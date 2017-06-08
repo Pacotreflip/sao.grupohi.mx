@@ -83,4 +83,9 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
     {
         // TODO: Implement getAuthIdentifierName() method.
     }
+
+    public function __toString()
+    {
+        return $this->nombre . ' ' . $this->apaterno . ' ' . $this->amaterno;
+    }
 }
