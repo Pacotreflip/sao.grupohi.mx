@@ -1,6 +1,6 @@
 <?php
 
-namespace SAO\Http;
+namespace Ghi\Http;
 
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
 
@@ -24,11 +24,11 @@ class Kernel extends HttpKernel
      */
     protected $middlewareGroups = [
         'web' => [
-            \SAO\Http\Middleware\EncryptCookies::class,
+            \Ghi\Http\Middleware\EncryptCookies::class,
             \Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse::class,
             \Illuminate\Session\Middleware\StartSession::class,
             \Illuminate\View\Middleware\ShareErrorsFromSession::class,
-            \SAO\Http\Middleware\VerifyCsrfToken::class,
+            \Ghi\Http\Middleware\VerifyCsrfToken::class,
         ],
 
         'api' => [
@@ -44,10 +44,11 @@ class Kernel extends HttpKernel
      * @var array
      */
     protected $routeMiddleware = [
-        'auth' => \SAO\Http\Middleware\Authenticate::class,
+        'auth' => \Ghi\Http\Middleware\Authenticate::class,
         'auth.basic' => \Illuminate\Auth\Middleware\AuthenticateWithBasicAuth::class,
         'can' => \Illuminate\Foundation\Http\Middleware\Authorize::class,
-        'guest' => \SAO\Http\Middleware\RedirectIfAuthenticated::class,
+        'guest' => \Ghi\Http\Middleware\RedirectIfAuthenticated::class,
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
+        'context' => \Ghi\Http\Middleware\RedirectIfContextNotSet::class,
     ];
 }

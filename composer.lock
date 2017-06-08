@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "fc51b0ba705ed1a585ecf010c5070213",
+    "content-hash": "6bef82f96f0d596e9f17db42c0978cc7",
     "packages": [
         {
             "name": "acacha/admin-lte-template-laravel",
@@ -356,6 +356,50 @@
                 "tokenizer"
             ],
             "time": "2016-12-07T09:37:55+00:00"
+        },
+        {
+            "name": "laracasts/flash",
+            "version": "3.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/laracasts/flash.git",
+                "reference": "1c7658652e10791d934a37bc0f6f0bd5ce5ac73f"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/laracasts/flash/zipball/1c7658652e10791d934a37bc0f6f0bd5ce5ac73f",
+                "reference": "1c7658652e10791d934a37bc0f6f0bd5ce5ac73f",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/support": "~5.0",
+                "php": ">=5.4.0"
+            },
+            "require-dev": {
+                "mockery/mockery": "dev-master",
+                "phpunit/phpunit": "^6.1"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "Laracasts\\Flash": "src/"
+                },
+                "files": [
+                    "src/Laracasts/Flash/functions.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Jeffrey Way",
+                    "email": "jeffrey@laracasts.com"
+                }
+            ],
+            "description": "Easy flash notifications",
+            "time": "2017-04-26T16:55:22+00:00"
         },
         {
             "name": "laravel/framework",
@@ -1954,6 +1998,92 @@
             "time": "2016-04-29T12:21:54+00:00"
         },
         {
+            "name": "ghi/core-domain",
+            "version": "1.0.10",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Grupo-Hermes-Infraestructura/core.git",
+                "reference": "bb1a2eabb9cf8abe630061ae74de2b6f6693398c"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Grupo-Hermes-Infraestructura/core/zipball/bb1a2eabb9cf8abe630061ae74de2b6f6693398c",
+                "reference": "bb1a2eabb9cf8abe630061ae74de2b6f6693398c",
+                "shasum": ""
+            },
+            "require": {
+                "laracasts/presenter": "^0.2.1",
+                "laravel/framework": "^5.1"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Ghi\\Core\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Uziel Bueno",
+                    "email": "ux.webs@gmail.com"
+                }
+            ],
+            "description": "Paquete con el dominio de negocio core para las aplicaciones de GHI.",
+            "keywords": [
+                "core",
+                "ghi",
+                "laravel"
+            ],
+            "time": "2015-11-04T03:56:10+00:00"
+        },
+        {
+            "name": "ghidev/intranet-auth",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/ghidev/intranet-auth.git",
+                "reference": "17dbf03a50e39f426da32717dc44fcf1e67ba454"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/ghidev/intranet-auth/zipball/17dbf03a50e39f426da32717dc44fcf1e67ba454",
+                "reference": "17dbf03a50e39f426da32717dc44fcf1e67ba454",
+                "shasum": ""
+            },
+            "require": {
+                "ghi/core-domain": "^1.0",
+                "laravel/framework": "^5.2"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Ghidev\\IntranetAuth\\": "src/IntranetAuth/",
+                    "Ghidev\\Core\\": "src/Core/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Francisco Esquivel",
+                    "email": "froker91@gmail.com"
+                }
+            ],
+            "description": "Paquete para integrar auntenticacion con la intranet de GHI con Laravel",
+            "keywords": [
+                "auth",
+                "ghi",
+                "intranet",
+                "laravel"
+            ],
+            "time": "2017-03-08T23:32:31+00:00"
+        },
+        {
             "name": "hamcrest/hamcrest-php",
             "version": "v1.2.2",
             "source": {
@@ -1997,6 +2127,52 @@
                 "test"
             ],
             "time": "2015-05-11T14:41:42+00:00"
+        },
+        {
+            "name": "laracasts/presenter",
+            "version": "0.2.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/laracasts/Presenter.git",
+                "reference": "b284f3137f990efd6e95df49d254f1ccc4541e92"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/laracasts/Presenter/zipball/b284f3137f990efd6e95df49d254f1ccc4541e92",
+                "reference": "b284f3137f990efd6e95df49d254f1ccc4541e92",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/support": "~5.0",
+                "php": ">=5.4.0"
+            },
+            "require-dev": {
+                "mockery/mockery": "~0.9",
+                "phpspec/phpspec": "~2.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "Laracasts\\Presenter": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Jeffrey Way",
+                    "email": "jeffrey@laracasts.com"
+                }
+            ],
+            "description": "Simple view presenters",
+            "keywords": [
+                "laravel",
+                "presenter",
+                "view"
+            ],
+            "time": "2014-09-13T13:18:07+00:00"
         },
         {
             "name": "mockery/mockery",
@@ -3237,7 +3413,9 @@
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": [],
+    "stability-flags": {
+        "ghidev/intranet-auth": 20
+    },
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {

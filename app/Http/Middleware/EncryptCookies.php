@@ -1,6 +1,6 @@
 <?php
 
-namespace SAO\Http\Middleware;
+namespace Ghi\Http\Middleware;
 
 use Illuminate\Cookie\Middleware\EncryptCookies as BaseEncrypter;
 

@@ -66,8 +66,8 @@ return [
 
     'providers' => [
         'users' => [
-            'driver' => 'eloquent',
-            'model' => SAO\User::class,
+            'driver' => 'intranet-auth',
+            'model' => \Ghi\Domain\Core\Models\User::class,
         ],
 
         // 'users' => [

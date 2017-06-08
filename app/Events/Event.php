@@ -1,6 +1,6 @@
 <?php
 
-namespace SAO\Events;
+namespace Ghi\Events;
 
 abstract class Event
 {

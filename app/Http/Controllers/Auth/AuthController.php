@@ -1,10 +1,12 @@
 <?php
 
-namespace SAO\Http\Controllers\Auth;
+namespace Ghi\Http\Controllers\Auth;
 
-use SAO\User;
+use Ghi\Domain\Core\Models\User;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session;
 use Validator;
-use SAO\Http\Controllers\Controller;
+use Ghi\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\ThrottlesLogins;
 use Illuminate\Foundation\Auth\AuthenticatesAndRegistersUsers;
 
@@ -28,16 +30,16 @@ class AuthController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = '/home';
+    public $redirectTo = '/obras';
+    protected $redirectAfterLogout = '/auth/login';
 
     /**
      * Create a new authentication controller instance.
      *
-     * @return void
      */
     public function __construct()
     {
-        $this->middleware($this->guestMiddleware(), ['except' => 'logout']);
+        $this->middleware($this->guestMiddleware(), ['except' => 'getLogout']);
     }
 
     /**
@@ -51,8 +53,7 @@ class AuthController extends Controller
         return Validator::make($data, [
             'name' => 'required|max:255',
             'email' => 'required|email|max:255|unique:users',
-            'password' => 'required|confirmed|min:6',
-            'terms' => 'required',
+            'password' => 'required|min:6|confirmed',
         ]);
     }
 
@@ -69,5 +70,12 @@ class AuthController extends Controller
             'email' => $data['email'],
             'password' => bcrypt($data['password']),
         ]);
+    }
+
+    public function getLogout()
+    {
+        Session::flush();
+        Auth::guard($this->getGuard())->logout();
+        return redirect(property_exists($this, 'redirectAfterLogout') ? $this->redirectAfterLogout : '/');
     }
 }

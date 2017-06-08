@@ -151,16 +151,30 @@ return [
         /*
          * Application Service Providers...
          */
-        SAO\Providers\AppServiceProvider::class,
-        SAO\Providers\AuthServiceProvider::class,
-        SAO\Providers\EventServiceProvider::class,
-        SAO\Providers\RouteServiceProvider::class,
+        Ghi\Providers\AppServiceProvider::class,
+        Ghi\Providers\AuthServiceProvider::class,
+        Ghi\Providers\EventServiceProvider::class,
+        Ghi\Providers\RouteServiceProvider::class,
 
         /*
-         * AdminLTETemplateLaravel Service Provider...
+         * Acacha / dminLTETemplateLaravel Service Provider...
          */
         Acacha\AdminLTETemplateLaravel\Providers\AdminLTETemplateServiceProvider::class,
 
+        /*
+        * Ghidev / IntranetAuth Service Provider...
+        */
+        Ghidev\IntranetAuth\IntranetAuthServiceProvider::class,
+
+        /*
+         * Laracasts / Flash Service Provider...
+         */
+        Laracasts\Flash\FlashServiceProvider::class,
+
+        /*
+         * Ghi / Core Service Provider...
+         */
+        Ghi\Core\Providers\RepositoryServiceProvider::class,
 
     ],
 

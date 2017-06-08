@@ -11,12 +11,4 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
-
-Route::group(['middleware' => 'web'], function () {
-    Route::auth();
-    Route::get('/admin', 'HomeController@index');
- 
-});
+include('routes/SAO.php');

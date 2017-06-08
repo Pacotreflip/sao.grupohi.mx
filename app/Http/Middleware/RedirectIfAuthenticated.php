@@ -1,6 +1,6 @@
 <?php
 
-namespace SAO\Http\Middleware;
+namespace Ghi\Http\Middleware;
 
 use Closure;
 use Illuminate\Support\Facades\Auth;

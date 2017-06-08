@@ -1,6 +1,6 @@
 <?php
 
-namespace SAO\Jobs;
+namespace Ghi\Jobs;
 
 use Illuminate\Bus\Queueable;
 

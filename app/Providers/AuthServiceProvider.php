@@ -1,6 +1,6 @@
 <?php
 
-namespace SAO\Providers;
+namespace Ghi\Providers;
 
 use Illuminate\Contracts\Auth\Access\Gate as GateContract;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
@@ -13,7 +13,7 @@ class AuthServiceProvider extends ServiceProvider
      * @var array
      */
     protected $policies = [
-        'SAO\Model' => 'SAO\Policies\ModelPolicy',
+        'Ghi\Model' => 'Ghi\Policies\ModelPolicy',
     ];
 
     /**

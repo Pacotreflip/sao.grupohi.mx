@@ -1,7 +1,8 @@
 <?php
 
-namespace SAO\Providers;
+namespace Ghi\Providers;
 
+use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -13,7 +14,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
+        View::composer('*', \Ghi\Http\Composers\ObraComposer::class);
     }
 
     /**
@@ -23,6 +24,49 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        //
+        $this->app->bind(
+            \Ghi\Core\Contracts\Context::class,
+            \Ghi\Core\App\ContextSession::class
+        );
+
+        $this->app->bind(
+            \Ghi\Domain\Core\Contracts\UserRepository::class,
+            \Ghi\Domain\Core\Repositories\EloquentUserRepository::class
+        );
+
+        $this->app->bind(
+            \Ghi\Domain\Core\Contracts\PolizaTipoRepository::class,
+            \Ghi\Domain\Core\Repositories\EloquentPolizaTipoRepository::class
+        );
+
+        $this->app->bind(
+            \Ghi\Domain\Core\Contracts\MovimientoRepository::class,
+            \Ghi\Domain\Core\Repositories\EloquentMovimientoRepository::class
+        );
+
+        $this->app->bind(
+            \Ghi\Domain\Core\Contracts\TipoMovimientoRepository::class,
+            \Ghi\Domain\Core\Repositories\EloquentTipoMovimientoRepository::class
+        );
+
+        $this->app->bind(
+            \Ghi\Domain\Core\Contracts\TransaccionInterfazRepository::class,
+            \Ghi\Domain\Core\Repositories\EloquentTransaccionInterfazRepository::class
+        );
+
+        $this->app->bind(
+            \Ghi\Domain\Core\Contracts\ObraRepository::class,
+            \Ghi\Domain\Core\Repositories\EloquentObraRepository::class
+        );
+
+        $this->app->bind(
+            \Ghi\Domain\Core\Contracts\CuentaContableRepository::class,
+            \Ghi\Domain\Core\Repositories\EloquentCuentaContableRepository::class
+        );
+
+        $this->app->bind(
+            \Ghi\Domain\Core\Contracts\TipoCuentaContableRepository::class,
+            \Ghi\Domain\Core\Repositories\EloquentTipoCuentaContableRepository::class
+        );
     }
 }

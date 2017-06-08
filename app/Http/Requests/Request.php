@@ -1,6 +1,6 @@
 <?php
 
-namespace SAO\Http\Requests;
+namespace Ghi\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
