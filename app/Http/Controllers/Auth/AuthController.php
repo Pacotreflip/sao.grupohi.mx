@@ -3,12 +3,12 @@
 namespace Ghi\Http\Controllers\Auth;
 
 use Ghi\Domain\Core\Models\User;
+use Ghidev\IntranetAuth\AuthenticatesIntranetUsers;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 use Validator;
 use Ghi\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\ThrottlesLogins;
-use Illuminate\Foundation\Auth\AuthenticatesAndRegistersUsers;
 
 class AuthController extends Controller
 {
@@ -23,7 +23,7 @@ class AuthController extends Controller
     |
     */
 
-    use AuthenticatesAndRegistersUsers, ThrottlesLogins;
+    use AuthenticatesIntranetUsers, ThrottlesLogins;
 
     /**
      * Where to redirect users after login / registration.

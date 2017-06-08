@@ -46,6 +46,38 @@ return [
 
     'connections' => [
 
+        'igh' => [
+            'driver' => 'mysql',
+            'host' => env('IGH_DB_HOST', 'localhost'),
+            'port' => env('IGH_DB_PORT', '3306'),
+            'database' => env('IGH_DB_DATABASE', 'forge'),
+            'username' => env('IGH_DB_USERNAME', 'forge'),
+            'password' => env('IGH_DB_PASSWORD', ''),
+            'charset' => 'utf8',
+            'collation' => 'utf8_unicode_ci',
+            'prefix' => '',
+            'strict' => false,
+            'engine' => null,
+        ],
+
+        'generales' => [
+            'driver'   => 'sqlsrv',
+            'host'     => env('DB_HOST_GENERALES', 'localhost'),
+            'database' => env('DB_DATABASE_GENERALES', 'forge'),
+            'username' => env('DB_USERNAME_GENERALES', 'forge'),
+            'password' => env('DB_PASSWORD_GENERALES', ''),
+            'prefix'   => '',
+        ],
+
+        'cadeco' => [
+            'driver'   => 'sqlsrv',
+            'host'     => env('DB_HOST_CADECO', 'localhost'),
+            'database' => env('DB_DATABASE_CADECO', 'forge'),
+            'username' => env('DB_USERNAME_CADECO', 'forge'),
+            'password' => env('DB_PASSWORD_CADECO', ''),
+            'prefix'   => '',
+        ],
+
         'sqlite' => [
             'driver' => 'sqlite',
             'database' => env('DB_DATABASE', database_path('database.sqlite')),
