@@ -176,6 +176,12 @@ return [
          */
         Ghi\Core\Providers\RepositoryServiceProvider::class,
 
+        /*
+         * DaveJamesMiller / Breadcrumbs Service Provider...
+         */
+        DaveJamesMiller\Breadcrumbs\ServiceProvider::class,
+
+
     ],
 
     /*
@@ -222,6 +228,7 @@ return [
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
         'AdminLTE' => Acacha\AdminLTETemplateLaravel\Facades\AdminLTE::class,
+        'Breadcrumbs' => DaveJamesMiller\Breadcrumbs\Facade::class,
 
     ],
 
