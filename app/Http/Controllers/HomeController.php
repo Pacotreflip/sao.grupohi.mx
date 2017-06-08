@@ -5,14 +5,14 @@
  * https://github.com/laravel/framework/blob/5.2/src/Illuminate/Auth/Console/stubs/make/controllers/HomeController.stub
  */
 
-namespace App\Http\Controllers;
+namespace SAO\Http\Controllers;
 
-use App\Http\Requests;
+use SAO\Http\Requests;
 use Illuminate\Http\Request;
 
 /**
  * Class HomeController
- * @package App\Http\Controllers
+ * @package SAO\Http\Controllers
  */
 class HomeController extends Controller
 {

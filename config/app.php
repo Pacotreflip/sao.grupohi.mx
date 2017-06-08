@@ -151,10 +151,10 @@ return [
         /*
          * Application Service Providers...
          */
-        App\Providers\AppServiceProvider::class,
-        App\Providers\AuthServiceProvider::class,
-        App\Providers\EventServiceProvider::class,
-        App\Providers\RouteServiceProvider::class,
+        SAO\Providers\AppServiceProvider::class,
+        SAO\Providers\AuthServiceProvider::class,
+        SAO\Providers\EventServiceProvider::class,
+        SAO\Providers\RouteServiceProvider::class,
 
         /*
          * AdminLTETemplateLaravel Service Provider...
