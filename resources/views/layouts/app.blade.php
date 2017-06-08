@@ -29,7 +29,7 @@ desired effect
 |               | sidebar-mini                            |
 |---------------------------------------------------------|
 -->
-<body class="skin-blue sidebar-mini">
+<body class="skin-green sidebar-mini">
 <div class="wrapper">
 
     @include('layouts.partials.mainheader')
@@ -56,6 +56,7 @@ desired effect
 
 @section('scripts')
     @include('layouts.partials.scripts')
+    @yield('scripts-content')
 @show
 
 </body>

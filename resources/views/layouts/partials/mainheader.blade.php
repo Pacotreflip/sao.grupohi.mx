@@ -2,11 +2,16 @@
 <header class="main-header">
 
     <!-- Logo -->
-    <a href="{{ url('/home') }}" class="logo">
-        <!-- mini logo for sidebar mini 50x50 pixels -->
+    <!--a href="{{ url('/home') }}" class="logo">
         <span class="logo-mini"><b>A</b>LT</span>
-        <!-- logo for regular state and mobile devices -->
-        <span class="logo-lg"><b>Admin</b>LTE Laravel </span>
+        <span class="logo-lg">{{ trans('strings.app-name') }}</span>
+    </a -->
+
+    <a class="logo" href="/">
+        <figure class="nav-company pull-left">
+            <img src="{{ asset('img/company-icon.png') }}"/>
+        </figure>
+        {{ trans('strings.app-name') }}
     </a>
 
     <!-- Header Navbar -->
