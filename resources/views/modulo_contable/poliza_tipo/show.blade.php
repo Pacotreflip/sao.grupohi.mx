@@ -38,7 +38,7 @@
                     <div class="col-sm-12">
                         <div class="row">
                             <div class="box-body">
-                                <table class="table table-striped">
+                                <table class="table table-bordered table-striped ">
                                     <thead>
                                     <tr>
                                         <th>Cuenta Contable</th>
@@ -50,9 +50,9 @@
                                     <tbody>
                                     @foreach($movimientos as $movimieto)
                                     <tr>
-                                        <td>$movimieto</td>
-                                        <td></td>
-                                        <td></td>
+                                        <td>{{$movimieto->cuentaContable->tipoCuentaContable}}</td>
+                                        <td>@if($movimieto->tipoMovimiento->id==1)<span class="fa fa-check-circle"></span>@endif</td>
+                                        <td>@if($movimieto->tipoMovimiento->id==2)<span class="fa fa-check-circle"></span>@endif</td>
                                     </tr>
                                         @endforeach
                                     </tbody>
