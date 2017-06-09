@@ -12631,7 +12631,7 @@ Vue.component('poliza-tipo-create', {
 
         save: function save() {
             var self = this;
-            var id_transaccion_interfaz = $('#id_transaccion_interfaz');
+            var id_transaccion_interfaz = $('#id_transaccion_interfaz').val();
             var url = App.host + '/modulo_contable/poliza_tipo';
 
             $.ajax({
