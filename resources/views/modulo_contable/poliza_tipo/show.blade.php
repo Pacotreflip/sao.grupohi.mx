@@ -2,38 +2,36 @@
 @section('title', 'Polizas Tipo')
 @section('contentheader_title', 'POLIZAS TIPO')
 @section('main-content')
-    {!! Breadcrumbs::render('modulo_contable.poliza_tipo.create') !!}
+    {!! Breadcrumbs::render('modulo_contable.poliza_tipo.show', $poliza_tipo) !!}
     <hr>
-
-
     <div class="row">
         <div class="col-md-12">
-        <div class="box box-solid">
-            <div class="box-header with-border">
-                <i class="fa fa-text-width"></i>
+            <div class="box box-success">
 
-                <h3 class="box-title">Póliza Tipo: {{$poliza_tipo->transaccionInterfaz}}</h3>
+                <div class="box box-solid">
+                    <div class="box-header with-border">
+                        <h3 class="box-title">{{ $poliza_tipo->transaccionInterfaz }}</h3>
+                    </div>
+                    <!-- /.box-header -->
+                    <div class="box-body">
+                        <dl>
+                            <dt>ID</dt>
+                            <dd>{{$poliza_tipo->id}}</dd>
+                            <dt>USUARIO QUE REGISTRÓ</dt>
+                            <dd>{{$poliza_tipo->userRegistro}}</dd>
+                            <dt>FECHA Y HORA DE REGISTRO</dt>
+                            <dd>{{$poliza_tipo->created_at->format('Y-m-d h:i:s a')}}</dd>
+                        </dl>
+                    </div>
+                    <!-- /.box-body -->
+                </div>
             </div>
-            <!-- /.box-header -->
-            <div class="box-body">
-                <dl class="dl-horizontal">
-                    <dt>ID</dt>
-                    <dd>{{$poliza_tipo->id}}</dd>
-                    <dt>Usuario que Registró</dt>
-                    <dd>{{$poliza_tipo->userRegistro}}</dd>
-                    <dt>Fecha y Hora de Registro</dt>
-                    <dd>{{$poliza_tipo->created_at->format('Y-m-d h:i:s a')}}</dd>
-                </dl>
-            </div>
-            <!-- /.box-body -->
-        </div>
         </div>
     </div>
 
     <div class="row">
-
         <div class="col-md-12">
-            <div class="box">
+            <div class="box box-success">
                 <div class="box-header">
                     <h3 class="box-title">Movimientos</h3>
 

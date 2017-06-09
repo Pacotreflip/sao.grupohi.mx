@@ -17,3 +17,7 @@ Breadcrumbs::register('modulo_contable.poliza_tipo.create', function ($breadcrum
     $breadcrumb->parent('modulo_contable.poliza_tipo.index');
     $breadcrumb->push('NUEVA PÓLIZA TIPO', route('modulo_contable.poliza_tipo.create'));
 });
+Breadcrumbs::register('modulo_contable.poliza_tipo.show', function ($breadcrumb, $poliza_tipo) {
+    $breadcrumb->parent('modulo_contable.poliza_tipo.index');
+    $breadcrumb->push($poliza_tipo->transaccionInterfaz, route('modulo_contable.poliza_tipo.show', $poliza_tipo));
+});
