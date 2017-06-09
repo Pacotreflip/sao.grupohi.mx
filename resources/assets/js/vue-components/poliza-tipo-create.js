@@ -7,6 +7,10 @@ Vue.component('poliza-tipo-create', {
                     'id_transaccion_interfaz' : '',
                     'movimientos' : []
                 },
+                'movimiento' : {
+                    'id_cuenta_contable' : '',
+                    'id_tipo_movimiento' : ''
+                },
                 'errors' : []
             },
             'guardando' : false
@@ -36,8 +40,8 @@ Vue.component('poliza-tipo-create', {
         },
 
         reset_movimiento: function () {
-            $('#id_cuenta_contable').val();
-            $('#id_tipo_movimiento').val();
+            Vue.set(this.movimiento, 'id_cuenta_contable', '');
+            Vue.set(this.movimiento, 'id_tipo_movimiento', '');
         },
 
         save: function () {
