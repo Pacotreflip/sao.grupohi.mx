@@ -14,8 +14,7 @@ class MovimientoPoliza extends Model
         'id_tipo_movimiento',
         'registro',
         'cancelo',
-        'motivo',
-        'estatus'
+        'motivo'
     ];
 
     public function polizaTipo() {

@@ -16,8 +16,7 @@ class PolizaTipo extends Model
         'registro',
         'aprobo',
         'cancelo',
-        'motivo',
-        'estatus'
+        'motivo'
     ];
 
     protected $dates = ['deleted_at'];

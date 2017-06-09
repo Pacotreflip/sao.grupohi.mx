@@ -4,6 +4,7 @@ use Ghi\Domain\Core\Contracts\CuentaContableRepository;
 use Ghi\Domain\Core\Contracts\PolizaTipoRepository;
 use Ghi\Domain\Core\Contracts\TipoMovimientoRepository;
 use Ghi\Domain\Core\Contracts\TransaccionInterfazRepository;
+use Illuminate\Http\Request;
 
 class PolizaTipoController extends Controller
 {
@@ -72,5 +73,8 @@ class PolizaTipoController extends Controller
                 'cuentas_contables'      => $cuentas_contables,
                 'tipos_movimiento'       => $tipos_movimiento
             ]);
+    }
+    public function  store(Request $request){
+            return response()->json(['success' => $this->poliza_tipo->create($request)]);
     }
 }
