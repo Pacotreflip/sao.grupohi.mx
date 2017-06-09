@@ -12629,17 +12629,19 @@ Vue.component('poliza-tipo-create', {
             $('#id_tipo_movimiento').val();
         },
 
-        save: function save() {
-            var self = this;
-            var id_transaccion_interfaz = $('#id_transaccion_interfaz').val();
-            var url = App.host + '/modulo_contable/poliza_tipo';
+        save: function save(e) {
+            e.preventDefault();
 
+            var self = this;
+            var url = App.host + '/modulo_contable/poliza_tipo';
             $.ajax({
                 type: 'POST',
                 url: url,
-                data: self.form.poliza_tipo,
+                data: {
+                    id_transaccion_interfaz: $('#id_transaccion_interfaz').val(),
+                    movimientos: self.form.poliza_tipo.movimientos
+                },
                 beforeSend: function beforeSend() {
-                    self.form.poliza_tipo.id_transaccion_interfaz = id_transaccion_interfaz;
                     self.guardando = true;
                 },
                 success: function success() {},
