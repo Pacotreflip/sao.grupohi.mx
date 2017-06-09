@@ -17,4 +17,9 @@ class TipoCuentaContable extends Model
     public function cuentasContables() {
         return $this->hasMany(CuentaContable::class, 'id_cuenta_contable');
     }
+
+    public function __toString()
+    {
+        return $this->descripcion;
+    }
 }

@@ -10,3 +10,4 @@
 <!-- DataTables -->
 <script src="{{ asset('/plugins/datatables/jquery.dataTables.min.js') }}" type="text/javascript"></script>
 <script src="{{ asset('/plugins/datatables/dataTables.bootstrap.min.js') }}" type="text/javascript"></script>
+<script src="{{ asset(elixir("js/app.js")) }}"></script>

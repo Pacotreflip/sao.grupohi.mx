@@ -2,5 +2,5 @@
 
 interface TipoMovimientoRepository
 {
-
+    public function lists();
 }
