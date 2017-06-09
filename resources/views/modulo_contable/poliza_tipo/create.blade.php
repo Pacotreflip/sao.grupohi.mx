@@ -18,6 +18,7 @@
                             <div class="form-group">
                                 <label for="id_transaccion_interfaz">Tipo de Póliza</label>
                                 <select id="id_transaccion_interfaz" name="id_transaccion_interfaz" class="form-control" v-select2 v-model="form.poliza_tipo.id_transaccion_interfaz">
+                                    <option value>[-SELECCIONE-]</option>
                                     @foreach($transacciones_interfaz as $key => $item)
                                         <option value="{{$key}}">{{ $item }}</option>
                                     @endforeach
@@ -81,6 +82,7 @@
                                             <div class="form-group">
                                                 <label for="id_cuenta_contable">Cuenta Contable</label>
                                                 <select id="id_cuenta_contable" name="id_cuenta_contable" class="form-control" v-select2>
+                                                    <option value>[-SELECCIONE-]</option>
                                                     @foreach($cuentas_contables as $key => $item)
                                                         <option value="{{$key}}">{{ $item }}</option>
                                                     @endforeach
@@ -92,6 +94,7 @@
                                             <div class="form-group">
                                                 <label for="id_tipo_movimiento">Tipo de Movimiento</label>
                                                 <select id="id_tipo_movimiento" name="id_tipo_movimiento" class="form-control" v-select2>
+                                                    <option value>[-SELECCIONE-]</option>
                                                     @foreach($tipos_movimiento as $key => $item)
                                                         <option value="{{$key}}">{{ $item }}</option>
                                                     @endforeach
