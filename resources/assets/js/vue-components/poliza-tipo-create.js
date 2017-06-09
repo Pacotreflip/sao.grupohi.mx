@@ -1,4 +1,5 @@
 Vue.component('poliza-tipo-create', {
+    props: ['cuentas_contables'],
     data: function() {
         return {
             'form' : {
@@ -11,7 +12,8 @@ Vue.component('poliza-tipo-create', {
                     'id_tipo_movimiento' : ''
                 },
                 'errors' : []
-            }
+            },
+            'guardando' : false
         }
     },
 
@@ -47,12 +49,12 @@ Vue.component('poliza-tipo-create', {
             $.ajax({
                 type: 'POST',
                 url: url,
-                data: form.poliza_tipo,
+                data: self.form.poliza_tipo,
                 beforeSend: function () {
                     self.guardando = true;
                 },
                 success: function () {
-                    swal()
+
                 },
                 error: function () {
 

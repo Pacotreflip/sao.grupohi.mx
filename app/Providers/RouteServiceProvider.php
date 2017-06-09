@@ -14,7 +14,16 @@ class RouteServiceProvider extends ServiceProvider
      *
      * @var string
      */
-    protected $namespace = 'Ghi\Http\Controllers';
+    protected $web_namespace = 'Ghi\Http\Controllers';
+
+    /**
+     * This namespace is applied to your API controller routes.
+     *
+     * In addition, it is set as the URL generator's root namespace.
+     *
+     * @var string
+     */
+    protected $api_namespace = 'Ghi\Api\Controllers';
 
     /**
      * Define your route model bindings, pattern filters, etc.
@@ -52,10 +61,27 @@ class RouteServiceProvider extends ServiceProvider
      */
     protected function mapWebRoutes(Router $router)
     {
+        /*
+        |--------------------------------------------------------------------------
+        | Web Router
+        |--------------------------------------------------------------------------
+        */
         $router->group([
-            'namespace' => $this->namespace, 'middleware' => 'web',
+            'namespace' => $this->web_namespace, 'middleware' => 'web',
         ], function ($router) {
             require app_path('Http/routes.php');
         });
+
+        /*
+        |--------------------------------------------------------------------------
+        | Api Router
+        |--------------------------------------------------------------------------
+        */
+        $router->group([
+            'namespace' => $this->api_namespace
+        ], function ($router) {
+            require app_path('Api/routes.php');
+        });
+
     }
 }

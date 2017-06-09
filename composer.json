@@ -9,7 +9,9 @@
         "laravel/framework": "5.2.*",
         "acacha/admin-lte-template-laravel": "2.*",
         "laracasts/flash": "^3.0",
-        "davejamesmiller/laravel-breadcrumbs": "^3.0"
+        "davejamesmiller/laravel-breadcrumbs": "^3.0",
+        "dingo/api": "1.0.*@dev",
+        "tymon/jwt-auth": "^0.5.12"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",

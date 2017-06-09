@@ -181,6 +181,10 @@ return [
          */
         DaveJamesMiller\Breadcrumbs\ServiceProvider::class,
 
+        /*
+         * Dingo / Api Service Provider...
+         */
+        Dingo\Api\Provider\LaravelServiceProvider::class,
 
     ],
 

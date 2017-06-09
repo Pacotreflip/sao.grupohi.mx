@@ -32,6 +32,8 @@ class PolizaTipoController extends Controller
      * PolizaTipoController constructor.
      * @param PolizaTipoRepository $poliza_tipo
      * @param TransaccionInterfazRepository $transaccion_interfaz
+     * @param CuentaContableRepository $cuenta_contable
+     * @param TipoMovimientoRepository $tipo_movimiento
      */
     public function __construct(
         PolizaTipoRepository $poliza_tipo,
@@ -51,14 +53,18 @@ class PolizaTipoController extends Controller
     }
 
     /**
+     * Muestra la vista del listado de Pólizas tipo registradas
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function index() {
-        $polizas_tipo = $this->poliza_tipo->lists();
-        return view('modulo_contable.poliza_tipo.index')->with('polizas_tipo', $polizas_tipo);
+        $polizas_tipo = $this->poliza_tipo->getAll();
+        return view('modulo_contable.poliza_tipo.index')
+            ->with('polizas_tipo', $polizas_tipo);
     }
 
+
     /**
+     * Muestra la vista de creación de Póliza ipo
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function create() {
@@ -74,6 +80,10 @@ class PolizaTipoController extends Controller
                 'tipos_movimiento'       => $tipos_movimiento
             ]);
     }
+
+    /*
+     *
+     */
     public function  store(Request $request){
             return response()->json(['success' => $this->poliza_tipo->create($request)]);
     }

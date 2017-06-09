@@ -7,9 +7,9 @@
     <hr>
     <div id="app">
         <global-errors></global-errors>
-        <poliza-tipo-create inline-template>
+        <poliza-tipo-create cuentas_contables="{{$cuentas_contables}}"  inline-template>
             <section>
-                <div class="box box-info">
+                <div class="box box-success">
                     <div class="box-header with-border">
                         <h3 class="box-title">Información de la Póliza Tipo </h3>
                     </div>
@@ -35,7 +35,7 @@
                     </div>
                 </div>
 
-                <div v-if="form.poliza_tipo.movimientos.length" class="box box-info">
+                <div v-if="form.poliza_tipo.movimientos.length" class="box box-success">
                     <div class="box-header with-border">
                         <h3 class="box-title">Movimientos</h3>
                     </div>
@@ -72,7 +72,7 @@
                                 <h4 class="modal-title">Agregar Movimiento</h4>
                             </div>
                             <div class="modal-body">
-                                <div class="box box-info">
+                                <div class="box box-success">
                                     <div class="box-header with-border">
                                         <h3 class="box-title">Información del Movimiento </h3>
                                     </div>

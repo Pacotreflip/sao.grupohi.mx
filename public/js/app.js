@@ -12596,7 +12596,8 @@ Vue.component('poliza-tipo-create', {
                     'id_tipo_movimiento': ''
                 },
                 'errors': []
-            }
+            },
+            'guardando': false
         };
     },
 
@@ -12632,16 +12633,25 @@ Vue.component('poliza-tipo-create', {
             $.ajax({
                 type: 'POST',
                 url: url,
-                data: form.poliza_tipo,
+                data: self.form.poliza_tipo,
                 beforeSend: function beforeSend() {
                     self.guardando = true;
                 },
-                success: function success() {
-                    swal();
-                },
+                success: function success() {},
                 error: function error() {},
                 complete: function complete() {
                     self.guardando = false;
+                }
+            });
+        },
+
+        get_cuenta_contable_by_id: function get_cuenta_contable_by_id(id) {
+            var url = App.host + '/modulo_contable/cuenta_contable/' + id;
+            $.ajax({
+                type: 'GET',
+                url: url,
+                success: function success(response) {
+                    return response;
                 }
             });
         }
