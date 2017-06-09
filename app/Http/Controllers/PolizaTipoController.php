@@ -94,7 +94,11 @@ class PolizaTipoController extends Controller
      * Recibe los datos para la creación de una nueva Póliza Tipo
      */
     public function  store(Request $request){
-        return response()->json(['success' => $this->poliza_tipo->create($request)]);
+        $poliza_tipo = $this->poliza_tipo->create($request->all());
+
+        return response()->json([
+            'success' => $poliza_tipo ? true : false,
+            'url' => route('modulo_contable.poliza_tipo.show', $poliza_tipo->id)]);
     }
 
     public function show($id) {

@@ -6,7 +6,7 @@
     {!! Breadcrumbs::render('modulo_contable.poliza_tipo.index') !!}
     <div class="row">
         <div class="col-sm-12">
-            <a class="btn btn-app btn-success" style="float:right">
+            <a href="{{ route('modulo_contable.poliza_tipo.create') }}" class="btn btn-app btn-success" style="float:right">
                 <i class="glyphicon glyphicon-plus-sign"></i>Nuevo
             </a>
         </div>

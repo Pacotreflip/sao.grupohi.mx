@@ -17,7 +17,7 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label for="id_transaccion_interfaz">Tipo de Póliza</label>
-                                <select id="id_transaccion_interfaz" name="id_transaccion_interfaz" class="form-control" v-select2 v-model="form.poliza_tipo.id_transaccion_interfaz">
+                                <select id="id_transaccion_interfaz" name="id_transaccion_interfaz" class="form-control" v-model="form.poliza_tipo.id_transaccion_interfaz">
                                     <option value>[-SELECCIONE-]</option>
                                     @foreach($transacciones_interfaz as $key => $item)
                                         <option value="{{$key}}">{{ $item }}</option>
@@ -60,7 +60,14 @@
                     </div>
                 </div>
                 <div>
-                    <button type="button" class="btn btn-success" @click="save">Guardar</button>
+                    <button type="button" class="btn btn-success" @click="save" :disabled="guardando">
+                        <span v-if="guardando">
+                            <i class="fa fa-spinner fa-spin"></i> Guardando
+                        </span>
+                        <span v-else>
+                            <i class="fa fa-save"></i> Guardar
+                        </span>
+                    </button>
                 </div>
 
                 <!-- modal Add Movimiento -->

@@ -56,10 +56,11 @@ class EloquentPolizaTipoRepository implements PolizaTipoRepository
                 $this->movimiento->create($poliza_tipo->id, $movimiento);
             }
             DB::connection('cadeco')->commit();
-            return true;
+            return $poliza_tipo;
         }
         catch(\Exception $e){
             DB::connection('cadeco')->rollBack();
+            throw $e;
             return false;
         }
     }

@@ -12530,6 +12530,13 @@ require('sweetalert');
 //window.Vue = require('vue/dist/vue.min');
 require('vue-resource');
 Vue.http.headers.common['X-CSRF-TOKEN'] = App.csrfToken;
+$(function () {
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': App.csrfToken
+        }
+    });
+});
 
 if ($('#app').length) {
     new Vue({
@@ -12584,17 +12591,13 @@ Vue.component('global-errors', {
 'use strict';
 
 Vue.component('poliza-tipo-create', {
-    props: ['cuentas_contables'],
+    props: ['cuentas_contables', 'tipos_movimiento'],
     data: function data() {
         return {
             'form': {
                 'poliza_tipo': {
                     'id_transaccion_interfaz': '',
                     'movimientos': []
-                },
-                'movimiento': {
-                    'id_cuenta_contable': '',
-                    'id_tipo_movimiento': ''
                 },
                 'errors': []
             },
@@ -12606,7 +12609,8 @@ Vue.component('poliza-tipo-create', {
         select2: {
             inserted: function inserted(el) {
                 $(el).select2({
-                    width: '100%'
+                    width: '100%',
+                    placeholder: "--SELECCIONE--"
                 });
             }
         }
@@ -12617,46 +12621,48 @@ Vue.component('poliza-tipo-create', {
             var id_cuenta_contable = $('#id_cuenta_contable').val();
             var id_tipo_movimiento = $('#id_tipo_movimiento').val();
 
-            Vue.set(this.form.movimiento, 'id_cuenta_contable', id_cuenta_contable);
-            Vue.set(this.form.movimiento, 'id_tipo_movimiento', id_tipo_movimiento);
-
-            this.form.poliza_tipo.movimientos.push(this.form.movimiento);
+            this.form.poliza_tipo.movimientos.push({
+                id_cuenta_contable: id_cuenta_contable,
+                id_tipo_movimiento: id_tipo_movimiento
+            });
         },
 
         reset_movimiento: function reset_movimiento() {
-            Vue.set(this.form.movimiento, 'id_cuenta_contable', '');
-            Vue.set(this.form.movimiento, 'id_tipo_movimiento', '');
+            $('#id_cuenta_contable').val();
+            $('#id_tipo_movimiento').val();
         },
 
         save: function save() {
             var self = this;
             var url = App.host + '/modulo_contable/poliza_tipo';
+            var data = self.form.poliza_tipo;
+
+            console.log(data);
+
             $.ajax({
                 type: 'POST',
                 url: url,
-                data: self.form.poliza_tipo,
+                data: data,
                 beforeSend: function beforeSend() {
                     self.guardando = true;
                 },
-                success: function success() {},
+                success: function success(response) {
+                    if (response.success) {
+                        window.location = response.url;
+                    } else {
+                        swal({
+                            type: 'error',
+                            title: '¡Error!',
+                            text: 'Ocurrio un error'
+                        });
+                    }
+                },
                 error: function error() {},
                 complete: function complete() {
                     self.guardando = false;
                 }
             });
-        },
-
-        get_cuenta_contable_by_id: function get_cuenta_contable_by_id(id) {
-            var url = App.host + '/modulo_contable/cuenta_contable/' + id;
-            $.ajax({
-                type: 'GET',
-                url: url,
-                success: function success(response) {
-                    return response;
-                }
-            });
         }
-
     }
 });
 
