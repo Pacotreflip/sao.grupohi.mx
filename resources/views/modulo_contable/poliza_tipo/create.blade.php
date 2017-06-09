@@ -49,14 +49,17 @@
                             </tr>
                             </thead>
                             <tbody>
-                            <tr v-for="(index, movimiento) in form.poliza_tipo.movimientos">
+                            <tr v-for="(movimiento, index) in form.poliza_tipo.movimientos">
                                 <td>@{{ index + 1  }}</td>
-                                <td>@{{ movimiento.cuenta_contable }}</td>
-                                <td>@{{ movimiento.tipo }}</td>
+                                <td>@{{ movimiento.id_cuenta_contable }}</td>
+                                <td>@{{ movimiento.id_tipo_movimiento }}</td>
                             </tr>
                             </tbody>
                         </table>
                     </div>
+                </div>
+                <div>
+                    <button type="button" class="btn btn-success" @click="save">Guardar</button>
                 </div>
 
                 <!-- modal Add Movimiento -->

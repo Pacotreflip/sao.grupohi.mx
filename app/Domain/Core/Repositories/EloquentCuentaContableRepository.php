@@ -13,4 +13,9 @@ class EloquentCuentaContableRepository implements CuentaContableRepository
         }
         return collect($data);
     }
+
+    public function getById($id)
+    {
+        return CuentaContable::find($id)->toArray();
+    }
 }
