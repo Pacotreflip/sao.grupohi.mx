@@ -32,8 +32,11 @@
 
                         <ul class="dropdown-menu">
                            <li class="user-footer">
-                               <a href="auth/logout"><i class="fa fa-fw fa-power-off"></i> Cerrar Sesión</a>
+                               <a href="/obras"><i class="fa fa-fw fa-database"></i> Obras</a>
                            </li>
+                            <li class="user-footer">
+                                <a href="auth/logout"><i class="fa fa-fw fa-power-off"></i> Cerrar Sesión</a>
+                            </li>
                         </ul>
                     </li>
                 @endif
