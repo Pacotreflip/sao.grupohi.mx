@@ -1,7 +1,9 @@
 <head>
+    <link href="/img/company-icon.png" rel="shortcut icon" type="image/x-icon" />
     <meta charset="UTF-8">
     <title> {{ trans('strings.app-name') }} - @yield('title') </title>
     <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
+
 
     <!-- Bootstrap 3.3.4 -->
     <link href="{{ asset('/css/bootstrap.css') }}" rel="stylesheet" type="text/css" />
