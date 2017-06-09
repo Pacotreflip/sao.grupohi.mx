@@ -38,4 +38,8 @@ class PagesController extends Controller
     public function welcome() {
         return view('pages.welcome');
     }
+
+    public function modulo_contable() {
+        return view('modulo_contable.index');
+    }
 }

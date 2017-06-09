@@ -15,4 +15,9 @@ class TransaccionInterfaz extends Model
     public function polizasTipo(){
         return $this->hasMany(PolizaTipo::class, "id_transaccion_interfaz");
     }
+
+    public function __toString()
+    {
+        return $this->descripcion;
+    }
 }
