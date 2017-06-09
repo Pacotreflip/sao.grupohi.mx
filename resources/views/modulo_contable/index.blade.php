@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('modulo_contable.layout')
 @section('title', 'Módulo Contable')
 @section('contentheader_title', 'MÓDULO CONTABLE')
 @section('main-content')

@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('modulo_contable.layout')
 @section('title', 'Polizas Tipo')
 @section('contentheader_title', 'POLIZAS TIPO')
 
