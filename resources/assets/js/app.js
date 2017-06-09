@@ -10,6 +10,13 @@ require('sweetalert');
 //window.Vue = require('vue/dist/vue.min');
 require('vue-resource');
 Vue.http.headers.common['X-CSRF-TOKEN'] = App.csrfToken;
+$(function ()  {
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': App.csrfToken
+        }
+    });
+});
 
 if ($('#app').length) {
     new Vue({
