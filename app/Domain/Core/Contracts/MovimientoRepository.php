@@ -2,5 +2,5 @@
 
 interface MovimientoRepository
 {
-
+ function create($id_transaccion_interfaz,array $movimientos);
 }

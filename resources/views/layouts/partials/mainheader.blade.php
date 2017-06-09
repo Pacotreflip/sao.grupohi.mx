@@ -27,26 +27,16 @@
                             <i class="fa fa-fw fa-user"></i>
                             <!-- hidden-xs hides the username on small devices so only the image appears. -->
                             <span class="hidden-xs">{{ auth()->user() }}</span>
+                            <i class="fa fa-fw fa-caret-down"></i>
                         </a>
-                        <ul class="dropdown-menu">
 
-                            <!-- Menu Footer-->
-                            <li class="user-footer">
-                                <div class="pull-left">
-                                    <a href="#" class="btn btn-default btn-flat">{{ trans('adminlte_lang::message.profile') }}</a>
-                                </div>
-                                <div class="pull-right">
-                                    <a href="{{ url('/logout') }}" class="btn btn-default btn-flat">{{ trans('adminlte_lang::message.signout') }}</a>
-                                </div>
-                            </li>
+                        <ul class="dropdown-menu">
+                           <li class="user-footer">
+                               <a href="auth/logout"><i class="fa fa-fw fa-power-off"></i> Cerrar Sesión</a>
+                           </li>
                         </ul>
                     </li>
                 @endif
-
-                <!-- Control Sidebar Toggle Button -->
-                <li>
-                    <a href="#" data-toggle="control-sidebar"><i class="fa fa-gears"></i></a>
-                </li>
             </ul>
         </div>
     </nav>
