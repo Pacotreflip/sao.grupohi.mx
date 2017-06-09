@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('modulo_contable.layout')
 @section('title', 'Polizas Tipo')
 @section('contentheader_title', 'POLIZAS TIPO')
 
@@ -7,7 +7,7 @@
     <hr>
     <div id="app">
         <global-errors></global-errors>
-        <poliza-tipo-create cuentas_contables="{{$cuentas_contables}}"  inline-template>
+        <poliza-tipo-create v-bind:tipos_movimiento="{{ $tipos_movimiento }}" v-bind:cuentas_contables="{{ $cuentas_contables }}"  inline-template>
             <section>
                 <div class="box box-success">
                     <div class="box-header with-border">
@@ -49,10 +49,10 @@
                             </tr>
                             </thead>
                             <tbody>
-                            <tr v-for="(movimiento, index) in form.poliza_tipo.movimientos">
+                            <tr v-for="(item, index) in form.poliza_tipo.movimientos">
                                 <td>@{{ index + 1  }}</td>
-                                <td>@{{ movimiento.id_cuenta_contable }}</td>
-                                <td>@{{ movimiento.id_tipo_movimiento }}</td>
+                                <td>@{{ cuentas_contables[item.id_cuenta_contable] }}</td>
+                                <td>@{{ tipos_movimiento[item.id_tipo_movimiento] }}</td>
                             </tr>
                             </tbody>
                         </table>
@@ -80,7 +80,7 @@
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <label for="id_cuenta_contable">Cuenta Contable</label>
-                                                <select id="id_cuenta_contable" name="id_cuenta_contable" class="form-control" v-select2 v-model="form.movimiento.id_cuenta_contable" v-select2>
+                                                <select id="id_cuenta_contable" name="id_cuenta_contable" class="form-control" v-select2>
                                                     @foreach($cuentas_contables as $key => $item)
                                                         <option value="{{$key}}">{{ $item }}</option>
                                                     @endforeach
@@ -91,7 +91,7 @@
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <label for="id_tipo_movimiento">Tipo de Movimiento</label>
-                                                <select id="id_tipo_movimiento" name="id_tipo_movimiento" class="form-control" v-select2 v-model="form.movimiento.id_tipo_movimiento" v-select2>
+                                                <select id="id_tipo_movimiento" name="id_tipo_movimiento" class="form-control" v-select2>
                                                     @foreach($tipos_movimiento as $key => $item)
                                                         <option value="{{$key}}">{{ $item }}</option>
                                                     @endforeach

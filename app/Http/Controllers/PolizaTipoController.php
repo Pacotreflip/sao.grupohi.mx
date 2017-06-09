@@ -82,9 +82,9 @@ class PolizaTipoController extends Controller
     }
 
     /*
-     *
+     * Recibe los datos para la creación de una nueva Póliza Tipo
      */
     public function  store(Request $request){
-            return response()->json(['success' => $this->poliza_tipo->create($request)]);
+        return response()->json(['success' => $this->poliza_tipo->create($request)]);
     }
 }

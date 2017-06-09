@@ -6,6 +6,9 @@ use Ghi\Domain\Core\Models\CuentaContable;
 class EloquentCuentaContableRepository implements CuentaContableRepository
 {
 
+    /*
+     * Regresa un listado de cuentas contables id => tipoCuentaContable
+     */
     public function lists() {
         $data = [];
         foreach (CuentaContable::all() as $item) {
