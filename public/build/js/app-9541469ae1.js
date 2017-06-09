@@ -12629,9 +12629,7 @@ Vue.component('poliza-tipo-create', {
             $('#id_tipo_movimiento').val();
         },
 
-        save: function save(e) {
-            e.preventDefault();
-
+        save: function save() {
             var self = this;
             var url = App.host + '/modulo_contable/poliza_tipo';
             $.ajax({
