@@ -7,6 +7,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
 @section('htmlheader')
     @include('layouts.partials.htmlheader')
+    @include('scripts.globals')
 @show
 
 <!--

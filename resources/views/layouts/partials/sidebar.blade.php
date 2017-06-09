@@ -18,6 +18,7 @@
             </div>
         @endif
 
+        @yield('content-menu')
         <!-- Sidebar Menu -->
         <ul class="sidebar-menu">
             <li class="header">{{ trans('adminlte_lang::message.header') }}</li>
