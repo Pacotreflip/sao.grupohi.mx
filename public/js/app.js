@@ -12632,8 +12632,8 @@ Vue.component('poliza-tipo-create', {
         },
 
         reset_movimiento: function reset_movimiento() {
-            Vue.set(this.movimiento, 'id_cuenta_contable', '');
-            Vue.set(this.movimiento, 'id_tipo_movimiento', '');
+            Vue.set(this.form.movimiento, 'id_cuenta_contable', '');
+            Vue.set(this.form.movimiento, 'id_tipo_movimiento', '');
         },
 
         save: function save() {

@@ -61,7 +61,7 @@
                         </table>
                     </div>
                 </div>
-                <div>
+                <div v-if="form.poliza_tipo.movimientos.length > 0">
                     <button type="button" class="btn btn-success" @click="save" :disabled="guardando">
                         <span v-if="guardando">
                             <i class="fa fa-spinner fa-spin"></i> Guardando
@@ -90,7 +90,7 @@
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <label for="id_cuenta_contable">Cuenta Contable</label>
-                                                <select id="id_cuenta_contable" name="id_cuenta_contable" class="form-control" v-model="movimiento.id_cuenta_contable">
+                                                <select id="id_cuenta_contable" name="id_cuenta_contable" class="form-control" v-model="form.movimiento.id_cuenta_contable">
                                                     <option value>[-SELECCIONE-]</option>
                                                     @foreach($cuentas_contables as $key => $item)
                                                         <option value="{{$key}}">{{ $item }}</option>
@@ -102,7 +102,7 @@
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <label for="id_tipo_movimiento">Tipo de Movimiento</label>
-                                                <select id="id_tipo_movimiento" name="id_tipo_movimiento" class="form-control" v-model="movimiento.id_tipo_movimiento">
+                                                <select id="id_tipo_movimiento" name="id_tipo_movimiento" class="form-control" v-model="form.movimiento.id_tipo_movimiento">
                                                     <option value>[-SELECCIONE-]</option>
                                                     @foreach($tipos_movimiento as $key => $item)
                                                         <option value="{{$key}}">{{ $item }}</option>
@@ -116,7 +116,7 @@
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Cerrar</button>
-                                <button type="button" class="btn btn-primary" @click="add_movimiento" data-dismiss="modal">Agregar</button>
+                                <button type="button" class="btn btn-primary" @click="add_movimiento" data-dismiss="modal" :disabled="form.movimiento.id_cuenta_contable == '' || form.movimiento.id_tipo_movimiento == ''">Agregar</button>
                             </div>
                         </div>
                         <!-- /.modal-content -->
