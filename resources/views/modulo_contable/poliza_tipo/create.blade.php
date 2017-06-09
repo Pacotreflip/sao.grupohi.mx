@@ -17,7 +17,7 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label for="id_transaccion_interfaz">Tipo de Póliza</label>
-                                <select id="id_transaccion_interfaz" name="id_transaccion_interfaz" class="form-control" v-model="form.poliza_tipo.id_transaccion_interfaz">
+                                <select id="id_transaccion_interfaz" name="id_transaccion_interfaz" class="form-control" v-model="form.poliza_tipo.id_transaccion_interfaz" :disabled="form.poliza_tipo.movimientos.length > 0">
                                     <option value>[-SELECCIONE-]</option>
                                     @foreach($transacciones_interfaz as $key => $item)
                                         <option value="{{$key}}">{{ $item }}</option>
@@ -28,7 +28,7 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label for="add_movimiento">Agragar Movimiento</label>
-                                <button type="button" class="btn btn-primary btn-block" data-toggle="modal" data-target="#modal-add-movimiento" @click="reset_movimiento">
+                                <button type="button" class="btn btn-primary btn-block" data-toggle="modal" data-target="#modal-add-movimiento" @click="reset_movimiento" :disabled="guardando || form.poliza_tipo.id_transaccion_interfaz == ''">
                                     <i class="fa fa-fw fa-plus"></i>
                                 </button>
                             </div>
@@ -90,7 +90,7 @@
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <label for="id_cuenta_contable">Cuenta Contable</label>
-                                                <select id="id_cuenta_contable" name="id_cuenta_contable" class="form-control" v-select2>
+                                                <select id="id_cuenta_contable" name="id_cuenta_contable" class="form-control" v-model="movimiento.id_cuenta_contable">
                                                     <option value>[-SELECCIONE-]</option>
                                                     @foreach($cuentas_contables as $key => $item)
                                                         <option value="{{$key}}">{{ $item }}</option>
@@ -102,7 +102,7 @@
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <label for="id_tipo_movimiento">Tipo de Movimiento</label>
-                                                <select id="id_tipo_movimiento" name="id_tipo_movimiento" class="form-control" v-select2>
+                                                <select id="id_tipo_movimiento" name="id_tipo_movimiento" class="form-control" v-model="movimiento.id_tipo_movimiento">
                                                     <option value>[-SELECCIONE-]</option>
                                                     @foreach($tipos_movimiento as $key => $item)
                                                         <option value="{{$key}}">{{ $item }}</option>
@@ -116,7 +116,7 @@
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Cerrar</button>
-                                <button type="button" class="btn btn-primary" @click="add_movimiento">Agregar</button>
+                                <button type="button" class="btn btn-primary" @click="add_movimiento" data-dismiss="modal">Agregar</button>
                             </div>
                         </div>
                         <!-- /.modal-content -->
