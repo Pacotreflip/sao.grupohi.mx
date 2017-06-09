@@ -16,4 +16,8 @@ class EloquentMovimientoRepository implements MovimientoRepository
         ]);
     }
 
+    public function getByPolizaTipoId($poliza_tipo_id)
+    {
+        return MovimientoPoliza::where('id_poliza_tipo', '=', $poliza_tipo_id)->get();
+    }
 }

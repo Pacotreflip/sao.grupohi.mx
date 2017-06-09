@@ -1,6 +1,7 @@
 <?php namespace Ghi\Http\Controllers;
 
 use Ghi\Domain\Core\Contracts\CuentaContableRepository;
+use Ghi\Domain\Core\Contracts\MovimientoRepository;
 use Ghi\Domain\Core\Contracts\PolizaTipoRepository;
 use Ghi\Domain\Core\Contracts\TipoMovimientoRepository;
 use Ghi\Domain\Core\Contracts\TransaccionInterfazRepository;
@@ -29,17 +30,24 @@ class PolizaTipoController extends Controller
     private $tipo_movimiento;
 
     /**
+     * @var MovimientoRepository
+     */
+    private $movimiento;
+
+    /**
      * PolizaTipoController constructor.
      * @param PolizaTipoRepository $poliza_tipo
      * @param TransaccionInterfazRepository $transaccion_interfaz
      * @param CuentaContableRepository $cuenta_contable
      * @param TipoMovimientoRepository $tipo_movimiento
+     * @param MovimientoRepository $movimiento
      */
     public function __construct(
         PolizaTipoRepository $poliza_tipo,
         TransaccionInterfazRepository $transaccion_interfaz,
         CuentaContableRepository $cuenta_contable,
-        TipoMovimientoRepository $tipo_movimiento)
+        TipoMovimientoRepository $tipo_movimiento,
+        MovimientoRepository $movimiento)
     {
         parent::__construct();
 
@@ -50,6 +58,7 @@ class PolizaTipoController extends Controller
         $this->transaccion_interfaz = $transaccion_interfaz;
         $this->cuenta_contable = $cuenta_contable;
         $this->tipo_movimiento = $tipo_movimiento;
+        $this->movimiento = $movimiento;
     }
 
     /**
@@ -90,8 +99,12 @@ class PolizaTipoController extends Controller
 
     public function show($id) {
         $poliza_tipo = $this->poliza_tipo->getById($id);
+        $movimientos = $this->movimiento->getByPolizaTipoId($poliza_tipo->id);
 
         return view('modulo_contable.poliza_tipo.show')
-            ->with('poliza_tipo', $poliza_tipo);
+            ->with([
+                'poliza_tipo' => $poliza_tipo,
+                'movimientos' => $movimientos
+            ]);
     }
 }
