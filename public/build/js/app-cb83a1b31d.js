@@ -12662,6 +12662,9 @@ Vue.component('poliza-tipo-create', {
                     self.guardando = false;
                 }
             });
+        },
+        remove_movimiento: function remove_movimiento(e) {
+            Vue.delete(this.form.poliza_tipo.movimientos, e);
         }
     }
 });

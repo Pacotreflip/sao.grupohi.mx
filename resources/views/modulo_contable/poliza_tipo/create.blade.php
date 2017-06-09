@@ -47,6 +47,7 @@
                                 <th>#</th>
                                 <th>Cuenta Contable</th>
                                 <th>Tipo de Movimiento</th>
+                                <th>Quitar</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -54,6 +55,7 @@
                                 <td>@{{ index + 1  }}</td>
                                 <td>@{{ cuentas_contables[item.id_cuenta_contable] }}</td>
                                 <td>@{{ tipos_movimiento[item.id_tipo_movimiento] }}</td>
+                                <td><button class="btn btn-xs btn-danger" @click="remove_movimiento(index)"><i class="fa fa-trash" /></button></td>
                             </tr>
                             </tbody>
                         </table>

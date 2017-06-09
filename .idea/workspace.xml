@@ -2,8 +2,15 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="a092cd11-95ca-4984-9945-f7adccd63558" name="Default" comment="">
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/build/css/app-b2ca13cb5e.css" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/public/build/js/app-e32e65155a.js" afterPath="$PROJECT_DIR$/public/build/js/app-cb83a1b31d.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/views/modulo_contable/poliza_tipo/show.blade.php" afterPath="$PROJECT_DIR$/resources/views/modulo_contable/poliza_tipo/show.blade.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/build/js/app.js.map" afterPath="$PROJECT_DIR$/public/build/js/app.js.map" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/build/rev-manifest.json" afterPath="$PROJECT_DIR$/public/build/rev-manifest.json" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/js/app.js" afterPath="$PROJECT_DIR$/public/js/app.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/js/app.js.map" afterPath="$PROJECT_DIR$/public/js/app.js.map" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/assets/js/vue-components/poliza-tipo-create.js" afterPath="$PROJECT_DIR$/resources/assets/js/vue-components/poliza-tipo-create.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/views/modulo_contable/poliza_tipo/create.blade.php" afterPath="$PROJECT_DIR$/resources/views/modulo_contable/poliza_tipo/create.blade.php" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -15,67 +22,36 @@
   <component name="ExecutionTargetManager" SELECTED_TARGET="default_target" />
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="show.blade.php" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/resources/views/modulo_contable/poliza_tipo/show.blade.php">
+      <file leaf-file-name="create.blade.php" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/resources/views/modulo_contable/poliza_tipo/create.blade.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="408">
-              <caret line="42" column="81" lean-forward="false" selection-start-line="42" selection-start-column="81" selection-end-line="42" selection-end-column="81" />
+            <state relative-caret-position="459">
+              <caret line="57" column="105" lean-forward="false" selection-start-line="57" selection-start-column="100" selection-end-line="57" selection-end-column="105" />
               <folding>
-                <marker date="1497032181116" expanded="true" signature="9:33" ph="..." />
-                <marker date="1497032181116" expanded="true" signature="44:67" ph="..." />
-                <marker date="1497032181116" expanded="true" signature="78:115" ph="..." />
-                <marker date="1497032181116" expanded="true" signature="126:140" ph="..." />
-                <marker date="1497032181116" expanded="true" signature="149:208" ph="..." />
-                <marker date="1497032181116" expanded="true" signature="465:498" ph="..." />
-                <marker date="1497032181116" expanded="true" signature="695:711" ph="..." />
-                <marker date="1497032181116" expanded="true" signature="795:821" ph="..." />
-                <marker date="1497032181116" expanded="true" signature="909:923" ph="..." />
-                <marker date="1497032181116" expanded="true" signature="909:958" ph="..." />
-                <marker date="1497032181116" expanded="true" signature="2040:2086" ph="..." />
+                <marker date="1497035104088" expanded="true" signature="9:33" ph="..." />
+                <marker date="1497035104088" expanded="true" signature="44:67" ph="..." />
+                <marker date="1497035104088" expanded="true" signature="78:115" ph="..." />
+                <marker date="1497035104088" expanded="true" signature="127:141" ph="..." />
+                <marker date="1497035104088" expanded="true" signature="150:209" ph="..." />
+                <marker date="1497035104088" expanded="true" signature="336:355" ph="..." />
+                <marker date="1497035104088" expanded="true" signature="387:407" ph="..." />
+                <marker date="1497035104088" expanded="true" signature="1289:1293" ph="..." />
+                <marker date="1497035104088" expanded="true" signature="1299:1306" ph="..." />
+                <marker date="1497035104088" expanded="true" signature="5493:5497" ph="..." />
+                <marker date="1497035104088" expanded="true" signature="5503:5510" ph="..." />
+                <marker date="1497035104088" expanded="true" signature="6380:6384" ph="..." />
+                <marker date="1497035104088" expanded="true" signature="6390:6397" ph="..." />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="CuentaContable.php" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/Domain/Core/Models/CuentaContable.php">
+      <file leaf-file-name="poliza-tipo-create.js" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/resources/assets/js/vue-components/poliza-tipo-create.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="391">
-              <caret line="23" column="38" lean-forward="false" selection-start-line="23" selection-start-column="20" selection-end-line="23" selection-end-column="38" />
+            <state relative-caret-position="437">
+              <caret line="76" column="57" lean-forward="true" selection-start-line="76" selection-start-column="57" selection-end-line="76" selection-end-column="57" />
               <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="MovimientoPoliza.php" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/Domain/Core/Models/MovimientoPoliza.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="425">
-              <caret line="25" column="34" lean-forward="false" selection-start-line="25" selection-start-column="20" selection-end-line="25" selection-end-column="34" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="index.blade.php" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/resources/views/modulo_contable/poliza_tipo/index.blade.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="136">
-              <caret line="23" column="60" lean-forward="true" selection-start-line="23" selection-start-column="60" selection-end-line="23" selection-end-column="95" />
-              <folding>
-                <marker date="1497030708497" expanded="true" signature="9:33" ph="..." />
-                <marker date="1497030708497" expanded="true" signature="44:67" ph="..." />
-                <marker date="1497030708497" expanded="true" signature="78:115" ph="..." />
-                <marker date="1497030708497" expanded="true" signature="127:141" ph="..." />
-                <marker date="1497030708497" expanded="true" signature="150:208" ph="..." />
-                <marker date="1497030708497" expanded="true" signature="2095:2106" ph="..." />
-                <marker date="1497030708497" expanded="true" signature="2160:2189" ph="..." />
-                <marker date="1497030708497" expanded="true" signature="2243:2266" ph="..." />
-                <marker date="1497030708497" expanded="true" signature="2320:2341" ph="..." />
-                <marker date="1497030708497" expanded="true" signature="2395:2439" ph="..." />
-                <marker date="1497030708497" expanded="true" signature="2619:2673" ph="..." />
-                <marker date="1497030708497" expanded="true" signature="4367:4384" ph="..." />
-              </folding>
             </state>
           </provider>
         </entry>
@@ -91,8 +67,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>app.c</find>
-      <find>tabmessa</find>
       <find>app.</find>
       <find>index</find>
       <find>bread</find>
@@ -121,6 +95,8 @@
       <find>Con</find>
       <find>Cont</find>
       <find>Contable</find>
+      <find>modulo_contable.poliza_tipo.create</find>
+      <find>push</find>
     </findStrings>
     <replaceStrings>
       <replace>polizas_tipo</replace>
@@ -131,6 +107,7 @@
       <dir>C:\Users\Usuario\Desktop\saoweb.grupohi.mx\resources</dir>
       <dir>C:\httpd\www\php56.loc\saoweb.grupohi.mx\resources</dir>
       <dir>C:\httpd\www\php56.loc\saoweb.grupohi.mx\app</dir>
+      <dir>C:\httpd\www\php56.loc\saoweb.grupohi.mx</dir>
     </dirStrings>
   </component>
   <component name="Git.Settings">
@@ -153,7 +130,6 @@
         <option value="$PROJECT_DIR$/database/migrations/2017_06_07_170703_create_tipos_movimientos_table.php" />
         <option value="$PROJECT_DIR$/database/migrations/2017_06_07_170745_create_int_tipos_cuentas_contables_table.php" />
         <option value="$PROJECT_DIR$/resources/assets/less/app.less" />
-        <option value="$PROJECT_DIR$/app/Http/breadcrumbs/modulo_contable.php" />
         <option value="$PROJECT_DIR$/resources/views/modulo_contable/poliza_tipo/index.blade.php" />
         <option value="$PROJECT_DIR$/resources/views/layouts/partials/sidebar.blade.php" />
         <option value="$PROJECT_DIR$/app/Domain/Core/Repositories/EloquentTransaccionInterfazRepository.php" />
@@ -187,14 +163,15 @@
         <option value="$PROJECT_DIR$/resources/assets/js/app.js" />
         <option value="$PROJECT_DIR$/app/Http/Kernel.php" />
         <option value="$PROJECT_DIR$/app/Api/Controllers/CuentaContableController.php" />
-        <option value="$PROJECT_DIR$/resources/views/modulo_contable/poliza_tipo/create.blade.php" />
-        <option value="$PROJECT_DIR$/resources/assets/js/vue-components/poliza-tipo-create.js" />
         <option value="$PROJECT_DIR$/.idea/workspace.xml" />
         <option value="$PROJECT_DIR$/.env" />
         <option value="$PROJECT_DIR$/resources/views/modulo_contable/layout.blade.php" />
         <option value="$PROJECT_DIR$/resources/views/pages/index.blade.php" />
         <option value="$PROJECT_DIR$/resources/views/layouts/partials/mainheader.blade.php" />
         <option value="$PROJECT_DIR$/resources/views/modulo_contable/poliza_tipo/show.blade.php" />
+        <option value="$PROJECT_DIR$/app/Http/breadcrumbs/modulo_contable.php" />
+        <option value="$PROJECT_DIR$/resources/views/modulo_contable/poliza_tipo/create.blade.php" />
+        <option value="$PROJECT_DIR$/resources/assets/js/vue-components/poliza-tipo-create.js" />
       </list>
     </option>
   </component>
@@ -683,7 +660,7 @@
       <workItem from="1496945749500" duration="8753000" />
       <workItem from="1496977877135" duration="5501000" />
       <workItem from="1497029305597" duration="986000" />
-      <workItem from="1497030369827" duration="1828000" />
+      <workItem from="1497030369827" duration="5314000" />
     </task>
     <task id="LOCAL-00001" summary="Instalación de Plantilla &quot;AdminLTE&quot;">
       <created>1496945971946</created>
@@ -748,34 +725,42 @@
       <option name="project" value="LOCAL" />
       <updated>1497031654334</updated>
     </task>
-    <option name="localTasksCounter" value="10" />
+    <task id="LOCAL-00010" summary="Finalizacion de movimientos">
+      <created>1497032221955</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1497032221955</updated>
+    </task>
+    <option name="localTasksCounter" value="11" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="37739000" />
+    <option name="totallyTimeSpent" value="41225000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="1358" y="-8" width="1936" height="1096" extended-state="6" />
     <layout>
-      <window_info id="Gulp" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="5" side_tool="true" content_ui="tabs" />
-      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.25208333" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="10" side_tool="true" content_ui="tabs" />
-      <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.24141519" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.24141519" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="npm" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="5" side_tool="true" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.32882413" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
+      <window_info id="Gulp" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="5" side_tool="true" content_ui="tabs" />
+      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.25208333" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Inspection Results" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3298647" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
+      <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32962137" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32882413" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="5" side_tool="true" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32962137" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
     </layout>
     <layout-to-restore>
@@ -843,70 +828,14 @@
     <MESSAGE value="MÓDULO CONTABLE: Integración de Vue para la creación de Pólizas Tipo" />
     <MESSAGE value="seleccion de modulo en cuenta de usuario" />
     <MESSAGE value="construccion movimientos" />
-    <option name="LAST_COMMIT_MESSAGE" value="construccion movimientos" />
+    <MESSAGE value="Finalizacion de movimientos" />
+    <option name="LAST_COMMIT_MESSAGE" value="Finalizacion de movimientos" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager />
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/app/Domain/Core/Models/TipoCuentaContable.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="506">
-          <caret line="22" column="34" lean-forward="false" selection-start-line="22" selection-start-column="34" selection-end-line="22" selection-end-column="34" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/Domain/Core/Contracts/TipoMovimientoRepository.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="92">
-          <caret line="4" column="28" lean-forward="false" selection-start-line="4" selection-start-column="28" selection-end-line="4" selection-end-column="28" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/Domain/Core/Repositories/EloquentTipoMovimientoRepository.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="161">
-          <caret line="7" column="0" lean-forward="false" selection-start-line="7" selection-start-column="0" selection-end-line="7" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/Domain/Core/Repositories/EloquentTransaccionInterfazRepository.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="46">
-          <caret line="2" column="4" lean-forward="true" selection-start-line="2" selection-start-column="4" selection-end-line="2" selection-end-column="4" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/node_modules/sweetalert/lib/sweetalert.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/Domain/Core/Contracts/TransaccionInterfazRepository.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="92">
-          <caret line="4" column="31" lean-forward="false" selection-start-line="4" selection-start-column="31" selection-end-line="4" selection-end-column="31" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/Http/Controllers/CuentaContableController.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="230">
-          <caret line="10" column="43" lean-forward="false" selection-start-line="10" selection-start-column="43" selection-end-line="10" selection-end-column="43" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/Domain/Core/Contracts/CuentaContableRepository.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="92">
-          <caret line="4" column="33" lean-forward="false" selection-start-line="4" selection-start-column="33" selection-end-line="4" selection-end-column="33" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/Domain/Core/Repositories/EloquentCuentaContableRepository.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="414">
@@ -1068,13 +997,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/resources/assets/js/vue-components/poliza-tipo-create.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="136">
-          <caret line="8" column="18" lean-forward="false" selection-start-line="8" selection-start-column="18" selection-end-line="8" selection-end-column="18" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/.idea/workspace.xml">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="68">
@@ -1174,28 +1096,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/resources/views/modulo_contable/poliza_tipo/create.blade.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="209">
-          <caret line="58" column="32" lean-forward="true" selection-start-line="0" selection-start-column="0" selection-end-line="119" selection-end-column="11" />
-          <folding>
-            <marker date="1497029288282" expanded="true" signature="9:33" ph="..." />
-            <marker date="1497029288282" expanded="true" signature="44:67" ph="..." />
-            <marker date="1497029288282" expanded="true" signature="78:115" ph="..." />
-            <marker date="1497029288282" expanded="true" signature="127:141" ph="..." />
-            <marker date="1497029288282" expanded="true" signature="150:209" ph="..." />
-            <marker date="1497029288282" expanded="true" signature="336:355" ph="..." />
-            <marker date="1497029288282" expanded="true" signature="387:407" ph="..." />
-            <marker date="1497029288282" expanded="true" signature="1299:1303" ph="..." />
-            <marker date="1497029288282" expanded="true" signature="1309:1316" ph="..." />
-            <marker date="1497029288282" expanded="true" signature="4982:4986" ph="..." />
-            <marker date="1497029288282" expanded="true" signature="4992:4999" ph="..." />
-            <marker date="1497029288282" expanded="true" signature="5869:5873" ph="..." />
-            <marker date="1497029288282" expanded="true" signature="5879:5886" ph="..." />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/resources/views/layouts/partials/mainheader.blade.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="357">
@@ -1213,27 +1113,6 @@
         <state relative-caret-position="250">
           <caret line="23" column="39" lean-forward="false" selection-start-line="23" selection-start-column="20" selection-end-line="23" selection-end-column="39" />
           <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/resources/views/pages/index.blade.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1400">
-          <caret line="98" column="47" lean-forward="true" selection-start-line="98" selection-start-column="47" selection-end-line="98" selection-end-column="47" />
-          <folding>
-            <marker date="1497030273151" expanded="true" signature="9:22" ph="..." />
-            <marker date="1497030273151" expanded="true" signature="33:50" ph="..." />
-            <marker date="1497030273151" expanded="true" signature="61:92" ph="..." />
-            <marker date="1497030273151" expanded="true" signature="103:117" ph="..." />
-            <marker date="1497030273151" expanded="true" signature="126:156" ph="..." />
-            <marker date="1497030273151" expanded="true" signature="1058:1088" ph="..." />
-            <marker date="1497030273151" expanded="true" signature="1840:1870" ph="..." />
-            <marker date="1497030273151" expanded="true" signature="2621:2651" ph="..." />
-            <marker date="1497030273151" expanded="true" signature="3397:3427" ph="..." />
-            <marker date="1497030273151" expanded="true" signature="4180:4210" ph="..." />
-            <marker date="1497030273151" expanded="true" signature="4963:4993" ph="..." />
-            <marker date="1497030273151" expanded="true" signature="5750:5780" ph="..." />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1264,18 +1143,18 @@
         <state relative-caret-position="136">
           <caret line="23" column="60" lean-forward="true" selection-start-line="23" selection-start-column="60" selection-end-line="23" selection-end-column="95" />
           <folding>
-            <marker date="1497030708497" expanded="true" signature="9:33" ph="..." />
-            <marker date="1497030708497" expanded="true" signature="44:67" ph="..." />
-            <marker date="1497030708497" expanded="true" signature="78:115" ph="..." />
-            <marker date="1497030708497" expanded="true" signature="127:141" ph="..." />
-            <marker date="1497030708497" expanded="true" signature="150:208" ph="..." />
-            <marker date="1497030708497" expanded="true" signature="2095:2106" ph="..." />
-            <marker date="1497030708497" expanded="true" signature="2160:2189" ph="..." />
-            <marker date="1497030708497" expanded="true" signature="2243:2266" ph="..." />
-            <marker date="1497030708497" expanded="true" signature="2320:2341" ph="..." />
-            <marker date="1497030708497" expanded="true" signature="2395:2439" ph="..." />
-            <marker date="1497030708497" expanded="true" signature="2619:2673" ph="..." />
-            <marker date="1497030708497" expanded="true" signature="4367:4384" ph="..." />
+            <marker date="1497034069320" expanded="true" signature="9:33" ph="..." />
+            <marker date="1497034069320" expanded="true" signature="44:67" ph="..." />
+            <marker date="1497034069320" expanded="true" signature="78:115" ph="..." />
+            <marker date="1497034069320" expanded="true" signature="127:141" ph="..." />
+            <marker date="1497034069320" expanded="true" signature="150:208" ph="..." />
+            <marker date="1497034069320" expanded="true" signature="2152:2163" ph="..." />
+            <marker date="1497034069320" expanded="true" signature="2217:2246" ph="..." />
+            <marker date="1497034069320" expanded="true" signature="2300:2323" ph="..." />
+            <marker date="1497034069320" expanded="true" signature="2377:2398" ph="..." />
+            <marker date="1497034069320" expanded="true" signature="2452:2496" ph="..." />
+            <marker date="1497034069320" expanded="true" signature="2676:2730" ph="..." />
+            <marker date="1497034069320" expanded="true" signature="4424:4441" ph="..." />
           </folding>
         </state>
       </provider>
@@ -1288,23 +1167,138 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/resources/assets/less/bootstrap/breadcrumbs.less">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/Http/breadcrumbs.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/config/breadcrumbs.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/vendor/davejamesmiller/laravel-breadcrumbs/config/breadcrumbs.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/vendor/swiftmailer/swiftmailer/tests/bug/Swift/BugFileByteStreamConsecutiveReadCallsTest.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/vendor/acacha/admin-lte-template-laravel/resources/assets/less/bootstrap/breadcrumbs.less">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="442">
+          <caret line="26" column="0" lean-forward="true" selection-start-line="26" selection-start-column="0" selection-end-line="26" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/resources/views/modulo_contable/poliza_tipo/show.blade.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="408">
-          <caret line="42" column="81" lean-forward="false" selection-start-line="42" selection-start-column="81" selection-end-line="42" selection-end-column="81" />
+        <state relative-caret-position="68">
+          <caret line="4" column="29" lean-forward="false" selection-start-line="4" selection-start-column="29" selection-end-line="4" selection-end-column="63" />
           <folding>
-            <marker date="1497032181116" expanded="true" signature="9:33" ph="..." />
-            <marker date="1497032181116" expanded="true" signature="44:67" ph="..." />
-            <marker date="1497032181116" expanded="true" signature="78:115" ph="..." />
-            <marker date="1497032181116" expanded="true" signature="126:140" ph="..." />
-            <marker date="1497032181116" expanded="true" signature="149:208" ph="..." />
-            <marker date="1497032181116" expanded="true" signature="465:498" ph="..." />
-            <marker date="1497032181116" expanded="true" signature="695:711" ph="..." />
-            <marker date="1497032181116" expanded="true" signature="795:821" ph="..." />
-            <marker date="1497032181116" expanded="true" signature="909:923" ph="..." />
-            <marker date="1497032181116" expanded="true" signature="909:958" ph="..." />
-            <marker date="1497032181116" expanded="true" signature="2040:2086" ph="..." />
+            <marker date="1497034069320" expanded="true" signature="9:33" ph="..." />
+            <marker date="1497034069320" expanded="true" signature="44:67" ph="..." />
+            <marker date="1497034069320" expanded="true" signature="78:115" ph="..." />
+            <marker date="1497034069320" expanded="true" signature="126:140" ph="..." />
+            <marker date="1497034069320" expanded="true" signature="149:199" ph="..." />
+            <marker date="1497034069320" expanded="true" signature="465:498" ph="..." />
+            <marker date="1497034069320" expanded="true" signature="695:711" ph="..." />
+            <marker date="1497034069320" expanded="true" signature="795:821" ph="..." />
+            <marker date="1497034069320" expanded="true" signature="909:923" ph="..." />
+            <marker date="1497034069320" expanded="true" signature="909:958" ph="..." />
+            <marker date="1497034069320" expanded="true" signature="2176:2222" ph="..." />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/Http/breadcrumbs/modulo_contable.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="272">
+          <caret line="16" column="61" lean-forward="true" selection-start-line="16" selection-start-column="61" selection-end-line="16" selection-end-column="61" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/resources/views/pages/index.blade.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1666">
+          <caret line="98" column="47" lean-forward="true" selection-start-line="98" selection-start-column="47" selection-end-line="98" selection-end-column="47" />
+          <folding>
+            <marker date="1497030273151" expanded="true" signature="9:22" ph="..." />
+            <marker date="1497030273151" expanded="true" signature="33:50" ph="..." />
+            <marker date="1497030273151" expanded="true" signature="61:92" ph="..." />
+            <marker date="1497030273151" expanded="true" signature="103:117" ph="..." />
+            <marker date="1497030273151" expanded="true" signature="126:156" ph="..." />
+            <marker date="1497030273151" expanded="true" signature="1058:1088" ph="..." />
+            <marker date="1497030273151" expanded="true" signature="1840:1870" ph="..." />
+            <marker date="1497030273151" expanded="true" signature="2621:2651" ph="..." />
+            <marker date="1497030273151" expanded="true" signature="3397:3427" ph="..." />
+            <marker date="1497030273151" expanded="true" signature="4180:4210" ph="..." />
+            <marker date="1497030273151" expanded="true" signature="4963:4993" ph="..." />
+            <marker date="1497030273151" expanded="true" signature="5750:5780" ph="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/public/js/app.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-1938">
+          <caret line="24" column="14" lean-forward="true" selection-start-line="24" selection-start-column="14" selection-end-line="24" selection-end-column="14" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/resources/views/modulo_contable/poliza_tipo/create.blade.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="459">
+          <caret line="57" column="105" lean-forward="false" selection-start-line="57" selection-start-column="100" selection-end-line="57" selection-end-column="105" />
+          <folding>
+            <marker date="1497035104088" expanded="true" signature="9:33" ph="..." />
+            <marker date="1497035104088" expanded="true" signature="44:67" ph="..." />
+            <marker date="1497035104088" expanded="true" signature="78:115" ph="..." />
+            <marker date="1497035104088" expanded="true" signature="127:141" ph="..." />
+            <marker date="1497035104088" expanded="true" signature="150:209" ph="..." />
+            <marker date="1497035104088" expanded="true" signature="336:355" ph="..." />
+            <marker date="1497035104088" expanded="true" signature="387:407" ph="..." />
+            <marker date="1497035104088" expanded="true" signature="1289:1293" ph="..." />
+            <marker date="1497035104088" expanded="true" signature="1299:1306" ph="..." />
+            <marker date="1497035104088" expanded="true" signature="5493:5497" ph="..." />
+            <marker date="1497035104088" expanded="true" signature="5503:5510" ph="..." />
+            <marker date="1497035104088" expanded="true" signature="6380:6384" ph="..." />
+            <marker date="1497035104088" expanded="true" signature="6390:6397" ph="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/resources/assets/js/vue-components/poliza-tipo-create.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="437">
+          <caret line="76" column="57" lean-forward="true" selection-start-line="76" selection-start-column="57" selection-end-line="76" selection-end-column="57" />
+          <folding />
         </state>
       </provider>
     </entry>
