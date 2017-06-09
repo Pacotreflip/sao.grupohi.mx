@@ -87,4 +87,11 @@ class PolizaTipoController extends Controller
     public function  store(Request $request){
         return response()->json(['success' => $this->poliza_tipo->create($request)]);
     }
+
+    public function show($id) {
+        $poliza_tipo = $this->poliza_tipo->getById($id);
+
+        return view('modulo_contable.poliza_tipo.show')
+            ->with('poliza_tipo', $poliza_tipo);
+    }
 }

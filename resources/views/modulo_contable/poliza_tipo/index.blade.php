@@ -4,17 +4,19 @@
 
 @section('main-content')
     {!! Breadcrumbs::render('modulo_contable.poliza_tipo.index') !!}
- <div class="row">
-        <div class="col-xs-12">
+    <div class="row">
+        <div class="col-sm-12">
+            <a class="btn btn-app btn-success" style="float:right">
+                <i class="glyphicon glyphicon-plus-sign"></i>Nuevo
+            </a>
+        </div>
+    </div>
+    <br>
+    <div class="row">
+        <div class="col-md-12">
             <div class="box">
                 <div class="box-header">
                     <h3 class="box-title">Pólizas Generadas</h3>
-                    <div class="col-sm-12">
-                        <a class="btn btn-app btn-success" style="float:right">
-                            <i class="glyphicon glyphicon-plus-sign"></i>Nuevo
-                        </a>
-                        <br/><br/><br/><br/>
-                    </div>
 
                     <div class="col-sm-12">
                         <div class="row">
@@ -32,6 +34,7 @@
                                     <th class="sorting" tabindex="0" aria-controls="polizas_tipo">Fecha y Hora de
                                         Registro
                                     </th>
+                                    <th></th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -42,6 +45,19 @@
                                         <td>{{ $item->numMovimientos }}</td>
                                         <td>{{ $item->userRegistro }}</td>
                                         <td>{{ $item->created_at->format('Y-m-d h:i:s a') }}</td>
+                                        <td>
+                                            <div class="btn-group">
+                                                <a href="{{ route('modulo_contable.poliza_tipo.show', $item->id) }}" type="button" class="btn btn-xs btn-default">
+                                                    <i class="fa fa-eye"></i>
+                                                </a>
+                                                <a type="button" class="btn btn-xs btn-info">
+                                                    <i class="fa fa-pencil"></i>
+                                                </a>
+                                                <button type="button" class="btn btn-xs btn-danger">
+                                                    <i class="fa fa-trash"></i>
+                                                </button>
+                                            </div>
+                                        </td>
                                     </tr>
                                 @endforeach
                                 </tbody>
@@ -52,6 +68,7 @@
                                     <th rowspan="1" colspan="1"># Movimientos</th>
                                     <th rowspan="1" colspan="1">Registró</th>
                                     <th rowspan="1" colspan="1">Fecha y Hora de Registro</th>
+                                    <th></th>
                                 </tr>
                                 </tfoot>
                             </table>

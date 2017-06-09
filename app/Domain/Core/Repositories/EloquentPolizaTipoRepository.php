@@ -1,6 +1,7 @@
 <?php namespace Ghi\Domain\Core\Repositories;
 
 use Ghi\Domain\Core\Contracts\Collection;
+use Ghi\Domain\Core\Contracts\Model;
 use Ghi\Domain\Core\Models\PolizaTipo;
 use Ghi\Domain\Core\Contracts\PolizaTipoRepository;
 use Illuminate\Support\Facades\DB;
@@ -61,5 +62,15 @@ class EloquentPolizaTipoRepository implements PolizaTipoRepository
             DB::connection('cadeco')->rollBack();
             return false;
         }
+    }
+
+    /**
+     *  Busca y retona una Poliza Tipo por su ID
+     * @param $id
+     * @return Model
+     */
+    public function getById($id)
+    {
+        return PolizaTipo::find($id);
     }
 }

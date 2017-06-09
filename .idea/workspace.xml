@@ -3,9 +3,11 @@
   <component name="ChangeListManager">
     <list default="true" id="a092cd11-95ca-4984-9945-f7adccd63558" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/Http/Controllers/ContextoController.php" afterPath="$PROJECT_DIR$/app/Http/Controllers/ContextoController.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/Http/Routes/SAO.php" afterPath="$PROJECT_DIR$/app/Http/Routes/SAO.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/views/layouts/landing.blade.php" afterPath="$PROJECT_DIR$/resources/views/layouts/landing.blade.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/Domain/Core/Contracts/PolizaTipoRepository.php" afterPath="$PROJECT_DIR$/app/Domain/Core/Contracts/PolizaTipoRepository.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/Domain/Core/Repositories/EloquentPolizaTipoRepository.php" afterPath="$PROJECT_DIR$/app/Domain/Core/Repositories/EloquentPolizaTipoRepository.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/Http/Controllers/PolizaTipoController.php" afterPath="$PROJECT_DIR$/app/Http/Controllers/PolizaTipoController.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/Http/Routes/modulo_contable.php" afterPath="$PROJECT_DIR$/app/Http/Routes/modulo_contable.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/views/modulo_contable/poliza_tipo/index.blade.php" afterPath="$PROJECT_DIR$/resources/views/modulo_contable/poliza_tipo/index.blade.php" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -17,21 +19,21 @@
   <component name="ExecutionTargetManager" SELECTED_TARGET="default_target" />
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="create.blade.php" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/resources/views/modulo_contable/poliza_tipo/create.blade.php">
+      <file leaf-file-name="routes.php" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/Http/routes.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="2599">
-              <caret line="113" column="26" lean-forward="true" selection-start-line="113" selection-start-column="26" selection-end-line="113" selection-end-column="26" />
+            <state relative-caret-position="115">
+              <caret line="14" column="23" lean-forward="false" selection-start-line="14" selection-start-column="23" selection-end-line="14" selection-end-column="23" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="routes.php" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/Http/routes.php">
+      <file leaf-file-name="modulo_contable.php" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/Http/Routes/modulo_contable.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="92">
-              <caret line="13" column="18" lean-forward="false" selection-start-line="13" selection-start-column="18" selection-end-line="13" selection-end-column="18" />
+            <state relative-caret-position="230">
+              <caret line="10" column="103" lean-forward="false" selection-start-line="10" selection-start-column="103" selection-end-line="10" selection-end-column="103" />
               <folding />
             </state>
           </provider>
@@ -47,12 +49,24 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="ContextoController.php" pinned="false" current-in-tab="true">
+      <file leaf-file-name="ContextoController.php" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/Http/Controllers/ContextoController.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="368">
-              <caret line="36" column="32" lean-forward="false" selection-start-line="36" selection-start-column="32" selection-end-line="36" selection-end-column="32" />
+            <state relative-caret-position="414">
+              <caret line="38" column="1" lean-forward="true" selection-start-line="38" selection-start-column="1" selection-end-line="38" selection-end-column="1" />
               <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="index.blade.php" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/resources/views/modulo_contable/poliza_tipo/index.blade.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="322">
+              <caret line="53" column="80" lean-forward="true" selection-start-line="53" selection-start-column="80" selection-end-line="53" selection-end-column="80" />
+              <folding>
+                <element signature="e#313#332#0#HTML" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -67,53 +81,43 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="landing.blade.php" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/resources/views/layouts/landing.blade.php">
+      <file leaf-file-name="PolizaTipoController.php" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/app/Http/Controllers/PolizaTipoController.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="46">
-              <caret line="2" column="8" lean-forward="false" selection-start-line="2" selection-start-column="8" selection-end-line="2" selection-end-column="8" />
+            <state relative-caret-position="437">
+              <caret line="94" column="12" lean-forward="false" selection-start-line="94" selection-start-column="12" selection-end-line="94" selection-end-column="12" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name=".env" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/.env">
+      <file leaf-file-name="PolizaTipoRepository.php" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/Domain/Core/Contracts/PolizaTipoRepository.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="805">
-              <caret line="35" column="0" lean-forward="false" selection-start-line="35" selection-start-column="0" selection-end-line="35" selection-end-column="0" />
+            <state relative-caret-position="368">
+              <caret line="20" column="48" lean-forward="false" selection-start-line="20" selection-start-column="48" selection-end-line="20" selection-end-column="48" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="create-component.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/node_modules/vue/src/core/vdom/create-component.js">
+      <file leaf-file-name="EloquentPolizaTipoRepository.php" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/Domain/Core/Repositories/EloquentPolizaTipoRepository.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="0">
-              <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+            <state relative-caret-position="414">
+              <caret line="73" column="37" lean-forward="false" selection-start-line="73" selection-start-column="37" selection-end-line="73" selection-end-column="37" />
               <folding>
-                <element signature="n#!!doc" expanded="true" />
+                <element signature="e#47#88#0#PHP" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="vue-components.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/resources/assets/js/vue-components.js">
+      <file leaf-file-name="landing.blade.php" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/resources/views/layouts/landing.blade.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="69">
-              <caret line="3" column="0" lean-forward="false" selection-start-line="3" selection-start-column="0" selection-end-line="3" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="poliza-tipo-create.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/resources/assets/js/vue-components/poliza-tipo-create.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="897">
-              <caret line="39" column="24" lean-forward="false" selection-start-line="39" selection-start-column="24" selection-end-line="39" selection-end-column="24" />
+            <state relative-caret-position="46">
+              <caret line="2" column="8" lean-forward="false" selection-start-line="2" selection-start-column="8" selection-end-line="2" selection-end-column="8" />
               <folding />
             </state>
           </provider>
@@ -196,15 +200,12 @@
         <option value="$PROJECT_DIR$/app/Domain/Core/Models/TipoCuentaContable.php" />
         <option value="$PROJECT_DIR$/app/Domain/Core/Repositories/EloquentTipoMovimientoRepository.php" />
         <option value="$PROJECT_DIR$/app/Domain/Core/Contracts/TipoMovimientoRepository.php" />
-        <option value="$PROJECT_DIR$/app/Http/Routes/modulo_contable.php" />
         <option value="$PROJECT_DIR$/app/Http/Controllers/CuentaContableController.php" />
         <option value="$PROJECT_DIR$/app/Domain/Core/Contracts/CuentaContableRepository.php" />
         <option value="$PROJECT_DIR$/resources/views/auth/login.blade.php" />
         <option value="$PROJECT_DIR$/resources/views/layouts/partials/contentheader.blade.php" />
         <option value="$PROJECT_DIR$/resources/views/layouts/partials/controlsidebar.blade.php" />
         <option value="$PROJECT_DIR$/resources/views/layouts/app.blade.php" />
-        <option value="$PROJECT_DIR$/app/Domain/Core/Repositories/EloquentPolizaTipoRepository.php" />
-        <option value="$PROJECT_DIR$/app/Domain/Core/Contracts/PolizaTipoRepository.php" />
         <option value="$PROJECT_DIR$/composer.json" />
         <option value="$PROJECT_DIR$/app/Http/api-routes.php" />
         <option value="$PROJECT_DIR$/app/Http/routes.php" />
@@ -216,17 +217,20 @@
         <option value="$PROJECT_DIR$/app/Http/Kernel.php" />
         <option value="$PROJECT_DIR$/app/Api/Controllers/CuentaContableController.php" />
         <option value="$PROJECT_DIR$/app/Domain/Core/Repositories/EloquentCuentaContableRepository.php" />
-        <option value="$PROJECT_DIR$/resources/views/modulo_contable/poliza_tipo/index.blade.php" />
         <option value="$PROJECT_DIR$/resources/assets/js/scripts/globals.js" />
         <option value="$PROJECT_DIR$/resources/assets/js/app.js" />
         <option value="$PROJECT_DIR$/resources/views/scripts/globals.blade.php" />
-        <option value="$PROJECT_DIR$/app/Http/Controllers/PolizaTipoController.php" />
         <option value="$PROJECT_DIR$/.env" />
         <option value="$PROJECT_DIR$/resources/assets/js/vue-components/poliza-tipo-create.js" />
         <option value="$PROJECT_DIR$/resources/views/modulo_contable/poliza_tipo/create.blade.php" />
         <option value="$PROJECT_DIR$/resources/views/layouts/landing.blade.php" />
         <option value="$PROJECT_DIR$/app/Http/Routes/SAO.php" />
         <option value="$PROJECT_DIR$/app/Http/Controllers/ContextoController.php" />
+        <option value="$PROJECT_DIR$/resources/views/modulo_contable/poliza_tipo/index.blade.php" />
+        <option value="$PROJECT_DIR$/app/Http/Routes/modulo_contable.php" />
+        <option value="$PROJECT_DIR$/app/Domain/Core/Contracts/PolizaTipoRepository.php" />
+        <option value="$PROJECT_DIR$/app/Domain/Core/Repositories/EloquentPolizaTipoRepository.php" />
+        <option value="$PROJECT_DIR$/app/Http/Controllers/PolizaTipoController.php" />
       </list>
     </option>
   </component>
@@ -534,7 +538,7 @@
       <updated>1496945747141</updated>
       <workItem from="1496945749500" duration="8753000" />
       <workItem from="1496977877135" duration="11728000" />
-      <workItem from="1497029161325" duration="400000" />
+      <workItem from="1497029161325" duration="1386000" />
     </task>
     <task id="LOCAL-00001" summary="Instalación de Plantilla &quot;AdminLTE&quot;">
       <created>1496945971946</created>
@@ -613,17 +617,24 @@
       <option name="project" value="LOCAL" />
       <updated>1497029250982</updated>
     </task>
-    <option name="localTasksCounter" value="12" />
+    <task id="LOCAL-00012" summary="Eliminar Landing Page">
+      <created>1497029574877</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1497029574877</updated>
+    </task>
+    <option name="localTasksCounter" value="13" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="41222000" />
+    <option name="totallyTimeSpent" value="42208000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
     <layout>
       <window_info id="Gulp" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="5" side_tool="true" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.2553305" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.2553305" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="10" side_tool="true" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
@@ -710,7 +721,8 @@
     <MESSAGE value="MÓDULO CONTABLE: Vista Create de Póliza Tipo" />
     <MESSAGE value="MÓDULO CONTABLE: Corrección de los datos del formulario" />
     <MESSAGE value="MÓDULO CONTABLE: Gulp" />
-    <option name="LAST_COMMIT_MESSAGE" value="MÓDULO CONTABLE: Gulp" />
+    <MESSAGE value="Eliminar Landing Page" />
+    <option name="LAST_COMMIT_MESSAGE" value="Eliminar Landing Page" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager />
@@ -782,14 +794,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/Http/Routes/modulo_contable.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="368">
-          <caret line="16" column="3" lean-forward="false" selection-start-line="16" selection-start-column="3" selection-end-line="16" selection-end-column="3" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/public/img/company-icon.png">
       <provider selected="true" editor-type-id="images">
         <state />
@@ -850,13 +854,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1334">
           <caret line="58" column="0" lean-forward="false" selection-start-line="58" selection-start-column="0" selection-end-line="58" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/Domain/Core/Repositories/EloquentPolizaTipoRepository.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="6" lean-forward="false" selection-start-line="0" selection-start-column="6" selection-end-line="0" selection-end-column="6" />
         </state>
       </provider>
     </entry>
@@ -968,13 +965,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/resources/views/modulo_contable/poliza_tipo/index.blade.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="174">
-          <caret line="21" column="51" lean-forward="false" selection-start-line="21" selection-start-column="51" selection-end-line="21" selection-end-column="51" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/resources/assets/js/scripts/globals.js" />
     <entry file="file://$PROJECT_DIR$/resources/assets/js/app.js">
       <provider selected="true" editor-type-id="text-editor">
@@ -990,21 +980,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="368">
           <caret line="25" column="9" lean-forward="false" selection-start-line="25" selection-start-column="9" selection-end-line="25" selection-end-column="9" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/Http/Controllers/PolizaTipoController.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="340">
-          <caret line="87" column="68" lean-forward="false" selection-start-line="87" selection-start-column="68" selection-end-line="87" selection-end-column="68" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/Domain/Core/Contracts/PolizaTipoRepository.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="391">
-          <caret line="17" column="20" lean-forward="false" selection-start-line="17" selection-start-column="20" selection-end-line="17" selection-end-column="20" />
         </state>
       </provider>
     </entry>
@@ -1066,14 +1041,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/Http/routes.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="92">
-          <caret line="13" column="18" lean-forward="false" selection-start-line="13" selection-start-column="18" selection-end-line="13" selection-end-column="18" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/Http/Routes/SAO.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="207">
@@ -1084,8 +1051,60 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app/Http/Controllers/ContextoController.php">
       <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="414">
+          <caret line="38" column="1" lean-forward="true" selection-start-line="38" selection-start-column="1" selection-end-line="38" selection-end-column="1" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/resources/views/modulo_contable/poliza_tipo/index.blade.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="322">
+          <caret line="53" column="80" lean-forward="true" selection-start-line="53" selection-start-column="80" selection-end-line="53" selection-end-column="80" />
+          <folding>
+            <element signature="e#313#332#0#HTML" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/Http/routes.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="115">
+          <caret line="14" column="23" lean-forward="false" selection-start-line="14" selection-start-column="23" selection-end-line="14" selection-end-column="23" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/Http/Routes/modulo_contable.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="230">
+          <caret line="10" column="103" lean-forward="false" selection-start-line="10" selection-start-column="103" selection-end-line="10" selection-end-column="103" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/Domain/Core/Repositories/EloquentPolizaTipoRepository.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="414">
+          <caret line="73" column="37" lean-forward="false" selection-start-line="73" selection-start-column="37" selection-end-line="73" selection-end-column="37" />
+          <folding>
+            <element signature="e#47#88#0#PHP" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/Domain/Core/Contracts/PolizaTipoRepository.php">
+      <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="368">
-          <caret line="36" column="32" lean-forward="false" selection-start-line="36" selection-start-column="32" selection-end-line="36" selection-end-column="32" />
+          <caret line="20" column="48" lean-forward="false" selection-start-line="20" selection-start-column="48" selection-end-line="20" selection-end-column="48" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/Http/Controllers/PolizaTipoController.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="437">
+          <caret line="94" column="12" lean-forward="false" selection-start-line="94" selection-start-column="12" selection-end-line="94" selection-end-column="12" />
           <folding />
         </state>
       </provider>

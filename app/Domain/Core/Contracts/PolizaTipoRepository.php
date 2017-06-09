@@ -16,4 +16,11 @@ interface PolizaTipoRepository
      * @return bool
      */
     public function create($data);
+
+    /**
+     *  Busca y retona una Poliza Tipo por su ID
+     * @param $id
+     * @return Model
+     */
+    public function getById($id);
 }
