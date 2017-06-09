@@ -42,7 +42,7 @@ desired effect
         @include('layouts.partials.contentheader')
 
         <!-- Main content -->
-        <section class="content">
+        <section class="content" style="width: 98%;">
             <!-- Your Page Content Here -->
             @yield('main-content')
         </section><!-- /.content -->
