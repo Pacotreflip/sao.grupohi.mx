@@ -2,11 +2,10 @@
 
 
 //Pages
-Route::get('/', 'PagesController@welcome')->name('welcome');
 Route::get('obras', 'PagesController@obras')->name('obras');
 
 Route::group(['middleware' => 'context'], function () {
-    Route::get('index', 'PagesController@index')->name('index');
+    Route::get('/', 'PagesController@index')->name('index');
 });
 
 //Contexto

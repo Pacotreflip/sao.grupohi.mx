@@ -34,6 +34,6 @@ class ContextoController extends Controller
     public function  set($database, $id){
         $this->context->setId($id);
         $this->context->setDatabaseName($database);
-        return redirect()->to('index');
+        return redirect()->to('/');
     }
 }
