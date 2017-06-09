@@ -2,5 +2,5 @@
 
 interface CuentaContableRepository
 {
-
+    public function getById($id);
 }

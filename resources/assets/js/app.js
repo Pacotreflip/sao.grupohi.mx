@@ -4,6 +4,7 @@
 
 //Development
 window.Vue = require('vue/dist/vue.js');
+require('sweetalert');
 
 //Production
 //window.Vue = require('vue/dist/vue.min');
