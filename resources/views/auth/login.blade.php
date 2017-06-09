@@ -6,7 +6,7 @@
 <body class="hold-transition login-page">
     <div class="login-box">
         <div class="login-logo">
-            <b>SAO</b> WEB
+            <img src="{{ asset('/img/logo_hc.png') }}" class="img-responsive img-rounded">
         </div><!-- /.login-logo -->
 
     @if (count($errors) > 0)

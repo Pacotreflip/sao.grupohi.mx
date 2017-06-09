@@ -3,24 +3,25 @@
 use Ghi\Domain\Core\Contracts\Collection;
 use Ghi\Domain\Core\Models\PolizaTipo;
 use Ghi\Domain\Core\Contracts\PolizaTipoRepository;
-use Mockery\Exception;
+use Illuminate\Support\Facades\DB;
 
 class EloquentPolizaTipoRepository implements PolizaTipoRepository
 {
 
-    private $model;
+    private $poliza_tipo;
 
     private $movimiento;
 
     /**
      * EloquentPolizaTipoRepository constructor.
-     * @param $model
+     * @param PolizaTipo $poliza_tipo
+     * @param EloquentMovimientoRepository $movimiento
      */
     public function __construct(
-        PolizaTipo $model,
+        PolizaTipo $poliza_tipo,
         EloquentMovimientoRepository $movimiento)
     {
-        $this->model = $model;
+        $this->poliza_tipo = $poliza_tipo;
         $this->movimiento = $movimiento;
     }
 
@@ -32,15 +33,22 @@ class EloquentPolizaTipoRepository implements PolizaTipoRepository
      */
     public function getAll()
     {
-        return $this->model->all();
+        return $this->poliza_tipo->all();
     }
+
+    /**
+     * Guarda un nuevo registro de Póliza Tipo con sus movimientos
+     *
+     * @param array $data
+     * @return bool
+     */
     public function create($data){
         try {
             DB::connection('cadeco')->beginTransaction();
 
             $poliza_tipo = PolizaTipo::create([
                 'id_transaccion_interfaz' => $data['id_transaccion_interfaz'],
-                'registro' => auth()->user()->idusuario
+                'registro'                => auth()->user()->idusuario
             ]);
 
             foreach ($data['movimientos'] as $movimiento) {
