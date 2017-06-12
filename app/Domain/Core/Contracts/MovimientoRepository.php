@@ -2,6 +2,16 @@
 
 interface MovimientoRepository
 {
- public function create(array $data);
- public function getByPolizaTipoId($id);
+    /**
+     * Crea un nuevo registro de Movimiento
+     * @param $data
+     * @return \Ghi\Domain\Core\Models\MovimientoPoliza
+     */
+    public function create($data);
+
+    /**
+     * @param $id
+     * @return \Ghi\Domain\Core\Models\MovimientoPoliza
+     */
+    public function getByPolizaTipoId($id);
 }

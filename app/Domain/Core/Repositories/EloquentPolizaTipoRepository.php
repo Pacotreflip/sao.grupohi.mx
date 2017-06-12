@@ -1,78 +1,74 @@
 <?php namespace Ghi\Domain\Core\Repositories;
 
-use Ghi\Domain\Core\Contracts\Collection;
-use Ghi\Domain\Core\Contracts\Model;
-use Ghi\Domain\Core\Models\PolizaTipo;
 use Ghi\Domain\Core\Contracts\PolizaTipoRepository;
+use Ghi\Domain\Core\Models\MovimientoPoliza;
+use Ghi\Domain\Core\Models\PolizaTipo;
 use Illuminate\Support\Facades\DB;
 
 class EloquentPolizaTipoRepository implements PolizaTipoRepository
 {
 
-    private $poliza_tipo;
-
-    private $movimiento;
+    /**
+     * @var \Ghi\Domain\Core\Models\PolizaTipo
+     */
+    private $model;
 
     /**
      * EloquentPolizaTipoRepository constructor.
-     * @param PolizaTipo $poliza_tipo
-     * @param EloquentMovimientoRepository $movimiento
+     * @param \Ghi\Domain\Core\Models\PolizaTipo $model
      */
-    public function __construct(
-        PolizaTipo $poliza_tipo,
-        EloquentMovimientoRepository $movimiento)
+    public function __construct(PolizaTipo $model)
     {
-        $this->poliza_tipo = $poliza_tipo;
-        $this->movimiento = $movimiento;
+        $this->model = $model;
     }
-
 
     /**
      * Obtiene todas las polizas tipo
      *
-     * @return Collection|PolizaTipo
+     * @return \Illuminate\Database\Eloquent\Collection|\Ghi\Domain\Core\Contracts\PolizaTipo
      */
     public function getAll()
     {
-        return $this->poliza_tipo->all();
+        return $this->model->all();
     }
 
     /**
      * Guarda un nuevo registro de Póliza Tipo con sus movimientos
      *
-     * @param array $data
-     * @return bool
+     * @param $data
+     * @return \Ghi\Domain\Core\Models\PolizaTipo
+     * @throws \Exception
      */
-    public function create($data){
+    public function create($data)
+    {
         try {
             DB::connection('cadeco')->beginTransaction();
 
-            $poliza_tipo = PolizaTipo::create([
+            $poliza_tipo = $this->model->create([
                 'id_transaccion_interfaz' => $data['id_transaccion_interfaz'],
                 'registro'                => auth()->user()->idusuario
             ]);
 
             foreach ($data['movimientos'] as $movimiento) {
                 $movimiento['id_poliza_tipo'] = $poliza_tipo->id;
-                $this->movimiento->create($movimiento);
+                (new EloquentMovimientoRepository(new MovimientoPoliza()))->create($movimiento);
             }
             DB::connection('cadeco')->commit();
-            return $poliza_tipo;
         }
         catch(\Exception $e){
             DB::connection('cadeco')->rollBack();
             throw $e;
-            return false;
         }
+        return $poliza_tipo;
     }
 
     /**
-     *  Busca y retona una Poliza Tipo por su ID
+     *  Obtiene Poliza Tipo por su ID
      * @param $id
-     * @return Model
+     * @return \Ghi\Domain\Core\Models\PolizaTipo
      */
     public function getById($id)
     {
-        return PolizaTipo::find($id);
+        return $this->model->find($id);
     }
 }

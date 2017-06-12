@@ -5,22 +5,22 @@ interface PolizaTipoRepository
     /**
      * Obtiene todas las polizas tipo
      *
-     * @return Collection|PolizaTipo
+     * @return \Illuminate\Database\Eloquent\Collection|PolizaTipo
      */
     public function getAll();
 
     /**
      * Guarda un nuevo registro de Póliza Tipo con sus movimientos
      *
-     * @param array $data
-     * @return bool
+     * @param  $data
+     * @return \Ghi\Domain\Core\Models\PolizaTipo
      */
     public function create($data);
 
     /**
-     *  Busca y retona una Poliza Tipo por su ID
+     *  Obtiene Poliza Tipo por su ID
      * @param $id
-     * @return Model
+     * @return \Ghi\Domain\Core\Models\PolizaTipo
      */
     public function getById($id);
 }

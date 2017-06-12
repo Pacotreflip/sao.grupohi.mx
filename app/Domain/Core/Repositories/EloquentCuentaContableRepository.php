@@ -6,19 +6,40 @@ use Ghi\Domain\Core\Models\CuentaContable;
 class EloquentCuentaContableRepository implements CuentaContableRepository
 {
 
-    /*
-     * Regresa un listado de cuentas contables id => tipoCuentaContable
+    /**
+     * @var \Ghi\Domain\Core\Models\CuentaContable
      */
-    public function lists() {
+    protected $model;
+
+    /**
+     * EloquentCuentaContableRepository constructor.
+     * @param \Ghi\Domain\Core\Models\CuentaContable $model
+     */
+    public function __construct(CuentaContable $model)
+    {
+        $this->model = $model;
+    }
+
+    /**
+     * Obtiene una cuenta contable por su Id
+     * @param $id
+     * @return \Ghi\Domain\Core\Models\CuentaContable
+     */
+    public function getById($id)
+    {
+        return $this->model->find($id);
+    }
+
+    /**
+     * Obtiene las cuentas contables en forma de lista para combos
+     * @return \Illuminate\Database\Eloquent\Collection|CuentaContable
+     */
+    public function lists()
+    {
         $data = [];
-        foreach (CuentaContable::all() as $item) {
+        foreach ($this->model->all() as $item) {
             $data[$item->id_int_cuenta_contable] = (String) $item->tipoCuentaContable;
         }
         return collect($data);
-    }
-
-    public function getById($id)
-    {
-        return CuentaContable::find($id)->toArray();
     }
 }

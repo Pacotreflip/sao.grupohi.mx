@@ -29,6 +29,7 @@
         </div>
     </div>
 
+    @if(count($movimientos))
     <div class="row">
         <div class="col-md-12">
             <div class="box box-success">
@@ -64,4 +65,5 @@
             </div>
         </div>
     </div>
+    @endif
 @endsection

@@ -2,25 +2,29 @@
 
 use Ghi\Domain\Core\Contracts\MovimientoRepository;
 use Ghi\Domain\Core\Models\MovimientoPoliza;
-use Mockery\Exception;
 
 class EloquentMovimientoRepository implements MovimientoRepository
 {
-
     /**
-     * @var MovimientoPoliza
+     * @var \Ghi\Domain\Core\Models\MovimientoPoliza
      */
     private $model;
 
     /**
      * EloquentMovimientoRepository constructor.
+     * @param \Ghi\Domain\Core\Models\MovimientoPoliza $model
      */
     public function __construct(MovimientoPoliza $model)
     {
         $this->model = $model;
     }
 
-    function create(array $data)
+    /**
+     * Crea un nuevo registro de Movimiento
+     * @param $data
+     * @return \Ghi\Domain\Core\Models\MovimientoPoliza
+     */
+    public function create($data)
     {
         $this->model->create([
             'id_poliza_tipo'=>$data['id_poliza_tipo'],
@@ -30,6 +34,10 @@ class EloquentMovimientoRepository implements MovimientoRepository
         ]);
     }
 
+    /**
+     * @param $id
+     * @return \Ghi\Domain\Core\Models\MovimientoPoliza
+     */
     public function getByPolizaTipoId($id)
     {
         return $this->model->where('id_poliza_tipo', '=', $id)->get();
