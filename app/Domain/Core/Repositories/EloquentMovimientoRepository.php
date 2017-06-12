@@ -6,18 +6,32 @@ use Mockery\Exception;
 
 class EloquentMovimientoRepository implements MovimientoRepository
 {
-    function create($idPoliza, array $movimientos)
+
+    /**
+     * @var MovimientoPoliza
+     */
+    private $model;
+
+    /**
+     * EloquentMovimientoRepository constructor.
+     */
+    public function __construct(MovimientoPoliza $model)
     {
-        MovimientoPoliza::create([
-            'id_poliza_tipo'=>$idPoliza,
-            'id_cuenta_contable'=>$movimientos['id_cuenta_contable'],
-            'id_tipo_movimiento'=>$movimientos['id_tipo_movimiento'],
+        $this->model = $model;
+    }
+
+    function create(array $data)
+    {
+        $this->model->create([
+            'id_poliza_tipo'=>$data['id_poliza_tipo'],
+            'id_cuenta_contable'=>$data['id_cuenta_contable'],
+            'id_tipo_movimiento'=>$data['id_tipo_movimiento'],
             'registro' => auth()->user()->idusuario
         ]);
     }
 
-    public function getByPolizaTipoId($poliza_tipo_id)
+    public function getByPolizaTipoId($id)
     {
-        return MovimientoPoliza::where('id_poliza_tipo', '=', $poliza_tipo_id)->get();
+        return $this->model->where('id_poliza_tipo', '=', $id)->get();
     }
 }

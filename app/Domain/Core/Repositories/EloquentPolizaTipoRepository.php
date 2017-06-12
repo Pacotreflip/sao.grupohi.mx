@@ -53,7 +53,8 @@ class EloquentPolizaTipoRepository implements PolizaTipoRepository
             ]);
 
             foreach ($data['movimientos'] as $movimiento) {
-                $this->movimiento->create($poliza_tipo->id, $movimiento);
+                $movimiento['id_poliza_tipo'] = $poliza_tipo->id;
+                $this->movimiento->create($movimiento);
             }
             DB::connection('cadeco')->commit();
             return $poliza_tipo;

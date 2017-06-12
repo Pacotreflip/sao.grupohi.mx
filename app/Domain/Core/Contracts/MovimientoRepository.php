@@ -2,6 +2,6 @@
 
 interface MovimientoRepository
 {
- public function create($id_transaccion_interfaz,array $movimientos);
- public function getByPolizaTipoId($poliza_tipo_id);
+ public function create(array $data);
+ public function getByPolizaTipoId($id);
 }

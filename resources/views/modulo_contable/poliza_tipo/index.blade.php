@@ -19,7 +19,7 @@
                     <h3 class="box-title">Pólizas Generadas</h3>
 
                     <div class="col-sm-12">
-                        <div class="row">
+                        <div class="row table-responsive">
 
                             <table id="polizas_tipo" class="table table-bordered table-striped dataTable" role="grid"
                                    aria-describedby="polizas_tipo_info">
@@ -45,7 +45,7 @@
                                         <td>{{ $item->numMovimientos }}</td>
                                         <td>{{ $item->userRegistro }}</td>
                                         <td>{{ $item->created_at->format('Y-m-d h:i:s a') }}</td>
-                                        <td>
+                                        <td style="min-width: 90px;max-width: 90px">
                                             <div class="btn-group">
                                                 <a href="{{ route('modulo_contable.poliza_tipo.show', $item->id) }}" type="button" class="btn btn-xs btn-default">
                                                     <i class="fa fa-eye"></i>
