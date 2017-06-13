@@ -2,25 +2,11 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="a092cd11-95ca-4984-9945-f7adccd63558" name="Default" comment="">
-      <change type="MOVED" beforePath="$PROJECT_DIR$/public/build/js/app-5c21395e27.js" afterPath="$PROJECT_DIR$/public/build/js/app-6af4820163.js" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/database/migrations/2017_06_13_113842_add_vigencia_to_poliza_tipo_table.php" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/Domain/Core/Contracts/TransaccionInterfazRepository.php" afterPath="$PROJECT_DIR$/app/Domain/Core/Contracts/TransaccionInterfazRepository.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/Domain/Core/Repositories/EloquentTransaccionInterfazRepository.php" afterPath="$PROJECT_DIR$/app/Domain/Core/Repositories/EloquentTransaccionInterfazRepository.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/Http/Controllers/PolizaTipoController.php" afterPath="$PROJECT_DIR$/app/Http/Controllers/PolizaTipoController.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/Http/Routes/modulo_contable.php" afterPath="$PROJECT_DIR$/app/Http/Routes/modulo_contable.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/build/css/app.css.map" afterPath="$PROJECT_DIR$/public/build/css/app.css.map" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/build/js/app.js.map" afterPath="$PROJECT_DIR$/public/build/js/app.js.map" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/build/rev-manifest.json" afterPath="$PROJECT_DIR$/public/build/rev-manifest.json" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/css/AdminLTE.css.map" afterPath="$PROJECT_DIR$/public/css/AdminLTE.css.map" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/css/app.css.map" afterPath="$PROJECT_DIR$/public/css/app.css.map" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/css/bootstrap.css.map" afterPath="$PROJECT_DIR$/public/css/bootstrap.css.map" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/js/app.js" afterPath="$PROJECT_DIR$/public/js/app.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/js/app.js.map" afterPath="$PROJECT_DIR$/public/js/app.js.map" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/assets/js/scripts/generales.js" afterPath="$PROJECT_DIR$/resources/assets/js/scripts/generales.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/assets/js/vue-components/poliza-tipo-create.js" afterPath="$PROJECT_DIR$/resources/assets/js/vue-components/poliza-tipo-create.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/views/layouts/partials/htmlheader.blade.php" afterPath="$PROJECT_DIR$/resources/views/layouts/partials/htmlheader.blade.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/views/layouts/partials/scripts.blade.php" afterPath="$PROJECT_DIR$/resources/views/layouts/partials/scripts.blade.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/views/modulo_contable/poliza_tipo/create.blade.php" afterPath="$PROJECT_DIR$/resources/views/modulo_contable/poliza_tipo/create.blade.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/Domain/Core/Models/PolizaTipo.php" afterPath="$PROJECT_DIR$/app/Domain/Core/Models/PolizaTipo.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/Http/breadcrumbs/modulo_contable.php" afterPath="$PROJECT_DIR$/app/Http/breadcrumbs/modulo_contable.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/views/modulo_contable/layout.blade.php" afterPath="$PROJECT_DIR$/resources/views/modulo_contable/layout.blade.php" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/views/modulo_contable/poliza_tipo/index.blade.php" afterPath="$PROJECT_DIR$/resources/views/modulo_contable/poliza_tipo/index.blade.php" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -33,82 +19,99 @@
   <component name="ExecutionTargetManager" SELECTED_TARGET="default_target" />
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="create.blade.php" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/resources/views/modulo_contable/poliza_tipo/create.blade.php">
+      <file leaf-file-name="layout.blade.php" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/resources/views/modulo_contable/layout.blade.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="375">
-              <caret line="121" column="42" lean-forward="false" selection-start-line="121" selection-start-column="42" selection-end-line="121" selection-end-column="42" />
+            <state relative-caret-position="68">
+              <caret line="4" column="9" lean-forward="true" selection-start-line="4" selection-start-column="9" selection-end-line="4" selection-end-column="9" />
               <folding>
-                <element signature="e#4609#4631#0#HTML" expanded="true" />
-                <marker date="1497369725012" expanded="true" signature="9:33" ph="..." />
-                <marker date="1497369725012" expanded="true" signature="44:67" ph="..." />
-                <marker date="1497369725012" expanded="true" signature="78:115" ph="..." />
-                <marker date="1497369725012" expanded="true" signature="127:141" ph="..." />
-                <marker date="1497369725012" expanded="true" signature="150:209" ph="..." />
-                <marker date="1497369725012" expanded="true" signature="336:355" ph="..." />
-                <marker date="1497369725012" expanded="true" signature="387:407" ph="..." />
-                <marker date="1497369725012" expanded="true" signature="1341:1345" ph="..." />
-                <marker date="1497369725012" expanded="true" signature="1351:1358" ph="..." />
-                <marker date="1497369725012" expanded="true" signature="6145:6149" ph="..." />
-                <marker date="1497369725012" expanded="true" signature="6155:6162" ph="..." />
-                <marker date="1497369725012" expanded="true" signature="7067:7071" ph="..." />
-                <marker date="1497369725012" expanded="true" signature="7077:7084" ph="..." />
-                <marker date="1497369725012" expanded="true" signature="7833:7884" ph="..." />
+                <marker date="1497372883839" expanded="true" signature="9:22" ph="..." />
+                <marker date="1497372883839" expanded="true" signature="33:47" ph="..." />
+                <marker date="1497372883839" expanded="true" signature="103:140" ph="..." />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="modulo_contable.php" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/Http/Routes/modulo_contable.php">
+      <file leaf-file-name="index.blade.php" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/resources/views/modulo_contable/poliza_tipo/index.blade.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="289">
-              <caret line="17" column="75" lean-forward="true" selection-start-line="17" selection-start-column="75" selection-end-line="17" selection-end-column="75" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="PolizaTipoController.php" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/Http/Controllers/PolizaTipoController.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="231">
-              <caret line="82" column="77" lean-forward="false" selection-start-line="82" selection-start-column="63" selection-end-line="82" selection-end-column="77" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="generales.js" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/resources/assets/js/scripts/generales.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="130">
-              <caret line="13" column="33" lean-forward="true" selection-start-line="13" selection-start-column="33" selection-end-line="13" selection-end-column="33" />
-              <folding />
+            <state relative-caret-position="425">
+              <caret line="58" column="53" lean-forward="true" selection-start-line="58" selection-start-column="53" selection-end-line="58" selection-end-column="53" />
+              <folding>
+                <marker date="1497372924608" expanded="true" signature="9:33" ph="..." />
+                <marker date="1497372924608" expanded="true" signature="44:75" ph="..." />
+                <marker date="1497372924608" expanded="true" signature="86:131" ph="..." />
+                <marker date="1497372924608" expanded="true" signature="143:157" ph="..." />
+                <marker date="1497372924608" expanded="true" signature="166:224" ph="..." />
+                <marker date="1497372924608" expanded="true" signature="305:350" ph="..." />
+                <marker date="1497372924608" expanded="true" signature="2225:2236" ph="..." />
+                <marker date="1497372924608" expanded="true" signature="2290:2319" ph="..." />
+                <marker date="1497372924608" expanded="true" signature="2373:2396" ph="..." />
+                <marker date="1497372924608" expanded="true" signature="2450:2471" ph="..." />
+                <marker date="1497372924608" expanded="true" signature="2525:2569" ph="..." />
+                <marker date="1497372924608" expanded="true" signature="3241:3295" ph="..." />
+                <marker date="1497372924608" expanded="true" signature="3845:3854" ph="..." />
+              </folding>
             </state>
           </provider>
         </entry>
       </file>
       <file leaf-file-name="index.blade.php" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/resources/views/modulo_contable/poliza_tipo/index.blade.php">
+        <entry file="file://$PROJECT_DIR$/resources/views/modulo_contable/index.blade.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="187">
-              <caret line="23" column="35" lean-forward="false" selection-start-line="23" selection-start-column="35" selection-end-line="23" selection-end-column="35" />
+            <state relative-caret-position="102">
+              <caret line="6" column="0" lean-forward="false" selection-start-line="6" selection-start-column="0" selection-end-line="6" selection-end-column="0" />
               <folding>
-                <element signature="e#2560#2599#0#HTML" expanded="true" />
-                <marker date="1497370012027" expanded="true" signature="9:33" ph="..." />
-                <marker date="1497370012027" expanded="true" signature="44:67" ph="..." />
-                <marker date="1497370012027" expanded="true" signature="78:115" ph="..." />
-                <marker date="1497370012027" expanded="true" signature="127:141" ph="..." />
-                <marker date="1497370012027" expanded="true" signature="150:208" ph="..." />
-                <marker date="1497370012027" expanded="true" signature="289:334" ph="..." />
-                <marker date="1497370012027" expanded="true" signature="2164:2175" ph="..." />
-                <marker date="1497370012027" expanded="true" signature="2229:2258" ph="..." />
-                <marker date="1497370012027" expanded="true" signature="2312:2335" ph="..." />
-                <marker date="1497370012027" expanded="true" signature="2389:2410" ph="..." />
-                <marker date="1497370012027" expanded="true" signature="2464:2508" ph="..." />
-                <marker date="1497370012027" expanded="true" signature="2728:2782" ph="..." />
-                <marker date="1497370012027" expanded="true" signature="3323:3332" ph="..." />
+                <marker date="1496969941249" expanded="true" signature="9:33" ph="..." />
+                <marker date="1496969941249" expanded="true" signature="44:70" ph="..." />
+                <marker date="1496969941249" expanded="true" signature="81:121" ph="..." />
+                <marker date="1496969941249" expanded="true" signature="132:146" ph="..." />
+                <marker date="1496969941249" expanded="true" signature="155:201" ph="..." />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="breadcrumbs.php" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/Http/breadcrumbs.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="102">
+              <caret line="6" column="32" lean-forward="true" selection-start-line="6" selection-start-column="32" selection-end-line="6" selection-end-column="32" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="PolizaTipo.php" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/Domain/Core/Models/PolizaTipo.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="1090">
+              <caret line="77" column="45" lean-forward="false" selection-start-line="77" selection-start-column="39" selection-end-line="77" selection-end-column="45" />
+              <folding>
+                <element signature="e#42#60#0#PHP" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="2017_06_07_170642_create_poliza_tipo_table.php" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/database/migrations/2017_06_07_170642_create_poliza_tipo_table.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="323">
+              <caret line="20" column="49" lean-forward="false" selection-start-line="20" selection-start-column="49" selection-end-line="20" selection-end-column="49" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="2017_06_13_113842_add_vigencia_to_poliza_tipo_table.php" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/database/migrations/2017_06_13_113842_add_vigencia_to_poliza_tipo_table.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="306">
+              <caret line="18" column="11" lean-forward="true" selection-start-line="18" selection-start-column="11" selection-end-line="18" selection-end-column="11" />
+              <folding>
+                <element signature="e#7#48#0#PHP" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -180,9 +183,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/database/migrations/2017_06_07_170745_create_int_tipos_cuentas_contables_table.php" />
-        <option value="$PROJECT_DIR$/resources/assets/less/app.less" />
-        <option value="$PROJECT_DIR$/resources/views/layouts/partials/sidebar.blade.php" />
         <option value="$PROJECT_DIR$/resources/views/scripts/globals.blade.php" />
         <option value="$PROJECT_DIR$/resources/assets/js/vue-components.js" />
         <option value="$PROJECT_DIR$/gulpfile.js" />
@@ -210,8 +210,6 @@
         <option value="$PROJECT_DIR$/.env" />
         <option value="$PROJECT_DIR$/resources/views/pages/index.blade.php" />
         <option value="$PROJECT_DIR$/resources/views/layouts/partials/mainheader.blade.php" />
-        <option value="$PROJECT_DIR$/app/Http/breadcrumbs/modulo_contable.php" />
-        <option value="$PROJECT_DIR$/resources/views/modulo_contable/layout.blade.php" />
         <option value="$PROJECT_DIR$/app/Domain/Core/Repositories/EloquentMovimientoRepository.php" />
         <option value="$PROJECT_DIR$/app/Domain/Core/Contracts/MovimientoRepository.php" />
         <option value="$PROJECT_DIR$/app/Domain/Core/Repositories/EloquentPolizaTipoRepository.php" />
@@ -230,7 +228,12 @@
         <option value="$PROJECT_DIR$/app/Http/Routes/modulo_contable.php" />
         <option value="$PROJECT_DIR$/resources/assets/js/scripts/generales.js" />
         <option value="$PROJECT_DIR$/public/js/app.js" />
+        <option value="$PROJECT_DIR$/database/migrations/2017_06_07_170642_create_poliza_tipo_table.php" />
+        <option value="$PROJECT_DIR$/database/migrations/2017_06_13_113842_add_vigencia_to_poliza_tipo_table.php" />
+        <option value="$PROJECT_DIR$/app/Http/breadcrumbs/modulo_contable.php" />
+        <option value="$PROJECT_DIR$/resources/views/modulo_contable/layout.blade.php" />
         <option value="$PROJECT_DIR$/resources/views/modulo_contable/poliza_tipo/index.blade.php" />
+        <option value="$PROJECT_DIR$/app/Domain/Core/Models/PolizaTipo.php" />
       </list>
     </option>
   </component>
@@ -300,22 +303,8 @@
               <option name="myItemId" value="resources" />
               <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
             </PATH_ELEMENT>
-          </PATH>
-          <PATH>
             <PATH_ELEMENT>
-              <option name="myItemId" value="saoweb.grupohi.mx" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="saoweb.grupohi.mx" />
-              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="resources" />
-              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="assets" />
+              <option name="myItemId" value="views" />
               <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
             </PATH_ELEMENT>
           </PATH>
@@ -333,11 +322,11 @@
               <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="assets" />
+              <option name="myItemId" value="views" />
               <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="js" />
+              <option name="myItemId" value="modulo_contable" />
               <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
             </PATH_ELEMENT>
           </PATH>
@@ -355,15 +344,51 @@
               <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="assets" />
+              <option name="myItemId" value="views" />
               <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="js" />
+              <option name="myItemId" value="modulo_contable" />
               <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="scripts" />
+              <option name="myItemId" value="poliza_tipo" />
+              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="saoweb.grupohi.mx" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="saoweb.grupohi.mx" />
+              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="resources" />
+              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="views" />
+              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="layouts" />
+              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="saoweb.grupohi.mx" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="saoweb.grupohi.mx" />
+              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="resources" />
               <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
             </PATH_ELEMENT>
           </PATH>
@@ -491,7 +516,7 @@
       <workItem from="1497029305597" duration="986000" />
       <workItem from="1497030369827" duration="5314000" />
       <workItem from="1497035796322" duration="7156000" />
-      <workItem from="1497281417633" duration="17846000" />
+      <workItem from="1497281417633" duration="22104000" />
     </task>
     <task id="LOCAL-00001" summary="Instalación de Plantilla &quot;AdminLTE&quot;">
       <created>1496945971946</created>
@@ -577,11 +602,18 @@
       <option name="project" value="LOCAL" />
       <updated>1497284835950</updated>
     </task>
-    <option name="localTasksCounter" value="13" />
+    <task id="LOCAL-00013" summary="integracion de scripts en generales.js">
+      <created>1497370122081</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1497370122081</updated>
+    </task>
+    <option name="localTasksCounter" value="14" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="66227000" />
+    <option name="totallyTimeSpent" value="70485000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="1358" y="-8" width="1936" height="1096" extended-state="6" />
@@ -677,7 +709,8 @@
     <MESSAGE value="Merge remote-tracking branch 'Jfesquivel/master' into Presentacion&#10;&#10;# Conflicts:&#10;#&#9;.idea/workspace.xml&#10;#&#9;public/build/js/app-8adfad54c7.js&#10;#&#9;public/build/js/app-cb83a1b31d.js&#10;#&#9;public/build/js/app-e32e65155a.js&#10;#&#9;public/build/js/app.js.map&#10;#&#9;public/build/rev-manifest.json&#10;#&#9;public/js/app.js.map" />
     <MESSAGE value="cambios polias" />
     <MESSAGE value="cambios en proceso poliza" />
-    <option name="LAST_COMMIT_MESSAGE" value="cambios en proceso poliza" />
+    <MESSAGE value="integracion de scripts en generales.js" />
+    <option name="LAST_COMMIT_MESSAGE" value="integracion de scripts en generales.js" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -686,45 +719,6 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/app/Http/breadcrumbs/modulo_contable.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="272">
-          <caret line="16" column="61" lean-forward="true" selection-start-line="16" selection-start-column="61" selection-end-line="16" selection-end-column="61" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/resources/views/pages/index.blade.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1666">
-          <caret line="98" column="47" lean-forward="true" selection-start-line="98" selection-start-column="47" selection-end-line="98" selection-end-column="47" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/vendor/acacha/admin-lte-template-laravel/public/img/AcachaAdminLTE600x314.png">
-      <provider selected="true" editor-type-id="images">
-        <state />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/vendor/acacha/admin-lte-template-laravel/public/img/app-bg.png">
-      <provider selected="true" editor-type-id="images">
-        <state />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/vendor/acacha/admin-lte-template-laravel/public/img/arrow1.png">
-      <provider selected="true" editor-type-id="images">
-        <state />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/vendor/acacha/admin-lte-template-laravel/public/img/arrow2.png">
-      <provider selected="true" editor-type-id="images">
-        <state />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/vendor/acacha/admin-lte-template-laravel/public/img/avatar.png">
-      <provider selected="true" editor-type-id="images">
-        <state />
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/vendor/acacha/admin-lte-template-laravel/public/img/avatar2.png">
       <provider selected="true" editor-type-id="images">
         <state />
@@ -779,32 +773,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-403">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/resources/views/modulo_contable/layout.blade.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="51">
-          <caret line="3" column="46" lean-forward="false" selection-start-line="3" selection-start-column="31" selection-end-line="3" selection-end-column="46" />
-          <folding>
-            <marker date="1497282574533" expanded="true" signature="9:22" ph="..." />
-            <marker date="1497282574533" expanded="true" signature="33:47" ph="..." />
-            <marker date="1497282574533" expanded="true" signature="103:140" ph="..." />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/resources/views/modulo_contable/index.blade.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="102">
-          <caret line="6" column="0" lean-forward="false" selection-start-line="6" selection-start-column="0" selection-end-line="6" selection-end-column="0" />
-          <folding>
-            <marker date="1496969941249" expanded="true" signature="9:33" ph="..." />
-            <marker date="1496969941249" expanded="true" signature="44:70" ph="..." />
-            <marker date="1496969941249" expanded="true" signature="81:121" ph="..." />
-            <marker date="1496969941249" expanded="true" signature="132:146" ph="..." />
-            <marker date="1496969941249" expanded="true" signature="155:201" ph="..." />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1103,34 +1071,119 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/resources/views/modulo_contable/poliza_tipo/index.blade.php">
+    <entry file="file://$PROJECT_DIR$/resources/assets/js/scripts/generales.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="187">
-          <caret line="23" column="35" lean-forward="false" selection-start-line="23" selection-start-column="35" selection-end-line="23" selection-end-column="35" />
+        <state relative-caret-position="96">
+          <caret line="11" column="0" lean-forward="true" selection-start-line="11" selection-start-column="0" selection-end-line="11" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/.env">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-357">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/database/migrations/2017_06_07_170642_create_poliza_tipo_table.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="323">
+          <caret line="20" column="49" lean-forward="false" selection-start-line="20" selection-start-column="49" selection-end-line="20" selection-end-column="49" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/Http/breadcrumbs/modulo_contable.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="153">
+          <caret line="9" column="14" lean-forward="true" selection-start-line="9" selection-start-column="14" selection-end-line="9" selection-end-column="14" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/Http/breadcrumbs.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="102">
+          <caret line="6" column="32" lean-forward="true" selection-start-line="6" selection-start-column="32" selection-end-line="6" selection-end-column="32" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/resources/views/modulo_contable/layout.blade.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="68">
+          <caret line="4" column="9" lean-forward="true" selection-start-line="4" selection-start-column="9" selection-end-line="4" selection-end-column="9" />
           <folding>
-            <element signature="e#2560#2599#0#HTML" expanded="true" />
-            <marker date="1497370012027" expanded="true" signature="9:33" ph="..." />
-            <marker date="1497370012027" expanded="true" signature="44:67" ph="..." />
-            <marker date="1497370012027" expanded="true" signature="78:115" ph="..." />
-            <marker date="1497370012027" expanded="true" signature="127:141" ph="..." />
-            <marker date="1497370012027" expanded="true" signature="150:208" ph="..." />
-            <marker date="1497370012027" expanded="true" signature="289:334" ph="..." />
-            <marker date="1497370012027" expanded="true" signature="2164:2175" ph="..." />
-            <marker date="1497370012027" expanded="true" signature="2229:2258" ph="..." />
-            <marker date="1497370012027" expanded="true" signature="2312:2335" ph="..." />
-            <marker date="1497370012027" expanded="true" signature="2389:2410" ph="..." />
-            <marker date="1497370012027" expanded="true" signature="2464:2508" ph="..." />
-            <marker date="1497370012027" expanded="true" signature="2728:2782" ph="..." />
-            <marker date="1497370012027" expanded="true" signature="3323:3332" ph="..." />
+            <marker date="1497372883839" expanded="true" signature="9:22" ph="..." />
+            <marker date="1497372883839" expanded="true" signature="33:47" ph="..." />
+            <marker date="1497372883839" expanded="true" signature="103:140" ph="..." />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/resources/assets/js/scripts/generales.js">
+    <entry file="file://$PROJECT_DIR$/resources/views/modulo_contable/index.blade.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="130">
-          <caret line="13" column="33" lean-forward="true" selection-start-line="13" selection-start-column="33" selection-end-line="13" selection-end-column="33" />
+        <state relative-caret-position="102">
+          <caret line="6" column="0" lean-forward="false" selection-start-line="6" selection-start-column="0" selection-end-line="6" selection-end-column="0" />
+          <folding>
+            <marker date="1496969941249" expanded="true" signature="9:33" ph="..." />
+            <marker date="1496969941249" expanded="true" signature="44:70" ph="..." />
+            <marker date="1496969941249" expanded="true" signature="81:121" ph="..." />
+            <marker date="1496969941249" expanded="true" signature="132:146" ph="..." />
+            <marker date="1496969941249" expanded="true" signature="155:201" ph="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/database/migrations/2017_06_13_113842_add_vigencia_to_poliza_tipo_table.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="306">
+          <caret line="18" column="11" lean-forward="true" selection-start-line="18" selection-start-column="11" selection-end-line="18" selection-end-column="11" />
+          <folding>
+            <element signature="e#7#48#0#PHP" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/vendor/nesbot/carbon/src/Carbon/Carbon.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="236">
+          <caret line="1254" column="20" lean-forward="false" selection-start-line="1254" selection-start-column="20" selection-end-line="1254" selection-end-column="20" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/Domain/Core/Models/PolizaTipo.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1090">
+          <caret line="77" column="45" lean-forward="false" selection-start-line="77" selection-start-column="39" selection-end-line="77" selection-end-column="45" />
+          <folding>
+            <element signature="e#42#60#0#PHP" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/resources/views/modulo_contable/poliza_tipo/index.blade.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="425">
+          <caret line="58" column="53" lean-forward="true" selection-start-line="58" selection-start-column="53" selection-end-line="58" selection-end-column="53" />
+          <folding>
+            <marker date="1497372924608" expanded="true" signature="9:33" ph="..." />
+            <marker date="1497372924608" expanded="true" signature="44:75" ph="..." />
+            <marker date="1497372924608" expanded="true" signature="86:131" ph="..." />
+            <marker date="1497372924608" expanded="true" signature="143:157" ph="..." />
+            <marker date="1497372924608" expanded="true" signature="166:224" ph="..." />
+            <marker date="1497372924608" expanded="true" signature="305:350" ph="..." />
+            <marker date="1497372924608" expanded="true" signature="2225:2236" ph="..." />
+            <marker date="1497372924608" expanded="true" signature="2290:2319" ph="..." />
+            <marker date="1497372924608" expanded="true" signature="2373:2396" ph="..." />
+            <marker date="1497372924608" expanded="true" signature="2450:2471" ph="..." />
+            <marker date="1497372924608" expanded="true" signature="2525:2569" ph="..." />
+            <marker date="1497372924608" expanded="true" signature="3241:3295" ph="..." />
+            <marker date="1497372924608" expanded="true" signature="3845:3854" ph="..." />
+          </folding>
         </state>
       </provider>
     </entry>

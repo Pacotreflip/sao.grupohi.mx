@@ -11,11 +11,11 @@ Breadcrumbs::register('modulo_contable.index', function ($breadcrumb) {
  */
 Breadcrumbs::register('modulo_contable.poliza_tipo.index', function ($breadcrumb) {
     $breadcrumb->parent('modulo_contable.index');
-    $breadcrumb->push('PÓLIZAS TIPO', route('modulo_contable.poliza_tipo.index'));
+    $breadcrumb->push('PLANTILLAS DE PÓLIZAS', route('modulo_contable.poliza_tipo.index'));
 });
 Breadcrumbs::register('modulo_contable.poliza_tipo.create', function ($breadcrumb) {
     $breadcrumb->parent('modulo_contable.poliza_tipo.index');
-    $breadcrumb->push('NUEVA PÓLIZA TIPO', route('modulo_contable.poliza_tipo.create'));
+    $breadcrumb->push('NUEVA PLANTILLA PARA PÓLIZA', route('modulo_contable.poliza_tipo.create'));
 });
 Breadcrumbs::register('modulo_contable.poliza_tipo.show', function ($breadcrumb, $poliza_tipo) {
     $breadcrumb->parent('modulo_contable.poliza_tipo.index');

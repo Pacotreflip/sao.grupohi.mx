@@ -1,6 +1,6 @@
 @extends('modulo_contable.layout')
-@section('title', 'Polizas Tipo')
-@section('contentheader_title', 'PÓLIZAS TIPO')
+@section('title', 'Plantillas de Póliza')
+@section('contentheader_title', 'PLANTILLAS DE PÓLIZA')
 
 @section('main-content')
     {!! Breadcrumbs::render('modulo_contable.poliza_tipo.index') !!}
@@ -16,25 +16,23 @@
         <div class="col-md-12">
             <div class="box">
                 <div class="box-header">
-                    <h3 class="box-title">Pólizas Generadas</h3>
-
+                    <h3 class="box-title">Plantilla de Póliza</h3>
                     <div class="col-sm-12">
                         <div class="row table-responsive">
-
-                            <table  class="table table-bordered table-striped dataTable index_table" role="grid"
+                            <table  class="table table-bordered table-striped dataTable index_table small" role="grid"
                                    aria-describedby="polizas_tipo_info">
                                 <thead>
                                 <tr role="row">
                                     <th class="sorting_asc" tabindex="0" aria-controls="polizas_tipo"
                                         aria-sort="ascending">ID
                                     </th>
-                                    <th class="sorting" tabindex="0" aria-controls="polizas_tipo">Póliza Tipo</th>
+                                    <th class="sorting" tabindex="0" aria-controls="polizas_tipo">Tipo de Póliza</th>
                                     <th class="sorting" tabindex="0" aria-controls="polizas_tipo"># Movimientos</th>
                                     <th class="sorting" tabindex="0" aria-controls="polizas_tipo">Registró</th>
-                                    <th class="sorting" tabindex="0" aria-controls="polizas_tipo">Fecha y Hora de
-                                        Registro
-                                    </th>
+                                    <th class="sorting" tabindex="0" aria-controls="polizas_tipo">Fecha y Hora de Registro</th>
+                                    <th class="sorting" tabindex="0" aria-controls="polizas_tipo">Vigencia</th>
                                     <th></th>
+
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -45,12 +43,19 @@
                                         <td>{{ $item->numMovimientos }}</td>
                                         <td>{{ $item->userRegistro }}</td>
                                         <td>{{ $item->created_at->format('Y-m-d h:i:s a') }}</td>
+                                        <td>
+                                            @if($item->vigente)
+                                                <span class="label label-success">Vigente</span>
+                                            @else
+                                                <span class="label label-danger">No Vigente</span>
+                                            @endif
+                                        </td>
                                         <td style="min-width: 90px;max-width: 90px">
                                             <div class="btn-group">
                                                 <a href="{{ route('modulo_contable.poliza_tipo.show', $item->id) }}" type="button" class="btn btn-xs btn-default">
                                                     <i class="fa fa-eye"></i>
                                                 </a>
-                                                <a type="button" class="btn btn-xs btn-info">
+                                                <a type="button" class="btn btn-xs btn-info disabled">
                                                     <i class="fa fa-pencil"></i>
                                                 </a>
                                                 <button type="button" class="btn btn-xs btn-danger" onclick="desactivar_plantilla({{$item->id}})">
@@ -63,11 +68,12 @@
                                 </tbody>
                                 <tfoot>
                                 <tr>
-                                    <th rowspan="1" colspan="1">ID</th>
-                                    <th rowspan="1" colspan="1">Póliza Tipo</th>
-                                    <th rowspan="1" colspan="1"># Movimientos</th>
-                                    <th rowspan="1" colspan="1">Registró</th>
-                                    <th rowspan="1" colspan="1">Fecha y Hora de Registro</th>
+                                    <th>ID</th>
+                                    <th>Póliza Tipo</th>
+                                    <th># Movimientos</th>
+                                    <th>Registró</th>
+                                    <th>Fecha y Hora de Registro</th>
+                                    <th>Vigencia</th>
                                     <th></th>
                                 </tr>
                                 </tfoot>
