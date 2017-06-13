@@ -1,5 +1,5 @@
-var poliza_create = Vue.component('poliza-tipo-create', {
-    props: ['cuentas_contables', 'tipos_movimiento'],
+Vue.component('poliza-tipo-create', {
+    props: ['cuentas_contables', 'tipos_movimiento', 'transacciones_interfaz'],
     data: function() {
         return {
             'form' : {
@@ -15,30 +15,7 @@ var poliza_create = Vue.component('poliza-tipo-create', {
                 'errors' : []
             },
             'guardando' : false
-        }
-    },
 
-    directives: {
-        select2: {
-            inserted: function (el) {
-                $(el).select2({
-                    width: '100%',
-                    placeholder: "--SELECCIONE--"
-                });
-            }
-        },
-
-        datepicker: {
-            inserted: function (el) {
-                $(el).datepicker({
-                    autoclose: true,
-                    language: 'es'
-                }).on(
-                    "changeDate", () => {
-                    console.log(poliza_create);
-                    console.log(poliza_create.data);
-                });
-            }
         }
     },
 

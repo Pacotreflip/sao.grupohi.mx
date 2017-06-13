@@ -11020,8 +11020,9 @@ $(function () {
 require('./vue-components/global-errors');
 require('./vue-components/errors');
 require('./vue-components/poliza-tipo-create');
+require('./vue-components/select2');
 
-},{"./vue-components/errors":14,"./vue-components/global-errors":15,"./vue-components/poliza-tipo-create":16}],14:[function(require,module,exports){
+},{"./vue-components/errors":14,"./vue-components/global-errors":15,"./vue-components/poliza-tipo-create":16,"./vue-components/select2":17}],14:[function(require,module,exports){
 'use strict';
 
 Vue.component('app-errors', {
@@ -11030,7 +11031,7 @@ Vue.component('app-errors', {
     template: require('./templates/errors.html')
 });
 
-},{"./templates/errors.html":17}],15:[function(require,module,exports){
+},{"./templates/errors.html":18}],15:[function(require,module,exports){
 'use strict';
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
@@ -11056,11 +11057,11 @@ Vue.component('global-errors', {
   }
 });
 
-},{"./templates/global-errors.html":18}],16:[function(require,module,exports){
+},{"./templates/global-errors.html":19}],16:[function(require,module,exports){
 'use strict';
 
-var poliza_create = Vue.component('poliza-tipo-create', {
-    props: ['cuentas_contables', 'tipos_movimiento'],
+Vue.component('poliza-tipo-create', {
+    props: ['cuentas_contables', 'tipos_movimiento', 'transacciones_interfaz'],
     data: function data() {
         return {
             'form': {
@@ -11077,6 +11078,7 @@ var poliza_create = Vue.component('poliza-tipo-create', {
             },
             'guardando': false
         };
+
     },
 
     directives: {
@@ -11161,8 +11163,54 @@ var poliza_create = Vue.component('poliza-tipo-create', {
 });
 
 },{}],17:[function(require,module,exports){
-module.exports = '<div id="form-errors" v-cloak>\n  <div class="alert alert-danger" v-if="form.errors.length">\n    <ul>\n      <li v-for="error in form.errors">{{ error }}</li>\n    </ul>\n  </div>\n</div>';
+'use strict';
+
+Vue.component('select2', {
+    props: ['options', 'value'],
+    template: '<select><slot></slot></select>',
+    mounted: function mounted() {
+        var vm = this;
+        var data = [];
+
+        $.each(this.options, function (id, text) {
+            data.push({ id: id, text: text });
+        });
+
+        function SortByName(a, b) {
+            var aName = a.text.toLowerCase();
+            var bName = b.text.toLowerCase();
+            return aName < bName ? -1 : aName > bName ? 1 : 0;
+        }
+
+        data = data.sort(SortByName);
+
+        $(this.$el).select2({
+            data: data,
+            width: '100%'
+        }).val(this.value).trigger('change'
+        // emit event on change.
+        ).on('change', function () {
+            vm.$emit('input', this.value);
+        });
+    },
+    watch: {
+        value: function value(_value) {
+            // update value
+            $(this.$el).val(_value).trigger('change');
+        },
+        options: function options(_options) {
+            // update options
+            $(this.$el).select2({ data: _options });
+        }
+    },
+    destroyed: function destroyed() {
+        $(this.$el).off().select2('destroy');
+    }
+});
+
 },{}],18:[function(require,module,exports){
+module.exports = '<div id="form-errors" v-cloak>\n  <div class="alert alert-danger" v-if="form.errors.length">\n    <ul>\n      <li v-for="error in form.errors">{{ error }}</li>\n    </ul>\n  </div>\n</div>';
+},{}],19:[function(require,module,exports){
 module.exports = '<div class="alert alert-danger" v-show="errors.length">\n  <ul>\n    <li v-for="error in errors">{{ error }}</li>\n  </ul>\n</div>';
 },{}]},{},[11]);
 
