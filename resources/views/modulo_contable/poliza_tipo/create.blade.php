@@ -14,7 +14,7 @@
                         <h3 class="box-title">Información de la Póliza Tipo </h3>
                     </div>
                     <div class="box-body">
-                        <div class="col-md-9">
+                        <div class="col-md-5">
                             <div class="form-group">
                                 <label for="id_transaccion_interfaz">Tipo de Póliza</label>
                                 <select id="id_transaccion_interfaz" name="id_transaccion_interfaz" class="form-control" v-model="form.poliza_tipo.id_transaccion_interfaz" :disabled="form.poliza_tipo.movimientos.length > 0">
@@ -25,7 +25,15 @@
                                 </select>
                             </div>
                         </div>
-                        <div class="col-md-3">
+
+                        <div class="col-md-5">
+                            <div class="form-group">
+                                <label for="inicio_vigencia">Inicio de Vigencia</label>
+                                <input type="text" id="inicio_vigencia" name="inicio_vigencia" class="form-control" :disabled="form.poliza_tipo.id_transaccion_interfaz == ''" v-datepicker/>
+                            </div>
+                        </div>
+
+                        <div class="col-md-2">
                             <div class="form-group">
                                 <label for="add_movimiento">Agragar Movimiento</label>
                                 <button type="button" class="btn btn-primary btn-block" data-toggle="modal" data-target="#modal-add-movimiento" @click="reset_movimiento" :disabled="guardando || form.poliza_tipo.id_transaccion_interfaz == ''">

@@ -1,11 +1,12 @@
-Vue.component('poliza-tipo-create', {
+var poliza_create = Vue.component('poliza-tipo-create', {
     props: ['cuentas_contables', 'tipos_movimiento'],
     data: function() {
         return {
             'form' : {
                 'poliza_tipo' : {
                     'id_transaccion_interfaz' : '',
-                    'movimientos' : []
+                    'movimientos' : [],
+                    'inicio_vigencia' : ''
                 },
                 'movimiento' : {
                     'id_cuenta_contable' : '',
@@ -23,6 +24,19 @@ Vue.component('poliza-tipo-create', {
                 $(el).select2({
                     width: '100%',
                     placeholder: "--SELECCIONE--"
+                });
+            }
+        },
+
+        datepicker: {
+            inserted: function (el) {
+                $(el).datepicker({
+                    autoclose: true,
+                    language: 'es'
+                }).on(
+                    "changeDate", () => {
+                    console.log(poliza_create);
+                    console.log(poliza_create.data);
                 });
             }
         }
@@ -79,6 +93,11 @@ Vue.component('poliza-tipo-create', {
         },
         remove_movimiento:function (e) {
             Vue.delete(this.form.poliza_tipo.movimientos,e);
+        },
+
+        set_inicio_vigencia: function (e) {
+            Vue.set(this.form.poliza_tipo, 'inicio_vigencia', $(e.currentTarget).val());
         }
+
     }
 });

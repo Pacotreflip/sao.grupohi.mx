@@ -80,7 +80,7 @@ class PolizaTipoController extends Controller
      */
     public function create() {
 
-        $transacciones_interfaz = $this->transaccion_interfaz->lists();
+        $transacciones_interfaz = $this->transaccion_interfaz->getDisponibles();
         $cuentas_contables = $this->cuenta_contable->lists();
         $tipos_movimiento = $this->tipo_movimiento->lists();
 
