@@ -7,7 +7,11 @@
     <hr>
     <div id="app">
         <global-errors></global-errors>
-        <poliza-tipo-create v-bind:tipos_movimiento="{{ $tipos_movimiento }}" v-bind:cuentas_contables="{{ $cuentas_contables }}"  inline-template>
+        <poliza-tipo-create
+                v-bind:tipos_movimiento="{{ $tipos_movimiento }}"
+                v-bind:cuentas_contables="{{ $cuentas_contables }}"
+                v-bind:transacciones_interfaz="{{ $transacciones_interfaz }}"
+                inline-template>
             <section>
                 <div class="box box-success">
                     <div class="box-header with-border">
@@ -17,12 +21,9 @@
                         <div class="col-md-9">
                             <div class="form-group">
                                 <label for="id_transaccion_interfaz">Tipo de Póliza</label>
-                                <select id="id_transaccion_interfaz" name="id_transaccion_interfaz" class="form-control" v-model="form.poliza_tipo.id_transaccion_interfaz" :disabled="form.poliza_tipo.movimientos.length > 0">
-                                    <option value>[-SELECCIONE-]</option>
-                                    @foreach($transacciones_interfaz as $key => $item)
-                                        <option value="{{$key}}">{{ $item }}</option>
-                                    @endforeach
-                                </select>
+                                <select2 class="form-control" :options="transacciones_interfaz" v-model="form.poliza_tipo.id_transaccion_interfaz">
+                                    <option disabled value>[-SELECCIONE-]</option>
+                                </select2>
                             </div>
                         </div>
                         <div class="col-md-3">
