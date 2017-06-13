@@ -62,18 +62,20 @@ class PolizaTipoController extends Controller
     }
 
     /**
-     * Muestra la vista del listado de Pólizas tipo registradas
+     * Muestra la vista del listado de Plantillas Para Tipos de Póliza registradas
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function index() {
+
         $polizas_tipo = $this->poliza_tipo->getAll();
+
         return view('modulo_contable.poliza_tipo.index')
             ->with('polizas_tipo', $polizas_tipo);
     }
 
 
     /**
-     * Muestra la vista de creación de Póliza ipo
+     * Muestra la vista de creación de Plantilla para un Tipo de Póliza
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function create() {
@@ -91,7 +93,7 @@ class PolizaTipoController extends Controller
     }
 
     /*
-     * Recibe los datos para la creación de una nueva Póliza Tipo
+     * Recibe los datos para la creación de una nueva Plantilla para un Tipo de Póliza
      */
     public function  store(Request $request){
         $poliza_tipo = $this->poliza_tipo->create($request->all());
@@ -101,6 +103,9 @@ class PolizaTipoController extends Controller
             'url' => route('modulo_contable.poliza_tipo.show', $poliza_tipo->id)]);
     }
 
+    /*
+    * Devuelve la vista del detalle de una Plantilla pata Tipo de Póliza
+    */
     public function show($id) {
         $poliza_tipo = $this->poliza_tipo->getById($id);
         $movimientos = $this->movimiento->getByPolizaTipoId($poliza_tipo->id);
