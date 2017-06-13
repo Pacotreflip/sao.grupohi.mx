@@ -44,15 +44,6 @@ class EloquentTransaccionInterfazRepository implements TransaccionInterfazReposi
      */
     public function lists()
     {
-        return $this->model->orderBy('descripcion', 'ASC')->lists('descripcion', 'id_transaccion_interfaz');
-    }
-
-    /**
-     * Obtine las transacciones Interfaz q no estan asignadas en una plantilla
-     * @return \Illuminate\Database\Eloquent\Collection|\Ghi\Domain\Core\Contracts\TransaccionInterfaz
-     */
-    public function getDisponibles()
-    {
-        return $this->model->orderBy('descripcion','asc')->has('polizasTipo', '=', 0)->get();
+        return $this->model->disponibles()->orderBy('descripcion', 'ASC')->lists('descripcion', 'id_transaccion_interfaz');
     }
 }

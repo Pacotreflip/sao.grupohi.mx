@@ -71,4 +71,13 @@ class EloquentPolizaTipoRepository implements PolizaTipoRepository
     {
         return $this->model->find($id);
     }
+
+    /**
+     * Elimina un registro de Plantilla de Tipo de Póliza
+     * @param $id
+     * @return mixed
+     */
+    public function delete($id) {
+        $this->model->destroy($id);
+    }
 }

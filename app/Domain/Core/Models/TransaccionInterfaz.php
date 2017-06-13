@@ -20,4 +20,9 @@ class TransaccionInterfaz extends Model
     {
         return $this->descripcion;
     }
+
+    public function scopeDisponibles($query)
+    {
+        return $query->has('polizasTipo', '=', 0);
+    }
 }

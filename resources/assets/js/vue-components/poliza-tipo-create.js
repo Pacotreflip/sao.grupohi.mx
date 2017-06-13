@@ -19,6 +19,10 @@ Vue.component('poliza-tipo-create', {
         }
     },
 
+    mounted: function() {
+
+    },
+
     methods: {
         add_movimiento: function () {
             var id_cuenta_contable = $('#id_cuenta_contable').val();
@@ -33,6 +37,21 @@ Vue.component('poliza-tipo-create', {
         reset_movimiento: function () {
             Vue.set(this.form.movimiento, 'id_cuenta_contable', '');
             Vue.set(this.form.movimiento, 'id_tipo_movimiento', '');
+        },
+
+        confirm_save: function() {
+            var self = this;
+            swal({
+                title: "Guardar Plantilla",
+                text: "¿Estás seguro de que la información es correcta?",
+                type: "warning",
+                showCancelButton: true,
+                closeOnConfirm: false,
+                showLoaderOnConfirm: true,
+            },
+            function(){
+                self.save();
+            });
         },
 
         save: function () {
@@ -50,15 +69,7 @@ Vue.component('poliza-tipo-create', {
                     self.guardando = true;
                 },
                 success: function (response) {
-                    if (response.success) {
-                        window.location = response.url;
-                    } else {
-                        swal({
-                            type: 'error',
-                            title: '¡Error!',
-                            text: 'Ocurrio un error'
-                        });
-                    }
+                   swal
                 },
                 error: function () {
 

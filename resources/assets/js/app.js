@@ -6,7 +6,6 @@ require('./scripts/generales');
  * Development
  */
 window.Vue = require('vue/dist/vue.js');
-require('sweetalert');
 
 /**
  * Production

@@ -20,10 +20,4 @@ interface TransaccionInterfazRepository
      * @return \Illuminate\Database\Eloquent\Collection|TransaccionInterfaz
      */
     public function lists();
-
-    /**
-     * Obtine las transacciones Interfaz q no estan asignadas en una plantilla
-     * @return \Illuminate\Database\Eloquent\Collection|TransaccionInterfaz
-     */
-    public function getDisponibles();
 }

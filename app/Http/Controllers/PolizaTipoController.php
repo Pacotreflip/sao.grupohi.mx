@@ -80,7 +80,7 @@ class PolizaTipoController extends Controller
      */
     public function create() {
 
-        $transacciones_interfaz = $this->transaccion_interfaz->getDisponibles();
+        $transacciones_interfaz = $this->transaccion_interfaz->lists();
         $cuentas_contables = $this->cuenta_contable->lists();
         $tipos_movimiento = $this->tipo_movimiento->lists();
 
@@ -95,14 +95,12 @@ class PolizaTipoController extends Controller
     /*
      * Recibe los datos para la creación de una nueva Plantilla para un Tipo de Póliza
      */
-    public function  store(Request $request){
+    public function  store(Request $request)
+    {
         $poliza_tipo = $this->poliza_tipo->create($request->all());
 
-        return response()->json([
-            'success' => $poliza_tipo ? true : false,
-            'url' => route('modulo_contable.poliza_tipo.show', $poliza_tipo->id)]);
+        return $request->ajax() ? response()->json(['last_insert_id' => $poliza_tipo->id]) : $poliza_tipo;
     }
-
     /*
     * Devuelve la vista del detalle de una Plantilla pata Tipo de Póliza
     */
@@ -115,5 +113,9 @@ class PolizaTipoController extends Controller
                 'poliza_tipo' => $poliza_tipo,
                 'movimientos' => $movimientos
             ]);
+    }
+
+    public function destroy($id) {
+        return $this->poliza_tipo->delete($id);
     }
 }

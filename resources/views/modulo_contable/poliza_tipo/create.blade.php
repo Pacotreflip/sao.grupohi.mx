@@ -30,7 +30,7 @@
                         <div class="col-md-5">
                             <div class="form-group">
                                 <label for="inicio_vigencia">Inicio de Vigencia</label>
-                                <input type="text" id="inicio_vigencia" name="inicio_vigencia" class="form-control" :disabled="form.poliza_tipo.id_transaccion_interfaz == ''" v-datepicker/>
+                                <input type="text" id="inicio_vigencia" name="inicio_vigencia" class="form-control" :disabled="form.poliza_tipo.id_transaccion_interfaz == ''"/>
                             </div>
                         </div>
 
@@ -71,7 +71,7 @@
                     </div>
                 </div>
                 <div v-if="form.poliza_tipo.movimientos.length > 0">
-                    <button type="button" class="btn btn-success" @click="save" :disabled="guardando">
+                    <button type="button" class="btn btn-success" @click="confirm_save" :disabled="guardando">
                         <span v-if="guardando">
                             <i class="fa fa-spinner fa-spin"></i> Guardando
                         </span>

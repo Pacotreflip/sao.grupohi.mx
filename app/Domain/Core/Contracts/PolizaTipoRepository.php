@@ -23,4 +23,11 @@ interface PolizaTipoRepository
      * @return \Ghi\Domain\Core\Models\PolizaTipo
      */
     public function getById($id);
+
+    /**
+     * Elimina un registro de Plantilla de Tipo de Póliza
+     * @param $id
+     * @return mixed
+     */
+    public function delete($id);
 }
