@@ -39,7 +39,7 @@
                                 @foreach($polizas_tipo as $index => $item)
                                     <tr>
                                         <td>{{ $item->id }}</td>
-                                        <td>{{ $item->transaccion  }}</td>
+                                        <td>{{ $item->transaccionInterfaz  }}</td>
                                         <td>{{ $item->numMovimientos }}</td>
                                         <td>{{ $item->userRegistro }}</td>
                                         <td>{{ $item->created_at->format('Y-m-d h:i:s a') }}</td>
@@ -58,7 +58,7 @@
                                                 <a type="button" class="btn btn-xs btn-info disabled">
                                                     <i class="fa fa-pencil"></i>
                                                 </a>
-                                                <button type="button" class="btn btn-xs btn-danger" onclick="desactivar_plantilla({{$item->id}})">
+                                                <button type="button" class="btn btn-xs btn-danger" onclick="delete_plantilla({{$item->id}})">
                                                     <i class="fa fa-trash"></i>
                                                 </button>
                                             </div>
@@ -82,10 +82,47 @@
 
                     </div>
                     <br/>
-
                 </div>
             </div>
         </div>
     </div>
 
+    <form id='delete' method="post">
+        <input type='hidden' name='motivo' value/>
+        {{csrf_field()}}
+        <input type="hidden" name="_method" value="delete"/>
+    </form>
+
+@endsection
+@section('scripts-content')
+    <script>
+        function delete_plantilla(id) {
+            var form = $('#delete');
+            var url=App.host +"/modulo_contable/poliza_tipo/" + id;
+            swal({
+                title: "¡Eliminar Plantilla!",
+                text: "¿Esta seguro de que deseas eliminar la Plantilla?",
+                type: "input",
+                showCancelButton: true,
+                closeOnConfirm: false,
+                inputPlaceholder: "Motivo de eliminación.",
+                confirmButtonText: "Si, Eliminar",
+                cancelButtonText: "No, Cancelar",
+                showLoaderOnConfirm: true
+
+            },
+            function(inputValue){
+                if (inputValue === false) return false;
+                if (inputValue === "") {
+                    swal.showInputError("¡Escriba el motivo de la eliminación!");
+                    return false
+                }
+
+                form.attr("action", url);
+
+                $("input[name=motivo]").val(inputValue);
+                form.submit();
+            });
+        }
+    </script>
 @endsection

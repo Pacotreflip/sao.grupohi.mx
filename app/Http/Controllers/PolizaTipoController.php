@@ -141,6 +141,6 @@ class PolizaTipoController extends Controller
             return $this->response->errorInternal();
         }
 
-        return $this->response->accepted(route('modulo_contable.poliza_tipo.index'));
+        return redirect()->back();
     }
 }

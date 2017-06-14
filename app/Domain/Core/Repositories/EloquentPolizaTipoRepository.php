@@ -120,7 +120,7 @@ class EloquentPolizaTipoRepository implements PolizaTipoRepository
             $movimientos = (new EloquentMovimientoRepository(new MovimientoPoliza()))->getByPolizaTipoId($item->id);
             foreach ($movimientos as $movimiento) {
                 $movimiento->update($data);
-                $movimiento->destroy();
+                $movimiento->delete();
             }
 
             $item->destroy($id);
