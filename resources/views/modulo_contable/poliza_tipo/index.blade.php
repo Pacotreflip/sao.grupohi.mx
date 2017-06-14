@@ -39,7 +39,7 @@
                                 @foreach($polizas_tipo as $index => $item)
                                     <tr>
                                         <td>{{ $item->id }}</td>
-                                        <td>{{ $item->transaccionInterfaz  }}</td>
+                                        <td>{{ $item->transaccion  }}</td>
                                         <td>{{ $item->numMovimientos }}</td>
                                         <td>{{ $item->userRegistro }}</td>
                                         <td>{{ $item->created_at->format('Y-m-d h:i:s a') }}</td>
