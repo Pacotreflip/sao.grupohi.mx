@@ -19,8 +19,6 @@
                         <h3 class="box-title">Información de la Póliza Tipo </h3>
                     </div>
                     <div class="box-body">
-
-                        <input type="text" class="form-control" name="name">
                         <div class="col-md-5">
                             <div class="form-group">
                                 <label for="id_transaccion_interfaz">Tipo de Póliza</label>
