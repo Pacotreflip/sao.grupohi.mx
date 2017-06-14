@@ -9811,7 +9811,7 @@ Vue.component('poliza-tipo-create', {
                 'poliza_tipo': {
                     'id_transaccion_interfaz': '',
                     'movimientos': [],
-                    'inicio_vigencia': ''
+                    'inicio_vigencia': App.timeStamp(1)
                 },
                 'movimiento': {
                     'id_cuenta_contable': '',
@@ -9824,7 +9824,65 @@ Vue.component('poliza-tipo-create', {
         };
     },
 
-    mounted: function mounted() {},
+    mounted: function mounted() {
+        var self = this;
+        $("#inicio_vigencia").datepicker().on("changeDate", function () {
+            Vue.set(self.form.poliza_tipo, 'inicio_vigencia', $('#inicio_vigencia').val());
+        });
+    },
+
+    computed: {
+        check_movimientos: function check_movimientos() {
+            var a = false;
+            var b = false;
+            this.form.poliza_tipo.movimientos.forEach(function (movimiento) {
+                if (movimiento.id_tipo_movimiento == '1') {
+                    a = true;
+                } else if (movimiento.id_tipo_movimiento == '2') {
+                    b = true;
+                }
+            });
+
+            return a && b;
+        },
+
+        cuentas_contables_disponibles: function cuentas_contables_disponibles() {
+            var self = this;
+            var result = {};
+            $.each(this.cuentas_contables, function (index, cuenta_contable) {
+                var existe = false;
+                self.form.poliza_tipo.movimientos.forEach(function (movimiento) {
+                    if (index == movimiento.id_cuenta_contable) {
+                        existe = true;
+                    }
+                });
+
+                if (!existe) {
+                    result[index] = cuenta_contable;
+                } else {
+                    Vue.delete(result, index);
+                }
+            });
+
+            return result;
+        }
+    },
+
+    directives: {
+        datepicker: {
+            inserted: function inserted(el) {
+                $(el).datepicker({
+                    autoclose: true,
+                    language: 'es',
+                    startDate: '0d',
+                    todayHighlight: true,
+                    clearBtn: true,
+                    format: 'yyyy-mm-dd'
+                });
+                $(el).val(App.timeStamp(1));
+            }
+        }
+    },
 
     methods: {
         add_movimiento: function add_movimiento() {
@@ -9842,6 +9900,44 @@ Vue.component('poliza-tipo-create', {
             Vue.set(this.form.movimiento, 'id_tipo_movimiento', '');
         },
 
+        check_duplicity: function check_duplicity() {
+            var self = this;
+            var id = self.form.poliza_tipo.id_transaccion_interfaz;
+            var url = App.host + '/modulo_contable/poliza_tipo/findBy';
+            $.ajax({
+                type: 'GET',
+                url: url,
+                data: {
+                    'attribute': 'id_transaccion_interfaz',
+                    'value': id,
+                    'with': 'movimientos'
+                },
+                success: function success(response) {
+                    if (response) {
+                        var body = "";
+                        $.each(response.movimientos, function (index, movimiento) {
+                            body += "<tr><td>" + (index + 1) + "</td><td>" + self.cuentas_contables[movimiento.id_cuenta_contable] + "</td><td>" + self.tipos_movimiento[movimiento.id_tipo_movimiento] + "</td></tr>";
+                        });
+                        swal({
+                            title: "Advertencia",
+                            text: "Ya existe una Plantilla para el tipo de Póliza seleccionado con los siguientes movimientos <br>" + "<table class='table table-striped small'>" + "   <thead>" + "   <tr>" + "       <th style='text-align: center'>#</th>" + "       <th style='text-align: center'>Cuenta Contable</th>" + "       <th style='text-align: center'>Tipo</th>" + "   </tr>" + "   </thead>" + "   <tbody>" + body + "   </tbody>" + "</table>" + "<b>¿Deseas continuar con el registro?</b><br>" + "<small><small>(Se establecerá el fin de vigencia para la plantilla existente)</small></small>",
+                            type: "warning",
+                            html: true,
+                            showCancelButton: true,
+                            cancelButtonText: 'No, Cancelar',
+                            confirmButtonText: 'Si, Continuar',
+                            closeOnConfirm: false
+                        }, function () {
+                            self.confirm_save();
+                        });
+                    } else {
+                        self.confirm_save();
+                    }
+                },
+                error: function error(_error) {}
+            });
+        },
+
         confirm_save: function confirm_save() {
             var self = this;
             swal({
@@ -9849,8 +9945,7 @@ Vue.component('poliza-tipo-create', {
                 text: "¿Estás seguro de que la información es correcta?",
                 type: "warning",
                 showCancelButton: true,
-                closeOnConfirm: false,
-                showLoaderOnConfirm: true
+                closeOnConfirm: false
             }, function () {
                 self.save();
             });
@@ -9861,8 +9956,6 @@ Vue.component('poliza-tipo-create', {
             var url = App.host + '/modulo_contable/poliza_tipo';
             var data = self.form.poliza_tipo;
 
-            console.log(data);
-
             $.ajax({
                 type: 'POST',
                 url: url,
@@ -9870,23 +9963,30 @@ Vue.component('poliza-tipo-create', {
                 beforeSend: function beforeSend() {
                     self.guardando = true;
                 },
-                success: function success(response) {
-                    swal;
+                success: function success(data, textStatus, xhr) {
+                    console.log(xhr.status);
+                    console.log(xhr.getResponseHeader('Location'));
+                    swal({
+                        title: "Correcto",
+                        text: "Se ha creado la plantilla para el Tipo de Póliza<br>" + "<b>" + self.transacciones_interfaz[self.form.poliza_tipo.id_transaccion_interfaz] + "</b>",
+                        html: true,
+                        type: "success",
+                        confirmButtonText: "Ok",
+                        closeOnConfirm: false
+                    }, function () {
+                        window.location = xhr.getResponseHeader('Location');
+                    });
                 },
-                error: function error() {},
+                error: function error(_error2) {},
                 complete: function complete() {
                     self.guardando = false;
                 }
             });
         },
+
         remove_movimiento: function remove_movimiento(e) {
             Vue.delete(this.form.poliza_tipo.movimientos, e);
-        },
-
-        set_inicio_vigencia: function set_inicio_vigencia(e) {
-            Vue.set(this.form.poliza_tipo, 'inicio_vigencia', $(e.currentTarget).val());
         }
-
     }
 });
 

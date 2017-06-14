@@ -3,11 +3,14 @@
 namespace Ghi\Domain\Core\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class MovimientoPoliza extends Model
 {
+
+    use SoftDeletes;
     protected $connection = 'cadeco';
-    protected $table = 'movimientos_poliza';
+    protected $table = 'Contabilidad.movimientos_poliza';
     protected $fillable = [
         'id_poliza_tipo',
         'id_cuenta_contable',

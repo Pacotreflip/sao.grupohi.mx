@@ -12,7 +12,7 @@ class CreateMovimientosPolizaTable extends Migration
      */
     public function up()
     {
-        Schema::create('movimientos_poliza', function (Blueprint $table) {
+        Schema::create('contabilidad.movimientos_poliza', function (Blueprint $table) {
             $table->increments('id');
             $table->unsignedInteger('id_poliza_tipo')->index();
             $table->unsignedInteger('id_cuenta_contable')->index();
@@ -32,6 +32,6 @@ class CreateMovimientosPolizaTable extends Migration
      */
     public function down()
     {
-        Schema::drop('movimientos_poliza');
+        Schema::drop('contabilidad.movimientos_poliza');
     }
 }

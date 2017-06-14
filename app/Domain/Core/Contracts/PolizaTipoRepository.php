@@ -7,7 +7,7 @@ interface PolizaTipoRepository
      *
      * @return \Illuminate\Database\Eloquent\Collection|PolizaTipo
      */
-    public function getAll();
+    public function all();
 
     /**
      * Guarda un nuevo registro de Póliza Tipo con sus movimientos
@@ -22,12 +22,20 @@ interface PolizaTipoRepository
      * @param $id
      * @return \Ghi\Domain\Core\Models\PolizaTipo
      */
-    public function getById($id);
+    public function find($id);
+
+    /**
+     * Obtiene una Plantilla de Póliza que coincidan con la búsqueda
+     * @param $attribute
+     * @param $value
+     * @return \Ghi\Domain\Core\Models\PolizaTipo
+     */
+    public function findBy($attribute, $value, $with = null);
 
     /**
      * Elimina un registro de Plantilla de Tipo de Póliza
      * @param $id
      * @return mixed
      */
-    public function delete($id);
+    public function delete($data, $id);
 }

@@ -12,7 +12,7 @@ class CreateTiposMovimientosTable extends Migration
      */
     public function up()
     {
-        Schema::create('tipos_movimientos', function (Blueprint $table) {
+        Schema::create('contabilidad.tipos_movimientos', function (Blueprint $table) {
             $table->increments('id');
             $table->string('descripcion',254);
             $table->timestamps();
@@ -26,6 +26,6 @@ class CreateTiposMovimientosTable extends Migration
      */
     public function down()
     {
-        Schema::drop('tipos_movimientos');
+        Schema::drop('contabilidad.tipos_movimientos');
     }
 }

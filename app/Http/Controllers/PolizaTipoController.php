@@ -1,5 +1,6 @@
 <?php namespace Ghi\Http\Controllers;
 
+use Dingo\Api\Routing\Helpers;
 use Ghi\Domain\Core\Contracts\CuentaContableRepository;
 use Ghi\Domain\Core\Contracts\MovimientoRepository;
 use Ghi\Domain\Core\Contracts\PolizaTipoRepository;
@@ -9,6 +10,8 @@ use Illuminate\Http\Request;
 
 class PolizaTipoController extends Controller
 {
+
+    use Helpers;
     /**
      * @var PolizaTipoRepository
      */
@@ -67,7 +70,8 @@ class PolizaTipoController extends Controller
      */
     public function index() {
 
-        $polizas_tipo = $this->poliza_tipo->getAll();
+        $polizas_tipo = $this->poliza_tipo->all();
+
 
         return view('modulo_contable.poliza_tipo.index')
             ->with('polizas_tipo', $polizas_tipo);
@@ -93,20 +97,11 @@ class PolizaTipoController extends Controller
     }
 
     /*
-     * Recibe los datos para la creación de una nueva Plantilla para un Tipo de Póliza
-     */
-    public function  store(Request $request)
-    {
-        $poliza_tipo = $this->poliza_tipo->create($request->all());
-
-        return $request->ajax() ? response()->json(['last_insert_id' => $poliza_tipo->id]) : $poliza_tipo;
-    }
-    /*
     * Devuelve la vista del detalle de una Plantilla pata Tipo de Póliza
     */
     public function show($id) {
-        $poliza_tipo = $this->poliza_tipo->getById($id);
-        $movimientos = $this->movimiento->getByPolizaTipoId($poliza_tipo->id);
+        $poliza_tipo = $this->poliza_tipo->find($id);
+        $movimientos = $this->movimiento->findBy('id_poliza_tipo', $poliza_tipo->id);
 
         return view('modulo_contable.poliza_tipo.show')
             ->with([
@@ -115,7 +110,37 @@ class PolizaTipoController extends Controller
             ]);
     }
 
-    public function destroy($id) {
-        return $this->poliza_tipo->delete($id);
+    public function findBy(Request $request) {
+        $item = $this->poliza_tipo->findBy($request->attribute, $request->value, $request->with);
+
+        if (! $item) {
+            return $this->response->noContent();
+        }
+        return $this->response->array($item->toArray());
+    }
+
+    public function store(Request $request) {
+         $item = $this->poliza_tipo->create($request->all());
+
+        if(! $item) {
+            return $this->response->errorInternal();
+        }
+
+        return $this->response->created(route('modulo_contable.poliza_tipo.show', $item));
+    }
+
+    public function destroy(Request $request, $id)
+    {
+        $data = [
+            'cancelo' => auth()->user()->idusuario,
+            'motivo'  => $request->motivo
+        ];
+
+        $item = $this->poliza_tipo->delete($data, $id);
+        if(! $item) {
+            return $this->response->errorInternal();
+        }
+
+        return $this->response->accepted(route('modulo_contable.poliza_tipo.index'));
     }
 }

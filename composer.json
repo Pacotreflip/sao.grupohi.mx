@@ -10,8 +10,7 @@
         "acacha/admin-lte-template-laravel": "2.*",
         "laracasts/flash": "^3.0",
         "davejamesmiller/laravel-breadcrumbs": "^3.0",
-        "dingo/api": "1.0.*@dev",
-        "tymon/jwt-auth": "^0.5.12"
+        "dingo/api": "1.0.*@dev"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",
@@ -19,8 +18,8 @@
         "phpunit/phpunit": "~4.0",
         "symfony/css-selector": "2.8.*|3.0.*",
         "symfony/dom-crawler": "2.8.*|3.0.*",
-        "ghidev/intranet-auth": "dev-master"
-
+        "ghidev/intranet-auth": "dev-master",
+        "tymon/jwt-auth": "0.5.*"
     },
     "autoload": {
         "classmap": [

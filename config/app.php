@@ -157,6 +157,16 @@ return [
         Ghi\Providers\RouteServiceProvider::class,
 
         /*
+         * Dingo / Api Service Provider...
+         */
+        Dingo\Api\Provider\LaravelServiceProvider::class,
+
+        /*
+         * Tymon /TWTAuth
+         */
+        Tymon\JWTAuth\Providers\JWTAuthServiceProvider::class,
+
+        /*
          * Acacha / dminLTETemplateLaravel Service Provider...
          */
         Acacha\AdminLTETemplateLaravel\Providers\AdminLTETemplateServiceProvider::class,
@@ -181,10 +191,8 @@ return [
          */
         DaveJamesMiller\Breadcrumbs\ServiceProvider::class,
 
-        /*
-         * Dingo / Api Service Provider...
-         */
-        Dingo\Api\Provider\LaravelServiceProvider::class,
+
+
 
     ],
 
@@ -233,6 +241,8 @@ return [
         'View' => Illuminate\Support\Facades\View::class,
         'AdminLTE' => Acacha\AdminLTETemplateLaravel\Facades\AdminLTE::class,
         'Breadcrumbs' => DaveJamesMiller\Breadcrumbs\Facade::class,
+        'JWTAuth'   => Tymon\JWTAuth\Facades\JWTAuth::class,
+        'JWTFactory'=> Tymon\JWTAuth\Facades\JWTFactory::class,
 
     ],
 

@@ -8,6 +8,7 @@
     <div id="app">
         <global-errors></global-errors>
         <poliza-tipo-create
+                v-cloak
                 v-bind:tipos_movimiento="{{ $tipos_movimiento }}"
                 v-bind:cuentas_contables="{{ $cuentas_contables }}"
                 v-bind:transacciones_interfaz="{{ $transacciones_interfaz }}"
@@ -18,22 +19,22 @@
                         <h3 class="box-title">Información de la Póliza Tipo </h3>
                     </div>
                     <div class="box-body">
+
+                        <input type="text" class="form-control" name="name">
                         <div class="col-md-5">
                             <div class="form-group">
                                 <label for="id_transaccion_interfaz">Tipo de Póliza</label>
-                                <select2 class="form-control" :options="transacciones_interfaz" v-model="form.poliza_tipo.id_transaccion_interfaz">
+                                <select2 class="form-control" :options="transacciones_interfaz" v-model="form.poliza_tipo.id_transaccion_interfaz" :disabled="form.poliza_tipo.movimientos.length > 0">
                                     <option disabled value>[-SELECCIONE-]</option>
                                 </select2>
                             </div>
                         </div>
-
                         <div class="col-md-5">
                             <div class="form-group">
                                 <label for="inicio_vigencia">Inicio de Vigencia</label>
-                                <input type="text" id="inicio_vigencia" name="inicio_vigencia" class="form-control" :disabled="form.poliza_tipo.id_transaccion_interfaz == ''"/>
+                                <input type="text" id="inicio_vigencia" name="inicio_vigencia" class="form-control" :disabled="form.poliza_tipo.id_transaccion_interfaz == ''" v-datepicker :disabled="form.poliza_tipo.movimientos.length > 0" />
                             </div>
                         </div>
-
                         <div class="col-md-2">
                             <div class="form-group">
                                 <label for="add_movimiento">Agragar Movimiento</label>
@@ -44,34 +45,33 @@
                         </div>
                     </div>
                 </div>
-
                 <div v-if="form.poliza_tipo.movimientos.length" class="box box-success">
-                    <div class="box-header with-border">
-                        <h3 class="box-title">Movimientos</h3>
+                        <div class="box-header with-border">
+                            <h3 class="box-title">Movimientos</h3>
+                        </div>
+                        <div class="box-body">
+                            <table class="table table-striped">
+                                <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Cuenta Contable</th>
+                                    <th>Tipo de Movimiento</th>
+                                    <th>Quitar</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr v-for="(item, index) in form.poliza_tipo.movimientos">
+                                    <td>@{{ index + 1  }}</td>
+                                    <td>@{{ cuentas_contables[item.id_cuenta_contable] }}</td>
+                                    <td>@{{ tipos_movimiento[item.id_tipo_movimiento] }}</td>
+                                    <td><button class="btn btn-xs btn-danger" @click="remove_movimiento(index)"><i class="fa fa-trash" /></button></td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
-                    <div class="box-body">
-                        <table class="table table-striped">
-                            <thead>
-                            <tr>
-                                <th>#</th>
-                                <th>Cuenta Contable</th>
-                                <th>Tipo de Movimiento</th>
-                                <th>Quitar</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <tr v-for="(item, index) in form.poliza_tipo.movimientos">
-                                <td>@{{ index + 1  }}</td>
-                                <td>@{{ cuentas_contables[item.id_cuenta_contable] }}</td>
-                                <td>@{{ tipos_movimiento[item.id_tipo_movimiento] }}</td>
-                                <td><button class="btn btn-xs btn-danger" @click="remove_movimiento(index)"><i class="fa fa-trash" /></button></td>
-                            </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-                <div v-if="form.poliza_tipo.movimientos.length > 0">
-                    <button type="button" class="btn btn-success" @click="confirm_save" :disabled="guardando">
+                <div v-if="check_movimientos">
+                    <button type="button" class="btn btn-success" @click="check_duplicity" :disabled="guardando">
                         <span v-if="guardando">
                             <i class="fa fa-spinner fa-spin"></i> Guardando
                         </span>
@@ -101,9 +101,7 @@
                                                 <label for="id_cuenta_contable">Cuenta Contable</label>
                                                 <select id="id_cuenta_contable" name="id_cuenta_contable" class="form-control" v-model="form.movimiento.id_cuenta_contable">
                                                     <option value>[-SELECCIONE-]</option>
-                                                    @foreach($cuentas_contables as $key => $item)
-                                                        <option value="{{$key}}">{{ $item }}</option>
-                                                    @endforeach
+                                                        <option v-for="(cuenta_contable, index) in cuentas_contables_disponibles" v-bind:value="index">@{{ cuenta_contable }}</option>
                                                 </select>
                                             </div>
                                         </div>

@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class TipoMovimiento extends Model
 {
     protected $connection = 'cadeco';
-    protected $table = 'tipos_movimientos';
+    protected $table = 'Contabilidad.tipos_movimientos';
     protected $fillable = [
         'descripcion'
     ];

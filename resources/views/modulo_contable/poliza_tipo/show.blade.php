@@ -10,7 +10,7 @@
 
                 <div class="box box-solid">
                     <div class="box-header with-border">
-                        <h3 class="box-title">{{ $poliza_tipo->transaccionInterfaz }}</h3>
+                        <h3 class="box-title">{{ $poliza_tipo->transaccion }}</h3>
                     </div>
                     <!-- /.box-header -->
                     <div class="box-body">
@@ -21,6 +21,14 @@
                             <dd>{{$poliza_tipo->userRegistro}}</dd>
                             <dt>FECHA Y HORA DE REGISTRO</dt>
                             <dd>{{$poliza_tipo->created_at->format('Y-m-d h:i:s a')}}</dd>
+                            <dt>VIGENCIA</dt>
+                            <dd>
+                                @if($poliza_tipo->vigente)
+                                    <span class="label label-success">Vigente</span>
+                                @else
+                                    <span class="label label-danger">No Vigente</span>
+                                @endif
+                            </dd>
                         </dl>
                     </div>
                     <!-- /.box-body -->

@@ -12,7 +12,7 @@ class CreatePolizaTipoTable extends Migration
      */
     public function up()
     {
-        Schema::create('poliza_tipo', function (Blueprint $table) {
+        Schema::create('contabilidad.poliza_tipo', function (Blueprint $table) {
             $table->increments('id');
             $table->unsignedInteger('id_transaccion_interfaz')->index();
             $table->integer('registro');
@@ -31,6 +31,6 @@ class CreatePolizaTipoTable extends Migration
      */
     public function down()
     {
-        Schema::drop('poliza_tipo');
+        Schema::drop('contabilidad.poliza_tipo');
     }
 }

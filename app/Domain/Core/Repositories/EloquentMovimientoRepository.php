@@ -42,4 +42,16 @@ class EloquentMovimientoRepository implements MovimientoRepository
     {
         return $this->model->where('id_poliza_tipo', '=', $id)->get();
     }
+
+    /**
+     * Obtiene los movimientos que coindican con la busqueda
+     * @param $attribute
+     * @param $value
+     * @param array $columns
+     * @return mixed
+     */
+    public function findBy($attribute, $value, $columns = array('*'))
+    {
+        return $this->model->where($attribute, '=', $value)->get($columns);
+    }
 }

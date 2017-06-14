@@ -51,6 +51,8 @@ class Kernel extends HttpKernel
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'context' => \Ghi\Http\Middleware\RedirectIfContextNotSet::class,
         'cors' => \Ghi\Api\Middleware\cors::class,
-        'api.context' => \Ghi\Api\Middleware\VerifyContextApi::class
+        'api.context' => \Ghi\Api\Middleware\VerifyContextApi::class,
+        'jwt.auth' => 'Tymon\JWTAuth\Middleware\GetUserFromToken',
+        'jwt.refresh' => 'Tymon\JWTAuth\Middleware\RefreshToken',
     ];
 }

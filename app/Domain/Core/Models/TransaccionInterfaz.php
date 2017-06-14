@@ -2,12 +2,11 @@
 
 namespace Ghi\Domain\Core\Models;
 
-use Illuminate\Database\Eloquent\Model;
 
-class TransaccionInterfaz extends Model
+class TransaccionInterfaz extends BaseModel
 {
     protected $connection = 'cadeco';
-    protected $table = 'int_transacciones_interfaz';
+    protected $table = 'Contabilidad.int_transacciones_interfaz';
     protected $primaryKey = 'id_transaccion_interfaz';
     protected $fillable = [
         'descripcion'

@@ -13,7 +13,7 @@ class AddVigenciaToPolizaTipoTable extends Migration
      */
     public function up()
     {
-        Schema::table('poliza_tipo', function (Blueprint $table) {
+        Schema::table('contabilidad.poliza_tipo', function (Blueprint $table) {
             $table->timestamp('inicio_vigencia')->default(DB::raw('CURRENT_TIMESTAMP'));
             $table->timestamp('fin_vigencia')->nullable();
         });
@@ -26,7 +26,7 @@ class AddVigenciaToPolizaTipoTable extends Migration
      */
     public function down()
     {
-        Schema::table('poliza_tipo', function (Blueprint $table) {
+        Schema::table('contabilidad.poliza_tipo', function (Blueprint $table) {
             $table->dropColumn(['inicio_vigencia', 'fin_vigencia']);
         });
     }

@@ -13,4 +13,6 @@
 <script src="{{ asset('/plugins/datepicker/bootstrap-datepicker.js') }}" type="text/javascript"></script>
 <script src="{{ asset('/plugins/datepicker/locales/bootstrap-datepicker.es.js') }}" type="text/javascript"></script>
 <script src="{{ asset('/plugins/sweetalert/dist/sweetalert.min.js') }}" type="text/javascript"></script>
+<script src="{{ asset('/plugins/jquery-validation/dist/jquery.validate.js') }}" type="text/javascript"></script>
+<script src="{{ asset('/plugins/jquery-validation/dist/additional-methods.js') }}" type="text/javascript"></script>
 <script src="{{ asset(elixir("js/app.js")) }}"></script>

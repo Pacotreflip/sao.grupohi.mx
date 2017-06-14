@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class TipoCuentaContable extends Model
 {
     protected $connection = 'cadeco';
-    protected $table = 'int_tipos_cuentas_contables';
+    protected $table = 'Contabilidad.int_tipos_cuentas_contables';
     protected $primaryKey = 'id_tipo_cuenta_contable';
     protected $fillable = [
         'descripcion',

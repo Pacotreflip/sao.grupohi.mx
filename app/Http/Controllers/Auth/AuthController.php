@@ -4,11 +4,15 @@ namespace Ghi\Http\Controllers\Auth;
 
 use Ghi\Domain\Core\Models\User;
 use Ghidev\IntranetAuth\AuthenticatesIntranetUsers;
+use Illuminate\Http\Request;
+use Illuminate\Session\Store;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 use Validator;
 use Ghi\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\ThrottlesLogins;
+use JWTAuth;
+use Tymon\JWTAuth\Exceptions\JWTException;
 
 class AuthController extends Controller
 {
@@ -33,13 +37,16 @@ class AuthController extends Controller
     public $redirectTo = '/obras';
     protected $redirectAfterLogout = '/auth/login';
 
+
+    protected $session;
     /**
      * Create a new authentication controller instance.
      *
      */
-    public function __construct()
+    public function __construct(Store $session)
     {
         $this->middleware($this->guestMiddleware(), ['except' => 'getLogout']);
+        $this->session = $session;
     }
 
     /**

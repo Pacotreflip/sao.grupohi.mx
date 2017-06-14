@@ -29,6 +29,9 @@ class AppServiceProvider extends ServiceProvider
             \Ghi\Core\App\ContextSession::class
         );
 
+        $this->app->singleton('ghi.context', \Ghi\Core\App\ContextSession::class);
+
+
         $this->app->bind(
             \Ghi\Domain\Core\Contracts\UserRepository::class,
             \Ghi\Domain\Core\Repositories\EloquentUserRepository::class

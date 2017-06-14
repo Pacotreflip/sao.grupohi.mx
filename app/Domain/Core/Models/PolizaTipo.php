@@ -3,15 +3,15 @@
 namespace Ghi\Domain\Core\Models;
 
 use Carbon\Carbon;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\DB;
 
-class PolizaTipo extends Model
+class PolizaTipo extends BaseModel
 {
     use SoftDeletes;
 
     protected $connection = 'cadeco';
-    protected $table = 'poliza_tipo';
+    protected $table = 'Contabilidad.poliza_tipo';
     protected $fillable = [
         'id_transaccion_interfaz',
         'registro',
@@ -27,14 +27,14 @@ class PolizaTipo extends Model
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function transaccionInterfaz() {
+    public function transaccion() {
         return $this->belongsTo(TransaccionInterfaz::class, 'id_transaccion_interfaz');
     }
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function movimientosPoliza(){
+    public function movimientos(){
         return $this->hasMany(MovimientoPoliza::class, "id_poliza_tipo");
     }
 
@@ -63,18 +63,24 @@ class PolizaTipo extends Model
      * @return mixed
      */
     public function getNumMovimientosAttribute() {
-        return $this->movimientosPoliza->count();
+        return $this->movimientos->count();
     }
 
     /**
      * @return bool
      */
     public function getVigenteAttribute() {
-
-        if(! $this->fin_vigencia) {
-            return true;
+        $actual = Carbon::now()->timestamp;
+        if (! $this->fin_vigencia) {
+             return $this->inicio_vigencia->timestamp <= $actual;
+        } else {
+            return $this->inicio_vigencia->timestamp <= $actual && $this->fin_vigencia->timestamp >= $actual;
         }
+    }
 
-        return $this->fin_vigencia->lt(Carbon::now()->toDateTimeString());
+    public function scopeVigentes($query) {
+        return $query->whereNull('fin_vigencia')
+            ->orWhere('fin_vigencia', '>', DB::raw('CURRENT_TIMESTAMP'))
+            ->orWhere('inicio_vigencia', '>=', DB::raw('CURRENT_TIMESTAMP'));
     }
 }

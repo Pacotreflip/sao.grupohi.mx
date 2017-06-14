@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class CuentaContable extends Model
 {
     protected $connection = 'cadeco';
-    protected $table = 'int_cuentas_contables';
+    protected $table = 'Contabilidad.int_cuentas_contables';
     protected $primaryKey = 'id_int_cuenta_contable';
     protected $fillable = [
         'id_obra',

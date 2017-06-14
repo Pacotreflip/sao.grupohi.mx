@@ -6225,5 +6225,8 @@ label,
 div.dataTables_filter {
   text-align: right;
 }
+[v-cloak] {
+  display: none;
+}
 
 /*# sourceMappingURL=app.css.map */

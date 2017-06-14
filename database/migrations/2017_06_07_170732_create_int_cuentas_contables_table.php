@@ -12,7 +12,7 @@ class CreateIntCuentasContablesTable extends Migration
      */
     public function up()
     {
-        Schema::create('int_cuentas_contables', function (Blueprint $table) {
+        Schema::create('contabilidad.int_cuentas_contables', function (Blueprint $table) {
             $table->increments('id_int_cuenta_contable');
             $table->unsignedInteger('id_obra')->index();
             $table->unsignedInteger('id_int_tipo_cuenta_contable')->index();
@@ -31,7 +31,7 @@ class CreateIntCuentasContablesTable extends Migration
      */
     public function down()
     {
-        Schema::drop('int_cuentas_contables');
+        Schema::drop('contabilidad.int_cuentas_contables');
 
     }
 }

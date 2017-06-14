@@ -12,7 +12,7 @@ class CreateIntTransaccionesInterfazTable extends Migration
      */
     public function up()
     {
-        Schema::create('int_transacciones_interfaz', function (Blueprint $table) {
+        Schema::create('contabilidad.int_transacciones_interfaz', function (Blueprint $table) {
             $table->increments('id_transaccion_interfaz');
             $table->string('descripcion',254);
             $table->timestamps();
@@ -27,6 +27,6 @@ class CreateIntTransaccionesInterfazTable extends Migration
      */
     public function down()
     {
-        Schema::drop('int_transacciones_interfaz');
+        Schema::drop('contabilidad.int_transacciones_interfaz');
     }
 }
