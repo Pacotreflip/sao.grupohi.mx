@@ -146,22 +146,4 @@ class EloquentPolizaTipoRepository implements PolizaTipoRepository
     {
         return $this->model->find($id)->update($data);
     }
-
-
-    /**
-     * Verifica si una fecha dada comple con la condición de creación de Plantilla
-     * @param $fecha
-     * @param $id
-     * @return string $fecha
-     */
-    public function check_fecha($fecha, $id)
-    {
-        $poliza_tipo = $this->model->where('id_transaccion_interfaz', '=', $id)->first();
-
-        if(! $poliza_tipo) {
-            return $fecha;
-        } else {
-            return $poliza_tipo->min_date;
-        }
-    }
 }
