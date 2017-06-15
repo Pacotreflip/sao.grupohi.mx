@@ -6,3 +6,5 @@ Homestead.json
 .env
 /nbproject/private/
 /.idea
+/nbproject/project.properties
+/nbproject/project.xml
