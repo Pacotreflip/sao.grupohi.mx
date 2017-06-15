@@ -84,8 +84,8 @@ class PolizaTipo extends BaseModel
             ->orWhere('inicio_vigencia', '>=', DB::raw('CURRENT_TIMESTAMP'));
     }
 
-    public function getMinDateAttribute() {
-        $item = $this->select(DB::raw("MAX(inicio_vigencia) as fecha_minima"))->where('id_transaccion_interfaz','=',$this->id_transaccion_interfaz)->limit(1)->get();
-        return explode(" ", $item[0]->fecha_minima)[0];
+    static public function fecha_minima($id_transaccion_interfaz) {
+        $item = PolizaTipo::select(DB::raw("MAX(inicio_vigencia) as min_date"))->where('id_transaccion_interfaz','=', $id_transaccion_interfaz)->get();
+        return Carbon::createFromFormat('Y-m-d H', explode(" ", $item[0]->min_date)[0]. ' 00');
     }
 }

@@ -4,7 +4,9 @@ use Carbon\Carbon;
 use Ghi\Domain\Core\Contracts\PolizaTipoRepository;
 use Ghi\Domain\Core\Models\MovimientoPoliza;
 use Ghi\Domain\Core\Models\PolizaTipo;
+use Illuminate\Http\Exception\HttpResponseException;
 use Illuminate\Support\Facades\DB;
+use Symfony\Component\HttpFoundation\Response;
 
 class EloquentPolizaTipoRepository implements PolizaTipoRepository
 {
@@ -42,21 +44,15 @@ class EloquentPolizaTipoRepository implements PolizaTipoRepository
      */
     public function create($data)
     {
-        $poliza_tipo = null;
-
         try {
             DB::connection('cadeco')->beginTransaction();
 
             $inicio_vigencia = Carbon::createFromFormat('Y-m-d H', $data['inicio_vigencia']. ' 00');
             $fin_vigencia = Carbon::createFromFormat('Y-m-d H', $data['inicio_vigencia']. ' 00')->subSecond();
+            $fecha_minima = $this->model->fecha_minima($data['id_transaccion_interfaz']);
 
-            $existe = $this->model->vigentes()->where('id_transaccion_interfaz', '=', $data['id_transaccion_interfaz'])->get();
-
-            if (count($existe)) {
-                foreach ($existe as $e) {
-                    $e->fin_vigencia = $fin_vigencia;
-                    $e->save();
-                }
+            if($inicio_vigencia->lte($fecha_minima)) {
+                throw new HttpResponseException(new Response('La fecha de Inicio de Vigencia debe ser mayor a '. $fecha_minima->ToDateString() . ', ya que existe una plantilla que entrará en vigor en esa fecha', 400));
             }
 
             $poliza_tipo = $this->model->create([
@@ -64,7 +60,6 @@ class EloquentPolizaTipoRepository implements PolizaTipoRepository
                 'registro'                => auth()->user()->idusuario,
                 'inicio_vigencia'         => $inicio_vigencia
             ]);
-
 
             foreach ($data['movimientos'] as $movimiento) {
                 $movimiento['id_poliza_tipo'] = $poliza_tipo->id;
@@ -75,7 +70,6 @@ class EloquentPolizaTipoRepository implements PolizaTipoRepository
         catch(\Exception $e){
             DB::connection('cadeco')->rollBack();
             throw $e;
-            return response()->json(['message' => $e->getMessage(), 'status_code' => $e->getCode()]);
         }
         return $poliza_tipo;
     }
@@ -87,7 +81,7 @@ class EloquentPolizaTipoRepository implements PolizaTipoRepository
      */
     public function find($id , $with = null)
     {
-        if ($with) {
+        if ($with != null) {
             return $this->model->with($with)->find($id);
         }
         return $this->model->find($id);
@@ -101,27 +95,25 @@ class EloquentPolizaTipoRepository implements PolizaTipoRepository
      */
     public function findBy($attribute, $value, $with = null)
     {
-        if($with != null) {
+        if ($with != null) {
             return $this->model->with($with)->vigentes()->where($attribute, '=', $value)->first();
 
         }
         return $this->model->vigentes()->where($attribute, '=', $value)->first();
     }
 
-    /**
-     * Elimina un registro de Plantilla de Tipo de Póliza
-     * @param $id
-     * @return mixed
-     */
-    public function delete($data, $id) {
+    public function delete($data, $id)
+    {
         try {
             DB::connection('cadeco')->beginTransaction();
 
-            $item = $this->model->find($id);
+            if (! $item = $this->model->find($id)) {
+                throw new HttpResponseException(new Response('No se encontró la plantilla que se desea eliminar', 404));
+            }
+
             $item->update($data);
 
-            $movimientos = (new EloquentMovimientoRepository(new MovimientoPoliza()))->getByPolizaTipoId($item->id);
-            foreach ($movimientos as $movimiento) {
+            foreach ($item->movimientos as $movimiento) {
                 $movimiento->update($data);
                 $movimiento->delete();
             }
@@ -133,7 +125,6 @@ class EloquentPolizaTipoRepository implements PolizaTipoRepository
             DB::connection('cadeco')->rollBack();
             throw $e;
         }
-        return $item;
     }
 
     /**

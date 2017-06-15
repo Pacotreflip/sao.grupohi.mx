@@ -34,8 +34,8 @@ interface PolizaTipoRepository
 
     /**
      * Elimina un registro de Plantilla de Tipo de Póliza
+     * @param $data
      * @param $id
-     * @return mixed
      */
     public function delete($data, $id);
 }

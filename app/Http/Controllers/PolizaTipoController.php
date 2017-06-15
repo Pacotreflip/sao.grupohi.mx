@@ -111,11 +111,8 @@ class PolizaTipoController extends Controller
     public function findBy(Request $request)
     {
         $item = $this->poliza_tipo->findBy($request->attribute, $request->value, $request->with);
-        if (! $item) {
-            return $this->response->noContent();
-        }
 
-        return response()->json(['data' => $item], 200);
+        return response()->json(['data' => ['poliza_tipo' => $item]], 200);
     }
 
     /**
@@ -124,10 +121,6 @@ class PolizaTipoController extends Controller
     public function store(Request $request)
     {
         $item = $this->poliza_tipo->create($request->all());
-        if (! $item) {
-            return $this->response->errorInternal();
-        }
-
         return $this->response->created(route('modulo_contable.poliza_tipo.show', $item));
     }
 
@@ -136,16 +129,7 @@ class PolizaTipoController extends Controller
      */
     public function destroy(Request $request, $id)
     {
-        $item = $this->poliza_tipo->find($id);
-        if (! $item) {
-            return $this->response->errorNotFound();
-        }
-
-        $item = $this->poliza_tipo->delete($request->only('motivo'), $id);
-        if (! $item) {
-            return $this->response->errorInternal();
-        }
-
-        return $this->response->accepted(route('modulo_contable.poliza_tipo.index'));
+        $this->poliza_tipo->delete($request->only('motivo'), $id);
+        return $this->response()->accepted();
     }
 }

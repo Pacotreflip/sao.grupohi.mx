@@ -95,7 +95,6 @@
 @section('scripts-content')
     <script>
         function delete_plantilla(id) {
-            var form = $('#delete');
             var url=App.host +"/modulo_contable/poliza_tipo/" + id;
             swal({
                 title: "¡Eliminar Plantilla!",
@@ -116,10 +115,29 @@
                     return false
                 }
 
-                form.attr("action", url);
+                $.ajax({
+                    url: url,
+                    method: 'POST',
+                    data: {
+                        _method: 'DELETE',
+                        motivo: inputValue
+                    },
+                    success: function (data, textStatus, xhr) {
+                        swal({
+                            type: "success",
+                            title: '¡Correcto!',
+                            text: 'Plantilla Eliminada con éxito'
+                            confirmButtonText: "Ok",
+                            closeOnConfirm: false
+                        },
+                        function(){
+                            location.reload();
+                        });
+                    },
+                    complete: function () {
 
-                $("input[name=motivo]").val(inputValue);
-                form.submit();
+                    }
+                });
             });
         }
     </script>

@@ -30,7 +30,7 @@
                         <div class="col-md-5">
                             <div class="form-group">
                                 <label for="inicio_vigencia">Inicio de Vigencia</label>
-                                <input type="text" id="inicio_vigencia" name="inicio_vigencia" class="form-control" :disabled="form.poliza_tipo.id_transaccion_interfaz == ''" v-datepicker :disabled="form.poliza_tipo.movimientos.length > 0" />
+                                <input type="text" id="inicio_vigencia" v-model="form.poliza_tipo.inicio_vigencia" name="inicio_vigencia" class="form-control" :disabled="form.poliza_tipo.id_transaccion_interfaz == ''" v-datepicker :disabled="form.poliza_tipo.movimientos.length > 0" />
                             </div>
                         </div>
                         <div class="col-md-2">

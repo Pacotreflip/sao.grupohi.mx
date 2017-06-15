@@ -15,14 +15,13 @@ Vue.component('poliza-tipo-create', {
                 'errors' : []
             },
             'guardando' : false
-
         }
     },
 
     mounted: function() {
         var self = this;
         $("#inicio_vigencia").datepicker().on("changeDate",function () {
-            self.check_fecha($('#inicio_vigencia').val());
+            Vue.set(self.form.poliza_tipo, 'inicio_vigencia', $('#inicio_vigencia').val())
         });
     },
 
@@ -69,12 +68,11 @@ Vue.component('poliza-tipo-create', {
                 $(el).datepicker({
                     autoclose: true,
                     language: 'es',
-                    startDate: '0d',
+                    startDate: '1d',
                     todayHighlight: true,
                     clearBtn: true,
                     format: 'yyyy-mm-dd'
                 });
-                $(el).val(App.timeStamp(1));
             }
         }
     },
@@ -108,14 +106,14 @@ Vue.component('poliza-tipo-create', {
                     'with' : 'movimientos'
                 },
                 success: function (response) {
-                    if(response) {
+                    if(response.data.poliza_tipo) {
                         var body = "";
-                        $.each(response.movimientos, function (index, movimiento) {
+                        $.each(response.data.poliza_tipo.movimientos, function (index, movimiento) {
                             body += "<tr><td>"+(index+1)+"</td><td>"+ self.cuentas_contables[movimiento.id_cuenta_contable] +"</td><td>"+self.tipos_movimiento[movimiento.id_tipo_movimiento]+"</td></tr>"
                         });
                         swal({
                             title: "Advertencia",
-                            text: "Ya existe una Plantilla para el tipo de Póliza seleccionado con los siguientes movimientos <br>" +
+                            text: "Ya existe una Plantilla para el tipo de Póliza seleccionado con los siguientes movimientos <br><br>" +
                             "<table class='table table-striped small'>" +
                             "   <thead>" +
                             "   <tr>" +
@@ -143,9 +141,6 @@ Vue.component('poliza-tipo-create', {
                     } else {
                         self.confirm_save();
                     }
-                },
-                error: function (error) {
-
                 }
             });
         },
@@ -177,10 +172,8 @@ Vue.component('poliza-tipo-create', {
                     self.guardando = true;
                 },
                 success: function (data, textStatus, xhr) {
-                    console.log(xhr.status);
-                    console.log(xhr.getResponseHeader('Location'));
                     swal({
-                        title: "Correcto",
+                        title: '¡Correcto!',
                         text: "Se ha creado la plantilla para el Tipo de Póliza<br>" +
                         "<b>" + self.transacciones_interfaz[self.form.poliza_tipo.id_transaccion_interfaz] + "</b>",
                         html: true,
@@ -192,8 +185,6 @@ Vue.component('poliza-tipo-create', {
                         window.location = xhr.getResponseHeader('Location');
                     });
                 },
-                error: function (error) {
-                },
                 complete: function () {
                     self.guardando = false;
                 }
@@ -202,28 +193,6 @@ Vue.component('poliza-tipo-create', {
 
         remove_movimiento:function (e) {
             Vue.delete(this.form.poliza_tipo.movimientos,e);
-        },
-
-        check_fecha: function (date) {
-            alert(date);
-
-            var id = this.form.poliza_tipo.id_transaccion_interfaz;
-
-            $.ajax({
-                type: 'GET',
-                url: App.host + '/modulo_contable/poliza_tipo/' + id + '/check_fecha',
-                data: {
-                    fecha: date
-                },
-                success: function (data, textStatus, xhr) {
-                    console.log(data);
-                    //Vue.set(self.form.poliza_tipo, 'inicio_vigencia', date);
-                },
-                error: function (error) {
-                    console.log(error);
-                    //Vue.set(self.form.poliza_tipo, 'inicio_vigencia', response);
-                }
-            });
         }
     }
 });

@@ -6,6 +6,13 @@ $(function ()  {
     $.ajaxSetup({
         headers: {
             'X-CSRF-TOKEN': App.csrfToken
+        },
+        error: function (jqXHR) {
+            swal({
+                type: 'error',
+                title: '¡Error!',
+                text: jqXHR.responseText
+            });
         }
     });
 });
