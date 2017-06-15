@@ -37,7 +37,7 @@
         </div>
     </div>
 
-    @if(count($movimientos))
+    @if($poliza_tipo->movimientos)
     <div class="row">
         <div class="col-md-12">
             <div class="box box-success">
@@ -57,7 +57,7 @@
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    @foreach($movimientos as $movimieto)
+                                    @foreach($poliza_tipo->movimientos as $movimieto)
                                     <tr>
                                         <td>{{$movimieto->cuentaContable->tipoCuentaContable}}</td>
                                         <td>@if($movimieto->tipoMovimiento->id==1)<span class="fa fa-check-circle"></span>@endif</td>

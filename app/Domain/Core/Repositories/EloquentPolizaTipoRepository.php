@@ -85,8 +85,11 @@ class EloquentPolizaTipoRepository implements PolizaTipoRepository
      * @param $id
      * @return \Ghi\Domain\Core\Models\PolizaTipo
      */
-    public function find($id)
+    public function find($id , $with = null)
     {
+        if ($with) {
+            return $this->model->with($with)->find($id);
+        }
         return $this->model->find($id);
     }
 

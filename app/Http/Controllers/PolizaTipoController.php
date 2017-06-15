@@ -11,7 +11,6 @@ use Illuminate\Http\Request;
 
 class PolizaTipoController extends Controller
 {
-
     use Helpers;
     /**
      * @var PolizaTipoRepository
@@ -69,22 +68,20 @@ class PolizaTipoController extends Controller
      * Muestra la vista del listado de Plantillas Para Tipos de Póliza registradas
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function index() {
-
+    public function index()
+    {
         $polizas_tipo = $this->poliza_tipo->all();
-
 
         return view('modulo_contable.poliza_tipo.index')
             ->with('polizas_tipo', $polizas_tipo);
     }
 
-
     /**
      * Muestra la vista de creación de Plantilla para un Tipo de Póliza
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function create() {
-
+    public function create()
+    {
         $transacciones_interfaz = $this->transaccion_interfaz->lists();
         $cuentas_contables = $this->cuenta_contable->lists();
         $tipos_movimiento = $this->tipo_movimiento->lists();
@@ -92,71 +89,63 @@ class PolizaTipoController extends Controller
         return view('modulo_contable.poliza_tipo.create')
             ->with([
                 'transacciones_interfaz' => $transacciones_interfaz,
-                'cuentas_contables'      => $cuentas_contables,
-                'tipos_movimiento'       => $tipos_movimiento
+                'cuentas_contables' => $cuentas_contables,
+                'tipos_movimiento' => $tipos_movimiento
             ]);
     }
 
-    /*
+    /**
     * Devuelve la vista del detalle de una Plantilla pata Tipo de Póliza
     */
-    public function show($id) {
-        $poliza_tipo = $this->poliza_tipo->find($id);
-        $movimientos = $this->movimiento->findBy('id_poliza_tipo', $poliza_tipo->id);
+    public function show($id)
+    {
+        $poliza_tipo = $this->poliza_tipo->find($id, 'movimientos');
 
         return view('modulo_contable.poliza_tipo.show')
-            ->with([
-                'poliza_tipo' => $poliza_tipo,
-                'movimientos' => $movimientos
-            ]);
+            ->with('poliza_tipo', $poliza_tipo);
     }
 
-    public function findBy(Request $request) {
+    /**
+     * Devuelve la Platilla que coincida con los atributos de búsqueda
+     */
+    public function findBy(Request $request)
+    {
         $item = $this->poliza_tipo->findBy($request->attribute, $request->value, $request->with);
-
         if (! $item) {
             return $this->response->noContent();
         }
-        return $this->response->array($item->toArray());
+
+        return response()->json(['data' => $item], 200);
     }
 
-    public function store(CreatePolizaTipoRequest $request) {
-         $item = $this->poliza_tipo->create($request->all());
-
-        if(! $item) {
+    /**
+     * Guarda un registro de Plantilla y sus respectivos movimientos
+     */
+    public function store(Request $request)
+    {
+        $item = $this->poliza_tipo->create($request->all());
+        if (! $item) {
             return $this->response->errorInternal();
         }
 
         return $this->response->created(route('modulo_contable.poliza_tipo.show', $item));
     }
 
+    /**
+     * Elimina un registro de Plantilla
+     */
     public function destroy(Request $request, $id)
     {
-        $data = [
-            'cancelo' => auth()->user()->idusuario,
-            'motivo'  => $request->motivo
-        ];
+        $item = $this->poliza_tipo->find($id);
+        if (! $item) {
+            return $this->response->errorNotFound();
+        }
 
-        $item = $this->poliza_tipo->delete($data, $id);
-        if(! $item) {
+        $item = $this->poliza_tipo->delete($request->only('motivo'), $id);
+        if (! $item) {
             return $this->response->errorInternal();
         }
 
-        return redirect()->back();
-    }
-
-    public function check_fecha(Request $request, $id) {
-        $fecha = $this->poliza_tipo->check_fecha($request->fecha, $id);
-
-        if($fecha != $request->fecha) {
-            return response()->json([
-                'fecha' => $fecha,
-                'success' => false
-            ]);
-        }
-        return response()->json([
-            'fecha' => $fecha,
-            'success' => true
-        ]);
+        return $this->response->accepted(route('modulo_contable.poliza_tipo.index'));
     }
 }

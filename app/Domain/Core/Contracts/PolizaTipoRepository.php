@@ -22,7 +22,7 @@ interface PolizaTipoRepository
      * @param $id
      * @return \Ghi\Domain\Core\Models\PolizaTipo
      */
-    public function find($id);
+    public function find($id, $with = null);
 
     /**
      * Obtiene una Plantilla de Póliza que coincidan con la búsqueda
