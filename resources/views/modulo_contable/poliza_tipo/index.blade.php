@@ -71,7 +71,7 @@
                                                     <i class="fa fa-eye"></i>
                                                 </a>
 
-                                                <button type="button" class="btn btn-xs btn-danger" onclick="delete_plantilla({{$item->id}})">
+                                                <button type="button" class="btn btn-xs btn-danger" onclick=" delete_plantilla({{$item->id}})">
                                                     <i class="fa fa-trash"></i>
                                                 </button>
                                             </div>
