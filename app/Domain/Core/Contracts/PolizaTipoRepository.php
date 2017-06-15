@@ -38,12 +38,4 @@ interface PolizaTipoRepository
      * @return mixed
      */
     public function delete($data, $id);
-
-    /**
-     * Verifica si una fecha dada comple con la condición de creación de Plantilla
-     * @param $fecha
-     * @param $id
-     * @return string $fecha
-     */
-    public function check_fecha($fecha, $id);
 }
