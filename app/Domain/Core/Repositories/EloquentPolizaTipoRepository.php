@@ -55,6 +55,12 @@ class EloquentPolizaTipoRepository implements PolizaTipoRepository
                 throw new HttpResponseException(new Response('La fecha de Inicio de Vigencia debe ser mayor a '. $fecha_minima->ToDateString() . ', ya que existe una plantilla que entrará en vigor en esa fecha', 400));
             }
 
+            $ultima = $this->findBy('id_transaccion_interfaz', $data['id_transaccion_interfaz']);
+
+            if ($ultima) {
+                $ultima->update(['fin_vigencia' => $fin_vigencia]);
+            }
+
             $poliza_tipo = $this->model->create([
                 'id_transaccion_interfaz' => $data['id_transaccion_interfaz'],
                 'registro'                => auth()->user()->idusuario,

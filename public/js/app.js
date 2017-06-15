@@ -9923,9 +9923,9 @@ Vue.component('poliza-tipo-create', {
                         $.each(response.data.poliza_tipo.movimientos, function (index, movimiento) {
                             body += "<tr><td>" + (index + 1) + "</td><td>" + self.cuentas_contables[movimiento.id_cuenta_contable] + "</td><td>" + self.tipos_movimiento[movimiento.id_tipo_movimiento] + "</td></tr>";
                         });
-                        swal({
+                        var text = swal({
                             title: "Advertencia",
-                            text: "Ya existe una Plantilla para el tipo de Póliza seleccionado con los siguientes movimientos <br>" + "<table class='table table-striped small'>" + "   <thead>" + "   <tr>" + "       <th style='text-align: center'>#</th>" + "       <th style='text-align: center'>Cuenta Contable</th>" + "       <th style='text-align: center'>Tipo</th>" + "   </tr>" + "   </thead>" + "   <tbody>" + body + "   </tbody>" + "</table>" + "<b>¿Deseas continuar con el registro?</b><br>" + "<small><small>(Se establecerá el fin de vigencia para la plantilla existente)</small></small>",
+                            text: "Ya existe una Plantilla para el tipo de Póliza seleccionado con un estado <b>" + response.data.poliza_tipo.vigencia + "</b> la cual " + (response.data.poliza_tipo.vigencia == 'Pendiente') ? "entrará en vigor el" : "es vigente desde el" + " día <b>'" + response.data.poliza_tipo.inicio_vigencia.split(" ")[0] + "'</b><br><br>" + "<table class='table table-striped small'>" + "   <thead>" + "   <tr>" + "       <th style='text-align: center'>#</th>" + "       <th style='text-align: center'>Cuenta Contable</th>" + "       <th style='text-align: center'>Tipo</th>" + "   </tr>" + "   </thead>" + "   <tbody>" + body + "   </tbody>" + "</table>" + "<b>¿Deseas continuar con el registro?</b><br>" + "<small><small>(Se establecerá el fin de vigencia para la plantilla existente)</small></small>",
                             type: "warning",
                             html: true,
                             showCancelButton: true,
@@ -9938,9 +9938,6 @@ Vue.component('poliza-tipo-create', {
                     } else {
                         self.confirm_save();
                     }
-                },
-                error: function error(jqXHR) {
-                    console.log('override');
                 }
             });
         },

@@ -111,9 +111,10 @@ Vue.component('poliza-tipo-create', {
                         $.each(response.data.poliza_tipo.movimientos, function (index, movimiento) {
                             body += "<tr><td>"+(index+1)+"</td><td>"+ self.cuentas_contables[movimiento.id_cuenta_contable] +"</td><td>"+self.tipos_movimiento[movimiento.id_tipo_movimiento]+"</td></tr>"
                         });
+                        var text =
                         swal({
                             title: "Advertencia",
-                            text: "Ya existe una Plantilla para el tipo de Póliza seleccionado con los siguientes movimientos <br><br>" +
+                            text: "Ya existe una Plantilla para el tipo de Póliza seleccionado con un estado <b>" + response.data.poliza_tipo.vigencia + "</b> la cual " + (response.data.poliza_tipo.vigencia == 'Pendiente') ? "entrará en vigor el" : "es vigente desde el" + " día <b>'" + response.data.poliza_tipo.inicio_vigencia.split(" ")[0] + "'</b><br><br>" +
                             "<table class='table table-striped small'>" +
                             "   <thead>" +
                             "   <tr>" +
