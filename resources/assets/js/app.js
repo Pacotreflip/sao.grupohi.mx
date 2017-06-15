@@ -7,6 +7,7 @@ require('./scripts/generales');
  */
 window.Vue = require('vue/dist/vue.js');
 
+Vue.use(require('vee-validate'));
 /**
  * Production
  */

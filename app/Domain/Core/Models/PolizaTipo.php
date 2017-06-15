@@ -24,6 +24,7 @@ class PolizaTipo extends BaseModel
 
     protected $dates = ['deleted_at', 'inicio_vigencia', 'fin_vigencia'];
 
+    protected $appends=['vigencia'];
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
@@ -69,12 +70,16 @@ class PolizaTipo extends BaseModel
     /**
      * @return bool
      */
-    public function getVigenteAttribute() {
+    public function getVigenciaAttribute() {
+
         $actual = Carbon::now()->timestamp;
-        if (! $this->fin_vigencia) {
-             return $this->inicio_vigencia->timestamp <= $actual;
+        if($this->inicio_vigencia->timestamp>$actual&&$this->fin_vigencia==null){
+            return "Pendiente";
+        }
+        if (!$this->fin_vigencia) {
+             return $this->inicio_vigencia->timestamp <= $actual ? "Vigente" : "No Vigente";
         } else {
-            return $this->inicio_vigencia->timestamp <= $actual && $this->fin_vigencia->timestamp >= $actual;
+            return $this->inicio_vigencia->timestamp <= $actual && $this->fin_vigencia->timestamp >= $actual  ? "Vigente" : "No Vigente";
         }
     }
 
