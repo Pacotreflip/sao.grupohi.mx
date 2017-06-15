@@ -1,19 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="a092cd11-95ca-4984-9945-f7adccd63558" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/database/migrationsSeguridad/2017_06_14_175624_create_usuarios_proyectos_table.php" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/database/migrationsSeguridad/2017_06_14_175631_create_proyectos_table.php" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/database/migrationsSeguridad/2017_06_14_175638_create_role_user_table.php" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/database/migrationsSeguridad/2017_06_14_175646_create_roles_table.php" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/database/migrationsSeguridad/2017_06_14_175704_create_usuarios_proyectos_modulos_table.php" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/database/migrationsSeguridad/2017_06_14_175809_create_permission_role_table.php" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/database/migrationsSeguridad/2017_06_14_175819_create_permissions_table.php" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/database/migrationsSeguridad/2017_06_14_182559_add_foreignkeys_to_usuarios_proyectos.php" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/database/migrationsSeguridad/2017_06_14_182701_add_foreignkeys_to_permission_role.php" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/build/js/app-e9fda1e352.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/sh.exe.stackdump" />
+    <list default="true" id="a092cd11-95ca-4984-9945-f7adccd63558" name="Default" comment="migraciones">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/views/modulo_contable/poliza_tipo/show.blade.php" afterPath="$PROJECT_DIR$/resources/views/modulo_contable/poliza_tipo/show.blade.php" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -28,21 +18,33 @@
       <file leaf-file-name="show.blade.php" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/resources/views/modulo_contable/poliza_tipo/show.blade.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="471">
-              <caret line="30" column="33" lean-forward="true" selection-start-line="30" selection-start-column="33" selection-end-line="30" selection-end-column="33" />
+            <state relative-caret-position="204">
+              <caret line="12" column="83" lean-forward="false" selection-start-line="12" selection-start-column="83" selection-end-line="12" selection-end-column="83" />
               <folding>
-                <marker date="1497542846213" expanded="true" signature="9:33" ph="..." />
-                <marker date="1497542846213" expanded="true" signature="44:75" ph="..." />
-                <marker date="1497542846213" expanded="true" signature="86:131" ph="..." />
-                <marker date="1497542846213" expanded="true" signature="142:156" ph="..." />
-                <marker date="1497542846213" expanded="true" signature="165:236" ph="..." />
-                <marker date="1497542846213" expanded="true" signature="495:522" ph="..." />
-                <marker date="1497542846213" expanded="true" signature="745:761" ph="..." />
-                <marker date="1497542846213" expanded="true" signature="861:887" ph="..." />
-                <marker date="1497542846213" expanded="true" signature="991:1040" ph="..." />
-                <marker date="1497542846213" expanded="true" signature="2539:3112" ph="..." />
-                <marker date="1497542846213" expanded="true" signature="2653:2699" ph="..." />
+                <marker date="1497544439899" expanded="true" signature="9:33" ph="..." />
+                <marker date="1497544439899" expanded="true" signature="44:75" ph="..." />
+                <marker date="1497544439899" expanded="true" signature="86:131" ph="..." />
+                <marker date="1497544439899" expanded="true" signature="142:156" ph="..." />
+                <marker date="1497544439899" expanded="true" signature="165:236" ph="..." />
+                <marker date="1497544439899" expanded="true" signature="495:522" ph="..." />
+                <marker date="1497544439899" expanded="true" signature="1073:1089" ph="..." />
+                <marker date="1497544439899" expanded="true" signature="1197:1223" ph="..." />
+                <marker date="1497544439899" expanded="true" signature="1335:1384" ph="..." />
+                <marker date="1497544439899" expanded="true" signature="1685:1731" ph="..." />
+                <marker date="1497544439899" expanded="true" signature="1865:1908" ph="..." />
+                <marker date="1497544439899" expanded="true" signature="3150:3887" ph="..." />
+                <marker date="1497544439899" expanded="true" signature="3280:3326" ph="..." />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name=".env" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/.env">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="408">
+              <caret line="24" column="16" lean-forward="true" selection-start-line="24" selection-start-column="16" selection-end-line="24" selection-end-column="16" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -105,9 +107,12 @@
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="37280fbb4210f78cffa2755968412033b2cf38a1" />
+        <entry key="$PROJECT_DIR$" value="AORO" />
       </map>
     </option>
+    <push-targets>
+      <push-target-info target-remote="origin" target-branch="develop" repo="$PROJECT_DIR$" source="AORO" />
+    </push-targets>
   </component>
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
@@ -128,7 +133,6 @@
         <option value="$PROJECT_DIR$/app/Domain/Core/Contracts/TipoMovimientoRepository.php" />
         <option value="$PROJECT_DIR$/app/Domain/Core/Repositories/EloquentTipoMovimientoRepository.php" />
         <option value="$PROJECT_DIR$/app/Domain/Core/Repositories/EloquentUserRepository.php" />
-        <option value="$PROJECT_DIR$/resources/views/modulo_contable/poliza_tipo/show.blade.php" />
         <option value="$PROJECT_DIR$/resources/assets/js/scripts/all.js" />
         <option value="$PROJECT_DIR$/resources/assets/js/scripts/generales..js" />
         <option value="$PROJECT_DIR$/resources/assets/js/scripts/generales.js" />
@@ -163,6 +167,7 @@
         <option value="$PROJECT_DIR$/database/migrationsSeguridad/2017_06_14_175704_create_usuarios_proyectos_modulos_table.php" />
         <option value="$PROJECT_DIR$/database/migrationsSeguridad/2017_06_14_182701_add_foreignkeys_to_permission_role.php" />
         <option value="$PROJECT_DIR$/app/Domain/Core/Repositories/EloquentMovimientoRepository.php" />
+        <option value="$PROJECT_DIR$/resources/views/modulo_contable/poliza_tipo/show.blade.php" />
       </list>
     </option>
   </component>
@@ -187,10 +192,10 @@
   </component>
   <component name="PhpWorkspaceProjectConfiguration" backward_compatibility_performed="true" />
   <component name="ProjectFrameBounds">
-    <option name="x" value="-8" />
-    <option name="y" value="-8" />
-    <option name="width" value="1936" />
-    <option name="height" value="1056" />
+    <option name="x" value="217" />
+    <option name="y" value="211" />
+    <option name="width" value="1564" />
+    <option name="height" value="873" />
   </component>
   <component name="ProjectView">
     <navigator currentView="ProjectPane" proportions="" version="1">
@@ -231,7 +236,7 @@
               <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="public" />
+              <option name="myItemId" value="database" />
               <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
             </PATH_ELEMENT>
           </PATH>
@@ -245,7 +250,29 @@
               <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="database" />
+              <option name="myItemId" value="app" />
+              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="saoweb.grupohi.mx" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="saoweb.grupohi.mx" />
+              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="app" />
+              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Domain" />
+              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Core" />
               <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
             </PATH_ELEMENT>
           </PATH>
@@ -254,7 +281,7 @@
     </panes>
   </component>
   <component name="PropertiesComponent">
-    <property name="last_opened_file_path" value="$USER_HOME$/Laravel/control-maquinaria" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../mca.grupohi.mx" />
     <property name="nodejs_interpreter_path" value="C:/Program Files/nodejs/node" />
     <property name="WebServerToolWindowFactoryState" value="false" />
   </component>
@@ -483,24 +510,31 @@
       <option name="project" value="LOCAL" />
       <updated>1497374628897</updated>
     </task>
-    <option name="localTasksCounter" value="16" />
+    <task id="LOCAL-00016" summary="migraciones">
+      <created>1497542983716</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1497542983716</updated>
+    </task>
+    <option name="localTasksCounter" value="17" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="72009000" />
+    <option name="totallyTimeSpent" value="73691000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
+    <frame x="217" y="211" width="1564" height="873" extended-state="0" />
     <layout>
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.5033408" sideWeight="0.5042644" order="8" side_tool="true" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4267101" sideWeight="0.50625" order="8" side_tool="true" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.25515744" sideWeight="0.49573562" order="9" side_tool="false" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4267101" sideWeight="0.49375" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="npm" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
-      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.86644953" sideWeight="0.49573562" order="10" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.35365853" sideWeight="0.49573562" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Gulp" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.26332623" sideWeight="0.51357466" order="3" side_tool="true" content_ui="tabs" />
-      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.26302084" sideWeight="0.48642534" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.3262274" sideWeight="0.48642534" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
@@ -600,7 +634,8 @@
     <MESSAGE value="MÓDULO CONTABLE: (Gulp) Crear Póliza Tipo Completo" />
     <MESSAGE value="MÓDULO CONTABLE: Comentarios en interfaces y repositorios" />
     <MESSAGE value="MÓDULO CONTABLE: Incluir Select2 como Componente Global" />
-    <option name="LAST_COMMIT_MESSAGE" value="MÓDULO CONTABLE: Incluir Select2 como Componente Global" />
+    <MESSAGE value="migraciones" />
+    <option name="LAST_COMMIT_MESSAGE" value="migraciones" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -672,6 +707,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="765">
           <caret line="47" column="5" lean-forward="false" selection-start-line="47" selection-start-column="5" selection-end-line="47" selection-end-column="5" />
+          <folding />
         </state>
       </provider>
     </entry>
@@ -847,14 +883,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/.env">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="578">
-          <caret line="34" column="19" lean-forward="true" selection-start-line="34" selection-start-column="19" selection-end-line="34" selection-end-column="19" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/config/database.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="408">
@@ -936,7 +964,7 @@
         <state relative-caret-position="408">
           <caret line="24" column="0" lean-forward="false" selection-start-line="24" selection-start-column="0" selection-end-line="24" selection-end-column="0" />
           <folding>
-            <element signature="e#40#100#0#PHP" expanded="true" />
+            <element signature="e#40#100#0#PHP" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -959,22 +987,32 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/.env">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="408">
+          <caret line="24" column="16" lean-forward="true" selection-start-line="24" selection-start-column="16" selection-end-line="24" selection-end-column="16" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/resources/views/modulo_contable/poliza_tipo/show.blade.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="471">
-          <caret line="30" column="33" lean-forward="true" selection-start-line="30" selection-start-column="33" selection-end-line="30" selection-end-column="33" />
+        <state relative-caret-position="204">
+          <caret line="12" column="83" lean-forward="false" selection-start-line="12" selection-start-column="83" selection-end-line="12" selection-end-column="83" />
           <folding>
-            <marker date="1497542846213" expanded="true" signature="9:33" ph="..." />
-            <marker date="1497542846213" expanded="true" signature="44:75" ph="..." />
-            <marker date="1497542846213" expanded="true" signature="86:131" ph="..." />
-            <marker date="1497542846213" expanded="true" signature="142:156" ph="..." />
-            <marker date="1497542846213" expanded="true" signature="165:236" ph="..." />
-            <marker date="1497542846213" expanded="true" signature="495:522" ph="..." />
-            <marker date="1497542846213" expanded="true" signature="745:761" ph="..." />
-            <marker date="1497542846213" expanded="true" signature="861:887" ph="..." />
-            <marker date="1497542846213" expanded="true" signature="991:1040" ph="..." />
-            <marker date="1497542846213" expanded="true" signature="2539:3112" ph="..." />
-            <marker date="1497542846213" expanded="true" signature="2653:2699" ph="..." />
+            <marker date="1497544439899" expanded="true" signature="9:33" ph="..." />
+            <marker date="1497544439899" expanded="true" signature="44:75" ph="..." />
+            <marker date="1497544439899" expanded="true" signature="86:131" ph="..." />
+            <marker date="1497544439899" expanded="true" signature="142:156" ph="..." />
+            <marker date="1497544439899" expanded="true" signature="165:236" ph="..." />
+            <marker date="1497544439899" expanded="true" signature="495:522" ph="..." />
+            <marker date="1497544439899" expanded="true" signature="1073:1089" ph="..." />
+            <marker date="1497544439899" expanded="true" signature="1197:1223" ph="..." />
+            <marker date="1497544439899" expanded="true" signature="1335:1384" ph="..." />
+            <marker date="1497544439899" expanded="true" signature="1685:1731" ph="..." />
+            <marker date="1497544439899" expanded="true" signature="1865:1908" ph="..." />
+            <marker date="1497544439899" expanded="true" signature="3150:3887" ph="..." />
+            <marker date="1497544439899" expanded="true" signature="3280:3326" ph="..." />
           </folding>
         </state>
       </provider>
