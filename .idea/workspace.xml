@@ -2,14 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="a092cd11-95ca-4984-9945-f7adccd63558" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/Http/Requests/CreatePolizaTipoRequest.php" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/public/build/js/app-e9fda1e352.js" afterPath="$PROJECT_DIR$/public/build/js/app-7b1b5c8f9e.js" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/public/build/js/app-7b1b5c8f9e.js" afterPath="$PROJECT_DIR$/public/build/js/app-560b87335c.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/Domain/Core/Contracts/PolizaTipoRepository.php" afterPath="$PROJECT_DIR$/app/Domain/Core/Contracts/PolizaTipoRepository.php" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/Domain/Core/Models/PolizaTipo.php" afterPath="$PROJECT_DIR$/app/Domain/Core/Models/PolizaTipo.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/Domain/Core/Repositories/EloquentPolizaTipoRepository.php" afterPath="$PROJECT_DIR$/app/Domain/Core/Repositories/EloquentPolizaTipoRepository.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/Http/Controllers/PolizaTipoController.php" afterPath="$PROJECT_DIR$/app/Http/Controllers/PolizaTipoController.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/package.json" afterPath="$PROJECT_DIR$/package.json" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/build/css/app.css.map" afterPath="$PROJECT_DIR$/public/build/css/app.css.map" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/build/js/app.js.map" afterPath="$PROJECT_DIR$/public/build/js/app.js.map" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/build/rev-manifest.json" afterPath="$PROJECT_DIR$/public/build/rev-manifest.json" />
@@ -18,10 +13,8 @@
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/css/bootstrap.css.map" afterPath="$PROJECT_DIR$/public/css/bootstrap.css.map" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/js/app.js" afterPath="$PROJECT_DIR$/public/js/app.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/js/app.js.map" afterPath="$PROJECT_DIR$/public/js/app.js.map" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/assets/js/scripts/generales.js" afterPath="$PROJECT_DIR$/resources/assets/js/scripts/generales.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/assets/js/vue-components/poliza-tipo-create.js" afterPath="$PROJECT_DIR$/resources/assets/js/vue-components/poliza-tipo-create.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/views/modulo_contable/poliza_tipo/create.blade.php" afterPath="$PROJECT_DIR$/resources/views/modulo_contable/poliza_tipo/create.blade.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/views/modulo_contable/poliza_tipo/index.blade.php" afterPath="$PROJECT_DIR$/resources/views/modulo_contable/poliza_tipo/index.blade.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/assets/js/app.js" afterPath="$PROJECT_DIR$/resources/assets/js/app.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/views/modulo_contable/poliza_tipo/show.blade.php" afterPath="$PROJECT_DIR$/resources/views/modulo_contable/poliza_tipo/show.blade.php" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -33,107 +26,34 @@
   <component name="ExecutionTargetManager" SELECTED_TARGET="default_target" />
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="poliza-tipo-create.js" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/resources/assets/js/vue-components/poliza-tipo-create.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="468">
-              <caret line="115" column="134" lean-forward="false" selection-start-line="115" selection-start-column="134" selection-end-line="115" selection-end-column="134" />
-              <folding>
-                <marker date="1497554153983" expanded="true" signature="4308:4326" ph="..." />
-                <marker date="1497554153983" expanded="true" signature="4385:4403" ph="..." />
-                <marker date="1497554153983" expanded="true" signature="4476:4494" ph="..." />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="index.blade.php" pinned="false" current-in-tab="false">
+      <file leaf-file-name="index.blade.php" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/resources/views/modulo_contable/poliza_tipo/index.blade.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="227">
-              <caret line="135" column="22" lean-forward="false" selection-start-line="135" selection-start-column="22" selection-end-line="135" selection-end-column="22" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="generales.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/resources/assets/js/scripts/generales.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="299">
-              <caret line="13" column="40" lean-forward="false" selection-start-line="13" selection-start-column="28" selection-end-line="13" selection-end-column="40" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="vue-components.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/resources/assets/js/vue-components.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="69">
-              <caret line="3" column="36" lean-forward="false" selection-start-line="3" selection-start-column="36" selection-end-line="3" selection-end-column="36" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="modulo_contable.php" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/Http/Routes/modulo_contable.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="218">
-              <caret line="13" column="58" lean-forward="false" selection-start-line="13" selection-start-column="53" selection-end-line="13" selection-end-column="58" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="PolizaTipoController.php" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/Http/Controllers/PolizaTipoController.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="671">
-              <caret line="122" column="0" lean-forward="false" selection-start-line="122" selection-start-column="0" selection-end-line="122" selection-end-column="0" />
+            <state relative-caret-position="102">
+              <caret line="6" column="21" lean-forward="true" selection-start-line="6" selection-start-column="21" selection-end-line="6" selection-end-column="21" />
               <folding>
-                <element signature="e#493#537#0#PHP" expanded="false" />
-                <element signature="e#569#622#0#PHP" expanded="false" />
-                <element signature="e#663#711#0#PHP" expanded="false" />
-                <element signature="e#747#795#0#PHP" expanded="false" />
-                <element signature="e#831#875#0#PHP" expanded="false" />
-                <element signature="e#906#1231#0#PHP" expanded="false" />
-                <element signature="e#1883#2049#0#PHP" expanded="false" />
-                <element signature="e#2255#2410#0#PHP" expanded="false" />
-                <element signature="e#2932#3015#0#PHP" expanded="false" />
-                <element signature="e#3238#3320#0#PHP" expanded="false" />
+                <marker date="1497556081649" expanded="true" signature="9:33" ph="..." />
+                <marker date="1497556081649" expanded="true" signature="44:75" ph="..." />
+                <marker date="1497556081649" expanded="true" signature="86:131" ph="..." />
+                <marker date="1497556081649" expanded="true" signature="143:157" ph="..." />
+                <marker date="1497556081649" expanded="true" signature="166:224" ph="..." />
+                <marker date="1497556081649" expanded="true" signature="305:350" ph="..." />
+                <marker date="1497556081649" expanded="true" signature="2259:2270" ph="..." />
+                <marker date="1497556081649" expanded="true" signature="2324:2345" ph="..." />
+                <marker date="1497556081649" expanded="true" signature="2399:2422" ph="..." />
+                <marker date="1497556081649" expanded="true" signature="2476:2497" ph="..." />
+                <marker date="1497556081649" expanded="true" signature="2551:2595" ph="..." />
+                <marker date="1497556081649" expanded="true" signature="3459:3513" ph="..." />
+                <marker date="1497556081649" expanded="true" signature="3823:3832" ph="..." />
+                <marker date="1497556081649" expanded="true" signature="5039:5051" ph="..." />
+                <marker date="1497556081649" expanded="true" signature="5149:5166" ph="..." />
+                <marker date="1497556081649" expanded="true" signature="5220:5756" ph="..." />
+                <marker date="1497556081649" expanded="true" signature="5792:6854" ph="..." />
+                <marker date="1497556081649" expanded="true" signature="5889:6021" ph="..." />
+                <marker date="1497556081649" expanded="true" signature="6315:6634" ph="..." />
+                <marker date="1497556081649" expanded="true" signature="6672:6744" ph="..." />
+                <marker date="1497556081649" expanded="true" signature="6814:6836" ph="..." />
               </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="routes.php" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/Http/routes.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="115">
-              <caret line="14" column="21" lean-forward="false" selection-start-line="14" selection-start-column="21" selection-end-line="14" selection-end-column="21" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="create.blade.php" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/resources/views/modulo_contable/poliza_tipo/create.blade.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-1817">
-              <caret line="32" column="115" lean-forward="false" selection-start-line="32" selection-start-column="71" selection-end-line="32" selection-end-column="115" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="EloquentPolizaTipoRepository.php" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/Domain/Core/Repositories/EloquentPolizaTipoRepository.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-1643">
-              <caret line="54" column="215" lean-forward="false" selection-start-line="54" selection-start-column="215" selection-end-line="54" selection-end-column="215" />
-              <folding />
             </state>
           </provider>
         </entry>
@@ -141,9 +61,33 @@
       <file leaf-file-name="PolizaTipo.php" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/Domain/Core/Models/PolizaTipo.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="239">
-              <caret line="86" column="39" lean-forward="false" selection-start-line="86" selection-start-column="39" selection-end-line="86" selection-end-column="39" />
+            <state relative-caret-position="510">
+              <caret line="81" column="98" lean-forward="false" selection-start-line="81" selection-start-column="98" selection-end-line="81" selection-end-column="98" />
               <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="show.blade.php" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/resources/views/modulo_contable/poliza_tipo/show.blade.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="136">
+              <caret line="12" column="53" lean-forward="false" selection-start-line="12" selection-start-column="53" selection-end-line="12" selection-end-column="112" />
+              <folding>
+                <marker date="1497554450883" expanded="true" signature="9:33" ph="..." />
+                <marker date="1497554450883" expanded="true" signature="44:75" ph="..." />
+                <marker date="1497554450883" expanded="true" signature="86:131" ph="..." />
+                <marker date="1497554450883" expanded="true" signature="142:156" ph="..." />
+                <marker date="1497554450883" expanded="true" signature="165:236" ph="..." />
+                <marker date="1497554450883" expanded="true" signature="495:522" ph="..." />
+                <marker date="1497554450883" expanded="true" signature="1073:1089" ph="..." />
+                <marker date="1497554450883" expanded="true" signature="1197:1223" ph="..." />
+                <marker date="1497554450883" expanded="true" signature="1335:1384" ph="..." />
+                <marker date="1497554450883" expanded="true" signature="1635:1681" ph="..." />
+                <marker date="1497554450883" expanded="true" signature="1815:1858" ph="..." />
+                <marker date="1497554450883" expanded="true" signature="3100:3837" ph="..." />
+                <marker date="1497554450883" expanded="true" signature="3230:3276" ph="..." />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -159,111 +103,114 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
+      <find>poliza</find>
+      <find>polizas</find>
+      <find>plizas</find>
+      <find>pólizas</find>
+      <find>T</find>
+      <find>Ti</find>
+      <find>Tipo</find>
+      <find>CO</find>
+      <find>CON</find>
+      <find>CONTAB</find>
+      <find>CONTABL</find>
+      <find>CONTABLE</find>
+      <find>Co</find>
+      <find>Con</find>
+      <find>Cont</find>
+      <find>Contable</find>
+      <find>modulo_contable.poliza_tipo.create</find>
+      <find>push</find>
+      <find>id_cuenta_contable</find>
+      <find>movimiento</find>
+      <find>getByPolizaTipoId</find>
+      <find>vue.component</find>
+      <find>save</find>
       <find>getdispo</find>
       <find>console</find>
-      <find>confirm_sa</find>
-      <find>validat</find>
-      <find>disponibled</find>
-      <find>LOCATION</find>
+      <find>increments</find>
+      <find>en</find>
       <find>guardar</find>
-      <find>g</find>
-      <find>gh</find>
-      <find>ghi</find>
-      <find>ghi.conte</find>
-      <find>ghi.contex</find>
-      <find>ghi.context</find>
-      <find>auth</find>
-      <find>guard/</find>
-      <find>postlogin</find>
-      <find>getlogin</find>
-      <find>create</find>
-      <find>set_inicio_vigencia</find>
-      <find>lists</find>
-      <find>api</find>
-      <find>store</find>
-      <find>update</find>
-      <find>transaccio</find>
-      <find>inline</find>
-      <find>cloac</find>
-      <find>check</find>
-      <find>internal</find>
-      <find>findby</find>
-      <find>find</find>
+      <find>lan</find>
+      <find>inicio_vigencia</find>
     </findStrings>
     <replaceStrings>
       <replace>polizas_tipo</replace>
     </replaceStrings>
     <dirStrings>
       <dir>C:\Users\Usuario\Desktop\saoweb.grupohi.mx\vendor\laravel\framework\src\Illuminate\Auth</dir>
+      <dir>C:\Users\Usuario\Desktop\saoweb.grupohi.mx</dir>
       <dir>C:\Users\Usuario\Desktop\saoweb.grupohi.mx\resources</dir>
       <dir>C:\httpd\www\php56.loc\saoweb.grupohi.mx\resources</dir>
       <dir>C:\httpd\www\php56.loc\saoweb.grupohi.mx\app</dir>
       <dir>C:\httpd\www\php56.loc\saoweb.grupohi.mx</dir>
-      <dir>C:\Users\Usuario\Desktop\saoweb.grupohi.mx</dir>
     </dirStrings>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="e850a64ffe256354e53fd26f1ad71b868efa1bb6" />
+        <entry key="$PROJECT_DIR$" value="AORO" />
       </map>
     </option>
+    <push-targets>
+      <push-target-info target-remote="origin" target-branch="develop" repo="$PROJECT_DIR$" source="AORO" />
+    </push-targets>
   </component>
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/resources/assets/js/vue-components/select2.js" />
-        <option value="$PROJECT_DIR$/resources/views/layouts/partials/htmlheader.blade.php" />
-        <option value="$PROJECT_DIR$/app/Domain/Core/Models/BaseModel.php" />
-        <option value="$PROJECT_DIR$/resources/assets/less/app.less" />
-        <option value="$PROJECT_DIR$/app/Api/Controllers/BaseController.php" />
-        <option value="$PROJECT_DIR$/app/Http/Middleware/VerifyCsrfToken.php" />
-        <option value="$PROJECT_DIR$/app/Api/Controllers/ApiController.php" />
-        <option value="$PROJECT_DIR$/bootstrap/app.php" />
-        <option value="$PROJECT_DIR$/public/.htaccess" />
-        <option value="$PROJECT_DIR$/app/Http/Middleware/Authenticate.php" />
-        <option value="$PROJECT_DIR$/composer.json" />
-        <option value="$PROJECT_DIR$/config/api.php" />
-        <option value="$PROJECT_DIR$/app/Http/routes.php" />
-        <option value="$PROJECT_DIR$/app/Providers/AppServiceProvider.php" />
-        <option value="$PROJECT_DIR$/config/app.php" />
-        <option value="$PROJECT_DIR$/config/jwt.php" />
-        <option value="$PROJECT_DIR$/app/Http/Kernel.php" />
-        <option value="$PROJECT_DIR$/app/Domain/Core/Models/CuentaContable.php" />
-        <option value="$PROJECT_DIR$/app/Domain/Core/Models/TipoCuentaContable.php" />
-        <option value="$PROJECT_DIR$/app/Domain/Core/Models/TipoMovimiento.php" />
-        <option value="$PROJECT_DIR$/app/Domain/Core/Repositories/EloquentMovimientoRepository.php" />
-        <option value="$PROJECT_DIR$/app/Domain/Core/Contracts/MovimientoRepository.php" />
-        <option value="$PROJECT_DIR$/app/Domain/Core/Models/UsuarioCadeco.php" />
-        <option value="$PROJECT_DIR$/app/Api/Controllers/PolizaTipoController.php" />
-        <option value="$PROJECT_DIR$/resources/views/scripts/globals.blade.php" />
-        <option value="$PROJECT_DIR$/app/Api/routes.php" />
-        <option value="$PROJECT_DIR$/app/Http/Controllers/Auth/AuthController.php" />
-        <option value="$PROJECT_DIR$/app/Api/Routes/modulo_contable.php" />
-        <option value="$PROJECT_DIR$/app/Domain/Core/Models/MovimientoPoliza.php" />
+        <option value="$PROJECT_DIR$/resources/views/modulo_contable/layout.blade.php" />
+        <option value="$PROJECT_DIR$/resources/views/pages/index.blade.php" />
+        <option value="$PROJECT_DIR$/resources/views/layouts/partials/mainheader.blade.php" />
         <option value="$PROJECT_DIR$/app/Http/breadcrumbs/modulo_contable.php" />
-        <option value="$PROJECT_DIR$/resources/views/layouts/partials/scripts.blade.php" />
-        <option value="$PROJECT_DIR$/resources/assets/js/vue-components/poliza-tipo-row.js" />
-        <option value="$PROJECT_DIR$/app/Http/Requests/CreatePolizaTipoRequest.php" />
-        <option value="$PROJECT_DIR$/app/Domain/Core/Models/TransaccionInterfaz.php" />
-        <option value="$PROJECT_DIR$/app/Domain/Core/Repositories/EloquentTransaccionInterfazRepository.php" />
-        <option value="$PROJECT_DIR$/app/Domain/Core/Contracts/TransaccionInterfazRepository.php" />
-        <option value="$PROJECT_DIR$/app/Http/Controllers/TransaccionInterfazController.php" />
-        <option value="$PROJECT_DIR$/resources/views/modulo_contable/poliza_tipo/show.blade.php" />
-        <option value="$PROJECT_DIR$/app/Domain/Core/Contracts/PolizaTipoRepository.php" />
-        <option value="$PROJECT_DIR$/resources/assets/js/app.js" />
-        <option value="$PROJECT_DIR$/package.json" />
-        <option value="$PROJECT_DIR$/resources/assets/js/vue-components/datepicker.js" />
-        <option value="$PROJECT_DIR$/resources/assets/js/vue-components.js" />
-        <option value="$PROJECT_DIR$/resources/views/modulo_contable/poliza_tipo/create.blade.php" />
-        <option value="$PROJECT_DIR$/app/Http/Routes/modulo_contable.php" />
-        <option value="$PROJECT_DIR$/app/Http/Controllers/PolizaTipoController.php" />
-        <option value="$PROJECT_DIR$/app/Domain/Core/Models/PolizaTipo.php" />
-        <option value="$PROJECT_DIR$/app/Domain/Core/Repositories/EloquentPolizaTipoRepository.php" />
-        <option value="$PROJECT_DIR$/resources/views/modulo_contable/poliza_tipo/index.blade.php" />
+        <option value="$PROJECT_DIR$/gulpfile.js" />
+        <option value="$PROJECT_DIR$/app/Domain/Core/Models/CuentaContable.php" />
+        <option value="$PROJECT_DIR$/app/Api/Controllers/CuentaContableController.php" />
+        <option value="$PROJECT_DIR$/app/Domain/Core/Contracts/CuentaContableRepository.php" />
+        <option value="$PROJECT_DIR$/app/Domain/Core/Contracts/MovimientoRepository.php" />
+        <option value="$PROJECT_DIR$/app/Domain/Core/Repositories/EloquentCuentaContableRepository.php" />
+        <option value="$PROJECT_DIR$/app/Domain/Core/Contracts/TipoMovimientoRepository.php" />
+        <option value="$PROJECT_DIR$/app/Domain/Core/Repositories/EloquentTipoMovimientoRepository.php" />
+        <option value="$PROJECT_DIR$/app/Domain/Core/Repositories/EloquentUserRepository.php" />
+        <option value="$PROJECT_DIR$/resources/assets/js/scripts/all.js" />
+        <option value="$PROJECT_DIR$/resources/assets/js/scripts/generales..js" />
         <option value="$PROJECT_DIR$/resources/assets/js/scripts/generales.js" />
+        <option value="$PROJECT_DIR$/resources/assets/js/vue-components.js" />
+        <option value="$PROJECT_DIR$/public/build/js/app-949d4c20a5.js" />
+        <option value="$PROJECT_DIR$/resources/assets/js/vue-components/select2.js" />
+        <option value="$PROJECT_DIR$/app/Domain/Core/Repositories/EloquentTransaccionInterfazRepository.php" />
+        <option value="$PROJECT_DIR$/app/Domain/Core/Models/TransaccionInterfaz.php" />
+        <option value="$PROJECT_DIR$/app/Domain/Core/Contracts/TransaccionInterfazRepository.php" />
+        <option value="$PROJECT_DIR$/resources/views/layouts/partials/htmlheader.blade.php" />
+        <option value="$PROJECT_DIR$/package.json" />
+        <option value="$PROJECT_DIR$/app/Http/Controllers/PolizaTipoController.php" />
+        <option value="$PROJECT_DIR$/app/Domain/Core/Contracts/PolizaTipoRepository.php" />
+        <option value="$PROJECT_DIR$/app/Domain/Core/Repositories/EloquentPolizaTipoRepository.php" />
+        <option value="$PROJECT_DIR$/database/migrations/2017_06_14_175624_create_usuarios_proyectos_table.php" />
+        <option value="$PROJECT_DIR$/database/migrations/2017_06_14_175631_create_proyectos_table.php" />
+        <option value="$PROJECT_DIR$/database/migrations/2017_06_14_175638_create_role_user_table.php" />
+        <option value="$PROJECT_DIR$/database/migrations/2017_06_14_175646_create_roles_table.php" />
+        <option value="$PROJECT_DIR$/database/migrations/2017_06_14_175704_create_usuarios_proyectos_modulos_table.php" />
+        <option value="$PROJECT_DIR$/database/migrations/2017_06_14_175809_create_permission_role_table.php" />
+        <option value="$PROJECT_DIR$/database/migrations/2017_06_14_175819_create_permissions_table.php" />
+        <option value="$PROJECT_DIR$/database/migrations/2017_06_14_182559_add_foreignkeys_to_usuarios_proyectos.php" />
+        <option value="$PROJECT_DIR$/database/migrations/2017_06_14_182632_add_foreignkeys_to_proyectos.php" />
+        <option value="$PROJECT_DIR$/database/migrations/2017_06_14_182701_add_foreignkeys_to_permission_role.php" />
+        <option value="$PROJECT_DIR$/config/database.php" />
+        <option value="$PROJECT_DIR$/.env" />
+        <option value="$PROJECT_DIR$/database/migrationsSeguridad/2017_06_14_175631_create_proyectos_table.php" />
+        <option value="$PROJECT_DIR$/database/migrationsSeguridad/2017_06_14_175704_create_usuarios_proyectos_modulos_table.php" />
+        <option value="$PROJECT_DIR$/database/migrationsSeguridad/2017_06_14_182701_add_foreignkeys_to_permission_role.php" />
+        <option value="$PROJECT_DIR$/app/Domain/Core/Repositories/EloquentMovimientoRepository.php" />
+        <option value="$PROJECT_DIR$/resources/views/layouts/partials/scripts.blade.php" />
+        <option value="$PROJECT_DIR$/node_modules/vee-validate/types/vee-validate.d.ts" />
+        <option value="$PROJECT_DIR$/resources/assets/js/app.js" />
+        <option value="$PROJECT_DIR$/resources/views/modulo_contable/poliza_tipo/create.blade.php" />
         <option value="$PROJECT_DIR$/resources/assets/js/vue-components/poliza-tipo-create.js" />
+        <option value="$PROJECT_DIR$/resources/views/modulo_contable/poliza_tipo/show.blade.php" />
+        <option value="$PROJECT_DIR$/app/Domain/Core/Models/PolizaTipo.php" />
+        <option value="$PROJECT_DIR$/resources/views/modulo_contable/poliza_tipo/index.blade.php" />
       </list>
     </option>
   </component>
@@ -276,26 +223,6 @@
     <gulpfiles>
       <GulpfileState>
         <gulpfile-path>$PROJECT_DIR$/gulpfile.js</gulpfile-path>
-        <tasks>
-          <GulpTaskState>
-            <task-name>default</task-name>
-          </GulpTaskState>
-          <GulpTaskState>
-            <task-name>tdd</task-name>
-          </GulpTaskState>
-          <GulpTaskState>
-            <task-name>watch</task-name>
-          </GulpTaskState>
-          <GulpTaskState>
-            <task-name>less</task-name>
-          </GulpTaskState>
-          <GulpTaskState>
-            <task-name>browserify</task-name>
-          </GulpTaskState>
-          <GulpTaskState>
-            <task-name>version</task-name>
-          </GulpTaskState>
-        </tasks>
       </GulpfileState>
     </gulpfiles>
     <sorting>DEFINITION_ORDER</sorting>
@@ -342,136 +269,28 @@
               <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
             </PATH_ELEMENT>
           </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="saoweb.grupohi.mx" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="saoweb.grupohi.mx" />
-              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="resources" />
-              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="saoweb.grupohi.mx" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="saoweb.grupohi.mx" />
-              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="resources" />
-              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="assets" />
-              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="saoweb.grupohi.mx" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="saoweb.grupohi.mx" />
-              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="resources" />
-              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="assets" />
-              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="js" />
-              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="saoweb.grupohi.mx" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="saoweb.grupohi.mx" />
-              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="resources" />
-              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="assets" />
-              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="js" />
-              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="vue-components" />
-              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="saoweb.grupohi.mx" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="saoweb.grupohi.mx" />
-              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="public" />
-              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="saoweb.grupohi.mx" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="saoweb.grupohi.mx" />
-              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="app" />
-              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
-            </PATH_ELEMENT>
-          </PATH>
         </subPane>
       </pane>
     </panes>
   </component>
   <component name="PropertiesComponent">
-    <property name="last_opened_file_path" value="$USER_HOME$/Laravel/mca.grupohi.mx" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../mca.grupohi.mx" />
     <property name="nodejs_interpreter_path" value="C:/Program Files/nodejs/node" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="js.buildTools.gulp.gulp_package_dir" value="C:\Users\Usuario\Desktop\saoweb.grupohi.mx\node_modules\gulp" />
   </component>
   <component name="RecentsManager">
-    <key name="CopyFile.RECENT_KEYS">
-      <recent name="C:\Users\Usuario\Desktop\saoweb.grupohi.mx\database" />
-      <recent name="C:\Users\Usuario\Desktop\saoweb.grupohi.mx\app\Api\Controllers" />
-      <recent name="C:\Users\Usuario\Desktop\saoweb.grupohi.mx\public\plugins" />
-      <recent name="C:\Users\Usuario\Desktop\saoweb.grupohi.mx\app\Api\Middleware" />
-      <recent name="C:\Users\Usuario\Desktop\saoweb.grupohi.mx\public\img" />
-    </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\httpd\www\php56.loc\saoweb.grupohi.mx\database\migrationsSeguridad" />
       <recent name="C:\Users\Usuario\Desktop\saoweb.grupohi.mx\resources\views\pages" />
       <recent name="C:\Users\Usuario\Desktop\saoweb.grupohi.mx\app\Domain\Core\Models" />
       <recent name="C:\Users\Usuario\Desktop\saoweb.grupohi.mx\app\Domain" />
+    </key>
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\Usuario\Desktop\saoweb.grupohi.mx\public\plugins" />
+      <recent name="C:\Users\Usuario\Desktop\saoweb.grupohi.mx\app\Api\Middleware" />
+      <recent name="C:\Users\Usuario\Desktop\saoweb.grupohi.mx\app\Api\Controllers" />
+      <recent name="C:\Users\Usuario\Desktop\saoweb.grupohi.mx\public\img" />
+      <recent name="C:\Users\Usuario\Desktop\saoweb.grupohi.mx\resources\assets\js" />
     </key>
   </component>
   <component name="RunDashboard">
@@ -575,10 +394,9 @@
       <workItem from="1497035796322" duration="140000" />
       <workItem from="1497036303280" duration="14000" />
       <workItem from="1497036435654" duration="6860000" />
-      <workItem from="1497284945877" duration="27175000" />
-      <workItem from="1497393018682" duration="7689000" />
-      <workItem from="1497455421013" duration="100000" />
-      <workItem from="1497455585226" duration="49811000" />
+      <workItem from="1497284945877" duration="18225000" />
+      <workItem from="1497480507033" duration="49000" />
+      <workItem from="1497480911286" duration="5183000" />
     </task>
     <task id="LOCAL-00001" summary="Instalación de Plantilla &quot;AdminLTE&quot;">
       <created>1496945971946</created>
@@ -685,100 +503,96 @@
       <option name="project" value="LOCAL" />
       <updated>1497374628897</updated>
     </task>
-    <task id="LOCAL-00016" summary="MÓDULO CONTABLE: Se agrega sweet Alert a los plugins de Admin LTE">
-      <created>1497378528095</created>
+    <task id="LOCAL-00016" summary="migraciones">
+      <created>1497542983716</created>
       <option name="number" value="00016" />
       <option name="presentableId" value="LOCAL-00016" />
       <option name="project" value="LOCAL" />
-      <updated>1497378528095</updated>
+      <updated>1497542983716</updated>
     </task>
-    <task id="LOCAL-00017" summary="MÓDULO CONTABLE: Avance de Plantillas para Pólizas">
-      <created>1497480031737</created>
+    <task id="LOCAL-00017" summary="detalle vigencia poliza">
+      <created>1497544650974</created>
       <option name="number" value="00017" />
       <option name="presentableId" value="LOCAL-00017" />
       <option name="project" value="LOCAL" />
-      <updated>1497480031737</updated>
+      <updated>1497544650974</updated>
     </task>
-    <task id="LOCAL-00018" summary="SISTEMA CONTABLE : Polizas Tipo reg y elim">
-      <created>1497482183976</created>
+    <task id="LOCAL-00018" summary="index tabla polizas tipo">
+      <created>1497556120030</created>
       <option name="number" value="00018" />
       <option name="presentableId" value="LOCAL-00018" />
       <option name="project" value="LOCAL" />
-      <updated>1497482183976</updated>
+      <updated>1497556120030</updated>
     </task>
-    <task id="LOCAL-00019" summary="SISTEMA CONTABLE: Mostrar Tipo de Poliza en Index de Plantillas de Poliza">
-      <created>1497482533046</created>
-      <option name="number" value="00019" />
-      <option name="presentableId" value="LOCAL-00019" />
-      <option name="project" value="LOCAL" />
-      <updated>1497482533046</updated>
-    </task>
-    <task id="LOCAL-00020" summary="MÓDULO CONTABLE: Gulp">
-      <created>1497482778051</created>
-      <option name="number" value="00020" />
-      <option name="presentableId" value="LOCAL-00020" />
-      <option name="project" value="LOCAL" />
-      <updated>1497482778051</updated>
-    </task>
-    <task id="LOCAL-00021" summary="MÓDULO CONTABLE: Correcciones del fin del mundo">
-      <created>1497491098105</created>
-      <option name="number" value="00021" />
-      <option name="presentableId" value="LOCAL-00021" />
-      <option name="project" value="LOCAL" />
-      <updated>1497491098105</updated>
-    </task>
-    <task id="LOCAL-00022" summary="MÓDULO CONTABLE: Ordenamiento del Controlador de Poliza Tipo">
-      <created>1497541462093</created>
-      <option name="number" value="00022" />
-      <option name="presentableId" value="LOCAL-00022" />
-      <option name="project" value="LOCAL" />
-      <updated>1497541462093</updated>
-    </task>
-    <task id="LOCAL-00023" summary="MÓDULO CONTABLE: Eliminar Check Fecha de EloquentPolizaTiroRepository">
-      <created>1497541965681</created>
-      <option name="number" value="00023" />
-      <option name="presentableId" value="LOCAL-00023" />
-      <option name="project" value="LOCAL" />
-      <updated>1497541965681</updated>
-    </task>
-    <task id="LOCAL-00024" summary="MÓDULO CONTABLE: Eliminar Check Fecha de EloquentPolizaTiroRepository">
-      <created>1497542180430</created>
-      <option name="number" value="00024" />
-      <option name="presentableId" value="LOCAL-00024" />
-      <option name="project" value="LOCAL" />
-      <updated>1497542180430</updated>
-    </task>
-    <option name="localTasksCounter" value="25" />
+    <option name="localTasksCounter" value="19" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="133014000" />
+    <option name="totallyTimeSpent" value="82960000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
     <layout>
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.5033408" sideWeight="0.5042644" order="8" side_tool="true" content_ui="tabs" />
-      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.42093542" sideWeight="0.49573562" order="9" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4267101" sideWeight="0.50625" order="8" side_tool="true" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.58089036" sideWeight="0.49375" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="npm" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
-      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3964365" sideWeight="0.49573562" order="10" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3072747" sideWeight="0.49573562" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Gulp" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.26332623" sideWeight="0.51357466" order="3" side_tool="true" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.26332623" sideWeight="0.48642534" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="TypeScript" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.23958333" sideWeight="0.48642534" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32962137" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32790446" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="true" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="true" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
+      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.5033408" sideWeight="0.5042644" order="10" side_tool="true" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.40716612" sideWeight="0.49573562" order="10" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="npm" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="5" side_tool="true" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.49402824" sideWeight="0.49573562" order="10" side_tool="false" content_ui="tabs" />
+      <window_info id="Gulp" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="5" side_tool="true" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.35572916" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Inspection Results" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3298647" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
+      <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="5" side_tool="true" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
     </layout>
+    <layout-to-restore>
+      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
+      <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.5033408" sideWeight="0.5042644" order="9" side_tool="true" content_ui="tabs" />
+      <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.40716612" sideWeight="0.49573562" order="10" side_tool="false" content_ui="tabs" />
+      <window_info id="npm" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.49402824" sideWeight="0.49573562" order="11" side_tool="false" content_ui="tabs" />
+      <window_info id="Gulp" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="true" content_ui="tabs" />
+      <window_info id="TypeScript" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.35572916" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
+      <window_info id="Inspection Results" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3298647" sideWeight="0.5" order="12" side_tool="false" content_ui="tabs" />
+      <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32790446" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
+      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="true" content_ui="tabs" />
+    </layout-to-restore>
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="processedProjectFiles" value="true" />
@@ -829,39 +643,71 @@
     <MESSAGE value="MÓDULO CONTABLE: (Gulp) Crear Póliza Tipo Completo" />
     <MESSAGE value="MÓDULO CONTABLE: Comentarios en interfaces y repositorios" />
     <MESSAGE value="MÓDULO CONTABLE: Incluir Select2 como Componente Global" />
-    <MESSAGE value="MÓDULO CONTABLE: Se agrega sweet Alert a los plugins de Admin LTE" />
-    <MESSAGE value="MÓDULO CONTABLE: Avance de Plantillas para Pólizas" />
-    <MESSAGE value="SISTEMA CONTABLE : Polizas Tipo reg y elim" />
-    <MESSAGE value="SISTEMA CONTABLE: Mostrar Tipo de Poliza en Index de Plantillas de Poliza" />
-    <MESSAGE value="MÓDULO CONTABLE: Gulp" />
-    <MESSAGE value="MÓDULO CONTABLE: Correcciones del fin del mundo" />
-    <MESSAGE value="MÓDULO CONTABLE: Ordenamiento del Controlador de Poliza Tipo" />
-    <MESSAGE value="MÓDULO CONTABLE: Eliminar Check Fecha de EloquentPolizaTiroRepository" />
-    <option name="LAST_COMMIT_MESSAGE" value="MÓDULO CONTABLE: Eliminar Check Fecha de EloquentPolizaTiroRepository" />
+    <MESSAGE value="migraciones" />
+    <MESSAGE value="detalle vigencia poliza" />
+    <MESSAGE value="index tabla polizas tipo" />
+    <option name="LAST_COMMIT_MESSAGE" value="index tabla polizas tipo" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
-        <line-breakpoint enabled="true" type="php">
-          <url>file://$PROJECT_DIR$/app/Http/Controllers/TransaccionInterfazController.php</url>
-          <line>26</line>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/resources/assets/js/vue-components/poliza-tipo-create.js</url>
+          <line>195</line>
+          <properties />
           <option name="timeStamp" value="6" />
         </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/resources/assets/js/vue-components/poliza-tipo-create.js</url>
+          <line>191</line>
+          <properties />
+          <option name="timeStamp" value="7" />
+        </line-breakpoint>
       </breakpoints>
-      <option name="time" value="7" />
+      <option name="time" value="8" />
     </breakpoint-manager>
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/app/Domain/Core/Models/Obra.php">
+    <entry file="file://$PROJECT_DIR$/app/Domain/Core/Contracts/TransaccionInterfazRepository.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-414">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        <state relative-caret-position="174">
+          <caret line="21" column="28" lean-forward="false" selection-start-line="21" selection-start-column="28" selection-end-line="21" selection-end-column="28" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/Domain/Core/Contracts/CuentaContableRepository.php">
+    <entry file="file://$PROJECT_DIR$/resources/assets/js/vue-components/select2.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="85">
+          <caret line="5" column="21" lean-forward="false" selection-start-line="5" selection-start-column="21" selection-end-line="5" selection-end-column="21" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/Domain/Core/Models/TransaccionInterfaz.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="552">
+          <caret line="24" column="5" lean-forward="true" selection-start-line="24" selection-start-column="5" selection-end-line="24" selection-end-column="5" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/Domain/Core/Repositories/EloquentTransaccionInterfazRepository.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="765">
+          <caret line="47" column="5" lean-forward="false" selection-start-line="47" selection-start-column="5" selection-end-line="47" selection-end-column="5" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/public/plugins/sweetalert/dev/ie9.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="437">
+          <caret line="19" column="1" lean-forward="true" selection-start-line="19" selection-start-column="1" selection-end-line="19" selection-end-column="1" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/resources/views/layouts/partials/contentheader.blade.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
@@ -869,95 +715,51 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/Domain/Core/Repositories/EloquentMovimientoRepository.php">
+    <entry file="file://$PROJECT_DIR$/resources/views/layouts/partials/htmlheader.blade.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="664">
-          <caret line="54" column="75" lean-forward="true" selection-start-line="54" selection-start-column="75" selection-end-line="54" selection-end-column="75" />
+        <state relative-caret-position="306">
+          <caret line="18" column="51" lean-forward="false" selection-start-line="18" selection-start-column="51" selection-end-line="18" selection-end-column="51" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/database/migrations/.gitkeep">
+    <entry file="file://$PROJECT_DIR$/app/Http/Controllers/PolizaTipoController.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="23">
-          <caret line="1" column="0" lean-forward="true" selection-start-line="1" selection-start-column="0" selection-end-line="1" selection-end-column="0" />
+        <state relative-caret-position="2227">
+          <caret line="131" column="5" lean-forward="false" selection-start-line="131" selection-start-column="5" selection-end-line="131" selection-end-column="5" />
+          <folding>
+            <marker date="1497554320942" expanded="true" signature="4071:4081" ph="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/Domain/Core/Contracts/PolizaTipoRepository.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="510">
+          <caret line="30" column="7" lean-forward="false" selection-start-line="26" selection-start-column="4" selection-end-line="30" selection-end-column="7" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/Domain/Core/Contracts/MovimientoRepository.php">
+    <entry file="file://$PROJECT_DIR$/database/migrations/2017_06_07_170732_create_int_cuentas_contables_table.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="391">
-          <caret line="17" column="0" lean-forward="false" selection-start-line="17" selection-start-column="0" selection-end-line="24" selection-end-column="70" />
+        <state relative-caret-position="289">
+          <caret line="18" column="5" lean-forward="false" selection-start-line="18" selection-start-column="5" selection-end-line="18" selection-end-column="53" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$USER_HOME$/AppData/Roaming/Skype/My Skype Received Files/Models/User.php">
+    <entry file="file://$PROJECT_DIR$/app/Domain/Core/Repositories/EloquentPolizaTipoRepository.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1107">
-          <caret line="12" column="85" lean-forward="true" selection-start-line="12" selection-start-column="85" selection-end-line="12" selection-end-column="85" />
-          <folding />
+        <state relative-caret-position="544">
+          <caret line="33" column="5" lean-forward="false" selection-start-line="33" selection-start-column="5" selection-end-line="33" selection-end-column="5" />
+          <folding>
+            <marker date="1497554320939" expanded="true" signature="4309:4318" ph="{...}" />
+          </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/Domain/Core/Models/UsuarioCadeco.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="161">
-          <caret line="7" column="1" lean-forward="false" selection-start-line="7" selection-start-column="1" selection-end-line="7" selection-end-column="1" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/Domain/Core/Models/User.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="322">
-          <caret line="20" column="7" lean-forward="true" selection-start-line="20" selection-start-column="7" selection-end-line="20" selection-end-column="7" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$APPLICATION_HOME_DIR$/plugins/php/lib/php.jar!/stubs/Core/Core.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="291">
-          <caret line="42" column="9" lean-forward="false" selection-start-line="42" selection-start-column="9" selection-end-line="42" selection-end-column="9" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/vendor/tymon/jwt-auth/src/Middleware/RefreshToken.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="230">
-          <caret line="18" column="7" lean-forward="false" selection-start-line="18" selection-start-column="7" selection-end-line="18" selection-end-column="7" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/resources/views/scripts/globals.blade.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-187">
-          <caret line="6" column="0" lean-forward="false" selection-start-line="6" selection-start-column="0" selection-end-line="6" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/Api/Controllers/PolizaTipoController.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="276">
-          <caret line="18" column="66" lean-forward="true" selection-start-line="18" selection-start-column="66" selection-end-line="18" selection-end-column="66" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/Api/routes.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="161">
-          <caret line="7" column="63" lean-forward="false" selection-start-line="7" selection-start-column="63" selection-end-line="7" selection-end-column="63" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/Domain/Core/Models/BaseModel.php">
+    <entry file="file://$PROJECT_DIR$/database/migrations/2017_06_07_170745_create_int_tipos_cuentas_contables_table.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
@@ -965,73 +767,184 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/Domain/Core/Models/CuentaContable.php">
+    <entry file="file://$PROJECT_DIR$/database/migrations/2017_06_08_175306_add_foreignkeys_to_poliza_tipo.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="161">
-          <caret line="7" column="34" lean-forward="false" selection-start-line="7" selection-start-column="29" selection-end-line="7" selection-end-column="34" />
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/Http/Controllers/Auth/AuthController.php">
+    <entry file="file://$PROJECT_DIR$/database/migrations/2017_06_07_170247_create_int_transacciones_interfaz_table.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="664">
-          <caret line="86" column="5" lean-forward="false" selection-start-line="86" selection-start-column="5" selection-end-line="86" selection-end-column="5" />
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/database/migrations/2017_06_13_113842_add_vigencia_to_poliza_tipo_table.php">
+    <entry file="file://$PROJECT_DIR$/database/migrations/2017_06_07_192153_alter_obras_table.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="345">
-          <caret line="17" column="43" lean-forward="false" selection-start-line="17" selection-start-column="31" selection-end-line="17" selection-end-column="43" />
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/database/migrationsSeguridad/2017_06_14_175819_create_permissions_table.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="136">
+          <caret line="9" column="6" lean-forward="true" selection-start-line="9" selection-start-column="6" selection-end-line="9" selection-end-column="6" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/database/migrations/2017_06_14_131412_add_foreignkey_to_datos_contables_obra.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="136">
+          <caret line="15" column="79" lean-forward="true" selection-start-line="15" selection-start-column="11" selection-end-line="15" selection-end-column="79" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/database/migrations/2017_06_08_175339_add_foreignkeys_to_int_cuentas_contables.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="318">
+          <caret line="33" column="0" lean-forward="true" selection-start-line="33" selection-start-column="0" selection-end-line="33" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/database/migrations/2017_06_14_182632_add_foreignkeys_to_proyectos.php" />
+    <entry file="file://$PROJECT_DIR$/database/migrationsSeguridad/2017_06_14_182559_add_foreignkeys_to_usuarios_proyectos.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="238">
+          <caret line="15" column="6" lean-forward="true" selection-start-line="15" selection-start-column="6" selection-end-line="15" selection-end-column="87" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/database/migrationsSeguridad/2017_06_14_175809_create_permission_role_table.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="221">
+          <caret line="14" column="39" lean-forward="false" selection-start-line="14" selection-start-column="24" selection-end-line="14" selection-end-column="39" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/database/migrationsSeguridad/2017_06_14_175646_create_roles_table.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="221">
+          <caret line="14" column="29" lean-forward="false" selection-start-line="14" selection-start-column="24" selection-end-line="14" selection-end-column="29" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/config/database.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="408">
+          <caret line="81" column="41" lean-forward="false" selection-start-line="81" selection-start-column="41" selection-end-line="81" selection-end-column="41" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/database/migrationsSeguridad/2017_06_14_175638_create_role_user_table.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="119">
+          <caret line="17" column="43" lean-forward="true" selection-start-line="15" selection-start-column="10" selection-end-line="17" selection-end-column="43" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/database/migrationsSeguridad/2017_06_14_175624_create_usuarios_proyectos_table.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="199">
+          <caret line="19" column="40" lean-forward="true" selection-start-line="19" selection-start-column="40" selection-end-line="19" selection-end-column="40" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/database/migrations/2017_06_07_170642_create_poliza_tipo_table.php">
       <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="323">
+          <caret line="20" column="0" lean-forward="false" selection-start-line="20" selection-start-column="0" selection-end-line="20" selection-end-column="49" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/database/migrations/2017_06_07_170703_create_tipos_movimientos_table.php">
+      <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/Api/Routes/modulo_contable.php">
+    <entry file="file://$PROJECT_DIR$/database/migrationsSeguridad/2017_06_14_175631_create_proyectos_table.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="184">
-          <caret line="8" column="0" lean-forward="false" selection-start-line="8" selection-start-column="0" selection-end-line="8" selection-end-column="0" />
+        <state relative-caret-position="211">
+          <caret line="24" column="43" lean-forward="false" selection-start-line="24" selection-start-column="43" selection-end-line="24" selection-end-column="43" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/Domain/Core/Models/MovimientoPoliza.php">
+    <entry file="file://$PROJECT_DIR$/database/migrationsSeguridad/2017_06_14_175704_create_usuarios_proyectos_modulos_table.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="207">
-          <caret line="10" column="20" lean-forward="false" selection-start-line="10" selection-start-column="20" selection-end-line="10" selection-end-column="20" />
+        <state relative-caret-position="85">
+          <caret line="15" column="40" lean-forward="false" selection-start-line="15" selection-start-column="40" selection-end-line="15" selection-end-column="40" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/database/migrationsSeguridad/2017_06_14_182701_add_foreignkeys_to_permission_role.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="238">
+          <caret line="15" column="79" lean-forward="false" selection-start-line="15" selection-start-column="79" selection-end-line="15" selection-end-column="79" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/Http/Routes/modulo_contable.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="187">
+          <caret line="11" column="42" lean-forward="false" selection-start-line="11" selection-start-column="42" selection-end-line="11" selection-end-column="42" />
           <folding>
-            <element signature="e#42#81#0#PHP" expanded="false" />
+            <marker date="1497542846153" expanded="true" signature="20:1030" ph="..." />
+            <marker date="1497542846153" expanded="true" signature="66:1029" ph="..." />
+            <marker date="1497542846153" expanded="true" signature="911:950" ph="..." />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/vendor/laravel/framework/src/Illuminate/Database/Eloquent/Model.php">
+    <entry file="file://$PROJECT_DIR$/app/Http/Controllers/TransaccionInterfazController.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="165">
-          <caret line="1082" column="27" lean-forward="false" selection-start-line="1082" selection-start-column="27" selection-end-line="1082" selection-end-column="27" />
+        <state relative-caret-position="408">
+          <caret line="24" column="0" lean-forward="false" selection-start-line="24" selection-start-column="0" selection-end-line="24" selection-end-column="0" />
+          <folding>
+            <element signature="e#40#100#0#PHP" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/Domain/Core/Repositories/EloquentMovimientoRepository.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="374">
+          <caret line="26" column="33" lean-forward="true" selection-start-line="26" selection-start-column="33" selection-end-line="26" selection-end-column="33" />
+          <folding>
+            <marker date="1497542846133" expanded="true" signature="211:1540" ph="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/Domain/Core/Contracts/MovimientoRepository.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="408">
+          <caret line="24" column="26" lean-forward="false" selection-start-line="24" selection-start-column="20" selection-end-line="24" selection-end-column="26" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/Http/breadcrumbs/modulo_contable.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="332">
-          <caret line="22" column="3" lean-forward="false" selection-start-line="22" selection-start-column="3" selection-end-line="22" selection-end-column="3" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/gulpfile.js">
+    <entry file="file://$PROJECT_DIR$/node_modules/vee-validate/types/vue.d.ts">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
@@ -1039,7 +952,47 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/resources/views/modulo_contable/index.blade.php">
+    <entry file="file://$PROJECT_DIR$/node_modules/vee-validate/dist/vee-validate.es2015.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-3111">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/node_modules/vee-validate/dist/vee-validate.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="323">
+          <caret line="19" column="21" lean-forward="true" selection-start-line="19" selection-start-column="21" selection-end-line="19" selection-end-column="21" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/.env">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="408">
+          <caret line="24" column="16" lean-forward="false" selection-start-line="24" selection-start-column="16" selection-end-line="24" selection-end-column="16" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/composer.json">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="221">
+          <caret line="13" column="6" lean-forward="false" selection-start-line="13" selection-start-column="6" selection-end-line="13" selection-end-column="6" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/node_modules/vee-validate/dist/locale/es.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="51" lean-forward="false" selection-start-line="0" selection-start-column="51" selection-end-line="0" selection-end-column="51" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/node_modules/vee-validate/dist/locale/en.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
@@ -1049,239 +1002,161 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/resources/views/layouts/partials/scripts.blade.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="345">
-          <caret line="15" column="0" lean-forward="false" selection-start-line="15" selection-start-column="0" selection-end-line="15" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/resources/assets/js/vue-components/poliza-tipo-row.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1063">
-          <caret line="0" column="27" lean-forward="false" selection-start-line="0" selection-start-column="27" selection-end-line="0" selection-end-column="27" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/Http/Requests/CreatePolizaTipoRequest.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="322">
-          <caret line="29" column="12" lean-forward="false" selection-start-line="29" selection-start-column="12" selection-end-line="29" selection-end-column="12" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/resources/assets/js/vue-components/select2.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="92">
-          <caret line="4" column="8" lean-forward="true" selection-start-line="4" selection-start-column="8" selection-end-line="4" selection-end-column="21" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/Domain/Core/Models/TransaccionInterfaz.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="292">
-          <caret line="25" column="5" lean-forward="false" selection-start-line="25" selection-start-column="5" selection-end-line="25" selection-end-column="5" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/Domain/Core/Repositories/EloquentTransaccionInterfazRepository.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="315">
-          <caret line="59" column="5" lean-forward="false" selection-start-line="59" selection-start-column="5" selection-end-line="59" selection-end-column="5" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/Http/Controllers/TransaccionInterfazController.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="552">
-          <caret line="24" column="0" lean-forward="false" selection-start-line="24" selection-start-column="0" selection-end-line="24" selection-end-column="0" />
+        <state relative-caret-position="272">
+          <caret line="16" column="0" lean-forward="false" selection-start-line="16" selection-start-column="0" selection-end-line="16" selection-end-column="0" />
           <folding>
-            <element signature="e#40#100#0#PHP" expanded="true" />
+            <marker date="1497547173844" expanded="true" signature="66:112" ph="..." />
+            <marker date="1497547173844" expanded="true" signature="169:200" ph="..." />
+            <marker date="1497547173844" expanded="true" signature="274:299" ph="..." />
+            <marker date="1497547173844" expanded="true" signature="368:410" ph="..." />
+            <marker date="1497547173844" expanded="true" signature="482:537" ph="..." />
+            <marker date="1497547173844" expanded="true" signature="589:647" ph="..." />
+            <marker date="1497547173844" expanded="true" signature="699:753" ph="..." />
+            <marker date="1497547173844" expanded="true" signature="922:975" ph="..." />
+            <marker date="1497547173844" expanded="true" signature="1027:1055" ph="..." />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/resources/views/modulo_contable/poliza_tipo/show.blade.php">
+    <entry file="file://$PROJECT_DIR$/node_modules/vee-validate/types/index.d.ts">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="204">
-          <caret line="39" column="34" lean-forward="false" selection-start-line="39" selection-start-column="34" selection-end-line="39" selection-end-column="34" />
+        <state relative-caret-position="17">
+          <caret line="1" column="19" lean-forward="false" selection-start-line="1" selection-start-column="19" selection-end-line="1" selection-end-column="19" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/Domain/Core/Contracts/TransaccionInterfazRepository.php">
+    <entry file="file://$PROJECT_DIR$/node_modules/vee-validate/types/vee-validate.d.ts">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="483">
-          <caret line="21" column="28" lean-forward="false" selection-start-line="21" selection-start-column="28" selection-end-line="21" selection-end-column="28" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/Domain/Core/Contracts/PolizaTipoRepository.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="414">
-          <caret line="40" column="1" lean-forward="true" selection-start-line="40" selection-start-column="1" selection-end-line="40" selection-end-column="1" />
-          <folding>
-            <element signature="e#81#204#0#PHP" expanded="false" />
-            <element signature="e#237#393#0#PHP" expanded="false" />
-            <element signature="e#434#551#0#PHP" expanded="false" />
-            <element signature="e#602#778#0#PHP" expanded="false" />
-            <element signature="e#846#953#0#PHP" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/vendor/phpunit/php-code-coverage/src/CodeCoverage/Report/HTML/Renderer/Template/js/d3.min.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/node_modules/vue2-datepicker/datepicker/languages.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/node_modules/vue2-datepicker/datepicker/index.vue">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-6762">
-          <caret line="9" column="30" lean-forward="false" selection-start-line="9" selection-start-column="30" selection-end-line="9" selection-end-column="30" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/package.json">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="253">
-          <caret line="11" column="19" lean-forward="true" selection-start-line="11" selection-start-column="19" selection-end-line="11" selection-end-column="19" />
+        <state relative-caret-position="192">
+          <caret line="48" column="13" lean-forward="false" selection-start-line="48" selection-start-column="4" selection-end-line="48" selection-end-column="13" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/resources/assets/js/app.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="391">
-          <caret line="17" column="47" lean-forward="true" selection-start-line="17" selection-start-column="47" selection-end-line="17" selection-end-column="47" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/node_modules/vue2-datepicker/datepicker/calendar-panel.vue">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="345">
-          <caret line="195" column="36" lean-forward="true" selection-start-line="195" selection-start-column="36" selection-end-line="195" selection-end-column="36" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/resources/assets/js/vue-components/datepicker.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="299">
-          <caret line="13" column="33" lean-forward="true" selection-start-line="13" selection-start-column="33" selection-end-line="13" selection-end-column="33" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/resources/assets/js/vue-components.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="69">
-          <caret line="3" column="36" lean-forward="false" selection-start-line="3" selection-start-column="36" selection-end-line="3" selection-end-column="36" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/Http/routes.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="115">
-          <caret line="14" column="21" lean-forward="false" selection-start-line="14" selection-start-column="21" selection-end-line="14" selection-end-column="21" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/Http/Routes/modulo_contable.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="218">
-          <caret line="13" column="58" lean-forward="false" selection-start-line="13" selection-start-column="53" selection-end-line="13" selection-end-column="58" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/Domain/Core/Models/PolizaTipo.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="239">
-          <caret line="86" column="39" lean-forward="false" selection-start-line="86" selection-start-column="39" selection-end-line="86" selection-end-column="39" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/Http/Controllers/PolizaTipoController.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="671">
-          <caret line="122" column="0" lean-forward="false" selection-start-line="122" selection-start-column="0" selection-end-line="122" selection-end-column="0" />
+        <state relative-caret-position="136">
+          <caret line="8" column="0" lean-forward="false" selection-start-line="8" selection-start-column="0" selection-end-line="8" selection-end-column="0" />
           <folding>
-            <element signature="e#493#537#0#PHP" expanded="false" />
-            <element signature="e#569#622#0#PHP" expanded="false" />
-            <element signature="e#663#711#0#PHP" expanded="false" />
-            <element signature="e#747#795#0#PHP" expanded="false" />
-            <element signature="e#831#875#0#PHP" expanded="false" />
-            <element signature="e#906#1231#0#PHP" expanded="false" />
-            <element signature="e#1883#2049#0#PHP" expanded="false" />
-            <element signature="e#2255#2410#0#PHP" expanded="false" />
-            <element signature="e#2932#3015#0#PHP" expanded="false" />
-            <element signature="e#3238#3320#0#PHP" expanded="false" />
+            <marker date="1497554325686" expanded="true" signature="145:200" ph="/** Production ...*/" />
+            <marker date="1497554325686" expanded="true" signature="268:361" ph="{...}" />
+            <marker date="1497554325686" expanded="true" signature="282:357" ph="{&quot;el&quot;: '##app'...}" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/Domain/Core/Repositories/EloquentPolizaTipoRepository.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1643">
-          <caret line="54" column="215" lean-forward="false" selection-start-line="54" selection-start-column="215" selection-end-line="54" selection-end-column="215" />
-          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/resources/views/modulo_contable/poliza_tipo/create.blade.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1817">
-          <caret line="32" column="115" lean-forward="false" selection-start-line="32" selection-start-column="71" selection-end-line="32" selection-end-column="115" />
+        <state relative-caret-position="188">
+          <caret line="27" column="34" lean-forward="false" selection-start-line="27" selection-start-column="34" selection-end-line="27" selection-end-column="34" />
+          <folding>
+            <marker date="1497554364785" expanded="true" signature="9:33" ph="..." />
+            <marker date="1497554364785" expanded="true" signature="44:75" ph="..." />
+            <marker date="1497554364785" expanded="true" signature="86:131" ph="..." />
+            <marker date="1497554364785" expanded="true" signature="143:157" ph="..." />
+            <marker date="1497554364785" expanded="true" signature="166:225" ph="..." />
+            <marker date="1497554364785" expanded="true" signature="4236:4601" ph="..." />
+            <marker date="1497554364785" expanded="true" signature="4236:8107" ph="..." />
+            <marker date="1497554364785" expanded="true" signature="4236:8137" ph="..." />
+            <marker date="1497554364785" expanded="true" signature="4259:4578" ph="..." />
+            <marker date="1497554364785" expanded="true" signature="4307:4415" ph="..." />
+            <marker date="1497554364785" expanded="true" signature="4453:4548" ph="..." />
+            <marker date="1497554364785" expanded="false" signature="4723:4737" ph="..." />
+            <marker date="1497554364785" expanded="true" signature="4738:8084" ph="..." />
+            <marker date="1497554364785" expanded="true" signature="4785:8017" ph="..." />
+            <marker date="1497554364785" expanded="true" signature="4837:7941" ph="..." />
+            <marker date="1497554364785" expanded="true" signature="4892:5195" ph="..." />
+            <marker date="1497554364785" expanded="true" signature="5001:5080" ph="..." />
+            <marker date="1497554364785" expanded="true" signature="5248:7458" ph="..." />
+            <marker date="1497554364785" expanded="true" signature="5310:7423" ph="..." />
+            <marker date="1497554364785" expanded="true" signature="5383:5521" ph="..." />
+            <marker date="1497554364785" expanded="true" signature="5580:7384" ph="..." />
+            <marker date="1497554364785" expanded="true" signature="5643:6418" ph="..." />
+            <marker date="1497554364785" expanded="true" signature="5712:6371" ph="..." />
+            <marker date="1497554364785" expanded="true" signature="5989:6320" ph="..." />
+            <marker date="1497554364785" expanded="true" signature="6482:7340" ph="..." />
+            <marker date="1497554364785" expanded="true" signature="6551:7293" ph="..." />
+            <marker date="1497554364785" expanded="true" signature="6831:7242" ph="..." />
+            <marker date="1497554364785" expanded="true" signature="7093:7097" ph="..." />
+            <marker date="1497554364785" expanded="true" signature="7103:7110" ph="..." />
+            <marker date="1497554364785" expanded="true" signature="7513:7910" ph="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/resources/assets/js/vue-components/poliza-tipo-create.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="136">
+          <caret line="8" column="36" lean-forward="false" selection-start-line="8" selection-start-column="21" selection-end-line="8" selection-end-column="36" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/resources/assets/js/scripts/generales.js">
+    <entry file="file://$PROJECT_DIR$/package.json">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="299">
-          <caret line="13" column="40" lean-forward="false" selection-start-line="13" selection-start-column="28" selection-end-line="13" selection-end-column="40" />
+        <state relative-caret-position="221">
+          <caret line="13" column="3" lean-forward="true" selection-start-line="13" selection-start-column="3" selection-end-line="13" selection-end-column="3" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/resources/views/modulo_contable/poliza_tipo/show.blade.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="136">
+          <caret line="12" column="53" lean-forward="false" selection-start-line="12" selection-start-column="53" selection-end-line="12" selection-end-column="112" />
+          <folding>
+            <marker date="1497554450883" expanded="true" signature="9:33" ph="..." />
+            <marker date="1497554450883" expanded="true" signature="44:75" ph="..." />
+            <marker date="1497554450883" expanded="true" signature="86:131" ph="..." />
+            <marker date="1497554450883" expanded="true" signature="142:156" ph="..." />
+            <marker date="1497554450883" expanded="true" signature="165:236" ph="..." />
+            <marker date="1497554450883" expanded="true" signature="495:522" ph="..." />
+            <marker date="1497554450883" expanded="true" signature="1073:1089" ph="..." />
+            <marker date="1497554450883" expanded="true" signature="1197:1223" ph="..." />
+            <marker date="1497554450883" expanded="true" signature="1335:1384" ph="..." />
+            <marker date="1497554450883" expanded="true" signature="1635:1681" ph="..." />
+            <marker date="1497554450883" expanded="true" signature="1815:1858" ph="..." />
+            <marker date="1497554450883" expanded="true" signature="3100:3837" ph="..." />
+            <marker date="1497554450883" expanded="true" signature="3230:3276" ph="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/Domain/Core/Models/PolizaTipo.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="510">
+          <caret line="81" column="98" lean-forward="false" selection-start-line="81" selection-start-column="98" selection-end-line="81" selection-end-column="98" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/resources/views/modulo_contable/poliza_tipo/index.blade.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="227">
-          <caret line="135" column="22" lean-forward="false" selection-start-line="135" selection-start-column="22" selection-end-line="135" selection-end-column="22" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/resources/assets/js/vue-components/poliza-tipo-create.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="468">
-          <caret line="115" column="134" lean-forward="false" selection-start-line="115" selection-start-column="134" selection-end-line="115" selection-end-column="134" />
+        <state relative-caret-position="102">
+          <caret line="6" column="21" lean-forward="true" selection-start-line="6" selection-start-column="21" selection-end-line="6" selection-end-column="21" />
           <folding>
-            <marker date="1497554153983" expanded="true" signature="4308:4326" ph="..." />
-            <marker date="1497554153983" expanded="true" signature="4385:4403" ph="..." />
-            <marker date="1497554153983" expanded="true" signature="4476:4494" ph="..." />
+            <marker date="1497556081649" expanded="true" signature="9:33" ph="..." />
+            <marker date="1497556081649" expanded="true" signature="44:75" ph="..." />
+            <marker date="1497556081649" expanded="true" signature="86:131" ph="..." />
+            <marker date="1497556081649" expanded="true" signature="143:157" ph="..." />
+            <marker date="1497556081649" expanded="true" signature="166:224" ph="..." />
+            <marker date="1497556081649" expanded="true" signature="305:350" ph="..." />
+            <marker date="1497556081649" expanded="true" signature="2259:2270" ph="..." />
+            <marker date="1497556081649" expanded="true" signature="2324:2345" ph="..." />
+            <marker date="1497556081649" expanded="true" signature="2399:2422" ph="..." />
+            <marker date="1497556081649" expanded="true" signature="2476:2497" ph="..." />
+            <marker date="1497556081649" expanded="true" signature="2551:2595" ph="..." />
+            <marker date="1497556081649" expanded="true" signature="3459:3513" ph="..." />
+            <marker date="1497556081649" expanded="true" signature="3823:3832" ph="..." />
+            <marker date="1497556081649" expanded="true" signature="5039:5051" ph="..." />
+            <marker date="1497556081649" expanded="true" signature="5149:5166" ph="..." />
+            <marker date="1497556081649" expanded="true" signature="5220:5756" ph="..." />
+            <marker date="1497556081649" expanded="true" signature="5792:6854" ph="..." />
+            <marker date="1497556081649" expanded="true" signature="5889:6021" ph="..." />
+            <marker date="1497556081649" expanded="true" signature="6315:6634" ph="..." />
+            <marker date="1497556081649" expanded="true" signature="6672:6744" ph="..." />
+            <marker date="1497556081649" expanded="true" signature="6814:6836" ph="..." />
           </folding>
         </state>
       </provider>
