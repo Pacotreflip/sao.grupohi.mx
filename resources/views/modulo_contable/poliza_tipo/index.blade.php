@@ -12,7 +12,8 @@
         </div>
     </div>
     <br>
-    <div class="row">
+    @if(count($polizas_tipo)>0)
+    <div class="row" >
         <div class="col-md-12">
             <div class="box">
                 <div class="box-header">
@@ -37,6 +38,7 @@
                                 </thead>
                                 <tbody>
                                 @foreach($polizas_tipo as $index => $item)
+
                                     <tr>
                                         <td>{{ $item->id }}</td>
                                         <td>{{ $item->transaccion  }}</td>
@@ -44,10 +46,12 @@
                                         <td>{{ $item->userRegistro }}</td>
                                         <td>{{ $item->created_at->format('Y-m-d h:i:s a') }}</td>
                                         <td>
-                                            @if($item->vigente)
+                                            @if($item->vigente=="Vigente")
                                                 <span class="label label-success">Vigente</span>
-                                            @else
+                                            @elseif($item->vigente=="No Vigente")
                                                 <span class="label label-danger">No Vigente</span>
+                                            @else
+                                                <span class="label label-warning">Pendiente</span>
                                             @endif
                                         </td>
                                         <td style="min-width: 90px;max-width: 90px">
@@ -84,7 +88,7 @@
             </div>
         </div>
     </div>
-
+@endif
     <form id='delete' method="post">
         <input type='hidden' name='motivo' value/>
         {{csrf_field()}}
