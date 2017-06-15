@@ -32,6 +32,8 @@
                                     <th class="sorting" tabindex="0" aria-controls="polizas_tipo">Registró</th>
                                     <th class="sorting" tabindex="0" aria-controls="polizas_tipo">Fecha y Hora de Registro</th>
                                     <th class="sorting" tabindex="0" aria-controls="polizas_tipo">Vigencia</th>
+                                    <th class="sorting" tabindex="0" aria-controls="polizas_tipo">Inicio de Vigencia</th>
+                                    <th class="sorting" tabindex="0" aria-controls="polizas_tipo">Fin de Vigencia</th>
                                     <th></th>
 
                                 </tr>
@@ -47,11 +49,20 @@
                                         <td>{{ $item->created_at->format('Y-m-d h:i:s a') }}</td>
                                         <td>
                                             @if($item->vigencia == "Vigente")
-                                                <span class="label label-success">Vigente</span>
+                                                <span class="label label-success">{{$item->vigencia}}</span>
                                             @elseif($item->vigencia == "No Vigente")
-                                                <span class="label label-danger">No Vigente</span>
+                                                <span class="label label-danger">{{$item->vigencia}}</span>
                                             @else
-                                                <span class="label label-info">Pendiente</span>
+                                                <span class="label label-info">{{$item->vigencia}}</span>
+                                            @endif
+                                        </td>
+
+
+                                        <td>{{$item->inicio_vigencia->format('Y-m-d h:i:s a')}}</td>
+                                        <td>
+                                            @if($item->fin_vigencia){{$item->fin_vigencia->format('Y-m-d h:i:s a')}}
+                                            @else
+                                                N/A
                                             @endif
                                         </td>
                                         <td style="min-width: 90px;max-width: 90px">
@@ -76,6 +87,8 @@
                                     <th>Registró</th>
                                     <th>Fecha y Hora de Registro</th>
                                     <th>Vigencia</th>
+                                    <th>Inicio de Vigencia</th>
+                                    <th>Fin de Vigencia</th>
                                     <th></th>
                                 </tr>
                                 </tfoot>

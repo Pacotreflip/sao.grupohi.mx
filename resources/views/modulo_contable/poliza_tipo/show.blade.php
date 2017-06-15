@@ -12,11 +12,11 @@
                     <div class="box-header with-border">
                         <h3 class="box-title">{{ $poliza_tipo->transaccion }} &nbsp;
                             @if($poliza_tipo->vigencia == 'Vigente')
-                                <span class="label label-success">Vigente</span>
+                                <span class="label label-success">{{$poliza_tipo->vigencia}}</span>
                             @elseif($poliza_tipo->vigencia == 'No Vigente')
-                                <span class="label label-danger">No Vigente</span>
+                                <span class="label label-danger">{{$poliza_tipo->vigencia}}</span>
                             @else
-                                <span class="label label-info">Pendiente</span>
+                                <span class="label label-info">{{$poliza_tipo->vigencia}}</span>
                             @endif
                         </h3>
                     </div>
