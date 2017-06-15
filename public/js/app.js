@@ -9764,9 +9764,8 @@ require('./vue-components/global-errors');
 require('./vue-components/errors');
 require('./vue-components/poliza-tipo-create');
 require('./vue-components/select2');
-require('./vue-components/poliza-tipo-row');
 
-},{"./vue-components/errors":5,"./vue-components/global-errors":6,"./vue-components/poliza-tipo-create":7,"./vue-components/poliza-tipo-row":8,"./vue-components/select2":9}],5:[function(require,module,exports){
+},{"./vue-components/errors":5,"./vue-components/global-errors":6,"./vue-components/poliza-tipo-create":7,"./vue-components/select2":8}],5:[function(require,module,exports){
 'use strict';
 
 Vue.component('app-errors', {
@@ -9775,7 +9774,7 @@ Vue.component('app-errors', {
     template: require('./templates/errors.html')
 });
 
-},{"./templates/errors.html":10}],6:[function(require,module,exports){
+},{"./templates/errors.html":9}],6:[function(require,module,exports){
 'use strict';
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
@@ -9801,7 +9800,7 @@ Vue.component('global-errors', {
   }
 });
 
-},{"./templates/global-errors.html":11}],7:[function(require,module,exports){
+},{"./templates/global-errors.html":10}],7:[function(require,module,exports){
 'use strict';
 
 Vue.component('poliza-tipo-create', {
@@ -9812,7 +9811,7 @@ Vue.component('poliza-tipo-create', {
                 'poliza_tipo': {
                     'id_transaccion_interfaz': '',
                     'movimientos': [],
-                    'inicio_vigencia': App.timeStamp(1)
+                    'inicio_vigencia': ''
                 },
                 'movimiento': {
                     'id_cuenta_contable': '',
@@ -9828,7 +9827,7 @@ Vue.component('poliza-tipo-create', {
     mounted: function mounted() {
         var self = this;
         $("#inicio_vigencia").datepicker().on("changeDate", function () {
-            Vue.set(self.form.poliza_tipo, 'inicio_vigencia', $('#inicio_vigencia').val());
+            self.check_fecha($('#inicio_vigencia').val());
         });
     },
 
@@ -9987,75 +9986,33 @@ Vue.component('poliza-tipo-create', {
 
         remove_movimiento: function remove_movimiento(e) {
             Vue.delete(this.form.poliza_tipo.movimientos, e);
+        },
+
+        check_fecha: function check_fecha(date) {
+            alert(date);
+
+            var id = this.form.poliza_tipo.id_transaccion_interfaz;
+
+            $.ajax({
+                type: 'GET',
+                url: App.host + '/modulo_contable/poliza_tipo/' + id + '/check_fecha',
+                data: {
+                    fecha: date
+                },
+                success: function success(data, textStatus, xhr) {
+                    console.log(data);
+                    //Vue.set(self.form.poliza_tipo, 'inicio_vigencia', date);
+                },
+                error: function error(_error3) {
+                    console.log(_error3);
+                    //Vue.set(self.form.poliza_tipo, 'inicio_vigencia', response);
+                }
+            });
         }
     }
 });
 
 },{}],8:[function(require,module,exports){
-'use strict';
-
-Vue.component('poliza-tipo-row', {
-    props: ['name', 'delete_url'],
-    data: function data() {
-        return {
-            'guardando': false
-        };
-    },
-
-    methods: {
-        confirm_delete: function confirm_delete(e) {
-            e.preventDefault();
-            var self = this;
-            swal({
-                title: "Eliminar " + self.name,
-                text: "¿Estás seguro de que deseas continuar?",
-                type: "input",
-                showCancelButton: true,
-                closeOnConfirm: false,
-                animation: "slide-from-top",
-                inputPlaceholder: "Motivo de eliminación"
-            }, function (inputValue) {
-                if (inputValue === false) return false;
-
-                if (inputValue === "") {
-                    swal.showInputError("Escriba el motivo de eliminación");
-                    return false;
-                }
-                self.delete(motivo);
-            });
-        },
-
-        delete: function _delete(motivo) {
-            e.preventDefault();
-
-            var self = this;
-
-            $.ajax({
-                type: 'POST',
-                url: self.delete_url,
-                data: {
-                    motivo: motivo,
-                    _method: 'DELETE'
-                },
-                beforeSend: function beforeSend() {
-                    self.guardando = true;
-                },
-                success: function success(response) {
-                    alert('success');
-                },
-                error: function error(_error) {
-                    alert('error');
-                },
-                complete: function complete() {
-                    self.guardando = false;
-                }
-
-            });
-        }
-    }
-});
-
-},{}],9:[function(require,module,exports){
 'use strict';
 
 Vue.component('select2', {
@@ -10101,9 +10058,9 @@ Vue.component('select2', {
     }
 });
 
-},{}],10:[function(require,module,exports){
+},{}],9:[function(require,module,exports){
 module.exports = '<div id="form-errors" v-cloak>\n  <div class="alert alert-danger" v-if="form.errors.length">\n    <ul>\n      <li v-for="error in form.errors">{{ error }}</li>\n    </ul>\n  </div>\n</div>';
-},{}],11:[function(require,module,exports){
+},{}],10:[function(require,module,exports){
 module.exports = '<div class="alert alert-danger" v-show="errors.length">\n  <ul>\n    <li v-for="error in errors">{{ error }}</li>\n  </ul>\n</div>';
 },{}]},{},[2]);
 

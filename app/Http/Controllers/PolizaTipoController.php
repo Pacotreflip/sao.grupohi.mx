@@ -6,6 +6,7 @@ use Ghi\Domain\Core\Contracts\MovimientoRepository;
 use Ghi\Domain\Core\Contracts\PolizaTipoRepository;
 use Ghi\Domain\Core\Contracts\TipoMovimientoRepository;
 use Ghi\Domain\Core\Contracts\TransaccionInterfazRepository;
+use Ghi\Http\Requests\CreatePolizaTipoRequest;
 use Illuminate\Http\Request;
 
 class PolizaTipoController extends Controller
@@ -119,7 +120,7 @@ class PolizaTipoController extends Controller
         return $this->response->array($item->toArray());
     }
 
-    public function store(Request $request) {
+    public function store(CreatePolizaTipoRequest $request) {
          $item = $this->poliza_tipo->create($request->all());
 
         if(! $item) {
@@ -142,5 +143,20 @@ class PolizaTipoController extends Controller
         }
 
         return redirect()->back();
+    }
+
+    public function check_fecha(Request $request, $id) {
+        $fecha = $this->poliza_tipo->check_fecha($request->fecha, $id);
+
+        if($fecha != $request->fecha) {
+            return response()->json([
+                'fecha' => $fecha,
+                'success' => false
+            ]);
+        }
+        return response()->json([
+            'fecha' => $fecha,
+            'success' => true
+        ]);
     }
 }

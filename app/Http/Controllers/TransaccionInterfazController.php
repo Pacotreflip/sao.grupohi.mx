@@ -3,6 +3,7 @@
 namespace Ghi\Http\Controllers;
 
 use Ghi\Domain\Core\Contracts\TransaccionInterfazRepository;
+use Illuminate\Http\Request;
 
 class TransaccionInterfazController extends Controller
 {
@@ -23,9 +24,5 @@ class TransaccionInterfazController extends Controller
         $this->middleware('context');
 
         $this->transaccion_interfaz = $transaccion_interfaz;
-    }
-
-    public function poliza_tipo($id) {
-        return $this->transaccion_interfaz->getPolizaTipoVigente($id);
     }
 }

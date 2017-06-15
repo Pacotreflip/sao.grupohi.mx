@@ -1,6 +1,6 @@
 @extends('modulo_contable.layout')
-@section('title', 'Polizas Tipo')
-@section('contentheader_title', 'POLIZAS TIPO')
+@section('title', 'Plantillas de Póliza')
+@section('contentheader_title', 'PLANTILLAS DE PÓLIZA')
 @section('main-content')
     {!! Breadcrumbs::render('modulo_contable.poliza_tipo.show', $poliza_tipo) !!}
     <hr>

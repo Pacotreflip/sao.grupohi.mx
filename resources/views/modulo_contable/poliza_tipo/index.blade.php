@@ -55,9 +55,7 @@
                                                 <a href="{{ route('modulo_contable.poliza_tipo.show', $item->id) }}" type="button" class="btn btn-xs btn-default">
                                                     <i class="fa fa-eye"></i>
                                                 </a>
-                                                <a type="button" class="btn btn-xs btn-info disabled">
-                                                    <i class="fa fa-pencil"></i>
-                                                </a>
+
                                                 <button type="button" class="btn btn-xs btn-danger" onclick="delete_plantilla({{$item->id}})">
                                                     <i class="fa fa-trash"></i>
                                                 </button>

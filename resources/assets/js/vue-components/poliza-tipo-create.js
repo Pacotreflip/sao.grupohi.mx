@@ -6,7 +6,7 @@ Vue.component('poliza-tipo-create', {
                 'poliza_tipo' : {
                     'id_transaccion_interfaz' : '',
                     'movimientos' : [],
-                    'inicio_vigencia' : App.timeStamp(1)
+                    'inicio_vigencia' : ''
                 },
                 'movimiento' : {
                     'id_cuenta_contable' : '',
@@ -22,7 +22,7 @@ Vue.component('poliza-tipo-create', {
     mounted: function() {
         var self = this;
         $("#inicio_vigencia").datepicker().on("changeDate",function () {
-            Vue.set(self.form.poliza_tipo, 'inicio_vigencia', $('#inicio_vigencia').val());
+            self.check_fecha($('#inicio_vigencia').val());
         });
     },
 
@@ -202,6 +202,28 @@ Vue.component('poliza-tipo-create', {
 
         remove_movimiento:function (e) {
             Vue.delete(this.form.poliza_tipo.movimientos,e);
+        },
+
+        check_fecha: function (date) {
+            alert(date);
+
+            var id = this.form.poliza_tipo.id_transaccion_interfaz;
+
+            $.ajax({
+                type: 'GET',
+                url: App.host + '/modulo_contable/poliza_tipo/' + id + '/check_fecha',
+                data: {
+                    fecha: date
+                },
+                success: function (data, textStatus, xhr) {
+                    console.log(data);
+                    //Vue.set(self.form.poliza_tipo, 'inicio_vigencia', date);
+                },
+                error: function (error) {
+                    console.log(error);
+                    //Vue.set(self.form.poliza_tipo, 'inicio_vigencia', response);
+                }
+            });
         }
     }
 });
