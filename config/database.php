@@ -78,6 +78,14 @@ return [
             'prefix'   => '',
         ],
 
+        'seguridad' => [
+            'driver'   => 'sqlsrv',
+            'host'     => env('DB_HOST_SEGURIDAD', 'localhost'),
+            'database' => env('DB_DATABASE_SEGURIDAD', 'forge'),
+            'username' => env('DB_USERNAME_SEGURIDAD', 'forge'),
+            'password' => env('DB_PASSWORD_SEGURIDAD', ''),
+            'prefix'   => '',
+        ],
         'sqlite' => [
             'driver' => 'sqlite',
             'database' => env('DB_DATABASE', database_path('database.sqlite')),
