@@ -1,6 +1,7 @@
 <head>
     <link href="/img/company-icon.png" rel="shortcut icon" type="image/x-icon" />
     <meta charset="UTF-8">
+    <meta name="csrf-token" content="{{ csrf_token() }}" />
     <title> {{ trans('strings.app-name') }} - @yield('title') </title>
     <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
 
