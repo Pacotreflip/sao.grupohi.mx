@@ -10,6 +10,7 @@
     "bootstrap-sass": "^3.0.0"
   },
   "dependencies": {
+    "sweetalert2": "^6.6.5",
     "vue": "^2.3.4"
   }
 }

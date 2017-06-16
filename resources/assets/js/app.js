@@ -6,7 +6,8 @@ require('./scripts/generales');
  * Development
  */
 window.Vue = require('vue/dist/vue.js');
-
+window.swal = require('sweetalert2');
+/**
 /**
  * Production
  */

@@ -11339,12 +11339,12 @@ return Vue$3;
  * Created by JFEsquivel on 08/06/2017.
  */
 require('./scripts/generales');
+window.swal = require('sweetalert2');
 /**
  * Development
  */
 window.Vue = require('vue/dist/vue.js');
-window.swal = require('sweetalert2');
-/**
+
 /**
  * Production
  */
@@ -11572,13 +11572,14 @@ Vue.component('poliza-tipo-create', {
 
                         swal({
                             title: "Advertencia",
-                            html: "Ya existe una Plantilla para el tipo de Póliza seleccionado con un estado <b>" + response.data.poliza_tipo.vigencia + "</b><br>" + "Con un inicio de vigencia el día <b>" + response.data.poliza_tipo.inicio_vigencia.split(" ")[0] + "</b><br><br>" + "<table class='table table-striped small'>" + "   <thead>" + "   <tr>" + "       <th style='text-align: center'>#</th>" + "       <th style='text-align: center'>Cuenta Contable</th>" + "       <th style='text-align: center'>Tipo</th>" + "   </tr>" + "   </thead>" + "   <tbody>" + body + "   </tbody>" + "</table>" + "<b>¿Deseas continuar con el registro?</b><br>" + "<small><small>(Se establecerá el fin de vigencia para la plantilla existente)</small></small>",
+                            text: "Ya existe una Plantilla para el tipo de Póliza seleccionado con un estado <b>" + response.data.poliza_tipo.vigencia + "</b><br>" + "Con un inicio de vigencia el día <b>" + response.data.poliza_tipo.inicio_vigencia.split(" ")[0] + "</b><br><br>" + "<table class='table table-striped small'>" + "   <thead>" + "   <tr>" + "       <th style='text-align: center'>#</th>" + "       <th style='text-align: center'>Cuenta Contable</th>" + "       <th style='text-align: center'>Tipo</th>" + "   </tr>" + "   </thead>" + "   <tbody>" + body + "   </tbody>" + "</table>" + "<b>¿Deseas continuar con el registro?</b><br>" + "<small><small>(Se establecerá el fin de vigencia para la plantilla existente)</small></small>",
                             type: "warning",
+                            html: true,
                             showCancelButton: true,
                             cancelButtonText: 'No, Cancelar',
-                            confirmButtonText: 'Si, Continuar'
-
-                        }).then(function () {
+                            confirmButtonText: 'Si, Continuar',
+                            closeOnConfirm: false
+                        }, function () {
                             self.confirm_save();
                         });
                     } else {
@@ -11595,11 +11596,8 @@ Vue.component('poliza-tipo-create', {
                 text: "¿Estás seguro de que la información es correcta?",
                 type: "warning",
                 showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                confirmButtonText: "Si, Continuar",
-                cancelButtonText: "No, Cancelar"
-            }).then(function () {
+                closeOnConfirm: false
+            }, function () {
                 self.save();
             });
         },
@@ -11624,7 +11622,7 @@ Vue.component('poliza-tipo-create', {
                         type: "success",
                         confirmButtonText: "Ok",
                         closeOnConfirm: false
-                    }).then(function () {
+                    }, function () {
                         window.location = xhr.getResponseHeader('Location');
                     });
                 },
