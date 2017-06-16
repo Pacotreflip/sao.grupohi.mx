@@ -1,2 +1,45 @@
-// @import "node_modules/bootstrap-sass/assets/stylesheets/bootstrap";
+// Font Awesome overrides
+$fa-font-path: "../fonts/font-awesome";
 
+// Roboto Font overrides
+$roboto-font-path: "../fonts/roboto";
+
+// File Input overrides
+$image-path: "../img";
+
+$btn-font-weight: 300;
+$font-family-sans-serif: "Roboto-Light", Helvetica, Arial, sans-serif;
+$icon-font-path: "../fonts/bootstrap/";
+
+@import "node_modules/bootstrap-sass/assets/stylesheets/bootstrap";
+@import "node_modules/roboto-fontface/css/roboto/sass/roboto-fontface";
+@import "node_modules/font-awesome/scss/font-awesome";
+@import "node_modules/sweetalert2/src/sweetalert2.scss";
+@import "node_modules/node_modules/ionicons/dist/scss/ionicons";
+@import "node_modules/select2/src/scss/core";
+
+body, label, .checkbox label {
+  font-weight: 300;
+}
+
+.nav-company img {
+  width: 60%;
+  position: relative;
+  top: -5px;
+}
+
+.skin-green .main-header .logo {
+  background-color: #1e282c;
+}
+
+.skin-green .main-header .logo:hover {
+  background-color: #1e282c;
+}
+
+div.dataTables_filter {
+  text-align: right;
+}
+
+[v-cloak] {
+  display: none;
+}
