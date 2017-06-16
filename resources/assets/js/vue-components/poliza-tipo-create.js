@@ -68,7 +68,6 @@ Vue.component('poliza-tipo-create', {
                 $(el).datepicker({
                     autoclose: true,
                     language: 'es',
-                    startDate: '1d',
                     todayHighlight: true,
                     clearBtn: true,
                     format: 'yyyy-mm-dd'
