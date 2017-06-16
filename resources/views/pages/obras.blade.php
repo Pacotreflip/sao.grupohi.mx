@@ -16,6 +16,9 @@
 
         @endforeach
     </ul>
+    <div class="text-center">
+        {!! $obras->render() !!}
+    </div>
 @endsection
 
 @section('scripts-content')
