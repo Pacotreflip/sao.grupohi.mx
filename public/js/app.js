@@ -11580,7 +11580,7 @@ Vue.component('poliza-tipo-create', {
 
                         }).then(function () {
                             self.confirm_save();
-                        });
+                        }).catch(swal.noop);
                     } else {
                         self.confirm_save();
                     }
@@ -11601,7 +11601,7 @@ Vue.component('poliza-tipo-create', {
                 cancelButtonText: "No, Cancelar"
             }).then(function () {
                 self.save();
-            });
+            }).catch(swal.noop);
         },
 
         save: function save() {
@@ -11626,7 +11626,7 @@ Vue.component('poliza-tipo-create', {
                         closeOnConfirm: false
                     }).then(function () {
                         window.location = xhr.getResponseHeader('Location');
-                    });
+                    }).catch(swal.noop);
                 },
                 complete: function complete() {
                     self.guardando = false;

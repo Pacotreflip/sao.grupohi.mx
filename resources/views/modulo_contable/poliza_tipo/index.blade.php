@@ -152,7 +152,7 @@
 
                     }
                 });
-            })
+            }) .catch(swal.noop);
 
  }
     </script>

@@ -138,7 +138,7 @@ Vue.component('poliza-tipo-create', {
                         }
                         ).then(function (){
                             self.confirm_save();
-                        })
+                        }).catch(swal.noop);
 
 
 
@@ -162,7 +162,7 @@ Vue.component('poliza-tipo-create', {
                 cancelButtonText: "No, Cancelar",
             }).then(function () {
                 self.save();
-            })
+            }).catch(swal.noop);
         },
 
         save: function () {
@@ -188,7 +188,7 @@ Vue.component('poliza-tipo-create', {
                         closeOnConfirm: false
                     }).then(function () {
                             window.location = xhr.getResponseHeader('Location');
-                        });
+                        })  .catch(swal.noop);
                 },
                 complete: function () {
                     self.guardando = false;
