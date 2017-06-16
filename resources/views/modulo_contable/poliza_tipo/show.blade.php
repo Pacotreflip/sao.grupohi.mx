@@ -30,7 +30,7 @@
                                 <dt>USUARIO QUE REGISTRÓ</dt>
                                 <dd>{{$poliza_tipo->userRegistro}}</dd>
                                 <dt>FECHA Y HORA DE REGISTRO</dt>
-                                <dd>{{$poliza_tipo->created_at->format('Y-m-d h:i:s a')}}</dd>
+                                <dd>{{$poliza_tipo->created_at->format('Y-m-d h:i:s a')}} </dd>
                             </dl>
                         </div>
                         <div class="col-sm-6">

@@ -44,6 +44,8 @@ desired effect
             @include('layouts.partials.contentheader')
                 <br>
         <!-- Your Page Content Here -->
+            @include('flash::message')
+
             @yield('main-content')
         </section><!-- /.content -->
     </div><!-- /.content-wrapper -->

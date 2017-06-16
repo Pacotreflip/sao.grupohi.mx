@@ -14,6 +14,7 @@ class PagesController extends Controller
     {
         parent::__construct();
         $this->middleware('auth');
+        $this->middleware('context', ['only' => 'modulo_contable']);
         $this->session = $session;
     }
 
