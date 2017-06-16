@@ -6,7 +6,7 @@
     {!! Breadcrumbs::render('modulo_contable.poliza_tipo.index') !!}
     <div class="row">
         <div class="col-sm-12">
-            <a href="{{ route('modulo_contable.poliza_tipo.create') }}" class="btn btn-app btn-success" style="float:right">
+            <a  href="{{ route('modulo_contable.poliza_tipo.create') }}" class="btn btn-success btn-app" style="float:right">
                 <i class="glyphicon glyphicon-plus-sign"></i>Nueva
             </a>
         </div>
@@ -20,7 +20,7 @@
                     <h3 class="box-title">Plantilla de Póliza</h3>
                     <div class="col-sm-12">
                         <div class="row table-responsive">
-                            <table  class="table table-bordered table-striped dataTable index_table" role="grid"
+                            <table  class="table table-bordered table-striped dataTable index_table small" role="grid"
                                    aria-describedby="polizas_tipo_info">
                                 <thead>
                                 <tr role="row">

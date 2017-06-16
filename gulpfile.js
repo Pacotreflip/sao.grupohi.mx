@@ -4,7 +4,7 @@ var paths = {
     'bootstrap': './node_modules/bootstrap-sass/assets/',
     'fontawesome': './node_modules/font-awesome/',
     'roboto': './node_modules/roboto-fontface/'
-}
+};
 
 /*
  |--------------------------------------------------------------------------

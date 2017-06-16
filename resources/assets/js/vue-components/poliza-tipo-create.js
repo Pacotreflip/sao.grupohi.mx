@@ -155,8 +155,6 @@ Vue.component('poliza-tipo-create', {
                 text: "¿Estás seguro de que la información es correcta?",
                 type: "warning",
                 showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
                 confirmButtonText: "Si, Continuar",
                 cancelButtonText: "No, Cancelar",
             }).then(function () {
@@ -179,9 +177,8 @@ Vue.component('poliza-tipo-create', {
                 success: function (data, textStatus, xhr) {
                     swal({
                         title: '¡Correcto!',
-                        text: "Se ha creado la plantilla para el Tipo de Póliza<br>" +
+                        html: "Se ha creado la plantilla para el Tipo de Póliza<br>" +
                         "<b>" + self.transacciones_interfaz[self.form.poliza_tipo.id_transaccion_interfaz] + "</b>",
-                        html: true,
                         type: "success",
                         confirmButtonText: "Ok",
                         closeOnConfirm: false
