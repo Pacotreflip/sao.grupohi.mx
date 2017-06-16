@@ -20,7 +20,7 @@
                     <h3 class="box-title">Plantilla de Póliza</h3>
                     <div class="col-sm-12">
                         <div class="row table-responsive">
-                            <table  class="table table-bordered table-striped dataTable index_table small" role="grid"
+                            <table  class="table table-bordered table-striped dataTable index_table" role="grid"
                                    aria-describedby="polizas_tipo_info">
                                 <thead>
                                 <tr role="row">

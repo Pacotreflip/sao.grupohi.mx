@@ -49,7 +49,7 @@
 
 </div><!-- /.login-box -->
 
-    @include('layouts.partials.scripts_auth')
+    @include('layouts.partials.scripts')
 
     <script>
         $(function () {

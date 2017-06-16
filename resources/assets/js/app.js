@@ -3,12 +3,15 @@
  */
 
 window.$ = window.jQuery = require('jquery');
-require('bootstrap-sass');
+require('bootstrap');
 require('admin-lte');
-require('select2');
-require('datatables');
-require('datatables.net-bs');
-require('sweetalert2');
+require('admin-lte/plugins/select2/select2');
+require('admin-lte/plugins/select2/i18n/es');
+require('admin-lte/plugins/datatables/jquery.dataTables');
+require('admin-lte/plugins/datatables/dataTables.bootstrap');
+require('admin-lte/plugins/datepicker/bootstrap-datepicker');
+require('admin-lte/plugins/datepicker/locales/bootstrap-datepicker.es');
+window.swal = require('sweetalert2');
 
 require('./scripts/generales');
 /**
