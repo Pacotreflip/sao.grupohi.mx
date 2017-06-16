@@ -26,16 +26,30 @@
                             <!-- The user image in the navbar-->
                             <i class="fa fa-fw fa-user"></i>
                             <!-- hidden-xs hides the username on small devices so only the image appears. -->
-                            <span class="hidden-xs">{{ auth()->user() }}</span>
+                            <span class="hidden-xs"></span>
                             <i class="fa fa-fw fa-caret-down"></i>
                         </a>
 
                         <ul class="dropdown-menu">
-                           <li class="user-footer">
-                               <a href="/obras"><i class="fa fa-fw fa-database"></i> Obras</a>
-                           </li>
+                            <!-- User image -->
+                            <li class="user-header">
+                                <i class="fa fa-user fa-5x img-circle" style="color:white"></i>
+
+                                <p>
+                                    {{ auth()->user() }}
+                                    <small>{{$currentObra ? $currentObra->nombre : ''}}</small>
+                                </p>
+                            </li>
+                            <!-- Menu Body -->
+
+                            <!-- Menu Footer-->
                             <li class="user-footer">
-                                <a href="{{route('auth.getLogout')}}"><i class="fa fa-fw fa-power-off"></i> Cerrar Sesión</a>
+                                <div class="pull-left">
+                                    <a href="{{ route('obras') }}" class="btn btn-default btn-flat">Cambiar Obra</a>
+                                </div>
+                                <div class="pull-right">
+                                    <a href="{{route('auth.getLogout')}}" class="btn btn-default btn-flat">Cerrar Sesión</a>
+                                </div>
                             </li>
                         </ul>
                     </li>
