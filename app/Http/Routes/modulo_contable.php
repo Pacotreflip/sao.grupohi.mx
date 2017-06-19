@@ -17,5 +17,6 @@ Route::group(['prefix' => 'modulo_contable'], function () {
     /*
      * Cuenta Contable Routes...
      */
-    Route::get('cuenta_contable/{id}', 'CuentaContableController@getById');
+    Route::get('cuenta_contable', 'CuentaContableController@index')->name('modulo_contable.cuenta_contable.index');
+
 });

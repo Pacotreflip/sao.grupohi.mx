@@ -18,7 +18,8 @@ class CuentaContableController extends Controller
         $this->cuenta_contable = $cuenta_contable;
     }
 
-    public function getById($id) {
-        return $this->cuenta_contable->getById($id);
+    public function index()
+    {
+        return view('modulo_contable.cuenta_contable.index');
     }
 }

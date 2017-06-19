@@ -47146,8 +47146,21 @@ require('./vue-components/global-errors');
 require('./vue-components/errors');
 require('./vue-components/poliza-tipo-create');
 require('./vue-components/select2');
+require('./vue-components/cuenta-contable-create');
 
-},{"./vue-components/errors":29,"./vue-components/global-errors":30,"./vue-components/poliza-tipo-create":31,"./vue-components/select2":32}],29:[function(require,module,exports){
+},{"./vue-components/cuenta-contable-create":29,"./vue-components/errors":30,"./vue-components/global-errors":31,"./vue-components/poliza-tipo-create":32,"./vue-components/select2":33}],29:[function(require,module,exports){
+'use strict';
+
+Vue.component('cuenta-contable-create', {
+    props: ['cuentas_tipo', 'obra_cuenta'],
+    data: function data() {
+        return {};
+    },
+
+    methods: {}
+});
+
+},{}],30:[function(require,module,exports){
 'use strict';
 
 Vue.component('app-errors', {
@@ -47156,7 +47169,7 @@ Vue.component('app-errors', {
     template: require('./templates/errors.html')
 });
 
-},{"./templates/errors.html":33}],30:[function(require,module,exports){
+},{"./templates/errors.html":34}],31:[function(require,module,exports){
 'use strict';
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
@@ -47182,7 +47195,7 @@ Vue.component('global-errors', {
   }
 });
 
-},{"./templates/global-errors.html":34}],31:[function(require,module,exports){
+},{"./templates/global-errors.html":35}],32:[function(require,module,exports){
 'use strict';
 
 Vue.component('poliza-tipo-create', {
@@ -47373,7 +47386,7 @@ Vue.component('poliza-tipo-create', {
     }
 });
 
-},{}],32:[function(require,module,exports){
+},{}],33:[function(require,module,exports){
 'use strict';
 
 Vue.component('select2', {
@@ -47419,9 +47432,9 @@ Vue.component('select2', {
     }
 });
 
-},{}],33:[function(require,module,exports){
-module.exports = '<div id="form-errors" v-cloak>\n  <div class="alert alert-danger" v-if="form.errors.length">\n    <ul>\n      <li v-for="error in form.errors">{{ error }}</li>\n    </ul>\n  </div>\n</div>';
 },{}],34:[function(require,module,exports){
+module.exports = '<div id="form-errors" v-cloak>\n  <div class="alert alert-danger" v-if="form.errors.length">\n    <ul>\n      <li v-for="error in form.errors">{{ error }}</li>\n    </ul>\n  </div>\n</div>';
+},{}],35:[function(require,module,exports){
 module.exports = '<div class="alert alert-danger" v-show="errors.length">\n  <ul>\n    <li v-for="error in errors">{{ error }}</li>\n  </ul>\n</div>';
 },{}]},{},[26]);
 
