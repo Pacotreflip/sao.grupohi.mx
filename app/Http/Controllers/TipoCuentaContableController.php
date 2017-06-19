@@ -34,7 +34,10 @@ class TipoCuentaContableController extends Controller
     public function index()
     {
         $tipos_cuenta_contable = $this->tipo_cuenta_contable->all();
-        // TODO: Add return statement
+        //dd($tipos_cuenta_contable);
+        return view('modulo_contable.tipo_cuenta_contable.index')
+            ->with('tipos_cuenta_contable', $tipos_cuenta_contable);
+        //
     }
 
     /**

@@ -21,3 +21,17 @@ Breadcrumbs::register('modulo_contable.poliza_tipo.show', function ($breadcrumb,
     $breadcrumb->parent('modulo_contable.poliza_tipo.index');
     $breadcrumb->push($poliza_tipo->transaccion, route('modulo_contable.poliza_tipo.show', $poliza_tipo));
 });
+
+
+/*
+ * Tipo Cuenta Contable
+ */
+
+Breadcrumbs::register('modulo_contable.tipo_cuenta_contable.index', function ($breadcrumb) {
+    $breadcrumb->parent('modulo_contable.index');
+    $breadcrumb->push('TIPO CUENTA CONTABLE', route('modulo_contable.tipo_cuenta_contable.index'));
+});
+Breadcrumbs::register('modulo_contable.tipo_cuenta_contable.create', function ($breadcrumb) {
+    $breadcrumb->parent('modulo_contable.tipo_cuenta_contable.index');
+    $breadcrumb->push('NUEVA PLANTILLA PARA TIPO CUENTA CONTABLE', route('modulo_contable.tipo_cuenta_contable.create'));
+});

@@ -30,10 +30,10 @@ class TipoCuentaContable extends Model
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany|CuentaContable
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo|User
      */
-    public function cuentasContables() {
-        return $this->hasMany(CuentaContable::class, 'id_cuenta_contable');
+    public function userRegistro() {
+        return $this->belongsTo(User::class, 'registro');
     }
 
     /**

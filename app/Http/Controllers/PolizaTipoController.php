@@ -71,9 +71,8 @@ class PolizaTipoController extends Controller
     public function index()
     {
         $polizas_tipo = $this->poliza_tipo->all();
-
         return view('modulo_contable.poliza_tipo.index')
-            ->with('polizas_tipo', $polizas_tipo);
+        ->with('polizas_tipo', $polizas_tipo);
     }
 
     /**
@@ -85,7 +84,6 @@ class PolizaTipoController extends Controller
         $transacciones_interfaz = $this->transaccion_interfaz->lists();
         $cuentas_contables = $this->cuenta_contable->all('tipoCuentaContable');
         $tipos_movimiento = $this->tipo_movimiento->lists();
-
         return view('modulo_contable.poliza_tipo.create')
             ->with([
                 'transacciones_interfaz' => $transacciones_interfaz,

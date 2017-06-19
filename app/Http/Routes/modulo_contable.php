@@ -18,4 +18,11 @@ Route::group(['prefix' => 'modulo_contable'], function () {
      * Cuenta Contable Routes...
      */
     Route::get('cuenta_contable/{id}', 'CuentaContableController@getById');
+
+    /*
+     * Tipo Cuenta Contable Routes.....
+     */
+    Route::get('tipo_cuenta_contable', 'TipoCuentaContableController@index')->name('modulo_contable.tipo_cuenta_contable.index');
+    Route::get('tipo_cuenta_contable/create', 'TipoCuentaContableController@create')->name('modulo_contable.tipo_cuenta_contable.create');
+    Route::delete('tipo_cuenta_contable/{id}', 'TipoCuentaContableController@destroy')->name('modulo_contable.tipo_cuenta_contable.destroy')->where(['id'=>'[0-9]+']);
 });

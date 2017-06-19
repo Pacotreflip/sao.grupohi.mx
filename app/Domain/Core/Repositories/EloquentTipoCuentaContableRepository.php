@@ -5,6 +5,7 @@ use Ghi\Domain\Core\Contracts\Identificador;
 use Ghi\Domain\Core\Contracts\Motivo;
 use Ghi\Domain\Core\Contracts\TipoCuentaContableRepository;
 use Ghi\Domain\Core\Models\TipoCuentaContable;
+use Illuminate\Support\Facades\DB;
 
 class EloquentTipoCuentaContableRepository implements TipoCuentaContableRepository
 {
