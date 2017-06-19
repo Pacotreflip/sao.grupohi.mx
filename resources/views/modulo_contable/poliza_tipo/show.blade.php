@@ -36,10 +36,15 @@
                         <div class="col-sm-6">
                             <dl>
                                 <dt>INICIO DE VIGENCIA</dt>
-                                <dd>{{$poliza_tipo->inicio_vigencia->format('Y-m-d')}}</dd>
+                                <dd>{{$poliza_tipo->inicio_vigencia->format('Y-m-d h:i:s a')}}</dd>
                                 <dt>FIN DE VIGENCIA</dt>
-                                <dd>@if($poliza_tipo->fin_vigencia){{$poliza_tipo->fin_vigencia->format('Y-m-d')}}@else
-                                        N/A @endif</dd>
+                                <dd>
+                                    @if($poliza_tipo->fin_vigencia)
+                                        {{$poliza_tipo->fin_vigencia->format('Y-m-d h:i:s a')}}
+                                    @else
+                                        N/A
+                                    @endif
+                                </dd>
                             </dl>
                         </div>
 
