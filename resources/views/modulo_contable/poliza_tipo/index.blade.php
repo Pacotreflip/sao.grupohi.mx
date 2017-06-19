@@ -15,18 +15,18 @@
     @if(count($polizas_tipo) > 0)
     <div class="row" >
         <div class="col-md-12">
-            <div class="box">
-                <div class="box-header">
+            <div class="box box-info">
+                <div class="box-header with-border">
                     <h3 class="box-title">Plantilla de Póliza</h3>
+                </div>
+                <div class="box-body">
                     <div class="col-sm-12">
                         <div class="row table-responsive">
-                            <table  class="table table-bordered table-striped dataTable index_table small" role="grid"
+                            <table  class="table table-bordered table-striped dataTable index_table" role="grid"
                                    aria-describedby="polizas_tipo_info">
                                 <thead>
                                 <tr role="row">
-                                    <th class="sorting_asc" tabindex="0" aria-controls="polizas_tipo"
-                                        aria-sort="ascending">ID
-                                    </th>
+                                    <th class="sorting_asc" tabindex="0" aria-controls="polizas_tipo" aria-sort="ascending">#</th>
                                     <th class="sorting" tabindex="0" aria-controls="polizas_tipo">Tipo de Póliza</th>
                                     <th class="sorting" tabindex="0" aria-controls="polizas_tipo"># Movimientos</th>
                                     <th class="sorting" tabindex="0" aria-controls="polizas_tipo">Registró</th>
@@ -35,14 +35,13 @@
                                     <th class="sorting" tabindex="0" aria-controls="polizas_tipo">Inicio de Vigencia</th>
                                     <th class="sorting" tabindex="0" aria-controls="polizas_tipo">Fin de Vigencia</th>
                                     <th></th>
-
                                 </tr>
                                 </thead>
                                 <tbody>
                                 @foreach($polizas_tipo as $index => $item)
 
                                     <tr>
-                                        <td>{{ $item->id }}</td>
+                                        <td>{{ $index + 1 }}</td>
                                         <td>{{ $item->transaccion  }}</td>
                                         <td>{{ $item->numMovimientos }}</td>
                                         <td>{{ $item->userRegistro }}</td>

@@ -6,7 +6,7 @@ use Ghi\Domain\Core\Contracts\MovimientoRepository;
 use Ghi\Domain\Core\Contracts\PolizaTipoRepository;
 use Ghi\Domain\Core\Contracts\TipoMovimientoRepository;
 use Ghi\Domain\Core\Contracts\TransaccionInterfazRepository;
-use Ghi\Http\Requests\CreatePolizaTipoRequest;
+
 use Illuminate\Http\Request;
 
 class PolizaTipoController extends Controller

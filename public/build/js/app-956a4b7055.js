@@ -11457,7 +11457,7 @@ Vue.component('global-errors', {
 'use strict';
 
 Vue.component('poliza-tipo-create', {
-    props: ['cuentas_contables', 'tipos_movimiento', 'transacciones_interfaz'],
+    props: ['cuenta_contable', 'tipos_movimiento', 'transacciones_interfaz'],
     data: function data() {
         return {
             'form': {

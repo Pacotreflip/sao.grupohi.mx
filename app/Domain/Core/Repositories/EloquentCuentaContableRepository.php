@@ -21,12 +21,15 @@ class EloquentCuentaContableRepository implements CuentaContableRepository
     }
 
     /**
-     * Obtiene una cuenta contable por su Id
+     *  Obtiene Poliza Tipo por su ID
      * @param $id
-     * @return \Ghi\Domain\Core\Models\CuentaContable
+     * @return \Ghi\Domain\Core\Models\PolizaTipo
      */
-    public function getById($id)
+    public function find($id , $with = null)
     {
+        if ($with != null) {
+            return $this->model->with($with)->find($id);
+        }
         return $this->model->find($id);
     }
 
