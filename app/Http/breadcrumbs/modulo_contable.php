@@ -35,3 +35,11 @@ Breadcrumbs::register('modulo_contable.tipo_cuenta_contable.create', function ($
     $breadcrumb->parent('modulo_contable.tipo_cuenta_contable.index');
     $breadcrumb->push('NUEVA PLANTILLA PARA TIPO CUENTA CONTABLE', route('modulo_contable.tipo_cuenta_contable.create'));
 });
+
+/*
+ * Cuenta Contable
+ */
+Breadcrumbs::register('modulo_contable.cuenta_contable.index', function ($breadcrumb) {
+    $breadcrumb->parent('modulo_contable.index');
+    $breadcrumb->push('CUENTAS CONTABLES', route('modulo_contable.cuenta_contable.index'));
+});

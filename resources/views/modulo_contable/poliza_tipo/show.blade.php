@@ -22,7 +22,6 @@
                     </div>
                     <!-- /.box-header -->
                     <div class="box-body">
-
                         <div class="col-sm-6">
                             <dl>
                                 <dt>ID</dt>
@@ -47,7 +46,6 @@
                                 </dd>
                             </dl>
                         </div>
-
                     </div>
                     <!-- /.box-body -->
                 </div>
@@ -61,7 +59,6 @@
                 <div class="box box-success">
                     <div class="box-header">
                         <h3 class="box-title">Movimientos</h3>
-
                         <div class="col-sm-12">
                             <div class="row">
                                 <div class="box-body">
@@ -71,17 +68,21 @@
                                             <th>Cuenta Contable</th>
                                             <th>Cargo</th>
                                             <th>Abono</th>
-
                                         </tr>
                                         </thead>
                                         <tbody>
                                         @foreach($poliza_tipo->movimientos as $movimieto)
                                             <tr>
                                                 <td>{{$movimieto->cuentaContable->tipoCuentaContable}}</td>
-                                                <td>@if($movimieto->tipoMovimiento->id==1)<span
-                                                            class="fa fa-check-circle"></span>@endif</td>
-                                                <td>@if($movimieto->tipoMovimiento->id==2)<span
-                                                            class="fa fa-check-circle"></span>@endif</td>
+                                                <td>
+                                                    @if($movimieto->tipoMovimiento->id == 1)
+                                                        <span class="fa fa-check-circle"></span>
+                                                    @endif
+                                                </td>
+                                                <td>@if($movimieto->tipoMovimiento->id == 2)
+                                                        <span class="fa fa-check-circle"></span>
+                                                    @endif
+                                                </td>
                                             </tr>
                                         @endforeach
                                         </tbody>
