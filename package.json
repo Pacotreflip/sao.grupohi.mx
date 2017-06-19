@@ -6,10 +6,16 @@
   },
   "devDependencies": {
     "gulp": "^3.9.1",
-    "laravel-elixir": "^5.0.0",
-    "bootstrap-sass": "^3.0.0"
+    "laravel-elixir": "^5.0.0"
   },
   "dependencies": {
+    "admin-lte": "^2.3.11",
+    "bootstrap": "^3.3.7",
+    "font-awesome": "^4.7.0",
+    "ionicons": "^3.0.0",
+    "jquery": "^3.2.1",
+    "roboto-fontface": "^0.7.0",
+    "sweetalert2": "^6.6.5",
     "vue": "^2.3.4"
   }
 }

@@ -113,7 +113,7 @@ Vue.component('poliza-tipo-create', {
 
                         swal({
                             title: "Advertencia",
-                            text: "Ya existe una Plantilla para el tipo de Póliza seleccionado con un estado <b>" + response.data.poliza_tipo.vigencia + "</b><br>" +
+                            html: "Ya existe una Plantilla para el tipo de Póliza seleccionado con un estado <b>" + response.data.poliza_tipo.vigencia + "</b><br>" +
                             "Con un inicio de vigencia el día <b>" + response.data.poliza_tipo.inicio_vigencia.split(" ")[0] + "</b><br><br>" +
                             "<table class='table table-striped small'>" +
                             "   <thead>" +
@@ -130,15 +130,17 @@ Vue.component('poliza-tipo-create', {
                             "<b>¿Deseas continuar con el registro?</b><br>" +
                             "<small><small>(Se establecerá el fin de vigencia para la plantilla existente)</small></small>",
                             type: "warning",
-                            html: true,
                             showCancelButton: true,
                             cancelButtonText: 'No, Cancelar',
                             confirmButtonText: 'Si, Continuar',
-                            closeOnConfirm: false
-                        },
-                        function(){
+
+                        }
+                        ).then(function (){
                             self.confirm_save();
-                        });
+                        }).catch(swal.noop);
+
+
+
                     } else {
                         self.confirm_save();
                     }
@@ -153,11 +155,11 @@ Vue.component('poliza-tipo-create', {
                 text: "¿Estás seguro de que la información es correcta?",
                 type: "warning",
                 showCancelButton: true,
-                closeOnConfirm: false
-            },
-            function(){
+                confirmButtonText: "Si, Continuar",
+                cancelButtonText: "No, Cancelar",
+            }).then(function () {
                 self.save();
-            });
+            }).catch(swal.noop);
         },
 
         save: function () {
@@ -175,16 +177,14 @@ Vue.component('poliza-tipo-create', {
                 success: function (data, textStatus, xhr) {
                     swal({
                         title: '¡Correcto!',
-                        text: "Se ha creado la plantilla para el Tipo de Póliza<br>" +
+                        html: "Se ha creado la plantilla para el Tipo de Póliza<br>" +
                         "<b>" + self.transacciones_interfaz[self.form.poliza_tipo.id_transaccion_interfaz] + "</b>",
-                        html: true,
                         type: "success",
                         confirmButtonText: "Ok",
                         closeOnConfirm: false
-                    },
-                    function(){
-                        window.location = xhr.getResponseHeader('Location');
-                    });
+                    }).then(function () {
+                            window.location = xhr.getResponseHeader('Location');
+                        })  .catch(swal.noop);
                 },
                 complete: function () {
                     self.guardando = false;

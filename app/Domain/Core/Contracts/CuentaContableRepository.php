@@ -7,7 +7,7 @@ interface CuentaContableRepository
      * @param $id
      * @return \Ghi\Domain\Core\Models\CuentaContable
      */
-    public function getById($id);
+    public function find($id);
 
     /**
      * Obtiene las cuentas contables en forma de lista para combos

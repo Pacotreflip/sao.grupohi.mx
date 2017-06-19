@@ -6,7 +6,7 @@
     {!! Breadcrumbs::render('modulo_contable.poliza_tipo.index') !!}
     <div class="row">
         <div class="col-sm-12">
-            <a href="{{ route('modulo_contable.poliza_tipo.create') }}" class="btn btn-app btn-success" style="float:right">
+            <a  href="{{ route('modulo_contable.poliza_tipo.create') }}" class="btn btn-success btn-app" style="float:right">
                 <i class="glyphicon glyphicon-plus-sign"></i>Nueva
             </a>
         </div>
@@ -15,18 +15,18 @@
     @if(count($polizas_tipo) > 0)
     <div class="row" >
         <div class="col-md-12">
-            <div class="box">
-                <div class="box-header">
+            <div class="box box-info">
+                <div class="box-header with-border">
                     <h3 class="box-title">Plantilla de Póliza</h3>
+                </div>
+                <div class="box-body">
                     <div class="col-sm-12">
                         <div class="row table-responsive">
-                            <table  class="table table-bordered table-striped dataTable index_table small" role="grid"
+                            <table  class="table table-bordered table-striped dataTable index_table" role="grid"
                                    aria-describedby="polizas_tipo_info">
                                 <thead>
                                 <tr role="row">
-                                    <th class="sorting_asc" tabindex="0" aria-controls="polizas_tipo"
-                                        aria-sort="ascending">ID
-                                    </th>
+                                    <th class="sorting_asc" tabindex="0" aria-controls="polizas_tipo" aria-sort="ascending">#</th>
                                     <th class="sorting" tabindex="0" aria-controls="polizas_tipo">Tipo de Póliza</th>
                                     <th class="sorting" tabindex="0" aria-controls="polizas_tipo"># Movimientos</th>
                                     <th class="sorting" tabindex="0" aria-controls="polizas_tipo">Registró</th>
@@ -35,14 +35,13 @@
                                     <th class="sorting" tabindex="0" aria-controls="polizas_tipo">Inicio de Vigencia</th>
                                     <th class="sorting" tabindex="0" aria-controls="polizas_tipo">Fin de Vigencia</th>
                                     <th></th>
-
                                 </tr>
                                 </thead>
                                 <tbody>
                                 @foreach($polizas_tipo as $index => $item)
 
                                     <tr>
-                                        <td>{{ $item->id }}</td>
+                                        <td>{{ $index + 1 }}</td>
                                         <td>{{ $item->transaccion  }}</td>
                                         <td>{{ $item->numMovimientos }}</td>
                                         <td>{{ $item->userRegistro }}</td>
@@ -105,26 +104,32 @@
 @section('scripts-content')
     <script>
         function delete_plantilla(id) {
+
             var url=App.host +"/modulo_contable/poliza_tipo/" + id;
             swal({
                 title: "¡Eliminar Plantilla!",
                 text: "¿Esta seguro de que deseas eliminar la Plantilla?",
-                type: "input",
-                showCancelButton: true,
-                closeOnConfirm: false,
+                input: 'text',
                 inputPlaceholder: "Motivo de eliminación.",
                 confirmButtonText: "Si, Eliminar",
                 cancelButtonText: "No, Cancelar",
-                showLoaderOnConfirm: true
-            },
-            function(inputValue){
-                if (inputValue === false) return false;
-                if (inputValue === "") {
-                    swal.showInputError("¡Escriba el motivo de la eliminación!");
-                    return false
-                }
-
-                $.ajax({
+                showCancelButton: true,
+                showLoaderOnConfirm: true,
+                preConfirm: function (inputValue) {
+                    return new Promise(function (resolve, reject) {
+                        setTimeout(function() {
+                            if (inputValue === false) return false;
+                            if (inputValue === "") {
+                                swal.showInputError("¡Escriba el motivo de la eliminación!");
+                                return false
+                            }
+                            resolve()
+                        }, 2000)
+                    })
+                },
+                allowOutsideClick: false
+            }).then(function (inputValue)
+            { $.ajax({
                     url: url,
                     method: 'POST',
                     data: {
@@ -133,13 +138,12 @@
                     },
                     success: function (data, textStatus, xhr) {
                         swal({
-                            type: "success",
-                            title: '¡Correcto!',
-                            text: 'Plantilla Eliminada con éxito',
-                            confirmButtonText: "Ok",
-                            closeOnConfirm: false
-                        },
-                        function(){
+                                type: "success",
+                                title: '¡Correcto!',
+                                text: 'Plantilla Eliminada con éxito',
+                                confirmButtonText: "Ok",
+                                closeOnConfirm: false
+                            }).then(function () {
                             location.reload();
                         });
                     },
@@ -147,7 +151,8 @@
 
                     }
                 });
-            });
-        }
+            }) .catch(swal.noop);
+
+ }
     </script>
 @endsection
