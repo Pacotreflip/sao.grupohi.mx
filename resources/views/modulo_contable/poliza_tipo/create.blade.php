@@ -60,7 +60,7 @@
                                 <tbody>
                                 <tr v-for="(item, index) in form.poliza_tipo.movimientos">
                                     <td>@{{ index + 1  }}</td>
-                                    <td>@{{ cuentas_contables[item.id_cuenta_contable] }}</td>
+                                    <td>@{{ getTipoCuentaDescription(item.id_cuenta_contable) }}</td>
                                     <td>@{{ tipos_movimiento[item.id_tipo_movimiento] }}</td>
                                     <td><button class="btn btn-xs btn-danger" @click="remove_movimiento(index)"><i class="fa fa-trash" /></button></td>
                                 </tr>
@@ -99,7 +99,7 @@
                                                 <label for="id_cuenta_contable">Cuenta Contable</label>
                                                 <select id="id_cuenta_contable" name="id_cuenta_contable" class="form-control" v-model="form.movimiento.id_cuenta_contable">
                                                     <option value>[-SELECCIONE-]</option>
-                                                        <option v-for="(cuenta_contable, index) in cuentas_contables_disponibles" v-bind:value="index">@{{ cuenta_contable }}</option>
+                                                        <option v-for="cuenta_contable in cuentas_contables_disponibles" v-bind:value="cuenta_contable.id_int_cuenta_contable">@{{ cuenta_contable.tipo_cuenta_contable.descripcion }}</option>
                                                 </select>
                                             </div>
                                         </div>

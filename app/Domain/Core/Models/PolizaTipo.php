@@ -3,6 +3,7 @@
 namespace Ghi\Domain\Core\Models;
 
 use Carbon\Carbon;
+use Ghi\Core\Contracts\Context;
 use Ghi\Domain\Core\Models\Scopes\ObraScope;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\DB;
@@ -10,6 +11,8 @@ use Illuminate\Support\Facades\DB;
 class PolizaTipo extends BaseModel
 {
     use SoftDeletes;
+
+    var $id_obra;
 
     protected $connection = 'cadeco';
     protected $table = 'Contabilidad.poliza_tipo';
@@ -20,15 +23,21 @@ class PolizaTipo extends BaseModel
         'cancelo',
         'motivo',
         'inicio_vigencia',
-        'fin_vigencia'
+        'fin_vigencia',
+        'id_obra'
     ];
     protected $dates = ['deleted_at', 'inicio_vigencia', 'fin_vigencia'];
     protected $appends=['vigencia'];
 
+    public function __construct(array $attributes = [])
+    {
+        $attributes['id_obra'] = \Ghi\Core\Facades\Context::getId();
+        parent::__construct($attributes);
+    }
+
     protected static function boot()
     {
         parent::boot();
-
         static::addGlobalScope(new ObraScope());
     }
 

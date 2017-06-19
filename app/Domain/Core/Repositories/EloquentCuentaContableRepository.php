@@ -21,6 +21,19 @@ class EloquentCuentaContableRepository implements CuentaContableRepository
     }
 
     /**
+     * Obtiene todas las cuentas contables
+     * @param null|array|string $with
+     * @return \Illuminate\Database\Eloquent\Collection|\Ghi\Domain\Core\Contracts\CuentaContable
+     */
+    public function all($with = null)
+    {
+        if($with != null) {
+            return $this->model->with($with)->get();
+        }
+        return $this->model->all();
+    }
+
+    /**
      *  Obtiene Poliza Tipo por su ID
      * @param $id
      * @return \Ghi\Domain\Core\Models\PolizaTipo
@@ -31,18 +44,5 @@ class EloquentCuentaContableRepository implements CuentaContableRepository
             return $this->model->with($with)->find($id);
         }
         return $this->model->find($id);
-    }
-
-    /**
-     * Obtiene las cuentas contables en forma de lista para combos
-     * @return \Illuminate\Database\Eloquent\Collection|CuentaContable
-     */
-    public function lists()
-    {
-        $data = [];
-        foreach ($this->model->all() as $item) {
-            $data[$item->id_int_cuenta_contable] = (String) $item->tipoCuentaContable;
-        }
-        return collect($data);
     }
 }

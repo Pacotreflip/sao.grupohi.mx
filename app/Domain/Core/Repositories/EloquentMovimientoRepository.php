@@ -35,15 +35,6 @@ class EloquentMovimientoRepository implements MovimientoRepository
     }
 
     /**
-     * @param $id
-     * @return \Ghi\Domain\Core\Models\MovimientoPoliza
-     */
-    public function getByPolizaTipoId($id)
-    {
-        return $this->model->where('id_poliza_tipo', '=', $id)->get();
-    }
-
-    /**
      * Obtiene los movimientos que coindican con la busqueda
      * @param $attribute
      * @param $value

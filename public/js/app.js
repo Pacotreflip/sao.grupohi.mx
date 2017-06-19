@@ -47229,19 +47229,17 @@ Vue.component('poliza-tipo-create', {
 
         cuentas_contables_disponibles: function cuentas_contables_disponibles() {
             var self = this;
-            var result = {};
+            var result = [];
             $.each(this.cuentas_contables, function (index, cuenta_contable) {
                 var existe = false;
                 self.form.poliza_tipo.movimientos.forEach(function (movimiento) {
-                    if (index == movimiento.id_cuenta_contable) {
+                    if (cuenta_contable.id_int_cuenta_contable == movimiento.id_cuenta_contable) {
                         existe = true;
                     }
                 });
 
                 if (!existe) {
-                    result[index] = cuenta_contable;
-                } else {
-                    Vue.delete(result, index);
+                    result.push(cuenta_contable);
                 }
             });
 
@@ -47361,6 +47359,16 @@ Vue.component('poliza-tipo-create', {
 
         remove_movimiento: function remove_movimiento(e) {
             Vue.delete(this.form.poliza_tipo.movimientos, e);
+        },
+
+        getTipoCuentaDescription: function getTipoCuentaDescription(id) {
+            var result = "";
+            $.each(this.cuentas_contables, function (index, cuenta_contable) {
+                if (cuenta_contable.id_int_cuenta_contable == id) {
+                    result = cuenta_contable.tipo_cuenta_contable.descripcion;
+                }
+            });
+            return result;
         }
     }
 });
