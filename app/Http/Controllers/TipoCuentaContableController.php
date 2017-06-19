@@ -45,33 +45,8 @@ class TipoCuentaContableController extends Controller
      */
     public function show($id)
     {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    public function find()
-    {
-        //
+        $tipo_cuenta_contable = $this->tipo_cuenta_contable->find($id);
+        // TODO: Add return statement
     }
 
     /**
@@ -82,18 +57,8 @@ class TipoCuentaContableController extends Controller
      */
     public function store(Request $request)
     {
-        //
-    }
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
+        $item = $this->tipo_cuenta_contable->create($request->all());
+        // TODO: Add return statement
     }
 
     /**
@@ -102,8 +67,9 @@ class TipoCuentaContableController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request, $id)
     {
-        //
+        $this->tipo_cuenta_contable->delete($request->only('motivo'), $id);
+        return $this->response()->accepted();
     }
 }
