@@ -1,5 +1,5 @@
 Vue.component('poliza-tipo-create', {
-    props: ['cuenta_contable', 'tipos_movimiento', 'transacciones_interfaz'],
+    props: ['cuentas_contables', 'tipos_movimiento', 'transacciones_interfaz'],
     data: function() {
         return {
             'form' : {
@@ -106,7 +106,7 @@ Vue.component('poliza-tipo-create', {
                     if(response.data.poliza_tipo != null) {
                         var body = "";
                         $.each(response.data.poliza_tipo.movimientos, function (index, movimiento) {
-                            body += "<tr><td>"+(index+1)+"</td><td style='text-align: left'>"+ self.cuentas_contables[movimiento.id_cuenta_contable] +"</td><td>"+self.tipos_movimiento[movimiento.id_tipo_movimiento]+"</td></tr>"
+                            body += "<tr><td>"+(index+1)+"</td><td style='text-align: left'>"+ self.getTipoCuentaDescription(movimiento.id_cuenta_contable) +"</td><td>"+self.tipos_movimiento[movimiento.id_tipo_movimiento]+"</td></tr>"
                         });
 
                         swal({
