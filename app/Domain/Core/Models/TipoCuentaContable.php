@@ -8,7 +8,6 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class TipoCuentaContable extends Model
 {
-
     use SoftDeletes;
 
     protected $connection = 'cadeco';
@@ -21,7 +20,6 @@ class TipoCuentaContable extends Model
         'id_obra',
         'motivo'
     ];
-
     protected $dates = ['deleted_at'];
 
     protected static function boot()
@@ -31,11 +29,16 @@ class TipoCuentaContable extends Model
         static::addGlobalScope(new ObraScope());
     }
 
-
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany|CuentaContable
+     */
     public function cuentasContables() {
         return $this->hasMany(CuentaContable::class, 'id_cuenta_contable');
     }
 
+    /**
+     * @return string
+     */
     public function __toString()
     {
         return $this->descripcion;

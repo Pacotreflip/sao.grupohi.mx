@@ -27,6 +27,9 @@ class Obra extends \Ghi\Core\Models\Obra
         'NumobraContPaq',
     ];
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany|CuentaContable
+     */
     public function cuentasContables(){
         return $this->hasMany(CuentaContable::class, "id_obra");
     }

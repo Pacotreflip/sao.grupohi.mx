@@ -14,5 +14,4 @@ class TipoMovimiento extends Model
     public function movimientosPoliza() {
         return $this->hasMany(MovimientoPoliza::class, 'id_tipo_movimiento');
     }
-
 }
