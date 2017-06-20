@@ -9,6 +9,7 @@
     <div id="app">
         <global-errors></global-errors>
         <cuenta-contable-create
+                v-bind:obra="{{$currentObra}}"
                 v-cloak
                 inline-template>
             <section>
@@ -21,19 +22,19 @@
                             <div class="col-md-4">
                                 <div class="form-group">
                                     <label for="BDContPaq" class="control-label">Base de Datos CONTPAQ</label>
-                                    <input type="text" class="form-control" id="BDContPaq">
+                                    <input type="text" name="BDContPaq" class="form-control" id="BDContPaq">
                                 </div>
                             </div>
                             <div class="col-md-4">
                                 <div class="form-group">
                                     <label for="NumobraContPaq" class="control-label">Número de Obra CONTPAQ</label>
-                                    <input type="number" class="form-control" id="NumobraContPaq">
+                                    <input type="number" name="NumobraContPaq" class="form-control" id="NumobraContPaq">
                                 </div>
                             </div>
                             <div class="col-md-4">
                                 <div class="form-group">
                                     <label for="FormatoCuenta" class="control-label">Formato de Cuentas</label>
-                                    <input type="text" class="form-control" id="FormatoCuenta">
+                                    <input type="text" name="FormatoCuenta" class="form-control" id="FormatoCuenta">
                                 </div>
                             </div>
                         </div>
