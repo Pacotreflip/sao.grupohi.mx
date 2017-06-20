@@ -7,8 +7,6 @@ require('bootstrap');
 require('admin-lte');
 require('admin-lte/plugins/select2/select2');
 require('admin-lte/plugins/select2/i18n/es');
-require('datatables');
-require('admin-lte/plugins/datatables/dataTables.bootstrap');
 require('admin-lte/plugins/datepicker/bootstrap-datepicker');
 require('admin-lte/plugins/datepicker/locales/bootstrap-datepicker.es');
 window.swal = require('sweetalert2');
