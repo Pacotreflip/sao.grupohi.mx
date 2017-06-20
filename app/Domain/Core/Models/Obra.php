@@ -25,6 +25,8 @@ class Obra extends \Ghi\Core\Models\Obra
         'nombre_publico',
         'BDContPaq',
         'NumobraContPaq',
+        'FormatoCuenta',
+        'FormatoCuentaRegExp'
     ];
 
     /**

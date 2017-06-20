@@ -31981,13 +31981,13 @@ require('./vue-components/global-errors');
 require('./vue-components/errors');
 require('./vue-components/poliza_tipo/poliza-tipo-create');
 require('./vue-components/select2');
-require('./vue-components/cuenta_contable/cuenta-contable-create');
+require('./vue-components/cuenta_contable/cuenta-contable');
 
-},{"./vue-components/cuenta_contable/cuenta-contable-create":26,"./vue-components/errors":27,"./vue-components/global-errors":28,"./vue-components/poliza_tipo/poliza-tipo-create":29,"./vue-components/select2":30}],26:[function(require,module,exports){
+},{"./vue-components/cuenta_contable/cuenta-contable":26,"./vue-components/errors":27,"./vue-components/global-errors":28,"./vue-components/poliza_tipo/poliza-tipo-create":29,"./vue-components/select2":30}],26:[function(require,module,exports){
 'use strict';
 
-Vue.component('cuenta-contable-create', {
-    props: ['obra'],
+Vue.component('cuenta-contable', {
+    props: ['obra', 'obra_update_url'],
     data: function data() {
         return {
             guardando: false
@@ -32014,7 +32014,24 @@ Vue.component('cuenta-contable-create', {
 
         save_datos_obra: function save_datos_obra() {
             var self = this;
-            alert('save');
+            $.ajax({
+                type: 'POST',
+                url: self.obra_update_url,
+                data: self.datosObra,
+                beforeSend: function beforeSend() {
+                    self.guardando = true;
+                },
+                success: function success(data, textStatus, xhr) {
+                    swal({
+                        type: 'success',
+                        title: 'Correcto',
+                        html: 'Datos de la Obra <b>' + self.obra.nombre + '</b> actualizados correctamente'
+                    });
+                },
+                complete: function complete() {
+                    self.guardando = false;
+                }
+            });
         }
     }
 });

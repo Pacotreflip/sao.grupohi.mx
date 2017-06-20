@@ -22,4 +22,8 @@ class CuentaContableController extends Controller
     {
         return view('modulo_contable.cuenta_contable.index');
     }
+
+    public function configuracion() {
+        return view('modulo_contable.cuenta_contable.configuracion');
+    }
 }

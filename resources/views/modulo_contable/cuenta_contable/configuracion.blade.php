@@ -4,37 +4,38 @@
 @section('contentheader_description', '(CONFIGURACIÓN)')
 
 @section('main-content')
-    {!! Breadcrumbs::render('modulo_contable.cuenta_contable.index') !!}
+    {!! Breadcrumbs::render('modulo_contable.cuenta_contable.configuracion') !!}
     <hr>
     <div id="app">
         <global-errors></global-errors>
-        <cuenta-contable-create
+        <cuenta-contable
+                v-bind:obra_update_url="'{{route('modulo_contable.obra.update', $currentObra)}}'"
                 v-bind:obra="{{$currentObra}}"
                 v-cloak
                 inline-template>
             <section>
                 <div class="box box-info">
                     <div class="box-header with-border">
-                        <h3 class="box-title">Información general de la Obra</h3>
+                        <h3 class="box-title">Datos de la Obra</h3>
                     </div>
                     <form id="form_datos_obra">
                         <div class="box-body">
                             <div class="col-md-4">
                                 <div class="form-group">
                                     <label for="BDContPaq" class="control-label">Base de Datos CONTPAQ</label>
-                                    <input type="text" name="BDContPaq" class="form-control" id="BDContPaq">
+                                    <input type="text" name="BDContPaq" class="form-control" id="BDContPaq" v-model="obra.BDContPaq">
                                 </div>
                             </div>
                             <div class="col-md-4">
                                 <div class="form-group">
                                     <label for="NumobraContPaq" class="control-label">Número de Obra CONTPAQ</label>
-                                    <input type="number" name="NumobraContPaq" class="form-control" id="NumobraContPaq">
+                                    <input type="number" name="NumobraContPaq" class="form-control" id="NumobraContPaq" v-model="obra.NumobraContPaq">
                                 </div>
                             </div>
                             <div class="col-md-4">
                                 <div class="form-group">
                                     <label for="FormatoCuenta" class="control-label">Formato de Cuentas</label>
-                                    <input type="text" name="FormatoCuenta" class="form-control" id="FormatoCuenta">
+                                    <input type="text" name="FormatoCuenta" class="form-control" id="FormatoCuenta" v-model="obra.FormatoCuenta">
                                 </div>
                             </div>
                         </div>
@@ -55,6 +56,6 @@
                     </form>
                 </div>
             </section>
-        </cuenta-contable-create>
+        </cuenta-contable>
     </div>
 @endsection

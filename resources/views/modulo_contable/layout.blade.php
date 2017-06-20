@@ -13,6 +13,6 @@
                 <li ><a href="{{ url('/modulo_contable/poliza_tipo') }}"><i class='fa fa-book'></i> <span>Plantillas de Póliza</span></a></li>
             </ul>
         </li>
-        <li ><a href="{{route('modulo_contable.cuenta_contable.index')}}"><i class='fa fa-bank'></i> <span>Cuentas contables</span></a></li>
+        <li ><a href="{{route('modulo_contable.cuenta_contable.configuracion')}}"><i class='fa fa-bank'></i> <span>Cuentas contables</span></a></li>
     </ul>
 @endsection
