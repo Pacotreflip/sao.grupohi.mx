@@ -30,7 +30,6 @@ class ObraController extends Controller
 
     public function update(Request $request, $id) {
 
-        dd($request->all());
         $item = $this->obra->update($request->all(), $id);
 
         return response()->json(['data' => ['obra' => $item]], 200);

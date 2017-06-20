@@ -28,7 +28,7 @@
                                         <div class="form-group" :class="{'has-error': validation_errors.has('form_datos_obra.Base de Datos CONTPAQ') }">
                                             <label for="BDContPaq" class="col-md-3 control-label"><b>Base de Datos CONTPAQ</b></label>
                                             <div class="col-md-9">
-                                                <input type="text" v-validate="'required|alpha_num'" name="Base de Datos CONTPAQ" class="form-control" id="BDContPaq" v-model="obra.BDContPaq">
+                                                <input type="text" v-validate="'required'" name="Base de Datos CONTPAQ" class="form-control" id="BDContPaq" v-model="obra.BDContPaq">
                                                 <label class="help" v-show="validation_errors.has('form_datos_obra.Base de Datos CONTPAQ')">@{{ validation_errors.first('form_datos_obra.Base de Datos CONTPAQ') }}</label>
                                             </div>
                                             </div>
