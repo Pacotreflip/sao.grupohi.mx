@@ -28,8 +28,10 @@ class ObraController extends Controller
         $this->obra = $obra;
     }
 
-    public function update(Request $request) {
-        $item = $this->obra->update($request);
+    public function update(Request $request, $id) {
+
+        dd($request->all());
+        $item = $this->obra->update($request->all(), $id);
 
         return response()->json(['data' => ['obra' => $item]], 200);
     }

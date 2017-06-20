@@ -16,6 +16,7 @@
     "jquery": "^3.2.1",
     "roboto-fontface": "^0.7.0",
     "sweetalert2": "^6.6.5",
+    "vee-validate": "^2.0.0-rc.5",
     "vue": "^2.3.4"
   }
 }

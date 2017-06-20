@@ -115,7 +115,7 @@ class EloquentPolizaTipoRepository implements PolizaTipoRepository
             if (! $item = $this->model->find($id)) {
                 throw new HttpResponseException(new Response('No se encontró la plantilla que se desea eliminar', 404));
             }
-
+            array_push($data,['cancelo' => auth()->user()->idusuario]);
             $item->update($data);
 
             foreach ($item->movimientos as $movimiento) {
