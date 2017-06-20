@@ -5,7 +5,9 @@ use Ghi\Domain\Core\Contracts\Identificador;
 use Ghi\Domain\Core\Contracts\Motivo;
 use Ghi\Domain\Core\Contracts\TipoCuentaContableRepository;
 use Ghi\Domain\Core\Models\TipoCuentaContable;
+use Illuminate\Http\Exception\HttpResponseException;
 use Illuminate\Support\Facades\DB;
+use Symfony\Component\HttpFoundation\Response;
 
 class EloquentTipoCuentaContableRepository implements TipoCuentaContableRepository
 {
@@ -30,6 +32,7 @@ class EloquentTipoCuentaContableRepository implements TipoCuentaContableReposito
      */
     public function all()
     {
+        return $this->model->all();
         return $this->model->all();
     }
 
@@ -84,6 +87,10 @@ class EloquentTipoCuentaContableRepository implements TipoCuentaContableReposito
 
             if (! $item = $this->model->find($id)) {
                 throw new HttpResponseException(new Response('No se encontró la plantilla que se desea eliminar', 404));
+            }
+
+            if ($this->model->has('cuentaContable', '>', 0)) {
+                throw new HttpResponseException(new Response('No se puede eliminar el Tipo de Cuenta ya que se encuentra configurada con una cuenta contable', 400));
             }
 
             $item->update($data);

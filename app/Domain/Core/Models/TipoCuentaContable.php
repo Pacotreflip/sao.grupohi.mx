@@ -37,10 +37,19 @@ class TipoCuentaContable extends Model
     }
 
     /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne|CuentaContable
+     */
+    public function cuentaContable() {
+        return $this->hasOne(CuentaContable::class, 'id_int_tipo_cuenta_contable');
+    }
+
+    /**
      * @return string
      */
     public function __toString()
     {
         return $this->descripcion;
     }
+
+
 }

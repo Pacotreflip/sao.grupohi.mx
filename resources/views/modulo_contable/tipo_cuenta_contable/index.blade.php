@@ -29,6 +29,8 @@
                                     <th class="sorting_asc" tabindex="0" aria-controls="polizas_tipo" aria-sort="ascending">#</th>
                                     <th class="sorting" tabindex="0" aria-controls="polizas_tipo">Descripción</th>
                                     <th class="sorting" tabindex="0" aria-controls="polizas_tipo">Registró</th>
+                                    <th class="sorting" tabindex="0" aria-controls="polizas_tipo">Fecha y Hora de Registro</th>
+                                    <th class="sorting" tabindex="0" aria-controls="polizas_tipo">Asignada</th>
                                     <th></th>
                                 </tr>
                                 </thead>
@@ -39,7 +41,15 @@
                                         <td>{{ $index + 1 }}</td>
                                         <td>{{ $item->descripcion  }}</td>
                                         <td>{{ $item->userRegistro }}</td>
+                                        <td>{{ $item->created_at->format('Y-m-d h:i:s a') }}</td>
+                                        <td>
+                                            @if($item->cuentaContable)
+                                                <span class="label label-success">Asignada</span>
 
+                                            @else
+                                                <span class="label label-danger">No Asignada</span>
+                                            @endif
+                                        </td>
                                         <td style="min-width: 90px;max-width: 90px">
                                             <div class="btn-group">
                                                 <a href="{{ route('modulo_contable.poliza_tipo.show', $item->id) }}" type="button" class="btn btn-xs btn-default">
@@ -59,6 +69,8 @@
                                     <th>ID</th>
                                     <th>Descripcion</th>
                                     <th>Registró</th>
+                                    <th>Fecha y Hora de Registro</th>
+                                    <th>Asignada</th>
                                     <th></th>
                                 </tr>
                                 </tfoot>
