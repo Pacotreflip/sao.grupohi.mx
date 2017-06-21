@@ -17,5 +17,13 @@ Route::group(['prefix' => 'modulo_contable'], function () {
     /*
      * Cuenta Contable Routes...
      */
-    Route::get('cuenta_contable/{id}', 'CuentaContableController@getById');
+    Route::get('configuracion/cuenta_contable', 'CuentaContableController@configuracion')->name('modulo_contable.cuenta_contable.configuracion');
+    Route::post('cuenta_contable', 'CuentaContableController@store')->name('modulo_contable.cuenta_contable.store');
+    Route::patch('cuenta_contable/{cuenta_contable}', 'CuentaContableController@update')->name('modulo_contable.cuenta_contable.update');
+
+    /**
+     * Obra
+     */
+    Route::patch('obra/{obra}', 'ObraController@update')->name('modulo_contable.obra.update');
+
 });

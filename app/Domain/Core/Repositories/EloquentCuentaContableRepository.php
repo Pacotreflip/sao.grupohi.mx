@@ -2,6 +2,7 @@
 
 use Ghi\Domain\Core\Contracts\CuentaContableRepository;
 use Ghi\Domain\Core\Models\CuentaContable;
+use Illuminate\Support\Facades\DB;
 
 class EloquentCuentaContableRepository implements CuentaContableRepository
 {
@@ -21,25 +22,82 @@ class EloquentCuentaContableRepository implements CuentaContableRepository
     }
 
     /**
-     * Obtiene una cuenta contable por su Id
-     * @param $id
-     * @return \Ghi\Domain\Core\Models\CuentaContable
+     * Obtiene todas las cuentas contables
+     * @param null|array|string $with
+     * @return \Illuminate\Database\Eloquent\Collection|\Ghi\Domain\Core\Contracts\CuentaContable
      */
-    public function getById($id)
+    public function all($with = null)
     {
+        if($with != null) {
+            return $this->model->with($with)->get();
+        }
+        return $this->model->all();
+    }
+
+    /**
+     *  Obtiene Poliza Tipo por su ID
+     * @param $id
+     * @return \Ghi\Domain\Core\Models\PolizaTipo
+     */
+    public function find($id , $with = null)
+    {
+        if ($with != null) {
+            return $this->model->with($with)->find($id);
+        }
         return $this->model->find($id);
     }
 
     /**
-     * Obtiene las cuentas contables en forma de lista para combos
-     * @return \Illuminate\Database\Eloquent\Collection|CuentaContable
+     * Guarda un registro de cuenta contable
+     * @param array $data
+     * @return \Ghi\Domain\Core\Models\CuentaContable
+     * @throws \Exception
      */
-    public function lists()
+    public function create(array $data)
     {
-        $data = [];
-        foreach ($this->model->all() as $item) {
-            $data[$item->id_int_cuenta_contable] = (String) $item->tipoCuentaContable;
+        try {
+            DB::connection('cadeco')->beginTransaction();
+
+            $item = $this->model->create([
+                'prefijo' => $data['con_prefijo'] == "true" ?  $data['prefijo'] : null,
+                'cuenta_contable' => $data['con_prefijo'] == "true" ? null : $data['cuenta_contable'],
+                'id_int_tipo_cuenta_contable' => $data['id_int_tipo_cuenta_contable']
+            ]);
+
+            DB::connection('cadeco')->commit();
+
+        } catch (\Exception $e) {
+            DB::connection('cadeco')->rollBack();
+            throw $e;
         }
-        return collect($data);
+        return $item->where('id_int_cuenta_contable', '=', $item->id_int_cuenta_contable)->with('tipoCuentaContable')->first();
+    }
+
+    /**
+     * Actualiza un registro de cuenta contable
+     * @param array $data
+     * @return \Ghi\Domain\Core\Models\CuentaContable
+     * @throws \Exception
+     */
+    public function update(array $data)
+    {
+
+        try {
+            DB::connection('cadeco')->beginTransaction();
+            $item = $this->model->findOrFail($data['data']['id_int_cuenta_contable']);
+
+            $item->update([
+                'prefijo' => $data['data']['con_prefijo'] == "true" ?  $data['data']['prefijo'] : null,
+                'cuenta_contable' => $data['data']['con_prefijo'] == "true" ? null : $data['data']['cuenta_contable'],
+                'id_int_tipo_cuenta_contable' => $data['data']['id_int_tipo_cuenta_contable']
+            ]);
+
+            DB::connection('cadeco')->commit();
+
+        } catch (\Exception $e) {
+            DB::connection('cadeco')->rollBack();
+            throw $e;
+        }
+        return $item->where('id_int_cuenta_contable', '=', $item->id_int_cuenta_contable)->with('tipoCuentaContable')->first();
     }
 }

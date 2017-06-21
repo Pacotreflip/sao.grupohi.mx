@@ -6,7 +6,7 @@ use Ghi\Domain\Core\Contracts\MovimientoRepository;
 use Ghi\Domain\Core\Contracts\PolizaTipoRepository;
 use Ghi\Domain\Core\Contracts\TipoMovimientoRepository;
 use Ghi\Domain\Core\Contracts\TransaccionInterfazRepository;
-use Ghi\Http\Requests\CreatePolizaTipoRequest;
+
 use Illuminate\Http\Request;
 
 class PolizaTipoController extends Controller
@@ -83,7 +83,7 @@ class PolizaTipoController extends Controller
     public function create()
     {
         $transacciones_interfaz = $this->transaccion_interfaz->lists();
-        $cuentas_contables = $this->cuenta_contable->lists();
+        $cuentas_contables = $this->cuenta_contable->all('tipoCuentaContable');
         $tipos_movimiento = $this->tipo_movimiento->lists();
 
         return view('modulo_contable.poliza_tipo.create')

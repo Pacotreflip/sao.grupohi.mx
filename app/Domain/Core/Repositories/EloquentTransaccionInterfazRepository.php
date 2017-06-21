@@ -36,7 +36,7 @@ class EloquentTransaccionInterfazRepository implements TransaccionInterfazReposi
      */
     public function all()
     {
-
+        return $this->model->all();
     }
 
     /**

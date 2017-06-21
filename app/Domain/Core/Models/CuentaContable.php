@@ -2,11 +2,17 @@
 
 namespace Ghi\Domain\Core\Models;
 
+use Ghi\Domain\Core\Models\Scopes\ObraScope;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 
 class CuentaContable extends Model
 {
+    use SoftDeletes;
+    var $id_obra;
+
+
     protected $connection = 'cadeco';
     protected $table = 'Contabilidad.int_cuentas_contables';
     protected $primaryKey = 'id_int_cuenta_contable';
@@ -18,15 +24,31 @@ class CuentaContable extends Model
         'cuenta_contable',
         'estatus'
     ];
-    public function obra() {
-        return $this->belongsTo(Obra::class, 'id_obra');
+    protected $dates = ['deleted_at'];
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::addGlobalScope(new ObraScope());
     }
+
+    public function __construct(array $attributes = [])
+    {
+        $attributes['id_obra'] = \Ghi\Core\Facades\Context::getId();
+        parent::__construct($attributes);
+    }
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo|TipoCuentaContable
+     */
     public function tipoCuentaContable() {
         return $this->belongsTo(TipoCuentaContable::class, 'id_int_tipo_cuenta_contable');
     }
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany|MovimientoPoliza
+     */
     public function movimientosPoliza() {
         return $this->hasMany(MovimientoPoliza::class, 'id_cuenta_contable');
     }
-
 }

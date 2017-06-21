@@ -1,5 +1,11 @@
 var elixir = require('laravel-elixir');
 
+var paths = {
+    'bootstrap': './node_modules/bootstrap/',
+    'fontawesome': './node_modules/font-awesome/',
+    'roboto': './node_modules/roboto-fontface/'
+};
+
 /*
  |--------------------------------------------------------------------------
  | Elixir Asset Management
@@ -12,9 +18,12 @@ var elixir = require('laravel-elixir');
  */
 
 elixir(function(mix) {
-    mix.less('app.less');
-    mix.less('admin-lte/AdminLTE.less');
-    mix.less('bootstrap/bootstrap.less');
+    mix.sass('app.scss', './resources/assets/css/sass.css');
+    mix.less('app.less', './resources/assets/css/less.css');
+    mix.styles(['*.css'], 'public/css/app.css');
+    mix.copy(paths.roboto + 'fonts', 'public/build/fonts');
+    mix.copy(paths.bootstrap + 'fonts', 'public/build/fonts');
+    mix.copy(paths.fontawesome + 'fonts', 'public/build/fonts');
     mix.browserify('app.js');
     mix.version(['public/css/app.css', 'public/js/app.js']);
 });

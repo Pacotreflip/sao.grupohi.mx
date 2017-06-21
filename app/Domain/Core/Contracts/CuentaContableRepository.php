@@ -3,15 +3,31 @@
 interface CuentaContableRepository
 {
     /**
+     * Obtiene todas las cuentas contables
+     * @param null|array|string $with
+     * @return \Illuminate\Database\Eloquent\Collection|CuentaContable
+     */
+    public function all($with = null);
+
+    /**
      * Obtiene una cuenta contable por su Id
      * @param $id
      * @return \Ghi\Domain\Core\Models\CuentaContable
      */
-    public function getById($id);
+    public function find($id);
 
     /**
-     * Obtiene las cuentas contables en forma de lista para combos
-     * @return \Illuminate\Database\Eloquent\Collection|CuentaContable
+     * Guarda un registro de cuenta contable
+     * @param array $data
+     * @return \Ghi\Domain\Core\Models\CuentaContable
+     * @throws \Exception
      */
-    public function lists();
+    public function create(array $data);
+    /**
+     * Actualiza un registro de cuenta contable
+     * @param array $data
+     * @return \Ghi\Domain\Core\Models\CuentaContable
+     * @throws \Exception
+     */
+    public function update(array $data);
 }

@@ -10,12 +10,6 @@ interface MovimientoRepository
     public function create($data);
 
     /**
-     * @param $id
-     * @return \Ghi\Domain\Core\Models\MovimientoPoliza
-     */
-    public function getByPolizaTipoId($id);
-
-    /**
      * Obtiene los movimientos que coindican con la busqueda
      * @param $attribute
      * @param $value

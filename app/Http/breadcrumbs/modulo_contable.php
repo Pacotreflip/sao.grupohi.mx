@@ -21,3 +21,11 @@ Breadcrumbs::register('modulo_contable.poliza_tipo.show', function ($breadcrumb,
     $breadcrumb->parent('modulo_contable.poliza_tipo.index');
     $breadcrumb->push($poliza_tipo->transaccion, route('modulo_contable.poliza_tipo.show', $poliza_tipo));
 });
+
+/*
+ * Cuenta Contable
+ */
+Breadcrumbs::register('modulo_contable.cuenta_contable.configuracion', function ($breadcrumb) {
+    $breadcrumb->parent('modulo_contable.index');
+    $breadcrumb->push('CONFIGURACIÓN DE CUENTAS CONTABLES', route('modulo_contable.cuenta_contable.configuracion'));
+});
