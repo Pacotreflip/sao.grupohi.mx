@@ -29,3 +29,10 @@ Breadcrumbs::register('modulo_contable.cuenta_contable.configuracion', function 
     $breadcrumb->parent('modulo_contable.index');
     $breadcrumb->push('CONFIGURACIÓN DE CUENTAS CONTABLES', route('modulo_contable.cuenta_contable.configuracion'));
 });
+/**
+ * Polizas Generales
+ */
+Breadcrumbs::register('modulo_contable.poliza_general.index', function ($breadcrumb) {
+    $breadcrumb->parent('modulo_contable.index');
+    $breadcrumb->push('PÓLIZAS GENERALES', route('modulo_contable.poliza_general.index'));
+});
