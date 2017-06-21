@@ -95,4 +95,12 @@ class EloquentTipoCuentaContableRepository implements TipoCuentaContableReposito
         }
     }
 
+    /**
+     * Obtienes los tipos de cuentas contables en lista para combo
+     * @return array
+     */
+    public function lists()
+    {
+     return $this->model->orderBy('descripcion','ASC')->lists('descripcion','id_tipo_cuenta_contable');
+    }
 }

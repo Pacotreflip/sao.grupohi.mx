@@ -10,6 +10,8 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class CuentaContable extends Model
 {
     use SoftDeletes;
+    var $id_obra;
+
 
     protected $connection = 'cadeco';
     protected $table = 'Contabilidad.int_cuentas_contables';
@@ -31,6 +33,11 @@ class CuentaContable extends Model
         static::addGlobalScope(new ObraScope());
     }
 
+    public function __construct(array $attributes = [])
+    {
+        $attributes['id_obra'] = \Ghi\Core\Facades\Context::getId();
+        parent::__construct($attributes);
+    }
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo|TipoCuentaContable
      */

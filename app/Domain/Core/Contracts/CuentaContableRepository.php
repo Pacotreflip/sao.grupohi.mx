@@ -15,4 +15,19 @@ interface CuentaContableRepository
      * @return \Ghi\Domain\Core\Models\CuentaContable
      */
     public function find($id);
+
+    /**
+     * Guarda un registro de cuenta contable
+     * @param array $data
+     * @return \Ghi\Domain\Core\Models\CuentaContable
+     * @throws \Exception
+     */
+    public function create(array $data);
+    /**
+     * Actualiza un registro de cuenta contable
+     * @param array $data
+     * @return \Ghi\Domain\Core\Models\CuentaContable
+     * @throws \Exception
+     */
+    public function update(array $data);
 }
