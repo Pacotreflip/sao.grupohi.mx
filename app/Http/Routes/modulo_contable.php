@@ -25,5 +25,8 @@ Route::group(['prefix' => 'modulo_contable'], function () {
      * Obra
      */
     Route::patch('obra/{obra}', 'ObraController@update')->name('modulo_contable.obra.update');
-
+    /**
+     * Polizas Generales
+     */
+    Route::get('poliza_general', 'PolizaGeneralController@index')->name('modulo_contable.poliza_general.index');
 });
