@@ -3,6 +3,7 @@
 namespace Ghi\Domain\Core\Models;
 
 use Ghi\Domain\Core\Models\Scopes\ObraScope;
+use Ghi\polizasMovimientos;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -50,5 +51,8 @@ class CuentaContable extends Model
      */
     public function movimientosPoliza() {
         return $this->hasMany(MovimientoPoliza::class, 'id_cuenta_contable');
+    }
+    public function polizaMovimientos() {
+        return $this->hasMany(PolizasMovimientos::class, 'id_cuenta_contable');
     }
 }

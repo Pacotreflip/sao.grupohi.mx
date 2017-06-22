@@ -32,6 +32,8 @@ class CuentaContableController extends Controller
 
         $tipos_cuentas_contables = $this->tipo_cuenta_contable->lists();
         $cuentas_contables = $this->cuenta_contable->all('tipoCuentaContable');
+
+
          return view('modulo_contable.cuenta_contable.configuracion')
             ->with('cuentas_contables', $cuentas_contables)
              ->with('tipos_cuentas_contables',$tipos_cuentas_contables);
