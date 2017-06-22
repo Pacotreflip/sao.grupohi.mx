@@ -2,15 +2,14 @@
 
 namespace Ghi\Domain\Core\Models;
 
-use Ghi\Domain\Core\Models\TiposPolizaContpaq;
-use Ghi\Domain\Core\Models\TransaccionInterfaz;
-use Ghi\Domain\Core\Models\Transacciones;
+use Ghi\PolizaMovimiento;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class polizas extends Model
+class Poliza extends Model
 {
     use SoftDeletes;
+
     protected $connection = 'cadeco';
     protected $table = 'Contabilidad.int_polizas';
     protected $primaryKey = 'id_int_poliza';
@@ -34,20 +33,43 @@ class polizas extends Model
         'id_poliza_contpaq',
         'poliza_contpaq',
         'registro'
-          ];
+    ];
 
+    /**
+     * Poliza constructor.
+     * @param array $attributes
+     */
+    public function __construct(array $attributes = [])
+    {
+        $attributes['id_obra_cadeco'] = \Ghi\Core\Facades\Context::getId();
+        parent::__construct($attributes);
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
     public function transaccionInterfaz() {
         return $this->belongsTo(TransaccionInterfaz::class, 'id_tipo_poliza_interfaz');
     }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
     public function transacciones() {
-        return $this->belongsTo(Transacciones::class, 'id_transaccion_sao');
-    }
-    public function tiposPolizasContpaq() {
-        return $this->belongsTo(TiposPolizaContpaq::class, 'id_tipo_poliza_contpaq');
+        return $this->belongsTo(Transaccion::class, 'id_transaccion_sao');
     }
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function tipoPolizaContpaq() {
+        return $this->belongsTo(TipoPolizaContpaq::class, 'id_tipo_poliza_contpaq');
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
     public function polizasMovimiento() {
-        return $this->hasMany(polizasMovimientos::class, 'id_int_poliza');
+        return $this->hasMany(PolizaMovimiento::class, 'id_int_poliza');
     }
-
 }

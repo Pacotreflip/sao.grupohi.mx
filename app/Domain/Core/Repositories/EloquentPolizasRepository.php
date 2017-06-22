@@ -1,14 +1,8 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: EMARTINEZ
- * Date: 21/06/2017
- * Time: 06:26 PM
- */
 
 namespace Ghi\Domain\Core\Repositories;
+
 use Ghi\Domain\Core\Contracts\PolizasRepository;
-use Ghi\Domain\Core\Models\polizas;
 
 
 class EloquentPolizasRepository implements PolizasRepository
@@ -20,8 +14,8 @@ class EloquentPolizasRepository implements PolizasRepository
     protected $model;
 
     /**
-     * EloquentCuentaContableRepository constructor.
-     * @param \Ghi\Domain\Core\Models\CuentaContable $model
+     * EloquentPolizasRepository constructor.
+     * @param \Ghi\Domain\Core\Models\Polizas $model
      */
     public function __construct(Polizas $model)
     {

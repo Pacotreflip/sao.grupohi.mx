@@ -1,13 +1,14 @@
 <?php
 
-namespace Ghi;
+namespace Ghi\Domain\Core\Models;
 
-use Ghi\Domain\Core\Models\CuentaContable;
-use Ghi\Domain\Core\Models\TipoMovimiento;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-class polizasMovimientos extends Model
-{    use SoftDeletes;
+
+class PolizaMovimiento extends Model
+{
+    use SoftDeletes;
+
     protected $connection = 'cadeco';
     protected $table = 'Contabilidad.int_polizas_movimientos';
     protected $primaryKey = 'id_int_poliza_movimiento';
@@ -28,13 +29,24 @@ class polizasMovimientos extends Model
         'registro'
        ];
 
-    public function polizasMovimientos() {
-        return $this->belongsTo(Polizas::class, 'id_int_poliza');
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function polizaMovimiento() {
+        return $this->belongsTo(Poliza::class, 'id_int_poliza');
     }
-    public function cuentasContables() {
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function cuentaContable() {
         return $this->belongsTo(CuentaContable::class, 'id_cuenta_contable');
     }
-    public function tiposMovimientos() {
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function tipoMovimientos() {
         return $this->belongsTo(TipoMovimiento::class, 'id_tipo_movimiento_poliza');
     }
 }

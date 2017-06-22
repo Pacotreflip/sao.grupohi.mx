@@ -1,10 +1,10 @@
 <?php
 
-namespace Ghi;
+namespace Ghi\Domain\Core\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Transacciones extends Model
+class Transaccion extends Model
 {
     protected $connection = 'cadeco';
     protected $table = 'transacciones';

@@ -7,12 +7,9 @@ use Ghi\polizasMovimientos;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-
 class CuentaContable extends Model
 {
     use SoftDeletes;
-    var $id_obra;
-
 
     protected $connection = 'cadeco';
     protected $table = 'Contabilidad.int_cuentas_contables';
@@ -34,11 +31,16 @@ class CuentaContable extends Model
         static::addGlobalScope(new ObraScope());
     }
 
+    /**
+     * CuentaContable constructor.
+     * @param array $attributes
+     */
     public function __construct(array $attributes = [])
     {
         $attributes['id_obra'] = \Ghi\Core\Facades\Context::getId();
         parent::__construct($attributes);
     }
+
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo|TipoCuentaContable
      */
@@ -52,7 +54,11 @@ class CuentaContable extends Model
     public function movimientosPoliza() {
         return $this->hasMany(MovimientoPoliza::class, 'id_cuenta_contable');
     }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
     public function polizaMovimientos() {
-        return $this->hasMany(PolizasMovimientos::class, 'id_cuenta_contable');
+        return $this->hasMany(PolizaMovimiento::class, 'id_cuenta_contable');
     }
 }
