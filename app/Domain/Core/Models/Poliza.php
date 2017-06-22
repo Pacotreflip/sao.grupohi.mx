@@ -2,7 +2,7 @@
 
 namespace Ghi\Domain\Core\Models;
 
-use Ghi\PolizaMovimiento;
+
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -69,7 +69,7 @@ class Poliza extends Model
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function polizasMovimiento() {
+    public function polizaMovimientos() {
         return $this->hasMany(PolizaMovimiento::class, 'id_int_poliza');
     }
 }

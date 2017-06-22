@@ -36,3 +36,7 @@ Breadcrumbs::register('modulo_contable.poliza_general.index', function ($breadcr
     $breadcrumb->parent('modulo_contable.index');
     $breadcrumb->push('PÓLIZAS GENERALES', route('modulo_contable.poliza_general.index'));
 });
+Breadcrumbs::register('modulo_contable.poliza_general.show', function ($breadcrumb,$poliza) {
+    $breadcrumb->parent('modulo_contable.poliza_general.index');
+    $breadcrumb->push($poliza->tipoPolizaContpaq, route('modulo_contable.poliza_general.show',$poliza));
+});

@@ -10,4 +10,11 @@ interface PolizaRepository
      * @return \Illuminate\Database\Eloquent\Collection|Poliza
      */
     public function all($with = null);
+
+    /**
+     * @param $id
+     * @return mixed \Illuminate\Database\Eloquent\Collection|Poliza
+     */
+    public function find($id);
+
 }

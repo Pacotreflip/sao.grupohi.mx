@@ -16,11 +16,18 @@ class PolizaController extends Controller
         $this->middleware('auth');
         $this->middleware('context');
         $this->poliza = $poliza;
+
     }
 
     public function index()
     {
         $polizas = $this->poliza->all();
         return view('modulo_contable.poliza_general.index')->with('polizas', $polizas);
+    }
+
+    public function show($id)
+    {
+        $polizas = $this->poliza->find($id);
+        return view('modulo_contable.poliza_general.show')->with('poliza', $polizas);
     }
 }

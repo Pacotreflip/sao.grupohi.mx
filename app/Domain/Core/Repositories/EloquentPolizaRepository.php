@@ -35,4 +35,13 @@ class EloquentPolizaRepository implements PolizaRepository
         }
         return $this->model->all();
     }
+
+    /**
+     * @param $id
+     * @return mixed \Illuminate\Database\Eloquent\Collection|Poliza
+     */
+    public function find($id)
+    {
+        return $this->model->find($id);
+    }
 }

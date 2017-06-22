@@ -30,4 +30,5 @@ Route::group(['prefix' => 'modulo_contable'], function () {
      * Polizas Generales
      */
     Route::get('poliza_general', 'PolizaController@index')->name('modulo_contable.poliza_general.index');
+    Route::get('poliza_general/{id}', 'PolizaController@show')->name('modulo_contable.poliza_general.show')->where(['id' => '[0-9]+']);
 });
