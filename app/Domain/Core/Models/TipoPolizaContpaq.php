@@ -14,4 +14,9 @@ class TipoPolizaContpaq extends Model
         'estatus',
         'id_int_tipo_poliza_contpaq'
     ];
+
+    public function __toString()
+    {
+        return $this->descripcion;
+    }
 }

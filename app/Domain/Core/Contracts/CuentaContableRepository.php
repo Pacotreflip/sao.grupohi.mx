@@ -23,6 +23,7 @@ interface CuentaContableRepository
      * @throws \Exception
      */
     public function create(array $data);
+
     /**
      * Actualiza un registro de cuenta contable
      * @param array $data

@@ -34,11 +34,11 @@ class EloquentObraRepository implements ObraRepository
 
         try {
             DB::connection('cadeco')->beginTransaction();
-            if (! $item = $this->model->find($id)) {
+            if (!$item = $this->model->find($id)) {
                 throw new HttpResponseException(new Response('No se encontró la Obra que se desea Actualizar', 404));
             }
 
-            if($data['FormatoCuenta']) {
+            if ($data['FormatoCuenta']) {
                 $regExp = "^";
                 $formato = explode("-", $data['FormatoCuenta']);
                 foreach ($formato as $i => $d) {
@@ -55,7 +55,7 @@ class EloquentObraRepository implements ObraRepository
 
             $item->update($data);
             DB::connection('cadeco')->commit();
-        } catch (\Exception $e){
+        } catch (\Exception $e) {
             DB::connection('cadeco')->rollBack();
             throw $e;
         }

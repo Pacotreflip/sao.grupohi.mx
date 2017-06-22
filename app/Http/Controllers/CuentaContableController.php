@@ -28,15 +28,16 @@ class CuentaContableController extends Controller
         return view('modulo_contable.cuenta_contable.index');
     }
 
-    public function configuracion() {
+    public function configuracion()
+    {
 
         $tipos_cuentas_contables = $this->tipo_cuenta_contable->lists();
         $cuentas_contables = $this->cuenta_contable->all('tipoCuentaContable');
 
 
-         return view('modulo_contable.cuenta_contable.configuracion')
+        return view('modulo_contable.cuenta_contable.configuracion')
             ->with('cuentas_contables', $cuentas_contables)
-             ->with('tipos_cuentas_contables',$tipos_cuentas_contables);
+            ->with('tipos_cuentas_contables', $tipos_cuentas_contables);
     }
 
     /**
@@ -54,10 +55,11 @@ class CuentaContableController extends Controller
             ]
         ], 200);
     }
+
     /**
      * Actualiza un registro de Cuenta Contable
      */
-    public function update(Request $request,$id)
+    public function update(Request $request, $id)
     {
         $item = $this->cuenta_contable->update($request->all());
         $cuentas_contables = $this->cuenta_contable->all('tipoCuentaContable');

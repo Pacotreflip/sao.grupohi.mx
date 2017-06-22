@@ -2,7 +2,9 @@
 
 use Ghi\Domain\Core\Contracts\CuentaContableRepository;
 use Ghi\Domain\Core\Models\CuentaContable;
+use Illuminate\Http\Exception\HttpResponseException;
 use Illuminate\Support\Facades\DB;
+use Symfony\Component\HttpFoundation\Response;
 
 class EloquentCuentaContableRepository implements CuentaContableRepository
 {
@@ -28,7 +30,7 @@ class EloquentCuentaContableRepository implements CuentaContableRepository
      */
     public function all($with = null)
     {
-        if($with != null) {
+        if ($with != null) {
             return $this->model->with($with)->get();
         }
         return $this->model->all();
@@ -39,7 +41,7 @@ class EloquentCuentaContableRepository implements CuentaContableRepository
      * @param $id
      * @return \Ghi\Domain\Core\Models\PolizaTipo
      */
-    public function find($id , $with = null)
+    public function find($id, $with = null)
     {
         if ($with != null) {
             return $this->model->with($with)->find($id);
@@ -59,7 +61,7 @@ class EloquentCuentaContableRepository implements CuentaContableRepository
             DB::connection('cadeco')->beginTransaction();
 
             $item = $this->model->create([
-                'prefijo' => $data['con_prefijo'] == "true" ?  $data['prefijo'] : null,
+                'prefijo' => $data['con_prefijo'] == "true" ? $data['prefijo'] : null,
                 'cuenta_contable' => $data['con_prefijo'] == "true" ? null : $data['cuenta_contable'],
                 'id_int_tipo_cuenta_contable' => $data['id_int_tipo_cuenta_contable']
             ]);
@@ -84,10 +86,12 @@ class EloquentCuentaContableRepository implements CuentaContableRepository
 
         try {
             DB::connection('cadeco')->beginTransaction();
-            $item = $this->model->findOrFail($data['data']['id_int_cuenta_contable']);
+            if (!$item = $this->model->find($data['data']['id_int_cuenta_contable'])) {
+                throw new HttpResponseException(new Response('No se encontró la poliza', 404));
+            }
 
             $item->update([
-                'prefijo' => $data['data']['con_prefijo'] == "true" ?  $data['data']['prefijo'] : null,
+                'prefijo' => $data['data']['con_prefijo'] == "true" ? $data['data']['prefijo'] : null,
                 'cuenta_contable' => $data['data']['con_prefijo'] == "true" ? null : $data['data']['cuenta_contable'],
                 'id_int_tipo_cuenta_contable' => $data['data']['id_int_tipo_cuenta_contable']
             ]);

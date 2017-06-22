@@ -35562,9 +35562,8 @@ require('./vue-components/errors');
 require('./vue-components/poliza_tipo/poliza-tipo-create');
 require('./vue-components/select2');
 require('./vue-components/cuenta_contable/cuenta-contable');
-require('./vue-components/polizas_general/poliza-general-create');
 
-},{"./vue-components/cuenta_contable/cuenta-contable":28,"./vue-components/errors":29,"./vue-components/global-errors":30,"./vue-components/poliza_tipo/poliza-tipo-create":31,"./vue-components/polizas_general/poliza-general-create":32,"./vue-components/select2":33}],28:[function(require,module,exports){
+},{"./vue-components/cuenta_contable/cuenta-contable":28,"./vue-components/errors":29,"./vue-components/global-errors":30,"./vue-components/poliza_tipo/poliza-tipo-create":31,"./vue-components/select2":32}],28:[function(require,module,exports){
 'use strict';
 
 Vue.component('cuenta-contable', {
@@ -35809,7 +35808,7 @@ Vue.component('app-errors', {
     template: require('./templates/errors.html')
 });
 
-},{"./templates/errors.html":34}],30:[function(require,module,exports){
+},{"./templates/errors.html":33}],30:[function(require,module,exports){
 'use strict';
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
@@ -35835,7 +35834,7 @@ Vue.component('global-errors', {
   }
 });
 
-},{"./templates/global-errors.html":35}],31:[function(require,module,exports){
+},{"./templates/global-errors.html":34}],31:[function(require,module,exports){
 'use strict';
 
 Vue.component('poliza-tipo-create', {
@@ -36029,41 +36028,6 @@ Vue.component('poliza-tipo-create', {
 },{}],32:[function(require,module,exports){
 'use strict';
 
-Vue.component('poliza-general-create', {
-    props: ['polizas'],
-    data: function data() {
-        return {
-            'form': {
-                'poliza_seleccionada': {
-                    'tipo_poliza': '',
-                    'concepto': '',
-                    'total': '',
-                    'cuadre': '',
-                    'estatus': '',
-                    'poliza_contpaq': '',
-                    'usuario_registro': '',
-                    'fecha_registro': ''
-
-                },
-                'errors': []
-            },
-            'guardando': false
-        };
-    },
-
-    methods: {
-        ver_detalle: function ver_detalle(e) {
-            var self = this;
-            console.log(e.tipos_polizas_contpaq.descripcion);
-            Vue.set(self.form.poliza_seleccionada, 'tipo_poliza', e.tipos_polizas_contpaq.descripcion);
-            Vue.set(self.form.poliza_seleccionada, 'fecha_registro', e.created_at);
-            Vue.set(self.form.poliza_seleccionada, 'concepto', e.concepto);
-        } }
-});
-
-},{}],33:[function(require,module,exports){
-'use strict';
-
 Vue.component('select2', {
     props: ['options', 'value'],
     template: '<select><slot></slot></select>',
@@ -36107,9 +36071,9 @@ Vue.component('select2', {
     }
 });
 
-},{}],34:[function(require,module,exports){
+},{}],33:[function(require,module,exports){
 module.exports = '<div id="form-errors" v-cloak>\n  <div class="alert alert-danger" v-if="form.errors.length">\n    <ul>\n      <li v-for="error in form.errors">{{ error }}</li>\n    </ul>\n  </div>\n</div>';
-},{}],35:[function(require,module,exports){
+},{}],34:[function(require,module,exports){
 module.exports = '<div class="alert alert-danger" v-show="errors.length">\n  <ul>\n    <li v-for="error in errors">{{ error }}</li>\n  </ul>\n</div>';
 },{}]},{},[25]);
 

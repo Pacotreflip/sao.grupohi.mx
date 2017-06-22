@@ -1,7 +1,7 @@
 <?php namespace Ghi\Domain\Core\Contracts;
 
 
-interface PolizasRepository
+interface PolizaRepository
 {
 
     /**

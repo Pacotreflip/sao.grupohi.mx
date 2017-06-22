@@ -73,8 +73,8 @@ class AppServiceProvider extends ServiceProvider
         );
 
         $this->app->bind(
-            \Ghi\Domain\Core\Contracts\PolizasRepository::class,
-            \Ghi\Domain\Core\Repositories\EloquentPolizasRepository::class
+            \Ghi\Domain\Core\Contracts\PolizaRepository::class,
+            \Ghi\Domain\Core\Repositories\EloquentPolizaRepository::class
         );
     }
 }

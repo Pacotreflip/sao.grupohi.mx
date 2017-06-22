@@ -13,7 +13,7 @@ class EloquentTipoMovimientoRepository implements TipoMovimientoRepository
 
     /**
      * EloquentTipoMovimientoRepository constructor.
-     * @param \Ghi\Domain\Core\Models\TipoMovimiento$model
+     * @param \Ghi\Domain\Core\Models\TipoMovimiento $model
      */
     public function __construct(TipoMovimiento $model)
     {

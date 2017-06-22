@@ -65,5 +65,5 @@ class Transaccion extends Model
         'fecha_ejecucion',
         'fecha_contable',
         'anticipo_pactado_monto'
-        ];
+    ];
 }

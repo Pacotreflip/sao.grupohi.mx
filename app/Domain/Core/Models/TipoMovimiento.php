@@ -11,6 +11,10 @@ class TipoMovimiento extends Model
     protected $fillable = [
         'descripcion'
     ];
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany|MovimientoPoliza
+     */
     public function movimientosPoliza() {
         return $this->hasMany(MovimientoPoliza::class, 'id_tipo_movimiento');
     }

@@ -55,14 +55,13 @@ class EloquentTipoCuentaContableRepository implements TipoCuentaContableReposito
             DB::connection('cadeco')->beginTransaction();
 
             $tipo_cuenta_contable = $this->model->create([
-                'descripcion'             => $data['descripcion'],
-                'registro'                => auth()->user()->idusuario,
-                'id_obra'                 => Context::getId()
+                'descripcion' => $data['descripcion'],
+                'registro' => auth()->user()->idusuario,
+                'id_obra' => Context::getId()
             ]);
 
             DB::connection('cadeco')->commit();
-        }
-        catch(\Exception $e){
+        } catch (\Exception $e) {
             DB::connection('cadeco')->rollBack();
             throw $e;
         }
@@ -81,7 +80,7 @@ class EloquentTipoCuentaContableRepository implements TipoCuentaContableReposito
         try {
             DB::connection('cadeco')->beginTransaction();
 
-            if (! $item = $this->model->find($id)) {
+            if (!$item = $this->model->find($id)) {
                 throw new HttpResponseException(new Response('No se encontró la plantilla que se desea eliminar', 404));
             }
 
@@ -101,6 +100,6 @@ class EloquentTipoCuentaContableRepository implements TipoCuentaContableReposito
      */
     public function lists()
     {
-     return $this->model->orderBy('descripcion','ASC')->lists('descripcion','id_tipo_cuenta_contable');
+        return $this->model->orderBy('descripcion', 'ASC')->lists('descripcion', 'id_tipo_cuenta_contable');
     }
 }

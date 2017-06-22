@@ -9,8 +9,8 @@ Route::group(['prefix' => 'modulo_contable'], function () {
     Route::get('poliza_tipo', 'PolizaTipoController@index')->name('modulo_contable.poliza_tipo.index');
     Route::get('poliza_tipo/findBy', 'PolizaTipoController@findBy');
     Route::get('poliza_tipo/create', 'PolizaTipoController@create')->name('modulo_contable.poliza_tipo.create');
-    Route::delete('poliza_tipo/{id}', 'PolizaTipoController@destroy')->name('modulo_contable.poliza_tipo.destroy')->where(['id'=>'[0-9]+']);
-    Route::get('poliza_tipo/{id}', 'PolizaTipoController@show')->name('modulo_contable.poliza_tipo.show')->where(['id'=>'[0-9]+']);
+    Route::delete('poliza_tipo/{id}', 'PolizaTipoController@destroy')->name('modulo_contable.poliza_tipo.destroy')->where(['id' => '[0-9]+']);
+    Route::get('poliza_tipo/{id}', 'PolizaTipoController@show')->name('modulo_contable.poliza_tipo.show')->where(['id' => '[0-9]+']);
     Route::post('poliza_tipo', 'PolizaTipoController@store');
     Route::get('poliza_tipo/{id}/check_fecha', 'PolizaTipoController@check_fecha');
 
@@ -25,8 +25,9 @@ Route::group(['prefix' => 'modulo_contable'], function () {
      * Obra
      */
     Route::patch('obra/{obra}', 'ObraController@update')->name('modulo_contable.obra.update');
+
     /**
      * Polizas Generales
      */
-    Route::get('poliza_general', 'PolizaGeneralController@index')->name('modulo_contable.poliza_general.index');
+    Route::get('poliza_general', 'PolizaController@index')->name('modulo_contable.poliza_general.index');
 });
