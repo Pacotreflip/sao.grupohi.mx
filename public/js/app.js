@@ -35554,6 +35554,17 @@ $(function () {
     });
 });
 
+Number.prototype.formatMoney = function (c, d, t) {
+    var n = this,
+        c = isNaN(c = Math.abs(c)) ? 2 : c,
+        d = d == undefined ? "." : d,
+        t = t == undefined ? "," : t,
+        s = n < 0 ? "-" : "",
+        i = String(parseInt(n = Math.abs(Number(n) || 0).toFixed(c))),
+        j = (j = i.length) > 3 ? j % 3 : 0;
+    return s + (j ? i.substr(0, j) + t : "") + i.substr(j).replace(/(\d{3})(?=\d)/g, "$1" + t) + (c ? d + Math.abs(n - i).toFixed(c).slice(2) : "");
+};
+
 },{}],27:[function(require,module,exports){
 'use strict';
 
@@ -35838,53 +35849,16 @@ Vue.component('global-errors', {
 },{"./templates/global-errors.html":35}],31:[function(require,module,exports){
 'use strict';
 
-var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
-
 Vue.component('poliza-generada-edit', {
     props: ['poliza'],
     data: function data() {
         return {
             data: {
-                'poliza': this.poliza,
-                'poliza_edit': this.poliza
+                'poliza': this.poliza
             },
             'form': {},
             'guardando': false
         };
-    },
-
-    computed: {
-        cambio: function cambio() {
-            Object.extend(Object, {
-                deepEquals: function (_deepEquals) {
-                    function deepEquals(_x, _x2) {
-                        return _deepEquals.apply(this, arguments);
-                    }
-
-                    deepEquals.toString = function () {
-                        return _deepEquals.toString();
-                    };
-
-                    return deepEquals;
-                }(function (o1, o2) {
-                    var k1 = Object.keys(o1).sort();
-                    var k2 = Object.keys(o2).sort();
-                    if (k1.length != k2.length) return false;
-                    return k1.zip(k2, function (keyPair) {
-                        if (_typeof(o1[keyPair[0]]) == _typeof(o2[keyPair[1]]) == "object") {
-                            return deepEquals(o1[keyPair[0]], o2[keyPair[1]]);
-                        } else {
-                            return o1[keyPair[0]] == o2[keyPair[1]];
-                        }
-                    }).all();
-                })
-            });
-
-            var anObj = JSON.parse(this.data.poliza);
-            var anotherObj = JSON.parse(this.data.poliza_edit);
-
-            return Object.deepEquals(anObj, anotherObj);
-        }
     }
 
 });

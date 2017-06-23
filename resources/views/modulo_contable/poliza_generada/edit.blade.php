@@ -7,11 +7,7 @@
     {!! Breadcrumbs::render('modulo_contable.poliza_generada.edit', $poliza) !!}
 
     <div id="app">
-        <poliza-generada-edit
-                :poliza="{{$poliza}}"
-                inline-template
-                v-cloak
-        >
+        <poliza-generada-edit v-bind:poliza="{{$poliza}}" inline-template v-cloak>
             <section>
                 <div class="row">
                     <div class="col-md-12">
@@ -32,13 +28,22 @@
                                         </tr>
                                         <tr>
                                             <th colspan="4" class="bg-gray-light">Concepto:<br>
-                                                <input type="text" class="form-control" v-model="data.poliza_edit.concepto">
+                                                <input type="text" class="form-control" v-model="data.poliza.concepto">
                                             </th>
                                             <th colspan="2" class="bg-gray-light">Usuario
                                                 Solicita:<br><label> {{$poliza->user_registro }}</label></th>
 
                                         </tr>
                                     </table>
+
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <a class="btn btn-app btn-sm btn-success pull-right">
+                                                <i class="fa fa-plus"></i> Movimiento
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <br>
                                     <table v-if="data.poliza.poliza_movimientos.length" class="table table-bordered small">
 
                                             <tr>
@@ -55,12 +60,12 @@
                                                     <td>@{{ movimiento.descripcion_cuenta_contable}}</td>
                                                     <td class="bg-gray-light numerico">
                                                         <span v-if="movimiento.id_tipo_movimiento_poliza == 1">
-                                                            $ @{{number_format(movimiento.importe,'2','.',',') }}
+                                                            $ @{{(movimiento.importe) }}
                                                         </span>
                                                     </td>
                                                     <td class="bg-gray-light numerico">
                                                         <span v-if="movimiento.id_tipo_movimiento_poliza == 1">
-                                                            $ @{{number_format(movimiento.importe,'2','.',',') }}
+                                                            $ @{{(movimiento.importe) }}
                                                         </span>
                                                     </td>
                                                     <td>@{{movimiento.referencia}}</td>
@@ -71,15 +76,15 @@
 
                                                 <td colspan="2" class="bg-gray"><b>Sumas Iguales</b></td>
                                                 <td class="bg-gray numerico">
-                                                    <b>${{number_format($poliza->sumaDebe,'2','.',',')}}</b></td>
+                                                    <b>$@{{(poliza.suma_debe)}}</b></td>
                                                 <td class="bg-gray numerico">
-                                                    <b>${{number_format($poliza->sumaHaber,'2','.',',')}}</b></td>
+                                                    <b>$@{{(poliza.suma_haber)}}</b></td>
                                                 <td class="bg-gray"></td>
                                                 <td class="bg-gray"></td>
                                             </tr>
 
                                         </table>
-                                        <div class="col-sm-12" style="text-align: right"><h4><b>Total de la Póliza:</b>  ${{number_format($movimiento->sum('importe'),'2','.',',')}}</h4></div>
+                                        <div class="col-sm-12" style="text-align: right"><h4><b>Total de la Póliza:</b>  $@{{(poliza.total)}}</h4></div>
                                 </div>
                             </div>
                         </div>

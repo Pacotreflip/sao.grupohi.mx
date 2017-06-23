@@ -3,8 +3,7 @@ Vue.component('poliza-generada-edit', {
     data: function () {
         return {
             data: {
-                'poliza': this.poliza,
-                'poliza_edit' : this.poliza
+                'poliza': this.poliza
             },
             'form': {},
             'guardando': false

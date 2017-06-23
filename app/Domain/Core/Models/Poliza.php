@@ -35,7 +35,7 @@ class Poliza extends Model
         'registro'
     ];
 
-    protected $appends = ['descripcion_cuenta_contable'];
+    protected $appends = ['suma_debe', 'suma_haber'];
 
     /**
      * Poliza constructor.
@@ -116,8 +116,4 @@ class Poliza extends Model
         return $result;
     }
 
-    public function __toString()
-    {
-        return (String) $this->tipoPolizaContpaq;
-    }
 }

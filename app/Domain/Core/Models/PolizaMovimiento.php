@@ -27,7 +27,9 @@ class PolizaMovimiento extends Model
         'estatus',
         'timestamp',
         'registro'
-       ];
+    ];
+
+    protected $appends = ['descripcion_cuenta_contable'];
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
