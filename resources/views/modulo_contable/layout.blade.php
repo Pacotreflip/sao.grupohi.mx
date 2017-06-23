@@ -16,6 +16,6 @@
             </ul>
         </li>
         <li ><a href="{{route('modulo_contable.cuenta_contable.configuracion')}}"><i class='fa fa-bank'></i> <span>Cuentas contables</span></a></li>
-        <li ><a href="{{ url('/modulo_contable/poliza_general') }}"><i class='fa fa-file-text-o'></i> <span>Pólizas Generales</span></a></li>
+        <li ><a href="{{ url('/modulo_contable/poliza_general') }}"><i class='fa fa-file-text-o'></i> <span>Pólizas Generadas</span></a></li>
     </ul>
 @endsection

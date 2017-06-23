@@ -1,6 +1,6 @@
 @extends('modulo_contable.layout')
 @section('title', 'Póliza General')
-@section('contentheader_title', 'PÓLIZA GENERAL')
+@section('contentheader_title', 'PÓLIZA GENERADA')
 
 @section('main-content')
     {!! Breadcrumbs::render('modulo_contable.poliza_general.show',$poliza) !!}
@@ -14,57 +14,72 @@
 
                 <div class="box-body">
                     <div class="table-responsive">
-                        <table class="table table-bordered ">
+                        <table class="table table-bordered small">
                             <tr>
-                                <th>Tipo de Póliza</th>
+                                <th colspan="5" class="bg-gray-light">Poliza
+                                    :<br><label>{{ $poliza->tipoPolizaContpaq}}</label></th>
+                                <th class="bg-gray-light">Fecha de Solicitud
+                                    :<br><label>{{ $poliza->created_at->format('Y-m-d h:i:s a') }}</label></th>
+                            </tr>
+                            <tr>
+                                <th colspan="4" class="bg-gray-light">Concepto:
+                                    <br><label> {{$poliza->concepto }}</label></th>
+                                <th colspan="2" class="bg-gray-light">Usuario
+                                    Solicita:<br><label> {{$poliza->user_registro }}</label></th>
 
-                                <th>Total</th>
-                                <th>Cuadre</th>
-                                <th>Estatus</th>
-                                <th>Poliza ContPaq</th>
                             </tr>
-                            <tr>
-                                <td>{{ $poliza->tipoPolizaContpaq}}</td>
+                        </table>
 
-                                <td>{{ $poliza->total}}</td>
-                                <td>{{ $poliza->cuadre}}</td>
-                                <td>1</td>
-                                <td>No lanzado</td>
-                            </tr>
-                            <tr>
-                                <th>Cuenta Contable</th>
-                                <th>Referencia</th>
-                                <th>Concepto</th>
-                                <th>Debe</th>
-                                <th>Haber</th>
-                            </tr>
-                            @foreach($poliza->polizaMovimientos as $movimiento)
+                        @if($poliza->polizaMovimientos()->count())
+                            <table class="table table-bordered small">
+                                <!--  <tr>
+                                       <th>Tipo de Póliza</th>
+
+                                       <th>Total</th>
+                                       <th>Cuadre</th>
+                                       <th>Estatus</th>
+                                       <th>Poliza ContPaq</th>
+                                   </tr>
+
+                                   -->
                                 <tr>
-                                    <td>{{$movimiento->cuenta_contable}}</td>
-                                    <td>ref</td>
-                                    <td>pago de algo</td>
-                                    <td>150</td>
-                                    <td></td>
+                                    <th class="bg-gray-light">Cuenta Contable</th>
+                                    <th class="bg-gray-light">Nombre Cuenta Contable</th>
+                                    <th class="bg-gray-light">Debe</th>
+                                    <th class="bg-gray-light">Haber</th>
+                                    <th class="bg-gray-light">Referencia</th>
+                                    <th class="bg-gray-light">Concepto</th>
+
                                 </tr>
-                            @endforeach
-                            <tr>
-                                <td colspan="2"></td>
-                                <td>Sumas Iguales</td>
-                                <td></td>
-                                <td></td>
-                            </tr>
+                                @foreach($poliza->polizaMovimientos as $movimiento)
+                                    <tr>
+                                        <td>{{$movimiento->cuenta_contable}}</td>
+                                        <td>{{$movimiento->descripcion_cuenta_contable}}</td>
+                                        <td class="bg-gray-light numerico">@if($movimiento->id_tipo_movimiento_poliza==1)
+                                                ${{number_format($movimiento->importe,'2','.',',')}}@endif</td>
+                                        <td class="bg-gray-light numerico">@if($movimiento->id_tipo_movimiento_poliza==2)
+                                                ${{number_format($movimiento->importe,'2','.',',')}}@endif</td>
+                                        <td>{{$movimiento->referencia}}</td>
+                                        <td>{{$movimiento->concepto}}</td>
 
-                        </table>
+                                    </tr>
+                                @endforeach
+                                <tr>
 
-                        <table class="table table-bordered ">
-                            <tr>
-                                <th>Concepto</th>
+                                    <td colspan="2" class="bg-gray"><b>Sumas Iguales</b></td>
+                                    <td class="bg-gray numerico">
+                                        <b>${{number_format($poliza->sumaDebe,'2','.',',')}}</b></td>
+                                    <td class="bg-gray numerico">
+                                        <b>${{number_format($poliza->sumaHaber,'2','.',',')}}</b></td>
+                                    <td class="bg-gray"></td>
+                                    <td class="bg-gray"></td>
+                                </tr>
 
-                            </tr>
-                            <tr>
-                                <td>{{$poliza->concepto}}</td>
-                            </tr>
-                        </table>
+                            </table>
+                            <div class="col-sm-12" style="text-align: right"><h4><b>Total de la Póliza:</b>  ${{number_format($movimiento->sum('importe'),'2','.',',')}}</h4></div>
+                        @endif
+
+
                     </div>
                 </div>
             </div>

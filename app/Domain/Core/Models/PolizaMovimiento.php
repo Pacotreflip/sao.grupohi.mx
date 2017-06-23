@@ -49,4 +49,13 @@ class PolizaMovimiento extends Model
     public function tipoMovimientos() {
         return $this->belongsTo(TipoMovimiento::class, 'id_tipo_movimiento_poliza');
     }
+
+    public function getDescripcionCuentaContableAttribute(){
+        if ($cuenta_contable = CuentaContable::where('cuenta_contable', '=', $this->cuenta_contable)->first()) {
+            return (String) $cuenta_contable->tipoCuentaContable;
+        } else {
+            return "No Registrada";
+        }
+    }
+
 }
