@@ -35851,7 +35851,7 @@ Vue.component('global-errors', {
 'use strict';
 
 Vue.component('poliza-generada-edit', {
-    props: ['poliza', 'poliza_edit', 'obra', 'url_cuenta_contable_findby'],
+    props: ['poliza', 'poliza_edit', 'obra', 'url_cuenta_contable_findby', 'url_poliza_generada_update'],
     data: function data() {
         return {
             'data': {
@@ -35986,6 +35986,48 @@ Vue.component('poliza-generada-edit', {
 
         remove_movimiento: function remove_movimiento(index) {
             Vue.delete(this.data.poliza_edit.poliza_movimientos, index);
+        },
+
+        confirm_save: function confirm_save() {
+            var self = this;
+            swal({
+                title: "Guardar Cambios de la Póliza",
+                text: "¿Estás seguro de que la información es correcta?",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonText: "Si, Continuar",
+                cancelButtonText: "No, Cancelar"
+            }).then(function () {
+                self.save();
+            }).catch(swal.noop);
+        },
+
+        save: function save() {
+            var self = this;
+
+            $.ajax({
+                type: 'POST',
+                url: self.url_poliza_generada_update,
+                data: {
+                    _method: 'PATCH',
+                    poliza_generada: self.data.poliza_edit
+                },
+                beforeSend: function beforeSend() {
+                    self.guardando = true;
+                },
+                success: function success(data, textStatus, xhr) {
+                    self.data.poliza = data.data.poliza_generada;
+                    self.data.poliza_edit = data.data.poliza_generada;
+                    swal({
+                        type: 'success',
+                        title: 'Correcto',
+                        html: 'Póliza  <b>' + self.data.poliza_edit.tipo_poliza_contpaq.descripcion + '</b> actualizada correctamente'
+                    });
+                },
+                complete: function complete() {
+                    self.guardando = false;
+                }
+            });
         }
     }
 });
