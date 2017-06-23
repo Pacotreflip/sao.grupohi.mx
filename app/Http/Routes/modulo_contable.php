@@ -35,9 +35,13 @@ Route::group(['prefix' => 'modulo_contable'], function () {
     Route::patch('obra/{obra}', 'ObraController@update')->name('modulo_contable.obra.update');
 
     /**
-     * Polizas Generales
+     * Polizas Generadas
      */
     Route::get('poliza_generada', 'PolizaController@index')->name('modulo_contable.poliza_generada.index');
     Route::get('poliza_generada/{id}', 'PolizaController@show')->name('modulo_contable.poliza_generada.show')->where(['id' => '[0-9]+']);
     Route::get('poliza_generada/{id}/edit', 'PolizaController@edit')->name('modulo_contable.poliza_generada.edit')->where(['id' => '[0-9]+']);
+    Route::patch('poliza_generada/{id}', 'PolizaController@update')->name('modulo_contable.poliza_generada.update')->where(['id' => '[0-9]+']);
+
+    Route::get('poliza_generada/{poliza}/historico', 'PolizaHistoricoController@index')->name('modulo_contable.poliza_generada.historico')->where(['id' => '[0-9]+']);
+
 });

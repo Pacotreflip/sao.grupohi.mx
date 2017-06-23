@@ -68,13 +68,13 @@
                                 @endforeach
                                 <tr>
 
-                                    <td colspan="2" class="bg-gray"><b>Sumas Iguales</b></td>
-                                    <td class="bg-gray numerico">
+                                    <td colspan="2" class="bg-gray @if($poliza->cuadrado!=1) bg-red @endif" style="text-align: right"><b>Sumas Iguales  </b></td>
+                                    <td class="bg-gray numerico @if($poliza->cuadrado!=1) bg-red @endif">
                                         <b>${{number_format($poliza->sumaDebe,'2','.',',')}}</b></td>
-                                    <td class="bg-gray numerico">
+                                    <td class="bg-gray numerico @if($poliza->cuadrado!=1) bg-red @endif">
                                         <b>${{number_format($poliza->sumaHaber,'2','.',',')}}</b></td>
-                                    <td class="bg-gray"></td>
-                                    <td class="bg-gray"></td>
+                                    <td class="bg-gray @if($poliza->cuadrado!=1) bg-red @endif"></td>
+                                    <td class="bg-gray @if($poliza->cuadrado!=1) bg-red @endif"></td>
                                 </tr>
 
                             </table>

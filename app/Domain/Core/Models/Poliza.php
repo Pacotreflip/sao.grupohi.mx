@@ -116,4 +116,15 @@ class Poliza extends Model
         return $result;
     }
 
+    /**
+     * @return int
+     */
+    public function getCuadradoAttribute()
+    {
+        if($this->SumaHaber!=$this->total||$this->SumaDebe!=$this->total){
+            return false;
+        }
+        return true;
+    }
+
 }

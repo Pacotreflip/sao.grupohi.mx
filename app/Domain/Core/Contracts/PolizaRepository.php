@@ -17,4 +17,12 @@ interface PolizaRepository
      */
     public function find($id, $with = null);
 
+
+    /**
+     * @param array $data
+     * @param $id
+     * @return mixed \Illuminate\Database\Eloquent\Collection|Poliza
+     * @throws \Exception
+     */
+    public function update(array $data, $id);
 }
