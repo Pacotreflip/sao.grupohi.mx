@@ -35562,8 +35562,9 @@ require('./vue-components/errors');
 require('./vue-components/poliza_tipo/poliza-tipo-create');
 require('./vue-components/select2');
 require('./vue-components/cuenta_contable/cuenta-contable');
+require('./vue-components/poliza_generada/poliza-generada-edit');
 
-},{"./vue-components/cuenta_contable/cuenta-contable":28,"./vue-components/errors":29,"./vue-components/global-errors":30,"./vue-components/poliza_tipo/poliza-tipo-create":31,"./vue-components/select2":32}],28:[function(require,module,exports){
+},{"./vue-components/cuenta_contable/cuenta-contable":28,"./vue-components/errors":29,"./vue-components/global-errors":30,"./vue-components/poliza_generada/poliza-generada-edit":31,"./vue-components/poliza_tipo/poliza-tipo-create":32,"./vue-components/select2":33}],28:[function(require,module,exports){
 'use strict';
 
 Vue.component('cuenta-contable', {
@@ -35808,7 +35809,7 @@ Vue.component('app-errors', {
     template: require('./templates/errors.html')
 });
 
-},{"./templates/errors.html":33}],30:[function(require,module,exports){
+},{"./templates/errors.html":34}],30:[function(require,module,exports){
 'use strict';
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
@@ -35834,7 +35835,61 @@ Vue.component('global-errors', {
   }
 });
 
-},{"./templates/global-errors.html":34}],31:[function(require,module,exports){
+},{"./templates/global-errors.html":35}],31:[function(require,module,exports){
+'use strict';
+
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+
+Vue.component('poliza-generada-edit', {
+    props: ['poliza'],
+    data: function data() {
+        return {
+            data: {
+                'poliza': this.poliza,
+                'poliza_edit': this.poliza
+            },
+            'form': {},
+            'guardando': false
+        };
+    },
+
+    computed: {
+        cambio: function cambio() {
+            Object.extend(Object, {
+                deepEquals: function (_deepEquals) {
+                    function deepEquals(_x, _x2) {
+                        return _deepEquals.apply(this, arguments);
+                    }
+
+                    deepEquals.toString = function () {
+                        return _deepEquals.toString();
+                    };
+
+                    return deepEquals;
+                }(function (o1, o2) {
+                    var k1 = Object.keys(o1).sort();
+                    var k2 = Object.keys(o2).sort();
+                    if (k1.length != k2.length) return false;
+                    return k1.zip(k2, function (keyPair) {
+                        if (_typeof(o1[keyPair[0]]) == _typeof(o2[keyPair[1]]) == "object") {
+                            return deepEquals(o1[keyPair[0]], o2[keyPair[1]]);
+                        } else {
+                            return o1[keyPair[0]] == o2[keyPair[1]];
+                        }
+                    }).all();
+                })
+            });
+
+            var anObj = JSON.parse(this.data.poliza);
+            var anotherObj = JSON.parse(this.data.poliza_edit);
+
+            return Object.deepEquals(anObj, anotherObj);
+        }
+    }
+
+});
+
+},{}],32:[function(require,module,exports){
 'use strict';
 
 Vue.component('poliza-tipo-create', {
@@ -36025,7 +36080,7 @@ Vue.component('poliza-tipo-create', {
     }
 });
 
-},{}],32:[function(require,module,exports){
+},{}],33:[function(require,module,exports){
 'use strict';
 
 Vue.component('select2', {
@@ -36071,9 +36126,9 @@ Vue.component('select2', {
     }
 });
 
-},{}],33:[function(require,module,exports){
-module.exports = '<div id="form-errors" v-cloak>\n  <div class="alert alert-danger" v-if="form.errors.length">\n    <ul>\n      <li v-for="error in form.errors">{{ error }}</li>\n    </ul>\n  </div>\n</div>';
 },{}],34:[function(require,module,exports){
+module.exports = '<div id="form-errors" v-cloak>\n  <div class="alert alert-danger" v-if="form.errors.length">\n    <ul>\n      <li v-for="error in form.errors">{{ error }}</li>\n    </ul>\n  </div>\n</div>';
+},{}],35:[function(require,module,exports){
 module.exports = '<div class="alert alert-danger" v-show="errors.length">\n  <ul>\n    <li v-for="error in errors">{{ error }}</li>\n  </ul>\n</div>';
 },{}]},{},[25]);
 

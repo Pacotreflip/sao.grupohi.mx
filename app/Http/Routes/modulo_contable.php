@@ -29,6 +29,7 @@ Route::group(['prefix' => 'modulo_contable'], function () {
     /**
      * Polizas Generales
      */
-    Route::get('poliza_general', 'PolizaController@index')->name('modulo_contable.poliza_general.index');
-    Route::get('poliza_general/{id}', 'PolizaController@show')->name('modulo_contable.poliza_general.show')->where(['id' => '[0-9]+']);
+    Route::get('poliza_generada', 'PolizaController@index')->name('modulo_contable.poliza_generada.index');
+    Route::get('poliza_generada/{id}', 'PolizaController@show')->name('modulo_contable.poliza_generada.show')->where(['id' => '[0-9]+']);
+    Route::get('poliza_generada/{id}/edit', 'PolizaController@edit')->name('modulo_contable.poliza_generada.edit')->where(['id' => '[0-9]+']);
 });

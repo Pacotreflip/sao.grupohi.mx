@@ -22,12 +22,18 @@ class PolizaController extends Controller
     public function index()
     {
         $polizas = $this->poliza->all();
-        return view('modulo_contable.poliza_general.index')->with('polizas', $polizas);
+        return view('modulo_contable.poliza_generada.index')->with('polizas', $polizas);
     }
 
     public function show($id)
     {
         $polizas = $this->poliza->find($id);
-        return view('modulo_contable.poliza_general.show')->with('poliza', $polizas);
+        return view('modulo_contable.poliza_generada.show')->with('poliza', $polizas);
+    }
+
+    public function edit($id)
+    {
+        $poliza = $this->poliza->find($id, 'polizaMovimientos');
+        return view('modulo_contable.poliza_generada.edit')->with('poliza', $poliza);
     }
 }

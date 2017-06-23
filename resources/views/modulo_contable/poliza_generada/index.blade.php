@@ -1,8 +1,10 @@
 @extends('modulo_contable.layout')
 @section('title', 'Póliza Generada')
 @section('contentheader_title', 'PÓLIZAS GENERADAS')
+@section('contentheader_description', '(LISTA)')
+
 @section('main-content')
-    {!! Breadcrumbs::render('modulo_contable.poliza_general.index') !!}
+    {!! Breadcrumbs::render('modulo_contable.poliza_generada.index') !!}
     <hr>
     <div class="row">
         <div class="col-md-12">
@@ -43,8 +45,8 @@
                                     </td>
                                     <td>N/A</td>
                                     <td style="min-width: 90px;max-width: 90px">
-                                        <a href="{{route('modulo_contable.poliza_general.show',$item)}}" title="Ver" class="btn btn-xs btn-default"><i class="fa fa-eye"></i></a>
-                                        <a title="Editar" class="btn btn-xs btn-info"><i class="fa fa-pencil"></i></a>
+                                        <a href="{{route('modulo_contable.poliza_generada.show',$item)}}" title="Ver" class="btn btn-xs btn-default"><i class="fa fa-eye"></i></a>
+                                        <a href="{{route('modulo_contable.poliza_generada.edit',$item)}}" title="Editar" class="btn btn-xs btn-info"><i class="fa fa-pencil"></i></a>
                                     </td>
                                 </tr>
                             @endforeach
@@ -55,6 +57,4 @@
             </div>
         </div>
     </div>
-
-
 @endsection

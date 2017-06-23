@@ -35,6 +35,8 @@ class Poliza extends Model
         'registro'
     ];
 
+    protected $appends = ['descripcion_cuenta_contable'];
+
     /**
      * Poliza constructor.
      * @param array $attributes
@@ -99,6 +101,7 @@ class Poliza extends Model
 
         return $result;
     }
+
     /**
      * @return int
      */
@@ -110,7 +113,11 @@ class Poliza extends Model
                 $result += $movimiento->importe;
             }
         }
-
         return $result;
+    }
+
+    public function __toString()
+    {
+        return (String) $this->tipoPolizaContpaq;
     }
 }

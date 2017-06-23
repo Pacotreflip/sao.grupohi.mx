@@ -1,9 +1,11 @@
 @extends('modulo_contable.layout')
 @section('title', 'Póliza General')
-@section('contentheader_title', 'PÓLIZA GENERADA')
+@section('contentheader_title', 'PÓLIZAS GENERADAS')
+@section('contentheader_description', '(DETALLE)')
+
 
 @section('main-content')
-    {!! Breadcrumbs::render('modulo_contable.poliza_general.show',$poliza) !!}
+    {!! Breadcrumbs::render('modulo_contable.poliza_generada.show', $poliza) !!}
     <div class="row">
         <div class="col-md-12">
             <div class="box box-success">
@@ -76,7 +78,7 @@
                                 </tr>
 
                             </table>
-                            <div class="col-sm-12" style="text-align: right"><h4><b>Total de la Póliza:</b>  ${{number_format($movimiento->sum('importe'),'2','.',',')}}</h4></div>
+                            <div class="col-sm-12" style="text-align: right"><h4><b>Total de la Póliza:</b>  ${{number_format($poliza->total,'2','.',',')}}</h4></div>
                         @endif
 
 
