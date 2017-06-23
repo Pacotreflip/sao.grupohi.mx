@@ -26,13 +26,6 @@ Vue.component('poliza-generada-edit', {
 
     methods: {
         show_add_movimiento: function () {
-            this.form.movimiento =  {
-                'id_int_poliza': this.poliza.id_int_poliza,
-                'cuenta_contable': '',
-                'id_tipo_movimiento_poliza': '',
-                'importe': ''
-            };
-
             $('#add_movimiento_modal').modal('show');
             this.$validator.clean();
         },
@@ -47,6 +40,24 @@ Vue.component('poliza-generada-edit', {
                      text: 'Por favor corrija los errores del formulario'
                  });
             });
+        },
+
+        close_add_movimiento: function () {
+            $('#add_movimiento_modal').modal('hide');
+            this.form.movimiento =  {
+                'id_int_poliza': this.poliza.id_int_poliza,
+                'cuenta_contable': '',
+                'id_tipo_movimiento_poliza': '',
+                'importe': ''
+            };
+        },
+
+        update_sumas: function () {
+            $.each(this.data.poliza_edit.movimiento, function (movimiento) {
+
+            });
+            suma_debe =
+            suma_haber =
         }
     }
 });

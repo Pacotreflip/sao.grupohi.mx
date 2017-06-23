@@ -17,7 +17,7 @@
                             </div>
                             <div class="box-body">
                                 <div class="table-responsive">
-                                    <table class="table table-bordered small">
+                                    <table class="table table-bordered ">
                                         <tr>
                                             <th class="bg-gray-light">Poliza
                                                 :<br><label>{{ $poliza->tipoPolizaContpaq}}</label></th>
@@ -26,7 +26,7 @@
                                         </tr>
                                         <tr>
                                             <th class="bg-gray-light">Concepto:<br>
-                                                <input type="text" class="form-control input-sm" v-model="poliza.concepto">
+                                                <input type="text" class="form-control input-sm" v-model="data.poliza_edit.concepto">
                                             </th>
                                             <th class="bg-gray-light">Usuario
                                                 Solicita:<br><label> {{$poliza->user_registro }}</label></th>
@@ -34,11 +34,12 @@
                                         </tr>
                                     </table>
 
-                                    <table v-if="poliza.poliza_movimientos.length" class="table table-bordered small">
+                                    <table v-if="data.poliza_edit.poliza_movimientos.length" class="table table-bordered">
 
                                             <tr>
                                                 <th class="bg-gray-light">Cuenta Contable</th>
                                                 <th class="bg-gray-light">Nombre Cuenta Contable</th>
+                                                <th class="bg-gray-light">Tipo</th>
                                                 <th class="bg-gray-light">Debe</th>
                                                 <th class="bg-gray-light">Haber</th>
                                                 <th class="bg-gray-light">Referencia</th>
@@ -46,17 +47,23 @@
                                                 <th class="bg-gray-light"><button class="btn-xs btn-success"><i class="fa fa-plus" @click="show_add_movimiento" ></i> </button></th>
 
                                             </tr>
-                                                <tr v-for="movimiento in data.poliza.poliza_movimientos">
+                                                <tr v-for="movimiento in data.poliza_edit.poliza_movimientos">
                                                     <td><input type="text" name="Cuenta Contable" class="form-control input-sm" v-model="movimiento.cuenta_contable"> </td>
                                                     <td>@{{ movimiento.descripcion_cuenta_contable}}</td>
+                                                    <td>
+                                                        <select name="Tipo" class="form-control input-sm" v-model="movimiento.id_tipo_movimiento_poliza">
+                                                            <option :value="1">Debe</option>
+                                                            <option :value="2">Haber</option>
+                                                        </select>
+                                                    </td>
                                                     <td class="bg-gray-light numerico">
                                                         <span v-if="movimiento.id_tipo_movimiento_poliza == 1">
-                                                            <input type="number" step="any" class="form-control input-sm" v-model="movimiento.importe">
+                                                            <input @change="update_sumas" type="number" step="any" class="form-control input-sm" v-model="movimiento.importe">
                                                         </span>
                                                     </td>
                                                     <td class="bg-gray-light numerico">
                                                         <span v-if="movimiento.id_tipo_movimiento_poliza == 2">
-                                                            <input type="number" step="any" class="form-control input-sm" v-model="movimiento.importe">
+                                                            <input @change="update_sumas" type="number" step="any" class="form-control input-sm" v-model="movimiento.importe">
                                                         </span>
                                                     </td>
                                                     <td>@{{movimiento.referencia}}</td>
@@ -65,7 +72,7 @@
                                                 </tr>
                                             <tr>
 
-                                                <td colspan="2" class="bg-gray"><b>Sumas Iguales</b></td>
+                                                <td colspan="3" class="bg-gray"><b>Sumas Iguales</b></td>
                                                 <td class="bg-gray numerico">
                                                     <b>$@{{(poliza.suma_debe)}}</b></td>
                                                 <td class="bg-gray numerico">
@@ -90,7 +97,7 @@
                     <div class="modal-dialog" role="document">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                <button type="button" class="close" aria-label="Close" @click="close_add_movimiento"><span aria-hidden="true">&times;</span></button>
                                 <h4 class="modal-title">Agregar Movimiento</h4>
                             </div>
                             <form id="form_add_movimiento" @submit.prevent="validateForm">
@@ -106,7 +113,7 @@
                                 </div>
                             </div>
                             <div class="modal-footer">
-                                <button class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                                <a class="btn btn-default" @click="close_add_movimiento">Cerrar</a>
                                 <button type="submit" class="btn btn-primary">Guardar</button>
                             </div>
                             </form>
