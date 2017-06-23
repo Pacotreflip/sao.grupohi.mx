@@ -7,7 +7,7 @@
     {!! Breadcrumbs::render('modulo_contable.poliza_generada.edit', $poliza) !!}
 
     <div id="app">
-        <poliza-generada-edit v-bind:poliza="{{$poliza}}" inline-template v-cloak>
+        <poliza-generada-edit v-bind:poliza="{{$poliza}}" v-bind:poliza_edit="{{$poliza}}" inline-template v-cloak>
             <section>
                 <div class="row">
                     <div class="col-md-12">
@@ -15,36 +15,26 @@
                             <div class="box-header with-border" style="text-align: right">
                                 <h3 class="box-title">Detalle de Póliza: {{$poliza->tipoPolizaContpaq}}</h3>
                             </div>
-
-
                             <div class="box-body">
                                 <div class="table-responsive">
                                     <table class="table table-bordered small">
                                         <tr>
-                                            <th colspan="5" class="bg-gray-light">Poliza
+                                            <th class="bg-gray-light">Poliza
                                                 :<br><label>{{ $poliza->tipoPolizaContpaq}}</label></th>
                                             <th class="bg-gray-light">Fecha de Solicitud
                                                 :<br><label>{{ $poliza->created_at->format('Y-m-d h:i:s a') }}</label></th>
                                         </tr>
                                         <tr>
-                                            <th colspan="4" class="bg-gray-light">Concepto:<br>
-                                                <input type="text" class="form-control" v-model="data.poliza.concepto">
+                                            <th class="bg-gray-light">Concepto:<br>
+                                                <input type="text" class="form-control input-sm" v-model="poliza.concepto">
                                             </th>
-                                            <th colspan="2" class="bg-gray-light">Usuario
+                                            <th class="bg-gray-light">Usuario
                                                 Solicita:<br><label> {{$poliza->user_registro }}</label></th>
 
                                         </tr>
                                     </table>
 
-                                    <div class="row">
-                                        <div class="col-md-12">
-                                            <a class="btn btn-app btn-sm btn-success pull-right">
-                                                <i class="fa fa-plus"></i> Movimiento
-                                            </a>
-                                        </div>
-                                    </div>
-                                    <br>
-                                    <table v-if="data.poliza.poliza_movimientos.length" class="table table-bordered small">
+                                    <table v-if="poliza.poliza_movimientos.length" class="table table-bordered small">
 
                                             <tr>
                                                 <th class="bg-gray-light">Cuenta Contable</th>
@@ -53,24 +43,25 @@
                                                 <th class="bg-gray-light">Haber</th>
                                                 <th class="bg-gray-light">Referencia</th>
                                                 <th class="bg-gray-light">Concepto</th>
+                                                <th class="bg-gray-light"><button class="btn-xs btn-success"><i class="fa fa-plus" @click="show_add_movimiento" ></i> </button></th>
 
                                             </tr>
                                                 <tr v-for="movimiento in data.poliza.poliza_movimientos">
-                                                    <td>@{{ movimiento.cuenta_contable}}</td>
+                                                    <td><input type="text" name="Cuenta Contable" class="form-control input-sm" v-model="movimiento.cuenta_contable"> </td>
                                                     <td>@{{ movimiento.descripcion_cuenta_contable}}</td>
                                                     <td class="bg-gray-light numerico">
                                                         <span v-if="movimiento.id_tipo_movimiento_poliza == 1">
-                                                            $ @{{(movimiento.importe) }}
+                                                            <input type="number" step="any" class="form-control input-sm" v-model="movimiento.importe">
                                                         </span>
                                                     </td>
                                                     <td class="bg-gray-light numerico">
-                                                        <span v-if="movimiento.id_tipo_movimiento_poliza == 1">
-                                                            $ @{{(movimiento.importe) }}
+                                                        <span v-if="movimiento.id_tipo_movimiento_poliza == 2">
+                                                            <input type="number" step="any" class="form-control input-sm" v-model="movimiento.importe">
                                                         </span>
                                                     </td>
                                                     <td>@{{movimiento.referencia}}</td>
                                                     <td>@{{movimiento.concepto}}</td>
-
+                                                    <th class="bg-gray-light"><button class="btn-xs btn-danger"><i class="fa fa-remove"></i> </button></th>
                                                 </tr>
                                             <tr>
 
@@ -79,19 +70,51 @@
                                                     <b>$@{{(poliza.suma_debe)}}</b></td>
                                                 <td class="bg-gray numerico">
                                                     <b>$@{{(poliza.suma_haber)}}</b></td>
-                                                <td class="bg-gray"></td>
-                                                <td class="bg-gray"></td>
+                                                <td class="bg-gray" colspan="3"></td>
                                             </tr>
-
                                         </table>
                                         <div class="col-sm-12" style="text-align: right"><h4><b>Total de la Póliza:</b>  $@{{(poliza.total)}}</h4></div>
+                                </div>
+                            </div>
+                            <div class="box-footer">
+                                <div class="col-md-12">
+                                    <button :disabled="! cambio" class="btn btn-info pull-right">Guardar Cambios</button>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </section>
 
+                <!-- Modal Agregar Movimiento -->
+                <div id="add_movimiento_modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="addMovimientoModal" data-backdrop="static" data-keyboard="false">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                <h4 class="modal-title">Agregar Movimiento</h4>
+                            </div>
+                            <form id="form_add_movimiento" @submit.prevent="validateForm">
+                            <div class="modal-body">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="form-group" :class="{'has-error': validation_errors.has('Cuenta Contable')}">
+                                            <label for="">Cuenta Contable</label>
+                                            <input type="text" v-validate="'required'" class="form-control" name="Cuenta Contable" v-model="form.movimiento.cuenta_contable">
+                                            <label class="help" v-show="validation_errors.has('Cuenta Contable')">@{{ validation_errors.first('Cuenta Contable') }}</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                                <button type="submit" class="btn btn-primary">Guardar</button>
+                            </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+            </section>
         </poliza-generada-edit>
     </div>
 @endsection

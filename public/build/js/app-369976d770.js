@@ -35850,17 +35850,58 @@ Vue.component('global-errors', {
 'use strict';
 
 Vue.component('poliza-generada-edit', {
-    props: ['poliza'],
+    props: ['poliza', 'poliza_edit'],
     data: function data() {
         return {
-            data: {
-                'poliza': this.poliza
+            'data': {
+                'poliza': this.poliza,
+                'poliza_edit': this.poliza_edit
             },
-            'form': {},
+            'form': {
+                'movimiento': {
+                    'id_int_poliza': this.poliza.id_int_poliza,
+                    'cuenta_contable': '',
+                    'id_tipo_movimiento_poliza': '',
+                    'importe': ''
+                }
+            },
             'guardando': false
         };
-    }
+    },
 
+    computed: {
+        cambio: function cambio() {
+            return JSON.stringify(this.data.poliza) !== JSON.stringify(this.data.poliza_edit);
+        }
+    },
+
+    methods: {
+        show_add_movimiento: function show_add_movimiento() {
+            this.form.movimiento = {
+                'id_int_poliza': this.poliza.id_int_poliza,
+                'cuenta_contable': '',
+                'id_tipo_movimiento_poliza': '',
+                'importe': ''
+            };
+
+            $('#add_movimiento_modal').modal('show');
+            this.$validator.clean();
+        },
+
+        validateForm: function validateForm() {
+            var _this = this;
+
+            this.$validator.validateAll().then(function () {
+                _this.add_movimiento();
+            }).catch(function () {
+                swal({
+                    type: 'warning',
+                    title: 'Advertencia',
+                    text: 'Por favor corrija los errores del formulario'
+                });
+            });
+        }
+    }
 });
 
 },{}],32:[function(require,module,exports){
