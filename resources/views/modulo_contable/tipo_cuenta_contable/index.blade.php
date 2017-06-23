@@ -17,20 +17,20 @@
         <div class="col-md-12">
             <div class="box box-info">
                 <div class="box-header with-border">
-                    <h3 class="box-title">Plantilla de Tipo Cuenta Contable</h3>
+                    <h3 class="box-title">Tipo Cuenta Contable</h3>
                 </div>
                 <div class="box-body">
                     <div class="col-sm-12">
                         <div class="row table-responsive">
                             <table  class="table table-bordered table-striped dataTable index_table" role="grid"
-                                   aria-describedby="polizas_tipo_info">
+                                   aria-describedby="tipo_cuenta_info">
                                 <thead>
                                 <tr role="row">
-                                    <th class="sorting_asc" tabindex="0" aria-controls="polizas_tipo" aria-sort="ascending">#</th>
-                                    <th class="sorting" tabindex="0" aria-controls="polizas_tipo">Descripción</th>
-                                    <th class="sorting" tabindex="0" aria-controls="polizas_tipo">Registró</th>
-                                    <th class="sorting" tabindex="0" aria-controls="polizas_tipo">Fecha y Hora de Registro</th>
-                                    <th class="sorting" tabindex="0" aria-controls="polizas_tipo">Asignada</th>
+                                    <th class="sorting_asc" tabindex="0" aria-controls="tipo_cuenta" aria-sort="ascending">#</th>
+                                    <th class="sorting" tabindex="0" aria-controls="tipo_cuenta">Descripción</th>
+                                    <th class="sorting" tabindex="0" aria-controls="tipo_cuenta">Registró</th>
+                                    <th class="sorting" tabindex="0" aria-controls="tipo_cuenta">Fecha y Hora de Registro</th>
+                                    <th class="sorting" tabindex="0" aria-controls="tipo_cuenta">Asignada</th>
                                     <th></th>
                                 </tr>
                                 </thead>
@@ -52,11 +52,11 @@
                                         </td>
                                         <td style="min-width: 90px;max-width: 90px">
                                             <div class="btn-group">
-                                                <a href="{{ route('modulo_contable.poliza_tipo.show', $item->id) }}" type="button" class="btn btn-xs btn-default">
+                                                <a href="{{ route('modulo_contable.tipo_cuenta_contable.show', $item->id_tipo_cuenta_contable) }}" type="button" class="btn btn-xs btn-default">
                                                     <i class="fa fa-eye"></i>
                                                 </a>
 
-                                                <button type="button" class="btn btn-xs btn-danger" onclick=" delete_plantilla({{$item->id_tipo_cuenta_contable}})">
+                                                <button type="button" class="btn btn-xs btn-danger" onclick=" delete_tipo_cuena_contable({{$item->id_tipo_cuenta_contable}})">
                                                     <i class="fa fa-trash"></i>
                                                 </button>
                                             </div>
@@ -86,12 +86,12 @@
 @endsection
 @section('scripts-content')
     <script>
-        function delete_plantilla(id) {
+        function delete_tipo_cuena_contable(id) {
 
             var url=App.host +"/modulo_contable/tipo_cuenta_contable/" + id;
             swal({
                 title: "¡Eliminar Plantilla!",
-                text: "¿Esta seguro de que deseas eliminar la Plantilla?",
+                text: "¿Esta seguro de que deseas eliminar el Tipo Cuenta Contable?",
                 input: 'text',
                 inputPlaceholder: "Motivo de eliminación.",
                 confirmButtonText: "Si, Eliminar",
@@ -123,7 +123,7 @@
                         swal({
                                 type: "success",
                                 title: '¡Correcto!',
-                                text: 'Plantilla Eliminada con éxito',
+                                text: 'Tipo Cuenta Contable Eliminada con éxito',
                                 confirmButtonText: "Ok",
                                 closeOnConfirm: false
                             }).then(function () {

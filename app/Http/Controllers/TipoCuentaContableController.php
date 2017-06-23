@@ -27,9 +27,8 @@ class TipoCuentaContableController extends Controller
     }
 
     /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
+     * Muestra la vista del listado de Plantillas Para Tipos de Cuentas Contables registradas
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function index()
     {
@@ -41,34 +40,37 @@ class TipoCuentaContableController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * Devuelve la vista del detalle de una Plantilla pata Tipo de Cuenta Contable
      */
     public function show($id)
     {
         $tipo_cuenta_contable = $this->tipo_cuenta_contable->find($id);
-        // TODO: Add return statement
+        return view('modulo_contable.tipo_cuenta_contable.show')
+            ->with('tipo_cuenta_contable', $tipo_cuenta_contable);
     }
 
     /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * Muestra la vista de creación de Plantilla para un Tipo de Póliza
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function create()
+    {
+        return view('modulo_contable.tipo_cuenta_contable.create');
+    }
+
+    /**
+     * Guarda un registro de Tipo Cuenta Contable.
      */
     public function store(Request $request)
     {
+
         $item = $this->tipo_cuenta_contable->create($request->all());
-        // TODO: Add return statement
+
+        return $this->response->created(route('modulo_contable.tipo_cuenta_contable.show', $item));
     }
 
     /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * Elimina un Registro de Tipo Cuenta Contable
      */
     public function destroy(Request $request, $id)
     {

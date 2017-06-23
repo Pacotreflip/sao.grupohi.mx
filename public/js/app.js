@@ -31982,8 +31982,9 @@ require('./vue-components/errors');
 require('./vue-components/poliza_tipo/poliza-tipo-create');
 require('./vue-components/select2');
 require('./vue-components/cuenta_contable/cuenta-contable-create');
+require('./vue-components/tipo_cuenta_contable/tipo-cuenta-contable-create');
 
-},{"./vue-components/cuenta_contable/cuenta-contable-create":26,"./vue-components/errors":27,"./vue-components/global-errors":28,"./vue-components/poliza_tipo/poliza-tipo-create":29,"./vue-components/select2":30}],26:[function(require,module,exports){
+},{"./vue-components/cuenta_contable/cuenta-contable-create":26,"./vue-components/errors":27,"./vue-components/global-errors":28,"./vue-components/poliza_tipo/poliza-tipo-create":29,"./vue-components/select2":30,"./vue-components/tipo_cuenta_contable/tipo-cuenta-contable-create":33}],26:[function(require,module,exports){
 'use strict';
 
 Vue.component('cuenta-contable-create', {
@@ -32295,6 +32296,74 @@ Vue.component('select2', {
 module.exports = '<div id="form-errors" v-cloak>\n  <div class="alert alert-danger" v-if="form.errors.length">\n    <ul>\n      <li v-for="error in form.errors">{{ error }}</li>\n    </ul>\n  </div>\n</div>';
 },{}],32:[function(require,module,exports){
 module.exports = '<div class="alert alert-danger" v-show="errors.length">\n  <ul>\n    <li v-for="error in errors">{{ error }}</li>\n  </ul>\n</div>';
+},{}],33:[function(require,module,exports){
+'use strict';
+
+/**
+ * Created by LERDES2 on 23/06/2017.
+ */
+
+Vue.component('tipo-cuenta-contable-create', {
+    data: function data() {
+        return {
+            'form': {
+                'tipo_cuenta_contable': {
+                    'descripcion': ''
+                }
+            },
+            'guardando': false
+        };
+    },
+
+    methods: {
+        confirm_save: function confirm_save() {
+            var self = this;
+            swal({
+                title: "Guardar Plantilla",
+                text: "¿Estás seguro de que la información es correcta?",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonText: "Si, Continuar",
+                cancelButtonText: "No, Cancelar"
+            }).then(function () {
+                self.save();
+            }).catch(swal.noop);
+        },
+
+        save: function save() {
+
+            alert("hola");
+            var self = this;
+            var url = App.host + '/modulo_contable/tipo_cuenta_contable';
+            var data = self.form.tipo_cuenta_contable;
+
+            $.ajax({
+                type: 'POST',
+                url: url,
+                data: data,
+                beforeSend: function beforeSend() {
+                    self.guardando = true;
+                },
+                success: function success(data, textStatus, xhr) {
+                    swal({
+                        title: '¡Correcto!',
+                        html: "Se ha creado la plantilla para el Tipo de Cuenta Contable",
+                        type: "success",
+                        confirmButtonText: "Ok",
+                        closeOnConfirm: false
+                    }).then(function () {
+                        window.location = xhr.getResponseHeader('Location');
+                    }).catch(swal.noop);
+                },
+                complete: function complete() {
+                    self.guardando = false;
+                }
+            });
+        }
+    }
+
+});
+
 },{}]},{},[23]);
 
 //# sourceMappingURL=app.js.map
