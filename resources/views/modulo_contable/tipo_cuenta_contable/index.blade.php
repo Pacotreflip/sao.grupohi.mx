@@ -30,7 +30,7 @@
                                     <th class="sorting" tabindex="0" aria-controls="tipo_cuenta">Descripción</th>
                                     <th class="sorting" tabindex="0" aria-controls="tipo_cuenta">Registró</th>
                                     <th class="sorting" tabindex="0" aria-controls="tipo_cuenta">Fecha y Hora de Registro</th>
-                                    <th class="sorting" tabindex="0" aria-controls="tipo_cuenta">Asignada</th>
+                                    <th class="sorting" tabindex="0" aria-controls="tipo_cuenta">Asignacion Tipo Cuenta Contable</th>
                                     <th></th>
                                 </tr>
                                 </thead>
@@ -44,7 +44,7 @@
                                         <td>{{ $item->created_at->format('Y-m-d h:i:s a') }}</td>
                                         <td>
                                             @if($item->cuentaContable)
-                                                <span class="label label-success">Asignada</span>
+                                                <span class="label label-success">{{$item->cuentaContable->prefijo.''.$item->cuentaContable->cuenta_contable }}</span>
 
                                             @else
                                                 <span class="label label-danger">No Asignada</span>
@@ -70,7 +70,7 @@
                                     <th>Descripcion</th>
                                     <th>Registró</th>
                                     <th>Fecha y Hora de Registro</th>
-                                    <th>Asignada</th>
+                                    <th>Asignacion Tipo Cuenta Contable</th>
                                     <th></th>
                                 </tr>
                                 </tfoot>
@@ -90,7 +90,7 @@
 
             var url=App.host +"/modulo_contable/tipo_cuenta_contable/" + id;
             swal({
-                title: "¡Eliminar Plantilla!",
+                title: "¡Eliminar TIPO CUENTA CONTABLE!",
                 text: "¿Esta seguro de que deseas eliminar el Tipo Cuenta Contable?",
                 input: 'text',
                 inputPlaceholder: "Motivo de eliminación.",
