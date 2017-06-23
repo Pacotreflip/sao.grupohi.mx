@@ -44,7 +44,23 @@ Breadcrumbs::register('modulo_contable.tipo_cuenta_contable.show', function ($br
 /*
  * Cuenta Contable
  */
-Breadcrumbs::register('modulo_contable.cuenta_contable.index', function ($breadcrumb) {
+Breadcrumbs::register('modulo_contable.cuenta_contable.configuracion', function ($breadcrumb) {
     $breadcrumb->parent('modulo_contable.index');
-    $breadcrumb->push('CUENTAS CONTABLES', route('modulo_contable.cuenta_contable.index'));
+    $breadcrumb->push('CONFIGURACIÓN DE CUENTAS CONTABLES', route('modulo_contable.cuenta_contable.configuracion'));
+});
+
+/**
+ * Poliza Generada
+ */
+Breadcrumbs::register('modulo_contable.poliza_generada.index', function ($breadcrumb) {
+    $breadcrumb->parent('modulo_contable.index');
+    $breadcrumb->push('PÓLIZAS GENERADAS', route('modulo_contable.poliza_generada.index'));
+});
+Breadcrumbs::register('modulo_contable.poliza_generada.show', function ($breadcrumb, $poliza) {
+    $breadcrumb->parent('modulo_contable.poliza_generada.index');
+    $breadcrumb->push(strtoupper($poliza->tipoPolizaContpaq), route('modulo_contable.poliza_generada.show', $poliza));
+});
+Breadcrumbs::register('modulo_contable.poliza_generada.edit', function ($breadcrumb, $poliza) {
+    $breadcrumb->parent('modulo_contable.poliza_generada.show', $poliza);
+    $breadcrumb->push('EDICIÓN', route('modulo_contable.poliza_generada.edit', $poliza));
 });

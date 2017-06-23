@@ -71,5 +71,10 @@ class AppServiceProvider extends ServiceProvider
             \Ghi\Domain\Core\Contracts\TipoCuentaContableRepository::class,
             \Ghi\Domain\Core\Repositories\EloquentTipoCuentaContableRepository::class
         );
+
+        $this->app->bind(
+            \Ghi\Domain\Core\Contracts\PolizaRepository::class,
+            \Ghi\Domain\Core\Repositories\EloquentPolizaRepository::class
+        );
     }
 }

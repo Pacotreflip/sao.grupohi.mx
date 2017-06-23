@@ -131,7 +131,8 @@ return [
     |
     */
 
-    'migrations' => 'migrations',
+    'migrations' => 'erp_migrations',
+   // 'migrations' => 'equipamiento_migrations',
 
     /*
     |--------------------------------------------------------------------------

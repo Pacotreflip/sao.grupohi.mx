@@ -89,10 +89,10 @@ class EloquentUserRepository extends \Ghi\Core\Repositories\EloquentUserReposito
             DB::disconnect('cadeco');
         }
 
-        $perPage     = 10;
+        $perPage = 10;
         $currentPage = Paginator::resolveCurrentPage();
         $currentPage = $currentPage ? $currentPage : 1;
-        $offset      = ($currentPage * $perPage) - $perPage;
+        $offset = ($currentPage * $perPage) - $perPage;
 
         $paginator = new LengthAwarePaginator(
             $obrasUsuario->slice($offset, $perPage),
@@ -111,7 +111,7 @@ class EloquentUserRepository extends \Ghi\Core\Repositories\EloquentUserReposito
      */
     private function getObrasUsuario($usuarioCadeco)
     {
-        if (! $usuarioCadeco) {
+        if (!$usuarioCadeco) {
             return [];
         }
 

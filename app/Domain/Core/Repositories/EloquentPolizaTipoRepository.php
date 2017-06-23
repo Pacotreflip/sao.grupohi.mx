@@ -47,12 +47,12 @@ class EloquentPolizaTipoRepository implements PolizaTipoRepository
         try {
             DB::connection('cadeco')->beginTransaction();
 
-            $inicio_vigencia = Carbon::createFromFormat('Y-m-d H', $data['inicio_vigencia']. ' 00');
-            $fin_vigencia = Carbon::createFromFormat('Y-m-d H', $data['inicio_vigencia']. ' 00')->subSecond();
+            $inicio_vigencia = Carbon::createFromFormat('Y-m-d H', $data['inicio_vigencia'] . ' 00');
+            $fin_vigencia = Carbon::createFromFormat('Y-m-d H', $data['inicio_vigencia'] . ' 00')->subSecond();
             $fecha_minima = $this->model->fecha_minima($data['id_transaccion_interfaz']);
 
-            if($fecha_minima && $inicio_vigencia->lte($fecha_minima)) {
-                throw new HttpResponseException(new Response('La fecha de Inicio de Vigencia debe ser mayor a '. $fecha_minima->ToDateString() . ', ya que existe una plantilla que entrará en vigor en esa fecha', 400));
+            if ($fecha_minima && $inicio_vigencia->lte($fecha_minima)) {
+                throw new HttpResponseException(new Response('La fecha de Inicio de Vigencia debe ser mayor a ' . $fecha_minima->ToDateString() . ', ya que existe una plantilla que entrará en vigor en esa fecha', 400));
             }
 
             $ultima = $this->findBy('id_transaccion_interfaz', $data['id_transaccion_interfaz']);
@@ -63,8 +63,8 @@ class EloquentPolizaTipoRepository implements PolizaTipoRepository
 
             $poliza_tipo = $this->model->create([
                 'id_transaccion_interfaz' => $data['id_transaccion_interfaz'],
-                'registro'                => auth()->user()->idusuario,
-                'inicio_vigencia'         => $inicio_vigencia
+                'registro' => auth()->user()->idusuario,
+                'inicio_vigencia' => $inicio_vigencia
             ]);
 
             foreach ($data['movimientos'] as $movimiento) {
@@ -72,8 +72,7 @@ class EloquentPolizaTipoRepository implements PolizaTipoRepository
                 (new EloquentMovimientoRepository(new MovimientoPoliza()))->create($movimiento);
             }
             DB::connection('cadeco')->commit();
-        }
-        catch(\Exception $e){
+        } catch (\Exception $e) {
             DB::connection('cadeco')->rollBack();
             throw $e;
         }
@@ -85,7 +84,7 @@ class EloquentPolizaTipoRepository implements PolizaTipoRepository
      * @param $id
      * @return \Ghi\Domain\Core\Models\PolizaTipo
      */
-    public function find($id , $with = null)
+    public function find($id, $with = null)
     {
         if ($with != null) {
             return $this->model->with($with)->find($id);
@@ -112,10 +111,10 @@ class EloquentPolizaTipoRepository implements PolizaTipoRepository
         try {
             DB::connection('cadeco')->beginTransaction();
 
-            if (! $item = $this->model->find($id)) {
+            if (!$item = $this->model->find($id)) {
                 throw new HttpResponseException(new Response('No se encontró la plantilla que se desea eliminar', 404));
             }
-
+            array_push($data, ['cancelo' => auth()->user()->idusuario]);
             $item->update($data);
 
             foreach ($item->movimientos as $movimiento) {

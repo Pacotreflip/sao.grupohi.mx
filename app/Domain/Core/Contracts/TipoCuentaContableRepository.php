@@ -33,4 +33,11 @@ interface TipoCuentaContableRepository
      * @throws \Exception
      */
     public function delete($data, $id);
+
+    /**
+     * Obtienes los tipos de cuentas contables en lista para combo
+     * @return array
+     */
+    public function lists();
+
 }

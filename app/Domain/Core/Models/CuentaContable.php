@@ -3,9 +3,9 @@
 namespace Ghi\Domain\Core\Models;
 
 use Ghi\Domain\Core\Models\Scopes\ObraScope;
+use Ghi\polizasMovimientos;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-
 
 class CuentaContable extends Model
 {
@@ -32,6 +32,16 @@ class CuentaContable extends Model
     }
 
     /**
+     * CuentaContable constructor.
+     * @param array $attributes
+     */
+    public function __construct(array $attributes = [])
+    {
+        $attributes['id_obra'] = \Ghi\Core\Facades\Context::getId();
+        parent::__construct($attributes);
+    }
+
+    /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo|TipoCuentaContable
      */
     public function tipoCuentaContable() {
@@ -43,5 +53,12 @@ class CuentaContable extends Model
      */
     public function movimientosPoliza() {
         return $this->hasMany(MovimientoPoliza::class, 'id_cuenta_contable');
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function polizaMovimientos() {
+        return $this->hasMany(PolizaMovimiento::class, 'id_cuenta_contable');
     }
 }

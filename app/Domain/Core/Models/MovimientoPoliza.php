@@ -41,4 +41,5 @@ class MovimientoPoliza extends Model
     public function cuentaContable() {
         return $this->belongsTo(CuentaContable::class, 'id_cuenta_contable');
     }
+
 }

@@ -3,7 +3,7 @@
 namespace Ghi\Http\Composers;
 
 use Ghi\Core\Contracts\Context;
-use Ghi\Core\Contracts\ObraRepository;
+use Ghi\Domain\Core\Contracts\ObraRepository;
 use Illuminate\Contracts\View\View;
 
 class ObraComposer
@@ -44,7 +44,7 @@ class ObraComposer
     private function getCurrentObra()
     {
         if ($this->context->isEstablished()) {
-            return $this->obras->getById($this->context->getId());
+            return $this->obras->find($this->context->getId());
         }
         return null;
     }

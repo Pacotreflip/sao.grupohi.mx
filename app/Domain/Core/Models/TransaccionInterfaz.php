@@ -14,7 +14,8 @@ class TransaccionInterfaz extends BaseModel
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany|PolizaTipo
      */
-    public function polizasTipo(){
+    public function polizasTipo()
+    {
         return $this->hasMany(PolizaTipo::class, "id_transaccion_interfaz");
     }
 
