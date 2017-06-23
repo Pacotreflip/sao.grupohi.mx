@@ -58,12 +58,12 @@
                                                     </td>
                                                     <td class="bg-gray-light numerico">
                                                         <span v-if="movimiento.id_tipo_movimiento_poliza == 1">
-                                                            <input @change="update_sumas" type="number" step="any" class="form-control input-sm" v-model="movimiento.importe">
+                                                            <input type="number" step="any" class="form-control input-sm" v-model="movimiento.importe">
                                                         </span>
                                                     </td>
                                                     <td class="bg-gray-light numerico">
                                                         <span v-if="movimiento.id_tipo_movimiento_poliza == 2">
-                                                            <input @change="update_sumas" type="number" step="any" class="form-control input-sm" v-model="movimiento.importe">
+                                                            <input type="number" step="any" class="form-control input-sm" v-model="movimiento.importe">
                                                         </span>
                                                     </td>
                                                     <td>@{{movimiento.referencia}}</td>

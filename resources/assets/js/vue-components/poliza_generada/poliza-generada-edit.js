@@ -21,6 +21,20 @@ Vue.component('poliza-generada-edit', {
     computed: {
         cambio: function () {
             return JSON.stringify(this.data.poliza) !== JSON.stringify(this.data.poliza_edit);
+        },
+
+        sumas: function () {
+            var suma_haber = 0;
+            var suma_debe = 0;
+            this.data.poliza_edit.poliza_movimientos.forEach(function (movimiento) {
+                if(movimiento.id_tipo_movimiento_poliza == 1) {
+                    suma_debe += parseFloat(movimiento.importe);
+                } else if (movimiento.id_tipo_movimiento_poliza == 2) {
+                    suma_haber += parseFloat(movimiento.importe);
+                }
+            });
+            Vue.set(this.data.poliza_edit, 'suma_debe', suma_debe);
+            Vue.set(this.data.poliza_edit, 'suma_haber', suma_haber);
         }
     },
 
@@ -53,9 +67,6 @@ Vue.component('poliza-generada-edit', {
         },
 
         update_sumas: function () {
-            $.each(this.data.poliza_edit.movimiento, function (movimiento) {
-
-            });
 
         }
     }
