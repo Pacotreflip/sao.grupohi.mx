@@ -104,4 +104,18 @@ class EloquentCuentaContableRepository implements CuentaContableRepository
         }
         return $item->where('id_int_cuenta_contable', '=', $item->id_int_cuenta_contable)->with('tipoCuentaContable')->first();
     }
+
+    /**
+     * Obtiene una Cuenta Contable que coincida con la búsqueda
+     * @param $attribute
+     * @param $value
+     * @return \Ghi\Domain\Core\Models\CuentaContable
+     */
+    public function findBy($attribute, $value, $with = null)
+    {
+        if ($with != null) {
+            return $this->model->orderBy('id_int_cuenta_contable', 'DESC')->with($with)->where($attribute, '=', $value)->first();
+        }
+        return $this->model->orderBy('id', 'DESC')->where($attribute, '=', $value)->first();
+    }
 }

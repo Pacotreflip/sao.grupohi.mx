@@ -17,6 +17,14 @@ interface CuentaContableRepository
     public function find($id);
 
     /**
+     * Obtiene una Cuenta Contable que coincida con la búsqueda
+     * @param $attribute
+     * @param $value
+     * @return \Ghi\Domain\Core\Models\CuentaContable
+     */
+    public function findBy($attribute, $value, $with = null);
+
+    /**
      * Guarda un registro de cuenta contable
      * @param array $data
      * @return \Ghi\Domain\Core\Models\CuentaContable
