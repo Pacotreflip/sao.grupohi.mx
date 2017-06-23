@@ -15,7 +15,7 @@ class CreateHistIntPolizasMovimientosTable extends Migration
     {
         Schema::create('contabilidad.hist_int_polizas_movimientos', function (Blueprint $table) {
             $table->increments('id_hist_int_poliza_movimiento');
-            $table->unsignedInteger('id_int_poliza_movimiento')->index();
+            $table->unsignedInteger('id_hist_int_poliza')->index();
             $table->unsignedInteger('id_int_poliza')->index()->nullable();
             $table->unsignedInteger('id_tipo_cuenta_contable')->index()->nullable();
             $table->unsignedInteger('id_cuenta_contable')->index()->nullable();

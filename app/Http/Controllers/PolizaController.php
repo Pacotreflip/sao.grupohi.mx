@@ -3,6 +3,7 @@
 namespace Ghi\Http\Controllers;
 
 use Ghi\Domain\Core\Contracts\PolizaRepository;
+use Illuminate\Http\Request;
 
 class PolizaController extends Controller
 {
@@ -13,8 +14,8 @@ class PolizaController extends Controller
     {
         parent::__construct();
 
-        $this->middleware('auth');
-        $this->middleware('context');
+        //$this->middleware('auth');
+        //$this->middleware('context');
         $this->poliza = $poliza;
 
     }
@@ -36,4 +37,13 @@ class PolizaController extends Controller
         $poliza = $this->poliza->find($id, 'polizaMovimientos');
         return view('modulo_contable.poliza_generada.edit')->with('poliza', $poliza);
     }
+
+    public function update(Request $request,$id)
+    {
+        $this->poliza->update($request->all(),$id);
+        $poliza = $this->poliza->find($id, 'polizaMovimientos');
+    }
+
+
+
 }

@@ -47,6 +47,7 @@
                                     <td style="min-width: 90px;max-width: 90px">
                                         <a href="{{route('modulo_contable.poliza_generada.show',$item)}}" title="Ver" class="btn btn-xs btn-default"><i class="fa fa-eye"></i></a>
                                         <a href="{{route('modulo_contable.poliza_generada.edit',$item)}}" title="Editar" class="btn btn-xs btn-info"><i class="fa fa-pencil"></i></a>
+                                        <a href="{{route('modulo_contable.poliza_generada.historico',$item)}}" title="Editar" class="btn btn-xs btn-success"><i class="fa fa-clock-o"></i></a>
                                     </td>
                                 </tr>
                             @endforeach

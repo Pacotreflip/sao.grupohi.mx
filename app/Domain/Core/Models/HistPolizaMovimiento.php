@@ -5,7 +5,7 @@ namespace Ghi\Domain\Core\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class PolizaMovimiento extends Model
+class HistPolizaMovimiento extends Model
 {
     use SoftDeletes;
 
@@ -13,6 +13,7 @@ class PolizaMovimiento extends Model
     protected $table = 'Contabilidad.hist_int_polizas_movimientos';
     protected $primaryKey = 'id_hist_int_poliza';
     protected $fillable = [
+        'id_hist_int_poliza',
         'id_int_poliza_movimiento',
         'id_int_poliza',
         'id_tipo_cuenta_contable',
