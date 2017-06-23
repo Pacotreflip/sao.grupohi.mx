@@ -56,8 +56,7 @@ Vue.component('poliza-generada-edit', {
             $.each(this.data.poliza_edit.movimiento, function (movimiento) {
 
             });
-            suma_debe =
-            suma_haber =
+
         }
     }
 });
