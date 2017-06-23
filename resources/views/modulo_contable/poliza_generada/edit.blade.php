@@ -8,10 +8,11 @@
 
     <div id="app">
         <poliza-generada-edit
-                v-bind:poliza="{{$poliza}}"
-                v-bind:poliza_edit="{{$poliza}}"
-                v-bind:obra="{{$currentObra}}"
-                v-bind:url_cuenta_contable_findby="'{{route('modulo_contable.cuenta_contable.findby')}}'"
+                :poliza="{{$poliza}}"
+                :poliza_edit="{{$poliza}}"
+                :obra="{{$currentObra}}"
+                :url_cuenta_contable_findby="'{{route('modulo_contable.cuenta_contable.findby')}}'"
+                :url_poliza_generada_update="'{{route('modulo_contable.poliza_generada.update', $poliza)}}'"
                 inline-template
                 v-cloak>
             <section>
@@ -95,7 +96,7 @@
                             </div>
                             <div class="box-footer">
                                 <div class="col-md-12">
-                                    <button :disabled="! cambio" class="btn btn-info pull-right">Guardar Cambios</button>
+                                    <button :disabled="! cambio" class="btn btn-info pull-right" @click="confirm_save">Guardar Cambios</button>
                                 </div>
                             </div>
                         </div>
@@ -165,8 +166,6 @@
                         </div>
                     </div>
                 </div>
-
-                @{{  }}
             </section>
         </poliza-generada-edit>
     </div>
