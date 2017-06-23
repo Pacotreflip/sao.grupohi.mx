@@ -35993,21 +35993,19 @@ Vue.component('poliza-generada-edit', {
             $('#add_movimiento_modal').modal('show');
             this.$validator.clean();
         },
-
-        validateForm: function validateForm() {
-            var _this = this;
-
-            this.$validator.validateAll().then(function () {
-                _this.add_movimiento();
-            }).catch(function () {
-                swal({
-                    type: 'warning',
-                    title: 'Advertencia',
-                    text: 'Por favor corrija los errores del formulario'
-                });
-            });
-        },
-
+        /*
+                validateForm: function() {
+                    this.$validator.validateAll().then(() => {
+                        this.add_movimiento();
+                    }).catch(() => {
+                        swal({
+                             type: 'warning',
+                             title: 'Advertencia',
+                             text: 'Por favor corrija los errores del formulario'
+                         });
+                    });
+                },
+        */
         close_add_movimiento: function close_add_movimiento() {
             $('#add_movimiento_modal').modal('hide');
             this.form.movimiento = {
@@ -36288,7 +36286,7 @@ Vue.component('tipo-cuenta-contable-create', {
         confirm_save: function confirm_save() {
             var self = this;
             swal({
-                title: "Guardar Plantilla",
+                title: "Guardar Tipo Cuenta Contable",
                 text: "¿Estás seguro de que la información es correcta?",
                 type: "warning",
                 showCancelButton: true,
@@ -36301,7 +36299,6 @@ Vue.component('tipo-cuenta-contable-create', {
 
         save: function save() {
 
-            alert("hola");
             var self = this;
             var url = App.host + '/modulo_contable/tipo_cuenta_contable';
             var data = self.form.tipo_cuenta_contable;
@@ -36316,7 +36313,7 @@ Vue.component('tipo-cuenta-contable-create', {
                 success: function success(data, textStatus, xhr) {
                     swal({
                         title: '¡Correcto!',
-                        html: "Se ha creado la plantilla para el Tipo de Cuenta Contable",
+                        html: "Se ha creado el Tipo de Cuenta Contable con éxito",
                         type: "success",
                         confirmButtonText: "Ok",
                         closeOnConfirm: false

@@ -18,7 +18,7 @@ Vue.component('tipo-cuenta-contable-create',{
         confirm_save: function() {
             var self = this;
             swal({
-                title: "Guardar Plantilla",
+                title: "Guardar Tipo Cuenta Contable",
                 text: "¿Estás seguro de que la información es correcta?",
                 type: "warning",
                 showCancelButton: true,
@@ -31,7 +31,6 @@ Vue.component('tipo-cuenta-contable-create',{
 
         save: function () {
 
-            alert("hola");
             var self = this;
             var url = App.host + '/modulo_contable/tipo_cuenta_contable';
             var data = self.form.tipo_cuenta_contable;
@@ -46,7 +45,7 @@ Vue.component('tipo-cuenta-contable-create',{
                 success: function (data, textStatus, xhr) {
                     swal({
                         title: '¡Correcto!',
-                        html: "Se ha creado la plantilla para el Tipo de Cuenta Contable",
+                        html: "Se ha creado el Tipo de Cuenta Contable con éxito",
                         type: "success",
                         confirmButtonText: "Ok",
                         closeOnConfirm: false

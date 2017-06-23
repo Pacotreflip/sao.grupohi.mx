@@ -1,6 +1,6 @@
 @extends('modulo_contable.layout')
 @section('title', 'Plantillas de Póliza')
-@section('contentheader_title', 'PLANTILLAS DE PÓLIZA')
+@section('contentheader_title', 'TIPO CUENTA CONTABLE')
 
 @section('main-content')
     {!! Breadcrumbs::render('modulo_contable.tipo_cuenta_contable.create') !!}
@@ -27,7 +27,7 @@
                     <!-- /.box-body-->
                     <div class="box-footer">
                         <div class="col-md-12">
-                            <button type="submit" class="btn btn-info pull-right" @click="confirm_save" :disabled="guardando">
+                            <button type="submit" class="btn btn-info pull-right" @click="confirm_save"  :disabled="form.tipo_cuenta_contable.descripcion == ''">
                                     <span v-if="guardando">
                                         <i class="fa fa-spinner fa-spin"></i> Guardando
                                     </span>

@@ -29,7 +29,7 @@ Vue.component('poliza-generada-edit', {
             $('#add_movimiento_modal').modal('show');
             this.$validator.clean();
         },
-
+/*
         validateForm: function() {
             this.$validator.validateAll().then(() => {
                 this.add_movimiento();
@@ -41,7 +41,7 @@ Vue.component('poliza-generada-edit', {
                  });
             });
         },
-
+*/
         close_add_movimiento: function () {
             $('#add_movimiento_modal').modal('hide');
             this.form.movimiento =  {

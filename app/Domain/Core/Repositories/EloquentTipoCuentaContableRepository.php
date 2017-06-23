@@ -33,7 +33,6 @@ class EloquentTipoCuentaContableRepository implements TipoCuentaContableReposito
     public function all()
     {
         return $this->model->all();
-        return $this->model->all();
     }
 
     /**

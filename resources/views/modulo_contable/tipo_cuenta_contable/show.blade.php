@@ -1,6 +1,6 @@
 @extends('modulo_contable.layout')
 @section('title', 'Plantillas de Póliza')
-@section('contentheader_title', 'PLANTILLAS DE PÓLIZA')
+@section('contentheader_title', 'TIPO CUENTA CONTABLE')
 @section('main-content')
     {!! Breadcrumbs::render('modulo_contable.tipo_cuenta_contable.show', $tipo_cuenta_contable) !!}
     <hr>
@@ -10,12 +10,12 @@
 
                 <div class="box box-solid">
                     <div class="box-header with-border">
-                        <h3 class="box-title">Asignación &nbsp;
-                            @if($tipo_cuenta_contable->cuentaContable)
-                                <span class="label label-success">Asignada</span>
+                        <h3 class="box-title">Tipo Cuenta Contable&nbsp;
+                            @if($tipo_cuenta_contable->cuentaContable->prefijo == null)
+                                <span class="label label-success">{{$tipo_cuenta_contable->cuentaContable->cuenta_contable}}</span>
 
                             @else
-                                <span class="label label-danger">No Asignada</span>
+                                <span class="label label-success">{{$tipo_cuenta_contable->cuentaContable->prefijo}}</span>
                             @endif
                         </h3>
                     </div>
