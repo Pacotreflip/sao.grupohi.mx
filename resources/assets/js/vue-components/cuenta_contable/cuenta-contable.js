@@ -153,6 +153,7 @@ Vue.component('cuenta-contable', {
                 url: url,
                 data: data,
                 beforeSend: function () {
+                    self.validation_errors.clear('form_datos_cuenta');
                     self.guardando = true;
                 },
                 success: function (data, textStatus, xhr) {

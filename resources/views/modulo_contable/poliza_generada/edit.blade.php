@@ -22,6 +22,7 @@
                             <div class="box-header with-border" style="text-align: right">
                                 <h3 class="box-title">Detalle de Póliza: {{$poliza->tipoPolizaContpaq}}</h3>
                             </div>
+                            <form id="form_poliza" @submit.prevent="validateForm('form_poliza','confirm_save')"  data-vv-scope="form_poliza">
                             <div class="box-body">
                                 <div class="table-responsive">
                                     <table class="table table-bordered ">
@@ -32,73 +33,81 @@
                                                 :<br><label>{{ $poliza->created_at->format('Y-m-d h:i:s a') }}</label></th>
                                         </tr>
                                         <tr>
-                                            <th class="bg-gray-light">Concepto:<br>
-                                                <input type="text" class="form-control input-sm" v-model="data.poliza_edit.concepto">
+                                            <th class="bg-gray-light form-group" :class="{'has-error': validation_errors.has('form_poliza.Concepto')}">
+                                                Concepto:<br>
+                                                <input name="Concepto" type="text" v-validate="'required'" class="form-control input-sm" v-model="data.poliza_edit.concepto">
+                                                <label class="help" v-show="validation_errors.has('form_poliza.Concepto')">@{{ validation_errors.first('form_poliza.Concepto') }}</label>
                                             </th>
                                             <th class="bg-gray-light">Usuario
                                                 Solicita:<br><label> {{$poliza->user_registro }}</label></th>
-
                                         </tr>
                                     </table>
-
                                     <table v-if="data.poliza_edit.poliza_movimientos.length" class="table table-bordered">
-
-                                            <tr>
-                                                <th class="bg-gray-light">Cuenta Contable</th>
-                                                <th class="bg-gray-light">Nombre Cuenta Contable</th>
-                                                <th class="bg-gray-light">Tipo</th>
-                                                <th class="bg-gray-light">Debe</th>
-                                                <th class="bg-gray-light">Haber</th>
-                                                <th class="bg-gray-light">Referencia</th>
-                                                <th class="bg-gray-light">Concepto</th>
-                                                <th class="bg-gray-light"><button class="btn-xs btn-success" @click="show_add_movimiento"><i class="fa fa-plus"></i> </button></th>
-
-                                            </tr>
-                                                <tr v-for="(movimiento, index) in data.poliza_edit.poliza_movimientos">
-                                                    <td><input type="text" class="form-control input-sm" v-model="movimiento.cuenta_contable"> </td>
-                                                    <td>@{{ movimiento.descripcion_cuenta_contable}}</td>
-                                                    <td>
-                                                        <select name="Tipo" class="form-control input-sm" v-model="movimiento.id_tipo_movimiento_poliza">
-                                                            <option :value="1">Debe</option>
-                                                            <option :value="2">Haber</option>
-                                                        </select>
-                                                    </td>
-                                                    <td class="bg-gray-light numerico">
-                                                        <span v-if="movimiento.id_tipo_movimiento_poliza == 1">
-                                                            <input type="number" step="any" class="form-control input-sm" v-model="movimiento.importe">
-                                                        </span>
-                                                    </td>
-                                                    <td class="bg-gray-light numerico">
-                                                        <span v-if="movimiento.id_tipo_movimiento_poliza == 2">
-                                                            <input type="number" step="any" class="form-control input-sm" v-model="movimiento.importe">
-                                                        </span>
-                                                    </td>
-                                                    <td>
-                                                        <input name="Referencia" class="form-control input-sm" type="text" v-model="movimiento.referencia">
-                                                    </td>
-                                                    <td>
-                                                        <input name="Concepto" class="form-control input-sm" type="text" v-model="movimiento.concepto">
-                                                    </td>
-                                                    <th class="bg-gray-light"><button class="btn-xs btn-danger" @click="confirm_remove_movimiento(index)"><i class="fa fa-remove"></i> </button></th>
-                                                </tr>
-                                            <tr>
-
-                                                <td colspan="3" class="bg-gray"><b>Sumas Iguales</b></td>
-                                                <td class="bg-gray numerico">
-                                                    <b>$@{{(suma_debe)}}</b></td>
-                                                <td class="bg-gray numerico">
-                                                    <b>$@{{(suma_haber)}}</b></td>
-                                                <td class="bg-gray" colspan="3"></td>
-                                            </tr>
-                                        </table>
-                                        <div class="col-sm-12" style="text-align: right"><h4><b>Total de la Póliza:</b>  $@{{(data.poliza_edit.total)}}</h4></div>
+                                        <thead>
+                                        <tr>
+                                            <th class="bg-gray-light">Cuenta Contable</th>
+                                            <th class="bg-gray-light">Nombre Cuenta Contable</th>
+                                            <th class="bg-gray-light">Tipo</th>
+                                            <th class="bg-gray-light">Debe</th>
+                                            <th class="bg-gray-light">Haber</th>
+                                            <th class="bg-gray-light">Referencia</th>
+                                            <th class="bg-gray-light">Concepto</th>
+                                            <th class="bg-gray-light"><button class="btn-xs btn-success" @click="show_add_movimiento"><i class="fa fa-plus"></i> </button></th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr v-for="(movimiento, index) in data.poliza_edit.poliza_movimientos">
+                                            <td><input type="text" class="form-control input-sm" v-model="movimiento.cuenta_contable"> </td>
+                                            <td>@{{ movimiento.descripcion_cuenta_contable}}</td>
+                                            <td>
+                                                <select name="Tipo" class="form-control input-sm" v-model="movimiento.id_tipo_movimiento_poliza">
+                                                    <option :value="1">Debe</option>
+                                                    <option :value="2">Haber</option>
+                                                </select>
+                                            </td>
+                                            <td class="bg-gray-light numerico">
+                                                <span v-if="movimiento.id_tipo_movimiento_poliza == 1">
+                                                    <input type="number" step="any" class="form-control input-sm" v-model="movimiento.importe">
+                                                </span>
+                                            </td>
+                                            <td class="bg-gray-light numerico">
+                                                <span v-if="movimiento.id_tipo_movimiento_poliza == 2">
+                                                    <input type="number" step="any" class="form-control input-sm" v-model="movimiento.importe">
+                                                </span>
+                                            </td>
+                                            <td>
+                                                <input name="Referencia" class="form-control input-sm" type="text" v-model="movimiento.referencia">
+                                            </td>
+                                            <td>
+                                                <input name="Concepto" class="form-control input-sm" type="text" v-model="movimiento.concepto">
+                                            </td>
+                                            <th class="bg-gray-light"><button class="btn-xs btn-danger" @click="confirm_remove_movimiento(index)"><i class="fa fa-remove"></i> </button></th>
+                                        </tr>
+                                        </tbody>
+                                        <tfoot>
+                                        <tr>
+                                            <th colspan="3" class="bg-gray">
+                                                <b>Sumas Iguales</b>
+                                            </th>
+                                            <th class="bg-gray numerico">
+                                                <b>$@{{(suma_debe)}}</b>
+                                            </th>
+                                            <th class="bg-gray numerico">
+                                                <b>$@{{(suma_haber)}}</b>
+                                            </th>
+                                            <th class="bg-gray" colspan="3"></th>
+                                        </tr>
+                                        </tfoot>
+                                    </table>
+                                    <div class="col-sm-12" style="text-align: right"><h4><b>Total de la Póliza:</b>  $@{{(data.poliza_edit.total)}}</h4></div>
                                 </div>
                             </div>
                             <div class="box-footer">
                                 <div class="col-md-12">
-                                    <button :disabled="! cambio" class="btn btn-info pull-right" @click="confirm_save">Guardar Cambios</button>
+                                    <button :disabled="! cambio" class="btn btn-info pull-right" type="submit">Guardar Cambios</button>
                                 </div>
                             </div>
+                            </form>
                         </div>
                     </div>
                 </div>

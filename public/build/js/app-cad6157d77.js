@@ -35726,7 +35726,6 @@ Vue.component('cuenta-contable', {
                 url: url,
                 data: data,
                 beforeSend: function beforeSend() {
-                    self.validation_errors.clear('form_datos_cuenta');
                     self.guardando = true;
                 },
                 success: function success(data, textStatus, xhr) {
@@ -35912,8 +35911,6 @@ Vue.component('poliza-generada-edit', {
             this.$validator.validateAll(scope).then(function () {
                 if (funcion == 'confirm_add_movimiento') {
                     _this.confirm_add_movimiento();
-                } else if (funcion == 'confirm_save') {
-                    _this.confirm_save();
                 }
             }).catch(function () {
                 swal({
@@ -36007,9 +36004,6 @@ Vue.component('poliza-generada-edit', {
 
         save: function save() {
             var self = this;
-
-            Vue.set(this.data.poliza_edit, 'suma_haber', this.suma_haber);
-            Vue.set(this.data.poliza_edit, 'suma_debe', this.suma_debe);
 
             $.ajax({
                 type: 'POST',

@@ -57,6 +57,8 @@ Vue.component('poliza-generada-edit', {
             this.$validator.validateAll(scope).then(() => {
                 if(funcion == 'confirm_add_movimiento') {
                     this.confirm_add_movimiento();
+                } else  if (funcion == 'confirm_save') {
+                    this.confirm_save();
                 }
             }).catch(() => {
                 swal({

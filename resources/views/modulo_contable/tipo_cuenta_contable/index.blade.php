@@ -44,8 +44,7 @@
                                         <td>{{ $item->created_at->format('Y-m-d h:i:s a') }}</td>
                                         <td>
                                             @if($item->cuentaContable)
-                                                <span class="label label-success">{{$item->cuentaContable->prefijo.''.$item->cuentaContable->cuenta_contable }}</span>
-
+                                                <span class="label label-success" title="{{$item->cuentaContable->prefijo.''.$item->cuentaContable->cuenta_contable }}">Asignada</span>
                                             @else
                                                 <span class="label label-danger">No Asignada</span>
                                             @endif
