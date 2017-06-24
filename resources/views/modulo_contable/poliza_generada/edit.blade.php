@@ -45,6 +45,7 @@
                                     <table v-if="data.poliza_edit.poliza_movimientos.length" class="table table-bordered">
                                         <thead>
                                         <tr>
+                                            <th class="bg-gray-light">#</th>
                                             <th class="bg-gray-light">Cuenta Contable</th>
                                             <th class="bg-gray-light">Nombre Cuenta Contable</th>
                                             <th class="bg-gray-light">Tipo</th>
@@ -52,41 +53,51 @@
                                             <th class="bg-gray-light">Haber</th>
                                             <th class="bg-gray-light">Referencia</th>
                                             <th class="bg-gray-light">Concepto</th>
-                                            <th class="bg-gray-light"><button class="btn-xs btn-success" @click="show_add_movimiento"><i class="fa fa-plus"></i> </button></th>
+                                            <th class="bg-gray-light"><button class="btn-xs btn-success" type="button" @click="show_add_movimiento"><i class="fa fa-plus"></i> </button></th>
                                         </tr>
                                         </thead>
                                         <tbody>
                                         <tr v-for="(movimiento, index) in data.poliza_edit.poliza_movimientos">
-                                            <td><input type="text" class="form-control input-sm" v-model="movimiento.cuenta_contable"> </td>
+                                            <td>@{{ index + 1 }}</td>
+                                            <td class="form-group" :class="{'has-error': validation_errors.has('form_poliza.CuentaContable [' + (index + 1) + ']')}">
+                                                <input type="text" v-validate="'required|regex:' + obra.FormatoCuentaRegExp" :name="'CuentaContable [' + (index + 1) + ']'" class="form-control input-sm" v-model="movimiento.cuenta_contable">
+                                                <label class="help" v-show="validation_errors.has('form_poliza.CuentaContable [' + (index + 1) + ']')">@{{ validation_errors.first('form_poliza.CuentaContable [' + (index + 1) + ']') }}</label>
+                                            </td>
                                             <td>@{{ movimiento.descripcion_cuenta_contable}}</td>
-                                            <td>
-                                                <select name="Tipo" class="form-control input-sm" v-model="movimiento.id_tipo_movimiento_poliza">
+                                            <td class="form-group" :class="{'has-error': validation_errors.has('form_poliza.Tipo [' + (index + 1) + ']')}">
+                                                <select :name="'Tipo [' + (index + 1) + ']'" v-validate="'required|numeric'" class="form-control input-sm" v-model="movimiento.id_tipo_movimiento_poliza">
                                                     <option :value="1">Debe</option>
                                                     <option :value="2">Haber</option>
                                                 </select>
+                                                <label class="help" v-show="validation_errors.has('form_poliza.Tipo [' + (index + 1) + ']')">@{{ validation_errors.first('form_poliza.Tipo [' + (index + 1) + ']') }}</label>
                                             </td>
-                                            <td class="bg-gray-light numerico">
+                                            <td class="bg-gray-light numerico form-group" :class="{'has-error': validation_errors.has('form_poliza.Importe [' + (index + 1) + ']')}">
                                                 <span v-if="movimiento.id_tipo_movimiento_poliza == 1">
-                                                    <input type="number" step="any" class="form-control input-sm" v-model="movimiento.importe">
+                                                    <input v-validate="'required|min_value:0'" :name="'Importe [' + (index + 1) + ']'" type="number" step="any" class="form-control input-sm text-right" v-model="movimiento.importe">
+                                                    <label class="help" v-show="validation_errors.has('form_poliza.Importe [' + (index + 1) + ']')">@{{ validation_errors.first('form_poliza.Importe [' + (index + 1) + ']') }}</label>
                                                 </span>
                                             </td>
-                                            <td class="bg-gray-light numerico">
+                                            <td class="bg-gray-light numerico form-group" :class="{'has-error': validation_errors.has('form_poliza.Importe [' + (index + 1) + ']')}">
                                                 <span v-if="movimiento.id_tipo_movimiento_poliza == 2">
-                                                    <input type="number" step="any" class="form-control input-sm" v-model="movimiento.importe">
+                                                    <input v-validate="'required|min_value:0'" :name="'Importe [' + (index + 1) + ']'" type="number" step="any" class="form-control input-sm text-right" v-model="movimiento.importe">
+                                                    <label class="help" v-show="validation_errors.has('form_poliza.Importe [' + (index + 1) + ']')">@{{ validation_errors.first('form_poliza.Importe [' + (index + 1) + ']') }}</label>
                                                 </span>
                                             </td>
-                                            <td>
-                                                <input name="Referencia" class="form-control input-sm" type="text" v-model="movimiento.referencia">
+                                            <td class="form-group" :class="{'has-error': validation_errors.has('form_poliza.Referencia [' + (index + 1) + ']')}">
+                                                <input :name="'Referencia [' + (index + 1) + ']'" v-validate="'required'" class="form-control input-sm" type="text" v-model="movimiento.referencia">
+                                                <label class="help" v-show="validation_errors.has('form_poliza.Referencia [' + (index + 1) + ']')">@{{ validation_errors.first('form_poliza.Referencia [' + (index + 1) + ']') }}</label>
+                                                <label class="help" v-show="validation_errors.has('form_poliza.Referencia [' + (index + 1) + ']')">@{{ validation_errors.first('form_poliza.Referencia [' + (index + 1) + ']') }}</label>
                                             </td>
-                                            <td>
-                                                <input name="Concepto" class="form-control input-sm" type="text" v-model="movimiento.concepto">
+                                            <td class="form-group" :class="{'has-error': validation_errors.has('form_poliza.Concepto [' + (index + 1) + ']')}">
+                                                <input :name="'Concepto [' + (index + 1) + ']'" v-validate="'required'" class="form-control input-sm" type="text" v-model="movimiento.concepto">
+                                                <label class="help" v-show="validation_errors.has('form_poliza.Concepto [' + (index + 1) + ']')">@{{ validation_errors.first('form_poliza.Concepto [' + (index + 1) + ']') }}</label>
                                             </td>
-                                            <th class="bg-gray-light"><button class="btn-xs btn-danger" @click="confirm_remove_movimiento(index)"><i class="fa fa-remove"></i> </button></th>
+                                            <th class="bg-gray-light"><button class="btn-xs btn-danger" type="button" @click="confirm_remove_movimiento(index)"><i class="fa fa-remove"></i> </button></th>
                                         </tr>
                                         </tbody>
                                         <tfoot>
                                         <tr>
-                                            <th colspan="3" class="bg-gray">
+                                            <th colspan="4" class="bg-gray text-right">
                                                 <b>Sumas Iguales</b>
                                             </th>
                                             <th class="bg-gray numerico">
@@ -144,7 +155,7 @@
                                     <div class="col-md-4">
                                         <div class="form-group" :class="{'has-error': validation_errors.has('form_add_movimiento.Importe')}">
                                             <label for="">Importe</label>
-                                            <input type="number" step="any" v-validate="'required|decimal'" class="form-control" name="Importe" v-model="form.movimiento.importe">
+                                            <input type="number" step="any" v-validate="'required|decimal|min_value:0'" class="form-control" name="Importe" v-model="form.movimiento.importe">
                                             <label class="help" v-show="validation_errors.has('form_add_movimiento.Importe')">@{{ validation_errors.first('form_add_movimiento.Importe') }}</label>
                                         </div>
                                     </div>
@@ -168,7 +179,7 @@
                                 </div>
                             </div>
                             <div class="modal-footer">
-                                <a class="btn btn-default" @click="close_add_movimiento">Cerrar</a>
+                                <button type="button" class="btn btn-default" @click="close_add_movimiento">Cerrar</button>
                                 <button type="submit" class="btn btn-primary" >Guardar</button>
                             </div>
                             </form>
