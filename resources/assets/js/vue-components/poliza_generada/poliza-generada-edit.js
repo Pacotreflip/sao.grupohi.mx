@@ -32,7 +32,7 @@ Vue.component('poliza-generada-edit', {
                     suma_haber += parseFloat(movimiento.importe);
                 }
             });
-           return suma_haber;
+            return suma_haber;
         },
 
         suma_debe: function () {
@@ -150,6 +150,10 @@ Vue.component('poliza-generada-edit', {
 
         save: function () {
             var self = this;
+
+            Vue.set(this.data.poliza_edit,'suma_haber',this.suma_haber);
+            Vue.set(this.data.poliza_edit,'suma_debe',this.suma_debe);
+
 
             $.ajax({
                 type: 'POST',
