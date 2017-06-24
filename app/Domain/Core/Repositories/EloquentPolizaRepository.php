@@ -8,9 +8,9 @@ use Ghi\Domain\Core\Models\HistPoliza;
 use Ghi\Domain\Core\Models\HistPolizaMovimiento;
 use Ghi\Domain\Core\Models\Poliza;
 use Ghi\Domain\Core\Models\PolizaMovimiento;
-use Ghi\Domain\Core\Models\TipoCuentaContable;
 use Illuminate\Http\Exception\HttpResponseException;
 use Illuminate\Support\Facades\DB;
+use Mockery\Exception;
 use Symfony\Component\HttpFoundation\Response;
 
 
@@ -72,12 +72,16 @@ class EloquentPolizaRepository implements PolizaRepository
             if (!$poliza = $this->model->find($id)) {
                 throw new HttpResponseException(new Response('No se encontró la poliza', 404));
             }
-
+            $poliza->concepto = $data['poliza_generada']['concepto'];
             $cuentas_debe = false;
             $cuentas_haber = false;
             $suma_debe = $data['poliza_generada']['suma_debe'];
             $suma_haber = $data['poliza_generada']['suma_haber'];
             $suma_total = $suma_debe + $suma_haber;
+
+            if(! isset( $data['poliza_generada']['poliza_movimientos'])) {
+                throw new HttpResponseException(new Response('La póliza debe contener al menos un movimiento de cada tipo (Debe, Haber)', 404));
+            }
 
             foreach ($data['poliza_generada']['poliza_movimientos'] as $polizaMovimiento) {
                 $repetido = 0;
@@ -109,38 +113,52 @@ class EloquentPolizaRepository implements PolizaRepository
             if ($suma_debe != $suma_haber) {
                 throw new HttpResponseException(new Response('Las sumas iguales no corresponden.', 404));
             }
-            if ($suma_total!=$data['poliza_generada']['total']) {
+            if ($suma_debe != $data['poliza_generada']['total'] || $suma_haber != $data['poliza_generada']['total']) {
                 throw new HttpResponseException(new Response('Las sumas iguales no deben exceder $' . $data['poliza_generada']['total'], 404));
             }
 
+            $movimientos_actuales = PolizaMovimiento::where('id_int_poliza', $poliza->id_int_poliza)->get();
 
+            foreach ($movimientos_actuales as $polizaMovimiento) {
+                $polizaMovimiento->delete();
+            }
 
 
             foreach ($data['poliza_generada']['poliza_movimientos'] as $polizaMovimiento) {
-                if ($polizaMovimiento['id_int_poliza_movimiento'] != null) {
-                    PolizaMovimiento::update($polizaMovimiento);
+                if (count($polizaMovimiento) > 10) {
+                    $movimientoPoliza = PolizaMovimiento::withTrashed()->find($polizaMovimiento['id_int_poliza_movimiento']);
+                    $movimientoPoliza->referencia = $polizaMovimiento['referencia'];
+                    $movimientoPoliza->concepto = $polizaMovimiento['concepto'];
+                    $movimientoPoliza->cuenta_contable = $polizaMovimiento['cuenta_contable'];
+                    $movimientoPoliza->importe = $polizaMovimiento['importe'];
+                    $movimientoPoliza->id_tipo_movimiento_poliza = $polizaMovimiento['id_tipo_movimiento_poliza'];
+                    $movimientoPoliza->restore();
+
                 } else {
-                    PolizaMovimiento::create($polizaMovimiento);
+                    $movimientoPoliza = new PolizaMovimiento();
+                    $movimientoPoliza->id_int_poliza = $poliza->id_int_poliza;
+                    $movimientoPoliza->referencia = $polizaMovimiento['referencia'];
+                    $movimientoPoliza->concepto = $polizaMovimiento['concepto'];
+                    $movimientoPoliza->cuenta_contable = $polizaMovimiento['cuenta_contable'];
+                    $movimientoPoliza->importe = $polizaMovimiento['importe'];
+                    $movimientoPoliza->id_tipo_movimiento_poliza = $polizaMovimiento['id_tipo_movimiento_poliza'];
+                    $movimientoPoliza->save();
                 }
+
             }
-            Poliza::update($data['poliza_generada']);
-            /*
+            $poliza->save();
+            $poliza = $this->model->find($id);
+            $poliza_hist = HistPoliza::create($poliza->toArray());
+            foreach ($poliza->polizaMovimientos as $movimiento) {
+                $movimiento->id_hist_int_poliza = $poliza_hist->id_hist_int_poliza;
+                $hist_movimiento = HistPolizaMovimiento::create($movimiento->toArray());
+            }
 
-                    DB::connection('cadeco')->beginTransaction();
-                    $poliza = $this->model->find($id);
-                    $poliza_hist = HistPoliza::create($poliza->toArray());
-                    foreach ($poliza->polizaMovimientos as $movimiento) {
-                        $movimiento->id_hist_int_poliza=$poliza_hist->id_hist_int_poliza;
-                        $hist_movimiento = HistPolizaMovimiento::create($movimiento->toArray());
-                    }
-
-        */
             DB::connection('cadeco')->commit();
         } catch (\Exception $e) {
             DB::connection('cadeco')->rollback();
             throw $e;
         }
-        return $this->model->find($id);
-
+        return $this->find($id, ['polizaMovimientos','tipoPolizaContpaq']);
     }
 }

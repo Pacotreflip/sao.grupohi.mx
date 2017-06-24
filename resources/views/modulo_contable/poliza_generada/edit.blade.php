@@ -42,7 +42,7 @@
                                                 Solicita:<br><label> {{$poliza->user_registro }}</label></th>
                                         </tr>
                                     </table>
-                                    <table v-if="data.poliza_edit.poliza_movimientos.length" class="table table-bordered">
+                                    <table class="table table-bordered">
                                         <thead>
                                         <tr>
                                             <th class="bg-gray-light">#</th>
@@ -132,7 +132,7 @@
                                 <h4 class="modal-title">Agregar Movimiento</h4>
                             </div>
                             <form id="form_add_movimiento" @submit.prevent="validateForm('form_add_movimiento','confirm_add_movimiento')"  data-vv-scope="form_add_movimiento">
-                            <div class="modal-body" v-if="">
+                            <div class="modal-body">
                                 <div class="row">
                                     <div class="col-md-4">
                                         <div class="form-group" :class="{'has-error': validation_errors.has('form_add_movimiento.Cuenta Contable')}">

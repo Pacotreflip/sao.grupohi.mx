@@ -40,10 +40,8 @@ class PolizaController extends Controller
 
     public function update(Request $request,$id)
     {
-        $this->poliza->update($request->all(),$id);
-        $poliza = $this->poliza->find($id, 'polizaMovimientos');
+        $item = $this->poliza->update($request->all(),$id);
+
+        return response()->json(['data' => ['poliza_generada' => $item]],200);
     }
-
-
-
 }

@@ -14,7 +14,6 @@ class HistPolizaMovimiento extends Model
     protected $primaryKey = 'id_hist_int_poliza';
     protected $fillable = [
         'id_hist_int_poliza',
-        'id_int_poliza_movimiento',
         'id_int_poliza',
         'id_tipo_cuenta_contable',
         'id_cuenta_contable',
