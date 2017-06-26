@@ -29,7 +29,7 @@
                                 <tr role="row">
                                     <th class="sorting_asc" tabindex="0" aria-controls="polizas_tipo" aria-sort="ascending">#</th>
                                     <th class="sorting" tabindex="0" aria-controls="polizas_tipo">Tipo de Póliza</th>
-                                    <th class="sorting" tabindex="0" aria-controls="polizas_tipo"># Movimientos</th>
+                                    <th class="sorting" tabindex="0" aria-controls="polizas_tipo">Número de Movimientos</th>
                                     <th class="sorting" tabindex="0" aria-controls="polizas_tipo">Registró</th>
                                     <th class="sorting" tabindex="0" aria-controls="polizas_tipo">Fecha y Hora de Registro</th>
                                     <th class="sorting" tabindex="0" aria-controls="polizas_tipo">Vigencia</th>

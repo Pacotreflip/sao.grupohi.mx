@@ -36,7 +36,7 @@
                         </div>
                         <div class="col-md-2">
                             <div class="form-group">
-                                <label for="add_movimiento">Agragar Movimiento</label>
+                                <label for="add_movimiento">Agregar Movimiento</label>
                                 <button type="button" class="btn btn-primary btn-block" data-toggle="modal" data-target="#modal-add-movimiento" @click="reset_movimiento" :disabled="guardando || form.poliza_tipo.id_transaccion_interfaz == ''">
                                     <i class="fa fa-fw fa-plus"></i>
                                 </button>
