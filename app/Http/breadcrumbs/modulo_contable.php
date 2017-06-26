@@ -23,7 +23,7 @@ Breadcrumbs::register('modulo_contable.poliza_tipo.show', function ($breadcrumb,
 });
 
 
-/*
+/**
  * Tipo Cuenta Contable
  */
 
@@ -63,4 +63,21 @@ Breadcrumbs::register('modulo_contable.poliza_generada.show', function ($breadcr
 Breadcrumbs::register('modulo_contable.poliza_generada.edit', function ($breadcrumb, $poliza) {
     $breadcrumb->parent('modulo_contable.poliza_generada.show', $poliza);
     $breadcrumb->push('EDICIÓN', route('modulo_contable.poliza_generada.edit', $poliza));
+});
+
+/**
+ * Cuentas Material
+ */
+
+Breadcrumbs::register('modulo_contable.cuenta_material.index', function ($breadcrumb) {
+    $breadcrumb->parent('modulo_contable.index');
+    $breadcrumb->push('CUENTAS MATERIALES', route('modulo_contable.cuenta_material.index'));
+});
+Breadcrumbs::register('modulo_contable.cuenta_material.create', function ($breadcrumb) {
+    $breadcrumb->parent('modulo_contable.cuenta_material.index');
+    $breadcrumb->push('NUEVA CUENTA DE MATERIAL', route('modulo_contable.cuenta_material.create'));
+});
+Breadcrumbs::register('modulo_contable.cuenta_material.show', function ($breadcrumb) {
+    $breadcrumb->parent('modulo_contable.cuenta_material.index');
+    $breadcrumb->push('VER CUENTAS DE MATERIALES', route('modulo_contable.cuenta_material.show'));
 });
