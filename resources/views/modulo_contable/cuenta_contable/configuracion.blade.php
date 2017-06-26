@@ -108,7 +108,7 @@
                             <div class="box-footer">
                                 <div class="col-md-12">
                                     <button type="submit" class="btn btn-info pull-right" :disabled="guardando" >
-                                        <i class="fa fa-cogs"></i> Configurar
+                                        <i class="fa fa-save"></i> Guardar
                                     </button>
                                 </div>
                             </div>
@@ -139,9 +139,8 @@
                                         </thead>
                                         <tbody>
                                         <tr v-for="(item, index) in data.cuentas_contables">
-
                                             <td>@{{ index + 1  }}</td>
-                                            <td>@{{ item.tipo_cuenta_contable.descripcion }}</td>
+                                            <td>@{{ item.tipo_cuenta_contable ? item.tipo_cuenta_contable.descripcion : ''}}</td>
                                             <td>@{{ item.prefijo ? item.prefijo : '' }}</td>
                                             <td>@{{ item.cuenta_contable ? item.cuenta_contable : '' }}</td>
                                             <td>
@@ -205,7 +204,7 @@
 
                                         <button type="button" class="btn btn-default pull-left" data-dismiss="modal" id="closeModal">Cerrar</button>
                                         <button type="submit" class="btn btn-info pull-right" :disabled="guardando"  >
-                                            <i class="fa fa-cogs"></i> Configurar
+                                            <i class="fa fa-save"></i> Guradar
                                         </button>
                                     </div>
                                 </div>

@@ -5,7 +5,7 @@
 
 @section('main-content')
     {!! Breadcrumbs::render('modulo_contable.poliza_generada.index') !!}
-    <hr>
+
     <div class="row">
         <div class="col-md-12">
             <div class="box box-success">
@@ -26,7 +26,7 @@
                                 <th>Total</th>
                                 <th>Cuadre</th>
                                 <th>Estatus</th>
-                                <th>Poliza ContPaq</th>
+                                <th>Póliza ContPaq</th>
                                 <th>Acciones</th>
                             </tr>
                             </thead>

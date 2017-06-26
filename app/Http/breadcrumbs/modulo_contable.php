@@ -68,20 +68,3 @@ Breadcrumbs::register('modulo_contable.poliza_generada.historico', function ($br
     $breadcrumb->parent('modulo_contable.poliza_generada.index');
     $breadcrumb->push($poliza->tipoPolizaContpaq, route('modulo_contable.poliza_generada.historico', $poliza));
 });
-
-/**
- * Cuentas Material
- */
-
-Breadcrumbs::register('modulo_contable.cuenta_material.index', function ($breadcrumb) {
-    $breadcrumb->parent('modulo_contable.index');
-    $breadcrumb->push('CUENTAS MATERIALES', route('modulo_contable.cuenta_material.index'));
-});
-Breadcrumbs::register('modulo_contable.cuenta_material.create', function ($breadcrumb) {
-    $breadcrumb->parent('modulo_contable.cuenta_material.index');
-    $breadcrumb->push('NUEVA CUENTA DE MATERIAL', route('modulo_contable.cuenta_material.create'));
-});
-Breadcrumbs::register('modulo_contable.cuenta_material.show', function ($breadcrumb) {
-    $breadcrumb->parent('modulo_contable.cuenta_material.index');
-    $breadcrumb->push('VER CUENTAS DE MATERIALES', route('modulo_contable.cuenta_material.show'));
-});
