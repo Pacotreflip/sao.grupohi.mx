@@ -19,7 +19,7 @@ Breadcrumbs::register('sistema_contable.poliza_tipo.create', function ($breadcru
 });
 Breadcrumbs::register('sistema_contable.poliza_tipo.show', function ($breadcrumb, $poliza_tipo) {
     $breadcrumb->parent('sistema_contable.poliza_tipo.index');
-    $breadcrumb->push($poliza_tipo->transaccion, route('sistema_contable.poliza_tipo.show', $poliza_tipo));
+    $breadcrumb->push(mb_strtoupper($poliza_tipo->transaccion), route('sistema_contable.poliza_tipo.show', $poliza_tipo));
 });
 
 
