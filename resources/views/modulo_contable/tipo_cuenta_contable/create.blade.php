@@ -1,6 +1,7 @@
 @extends('modulo_contable.layout')
 @section('title', 'Plantillas de Póliza')
 @section('contentheader_title', 'TIPO CUENTA CONTABLE')
+@section('contentheader_description', '(NUEVA)')
 
 @section('main-content')
     {!! Breadcrumbs::render('modulo_contable.tipo_cuenta_contable.create') !!}

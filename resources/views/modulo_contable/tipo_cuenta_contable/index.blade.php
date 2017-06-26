@@ -1,6 +1,7 @@
 @extends('modulo_contable.layout')
 @section('title', 'Plantillas de Tipo Cuenta Contable')
 @section('contentheader_title', 'TIPO CUENTA CONTABLE')
+@section('contentheader_description', '(LISTA)')
 
 @section('main-content')
     {!! Breadcrumbs::render('modulo_contable.tipo_cuenta_contable.index') !!}
@@ -22,7 +23,7 @@
                 <div class="box-body">
                     <div class="col-sm-12">
                         <div class="row table-responsive">
-                            <table  class="table table-bordered table-striped dataTable index_table" role="grid"
+                            <table  class="table table-bordered table-striped small index_table" role="grid"
                                    aria-describedby="tipo_cuenta_info">
                                 <thead>
                                 <tr role="row">
