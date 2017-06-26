@@ -35554,17 +35554,6 @@ $(function () {
     });
 });
 
-Number.prototype.formatMoney = function (c, d, t) {
-    var n = this,
-        c = isNaN(c = Math.abs(c)) ? 2 : c,
-        d = d == undefined ? "." : d,
-        t = t == undefined ? "," : t,
-        s = n < 0 ? "-" : "",
-        i = String(parseInt(n = Math.abs(Number(n) || 0).toFixed(c))),
-        j = (j = i.length) > 3 ? j % 3 : 0;
-    return s + (j ? i.substr(0, j) + t : "") + i.substr(j).replace(/(\d{3})(?=\d)/g, "$1" + t) + (c ? d + Math.abs(n - i).toFixed(c).slice(2) : "");
-};
-
 },{}],27:[function(require,module,exports){
 'use strict';
 
@@ -35572,11 +35561,9 @@ require('./vue-components/global-errors');
 require('./vue-components/errors');
 require('./vue-components/poliza_tipo/poliza-tipo-create');
 require('./vue-components/select2');
-require('./vue-components/tipo_cuenta_contable/tipo-cuenta-contable-create');
 require('./vue-components/cuenta_contable/cuenta-contable');
-require('./vue-components/poliza_generada/poliza-generada-edit');
 
-},{"./vue-components/cuenta_contable/cuenta-contable":28,"./vue-components/errors":29,"./vue-components/global-errors":30,"./vue-components/poliza_generada/poliza-generada-edit":31,"./vue-components/poliza_tipo/poliza-tipo-create":32,"./vue-components/select2":33,"./vue-components/tipo_cuenta_contable/tipo-cuenta-contable-create":36}],28:[function(require,module,exports){
+},{"./vue-components/cuenta_contable/cuenta-contable":28,"./vue-components/errors":29,"./vue-components/global-errors":30,"./vue-components/poliza_tipo/poliza-tipo-create":31,"./vue-components/select2":32}],28:[function(require,module,exports){
 'use strict';
 
 Vue.component('cuenta-contable', {
@@ -35726,7 +35713,6 @@ Vue.component('cuenta-contable', {
                 url: url,
                 data: data,
                 beforeSend: function beforeSend() {
-                    self.validation_errors.clear('form_datos_cuenta');
                     self.guardando = true;
                 },
                 success: function success(data, textStatus, xhr) {
@@ -35822,7 +35808,7 @@ Vue.component('app-errors', {
     template: require('./templates/errors.html')
 });
 
-},{"./templates/errors.html":34}],30:[function(require,module,exports){
+},{"./templates/errors.html":33}],30:[function(require,module,exports){
 'use strict';
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
@@ -35848,197 +35834,7 @@ Vue.component('global-errors', {
   }
 });
 
-},{"./templates/global-errors.html":35}],31:[function(require,module,exports){
-'use strict';
-
-Vue.component('poliza-generada-edit', {
-    props: ['poliza', 'poliza_edit', 'obra', 'url_cuenta_contable_findby', 'url_poliza_generada_update'],
-    data: function data() {
-        return {
-            'data': {
-                'poliza': this.poliza,
-                'poliza_edit': this.poliza_edit
-            },
-            'form': {
-                'movimiento': {
-                    'id_int_poliza': this.poliza.id_int_poliza,
-                    'cuenta_contable': '',
-                    'id_tipo_movimiento_poliza': '',
-                    'importe': '',
-                    'referencia': '',
-                    'concepto': ''
-                }
-            },
-            'guardando': false
-        };
-    },
-
-    computed: {
-        cambio: function cambio() {
-            return JSON.stringify(this.data.poliza) !== JSON.stringify(this.data.poliza_edit);
-        },
-
-        suma_haber: function suma_haber() {
-            var suma_haber = 0;
-            this.data.poliza_edit.poliza_movimientos.forEach(function (movimiento) {
-                if (movimiento.id_tipo_movimiento_poliza == 2) {
-                    suma_haber += parseFloat(movimiento.importe);
-                }
-            });
-            return suma_haber;
-        },
-
-        suma_debe: function suma_debe() {
-            var suma_debe = 0;
-            this.data.poliza_edit.poliza_movimientos.forEach(function (movimiento) {
-                if (movimiento.id_tipo_movimiento_poliza == 1) {
-                    suma_debe += parseFloat(movimiento.importe);
-                }
-            });
-            return suma_debe;
-        }
-    },
-
-    methods: {
-        show_add_movimiento: function show_add_movimiento() {
-            this.validation_errors.clear('form_add_movimiento');
-            $('#add_movimiento_modal').modal('show');
-            this.validation_errors.clear('form_add_movimiento');
-        },
-
-        validateForm: function validateForm(scope, funcion) {
-            var _this = this;
-
-            this.$validator.validateAll(scope).then(function () {
-                if (funcion == 'confirm_add_movimiento') {
-                    _this.confirm_add_movimiento();
-                } else if (funcion == 'confirm_save') {
-                    _this.confirm_save();
-                }
-            }).catch(function () {
-                swal({
-                    type: 'warning',
-                    title: 'Advertencia',
-                    text: 'Por favor corrija los errores del formulario'
-                });
-            });
-        },
-
-        close_add_movimiento: function close_add_movimiento() {
-            $('#add_movimiento_modal').modal('hide');
-            this.form.movimiento = {
-                'id_int_poliza': this.poliza.id_int_poliza,
-                'cuenta_contable': '',
-                'id_tipo_movimiento_poliza': '',
-                'importe': ''
-            };
-        },
-
-        confirm_add_movimiento: function confirm_add_movimiento() {
-            var self = this;
-            swal({
-                title: "Agregar Movimiento",
-                text: "¿Estás seguro de que la información es correcta?",
-                type: "warning",
-                showCancelButton: true,
-                confirmButtonText: "Si, Continuar",
-                cancelButtonText: "No, Cancelar"
-            }).then(function () {
-                self.add_movimiento();
-            }).catch(swal.noop);
-        },
-
-        add_movimiento: function add_movimiento() {
-            var self = this;
-            var url = this.url_cuenta_contable_findby;
-            $.ajax({
-                type: 'GET',
-                url: url,
-                data: {
-                    attribute: 'cuenta_contable',
-                    value: self.form.movimiento.cuenta_contable,
-                    with: 'tipoCuentaContable'
-                },
-                success: function success(data, textStatus, xhr) {
-                    if (data.data.cuenta_contable) {
-                        self.form.movimiento.id_tipo_cuenta_contable = data.data.cuenta_contable.id_int_tipo_cuenta_contable;
-                        self.form.movimiento.id_cuenta_contable = data.data.cuenta_contable.id_int_cuenta_contable;
-                        self.form.movimiento.descripcion_cuenta_contable = data.data.cuenta_contable.tipo_cuenta_contable.descripcion;
-                    }
-                },
-                complete: function complete() {
-                    self.data.poliza_edit.poliza_movimientos.push(self.form.movimiento);
-                    self.close_add_movimiento();
-                }
-            });
-        },
-
-        confirm_remove_movimiento: function confirm_remove_movimiento(index) {
-            var self = this;
-            swal({
-                title: "Quitar Movimiento",
-                text: "¿Estás seguro de que deseas quitar el movimiento de la Póliza?",
-                type: "warning",
-                showCancelButton: true,
-                confirmButtonText: "Si, Continuar",
-                cancelButtonText: "No, Cancelar"
-            }).then(function () {
-                self.remove_movimiento(index);
-            }).catch(swal.noop);
-        },
-
-        remove_movimiento: function remove_movimiento(index) {
-            Vue.delete(this.data.poliza_edit.poliza_movimientos, index);
-        },
-
-        confirm_save: function confirm_save() {
-            var self = this;
-            swal({
-                title: "Guardar Cambios de la Póliza",
-                text: "¿Estás seguro de que la información es correcta?",
-                type: "warning",
-                showCancelButton: true,
-                confirmButtonText: "Si, Continuar",
-                cancelButtonText: "No, Cancelar"
-            }).then(function () {
-                self.save();
-            }).catch(swal.noop);
-        },
-
-        save: function save() {
-            var self = this;
-
-            Vue.set(this.data.poliza_edit, 'suma_haber', this.suma_haber);
-            Vue.set(this.data.poliza_edit, 'suma_debe', this.suma_debe);
-
-            $.ajax({
-                type: 'POST',
-                url: self.url_poliza_generada_update,
-                data: {
-                    _method: 'PATCH',
-                    poliza_generada: self.data.poliza_edit
-                },
-                beforeSend: function beforeSend() {
-                    self.guardando = true;
-                },
-                success: function success(data, textStatus, xhr) {
-                    self.data.poliza = data.data.poliza_generada;
-                    self.data.poliza_edit = data.data.poliza_generada;
-                    swal({
-                        type: 'success',
-                        title: 'Correcto',
-                        html: 'Póliza  <b>' + self.data.poliza_edit.tipo_poliza_contpaq.descripcion + '</b> actualizada correctamente'
-                    });
-                },
-                complete: function complete() {
-                    self.guardando = false;
-                }
-            });
-        }
-    }
-});
-
-},{}],32:[function(require,module,exports){
+},{"./templates/global-errors.html":34}],31:[function(require,module,exports){
 'use strict';
 
 Vue.component('poliza-tipo-create', {
@@ -36229,7 +36025,7 @@ Vue.component('poliza-tipo-create', {
     }
 });
 
-},{}],33:[function(require,module,exports){
+},{}],32:[function(require,module,exports){
 'use strict';
 
 Vue.component('select2', {
@@ -36275,77 +36071,10 @@ Vue.component('select2', {
     }
 });
 
-},{}],34:[function(require,module,exports){
+},{}],33:[function(require,module,exports){
 module.exports = '<div id="form-errors" v-cloak>\n  <div class="alert alert-danger" v-if="form.errors.length">\n    <ul>\n      <li v-for="error in form.errors">{{ error }}</li>\n    </ul>\n  </div>\n</div>';
-},{}],35:[function(require,module,exports){
+},{}],34:[function(require,module,exports){
 module.exports = '<div class="alert alert-danger" v-show="errors.length">\n  <ul>\n    <li v-for="error in errors">{{ error }}</li>\n  </ul>\n</div>';
-},{}],36:[function(require,module,exports){
-'use strict';
-
-/**
- * Created by LERDES2 on 23/06/2017.
- */
-
-Vue.component('tipo-cuenta-contable-create', {
-    data: function data() {
-        return {
-            'form': {
-                'tipo_cuenta_contable': {
-                    'descripcion': ''
-                }
-            },
-            'guardando': false
-        };
-    },
-
-    methods: {
-        confirm_save: function confirm_save() {
-            var self = this;
-            swal({
-                title: "Guardar Tipo Cuenta Contable",
-                text: "¿Estás seguro de que la información es correcta?",
-                type: "warning",
-                showCancelButton: true,
-                confirmButtonText: "Si, Continuar",
-                cancelButtonText: "No, Cancelar"
-            }).then(function () {
-                self.save();
-            }).catch(swal.noop);
-        },
-
-        save: function save() {
-
-            var self = this;
-            var url = App.host + '/modulo_contable/tipo_cuenta_contable';
-            var data = self.form.tipo_cuenta_contable;
-
-            $.ajax({
-                type: 'POST',
-                url: url,
-                data: data,
-                beforeSend: function beforeSend() {
-                    self.guardando = true;
-                },
-                success: function success(data, textStatus, xhr) {
-                    swal({
-                        title: '¡Correcto!',
-                        html: "Se ha creado el Tipo de Cuenta Contable con éxito",
-                        type: "success",
-                        confirmButtonText: "Ok",
-                        closeOnConfirm: false
-                    }).then(function () {
-                        window.location = xhr.getResponseHeader('Location');
-                    }).catch(swal.noop);
-                },
-                complete: function complete() {
-                    self.guardando = false;
-                }
-            });
-        }
-    }
-
-});
-
 },{}]},{},[25]);
 
 //# sourceMappingURL=app.js.map
