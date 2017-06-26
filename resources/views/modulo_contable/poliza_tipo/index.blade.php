@@ -121,11 +121,11 @@
                         setTimeout(function() {
                             if (inputValue === false) return false;
                             if (inputValue === "") {
-                                swal.showInputError("¡Escriba el motivo de la eliminación!");
+                                reject("¡Escriba el motivo de la eliminación!");
                                 return false
                             }
                             resolve()
-                        }, 2000)
+                        },500)
                     })
                 },
                 allowOutsideClick: false

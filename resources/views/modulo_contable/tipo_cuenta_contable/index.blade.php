@@ -55,7 +55,7 @@
                                                     <i class="fa fa-eye"></i>
                                                 </a>
 
-                                                <button type="button" class="btn btn-xs btn-danger" onclick=" delete_tipo_cuena_contable({{$item->id_tipo_cuenta_contable}})">
+                                                <button type="button" class="btn btn-xs btn-danger" onclick=" delete_tipo_cuenta_contable({{$item->id_tipo_cuenta_contable}})">
                                                     <i class="fa fa-trash"></i>
                                                 </button>
                                             </div>
@@ -85,7 +85,7 @@
 @endsection
 @section('scripts-content')
     <script>
-        function delete_tipo_cuena_contable(id) {
+        function delete_tipo_cuenta_contable(id) {
 
             var url=App.host +"/modulo_contable/tipo_cuenta_contable/" + id;
             swal({
@@ -102,11 +102,11 @@
                         setTimeout(function() {
                             if (inputValue === false) return false;
                             if (inputValue === "") {
-                                swal.showInputError("¡Escriba el motivo de la eliminación!");
+                                reject("¡Escriba el motivo de la eliminación!");
                                 return false
                             }
                             resolve()
-                        }, 2000)
+                        }, 500)
                     })
                 },
                 allowOutsideClick: false
@@ -120,12 +120,12 @@
                     },
                     success: function (data, textStatus, xhr) {
                         swal({
-                                type: "success",
-                                title: '¡Correcto!',
-                                text: 'Tipo Cuenta Contable Eliminada con éxito',
-                                confirmButtonText: "Ok",
-                                closeOnConfirm: false
-                            }).then(function () {
+                            type: "success",
+                            title: '¡Correcto!',
+                            text: 'Tipo Cuenta Contable Eliminada con éxito',
+                            confirmButtonText: "Ok",
+                            closeOnConfirm: false
+                        }).then(function () {
                             location.reload();
                         });
                     },
