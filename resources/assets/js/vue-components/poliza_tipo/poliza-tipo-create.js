@@ -181,8 +181,8 @@ Vue.component('poliza-tipo-create', {
                         confirmButtonText: "Ok",
                         closeOnConfirm: false
                     }).then(function () {
-                            window.location = xhr.getResponseHeader('Location');
-                        })  .catch(swal.noop);
+                        window.location = xhr.getResponseHeader('Location');
+                    })  .catch(swal.noop);
                 },
                 complete: function () {
                     self.guardando = false;

@@ -6,7 +6,7 @@ namespace Ghi\Domain\Core\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Poliza extends Model
+class HistPoliza extends Model
 {
     use SoftDeletes;
 
@@ -37,16 +37,6 @@ class Poliza extends Model
     ];
 
     /**
-     * Poliza constructor.
-     * @param array $attributes
-     */
-    public function __construct(array $attributes = [])
-    {
-        $attributes['id_obra_cadeco'] = \Ghi\Core\Facades\Context::getId();
-        parent::__construct($attributes);
-    }
-
-    /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function transaccionInterfaz()
@@ -75,7 +65,7 @@ class Poliza extends Model
      */
     public function polizaMovimientos()
     {
-        return $this->hasMany(PolizaMovimiento::class, 'id_int_poliza');
+        return $this->hasMany(HistPolizaMovimiento::class, 'id_hist_int_poliza');
     }
 
     /**

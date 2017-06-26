@@ -35726,7 +35726,6 @@ Vue.component('cuenta-contable', {
                 url: url,
                 data: data,
                 beforeSend: function beforeSend() {
-                    self.validation_errors.clear('form_datos_cuenta');
                     self.guardando = true;
                 },
                 success: function success(data, textStatus, xhr) {
@@ -35912,8 +35911,6 @@ Vue.component('poliza-generada-edit', {
             this.$validator.validateAll(scope).then(function () {
                 if (funcion == 'confirm_add_movimiento') {
                     _this.confirm_add_movimiento();
-                } else if (funcion == 'confirm_save') {
-                    _this.confirm_save();
                 }
             }).catch(function () {
                 swal({
@@ -36008,9 +36005,6 @@ Vue.component('poliza-generada-edit', {
         save: function save() {
             var self = this;
 
-            Vue.set(this.data.poliza_edit, 'suma_haber', this.suma_haber);
-            Vue.set(this.data.poliza_edit, 'suma_debe', this.suma_debe);
-
             $.ajax({
                 type: 'POST',
                 url: self.url_poliza_generada_update,
@@ -36022,15 +36016,13 @@ Vue.component('poliza-generada-edit', {
                     self.guardando = true;
                 },
                 success: function success(data, textStatus, xhr) {
+                    self.data.poliza = data.data.poliza_generada;
+                    self.data.poliza_edit = data.data.poliza_generada;
                     swal({
-                        title: '¡Correcto!',
-                        html: 'Póliza  <b>' + self.data.poliza_edit.tipo_poliza_contpaq.descripcion + '</b> actualizada correctamente',
                         type: 'success',
-                        confirmButtonText: "Ok",
-                        closeOnConfirm: false
-                    }).then(function () {
-                        window.location = xhr.getResponseHeader('Location');
-                    }).catch(swal.noop);
+                        title: 'Correcto',
+                        html: 'Póliza  <b>' + self.data.poliza_edit.tipo_poliza_contpaq.descripcion + '</b> actualizada correctamente'
+                    });
                 },
                 complete: function complete() {
                     self.guardando = false;

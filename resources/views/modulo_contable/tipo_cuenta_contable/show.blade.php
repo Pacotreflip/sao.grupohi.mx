@@ -13,7 +13,6 @@
                         <h3 class="box-title">Tipo Cuenta Contable&nbsp;
                             @if($tipo_cuenta_contable->cuentaContable->prefijo == null)
                                 <span class="label label-success">{{$tipo_cuenta_contable->cuentaContable->cuenta_contable}}</span>
-
                             @else
                                 <span class="label label-success">{{$tipo_cuenta_contable->cuentaContable->prefijo}}</span>
                             @endif

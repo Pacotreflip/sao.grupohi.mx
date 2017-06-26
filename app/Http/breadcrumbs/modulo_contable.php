@@ -64,6 +64,10 @@ Breadcrumbs::register('modulo_contable.poliza_generada.edit', function ($breadcr
     $breadcrumb->parent('modulo_contable.poliza_generada.show', $poliza);
     $breadcrumb->push('EDICIÓN', route('modulo_contable.poliza_generada.edit', $poliza));
 });
+Breadcrumbs::register('modulo_contable.poliza_generada.historico', function ($breadcrumb, $poliza) {
+    $breadcrumb->parent('modulo_contable.poliza_generada.index');
+    $breadcrumb->push($poliza->tipoPolizaContpaq, route('modulo_contable.poliza_generada.historico', $poliza));
+});
 
 /**
  * Cuentas Material

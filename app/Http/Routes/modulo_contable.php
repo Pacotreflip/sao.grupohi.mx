@@ -20,6 +20,7 @@ Route::group(['prefix' => 'modulo_contable'], function () {
     Route::get('configuracion/cuenta_contable', 'CuentaContableController@configuracion')->name('modulo_contable.cuenta_contable.configuracion');
     Route::post('cuenta_contable', 'CuentaContableController@store')->name('modulo_contable.cuenta_contable.store');
     Route::patch('cuenta_contable/{cuenta_contable}', 'CuentaContableController@update')->name('modulo_contable.cuenta_contable.update');
+    Route::get('cuenta_contable/findBy', 'CuentaContableController@findBy')->name('modulo_contable.cuenta_contable.findby');
 
     /**
      * Tipo Cuenta Contable Routes.....
@@ -35,7 +36,7 @@ Route::group(['prefix' => 'modulo_contable'], function () {
     Route::patch('obra/{obra}', 'ObraController@update')->name('modulo_contable.obra.update');
 
     /**
-     * Polizas Generales
+     * Polizas Generadas
      */
     Route::get('poliza_generada', 'PolizaController@index')->name('modulo_contable.poliza_generada.index');
     Route::get('poliza_generada/{id}', 'PolizaController@show')->name('modulo_contable.poliza_generada.show')->where(['id' => '[0-9]+']);
@@ -47,4 +48,8 @@ Route::group(['prefix' => 'modulo_contable'], function () {
     Route::get('cuenta_material', 'CuentaMaterialController@index')->name('modulo_contable.cuenta_material.index');
     Route::get('cuenta_material/create', 'CuentaMaterialController@create')->name('modulo_contable.cuenta_material.create');
     Route::get('cuenta_material/show', 'CuentaMaterialController@show')->name('modulo_contable.cuenta_material.show');  // modificar, solo es de muestra
+    Route::patch('poliza_generada/{id}', 'PolizaController@update')->name('modulo_contable.poliza_generada.update')->where(['id' => '[0-9]+']);
+
+    Route::get('poliza_generada/{poliza}/historico', 'PolizaHistoricoController@index')->name('modulo_contable.poliza_generada.historico')->where(['id' => '[0-9]+']);
+
 });

@@ -4,6 +4,7 @@ namespace Ghi\Http\Controllers;
 
 use Ghi\Domain\Core\Contracts\CuentaContableRepository;
 use Ghi\Domain\Core\Contracts\TipoCuentaContableRepository;
+use Ghi\Domain\Core\Models\CuentaContable;
 use Illuminate\Http\Request;
 
 class CuentaContableController extends Controller
@@ -69,5 +70,14 @@ class CuentaContableController extends Controller
                 'cuentas_contables' => $cuentas_contables
             ]
         ], 200);
+    }
+
+    /**
+     * Busca y devuelve una Cuenta Contable que coincida con el atributo de búsqueda
+     */
+    public function findBy(Request $request)
+    {
+        $item = $this->cuenta_contable->findBy($request->attribute, $request->value, $request->with);
+        return response()->json(['data' => ['cuenta_contable' => $item]], 200);
     }
 }
