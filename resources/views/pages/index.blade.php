@@ -20,7 +20,7 @@
                                 </div>
 
                                 <a href="{{route('sistema_contable.index')}}" class="small-box-footer">
-                                    Acceder<i class="fa fa-arrow-circle-right"></i>
+                                    Ingresar<i class="fa fa-arrow-circle-right"></i>
                                 </a>
                             </div>
                         </div>
