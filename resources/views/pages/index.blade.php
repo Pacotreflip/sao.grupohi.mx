@@ -1,6 +1,6 @@
 @extends('layouts.app')
 @section('title', 'Inicio')
-@section('contentheader_title', 'MÓDULOS')
+@section('contentheader_title', 'SISTEMAS')
 @section('main-content')
     <!-- Main content -->
     <section class="content">
@@ -19,7 +19,7 @@
                                     <i class="fa fa-usd fa-fw "></i>
                                 </div>
 
-                                <a href="{{route('modulo_contable.index')}}" class="small-box-footer">
+                                <a href="{{route('sistema_contable.index')}}" class="small-box-footer">
                                     Acceder<i class="fa fa-arrow-circle-right"></i>
                                 </a>
                             </div>

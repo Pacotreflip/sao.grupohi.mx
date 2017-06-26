@@ -1,4 +1,4 @@
-Vue.component('cuenta-contable', {
+Vue.component('configuracion-contable', {
     props: [
         'obra',
         'obra_update_url',
@@ -173,7 +173,7 @@ Vue.component('cuenta-contable', {
         update_cuenta_contable:function () {
             var self = this;
             var data = self.form.cuenta_contable_update;
-            var url=App.host+'/modulo_contable/cuenta_contable/'+data.id_cuenta_contable;
+            var url=App.host+'/sistema_contable/cuenta_contable/'+data.id_cuenta_contable;
             $.ajax({
                 type: 'POST',
                 url: url,

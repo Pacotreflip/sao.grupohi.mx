@@ -35573,13 +35573,13 @@ require('./vue-components/errors');
 require('./vue-components/poliza_tipo/poliza-tipo-create');
 require('./vue-components/select2');
 require('./vue-components/tipo_cuenta_contable/tipo-cuenta-contable-create');
-require('./vue-components/cuenta_contable/cuenta-contable');
+require('./vue-components/cuenta_contable/configuracion-contable');
 require('./vue-components/poliza_generada/poliza-generada-edit');
 
-},{"./vue-components/cuenta_contable/cuenta-contable":28,"./vue-components/errors":29,"./vue-components/global-errors":30,"./vue-components/poliza_generada/poliza-generada-edit":31,"./vue-components/poliza_tipo/poliza-tipo-create":32,"./vue-components/select2":33,"./vue-components/tipo_cuenta_contable/tipo-cuenta-contable-create":36}],28:[function(require,module,exports){
+},{"./vue-components/cuenta_contable/configuracion-contable":28,"./vue-components/errors":29,"./vue-components/global-errors":30,"./vue-components/poliza_generada/poliza-generada-edit":31,"./vue-components/poliza_tipo/poliza-tipo-create":32,"./vue-components/select2":33,"./vue-components/tipo_cuenta_contable/tipo-cuenta-contable-create":36}],28:[function(require,module,exports){
 'use strict';
 
-Vue.component('cuenta-contable', {
+Vue.component('configuracion-contable', {
     props: ['obra', 'obra_update_url', 'cuenta_update_url', 'cuenta_store_url', 'tipos_cuentas_contables', 'cuentas_contables'],
     data: function data() {
         return {
@@ -35746,7 +35746,7 @@ Vue.component('cuenta-contable', {
         update_cuenta_contable: function update_cuenta_contable() {
             var self = this;
             var data = self.form.cuenta_contable_update;
-            var url = App.host + '/modulo_contable/cuenta_contable/' + data.id_cuenta_contable;
+            var url = App.host + '/sistema_contable/cuenta_contable/' + data.id_cuenta_contable;
             $.ajax({
                 type: 'POST',
                 url: url,
@@ -36138,7 +36138,7 @@ Vue.component('poliza-tipo-create', {
         check_duplicity: function check_duplicity() {
             var self = this;
             var id = self.form.poliza_tipo.id_transaccion_interfaz;
-            var url = App.host + '/modulo_contable/poliza_tipo/findBy';
+            var url = App.host + '/sistema_contable/poliza_tipo/findBy';
             $.ajax({
                 type: 'GET',
                 url: url,
@@ -36188,7 +36188,7 @@ Vue.component('poliza-tipo-create', {
 
         save: function save() {
             var self = this;
-            var url = App.host + '/modulo_contable/poliza_tipo';
+            var url = App.host + '/sistema_contable/poliza_tipo';
             var data = self.form.poliza_tipo;
 
             $.ajax({
@@ -36318,7 +36318,7 @@ Vue.component('tipo-cuenta-contable-create', {
         save: function save() {
 
             var self = this;
-            var url = App.host + '/modulo_contable/tipo_cuenta_contable';
+            var url = App.host + '/sistema_contable/tipo_cuenta_contable';
             var data = self.form.tipo_cuenta_contable;
 
             $.ajax({

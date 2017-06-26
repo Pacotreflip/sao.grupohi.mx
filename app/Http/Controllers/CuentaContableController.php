@@ -26,7 +26,7 @@ class CuentaContableController extends Controller
 
     public function index()
     {
-        return view('modulo_contable.cuenta_contable.index');
+        return view('sistema_contable.cuenta_contable.index');
     }
 
     public function configuracion()
@@ -36,7 +36,7 @@ class CuentaContableController extends Controller
         $cuentas_contables = $this->cuenta_contable->all('tipoCuentaContable');
 
 
-        return view('modulo_contable.cuenta_contable.configuracion')
+        return view('sistema_contable.cuenta_contable.configuracion')
             ->with('cuentas_contables', $cuentas_contables)
             ->with('tipos_cuentas_contables', $tipos_cuentas_contables);
     }

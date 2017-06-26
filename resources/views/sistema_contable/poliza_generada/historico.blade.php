@@ -1,4 +1,4 @@
-@extends('modulo_contable.layout')
+@extends('sistema_contable.layout')
 @section('title', 'Póliza General')
 @section('contentheader_title', 'PÓLIZAS GENERADAS')
 @section('contentheader_description', '(HISTORICO)')
@@ -7,7 +7,7 @@
 @section('main-content')
 
 
-    {!! Breadcrumbs::render('modulo_contable.poliza_generada.historico', @$polizas[0]) !!}
+    {!! Breadcrumbs::render('sistema_contable.poliza_generada.historico', @$polizas[0]) !!}
     <div class="row">
         <div class="col-md-12">
             <div class="box box-success">

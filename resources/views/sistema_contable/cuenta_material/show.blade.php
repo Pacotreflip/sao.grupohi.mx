@@ -1,8 +1,8 @@
-@extends('modulo_contable.layout')
+@extends('sistema_contable.layout')
 @section('title', 'Cuentas de Materiales')
 @section('contentheader_title', 'CUENTAS DE MATERIALES')
 @section('main-content')
-    {!! Breadcrumbs::render('modulo_contable.cuenta_material.show') !!}
+    {!! Breadcrumbs::render('sistema_contable.cuenta_material.show') !!}
 
     <hr>
     <div class="row">

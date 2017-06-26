@@ -1,18 +1,18 @@
-@extends('modulo_contable.layout')
+@extends('sistema_contable.layout')
 @section('title', 'Pólizas Generadas')
 @section('contentheader_title', 'PÓLIZAS GENERADAS')
 @section('contentheader_description', '(EDICIÓN)')
 
 @section('main-content')
-    {!! Breadcrumbs::render('modulo_contable.poliza_generada.edit', $poliza) !!}
+    {!! Breadcrumbs::render('sistema_contable.poliza_generada.edit', $poliza) !!}
 
     <div id="app">
         <poliza-generada-edit
                 :poliza="{{$poliza}}"
                 :poliza_edit="{{$poliza}}"
                 :obra="{{$currentObra}}"
-                :url_cuenta_contable_findby="'{{route('modulo_contable.cuenta_contable.findby')}}'"
-                :url_poliza_generada_update="'{{route('modulo_contable.poliza_generada.update', $poliza)}}'"
+                :url_cuenta_contable_findby="'{{route('sistema_contable.cuenta_contable.findby')}}'"
+                :url_poliza_generada_update="'{{route('sistema_contable.poliza_generada.update', $poliza)}}'"
                 inline-template
                 v-cloak>
             <section>
@@ -60,7 +60,7 @@
                                         <tr v-for="(movimiento, index) in data.poliza_edit.poliza_movimientos">
                                             <td>@{{ index + 1 }}</td>
                                             <td class="form-group" :class="{'has-error': validation_errors.has('form_poliza.CuentaContable [' + (index + 1) + ']')}">
-                                                <input type="text" v-validate="'required|regex:' + obra.FormatoCuentaRegExp" :name="'CuentaContable [' + (index + 1) + ']'" class="form-control input-sm" v-model="movimiento.cuenta_contable">
+                                                <input :placeholder="obra.FormatoCuenta" type="text" v-validate="'required|regex:' + obra.FormatoCuentaRegExp" :name="'CuentaContable [' + (index + 1) + ']'" class="form-control input-sm" v-model="movimiento.cuenta_contable">
                                                 <label class="help" v-show="validation_errors.has('form_poliza.CuentaContable [' + (index + 1) + ']')">@{{ validation_errors.first('form_poliza.CuentaContable [' + (index + 1) + ']') }}</label>
                                             </td>
                                             <td>@{{ movimiento.descripcion_cuenta_contable}}</td>

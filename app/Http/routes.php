@@ -12,4 +12,4 @@
 */
 
 include('routes/SAO.php');
-include('routes/modulo_contable.php');
+include('routes/sistema_contable.php');
