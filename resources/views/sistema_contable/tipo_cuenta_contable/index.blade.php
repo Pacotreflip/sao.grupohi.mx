@@ -31,7 +31,7 @@
                                     <th class="sorting" tabindex="0" aria-controls="tipo_cuenta">Descripción</th>
                                     <th class="sorting" tabindex="0" aria-controls="tipo_cuenta">Registró</th>
                                     <th class="sorting" tabindex="0" aria-controls="tipo_cuenta">Fecha y Hora de Registro</th>
-                                    <th class="sorting" tabindex="0" aria-controls="tipo_cuenta">Asignacion Tipo Cuenta Contable</th>
+                                    <th class="sorting" tabindex="0" aria-controls="tipo_cuenta">Asignación a Cuenta Contable</th>
                                     <th></th>
                                 </tr>
                                 </thead>
