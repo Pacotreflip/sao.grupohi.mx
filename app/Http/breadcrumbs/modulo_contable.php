@@ -58,7 +58,7 @@ Breadcrumbs::register('modulo_contable.poliza_generada.index', function ($breadc
 });
 Breadcrumbs::register('modulo_contable.poliza_generada.show', function ($breadcrumb, $poliza) {
     $breadcrumb->parent('modulo_contable.poliza_generada.index');
-    $breadcrumb->push(strtoupper($poliza->tipoPolizaContpaq), route('modulo_contable.poliza_generada.show', $poliza));
+    $breadcrumb->push(mb_strtoupper($poliza->tipoPolizaContpaq), route('modulo_contable.poliza_generada.show', $poliza));
 });
 Breadcrumbs::register('modulo_contable.poliza_generada.edit', function ($breadcrumb, $poliza) {
     $breadcrumb->parent('modulo_contable.poliza_generada.show', $poliza);
@@ -66,5 +66,5 @@ Breadcrumbs::register('modulo_contable.poliza_generada.edit', function ($breadcr
 });
 Breadcrumbs::register('modulo_contable.poliza_generada.historico', function ($breadcrumb, $poliza) {
     $breadcrumb->parent('modulo_contable.poliza_generada.index');
-    $breadcrumb->push($poliza->tipoPolizaContpaq, route('modulo_contable.poliza_generada.historico', $poliza));
+    $breadcrumb->push(mb_strtoupper($poliza->tipoPolizaContpaq), route('modulo_contable.poliza_generada.historico', $poliza));
 });

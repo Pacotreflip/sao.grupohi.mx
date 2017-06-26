@@ -1,6 +1,6 @@
 @extends('modulo_contable.layout')
 @section('title', 'Pólizas Generadas')
-@section('contentheader_title', 'PÓLIZAS GENERADA')
+@section('contentheader_title', 'PÓLIZAS GENERADAS')
 @section('contentheader_description', '(EDICIÓN)')
 
 @section('main-content')
@@ -19,8 +19,8 @@
                 <div class="row">
                     <div class="col-md-12">
                         <div class="box box-success">
-                            <div class="box-header with-border" style="text-align: right">
-                                <h3 class="box-title">Detalle de Póliza: {{$poliza->tipoPolizaContpaq}}</h3>
+                            <div class="box-header with-border" >
+                                <h3 class="box-title">Detalle de Póliza</h3>
                             </div>
                             <form id="form_poliza" @submit.prevent="validateForm('form_poliza','confirm_save')"  data-vv-scope="form_poliza">
                             <div class="box-body">

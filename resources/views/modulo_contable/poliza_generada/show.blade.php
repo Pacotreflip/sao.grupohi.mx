@@ -9,16 +9,16 @@
     <div class="row">
         <div class="col-md-12">
             <div class="box box-success">
-                <div class="box-header with-border" style="text-align: right">
-                    <h3 class="box-title">Detalle de Póliza: {{$poliza->tipoPolizaContpaq}}</h3>
+                <div class="box-header with-border">
+                    <h3 class="box-title">Detalle de Póliza</h3>
                 </div>
 
 
                 <div class="box-body">
                     <div class="table-responsive">
-                        <table class="table table-bordered small">
+                        <table class="table table-bordered">
                             <tr>
-                                <th colspan="5" class="bg-gray-light">Poliza
+                                <th colspan="5" class="bg-gray-light">Póliza
                                     :<br><label>{{ $poliza->tipoPolizaContpaq}}</label></th>
                                 <th class="bg-gray-light">Fecha de Solicitud
                                     :<br><label>{{ $poliza->created_at->format('Y-m-d h:i:s a') }}</label></th>
@@ -33,7 +33,7 @@
                         </table>
 
                         @if($poliza->polizaMovimientos()->count())
-                            <table class="table table-bordered small">
+                            <table class="table table-bordered">
                                 <!--  <tr>
                                        <th>Tipo de Póliza</th>
 

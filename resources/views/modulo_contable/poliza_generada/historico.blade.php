@@ -11,13 +11,10 @@
     <div class="row">
         <div class="col-md-12">
             <div class="box box-success">
-                <section class="content-header">
-                    <h1>
-                        Historico de Póliza:
-                        <small> {{ @$polizas[0]->tipoPolizaContpaq }}</small>
-                    </h1>
+                <div class="box-header with-border">
+                    <h3 class="box-title">Historico de Póliza</h3>
 
-                </section>
+                </div>
 
                 <!-- Main content -->
                 <section class="content">
