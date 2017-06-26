@@ -34,7 +34,7 @@ class TipoCuentaContableController extends Controller
     {
         $tipos_cuenta_contable = $this->tipo_cuenta_contable->all();
         //dd($tipos_cuenta_contable);
-        return view('modulo_contable.tipo_cuenta_contable.index')
+        return view('sistema_contable.tipo_cuenta_contable.index')
             ->with('tipos_cuenta_contable', $tipos_cuenta_contable);
         //
     }
@@ -45,7 +45,7 @@ class TipoCuentaContableController extends Controller
     public function show($id)
     {
         $tipo_cuenta_contable = $this->tipo_cuenta_contable->find($id);
-        return view('modulo_contable.tipo_cuenta_contable.show')
+        return view('sistema_contable.tipo_cuenta_contable.show')
             ->with('tipo_cuenta_contable', $tipo_cuenta_contable);
     }
 
@@ -55,7 +55,7 @@ class TipoCuentaContableController extends Controller
      */
     public function create()
     {
-        return view('modulo_contable.tipo_cuenta_contable.create');
+        return view('sistema_contable.tipo_cuenta_contable.create');
     }
 
     /**
@@ -66,7 +66,7 @@ class TipoCuentaContableController extends Controller
 
         $item = $this->tipo_cuenta_contable->create($request->all());
 
-        return $this->response->created(route('modulo_contable.tipo_cuenta_contable.show', $item));
+        return $this->response->created(route('sistema_contable.tipo_cuenta_contable.show', $item));
     }
 
     /**

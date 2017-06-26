@@ -1,10 +1,10 @@
-@extends('modulo_contable.layout')
+@extends('sistema_contable.layout')
 @section('title', 'Póliza Generada')
 @section('contentheader_title', 'PÓLIZAS GENERADAS')
 @section('contentheader_description', '(LISTA)')
 
 @section('main-content')
-    {!! Breadcrumbs::render('modulo_contable.poliza_generada.index') !!}
+    {!! Breadcrumbs::render('sistema_contable.poliza_generada.index') !!}
 
     <div class="row">
         <div class="col-md-12">
@@ -14,9 +14,6 @@
                 </div>
                 <div class="box-body">
                     <div class="table-responsive">
-
-
-
                         <table class="table table-bordered table-striped small index_table" id="example">
                             <thead>
                             <tr>
@@ -45,9 +42,9 @@
                                     </td>
                                     <td>N/A</td>
                                     <td style="min-width: 90px;max-width: 90px">
-                                        <a href="{{route('modulo_contable.poliza_generada.show',$item)}}" title="Ver" class="btn btn-xs btn-default"><i class="fa fa-eye"></i></a>
-                                        <a href="{{route('modulo_contable.poliza_generada.edit',$item)}}" title="Editar" class="btn btn-xs btn-info"><i class="fa fa-pencil"></i></a>
-                                        <a href="{{route('modulo_contable.poliza_generada.historico',$item)}}" title="Editar" class="btn btn-xs btn-success"><i class="fa fa-clock-o"></i></a>
+                                        <a href="{{route('sistema_contable.poliza_generada.show',$item)}}" title="Ver" class="btn btn-xs btn-default"><i class="fa fa-eye"></i></a>
+                                        <a href="{{route('sistema_contable.poliza_generada.edit',$item)}}" title="Editar" class="btn btn-xs btn-info"><i class="fa fa-pencil"></i></a>
+                                        <a href="{{route('sistema_contable.poliza_generada.historico',$item)}}" title="Editar" class="btn btn-xs btn-success"><i class="fa fa-clock-o"></i></a>
                                     </td>
                                 </tr>
                             @endforeach

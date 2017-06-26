@@ -1,13 +1,13 @@
-@extends('modulo_contable.layout')
+@extends('sistema_contable.layout')
 @section('title', 'Cuentas de Materiales')
 @section('contentheader_title', 'CUENTAS DE MATERIALES')
 
 @section('main-content')
-    {!! Breadcrumbs::render('modulo_contable.cuenta_material.index') !!}
+    {!! Breadcrumbs::render('sistema_contable.cuenta_material.index') !!}
 
     <div class="row">
         <div class="col-sm-12">
-            <a  href="{{ route('modulo_contable.cuenta_material.create') }}" class="btn btn-success btn-app" style="float:right">
+            <a  href="{{ route('sistema_contable.cuenta_material.create') }}" class="btn btn-success btn-app" style="float:right">
                 <i class="glyphicon glyphicon-plus-sign"></i>Nueva
             </a>
         </div>

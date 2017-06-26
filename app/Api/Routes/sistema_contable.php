@@ -1,9 +1,9 @@
 <?php
 
 /*
- * Módulo Contable Api Routes...
+ * Sistema Contable Api Routes...
  */
-$api->group(['prefix' => 'modulo_contable'], function ($api) {
+$api->group(['prefix' => 'sistema_contable'], function ($api) {
 
     //Plantillas de Póliza Routes
     $api->get('poliza_tipo/{id_poliza_tipo}', 'Ghi\Api\Controllers\PolizaTipoController@find');

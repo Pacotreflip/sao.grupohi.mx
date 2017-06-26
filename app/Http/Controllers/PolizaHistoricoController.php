@@ -33,7 +33,7 @@ class PolizaHistoricoController extends Controller
      */
     public function index($poliza){
        $polizas = $this->poliza->find($poliza);
-        return view('modulo_contable.poliza_generada.historico')->with('polizas', $polizas);
+        return view('sistema_contable.poliza_generada.historico')->with('polizas', $polizas);
 
     }
 }

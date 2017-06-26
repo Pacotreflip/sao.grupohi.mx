@@ -1,9 +1,9 @@
-@extends('modulo_contable.layout')
+@extends('sistema_contable.layout')
 @section('title', 'Plantillas de Póliza')
 @section('contentheader_title', 'TIPO CUENTA CONTABLE')
 @section('contentheader_description', '(DETALLE)')
 @section('main-content')
-    {!! Breadcrumbs::render('modulo_contable.tipo_cuenta_contable.show', $tipo_cuenta_contable) !!}
+    {!! Breadcrumbs::render('sistema_contable.tipo_cuenta_contable.show', $tipo_cuenta_contable) !!}
     <hr>
     <div class="row">
         <div class="col-md-12">

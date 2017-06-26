@@ -32,7 +32,7 @@ Vue.component('tipo-cuenta-contable-create',{
         save: function () {
 
             var self = this;
-            var url = App.host + '/modulo_contable/tipo_cuenta_contable';
+            var url = App.host + '/sistema_contable/tipo_cuenta_contable';
             var data = self.form.tipo_cuenta_contable;
 
             $.ajax({

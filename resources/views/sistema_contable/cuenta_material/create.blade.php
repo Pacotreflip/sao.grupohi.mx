@@ -1,10 +1,10 @@
-@extends('modulo_contable.layout')
-@section('title', 'Plantillas de Póliza')
-@section('contentheader_title', 'TIPO CUENTA CONTABLE')
-@section('contentheader_description', '(NUEVA)')
+@extends('sistema_contable.layout')
+@section('title', 'Cuentas de Materiales')
+@section('contentheader_title', 'CUENTAS DE MATERIALES')
 
 @section('main-content')
-    {!! Breadcrumbs::render('modulo_contable.tipo_cuenta_contable.create') !!}
+    {!! Breadcrumbs::render('sistema_contable.cuenta_material.create') !!}
+
     <hr>
     <div id="app">
         <global-errors></global-errors>
@@ -14,12 +14,24 @@
             <section>
                 <div class="box box-success">
                     <div class="box-header with-border">
-                        <h3 class="box-title">Información del Tipo Cuenta Contable </h3>
+                        <h3 class="box-title">Información de la Cuenta de Material </h3>
                     </div>
                     <div class="box-body">
                         <div class="col-md-4">
                             <div class="form-group">
-                                <label for="descripcion" class="control-label">Descripción Tipo Cuenta Contable</label>
+                                <label for="descripcion" class="control-label">Campo 1</label>
+                                <input type="text" name="descripcion" class="form-control" id="descripcion" v-model="form.tipo_cuenta_contable.descripcion">
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="descripcion" class="control-label">Campo2</label>
+                                <input type="text" name="descripcion" class="form-control" id="descripcion" v-model="form.tipo_cuenta_contable.descripcion">
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="descripcion" class="control-label">Campo3</label>
                                 <input type="text" name="descripcion" class="form-control" id="descripcion" v-model="form.tipo_cuenta_contable.descripcion">
                             </div>
                         </div>
@@ -41,8 +53,8 @@
                     <!-- /.box-footer -->
 
                 </div>
-
             </section>
         </tipo-cuenta-contable-create>
     </div>
+
 @endsection

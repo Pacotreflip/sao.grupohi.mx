@@ -33,7 +33,7 @@ class CuentaMaterialController extends Controller
     {
         $cuentas_material = $this->cuenta_material->all();
 
-        return view('modulo_contable.cuenta_material.index')
+        return view('sistema_contable.cuenta_material.index')
                     ->with('cuentas_material', $cuentas_material);
     }
 
@@ -43,7 +43,7 @@ class CuentaMaterialController extends Controller
      */
     public function create()
     {
-        return view('modulo_contable.cuenta_material.create');
+        return view('sistema_contable.cuenta_material.create');
     }
 
     /**
@@ -52,7 +52,7 @@ class CuentaMaterialController extends Controller
     public function show($id)
     {
         $cuenta_material = $this->cuenta_material->find($id);
-        return view('modulo_contable.cuenta_material.show')
+        return view('sistema_contable.cuenta_material.show')
             ->with('cuenta_material', $cuenta_material);
     }
 
@@ -65,7 +65,7 @@ class CuentaMaterialController extends Controller
 
         $item = $this->cuenta_material->create($request->all());
 
-        return $this->response->created(route('modulo_contable.cuenta_material.show', $item));
+        return $this->response->created(route('sistema_contable.cuenta_material.show', $item));
     }
 
     /**

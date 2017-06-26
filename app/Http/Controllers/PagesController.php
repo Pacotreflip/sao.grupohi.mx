@@ -14,7 +14,7 @@ class PagesController extends Controller
     {
         parent::__construct();
         $this->middleware('auth');
-        $this->middleware('context', ['only' => 'modulo_contable']);
+        $this->middleware('context', ['only' => 'sistema_contable']);
         $this->session = $session;
     }
 
@@ -40,7 +40,7 @@ class PagesController extends Controller
         return view('pages.welcome');
     }
 
-    public function modulo_contable() {
-        return view('modulo_contable.index');
+    public function sistema_contable() {
+        return view('sistema_contable.index');
     }
 }

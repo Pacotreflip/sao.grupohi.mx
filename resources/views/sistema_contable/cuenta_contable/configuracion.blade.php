@@ -1,16 +1,16 @@
-@extends('modulo_contable.layout')
+@extends('sistema_contable.layout')
 @section('title', 'Cuentas Contables')
 @section('contentheader_title', 'CUENTAS CONTABLES')
 @section('contentheader_description', '(CONFIGURACIÓN)')
 
 @section('main-content')
-    {!! Breadcrumbs::render('modulo_contable.cuenta_contable.configuracion') !!}
+    {!! Breadcrumbs::render('sistema_contable.cuenta_contable.configuracion') !!}
     <hr>
     <div id="app">
         <global-errors></global-errors>
-        <cuenta-contable
-                :obra_update_url="'{{route('modulo_contable.obra.update', $currentObra)}}'"
-                :cuenta_store_url="'{{route('modulo_contable.cuenta_contable.store')}}'"
+        <configuracion-contable
+                :obra_update_url="'{{route('sistema_contable.obra.update', $currentObra)}}'"
+                :cuenta_store_url="'{{route('sistema_contable.cuenta_contable.store')}}'"
                 :tipos_cuentas_contables="{{$tipos_cuentas_contables}}"
                 :obra="{{$currentObra}}"
                 :cuentas_contables="{{$cuentas_contables}}"
@@ -215,6 +215,6 @@
                     </div>
                 </div>
             </section>
-        </cuenta-contable>
+        </configuracion-contable>
     </div>
 @endsection

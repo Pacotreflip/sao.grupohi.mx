@@ -93,7 +93,7 @@ Vue.component('poliza-tipo-create', {
         check_duplicity: function () {
             var self = this;
             var id = self.form.poliza_tipo.id_transaccion_interfaz;
-            var url = App.host + '/modulo_contable/poliza_tipo/findBy';
+            var url = App.host + '/sistema_contable/poliza_tipo/findBy';
             $.ajax({
                 type: 'GET',
                 url: url,
@@ -162,7 +162,7 @@ Vue.component('poliza-tipo-create', {
 
         save: function () {
             var self = this;
-            var url = App.host + '/modulo_contable/poliza_tipo';
+            var url = App.host + '/sistema_contable/poliza_tipo';
             var data = self.form.poliza_tipo;
 
             $.ajax({
