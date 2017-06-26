@@ -70,7 +70,7 @@
                                     <th>Descripcion</th>
                                     <th>Registró</th>
                                     <th>Fecha y Hora de Registro</th>
-                                    <th>Asignacion Tipo Cuenta Contable</th>
+                                    <th>Asignación a Cuenta Contable</th>
                                     <th></th>
                                 </tr>
                                 </tfoot>
