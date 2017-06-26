@@ -81,9 +81,9 @@
                                 </tbody>
                                 <tfoot>
                                 <tr>
-                                    <th>ID</th>
-                                    <th>Póliza Tipo</th>
-                                    <th># Movimientos</th>
+                                    <th>#</th>
+                                    <th>Tipo de Póliza</th>
+                                    <th>Número de Movimientos</th>
                                     <th>Registró</th>
                                     <th>Fecha y Hora de Registro</th>
                                     <th>Vigencia</th>

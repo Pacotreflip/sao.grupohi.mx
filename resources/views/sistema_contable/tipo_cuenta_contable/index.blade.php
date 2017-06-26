@@ -66,8 +66,8 @@
                                 </tbody>
                                 <tfoot>
                                 <tr>
-                                    <th>ID</th>
-                                    <th>Descripcion</th>
+                                    <th>#</th>
+                                    <th>Descripción</th>
                                     <th>Registró</th>
                                     <th>Fecha y Hora de Registro</th>
                                     <th>Asignación a Cuenta Contable</th>
