@@ -168,13 +168,15 @@ Vue.component('poliza-generada-edit', {
                     self.guardando = true;
                 },
                 success: function (data, textStatus, xhr) {
-                    self.data.poliza = data.data.poliza_generada;
-                    self.data.poliza_edit = data.data.poliza_generada;
                     swal({
-                        type: 'success',
-                        title: 'Correcto',
+                        title: '¡Correcto!',
                         html: 'Póliza  <b>' +self.data.poliza_edit.tipo_poliza_contpaq.descripcion + '</b> actualizada correctamente',
-                    });
+                        type: 'success',
+                        confirmButtonText: "Ok",
+                        closeOnConfirm: false
+                    }).then(function () {
+                        window.location = xhr.getResponseHeader('Location');
+                    })  .catch(swal.noop);
                 },
                 complete: function () {
                     self.guardando = false;

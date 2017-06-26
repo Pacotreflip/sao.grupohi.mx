@@ -2,20 +2,19 @@
 
 namespace Ghi\Http\Controllers;
 
+use Dingo\Api\Routing\Helpers;
 use Ghi\Domain\Core\Contracts\PolizaRepository;
 use Illuminate\Http\Request;
 
 class PolizaController extends Controller
 {
+    use Helpers;
 
     protected $poliza;
 
     public function __construct(PolizaRepository $poliza)
     {
         parent::__construct();
-
-        //$this->middleware('auth');
-        //$this->middleware('context');
         $this->poliza = $poliza;
 
     }
@@ -41,7 +40,6 @@ class PolizaController extends Controller
     public function update(Request $request,$id)
     {
         $item = $this->poliza->update($request->all(),$id);
-
-        return response()->json(['data' => ['poliza_generada' => $item]],200);
+        return $this->response->created(route('modulo_contable.poliza_generada.show', $item));
     }
 }
