@@ -87,7 +87,7 @@ class EloquentTipoCuentaContableRepository implements TipoCuentaContableReposito
                 throw new HttpResponseException(new Response('No se encontró la plantilla que se desea eliminar', 404));
             }
 
-            if ($this->model->has('cuentaContable', '>', 0)) {
+            if ($item->cuentaContable) {
                 throw new HttpResponseException(new Response('No se puede eliminar el Tipo de Cuenta ya que se encuentra configurada con una cuenta contable', 400));
             }
 
