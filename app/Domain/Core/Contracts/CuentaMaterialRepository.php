@@ -19,6 +19,13 @@ interface CuentaMaterialRepository
     public function all();
 
     /**
+     * Obtiene todas las Cuentas de Materiales padre
+     *
+     * @return \Illuminate\Database\Eloquent\Collection|CuentaMaterial
+     */
+    public function lista($value);
+
+    /**
      *  Obtiene Cuenta de Material por su ID
      * @param $id
      * @return \Ghi\Domain\Core\Models\CuentaMaterial

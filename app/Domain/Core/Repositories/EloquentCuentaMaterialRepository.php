@@ -12,6 +12,8 @@ use Ghi\Domain\Core\Contracts\CuentaMaterialRepository;
 use Ghi\Domain\Core\Contracts\Identificador;
 use Ghi\Domain\Core\Contracts\Motivo;
 use Ghi\Domain\Core\Models\CuentaMaterial;
+use DB;
+use Ghi\Domain\Core\Models\Material;
 
 
 class EloquentCuentaMaterialRepository implements CuentaMaterialRepository
@@ -100,5 +102,19 @@ class EloquentCuentaMaterialRepository implements CuentaMaterialRepository
             DB::connection('cadeco')->rollBack();
             throw $e;
         }
+    }
+
+    /**
+     * Obtiene todas las Cuentas de Materiales padre
+     *
+     * @return \Illuminate\Database\Eloquent\Collection|\Ghi\Domain\Core\Contracts\CuentaMaterial
+     */
+    public function lista($value)
+    {
+        $resp = Material::where('tipo_material', $value)
+                            ->where(DB::raw('SUBSTRING(nivel, 5,1)'), '=','')
+                            ->orderBy('nivel', 'asc')->get()->all();
+        //dd($resp);
+        return $resp;
     }
 }

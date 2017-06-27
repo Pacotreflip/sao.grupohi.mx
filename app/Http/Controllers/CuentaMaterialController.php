@@ -31,10 +31,10 @@ class CuentaMaterialController extends Controller
      */
     public function index()
     {
-        $cuentas_material = $this->cuenta_material->all();
-
-        return view('sistema_contable.cuenta_material.index')
-                    ->with('cuentas_material', $cuentas_material);
+        //$cuentas_material = $this->cuenta_material->all();
+        //$cuentas_material = $this->cuenta_material->lista();
+        return view('sistema_contable.cuenta_material.index');
+                    //->with('cuentas_material', $cuentas_material);
     }
 
     /**
@@ -75,5 +75,15 @@ class CuentaMaterialController extends Controller
     {
         $this->cuenta_material->delete($request->only('motivo'), $id);
         return $this->response()->accepted();
+    }
+
+    /**
+     * Devuelve la Platilla que coincida con los atributos de búsqueda
+     */
+    public function findBy(Request $request)
+    {
+        $item = $this->cuenta_material->lista($request->value);
+
+        return response()->json(['data' => ['cuenta_material' => $item]], 200);
     }
 }

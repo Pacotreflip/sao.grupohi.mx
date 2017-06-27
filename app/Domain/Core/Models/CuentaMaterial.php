@@ -13,6 +13,12 @@ use Illuminate\Database\Eloquent\Model;
 
 class CuentaMaterial extends Model
 {
-    use SoftDeletes;
+
+
+    protected $connection = 'cadeco';
+    protected $table = 'dbo.materiales';
+
+
+
 
 }
