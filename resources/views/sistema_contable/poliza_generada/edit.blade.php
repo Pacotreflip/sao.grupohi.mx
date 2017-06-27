@@ -10,7 +10,7 @@
         <poliza-generada-edit
                 :poliza="{{$poliza}}"
                 :poliza_edit="{{$poliza}}"
-                :obra="{{$currentObra}}"
+                :datos_contables="{{$currentObra->datosContables}}"
                 :url_cuenta_contable_findby="'{{route('sistema_contable.cuenta_contable.findby')}}'"
                 :url_poliza_generada_update="'{{route('sistema_contable.poliza_generada.update', $poliza)}}'"
                 inline-template
@@ -60,7 +60,7 @@
                                         <tr v-for="(movimiento, index) in data.poliza_edit.poliza_movimientos">
                                             <td>@{{ index + 1 }}</td>
                                             <td class="form-group" :class="{'has-error': validation_errors.has('form_poliza.CuentaContable [' + (index + 1) + ']')}">
-                                                <input :placeholder="obra.FormatoCuenta" type="text" v-validate="'required|regex:' + obra.FormatoCuentaRegExp" :name="'CuentaContable [' + (index + 1) + ']'" class="form-control input-sm" v-model="movimiento.cuenta_contable">
+                                                <input :placeholder="datos_contables.FormatoCuenta" type="text" v-validate="'required|regex:' + datos_contables.FormatoCuentaRegExp" :name="'CuentaContable [' + (index + 1) + ']'" class="form-control input-sm" v-model="movimiento.cuenta_contable">
                                                 <label class="help" v-show="validation_errors.has('form_poliza.CuentaContable [' + (index + 1) + ']')">@{{ validation_errors.first('form_poliza.CuentaContable [' + (index + 1) + ']') }}</label>
                                             </td>
                                             <td>@{{ movimiento.descripcion_cuenta_contable}}</td>
@@ -137,7 +137,7 @@
                                     <div class="col-md-4">
                                         <div class="form-group" :class="{'has-error': validation_errors.has('form_add_movimiento.Cuenta Contable')}">
                                             <label for="">Cuenta Contable</label>
-                                            <input type="text" v-validate="'required|regex:' + obra.FormatoCuentaRegExp" class="form-control" name="Cuenta Contable" v-model="form.movimiento.cuenta_contable">
+                                            <input type="text" v-validate="'required|regex:' + datos_contables.FormatoCuentaRegExp" class="form-control" name="Cuenta Contable" v-model="form.movimiento.cuenta_contable">
                                             <label class="help" v-show="validation_errors.has('form_add_movimiento.Cuenta Contable')">@{{ validation_errors.first('form_add_movimiento.Cuenta Contable') }}</label>
                                         </div>
                                     </div>

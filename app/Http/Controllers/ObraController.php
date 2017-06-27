@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 class ObraController extends Controller
 {
     use Helpers;
+
     /**
      * @var Obra
      */

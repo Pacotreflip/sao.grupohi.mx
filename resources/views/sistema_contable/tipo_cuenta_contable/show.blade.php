@@ -1,6 +1,6 @@
 @extends('sistema_contable.layout')
-@section('title', 'Plantillas de Póliza')
-@section('contentheader_title', 'TIPO CUENTA CONTABLE')
+@section('title', 'Tipos de Cuentas Contables')
+@section('contentheader_title', 'TIPOS CUENTAS CONTABLES')
 @section('contentheader_description', '(DETALLE)')
 @section('main-content')
     {!! Breadcrumbs::render('sistema_contable.tipo_cuenta_contable.show', $tipo_cuenta_contable) !!}
@@ -11,7 +11,7 @@
 
                 <div class="box box-solid">
                     <div class="box-header with-border">
-                        <h3 class="box-title">Tipo Cuenta Contable&nbsp;
+                        <h3 class="box-title">{{ $tipo_cuenta_contable->descripcion }}
                             @if($tipo_cuenta_contable->cuentaContable)
                                 <span class="label label-success">Asignada</span>
                             @else

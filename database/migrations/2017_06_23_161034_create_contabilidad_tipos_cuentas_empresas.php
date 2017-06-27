@@ -14,7 +14,9 @@ class CreateContabilidadTiposCuentasEmpresas extends Migration
     {
         Schema::create('Contabilidad.tipos_cuentas_empresas', function (Blueprint $table) {
             $table->increments('id');
+            $table->string("descripcion",254);
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

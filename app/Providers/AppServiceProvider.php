@@ -83,6 +83,11 @@ class AppServiceProvider extends ServiceProvider
         );
 
         $this->app->bind(
+            \Ghi\Domain\Core\Contracts\DatosContablesRepository::class,
+            \Ghi\Domain\Core\Repositories\EloquentDatosContablesRepository::class
+        );
+
+        $this->app->bind(
             \Ghi\Domain\Core\Contracts\CuentaMaterialRepository::class,
             \Ghi\Domain\Core\Repositories\EloquentCuentaMaterialRepository::class
         );

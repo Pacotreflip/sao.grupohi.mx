@@ -35,8 +35,9 @@ interface CuentaContableRepository
     /**
      * Actualiza un registro de cuenta contable
      * @param array $data
+     * @param $id
      * @return \Ghi\Domain\Core\Models\CuentaContable
      * @throws \Exception
      */
-    public function update(array $data);
+    public function update(array $data,$id);
 }

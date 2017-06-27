@@ -33,7 +33,7 @@
         </div>
         <div class="row">
             <div class="col-xs-8">
-                <div class="checkbox icheck">
+                <div>
                     <label>
                         <input type="checkbox" name="remember_me" value="1"> Recordar mi sesión
                     </label>

@@ -1,10 +1,12 @@
 <?php
 
-namespace Ghi\Domain\Core\Models;
+namespace Ghi\Domain\Core\Models\Contabilidad;
 
 use Carbon\Carbon;
 use Ghi\Core\Contracts\Context;
+use Ghi\Domain\Core\Models\BaseModel;
 use Ghi\Domain\Core\Models\Scopes\ObraScope;
+use Ghi\Domain\Core\Models\User;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\DB;
 

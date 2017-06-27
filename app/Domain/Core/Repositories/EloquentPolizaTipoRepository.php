@@ -2,8 +2,8 @@
 
 use Carbon\Carbon;
 use Ghi\Domain\Core\Contracts\PolizaTipoRepository;
-use Ghi\Domain\Core\Models\MovimientoPoliza;
-use Ghi\Domain\Core\Models\PolizaTipo;
+use Ghi\Domain\Core\Models\Contabilidad\MovimientoPoliza;
+use Ghi\Domain\Core\Models\Contabilidad\PolizaTipo;
 use Illuminate\Http\Exception\HttpResponseException;
 use Illuminate\Support\Facades\DB;
 use Symfony\Component\HttpFoundation\Response;

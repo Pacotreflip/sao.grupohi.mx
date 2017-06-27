@@ -2,7 +2,8 @@
 
 namespace Ghi\Http\Controllers;
 
-use Ghi\Core\Models\Obra;
+use Ghi\Core\Facades\Context;
+use Ghi\Domain\Core\Models\Obra;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Auth\Access\AuthorizesResources;
 use Illuminate\Foundation\Bus\DispatchesJobs;
@@ -36,7 +37,7 @@ abstract class Controller extends BaseController
      */
     protected function getIdObra()
     {
-        return \Context::getId();
+        return Context::getId();
     }
 
     /**

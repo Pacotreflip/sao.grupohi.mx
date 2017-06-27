@@ -1,6 +1,6 @@
 <?php
 
-namespace Ghi\Domain\Core\Models;
+namespace Ghi\Domain\Core\Models\Contabilidad;
 
 use Illuminate\Database\Eloquent\Model;
 

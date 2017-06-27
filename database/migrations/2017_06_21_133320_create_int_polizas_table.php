@@ -15,11 +15,11 @@ class CreateIntPolizasTable extends Migration
         Schema::create('contabilidad.int_polizas', function (Blueprint $table) {
             $table->increments('id_int_poliza');
             $table->integer('id_tipo_poliza')->nullable();
-            $table->unsignedInteger('id_tipo_poliza_interfaz')->index();
-            $table->unsignedInteger('id_tipo_poliza_contpaq')->index();
+            $table->unsignedInteger('id_tipo_poliza_interfaz');
+            $table->unsignedInteger('id_tipo_poliza_contpaq');
             $table->string('alias_bd_cadeco',254)->nullable();
-            $table->unsignedInteger('id_obra_cadeco')->index();
-            $table->unsignedInteger('id_transaccion_sao')->index();
+            $table->unsignedInteger('id_obra_cadeco');
+            $table->unsignedInteger('id_transaccion_sao');
             $table->integer('id_obra_contpaq')->nullable();
             $table->string('alias_bd_contpaq',254)->nullable();
             $table->datetime('fecha')->nullable();

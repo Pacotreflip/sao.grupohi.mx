@@ -9,20 +9,20 @@
     <div id="app">
         <global-errors></global-errors>
         <configuracion-contable
-                :obra_update_url="'{{route('sistema_contable.obra.update', $currentObra)}}'"
+                :datos_contables_update_url="'{{route('sistema_contable.datos_contables.update', $currentObra->datosContables)}}'"
                 :cuenta_store_url="'{{route('sistema_contable.cuenta_contable.store')}}'"
                 :tipos_cuentas_contables="{{$tipos_cuentas_contables}}"
-                :obra="{{$currentObra}}"
+                :datos_contables="{{$currentObra->datosContables}}"
                 :cuentas_contables="{{$cuentas_contables}}"
                 v-cloak
                 inline-template>
             <section>
                 <div class="row">
                     <div class="col-md-6">
-                        <!-- Información de la Obra -->
+                        <!-- Datos contables de la Obra -->
                         <div class="box box-info">
                             <div class="box-header with-border">
-                                <h3 class="box-title">Datos de la Obra</h3>
+                                <h3 class="box-title">Datos Contables de la Obra</h3>
                             </div>
                             <form class="form-horizontal" id="form_datos_obra" @submit.prevent="validateForm('form_datos_obra', 'save_datos_obra')"  data-vv-scope="form_datos_obra">
                                 <div class="box-body">
@@ -30,21 +30,21 @@
                                         <div class="form-group" :class="{'has-error': validation_errors.has('form_datos_obra.Base de Datos CONTPAQ') }">
                                             <label for="BDContPaq" class="col-md-3 control-label"><b>Base de Datos CONTPAQ</b></label>
                                             <div class="col-md-9">
-                                                <input type="text" v-validate="'required'" name="Base de Datos CONTPAQ" class="form-control" id="BDContPaq" v-model="data.obra.BDContPaq">
+                                                <input type="text" v-validate="'required'" name="Base de Datos CONTPAQ" class="form-control" id="BDContPaq" v-model="data.datos_contables.BDContPaq">
                                                 <label class="help" v-show="validation_errors.has('form_datos_obra.Base de Datos CONTPAQ')">@{{ validation_errors.first('form_datos_obra.Base de Datos CONTPAQ') }}</label>
                                             </div>
                                             </div>
                                         <div class="form-group" :class="{'has-error': validation_errors.has('form_datos_obra.Numero de Obra CONTPAQ') }">
                                             <label for="NumobraContPaq" class="col-md-3 control-label"><b>Número de Obra CONTPAQ</b></label>
                                             <div class="col-md-9">
-                                                <input type="number" v-validate="'required|numeric'" name="Numero de Obra CONTPAQ" class="form-control" id="NumobraContPaq" v-model="data.obra.NumobraContPaq">
+                                                <input type="number" v-validate="'required|numeric'" name="Numero de Obra CONTPAQ" class="form-control" id="NumobraContPaq" v-model="data.datos_contables.NumobraContPaq">
                                                 <label class="help" v-show="validation_errors.has('form_datos_obra.Numero de Obra CONTPAQ')">@{{ validation_errors.first('form_datos_obra.Numero de Obra CONTPAQ') }}</label>
                                             </div>
                                         </div>
                                         <div class="form-group" :class="{'has-error': validation_errors.has('form_datos_obra.Formato de Cuentas') }">
                                             <label for="FormatoCuenta" class="col-md-3 control-label"><b>Formato de Cuentas</b></label>
                                             <div class="col-md-9">
-                                                <input type="text" v-validate="'required|regex:^\#[\#\-]+\#$'" name="Formato de Cuentas" class="form-control" id="FormatoCuenta" v-model="data.obra.FormatoCuenta">
+                                                <input type="text" v-validate="'required|regex:^\#[\#\-]+\#$'" name="Formato de Cuentas" class="form-control" id="FormatoCuenta" v-model="data.datos_contables.FormatoCuenta">
                                                 <label class="help" v-show="validation_errors.has('form_datos_obra.Formato de Cuentas')">@{{ validation_errors.first('form_datos_obra.Formato de Cuentas') }}</label>
                                             </div>
                                         </div>
@@ -100,7 +100,7 @@
                                     </div>
                                     <div v-show="! form.cuenta_contable.con_prefijo" class="form-group" :class="{'has-error': validation_errors.has('form_datos_cuenta.Cuenta') }">
                                         <label for="cuenta">Cuenta</label>
-                                        <input type="text"  v-validate="! form.cuenta_contable.con_prefijo ? 'required|regex:' + data.obra.FormatoCuentaRegExp : ''" class="form-control" name="Cuenta" id="cuenta" v-model="form.cuenta_contable.cuenta_contable"/>
+                                        <input :placeholder="data.datos_contables.FormatoCuenta" type="text"  v-validate="! form.cuenta_contable.con_prefijo ? 'required|regex:' + data.datos_contables.FormatoCuentaRegExp : ''" class="form-control" name="Cuenta" id="cuenta" v-model="form.cuenta_contable.cuenta_contable"/>
                                         <label class="help" v-show="validation_errors.has('form_datos_cuenta.Cuenta')">@{{ validation_errors.first('form_datos_cuenta.Cuenta') }}</label>
                                     </div>
                                 </div>
@@ -194,7 +194,7 @@
                                         </div>
                                         <div v-show="! form.cuenta_contable_update.con_prefijo" class="form-group" :class="{'has-error': validation_errors.has('form_datos_cuenta_update.Cuenta') }">
                                             <label for="cuenta">Cuenta</label>
-                                            <input type="text"  v-validate="! form.cuenta_contable_update.con_prefijo ? 'required|regex:' + data.obra.FormatoCuentaRegExp : ''" class="form-control" name="Cuenta" id="cuenta" v-model="form.cuenta_contable_update.cuenta_contable"/>
+                                            <input :placeholder="data.datos_contables.FormatoCuenta" type="text"  v-validate="! form.cuenta_contable_update.con_prefijo ? 'required|regex:' + data.datos_contables.FormatoCuentaRegExp : ''" class="form-control" name="Cuenta" id="cuenta" v-model="form.cuenta_contable_update.cuenta_contable"/>
                                             <label class="help" v-show="validation_errors.has('form_datos_cuenta_update.Cuenta')">@{{ validation_errors.first('form_datos_cuenta_update.Cuenta') }}</label>
                                         </div>
                                     </div>
@@ -204,7 +204,7 @@
 
                                         <button type="button" class="btn btn-default pull-left" data-dismiss="modal" id="closeModal">Cerrar</button>
                                         <button type="submit" class="btn btn-info pull-right" :disabled="guardando"  >
-                                            <i class="fa fa-save"></i> Guradar
+                                            <i class="fa fa-save"></i> Guardar
                                         </button>
                                     </div>
                                 </div>

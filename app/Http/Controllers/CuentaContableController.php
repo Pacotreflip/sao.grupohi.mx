@@ -4,7 +4,6 @@ namespace Ghi\Http\Controllers;
 
 use Ghi\Domain\Core\Contracts\CuentaContableRepository;
 use Ghi\Domain\Core\Contracts\TipoCuentaContableRepository;
-use Ghi\Domain\Core\Models\CuentaContable;
 use Illuminate\Http\Request;
 
 class CuentaContableController extends Controller
@@ -12,6 +11,11 @@ class CuentaContableController extends Controller
     protected $cuenta_contable;
     protected $tipo_cuenta_contable;
 
+    /**
+     * CuentaContableController constructor.
+     * @param CuentaContableRepository $cuenta_contable
+     * @param TipoCuentaContableRepository $tipo_cuenta_contable
+     */
     public function __construct(
         CuentaContableRepository $cuenta_contable, TipoCuentaContableRepository $tipo_cuenta_contable)
     {
@@ -24,11 +28,17 @@ class CuentaContableController extends Controller
         $this->tipo_cuenta_contable = $tipo_cuenta_contable;
     }
 
+    /**
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     public function index()
     {
         return view('sistema_contable.cuenta_contable.index');
     }
 
+    /**
+     * @return \Illuminate\View\View
+     */
     public function configuracion()
     {
 
@@ -62,7 +72,8 @@ class CuentaContableController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $item = $this->cuenta_contable->update($request->all());
+
+        $item = $this->cuenta_contable->update($request->all(),$id);
         $cuentas_contables = $this->cuenta_contable->all('tipoCuentaContable');
         return response()->json(['data' =>
             [

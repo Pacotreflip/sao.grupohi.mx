@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class createContabilidadTiposCuentasMateriales extends Migration
+class CreateContabilidadTiposCuentasMateriales extends Migration
 {
     /**
      * Run the migrations.
@@ -16,6 +16,7 @@ class createContabilidadTiposCuentasMateriales extends Migration
             $table->increments('id');
             $table->string("descripcion",254);
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 
