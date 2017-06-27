@@ -1,31 +1,42 @@
 <?php namespace Ghi\Domain\Core\Repositories;
 
-use Ghi\Domain\Core\Contracts\ObraRepository;
-use Ghi\Domain\Core\Models\Obra;
+use Ghi\Domain\Core\Contracts\DatosContablesRepository;
+use Ghi\Domain\Core\Models\Contabilidad\DatosContables;
 use Illuminate\Http\Exception\HttpResponseException;
 use Illuminate\Support\Facades\DB;
 use Symfony\Component\HttpFoundation\Response;
 
-class EloquentObraRepository implements ObraRepository
+class EloquentDatosContablesRepository implements DatosContablesRepository
 {
+
     /**
-     * @var \Ghi\Domain\Core\Models\Obra
+     * @var \Ghi\Domain\Core\Models\Contabilidad\DatosContables
      */
     private $model;
 
-    /**
-     * EloquentPolizaTipoRepository constructor.
-     * @param \Ghi\Domain\Core\Models\Obra $model
-     */
-    public function __construct(Obra $model)
+    public function __construct(DatosContables $model)
     {
         $this->model = $model;
     }
 
     /**
-     * Actualiza la información de la obra
+     * Obtiene los datos contables de una obra que coincidan con los atributos de búsqueda
+     * @param string $attribute
+     * @param mixed $value
+     * @param string|array|null $with
+     * @return \Ghi\Domain\Core\Models\Contabilidad\DatosContables
+     */
+    public function findBy($attribute, $value, $with = null) {
+        if($with != null) {
+            return $this->model->with($with)->where($attribute, '=', $value)->first();
+        }
+        return $this->model->where($attribute, '=', $value)->first();
+    }
+
+    /**
+     * Actualiza la los datos contables de una obra
      * @param array $data
-     * @return \Ghi\Domain\Core\Models\Obra
+     * @return \Ghi\Domain\Core\Models\Contabilidad\DatosContables
      * @throws \Exception
      */
     public function update(array $data, $id)
@@ -33,7 +44,7 @@ class EloquentObraRepository implements ObraRepository
         try {
             DB::connection('cadeco')->beginTransaction();
             if (!$item = $this->model->find($id)) {
-                throw new HttpResponseException(new Response('No se encontró la Obra que se desea Actualizar', 404));
+                throw new HttpResponseException(new Response('No se encontraron los Datos Contables que se desean Actualizar', 404));
             }
 
             if ($data['FormatoCuenta']) {
@@ -58,16 +69,5 @@ class EloquentObraRepository implements ObraRepository
             throw $e;
         }
         return $item;
-    }
-
-    /**
-     * Busca y devuelve la obra por su ID
-     * @param $id
-     * @return \Ghi\Domain\Core\Models\Obra
-     * @throws \Exception
-     */
-    public function find($id)
-    {
-        return $this->model->findOrFail($id);
     }
 }

@@ -19,6 +19,7 @@ class CreateContabilidadMateriales extends Migration
             $table->integer("id_tipo_cuenta_material")->unsigned();
             $table->string("cuenta",254);
             $table->integer("registro");
+            $table->timestamps();
             $table->softDeletes();
             
             $table->foreign('id_obra')

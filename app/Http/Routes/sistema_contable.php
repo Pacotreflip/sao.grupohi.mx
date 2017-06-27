@@ -30,10 +30,12 @@ Route::group(['prefix' => 'sistema_contable'], function () {
     Route::delete('tipo_cuenta_contable/{id}', 'TipoCuentaContableController@destroy')->name('sistema_contable.tipo_cuenta_contable.destroy')->where(['id'=>'[0-9]+']);
     Route::get('tipo_cuenta_contable/{id}', 'TipoCuentaContableController@show')->name('sistema_contable.tipo_cuenta_contable.show')->where(['id'=>'[0-9]+']);
     Route::post('tipo_cuenta_contable', 'TipoCuentaContableController@store');
+
     /**
-     * Obra
+     * Datos Contables
      */
-    Route::patch('obra/{obra}', 'ObraController@update')->name('sistema_contable.obra.update');
+    Route::get('datos_contables/findBy', 'DatosContablesController@findBy');
+    Route::patch('datos_contables/{datos_contables}', 'DatosContablesController@update')->name('sistema_contable.datos_contables.update');
 
     /**
      * Polizas Generadas

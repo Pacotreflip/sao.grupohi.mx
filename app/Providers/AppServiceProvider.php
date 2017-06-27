@@ -81,5 +81,10 @@ class AppServiceProvider extends ServiceProvider
             \Ghi\Domain\Core\Contracts\PolizaHistoricoRepository::class,
             \Ghi\Domain\Core\Repositories\EloquentPolizaHistoricoRepository::class
         );
+
+        $this->app->bind(
+            \Ghi\Domain\Core\Contracts\DatosContablesRepository::class,
+            \Ghi\Domain\Core\Repositories\EloquentDatosContablesRepository::class
+        );
     }
 }

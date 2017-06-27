@@ -2,6 +2,8 @@
 
 namespace Ghi\Domain\Core\Models;
 
+use Ghi\Domain\Core\Models\Contabilidad\DatosContables;
+
 class Obra extends \Ghi\Core\Models\Obra
 {
     protected $fillable = [
@@ -34,5 +36,12 @@ class Obra extends \Ghi\Core\Models\Obra
      */
     public function cuentasContables(){
         return $this->hasMany(CuentaContable::class, "id_obra");
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne|DatosContables
+     */
+    public function datosContables() {
+        return $this->hasOne(DatosContables::class, 'id_obra');
     }
 }

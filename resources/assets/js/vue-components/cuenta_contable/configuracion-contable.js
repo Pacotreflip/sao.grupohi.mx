@@ -1,7 +1,7 @@
 Vue.component('configuracion-contable', {
     props: [
-        'obra',
-        'obra_update_url',
+        'datos_contables',
+        'datos_contables_update_url',
         'cuenta_update_url',
         'cuenta_store_url',
         'tipos_cuentas_contables',
@@ -10,7 +10,7 @@ Vue.component('configuracion-contable', {
     data: function() {
         return {
             'data' : {
-                'obra': this.obra,
+                'datos_contables': this.datos_contables,
                 'tipos_cuentas_contables' : this.tipos_cuentas_contables,
                 'tipos_cuentas_contables_update' : this.tipos_cuentas_contables_update,
                 'cuentas_contables' : this.cuentas_contables
@@ -78,7 +78,7 @@ Vue.component('configuracion-contable', {
         confirm_datos_obra: function () {
             var self = this;
             swal({
-                title: "Guardar Datos de Obra",
+                title: "Guardar Datos Contables de la Obra",
                 text: "¿Estás seguro de que la información es correcta?",
                 type: "warning",
                 showCancelButton: true,
@@ -93,22 +93,22 @@ Vue.component('configuracion-contable', {
             var self = this;
             $.ajax({
                 type: 'POST',
-                url: self.obra_update_url,
+                url: self.datos_contables_update_url,
                 data: {
-                    BDContPaq : self.data.obra.BDContPaq,
-                    FormatoCuenta : self.data.obra.FormatoCuenta,
-                    NumobraContPaq : self.data.obra.NumobraContPaq,
+                    BDContPaq : self.data.datos_contables.BDContPaq,
+                    FormatoCuenta : self.data.datos_contables.FormatoCuenta,
+                    NumobraContPaq : self.data.datos_contables.NumobraContPaq,
                     _method : 'PATCH'
                 },
                 beforeSend: function () {
                     self.guardando = true;
                 },
                 success: function (data, textStatus, xhr) {
-                    self.data.obra = data.data.obra;
+                    self.data.datos_contables = data.data.datos_contables;
                     swal({
                         type: 'success',
                         title: 'Correcto',
-                        html: 'Datos de la Obra <b>' +self.data.obra.nombre + '</b> actualizados correctamente',
+                        html: 'Datos Contables de la Obra actualizados correctamente',
                     });
                 },
                 complete: function () {

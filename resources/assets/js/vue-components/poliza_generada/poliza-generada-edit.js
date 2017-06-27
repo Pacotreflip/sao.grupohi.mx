@@ -1,5 +1,5 @@
 Vue.component('poliza-generada-edit', {
-    props: ['poliza', 'poliza_edit', 'obra', 'url_cuenta_contable_findby', 'url_poliza_generada_update'],
+    props: ['poliza', 'poliza_edit', 'datos_contables', 'url_cuenta_contable_findby', 'url_poliza_generada_update'],
     data: function () {
         return {
             'data': {
