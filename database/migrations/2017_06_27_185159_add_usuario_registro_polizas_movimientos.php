@@ -1,0 +1,33 @@
+<?php
+
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Database\Migrations\Migration;
+
+class AddUsuarioRegistroPolizasMovimientos extends Migration
+{
+    /**
+     * Run the migrations.
+     *
+     * @return void
+     */
+    public function up()
+    {
+        Schema::table('Contabilidad.int_polizas_movimientos', function (Blueprint $table) {
+            $table->int("registro")->nullable()->change();
+            $table->string("usuario_registro",100);
+        });
+    }
+
+    /**
+     * Reverse the migrations.
+     *
+     * @return void
+     */
+    public function down()
+    {
+        Schema::table('Contabilidad.int_polizas_movimientos', function (Blueprint $table) {
+            $table->int("registro")->change();
+            $table->dropColumn("usuario_registro");
+        });
+    }
+}
