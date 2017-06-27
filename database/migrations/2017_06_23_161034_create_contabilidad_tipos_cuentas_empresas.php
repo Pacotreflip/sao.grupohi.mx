@@ -16,6 +16,7 @@ class CreateContabilidadTiposCuentasEmpresas extends Migration
             $table->increments('id');
             $table->string("descripcion",254);
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

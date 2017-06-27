@@ -29,10 +29,10 @@ class AddForeignkeyToIntPolizas extends Migration
     public function down()
     {
         Schema::table('contabilidad.int_polizas', function (Blueprint $table) {
-            $table->dropForeign('int_polizas_id_tipo_poliza_interfaz_foreign');
-            $table->dropForeign('int_polizas_id_int_tipo_poliza_contpaq_foreign');
-            $table->dropForeign('int_polizas_id_obra_cadeco_foreign');
-            $table->dropForeign('int_polizas_id_transaccion_sao_foreign');
+            $table->dropForeign('contabilidad_int_polizas_id_tipo_poliza_interfaz_foreign');
+            $table->dropForeign('contabilidad_int_polizas_id_tipo_poliza_contpaq_foreign');
+            $table->dropForeign('contabilidad_int_polizas_id_obra_cadeco_foreign');
+            $table->dropForeign('contabilidad_int_polizas_id_transaccion_sao_foreign');
         });
     }
 }

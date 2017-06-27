@@ -3,7 +3,6 @@
 namespace Ghi\Http\Controllers;
 
 use Ghi\Domain\Core\Contracts\CuentaContableRepository;
-use Ghi\Domain\Core\Contracts\DatosContablesRepository;
 use Ghi\Domain\Core\Contracts\TipoCuentaContableRepository;
 use Illuminate\Http\Request;
 
