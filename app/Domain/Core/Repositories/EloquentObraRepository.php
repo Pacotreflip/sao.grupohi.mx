@@ -14,7 +14,7 @@ class EloquentObraRepository implements ObraRepository
     private $model;
 
     /**
-     * EloquentPolizaTipoRepository constructor.
+     * EloquentObraRepository constructor.
      * @param \Ghi\Domain\Core\Models\Obra $model
      */
     public function __construct(Obra $model)

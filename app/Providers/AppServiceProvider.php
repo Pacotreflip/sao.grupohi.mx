@@ -86,5 +86,10 @@ class AppServiceProvider extends ServiceProvider
             \Ghi\Domain\Core\Contracts\DatosContablesRepository::class,
             \Ghi\Domain\Core\Repositories\EloquentDatosContablesRepository::class
         );
+
+        $this->app->bind(
+            \Ghi\Domain\Core\Contracts\ConceptoRepository::class,
+            \Ghi\Domain\Core\Repositories\EloquentConceptoRepository::class
+        );
     }
 }
