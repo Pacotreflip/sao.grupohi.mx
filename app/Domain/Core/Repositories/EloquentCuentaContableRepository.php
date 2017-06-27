@@ -1,7 +1,7 @@
 <?php namespace Ghi\Domain\Core\Repositories;
 
 use Ghi\Domain\Core\Contracts\CuentaContableRepository;
-use Ghi\Domain\Core\Models\CuentaContable;
+use Ghi\Domain\Core\Models\Contabilidad\CuentaContable;
 use Illuminate\Http\Exception\HttpResponseException;
 use Illuminate\Support\Facades\DB;
 use Symfony\Component\HttpFoundation\Response;
@@ -78,15 +78,16 @@ class EloquentCuentaContableRepository implements CuentaContableRepository
     /**
      * Actualiza un registro de cuenta contable
      * @param array $data
+     * @param $id
      * @return \Ghi\Domain\Core\Models\CuentaContable
      * @throws \Exception
      */
-    public function update(array $data)
+    public function update(array $data,$id)
     {
 
         try {
             DB::connection('cadeco')->beginTransaction();
-            if (!$item = $this->model->find($data['data']['id_int_cuenta_contable'])) {
+            if (!$item = $this->model->find($id)) {
                 throw new HttpResponseException(new Response('No se encontró la poliza', 404));
             }
 

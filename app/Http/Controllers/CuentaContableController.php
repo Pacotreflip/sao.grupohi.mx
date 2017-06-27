@@ -72,7 +72,8 @@ class CuentaContableController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $item = $this->cuenta_contable->update($request->all());
+
+        $item = $this->cuenta_contable->update($request->all(),$id);
         $cuentas_contables = $this->cuenta_contable->all('tipoCuentaContable');
         return response()->json(['data' =>
             [

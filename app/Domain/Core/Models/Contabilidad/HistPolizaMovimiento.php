@@ -1,18 +1,19 @@
 <?php
 
-namespace Ghi\Domain\Core\Models;
+namespace Ghi\Domain\Core\Models\Contabilidad;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class PolizaMovimiento extends Model
+class HistPolizaMovimiento extends Model
 {
     use SoftDeletes;
 
     protected $connection = 'cadeco';
-    protected $table = 'Contabilidad.int_polizas_movimientos';
-    protected $primaryKey = 'id_int_poliza_movimiento';
+    protected $table = 'Contabilidad.hist_int_polizas_movimientos';
+    protected $primaryKey = 'id_hist_int_poliza';
     protected $fillable = [
+        'id_hist_int_poliza',
         'id_int_poliza',
         'id_tipo_cuenta_contable',
         'id_cuenta_contable',
@@ -27,9 +28,7 @@ class PolizaMovimiento extends Model
         'estatus',
         'timestamp',
         'registro'
-    ];
-
-    protected $appends = ['descripcion_cuenta_contable'];
+       ];
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo

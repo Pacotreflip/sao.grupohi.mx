@@ -4,9 +4,9 @@ namespace Ghi\Domain\Core\Repositories;
 
 use Ghi\Domain\Core\Contracts\PolizaHistoricoRepository;
 use Ghi\Domain\Core\Contracts\PolizaRepository;
-use Ghi\Domain\Core\Models\HistPoliza;
-use Ghi\Domain\Core\Models\HistPolizaMovimiento;
-use Ghi\Domain\Core\Models\Poliza;
+use Ghi\Domain\Core\Models\Contabilidad\HistPoliza;
+use Ghi\Domain\Core\Models\Contabilidad\HistPolizaMovimiento;
+use Ghi\Domain\Core\Models\Contabilidad\Poliza;
 
 
 class EloquentPolizaHistoricoRepository implements PolizaHistoricoRepository

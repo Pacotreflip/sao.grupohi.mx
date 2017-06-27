@@ -1,7 +1,7 @@
 <?php namespace Ghi\Domain\Core\Repositories;
 
 use Ghi\Domain\Core\Contracts\TipoMovimientoRepository;
-use Ghi\Domain\Core\Models\TipoMovimiento;
+use Ghi\Domain\Core\Models\Contabilidad\TipoMovimiento;
 
 class EloquentTipoMovimientoRepository implements TipoMovimientoRepository
 {

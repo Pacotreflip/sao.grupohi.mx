@@ -173,7 +173,7 @@ Vue.component('configuracion-contable', {
         update_cuenta_contable:function () {
             var self = this;
             var data = self.form.cuenta_contable_update;
-            var url=App.host+'/sistema_contable/cuenta_contable/'+data.id_cuenta_contable;
+            var url=App.host+'/sistema_contable/cuenta_contable/'+data.id_int_cuenta_contable;
             $.ajax({
                 type: 'POST',
                 url: url,

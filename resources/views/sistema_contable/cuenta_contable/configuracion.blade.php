@@ -204,7 +204,7 @@
 
                                         <button type="button" class="btn btn-default pull-left" data-dismiss="modal" id="closeModal">Cerrar</button>
                                         <button type="submit" class="btn btn-info pull-right" :disabled="guardando"  >
-                                            <i class="fa fa-save"></i> Guradar
+                                            <i class="fa fa-save"></i> Guardar
                                         </button>
                                     </div>
                                 </div>

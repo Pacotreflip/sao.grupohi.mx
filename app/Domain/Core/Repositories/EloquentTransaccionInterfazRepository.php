@@ -2,7 +2,7 @@
 
 use Ghi\Domain\Core\Contracts\PolizaTipo;
 use Ghi\Domain\Core\Contracts\TransaccionInterfazRepository;
-use Ghi\Domain\Core\Models\TransaccionInterfaz;
+use Ghi\Domain\Core\Models\Contabilidad\TransaccionInterfaz;
 
 class EloquentTransaccionInterfazRepository implements TransaccionInterfazRepository
 {
