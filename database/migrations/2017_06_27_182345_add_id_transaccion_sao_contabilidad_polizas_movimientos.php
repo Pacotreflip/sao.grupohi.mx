@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AddIdItemSaoContabilidadCuentasConceptos extends Migration
+class AddIdTransaccionSaoContabilidadPolizasMovimientos extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,8 @@ class AddIdItemSaoContabilidadCuentasConceptos extends Migration
     public function up()
     {
         Schema::table('Contabilidad.int_polizas_movimientos', function (Blueprint $table) {
-            $table->integer('id_item_sao')->unsigned()->nullable()->after("id_transaccion_sao");
-            $table->foreign('id_item_sao')->references('id_item')->on('dbo.items');
+            $table->integer('id_transaccion_sao')->unsigned()->nullable();
+            $table->foreign('id_transaccion_sao')->references('id_transaccion')->on('dbo.transacciones');
         });
     }
 
@@ -26,8 +26,8 @@ class AddIdItemSaoContabilidadCuentasConceptos extends Migration
     public function down()
     {
         Schema::table('Contabilidad.int_polizas_movimientos', function (Blueprint $table) {
-            $table->dropForeign('contabilidad_int_polizas_movimientos_id_item_sao_foreign');
-            $table->dropColumn('id_item_sao');
+            $table->dropForeign('contabilidad_int_polizas_movimientos_id_transaccion_sao_foreign');
+            $table->dropColumn('id_transaccion_sao');
         });
     }
 }
