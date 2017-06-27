@@ -1,6 +1,6 @@
 @extends('sistema_contable.layout')
-@section('title', 'Plantillas de Tipo Cuenta Contable')
-@section('contentheader_title', 'TIPO CUENTA CONTABLE')
+@section('title', 'Tipos de Cuentas Contables')
+@section('contentheader_title', 'TIPOS DE CUENTAS CONTABLES')
 @section('contentheader_description', '(LISTA)')
 
 @section('main-content')
@@ -8,7 +8,7 @@
     <div class="row">
         <div class="col-sm-12">
             <a  href="{{ route('sistema_contable.tipo_cuenta_contable.create') }}" class="btn btn-success btn-app" style="float:right">
-                <i class="glyphicon glyphicon-plus-sign"></i>Nueva
+                <i class="glyphicon glyphicon-plus-sign"></i>Nuevo
             </a>
         </div>
     </div>
@@ -18,7 +18,7 @@
         <div class="col-md-12">
             <div class="box box-info">
                 <div class="box-header with-border">
-                    <h3 class="box-title">Tipo Cuenta Contable</h3>
+                    <h3 class="box-title">Tipos de Cuentas Contables</h3>
                 </div>
                 <div class="box-body">
                     <div class="col-sm-12">

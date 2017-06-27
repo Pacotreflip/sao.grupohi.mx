@@ -43,6 +43,7 @@ Route::group(['prefix' => 'sistema_contable'], function () {
     Route::get('poliza_generada', 'PolizaController@index')->name('sistema_contable.poliza_generada.index');
     Route::get('poliza_generada/{id}', 'PolizaController@show')->name('sistema_contable.poliza_generada.show')->where(['id' => '[0-9]+']);
     Route::get('poliza_generada/{id}/edit', 'PolizaController@edit')->name('sistema_contable.poliza_generada.edit')->where(['id' => '[0-9]+']);
+    Route::get('poliza_generada/{poliza}/historico', 'PolizaHistoricoController@index')->name('sistema_contable.poliza_generada.historico')->where(['id' => '[0-9]+']);
 
     /**
      * Cuentas Materiales
@@ -52,6 +53,8 @@ Route::group(['prefix' => 'sistema_contable'], function () {
     Route::get('cuenta_material/show', 'CuentaMaterialController@show')->name('sistema_contable.cuenta_material.show');  // modificar, solo es de muestra
     Route::patch('poliza_generada/{id}', 'PolizaController@update')->name('sistema_contable.poliza_generada.update')->where(['id' => '[0-9]+']);
 
-    Route::get('poliza_generada/{poliza}/historico', 'PolizaHistoricoController@index')->name('sistema_contable.poliza_generada.historico')->where(['id' => '[0-9]+']);
-
+    /**
+     * Relación Conceptos - Cuentas
+     */
+    Route::get('concepto_cuenta', 'ConceptoCuentaController@index')->name('sistema_contable.concepto_cuenta.index');
 });

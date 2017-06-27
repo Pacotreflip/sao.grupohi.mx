@@ -100,7 +100,7 @@
                                     </div>
                                     <div v-show="! form.cuenta_contable.con_prefijo" class="form-group" :class="{'has-error': validation_errors.has('form_datos_cuenta.Cuenta') }">
                                         <label for="cuenta">Cuenta</label>
-                                        <input type="text"  v-validate="! form.cuenta_contable.con_prefijo ? 'required|regex:' + data.datos_contables.FormatoCuentaRegExp : ''" class="form-control" name="Cuenta" id="cuenta" v-model="form.cuenta_contable.cuenta_contable"/>
+                                        <input :placeholder="data.datos_contables.FormatoCuenta" type="text"  v-validate="! form.cuenta_contable.con_prefijo ? 'required|regex:' + data.datos_contables.FormatoCuentaRegExp : ''" class="form-control" name="Cuenta" id="cuenta" v-model="form.cuenta_contable.cuenta_contable"/>
                                         <label class="help" v-show="validation_errors.has('form_datos_cuenta.Cuenta')">@{{ validation_errors.first('form_datos_cuenta.Cuenta') }}</label>
                                     </div>
                                 </div>
@@ -194,7 +194,7 @@
                                         </div>
                                         <div v-show="! form.cuenta_contable_update.con_prefijo" class="form-group" :class="{'has-error': validation_errors.has('form_datos_cuenta_update.Cuenta') }">
                                             <label for="cuenta">Cuenta</label>
-                                            <input type="text"  v-validate="! form.cuenta_contable_update.con_prefijo ? 'required|regex:' + data.datos_contables.FormatoCuentaRegExp : ''" class="form-control" name="Cuenta" id="cuenta" v-model="form.cuenta_contable_update.cuenta_contable"/>
+                                            <input :placeholder="data.datos_contables.FormatoCuenta" type="text"  v-validate="! form.cuenta_contable_update.con_prefijo ? 'required|regex:' + data.datos_contables.FormatoCuentaRegExp : ''" class="form-control" name="Cuenta" id="cuenta" v-model="form.cuenta_contable_update.cuenta_contable"/>
                                             <label class="help" v-show="validation_errors.has('form_datos_cuenta_update.Cuenta')">@{{ validation_errors.first('form_datos_cuenta_update.Cuenta') }}</label>
                                         </div>
                                     </div>

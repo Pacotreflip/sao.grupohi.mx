@@ -1,5 +1,5 @@
 @if ($breadcrumbs)
-    <ol class="breadcrumb">
+    <ol class="breadcrumb" style="text-align: right">
         @foreach ($breadcrumbs as $breadcrumb)
             @if ($breadcrumb->url && !$breadcrumb->last)
                 <li><a href="{{ $breadcrumb->url }}">{{ $breadcrumb->title }}</a></li>

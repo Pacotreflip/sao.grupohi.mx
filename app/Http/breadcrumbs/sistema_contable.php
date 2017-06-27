@@ -15,7 +15,7 @@ Breadcrumbs::register('sistema_contable.poliza_tipo.index', function ($breadcrum
 });
 Breadcrumbs::register('sistema_contable.poliza_tipo.create', function ($breadcrumb) {
     $breadcrumb->parent('sistema_contable.poliza_tipo.index');
-    $breadcrumb->push('NUEVA PLANTILLA PARA PÓLIZA', route('sistema_contable.poliza_tipo.create'));
+    $breadcrumb->push('CREAR', route('sistema_contable.poliza_tipo.create'));
 });
 Breadcrumbs::register('sistema_contable.poliza_tipo.show', function ($breadcrumb, $poliza_tipo) {
     $breadcrumb->parent('sistema_contable.poliza_tipo.index');
@@ -29,15 +29,15 @@ Breadcrumbs::register('sistema_contable.poliza_tipo.show', function ($breadcrumb
 
 Breadcrumbs::register('sistema_contable.tipo_cuenta_contable.index', function ($breadcrumb) {
     $breadcrumb->parent('sistema_contable.index');
-    $breadcrumb->push('TIPO CUENTA CONTABLE', route('sistema_contable.tipo_cuenta_contable.index'));
+    $breadcrumb->push('TIPOS DE CUENTAS CONTABLES', route('sistema_contable.tipo_cuenta_contable.index'));
 });
 Breadcrumbs::register('sistema_contable.tipo_cuenta_contable.create', function ($breadcrumb) {
     $breadcrumb->parent('sistema_contable.tipo_cuenta_contable.index');
-    $breadcrumb->push('NUEVO TIPO CUENTA CONTABLE', route('sistema_contable.tipo_cuenta_contable.create'));
+    $breadcrumb->push('CREAR', route('sistema_contable.tipo_cuenta_contable.create'));
 });
 Breadcrumbs::register('sistema_contable.tipo_cuenta_contable.show', function ($breadcrumb, $tipo_cuenta_contable) {
     $breadcrumb->parent('sistema_contable.tipo_cuenta_contable.index');
-    $breadcrumb->push('VER TIPO CUENTA CONTABLE', route('sistema_contable.tipo_cuenta_contable.show', $tipo_cuenta_contable));
+    $breadcrumb->push(mb_strtoupper($tipo_cuenta_contable->descripcion), route('sistema_contable.tipo_cuenta_contable.show', $tipo_cuenta_contable));
 });
 
 
@@ -79,7 +79,7 @@ Breadcrumbs::register('sistema_contable.cuenta_material.index', function ($bread
 });
 Breadcrumbs::register('sistema_contable.cuenta_material.create', function ($breadcrumb) {
     $breadcrumb->parent('sistema_contable.cuenta_material.index');
-    $breadcrumb->push('NUEVA CUENTA DE MATERIAL', route('sistema_contable.cuenta_material.create'));
+    $breadcrumb->push('CREAR', route('sistema_contable.cuenta_material.create'));
 });
 Breadcrumbs::register('sistema_contable.cuenta_material.show', function ($breadcrumb) {
     $breadcrumb->parent('sistema_contable.cuenta_material.index');
