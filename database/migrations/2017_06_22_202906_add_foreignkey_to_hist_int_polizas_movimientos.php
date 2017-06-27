@@ -30,11 +30,11 @@ class AddForeignkeyToHistIntPolizasMovimientos extends Migration
     public function down()
     {
         Schema::table('contabilidad.hist_int_polizas_movimientos', function (Blueprint $table) {
-            $table->dropForeign('contabilidad.hist_int_polizas_movimientos_id_hist_int_poliza_id_foreign');
-            $table->dropForeign('contabilidad.hist_int_polizas_movimientos_int_polizas_movimientos_id_int_poliza_foreign');
-            $table->dropForeign('contabilidad.hist_int_polizas_movimientos_int_polizas_movimientos_id_cuenta_contable_foreign');
-            $table->dropForeign('contabilidad.hist_int_polizas_movimientos_int_polizas_movimientos_id_tipo_cuenta_contable_foreign');
-            $table->dropForeign('contabilidad.hist_int_polizas_movimientos_int_polizas_movimientos_id_tipo_movimiento_poliza_foreign');
+            $table->dropForeign('contabilidad_hist_int_polizas_movimientos_id_hist_int_poliza_id_foreign');
+            $table->dropForeign('contabilidad_hist_int_polizas_movimientos_int_polizas_movimientos_id_int_poliza_foreign');
+            $table->dropForeign('contabilidad_hist_int_polizas_movimientos_int_polizas_movimientos_id_cuenta_contable_foreign');
+            $table->dropForeign('contabilidad_hist_int_polizas_movimientos_int_polizas_movimientos_id_tipo_cuenta_contable_foreign');
+            $table->dropForeign('contabilidad_hist_int_polizas_movimientos_int_polizas_movimientos_id_tipo_movimiento_poliza_foreign');
 
         });
     }
