@@ -13,7 +13,7 @@ class AddIdItemSaoContabilidadCuentasConceptos extends Migration
     public function up()
     {
         Schema::table('Contabilidad.int_polizas_movimientos', function (Blueprint $table) {
-            $table->integer('id_item_sao')->unsigned()->nullable();
+            $table->integer('id_item_sao')->unsigned()->nullable()->after("id_transaccion_sao");
             $table->foreign('id_item_sao')->references('id_item')->on('dbo.items');
         });
     }
