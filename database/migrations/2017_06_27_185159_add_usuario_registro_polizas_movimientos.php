@@ -13,7 +13,7 @@ class AddUsuarioRegistroPolizasMovimientos extends Migration
     public function up()
     {
         Schema::table('Contabilidad.int_polizas_movimientos', function (Blueprint $table) {
-            $table->string("usuario_registro",100);
+            $table->string("usuario_registro",100)->nullable();
         });
     }
 
