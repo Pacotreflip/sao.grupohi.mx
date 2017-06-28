@@ -38,7 +38,7 @@
                                     <td class="numerico">${{number_format($item->total,'2','.',',')}}</td>
                                     <td class="numerico">${{number_format($item->cuadre,'2','.',',')}}</td>
                                     <td class="">
-                                        <span class="label label-success">Lanzado</span>
+                                        <span class="label label-warning">Pendiente de Lanzar</span>
                                     </td>
                                     <td>N/A</td>
                                     <td style="min-width: 90px;max-width: 90px">
