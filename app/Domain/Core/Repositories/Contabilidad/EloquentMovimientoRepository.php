@@ -1,6 +1,6 @@
-<?php namespace Ghi\Domain\Core\Repositories;
+<?php namespace Ghi\Domain\Core\Repositories\Contabilidad;
 
-use Ghi\Domain\Core\Contracts\MovimientoRepository;
+use Ghi\Domain\Core\Contracts\Contabilidad\MovimientoRepository;
 use Ghi\Domain\Core\Models\Contabilidad\MovimientoPoliza;
 
 class EloquentMovimientoRepository implements MovimientoRepository

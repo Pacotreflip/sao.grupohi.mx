@@ -63,4 +63,15 @@ Route::group(['prefix' => 'sistema_contable'], function () {
      */
     Route::get('concepto/findBy', 'ConceptoController@findBy')->name('sistema_contable.concepto.findby');
     Route::get('concepto/getBy', 'ConceptoController@getBy')->name('sistema_contable.concepto.getBy');
+
+    /*
+     * Cuentas de Empresa
+     */
+
+    Route::get('cuenta_empresa', 'CuentaEmpresaController@index')->name('sistema_contable.cuenta_empresa.index');
+    Route::get('cuenta_empresa/create', 'CuentaEmpresaController@create')->name('sistema_contable.cuenta_empresa.create');
+    Route::get('cuenta_empresa/show', 'CuentaEmpresaController@show')->name('sistema_contable.cuenta_empresa.show');  // modificar, solo es de muestra
+    Route::patch('cuenta_empresa/{id}', 'PolizaController@update')->name('sistema_contable.cuenta_empresa.update')->where(['id' => '[0-9]+']);
+
+
 });

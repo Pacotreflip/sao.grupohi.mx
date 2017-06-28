@@ -1,7 +1,7 @@
-<?php namespace Ghi\Domain\Core\Repositories;
+<?php namespace Ghi\Domain\Core\Repositories\Contabilidad;
 
-use Ghi\Domain\Core\Contracts\PolizaTipo;
-use Ghi\Domain\Core\Contracts\TransaccionInterfazRepository;
+use Ghi\Domain\Core\Contracts\Contabilidad\PolizaTipo;
+use Ghi\Domain\Core\Contracts\Contabilidad\TransaccionInterfazRepository;
 use Ghi\Domain\Core\Models\Contabilidad\TransaccionInterfaz;
 
 class EloquentTransaccionInterfazRepository implements TransaccionInterfazRepository

@@ -2,7 +2,7 @@
 
 namespace Ghi\Http\Controllers;
 
-use Ghi\Domain\Core\Contracts\CuentaMaterialRepository;
+use Ghi\Domain\Core\Contracts\Contabilidad\CuentaMaterialRepository;
 use Illuminate\Http\Request;
 
 class CuentaMaterialController extends Controller

@@ -1,9 +1,9 @@
 <?php
 
-namespace Ghi\Domain\Core\Repositories;
+namespace Ghi\Domain\Core\Repositories\Contabilidad;
 
-use Ghi\Domain\Core\Contracts\PolizaHistoricoRepository;
-use Ghi\Domain\Core\Contracts\PolizaRepository;
+use Ghi\Domain\Core\Contracts\Contabilidad\PolizaHistoricoRepository;
+use Ghi\Domain\Core\Contracts\Contabilidad\PolizaRepository;
 use Ghi\Domain\Core\Models\Contabilidad\HistPoliza;
 use Ghi\Domain\Core\Models\Contabilidad\HistPolizaMovimiento;
 use Ghi\Domain\Core\Models\Contabilidad\Poliza;

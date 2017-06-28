@@ -1,6 +1,7 @@
-<?php namespace Ghi\Domain\Core\Contracts;
+<?php
+namespace Ghi\Domain\Core\Contracts\Contabilidad;
 
-use Ghi\Domain\Core\Models\Contabilidad\DatosContables;
+
 
 interface DatosContablesRepository
 {

@@ -1,6 +1,6 @@
-<?php namespace Ghi\Domain\Core\Repositories;
+<?php namespace Ghi\Domain\Core\Repositories\Contabilidad;
 
-use Ghi\Domain\Core\Contracts\ConceptoRepository;
+use Ghi\Domain\Core\Contracts\Contabilidad\ConceptoRepository;
 use Ghi\Domain\Core\Models\Concepto;
 
 

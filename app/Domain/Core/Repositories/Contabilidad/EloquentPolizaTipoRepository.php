@@ -1,7 +1,7 @@
-<?php namespace Ghi\Domain\Core\Repositories;
+<?php namespace Ghi\Domain\Core\Repositories\Contabilidad;
 
 use Carbon\Carbon;
-use Ghi\Domain\Core\Contracts\PolizaTipoRepository;
+use Ghi\Domain\Core\Contracts\Contabilidad\PolizaTipoRepository;
 use Ghi\Domain\Core\Models\Contabilidad\MovimientoPoliza;
 use Ghi\Domain\Core\Models\Contabilidad\PolizaTipo;
 use Illuminate\Http\Exception\HttpResponseException;

@@ -6,7 +6,7 @@
  * Time: 02:27 PM
  */
 
-namespace Ghi\Domain\Core\Contracts;
+namespace Ghi\Domain\Core\Contracts\Contabilidad;
 
 
 

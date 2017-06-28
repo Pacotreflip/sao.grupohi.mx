@@ -13,7 +13,7 @@
                 <li ><a href="{{route('sistema_contable.poliza_tipo.index')}}"><i class='fa fa-book'></i> <span>Plantillas de Póliza</span></a></li>
                 <li ><a href="{{route('sistema_contable.tipo_cuenta_contable.index')}}"><i class='fa fa-book'></i> <span>Tipos de Cuentas Contables</span></a></li>
                 <li ><a href="{{route('sistema_contable.concepto_cuenta.index')}}"><i class='fa fa-book'></i> <span>Conceptos - Cuentas</span></a></li>
-                <li ><a href="{{route('sistema_contable.concepto_cuenta.index')}}"><i class='fa fa-building-o'></i> <span>Empresa - Cuenta</span></a></li>
+                <li ><a href="{{route('sistema_contable.cuenta_empresa.index')}}"><i class='fa fa-building-o'></i> <span>Empresa - Cuenta</span></a></li>
                 <!--li ><a href="{{route('sistema_contable.cuenta_material.index')}}"><i class='fa fa-book'></i> <span>Cuentas Materiales</span></a></li-->
             </ul>
         </li>

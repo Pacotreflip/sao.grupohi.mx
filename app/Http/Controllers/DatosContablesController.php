@@ -3,7 +3,7 @@
 namespace Ghi\Http\Controllers;
 
 use Dingo\Api\Routing\Helpers;
-use Ghi\Domain\Core\Contracts\DatosContablesRepository;
+use Ghi\Domain\Core\Contracts\Contabilidad\DatosContablesRepository;
 use Illuminate\Http\Request;
 
 class DatosContablesController extends Controller

@@ -1,9 +1,9 @@
-<?php namespace Ghi\Domain\Core\Repositories;
+<?php namespace Ghi\Domain\Core\Repositories\Contabilidad;
 
 use Ghi\Core\Facades\Context;
 use Ghi\Domain\Core\Contracts\Identificador;
 use Ghi\Domain\Core\Contracts\Motivo;
-use Ghi\Domain\Core\Contracts\TipoCuentaContableRepository;
+use Ghi\Domain\Core\Contracts\Contabilidad\TipoCuentaContableRepository;
 use Ghi\Domain\Core\Models\Contabilidad\TipoCuentaContable;
 use Illuminate\Http\Exception\HttpResponseException;
 use Illuminate\Support\Facades\DB;

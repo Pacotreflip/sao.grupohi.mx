@@ -4,8 +4,8 @@ namespace Ghi\Http\Controllers;
 
 
 
-use Ghi\Domain\Core\Contracts\PolizaHistoricoRepository;
-use Ghi\Domain\Core\Contracts\PolizaRepository;
+use Ghi\Domain\Core\Contracts\Contabilidad\PolizaHistoricoRepository;
+use Ghi\Domain\Core\Contracts\Contabilidad\PolizaRepository;
 use Illuminate\Http\Request;
 
 use Ghi\Http\Requests;

@@ -1,9 +1,8 @@
 <?php
 
 namespace Ghi\Http\Controllers;
-
-use Ghi\Domain\Core\Contracts\CuentaContableRepository;
-use Ghi\Domain\Core\Contracts\TipoCuentaContableRepository;
+use Ghi\Domain\Core\Contracts\Contabilidad\CuentaContableRepository;
+use Ghi\Domain\Core\Contracts\Contabilidad\TipoCuentaContableRepository;
 use Illuminate\Http\Request;
 
 class CuentaContableController extends Controller

@@ -6,7 +6,7 @@
  * Time: 11:06 AM
  */
 
-namespace Ghi\Domain\Core\Repositories;
+namespace Ghi\Domain\Core\Repositories\Contabilidad;
 
 use Ghi\Domain\Core\Contracts\CuentaMaterialRepository;
 use Ghi\Domain\Core\Contracts\Identificador;

@@ -1,4 +1,4 @@
-<?php namespace Ghi\Domain\Core\Repositories;
+<?php namespace Ghi\Domain\Core\Repositories\Contabilidad;
 
 use Ghi\Domain\Core\Contracts\DatosContablesRepository;
 use Ghi\Domain\Core\Models\Contabilidad\DatosContables;

@@ -6,7 +6,7 @@
  * Time: 11:05 AM
  */
 
-namespace Ghi\Domain\Core\Contracts;
+namespace Ghi\Domain\Core\Contracts\Contabilidad;
 
 
 interface CuentaMaterialRepository

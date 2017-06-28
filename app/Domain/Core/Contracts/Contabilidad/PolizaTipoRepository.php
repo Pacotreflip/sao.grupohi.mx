@@ -1,4 +1,4 @@
-<?php namespace Ghi\Domain\Core\Contracts;
+<?php namespace Ghi\Domain\Core\Contracts\Contabilidad;
 
 interface PolizaTipoRepository
 {

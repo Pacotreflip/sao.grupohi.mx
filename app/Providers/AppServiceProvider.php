@@ -38,23 +38,23 @@ class AppServiceProvider extends ServiceProvider
         );
 
         $this->app->bind(
-            \Ghi\Domain\Core\Contracts\PolizaTipoRepository::class,
-            \Ghi\Domain\Core\Repositories\EloquentPolizaTipoRepository::class
+            \Ghi\Domain\Core\Contracts\Contabilidad\PolizaTipoRepository::class,
+            \Ghi\Domain\Core\Repositories\Contabilidad\EloquentPolizaTipoRepository::class
         );
 
         $this->app->bind(
-            \Ghi\Domain\Core\Contracts\MovimientoRepository::class,
-            \Ghi\Domain\Core\Repositories\EloquentMovimientoRepository::class
+            \Ghi\Domain\Core\Contracts\Contabilidad\MovimientoRepository::class,
+            \Ghi\Domain\Core\Repositories\Contabilidad\EloquentMovimientoRepository::class
         );
 
         $this->app->bind(
-            \Ghi\Domain\Core\Contracts\TipoMovimientoRepository::class,
-            \Ghi\Domain\Core\Repositories\EloquentTipoMovimientoRepository::class
+            \Ghi\Domain\Core\Contracts\Contabilidad\TipoMovimientoRepository::class,
+            \Ghi\Domain\Core\Repositories\Contabilidad\EloquentTipoMovimientoRepository::class
         );
 
         $this->app->bind(
-            \Ghi\Domain\Core\Contracts\TransaccionInterfazRepository::class,
-            \Ghi\Domain\Core\Repositories\EloquentTransaccionInterfazRepository::class
+            \Ghi\Domain\Core\Contracts\Contabilidad\TransaccionInterfazRepository::class,
+            \Ghi\Domain\Core\Repositories\Contabilidad\EloquentTransaccionInterfazRepository::class
         );
 
         $this->app->bind(
@@ -63,33 +63,37 @@ class AppServiceProvider extends ServiceProvider
         );
 
         $this->app->bind(
-            \Ghi\Domain\Core\Contracts\CuentaContableRepository::class,
-            \Ghi\Domain\Core\Repositories\EloquentCuentaContableRepository::class
+            \Ghi\Domain\Core\Contracts\Contabilidad\CuentaContableRepository::class,
+            \Ghi\Domain\Core\Repositories\Contabilidad\EloquentCuentaContableRepository::class
         );
 
         $this->app->bind(
-            \Ghi\Domain\Core\Contracts\TipoCuentaContableRepository::class,
-            \Ghi\Domain\Core\Repositories\EloquentTipoCuentaContableRepository::class
+            \Ghi\Domain\Core\Contracts\Contabilidad\TipoCuentaContableRepository::class,
+            \Ghi\Domain\Core\Repositories\Contabilidad\EloquentTipoCuentaContableRepository::class
         );
 
         $this->app->bind(
-            \Ghi\Domain\Core\Contracts\PolizaRepository::class,
-            \Ghi\Domain\Core\Repositories\EloquentPolizaRepository::class
+            \Ghi\Domain\Core\Contracts\Contabilidad\PolizaRepository::class,
+            \Ghi\Domain\Core\Repositories\Contabilidad\EloquentPolizaRepository::class
         );
 
         $this->app->bind(
-            \Ghi\Domain\Core\Contracts\PolizaHistoricoRepository::class,
-            \Ghi\Domain\Core\Repositories\EloquentPolizaHistoricoRepository::class
+            \Ghi\Domain\Core\Contracts\Contabilidad\PolizaHistoricoRepository::class,
+            \Ghi\Domain\Core\Repositories\Contabilidad\EloquentPolizaHistoricoRepository::class
         );
 
         $this->app->bind(
-            \Ghi\Domain\Core\Contracts\DatosContablesRepository::class,
-            \Ghi\Domain\Core\Repositories\EloquentDatosContablesRepository::class
+            \Ghi\Domain\Core\Contracts\Contabilidad\DatosContablesRepository::class,
+            \Ghi\Domain\Core\Repositories\Contabilidad\EloquentDatosContablesRepository::class
         );
 
         $this->app->bind(
-            \Ghi\Domain\Core\Contracts\ConceptoRepository::class,
-            \Ghi\Domain\Core\Repositories\EloquentConceptoRepository::class
+            \Ghi\Domain\Core\Contracts\Contabilidad\ConceptoRepository::class,
+            \Ghi\Domain\Core\Repositories\Contabilidad\EloquentConceptoRepository::class
+        );
+        $this->app->bind(
+            \Ghi\Domain\Core\Contracts\Contabilidad\CuentaEmpresaRepository::class,
+            \Ghi\Domain\Core\Repositories\Contabilidad\EloquentCuentaEmpresaRepository::class
         );
     }
 }

@@ -3,8 +3,8 @@
 namespace Ghi\Http\Controllers;
 
 use Dingo\Api\Routing\Helpers;
-use Ghi\Domain\Core\Contracts\PolizaRepository;
-use Ghi\Domain\Core\Contracts\TipoCuentaContableRepository;
+use Ghi\Domain\Core\Contracts\Contabilidad\PolizaRepository;
+use Ghi\Domain\Core\Contracts\Contabilidad\TipoCuentaContableRepository;
 use Illuminate\Http\Request;
 
 class PolizaController extends Controller
