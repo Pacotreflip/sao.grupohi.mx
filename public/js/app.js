@@ -36554,7 +36554,7 @@ Vue.component('global-errors', {
 'use strict';
 
 Vue.component('poliza-generada-edit', {
-    props: ['poliza', 'poliza_edit', 'datos_contables', 'url_cuenta_contable_findby', 'url_poliza_generada_update'],
+    props: ['poliza', 'poliza_edit', 'datos_contables', 'url_cuenta_contable_findby', 'url_poliza_generada_update', 'tipo_cuenta_contable'],
     data: function data() {
         return {
             'data': {
@@ -36568,7 +36568,8 @@ Vue.component('poliza-generada-edit', {
                     'id_tipo_movimiento_poliza': '',
                     'importe': '',
                     'referencia': '',
-                    'concepto': ''
+                    'concepto': '',
+                    'id_tipo_cuenta_contable': ''
                 }
             },
             'guardando': false

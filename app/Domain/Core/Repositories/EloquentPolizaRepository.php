@@ -132,6 +132,8 @@ class EloquentPolizaRepository implements PolizaRepository
                     $movimientoPoliza->cuenta_contable = $polizaMovimiento['cuenta_contable'];
                     $movimientoPoliza->importe = $polizaMovimiento['importe'];
                     $movimientoPoliza->id_tipo_movimiento_poliza = $polizaMovimiento['id_tipo_movimiento_poliza'];
+                    $movimientoPoliza->id_tipo_cuenta_contable = $polizaMovimiento['id_tipo_cuenta_contable'];
+
                     $movimientoPoliza->restore();
 
                 } else {
@@ -142,6 +144,7 @@ class EloquentPolizaRepository implements PolizaRepository
                     $movimientoPoliza->cuenta_contable = $polizaMovimiento['cuenta_contable'];
                     $movimientoPoliza->importe = $polizaMovimiento['importe'];
                     $movimientoPoliza->id_tipo_movimiento_poliza = $polizaMovimiento['id_tipo_movimiento_poliza'];
+                    $movimientoPoliza->id_tipo_cuenta_contable = $polizaMovimiento['id_tipo_cuenta_contable'];
                     $movimientoPoliza->save();
                 }
 

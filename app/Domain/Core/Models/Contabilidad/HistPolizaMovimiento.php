@@ -58,5 +58,12 @@ class HistPolizaMovimiento extends Model
             return "No Registrada";
         }
     }
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function tipoCuentaContable() {
+        return $this->belongsTo(TipoCuentaContable::class, 'id_tipo_cuenta_contable');
+    }
+
 
 }
