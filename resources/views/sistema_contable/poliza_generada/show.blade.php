@@ -20,7 +20,8 @@
                             <tr>
                                 <th colspan="5" class="bg-gray-light">Póliza
                                     :<br><label>{{ $poliza->tipoPolizaContpaq}}</label></th>
-                                <th class="bg-gray-light"></th>
+                                <th class="bg-gray-light">Fecha de Solicitud
+                                    :<br><label>{{ $poliza->created_at->format('Y-m-d h:i:s a') }}</label></th>
                             </tr>
                             <tr>
                                 <th colspan="4" class="bg-gray-light">Concepto:
