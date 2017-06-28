@@ -35687,17 +35687,17 @@ require('./vue-components/select2');
 require('./vue-components/tipo_cuenta_contable/tipo-cuenta-contable-create');
 require('./vue-components/cuenta_contable/configuracion-contable');
 require('./vue-components/poliza_generada/poliza-generada-edit');
-require('./vue-components/cuenta_material/cuenta_material_index');
+require('./vue-components/cuenta_material/cuenta-material-index');
 
-},{"./vue-components/cuenta_contable/configuracion-contable":28,"./vue-components/cuenta_material/cuenta_material_index":29,"./vue-components/errors":30,"./vue-components/global-errors":31,"./vue-components/poliza_generada/poliza-generada-edit":32,"./vue-components/poliza_tipo/poliza-tipo-create":33,"./vue-components/select2":34,"./vue-components/tipo_cuenta_contable/tipo-cuenta-contable-create":37}],28:[function(require,module,exports){
+},{"./vue-components/cuenta_contable/configuracion-contable":28,"./vue-components/cuenta_material/cuenta-material-index":29,"./vue-components/errors":30,"./vue-components/global-errors":31,"./vue-components/poliza_generada/poliza-generada-edit":32,"./vue-components/poliza_tipo/poliza-tipo-create":33,"./vue-components/select2":34,"./vue-components/tipo_cuenta_contable/tipo-cuenta-contable-create":37}],28:[function(require,module,exports){
 'use strict';
 
 Vue.component('configuracion-contable', {
-    props: ['obra', 'obra_update_url', 'cuenta_update_url', 'cuenta_store_url', 'tipos_cuentas_contables', 'cuentas_contables'],
+    props: ['datos_contables', 'datos_contables_update_url', 'cuenta_update_url', 'cuenta_store_url', 'tipos_cuentas_contables', 'cuentas_contables'],
     data: function data() {
         return {
             'data': {
-                'obra': this.obra,
+                'datos_contables': this.datos_contables,
                 'tipos_cuentas_contables': this.tipos_cuentas_contables,
                 'tipos_cuentas_contables_update': this.tipos_cuentas_contables_update,
                 'cuentas_contables': this.cuentas_contables
@@ -35764,7 +35764,7 @@ Vue.component('configuracion-contable', {
         confirm_datos_obra: function confirm_datos_obra() {
             var self = this;
             swal({
-                title: "Guardar Datos de Obra",
+                title: "Guardar Datos Contables de la Obra",
                 text: "¿Estás seguro de que la información es correcta?",
                 type: "warning",
                 showCancelButton: true,
@@ -35779,22 +35779,22 @@ Vue.component('configuracion-contable', {
             var self = this;
             $.ajax({
                 type: 'POST',
-                url: self.obra_update_url,
+                url: self.datos_contables_update_url,
                 data: {
-                    BDContPaq: self.data.obra.BDContPaq,
-                    FormatoCuenta: self.data.obra.FormatoCuenta,
-                    NumobraContPaq: self.data.obra.NumobraContPaq,
+                    BDContPaq: self.data.datos_contables.BDContPaq,
+                    FormatoCuenta: self.data.datos_contables.FormatoCuenta,
+                    NumobraContPaq: self.data.datos_contables.NumobraContPaq,
                     _method: 'PATCH'
                 },
                 beforeSend: function beforeSend() {
                     self.guardando = true;
                 },
                 success: function success(data, textStatus, xhr) {
-                    self.data.obra = data.data.obra;
+                    self.data.datos_contables = data.data.datos_contables;
                     swal({
                         type: 'success',
                         title: 'Correcto',
-                        html: 'Datos de la Obra <b>' + self.data.obra.nombre + '</b> actualizados correctamente'
+                        html: 'Datos Contables de la Obra actualizados correctamente'
                     });
                 },
                 complete: function complete() {
@@ -35859,7 +35859,7 @@ Vue.component('configuracion-contable', {
         update_cuenta_contable: function update_cuenta_contable() {
             var self = this;
             var data = self.form.cuenta_contable_update;
-            var url = App.host + '/sistema_contable/cuenta_contable/' + data.id_cuenta_contable;
+            var url = App.host + '/sistema_contable/cuenta_contable/' + data.id_int_cuenta_contable;
             $.ajax({
                 type: 'POST',
                 url: url,
@@ -35929,28 +35929,40 @@ Vue.component('configuracion-contable', {
 },{}],29:[function(require,module,exports){
 'use strict';
 
-Vue.component('cuenta_material_index', {
-    data: {
-        estatus: false,
-        items: {}
+Vue.component('cuenta-material-index', {
+    data: function data() {
+        return {
+            valor: '0',
+            items: '',
+            guardando: false
+        };
     },
     method: {
-        material: function material() {
-            var self = this;
-            var id = self.material.value;
-            var url = App.host + '/sistema_contable/poliza_tipo/findBy';
-            $.ajax({
-                type: 'GET',
-                url: url,
-                data: {
-                    'value': id
-                },
+        material: function material() {}
 
-                success: function success(response) {
-                    if (response.data.material) self.items = response;
-                    self.estatus = true;
-                }
-            });
+    },
+
+    computed: {
+        cambio: function cambio() {
+            var self = this;
+            var id = self.valor;
+            if (id != 0) {
+                var url = App.host + '/sistema_contable/cuenta_material/findBy';
+                $.ajax({
+                    type: 'GET',
+                    url: url,
+                    data: {
+                        'value': id
+                    },
+
+                    success: function success(response) {
+                        if (response.data.cuenta_material != null) {
+                            self.items = response.data.cuenta_material;
+                            self.guardando = true;
+                        }
+                    }
+                });
+            }
         }
     }
 });
@@ -35994,7 +36006,7 @@ Vue.component('global-errors', {
 'use strict';
 
 Vue.component('poliza-generada-edit', {
-    props: ['poliza', 'poliza_edit', 'obra', 'url_cuenta_contable_findby', 'url_poliza_generada_update'],
+    props: ['poliza', 'poliza_edit', 'datos_contables', 'url_cuenta_contable_findby', 'url_poliza_generada_update'],
     data: function data() {
         return {
             'data': {

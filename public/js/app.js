@@ -35687,9 +35687,9 @@ require('./vue-components/select2');
 require('./vue-components/tipo_cuenta_contable/tipo-cuenta-contable-create');
 require('./vue-components/cuenta_contable/configuracion-contable');
 require('./vue-components/poliza_generada/poliza-generada-edit');
-require('./vue-components/cuenta_material/cuenta_material_index');
+require('./vue-components/cuenta_material/cuenta-material-index');
 
-},{"./vue-components/cuenta_contable/configuracion-contable":28,"./vue-components/cuenta_material/cuenta_material_index":29,"./vue-components/errors":30,"./vue-components/global-errors":31,"./vue-components/poliza_generada/poliza-generada-edit":32,"./vue-components/poliza_tipo/poliza-tipo-create":33,"./vue-components/select2":34,"./vue-components/tipo_cuenta_contable/tipo-cuenta-contable-create":37}],28:[function(require,module,exports){
+},{"./vue-components/cuenta_contable/configuracion-contable":28,"./vue-components/cuenta_material/cuenta-material-index":29,"./vue-components/errors":30,"./vue-components/global-errors":31,"./vue-components/poliza_generada/poliza-generada-edit":32,"./vue-components/poliza_tipo/poliza-tipo-create":33,"./vue-components/select2":34,"./vue-components/tipo_cuenta_contable/tipo-cuenta-contable-create":37}],28:[function(require,module,exports){
 'use strict';
 
 Vue.component('configuracion-contable', {
@@ -35929,28 +35929,40 @@ Vue.component('configuracion-contable', {
 },{}],29:[function(require,module,exports){
 'use strict';
 
-Vue.component('cuenta_material_index', {
-    data: {
-        estatus: false,
-        items: {}
+Vue.component('cuenta-material-index', {
+    data: function data() {
+        return {
+            valor: '0',
+            items: '',
+            guardando: false
+        };
     },
     method: {
-        material: function material() {
-            var self = this;
-            var id = self.material.value;
-            var url = App.host + '/sistema_contable/poliza_tipo/findBy';
-            $.ajax({
-                type: 'GET',
-                url: url,
-                data: {
-                    'value': id
-                },
+        material: function material() {}
 
-                success: function success(response) {
-                    if (response.data.material) self.items = response;
-                    self.estatus = true;
-                }
-            });
+    },
+
+    computed: {
+        cambio: function cambio() {
+            var self = this;
+            var id = self.valor;
+            if (id != 0) {
+                var url = App.host + '/sistema_contable/cuenta_material/findBy';
+                $.ajax({
+                    type: 'GET',
+                    url: url,
+                    data: {
+                        'value': id
+                    },
+
+                    success: function success(response) {
+                        if (response.data.cuenta_material != null) {
+                            self.items = response.data.cuenta_material;
+                            self.guardando = true;
+                        }
+                    }
+                });
+            }
         }
     }
 });

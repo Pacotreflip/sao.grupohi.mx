@@ -4,7 +4,7 @@
 
 @section('main-content')
     {!! Breadcrumbs::render('sistema_contable.cuenta_material.index') !!}
-    <hr>
+    <hr xmlns:v-on="http://www.w3.org/1999/xhtml" xmlns:v-on="http://www.w3.org/1999/xhtml">
     <div id="app">
 
 
@@ -17,24 +17,25 @@
                     <div class="col-sm-12">
                         <div class="box box-info">
                             <div class="box-header with-border ">
-                                <h3 class="box-title col-sm-3">Selecciones la Cuenta de Materiales</h3>
-                                <select class="form-control col-sm-6">
-                                    <option value = 0>[-SELECCIONE-]</option>
-                                    <option value = 1>Materiales</option>
-                                    <option value = 2>Mano de Obra y Servicios</option>
-                                    <option value = 4>Herramienta y Equipo</option>
-                                    <option value = 8>Maquinaria</option>
+                                <h3 class="box-title col-sm-3">Seleccione el Tipo de MAterial</h3>
+                                <select class="form-control col-sm-6"  v-model="valor" :change="cambio">
+                                    <option :value = 0>[-SELECCIONE-]</option>
+                                    <option :value = 1>Materiales</option>
+                                    <option :value = 2>Mano de Obra y Servicios</option>
+                                    <option :value = 4>Herramienta y Equipo</option>
+                                    <option :value = 8>Maquinaria</option>
                                 </select>
                             </div>
-{{ estatus }}
                         </div>
+
+                        {{ dd(\Ghi\Domain\Core\Models\Material::find(6)->toArray()) }}
                     </div>
                 </div>
 
 
 
-                @if(false)
-                    <div class="row" v-if="estatus">
+                @if(true)
+                    <div class="row" >
                         <div class="col-md-12">
                             <div class="box box-info">
                                 <div class="box-header with-border">
@@ -43,7 +44,7 @@
                                 <div class="box-body">
                                     <div class="col-sm-12">
                                         <div class="row table-responsive">
-                                            <table  class="table table-bordered table-striped dataTable index_table" role="grid"
+                                            <table  class="table table-bordered table-striped " role="grid"
                                                     aria-describedby="tipo_cuenta_info">
                                                 <thead>
                                                 <tr role="row">
@@ -56,15 +57,15 @@
                                                 </thead>
                                                 <tbody>
                                                 <!-- // Statement de llenado   -->
-                                                @foreach($cuentas_material as $index => $item)
-                                                    <tr>
-                                                        <td>{{ $index + 1 }}</td>
-                                                        <td>{{ $item->nivel  }}</td>
-                                                        <td>{{ $item->descripcion }}</td>
-                                                        <td>{{ $item->unidad }}</td>
+
+                                                    <tr v-for="(item, index) in items" v-if="guardando">
+                                                        <td>@{{ index + 1 }}</td>
+                                                        <td>@{{ item.nivel  }}</td>
+                                                        <td>@{{ item.descripcion }}</td>
+                                                        <td>@{{ item.unidad }}</td>
                                                         <td></td>
                                                     </tr>
-                                                @endforeach
+
 
                                                 <!-- // fin de llenado  -->
                                                 </tbody>

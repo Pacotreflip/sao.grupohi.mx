@@ -11,14 +11,8 @@ namespace Ghi\Domain\Core\Models;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Model;
 
-class CuentaMaterial extends Model
+class CuentaMaterial extends BaseModel
 {
-
-
-    protected $connection = 'cadeco';
-    protected $table = 'dbo.materiales';
-
-
 
 
 }

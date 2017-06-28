@@ -23,7 +23,7 @@ interface CuentaMaterialRepository
      *
      * @return \Illuminate\Database\Eloquent\Collection|CuentaMaterial
      */
-    public function lista($value);
+    public function getBy($attribute, $operador, $value, $tipo);
 
     /**
      *  Obtiene Cuenta de Material por su ID
