@@ -1,8 +1,7 @@
 <?php namespace Ghi\Domain\Core\Repositories;
 
-use Ghi\Domain\Core\Contracts\Concepto;
 use Ghi\Domain\Core\Contracts\ConceptoRepository;
-use Ghi\Domain\Core\Models\Obra;
+use Ghi\Domain\Core\Models\Concepto;
 
 
 class EloquentConceptoRepository implements ConceptoRepository
@@ -16,7 +15,7 @@ class EloquentConceptoRepository implements ConceptoRepository
      * EloquentConceptoRepository constructor.
      * @param \Ghi\Domain\Core\Models\Concepto $model
      */
-    public function __construct(Obra $model)
+    public function __construct(Concepto $model)
     {
         $this->model = $model;
     }
