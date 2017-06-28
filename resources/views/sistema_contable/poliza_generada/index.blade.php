@@ -38,7 +38,10 @@
                                     <td class="numerico">${{number_format($item->total,'2','.',',')}}</td>
                                     <td class="numerico">${{number_format($item->cuadre,'2','.',',')}}</td>
                                     <td class="">
-                                        <span class="label label-warning">Pendiente de Lanzar</span>
+                                           @if($item->estatus==0) <span class="label bg-blue">Registrada</span>@endif
+                                            @if($item->estatus==1) <span class="label bg-green">Lanzada</span>@endif
+                                            @if($item->estatus==-1) <span class="label bg-yellow">No lanzada</span>@endif
+                                            @if($item->estatus==2) <span class="label bg-red">Con errores</span>@endif
                                     </td>
                                     <td>N/A</td>
                                     <td style="min-width: 90px;max-width: 90px">

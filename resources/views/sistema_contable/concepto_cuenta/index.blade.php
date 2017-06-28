@@ -31,7 +31,7 @@
                                         </tr>
                                         </thead>
                                         <tbody>
-                                            <tr  v-for="(concepto,index) in conceptos_ordenados" :class="tr_class(concepto)" :id="tr_id(concepto)">
+                                            <tr  v-for="(concepto,index) in conceptos_ordenados" :class="tr_class(concepto)" :id="tr_id(concepto)" >
                                                 <td v-if="concepto.id_padre == null">
                                                     <img v-if="concepto.tiene_hijos > 0 && ! concepto.cargado" src="{{asset('build/img/expand.png')}}" @click="get_hijos(concepto)">
                                                     @{{ concepto.descripcion }}

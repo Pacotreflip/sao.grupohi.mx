@@ -3,11 +3,12 @@
 namespace Ghi\Domain\Core\Models\Contabilidad;
 
 
+use Ghi\Domain\Core\Models\BaseModel;
 use Ghi\Domain\Core\Models\User;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Poliza extends Model
+class Poliza extends BaseModel
 {
     use SoftDeletes;
 

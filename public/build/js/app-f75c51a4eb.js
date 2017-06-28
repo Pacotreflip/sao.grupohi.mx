@@ -36225,11 +36225,11 @@ Vue.component('concepto-cuenta-edit', {
                 $(el).treegrid({
                     treeColumn: 0
                 });
-            },
-
-            componentUpdated: function componentUpdated(el) {
-                $(el).treegrid();
             }
+            /*,
+              componentUpdated:function (el) {
+                $(el).treegrid();
+              }*/
         }
 
     },
@@ -36269,7 +36269,9 @@ Vue.component('concepto-cuenta-edit', {
                         self.data.conceptos.push(concepto);
                     });
                     concepto.cargado = true;
-                    // $('#concepto_tree').treegrid();
+
+                    $('#concepto_tree').treegrid();
+                    $('#tr_id' + concepto.id).treegrid('expand');
                 }
             });
         }

@@ -18,15 +18,16 @@ Vue.component('concepto-cuenta-edit', {
                     treeColumn: 0
                 });
             }
-            ,
+            /*,
 
             componentUpdated:function (el) {
                 $(el).treegrid();
 
-            }
+            }*/
         }
 
-        ,
+
+
     },
 
     computed: {
@@ -49,7 +50,6 @@ Vue.component('concepto-cuenta-edit', {
 
         get_hijos: function(concepto) {
 
-
             var self=this;
             $.ajax({
                 type:'GET',
@@ -64,6 +64,9 @@ Vue.component('concepto-cuenta-edit', {
                         self.data.conceptos.push(concepto);
                     });
                     concepto.cargado = true;
+
+                    $('#concepto_tree').treegrid();
+                    $('#tr_id'+concepto.id).treegrid('expand');
                 }
             })
         }
