@@ -12,12 +12,18 @@ class TiposCuentasSeeder extends Seeder
     public function run()
     {
         DB::connection("cadeco")->table('Contabilidad.tipos_cuentas_empresas')->insert(
-            ['descripcion' => 'Cuenta de Proveedor',],
-            ['descripcion' => 'Cuenta de Proveedor USD',],
+            ['descripcion' => 'Cuenta de Proveedor',]
+        );
+        DB::connection("cadeco")->table('Contabilidad.tipos_cuentas_empresas')->insert(
+            ['descripcion' => 'Cuenta de Proveedor USD',]
+        );
+        DB::connection("cadeco")->table('Contabilidad.tipos_cuentas_empresas')->insert(
             ['descripcion' => 'Cuenta de Proveedor Complementaria',]
         );
         DB::connection("cadeco")->table('Contabilidad.tipos_cuentas_materiales')->insert(
-            ['descripcion' => 'Cuenta de Inventario',],
+            ['descripcion' => 'Cuenta de Inventario',]
+        );
+        DB::connection("cadeco")->table('Contabilidad.tipos_cuentas_materiales')->insert(
             ['descripcion' => 'Cuenta de Costo',]
         );
     }
