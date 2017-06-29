@@ -8,6 +8,7 @@
 
 namespace Ghi\Domain\Core\Repositories;
 use Ghi\Domain\Core\Contracts\AlmacenRepository;
+use Ghi\Domain\Core\Contracts\Identificador;
 use \Ghi\Domain\Core\Models\Almacen;
 
 class EloquentAlmacenRepository implements AlmacenRepository
@@ -36,5 +37,14 @@ class EloquentAlmacenRepository implements AlmacenRepository
         if ($with != null)
             return $this->model->with($with)->get();
         return $this->model->all();
+    }
+
+    /**
+     * @param $id Identificador de la Cuenta de Almacen que se va a mostrar
+     * @return \Illuminate\Database\Eloquent\Collection|\Ghi\Domain\Core\Contracts\AlmacenRepository
+     */
+    public function find($id)
+    {
+        return $this->model->find($id);
     }
 }

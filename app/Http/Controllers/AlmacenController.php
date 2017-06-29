@@ -37,4 +37,14 @@ class AlmacenController extends Controller
                 ->with('almacenes', $almacenes);
         //
     }
+
+    /**
+     * Devuelve la vista del detalle de una Cuenta de Almacen
+     */
+    public function show($id)
+    {
+        $almacen = $this->almacen->find($id);
+        return view('sistema_contable.cuenta_almacen.show')
+            ->with('almacen', $almacen);
+    }
 }
