@@ -16,7 +16,8 @@ class CuentaConcepto extends BaseModel
     protected $fillable = [
         'id_concepto',
         'cuenta',
-        'registro'
+        'registro',
+        'estatus'
     ];
 
     public function __construct(array $attributes = [])

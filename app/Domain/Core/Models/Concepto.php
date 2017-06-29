@@ -21,7 +21,7 @@ class Concepto extends BaseModel
 
     public function cuentaConcepto()
     {
-        return $this->hasOne(CuentaConcepto::class, 'id_concepto');
+        return $this->hasOne(CuentaConcepto::class, 'id_concepto')->where('Contabilidad.cuentas_conceptos.estatus', '=', 1);
     }
 
     public function getNivelHijosAttribute() {

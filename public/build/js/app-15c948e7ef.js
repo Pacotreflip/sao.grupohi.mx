@@ -36411,6 +36411,7 @@ Vue.component('cuenta-concepto-edit', {
             }
             this.validation_errors.clear('form_edit_cuenta');
             $('#edit_cuenta_modal').modal('show');
+            $('#cuenta_contable').focus();
             this.validation_errors.clear('form_edit_cuenta');
         },
 
