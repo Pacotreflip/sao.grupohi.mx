@@ -3,6 +3,7 @@
 namespace Ghi\Http\Controllers;
 
 use Ghi\Domain\Core\Contracts\Contabilidad\CuentaEmpresaRepository;
+use Ghi\Domain\Core\Contracts\EmpresaRepository;
 use Illuminate\Http\Request;
 
 use Ghi\Http\Requests;
@@ -14,9 +15,12 @@ class CuentaEmpresaController extends Controller
      * @var Cuenta
      */
     private $cuenta_empresa;
+    /**
+     * @var Empresa
+     */
+    private $empresa;
 
-
-    public function __construct(CuentaEmpresaRepository $cuenta_empresa)
+    public function __construct(CuentaEmpresaRepository $cuenta_empresa,EmpresaRepository $empresa)
     {
         parent::__construct();
 
@@ -24,6 +28,7 @@ class CuentaEmpresaController extends Controller
         $this->middleware('context');
 
         $this->cuenta_empresa = $cuenta_empresa;
+        $this->empresa=$empresa;
 
     }
 
@@ -33,9 +38,15 @@ class CuentaEmpresaController extends Controller
      */
     public function index()
     {
-        $cuenta_empresa = $this->cuenta_empresa->all();
-         dd($cuenta_empresa);
+        $empresas = $this->empresa->all('cuentasEmpresa');
+
         return view('sistema_contable.cuenta_empresa.index')
-            ->with('cuenta_empresa', $cuenta_empresa);
+            ->with('empresas', $empresas);
+    }
+
+    public function show($id){
+
+        $empresa = $this->empresa->find($id,'cuentasEmpresa');
+        return view('sistema_contable.cuenta_empresa.show')->with('empresa', $empresa);
     }
 }

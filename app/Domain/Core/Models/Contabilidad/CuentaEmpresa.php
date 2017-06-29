@@ -9,8 +9,11 @@
 namespace Ghi\Domain\Core\Models\Contabilidad;
 
 
+
 use Ghi\Domain\Core\Models\BaseModel;
+use Ghi\Domain\Core\Models\Empresa;
 use Illuminate\Database\Eloquent\SoftDeletes;
+
 
 class CuentaEmpresa extends BaseModel
 {
@@ -26,11 +29,16 @@ class CuentaEmpresa extends BaseModel
       ,'registro'
     ];
 
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo|TipoCuentaContable
-     */
-    public function tipoCuentaContable() {
-        return $this->belongsTo(TipoCuentaContable::class, 'id_int_tipo_cuenta_contable');
+
+    public function getTotalCuentasAttribute(){
+        return  CuentaEmpresa::where('id_empresa', '=', $this->id_empresa)->count();
+    }
+
+    public function empresa() {
+        return $this->belongsTo(Empresa::class, 'id_empresa');
+    }
+    public function tiposCuentasEmpresa() {
+        return $this->belongsTo(TipoCuentaEmpresa::class, 'id_tipo_cuenta_empresa');
     }
 
 }
