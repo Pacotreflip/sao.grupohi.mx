@@ -36385,13 +36385,22 @@ var comp = Vue.component('concepto-cuenta-edit', {
                     data.data.conceptos.forEach(function (concepto) {
                         self.data.conceptos.push(concepto);
                     });
+                    if ($('#tnode-' + concepto.id_concepto).treegrid('isCollapsed')) {
+                        console.log('cerrado');
+                    } else {
+                        console.log('abierto');
+                    };
                     $('#tnode-' + concepto.id_concepto).treegrid('expand');
                 },
                 complete: function complete() {
                     self.cargando = false;
                     concepto.cargado = true;
                     if ($('#tnode-' + concepto.id_concepto).treegrid('isCollapsed')) {
-                        $('#tnode-' + concepto.id_concepto + ' .treegrid-expander').click();
+                        console.log('cerrado');
+                        //$('#tnode-' + concepto.id_concepto + ' .treegrid-expander').click();
+                        $('#tnode-' + concepto.id_concepto).treegrid('expand');
+                    } else {
+                        console.log('abierto');
                     };
                 }
             });

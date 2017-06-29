@@ -22,10 +22,12 @@ var comp = Vue.component('concepto-cuenta-edit', {
                 });
             },
             componentUpdated:function (el) {
+                console.log('cambio');
                 $(el).treegrid({
                     saveState: true,
                     initialState: 'collapsed'
                 });
+                console.log('fin cambio')
             }
         }
     },
@@ -65,16 +67,30 @@ var comp = Vue.component('concepto-cuenta-edit', {
                     self.cargando = true;
                 },
                 success: function (data, textStatus, xhr) {
+                    console.log('inicio de push');
+                    var i = 0;
                     data.data.conceptos.forEach(function (concepto) {
                         self.data.conceptos.push(concepto);
+                        console.log('push ' + i);
                     });
+                    console.log('fin de push');
+
                     $('#tnode-' + concepto.id_concepto).treegrid('expand');
+                    console.log('expandir arbol en success');
                 },
                 complete: function() {
                     self.cargando = false;
                     concepto.cargado = true;
+                    console.log('condicion');
+                    console.log($('#tnode-' + concepto.id_concepto).treegrid('isCollapsed'));
+
                     if ($('#tnode-' + concepto.id_concepto).treegrid('isCollapsed')){
-                        $('#tnode-' + concepto.id_concepto + ' .treegrid-expander').click();
+                        console.log('cerrado');
+                        //$('#tnode-' + concepto.id_concepto + ' .treegrid-expander').click();
+                        $('#tnode-' + concepto.id_concepto).treegrid('expand');
+                        console.log('expandir arbol en complete');
+                    } else {
+                        console.log('abierto');
                     };
                 }
             });

@@ -38,11 +38,25 @@
                                             <tr  v-for="(concepto,index) in conceptos_ordenados" :class="tr_class(concepto)" :id="tr_id(concepto)" >
                                                 <td v-if="concepto.id_padre == null">
                                                     @{{ concepto.descripcion }}
-                                                    <a class="disabled" v-if="concepto.tiene_hijos > 0 && ! concepto.cargado" @click="get_hijos(concepto)">[+]</a>
+                                                    <button :disabled="cargando" class="btn-xs btn-mini" v-if="concepto.tiene_hijos > 0 && ! concepto.cargado" @click="get_hijos(concepto)">
+                                                        <span v-if="cargando">
+                                                            <i class="fa fa-spin fa-spinner"></i>
+                                                        </span>
+                                                        <span v-else>
+                                                            <i class="fa fa-plus"></i>
+                                                        </span>
+                                                    </button>
                                                 </td>
                                                 <td  v-else>
                                                     @{{ concepto.descripcion}}
-                                                    <a class="disabled" v-if="concepto.tiene_hijos > 0 && ! concepto.cargado" @click="get_hijos(concepto)">[+]</a>
+                                                    <button :disabled="cargando" class="btn-xs" v-if="concepto.tiene_hijos > 0 && ! concepto.cargado" @click="get_hijos(concepto)">
+                                                        <span v-if="cargando">
+                                                            <i class="fa fa-spin fa-spinner"></i>
+                                                        </span>
+                                                        <span v-else>
+                                                            <i class="fa fa-plus"></i>
+                                                        </span>
+                                                    </button>
                                                 </td>
                                                 <td >
                                                     @{{ concepto.cuenta_concepto != null ? concepto.cuenta_concepto.cuenta : '---' }}
@@ -80,8 +94,7 @@
                                     </span>
                                 </h4>
                             </div>
-                            <form v-if="form.cuenta != ''" id="form_edit_cuenta" @submit.prevent="validateForm('form_edit_cuenta','confirm_update_cuenta')"  data-vv-scope="form_edit_cuenta">
-                            <form v-else id="form_edit_cuenta" @submit.prevent="validateForm('form_edit_cuenta','confirm_save_cuenta')"  data-vv-scope="form_edit_cuenta">
+                            <form id="form_edit_cuenta" @submit.prevent="validateForm('form_edit_cuenta', form.cuenta != '' ? 'confirm_update_cuenta' : 'confirm_save_cuenta')"  data-vv-scope="form_edit_cuenta">
                                 <div class="modal-body">
                                     <div class="row">
                                         <div class="col-md-6">
