@@ -36308,13 +36308,14 @@ require('./vue-components/select2');
 require('./vue-components/tipo_cuenta_contable/tipo-cuenta-contable-create');
 require('./vue-components/cuenta_contable/configuracion-contable');
 require('./vue-components/poliza_generada/poliza-generada-edit');
-require('./vue-components/cuenta_concepto/cuenta-concepto-edit');
+require('./vue-components/concepto-cuenta/concepto-cuenta-edit');
 require('./vue-components/cuenta_material/cuenta-material-index');
+require('./vue-components/cuenta_empresa/cuenta-empresa-edit');
 
-},{"./vue-components/cuenta_concepto/cuenta-concepto-edit":31,"./vue-components/cuenta_contable/configuracion-contable":32,"./vue-components/cuenta_material/cuenta-material-index":33,"./vue-components/errors":34,"./vue-components/global-errors":35,"./vue-components/poliza_generada/poliza-generada-edit":36,"./vue-components/poliza_tipo/poliza-tipo-create":37,"./vue-components/select2":38,"./vue-components/tipo_cuenta_contable/tipo-cuenta-contable-create":41}],31:[function(require,module,exports){
+},{"./vue-components/concepto-cuenta/concepto-cuenta-edit":31,"./vue-components/cuenta_contable/configuracion-contable":32,"./vue-components/cuenta_empresa/cuenta-empresa-edit":33,"./vue-components/cuenta_material/cuenta-material-index":34,"./vue-components/errors":35,"./vue-components/global-errors":36,"./vue-components/poliza_generada/poliza-generada-edit":37,"./vue-components/poliza_tipo/poliza-tipo-create":38,"./vue-components/select2":39,"./vue-components/tipo_cuenta_contable/tipo-cuenta-contable-create":42}],31:[function(require,module,exports){
 'use strict';
 
-Vue.component('cuenta-concepto-edit', {
+var comp = Vue.component('concepto-cuenta-edit', {
     props: ['conceptos', 'url_concepto_get_by', 'datos_contables', 'url_store_cuenta'],
     data: function data() {
         return {
@@ -36322,16 +36323,13 @@ Vue.component('cuenta-concepto-edit', {
                 'conceptos': this.conceptos
             },
             'form': {
-                'concepto_edit': {},
                 'cuenta': '',
                 'concepto': '',
-                'id': '',
-                'id_concepto': ''
+                'id': ''
             },
             'cargando': false
         };
     },
-
     directives: {
         treegrid: {
             inserted: function inserted(el) {
@@ -36342,7 +36340,8 @@ Vue.component('cuenta-concepto-edit', {
             },
             componentUpdated: function componentUpdated(el) {
                 $(el).treegrid({
-                    saveState: true
+                    saveState: true,
+                    initialState: 'collapsed'
                 });
             }
         }
@@ -36369,8 +36368,8 @@ Vue.component('cuenta-concepto-edit', {
         },
 
         get_hijos: function get_hijos(concepto) {
-            var self = this;
 
+            var self = this;
             $.ajax({
                 type: 'GET',
                 url: self.url_concepto_get_by,
@@ -36387,21 +36386,20 @@ Vue.component('cuenta-concepto-edit', {
                     data.data.conceptos.forEach(function (concepto) {
                         self.data.conceptos.push(concepto);
                     });
-                    concepto.cargado = true;
+                    $('#tnode-' + concepto.id_concepto).treegrid('expand');
                 },
                 complete: function complete() {
                     self.cargando = false;
-                    setTimeout(function () {
-                        $('#tnode-' + concepto.id_concepto).treegrid('expand');
-                    }, 500);
+                    concepto.cargado = true;
+                    if ($('#tnode-' + concepto.id_concepto).treegrid('isCollapsed')) {
+                        $('#tnode-' + concepto.id_concepto + ' .treegrid-expander').click();
+                    };
                 }
             });
         },
 
         edit_cuenta: function edit_cuenta(concepto) {
-            this.form.concepto_edit = concepto;
             Vue.set(this.form, 'concepto', concepto.descripcion);
-            Vue.set(this.form, 'id_concepto', concepto.id_concepto);
             if (concepto.cuenta_concepto != null) {
                 Vue.set(this.form, 'cuenta', concepto.cuenta_concepto.cuenta);
                 Vue.set(this.form, 'id', concepto.cuenta_concepto.id);
@@ -36411,8 +36409,6 @@ Vue.component('cuenta-concepto-edit', {
             }
             this.validation_errors.clear('form_edit_cuenta');
             $('#edit_cuenta_modal').modal('show');
-            $('#cuenta_contable').focus();
-            this.validation_errors.clear('form_edit_cuenta');
         },
 
         validateForm: function validateForm(scope, funcion) {
@@ -36449,7 +36445,7 @@ Vue.component('cuenta-concepto-edit', {
 
         update_cuenta: function update_cuenta() {
             var self = this;
-            var url = this.url_store_cuenta + '/' + this.form.id;
+            var url = this.url_store_cuenta + this.form.id;
 
             $.ajax({
                 type: 'POST',
@@ -36461,18 +36457,7 @@ Vue.component('cuenta-concepto-edit', {
                 beforeSend: function beforeSend() {
                     self.guardando = true;
                 },
-                success: function success(data, textStatus, xhr) {
-                    self.form.concepto_edit.cuenta_concepto = data.data.cuenta_concepto;
-                    self.close_edit_cuenta();
-                    swal({
-                        type: 'success',
-                        title: 'Correcto',
-                        html: 'Cuenta Contable registrada correctamente'
-                    });
-                },
-                complete: function complete() {
-                    self.guardando = false;
-                }
+                success: function success() {}
             });
         },
 
@@ -36491,32 +36476,7 @@ Vue.component('cuenta-concepto-edit', {
         },
 
         save_cuenta: function save_cuenta() {
-            var self = this;
             var url = this.url_store_cuenta;
-
-            $.ajax({
-                type: 'POST',
-                url: url,
-                data: {
-                    cuenta: self.form.cuenta,
-                    id_concepto: self.form.id_concepto
-                },
-                beforeSend: function beforeSend() {
-                    self.guardando = true;
-                },
-                success: function success(data, textStatus, xhr) {
-                    self.form.concepto_edit.cuenta_concepto = data.data.cuenta_concepto;
-                    self.close_edit_cuenta();
-                    swal({
-                        type: 'success',
-                        title: 'Correcto',
-                        html: 'Cuenta Contable registrada correctamente'
-                    });
-                },
-                complete: function complete() {
-                    self.guardando = false;
-                }
-            });
         },
 
         close_edit_cuenta: function close_edit_cuenta() {
@@ -36524,7 +36484,6 @@ Vue.component('cuenta-concepto-edit', {
             Vue.set(this.form, 'cuenta', '');
             Vue.set(this.form, 'concepto', '');
             Vue.set(this.form, 'id', '');
-            Vue.set(this.form, 'id_concepto', '');
         }
     }
 });
@@ -36769,6 +36728,170 @@ Vue.component('configuracion-contable', {
 },{}],33:[function(require,module,exports){
 'use strict';
 
+Vue.component('cuenta-empresa-edit', {
+    props: ['empresa', 'tipo_cuenta_empresa'],
+
+    data: function data() {
+        return {
+            'data': {
+                'empresa': this.empresa
+            },
+            'form': {
+                'cuenta_empresa': '',
+                'cuenta_empresa_create': {
+                    'cuenta': '',
+                    'id_tipo_cuenta_empresa': '',
+                    'tipo_cuenta_empresa': {
+                        'descripcion': ''
+                    }
+
+                }
+            },
+            'guardando': false,
+            'nuevo_registro': false
+        };
+    },
+    methods: {
+        cerrar_dialog: function cerrar_dialog() {
+            $('#add_movimiento_modal').modal('hide');
+        },
+        confirm_elimina_cuenta: function confirm_elimina_cuenta(cuenta) {
+            var self = this;
+            self.form.cuenta_empresa = cuenta;
+            self.form.cuenta_empresa.id_empresa = cuenta.id_empresa;
+            swal({
+                title: "Eliminar Cuenta de Empresa",
+                text: "¿Estás seguro que desea eliminar la cuenta: " + cuenta.tipo_cuenta_empresa.descripcion + "?",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonText: "Si, Eliminar",
+                cancelButtonText: "No, Cancelar"
+            }).then(function () {
+
+                self.elimina_cuenta();
+            }).catch(swal.noop);
+        },
+        confirm_cuenta_update: function confirm_cuenta_update() {
+            var self = this;
+            swal({
+                title: "Actualizar Cuenta de Empresa",
+                text: "¿Estás seguro que desea actualizar la cuenta?",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonText: "Si, Actualizar",
+                cancelButtonText: "No, Cancelar"
+            }).then(function () {
+
+                self.update_cuenta_empresa();
+            }).catch(swal.noop);
+        },
+        elimina_cuenta: function elimina_cuenta() {
+            var self = this;
+            var data = self.form.cuenta_empresa;
+            var url = App.host + '/sistema_contable/cuenta_empresa/' + self.form.cuenta_empresa.id;
+            $.ajax({
+                type: 'POST',
+                url: url,
+                data: {
+                    data: data,
+                    _method: 'DELETE'
+                },
+                beforeSend: function beforeSend() {
+                    self.guardando = true;
+                },
+                success: function success(data, textStatus, xhr) {
+                    Vue.set(self.data, 'empresa', data.data.empresa);
+                    $('#add_movimiento_modal').modal('hide');
+                    swal({
+                        type: 'success',
+                        title: 'Correcto',
+                        html: 'La cuenta:' + self.form.cuenta_empresa.tipo_cuenta_empresa.descripcion + '</b> fue eliminada correctamente'
+                    });
+                    self.form.cuenta_empresa_create.cuenta = '';
+                    self.form.cuenta_empresa_create.id_tipo_cuenta_empresa = '';
+                    self.form.cuenta_empresa_create.tipo_cuenta_empresa.descripcion = '';
+                },
+                complete: function complete() {
+                    self.guardando = false;
+                }
+            });
+        },
+        create_cuenta_empresa: function create_cuenta_empresa() {
+            var self = this;
+            self.form.cuenta_empresa_create.cuenta = '';
+            self.form.cuenta_empresa_create.id_tipo_cuenta_empresa = '';
+            self.form.cuenta_empresa_create.tipo_cuenta_empresa.descripcion = '';
+            self.nuevo_registro = true;
+            $('#add_movimiento_modal').modal('show');
+        },
+        edit_cuenta_empresa: function edit_cuenta_empresa(cuenta) {
+            var self = this;
+            self.form.cuenta_empresa_create.cuenta = '';
+            self.form.cuenta_empresa_create.id_tipo_cuenta_empresa = '';
+            self.form.cuenta_empresa_create.tipo_cuenta_empresa.descripcion = '';
+            var self = this;
+            self.nuevo_registro = false;
+            self.form.cuenta_empresa_create = cuenta;
+            $('#add_movimiento_modal').modal('show');
+        },
+        update_cuenta_empresa: function update_cuenta_empresa(cuenta) {
+            var self = this;
+            var data = self.form.cuenta_empresa_create;
+            var url = App.host + '/sistema_contable/cuenta_empresa/' + self.form.cuenta_empresa_create.id;
+            $.ajax({
+                type: 'POST',
+                url: url,
+                data: {
+                    data: data,
+                    _method: 'PATCH'
+                },
+                beforeSend: function beforeSend() {
+                    self.guardando = true;
+                },
+                success: function success(data, textStatus, xhr) {
+                    Vue.set(self.data, 'empresa', data.data.empresa);
+                    $('#add_movimiento_modal').modal('hide');
+                    swal({
+                        type: 'success',
+                        title: 'Correcto',
+                        html: 'La cuenta:' + self.form.cuenta_empresa_create.tipo_cuenta_empresa.descripcion + '</b> fue actulizada correctamente'
+                    });
+
+                    self.form.cuenta_empresa_create.cuenta = '';
+                    self.form.cuenta_empresa_create.id_tipo_cuenta_empresa = '';
+                    self.form.cuenta_empresa_create.tipo_cuenta_empresa.descripcion = '';
+                },
+                complete: function complete() {
+                    self.guardando = false;
+                }
+            });
+        },
+
+        validateForm: function validateForm(scope, funcion) {
+            var _this = this;
+
+            this.$validator.validateAll(scope).then(function () {
+                if (funcion == 'confirm_edit_cuenta') {
+                    _this.confirm_cuenta_update();
+                } else if (funcion == 'confirm_create_cuenta') {
+                    _this.confirm_create_cuenta();
+                }
+            }).catch(function () {
+                swal({
+                    type: 'warning',
+                    title: 'Advertencia',
+                    text: 'Por favor corrija los errores del formulario'
+                });
+            });
+        }
+    },
+
+    computed: {}
+});
+
+},{}],34:[function(require,module,exports){
+'use strict';
+
 Vue.component('cuenta-material-index', {
     data: function data() {
         return {
@@ -36807,7 +36930,7 @@ Vue.component('cuenta-material-index', {
     }
 });
 
-},{}],34:[function(require,module,exports){
+},{}],35:[function(require,module,exports){
 'use strict';
 
 Vue.component('app-errors', {
@@ -36816,7 +36939,7 @@ Vue.component('app-errors', {
     template: require('./templates/errors.html')
 });
 
-},{"./templates/errors.html":39}],35:[function(require,module,exports){
+},{"./templates/errors.html":40}],36:[function(require,module,exports){
 'use strict';
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
@@ -36842,7 +36965,7 @@ Vue.component('global-errors', {
   }
 });
 
-},{"./templates/global-errors.html":40}],36:[function(require,module,exports){
+},{"./templates/global-errors.html":41}],37:[function(require,module,exports){
 'use strict';
 
 Vue.component('poliza-generada-edit', {
@@ -37035,7 +37158,7 @@ Vue.component('poliza-generada-edit', {
     }
 });
 
-},{}],37:[function(require,module,exports){
+},{}],38:[function(require,module,exports){
 'use strict';
 
 Vue.component('poliza-tipo-create', {
@@ -37226,7 +37349,7 @@ Vue.component('poliza-tipo-create', {
     }
 });
 
-},{}],38:[function(require,module,exports){
+},{}],39:[function(require,module,exports){
 'use strict';
 
 Vue.component('select2', {
@@ -37272,11 +37395,11 @@ Vue.component('select2', {
     }
 });
 
-},{}],39:[function(require,module,exports){
-module.exports = '<div id="form-errors" v-cloak>\n  <div class="alert alert-danger" v-if="form.errors.length">\n    <ul>\n      <li v-for="error in form.errors">{{ error }}</li>\n    </ul>\n  </div>\n</div>';
 },{}],40:[function(require,module,exports){
-module.exports = '<div class="alert alert-danger" v-show="errors.length">\n  <ul>\n    <li v-for="error in errors">{{ error }}</li>\n  </ul>\n</div>';
+module.exports = '<div id="form-errors" v-cloak>\n  <div class="alert alert-danger" v-if="form.errors.length">\n    <ul>\n      <li v-for="error in form.errors">{{ error }}</li>\n    </ul>\n  </div>\n</div>';
 },{}],41:[function(require,module,exports){
+module.exports = '<div class="alert alert-danger" v-show="errors.length">\n  <ul>\n    <li v-for="error in errors">{{ error }}</li>\n  </ul>\n</div>';
+},{}],42:[function(require,module,exports){
 'use strict';
 
 /**

@@ -36,6 +36,7 @@
                                             <td>{{$empresa->total_cuentas}}</td>
                                             <td>
                                                 <a href="{{route('sistema_contable.cuenta_empresa.show',$empresa)}}" title="Ver" class="btn btn-xs btn-default"><i class="fa fa-eye"></i></a>
+                                                <a href="{{route('sistema_contable.cuenta_empresa.edit',$empresa)}}" title="Ver" class="btn btn-xs btn-info"><i class="fa fa-edit"></i></a>
 
                                             </td>
                                         </tr>

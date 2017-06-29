@@ -56,7 +56,7 @@
                                             <tr>
                                                 <td>{{$index+1}}</td>
                                                 <td>{{$cuenta->cuenta}}</td>
-                                                <td>{{$cuenta->tiposCuentasEmpresa}}</td>
+                                                <td>{{$cuenta->tipoCuentaEmpresa}}</td>
 
                                             </tr>
                                         @endforeach
@@ -70,5 +70,4 @@
             </div>
         </div>
     @endif
-
 @endsection

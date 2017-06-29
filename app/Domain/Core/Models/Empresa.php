@@ -17,14 +17,10 @@ class Empresa extends BaseModel
     protected $table = 'dbo.empresas';
     protected $primaryKey = 'id_empresa';
     protected $appends = ['total_cuentas'];
-    public function __toString()
-    {
-        return $this->razon_social;
-    }
 
     public function cuentasEmpresa()
     {
-        return $this->hasMany(CuentaEmpresa::class, 'id_empresa');
+        return $this->hasMany(CuentaEmpresa::class, 'id_empresa')->where('Contabilidad.cuentas_empresas.estatus','=',1);
     }
 
     public function getTotalCuentasAttribute()

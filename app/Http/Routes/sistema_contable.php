@@ -79,6 +79,10 @@ Route::group(['prefix' => 'sistema_contable'], function () {
 
     Route::get('cuenta_empresa', 'CuentaEmpresaController@index')->name('sistema_contable.cuenta_empresa.index');
     Route::get('cuenta_empresa/create', 'CuentaEmpresaController@create')->name('sistema_contable.cuenta_empresa.create');
-    Route::get('cuenta_empresa/{id}', 'CuentaEmpresaController@show')->name('sistema_contable.cuenta_empresa.show')->where(['id' => '[0-9]+']);  // modificar, solo es de muestra
-    Route::patch('cuenta_empresa/{id}', 'PolizaController@update')->name('sistema_contable.cuenta_empresa.update')->where(['id' => '[0-9]+']);
+    Route::get('cuenta_empresa/{id}/edit', 'CuentaEmpresaController@edit')->name('sistema_contable.cuenta_empresa.edit')->where(['id' => '[0-9]+']);
+    Route::get('cuenta_empresa/{id}', 'CuentaEmpresaController@show')->name('sistema_contable.cuenta_empresa.show')->where(['id' => '[0-9]+']);
+    Route::delete('cuenta_empresa/{id}', 'CuentaEmpresaController@delete')->name('sistema_contable.cuenta_empresa.delete')->where(['id' => '[0-9]+']);
+    Route::patch('cuenta_empresa/{id}', 'CuentaEmpresaController@update')->name('sistema_contable.cuenta_empresa.update')->where(['id' => '[0-9]+']);
+
+
 });

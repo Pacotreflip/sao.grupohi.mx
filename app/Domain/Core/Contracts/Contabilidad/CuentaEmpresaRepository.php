@@ -34,4 +34,20 @@ interface CuentaEmpresaRepository
      */
     public function create($data);
 
+    /**
+     * @param array $data
+     * @param $id
+     * @return mixed \Illuminate\Database\Eloquent\Collection|CuentaEmpresa
+     * @throws \Exception
+     */
+    public function delete(array $data, $id);
+
+    /**
+     * @param array $data
+     * @param $id
+     * @return mixed \Illuminate\Database\Eloquent\Collection|CuentaEmpresa
+     * @throws \Exception
+     */
+    public function update(array $data, $id);
+
 }

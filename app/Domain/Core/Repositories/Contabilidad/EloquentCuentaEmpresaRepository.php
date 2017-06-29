@@ -39,9 +39,9 @@ class EloquentCuentaEmpresaRepository implements CuentaEmpresaRepository
     public function all($with = null)
     {
         if ($with != null) {
-            return  $this->model->all()->with($with);
+            return $this->model->all()->with($with);
         }
-       return $this->model->all();
+        return $this->model->all();
 
     }
 
@@ -65,5 +65,43 @@ class EloquentCuentaEmpresaRepository implements CuentaEmpresaRepository
     public function create($data)
     {
         // TODO: Implement create() method.
+    }
+
+    /**
+     * @param array $data
+     * @param $id
+     * @return mixed \Illuminate\Database\Eloquent\Collection|CuentaEmpresa
+     * @throws \Exception
+     */
+    public function delete(array $data, $id)
+    {
+
+        try {
+            $cuenta = $this->model->find($id);
+            $cuenta->estatus = 0;
+            $cuenta->save();
+        } catch (\Exception $e) {
+            throw $e;
+        }
+
+
+    }
+
+    /**
+     * @param array $data
+     * @param $id
+     * @throws \Exception
+     */
+    public function update(array $data, $id)
+    {
+        try {
+            $cuenta = $this->model->find($id);
+            $cuenta->cuenta=$data['data']['cuenta'];
+            $cuenta->save();
+        } catch (\Exception $e) {
+            throw $e;
+        }
+
+
     }
 }

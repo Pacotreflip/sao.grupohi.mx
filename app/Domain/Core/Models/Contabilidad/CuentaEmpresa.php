@@ -42,7 +42,7 @@ class CuentaEmpresa extends BaseModel
     public function empresa() {
         return $this->belongsTo(Empresa::class, 'id_empresa');
     }
-    public function tiposCuentasEmpresa() {
+    public function tipoCuentaEmpresa() {
         return $this->belongsTo(TipoCuentaEmpresa::class, 'id_tipo_cuenta_empresa');
     }
 
