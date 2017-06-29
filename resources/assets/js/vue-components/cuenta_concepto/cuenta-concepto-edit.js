@@ -91,7 +91,7 @@ Vue.component('cuenta-concepto-edit', {
                 Vue.set(this.form, 'cuenta', concepto.cuenta_concepto.cuenta);
                 Vue.set(this.form, 'id', concepto.cuenta_concepto.id);
             } else {
-                Vue.set(this.form, 'cuenta', null);
+                Vue.set(this.form, 'cuenta', '');
                 Vue.set(this.form, 'id', '');
             }
             this.validation_errors.clear('form_edit_cuenta');
@@ -203,6 +203,10 @@ Vue.component('cuenta-concepto-edit', {
 
         close_edit_cuenta: function () {
             $('#edit_cuenta_modal').modal('hide');
+            Vue.set(this.form, 'cuenta', '');
+            Vue.set(this.form, 'concepto', '');
+            Vue.set(this.form, 'id', '');
+            Vue.set(this.form, 'id_concepto', '');
         },
     }
 });
