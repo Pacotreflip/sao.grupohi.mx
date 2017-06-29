@@ -1,5 +1,5 @@
 Vue.component('poliza-generada-edit', {
-    props: ['poliza', 'poliza_edit', 'datos_contables', 'url_cuenta_contable_findby', 'url_poliza_generada_update'],
+    props: ['poliza', 'poliza_edit', 'datos_contables', 'url_cuenta_contable_findby', 'url_poliza_generada_update','tipo_cuenta_contable'],
     data: function () {
         return {
             'data': {
@@ -13,7 +13,8 @@ Vue.component('poliza-generada-edit', {
                     'id_tipo_movimiento_poliza' : '',
                     'importe' : '',
                     'referencia':'',
-                    'concepto':''
+                    'concepto':'',
+                    'id_tipo_cuenta_contable':''
                 },
             },
             'guardando': false
@@ -109,6 +110,7 @@ Vue.component('poliza-generada-edit', {
                         self.form.movimiento.id_tipo_cuenta_contable = data.data.cuenta_contable.id_int_tipo_cuenta_contable;
                         self.form.movimiento.id_cuenta_contable = data.data.cuenta_contable.id_int_cuenta_contable;
                         self.form.movimiento.descripcion_cuenta_contable = data.data.cuenta_contable.tipo_cuenta_contable.descripcion;
+
                     }
                 },
                 complete: function () {

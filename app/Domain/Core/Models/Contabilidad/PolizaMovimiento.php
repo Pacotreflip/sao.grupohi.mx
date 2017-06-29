@@ -60,4 +60,11 @@ class PolizaMovimiento extends Model
         }
     }
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function tipoCuentaContable() {
+        return $this->belongsTo(TipoCuentaContable::class, 'id_tipo_cuenta_contable');
+    }
+
 }

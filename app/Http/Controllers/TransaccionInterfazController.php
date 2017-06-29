@@ -2,7 +2,7 @@
 
 namespace Ghi\Http\Controllers;
 
-use Ghi\Domain\Core\Contracts\TransaccionInterfazRepository;
+use Ghi\Domain\Core\Contracts\Contabilidad\TransaccionInterfazRepository;
 use Illuminate\Http\Request;
 
 class TransaccionInterfazController extends Controller

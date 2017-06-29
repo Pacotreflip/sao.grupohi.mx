@@ -27,7 +27,7 @@
                                 <th colspan="4" class="bg-gray-light">Concepto:
                                     <br><label> {{$poliza->concepto }}</label></th>
                                 <th colspan="2" class="bg-gray-light">Usuario
-                                    Solicita:<br><label> {{$poliza->user_registro }}</label></th>
+                                    Solicita:<br><label> {{$poliza->usuario_solicita }}</label></th>
 
                             </tr>
                         </table>
@@ -54,9 +54,17 @@
 
                                 </tr>
                                 @foreach($poliza->polizaMovimientos as $movimiento)
+
+
                                     <tr>
                                         <td>{{$movimiento->cuenta_contable}}</td>
-                                        <td>{{$movimiento->descripcion_cuenta_contable}}</td>
+                                        <td>
+                                            @if($movimiento->tipoCuentaContable==$movimiento->descripcion_cuenta_contable)
+                                                {{$movimiento->descripcion_cuenta_contable}}
+                                            @else
+                                                {{$movimiento->tipoCuentaContable}} - {{$movimiento->descripcion_cuenta_contable}}
+                                            @endif
+                                           </td>
                                         <td class="bg-gray-light numerico">@if($movimiento->id_tipo_movimiento_poliza==1)
                                                 ${{number_format($movimiento->importe,'2','.',',')}}@endif</td>
                                         <td class="bg-gray-light numerico">@if($movimiento->id_tipo_movimiento_poliza==2)

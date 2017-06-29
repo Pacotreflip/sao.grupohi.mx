@@ -3,7 +3,8 @@
 namespace Ghi\Http\Controllers;
 
 use Dingo\Api\Routing\Helpers;
-use Ghi\Domain\Core\Contracts\PolizaRepository;
+use Ghi\Domain\Core\Contracts\Contabilidad\PolizaRepository;
+use Ghi\Domain\Core\Contracts\Contabilidad\TipoCuentaContableRepository;
 use Illuminate\Http\Request;
 
 class PolizaController extends Controller
@@ -11,16 +12,19 @@ class PolizaController extends Controller
     use Helpers;
 
     protected $poliza;
+    protected $tipoCuentaContable;
 
-    public function __construct(PolizaRepository $poliza)
+    public function __construct(PolizaRepository $poliza,TipoCuentaContableRepository $tipoCuenta)
     {
         parent::__construct();
         $this->poliza = $poliza;
+        $this->tipoCuentaContable=$tipoCuenta;
 
     }
 
     public function index()
     {
+
         $polizas = $this->poliza->all();
         return view('sistema_contable.poliza_generada.index')->with('polizas', $polizas);
     }
@@ -34,7 +38,9 @@ class PolizaController extends Controller
     public function edit($id)
     {
         $poliza = $this->poliza->find($id, 'polizaMovimientos');
-        return view('sistema_contable.poliza_generada.edit')->with('poliza', $poliza);
+        $tipoCuentaContable=$this->tipoCuentaContable->lists();
+
+        return view('sistema_contable.poliza_generada.edit')->with('poliza', $poliza)->with('tipoCuentaContable',$tipoCuentaContable);
     }
 
     public function update(Request $request,$id)

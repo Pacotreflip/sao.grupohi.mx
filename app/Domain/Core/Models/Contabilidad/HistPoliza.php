@@ -78,6 +78,15 @@ class HistPoliza extends Model
     }
 
     /**
+     * @return usuario registro
+     */
+    public function getUsuarioSolicitaAttribute()
+    {
+        $usuarioRegistro = substr($this->usuario_registro, 23, -1);
+        return $usuarioRegistro;
+    }
+
+    /**
      * @return int
      */
     public function getSumaDebeAttribute()
@@ -91,6 +100,7 @@ class HistPoliza extends Model
 
         return $result;
     }
+
     /**
      * @return int
      */

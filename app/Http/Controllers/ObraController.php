@@ -1,7 +1,7 @@
 <?php namespace Ghi\Http\Controllers;
 
 use Dingo\Api\Routing\Helpers;
-use Ghi\Domain\Core\Contracts\ObraRepository;
+use Ghi\Domain\Core\Contracts\Contabilidad\ObraRepository;
 
 use Ghi\Domain\Core\Models\Obra;
 use Illuminate\Http\Request;

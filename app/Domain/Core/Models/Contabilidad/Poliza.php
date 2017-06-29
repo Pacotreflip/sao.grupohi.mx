@@ -86,9 +86,18 @@ class Poliza extends BaseModel
      */
     public function user_registro()
     {
+
+
         return $this->belongsTo(User::class, 'registro', 'idusuario');
     }
-
+    /**
+     * @return usuario registro
+     */
+    public function getUsuarioSolicitaAttribute()
+    {
+        $usuarioRegistro = substr($this->usuario_registro, 23, -1);
+        return $usuarioRegistro;
+    }
     /**
      * @return int
      */

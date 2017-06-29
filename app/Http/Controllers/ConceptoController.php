@@ -3,7 +3,8 @@
 namespace Ghi\Http\Controllers;
 
 use Dingo\Api\Routing\Helpers;
-use Ghi\Domain\Core\Contracts\ConceptoRepository;
+
+use Ghi\Domain\Core\Contracts\Contabilidad\ConceptoRepository;
 use Illuminate\Http\Request;
 
 class ConceptoController extends Controller

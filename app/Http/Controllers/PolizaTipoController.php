@@ -1,11 +1,11 @@
 <?php namespace Ghi\Http\Controllers;
 
 use Dingo\Api\Routing\Helpers;
-use Ghi\Domain\Core\Contracts\CuentaContableRepository;
-use Ghi\Domain\Core\Contracts\MovimientoRepository;
-use Ghi\Domain\Core\Contracts\PolizaTipoRepository;
-use Ghi\Domain\Core\Contracts\TipoMovimientoRepository;
-use Ghi\Domain\Core\Contracts\TransaccionInterfazRepository;
+use Ghi\Domain\Core\Contracts\Contabilidad\CuentaContableRepository;
+use Ghi\Domain\Core\Contracts\Contabilidad\MovimientoRepository;
+use Ghi\Domain\Core\Contracts\Contabilidad\PolizaTipoRepository;
+use Ghi\Domain\Core\Contracts\Contabilidad\TipoMovimientoRepository;
+use Ghi\Domain\Core\Contracts\Contabilidad\TransaccionInterfazRepository;
 
 use Illuminate\Http\Request;
 
