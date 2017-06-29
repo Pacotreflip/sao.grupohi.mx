@@ -4,14 +4,14 @@
 @section('contentheader_description', '(LISTA)')
 
 @section('main-content')
-    {!! Breadcrumbs::render('sistema_contable.concepto_cuenta.index') !!}
+    {!! Breadcrumbs::render('sistema_contable.cuenta_concepto.index') !!}
     <hr>
 
     <div id="app">
-        <concepto-cuenta-edit
+        <cuenta-concepto-edit
                 :conceptos="{{$conceptos}}"
                 :url_concepto_get_by="'{{route('sistema_contable.concepto.getBy')}}'"
-                :url_store_cuenta="'{{route('sistema_contable.concepto_cuenta.store')}}'"
+                :url_store_cuenta="'{{route('sistema_contable.cuenta_concepto.store')}}'"
                 :datos_contables="{{$currentObra->datosContables}}"
                 v-cloak
                 inline-template>
@@ -86,7 +86,7 @@
                             <div class="modal-header">
                                 <button type="button" class="close" aria-label="Close" @click="close_edit_cuenta"><span aria-hidden="true">&times;</span></button>
                                 <h4 class="modal-title">
-                                    <span v-if="form.cuenta != ''">
+                                    <span v-if="form.concepto_edit.cuenta_concepto != null">
                                         Actualizar Cuenta Contable
                                     </span>
                                     <span v-else>
@@ -94,7 +94,7 @@
                                     </span>
                                 </h4>
                             </div>
-                            <form id="form_edit_cuenta" @submit.prevent="validateForm('form_edit_cuenta', form.cuenta != '' ? 'confirm_update_cuenta' : 'confirm_save_cuenta')"  data-vv-scope="form_edit_cuenta">
+                            <form id="form_edit_cuenta" @submit.prevent="validateForm('form_edit_cuenta', form.concepto_edit.cuenta_concepto != null ? 'confirm_update_cuenta' : 'confirm_save_cuenta')"  data-vv-scope="form_edit_cuenta">
                                 <div class="modal-body">
                                     <div class="row">
                                         <div class="col-md-6">
@@ -121,6 +121,6 @@
                     </div>
                 </div>
             </section>
-        </concepto-cuenta-edit>
+        </cuenta-concepto-edit>
     </div>
 @endsection

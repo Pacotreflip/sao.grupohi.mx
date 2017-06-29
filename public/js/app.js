@@ -36308,13 +36308,13 @@ require('./vue-components/select2');
 require('./vue-components/tipo_cuenta_contable/tipo-cuenta-contable-create');
 require('./vue-components/cuenta_contable/configuracion-contable');
 require('./vue-components/poliza_generada/poliza-generada-edit');
-require('./vue-components/concepto-cuenta/concepto-cuenta-edit');
+require('./vue-components/cuenta_concepto/cuenta-concepto-edit');
 require('./vue-components/cuenta_material/cuenta-material-index');
 
-},{"./vue-components/concepto-cuenta/concepto-cuenta-edit":31,"./vue-components/cuenta_contable/configuracion-contable":32,"./vue-components/cuenta_material/cuenta-material-index":33,"./vue-components/errors":34,"./vue-components/global-errors":35,"./vue-components/poliza_generada/poliza-generada-edit":36,"./vue-components/poliza_tipo/poliza-tipo-create":37,"./vue-components/select2":38,"./vue-components/tipo_cuenta_contable/tipo-cuenta-contable-create":41}],31:[function(require,module,exports){
+},{"./vue-components/cuenta_concepto/cuenta-concepto-edit":31,"./vue-components/cuenta_contable/configuracion-contable":32,"./vue-components/cuenta_material/cuenta-material-index":33,"./vue-components/errors":34,"./vue-components/global-errors":35,"./vue-components/poliza_generada/poliza-generada-edit":36,"./vue-components/poliza_tipo/poliza-tipo-create":37,"./vue-components/select2":38,"./vue-components/tipo_cuenta_contable/tipo-cuenta-contable-create":41}],31:[function(require,module,exports){
 'use strict';
 
-var comp = Vue.component('concepto-cuenta-edit', {
+Vue.component('cuenta-concepto-edit', {
     props: ['conceptos', 'url_concepto_get_by', 'datos_contables', 'url_store_cuenta'],
     data: function data() {
         return {
@@ -36322,13 +36322,16 @@ var comp = Vue.component('concepto-cuenta-edit', {
                 'conceptos': this.conceptos
             },
             'form': {
+                'concepto_edit': {},
                 'cuenta': '',
                 'concepto': '',
-                'id': ''
+                'id': '',
+                'id_concepto': ''
             },
             'cargando': false
         };
     },
+
     directives: {
         treegrid: {
             inserted: function inserted(el) {
@@ -36367,8 +36370,8 @@ var comp = Vue.component('concepto-cuenta-edit', {
         },
 
         get_hijos: function get_hijos(concepto) {
-
             var self = this;
+
             $.ajax({
                 type: 'GET',
                 url: self.url_concepto_get_by,
@@ -36385,29 +36388,22 @@ var comp = Vue.component('concepto-cuenta-edit', {
                     data.data.conceptos.forEach(function (concepto) {
                         self.data.conceptos.push(concepto);
                     });
-                    if ($('#tnode-' + concepto.id_concepto).treegrid('isCollapsed')) {
-                        console.log('cerrado');
-                    } else {
-                        console.log('abierto');
-                    };
                     $('#tnode-' + concepto.id_concepto).treegrid('expand');
                 },
                 complete: function complete() {
                     self.cargando = false;
                     concepto.cargado = true;
                     if ($('#tnode-' + concepto.id_concepto).treegrid('isCollapsed')) {
-                        console.log('cerrado');
-                        //$('#tnode-' + concepto.id_concepto + ' .treegrid-expander').click();
                         $('#tnode-' + concepto.id_concepto).treegrid('expand');
-                    } else {
-                        console.log('abierto');
-                    };
+                    }
                 }
             });
         },
 
         edit_cuenta: function edit_cuenta(concepto) {
+            this.form.concepto_edit = concepto;
             Vue.set(this.form, 'concepto', concepto.descripcion);
+            Vue.set(this.form, 'id_concepto', concepto.id_concepto);
             if (concepto.cuenta_concepto != null) {
                 Vue.set(this.form, 'cuenta', concepto.cuenta_concepto.cuenta);
                 Vue.set(this.form, 'id', concepto.cuenta_concepto.id);
@@ -36453,7 +36449,7 @@ var comp = Vue.component('concepto-cuenta-edit', {
 
         update_cuenta: function update_cuenta() {
             var self = this;
-            var url = this.url_store_cuenta + this.form.id;
+            var url = this.url_store_cuenta + '/' + this.form.id;
 
             $.ajax({
                 type: 'POST',
@@ -36465,7 +36461,18 @@ var comp = Vue.component('concepto-cuenta-edit', {
                 beforeSend: function beforeSend() {
                     self.guardando = true;
                 },
-                success: function success() {}
+                success: function success(data, textStatus, xhr) {
+                    self.form.concepto_edit.cuenta_concepto = data.data.cuenta_concepto;
+                    self.close_edit_cuenta();
+                    swal({
+                        type: 'success',
+                        title: 'Correcto',
+                        html: 'Cuenta Contable registrada correctamente'
+                    });
+                },
+                complete: function complete() {
+                    self.guardando = false;
+                }
             });
         },
 
@@ -36484,14 +36491,36 @@ var comp = Vue.component('concepto-cuenta-edit', {
         },
 
         save_cuenta: function save_cuenta() {
+            var self = this;
             var url = this.url_store_cuenta;
+
+            $.ajax({
+                type: 'POST',
+                url: url,
+                data: {
+                    cuenta: self.form.cuenta,
+                    id_concepto: self.form.id_concepto
+                },
+                beforeSend: function beforeSend() {
+                    self.guardando = true;
+                },
+                success: function success(data, textStatus, xhr) {
+                    self.form.concepto_edit.cuenta_concepto = data.data.cuenta_concepto;
+                    self.close_edit_cuenta();
+                    swal({
+                        type: 'success',
+                        title: 'Correcto',
+                        html: 'Cuenta Contable registrada correctamente'
+                    });
+                },
+                complete: function complete() {
+                    self.guardando = false;
+                }
+            });
         },
 
         close_edit_cuenta: function close_edit_cuenta() {
             $('#edit_cuenta_modal').modal('hide');
-            Vue.set(this.form, 'cuenta', '');
-            Vue.set(this.form, 'concepto', '');
-            Vue.set(this.form, 'id', '');
         }
     }
 });

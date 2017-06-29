@@ -86,11 +86,11 @@ Breadcrumbs::register('sistema_contable.cuenta_material.show', function ($breadc
     $breadcrumb->push('VER CUENTAS DE MATERIALES', route('sistema_contable.cuenta_material.show'));
 });
 /**
- * Concepto Cuenta
+ * Cuenta Concepto
  */
-Breadcrumbs::register('sistema_contable.concepto_cuenta.index', function ($breadcrumb) {
+Breadcrumbs::register('sistema_contable.cuenta_concepto.index', function ($breadcrumb) {
     $breadcrumb->parent('sistema_contable.index');
-    $breadcrumb->push('RELACIÓN CONCEPTO - CUENTA', route('sistema_contable.concepto_cuenta.index'));
+    $breadcrumb->push('RELACIÓN CONCEPTO - CUENTA', route('sistema_contable.cuenta_concepto.index'));
 });
 
 /**
