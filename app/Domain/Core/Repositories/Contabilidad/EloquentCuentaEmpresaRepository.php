@@ -12,6 +12,7 @@ namespace Ghi\Domain\Core\Repositories\Contabilidad;
 use Ghi\Domain\Core\Contracts\Contabilidad\CuentaEmpresaRepository;
 use Ghi\Domain\Core\Models\Contabilidad\CuentaContable;
 use Ghi\Domain\Core\Models\Contabilidad\CuentaEmpresa;
+use Illuminate\Support\Facades\DB;
 
 
 class EloquentCuentaEmpresaRepository implements CuentaEmpresaRepository
@@ -20,6 +21,7 @@ class EloquentCuentaEmpresaRepository implements CuentaEmpresaRepository
      * @var \Ghi\Domain\Core\Models\CuentaContable
      */
     protected $model;
+
     /**
      * EloquentCuentaContableRepository constructor.
      * @param \Ghi\Domain\Core\Models\CuentaContable $model
@@ -37,9 +39,10 @@ class EloquentCuentaEmpresaRepository implements CuentaEmpresaRepository
     public function all($with = null)
     {
         if ($with != null) {
-            return $this->model->with($with)->get();
+            return  $this->model->all()->with($with);
         }
-        return $this->model->all();
+       return $this->model->all();
+
     }
 
     /**

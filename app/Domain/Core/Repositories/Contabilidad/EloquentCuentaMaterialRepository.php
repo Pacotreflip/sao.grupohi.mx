@@ -8,7 +8,7 @@
 
 namespace Ghi\Domain\Core\Repositories\Contabilidad;
 
-use Ghi\Domain\Core\Contracts\CuentaMaterialRepository;
+use Ghi\Domain\Core\Contracts\Contabilidad\CuentaMaterialRepository;
 use Ghi\Domain\Core\Contracts\Identificador;
 use Ghi\Domain\Core\Contracts\Motivo;
 use Ghi\Domain\Core\Models\Material;

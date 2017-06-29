@@ -1,105 +1,74 @@
 @extends('sistema_contable.layout')
-@section('title', 'Cuentas de Materiales')
-@section('contentheader_title', 'CUENTAS DE MATERIALES')
+@section('title', 'Cuenta de Empresa')
+@section('contentheader_title', 'Cuenta Empresa')
+@section('contentheader_description', '(DETALLE)')
+
 @section('main-content')
-    {!! Breadcrumbs::render('sistema_contable.cuenta_material.show') !!}
 
     <hr>
     <div class="row">
         <div class="col-md-12">
             <div class="box box-success">
+
                 <div class="box box-solid">
                     <div class="box-header with-border">
-                        <h3 class="box-title">Material&nbsp;
-
+                        <h3 class="box-title">{{ $empresa->razon_social}} &nbsp;
                         </h3>
                     </div>
+                    <!-- /.box-header -->
+                    <div class="box-body">
+                        <div class="col-sm-6">
+                            <dl>
+                                <dt>ID</dt>
+                                <dd>{{$empresa->id_empresa}}</dd>
+                                <dt>USUARIO QUE REGISTRÓ</dt>
+                                <dd>{{$empresa->user_registro}}</dd>
+                                <dt>FECHA Y HORA DE REGISTRO</dt>
+                                <dd>{{$empresa->FechaHoraRegistro}} </dd>
+                            </dl>
+                        </div>
+
+                    </div>
+                    <!-- /.box-body -->
                 </div>
-
-                <!-- /.box-header -->
-                <div class="box-body">
-                    <div class="col-sm-6">
-                        <dl>
-                            <dt>ID</dt>
-                            <dd>id</dd>
-                            <dt>CAMPO 1</dt>
-                            <dd>campo1</dd>
-                        </dl>
-                    </div>
-                    <div class="col-sm-6">
-                        <dl>
-                            <dt>CAMPO 2</dt>
-                            <dd>campo 2</dd>
-                            <dt>CAMPO 3</dt>
-                            <dd>campo 3 </dd>
-                        </dl>
-                    </div>
-                </div>
-                <!-- /.box-body -->
-            </div>
-
-            <div class="box box-success">
-                <div class="box box-solid">
-                    <div class="box-header with-border">
-                        <h3 class="box-title">Tipo de Cuenta
-
-                        </h3>
-                    </div>
-                </div>
-
-                <!-- /.box-header -->
-                <div class="box-body">
-                    <div class="col-sm-6">
-                        <dl>
-                            <dt>ID</dt>
-                            <dd>id</dd>
-                            <dt>CAMPO 1</dt>
-                            <dd>campo1</dd>
-                        </dl>
-                    </div>
-                    <div class="col-sm-6">
-                        <dl>
-                            <dt>CAMPO 2</dt>
-                            <dd>campo 2</dd>
-                            <dt>CAMPO 3</dt>
-                            <dd>campo 3 </dd>
-                        </dl>
-                    </div>
-                </div>
-                <!-- /.box-body -->
-            </div>
-
-            <div class="box box-success">
-                <div class="box box-solid">
-                    <div class="box-header with-border">
-                        <h3 class="box-title">Cuenta Contable
-
-                        </h3>
-                    </div>
-                </div>
-
-                <!-- /.box-header -->
-                <div class="box-body">
-                    <div class="col-sm-6">
-                        <dl>
-                            <dt>ID</dt>
-                            <dd>id</dd>
-                            <dt>CAMPO 1</dt>
-                            <dd>campo1</dd>
-                        </dl>
-                    </div>
-                    <div class="col-sm-6">
-                        <dl>
-                            <dt>CAMPO 2</dt>
-                            <dd>campo 2</dd>
-                            <dt>CAMPO 3</dt>
-                            <dd>campo 3 </dd>
-                        </dl>
-                    </div>
-                </div>
-                <!-- /.box-body -->
             </div>
         </div>
     </div>
+    @if($empresa->cuentasEmpresa)
+        <div class="row">
+            <div class="col-md-12">
+                <div class="box box-success">
+                    <div class="box-header">
+                        <h3 class="box-title">Cuentas Configuradas</h3>
+                        <div class="col-sm-12">
+                            <div class="row">
+                                <div class="box-body">
+                                    <table class="table table-bordered table-striped ">
+                                        <thead>
+                                        <tr>
+                                            <th>#</th>
+                                            <th>Cuenta contable</th>
+                                            <th>Tipo de cuenta</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        @foreach($empresa->cuentasEmpresa as $index=>$cuenta)
+                                            <tr>
+                                                <td>{{$index+1}}</td>
+                                                <td>{{$cuenta->cuenta}}</td>
+                                                <td>{{$cuenta->tiposCuentasEmpresa}}</td>
+
+                                            </tr>
+                                        @endforeach
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    @endif
 
 @endsection
