@@ -18,6 +18,13 @@ class CuentaConcepto extends BaseModel
         'cuenta',
         'registro'
     ];
+
+    public function __construct(array $attributes = [])
+    {
+        $attributes['estatus'] = 1;
+        parent::__construct($attributes);
+    }
+
     protected $appends = ['usuario_registro'];
 
     /**
