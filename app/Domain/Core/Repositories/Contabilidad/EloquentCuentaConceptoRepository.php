@@ -58,15 +58,23 @@ class EloquentCuentaConceptoRepository implements CuentaConceptoRepository
         try {
             DB::connection('cadeco')->beginTransaction();
 
-            if (! $item = $this->model->find($id)) {
+            if (! $old = $this->model->find($id)) {
                 throw new HttpResponseException(new Response('No se encontró la Cuenta del Concepto que se desea Actualizar', 404));
             }
-            $item->update($data);
+
+            $new = $this->model->create([
+                'id_concepto' => $old->id_concepto,
+                'cuenta' => $data['cuenta'],
+                'registro' => auth()->user()->idusuario
+            ]);
+
+            $old->update(['estatus' => 0]);
+
             DB::connection('cadeco')->commit();
         } catch (\Exception $e) {
             DB::connection('cadeco')->rollBack();
             throw $e;
         }
-        return $item;
+        return $new;
     }
 }
