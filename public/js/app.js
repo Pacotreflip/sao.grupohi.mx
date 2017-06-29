@@ -36342,8 +36342,7 @@ Vue.component('cuenta-concepto-edit', {
             },
             componentUpdated: function componentUpdated(el) {
                 $(el).treegrid({
-                    saveState: true,
-                    initialState: 'collapsed'
+                    saveState: true
                 });
             }
         }
@@ -36412,6 +36411,7 @@ Vue.component('cuenta-concepto-edit', {
             }
             this.validation_errors.clear('form_edit_cuenta');
             $('#edit_cuenta_modal').modal('show');
+            this.validation_errors.clear('form_edit_cuenta');
         },
 
         validateForm: function validateForm(scope, funcion) {

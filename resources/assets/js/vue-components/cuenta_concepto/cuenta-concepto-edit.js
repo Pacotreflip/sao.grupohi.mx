@@ -27,7 +27,6 @@ Vue.component('cuenta-concepto-edit', {
             componentUpdated:function (el) {
                 $(el).treegrid({
                     saveState: true,
-                    initialState: 'collapsed'
                 });
             }
         }
@@ -97,6 +96,7 @@ Vue.component('cuenta-concepto-edit', {
             }
             this.validation_errors.clear('form_edit_cuenta');
             $('#edit_cuenta_modal').modal('show');
+            this.validation_errors.clear('form_edit_cuenta');
         },
 
         validateForm: function(scope, funcion) {
