@@ -36388,14 +36388,13 @@ Vue.component('cuenta-concepto-edit', {
                     data.data.conceptos.forEach(function (concepto) {
                         self.data.conceptos.push(concepto);
                     });
-                    $('#tnode-' + concepto.id_concepto).treegrid('expand');
+                    concepto.cargado = true;
                 },
                 complete: function complete() {
                     self.cargando = false;
-                    concepto.cargado = true;
-                    if ($('#tnode-' + concepto.id_concepto).treegrid('isCollapsed')) {
+                    setTimeout(function () {
                         $('#tnode-' + concepto.id_concepto).treegrid('expand');
-                    }
+                    }, 500);
                 }
             });
         },

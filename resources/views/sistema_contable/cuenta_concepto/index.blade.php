@@ -38,25 +38,25 @@
                                             <tr  v-for="(concepto,index) in conceptos_ordenados" :class="tr_class(concepto)" :id="tr_id(concepto)" >
                                                 <td v-if="concepto.id_padre == null">
                                                     @{{ concepto.descripcion }}
-                                                    <button :disabled="cargando" class="btn-xs btn-mini" v-if="concepto.tiene_hijos > 0 && ! concepto.cargado" @click="get_hijos(concepto)">
+                                                    <a :disabled="cargando" v-if="concepto.tiene_hijos > 0 && ! concepto.cargado" @click="get_hijos(concepto)">
                                                         <span v-if="cargando">
                                                             <i class="fa fa-spin fa-spinner"></i>
                                                         </span>
                                                         <span v-else>
                                                             <i class="fa fa-plus"></i>
                                                         </span>
-                                                    </button>
+                                                    </a>
                                                 </td>
                                                 <td  v-else>
                                                     @{{ concepto.descripcion}}
-                                                    <button :disabled="cargando" class="btn-xs" v-if="concepto.tiene_hijos > 0 && ! concepto.cargado" @click="get_hijos(concepto)">
+                                                    <a :disabled="cargando" v-if="concepto.tiene_hijos > 0 && ! concepto.cargado" @click="get_hijos(concepto)">
                                                         <span v-if="cargando">
                                                             <i class="fa fa-spin fa-spinner"></i>
                                                         </span>
                                                         <span v-else>
                                                             <i class="fa fa-plus"></i>
                                                         </span>
-                                                    </button>
+                                                    </a>
                                                 </td>
                                                 <td >
                                                     @{{ concepto.cuenta_concepto != null ? concepto.cuenta_concepto.cuenta : '---' }}
