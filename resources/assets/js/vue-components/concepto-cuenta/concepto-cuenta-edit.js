@@ -1,33 +1,33 @@
-Vue.component('concepto-cuenta-edit', {
-    props: ['conceptos','url_concepto_get_by'],
+var comp = Vue.component('concepto-cuenta-edit', {
+    props: ['conceptos','url_concepto_get_by', 'datos_contables', 'url_store_cuenta'],
     data: function () {
         return {
             'data': {
                 'conceptos' : this.conceptos
             },
             'form': {
-
+                'cuenta' : '',
+                'concepto' : '',
+                'id' : ''
             },
-            'guardando': false
+            'cargando': false
         }
     },
     directives: {
         treegrid: {
             inserted: function (el) {
                 $(el).treegrid({
-                    treeColumn: 0
+                    saveState: true,
+                    initialState: 'collapsed'
+                });
+            },
+            componentUpdated:function (el) {
+                $(el).treegrid({
+                    saveState: true,
+                    initialState: 'collapsed'
                 });
             }
-            /*,
-
-            componentUpdated:function (el) {
-                $(el).treegrid();
-
-            }*/
         }
-
-
-
     },
 
     computed: {
@@ -36,6 +36,7 @@ Vue.component('concepto-cuenta-edit', {
 
         }
     },
+
     methods: {
         tr_class: function(concepto) {
 
@@ -45,7 +46,7 @@ Vue.component('concepto-cuenta-edit', {
         },
 
         tr_id: function (concepto) {
-            return concepto.id_padre == null ? "tnode-" + concepto.id_concepto : "";
+            return concepto.id_padre == null || concepto.tiene_hijos > 0 ? "tnode-" + concepto.id_concepto : "";
         },
 
         get_hijos: function(concepto) {
@@ -57,18 +58,114 @@ Vue.component('concepto-cuenta-edit', {
                 data:{
                     attribute: 'nivel',
                     operator: 'like',
-                    value: concepto.nivel_hijos
+                    value: concepto.nivel_hijos,
+                    with : 'cuentaConcepto'
+                },
+                beforeSend: function () {
+                    self.cargando = true;
                 },
                 success: function (data, textStatus, xhr) {
                     data.data.conceptos.forEach(function (concepto) {
                         self.data.conceptos.push(concepto);
                     });
+                    $('#tnode-' + concepto.id_concepto).treegrid('expand');
+                },
+                complete: function() {
+                    self.cargando = false;
                     concepto.cargado = true;
-
-                    $('#concepto_tree').treegrid();
-                    $('#tr_id'+concepto.id).treegrid('expand');
+                    if ($('#tnode-' + concepto.id_concepto).treegrid('isCollapsed')){
+                        $('#tnode-' + concepto.id_concepto + ' .treegrid-expander').click();
+                    };
                 }
-            })
-        }
+            });
+        },
+
+        edit_cuenta: function (concepto) {
+            Vue.set(this.form, 'concepto', concepto.descripcion);
+            if (concepto.cuenta_concepto != null) {
+                Vue.set(this.form, 'cuenta', concepto.cuenta_concepto.cuenta);
+                Vue.set(this.form, 'id', concepto.cuenta_concepto.id);
+            } else {
+                Vue.set(this.form, 'cuenta', '');
+                Vue.set(this.form, 'id', '');
+            }
+            this.validation_errors.clear('form_edit_cuenta');
+            $('#edit_cuenta_modal').modal('show');
+        },
+
+        validateForm: function(scope, funcion) {
+            this.$validator.validateAll(scope).then(() => {
+                if(funcion == 'confirm_save_cuenta') {
+                    this.confirm_save_cuenta();
+                } else if (funcion == 'confirm_update_cuenta') {
+                   this.confirm_update_cuenta();
+                }
+            }).catch(() => {
+                swal({
+                     type: 'warning',
+                     title: 'Advertencia',
+                     text: 'Por favor corrija los errores del formulario'
+                });
+            });
+        },
+
+        confirm_update_cuenta: function () {
+            var self = this;
+            swal({
+                title: "Actualizar Cuenta Contable",
+                text: "¿Estás seguro de que la información es correcta?",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonText: "Si, Continuar",
+                cancelButtonText: "No, Cancelar",
+            }).then(function () {
+                self.update_cuenta();
+            }).catch(swal.noop);
+        },
+
+        update_cuenta: function () {
+            var self = this;
+            var url = this.url_store_cuenta + this.form.id;
+            
+            $.ajax({
+                type: 'POST',
+                url: url,
+                data: {
+                    _method: 'PATCH',
+                    cuenta: self.form.cuenta
+                },
+                beforeSend: function () {
+                    self.guardando = true;
+                },
+                success: function () {
+                    
+                }
+            });
+        },
+
+        confirm_save_cuenta: function () {
+            var self = this;
+            swal({
+                title: "Registrar Cuenta Contable",
+                text: "¿Estás seguro de que la información es correcta?",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonText: "Si, Continuar",
+                cancelButtonText: "No, Cancelar",
+            }).then(function () {
+                self.save_cuenta();
+            }).catch(swal.noop);
+        },
+
+        save_cuenta: function () {
+            var url = this.url_store_cuenta;
+        },
+
+        close_edit_cuenta: function () {
+            $('#edit_cuenta_modal').modal('hide');
+            Vue.set(this.form, 'cuenta', '');
+            Vue.set(this.form, 'concepto', '');
+            Vue.set(this.form, 'id', '');
+        },
     }
 });

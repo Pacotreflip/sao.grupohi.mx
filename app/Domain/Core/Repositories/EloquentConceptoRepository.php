@@ -27,8 +27,10 @@ class EloquentConceptoRepository implements ConceptoRepository
      * @param $value
      * @return \Illuminate\Database\Eloquent\Collection|Concepto
      */
-    public function getBy($attribute, $operator, $value)
+    public function getBy($attribute, $operator, $value, $with = null)
     {
+        if ($with != null)
+            return $this->model->with($with)->where($attribute, $operator, $value)->get();
         return $this->model->where($attribute, $operator, $value)->get();
     }
 

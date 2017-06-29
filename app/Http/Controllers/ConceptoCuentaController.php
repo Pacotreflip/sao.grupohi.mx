@@ -33,7 +33,7 @@ class ConceptoCuentaController extends Controller
 
     public function index()
     {
-        $conceptos = $this->concepto->getBy('nivel', 'like', '___.');
+        $conceptos = $this->concepto->getBy('nivel', 'like', '___.', 'cuentaConcepto');
 
        //$conceptos = Concepto::limit(30)->orderBy('nivel')->get();
         return view('sistema_contable.concepto_cuenta.index')

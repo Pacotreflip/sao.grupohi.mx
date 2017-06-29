@@ -41,7 +41,7 @@ class ConceptoController extends Controller
      * @return \Illuminate\Http\JsonResponse
      */
     public function getBy(Request $request) {
-        $items = $this->concepto->getBy($request->attribute, $request->operator, $request->value);
+        $items = $this->concepto->getBy($request->attribute, $request->operator, $request->value, $request->with);
         return response()->json(['data' => ['conceptos' => $items]], 200);
     }
 }

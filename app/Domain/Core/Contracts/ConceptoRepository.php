@@ -8,9 +8,6 @@
 
 namespace Ghi\Domain\Core\Contracts;
 
-
-
-
 interface ConceptoRepository
 {
     /**
@@ -20,8 +17,7 @@ interface ConceptoRepository
      * @param $value
      * @return \Illuminate\Database\Eloquent\Collection|Concepto
     */
-    public function getBy($attribute, $operator, $value);
-
+    public function getBy($attribute, $operator, $value, $with = null);
 
     /**
      * Obtiene un Concepto que coincida con los parametros de búsqueda

@@ -12,6 +12,8 @@ require('admin-lte/plugins/datepicker/locales/bootstrap-datepicker.es');
 window.swal = require('sweetalert2');
 require('admin-lte/plugins/iCheck/icheck');
 require('jquery-treegrid/js/jquery.treegrid.js');
+require('jquery-treegrid/js/jquery.treegrid.bootstrap3.js');
+require('jquery-treegrid/js/jquery.cookie.js');
 require('./scripts/generales');
 
 // Vue Dev
