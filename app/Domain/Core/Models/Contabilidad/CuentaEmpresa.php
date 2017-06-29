@@ -27,9 +27,14 @@ class CuentaEmpresa extends BaseModel
       ,'id_tipo_cuenta_empresa'
       ,'cuenta'
       ,'registro'
+      ,'estatus'
     ];
 
-
+    public function __construct(array $attributes = [])
+    {
+        $attributes['estatus'] = 1;
+        parent::__construct($attributes);
+    }
     public function getTotalCuentasAttribute(){
         return  CuentaEmpresa::where('id_empresa', '=', $this->id_empresa)->count();
     }
