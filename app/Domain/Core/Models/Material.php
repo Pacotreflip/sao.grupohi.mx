@@ -17,10 +17,5 @@ class Material extends BaseModel
     }
 
 
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany|CuentaMaterial
-     */
-    public function cuentaMaterial(){
-        return $this->hasMany(CuentaMaterial::class, "id_material");
-    }
+
 }

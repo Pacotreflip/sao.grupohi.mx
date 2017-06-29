@@ -85,3 +85,12 @@ Breadcrumbs::register('sistema_contable.cuenta_material.show', function ($breadc
     $breadcrumb->parent('sistema_contable.cuenta_material.index');
     $breadcrumb->push('VER CUENTAS DE MATERIALES', route('sistema_contable.cuenta_material.show'));
 });
+
+/**
+ * Cuentas Almacenes
+ */
+
+Breadcrumbs::register('sistema_contable.cuenta_almacen.index', function ($breadcrumb) {
+    $breadcrumb->parent('sistema_contable.index');
+    $breadcrumb->push('CUENTAS DE ALMACENES', route('sistema_contable.cuenta_almacen.index'));
+});

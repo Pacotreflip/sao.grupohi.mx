@@ -125,6 +125,6 @@ class EloquentCuentaMaterialRepository implements CuentaMaterialRepository
     {
         return $this->model->where($attribute, $operator, $value)
                            ->where('tipo_material', $tipo)
-                           ->orderBy()
+                           ->orderBy('nivel', 'asc')->all();
     }
 }

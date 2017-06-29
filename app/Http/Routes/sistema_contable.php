@@ -58,4 +58,10 @@ Route::group(['prefix' => 'sistema_contable'], function () {
      * Relación Conceptos - Cuentas
      */
     Route::get('concepto_cuenta', 'ConceptoCuentaController@index')->name('sistema_contable.concepto_cuenta.index');
+
+    /**
+     * Cuentas Almacens Routes...
+     */
+    Route::get('cuenta_almacen', 'AlmacenController@index')->name('sistema_contable.cuenta_almacen.index');
+
 });
