@@ -92,3 +92,12 @@ Breadcrumbs::register('sistema_contable.concepto_cuenta.index', function ($bread
     $breadcrumb->parent('sistema_contable.index');
     $breadcrumb->push('RELACIÓN CONCEPTO - CUENTA', route('sistema_contable.concepto_cuenta.index'));
 });
+
+/**
+ * Cuentas Almacenes
+ */
+
+Breadcrumbs::register('sistema_contable.cuenta_almacen.index', function ($breadcrumb) {
+    $breadcrumb->parent('sistema_contable.index');
+    $breadcrumb->push('CUENTAS DE ALMACENES', route('sistema_contable.cuenta_almacen.index'));
+});

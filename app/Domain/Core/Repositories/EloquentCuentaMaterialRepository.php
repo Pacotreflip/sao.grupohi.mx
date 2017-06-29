@@ -11,7 +11,7 @@ namespace Ghi\Domain\Core\Repositories;
 use Ghi\Domain\Core\Contracts\CuentaMaterialRepository;
 use Ghi\Domain\Core\Contracts\Identificador;
 use Ghi\Domain\Core\Contracts\Motivo;
-use Ghi\Domain\Core\Models\CuentaMaterial;
+use Ghi\Domain\Core\Models\Material;
 
 
 class EloquentCuentaMaterialRepository implements CuentaMaterialRepository
@@ -25,7 +25,7 @@ class EloquentCuentaMaterialRepository implements CuentaMaterialRepository
      * EloquentTipoCuentaContableRepository constructor.
      * @param \Ghi\Domain\Core\Models\TipoCuentaContable $model
      */
-    public function __construct(CuentaMaterial $model)
+    public function __construct(Material $model)
     {
         $this->model = $model;
     }
@@ -100,5 +100,31 @@ class EloquentCuentaMaterialRepository implements CuentaMaterialRepository
             DB::connection('cadeco')->rollBack();
             throw $e;
         }
+    }
+
+    /**
+     * Obtiene todas las Cuentas de Materiales padre
+     *
+     * @return \Illuminate\Database\Eloquent\Collection|\Ghi\Domain\Core\Contracts\CuentaMaterial
+     */
+    public function lista($value)
+    {
+        $resp = Material::where('tipo_material', $value)
+            ->where(DB::raw('SUBSTRING(nivel, 5,1)'), '=','')
+            ->orderBy('nivel', 'asc')->get()->all();
+        //dd($resp);
+        return $resp;
+    }
+
+    /**
+     * Obtiene todas las Cuentas de Materiales padre
+     *
+     * @return \Illuminate\Database\Eloquent\Collection|\Ghi\Domain\Core\Contracts\CuentaMaterial
+     */
+    public function getBy($attribute, $operator, $value, $tipo)
+    {
+        return $this->model->where($attribute, $operator, $value)
+                           ->where('tipo_material', $tipo)
+                           ->orderBy('nivel', 'asc')->all();
     }
 }

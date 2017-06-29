@@ -52,6 +52,7 @@ Route::group(['prefix' => 'sistema_contable'], function () {
     Route::get('cuenta_material/create', 'CuentaMaterialController@create')->name('sistema_contable.cuenta_material.create');
     Route::get('cuenta_material/show', 'CuentaMaterialController@show')->name('sistema_contable.cuenta_material.show');  // modificar, solo es de muestra
     Route::patch('poliza_generada/{id}', 'PolizaController@update')->name('sistema_contable.poliza_generada.update')->where(['id' => '[0-9]+']);
+    Route::get('cuenta_material/findBy', 'CuentaMaterialController@findBy');
 
     /**
      * Relación Conceptos - Cuentas
@@ -65,4 +66,10 @@ Route::group(['prefix' => 'sistema_contable'], function () {
      */
     Route::get('concepto/findBy', 'ConceptoController@findBy')->name('sistema_contable.concepto.findby');
     Route::get('concepto/getBy', 'ConceptoController@getBy')->name('sistema_contable.concepto.getBy');
+
+    /**
+     * Cuentas Almacens Routes...
+     */
+    Route::get('cuenta_almacen', 'AlmacenController@index')->name('sistema_contable.cuenta_almacen.index');
+
 });

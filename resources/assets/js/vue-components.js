@@ -6,3 +6,4 @@ require('./vue-components/tipo_cuenta_contable/tipo-cuenta-contable-create');
 require('./vue-components/cuenta_contable/configuracion-contable');
 require('./vue-components/poliza_generada/poliza-generada-edit');
 require('./vue-components/concepto-cuenta/concepto-cuenta-edit');
+require('./vue-components/cuenta_material/cuenta-material-index');
