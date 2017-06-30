@@ -31,6 +31,7 @@
                                             <tr role="row">
                                                 <th class="sorting_asc" tabindex="0" aria-controls="tipo_cuenta" aria-sort="ascending">#</th>
                                                 <th class="sorting" tabindex="0" aria-controls="tipo_cuenta">Almacén</th>
+                                                <th class="sorting" tabindex="0" aria-controls="tipo_cuenta">Tipo de Almacén</th>
                                                 <th class="sorting" tabindex="0" aria-controls="tipo_cuenta">Cuenta Contable</th>
                                                 <th class="sorting" tabindex="0" aria-controls="tipo_cuenta">Acciones</th>
                                             </tr>
@@ -39,6 +40,7 @@
                                             <tr v-for="(item, index) in data.almacenes">
                                                 <td>@{{ index + 1 }}</td>
                                                 <td>@{{ item.descripcion  }}</td>
+                                                <td>@{{ item.tipo_almacen  }}</td>
                                                 <td v-if="item.cuenta_almacen != null">
                                                     @{{ item.cuenta_almacen.cuenta }}
                                                 </td>
