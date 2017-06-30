@@ -94,11 +94,6 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(
             \Ghi\Domain\Core\Contracts\Contabilidad\CuentaEmpresaRepository::class,
             \Ghi\Domain\Core\Repositories\Contabilidad\EloquentCuentaEmpresaRepository::class
-           );
-
-        $this->app->bind(
-            \Ghi\Domain\Core\Contracts\Contabilidad\CuentaMaterialRepository::class,
-            \Ghi\Domain\Core\Repositories\Contabilidad\EloquentCuentaMaterialRepository::class
         );
 
         $this->app->bind(
