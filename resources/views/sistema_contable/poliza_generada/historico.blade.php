@@ -53,7 +53,7 @@
                                                         <table class="table table-bordered small">
                                                             <tr>
                                                                 <th colspan="5" class="bg-gray-light">Poliza
-                                                                    :<br><label>{{ $poliza->tipoPolizaContpaq}}</label>
+                                                                    :<br><label>{{ $poliza->transaccionInterfaz}}</label>
                                                                 </th>
                                                                 <th class="bg-gray-light">Fecha de Solicitud
                                                                     :<br><label>{{ $poliza->created_at->format('Y-m-d h:i:s a') }}</label>

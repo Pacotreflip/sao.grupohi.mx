@@ -85,8 +85,6 @@ class Poliza extends BaseModel
      */
     public function user_registro()
     {
-
-
         return $this->belongsTo(User::class, 'registro', 'idusuario');
     }
     /**
@@ -154,5 +152,9 @@ class Poliza extends BaseModel
             default:
                 break;
         }
+    }
+
+    public function historicos() {
+        return $this->hasMany(HistPoliza::class, 'id_int_poliza', 'id_int_poliza');
     }
 }
