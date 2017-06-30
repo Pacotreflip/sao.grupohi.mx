@@ -1,6 +1,6 @@
 @extends('sistema_contable.layout')
-@section('title', 'Cuenta de Empresa')
-@section('contentheader_title', 'Cuenta Empresa')
+@section('title', 'Cuentas de Empresas')
+@section('contentheader_title', 'CUENTAS DE EMPRESAS')
 @section('contentheader_description', '(DETALLE)')
 
 @section('main-content')
@@ -9,7 +9,6 @@
     <div class="row">
         <div class="col-md-12">
             <div class="box box-success">
-
                 <div class="box box-solid">
                     <div class="box-header with-border">
                         <h3 class="box-title">{{ $empresa->razon_social}} &nbsp;
@@ -23,11 +22,8 @@
                                 <dd>{{$empresa->id_empresa}}</dd>
                                 <dt>USUARIO QUE REGISTRÓ</dt>
                                 <dd>{{$empresa->user_registro}}</dd>
-                                <dt>FECHA Y HORA DE REGISTRO</dt>
-                                <dd>{{$empresa->FechaHoraRegistro}} </dd>
                             </dl>
                         </div>
-
                     </div>
                     <!-- /.box-body -->
                 </div>

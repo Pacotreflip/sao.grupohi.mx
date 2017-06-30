@@ -6,7 +6,6 @@
     {!! Breadcrumbs::render('sistema_contable.cuenta_empresa.index') !!}
 
     <div class="row">
-
     </div>
         <div class="row" >
             <div class="col-md-12">
@@ -24,7 +23,7 @@
                                         <th class="sorting_asc" tabindex="0" aria-controls="tipo_cuenta" aria-sort="ascending">#</th>
                                         <th class="sorting" tabindex="0" aria-controls="tipo_cuenta">Empresa</th>
                                         <th class="sorting" tabindex="0" aria-controls="tipo_cuenta">Número de Cuentas Configuradas</th>
-                                        <th></th>
+                                        <th class="sorting" tabindex="0" aria-controls="tipo_cuenta">Acciones</th>
                                     </tr>
                                     </thead>
                                     <tbody>
@@ -44,7 +43,7 @@
                                     <th >#</th>
                                     <th>Empresa</th>
                                     <th>Número de Cuentas Configuradas</th>
-                                    <th></th>
+                                    <th>Acciones</th>
                                     </tfoot>
                                 </table>
                             </div>
