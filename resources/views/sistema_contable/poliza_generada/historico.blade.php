@@ -37,7 +37,7 @@
 
                                     <li class="time-label">
                                       <span class="bg-red">
-                                        {{ $poliza->created_at->format('Y-m-d') }}
+                                        {{ $poliza->created_at->format('Y-m-d h:i:s a') }}
                                       </span>
                                     </li>
 
@@ -45,7 +45,7 @@
                                         <i class="fa fa-clock-o bg-blue"></i>
 
                                         <div class="timeline-item">
-                                            <h3 class="timeline-header"><a href="#">{{ $poliza->created_at->format('h:i:s a') }}</a>
+                                            <h3 class="timeline-header"><a href="#">{{ $poliza->created_at->format('Y-m-d h:i:s a') }}</a>
                                             </h3>
                                             <div class="timeline-body">
                                                 <div class="box-body">
@@ -74,7 +74,7 @@
 
                                                                 <tr>
                                                                     <th class="bg-gray-light">Cuenta Contable</th>
-                                                                    <th class="bg-gray-light">Nombre Cuenta Contable
+                                                                    <th class="bg-gray-light">Tipo Cuenta Contable
                                                                     </th>
                                                                     <th class="bg-gray-light">Debe</th>
                                                                     <th class="bg-gray-light">Haber</th>
