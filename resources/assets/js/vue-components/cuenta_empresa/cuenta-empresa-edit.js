@@ -1,5 +1,5 @@
 Vue.component('cuenta-empresa-edit', {
-    props: ['empresa', 'tipo_cuenta_empresa'],
+    props: ['empresa', 'tipo_cuenta_empresa','cuenta_store_url','datos_contables'],
 
     data: function () {
         return {
@@ -9,7 +9,9 @@ Vue.component('cuenta-empresa-edit', {
             'form': {
                 'cuenta_empresa': '',
                 'cuenta_empresa_create': {
+                    'id':'',
                     'cuenta': '',
+                    'id_empresa':'',
                     'id_tipo_cuenta_empresa': '',
                     'tipo_cuenta_empresa': {
                         'descripcion': ''
@@ -25,6 +27,7 @@ Vue.component('cuenta-empresa-edit', {
     methods: {
         cerrar_dialog: function () {
             $('#add_movimiento_modal').modal('hide');
+            $('#edit_movimiento_modal').modal('hide');
         },
         confirm_elimina_cuenta: function (cuenta) {
             var self = this;
@@ -55,6 +58,20 @@ Vue.component('cuenta-empresa-edit', {
             }).then(function () {
 
                 self.update_cuenta_empresa();
+            }).catch(swal.noop);
+
+        },
+        confirm_cuenta_create: function () {
+            var self = this;
+            swal({
+                title: "Crear Cuenta de Empresa",
+                text: "¿Estás seguro que desea guardar la cuenta?",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonText: "Si, Guardar",
+                cancelButtonText: "No, Cancelar",
+            }).then(function () {
+              self.save_cuenta_empresa();
             }).catch(swal.noop);
 
         },
@@ -93,8 +110,10 @@ Vue.component('cuenta-empresa-edit', {
             var self = this;
             self.form.cuenta_empresa_create.cuenta = '';
             self.form.cuenta_empresa_create.id_tipo_cuenta_empresa = '';
+            self.form.cuenta_empresa_create.id_empresa = self.data.empresa.id_empresa;
             self.form.cuenta_empresa_create.tipo_cuenta_empresa.descripcion = '';
             self.nuevo_registro = true;
+            self.validation_errors.clear('form_create_cuenta');
             $('#add_movimiento_modal').modal('show');
         },
         edit_cuenta_empresa: function (cuenta) {
@@ -103,7 +122,11 @@ Vue.component('cuenta-empresa-edit', {
             self.form.cuenta_empresa_create.cuenta = cuenta.cuenta;
             self.form.cuenta_empresa_create.id_tipo_cuenta_empresa = cuenta.id_tipo_cuenta_empresa;
             self.form.cuenta_empresa_create.tipo_cuenta_empresa.descripcion = cuenta.tipo_cuenta_empresa.descripcion;
-            $('#add_movimiento_modal').modal('show');
+            self.form.cuenta_empresa_create.id = cuenta.id;
+            self.form.cuenta_empresa_create.id_empresa = cuenta.id_empresa;
+
+
+            $('#edit_movimiento_modal').modal('show');
         },
         update_cuenta_empresa: function (cuenta) {
             var self = this;
@@ -117,6 +140,34 @@ Vue.component('cuenta-empresa-edit', {
                     _method: 'PATCH'
                 },
                 beforeSend: function () {
+                    self.validation_errors.clear('form_update_cuenta');
+                    self.guardando = true;
+                },
+                success: function (data, textStatus, xhr) {
+                    Vue.set(self.data, 'empresa', data.data.empresa);
+                    $('#edit_movimiento_modal').modal('hide');
+                    swal({
+                        type: 'success',
+                        title: 'Correcto',
+                        html: 'La cuenta:' + self.form.cuenta_empresa_create.tipo_cuenta_empresa.descripcion + '</b> fue actualizada correctamente',
+                    });
+                },
+                complete: function () {
+                    self.guardando = false;
+                }
+            });
+        }
+        ,
+        save_cuenta_empresa: function () {
+            var self = this;
+            var url = self.cuenta_store_url;
+            var data = self.form.cuenta_empresa_create;
+            $.ajax({
+                type: 'POST',
+                url: url,
+                data: data,
+                beforeSend: function () {
+                    self.validation_errors.clear('form_create_cuenta');
                     self.guardando = true;
                 },
                 success: function (data, textStatus, xhr) {
@@ -125,7 +176,7 @@ Vue.component('cuenta-empresa-edit', {
                     swal({
                         type: 'success',
                         title: 'Correcto',
-                        html: 'La cuenta:' + self.form.cuenta_empresa_create.tipo_cuenta_empresa.descripcion + '</b> fue actulizada correctamente',
+                        html: 'La cuenta:' + self.form.cuenta_empresa_create.tipo_cuenta_empresa.descripcion + '</b> fue creada correctamente',
                     });
                 },
                 complete: function () {
@@ -139,6 +190,9 @@ Vue.component('cuenta-empresa-edit', {
                 if (funcion == 'confirm_edit_cuenta') {
                 this.confirm_cuenta_update();
             }
+            else if (funcion == 'confirm_create_cuenta') {
+                this.confirm_cuenta_create();
+            }
 
         }).catch(() => {
                 swal({
@@ -150,5 +204,28 @@ Vue.component('cuenta-empresa-edit', {
         }
     },
 
-    computed: {}
+    computed: {
+
+        cuentas_empresa_disponibles: function () {
+
+                var self = this;
+                var result = {};
+                $.each(this.tipo_cuenta_empresa, function (index, tipo_cuenta_empresa) {
+                    var existe = false;
+                    self.data.empresa.cuentas_empresa.forEach(function (cuenta) {
+                        if(cuenta.id_tipo_cuenta_empresa == tipo_cuenta_empresa.id) {
+                            existe = true;
+                        }
+                    });
+
+                    if(! existe) {
+                        result[index] = tipo_cuenta_empresa;
+                    }
+                });
+
+                return result;
+        }
+
+
+    }
 });

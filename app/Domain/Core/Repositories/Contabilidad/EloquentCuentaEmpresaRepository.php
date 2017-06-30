@@ -9,6 +9,7 @@
 namespace Ghi\Domain\Core\Repositories\Contabilidad;
 
 
+use Dingo\Api\Auth\Auth;
 use Ghi\Domain\Core\Contracts\Contabilidad\CuentaEmpresaRepository;
 use Ghi\Domain\Core\Models\Contabilidad\CuentaContable;
 use Ghi\Domain\Core\Models\Contabilidad\CuentaEmpresa;
@@ -64,7 +65,24 @@ class EloquentCuentaEmpresaRepository implements CuentaEmpresaRepository
      */
     public function create($data)
     {
-        // TODO: Implement create() method.
+      try {
+          DB::connection('cadeco')->beginTransaction();
+          $modelo=$this->model;
+          $modelo->registro=auth()->user()->idusuario;
+          $modelo->id_empresa=$data['id_empresa'];
+          $modelo->cuenta=$data['cuenta'];
+          $modelo->id_tipo_cuenta_empresa=$data['id_tipo_cuenta_empresa'];
+
+          $item= $modelo->save();
+
+          DB::connection('cadeco')->commit();
+
+      } catch (\Exception $e) {
+          DB::connection('cadeco')->rollBack();
+          throw $e;
+      }
+        return $item;
+
     }
 
     /**

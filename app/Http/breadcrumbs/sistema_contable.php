@@ -101,3 +101,22 @@ Breadcrumbs::register('sistema_contable.cuenta_almacen.index', function ($breadc
     $breadcrumb->parent('sistema_contable.index');
     $breadcrumb->push('CUENTAS DE ALMACENES', route('sistema_contable.cuenta_almacen.index'));
 });
+
+
+/**
+ * Cuentas Empresa
+ */
+
+Breadcrumbs::register('sistema_contable.cuenta_empresa.index', function ($breadcrumb) {
+    $breadcrumb->parent('sistema_contable.index');
+    $breadcrumb->push('CUENTAS EMPRESA', route('sistema_contable.cuenta_empresa.index'));
+});
+Breadcrumbs::register('sistema_contable.cuenta_empresa.show', function ($breadcrumb, $empresa) {
+    $breadcrumb->parent('sistema_contable.cuenta_empresa.index');
+    $breadcrumb->push(mb_strtoupper($empresa->razon_social), route('sistema_contable.cuenta_empresa.show', $empresa));
+});
+
+Breadcrumbs::register('sistema_contable.cuenta_empresa.edit', function ($breadcrumb, $empresa) {
+    $breadcrumb->parent('sistema_contable.cuenta_empresa.show', $empresa);
+    $breadcrumb->push('EDICIÓN', route('sistema_contable.cuenta_empresa.edit', $empresa));
+});

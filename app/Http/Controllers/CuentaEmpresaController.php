@@ -64,20 +64,31 @@ class CuentaEmpresaController extends Controller
         $tipoCuentaEmpresa = $this->tipo_cuenta_empresa->all();
         return view('sistema_contable.cuenta_empresa.edit')->with('empresa', $empresa)->with('tipo_cuenta_empresa', $tipoCuentaEmpresa);
     }
-    public function delete(Request $request,$id){
-        $data=$request->all();
-        $this->cuenta_empresa->delete($data,$id);
+
+    public function delete(Request $request, $id)
+    {
+        $data = $request->all();
+        $this->cuenta_empresa->delete($data, $id);
         $empresa = $this->empresa->find($data['data']['id_empresa'], ['cuentasEmpresa.tipoCuentaEmpresa']);
         return response()->json(['data' => ['empresa' => $empresa]], 200);
 
     }
 
-    public function update(Request $request,$id){
+    public function update(Request $request, $id)
+    {
 
-
-        $data=$request->all();
-        $this->cuenta_empresa->update($data,$id);
+        $data = $request->all();
+        $this->cuenta_empresa->update($data, $id);
         $empresa = $this->empresa->find($data['data']['id_empresa'], ['cuentasEmpresa.tipoCuentaEmpresa']);
+        return response()->json(['data' => ['empresa' => $empresa]], 200);
+    }
+
+    public function store(Request $request)
+    {
+
+        $data = $request->all();
+        $this->cuenta_empresa->create($data);
+        $empresa = $this->empresa->find($data['id_empresa'], ['cuentasEmpresa.tipoCuentaEmpresa']);
         return response()->json(['data' => ['empresa' => $empresa]], 200);
     }
 }

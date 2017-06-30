@@ -78,7 +78,7 @@ Route::group(['prefix' => 'sistema_contable'], function () {
      */
 
     Route::get('cuenta_empresa', 'CuentaEmpresaController@index')->name('sistema_contable.cuenta_empresa.index');
-    Route::get('cuenta_empresa/create', 'CuentaEmpresaController@create')->name('sistema_contable.cuenta_empresa.create');
+    Route::post('cuenta_empresa', 'CuentaEmpresaController@store')->name('sistema_contable.cuenta_empresa.store');
     Route::get('cuenta_empresa/{id}/edit', 'CuentaEmpresaController@edit')->name('sistema_contable.cuenta_empresa.edit')->where(['id' => '[0-9]+']);
     Route::get('cuenta_empresa/{id}', 'CuentaEmpresaController@show')->name('sistema_contable.cuenta_empresa.show')->where(['id' => '[0-9]+']);
     Route::delete('cuenta_empresa/{id}', 'CuentaEmpresaController@delete')->name('sistema_contable.cuenta_empresa.delete')->where(['id' => '[0-9]+']);

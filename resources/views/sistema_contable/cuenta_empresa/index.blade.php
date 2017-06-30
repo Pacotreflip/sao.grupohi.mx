@@ -3,7 +3,7 @@
 @section('contentheader_title', 'CUENTA EMPRESA')
 
 @section('main-content')
-    {!! Breadcrumbs::render('sistema_contable.cuenta_material.index') !!}
+    {!! Breadcrumbs::render('sistema_contable.cuenta_empresa.index') !!}
 
     <div class="row">
 

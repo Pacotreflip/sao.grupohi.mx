@@ -33,6 +33,7 @@ class CuentaEmpresa extends BaseModel
     public function __construct(array $attributes = [])
     {
         $attributes['estatus'] = 1;
+        $attributes['id_obra'] = \Ghi\Core\Facades\Context::getId();
         parent::__construct($attributes);
     }
     public function getTotalCuentasAttribute(){

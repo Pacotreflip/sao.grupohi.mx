@@ -4,7 +4,7 @@
 @section('contentheader_description', '(DETALLE)')
 
 @section('main-content')
-
+    {!! Breadcrumbs::render('sistema_contable.cuenta_empresa.show', $empresa) !!}
     <hr>
     <div class="row">
         <div class="col-md-12">
