@@ -29,7 +29,7 @@
                                     <table class="table table-bordered ">
                                         <tr>
                                             <th class="bg-gray-light">Poliza
-                                                :<br><label>{{ $poliza->tipoPolizaContpaq}}</label></th>
+                                                :<br><label>{{ $poliza->transaccionInterfaz}}</label></th>
                                             <th class="bg-gray-light">Fecha de Solicitud
                                                 :<br><label>{{ $poliza->created_at}}</label></th>
                                         </tr>

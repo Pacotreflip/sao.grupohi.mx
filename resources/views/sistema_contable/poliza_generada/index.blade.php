@@ -33,7 +33,7 @@
                                 <tr>
 
                                     <td>{{ $index+1}}</td>
-                                    <td>{{ $item->tipoPolizaContpaq}}</td>
+                                    <td>{{ $item->transaccionInterfaz}}</td>
                                     <td>{{ $item->concepto}}</td>
                                     <td class="numerico">$ {{number_format($item->total,'2','.',',')}}</td>
                                     <td class="numerico">$ {{number_format($item->cuadre,'2','.',',')}}</td>
