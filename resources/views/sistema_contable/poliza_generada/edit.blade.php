@@ -68,8 +68,8 @@
                                             <td>@{{ movimiento.descripcion_cuenta_contable}}</td>
                                             <td class="form-group" :class="{'has-error': validation_errors.has('form_poliza.Tipo [' + (index + 1) + ']')}">
                                                 <select :name="'Tipo [' + (index + 1) + ']'" v-validate="'required|numeric'" class="form-control input-sm" v-model="movimiento.id_tipo_movimiento_poliza">
-                                                    <option :value="1">Debe</option>
-                                                    <option :value="2">Haber</option>
+                                                    <option :value="1">Cargo</option>
+                                                    <option :value="2">Abono</option>
                                                 </select>
                                                 <label class="help" v-show="validation_errors.has('form_poliza.Tipo [' + (index + 1) + ']')">@{{ validation_errors.first('form_poliza.Tipo [' + (index + 1) + ']') }}</label>
                                             </td>
@@ -163,8 +163,8 @@
                                             <label for="">Tipo</label>
                                             <select name="Tipo" v-validate="'required|numeric'" class="form-control" v-model="form.movimiento.id_tipo_movimiento_poliza">
                                                 <option value disabled>[-SELECCIONE-]</option>
-                                                <option :value="1">Debe</option>
-                                                <option :value="2">Haber</option>
+                                                <option :value="1">Cargo</option>
+                                                <option :value="2">Abono</option>
                                             </select>
                                             <label class="help" v-show="validation_errors.has('form_add_movimiento.Tipo')">@{{ validation_errors.first('form_add_movimiento.Tipo') }}</label>
                                         </div>

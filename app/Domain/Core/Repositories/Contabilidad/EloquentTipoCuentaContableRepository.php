@@ -12,7 +12,7 @@ use Symfony\Component\HttpFoundation\Response;
 class EloquentTipoCuentaContableRepository implements TipoCuentaContableRepository
 {
     /**
-     * @var \Ghi\Domain\Core\Models\TipoCuentaContable
+     * @var \Ghi\Domain\Core\Models\Contabilidad\TipoCuentaContable
      */
     protected $model;
 
