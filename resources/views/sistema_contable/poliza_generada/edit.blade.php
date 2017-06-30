@@ -31,7 +31,7 @@
                                             <th class="bg-gray-light">Poliza
                                                 :<br><label>{{ $poliza->tipoPolizaContpaq}}</label></th>
                                             <th class="bg-gray-light">Fecha de Solicitud
-                                                :<br><label>{{ $poliza->created_at->format('Y-m-d h:i:s a') }}</label></th>
+                                                :<br><label>{{ $poliza->created_at}}</label></th>
                                         </tr>
                                         <tr>
                                             <th class="bg-gray-light form-group" :class="{'has-error': validation_errors.has('form_poliza.Concepto')}">

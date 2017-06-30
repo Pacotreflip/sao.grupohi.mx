@@ -31,6 +31,7 @@ class PolizaMovimiento extends Model
 
     protected $appends = ['descripcion_cuenta_contable'];
 
+
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
@@ -66,5 +67,11 @@ class PolizaMovimiento extends Model
     public function tipoCuentaContable() {
         return $this->belongsTo(TipoCuentaContable::class, 'id_tipo_cuenta_contable');
     }
-
+    /**
+     * @param Importe
+     * @return Importe con 2 decimales
+     */
+    public function getImporteAttribute($value) {
+        return  $this->attributes['importe'] = number_format((float)$value, 2, '.', '');
+    }
 }

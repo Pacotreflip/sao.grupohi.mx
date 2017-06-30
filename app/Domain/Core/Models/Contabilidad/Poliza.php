@@ -5,7 +5,6 @@ namespace Ghi\Domain\Core\Models\Contabilidad;
 
 use Ghi\Domain\Core\Models\BaseModel;
 use Ghi\Domain\Core\Models\User;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Poliza extends BaseModel
@@ -137,4 +136,31 @@ class Poliza extends BaseModel
         }
         return true;
     }
+    /**
+     * @param total
+     * @return total con 2 decimales
+     */
+    public function getTotalAttribute($value) {
+        return  $this->attributes['total'] = number_format((float)$value, 2, '.', '');
+    }
+
+    public function  getEstatusAttribute($estatus){
+        switch ($estatus){
+            case 0:
+                return "Registrada";
+                break;
+            case 1:
+                return "Lanzada";
+                break;
+            case -1:
+                return "No Lanzada";
+                break;
+            case -2:
+                return "Con errores";
+                break;
+            default:
+                break;
+        }
+    }
+
 }

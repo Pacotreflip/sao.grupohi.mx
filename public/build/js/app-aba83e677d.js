@@ -37257,7 +37257,7 @@ Vue.component('poliza-generada-edit', {
                     suma_haber += parseFloat(movimiento.importe);
                 }
             });
-            return suma_haber;
+            return parseFloat(Math.round(suma_haber * 100) / 100).toFixed(2);
         },
 
         suma_debe: function suma_debe() {
@@ -37267,7 +37267,7 @@ Vue.component('poliza-generada-edit', {
                     suma_debe += parseFloat(movimiento.importe);
                 }
             });
-            return suma_debe;
+            return (Math.round(suma_debe * 100) / 100).toFixed(2);
         }
     },
 
