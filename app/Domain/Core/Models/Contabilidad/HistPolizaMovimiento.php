@@ -65,5 +65,11 @@ class HistPolizaMovimiento extends Model
         return $this->belongsTo(TipoCuentaContable::class, 'id_tipo_cuenta_contable');
     }
 
-
+    /**
+     * @param Importe
+     * @return Importe con 2 decimales
+     */
+    public function getImporteAttribute($value) {
+        return  $this->attributes['importe'] = number_format((float)$value, 2, '.', '');
+    }
 }

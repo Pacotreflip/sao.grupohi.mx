@@ -115,4 +115,12 @@ class HistPoliza extends Model
 
         return $result;
     }
+
+    /**
+     * @param total
+     * @return total con 2 decimales
+     */
+    public function getTotalAttribute($value) {
+        return  $this->attributes['total'] = number_format((float)$value, 2, '.', '');
+    }
 }
