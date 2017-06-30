@@ -94,21 +94,29 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(
             \Ghi\Domain\Core\Contracts\Contabilidad\CuentaEmpresaRepository::class,
             \Ghi\Domain\Core\Repositories\Contabilidad\EloquentCuentaEmpresaRepository::class
-           );
-
-        $this->app->bind(
-            \Ghi\Domain\Core\Contracts\CuentaMaterialRepository::class,
-            \Ghi\Domain\Core\Repositories\EloquentCuentaMaterialRepository::class
         );
 
         $this->app->bind(
-            \Ghi\Domain\Core\Contracts\CuentaAlmacenRepository::class,
-            \Ghi\Domain\Core\Repositories\EloquentCuentaAlmacenRepository::class
+            \Ghi\Domain\Core\Contracts\Contabilidad\CuentaAlmacenRepository::class,
+            \Ghi\Domain\Core\Repositories\Contabilidad\EloquentCuentaAlmacenRepository::class
         );
 
         $this->app->bind(
             \Ghi\Domain\Core\Contracts\AlmacenRepository::class,
             \Ghi\Domain\Core\Repositories\EloquentAlmacenRepository::class
+        );
+        $this->app->bind(
+            \Ghi\Domain\Core\Contracts\EmpresaRepository::class,
+            \Ghi\Domain\Core\Repositories\EloquentEmpresaRepository::class
+        );
+        $this->app->bind(
+            \Ghi\Domain\Core\Contracts\Contabilidad\TipoCuentaEmpresaRepository::class,
+            \Ghi\Domain\Core\Repositories\Contabilidad\EloquentTipoCuentaEmpresaRepository::class
+        );
+
+        $this->app->bind(
+            \Ghi\Domain\Core\Contracts\Contabilidad\CuentaConceptoRepository::class,
+            \Ghi\Domain\Core\Repositories\Contabilidad\EloquentCuentaConceptoRepository::class
         );
     }
 }

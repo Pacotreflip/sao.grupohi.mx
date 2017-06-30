@@ -48,7 +48,6 @@
                                         <tr>
                                             <th class="bg-gray-light">#</th>
                                             <th class="bg-gray-light">Cuenta Contable</th>
-                                            <th class="bg-gray-light">Tipo de Cuenta Contable</th>
                                             <th class="bg-gray-light">Nombre Cuenta Contable</th>
                                             <th class="bg-gray-light">Tipo</th>
                                             <th class="bg-gray-light">Debe</th>
@@ -64,15 +63,6 @@
                                             <td class="form-group" :class="{'has-error': validation_errors.has('form_poliza.CuentaContable [' + (index + 1) + ']')}">
                                                 <input :placeholder="datos_contables.FormatoCuenta" type="text" v-validate="'required|regex:' + datos_contables.FormatoCuentaRegExp" :name="'CuentaContable [' + (index + 1) + ']'" class="form-control input-sm" v-model="movimiento.cuenta_contable">
                                                 <label class="help" v-show="validation_errors.has('form_poliza.CuentaContable [' + (index + 1) + ']')">@{{ validation_errors.first('form_poliza.CuentaContable [' + (index + 1) + ']') }}</label>
-                                            </td>
-
-                                            <td class="form-group" :class="{'has-error': validation_errors.has('form_poliza.Tipo de Cuenta [' + (index + 1) + ']')}">
-
-                                            <select name="Tipo de Cuenta" class="form-control" v-validate="'required|numeric'"  v-model="movimiento.id_tipo_cuenta_contable">
-                                                <option value disabled>[-SELECCIONE-]</option>
-                                                <option v-for="(tipo_cuenta_contable, index) in tipo_cuenta_contable" :value="index">@{{ tipo_cuenta_contable }}</option>
-                                            </select>
-                                            <label class="help" v-show="validation_errors.has('form_add_movimiento.Tipo de Cuenta')">@{{ validation_errors.first('form_add_movimiento.Tipo de Cuenta') }}</label>
                                             </td>
 
                                             <td>@{{ movimiento.descripcion_cuenta_contable}}</td>

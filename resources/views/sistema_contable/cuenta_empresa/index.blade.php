@@ -1,23 +1,19 @@
 @extends('sistema_contable.layout')
 @section('title', 'Cuentas de Materiales')
-@section('contentheader_title', 'CUENTAS DE MATERIALES')
+@section('contentheader_title', 'CUENTA EMPRESA')
 
 @section('main-content')
-    {!! Breadcrumbs::render('sistema_contable.cuenta_material.index') !!}
+    {!! Breadcrumbs::render('sistema_contable.cuenta_empresa.index') !!}
 
     <div class="row">
-        <div class="col-sm-12">
-            <a  href="{{ route('sistema_contable.cuenta_material.create') }}" class="btn btn-success btn-app" style="float:right">
-                <i class="glyphicon glyphicon-plus-sign"></i>Nueva
-            </a>
-        </div>
+
     </div>
     @if(true)
         <div class="row" >
             <div class="col-md-12">
                 <div class="box box-info">
                     <div class="box-header with-border">
-                        <h3 class="box-title">Cuentas de Materiales</h3>
+                        <h3 class="box-title">Cuenta Empresa</h3>
                     </div>
                     <div class="box-body">
                         <div class="col-sm-12">
@@ -27,23 +23,32 @@
                                     <thead>
                                     <tr role="row">
                                         <th class="sorting_asc" tabindex="0" aria-controls="tipo_cuenta" aria-sort="ascending">#</th>
-                                        <th class="sorting" tabindex="0" aria-controls="tipo_cuenta">Material</th>
-                                        <th class="sorting" tabindex="0" aria-controls="tipo_cuenta">Tipo de Cuenta</th>
-                                        <th class="sorting" tabindex="0" aria-controls="tipo_cuenta">Cuenta Contable</th>
+                                        <th class="sorting" tabindex="0" aria-controls="tipo_cuenta">Empresa</th>
+                                        <th class="sorting" tabindex="0" aria-controls="tipo_cuenta">Cuentas Configuradas</th>
                                         <th></th>
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    <!-- // Statement de llenado   -->
+                                    @foreach($empresas as $index=>$empresa)
+                                        <tr>
+                                            <td>{{$index+1}}</td>
+                                            <td>{{$empresa->razon_social}}</td>
+                                            <td>{{$empresa->total_cuentas}}</td>
+                                            <td>
+                                                <a href="{{route('sistema_contable.cuenta_empresa.show',$empresa)}}" title="Ver" class="btn btn-xs btn-default"><i class="fa fa-eye"></i></a>
+                                                <a href="{{route('sistema_contable.cuenta_empresa.edit',$empresa)}}" title="Ver" class="btn btn-xs btn-info"><i class="fa fa-edit"></i></a>
+
+                                            </td>
+                                        </tr>
+                                    @endforeach
                                     </tbody>
                                     <tfoot>
-                                    <tr>
-                                        <th>ID</th>
-                                        <th>Material</th>
-                                        <th>Tipo de Cuenta</th>
-                                        <th>Cuenta Contable</th>
-                                        <th></th>
-                                    </tr>
+                                    <th >#</th>
+                                    <th>Cuenta</th>
+                                    <th>Cuentas Configuradas</th>
+                                    <th></th>
+
+
                                     </tfoot>
                                 </table>
                             </div>

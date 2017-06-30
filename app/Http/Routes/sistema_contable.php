@@ -44,22 +44,14 @@ Route::group(['prefix' => 'sistema_contable'], function () {
     Route::get('poliza_generada/{id}', 'PolizaController@show')->name('sistema_contable.poliza_generada.show')->where(['id' => '[0-9]+']);
     Route::get('poliza_generada/{id}/edit', 'PolizaController@edit')->name('sistema_contable.poliza_generada.edit')->where(['id' => '[0-9]+']);
     Route::get('poliza_generada/{poliza}/historico', 'PolizaHistoricoController@index')->name('sistema_contable.poliza_generada.historico')->where(['id' => '[0-9]+']);
-
-    /**
-     * Cuentas Materiales
-     */
-    Route::get('cuenta_material', 'CuentaMaterialController@index')->name('sistema_contable.cuenta_material.index');
-    Route::get('cuenta_material/create', 'CuentaMaterialController@create')->name('sistema_contable.cuenta_material.create');
-    Route::get('cuenta_material/show', 'CuentaMaterialController@show')->name('sistema_contable.cuenta_material.show');  // modificar, solo es de muestra
     Route::patch('poliza_generada/{id}', 'PolizaController@update')->name('sistema_contable.poliza_generada.update')->where(['id' => '[0-9]+']);
-    Route::get('cuenta_material/findBy', 'CuentaMaterialController@findBy');
 
     /**
-     * Relación Conceptos - Cuentas
+     * Relación Cuentas Concepto
      */
-    Route::get('concepto_cuenta', 'ConceptoCuentaController@index')->name('sistema_contable.concepto_cuenta.index');
-    Route::patch('concepto_cuenta/{id}', 'ConceptoCuentaController@update')->name('sistema_contable.concepto_cuenta.update');
-    Route::post('concepto_cuenta', 'ConceptoCuentaController@store')->name('sistema_contable.concepto_cuenta.store');
+    Route::get('cuenta_concepto', 'CuentaConceptoController@index')->name('sistema_contable.cuenta_concepto.index');
+    Route::patch('cuenta_concepto/{id}', 'CuentaConceptoController@update')->name('sistema_contable.cuenta_concepto.update');
+    Route::post('cuenta_concepto', 'CuentaConceptoController@store')->name('sistema_contable.cuenta_concepto.store');
 
     /**
      * Conceptos
@@ -70,17 +62,20 @@ Route::group(['prefix' => 'sistema_contable'], function () {
     /**
      * Cuentas Almacens Routes...
      */
-    Route::get('cuenta_almacen', 'AlmacenController@index')->name('sistema_contable.cuenta_almacen.index');
-
+    Route::get('cuenta_almacen', 'CuentaAlmacenController@index')->name('sistema_contable.cuenta_almacen.index');
+    Route::post('cuenta_almacen', 'CuentaAlmacenController@store')->name('sistema_contable.cuenta_almacen.store');
+    Route::patch('cuenta_almacen/{id}', 'CuentaAlmacenController@update')->name('sistema_contable.cuenta_almacen.update')->where(['id' => '[0-9]+']);
 
     /*
      * Cuentas de Empresa
      */
 
     Route::get('cuenta_empresa', 'CuentaEmpresaController@index')->name('sistema_contable.cuenta_empresa.index');
-    Route::get('cuenta_empresa/create', 'CuentaEmpresaController@create')->name('sistema_contable.cuenta_empresa.create');
-    Route::get('cuenta_empresa/show', 'CuentaEmpresaController@show')->name('sistema_contable.cuenta_empresa.show');  // modificar, solo es de muestra
-    Route::patch('cuenta_empresa/{id}', 'PolizaController@update')->name('sistema_contable.cuenta_empresa.update')->where(['id' => '[0-9]+']);
+    Route::post('cuenta_empresa', 'CuentaEmpresaController@store')->name('sistema_contable.cuenta_empresa.store');
+    Route::get('cuenta_empresa/{id}/edit', 'CuentaEmpresaController@edit')->name('sistema_contable.cuenta_empresa.edit')->where(['id' => '[0-9]+']);
+    Route::get('cuenta_empresa/{id}', 'CuentaEmpresaController@show')->name('sistema_contable.cuenta_empresa.show')->where(['id' => '[0-9]+']);
+    Route::delete('cuenta_empresa/{id}', 'CuentaEmpresaController@delete')->name('sistema_contable.cuenta_empresa.delete')->where(['id' => '[0-9]+']);
+    Route::patch('cuenta_empresa/{id}', 'CuentaEmpresaController@update')->name('sistema_contable.cuenta_empresa.update')->where(['id' => '[0-9]+']);
 
 
 });

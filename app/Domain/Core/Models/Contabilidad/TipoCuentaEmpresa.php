@@ -10,6 +10,7 @@ namespace Ghi\Domain\Core\Models\Contabilidad;
 
 
 use Ghi\Domain\Core\Models\BaseModel;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class TipoCuentaEmpresa extends BaseModel
 {
@@ -24,8 +25,14 @@ class TipoCuentaEmpresa extends BaseModel
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo|TipoCuentaContable
      */
-    public function tipoCuentaContable() {
+    public function tipoCuentaContable()
+    {
         return $this->belongsTo(TipoCuentaContable::class, 'id_int_tipo_cuenta_contable');
+    }
+
+    public function __toString()
+    {
+        return $this->descripcion;
     }
 
 }
