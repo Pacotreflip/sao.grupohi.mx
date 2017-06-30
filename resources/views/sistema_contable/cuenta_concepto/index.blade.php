@@ -1,6 +1,6 @@
 @extends('sistema_contable.layout')
-@section('title', 'Cuentas Concepto')
-@section('contentheader_title', 'CUENTAS CONCEPTO')
+@section('title', 'Cuentas Conceptos')
+@section('contentheader_title', 'CUENTAS CONCEPTOS')
 @section('contentheader_description', '(LISTA)')
 
 @section('main-content')
@@ -32,6 +32,7 @@
                                             <th>Cuenta Contable</th>
                                             <th>Usuario que Registró</th>
                                             <th>Fecha y Hora de Registro</th>
+                                            <th>Acciones</th>
                                         </tr>
                                         </thead>
                                         <tbody>
