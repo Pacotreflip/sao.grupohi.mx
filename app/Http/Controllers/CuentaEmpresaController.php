@@ -60,7 +60,7 @@ class CuentaEmpresaController extends Controller
 
     public function edit($id)
     {
-        $empresa = $this->empresa->find($id, ['cuentasEmpresa.tipoCuentaEmpresa']);
+        $empresa = $this->empresa->find($id, ['cuentasEmpresa.tipoCuentaEmpresa','user_registro']);
         $tipoCuentaEmpresa = $this->tipo_cuenta_empresa->all();
         return view('sistema_contable.cuenta_empresa.edit')->with('empresa', $empresa)->with('tipo_cuenta_empresa', $tipoCuentaEmpresa);
     }

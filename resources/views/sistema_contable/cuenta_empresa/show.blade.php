@@ -34,7 +34,7 @@
             </div>
         </div>
     </div>
-    @if($empresa->cuentasEmpresa)
+    @if(count($empresa->cuentasEmpresa)>0)
         <div class="row">
             <div class="col-md-12">
                 <div class="box box-success">

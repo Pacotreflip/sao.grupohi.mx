@@ -103,16 +103,16 @@
                                                 <b>Sumas Iguales</b>
                                             </th>
                                             <th class="bg-gray numerico">
-                                                <b>$@{{(suma_debe)}}</b>
+                                                <b>$ @{{(suma_debe)}}</b>
                                             </th>
                                             <th class="bg-gray numerico">
-                                                <b>$@{{(suma_haber)}}</b>
+                                                <b>$ @{{(suma_haber)}}</b>
                                             </th>
                                             <th class="bg-gray" colspan="3"></th>
                                         </tr>
                                         </tfoot>
                                     </table>
-                                    <div class="col-sm-12" style="text-align: right"><h4><b>Total de la Póliza:</b>  $@{{(data.poliza_edit.total)}}</h4></div>
+                                    <div class="col-sm-12" style="text-align: right"><h4><b>Total de la Póliza:</b>  $ @{{(data.poliza_edit.total)}}</h4></div>
                                 </div>
                             </div>
                             <div class="box-footer">

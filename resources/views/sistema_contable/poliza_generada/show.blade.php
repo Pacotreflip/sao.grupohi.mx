@@ -66,9 +66,9 @@
                                             @endif
                                            </td>
                                         <td class="bg-gray-light numerico">@if($movimiento->id_tipo_movimiento_poliza==1)
-                                                ${{number_format($movimiento->importe,'2','.',',')}}@endif</td>
+                                                $ {{number_format($movimiento->importe,'2','.',',')}}@endif</td>
                                         <td class="bg-gray-light numerico">@if($movimiento->id_tipo_movimiento_poliza==2)
-                                                ${{number_format($movimiento->importe,'2','.',',')}}@endif</td>
+                                                $ {{number_format($movimiento->importe,'2','.',',')}}@endif</td>
                                         <td>{{$movimiento->referencia}}</td>
                                         <td>{{$movimiento->concepto}}</td>
 
@@ -78,15 +78,15 @@
 
                                     <td colspan="2" class="bg-gray @if($poliza->cuadrado!=1) bg-red @endif" style="text-align: right"><b>Sumas Iguales  </b></td>
                                     <td class="bg-gray numerico @if($poliza->cuadrado!=1) bg-red @endif">
-                                        <b>${{number_format($poliza->sumaDebe,'2','.',',')}}</b></td>
+                                        <b>$ {{number_format($poliza->sumaDebe,'2','.',',')}}</b></td>
                                     <td class="bg-gray numerico @if($poliza->cuadrado!=1) bg-red @endif">
-                                        <b>${{number_format($poliza->sumaHaber,'2','.',',')}}</b></td>
+                                        <b>$ {{number_format($poliza->sumaHaber,'2','.',',')}}</b></td>
                                     <td class="bg-gray @if($poliza->cuadrado!=1) bg-red @endif"></td>
                                     <td class="bg-gray @if($poliza->cuadrado!=1) bg-red @endif"></td>
                                 </tr>
 
                             </table>
-                            <div class="col-sm-12" style="text-align: right"><h4><b>Total de la Póliza:</b>  ${{number_format($poliza->total,'2','.',',')}}</h4></div>
+                            <div class="col-sm-12" style="text-align: right"><h4><b>Total de la Póliza:</b>  $ {{number_format($poliza->total,'2','.',',')}}</h4></div>
                         @endif
 
 

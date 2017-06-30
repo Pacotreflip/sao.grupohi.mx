@@ -40,4 +40,5 @@ class Empresa extends BaseModel
         return $this->belongsTo(User::class, 'UsuarioRegistro', 'idusuario');
     }
 
+
 }

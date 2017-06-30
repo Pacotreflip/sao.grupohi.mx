@@ -34,7 +34,7 @@
                                             <dt>ID</dt>
                                             <dd>@{{empresa.id_empresa}}</dd>
                                             <dt>USUARIO QUE REGISTRÓ</dt>
-                                            <dd>@{{empresa.user_registro}}</dd>
+                                            <dd>@{{empresa.user_registro}} @{{empresa.user_registro.amaterno}} @{{empresa.user_registro.nombre}}</dd>
                                             <dt>FECHA Y HORA DE REGISTRO</dt>
                                             <dd>@{{empresa.FechaHoraRegistro}} </dd>
                                         </dl>
@@ -55,7 +55,7 @@
                     </div>
                 </div>
 
-                <div class="row">
+                <div class="row" v-if="data.empresa.cuentas_empresa.length > 0">
                     <div class="col-md-12">
                         <div class="box box-success">
                             <div class="box-header">
@@ -143,6 +143,7 @@
                                                  :class="{'has-error': validation_errors.has('form_create_cuenta.Cuenta Contable')}">
                                                 <label class="control-label">Cuenta Contable</label>
                                                 <input type="text"
+                                                       :placeholder="datos_contables.FormatoCuenta"
                                                        v-validate="'required|regex:' + datos_contables.FormatoCuentaRegExp"
                                                        class="form-control" name="Cuenta Contable"
                                                        v-model="form.cuenta_empresa_create.cuenta">
@@ -195,6 +196,7 @@
                                             <div class="form-group">
                                                 <label class="control-label">Cuenta Contable</label>
                                                 <input type="text" class="form-control" name="Cuenta Contable"
+                                                       :placeholder="datos_contables.FormatoCuenta"
                                                        v-model="form.cuenta_empresa_create.tipo_cuenta_empresa.descripcion"
                                                        disabled>
                                             </div>

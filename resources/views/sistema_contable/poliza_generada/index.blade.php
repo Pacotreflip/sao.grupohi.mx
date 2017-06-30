@@ -35,8 +35,8 @@
                                     <td>{{ $index+1}}</td>
                                     <td>{{ $item->tipoPolizaContpaq}}</td>
                                     <td>{{ $item->concepto}}</td>
-                                    <td class="numerico">${{number_format($item->total,'2','.',',')}}</td>
-                                    <td class="numerico">${{number_format($item->cuadre,'2','.',',')}}</td>
+                                    <td class="numerico">$ {{number_format($item->total,'2','.',',')}}</td>
+                                    <td class="numerico">$ {{number_format($item->cuadre,'2','.',',')}}</td>
                                     <td class="">
                                            @if($item->estatus=='Registrada') <span class="label bg-blue">Registrada</span>@endif
                                             @if($item->estatus=='Lanzada') <span class="label bg-green">Lanzada</span>@endif
