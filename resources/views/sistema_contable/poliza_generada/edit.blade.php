@@ -31,7 +31,7 @@
                                             <th class="bg-gray-light">Poliza
                                                 :<br><label>{{ $poliza->transaccionInterfaz}}</label></th>
                                             <th class="bg-gray-light">Fecha de Solicitud
-                                                :<br><label>{{ $poliza->created_at}}</label></th>
+                                                :<br><label>{{ $poliza->created_at->format('Y-m-d h:i:s a')}}</label></th>
                                         </tr>
                                         <tr>
                                             <th class="bg-gray-light form-group" :class="{'has-error': validation_errors.has('form_poliza.Concepto')}">
@@ -48,7 +48,7 @@
                                         <tr>
                                             <th class="bg-gray-light">#</th>
                                             <th class="bg-gray-light">Cuenta Contable</th>
-                                            <th class="bg-gray-light">Nombre Cuenta Contable</th>
+                                            <th class="bg-gray-light">Tipo Cuenta Contable</th>
                                             <th class="bg-gray-light">Tipo</th>
                                             <th class="bg-gray-light">Debe</th>
                                             <th class="bg-gray-light">Haber</th>

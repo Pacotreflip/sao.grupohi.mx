@@ -21,7 +21,7 @@
                                 <th colspan="5" class="bg-gray-light">Póliza
                                     :<br><label>{{ $poliza->transaccionInterfaz}}</label></th>
                                 <th class="bg-gray-light">Fecha de Solicitud
-                                    :<br><label>{{ $poliza->created_at->format('g:ia \o\n l jS F Y') }}</label></th>
+                                    :<br><label>{{ $poliza->created_at->format('Y-m-d h:i:s a')}}</label></th>
                             </tr>
                             <tr>
                                 <th colspan="4" class="bg-gray-light">Concepto:
@@ -34,19 +34,10 @@
 
                         @if($poliza->polizaMovimientos()->count())
                             <table class="table table-bordered">
-                                <!--  <tr>
-                                       <th>Tipo de Póliza</th>
 
-                                       <th>Total</th>
-                                       <th>Cuadre</th>
-                                       <th>Estatus</th>
-                                       <th>Poliza ContPaq</th>
-                                   </tr>
-
-                                   -->
                                 <tr>
                                     <th class="bg-gray-light">Cuenta Contable</th>
-                                    <th class="bg-gray-light">Nombre Cuenta Contable</th>
+                                    <th class="bg-gray-light">Tipo Cuenta Contable</th>
                                     <th class="bg-gray-light">Debe</th>
                                     <th class="bg-gray-light">Haber</th>
                                     <th class="bg-gray-light">Referencia</th>
