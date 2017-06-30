@@ -28,10 +28,14 @@
                                 <div class="table-responsive">
                                     <table class="table table-bordered ">
                                         <tr>
-                                            <th class="bg-gray-light">Poliza
-                                                :<br><label>{{ $poliza->transaccionInterfaz}}</label></th>
-                                            <th class="bg-gray-light">Fecha de Solicitud
-                                                :<br><label>{{ $poliza->created_at->format('Y-m-d h:i:s a')}}</label></th>
+                                            <th class="bg-gray-light">
+                                                Poliza:<br>
+                                                <label>{{ $poliza->transaccionInterfaz}}</label>
+                                            </th>
+                                            <th class="bg-gray-light">
+                                                Fecha de Solicitud:<br>
+                                                <label>{{ $poliza->created_at->format('Y-m-d h:i:s a')}}</label>
+                                            </th>
                                         </tr>
                                         <tr>
                                             <th class="bg-gray-light form-group" :class="{'has-error': validation_errors.has('form_poliza.Concepto')}">
@@ -39,8 +43,10 @@
                                                 <input name="Concepto" type="text" v-validate="'required'" class="form-control input-sm" v-model="data.poliza_edit.concepto">
                                                 <label class="help" v-show="validation_errors.has('form_poliza.Concepto')">@{{ validation_errors.first('form_poliza.Concepto') }}</label>
                                             </th>
-                                            <th class="bg-gray-light">Usuario
-                                                Solicita:<br><label> {{$poliza->usuario_solicita }}</label></th>
+                                            <th class="bg-gray-light">
+                                                Usuario Solicita:<br>
+                                                <label> {{$poliza->usuario_solicita }}</label>
+                                            </th>
                                         </tr>
                                     </table>
                                     <table class="table table-bordered">
@@ -103,16 +109,18 @@
                                                 <b>Sumas Iguales</b>
                                             </th>
                                             <th class="bg-gray numerico">
-                                                <b>$ @{{(suma_debe)}}</b>
+                                                <b>$ @{{(parseFloat(suma_debe)).formatMoney(2,'.',',')}}</b>
                                             </th>
                                             <th class="bg-gray numerico">
-                                                <b>$ @{{(suma_haber)}}</b>
+                                                <b>$ @{{(parseFloat(suma_haber)).formatMoney(2,'.',',')}}</b>
                                             </th>
                                             <th class="bg-gray" colspan="3"></th>
                                         </tr>
                                         </tfoot>
                                     </table>
-                                    <div class="col-sm-12" style="text-align: right"><h4><b>Total de la Póliza:</b>  $ @{{(data.poliza_edit.total)}}</h4></div>
+                                    <div class="col-sm-12" style="text-align: right">
+                                        <h4><b>Total de la Póliza:</b>  $ @{{ (parseFloat(data.poliza_edit.total)).formatMoney(2,'.',',')}}</h4>
+                                    </div>
                                 </div>
                             </div>
                             <div class="box-footer">
@@ -150,7 +158,7 @@
                                     <div class="col-md-6">
                                         <div class="form-group" :class="{'has-error': validation_errors.has('form_add_movimiento.Cuenta Contable')}">
                                             <label for="">Cuenta Contable</label>
-                                            <input type="text" v-validate="'required|regex:' + datos_contables.FormatoCuentaRegExp" class="form-control" name="Cuenta Contable" v-model="form.movimiento.cuenta_contable">
+                                            <input :placeholder="datos_contables.FormatoCuenta" type="text" v-validate="'required|regex:' + datos_contables.FormatoCuentaRegExp" class="form-control" name="Cuenta Contable" v-model="form.movimiento.cuenta_contable">
                                             <label class="help" v-show="validation_errors.has('form_add_movimiento.Cuenta Contable')">@{{ validation_errors.first('form_add_movimiento.Cuenta Contable') }}</label>
                                         </div>
                                     </div>

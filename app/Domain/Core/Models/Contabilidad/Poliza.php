@@ -136,13 +136,6 @@ class Poliza extends BaseModel
         }
         return true;
     }
-    /**
-     * @param total
-     * @return total con 2 decimales
-     */
-    public function getTotalAttribute($value) {
-        return  $this->attributes['total'] = number_format((float)$value, 2, '.', '');
-    }
 
     public function  getEstatusAttribute($estatus){
         switch ($estatus){
@@ -162,5 +155,4 @@ class Poliza extends BaseModel
                 break;
         }
     }
-
 }
