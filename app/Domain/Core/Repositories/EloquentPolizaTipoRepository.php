@@ -51,7 +51,7 @@ class EloquentPolizaTipoRepository implements PolizaTipoRepository
             $fin_vigencia = Carbon::createFromFormat('Y-m-d H', $data['inicio_vigencia']. ' 00')->subSecond();
             $fecha_minima = $this->model->fecha_minima($data['id_transaccion_interfaz']);
 
-            if($inicio_vigencia->lte($fecha_minima)) {
+            if($fecha_minima && $inicio_vigencia->lte($fecha_minima)) {
                 throw new HttpResponseException(new Response('La fecha de Inicio de Vigencia debe ser mayor a '. $fecha_minima->ToDateString() . ', ya que existe una plantilla que entrará en vigor en esa fecha', 400));
             }
 
@@ -102,10 +102,9 @@ class EloquentPolizaTipoRepository implements PolizaTipoRepository
     public function findBy($attribute, $value, $with = null)
     {
         if ($with != null) {
-            return $this->model->with($with)->vigentes()->where($attribute, '=', $value)->first();
-
+            return $this->model->orderBy('id', 'DESC')->with($with)->where($attribute, '=', $value)->first();
         }
-        return $this->model->vigentes()->where($attribute, '=', $value)->first();
+        return $this->model->orderBy('id', 'DESC')->where($attribute, '=', $value)->first();
     }
 
     public function delete($data, $id)

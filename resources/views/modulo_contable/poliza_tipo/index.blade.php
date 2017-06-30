@@ -7,12 +7,12 @@
     <div class="row">
         <div class="col-sm-12">
             <a href="{{ route('modulo_contable.poliza_tipo.create') }}" class="btn btn-app btn-success" style="float:right">
-                <i class="glyphicon glyphicon-plus-sign"></i>Nuevo
+                <i class="glyphicon glyphicon-plus-sign"></i>Nueva
             </a>
         </div>
     </div>
     <br>
-    @if(count($polizas_tipo)>0)
+    @if(count($polizas_tipo) > 0)
     <div class="row" >
         <div class="col-md-12">
             <div class="box">
@@ -46,12 +46,12 @@
                                         <td>{{ $item->userRegistro }}</td>
                                         <td>{{ $item->created_at->format('Y-m-d h:i:s a') }}</td>
                                         <td>
-                                            @if($item->vigente=="Vigente")
+                                            @if($item->vigencia == "Vigente")
                                                 <span class="label label-success">Vigente</span>
-                                            @elseif($item->vigente=="No Vigente")
+                                            @elseif($item->vigencia == "No Vigente")
                                                 <span class="label label-danger">No Vigente</span>
                                             @else
-                                                <span class="label label-warning">Pendiente</span>
+                                                <span class="label label-info">Pendiente</span>
                                             @endif
                                         </td>
                                         <td style="min-width: 90px;max-width: 90px">
@@ -81,7 +81,6 @@
                                 </tfoot>
                             </table>
                         </div>
-
                     </div>
                     <br/>
                 </div>
@@ -89,12 +88,6 @@
         </div>
     </div>
 @endif
-    <form id='delete' method="post">
-        <input type='hidden' name='motivo' value/>
-        {{csrf_field()}}
-        <input type="hidden" name="_method" value="delete"/>
-    </form>
-
 @endsection
 @section('scripts-content')
     <script>
@@ -110,7 +103,6 @@
                 confirmButtonText: "Si, Eliminar",
                 cancelButtonText: "No, Cancelar",
                 showLoaderOnConfirm: true
-
             },
             function(inputValue){
                 if (inputValue === false) return false;
@@ -130,7 +122,7 @@
                         swal({
                             type: "success",
                             title: '¡Correcto!',
-                            text: 'Plantilla Eliminada con éxito'
+                            text: 'Plantilla Eliminada con éxito',
                             confirmButtonText: "Ok",
                             closeOnConfirm: false
                         },

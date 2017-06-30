@@ -73,7 +73,7 @@ class PolizaTipo extends BaseModel
     public function getVigenciaAttribute() {
 
         $actual = Carbon::now()->timestamp;
-        if($this->inicio_vigencia->timestamp>$actual&&$this->fin_vigencia==null){
+        if($this->inicio_vigencia->timestamp>$actual && ($this->fin_vigencia==null || $this->fin_vigencia->timestamp > $actual)){
             return "Pendiente";
         }
         if (!$this->fin_vigencia) {
@@ -91,6 +91,9 @@ class PolizaTipo extends BaseModel
 
     static public function fecha_minima($id_transaccion_interfaz) {
         $item = PolizaTipo::select(DB::raw("MAX(inicio_vigencia) as min_date"))->where('id_transaccion_interfaz','=', $id_transaccion_interfaz)->get();
+        if (! $item[0]->min_date) {
+            return null;
+        }
         return Carbon::createFromFormat('Y-m-d H', explode(" ", $item[0]->min_date)[0]. ' 00');
     }
 }
