@@ -49,17 +49,16 @@
                                                 </td>
                                                 <td style="min-width: 90px;max-width: 90px">
                                                     <div class="btn-group">
-                                                        <button class="btn btn-xs btn-info" @click="editar(item)"> <i class="fa fa-edit"></i></button>
+                                                        <button title="Editar" class="btn btn-xs btn-info" @click="editar(item)"> <i class="fa fa-edit"></i></button>
                                                     </div>
                                                 </td>
-                                                        </tr>
-
-
+                                            </tr>
                                             </tbody>
                                             <tfoot>
                                                 <tr>
                                                     <th>#</th>
                                                     <th>Almacén</th>
+                                                    <th>Tipo de Almacén</th>
                                                     <th>Cuenta Contable</th>
                                                     <th>Acciones</th>
                                                 </tr>

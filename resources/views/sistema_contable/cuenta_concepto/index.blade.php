@@ -1,6 +1,6 @@
 @extends('sistema_contable.layout')
-@section('title', 'Cuentas Conceptos')
-@section('contentheader_title', 'CUENTAS CONCEPTOS')
+@section('title', 'Cuentas de Conceptos')
+@section('contentheader_title', 'CUENTAS DE CONCEPTOS')
 @section('contentheader_description', '(LISTA)')
 
 @section('main-content')
@@ -21,7 +21,7 @@
                         <!-- Datos Concepto de la Cuenta -->
                         <div class="box box-info">
                             <div class="box-header with-border">
-                                <h3 class="box-title">Cuentas Concepto</h3>
+                                <h3 class="box-title">Cuentas de Conceptos</h3>
                             </div>
                             <div class="box-body">
                                 <div class="table-responsive">
@@ -69,7 +69,7 @@
                                                     @{{ concepto.cuenta_concepto != null ? (new Date(concepto.cuenta_concepto.created_at)).dateFormat() : '---' }}
                                                 </td>
                                                 <td>
-                                                    <button class="btn btn-xs btn-info" @click="edit_cuenta(concepto)"> <i class="fa fa-edit"></i></button>
+                                                    <button title="Editar" class="btn btn-xs btn-info" @click="edit_cuenta(concepto)"> <i class="fa fa-edit"></i></button>
                                                 </td>
                                             </tr>
                                         </tbody>

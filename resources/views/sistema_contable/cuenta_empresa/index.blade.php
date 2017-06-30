@@ -1,6 +1,6 @@
 @extends('sistema_contable.layout')
-@section('title', 'Cuentas de Materiales')
-@section('contentheader_title', 'CUENTA EMPRESA')
+@section('title', 'Cuentas de Empresas')
+@section('contentheader_title', 'CUENTAS DE EMPRESAS')
 
 @section('main-content')
     {!! Breadcrumbs::render('sistema_contable.cuenta_empresa.index') !!}
@@ -8,12 +8,11 @@
     <div class="row">
 
     </div>
-    @if(true)
         <div class="row" >
             <div class="col-md-12">
                 <div class="box box-info">
                     <div class="box-header with-border">
-                        <h3 class="box-title">Cuenta Empresa</h3>
+                        <h3 class="box-title">Cuentas de Empresas</h3>
                     </div>
                     <div class="box-body">
                         <div class="col-sm-12">
@@ -24,7 +23,7 @@
                                     <tr role="row">
                                         <th class="sorting_asc" tabindex="0" aria-controls="tipo_cuenta" aria-sort="ascending">#</th>
                                         <th class="sorting" tabindex="0" aria-controls="tipo_cuenta">Empresa</th>
-                                        <th class="sorting" tabindex="0" aria-controls="tipo_cuenta">Cuentas Configuradas</th>
+                                        <th class="sorting" tabindex="0" aria-controls="tipo_cuenta">Número de Cuentas Configuradas</th>
                                         <th></th>
                                     </tr>
                                     </thead>
@@ -36,19 +35,16 @@
                                             <td>{{$empresa->total_cuentas}}</td>
                                             <td>
                                                 <a href="{{route('sistema_contable.cuenta_empresa.show',$empresa)}}" title="Ver" class="btn btn-xs btn-default"><i class="fa fa-eye"></i></a>
-                                                <a href="{{route('sistema_contable.cuenta_empresa.edit',$empresa)}}" title="Ver" class="btn btn-xs btn-info"><i class="fa fa-edit"></i></a>
-
+                                                <a href="{{route('sistema_contable.cuenta_empresa.edit',$empresa)}}" title="Editar" class="btn btn-xs btn-info"><i class="fa fa-edit"></i></a>
                                             </td>
                                         </tr>
                                     @endforeach
                                     </tbody>
                                     <tfoot>
                                     <th >#</th>
-                                    <th>Cuenta</th>
-                                    <th>Cuentas Configuradas</th>
+                                    <th>Empresa</th>
+                                    <th>Número de Cuentas Configuradas</th>
                                     <th></th>
-
-
                                     </tfoot>
                                 </table>
                             </div>
@@ -57,6 +53,4 @@
                     </div>
             </div>
         </div>
-    @endif
-
 @endsection
