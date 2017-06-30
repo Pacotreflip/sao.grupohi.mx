@@ -138,4 +138,8 @@ class Poliza extends BaseModel
         return true;
     }
 
+    public function __toString()
+    {
+        return (String) $this->tipoPolizaContpaq;
+    }
 }
