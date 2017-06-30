@@ -1,6 +1,6 @@
 @extends('sistema_contable.layout')
-@section('title', 'Relación Concepto Cuenta')
-@section('contentheader_title', 'RELACIÓN CONCEPTO - CUENTA')
+@section('title', 'Cuentas Concepto')
+@section('contentheader_title', 'CUENTAS CONCEPTO')
 @section('contentheader_description', '(LISTA)')
 
 @section('main-content')
@@ -8,7 +8,7 @@
     <hr>
 
     <div id="app">
-        <cuenta-concepto-edit
+        <cuenta-concepto-index
                 :conceptos="{{$conceptos}}"
                 :url_concepto_get_by="'{{route('sistema_contable.concepto.getBy')}}'"
                 :url_store_cuenta="'{{route('sistema_contable.cuenta_concepto.store')}}'"
@@ -21,7 +21,7 @@
                         <!-- Datos Concepto de la Cuenta -->
                         <div class="box box-info">
                             <div class="box-header with-border">
-                                <h3 class="box-title">Relación Concepto - Cuenta</h3>
+                                <h3 class="box-title">Cuentas Concepto</h3>
                             </div>
                             <div class="box-body">
                                 <div class="table-responsive">
@@ -35,7 +35,7 @@
                                         </tr>
                                         </thead>
                                         <tbody>
-                                            <tr  v-for="(concepto,index) in conceptos_ordenados" :class="tr_class(concepto)" :id="tr_id(concepto)" >
+                                            <tr  v-for="(concepto, index) in conceptos_ordenados" :class="tr_class(concepto)" :id="tr_id(concepto)" >
                                                 <td v-if="concepto.id_padre == null">
                                                     @{{ concepto.descripcion }}
                                                     <a :disabled="cargando" v-if="concepto.tiene_hijos > 0 && ! concepto.cargado" @click="get_hijos(concepto)">
@@ -65,7 +65,7 @@
                                                     @{{ concepto.cuenta_concepto != null ? concepto.cuenta_concepto.usuario_registro : '---' }}
                                                 </td>
                                                 <td>
-                                                    @{{ concepto.cuenta_concepto != null ? concepto.cuenta_concepto.created_at : '---' }}
+                                                    @{{ concepto.cuenta_concepto != null ? (new Date(concepto.cuenta_concepto.created_at)).dateFormat() : '---' }}
                                                 </td>
                                                 <td>
                                                     <button class="btn btn-xs btn-info" @click="edit_cuenta(concepto)"> <i class="fa fa-edit"></i></button>
@@ -121,6 +121,6 @@
                     </div>
                 </div>
             </section>
-        </cuenta-concepto-edit>
+        </cuenta-concepto-index>
     </div>
 @endsection

@@ -74,7 +74,7 @@ Breadcrumbs::register('sistema_contable.poliza_generada.historico', function ($b
  */
 Breadcrumbs::register('sistema_contable.cuenta_concepto.index', function ($breadcrumb) {
     $breadcrumb->parent('sistema_contable.index');
-    $breadcrumb->push('RELACIÓN CONCEPTO - CUENTA', route('sistema_contable.cuenta_concepto.index'));
+    $breadcrumb->push('CUENTAS CONCEPTO', route('sistema_contable.cuenta_concepto.index'));
 });
 
 /**

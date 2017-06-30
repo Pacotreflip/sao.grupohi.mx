@@ -5,7 +5,7 @@ require('./vue-components/select2');
 require('./vue-components/tipo_cuenta_contable/tipo-cuenta-contable-create');
 require('./vue-components/cuenta_contable/configuracion-contable');
 require('./vue-components/poliza_generada/poliza-generada-edit');
-require('./vue-components/cuenta_concepto/cuenta-concepto-edit');
+require('./vue-components/cuenta_concepto/index');
 require('./vue-components/cuenta_material/cuenta-material-index');
 require('./vue-components/cuenta_empresa/cuenta-empresa-edit');
 require('./vue-components/cuenta_almacen/index');

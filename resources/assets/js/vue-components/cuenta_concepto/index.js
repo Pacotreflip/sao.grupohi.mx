@@ -1,4 +1,4 @@
-Vue.component('cuenta-concepto-edit', {
+Vue.component('cuenta-concepto-index', {
     props: ['conceptos','url_concepto_get_by', 'datos_contables', 'url_store_cuenta'],
     data: function () {
         return {

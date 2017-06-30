@@ -36298,6 +36298,34 @@ Number.prototype.formatMoney = function (c, d, t) {
     return s + (j ? i.substr(0, j) + t : "") + i.substr(j).replace(/(\d{3})(?=\d)/g, "$1" + t) + (c ? d + Math.abs(n - i).toFixed(c).slice(2) : "");
 };
 
+Date.prototype.dateFormat = function () {
+    var date = this;
+    var sMonth = padValue(date.getMonth() + 1);
+    var sDay = padValue(date.getDate());
+    var sYear = date.getFullYear();
+    var sHour = date.getHours();
+    var sMinute = padValue(date.getMinutes());
+    var sSecond = padValue(date.getSeconds());
+
+    var sAMPM = "am";
+
+    var iHourCheck = parseInt(sHour);
+
+    if (iHourCheck > 12) {
+        sAMPM = "pm";
+        sHour = iHourCheck - 12;
+    } else if (iHourCheck === 0) {
+        sHour = "12";
+    }
+
+    sHour = padValue(sHour);
+    return sYear + "-" + sMonth + "-" + sDay + " " + sHour + ":" + sMinute + ":" + sSecond + " " + sAMPM;
+};
+
+function padValue(value) {
+    return value < 10 ? "0" + value : value;
+};
+
 },{}],30:[function(require,module,exports){
 'use strict';
 
@@ -36308,12 +36336,12 @@ require('./vue-components/select2');
 require('./vue-components/tipo_cuenta_contable/tipo-cuenta-contable-create');
 require('./vue-components/cuenta_contable/configuracion-contable');
 require('./vue-components/poliza_generada/poliza-generada-edit');
-require('./vue-components/cuenta_concepto/cuenta-concepto-edit');
+require('./vue-components/cuenta_concepto/index');
 require('./vue-components/cuenta_material/cuenta-material-index');
 require('./vue-components/cuenta_empresa/cuenta-empresa-edit');
 require('./vue-components/cuenta_almacen/index');
 
-},{"./vue-components/cuenta_almacen/index":31,"./vue-components/cuenta_concepto/cuenta-concepto-edit":32,"./vue-components/cuenta_contable/configuracion-contable":33,"./vue-components/cuenta_empresa/cuenta-empresa-edit":34,"./vue-components/cuenta_material/cuenta-material-index":35,"./vue-components/errors":36,"./vue-components/global-errors":37,"./vue-components/poliza_generada/poliza-generada-edit":38,"./vue-components/poliza_tipo/poliza-tipo-create":39,"./vue-components/select2":40,"./vue-components/tipo_cuenta_contable/tipo-cuenta-contable-create":43}],31:[function(require,module,exports){
+},{"./vue-components/cuenta_almacen/index":31,"./vue-components/cuenta_concepto/index":32,"./vue-components/cuenta_contable/configuracion-contable":33,"./vue-components/cuenta_empresa/cuenta-empresa-edit":34,"./vue-components/cuenta_material/cuenta-material-index":35,"./vue-components/errors":36,"./vue-components/global-errors":37,"./vue-components/poliza_generada/poliza-generada-edit":38,"./vue-components/poliza_tipo/poliza-tipo-create":39,"./vue-components/select2":40,"./vue-components/tipo_cuenta_contable/tipo-cuenta-contable-create":43}],31:[function(require,module,exports){
 'use strict';
 
 Vue.component('cuenta-almacen-index', {
@@ -36465,7 +36493,7 @@ Vue.component('cuenta-almacen-index', {
 },{}],32:[function(require,module,exports){
 'use strict';
 
-Vue.component('cuenta-concepto-edit', {
+Vue.component('cuenta-concepto-index', {
     props: ['conceptos', 'url_concepto_get_by', 'datos_contables', 'url_store_cuenta'],
     data: function data() {
         return {
