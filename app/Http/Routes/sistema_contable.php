@@ -46,15 +46,6 @@ Route::group(['prefix' => 'sistema_contable'], function () {
     Route::get('poliza_generada/{poliza}/historico', 'PolizaHistoricoController@index')->name('sistema_contable.poliza_generada.historico')->where(['id' => '[0-9]+']);
 
     /**
-     * Cuentas Materiales
-     */
-    Route::get('cuenta_material', 'CuentaMaterialController@index')->name('sistema_contable.cuenta_material.index');
-    Route::get('cuenta_material/create', 'CuentaMaterialController@create')->name('sistema_contable.cuenta_material.create');
-    Route::get('cuenta_material/show', 'CuentaMaterialController@show')->name('sistema_contable.cuenta_material.show');  // modificar, solo es de muestra
-    Route::patch('poliza_generada/{id}', 'PolizaController@update')->name('sistema_contable.poliza_generada.update')->where(['id' => '[0-9]+']);
-    Route::get('cuenta_material/findBy', 'CuentaMaterialController@findBy');
-
-    /**
      * Relación Cuentas Concepto
      */
     Route::get('cuenta_concepto', 'CuentaConceptoController@index')->name('sistema_contable.cuenta_concepto.index');
@@ -70,8 +61,9 @@ Route::group(['prefix' => 'sistema_contable'], function () {
     /**
      * Cuentas Almacens Routes...
      */
-    Route::get('cuenta_almacen', 'AlmacenController@index')->name('sistema_contable.cuenta_almacen.index');
-
+    Route::get('cuenta_almacen', 'CuentaAlmacenController@index')->name('sistema_contable.cuenta_almacen.index');
+    Route::post('cuenta_almacen', 'CuentaAlmacenController@store')->name('sistema_contable.cuenta_almacen.store');
+    Route::patch('cuenta_almacen/{id}', 'CuentaAlmacenController@update')->name('sistema_contable.cuenta_almacen.update')->where(['id' => '[0-9]+']);
 
     /*
      * Cuentas de Empresa

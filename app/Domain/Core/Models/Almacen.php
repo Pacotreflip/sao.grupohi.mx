@@ -14,7 +14,7 @@ class Almacen extends BaseModel
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany|CuentaAlmacen
      */
-    public function cuentasAlmacen(){
+    public function cuentaAlmacen(){
         return $this->hasOne(CuentaAlmacen::class, "id_almacen");
     }
 }
