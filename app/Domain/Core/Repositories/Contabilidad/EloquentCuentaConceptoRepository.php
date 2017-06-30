@@ -61,7 +61,9 @@ class EloquentCuentaConceptoRepository implements CuentaConceptoRepository
             if (! $old = $this->model->find($id)) {
                 throw new HttpResponseException(new Response('No se encontró la Cuenta del Concepto que se desea Actualizar', 404));
             }
-
+            if($old->cuenta == $data['cuenta']) {
+                throw new HttpResponseException(new Response('La cuenta Concepto que intentas actualizar es la misma', 404));
+            }
             $new = $this->model->create([
                 'id_concepto' => $old->id_concepto,
                 'cuenta' => $data['cuenta'],

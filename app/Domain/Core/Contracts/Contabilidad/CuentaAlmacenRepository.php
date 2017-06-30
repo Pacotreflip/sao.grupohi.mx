@@ -12,11 +12,20 @@ namespace Ghi\Domain\Core\Contracts\Contabilidad;
 interface CuentaAlmacenRepository
 {
     /**
-     * Guarda un nuevo registro de Cuenta de Almacén
-     *
-     * @param $data
-     * @return \Ghi\Domain\Core\Models\CuentaAlmacen
+     * Guarda un registro de cuenta almacén
+     * @param array $data
+     * @return \Ghi\Domain\Core\Models\Contabilidad\CuentaAlmacen
      * @throws \Exception
      */
-    public function create($data);
+    public function create(array $data);
+
+    /**
+     * Actualiza un registro de cuenta almacén
+     * @param array $data
+     * @param $id
+     * @return \Ghi\Domain\Core\Models\Contabilidad\CuentaAlmacen
+     * @throws \Exception
+     */
+    public function update(array $data,$id);
+
 }

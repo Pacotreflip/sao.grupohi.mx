@@ -71,12 +71,8 @@ Route::group(['prefix' => 'sistema_contable'], function () {
      * Cuentas Almacens Routes...
      */
     Route::get('cuenta_almacen', 'CuentaAlmacenController@index')->name('sistema_contable.cuenta_almacen.index');
-
-    /*
-     * Almacen Routes...
-     */
-    Route::get('almacen', 'AlmacenController@index')->name('sistema_contable.almacen.index');
-    Route::get('almacen/{id}', 'AlmacenController@show')->name('sistema_contable.almacen.show')->where(['id' => '[0-9]+']);
+    Route::post('cuenta_almacen', 'CuentaAlmacenController@store')->name('sistema_contable.cuenta_almacen.store');
+    Route::patch('cuenta_almacen/{id}', 'CuentaAlmacenController@update')->name('sistema_contable.cuenta_almacen.update')->where(['id' => '[0-9]+']);
 
     /*
      * Cuentas de Empresa

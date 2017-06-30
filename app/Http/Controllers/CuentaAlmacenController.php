@@ -5,6 +5,7 @@ namespace Ghi\Http\Controllers;
 use Ghi\Domain\Core\Contracts\AlmacenRepository;
 use Ghi\Domain\Core\Contracts\Contabilidad\CuentaAlmacenRepository;
 use Dingo\Api\Routing\Helpers;
+use Illuminate\Http\Request;
 
 class CuentaAlmacenController extends Controller
 {
@@ -36,15 +37,15 @@ class CuentaAlmacenController extends Controller
             ->with('almacenes', $almacenes);
     }
 
-    /**
-     * Guarda un registro de una Asignacion de Cuenta a una Cuenta de Alamcen
-     */
-    public function store(Request $request)
-    {
 
+    public function update(Request $request, $id) {
+        $item = $this->cuenta_almacen->update($request->all(), $id);
+        return response()->json(['data' => ['cuenta_almacen' => $item]],200);
+    }
+
+    public function store(Request $request) {
         $item = $this->cuenta_almacen->create($request->all());
-
-        return $this->response->created(route('sistema_contable.cuenta_almacen.show', $item));
+        return response()->json(['data' => ['cuenta_almacen' => $item]],200);
     }
 
 
