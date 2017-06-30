@@ -73,6 +73,7 @@ class EloquentPolizaRepository implements PolizaRepository
                 throw new HttpResponseException(new Response('No se encontró la poliza', 404));
             }
             $poliza->concepto = $data['poliza_generada']['concepto'];
+            $poliza->estatus=0;
             $cuentas_debe = false;
             $cuentas_haber = false;
             $suma_debe = $data['poliza_generada']['suma_debe'];

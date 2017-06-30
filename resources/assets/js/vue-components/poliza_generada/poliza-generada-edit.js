@@ -172,7 +172,7 @@ Vue.component('poliza-generada-edit', {
                 success: function (data, textStatus, xhr) {
                     swal({
                         title: '¡Correcto!',
-                        html: 'Póliza  <b>' +self.data.poliza_edit.tipo_poliza_contpaq.descripcion + '</b> actualizada correctamente',
+                        html: 'Póliza  <b>' +self.data.poliza_edit.transaccion_interfaz.descripcion + '</b> actualizada correctamente',
                         type: 'success',
                         confirmButtonText: "Ok",
                         closeOnConfirm: false
