@@ -137,8 +137,8 @@ class Poliza extends BaseModel
         return true;
     }
 
-    public function  getEstatusAttribute($estatus){
-        switch ($estatus){
+    public function  getEstatusStringAttribute(){
+        switch ($this->estatus){
             case 0:
                 return "Registrada";
                 break;
