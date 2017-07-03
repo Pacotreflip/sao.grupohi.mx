@@ -9,13 +9,13 @@ interface PolizaRepository
      *
      * @return \Illuminate\Database\Eloquent\Collection|Poliza
      */
-    public function all($with = null);
+    public function all();
 
     /**
      * @param $id
      * @return mixed \Illuminate\Database\Eloquent\Collection|Poliza
      */
-    public function find($id, $with = null);
+    public function find($id);
 
 
     /**
@@ -25,4 +25,12 @@ interface PolizaRepository
      * @throws \Exception
      */
     public function update(array $data, $id);
+
+
+    /**Crea relaciones con otros modelos
+     * @param array $array
+     * @return mixed
+     */
+    public function with($relations);
+
 }

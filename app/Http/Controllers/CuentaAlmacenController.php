@@ -31,7 +31,7 @@ class CuentaAlmacenController extends Controller
     }
 
     public function index() {
-        $almacenes = $this->almacen->all('cuentaAlmacen');
+        $almacenes = $this->almacen->with('cuentaAlmacen')->all();
 
         return view('sistema_contable.cuenta_almacen.index')
             ->with('almacenes', $almacenes);

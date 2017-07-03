@@ -37,13 +37,9 @@ class EloquentCuentaEmpresaRepository implements CuentaEmpresaRepository
      *
      * @return \Illuminate\Database\Eloquent\Collection|CuentaEmpresa
      */
-    public function all($with = null)
+    public function all()
     {
-        if ($with != null) {
-            return $this->model->all()->with($with);
-        }
-        return $this->model->all();
-
+        return $this->model->get();
     }
 
     /**
@@ -65,22 +61,22 @@ class EloquentCuentaEmpresaRepository implements CuentaEmpresaRepository
      */
     public function create($data)
     {
-      try {
-          DB::connection('cadeco')->beginTransaction();
-          $modelo=$this->model;
-          $modelo->registro=auth()->user()->idusuario;
-          $modelo->id_empresa=$data['id_empresa'];
-          $modelo->cuenta=$data['cuenta'];
-          $modelo->id_tipo_cuenta_empresa=$data['id_tipo_cuenta_empresa'];
+        try {
+            DB::connection('cadeco')->beginTransaction();
+            $modelo = $this->model;
+            $modelo->registro = auth()->user()->idusuario;
+            $modelo->id_empresa = $data['id_empresa'];
+            $modelo->cuenta = $data['cuenta'];
+            $modelo->id_tipo_cuenta_empresa = $data['id_tipo_cuenta_empresa'];
 
-          $item= $modelo->save();
+            $item = $modelo->save();
 
-          DB::connection('cadeco')->commit();
+            DB::connection('cadeco')->commit();
 
-      } catch (\Exception $e) {
-          DB::connection('cadeco')->rollBack();
-          throw $e;
-      }
+        } catch (\Exception $e) {
+            DB::connection('cadeco')->rollBack();
+            throw $e;
+        }
         return $item;
 
     }
@@ -114,12 +110,22 @@ class EloquentCuentaEmpresaRepository implements CuentaEmpresaRepository
     {
         try {
             $cuenta = $this->model->find($id);
-            $cuenta->cuenta=$data['data']['cuenta'];
+            $cuenta->cuenta = $data['data']['cuenta'];
             $cuenta->save();
         } catch (\Exception $e) {
             throw $e;
         }
 
 
+    }
+
+    /**Crea relaciones con otros modelos
+     * @param array $array
+     * @return mixed
+     */
+    public function with($relations)
+    {
+        $this->model = $this->model->with($relations);
+        return $this;
     }
 }

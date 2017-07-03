@@ -19,5 +19,12 @@ interface TipoCuentaEmpresaRepository
      *
      * @return \Illuminate\Database\Eloquent\Collection|TipoCuentaEmpresa
      */
-      public function  all();
+    public function all();
+
+
+    /**Crea relaciones con otros modelos
+     * @param array $array
+     * @return mixed
+     */
+    public function with($relations);
 }

@@ -16,7 +16,7 @@ interface CuentaEmpresaRepository
      *
      * @return \Illuminate\Database\Eloquent\Collection|CuentaEmpresa
      */
-    public function all($with);
+    public function all();
 
     /**
      *  Obtiene Cuenta de Empresa por su ID
@@ -49,5 +49,12 @@ interface CuentaEmpresaRepository
      * @throws \Exception
      */
     public function update(array $data, $id);
+
+    /**Crea relaciones con otros modelos
+     * @param array $array
+     * @return mixed
+     */
+    public function with($relations);
+
 
 }

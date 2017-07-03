@@ -7,6 +7,7 @@
  */
 
 namespace Ghi\Domain\Core\Repositories;
+
 use Ghi\Domain\Core\Contracts\AlmacenRepository;
 use Ghi\Domain\Core\Contracts\Identificador;
 use \Ghi\Domain\Core\Models\Almacen;
@@ -32,11 +33,9 @@ class EloquentAlmacenRepository implements AlmacenRepository
      *
      * @return \Illuminate\Database\Eloquent\Collection|\Ghi\Domain\Core\Contracts\AlmacenRepository
      */
-    public function all($with = null)
+    public function all()
     {
-        if ($with != null)
-            return $this->model->with($with)->get();
-        return $this->model->all();
+        return $this->model->get();
     }
 
     /**
@@ -47,4 +46,15 @@ class EloquentAlmacenRepository implements AlmacenRepository
     {
         return $this->model->find($id);
     }
+
+    /**Crea relaciones con otros modelos
+     * @param array $array
+     * @return mixed
+     */
+    public function with($relations)
+    {
+        $this->model = $this->model->with($relations);
+        return $this;
+    }
+
 }

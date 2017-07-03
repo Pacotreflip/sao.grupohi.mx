@@ -36,24 +36,17 @@ class EloquentPolizaRepository implements PolizaRepository
      *
      * @return \Illuminate\Database\Eloquent\Collection|Poliza
      */
-    public function all($with = null)
+    public function all()
     {
-        if ($with != null) {
-            return $this->model->with($with)->get();
-        }
-        return $this->model->all();
+        return $this->model->get();
     }
 
     /**
      * @param $id
      * @return mixed \Illuminate\Database\Eloquent\Collection|Poliza
      */
-    public function find($id, $with = null)
+    public function find($id)
     {
-        if ($with != null) {
-            return $this->model->with($with)->find($id);
-        }
-
         return $this->model->find($id);
     }
 
@@ -73,14 +66,14 @@ class EloquentPolizaRepository implements PolizaRepository
                 throw new HttpResponseException(new Response('No se encontró la poliza', 404));
             }
             $poliza->concepto = $data['poliza_generada']['concepto'];
-            $poliza->estatus=0;
+            $poliza->estatus = 0;
             $cuentas_debe = false;
             $cuentas_haber = false;
             $suma_debe = $data['poliza_generada']['suma_debe'];
             $suma_haber = $data['poliza_generada']['suma_haber'];
             $suma_total = $suma_debe + $suma_haber;
 
-            if(! isset( $data['poliza_generada']['poliza_movimientos'])) {
+            if (!isset($data['poliza_generada']['poliza_movimientos'])) {
                 throw new HttpResponseException(new Response('La póliza debe contener al menos un movimiento de cada tipo (Debe, Haber)', 404));
             }
 
@@ -114,9 +107,9 @@ class EloquentPolizaRepository implements PolizaRepository
             if ($suma_debe != $suma_haber) {
                 throw new HttpResponseException(new Response('Las sumas iguales no corresponden.', 404));
             }
-            if ($suma_debe != number_format($data['poliza_generada']['total'], 2) || $suma_haber !=  number_format($data['poliza_generada']['total'], 2)) {
+            if ($suma_debe != number_format($data['poliza_generada']['total'], 2) || $suma_haber != number_format($data['poliza_generada']['total'], 2)) {
                 throw new HttpResponseException(new Response(
-                    'Las sumas iguales deben ser iguales a $' . number_format($data['poliza_generada']['total'], 2,'.', ','), 404));
+                    'Las sumas iguales deben ser iguales a $' . number_format($data['poliza_generada']['total'], 2, '.', ','), 404));
             }
 
             $movimientos_actuales = PolizaMovimiento::where('id_int_poliza', $poliza->id_int_poliza)->get();
@@ -164,6 +157,17 @@ class EloquentPolizaRepository implements PolizaRepository
             DB::connection('cadeco')->rollback();
             throw $e;
         }
-        return $this->find($id, ['polizaMovimientos','tipoPolizaContpaq']);
+        return $this->find($id, ['polizaMovimientos', 'tipoPolizaContpaq']);
+    }
+
+
+    /**Crea relaciones con otros modelos
+     * @param array $array
+     * @return mixed
+     */
+    public function with($relations)
+    {
+        $this->model = $this->model->with($relations);
+        return $this;
     }
 }

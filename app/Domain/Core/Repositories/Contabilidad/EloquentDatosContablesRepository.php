@@ -23,13 +23,9 @@ class EloquentDatosContablesRepository implements DatosContablesRepository
      * Obtiene los datos contables de una obra que coincidan con los atributos de búsqueda
      * @param string $attribute
      * @param mixed $value
-     * @param string|array|null $with
      * @return \Ghi\Domain\Core\Models\Contabilidad\DatosContables
      */
-    public function findBy($attribute, $value, $with = null) {
-        if($with != null) {
-            return $this->model->with($with)->where($attribute, '=', $value)->first();
-        }
+    public function findBy($attribute, $value) {
         return $this->model->where($attribute, '=', $value)->first();
     }
 
@@ -64,7 +60,7 @@ class EloquentDatosContablesRepository implements DatosContablesRepository
 
             $item->update($data);
             DB::connection('cadeco')->commit();
-        } catch (\Exception $e) {
+        } catch (\Exception $e) {+
             DB::connection('cadeco')->rollBack();
             throw $e;
         }

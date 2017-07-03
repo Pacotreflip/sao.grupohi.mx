@@ -29,28 +29,33 @@ class EloquentEmpresaRepository implements EmpresaRepository
     {
         $this->model = $model;
     }
+
     /**
      * @param $with
      * @return  Illuminate\Support\Collection\Empresa
      */
-    public function all($with=null)
+    public function all()
     {
-        if ($with != null) {
-            return $this->model->with($with)->get();
-        }
-        return $this->model->all();
+        return $this->model->get();
     }
 
     /**
      * @param $id
      * @return Ghi\Domain\Core\Models\Contabilidad\CuentaEmpresa
      */
-    public function find($id, $with = null)
+    public function find($id)
     {
-
-        if ($with != null) {
-            return $this->model->with($with)->find($id);
-        }
         return $this->model->find($id);
+    }
+
+
+    /**Crea relaciones con otros modelos
+     * @param array $array
+     * @return mixed
+     */
+    public function with($relations)
+    {
+        $this->model = $this->model->with($relations);
+        return $this;
     }
 }

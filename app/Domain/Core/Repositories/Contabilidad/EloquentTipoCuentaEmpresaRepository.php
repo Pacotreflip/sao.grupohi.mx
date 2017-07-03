@@ -35,6 +35,16 @@ class EloquentTipoCuentaEmpresaRepository implements TipoCuentaEmpresaRepository
      */
     public function all()
     {
-     return $this->model->all();
+        return $this->model->get();
+    }
+
+    /**Crea relaciones con otros modelos
+     * @param array $array
+     * @return mixed
+     */
+    public function with($relations)
+    {
+        $this->model = $this->model->with($relations);
+        return $this;
     }
 }

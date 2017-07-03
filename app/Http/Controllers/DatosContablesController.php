@@ -34,7 +34,7 @@ class DatosContablesController extends Controller
      * @return \Illuminate\Http\JsonResponse
      */
     public function findBy(Request $request) {
-        $item = $this->datos_contables->findBy($request->attribute, $request->value, $request->with);
+        $item = $this->datos_contables->findBy($request->attribute, $request->value);
 
         return response()->json(['data' => ['datos_contables' => $item]], 200);
     }

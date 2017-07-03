@@ -23,17 +23,14 @@ class EloquentCuentaContableRepository implements CuentaContableRepository
         $this->model = $model;
     }
 
+
     /**
-     * Obtiene todas las cuentas contables
-     * @param null|array|string $with
-     * @return \Illuminate\Database\Eloquent\Collection|\Ghi\Domain\Core\Contracts\CuentaContable
+     *Obtiene todas las cuentas contables
+     * @return \Illuminate\Database\Eloquent\Collection|static[]
      */
-    public function all($with = null)
+    public function all()
     {
-        if ($with != null) {
-            return $this->model->with($with)->get();
-        }
-        return $this->model->all();
+        return $this->model->get();
     }
 
     /**
@@ -112,11 +109,18 @@ class EloquentCuentaContableRepository implements CuentaContableRepository
      * @param $value
      * @return \Ghi\Domain\Core\Models\CuentaContable
      */
-    public function findBy($attribute, $value, $with = null)
+    public function findBy($attribute, $value)
     {
-        if ($with != null) {
-            return $this->model->orderBy('id_int_cuenta_contable', 'DESC')->with($with)->where($attribute, '=', $value)->first();
-        }
         return $this->model->orderBy('id', 'DESC')->where($attribute, '=', $value)->first();
+    }
+
+    /**Crea relaciones con otros modelos
+     * @param array $array
+     * @return mixed
+     */
+    public function with($relations)
+    {
+         $this->model=$this->model->with($relations);
+         return $this;
     }
 }

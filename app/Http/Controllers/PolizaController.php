@@ -39,7 +39,7 @@ class PolizaController extends Controller
 
     public function edit($id)
     {
-        $poliza = $this->poliza->find($id, 'polizaMovimientos.tipoCuentaContable');
+        $poliza = $this->poliza->with('polizaMovimientos.tipoCuentaContable')->find($id);
         $cuentasContables=$this->cuenta_contable->all();
         $tipoCuentaContable=$this->tipoCuentaContable->lists();
 

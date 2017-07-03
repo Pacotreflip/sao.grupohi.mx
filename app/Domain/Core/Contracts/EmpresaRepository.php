@@ -9,18 +9,23 @@
 namespace Ghi\Domain\Core\Contracts;
 
 
-
 interface EmpresaRepository
 {
     /**
      * @param $with
      * @return Ghi\Domain\Core\Models\Contabilidad\collection|CuentaEmpresa
      */
-    public function all($with);
+    public function all();
 
     /**
      * @param $id
      * @return Ghi\Domain\Core\Models\Contabilidad\CuentaEmpresa
      */
-    public function find($id, $with);
+    public function find($id);
+
+    /**Crea relaciones con otros modelos
+     * @param array $array
+     * @return mixed
+     */
+    public function with($relations);
 }

@@ -20,4 +20,11 @@ interface TransaccionInterfazRepository
      * @return \Illuminate\Database\Eloquent\Collection|TransaccionInterfaz
      */
     public function lists();
+
+
+    /**Crea relaciones con otros modelos
+     * @param array $array
+     * @return mixed
+     */
+    public function with($relations);
 }

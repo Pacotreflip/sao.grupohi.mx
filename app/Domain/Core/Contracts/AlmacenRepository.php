@@ -16,11 +16,17 @@ interface AlmacenRepository
      *
      * @return \Illuminate\Database\Eloquent\Collection|\Ghi\Domain\Core\Contracts\AlmacenRepository
      */
-    public function all($with = null);
+    public function all();
 
     /**
      * @param $id Identificador de la Cuenta de Almacen que se va a mostrar
      * @return \Illuminate\Database\Eloquent\Collection|\Ghi\Domain\Core\Contracts\AlmacenRepository
      */
     public function find($id);
+
+    /**Crea relaciones con otros modelos
+     * @param array $array
+     * @return mixed
+     */
+    public function with($relations);
 }

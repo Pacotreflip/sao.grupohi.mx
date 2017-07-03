@@ -5,10 +5,9 @@ interface CuentaContableRepository
 {
     /**
      * Obtiene todas las cuentas contables
-     * @param null|array|string $with
      * @return \Illuminate\Database\Eloquent\Collection|CuentaContable
      */
-    public function all($with = null);
+    public function all();
 
     /**
      * Obtiene una cuenta contable por su Id
@@ -23,7 +22,7 @@ interface CuentaContableRepository
      * @param $value
      * @return \Ghi\Domain\Core\Models\CuentaContable
      */
-    public function findBy($attribute, $value, $with = null);
+    public function findBy($attribute, $value);
 
     /**
      * Guarda un registro de cuenta contable
@@ -41,4 +40,11 @@ interface CuentaContableRepository
      * @throws \Exception
      */
     public function update(array $data,$id);
+
+    /**Crea relaciones con otros modelos
+     * @param array $array
+     * @return mixed
+     */
+    public function with($relations);
+
 }

@@ -36,7 +36,7 @@ class EloquentTransaccionInterfazRepository implements TransaccionInterfazReposi
      */
     public function all()
     {
-        return $this->model->all();
+        return $this->model->get();
     }
 
     /**
@@ -57,5 +57,15 @@ class EloquentTransaccionInterfazRepository implements TransaccionInterfazReposi
     {
         $transaccion_interfaz = $this->model->find($id);
         return $transaccion_interfaz->polizaTipoVigente;
+    }
+
+    /**Crea relaciones con otros modelos
+     * @param array $array
+     * @return mixed
+     */
+    public function with($relations)
+    {
+        $this->model = $this->model->with($relations);
+        return $this;
     }
 }
