@@ -13,6 +13,7 @@
                 :datos_contables="{{$currentObra->datosContables}}"
                 :url_cuenta_contable_findby="'{{route('sistema_contable.cuenta_contable.findby')}}'"
                 :url_poliza_generada_update="'{{route('sistema_contable.poliza_generada.update', $poliza)}}'"
+                :cuentas_contables="{{$cuentasContables}}"
                 :tipo_cuenta_contable="{{$tipoCuentaContable}}"
                 inline-template
                 v-cloak>
@@ -64,8 +65,9 @@
                                                 <input :placeholder="datos_contables.FormatoCuenta" type="text" v-validate="'required|regex:' + datos_contables.FormatoCuentaRegExp" :name="'CuentaContable [' + (index + 1) + ']'" class="form-control input-sm" v-model="movimiento.cuenta_contable">
                                                 <label class="help" v-show="validation_errors.has('form_poliza.CuentaContable [' + (index + 1) + ']')">@{{ validation_errors.first('form_poliza.CuentaContable [' + (index + 1) + ']') }}</label>
                                             </td>
-
-                                            <td>@{{ movimiento.descripcion_cuenta_contable}}</td>
+                                            <td>
+                                                @{{movimiento.tipo_cuenta_contable?movimiento.tipo_cuenta_contable.descripcion==movimiento.descripcion_cuenta_contable?movimiento.descripcion_cuenta_contable
+                                                 :movimiento.tipo_cuenta_contable.descripcion+' - '+movimiento.descripcion_cuenta_contable:'-No registrada'}}</td>
                                             <td class="form-group" :class="{'has-error': validation_errors.has('form_poliza.Tipo [' + (index + 1) + ']')}">
                                                 <select :name="'Tipo [' + (index + 1) + ']'" v-validate="'required|numeric'" class="form-control input-sm" v-model="movimiento.id_tipo_movimiento_poliza">
                                                     <option :value="1">Cargo</option>
@@ -139,7 +141,7 @@
                                     <div class="col-md-6">
                                         <div class="form-group" :class="{'has-error': validation_errors.has('form_add_movimiento.Tipo de Cuenta')}">
                                             <label for="">Tipo de cuenta</label>
-                                            <select name="Tipo de Cuenta" class="form-control" v-validate="'required|numeric'"  v-model="form.movimiento.id_tipo_cuenta_contable">
+                                            <select name="Tipo de Cuenta" class="form-control" v-validate="'required|numeric'"  v-model="form.movimiento.id_tipo_cuenta_contable" v-on:change="obtener_numero_cuenta(form.movimiento.id_tipo_cuenta_contable)">
                                                 <option value disabled>[-SELECCIONE-]</option>
                                                 <option v-for="(tipo_cuenta_contable, index) in tipo_cuenta_contable" :value="index">@{{ tipo_cuenta_contable }}</option>
                                             </select>

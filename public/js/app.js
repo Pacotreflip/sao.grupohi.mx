@@ -37251,12 +37251,13 @@ Vue.component('global-errors', {
 'use strict';
 
 Vue.component('poliza-generada-edit', {
-    props: ['poliza', 'poliza_edit', 'datos_contables', 'url_cuenta_contable_findby', 'url_poliza_generada_update', 'tipo_cuenta_contable'],
+    props: ['poliza', 'poliza_edit', 'datos_contables', 'url_cuenta_contable_findby', 'url_poliza_generada_update', 'tipo_cuenta_contable', 'cuentas_contables'],
     data: function data() {
         return {
             'data': {
                 'poliza': this.poliza,
-                'poliza_edit': this.poliza_edit
+                'poliza_edit': this.poliza_edit,
+                'cuentas_contables': this.cuentas_contables
             },
             'form': {
                 'movimiento': {
@@ -37300,6 +37301,19 @@ Vue.component('poliza-generada-edit', {
     },
 
     methods: {
+
+        obtener_numero_cuenta: function obtener_numero_cuenta(idTipoCuenta) {
+            var self = this;
+            this.data.cuentas_contables.forEach(function (cuenta) {
+                if (cuenta.id_int_tipo_cuenta_contable == idTipoCuenta) {
+                    self.form.movimiento.cuenta_contable = cuenta.cuenta_contable;
+                }
+            });
+            if (self.form.movimiento.cuenta_contable == 'NULL') {
+                self.form.movimiento.cuenta_contable = '';
+            }
+        },
+
         show_add_movimiento: function show_add_movimiento() {
             this.validation_errors.clear('form_add_movimiento');
             $('#add_movimiento_modal').modal('show');
