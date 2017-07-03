@@ -32,7 +32,7 @@
                                     <th class="sorting" tabindex="0" aria-controls="tipo_cuenta">Registró</th>
                                     <th class="sorting" tabindex="0" aria-controls="tipo_cuenta">Fecha y Hora de Registro</th>
                                     <th class="sorting" tabindex="0" aria-controls="tipo_cuenta">Asignación a Cuenta Contable</th>
-                                    <th></th>
+                                    <th class="sorting" tabindex="0" aria-controls="tipo_cuenta">Acciones</th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -52,11 +52,10 @@
                                         </td>
                                         <td style="min-width: 90px;max-width: 90px">
                                             <div class="btn-group">
-                                                <a href="{{ route('sistema_contable.tipo_cuenta_contable.show', $item->id_tipo_cuenta_contable) }}" type="button" class="btn btn-xs btn-default">
+                                                <a title="Ver" href="{{ route('sistema_contable.tipo_cuenta_contable.show', $item->id_tipo_cuenta_contable) }}" type="button" class="btn btn-xs btn-default">
                                                     <i class="fa fa-eye"></i>
                                                 </a>
-
-                                                <button type="button" class="btn btn-xs btn-danger" onclick=" delete_tipo_cuenta_contable({{$item->id_tipo_cuenta_contable}})">
+                                                <button title="Eliminar" type="button" class="btn btn-xs btn-danger" onclick=" delete_tipo_cuenta_contable({{$item->id_tipo_cuenta_contable}})">
                                                     <i class="fa fa-trash"></i>
                                                 </button>
                                             </div>
@@ -71,7 +70,7 @@
                                     <th>Registró</th>
                                     <th>Fecha y Hora de Registro</th>
                                     <th>Asignación a Cuenta Contable</th>
-                                    <th></th>
+                                    <th>Acciones</th>
                                 </tr>
                                 </tfoot>
                             </table>
