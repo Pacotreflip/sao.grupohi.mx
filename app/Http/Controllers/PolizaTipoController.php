@@ -82,7 +82,7 @@ class PolizaTipoController extends Controller
     public function create()
     {
         $transacciones_interfaz = $this->transaccion_interfaz->lists();
-        $cuentas_contables = $this->cuenta_contable->all('tipoCuentaContable');
+        $cuentas_contables = $this->cuenta_contable->with('tipoCuentaContable')->all();
         $tipos_movimiento = $this->tipo_movimiento->lists();
         return view('sistema_contable.poliza_tipo.create')
             ->with([
@@ -97,7 +97,7 @@ class PolizaTipoController extends Controller
     */
     public function show($id)
     {
-        $poliza_tipo = $this->poliza_tipo->find($id, 'movimientos');
+        $poliza_tipo = $this->poliza_tipo->all('movimientos')->find($id);
 
         return view('sistema_contable.poliza_tipo.show')
             ->with('poliza_tipo', $poliza_tipo);
