@@ -1,13 +1,6 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: EMARTINEZ
- * Date: 28/06/2017
- * Time: 06:20 PM
- */
 
 namespace Ghi\Domain\Core\Models;
-
 
 use Ghi\Domain\Core\Models\Contabilidad\CuentaEmpresa;
 
@@ -39,6 +32,4 @@ class Empresa extends BaseModel
     {
         return $this->belongsTo(User::class, 'UsuarioRegistro', 'idusuario');
     }
-
-
 }

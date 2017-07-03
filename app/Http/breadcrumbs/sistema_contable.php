@@ -74,7 +74,7 @@ Breadcrumbs::register('sistema_contable.poliza_generada.historico', function ($b
  */
 Breadcrumbs::register('sistema_contable.cuenta_concepto.index', function ($breadcrumb) {
     $breadcrumb->parent('sistema_contable.index');
-    $breadcrumb->push('CUENTAS CONCEPTOS', route('sistema_contable.cuenta_concepto.index'));
+    $breadcrumb->push('CUENTAS DE CONCEPTOS', route('sistema_contable.cuenta_concepto.index'));
 });
 
 /**
@@ -93,7 +93,7 @@ Breadcrumbs::register('sistema_contable.cuenta_almacen.index', function ($breadc
 
 Breadcrumbs::register('sistema_contable.cuenta_empresa.index', function ($breadcrumb) {
     $breadcrumb->parent('sistema_contable.index');
-    $breadcrumb->push('CUENTAS EMPRESA', route('sistema_contable.cuenta_empresa.index'));
+    $breadcrumb->push('CUENTAS DE EMPRESAS', route('sistema_contable.cuenta_empresa.index'));
 });
 Breadcrumbs::register('sistema_contable.cuenta_empresa.show', function ($breadcrumb, $empresa) {
     $breadcrumb->parent('sistema_contable.cuenta_empresa.index');

@@ -18,35 +18,33 @@
                 inline-template>
             <section>
                 <div class="row">
-                    <div class="col-md-6">
+                    <div class="col-md-12">
                         <!-- Datos contables de la Obra -->
                         <div class="box box-info">
                             <div class="box-header with-border">
                                 <h3 class="box-title">Datos Contables de la Obra</h3>
                             </div>
-                            <form class="form-horizontal" id="form_datos_obra" @submit.prevent="validateForm('form_datos_obra', 'save_datos_obra')"  data-vv-scope="form_datos_obra">
+                            <form  id="form_datos_obra" @submit.prevent="validateForm('form_datos_obra', 'save_datos_obra')"  data-vv-scope="form_datos_obra">
                                 <div class="box-body">
-                                    <div class="col-md-12">
+                                    <div class="col-md-4">
                                         <div class="form-group" :class="{'has-error': validation_errors.has('form_datos_obra.Base de Datos CONTPAQ') }">
-                                            <label for="BDContPaq" class="col-md-3 control-label"><b>Base de Datos CONTPAQ</b></label>
-                                            <div class="col-md-9">
-                                                <input type="text" v-validate="'required'" name="Base de Datos CONTPAQ" class="form-control" id="BDContPaq" v-model="data.datos_contables.BDContPaq">
-                                                <label class="help" v-show="validation_errors.has('form_datos_obra.Base de Datos CONTPAQ')">@{{ validation_errors.first('form_datos_obra.Base de Datos CONTPAQ') }}</label>
-                                            </div>
-                                            </div>
-                                        <div class="form-group" :class="{'has-error': validation_errors.has('form_datos_obra.Numero de Obra CONTPAQ') }">
-                                            <label for="NumobraContPaq" class="col-md-3 control-label"><b>Número de Obra CONTPAQ</b></label>
-                                            <div class="col-md-9">
-                                                <input type="number" v-validate="'required|numeric'" name="Numero de Obra CONTPAQ" class="form-control" id="NumobraContPaq" v-model="data.datos_contables.NumobraContPaq">
-                                                <label class="help" v-show="validation_errors.has('form_datos_obra.Numero de Obra CONTPAQ')">@{{ validation_errors.first('form_datos_obra.Numero de Obra CONTPAQ') }}</label>
-                                            </div>
+                                            <label for="BDContPaq" class="control-label"><b>Base de Datos CONTPAQ</b></label>
+                                            <input type="text" v-validate="'required'" name="Base de Datos CONTPAQ" class="form-control" id="BDContPaq" v-model="data.datos_contables.BDContPaq">
+                                            <label class="help" v-show="validation_errors.has('form_datos_obra.Base de Datos CONTPAQ')">@{{ validation_errors.first('form_datos_obra.Base de Datos CONTPAQ') }}</label>
                                         </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group" :class="{'has-error': validation_errors.has('form_datos_obra.Numero de Obra CONTPAQ') }">
+                                            <label for="NumobraContPaq" class="control-label"><b>Número de Obra CONTPAQ</b></label>
+                                            <input type="number" v-validate="'required|numeric'" name="Numero de Obra CONTPAQ" class="form-control" id="NumobraContPaq" v-model="data.datos_contables.NumobraContPaq">
+                                            <label class="help" v-show="validation_errors.has('form_datos_obra.Numero de Obra CONTPAQ')">@{{ validation_errors.first('form_datos_obra.Numero de Obra CONTPAQ') }}</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
                                         <div class="form-group" :class="{'has-error': validation_errors.has('form_datos_obra.Formato de Cuentas') }">
-                                            <label for="FormatoCuenta" class="col-md-3 control-label"><b>Formato de Cuentas</b></label>
-                                            <div class="col-md-9">
-                                                <input type="text" v-validate="'required|regex:^\#[\#\-]+\#$'" name="Formato de Cuentas" class="form-control" id="FormatoCuenta" v-model="data.datos_contables.FormatoCuenta">
-                                                <label class="help" v-show="validation_errors.has('form_datos_obra.Formato de Cuentas')">@{{ validation_errors.first('form_datos_obra.Formato de Cuentas') }}</label>
-                                            </div>
+                                            <label for="FormatoCuenta" class="control-label"><b>Formato de Cuentas</b></label>
+                                            <input type="text" v-validate="'required|regex:^\#[\#\-]+\#$'" name="Formato de Cuentas" class="form-control" id="FormatoCuenta" v-model="data.datos_contables.FormatoCuenta">
+                                            <label class="help" v-show="validation_errors.has('form_datos_obra.Formato de Cuentas')">@{{ validation_errors.first('form_datos_obra.Formato de Cuentas') }}</label>
                                         </div>
                                     </div>
                                 </div>
@@ -64,54 +62,6 @@
                                     </div>
                                 </div>
                                 <!-- /.box-footer -->
-                            </form>
-                        </div>
-                        <!-- /.box -->
-                    </div>
-                    <div class="col-md-6">
-                        <!-- Configuración de Cuenta -->
-                        <div class="box box-info">
-                            <div class="box-header with-border">
-                                <h3 class="box-title">Configuración de Cuenta</h3>
-                            </div>
-                            <form class="form-horizontal" id="form_datos_cuenta" @submit.prevent="validateForm('form_datos_cuenta', 'save_datos_cuenta')"  data-vv-scope="form_datos_cuenta">
-                            <div class="box-body">
-                                <div class="col-md-9">
-                                    <div class="form-group" :class="{'has-error': validation_errors.has('form_datos_cuenta.Tipo de Cuenta') }" >
-                                        <label for="BDContPaq" class="control-label">Tipo de Cuenta</label>
-                                        <select name="Tipo de Cuenta" class="form-control" v-model="form.cuenta_contable.id_int_tipo_cuenta_contable" v-validate="'required|numeric'">
-                                            <option value disabled>[-SELECCIONE-]</option>
-                                            <option v-for="(tipo_cuenta_contable, index) in tipos_cuentas_contables_disponibles" :value="index">@{{ tipo_cuenta_contable }}</option>
-                                        </select>
-                                        <label class="help" v-show="validation_errors.has('form_datos_cuenta.Tipo de Cuenta')">@{{ validation_errors.first('form_datos_cuenta.Tipo de Cuenta') }}</label>
-                                    </div>
-                                </div>
-                                <div class="col-md-2 col-md-offset-1">
-                                    <div class="form-group">
-                                        <label for="con_prefijo" class="control-label">Con Prefijo</label><br>
-                                        <input type="checkbox" name="con_prefijo" v-model="form.cuenta_contable.con_prefijo">
-                                    </div>
-                                </div>
-                                <div class="col-md-12">
-                                    <div v-show="form.cuenta_contable.con_prefijo" class="form-group" :class="{'has-error': validation_errors.has('form_datos_cuenta.Prefijo') }">
-                                        <label for="prefijo">Prefijo</label>
-                                        <input type="text"  v-validate="form.cuenta_contable.con_prefijo ? 'required|numeric' : ''" class="form-control" name="Prefijo" id="prefijo" v-model="form.cuenta_contable.prefijo"/>
-                                        <label class="help" v-show="validation_errors.has('form_datos_cuenta.Prefijo')">@{{ validation_errors.first('form_datos_cuenta.Prefijo') }}</label>
-                                    </div>
-                                    <div v-show="! form.cuenta_contable.con_prefijo" class="form-group" :class="{'has-error': validation_errors.has('form_datos_cuenta.Cuenta') }">
-                                        <label for="cuenta">Cuenta</label>
-                                        <input :placeholder="data.datos_contables.FormatoCuenta" type="text"  v-validate="! form.cuenta_contable.con_prefijo ? 'required|regex:' + data.datos_contables.FormatoCuentaRegExp : ''" class="form-control" name="Cuenta" id="cuenta" v-model="form.cuenta_contable.cuenta_contable"/>
-                                        <label class="help" v-show="validation_errors.has('form_datos_cuenta.Cuenta')">@{{ validation_errors.first('form_datos_cuenta.Cuenta') }}</label>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="box-footer">
-                                <div class="col-md-12">
-                                    <button type="submit" class="btn btn-info pull-right" :disabled="guardando" >
-                                        <i class="fa fa-save"></i> Guardar
-                                    </button>
-                                </div>
-                            </div>
                             </form>
                         </div>
                         <!-- /.box -->

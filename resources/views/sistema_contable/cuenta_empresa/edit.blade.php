@@ -1,6 +1,6 @@
 @extends('sistema_contable.layout')
-@section('title', 'Pólizas Generadas')
-@section('contentheader_title', 'PÓLIZAS GENERADAS')
+@section('title', 'Cuentas de Empresas')
+@section('contentheader_title', 'CUENTAS DE EMPRESAS')
 @section('contentheader_description', '(EDICIÓN)')
 
 @section('main-content')
@@ -15,13 +15,9 @@
                 inline-template
                 v-cloak>
             <section>
-
-
                 <div class="row">
-
                     <div class="col-md-12">
                         <div class="box box-success">
-
                             <div class="box box-solid">
                                 <div class="box-header with-border">
                                     <h3 class="box-title">@{{empresa.razon_social}} &nbsp;
@@ -32,11 +28,9 @@
                                     <div class="col-sm-6">
                                         <dl>
                                             <dt>ID</dt>
-                                            <dd>@{{empresa.id_empresa}}</dd>
+                                            <dd>{{$empresa->id_empresa}}</dd>
                                             <dt>USUARIO QUE REGISTRÓ</dt>
-                                            <dd>@{{empresa.user_registro}} @{{empresa.user_registro.amaterno}} @{{empresa.user_registro.nombre}}</dd>
-                                            <dt>FECHA Y HORA DE REGISTRO</dt>
-                                            <dd>@{{empresa.FechaHoraRegistro}} </dd>
+                                            <dd>{{$empresa->user_registro}}</dd>
                                         </dl>
                                     </div>
 
@@ -50,7 +44,7 @@
                     <div class="col-sm-12">
                         <a class="btn btn-success btn-app bg-green" style="float:right"
                            v-on:click="create_cuenta_empresa">
-                            <i class="glyphicon glyphicon-plus-sign"></i>Nuevo
+                            <i class="glyphicon glyphicon-plus-sign"></i>Nueva
                         </a>
                     </div>
                 </div>
@@ -69,7 +63,7 @@
                                                     <th>#</th>
                                                     <th>Cuenta contable</th>
                                                     <th>Tipo de cuenta</th>
-                                                    <td></td>
+                                                    <th>Acciones</th>
                                                 </tr>
                                                 </thead>
                                                 <tbody>
@@ -79,15 +73,14 @@
                                                     <td>@{{cuenta.tipo_cuenta_empresa.descripcion}}</td>
                                                     <td>
                                                         <button type="button" class="btn btn-xs btn-danger"
-                                                                title="eliminar"
+                                                                title="Eliminar"
                                                                 v-on:click="confirm_elimina_cuenta(cuenta)">
                                                             <i class="fa fa-trash"></i>
                                                         </button>
-                                                        <button type="button" class="btn btn-xs btn-info" title="edit"
+                                                        <button type="button" class="btn btn-xs btn-info" title="Editar"
                                                                 v-on:click="edit_cuenta_empresa(cuenta)">
                                                             <i class="fa fa-edit"></i>
                                                         </button>
-
                                                     </td>
                                                 </tr>
                                                 </tbody>
@@ -110,17 +103,15 @@
                                     <span aria-hidden="true">×</span></button>
                                 <h4 class="modal-title">
                                     <span v-if="nuevo_registro">
-                                        Crear Cuenta Empresa
+                                        Registrar Cuenta Contable
                                     </span>
                                     <span v-else>
-                                        Actualizar Cuenta Empresa
+                                        Actualizar Cuenta Contable
                                     </span>
 
                                 </h4>
                             </div>
-
-                        <form id="form_create_cuenta" @submit.prevent="validateForm('form_create_cuenta','confirm_create_cuenta')"
-             data-vv-scope="form_create_cuenta">
+                        <form id="form_create_cuenta" @submit.prevent="validateForm('form_create_cuenta','confirm_create_cuenta')" data-vv-scope="form_create_cuenta">
                                 <div class="modal-body">
                                     <div class="row">
                                         <div class="col-md-6">
@@ -159,17 +150,10 @@
                                     <button type="submit" class="btn btn-primary">Guardar</button>
                                 </div>
                             </form>
-
-
                             </span>
-
-
                         </div>
                     </div>
                 </div>
-
-
-
 
                 <!-- Modal Edit Cuenta -->
                 <div id="edit_movimiento_modal" class="modal fade" tabindex="-1" role="dialog"
@@ -194,9 +178,8 @@
 
                                         <div class="col-md-6">
                                             <div class="form-group">
-                                                <label class="control-label">Cuenta Contable</label>
-                                                <input type="text" class="form-control" name="Cuenta Contable"
-                                                       :placeholder="datos_contables.FormatoCuenta"
+                                                <label class="control-label">Tipo de Cuenta</label>
+                                                <input type="text" class="form-control"
                                                        v-model="form.cuenta_empresa_create.tipo_cuenta_empresa.descripcion"
                                                        disabled>
                                             </div>
@@ -206,6 +189,7 @@
                                                  :class="{'has-error': validation_errors.has('form_edit_cuenta.Cuenta Contable')}">
                                                 <label class="control-label">Cuenta Contable</label>
                                                 <input type="text"
+                                                       :placeholder="datos_contables.FormatoCuenta"
                                                        v-validate="'required|regex:' + datos_contables.FormatoCuentaRegExp"
                                                        class="form-control" name="Cuenta Contable"
                                                        v-model="form.cuenta_empresa_create.cuenta">
@@ -221,13 +205,9 @@
                                     <button type="submit" class="btn btn-primary">Guardar</button>
                                 </div>
                             </form>
-
-
-
                         </div>
                     </div>
                 </div>
-
             </section>
         </cuenta-empresa-edit>
     </div>

@@ -85,8 +85,6 @@ class Poliza extends BaseModel
      */
     public function user_registro()
     {
-
-
         return $this->belongsTo(User::class, 'registro', 'idusuario');
     }
     /**
@@ -136,13 +134,6 @@ class Poliza extends BaseModel
         }
         return true;
     }
-    /**
-     * @param total
-     * @return total con 2 decimales
-     */
-    public function getTotalAttribute($value) {
-        return  $this->attributes['total'] = number_format((float)$value, 2, '.', '');
-    }
 
     public function  getEstatusStringAttribute(){
         switch ($this->estatus){
@@ -163,4 +154,7 @@ class Poliza extends BaseModel
         }
     }
 
+    public function historicos() {
+        return $this->hasMany(HistPoliza::class, 'id_int_poliza', 'id_int_poliza');
+    }
 }
