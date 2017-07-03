@@ -83,7 +83,7 @@ class CuentaContableController extends Controller
      */
     public function findBy(Request $request)
     {
-        $item = $this->cuenta_contable->findBy($request->attribute, $request->value, $request->with);
+        $item = $this->cuenta_contable->with('tipoCuentaContable')->findBy($request->attribute, $request->value);
         return response()->json(['data' => ['cuenta_contable' => $item]], 200);
     }
 }

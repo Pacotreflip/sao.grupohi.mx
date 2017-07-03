@@ -110,7 +110,7 @@ class EloquentCuentaContableRepository implements CuentaContableRepository
      */
     public function findBy($attribute, $value)
     {
-        return $this->model->orderBy('id', 'DESC')->where($attribute, '=', $value)->first();
+        return $this->model->orderBy('id_int_cuenta_contable', 'DESC')->where($attribute, '=', $value)->first();
     }
 
     /**Crea relaciones con otros modelos

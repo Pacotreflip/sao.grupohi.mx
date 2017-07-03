@@ -72,8 +72,7 @@
                                                 <label class="help" v-show="validation_errors.has('form_poliza.CuentaContable [' + (index + 1) + ']')">@{{ validation_errors.first('form_poliza.CuentaContable [' + (index + 1) + ']') }}</label>
                                             </td>
                                             <td>
-                                                @{{movimiento.tipo_cuenta_contable?movimiento.tipo_cuenta_contable.descripcion==movimiento.descripcion_cuenta_contable?movimiento.descripcion_cuenta_contable
-                                                 :movimiento.tipo_cuenta_contable.descripcion+' - '+movimiento.descripcion_cuenta_contable:'-No registrada'}}</td>
+                                                @{{movimiento.tipo_cuenta_contable?movimiento.tipo_cuenta_contable.descripcion:'No registrada'}}</td>
                                             <td class="form-group" :class="{'has-error': validation_errors.has('form_poliza.Tipo [' + (index + 1) + ']')}">
                                                 <select :name="'Tipo [' + (index + 1) + ']'" v-validate="'required|numeric'" class="form-control input-sm" v-model="movimiento.id_tipo_movimiento_poliza">
                                                     <option :value="1">Cargo</option>
