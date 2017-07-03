@@ -1,6 +1,6 @@
 <?php namespace Ghi\Domain\Core\Repositories\Contabilidad;
 
-use Ghi\Domain\Core\Contracts\DatosContablesRepository;
+use Ghi\Domain\Core\Contracts\Contabilidad\DatosContablesRepository;
 use Ghi\Domain\Core\Models\Contabilidad\DatosContables;
 use Illuminate\Http\Exception\HttpResponseException;
 use Illuminate\Support\Facades\DB;
