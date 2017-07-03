@@ -10,10 +10,9 @@
         <global-errors></global-errors>
         <configuracion-contable
                 :datos_contables_update_url="'{{route('sistema_contable.datos_contables.update', $currentObra->datosContables)}}'"
-                :cuenta_store_url="'{{route('sistema_contable.cuenta_contable.store')}}'"
+                :cuenta_contable_url="'{{route('sistema_contable.cuenta_contable.index')}}'"
                 :tipos_cuentas_contables="{{$tipos_cuentas_contables}}"
                 :datos_contables="{{$currentObra->datosContables}}"
-                :cuentas_contables="{{$cuentas_contables}}"
                 v-cloak
                 inline-template>
             <section>
@@ -69,11 +68,11 @@
                 </div>
                 <hr>
 
-                <div v-if="data.cuentas_contables.length" class="row">
+                <div v-if="data.tipos_cuentas_contables.length" class="row">
                     <div class="col-md-12">
                         <div class="box box-success">
                             <div class="box-header with-border">
-                                <h3 class="box-title">Cuentas Contables Configuradas</h3>
+                                <h3 class="box-title">Tipos de Cuentas Contables</h3>
                             </div>
                             <div class="box-body">
                                 <div class="table-responsive">
@@ -84,18 +83,25 @@
                                             <th>Tipo de Cuenta</th>
                                             <th>Prefijo</th>
                                             <th>Cuenta</th>
-                                            <th>Editar</th>
+                                            <th>Acciones</th>
                                         </tr>
                                         </thead>
                                         <tbody>
-                                        <tr v-for="(item, index) in data.cuentas_contables">
+                                        <tr v-for="(item, index) in data.tipos_cuentas_contables">
                                             <td>@{{ index + 1  }}</td>
-                                            <td>@{{ item.tipo_cuenta_contable ? item.tipo_cuenta_contable.descripcion : ''}}</td>
-                                            <td>@{{ item.prefijo ? item.prefijo : '' }}</td>
-                                            <td>@{{ item.cuenta_contable ? item.cuenta_contable : '' }}</td>
-                                            <td>
+                                            <td>@{{ item.descripcion }}</td>
+                                            <td>@{{ item.cuenta_contable ? item.cuenta_contable.prefijo : '' }}</td>
+                                            <td>@{{ item.cuenta_contable ? item.cuenta_contable.cuenta_contable : '' }}</td>
+                                            <td v-if="item.cuenta_contable != null">
                                                 <div class="btn-group">
-                                                    <button type="button" class="btn btn-xs btn-info" data-toggle="modal" data-target="#modal-configurar-cuenta" v-on:click="editar(item)">
+                                                    <button type="button" class="btn btn-xs btn-info" data-toggle="modal" data-target="#modal-editar-cuenta" v-on:click="editar(item)">
+                                                        <i class="fa fa-edit"></i>
+                                                    </button>
+                                                </div>
+                                            </td>
+                                            <td v-else>
+                                                <div class="btn-group">
+                                                    <button type="button" class="btn btn-xs btn-info" data-toggle="modal" data-target="#modal-configurar-cuenta" v-on:click="configurar(item)">
                                                         <i class="fa fa-edit"></i>
                                                     </button>
                                                 </div>
@@ -109,8 +115,8 @@
                     </div>
                 </div>
 
-                <!-- Modal Editar Configuración de Cuenta -->
-                <div class="modal fade" id="modal-configurar-cuenta" style="display: none;" id="modal">
+                <!-- Modal Editar Cuenta Contable -->
+                <div class="modal fade" id="modal-editar-cuenta" style="display: none;">
                     <div class="modal-dialog">
                         <div class="modal-content">
                             <div class="modal-header">
@@ -118,48 +124,93 @@
                                     <span aria-hidden="true">×</span></button>
                                 <h4 class="modal-title">Modificar Cuenta Contable</h4>
                             </div>
-                            <form class="form-horizontal" id="form_datos_cuenta_update" @submit.prevent="validateForm('form_datos_cuenta_update', 'save_datos_cuenta_update')"  data-vv-scope="form_datos_cuenta_update">
+                            <form class="form-horizontal" id="form_update_cuenta" @submit.prevent="validateForm('form_update_cuenta', 'update_cuenta')"  data-vv-scope="form_update_cuenta">
                                 <div class="box-body">
                                     <div class="col-md-9">
-                                        <div class="form-group" :class="{'has-error': validation_errors.has('form_datos_cuenta_update.Tipo de Cuenta') }" >
-                                            <label for="BDContPaq" class="control-label">Tipo de Cuenta</label>
-                                            <select name="Tipo de Cuenta" class="form-control" v-model="form.cuenta_contable_update.id_int_tipo_cuenta_contable" v-validate="'required|numeric'" id="id_int_tipo_cuenta_contable">
-                                                <option value disabled>[-SELECCIONE-]</option>
-                                                <option v-for="(tipo_cuenta_contable, index) in tipos_cuentas_contables_update" :value="index">@{{ tipo_cuenta_contable }}</option>
-                                            </select>
-                                            <label class="help" v-show="validation_errors.has('form_datos_cuenta_update.Tipo de Cuenta')">@{{ validation_errors.first('form_datos_cuenta_update.Tipo de Cuenta') }}</label>
+                                        <div class="form-group">
+                                            <label for="tipo_cuenta_contable" class="control-label">Tipo de Cuenta Contable</label>
+                                            <input id="tipo_cuenta_contable" type="text" class="form-control" readonly v-model="form.tipo_cuenta_contable_edit.descripcion">
                                         </div>
                                     </div>
                                     <div class="col-md-2 col-md-offset-1">
                                         <div class="form-group">
                                             <label for="con_prefijo" class="control-label">Con Prefijo</label><br>
-                                            <input type="checkbox" name="con_prefijo" v-model="form.cuenta_contable_update.con_prefijo">
+                                            <input type="checkbox" name="con_prefijo" v-model="form.tipo_cuenta_contable_edit.cuenta_contable.con_prefijo">
                                         </div>
                                     </div>
                                     <div class="col-md-12">
-                                        <div v-show="form.cuenta_contable_update.con_prefijo" class="form-group" :class="{'has-error': validation_errors.has('form_datos_cuenta_update.Prefijo') }">
+                                        <div v-show="form.tipo_cuenta_contable_edit.cuenta_contable.con_prefijo" class="form-group" :class="{'has-error': validation_errors.has('form_update_cuenta.Prefijo') }">
                                             <label for="prefijo">Prefijo</label>
-                                            <input type="text"  v-validate="form.cuenta_contable_update.con_prefijo ? 'required|numeric' : ''" class="form-control" name="Prefijo" id="prefijo" v-model="form.cuenta_contable_update.prefijo"/>
-                                            <label class="help" v-show="validation_errors.has('form_datos_cuenta_update.Prefijo')">@{{ validation_errors.first('form_datos_cuenta.Prefijo') }}</label>
+                                            <input type="text"  v-validate="form.tipo_cuenta_contable_edit.cuenta_contable.con_prefijo ? 'required|numeric' : ''" class="form-control" name="Prefijo" id="prefijo" v-model="form.tipo_cuenta_contable_edit.cuenta_contable.prefijo"/>
+                                            <label class="help" v-show="validation_errors.has('form_update_cuenta.Prefijo')">@{{ validation_errors.first('form_update_cuenta.Prefijo') }}</label>
                                         </div>
-                                        <div v-show="! form.cuenta_contable_update.con_prefijo" class="form-group" :class="{'has-error': validation_errors.has('form_datos_cuenta_update.Cuenta') }">
-                                            <label for="cuenta">Cuenta</label>
-                                            <input :placeholder="data.datos_contables.FormatoCuenta" type="text"  v-validate="! form.cuenta_contable_update.con_prefijo ? 'required|regex:' + data.datos_contables.FormatoCuentaRegExp : ''" class="form-control" name="Cuenta" id="cuenta" v-model="form.cuenta_contable_update.cuenta_contable"/>
-                                            <label class="help" v-show="validation_errors.has('form_datos_cuenta_update.Cuenta')">@{{ validation_errors.first('form_datos_cuenta_update.Cuenta') }}</label>
+                                        <div v-show="! form.tipo_cuenta_contable_edit.cuenta_contable.con_prefijo" class="form-group" :class="{'has-error': validation_errors.has('form_update_cuenta.Cuenta Contable') }">
+                                            <label for="cuenta">Cuenta Contable</label>
+                                            <input :placeholder="data.datos_contables.FormatoCuenta" type="text"  v-validate="! form.tipo_cuenta_contable_edit.cuenta_contable.con_prefijo ? 'required|regex:' + data.datos_contables.FormatoCuentaRegExp : ''" class="form-control" name="Cuenta Contable" id="cuenta" v-model="form.tipo_cuenta_contable_edit.cuenta_contable.cuenta_contable"/>
+                                            <label class="help" v-show="validation_errors.has('form_update_cuenta.Cuenta Contable')">@{{ validation_errors.first('form_update_cuenta.Cuenta Contable') }}</label>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="box-footer">
                                     <div class="col-md-12">
-
-                                        <button type="button" class="btn btn-default pull-left" data-dismiss="modal" id="closeModal">Cerrar</button>
-                                        <button type="submit" class="btn btn-info pull-right" :disabled="guardando"  >
+                                        <button type="button" class="btn btn-default pull-left" data-dismiss="modal" id="closeModal('modal-editar-cuenta')">Cerrar</button>
+                                        <button type="submit" class="btn btn-info pull-right" :disabled="guardando">
                                             <i class="fa fa-save"></i> Guardar
                                         </button>
                                     </div>
                                 </div>
                             </form>
 
+                        </div>
+                        <!-- /.modal-content -->
+                    </div>
+                </div>
+
+                <!-- Modal Configurar Cuenta Contable -->
+                <div class="modal fade" id="modal-configurar-cuenta" style="display: none;">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">×</span></button>
+                                <h4 class="modal-title">Configurar Cuenta Contable</h4>
+                            </div>
+                            <form class="form-horizontal" id="form_save_cuenta" @submit.prevent="validateForm('form_save_cuenta', 'save_cuenta')"  data-vv-scope="form_save_cuenta">
+                                <div class="box-body">
+                                    <div class="col-md-9">
+                                        <div class="form-group">
+                                            <label for="tipo_cuenta_contable" class="control-label">Tipo de Cuenta Contable</label>
+                                            <input id="tipo_cuenta_contable" type="text" class="form-control" readonly v-model="form.tipo_cuenta_contable_edit.descripcion">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2 col-md-offset-1">
+                                        <div class="form-group">
+                                            <label for="con_prefijo" class="control-label">Con Prefijo</label><br>
+                                            <input type="checkbox" name="con_prefijo" v-model="form.tipo_cuenta_contable_edit.cuenta_contable.con_prefijo">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div v-show="form.tipo_cuenta_contable_edit.cuenta_contable.con_prefijo" class="form-group" :class="{'has-error': validation_errors.has('form_save_cuenta.Prefijo') }">
+                                            <label for="prefijo">Prefijo</label>
+                                            <input type="text"  v-validate="form.tipo_cuenta_contable_edit.cuenta_contable.con_prefijo ? 'required|numeric' : ''" class="form-control" name="Prefijo" id="prefijo" v-model="form.tipo_cuenta_contable_edit.cuenta_contable.prefijo"/>
+                                            <label class="help" v-show="validation_errors.has('form_save_cuenta.Prefijo')">@{{ validation_errors.first('form_save_cuenta.Prefijo') }}</label>
+                                        </div>
+                                        <div v-show="! form.tipo_cuenta_contable_edit.cuenta_contable.con_prefijo" class="form-group" :class="{'has-error': validation_errors.has('form_save_cuenta.Cuenta Contable') }">
+                                            <label for="cuenta">Cuenta Contable</label>
+                                            <input :placeholder="data.datos_contables.FormatoCuenta" type="text"  v-validate="! form.tipo_cuenta_contable_edit.cuenta_contable.con_prefijo ? 'required|regex:' + data.datos_contables.FormatoCuentaRegExp : ''" class="form-control" name="Cuenta Contable" id="cuenta" v-model="form.tipo_cuenta_contable_edit.cuenta_contable.cuenta_contable"/>
+                                            <label class="help" v-show="validation_errors.has('form_save_cuenta.Cuenta Contable')">@{{ validation_errors.first('form_save_cuenta.Cuenta Contable') }}</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="box-footer">
+                                    <div class="col-md-12">
+                                        <button type="button" class="btn btn-default pull-left" data-dismiss="modal" id="closeModal('modal-configurar-cuenta')">Cerrar</button>
+                                        <button type="submit" class="btn btn-info pull-right" :disabled="guardando">
+                                            <i class="fa fa-save"></i> Guardar
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
                         </div>
                         <!-- /.modal-content -->
                     </div>

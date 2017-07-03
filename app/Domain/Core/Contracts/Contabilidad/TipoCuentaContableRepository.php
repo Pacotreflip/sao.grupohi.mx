@@ -40,4 +40,17 @@ interface TipoCuentaContableRepository
      */
     public function lists();
 
+    /**Crea relaciones con otros modelos
+     * @param $relations
+     * @return mixed
+     * @internal param array $array
+     */
+    public function with($relations);
+
+    /**
+     * Obtiene un scope sobre el modelo
+     * @param string $scope
+     * @return mixed
+     */
+    public function scope($scope);
 }

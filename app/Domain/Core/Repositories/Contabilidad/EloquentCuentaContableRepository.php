@@ -69,7 +69,7 @@ class EloquentCuentaContableRepository implements CuentaContableRepository
             DB::connection('cadeco')->rollBack();
             throw $e;
         }
-        return $item->where('id_int_cuenta_contable', '=', $item->id_int_cuenta_contable)->with('tipoCuentaContable')->first();
+        return $this->model->with('tipoCuentaContable')->find($item->id_int_cuenta_contable);
     }
 
     /**
@@ -79,19 +79,18 @@ class EloquentCuentaContableRepository implements CuentaContableRepository
      * @return \Ghi\Domain\Core\Models\CuentaContable
      * @throws \Exception
      */
-    public function update(array $data,$id)
+    public function update(array $data, $id)
     {
 
         try {
             DB::connection('cadeco')->beginTransaction();
             if (!$item = $this->model->find($id)) {
-                throw new HttpResponseException(new Response('No se encontró la poliza', 404));
+                throw new HttpResponseException(new Response('No se encontró la cuenta contable que se desea actualizar', 404));
             }
 
             $item->update([
                 'prefijo' => $data['data']['con_prefijo'] == "true" ? $data['data']['prefijo'] : null,
-                'cuenta_contable' => $data['data']['con_prefijo'] == "true" ? null : $data['data']['cuenta_contable'],
-                'id_int_tipo_cuenta_contable' => $data['data']['id_int_tipo_cuenta_contable']
+                'cuenta_contable' => $data['data']['con_prefijo'] == "true" ? null : $data['data']['cuenta_contable']
             ]);
 
             DB::connection('cadeco')->commit();

@@ -32,7 +32,7 @@ class EloquentTipoCuentaContableRepository implements TipoCuentaContableReposito
      */
     public function all()
     {
-        return $this->model->all();
+        return $this->model->get();
     }
 
     /**
@@ -108,5 +108,27 @@ class EloquentTipoCuentaContableRepository implements TipoCuentaContableReposito
     public function lists()
     {
         return $this->model->orderBy('descripcion', 'ASC')->lists('descripcion', 'id_tipo_cuenta_contable');
+    }
+
+    /**Crea relaciones con otros modelos
+     * @param $relations
+     * @return mixed
+     * @internal param array $array
+     */
+    public function with($relations)
+    {
+        $this->model = $this->model->with($relations);
+        return $this;
+    }
+
+    /**
+     * Obtiene un scope sobre el modelo
+     * @param string $scope
+     * @return mixed
+     */
+    public function scope($scope)
+    {
+        $this->model = $this->model->$scope();
+        return $this;
     }
 }

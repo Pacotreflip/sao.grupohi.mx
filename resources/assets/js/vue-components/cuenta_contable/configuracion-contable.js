@@ -2,77 +2,25 @@ Vue.component('configuracion-contable', {
     props: [
         'datos_contables',
         'datos_contables_update_url',
-        'cuenta_update_url',
-        'cuenta_store_url',
-        'tipos_cuentas_contables',
-        'cuentas_contables'
+        'cuenta_contable_url',
+        'tipos_cuentas_contables'
     ],
     data: function() {
         return {
             'data' : {
                 'datos_contables': this.datos_contables,
-                'tipos_cuentas_contables' : this.tipos_cuentas_contables,
-                'tipos_cuentas_contables_update' : this.tipos_cuentas_contables_update,
-                'cuentas_contables' : this.cuentas_contables
+                'tipos_cuentas_contables' : this.tipos_cuentas_contables
             },
             'form': {
-                'cuenta_contable': {
-                    'id_int_tipo_cuenta_contable': '',
-                    'prefijo': '',
-                    'cuenta_contable': '',
-                    'con_prefijo':false
+                'tipo_cuenta_contable_edit' : {
+                    'cuenta_contable' : {
+                        con_prefijo : false
+                    }
                 },
-                'cuenta_contable_update': {
-                    'id_int_cuenta_contable':'',
-                    'id_int_tipo_cuenta_contable': '',
-                    'prefijo': '',
-                    'cuenta_contable': '',
-                    'con_prefijo':false
-                },
-
             },
             'guardando' : false
         }
     },
-    computed:{
-        tipos_cuentas_contables_disponibles: function () {
-            var self = this;
-            var result = {};
-            $.each(this.data.tipos_cuentas_contables, function (index, tipo_cuenta_contable) {
-                var existe = false;
-                self.data.cuentas_contables.forEach(function (cuenta_contable) {
-                    if(cuenta_contable.id_int_tipo_cuenta_contable == index) {
-                        existe = true;
-                    }
-                });
-
-                if(! existe) {
-                    result[index] = tipo_cuenta_contable;
-                }
-            });
-
-            return result;
-        },
-        tipos_cuentas_contables_update:function () {
-            var self = this;
-            var result = {};
-            $.each(this.data.tipos_cuentas_contables, function (index, tipo_cuenta_contable) {
-                var existe = false;
-                self.data.cuentas_contables.forEach(function (cuenta_contable) {
-                    if(cuenta_contable.id_int_tipo_cuenta_contable == index&&index!=self.form.cuenta_contable_update.id_int_tipo_cuenta_contable) {
-                        existe = true;
-                    }
-                });
-
-                if(! existe) {
-                    result[index] = tipo_cuenta_contable;
-                }
-            });
-
-            return result;
-        }
-    }
-    ,
 
     methods: {
         confirm_datos_obra: function () {
@@ -120,7 +68,7 @@ Vue.component('configuracion-contable', {
         confirm_cuenta_contable: function () {
             var self = this;
             swal({
-                title: "Guardar Cuenta",
+                title: "Configurar Cuenta Contable",
                 text: "¿Estás seguro de que la información es correcta?",
                 type: "warning",
                 showCancelButton: true,
@@ -130,10 +78,11 @@ Vue.component('configuracion-contable', {
                 self.save_cuenta_contable();
             }).catch(swal.noop);
         },
+
         confirm_cuenta_contable_update: function () {
             var self = this;
             swal({
-                title: "Actualizar Cuenta",
+                title: "Actualizar Cuenta Contable",
                 text: "¿Estás seguro de que la información es correcta?",
                 type: "warning",
                 showCancelButton: true,
@@ -146,34 +95,45 @@ Vue.component('configuracion-contable', {
 
         save_cuenta_contable: function () {
             var self = this;
-            var url = self.cuenta_store_url;
-            var data = self.form.cuenta_contable;
+            var url = self.cuenta_contable_url;
+            var data = {
+                id_int_tipo_cuenta_contable : self.form.tipo_cuenta_contable_edit.id_int_tipo_cuenta_contable,
+                prefijo : self.form.tipo_cuenta_contable_edit.cuenta_contable.prefijo,
+                cuenta_contable : self.form.tipo_cuenta_contable_edit.cuenta_contable.cuenta_contable,
+                con_prefijo : self.form.tipo_cuenta_contable_edit.cuenta_contable.con_prefijo
+            };
+
             $.ajax({
                 type: 'POST',
                 url: url,
                 data: data,
                 beforeSend: function () {
-                    self.validation_errors.clear('form_datos_cuenta');
+                    self.validation_errors.clear('form_save_cuenta');
                     self.guardando = true;
                 },
                 success: function (data, textStatus, xhr) {
-                    Vue.set(self.data, 'cuentas_contables', data.data.cuentas_contables);
+                    Vue.set(self.data, 'tipos_cuentas_contables', data.data.tipos_cuentas_contables);
                     swal({
                         type: 'success',
                         title: 'Correcto',
                         html: 'Cuenta Contable <b>' + data.data.cuenta_contable.tipo_cuenta_contable.descripcion + '</b> configurada correctamente'
                     });
-                    self.reset_form();
                 },
                 complete: function () {
+                    self.reset_form();
+                    $('#modal-configurar-cuenta').modal('hide');
                     self.guardando = false;
                 }
             });
         },
         update_cuenta_contable:function () {
             var self = this;
-            var data = self.form.cuenta_contable_update;
-            var url=App.host+'/sistema_contable/cuenta_contable/'+data.id_int_cuenta_contable;
+            var data = {
+                con_prefijo : this.form.tipo_cuenta_contable_edit.cuenta_contable.con_prefijo,
+                prefijo : this.form.tipo_cuenta_contable_edit.cuenta_contable.prefijo,
+                cuenta_contable : this.form.tipo_cuenta_contable_edit.cuenta_contable.cuenta_contable
+            };
+            var url = self.cuenta_contable_url + '/' + this.form.tipo_cuenta_contable_edit.cuenta_contable.id_int_cuenta_contable;
             $.ajax({
                 type: 'POST',
                 url: url,
@@ -185,16 +145,16 @@ Vue.component('configuracion-contable', {
                     self.guardando = true;
                 },
                 success: function (data, textStatus, xhr) {
-                    Vue.set(self.data, 'cuentas_contables', data.data.cuentas_contables);
-                    $('#closeModal').click();
+                    Vue.set(self.data, 'tipos_cuentas_contables', data.data.tipos_cuentas_contables);
                     swal({
                         type: 'success',
                         title: 'Correcto',
-                        html: 'Datos de la cuenta <b>' + data.data.cuenta_contable.tipo_cuenta_contable.descripcion + '</b> actualizados correctamente',
+                        html: 'Cuenta Contable <b>' + data.data.cuenta_contable.tipo_cuenta_contable.descripcion + '</b> actualizada correctamente'
                     });
-                    self.reset_form();
                 },
                 complete: function () {
+                    self.reset_form();
+                    $('#modal-editar-cuenta').modal('hide');
                     self.guardando = false;
                 }
             });
@@ -204,10 +164,10 @@ Vue.component('configuracion-contable', {
             this.$validator.validateAll(scope).then(() => {
                 if(funcion == 'save_datos_obra') {
                     this.confirm_datos_obra();
-                } else if (funcion == 'save_datos_cuenta') {
+                } else if (funcion == 'save_cuenta') {
                     this.confirm_cuenta_contable();
                 }
-                  else if (funcion == 'save_datos_cuenta_update') {
+                  else if (funcion == 'update_cuenta') {
                     this.confirm_cuenta_contable_update();
                  }
             }).catch(() => {
@@ -218,23 +178,35 @@ Vue.component('configuracion-contable', {
                          });
             });
         },
-        editar:function (e){
-            Vue.set(this.form.cuenta_contable_update, 'id_int_tipo_cuenta_contable',e.id_int_tipo_cuenta_contable);
-            Vue.set(this.form.cuenta_contable_update, 'id_int_cuenta_contable',e.id_int_cuenta_contable);
-            Vue.set(this.form.cuenta_contable_update, 'cuenta_contable', e.cuenta_contable);
-            Vue.set(this.form.cuenta_contable_update, 'con_prefijo', e.prefijo?true:false);
+
+        editar:function (item){
+            Vue.set(this.form.tipo_cuenta_contable_edit, 'id_int_tipo_cuenta_contable', item.id_int_tipo_cuenta_contable);
+            Vue.set(this.form.tipo_cuenta_contable_edit, 'descripcion', item.descripcion);
+
+            Vue.set(this.form.tipo_cuenta_contable_edit.cuenta_contable, 'id_int_cuenta_contable', item.cuenta_contable.id_int_cuenta_contable);
+            Vue.set(this.form.tipo_cuenta_contable_edit.cuenta_contable, 'cuenta_contable', item.cuenta_contable.cuenta_contable);
+            Vue.set(this.form.tipo_cuenta_contable_edit.cuenta_contable, 'prefijo', item.cuenta_contable.prefijo);
+            Vue.set(this.form.tipo_cuenta_contable_edit.cuenta_contable, 'con_prefijo', item.cuenta_contable.prefijo ? true : false);
+        },
+
+        configurar:function (item){
+            Vue.set(this.form.tipo_cuenta_contable_edit, 'id_int_tipo_cuenta_contable', item.id_tipo_cuenta_contable);
+            Vue.set(this.form.tipo_cuenta_contable_edit, 'descripcion', item.descripcion);
+
+            Vue.set(this.form.tipo_cuenta_contable_edit.cuenta_contable, 'id_int_cuenta_contable', '');
+            Vue.set(this.form.tipo_cuenta_contable_edit.cuenta_contable, 'cuenta_contable', '');
+            Vue.set(this.form.tipo_cuenta_contable_edit.cuenta_contable, 'prefijo', '');
+            Vue.set(this.form.tipo_cuenta_contable_edit.cuenta_contable, 'con_prefijo', false);
         },
 
         reset_form: function () {
-            Vue.set(this.form.cuenta_contable, 'id_int_tipo_cuenta_contable', '');
-            Vue.set(this.form.cuenta_contable, 'prefijo', '');
-            Vue.set(this.form.cuenta_contable, 'cuenta_contable', '');
-            Vue.set(this.form.cuenta_contable, 'con_prefijo', false);
+            Vue.set(this.form.tipo_cuenta_contable_edit, 'id_int_tipo_cuenta_contable', '');
+            Vue.set(this.form.tipo_cuenta_contable_edit, 'descripcion', '');
 
-            Vue.set(this.form.cuenta_contable_update, 'id_int_tipo_cuenta_contable', '');
-            Vue.set(this.form.cuenta_contable_update, 'prefijo', '');
-            Vue.set(this.form.cuenta_contable_update, 'cuenta_contable', '');
-            Vue.set(this.form.cuenta_contable_update, 'con_prefijo', false);
+            Vue.set(this.form.tipo_cuenta_contable_edit.cuenta_contable, 'id_int_cuenta_contable', '');
+            Vue.set(this.form.tipo_cuenta_contable_edit.cuenta_contable, 'cuenta_contable', '');
+            Vue.set(this.form.tipo_cuenta_contable_edit.cuenta_contable, 'prefijo', '');
+            Vue.set(this.form.tipo_cuenta_contable_edit.cuenta_contable, 'con_prefijo', false);
         }
     }
 });
