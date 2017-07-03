@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AddTipoToContabilidadIntCuentasContablesTable extends Migration
+class AddTipoToContabilidadIntTiposCuentasContablesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -12,7 +12,7 @@ class AddTipoToContabilidadIntCuentasContablesTable extends Migration
      */
     public function up()
     {
-        Schema::table('Contabilidad.int_cuentas_contables', function (Blueprint $table) {
+        Schema::table('Contabilidad.int_tipos_cuentas_contables', function (Blueprint $table) {
             $table->integer('tipo')->nullable();
         });
     }
@@ -24,7 +24,7 @@ class AddTipoToContabilidadIntCuentasContablesTable extends Migration
      */
     public function down()
     {
-        Schema::table('Contabilidad.int_cuentas_contables', function (Blueprint $table) {
+        Schema::table('Contabilidad.int_tipos_cuentas_contables', function (Blueprint $table) {
             $table->dropColumn('tipo');
         });
     }

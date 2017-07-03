@@ -9,6 +9,8 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class TipoCuentaContable extends Model
 {
+    const TIPO_GENERALES = 1;
+
     use SoftDeletes;
 
     protected $connection = 'cadeco';
@@ -52,5 +54,7 @@ class TipoCuentaContable extends Model
         return $this->descripcion;
     }
 
-
+    public function scopeGenerales($query) {
+        return $query->where('Contabilidad.int_tipos_cuentas_contables.tipo', '=', $this::TIPO_GENERALES);
+    }
 }
