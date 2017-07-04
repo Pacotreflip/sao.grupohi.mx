@@ -57,4 +57,5 @@ class TipoCuentaContable extends Model
     public function scopeGenerales($query) {
         return $query->where('Contabilidad.int_tipos_cuentas_contables.tipo', '=', $this::TIPO_GENERALES);
     }
+
 }

@@ -86,10 +86,10 @@
                                                                     <tr>
                                                                         <td>{{$movimiento->cuenta_contable}}</td>
                                                                         <td>
-                                                                            @if($movimiento->tipoCuentaContable==$movimiento->descripcion_cuenta_contable)
-                                                                                {{$movimiento->descripcion_cuenta_contable}}
+                                                                            @if($movimiento->tipoCuentaContable)
+                                                                                {{$movimiento->tipoCuentaContable}}
                                                                             @else
-                                                                                {{$movimiento->tipoCuentaContable}} - {{$movimiento->descripcion_cuenta_contable}}
+                                                                                No Registrada
                                                                             @endif
                                                                         </td>
                                                                         <td class="bg-gray-light numerico">@if($movimiento->id_tipo_movimiento_poliza==1)
