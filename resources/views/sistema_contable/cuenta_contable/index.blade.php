@@ -48,7 +48,7 @@
                                             </td>
                                             <td v-else>
                                                 <div class="btn-group">
-                                                    <button type="button" class="btn btn-xs btn-info" data-toggle="modal" data-target="#modal-configurar-cuenta" v-on:click="configurar(item)">
+                                                    <button title="Editar" type="button" class="btn btn-xs btn-info" data-toggle="modal" data-target="#modal-configurar-cuenta" v-on:click="configurar(item)">
                                                         <i class="fa fa-edit"></i>
                                                     </button>
                                                 </div>
