@@ -35,7 +35,7 @@
                                     <th class="sorting" tabindex="0" aria-controls="polizas_tipo">Vigencia</th>
                                     <th class="sorting" tabindex="0" aria-controls="polizas_tipo">Inicio de Vigencia</th>
                                     <th class="sorting" tabindex="0" aria-controls="polizas_tipo">Fin de Vigencia</th>
-                                    <th></th>
+                                    <th class="sorting" tabindex="0" aria-controls="polizas_tipo">Acciones</th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -67,11 +67,10 @@
                                         </td>
                                         <td style="min-width: 90px;max-width: 90px">
                                             <div class="btn-group">
-                                                <a href="{{ route('sistema_contable.poliza_tipo.show', $item->id) }}" type="button" class="btn btn-xs btn-default">
+                                                <a title="Ver" href="{{ route('sistema_contable.poliza_tipo.show', $item->id) }}" type="button" class="btn btn-xs btn-default">
                                                     <i class="fa fa-eye"></i>
                                                 </a>
-
-                                                <button type="button" class="btn btn-xs btn-danger" onclick=" delete_plantilla({{$item->id}})">
+                                                <button title="Eliminar" type="button" class="btn btn-xs btn-danger" onclick=" delete_plantilla({{$item->id}})">
                                                     <i class="fa fa-trash"></i>
                                                 </button>
                                             </div>
@@ -89,7 +88,7 @@
                                     <th>Vigencia</th>
                                     <th>Inicio de Vigencia</th>
                                     <th>Fin de Vigencia</th>
-                                    <th></th>
+                                    <th>Acciones</th>
                                 </tr>
                                 </tfoot>
                             </table>
