@@ -23,7 +23,7 @@
                             </div>
                             <div class="box-body">
                                 <div class="table-responsive">
-                                    <table class="table table-bordered table-striped small index_table">
+                                    <table class="table table-bordered table-striped small">
                                         <thead>
                                         <tr>
                                             <th>#</th>
