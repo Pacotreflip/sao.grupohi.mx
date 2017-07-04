@@ -44,9 +44,9 @@ Breadcrumbs::register('sistema_contable.tipo_cuenta_contable.show', function ($b
 /*
  * Cuenta Contable
  */
-Breadcrumbs::register('sistema_contable.cuenta_contable.configuracion', function ($breadcrumb) {
+Breadcrumbs::register('sistema_contable.cuenta_contable.index', function ($breadcrumb) {
     $breadcrumb->parent('sistema_contable.index');
-    $breadcrumb->push('CONFIGURACIÓN DE CUENTAS CONTABLES', route('sistema_contable.cuenta_contable.configuracion'));
+    $breadcrumb->push('CUENTAS GENERALES', route('sistema_contable.cuenta_contable.index'));
 });
 
 /**
@@ -107,4 +107,12 @@ Breadcrumbs::register('sistema_contable.cuenta_empresa.edit', function ($breadcr
 Breadcrumbs::register('sistema_contable.cuenta_almacen.show', function ($breadcrumb) {
     $breadcrumb->parent('sistema_contable.cuenta_almacen.index');
     $breadcrumb->push('VER CUENTAS DE ALMACENES', route('sistema_contable.cuenta_almacen.index'));
+});
+
+/**
+ * Datos Contables
+ */
+Breadcrumbs::register('sistema_contable.datos_contables.edit', function ($breadcrumb, $datos_contables) {
+    $breadcrumb->parent('sistema_contable.index');
+    $breadcrumb->push($datos_contables->obra->nombre, route('sistema_contable.datos_contables.edit', $datos_contables));
 });

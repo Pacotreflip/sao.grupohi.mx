@@ -28,22 +28,13 @@ class CuentaContableController extends Controller
     }
 
     /**
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     * @return \Illuminate\View\View
      */
     public function index()
     {
-        return view('sistema_contable.cuenta_contable.index');
-    }
-
-    /**
-     * @return \Illuminate\View\View
-     */
-    public function configuracion()
-    {
-
         $tipos_cuentas_contables = $this->tipo_cuenta_contable->with('cuentaContable')->scope('generales')->all();
 
-        return view('sistema_contable.cuenta_contable.configuracion')
+        return view('sistema_contable.cuenta_contable.index')
             ->with('tipos_cuentas_contables', $tipos_cuentas_contables);
     }
 

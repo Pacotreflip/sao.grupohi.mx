@@ -29,6 +29,13 @@ class DatosContablesController extends Controller
         $this->datos_contables = $datos_contables;
     }
 
+    public function edit($id) {
+        $datos_contables = $this->datos_contables->find($id);
+
+        return view('sistema_contable.datos_contables.edit')
+            ->with('datos_contables', $datos_contables);
+    }
+
     /**
      * @param Request $request
      * @return \Illuminate\Http\JsonResponse

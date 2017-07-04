@@ -20,4 +20,19 @@ interface DatosContablesRepository
      * @throws \Exception
      */
     public function update(array $data, $id);
+
+    /**
+     * Crea relaciones con otros modelos
+     * @param $relations
+     * @return mixed
+     * @internal param array $array
+     */
+    public function with($relations);
+
+    /**
+     * Buscar datos contables por su id
+     * @param $id
+     * @return mixed
+     */
+    public function find($id);
 }

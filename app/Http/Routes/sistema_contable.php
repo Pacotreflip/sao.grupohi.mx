@@ -17,7 +17,6 @@ Route::group(['prefix' => 'sistema_contable'], function () {
     /*
      * Cuenta Contable Routes...
      */
-    Route::get('configuracion/cuenta_contable', 'CuentaContableController@configuracion')->name('sistema_contable.cuenta_contable.configuracion');
     Route::get('cuenta_contable', 'CuentaContableController@index')->name('sistema_contable.cuenta_contable.index');
     Route::post('cuenta_contable', 'CuentaContableController@store')->name('sistema_contable.cuenta_contable.store');
     Route::patch('cuenta_contable/{cuenta_contable}', 'CuentaContableController@update')->name('sistema_contable.cuenta_contable.update');
@@ -78,5 +77,8 @@ Route::group(['prefix' => 'sistema_contable'], function () {
     Route::delete('cuenta_empresa/{id}', 'CuentaEmpresaController@delete')->name('sistema_contable.cuenta_empresa.delete')->where(['id' => '[0-9]+']);
     Route::patch('cuenta_empresa/{id}', 'CuentaEmpresaController@update')->name('sistema_contable.cuenta_empresa.update')->where(['id' => '[0-9]+']);
 
-
+    /*
+     * Datos Contables Routes...
+     */
+    Route::get('datos_contables/{id}/edit', 'DatosContablesController@edit')->name('sistema_contable.datos_contables.edit');
 });

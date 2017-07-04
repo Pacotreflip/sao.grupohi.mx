@@ -66,4 +66,26 @@ class EloquentDatosContablesRepository implements DatosContablesRepository
         }
         return $item;
     }
+
+    /**
+     * Crea relaciones con otros modelos
+     * @param $relations
+     * @return mixed
+     * @internal param array $array
+     */
+    public function with($relations)
+    {
+        $this->model = $this->model->with($relations);
+        return $this;
+    }
+
+    /**
+     * Buscar datos contables por su id
+     * @param $id
+     * @return mixed
+     */
+    public function find($id)
+    {
+        return $this->model->find($id);
+    }
 }
