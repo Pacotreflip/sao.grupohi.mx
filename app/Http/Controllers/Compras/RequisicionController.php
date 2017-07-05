@@ -3,7 +3,9 @@
 namespace Ghi\Http\Controllers\Compras;
 
 use Dingo\Api\Routing\Helpers;
+use Ghi\Core\Facades\Context;
 use Ghi\Domain\Core\Contracts\Compras\RequisicionRepository;
+use Ghi\Domain\Core\Models\Compras\Requisiciones\Requisicion;
 use Illuminate\Http\Request;
 use Ghi\Http\Controllers\Controller;
 

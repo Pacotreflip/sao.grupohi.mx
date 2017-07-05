@@ -10,10 +10,10 @@ Route::group(['prefix' => 'compras'], function () {
     /**
      * Requisición Routes...
      */
-    Route::get('requisicion', 'RequisicionController@index')->name('compras.requisicion.index');
-    Route::get('requisicion/{id}', 'RequisicionController@show')->name('compras.requisicion.show')->where(['id' => '[0-9]+']);
-    Route::get('requisicion/create', 'RequisicionController@create')->name('compras.requisicion.create');
-    Route::post('requisicion', 'RequisicionController@store')->name('compras.requisicion.store');
+    Route::get('requisicion', 'Compras\RequisicionController@index')->name('compras.requisicion.index');
+    Route::get('requisicion/{id}', 'Compras\RequisicionController@show')->name('compras.requisicion.show')->where(['id' => '[0-9]+']);
+    Route::get('requisicion/create', 'Compras\RequisicionController@create')->name('compras.requisicion.create');
+    Route::post('requisicion', 'Compras\RequisicionController@store')->name('compras.requisicion.store');
 
 });
 

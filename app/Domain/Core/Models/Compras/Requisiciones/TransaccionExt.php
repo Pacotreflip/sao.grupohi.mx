@@ -27,6 +27,27 @@ class TransaccionExt extends Model
      */
     public $incrementing = false;
 
+    protected $fillable = [
+        'id_transaccion',
+        'id_departamento',
+        'id_tipo_requisicion',
+        'folio_adicional'
+    ];
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::creating(function ($model) {
+            $model->folio_adicional =
+                DepartamentoResponsable::find($model->id_departamento)->descripcion_corta
+                . '-'
+                . TipoRequisicion::find($model->id_tipo_requisicion)->descripcion_corta
+                . '-'
+                . Requisicion::find($model->id_transaccion)->numero_folio;
+        });
+    }
+
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo|Transaccion
      */

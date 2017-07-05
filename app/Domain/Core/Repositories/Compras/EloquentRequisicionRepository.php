@@ -1,27 +1,35 @@
 <?php
 namespace Ghi\Domain\Core\Repositories\Compras;
 use Ghi\Domain\Core\Contracts\Compras\RequisicionRepository;
-use Ghi\Domain\Core\Models\Transacciones\Transaccion;
+use Ghi\Domain\Core\Models\Compras\Requisiciones\Requisicion;
+use Ghi\Domain\Core\Models\Compras\Requisiciones\TransaccionExt;
+use Illuminate\Support\Facades\DB;
 
 class EloquentRequisicionRepository implements RequisicionRepository
 {
     /**
-     * @var \Ghi\Domain\Core\Models\Transacciones\Transaccion
+     * @var \Ghi\Domain\Core\Models\Compras\Requisiciones\Requisicion
      */
     protected $model;
 
     /**
-     * EloquentRequisicionRepository constructor.
-     * @param \Ghi\Domain\Core\Models\Transacciones\Transaccion $model
+     * @var \Ghi\Domain\Core\Models\Compras\Requisiciones\TransaccionExt
      */
-    public function __construct(Transaccion $model)
+    protected $ext;
+
+    /**
+     * EloquentRequisicionRepository constructor.
+     * @param \Ghi\Domain\Core\Models\Compras\Requisiciones\Requisicion $model
+     */
+        public function __construct(Requisicion $model, TransaccionExt $ext)
     {
         $this->model = $model;
+        $this->ext = $ext;
     }
     /**
      * Obtiene todos los registros de Requisicion
      *
-     * @return \Illuminate\Database\Eloquent\Collection|\Ghi\Domain\Core\Models\Transacciones\Transaccion
+     * @return \Illuminate\Database\Eloquent\Collection|Requisicion
      */
     public function all()
     {
@@ -30,7 +38,8 @@ class EloquentRequisicionRepository implements RequisicionRepository
 
     /**
      * @param integer $id
-     * @return \Illuminate\Database\Eloquent\Collection|\Ghi\Domain\Core\Models\Transacciones\Transaccion
+     * @return \Illuminate\Database\Eloquent\Model|Requisicion
+
      */
     public function find($id)
     {
@@ -51,11 +60,29 @@ class EloquentRequisicionRepository implements RequisicionRepository
     /**
      * Guarda un registro de Transaccion
      * @param array $data
-     * @return \Ghi\Domain\Core\Models\Transacciones\Transaccion
+     * @return \Ghi\Domain\Core\Models\Compras\Requisiciones\Requisicion
      * @throws \Exception
      */
     public function create(array $data)
     {
-        // TODO: Implement create() method.
+        try {
+            DB::connection('cadeco')->beginTransaction();
+
+            $item = $this->model->create($data);
+
+            $this->ext->create([
+                'id_transaccion' => $item->id_transaccion,
+                'id_departamento' => $data['id_departamento'],
+                'id_tipo_requisicion' => $data['id_tipo_requisicion']
+            ]);
+
+            DB::connection('cadeco')->commit();
+
+        } catch (\Exception $e) {
+            DB::connection('cadeco')->rollBack();
+            throw $e;
+        }
+
+        return $item;
     }
 }

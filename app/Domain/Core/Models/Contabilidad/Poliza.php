@@ -3,7 +3,9 @@
 namespace Ghi\Domain\Core\Models\Contabilidad;
 
 
+use Ghi\Core\Facades\Context;
 use Ghi\Domain\Core\Models\BaseModel;
+use Ghi\Domain\Core\Models\Scopes\ObraCadecoScope;
 use Ghi\Domain\Core\Models\User;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -38,14 +40,15 @@ class Poliza extends BaseModel
 
     protected $appends = ['suma_debe', 'suma_haber'];
 
-    /**
-     * Poliza constructor.
-     * @param array $attributes
-     */
-    public function __construct(array $attributes = [])
+    protected static function boot()
     {
-        $attributes['id_obra_cadeco'] = \Ghi\Core\Facades\Context::getId();
-        parent::__construct($attributes);
+        parent::boot();
+
+        static::addGlobalScope(new ObraCadecoScope());
+
+        static::creating(function ($model) {
+            $model->id_obra_cadeco = Context::getId();
+        });
     }
 
     /**

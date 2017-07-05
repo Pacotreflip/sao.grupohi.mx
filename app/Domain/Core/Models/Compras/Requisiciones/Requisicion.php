@@ -2,12 +2,24 @@
 
 namespace Ghi\Domain\Core\Models\Compras\Requisiciones;
 
+use Carbon\Carbon;
+use Ghi\Core\Facades\Context;
+use Ghi\Domain\Core\Models\Scopes\ObraScope;
 use Ghi\Domain\Core\Models\Scopes\RequisicionScope;
+use Ghi\Domain\Core\Models\Transacciones\Tipo;
 use Ghi\Domain\Core\Models\Transacciones\Transaccion;
 use Ghi\Domain\Core\Models\Transacciones\TransaccionTrait;
 
 class Requisicion extends Transaccion
 {
+
+    protected $fillable = [
+        'tipo_transaccion',
+        'fecha',
+        'opciones',
+        'observaciones'
+    ];
+
     /**
      * Aplicar Scope Global para recuperar solo las transacciones de tipo Requisición
      */
@@ -16,6 +28,14 @@ class Requisicion extends Transaccion
         parent::boot();
 
         static::addGlobalScope(new RequisicionScope());
+        static::addGlobalScope(new ObraScope());
+
+        static::creating(function ($model) {
+            $model->tipo_transaccion = Tipo::REQUISICION;
+            $model->opciones = 1;
+            $model->fecha = Carbon::now()->toDateTimeString();
+            $model->id_obra = Context::getId();
+        });
     }
 
     /**
@@ -29,7 +49,7 @@ class Requisicion extends Transaccion
      * @return string
      */
     public function getFolioAttribute() {
-        return $this->departamentoResponsable->descripcion_corta . '-' . $this->tipoRequisicion->descripcion_corta . '-' . $this->numero_folio;
+        return $this->transaccionExt->folio_adicional;
     }
 
     /**

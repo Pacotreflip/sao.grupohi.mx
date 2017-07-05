@@ -17,9 +17,11 @@ class CuentaAlmacen extends Model
         'estatus'
     ];
 
-    public function __construct(array $attributes = [])
+    protected static function boot()
     {
-        $attributes['estatus'] = 1;
-        parent::__construct($attributes);
+        parent::boot();
+        static::creating(function ($model) {
+            $model->estatus = 1;
+        });
     }
 }
