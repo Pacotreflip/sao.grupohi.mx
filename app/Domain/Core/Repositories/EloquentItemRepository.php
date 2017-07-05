@@ -1,8 +1,9 @@
 <?php
-namespace Ghi\Domain\Core\Repositories\Compras;
+namespace Ghi\Domain\Core\Repositories;
 
 use Ghi\Domain\Core\Contracts\Compras\Identificador;
-use Ghi\Domain\Core\Contracts\Compras\ItemRepository;
+
+use Ghi\Domain\Core\Contracts\ItemRepository;
 use Ghi\Domain\Core\Models\Transacciones\Item;
 
 class EloquentItemRepository implements ItemRepository
@@ -47,5 +48,16 @@ class EloquentItemRepository implements ItemRepository
     {
         $this->model = $this->model->with($relations);
         return $this;
+    }
+
+    /**
+     * Guarda un registro de Item
+     * @param array $data
+     * @return \Ghi\Domain\Core\Models\Transacciones\Item
+     * @throws \Exception
+     */
+    public function create(array $data)
+    {
+        // TODO: Implement create() method.
     }
 }

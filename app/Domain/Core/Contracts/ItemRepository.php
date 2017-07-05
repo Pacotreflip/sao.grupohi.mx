@@ -1,13 +1,6 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: EMARTINEZ
- * Date: 05/07/2017
- * Time: 11:43 AM
- */
 
-namespace Ghi\Domain\Core\Contracts\Compras;
-
+namespace Ghi\Domain\Core\Contracts;
 
 interface ItemRepository
 {
@@ -23,6 +16,13 @@ interface ItemRepository
      * @return \Illuminate\Database\Eloquent\Collection|\Ghi\Domain\Core\Models\Transacciones\Item
      */
     public function find($id);
+    /**
+     * Guarda un registro de Item
+     * @param array $data
+     * @return \Ghi\Domain\Core\Models\Transacciones\Item
+     * @throws \Exception
+     */
+    public function create(array $data);
 
     /**Crea relaciones con otros modelos
      * @param array $array
