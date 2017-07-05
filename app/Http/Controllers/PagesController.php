@@ -43,4 +43,7 @@ class PagesController extends Controller
     public function sistema_contable() {
         return view('sistema_contable.index');
     }
+    public function compras() {
+        return view('compras.index');
+    }
 }

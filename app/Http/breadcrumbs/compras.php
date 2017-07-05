@@ -19,3 +19,4 @@ Breadcrumbs::register('compras.requisicion.show', function ($breadcrumb, $requis
     $breadcrumb->parent('compras.requisicion.index');
     $breadcrumb->push($requisicion->folio, route('compras.requisicion.show', $requisicion));
 });
+
