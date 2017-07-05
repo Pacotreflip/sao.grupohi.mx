@@ -47,4 +47,15 @@ class EloquentRequisicionRepository implements RequisicionRepository
         $this->model = $this->model->with($relations);
         return $this;
     }
+
+    /**
+     * Guarda un registro de Transaccion
+     * @param array $data
+     * @return \Ghi\Domain\Core\Models\Transacciones\Transaccion
+     * @throws \Exception
+     */
+    public function create(array $data)
+    {
+        // TODO: Implement create() method.
+    }
 }
