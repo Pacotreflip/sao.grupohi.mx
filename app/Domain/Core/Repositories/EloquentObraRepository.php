@@ -70,4 +70,16 @@ class EloquentObraRepository implements ObraRepository
     {
         return $this->model->findOrFail($id);
     }
+
+    /**
+     * Crea relaciones con otros modelos
+     * @param $relations
+     * @return mixed
+     * @internal param array $array
+     */
+    public function with($relations)
+    {
+        $this->model = $this->model->with($relations);
+        return $this;
+    }
 }

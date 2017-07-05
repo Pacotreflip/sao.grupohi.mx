@@ -36334,14 +36334,15 @@ require('./vue-components/errors');
 require('./vue-components/poliza_tipo/poliza-tipo-create');
 require('./vue-components/select2');
 require('./vue-components/tipo_cuenta_contable/tipo-cuenta-contable-create');
-require('./vue-components/cuenta_contable/configuracion-contable');
+require('./vue-components/cuenta_contable/index');
 require('./vue-components/poliza_generada/poliza-generada-edit');
 require('./vue-components/cuenta_concepto/index');
 require('./vue-components/cuenta_material/cuenta-material-index');
 require('./vue-components/cuenta_empresa/cuenta-empresa-edit');
 require('./vue-components/cuenta_almacen/index');
+require('./vue-components/datos_contables/edit');
 
-},{"./vue-components/cuenta_almacen/index":31,"./vue-components/cuenta_concepto/index":32,"./vue-components/cuenta_contable/configuracion-contable":33,"./vue-components/cuenta_empresa/cuenta-empresa-edit":34,"./vue-components/cuenta_material/cuenta-material-index":35,"./vue-components/errors":36,"./vue-components/global-errors":37,"./vue-components/poliza_generada/poliza-generada-edit":38,"./vue-components/poliza_tipo/poliza-tipo-create":39,"./vue-components/select2":40,"./vue-components/tipo_cuenta_contable/tipo-cuenta-contable-create":43}],31:[function(require,module,exports){
+},{"./vue-components/cuenta_almacen/index":31,"./vue-components/cuenta_concepto/index":32,"./vue-components/cuenta_contable/index":33,"./vue-components/cuenta_empresa/cuenta-empresa-edit":34,"./vue-components/cuenta_material/cuenta-material-index":35,"./vue-components/datos_contables/edit":36,"./vue-components/errors":37,"./vue-components/global-errors":38,"./vue-components/poliza_generada/poliza-generada-edit":39,"./vue-components/poliza_tipo/poliza-tipo-create":40,"./vue-components/select2":41,"./vue-components/tipo_cuenta_contable/tipo-cuenta-contable-create":44}],31:[function(require,module,exports){
 'use strict';
 
 Vue.component('cuenta-almacen-index', {
@@ -36711,18 +36712,17 @@ Vue.component('cuenta-concepto-index', {
 },{}],33:[function(require,module,exports){
 'use strict';
 
-Vue.component('configuracion-contable', {
-    props: ['datos_contables', 'datos_contables_update_url', 'cuenta_contable_url', 'tipos_cuentas_contables'],
+Vue.component('cuenta-contable-index', {
+    props: ['datos_contables', 'cuenta_contable_url', 'tipos_cuentas_contables'],
     data: function data() {
         return {
             'data': {
-                'datos_contables': this.datos_contables,
                 'tipos_cuentas_contables': this.tipos_cuentas_contables
             },
             'form': {
                 'tipo_cuenta_contable_edit': {
                     'cuenta_contable': {
-                        con_prefijo: false
+                        'con_prefijo': false
                     }
                 }
             },
@@ -36731,48 +36731,6 @@ Vue.component('configuracion-contable', {
     },
 
     methods: {
-        confirm_datos_obra: function confirm_datos_obra() {
-            var self = this;
-            swal({
-                title: "Guardar Datos Contables de la Obra",
-                text: "¿Estás seguro de que la información es correcta?",
-                type: "warning",
-                showCancelButton: true,
-                confirmButtonText: "Si, Continuar",
-                cancelButtonText: "No, Cancelar"
-            }).then(function () {
-                self.save_datos_obra();
-            }).catch(swal.noop);
-        },
-
-        save_datos_obra: function save_datos_obra() {
-            var self = this;
-            $.ajax({
-                type: 'POST',
-                url: self.datos_contables_update_url,
-                data: {
-                    BDContPaq: self.data.datos_contables.BDContPaq,
-                    FormatoCuenta: self.data.datos_contables.FormatoCuenta,
-                    NumobraContPaq: self.data.datos_contables.NumobraContPaq,
-                    _method: 'PATCH'
-                },
-                beforeSend: function beforeSend() {
-                    self.guardando = true;
-                },
-                success: function success(data, textStatus, xhr) {
-                    self.data.datos_contables = data.data.datos_contables;
-                    swal({
-                        type: 'success',
-                        title: 'Correcto',
-                        html: 'Datos Contables de la Obra actualizados correctamente'
-                    });
-                },
-                complete: function complete() {
-                    self.guardando = false;
-                }
-            });
-        },
-
         confirm_cuenta_contable: function confirm_cuenta_contable() {
             var self = this;
             swal({
@@ -36872,9 +36830,7 @@ Vue.component('configuracion-contable', {
             var _this = this;
 
             this.$validator.validateAll(scope).then(function () {
-                if (funcion == 'save_datos_obra') {
-                    _this.confirm_datos_obra();
-                } else if (funcion == 'save_cuenta') {
+                if (funcion == 'save_cuenta') {
                     _this.confirm_cuenta_contable();
                 } else if (funcion == 'update_cuenta') {
                     _this.confirm_cuenta_contable_update();
@@ -37190,13 +37146,88 @@ Vue.component('cuenta-material-index', {
 },{}],36:[function(require,module,exports){
 'use strict';
 
+Vue.component('datos-contables-edit', {
+    props: ['datos_contables', 'datos_contables_update_url'],
+    data: function data() {
+        return {
+            'data': {
+                'datos_contables': this.datos_contables
+            },
+            'guardando': false
+        };
+    },
+
+    methods: {
+        confirm_datos_obra: function confirm_datos_obra() {
+            var self = this;
+            swal({
+                title: "Guardar Datos Contables de la Obra",
+                text: "¿Estás seguro de que la información es correcta?",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonText: "Si, Continuar",
+                cancelButtonText: "No, Cancelar"
+            }).then(function () {
+                self.save_datos_obra();
+            }).catch(swal.noop);
+        },
+
+        save_datos_obra: function save_datos_obra() {
+            var self = this;
+            $.ajax({
+                type: 'POST',
+                url: self.datos_contables_update_url,
+                data: {
+                    BDContPaq: self.data.datos_contables.BDContPaq,
+                    FormatoCuenta: self.data.datos_contables.FormatoCuenta,
+                    NumobraContPaq: self.data.datos_contables.NumobraContPaq,
+                    _method: 'PATCH'
+                },
+                beforeSend: function beforeSend() {
+                    self.guardando = true;
+                },
+                success: function success(data, textStatus, xhr) {
+                    self.data.datos_contables = data.data.datos_contables;
+                    swal({
+                        type: 'success',
+                        title: 'Correcto',
+                        html: 'Datos Contables de la Obra actualizados correctamente'
+                    });
+                },
+                complete: function complete() {
+                    self.guardando = false;
+                }
+            });
+        },
+
+        validateForm: function validateForm(scope, funcion) {
+            var _this = this;
+
+            this.$validator.validateAll(scope).then(function () {
+                if (funcion == 'save_datos_obra') {
+                    _this.confirm_datos_obra();
+                }
+            }).catch(function () {
+                swal({
+                    type: 'warning',
+                    title: 'Advertencia',
+                    text: 'Por favor corrija los errores del formulario'
+                });
+            });
+        }
+    }
+});
+
+},{}],37:[function(require,module,exports){
+'use strict';
+
 Vue.component('app-errors', {
     props: ['form'],
 
     template: require('./templates/errors.html')
 });
 
-},{"./templates/errors.html":41}],37:[function(require,module,exports){
+},{"./templates/errors.html":42}],38:[function(require,module,exports){
 'use strict';
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
@@ -37222,7 +37253,7 @@ Vue.component('global-errors', {
   }
 });
 
-},{"./templates/global-errors.html":42}],38:[function(require,module,exports){
+},{"./templates/global-errors.html":43}],39:[function(require,module,exports){
 'use strict';
 
 Vue.component('poliza-generada-edit', {
@@ -37429,7 +37460,7 @@ Vue.component('poliza-generada-edit', {
     }
 });
 
-},{}],39:[function(require,module,exports){
+},{}],40:[function(require,module,exports){
 'use strict';
 
 Vue.component('poliza-tipo-create', {
@@ -37620,7 +37651,7 @@ Vue.component('poliza-tipo-create', {
     }
 });
 
-},{}],40:[function(require,module,exports){
+},{}],41:[function(require,module,exports){
 'use strict';
 
 Vue.component('select2', {
@@ -37666,11 +37697,11 @@ Vue.component('select2', {
     }
 });
 
-},{}],41:[function(require,module,exports){
-module.exports = '<div id="form-errors" v-cloak>\n  <div class="alert alert-danger" v-if="form.errors.length">\n    <ul>\n      <li v-for="error in form.errors">{{ error }}</li>\n    </ul>\n  </div>\n</div>';
 },{}],42:[function(require,module,exports){
-module.exports = '<div class="alert alert-danger" v-show="errors.length">\n  <ul>\n    <li v-for="error in errors">{{ error }}</li>\n  </ul>\n</div>';
+module.exports = '<div id="form-errors" v-cloak>\n  <div class="alert alert-danger" v-if="form.errors.length">\n    <ul>\n      <li v-for="error in form.errors">{{ error }}</li>\n    </ul>\n  </div>\n</div>';
 },{}],43:[function(require,module,exports){
+module.exports = '<div class="alert alert-danger" v-show="errors.length">\n  <ul>\n    <li v-for="error in errors">{{ error }}</li>\n  </ul>\n</div>';
+},{}],44:[function(require,module,exports){
 'use strict';
 
 /**
