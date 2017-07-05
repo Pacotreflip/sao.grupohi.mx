@@ -2,7 +2,7 @@
 
 namespace Ghi\Domain\Core\Models\Scopes;
 
-use Ghi\Equipamiento\Transacciones\Tipo;
+use Ghi\Domain\Core\Models\Transacciones\Tipo;
 use Illuminate\Database\Eloquent\Scope;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;

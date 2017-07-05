@@ -1,6 +1,6 @@
 <?php
 
-namespace Ghi\Equipamiento\Transacciones;
+namespace Ghi\Domain\Core\Models\Transacciones;
 
 class Tipo
 {

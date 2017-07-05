@@ -9,7 +9,7 @@ class Transaccion extends Model
     /**
      * @var string
      */
-    protected $connection = 'cadeco ';
+    protected $connection = 'cadeco';
 
     /**
      * @var string

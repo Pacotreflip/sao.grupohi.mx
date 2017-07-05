@@ -29,6 +29,20 @@ class Requisicion extends Transaccion
      * @return string
      */
     public function getFolioAttribute() {
-        return $this->transaccionExt->departamentoResponsable->descripcion_corta . '-' . $this->transaccionExt->tipoRequisicion->descripcion_corta . '-' . $this->numero_folio;
+        return $this->departamentoResponsable->descripcion_corta . '-' . $this->tipoRequisicion->descripcion_corta . '-' . $this->numero_folio;
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo|DepartamentoResponsable
+     */
+    public function departamentoResponsable() {
+        return $this->transaccionExt->departamentoResponsable();
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo|TipoRequisicion
+     */
+    public function tipoRequisicion() {
+        return $this->transaccionExt->tipoRequisicion();
     }
 }
