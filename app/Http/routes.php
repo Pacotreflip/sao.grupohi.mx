@@ -13,3 +13,4 @@
 
 include('routes/SAO.php');
 include('routes/sistema_contable.php');
+include('routes/compras.php');

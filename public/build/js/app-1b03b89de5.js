@@ -36331,18 +36331,18 @@ function padValue(value) {
 
 require('./vue-components/global-errors');
 require('./vue-components/errors');
-require('./vue-components/poliza_tipo/poliza-tipo-create');
+require('./vue-components/Contabilidad/poliza_tipo/poliza-tipo-create');
 require('./vue-components/select2');
-require('./vue-components/tipo_cuenta_contable/tipo-cuenta-contable-create');
-require('./vue-components/cuenta_contable/index');
-require('./vue-components/poliza_generada/poliza-generada-edit');
-require('./vue-components/cuenta_concepto/index');
-require('./vue-components/cuenta_material/cuenta-material-index');
-require('./vue-components/cuenta_empresa/cuenta-empresa-edit');
-require('./vue-components/cuenta_almacen/index');
-require('./vue-components/datos_contables/edit');
+require('./vue-components/Contabilidad/tipo_cuenta_contable/tipo-cuenta-contable-create');
+require('./vue-components/Contabilidad/cuenta_contable/index');
+require('./vue-components/Contabilidad/poliza_generada/poliza-generada-edit');
+require('./vue-components/Contabilidad/cuenta_concepto/index');
+require('./vue-components/Contabilidad/cuenta_material/cuenta-material-index');
+require('./vue-components/Contabilidad/cuenta_empresa/cuenta-empresa-edit');
+require('./vue-components/Contabilidad/cuenta_almacen/index');
+require('./vue-components/Contabilidad/datos_contables/edit');
 
-},{"./vue-components/cuenta_almacen/index":31,"./vue-components/cuenta_concepto/index":32,"./vue-components/cuenta_contable/index":33,"./vue-components/cuenta_empresa/cuenta-empresa-edit":34,"./vue-components/cuenta_material/cuenta-material-index":35,"./vue-components/datos_contables/edit":36,"./vue-components/errors":37,"./vue-components/global-errors":38,"./vue-components/poliza_generada/poliza-generada-edit":39,"./vue-components/poliza_tipo/poliza-tipo-create":40,"./vue-components/select2":41,"./vue-components/tipo_cuenta_contable/tipo-cuenta-contable-create":44}],31:[function(require,module,exports){
+},{"./vue-components/Contabilidad/cuenta_almacen/index":31,"./vue-components/Contabilidad/cuenta_concepto/index":32,"./vue-components/Contabilidad/cuenta_contable/index":33,"./vue-components/Contabilidad/cuenta_empresa/cuenta-empresa-edit":34,"./vue-components/Contabilidad/cuenta_material/cuenta-material-index":35,"./vue-components/Contabilidad/datos_contables/edit":36,"./vue-components/Contabilidad/poliza_generada/poliza-generada-edit":37,"./vue-components/Contabilidad/poliza_tipo/poliza-tipo-create":38,"./vue-components/Contabilidad/tipo_cuenta_contable/tipo-cuenta-contable-create":39,"./vue-components/errors":40,"./vue-components/global-errors":41,"./vue-components/select2":42}],31:[function(require,module,exports){
 'use strict';
 
 Vue.component('cuenta-almacen-index', {
@@ -37221,41 +37221,6 @@ Vue.component('datos-contables-edit', {
 },{}],37:[function(require,module,exports){
 'use strict';
 
-Vue.component('app-errors', {
-    props: ['form'],
-
-    template: require('./templates/errors.html')
-});
-
-},{"./templates/errors.html":42}],38:[function(require,module,exports){
-'use strict';
-
-var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
-
-Vue.component('global-errors', {
-
-  data: function data() {
-    return {
-      errors: []
-    };
-  },
-
-  template: require('./templates/global-errors.html'),
-
-  events: {
-    displayGlobalErrors: function displayGlobalErrors(errors) {
-      if ((typeof errors === 'undefined' ? 'undefined' : _typeof(errors)) === 'object') {
-        this.errors = _.flatten(_.toArray(errors));
-      } else {
-        this.errors.push('Un error grave ocurrio. Por favor intente otra vez.');
-      }
-    }
-  }
-});
-
-},{"./templates/global-errors.html":43}],39:[function(require,module,exports){
-'use strict';
-
 Vue.component('poliza-generada-edit', {
     props: ['poliza', 'poliza_edit', 'datos_contables', 'url_cuenta_contable_findby', 'url_poliza_generada_update', 'tipo_cuenta_contable', 'cuentas_contables'],
     data: function data() {
@@ -37460,7 +37425,7 @@ Vue.component('poliza-generada-edit', {
     }
 });
 
-},{}],40:[function(require,module,exports){
+},{}],38:[function(require,module,exports){
 'use strict';
 
 Vue.component('poliza-tipo-create', {
@@ -37651,57 +37616,7 @@ Vue.component('poliza-tipo-create', {
     }
 });
 
-},{}],41:[function(require,module,exports){
-'use strict';
-
-Vue.component('select2', {
-    props: ['options', 'value'],
-    template: '<select><slot></slot></select>',
-    mounted: function mounted() {
-        var vm = this;
-        var data = [];
-
-        $.each(this.options, function (id, text) {
-            data.push({ id: id, text: text });
-        });
-
-        function SortByName(a, b) {
-            var aName = a.text.toLowerCase();
-            var bName = b.text.toLowerCase();
-            return aName < bName ? -1 : aName > bName ? 1 : 0;
-        }
-
-        data = data.sort(SortByName);
-
-        $(this.$el).select2({
-            data: data,
-            width: '100%'
-        }).val(this.value).trigger('change')
-        // emit event on change.
-        .on('change', function () {
-            vm.$emit('input', this.value);
-        });
-    },
-    watch: {
-        value: function value(_value) {
-            // update value
-            $(this.$el).val(_value).trigger('change');
-        },
-        options: function options(_options) {
-            // update options
-            $(this.$el).select2({ data: _options });
-        }
-    },
-    destroyed: function destroyed() {
-        $(this.$el).off().select2('destroy');
-    }
-});
-
-},{}],42:[function(require,module,exports){
-module.exports = '<div id="form-errors" v-cloak>\n  <div class="alert alert-danger" v-if="form.errors.length">\n    <ul>\n      <li v-for="error in form.errors">{{ error }}</li>\n    </ul>\n  </div>\n</div>';
-},{}],43:[function(require,module,exports){
-module.exports = '<div class="alert alert-danger" v-show="errors.length">\n  <ul>\n    <li v-for="error in errors">{{ error }}</li>\n  </ul>\n</div>';
-},{}],44:[function(require,module,exports){
+},{}],39:[function(require,module,exports){
 'use strict';
 
 /**
@@ -37768,6 +37683,91 @@ Vue.component('tipo-cuenta-contable-create', {
 
 });
 
+},{}],40:[function(require,module,exports){
+'use strict';
+
+Vue.component('app-errors', {
+    props: ['form'],
+
+    template: require('./templates/errors.html')
+});
+
+},{"./templates/errors.html":43}],41:[function(require,module,exports){
+'use strict';
+
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+
+Vue.component('global-errors', {
+
+  data: function data() {
+    return {
+      errors: []
+    };
+  },
+
+  template: require('./templates/global-errors.html'),
+
+  events: {
+    displayGlobalErrors: function displayGlobalErrors(errors) {
+      if ((typeof errors === 'undefined' ? 'undefined' : _typeof(errors)) === 'object') {
+        this.errors = _.flatten(_.toArray(errors));
+      } else {
+        this.errors.push('Un error grave ocurrio. Por favor intente otra vez.');
+      }
+    }
+  }
+});
+
+},{"./templates/global-errors.html":44}],42:[function(require,module,exports){
+'use strict';
+
+Vue.component('select2', {
+    props: ['options', 'value'],
+    template: '<select><slot></slot></select>',
+    mounted: function mounted() {
+        var vm = this;
+        var data = [];
+
+        $.each(this.options, function (id, text) {
+            data.push({ id: id, text: text });
+        });
+
+        function SortByName(a, b) {
+            var aName = a.text.toLowerCase();
+            var bName = b.text.toLowerCase();
+            return aName < bName ? -1 : aName > bName ? 1 : 0;
+        }
+
+        data = data.sort(SortByName);
+
+        $(this.$el).select2({
+            data: data,
+            width: '100%'
+        }).val(this.value).trigger('change')
+        // emit event on change.
+        .on('change', function () {
+            vm.$emit('input', this.value);
+        });
+    },
+    watch: {
+        value: function value(_value) {
+            // update value
+            $(this.$el).val(_value).trigger('change');
+        },
+        options: function options(_options) {
+            // update options
+            $(this.$el).select2({ data: _options });
+        }
+    },
+    destroyed: function destroyed() {
+        $(this.$el).off().select2('destroy');
+    }
+});
+
+},{}],43:[function(require,module,exports){
+module.exports = '<div id="form-errors" v-cloak>\n  <div class="alert alert-danger" v-if="form.errors.length">\n    <ul>\n      <li v-for="error in form.errors">{{ error }}</li>\n    </ul>\n  </div>\n</div>';
+},{}],44:[function(require,module,exports){
+module.exports = '<div class="alert alert-danger" v-show="errors.length">\n  <ul>\n    <li v-for="error in errors">{{ error }}</li>\n  </ul>\n</div>';
 },{}]},{},[28]);
 
 //# sourceMappingURL=app.js.map

@@ -10,7 +10,7 @@ interface TransaccionInterfazRepository
     public function find($id);
 
     /**
-     * Obtiene todas las Transacciones Interfáz
+     * Obtiene todas las Requisiciones Interfáz
      * @return \Illuminate\Database\Eloquent\Collection|TransaccionInterfaz
      */
     public function all();

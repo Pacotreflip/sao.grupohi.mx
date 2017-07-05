@@ -9,13 +9,9 @@ class Material extends BaseModel
     protected $table = 'dbo.materiales';
     protected $primaryKey = 'id_material';
 
-
     protected $appends = ['nivel_hijos'];
 
     public function getNivelHijosAttribute() {
         return $this->nivel . '___.';
     }
-
-
-
 }
