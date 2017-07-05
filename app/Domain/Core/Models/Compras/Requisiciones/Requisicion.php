@@ -28,13 +28,14 @@ class Requisicion extends Transaccion
         parent::boot();
 
         static::addGlobalScope(new RequisicionScope());
-        static::addGlobalScope(new ObraScope());
+        //static::addGlobalScope(new ObraScope());
 
         static::creating(function ($model) {
             $model->tipo_transaccion = Tipo::REQUISICION;
             $model->opciones = 1;
             $model->fecha = Carbon::now()->toDateTimeString();
-            $model->id_obra = Context::getId();
+           $model->id_obra =1;
+           // $model->id_obra = Context::getId();
         });
     }
 

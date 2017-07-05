@@ -2,6 +2,7 @@
 
 namespace Ghi\Domain\Core\Models\Transacciones;
 
+use Ghi\Domain\Core\Models\Compras\Requisiciones\ItemExt;
 use Ghi\Domain\Core\Models\Material;
 use Illuminate\Database\Eloquent\Model;
 
@@ -30,6 +31,17 @@ class Item extends Model
         'precio_unitario' => 'float'
     ];
 
+    protected $fillable =
+        [
+            'id_transaccion',
+            'id_material',
+            'unidad',
+            'cantidad'
+
+        ];
+
+    public $timestamps = false;
+
     /**
      * Material relacionado con este item
      *
@@ -43,7 +55,8 @@ class Item extends Model
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasOne|ItemExt
      */
-    public function requisicionItem() {
+    public function itemExt()
+    {
         return $this->hasOne(ItemExt::class, 'id_item', 'id_item');
     }
 }

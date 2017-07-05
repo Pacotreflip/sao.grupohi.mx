@@ -22,9 +22,27 @@ class ItemController extends Controller
     {
         parent::__construct();
 
-        $this->middleware('auth');
-        $this->middleware('context');
+        //$this->middleware('auth');
+        //$this->middleware('context');
 
         $this->item = $item;
+    }
+
+    public function store(Request $request) {
+        $item = $this->item->create($request->all());
+
+        return response()->json(['data' => ['item' => $item]], 200);
+    }
+
+    public function update(Request $request, $id) {
+        $item = $this->item->update($request->all(), $id);
+
+        return response()->json(['data' => ['item' => $item]], 200);
+    }
+
+    public function destroy($id) {
+        $this->item->delete($id);
+
+        return $this->response->accepted();
     }
 }

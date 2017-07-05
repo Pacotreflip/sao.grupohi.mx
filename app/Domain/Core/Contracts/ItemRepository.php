@@ -30,4 +30,20 @@ interface ItemRepository
      * @return mixed
      */
     public function with($relations);
+
+    /**
+     * Actualiza la información de las partidas de una requisición
+     * @param array $data
+     * @param $id
+     * @return mixed
+     * @throws \Exception
+     */
+    public function update(array $data, $id);
+
+    /**
+     * Elimina un Item
+     * @param $id
+     * @return mixed
+     */
+    public function delete($id);
 }

@@ -15,3 +15,10 @@ Route::get('/context/{database}/{id_obra}','ContextoController@set')->name('cont
 Route::get('auth/login', 'Auth\AuthController@getLogin')->name('auth.getLogin');
 Route::post('auth/login', 'Auth\AuthController@postLogin')->name('auth.postLogin');
 Route::get('auth/logout', 'Auth\AuthController@getLogout')->name('auth.getLogout');
+
+/**
+ * Item Routes...
+ */
+Route::post('item', 'ItemController@store')->name('item.store');
+Route::patch('item/{id}', 'ItemController@update')->name('item.update')->where(['id' => '[0-9]+']);
+Route::delete('item/{id}', 'ItemController@destroy')->name('item.destroy')->where(['id' => '[0-9]+']);

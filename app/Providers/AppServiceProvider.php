@@ -127,5 +127,9 @@ class AppServiceProvider extends ServiceProvider
             \Ghi\Domain\Core\Contracts\Compras\RequisicionRepository::class,
             \Ghi\Domain\Core\Repositories\Compras\EloquentRequisicionRepository::class
         );
+        $this->app->bind(
+            \Ghi\Domain\Core\Contracts\MaterialRepository::class,
+            \Ghi\Domain\Core\Repositories\EloquentMaterialRepository::class
+        );
     }
 }

@@ -30,4 +30,21 @@ interface RequisicionRepository
      * @return mixed
      */
     public function with($relations);
+
+    /**
+     * Actualiza un registro de Transaccion
+     * @param array $data
+     * @param integer $id
+     * @return \Ghi\Domain\Core\Models\Transacciones\Transaccion
+     * @throws \Exception
+     */
+    public function update(array $data, $id);
+
+    /**
+     * Elimina una Requisicion
+     * @param $id
+     * @return mixed
+     */
+    public function delete($id);
+
 }

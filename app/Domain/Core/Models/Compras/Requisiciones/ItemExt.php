@@ -4,9 +4,11 @@ namespace Ghi\Domain\Core\Models\Compras\Requisiciones;
 
 use Ghi\Domain\Core\Models\Transacciones\Item;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class ItemExt extends Model
 {
+    use SoftDeletes;
     /**
      * @var string
      */
@@ -27,6 +29,11 @@ class ItemExt extends Model
      */
     public $incrementing = false;
 
+    protected $fillable=
+        [
+            'id_item',
+            'observaciones'
+        ];
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo|Item
      */

@@ -13,13 +13,13 @@ interface EmpresaRepository
 {
     /**
      * @param $with
-     * @return Ghi\Domain\Core\Models\Contabilidad\collection|CuentaEmpresa
+     * @return \Ghi\Domain\Core\Models\Contabilidad\collection|CuentaEmpresa
      */
     public function all();
 
     /**
      * @param $id
-     * @return Ghi\Domain\Core\Models\Contabilidad\CuentaEmpresa
+     * @return \Ghi\Domain\Core\Models\Contabilidad\CuentaEmpresa
      */
     public function find($id);
 

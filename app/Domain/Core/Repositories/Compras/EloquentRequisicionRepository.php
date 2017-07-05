@@ -1,5 +1,7 @@
 <?php
+
 namespace Ghi\Domain\Core\Repositories\Compras;
+
 use Ghi\Domain\Core\Contracts\Compras\RequisicionRepository;
 use Ghi\Domain\Core\Models\Compras\Requisiciones\Requisicion;
 use Ghi\Domain\Core\Models\Compras\Requisiciones\TransaccionExt;
@@ -21,11 +23,12 @@ class EloquentRequisicionRepository implements RequisicionRepository
      * EloquentRequisicionRepository constructor.
      * @param \Ghi\Domain\Core\Models\Compras\Requisiciones\Requisicion $model
      */
-        public function __construct(Requisicion $model, TransaccionExt $ext)
+    public function __construct(Requisicion $model, TransaccionExt $ext)
     {
         $this->model = $model;
         $this->ext = $ext;
     }
+
     /**
      * Obtiene todos los registros de Requisicion
      *
@@ -39,7 +42,6 @@ class EloquentRequisicionRepository implements RequisicionRepository
     /**
      * @param integer $id
      * @return \Illuminate\Database\Eloquent\Model|Requisicion
-
      */
     public function find($id)
     {
@@ -83,6 +85,47 @@ class EloquentRequisicionRepository implements RequisicionRepository
             throw $e;
         }
 
-        return $item;
+        return $this->model->with('transaccionExt')->find($item->id_transaccion);
+    }
+
+    /**
+     * Actualiza un registro de Transaccion
+     * @param array $data
+     * @param integer $id
+     * @return \Ghi\Domain\Core\Models\Transacciones\Transaccion
+     * @throws \Exception
+     */
+    public function update(array $data, $id)
+    {
+        try {
+
+            DB::connection('cadeco')->beginTransaction();
+            if (!$requisicion = $this->model->find($id)) {
+                throw new HttpResponseException(new Response('No se encontró la requisición', 404));
+            }
+
+            $requisicion_ext = $this->ext->find($id);
+            $requisicion->update($data);
+            $requisicion_ext->update($data);
+            DB::connection('cadeco')->commit();
+
+        } catch (\Exception $e) {
+            DB::connection('cadeco')->rollBack();
+            throw $e;
+        }
+        return $this->model->with('transaccionExt')->find($requisicion->id_transaccion);
+    }
+
+    /**
+     * Elimina una Requisicion
+     * @param $id
+     * @return mixed
+     */
+    public function delete($id)
+    {
+        if (!$requisicion = $this->model->find($id)) {
+            throw new HttpResponseException(new Response('No se encontró la requisición', 404));
+        }
+        $requisicion->delete();
     }
 }

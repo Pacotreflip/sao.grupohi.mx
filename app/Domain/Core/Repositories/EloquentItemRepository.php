@@ -4,7 +4,11 @@ namespace Ghi\Domain\Core\Repositories;
 use Ghi\Domain\Core\Contracts\Compras\Identificador;
 
 use Ghi\Domain\Core\Contracts\ItemRepository;
+use Ghi\Domain\Core\Models\Compras\Requisiciones\ItemExt;
 use Ghi\Domain\Core\Models\Transacciones\Item;
+use Illuminate\Http\Exception\HttpResponseException;
+use Illuminate\Http\Response;
+use Illuminate\Support\Facades\DB;
 
 class EloquentItemRepository implements ItemRepository
 {
@@ -12,14 +16,19 @@ class EloquentItemRepository implements ItemRepository
      * @var \Ghi\Domain\Core\Models\Transacciones\Item
      */
     protected $model;
+    /**
+     * @var \Ghi\Domain\Core\Models\Compras\Requisiciones\ItemExt
+     */
+    protected $ext;
 
     /**
      * EloquentItemRepository constructor.
      * @param \Ghi\Domain\Core\Models\Transacciones\Item $model
      */
-    public function __construct(Item $model)
+    public function __construct(Item $model,ItemExt $ext)
     {
         $this->model = $model;
+        $this->ext = $ext;
     }
     /**
      * Obtiene todos los registros de Item
@@ -59,6 +68,68 @@ class EloquentItemRepository implements ItemRepository
      */
     public function create(array $data)
     {
-        // TODO: Implement create() method.
+        try {
+            DB::connection('cadeco')->beginTransaction();
+
+             $item = $this->model->create($data);
+             $this->ext->create(
+                 [
+                     'id_item'=>$item->id_item,
+                     'observaciones'=>$data['observaciones']
+                 ]
+             );
+
+            DB::connection('cadeco')->commit();
+
+        } catch (\Exception $e) {
+            DB::connection('cadeco')->rollBack();
+            throw $e;
+        }
+        return $this->model->with('itemExt')->find($item->id_item);
+    }
+
+
+    /**
+     * Actualiza la información de las partidas de una requisición
+     * @param array $data
+     * @param $id
+     * @return mixed
+     * @throws \Exception
+     */
+    public function update(array $data, $id)
+    {
+        try {
+            DB::connection('cadeco')->beginTransaction();
+
+            if (! $item = $this->model->find($id)) {
+                throw new HttpResponseException(new Response('No se encontró el Item', 404));
+            }
+
+            $item->update($data);
+            $item_ext = $this->ext->find($id);
+            $item_ext->update($data);
+
+            DB::connection('cadeco')->commit();
+        } catch (\Exception $e) {
+            DB::connection('cadeco')->rollBack();
+            throw $e;
+        }
+        return $this->model->with('itemExt')->find($item->id_item);
+    }
+
+
+    /**
+     * Elimina un Item
+     * @param $id
+     * @return mixed
+     */
+    public function delete($id)
+    {
+        if (! $item = $this->model->find($id)) {
+            throw new HttpResponseException(new Response('No se encontró el Item', 404));
+        }
+
+        $item->delete();
+       // $this->ext->destroy($id);
     }
 }
