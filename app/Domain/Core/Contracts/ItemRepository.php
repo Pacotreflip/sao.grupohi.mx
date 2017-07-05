@@ -24,8 +24,9 @@ interface ItemRepository
      */
     public function create(array $data);
 
-    /**Crea relaciones con otros modelos
-     * @param array $array
+    /**
+     * Crea relaciones con otros modelos
+     * @param $relations
      * @return mixed
      */
     public function with($relations);

@@ -12,7 +12,7 @@ interface RequisicionRepository
     public function all();
 
     /**
-     * @param $id Identificador de la Transaccion
+     * @param integer $id
      * @return \Illuminate\Database\Eloquent\Collection|\Ghi\Domain\Core\Models\Transacciones\Transaccion
      */
     public function find($id);
@@ -24,10 +24,10 @@ interface RequisicionRepository
      */
     public function create(array $data);
 
-    /**Crea relaciones con otros modelos
-     * @param array $array
+    /**
+     * Crea relaciones con otros modelos
+     * @param $relations
      * @return mixed
      */
     public function with($relations);
-
 }

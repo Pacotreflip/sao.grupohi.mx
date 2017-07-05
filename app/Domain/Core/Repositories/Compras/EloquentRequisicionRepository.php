@@ -1,6 +1,5 @@
 <?php
 namespace Ghi\Domain\Core\Repositories\Compras;
-use Ghi\Domain\Core\Contracts\Compras\Identificador;
 use Ghi\Domain\Core\Contracts\Compras\RequisicionRepository;
 use Ghi\Domain\Core\Models\Transacciones\Transaccion;
 
@@ -30,7 +29,7 @@ class EloquentRequisicionRepository implements RequisicionRepository
     }
 
     /**
-     * @param $id Identificador de la Transaccion
+     * @param integer $id
      * @return \Illuminate\Database\Eloquent\Collection|\Ghi\Domain\Core\Models\Transacciones\Transaccion
      */
     public function find($id)
@@ -38,8 +37,9 @@ class EloquentRequisicionRepository implements RequisicionRepository
         return $this->model->find($id);
     }
 
-    /**Crea relaciones con otros modelos
-     * @param array $array
+    /**
+     * Crea relaciones con otros modelos
+     * @param $relations
      * @return mixed
      */
     public function with($relations)
