@@ -61,6 +61,4 @@ class CuentaContable extends Model
     public function polizaMovimientos() {
         return $this->hasMany(PolizaMovimiento::class, 'id_cuenta_contable');
     }
-
-
 }
