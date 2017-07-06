@@ -23,4 +23,11 @@ class TipoRequisicion extends Model
     public function transaccionExt() {
         return $this->hasMany(TransaccionExt::class, 'id_tipo_requisicion', 'id');
     }
+    /**
+     * @return string
+     */
+    public function __toString()
+    {
+        return $this->descripcion;
+    }
 }

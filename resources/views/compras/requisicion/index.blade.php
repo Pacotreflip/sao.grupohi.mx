@@ -21,28 +21,33 @@
                                 <thead>
                                 <tr role="row">
                                     <th class="sorting_asc" tabindex="0" aria-sort="ascending">#</th>
-                                    <th class="sorting" tabindex="0">Departamento Responsable</th>
-                                    <th class="sorting" tabindex="0">Tipo</th>
-                                    <th class="sorting" tabindex="0">Observaciones</th>
+                                    <th class="sorting" tabindex="0">Folio de requisición</th>
+                                    <th class="sorting" tabindex="0">Observación</th>
+                                    <th class="sorting" tabindex="0">Fecha</th>
                                     <th class="sorting" tabindex="0">Acciones</th>
                                 </tr>
                                 </thead>
                                 <tbody>
                                 @foreach($requisiciones as $index => $requisicion)
                                     <tr>
-                                        <td>{{ $index + 1 }}</td>
-                                        <td>{{$requisicion->departamentoResponsable->descripcion}}</td>
-                                        <td>{{$requisicion}}</td>
+                                        <td>{{$index+1}}</td>
+                                        <td>{{$requisicion->folio}}</td>
                                         <td>{{$requisicion->observaciones}}</td>
-                                        <td></td>
+                                        <td>{{$requisicion->fecha->format('Y-m-d h:i:s a')}}</td>
+                                        <td>
+                                            <a href="{{ route('compras.requisicion.show', $requisicion->id_transaccion)}}" title="Ver" class="btn btn-xs btn-default"><i class="fa fa-eye"></i></a>
+                                            <a href="{{ route('compras.requisicion.edit', $requisicion->id_transaccion) }}" title="Editar" class="btn btn-xs btn-info"><i class="fa fa-edit"></i></a>
+                                            <a title="Eliminar" class="btn btn-xs btn-danger"><i class="fa fa-trash"></i></a>
+
+                                        </td>
                                     </tr>
                                 @endforeach
                                 </tbody>
                                 <tfoot>
                                 <th>#</th>
-                                <th>Departamento Responsable</th>
-                                <th>Tipo</th>
-                                <th>Observaciones</th>
+                                <th>Folio de requisición</th>
+                                <th>Observación</th>
+                                <th>Fecha</th>
                                 <th>Acciones</th>
                                 </tfoot>
                             </table>
@@ -52,5 +57,7 @@
                     </div>
                 </div>
             </div>
+        </div>
+    </div>
 
 @endsection

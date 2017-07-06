@@ -26,6 +26,8 @@ class Transaccion extends Model
      */
     public $timestamps = false;
 
+    protected $dates=['fecha'];
+
     /**
      * Items relacionados con esta transaccion
      *

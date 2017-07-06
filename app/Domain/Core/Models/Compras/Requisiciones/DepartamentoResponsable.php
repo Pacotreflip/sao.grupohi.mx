@@ -1,6 +1,7 @@
 <?php
 
 namespace Ghi\Domain\Core\Models\Compras\Requisiciones;
+
 use Illuminate\Database\Eloquent\Model;
 
 class DepartamentoResponsable extends Model
@@ -18,7 +19,16 @@ class DepartamentoResponsable extends Model
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany|TransaccionExt
      */
-    public function transaccionExt() {
+    public function transaccionExt()
+    {
         return $this->hasMany(TransaccionExt::class, 'id_departamento', 'id');
+    }
+
+    /**
+     * @return string
+     */
+    public function __toString()
+    {
+        return $this->descripcion;
     }
 }
