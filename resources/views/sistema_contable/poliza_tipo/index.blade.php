@@ -75,7 +75,7 @@
                                                 </button>
                                             </div>
                                         </td>
-                                    </tr>
+                                    </tr>i
                                 @endforeach
                                 </tbody>
                                 <tfoot>

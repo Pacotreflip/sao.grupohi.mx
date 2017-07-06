@@ -13,6 +13,14 @@
                     <h3 class="box-title">Requisiciones</h3>
                 </div>
                 <div class="box-body">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <a  href="{{ route('compras.requisicion.create') }}" class="btn btn-success btn-app" style="float:right">
+                                <i class="glyphicon glyphicon-plus-sign"></i>Nuevo
+                            </a>
+                        </div>
+                    </div>
+                    <br>
                     <div class="col-sm-12">
 
                         <div class="row table-responsive">
