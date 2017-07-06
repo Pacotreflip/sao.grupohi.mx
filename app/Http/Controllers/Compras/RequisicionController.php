@@ -3,11 +3,11 @@
 namespace Ghi\Http\Controllers\Compras;
 
 use Dingo\Api\Routing\Helpers;
-use Ghi\Core\Facades\Context;
-use Ghi\Core\Models\Material;
+
+use Ghi\Domain\Core\Contracts\Compras\DepartamentoResponsableRepository;
 use Ghi\Domain\Core\Contracts\Compras\RequisicionRepository;
+use Ghi\Domain\Core\Contracts\Compras\TipoRequisicionRepository;
 use Ghi\Domain\Core\Contracts\MaterialRepository;
-use Ghi\Domain\Core\Models\Compras\Requisiciones\Requisicion;
 use Illuminate\Http\Request;
 use Ghi\Http\Controllers\Controller;
 
@@ -17,21 +17,30 @@ class RequisicionController extends Controller
 
     protected $requisicion;
     protected $material;
+    protected $departamento_responsable;
+    protected $tipo_requisicion;
 
     /**
      * RequisicionController constructor.
      * @param RequisicionRepository $requisicion
      * @param MaterialRepository $material
+     * @param DepartamentoResponsableRepository $departamento_responsable
      */
-    public function __construct(RequisicionRepository $requisicion, MaterialRepository $material)
+    public function __construct(
+        RequisicionRepository $requisicion,
+        MaterialRepository $material,
+        DepartamentoResponsableRepository $departamento_responsable,
+        TipoRequisicionRepository $tipo_requisicion)
     {
         parent::__construct();
 
-        //$this->middleware('auth');
-        //$this->middleware('context');
+        $this->middleware('auth');
+        $this->middleware('context');
 
         $this->requisicion = $requisicion;
         $this->material = $material;
+        $this->departamento_responsable = $departamento_responsable;
+        $this->tipo_requisicion= $tipo_requisicion;
     }
 
     public function index() {
@@ -49,7 +58,14 @@ class RequisicionController extends Controller
     }
 
     public function create() {
-        return view('compras.requisicion.create');
+        $departamentos_responsables = $this->departamento_responsable->all();
+        $tipos_requisiciones = $this->tipo_requisicion->all();
+
+        return view('compras.requisicion.create')
+            ->with([
+                'departamentos_responsables' => $departamentos_responsables,
+                'tipos_requisiciones'          => $tipos_requisiciones
+            ]);
     }
 
     public function edit($id) {

@@ -136,9 +136,6 @@ Vue.component('poliza-tipo-create', {
                         ).then(function (){
                             self.confirm_save();
                         }).catch(swal.noop);
-
-
-
                     } else {
                         self.confirm_save();
                     }
