@@ -19,7 +19,8 @@ Vue.component('select2', {
 
         $(this.$el).select2({
                 data: data,
-                width: '100%'
+                width: '100%',
+                dropdownParent: $('#add_item_modal')
         })
             .val(this.value)
             .trigger('change')

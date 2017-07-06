@@ -36350,8 +36350,9 @@ require('./vue-components/Contabilidad/datos_contables/edit');
  * Compras Components
  */
 require('./vue-components/Compras/requisicion/create');
+require('./vue-components/Compras/requisicion/edit');
 
-},{"./vue-components/Compras/requisicion/create":31,"./vue-components/Contabilidad/cuenta_almacen/index":32,"./vue-components/Contabilidad/cuenta_concepto/index":33,"./vue-components/Contabilidad/cuenta_contable/index":34,"./vue-components/Contabilidad/cuenta_empresa/cuenta-empresa-edit":35,"./vue-components/Contabilidad/cuenta_material/cuenta-material-index":36,"./vue-components/Contabilidad/datos_contables/edit":37,"./vue-components/Contabilidad/poliza_generada/poliza-generada-edit":38,"./vue-components/Contabilidad/poliza_tipo/poliza-tipo-create":39,"./vue-components/Contabilidad/tipo_cuenta_contable/tipo-cuenta-contable-create":40,"./vue-components/errors":41,"./vue-components/global-errors":42,"./vue-components/select2":43}],31:[function(require,module,exports){
+},{"./vue-components/Compras/requisicion/create":31,"./vue-components/Compras/requisicion/edit":32,"./vue-components/Contabilidad/cuenta_almacen/index":33,"./vue-components/Contabilidad/cuenta_concepto/index":34,"./vue-components/Contabilidad/cuenta_contable/index":35,"./vue-components/Contabilidad/cuenta_empresa/cuenta-empresa-edit":36,"./vue-components/Contabilidad/cuenta_material/cuenta-material-index":37,"./vue-components/Contabilidad/datos_contables/edit":38,"./vue-components/Contabilidad/poliza_generada/poliza-generada-edit":39,"./vue-components/Contabilidad/poliza_tipo/poliza-tipo-create":40,"./vue-components/Contabilidad/tipo_cuenta_contable/tipo-cuenta-contable-create":41,"./vue-components/errors":42,"./vue-components/global-errors":43,"./vue-components/select2":44}],31:[function(require,module,exports){
 'use strict';
 
 Vue.component('requisicion-create', {
@@ -36432,6 +36433,143 @@ Vue.component('requisicion-create', {
 });
 
 },{}],32:[function(require,module,exports){
+'use strict';
+
+Vue.component('requisicion-edit', {
+
+    props: ['url_requisicion', 'requisicion', 'materiales', 'departamentos_responsables', 'tipos_requisiciones'],
+
+    data: function data() {
+        return {
+            form: {
+                requisicion: {
+                    id_departamento: this.requisicion.transaccion_ext.id_departamento,
+                    id_tipo_requisicion: this.requisicion.transaccion_ext.id_tipo_requisicion,
+                    observaciones: this.requisicion.observaciones
+                },
+                item: {
+                    'id_transaccion': this.requisicion.id_transaccion,
+                    'id_material': '',
+                    'observaciones': '',
+                    'cantidad': '',
+                    'unidad': ''
+                }
+            },
+            data: {
+                items: this.requisicion.items,
+                guardando: false
+            }
+        };
+    },
+    computed: {
+        materiales_list: function materiales_list() {
+            var result = {};
+            this.materiales.forEach(function (material) {
+                result[material.id_material] = material.descripcion;
+            });
+
+            return result;
+        }
+    },
+    methods: {
+        show_add_item: function show_add_item() {
+            this.validation_errors.clear('form_add_item');
+            $('#add_item_modal').modal('show');
+            this.validation_errors.clear('form_add_item');
+        },
+        show_edit_item: function show_edit_item(item) {
+            this.validation_errors.clear('form_edit_item');
+            $('#edit_item_modal').modal('show');
+            this.validation_errors.clear('form_edit_item');
+        },
+
+        close_add_item: function close_add_item() {
+            $('#add_item_modal').modal('hide');
+            $('#edit_item_modal').modal('hide');
+            this.form.item = {
+                'id_transaccion': this.requisicion.id_transaccion,
+                'id_material': '',
+                'observaciones': '',
+                'cantidad': '',
+                'unidad': ''
+            };
+        },
+
+        confirm_save: function confirm_save() {
+            var self = this;
+            swal({
+                title: "Actualizar Requisición",
+                text: "¿Estás seguro de que la información es correcta?",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonText: "Si, Continuar",
+                cancelButtonText: "No, Cancelar"
+            }).then(function () {
+                self.save();
+            }).catch(swal.noop);
+        },
+
+        save: function save() {
+            var self = this;
+            var url = this.url_requisicion;
+            var data = this.form;
+
+            $.ajax({
+                type: 'POST',
+                url: url,
+                data: data,
+                beforeSend: function beforeSend() {
+                    self.guardando = true;
+                },
+                success: function success(data, textStatus, xhr) {
+                    swal({
+                        title: '¡Correcto!',
+                        text: "Requisición actualizada correctamente.",
+                        type: "success",
+                        confirmButtonText: "Ok"
+                    });
+                },
+                complete: function complete() {
+                    self.guardando = false;
+                }
+            });
+        },
+        confirm_save_item: function confirm_save_item() {
+            var self = this;
+            swal({
+                title: "Guardar Partida",
+                text: "¿Estás seguro de que la información es correcta?",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonText: "Si, Continuar",
+                cancelButtonText: "No, Cancelar"
+            }).then(function () {
+                self.save_item();
+            }).catch(swal.noop);
+        },
+        save_item: function save_item() {},
+
+        validateForm: function validateForm(scope, funcion) {
+            var _this = this;
+
+            this.$validator.validateAll(scope).then(function () {
+                if (funcion == 'save') {
+                    _this.confirm_save();
+                } else if (funcion == 'save_item') {
+                    _this.confirm_save_item();
+                }
+            }).catch(function () {
+                swal({
+                    type: 'warning',
+                    title: 'Advertencia',
+                    text: 'Por favor corrija los errores del formulario'
+                });
+            });
+        }
+    }
+});
+
+},{}],33:[function(require,module,exports){
 'use strict';
 
 Vue.component('cuenta-almacen-index', {
@@ -36580,7 +36718,7 @@ Vue.component('cuenta-almacen-index', {
     }
 });
 
-},{}],33:[function(require,module,exports){
+},{}],34:[function(require,module,exports){
 'use strict';
 
 Vue.component('cuenta-concepto-index', {
@@ -36798,7 +36936,7 @@ Vue.component('cuenta-concepto-index', {
     }
 });
 
-},{}],34:[function(require,module,exports){
+},{}],35:[function(require,module,exports){
 'use strict';
 
 Vue.component('cuenta-contable-index', {
@@ -36965,7 +37103,7 @@ Vue.component('cuenta-contable-index', {
     }
 });
 
-},{}],35:[function(require,module,exports){
+},{}],36:[function(require,module,exports){
 'use strict';
 
 Vue.component('cuenta-empresa-edit', {
@@ -37191,7 +37329,7 @@ Vue.component('cuenta-empresa-edit', {
     }
 });
 
-},{}],36:[function(require,module,exports){
+},{}],37:[function(require,module,exports){
 'use strict';
 
 Vue.component('cuenta-material-index', {
@@ -37232,7 +37370,7 @@ Vue.component('cuenta-material-index', {
     }
 });
 
-},{}],37:[function(require,module,exports){
+},{}],38:[function(require,module,exports){
 'use strict';
 
 Vue.component('datos-contables-edit', {
@@ -37307,7 +37445,7 @@ Vue.component('datos-contables-edit', {
     }
 });
 
-},{}],38:[function(require,module,exports){
+},{}],39:[function(require,module,exports){
 'use strict';
 
 Vue.component('poliza-generada-edit', {
@@ -37514,7 +37652,7 @@ Vue.component('poliza-generada-edit', {
     }
 });
 
-},{}],39:[function(require,module,exports){
+},{}],40:[function(require,module,exports){
 'use strict';
 
 Vue.component('poliza-tipo-create', {
@@ -37705,7 +37843,7 @@ Vue.component('poliza-tipo-create', {
     }
 });
 
-},{}],40:[function(require,module,exports){
+},{}],41:[function(require,module,exports){
 'use strict';
 
 /**
@@ -37772,7 +37910,7 @@ Vue.component('tipo-cuenta-contable-create', {
 
 });
 
-},{}],41:[function(require,module,exports){
+},{}],42:[function(require,module,exports){
 'use strict';
 
 Vue.component('app-errors', {
@@ -37781,7 +37919,7 @@ Vue.component('app-errors', {
     template: require('./templates/errors.html')
 });
 
-},{"./templates/errors.html":44}],42:[function(require,module,exports){
+},{"./templates/errors.html":45}],43:[function(require,module,exports){
 'use strict';
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
@@ -37807,7 +37945,7 @@ Vue.component('global-errors', {
   }
 });
 
-},{"./templates/global-errors.html":45}],43:[function(require,module,exports){
+},{"./templates/global-errors.html":46}],44:[function(require,module,exports){
 'use strict';
 
 Vue.component('select2', {
@@ -37831,7 +37969,8 @@ Vue.component('select2', {
 
         $(this.$el).select2({
             data: data,
-            width: '100%'
+            width: '100%',
+            dropdownParent: $('#add_item_modal')
         }).val(this.value).trigger('change')
         // emit event on change.
         .on('change', function () {
@@ -37853,9 +37992,9 @@ Vue.component('select2', {
     }
 });
 
-},{}],44:[function(require,module,exports){
-module.exports = '<div id="form-errors" v-cloak>\n  <div class="alert alert-danger" v-if="form.errors.length">\n    <ul>\n      <li v-for="error in form.errors">{{ error }}</li>\n    </ul>\n  </div>\n</div>';
 },{}],45:[function(require,module,exports){
+module.exports = '<div id="form-errors" v-cloak>\n  <div class="alert alert-danger" v-if="form.errors.length">\n    <ul>\n      <li v-for="error in form.errors">{{ error }}</li>\n    </ul>\n  </div>\n</div>';
+},{}],46:[function(require,module,exports){
 module.exports = '<div class="alert alert-danger" v-show="errors.length">\n  <ul>\n    <li v-for="error in errors">{{ error }}</li>\n  </ul>\n</div>';
 },{}]},{},[28]);
 

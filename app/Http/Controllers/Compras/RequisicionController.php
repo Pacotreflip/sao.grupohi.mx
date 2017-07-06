@@ -69,14 +69,18 @@ class RequisicionController extends Controller
     }
 
     public function edit($id) {
-        $item = $this->requisicion->with('items')->find($id);
+        $item = $this->requisicion->with(['items.material','items.itemExt','transaccionExt'])->find($id);
+        $departamentos_responsables = $this->departamento_responsable->all();
+        $tipos_requisiciones = $this->tipo_requisicion->all();
 
         $materiales = $this->material->scope('materiales')->getBy('unidad','!=', null);
 
         return view('compras.requisicion.edit')
             ->with([
                 'requisicion' => $item,
-                'materiales' => $materiales
+                'materiales' => $materiales,
+                'departamentos_responsables' => $departamentos_responsables,
+                'tipos_requisiciones'          => $tipos_requisiciones
             ]);
     }
 

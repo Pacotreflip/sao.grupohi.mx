@@ -19,3 +19,4 @@ require('./vue-components/Contabilidad/datos_contables/edit');
  * Compras Components
  */
 require('./vue-components/Compras/requisicion/create');
+require('./vue-components/Compras/requisicion/edit');
