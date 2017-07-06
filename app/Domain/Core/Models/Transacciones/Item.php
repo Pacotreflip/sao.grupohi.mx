@@ -31,14 +31,12 @@ class Item extends Model
         'precio_unitario' => 'float'
     ];
 
-    protected $fillable =
-        [
-            'id_transaccion',
-            'id_material',
-            'unidad',
-            'cantidad'
-
-        ];
+    protected $fillable = [
+        'id_transaccion',
+        'id_material',
+        'unidad',
+        'cantidad'
+    ];
 
     public $timestamps = false;
 

@@ -36361,6 +36361,9 @@ Vue.component('requisicion-create', {
 
     data: function data() {
         return {
+            data: {
+                requisicion: null
+            },
             form: {
                 id_departamento: '',
                 id_tipo_requisicion: '',
@@ -36398,15 +36401,13 @@ Vue.component('requisicion-create', {
                     self.guardando = true;
                 },
                 success: function success(data, textStatus, xhr) {
+                    self.data.requisicion = data.data.requisicion;
                     swal({
                         title: '¡Correcto!',
                         html: "Se ha creado la Requisición <br>" + "<b>" + data.data.requisicion.transaccion_ext.folio_adicional + "</b>",
                         type: "success",
-                        confirmButtonText: "Ok",
-                        closeOnConfirm: false
-                    }).then(function () {
-                        window.location = self.url_requisicion + '/' + data.data.requisicion.id_transaccion + '/edit';
-                    }).catch(swal.noop);
+                        confirmButtonText: "Ok"
+                    });
                 },
                 complete: function complete() {
                     self.guardando = false;
@@ -36436,136 +36437,17 @@ Vue.component('requisicion-create', {
 'use strict';
 
 Vue.component('requisicion-edit', {
-
-    props: ['url_requisicion', 'requisicion', 'materiales', 'departamentos_responsables', 'tipos_requisiciones'],
-
     data: function data() {
         return {
             form: {
-                requisicion: {
-                    id_departamento: this.requisicion.transaccion_ext.id_departamento,
-                    id_tipo_requisicion: this.requisicion.transaccion_ext.id_tipo_requisicion,
-                    observaciones: this.requisicion.observaciones
-                },
                 item: {
-                    'id_transaccion': this.requisicion.id_transaccion,
-                    'id_material': '',
-                    'observaciones': '',
-                    'cantidad': '',
-                    'unidad': ''
+                    id_requisicion: '',
+                    id_material: '',
+                    cantidad: '',
+                    observaciones: ''
                 }
-            },
-            data: {
-                items: this.requisicion.items,
-                guardando: false
             }
         };
-    },
-    computed: {
-        materiales_list: function materiales_list() {
-            var result = {};
-            this.materiales.forEach(function (material) {
-                result[material.id_material] = material.descripcion;
-            });
-
-            return result;
-        }
-    },
-    methods: {
-        show_add_item: function show_add_item() {
-            this.validation_errors.clear('form_add_item');
-            $('#add_item_modal').modal('show');
-            this.validation_errors.clear('form_add_item');
-        },
-        show_edit_item: function show_edit_item(item) {
-            this.validation_errors.clear('form_edit_item');
-            $('#edit_item_modal').modal('show');
-            this.validation_errors.clear('form_edit_item');
-        },
-
-        close_add_item: function close_add_item() {
-            $('#add_item_modal').modal('hide');
-            $('#edit_item_modal').modal('hide');
-            this.form.item = {
-                'id_transaccion': this.requisicion.id_transaccion,
-                'id_material': '',
-                'observaciones': '',
-                'cantidad': '',
-                'unidad': ''
-            };
-        },
-
-        confirm_save: function confirm_save() {
-            var self = this;
-            swal({
-                title: "Actualizar Requisición",
-                text: "¿Estás seguro de que la información es correcta?",
-                type: "warning",
-                showCancelButton: true,
-                confirmButtonText: "Si, Continuar",
-                cancelButtonText: "No, Cancelar"
-            }).then(function () {
-                self.save();
-            }).catch(swal.noop);
-        },
-
-        save: function save() {
-            var self = this;
-            var url = this.url_requisicion;
-            var data = this.form;
-
-            $.ajax({
-                type: 'POST',
-                url: url,
-                data: data,
-                beforeSend: function beforeSend() {
-                    self.guardando = true;
-                },
-                success: function success(data, textStatus, xhr) {
-                    swal({
-                        title: '¡Correcto!',
-                        text: "Requisición actualizada correctamente.",
-                        type: "success",
-                        confirmButtonText: "Ok"
-                    });
-                },
-                complete: function complete() {
-                    self.guardando = false;
-                }
-            });
-        },
-        confirm_save_item: function confirm_save_item() {
-            var self = this;
-            swal({
-                title: "Guardar Partida",
-                text: "¿Estás seguro de que la información es correcta?",
-                type: "warning",
-                showCancelButton: true,
-                confirmButtonText: "Si, Continuar",
-                cancelButtonText: "No, Cancelar"
-            }).then(function () {
-                self.save_item();
-            }).catch(swal.noop);
-        },
-        save_item: function save_item() {},
-
-        validateForm: function validateForm(scope, funcion) {
-            var _this = this;
-
-            this.$validator.validateAll(scope).then(function () {
-                if (funcion == 'save') {
-                    _this.confirm_save();
-                } else if (funcion == 'save_item') {
-                    _this.confirm_save_item();
-                }
-            }).catch(function () {
-                swal({
-                    type: 'warning',
-                    title: 'Advertencia',
-                    text: 'Por favor corrija los errores del formulario'
-                });
-            });
-        }
     }
 });
 
@@ -37969,8 +37851,7 @@ Vue.component('select2', {
 
         $(this.$el).select2({
             data: data,
-            width: '100%',
-            dropdownParent: $('#add_item_modal')
+            width: '100%'
         }).val(this.value).trigger('change')
         // emit event on change.
         .on('change', function () {
