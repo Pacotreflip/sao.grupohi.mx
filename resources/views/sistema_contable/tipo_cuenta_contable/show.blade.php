@@ -4,7 +4,7 @@
 @section('contentheader_description', '(DETALLE)')
 @section('main-content')
     {!! Breadcrumbs::render('sistema_contable.tipo_cuenta_contable.show', $tipo_cuenta_contable) !!}
-    <hr>
+
     <div class="row">
         <div class="col-md-12">
             <div class="box box-success">

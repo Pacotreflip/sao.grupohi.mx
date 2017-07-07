@@ -5,6 +5,7 @@
 
 @section('main-content')
     {!! Breadcrumbs::render('sistema_contable.poliza_tipo.index') !!}
+
     <div class="row">
         <div class="col-sm-12">
             <a  href="{{ route('sistema_contable.poliza_tipo.create') }}" class="btn btn-success btn-app" style="float:right">

@@ -6,6 +6,7 @@
 
 @section('main-content')
     {!! Breadcrumbs::render('sistema_contable.poliza_generada.show', $poliza) !!}
+
     <div class="row">
         <div class="col-md-12">
             <div class="box box-success">

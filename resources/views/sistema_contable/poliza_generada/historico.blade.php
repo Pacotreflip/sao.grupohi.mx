@@ -3,10 +3,7 @@
 @section('contentheader_title', 'PÓLIZAS GENERADAS')
 @section('contentheader_description', '(HISTORICO)')
 
-
 @section('main-content')
-
-
     {!! Breadcrumbs::render('sistema_contable.poliza_generada.historico', @$poliza) !!}
 
     @if(count($polizas)==0)

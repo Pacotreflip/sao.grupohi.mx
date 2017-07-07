@@ -5,7 +5,7 @@
 
 @section('main-content')
     {!! Breadcrumbs::render('sistema_contable.datos_contables.edit', $datos_contables) !!}
-    <hr>
+
     <div id="app">
         <global-errors></global-errors>
         <datos-contables-edit

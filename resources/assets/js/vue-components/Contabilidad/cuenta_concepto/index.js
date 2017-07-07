@@ -150,7 +150,7 @@ Vue.component('cuenta-concepto-index', {
                     swal({
                         type: 'success',
                         title: 'Correcto',
-                        html: 'Cuenta Contable registrada correctamente',
+                        html: 'Cuenta Contable actualizada correctamente',
                     });
                 },
                 complete: function () {

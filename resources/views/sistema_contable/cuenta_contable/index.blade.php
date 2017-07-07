@@ -5,7 +5,7 @@
 
 @section('main-content')
     {!! Breadcrumbs::render('sistema_contable.cuenta_contable.index') !!}
-    <hr>
+
     <div id="app">
         <global-errors></global-errors>
         <cuenta-contable-index
@@ -15,7 +15,7 @@
                 v-cloak
                 inline-template>
             <section>
-                <div v-if="data.tipos_cuentas_contables.length" class="row">
+                <div class="row">
                     <div class="col-md-12">
                         <div class="box box-success">
                             <div class="box-header with-border">
@@ -41,14 +41,14 @@
                                             <td>@{{ item.cuenta_contable ? item.cuenta_contable.cuenta_contable : '' }}</td>
                                             <td v-if="item.cuenta_contable != null">
                                                 <div class="btn-group">
-                                                    <button title="Editar" type="button" class="btn btn-xs btn-info" data-toggle="modal" data-target="#modal-editar-cuenta" v-on:click="editar(item)">
+                                                    <button title="Editar" type="button" class="btn-xs btn-info" data-toggle="modal" data-target="#modal-editar-cuenta" v-on:click="editar(item)">
                                                         <i class="fa fa-edit"></i>
                                                     </button>
                                                 </div>
                                             </td>
                                             <td v-else>
                                                 <div class="btn-group">
-                                                    <button title="Configurar" type="button" class="btn btn-xs btn-info" data-toggle="modal" data-target="#modal-configurar-cuenta" v-on:click="configurar(item)">
+                                                    <button title="Configurar" type="button" class="btn-xs btn-info" data-toggle="modal" data-target="#modal-configurar-cuenta" v-on:click="configurar(item)">
                                                         <i class="fa fa-edit"></i>
                                                     </button>
                                                 </div>
@@ -72,7 +72,7 @@
                                 <h4 class="modal-title">Modificar Cuenta Contable</h4>
                             </div>
                             <form class="form-horizontal" id="form_update_cuenta" @submit.prevent="validateForm('form_update_cuenta', 'update_cuenta')"  data-vv-scope="form_update_cuenta">
-                                <div class="box-body">
+                                <div class="modal-body">
                                     <div class="col-md-9">
                                         <div class="form-group">
                                             <label for="tipo_cuenta_contable" class="control-label">Tipo de Cuenta Contable</label>
@@ -98,7 +98,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="box-footer">
+                                <div class="modal-footer">
                                     <div class="col-md-12">
                                         <button type="button" class="btn btn-default pull-left" data-dismiss="modal" id="closeModal('modal-editar-cuenta')">Cerrar</button>
                                         <button type="submit" class="btn btn-info pull-right" :disabled="guardando">

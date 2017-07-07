@@ -5,7 +5,7 @@
 
 @section('main-content')
     {!! Breadcrumbs::render('sistema_contable.tipo_cuenta_contable.create') !!}
-    <hr>
+
     <div id="app">
         <global-errors></global-errors>
         <tipo-cuenta-contable-create

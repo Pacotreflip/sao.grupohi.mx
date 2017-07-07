@@ -5,7 +5,7 @@
 
 @section('main-content')
     {!! Breadcrumbs::render('sistema_contable.poliza_tipo.create') !!}
-    <hr>
+
     <div id="app">
         <global-errors></global-errors>
         <poliza-tipo-create

@@ -36600,6 +36600,19 @@ Vue.component('requisicion-edit', {
                 }
             });
         },
+        confirm_update_item: function confirm_update_item() {
+            var self = this;
+            swal({
+                title: "Actualizar Partida",
+                text: "¿Estás seguro de que la información es correcta?",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonText: "Si, Continuar",
+                cancelButtonText: "No, Cancelar"
+            }).then(function () {
+                self.update_item();
+            }).catch(swal.noop);
+        },
         confirm_save_item: function confirm_save_item() {
             var self = this;
             swal({
@@ -36642,6 +36655,34 @@ Vue.component('requisicion-edit', {
             });
         },
 
+        update_item: function update_item() {
+            var self = this;
+            var url = App.host + '/item';
+            var data = this.form.item;
+
+            $.ajax({
+                type: 'POST',
+                url: url,
+                data: data,
+                beforeSend: function beforeSend() {
+                    self.guardando = true;
+                },
+                success: function success(data, textStatus, xhr) {
+                    self.data.items.push(data.data.item);
+                    $('#add_item_modal').modal('hide');
+                    swal({
+                        title: '¡Correcto!',
+                        text: "Requisición actualizada correctamente.",
+                        type: "success",
+                        confirmButtonText: "Ok"
+                    });
+                },
+                complete: function complete() {
+                    self.guardando = false;
+                }
+            });
+        },
+
         validateForm: function validateForm(scope, funcion) {
             var _this = this;
 
@@ -36651,7 +36692,7 @@ Vue.component('requisicion-edit', {
                 } else if (funcion == 'save_item') {
                     _this.confirm_save_item();
                 } else if (funcion == 'edit_item') {
-                    _this.confirm_save_item();
+                    _this.confirm_update_item();
                 }
             }).catch(function () {
                 swal({
@@ -36752,7 +36793,7 @@ Vue.component('cuenta-almacen-index', {
                     swal({
                         type: 'success',
                         title: 'Correcto',
-                        html: 'Cuenta Contable registrada correctamente'
+                        html: 'Cuenta Contable actualizada correctamente'
                     });
                 },
                 complete: function complete() {
@@ -36969,7 +37010,7 @@ Vue.component('cuenta-concepto-index', {
                     swal({
                         type: 'success',
                         title: 'Correcto',
-                        html: 'Cuenta Contable registrada correctamente'
+                        html: 'Cuenta Contable actualizada correctamente'
                     });
                 },
                 complete: function complete() {
@@ -37219,7 +37260,6 @@ Vue.component('cuenta-empresa-edit', {
                     'tipo_cuenta_empresa': {
                         'descripcion': ''
                     }
-
                 }
             },
             'guardando': false,
@@ -37227,20 +37267,24 @@ Vue.component('cuenta-empresa-edit', {
         };
     },
     methods: {
-        cerrar_dialog: function cerrar_dialog() {
-            $('#add_movimiento_modal').modal('hide');
-            $('#edit_movimiento_modal').modal('hide');
+        close_modal: function close_modal(modal) {
+            $('#' + modal).modal('hide');
+            this.form.cuenta_empresa_create.cuenta = '';
+            this.form.cuenta_empresa_create.id_tipo_cuenta_empresa = '';
+            this.form.cuenta_empresa_create.tipo_cuenta_empresa.descripcion = '';
+            this.form.cuenta_empresa_create.id = '';
+            this.form.cuenta_empresa_create.id_empresa = '';
         },
         confirm_elimina_cuenta: function confirm_elimina_cuenta(cuenta) {
             var self = this;
             self.form.cuenta_empresa = cuenta;
             self.form.cuenta_empresa.id_empresa = cuenta.id_empresa;
             swal({
-                title: "Eliminar Cuenta de Empresa",
-                text: "¿Estás seguro que desea eliminar la cuenta: " + cuenta.tipo_cuenta_empresa.descripcion + "?",
+                title: "Eliminar Cuenta Contable",
+                html: "¿Estás seguro que desea eliminar la cuenta: <b> " + cuenta.tipo_cuenta_empresa.descripcion + "</b>?",
                 type: "warning",
                 showCancelButton: true,
-                confirmButtonText: "Si, Eliminar",
+                confirmButtonText: "Si, Continuar",
                 cancelButtonText: "No, Cancelar"
             }).then(function () {
 
@@ -37250,11 +37294,11 @@ Vue.component('cuenta-empresa-edit', {
         confirm_cuenta_update: function confirm_cuenta_update() {
             var self = this;
             swal({
-                title: "Actualizar Cuenta de Empresa",
-                text: "¿Estás seguro que desea actualizar la cuenta?",
+                title: "Actualizar Cuenta Contable",
+                text: "¿Estás seguro que desea actualizar la Cuenta Contable?",
                 type: "warning",
                 showCancelButton: true,
-                confirmButtonText: "Si, Actualizar",
+                confirmButtonText: "Si, Continuar",
                 cancelButtonText: "No, Cancelar"
             }).then(function () {
 
@@ -37264,11 +37308,11 @@ Vue.component('cuenta-empresa-edit', {
         confirm_cuenta_create: function confirm_cuenta_create() {
             var self = this;
             swal({
-                title: "Crear Cuenta de Empresa",
-                text: "¿Estás seguro que desea guardar la cuenta?",
+                title: "Configurar Cuenta Contable",
+                text: "¿Estás seguro que desea configurar la Cuenta Contable?",
                 type: "warning",
                 showCancelButton: true,
-                confirmButtonText: "Si, Guardar",
+                confirmButtonText: "Si, Continuar",
                 cancelButtonText: "No, Cancelar"
             }).then(function () {
                 self.save_cuenta_empresa();
@@ -37294,7 +37338,7 @@ Vue.component('cuenta-empresa-edit', {
                     swal({
                         type: 'success',
                         title: 'Correcto',
-                        html: 'La cuenta:' + self.form.cuenta_empresa.tipo_cuenta_empresa.descripcion + '</b> fue eliminada correctamente'
+                        html: 'La cuenta: <b>' + self.form.cuenta_empresa.tipo_cuenta_empresa.descripcion + '</b> fue eliminada correctamente'
                     });
                 },
                 complete: function complete() {
@@ -37303,25 +37347,27 @@ Vue.component('cuenta-empresa-edit', {
             });
         },
         create_cuenta_empresa: function create_cuenta_empresa() {
-            var self = this;
-            self.form.cuenta_empresa_create.cuenta = '';
-            self.form.cuenta_empresa_create.id_tipo_cuenta_empresa = '';
-            self.form.cuenta_empresa_create.id_empresa = self.data.empresa.id_empresa;
-            self.form.cuenta_empresa_create.tipo_cuenta_empresa.descripcion = '';
-            self.nuevo_registro = true;
-            self.validation_errors.clear('form_create_cuenta');
+            this.form.cuenta_empresa_create.cuenta = '';
+            this.form.cuenta_empresa_create.id_tipo_cuenta_empresa = '';
+            this.form.cuenta_empresa_create.id_empresa = this.data.empresa.id_empresa;
+            this.form.cuenta_empresa_create.tipo_cuenta_empresa.descripcion = '';
+            this.nuevo_registro = true;
+
+            this.validation_errors.clear('form_create_cuenta');
             $('#add_movimiento_modal').modal('show');
+            this.validation_errors.clear('form_create_cuenta');
         },
         edit_cuenta_empresa: function edit_cuenta_empresa(cuenta) {
-            var self = this;
-            self.nuevo_registro = false;
-            self.form.cuenta_empresa_create.cuenta = cuenta.cuenta;
-            self.form.cuenta_empresa_create.id_tipo_cuenta_empresa = cuenta.id_tipo_cuenta_empresa;
-            self.form.cuenta_empresa_create.tipo_cuenta_empresa.descripcion = cuenta.tipo_cuenta_empresa.descripcion;
-            self.form.cuenta_empresa_create.id = cuenta.id;
-            self.form.cuenta_empresa_create.id_empresa = cuenta.id_empresa;
+            this.nuevo_registro = false;
+            this.form.cuenta_empresa_create.cuenta = cuenta.cuenta;
+            this.form.cuenta_empresa_create.id_tipo_cuenta_empresa = cuenta.id_tipo_cuenta_empresa;
+            this.form.cuenta_empresa_create.tipo_cuenta_empresa.descripcion = cuenta.tipo_cuenta_empresa.descripcion;
+            this.form.cuenta_empresa_create.id = cuenta.id;
+            this.form.cuenta_empresa_create.id_empresa = cuenta.id_empresa;
 
+            this.validation_errors.clear('form_update_cuenta');
             $('#edit_movimiento_modal').modal('show');
+            this.validation_errors.clear('form_update_cuenta');
         },
         update_cuenta_empresa: function update_cuenta_empresa(cuenta) {
             var self = this;
@@ -37366,12 +37412,12 @@ Vue.component('cuenta-empresa-edit', {
                     self.guardando = true;
                 },
                 success: function success(data, textStatus, xhr) {
-                    Vue.set(self.data, 'empresa', data.data.empresa);
+                    self.data.empresa.cuentas_empresa.push(data.data.cuenta_empresa);
                     $('#add_movimiento_modal').modal('hide');
                     swal({
                         type: 'success',
                         title: 'Correcto',
-                        html: 'La cuenta:' + self.form.cuenta_empresa_create.tipo_cuenta_empresa.descripcion + '</b> fue creada correctamente'
+                        html: 'La cuenta: <b>' + data.data.cuenta_empresa.tipo_cuenta_empresa.descripcion + '</b> fue configurada correctamente'
                     });
                 },
                 complete: function complete() {
@@ -37417,10 +37463,8 @@ Vue.component('cuenta-empresa-edit', {
                     result[index] = tipo_cuenta_empresa;
                 }
             });
-
             return result;
         }
-
     }
 });
 
