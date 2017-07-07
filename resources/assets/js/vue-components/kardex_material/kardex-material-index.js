@@ -22,8 +22,7 @@ Vue.component('kardex-material-index', {
                     'existencia':''
                 }
             },
-            valor: -1,
-            guardando : false
+            valor: -1
         }
     },
     methods :{
@@ -37,16 +36,14 @@ Vue.component('kardex-material-index', {
             var svalor = 0;
 
             if (self.valor != -1) {
-
-
                 url = url + material.id_material;
+
                 // Consulta de datos de kardex por material
 
                 $.ajax({
                     type: 'GET',
                     url: url,
                     beforeSend: function () {
-                        //alert(url);
                     },
                     success: function (response) {
                         // Asignación de datos para vista de detalle
@@ -69,7 +66,7 @@ Vue.component('kardex-material-index', {
                                 svalor += parseFloat(item.precio_unitario);
                             }
                         });
-
+                        // Asignacion de valores totales de Transacciones
                         self.form.totales.entrada_material = ematerial;
                         self.form.totales.entrada_valor = evalor;
                         self.form.totales.salida_material = smaterial;

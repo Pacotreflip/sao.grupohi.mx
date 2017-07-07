@@ -41,12 +41,10 @@ class KardexMaterialController extends Controller
         $materiales = $this->material->scope('ConTransaccionES')->all();
         return view('sistema_contable.kardex_material.index')
             ->with('materiales', $materiales);
-        //
     }
 
     public function getBy($id)
     {
-       // return $this->item->with(['transaccion', 'material'])->getBy('materiales.id_material', '=', $id);
         return $this->item->scope('conTransaccionES')->with('transaccion')->getBy('id_material', '=', $id);
     }
 }

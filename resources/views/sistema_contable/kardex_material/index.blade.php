@@ -92,21 +92,7 @@
                         </div>
                     </div>
                 </div>
-
-
             </section>
-
         </kardex-material-index>
     </div>
-
-
-
-@endsection
-@section('scripts-content')
-    <script>
-        function totalCosto(p1, p2) {
-            return p1 * p2;
-        }
-
-</script>
 @endsection
