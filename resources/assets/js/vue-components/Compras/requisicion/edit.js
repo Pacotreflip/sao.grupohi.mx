@@ -15,7 +15,8 @@ Vue.component('requisicion-edit', {
                     'id_material': '',
                     'observaciones': '',
                     'cantidad': '',
-                    'unidad': this.unidad
+                    'unidad': this.unidad,
+                    'id_item':''
 
                 }
             },
@@ -103,11 +104,12 @@ Vue.component('requisicion-edit', {
         },
 
         show_edit_item: function (item) {
-
+            this.form.item['index']= this.data.items.indexOf(item);
             this.form.item.id_material=item.id_material;
             this.form.item.observaciones=item.item_ext.observaciones;
             this.form.item.unidad=item.unidad;
             this.form.item.cantidad=item.cantidad;
+            this.form.item.id_item=item.id_item;
             $('#edit_item_modal').removeAttr('tabindex');
             this.validation_errors.clear('form_edit_item');
             $('#edit_item_modal').modal('show');
@@ -191,6 +193,19 @@ Vue.component('requisicion-edit', {
                 self.save_item();
             }).catch(swal.noop);
         },
+        confirm_update_requisicion: function () {
+            var self = this;
+            swal({
+                title: "Actualizar Requisicion",
+                text: "¿Estás seguro de que la información es correcta?",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonText: "Si, Continuar",
+                cancelButtonText: "No, Cancelar",
+            }).then(function () {
+                self.update_requisicion();
+            }).catch(swal.noop);
+        },
 
         save_item: function () {
             var self = this;
@@ -209,7 +224,7 @@ Vue.component('requisicion-edit', {
                     $('#add_item_modal').modal('hide');
                     swal({
                         title: '¡Correcto!',
-                        text: "Requisición actualizada correctamente.",
+                        text: "Partida guardada correctamente.",
                         type: "success",
                         confirmButtonText: "Ok"
                     });
@@ -222,31 +237,70 @@ Vue.component('requisicion-edit', {
         ,
 
        update_item: function () {
-            var self = this;
-            var url = App.host + '/item';
-            var data = this.form.item;
 
+           var self = this;
+           var url = App.host + '/item/' + self.form.item.id_item;
+           var data = this.form.item;
+           data['_method']='PATCH';
+           $.ajax({
+               type: 'POST',
+               url: url,
+               data: data ,
+               beforeSend: function () {
+                   self.guardando = true;
+               },
+               success: function (data, textStatus, xhr) {
+                   self.data.items[self.form.item.index]=data.data.item;
+                   $('#edit_item_modal').modal('hide');
+                   self.form.item=  {
+                       'id_transaccion' : self.requisicion.id_transaccion,
+                       'id_material': '',
+                       'observaciones': '',
+                       'cantidad': '',
+                       'unidad': ''
+                   };
+                   swal({
+                       title: '¡Correcto!',
+                       text: "Partida actualizada correctamente.",
+                       type: "success",
+                       confirmButtonText: "Ok"
+                   });
+
+
+               },
+               complete: function () {
+                   self.guardando = false;
+               }
+           });
+        }
+        ,
+        update_requisicion: function () {
+
+            var self = this;
+            var url = App.host + '/compras/requisicion/' + self.form.item.id_transaccion;
+            var data = this.form.requisicion;
+            data['_method']='patch';
             $.ajax({
                 type: 'POST',
                 url: url,
-                data: data,
+                data: data ,
                 beforeSend: function () {
                     self.guardando = true;
                 },
                 success: function (data, textStatus, xhr) {
-                    self.data.items.push(data.data.item);
-                    $('#add_item_modal').modal('hide');
                     swal({
                         title: '¡Correcto!',
                         text: "Requisición actualizada correctamente.",
                         type: "success",
                         confirmButtonText: "Ok"
-                    });
+                    }).then(function () {
+                        window.location = App.host + '/compras/requisicion/' + self.form.item.id_transaccion+ '/edit';
+                    })  .catch(swal.noop);
                 },
                 complete: function () {
                     self.guardando = false;
                 }
-            })
+            });
         }
         ,
         validateForm: function(scope, funcion) {
@@ -259,6 +313,10 @@ Vue.component('requisicion-edit', {
             else if(funcion=='edit_item'){
                 this.confirm_update_item();
             }
+            else if(funcion=='update_requisicion'){
+                this.confirm_update_requisicion();
+            }
+
             }).catch(() => {
                 swal({
                      type: 'warning',

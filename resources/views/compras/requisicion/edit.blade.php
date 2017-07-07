@@ -3,7 +3,7 @@
 @section('contentheader_title', 'REQUISICIONES')
 
 @section('main-content')
-
+    {!! Breadcrumbs::render('compras.requisicion.edit', $requisicion) !!}
     <div id="app">
         <global-errors></global-errors>
         <requisicion-edit
@@ -71,6 +71,7 @@
                         <h1 class="box-title">Partidas</h1>
                     </div>
                     <div class="box-body">
+                        <div class="col-sm-12">
                         <div class="row">
                             <div class="table-responsive">
                                 <table class="table table-bordered table-striped">
@@ -103,6 +104,7 @@
                                     </tbody>
                                 </table>
                             </div>
+                        </div>
                         </div>
                     </div>
                 </div>
@@ -164,26 +166,26 @@
                                     <div class="modal-body">
                                         <div class="row">
                                             <div class="col-md-6">
-                                                <div class="form-group" :class="{'has-error': validation_errors.has('form_add_item.Material')}">
+                                                <div class="form-group" :class="{'has-error': validation_errors.has('form_edit_item.Material')}">
                                                     <label for="">Material</label>
                                                     <select2 :name="'Material'" v-validate="'required'" v-model="form.item.id_material" :options="materiales_list" >
                                                         <option value disabled>[-SELECCIONE-]</option>
                                                     </select2>
-                                                    <label class="help" v-show="validation_errors.has('form_add_item.Material')">@{{ validation_errors.first('form_add_item.Material') }}</label>
+                                                    <label class="help" v-show="validation_errors.has('form_edit_item.Material')">@{{ validation_errors.first('form_edit_item.Material') }}</label>
                                                 </div>
                                             </div>
                                             <div class="col-md-6">
-                                                <div class="form-group" :class="{'has-error': validation_errors.has('form_add_item.Cantidad')}">
+                                                <div class="form-group" :class="{'has-error': validation_errors.has('form_edit_item.Cantidad')}">
                                                     <label for="">Cantidad</label>
                                                     <input type="number" v-validate="'required|numeric|min_value:1'" class="form-control" name="Cantidad" v-model="form.item.cantidad"/>
-                                                    <label class="help" v-show="validation_errors.has('form_add_item.Cantidad')">@{{ validation_errors.first('form_add_item.Cantidad') }}</label>
+                                                    <label class="help" v-show="validation_errors.has('form_edit_item.Cantidad')">@{{ validation_errors.first('form_edit_item.Cantidad') }}</label>
                                                 </div>
                                             </div>
                                             <div class="col-md-12">
-                                                <div class="form-group" :class="{'has-error': validation_errors.has('form_add_item.Observaciones')}">
+                                                <div class="form-group" :class="{'has-error': validation_errors.has('form_edit_item.Observaciones')}">
                                                     <label for="">Observaciones</label>
                                                     <textarea style="resize: none" v-validate="'required|max:1000'" class="form-control" name="Observaciones" v-model="form.item.observaciones"></textarea>
-                                                    <label class="help" v-show="validation_errors.has('form_add_item.Observaciones')">@{{ validation_errors.first('form_add_item.Observaciones') }}</label>
+                                                    <label class="help" v-show="validation_errors.has('form_edit_item.Observaciones')">@{{ validation_errors.first('form_add_item.Observaciones') }}</label>
                                                 </div>
                                             </div>
                                         </div>
