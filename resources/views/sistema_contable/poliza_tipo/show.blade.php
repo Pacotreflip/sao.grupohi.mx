@@ -8,46 +8,46 @@
 
     <div class="row">
         <div class="col-md-12">
-            <div class="box box-success">
-
+            <div class="box box-info">
                 <div class="box box-solid">
                     <div class="box-header with-border">
-                        <h3 class="box-title">{{ $poliza_tipo->transaccion }} &nbsp;
-                            @if($poliza_tipo->vigencia == 'Vigente')
-                                <span class="label label-success">{{$poliza_tipo->vigencia}}</span>
-                            @elseif($poliza_tipo->vigencia == 'No Vigente')
-                                <span class="label label-danger">{{$poliza_tipo->vigencia}}</span>
-                            @else
-                                <span class="label label-info">{{$poliza_tipo->vigencia}}</span>
-                            @endif
-                        </h3>
+                        <h3 class="box-title">Datos de la Plantilla</h3>
                     </div>
+
+
                     <!-- /.box-header -->
                     <div class="box-body">
-                        <div class="col-sm-6">
-                            <dl>
-                                <dt>ID</dt>
-                                <dd>{{$poliza_tipo->id}}</dd>
-                                <dt>USUARIO QUE REGISTRÓ</dt>
-                                <dd>{{$poliza_tipo->userRegistro}}</dd>
-                                <dt>FECHA Y HORA DE REGISTRO</dt>
-                                <dd>{{$poliza_tipo->created_at->format('Y-m-d h:i:s a')}} </dd>
-                            </dl>
-                        </div>
-                        <div class="col-sm-6">
-                            <dl>
-                                <dt>INICIO DE VIGENCIA</dt>
-                                <dd>{{$poliza_tipo->inicio_vigencia->format('Y-m-d h:i:s a')}}</dd>
-                                <dt>FIN DE VIGENCIA</dt>
-                                <dd>
-                                    @if($poliza_tipo->fin_vigencia)
+                        <table class="table table-bordered">
+                            <tbody>
+                            <tr>
+                                <th>TIPO DE PÓLIZA</th>
+                                <td>{{ $poliza_tipo->transaccion }}</td>
+                            </tr>
+                            <tr>
+                                <th>USUARIO QUE REGISTRÓ</th>
+                                <td>{{ $poliza_tipo->userRegistro }}</td>
+                            </tr>
+                            <tr>
+                                <th>FECHA Y HORA DE REGISTRO</th>
+                                <td>{{$poliza_tipo->created_at->format('Y-m-d h:i:s a')}}</td>
+                            </tr>
+                            <tr>
+                                <th colspan="2"></th>
+                            </tr>
+                            <tr>
+                                <th>INICIO DE VIGENCIA</th>
+                                <td>{{$poliza_tipo->inicio_vigencia->format('Y-m-d h:i:s a')}}</td>
+                            </tr>
+                            <tr>
+                                <th>FIN DE VIGENCIA</th>
+                                <td>@if($poliza_tipo->fin_vigencia)
                                         {{$poliza_tipo->fin_vigencia->format('Y-m-d h:i:s a')}}
                                     @else
                                         N/A
-                                    @endif
-                                </dd>
-                            </dl>
-                        </div>
+                                    @endif</td>
+                            </tr>
+                            </tbody>
+                        </table>
                     </div>
                     <!-- /.box-body -->
                 </div>

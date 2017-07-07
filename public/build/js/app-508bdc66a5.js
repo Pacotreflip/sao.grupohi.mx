@@ -37925,6 +37925,17 @@ Vue.component('poliza-tipo-create', {
     },
 
     methods: {
+        show_add_movimiento: function show_add_movimiento() {
+            this.validation_errors.clear('form_save_cuenta');
+            $('#modal-add-movimiento').modal('show');
+            this.validation_errors.clear('form_save_cuenta');
+        },
+
+        close_add_movimiento: function close_add_movimiento() {
+            $('#modal-add-movimiento').modal('hide');
+            this.reset_movimiento();
+        },
+
         add_movimiento: function add_movimiento() {
             var id_cuenta_contable = $('#id_cuenta_contable').val();
             var id_tipo_movimiento = $('#id_tipo_movimiento').val();
@@ -37933,6 +37944,10 @@ Vue.component('poliza-tipo-create', {
                 id_cuenta_contable: id_cuenta_contable,
                 id_tipo_movimiento: id_tipo_movimiento
             });
+            this.reset_movimiento();
+            this.validation_errors.clear('form_save_cuenta');
+            $('#modal-add-movimiento').modal('hide');
+            this.validation_errors.clear('form_save_cuenta');
         },
 
         reset_movimiento: function reset_movimiento() {
@@ -38007,12 +38022,9 @@ Vue.component('poliza-tipo-create', {
                     swal({
                         title: '¡Correcto!',
                         html: "Se ha creado la plantilla para el Tipo de Póliza<br>" + "<b>" + self.transacciones_interfaz[self.form.poliza_tipo.id_transaccion_interfaz] + "</b>",
-                        type: "success",
-                        confirmButtonText: "Ok",
-                        closeOnConfirm: false
-                    }).then(function () {
-                        window.location = xhr.getResponseHeader('Location');
-                    }).catch(swal.noop);
+                        type: "success"
+                    });
+                    window.location = xhr.getResponseHeader('Location');
                 },
                 complete: function complete() {
                     self.guardando = false;
@@ -38032,6 +38044,24 @@ Vue.component('poliza-tipo-create', {
                 }
             });
             return result;
+        },
+
+        validateForm: function validateForm(scope, funcion) {
+            var _this = this;
+
+            this.$validator.validateAll(scope).then(function () {
+                if (funcion == 'save_cuenta') {
+                    _this.add_movimiento();
+                } else if (funcion == 'save') {
+                    _this.check_duplicity();
+                }
+            }).catch(function () {
+                swal({
+                    type: 'warning',
+                    title: 'Advertencia',
+                    text: 'Por favor corrija los errores del formulario'
+                });
+            });
         }
     }
 });
