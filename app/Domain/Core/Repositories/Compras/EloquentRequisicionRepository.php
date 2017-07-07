@@ -3,7 +3,9 @@
 namespace Ghi\Domain\Core\Repositories\Compras;
 
 use Ghi\Domain\Core\Contracts\Compras\RequisicionRepository;
+use Ghi\Domain\Core\Models\Compras\Requisiciones\DepartamentoResponsable;
 use Ghi\Domain\Core\Models\Compras\Requisiciones\Requisicion;
+use Ghi\Domain\Core\Models\Compras\Requisiciones\TipoRequisicion;
 use Ghi\Domain\Core\Models\Compras\Requisiciones\TransaccionExt;
 use Illuminate\Support\Facades\DB;
 
@@ -107,6 +109,15 @@ class EloquentRequisicionRepository implements RequisicionRepository
             $requisicion_ext = $this->ext->find($id);
             $requisicion->update($data);
             $requisicion_ext->update($data);
+
+            $requisicion_ext->folio_adicional =
+                DepartamentoResponsable::find($requisicion_ext->id_departamento)->descripcion_corta
+                . '-'
+                . TipoRequisicion::find($requisicion_ext->id_tipo_requisicion)->descripcion_corta
+                . '-'
+                . Requisicion::find($requisicion_ext->id_transaccion)->numero_folio;
+            $requisicion_ext->save();
+
             DB::connection('cadeco')->commit();
 
         } catch (\Exception $e) {

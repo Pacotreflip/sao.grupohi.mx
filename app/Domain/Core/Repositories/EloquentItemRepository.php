@@ -113,7 +113,7 @@ class EloquentItemRepository implements ItemRepository
             DB::connection('cadeco')->rollBack();
             throw $e;
         }
-        return $this->model->with('itemExt')->find($item->id_item);
+        return $this->model->with(['itemExt','material'])->find($item->id_item);
     }
 
 

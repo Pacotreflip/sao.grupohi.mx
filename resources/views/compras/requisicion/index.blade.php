@@ -1,6 +1,7 @@
 @extends('compras.layout')
 @section('title', 'Requisiciones')
 @section('contentheader_title', 'REQUISICIONES')
+@section('contentheader_description', '(INDEX)')
 
 @section('main-content')
     {!! Breadcrumbs::render('compras.requisicion.index') !!}
@@ -16,7 +17,7 @@
                     <div class="row">
                         <div class="col-sm-12">
                             <a  href="{{ route('compras.requisicion.create') }}" class="btn btn-success btn-app" style="float:right">
-                                <i class="glyphicon glyphicon-plus-sign"></i>Nuevo
+                                <i class="glyphicon glyphicon-plus-sign"></i>Nueva
                             </a>
                         </div>
                     </div>
@@ -43,9 +44,9 @@
                                         <td>{{$requisicion->observaciones}}</td>
                                         <td>{{$requisicion->fecha->format('Y-m-d h:i:s a')}}</td>
                                         <td>
-                                            <a href="{{ route('compras.requisicion.show', $requisicion->id_transaccion)}}" title="Ver" class="btn btn-xs btn-default"><i class="fa fa-eye"></i></a>
-                                            <a href="{{ route('compras.requisicion.edit', $requisicion->id_transaccion) }}" title="Editar" class="btn btn-xs btn-info"><i class="fa fa-edit"></i></a>
-                                            <a title="Eliminar" class="btn btn-xs btn-danger"><i class="fa fa-trash"></i></a>
+                                            <a href="{{ route('compras.requisicion.show', $requisicion) }}" title="Ver"><button class="btn-xs btn-default"><i class="fa fa-eye"></i></button></a>
+                                            <a href="{{ route('compras.requisicion.edit', $requisicion) }}" title="Editar"><button class="btn-xs btn-info"><i class="fa fa-edit"></i></button></a>
+                                            <a title="Eliminar"><button  class="btn-xs btn-danger" onclick="eliminar_requisicion({{$requisicion->id_transaccion}}, this)"><i class="fa fa-trash"></i></button></a>
 
                                         </td>
                                     </tr>
@@ -66,6 +67,45 @@
                 </div>
             </div>
         </div>
+
     </div>
 
+@endsection
+@section('scripts-content')
+    <script>
+         function eliminar_requisicion(id) {
+             var self = this;
+             swal({
+                 title: "Eliminar Requisición",
+                 text: "¿Estás seguro de que deseas eliminar la Requisición?",
+                 type: "warning",
+                 showCancelButton: true,
+                 confirmButtonText: "Si, Continuar",
+                 cancelButtonText: "No, Cancelar",
+             }).then(function () {
+                 eliminar(id);
+             }).catch(swal.noop);
+         }
+
+         function eliminar(item) {
+
+             var url = App.host + '/item/' + item;
+             $.ajax({
+                 type: 'POST',
+                 url: url,
+                 data: {
+                     _method: 'DELETE'
+                 },
+                 success: function (data, textStatus, xhr) {
+                     swal({
+                         title: '¡Correcto!',
+                         text: "Requisición eliminada correctamente.",
+                         type: "success",
+                         confirmButtonText: "Ok"
+                     });
+                     location.reload();
+                 }
+             });
+         }
+    </script>
 @endsection

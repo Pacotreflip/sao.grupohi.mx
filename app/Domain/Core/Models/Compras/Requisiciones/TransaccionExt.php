@@ -46,6 +46,8 @@ class TransaccionExt extends Model
                 . '-'
                 . Requisicion::find($model->id_transaccion)->numero_folio;
         });
+
+
     }
 
     /**
