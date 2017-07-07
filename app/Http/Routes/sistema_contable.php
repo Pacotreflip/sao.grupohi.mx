@@ -81,4 +81,11 @@ Route::group(['prefix' => 'sistema_contable'], function () {
      * Datos Contables Routes...
      */
     Route::get('datos_contables/{id}/edit', 'DatosContablesController@edit')->name('sistema_contable.datos_contables.edit');
+
+    /**
+     * Kardex Materiales
+     */
+    Route::get('kardex_material', 'kardexMaterialController@index')->name('sistema_contable.kardex_material.index');
+    Route::get('kardex_material/{id}', 'kardexMaterialController@getBy')->name('sistema_contable.kardex_material.getBy')->where(['id' => '[0-9]+']);
+
 });

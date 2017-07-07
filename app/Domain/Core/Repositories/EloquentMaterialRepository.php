@@ -1,6 +1,9 @@
 <?php
 /**
  * Created by PhpStorm.
+ * User: LERDES2
+ * Date: 05/07/2017
+ * Time: 12:07 PM
  * User: EMARTINEZ
  * Date: 05/07/2017
  * Time: 01:51 PM
@@ -9,11 +12,17 @@
 namespace Ghi\Domain\Core\Repositories;
 
 
+use Ghi\Core\Models\Item;
+use Ghi\Domain\Core\Contracts\Ghi;
 use Ghi\Domain\Core\Contracts\MaterialRepository;
 use Ghi\Domain\Core\Models\Material;
+use Ghi\Items;
+use DB;
 
 class EloquentMaterialRepository implements MaterialRepository
 {
+
+
     /**
      * @var \Ghi\Domain\Core\Models\Material
      */
@@ -32,6 +41,9 @@ class EloquentMaterialRepository implements MaterialRepository
      * Obtiene todos los registros de Material
      *
      * @return \Illuminate\Database\Eloquent\Collection|\Ghi\Domain\Core\Models\Material
+    /**
+     * @param
+     * @return Ghi\Domain\Core\Models\Material
      */
     public function all()
     {

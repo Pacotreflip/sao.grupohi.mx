@@ -116,3 +116,13 @@ Breadcrumbs::register('sistema_contable.datos_contables.edit', function ($breadc
     $breadcrumb->parent('sistema_contable.index');
     $breadcrumb->push($datos_contables->obra->nombre, route('sistema_contable.datos_contables.edit', $datos_contables));
 });
+
+
+/**
+ * Kardex Materiales
+ */
+
+Breadcrumbs::register('sistema_contable.kardex_material.index', function ($breadcrumb) {
+    $breadcrumb->parent('sistema_contable.index');
+    $breadcrumb->push('KARDEX DE MATERIALES', route('sistema_contable.kardex_material.index'));
+});

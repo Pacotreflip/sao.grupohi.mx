@@ -30,6 +30,7 @@
                 <li ><a href="{{route('sistema_contable.poliza_tipo.index')}}"><i class='fa fa-book'></i> <span>Plantillas de Póliza</span></a></li>
             </ul>
         </li>
+
         <li class="treeview">
             <a href="#">
                 <i class="fa fa-cubes"></i>
@@ -41,6 +42,19 @@
             <ul class="treeview-menu">
                 <li ><a href="{{route('sistema_contable.datos_contables.edit', $currentObra->datosContables)}}"><i class='fa fa-circle-o'></i> <span>Configuración Contable</span></a></li>
                 <li ><a href="{{route('sistema_contable.poliza_generada.index')}}"><i class='fa fa-circle-o'></i> <span>Pólizas Generadas</span></a></li>
+            </ul>
+        </li>
+
+        <li class="treeview">
+            <a href="#">
+                <i class="fa fa-area-chart"></i>
+                <span>Reportes</span>
+                <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+            </a>
+            <ul class="treeview-menu">
+                <li ><a href="{{route('sistema_contable.kardex_material.index')}}"><i class='fa fa-book'></i> <span>Kardex - Material</span></a></li>
             </ul>
         </li>
     </ul>
