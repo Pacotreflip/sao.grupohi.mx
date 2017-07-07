@@ -2,12 +2,9 @@
 
 namespace Ghi\Http\Controllers;
 
-use Ghi\Domain\Core\Contracts\ItemsRepository;
 use Ghi\Domain\Core\Contracts\MaterialRepository;
-use Illuminate\Http\Request;
 use Dingo\Api\Routing\Helpers;
 
-use Ghi\Http\Requests;
 
 class KardexMaterialController extends Controller
 {
@@ -17,11 +14,9 @@ class KardexMaterialController extends Controller
      * @var MaterialRepository
      */
     private $material;
-    private $item;
 
     public function __construct(
-        MaterialRepository $material,
-        ItemsRepository $item)
+        MaterialRepository $material)
     {
         parent::__construct();
 
@@ -29,7 +24,6 @@ class KardexMaterialController extends Controller
         $this->middleware('context');
 
         $this->material = $material;
-        $this->item = $item;
     }
 
     /**
@@ -43,8 +37,5 @@ class KardexMaterialController extends Controller
             ->with('materiales', $materiales);
     }
 
-    public function getBy($id)
-    {
-        return $this->item->scope('conTransaccionES')->with('transaccion')->getBy('id_material', '=', $id);
-    }
+
 }

@@ -71,6 +71,7 @@ Vue.component('kardex-material-index', {
                         self.form.totales.entrada_valor = evalor;
                         self.form.totales.salida_material = smaterial;
                         self.form.totales.salida_valor = svalor;
+                        self.form.totales.existencia = ematerial - smaterial;
                     }
                 });
             }

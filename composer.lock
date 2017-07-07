@@ -546,7 +546,7 @@
                 }
             ],
             "description": "A package which provides FPDF class functionality to Laravel 5",
-            "time": "2017-03-24 23:43:15"
+            "time": "2017-03-24T23:43:15+00:00"
         },
         {
             "name": "jakub-onderka/php-console-color",

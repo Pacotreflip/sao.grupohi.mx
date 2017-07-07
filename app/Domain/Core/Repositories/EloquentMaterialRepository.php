@@ -12,12 +12,9 @@
 namespace Ghi\Domain\Core\Repositories;
 
 
-use Ghi\Core\Models\Item;
 use Ghi\Domain\Core\Contracts\Ghi;
 use Ghi\Domain\Core\Contracts\MaterialRepository;
 use Ghi\Domain\Core\Models\Material;
-use Ghi\Items;
-use DB;
 
 class EloquentMaterialRepository implements MaterialRepository
 {

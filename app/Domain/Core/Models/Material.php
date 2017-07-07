@@ -2,6 +2,8 @@
 
 namespace Ghi\Domain\Core\Models;
 
+use Ghi\Domain\Core\MOdels\Transacciones\Item;
+
 
 class Material extends BaseModel
 {
@@ -37,7 +39,7 @@ class Material extends BaseModel
     }
 
     public function items() {
-        return $this->hasMany(Items::class, 'id_material');
+        return $this->hasMany(Item::class, 'id_material');
     }
 
     public function scopeConTransaccionES($query) {

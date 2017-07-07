@@ -32,7 +32,7 @@
                                 <h3 class="box-title">Kardex de Material</h3>
                             </div>
                             <div class="box-body">
-                                <div class="col-sm-6">
+                                <div class="col-sm-4">
                                     <dl>
                                         <dt>ID MATERIAL: </dt>
                                         <dd>@{{form.material.id_material}}</dd>
@@ -40,12 +40,18 @@
                                         <dd>@{{form.material.descripcion}}</dd>
                                     </dl>
                                 </div>
-                                <div class="col-sm-6">
+                                <div class="col-sm-4">
                                     <dl>
                                         <dt>UNIDAD DE MEDIDA</dt>
                                         <dd >@{{form.material.unidad}}</dd>
                                         <dt>FAMILIA</dt>
                                         <dd>@{{form.material.d_padre}}</dd>
+                                    </dl>
+                                </div>
+                                <div class="col-sm-4">
+                                    <dl>
+                                        <dt>EXISTENCIA</dt>
+                                        <dd >@{{ form.totales.existencia }}</dd>
                                     </dl>
                                 </div>
                                 <div class="col-sm-12">
@@ -80,9 +86,9 @@
                                                     <th>#</th>
                                                     <th></th>
                                                     <th>TOTALES</th>
-                                                    <th>@{{ form.totales.entrada_material }}  /  @{{ form.totales.entrada_valor }}</th>
-                                                    <th>@{{ form.totales.salida_material }}  /  @{{ form.totales.salida_valor }}</th>
-                                                    <th>@{{ form.totales.entrada_material - form.totales.salida_material }}   /   @{{ form.totales.entrada_valor -  form.totales.salida_valor}} </th>
+                                                    <th>@{{ form.totales.entrada_material }}  /  @{{ parseFloat(form.totales.entrada_valor) }}</th>
+                                                    <th>@{{ form.totales.salida_material }}  /  @{{ parseFloat(form.totales.salida_valor) }}</th>
+                                                    <th>@{{ form.totales.entrada_material - form.totales.salida_material }}   /   @{{ parseFloat((form.totales.entrada_valor * form.totales.entrada_material) -  (form.totales.salida_valor * form.totales.salida_material))}} </th>
                                                 </tr>
                                             </tfoot>
                                         </table>
