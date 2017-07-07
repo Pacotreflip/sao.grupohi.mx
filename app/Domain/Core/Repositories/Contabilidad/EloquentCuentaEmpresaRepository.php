@@ -69,7 +69,7 @@ class EloquentCuentaEmpresaRepository implements CuentaEmpresaRepository
             $modelo->cuenta = $data['cuenta'];
             $modelo->id_tipo_cuenta_empresa = $data['id_tipo_cuenta_empresa'];
 
-            $item = $modelo->save();
+            $modelo->save();
 
             DB::connection('cadeco')->commit();
 
@@ -77,8 +77,7 @@ class EloquentCuentaEmpresaRepository implements CuentaEmpresaRepository
             DB::connection('cadeco')->rollBack();
             throw $e;
         }
-        return $item;
-
+        return $this->model->with('tipoCuentaEmpresa')->find($modelo->id);
     }
 
     /**

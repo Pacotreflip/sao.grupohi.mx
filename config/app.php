@@ -191,8 +191,13 @@ return [
          */
         DaveJamesMiller\Breadcrumbs\ServiceProvider::class,
 
+        /*
+         * Fpdf / FpdfServiceProvider
+         */
 
-
+        Ghidev\Fpdf\FpdfServiceProvider::class,
+        Ghidev\Fpdf\RotationServiceProvider::class,
+        Ghidev\Fpdf\MC_TableServiceProvider::class,
 
     ],
 
@@ -241,9 +246,11 @@ return [
         'View' => Illuminate\Support\Facades\View::class,
         'AdminLTE' => Acacha\AdminLTETemplateLaravel\Facades\AdminLTE::class,
         'Breadcrumbs' => DaveJamesMiller\Breadcrumbs\Facade::class,
-        'JWTAuth'   => Tymon\JWTAuth\Facades\JWTAuth::class,
-        'JWTFactory'=> Tymon\JWTAuth\Facades\JWTFactory::class,
-
+        'JWTAuth' => Tymon\JWTAuth\Facades\JWTAuth::class,
+        'JWTFactory' => Tymon\JWTAuth\Facades\JWTFactory::class,
+        'Fpdf' => Ghidev\Fpdf\Facades\Fpdf::class,
+        'Rotation' => Ghidev\Fpdf\Facades\Rotation::class,
+        'MC_Table' => Ghidev\Fpdf\Facades\MC_Table::class,
     ],
 
 ];

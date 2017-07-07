@@ -25,3 +25,8 @@ Breadcrumbs::register('compras.requisicion.create', function ($breadcrumb) {
     $breadcrumb->parent('compras.requisicion.index');
     $breadcrumb->push('NUEVA', route('compras.requisicion.create'));
 });
+
+Breadcrumbs::register('compras.requisicion.edit', function ($breadcrumb, $requisicion) {
+    $breadcrumb->parent('compras.requisicion.show', $requisicion);
+    $breadcrumb->push('EDICION', route('compras.requisicion.edit', $requisicion));
+});

@@ -5,8 +5,6 @@
 @section('main-content')
     {!! Breadcrumbs::render('sistema_contable.cuenta_almacen.show', $almacen) !!}
 
-
-    <hr>
     <div class="row">
         <div class="col-md-12">
             <div class="box box-success">

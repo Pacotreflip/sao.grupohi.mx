@@ -87,8 +87,8 @@ class CuentaEmpresaController extends Controller
     {
 
         $data = $request->all();
-        $this->cuenta_empresa->create($data);
-        $empresa = $this->empresa->with('cuentasEmpresa.tipoCuentaEmpresa')->find($data['id_empresa']);
-        return response()->json(['data' => ['empresa' => $empresa]], 200);
+        $cuenta = $this->cuenta_empresa->create($data);
+
+        return response()->json(['data' => ['cuenta_empresa' => $cuenta]], 200);
     }
 }

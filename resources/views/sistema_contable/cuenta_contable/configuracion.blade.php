@@ -5,7 +5,7 @@
 
 @section('main-content')
     {!! Breadcrumbs::render('sistema_contable.cuenta_contable.configuracion') !!}
-    <hr>
+
     <div id="app">
         <global-errors></global-errors>
         <configuracion-contable

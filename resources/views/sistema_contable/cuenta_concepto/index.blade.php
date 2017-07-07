@@ -1,11 +1,10 @@
 @extends('sistema_contable.layout')
 @section('title', 'Cuentas de Conceptos')
 @section('contentheader_title', 'CUENTAS DE CONCEPTOS')
-@section('contentheader_description', '(LISTA)')
+@section('contentheader_description', '(INDEX)')
 
 @section('main-content')
     {!! Breadcrumbs::render('sistema_contable.cuenta_concepto.index') !!}
-    <hr>
 
     <div id="app">
         <cuenta-concepto-index
@@ -69,7 +68,7 @@
                                                     @{{ concepto.cuenta_concepto != null ? (new Date(concepto.cuenta_concepto.created_at)).dateFormat() : '---' }}
                                                 </td>
                                                 <td>
-                                                    <button title="Editar" class="btn btn-xs btn-info" @click="edit_cuenta(concepto)"> <i class="fa fa-edit"></i></button>
+                                                    <button title="Editar" class="btn-xs btn-info" @click="edit_cuenta(concepto)"> <i class="fa fa-edit"></i></button>
                                                 </td>
                                             </tr>
                                         </tbody>
@@ -100,13 +99,13 @@
                                     <div class="row">
                                         <div class="col-md-6">
                                             <div class="form-group">
-                                                <label class="control-label">Concepto</label>
-                                                <input disabled type="text" class="form-control" v-model="form.concepto">
+                                                <label class="control-label"><b>Concepto</b></label>
+                                                <p>@{{ form.concepto }}</p>
                                             </div>
                                         </div>
                                         <div class="col-md-6">
                                             <div class="form-group" :class="{'has-error': validation_errors.has('form_edit_cuenta.Cuenta Contable')}">
-                                                <label class="control-label">Cuenta Contable</label>
+                                                <label class="control-label"><b>Cuenta Contable</b></label>
                                                 <input id="cuenta_contable" :placeholder="datos_contables.FormatoCuenta" type="text" v-validate="'required|regex:' + datos_contables.FormatoCuentaRegExp" class="form-control" name="Cuenta Contable" v-model="form.cuenta">
                                                 <label class="help" v-show="validation_errors.has('form_edit_cuenta.Cuenta Contable')">@{{ validation_errors.first('form_edit_cuenta.Cuenta Contable') }}</label>
                                             </div>

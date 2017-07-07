@@ -5,7 +5,7 @@
 
 @section('main-content')
     {!! Breadcrumbs::render('sistema_contable.poliza_tipo.show', $poliza_tipo) !!}
-    <hr>
+
     <div class="row">
         <div class="col-md-12">
             <div class="box box-success">

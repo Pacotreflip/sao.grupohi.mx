@@ -1,11 +1,11 @@
 @extends('sistema_contable.layout')
 @section('title', 'Cuentas Almacenes')
 @section('contentheader_title', 'CUENTAS DE ALMACENES')
-@section('contentheader_description', '(LISTA)')
+@section('contentheader_description', '(INDEX)')
 
 @section('main-content')
     {!! Breadcrumbs::render('sistema_contable.cuenta_almacen.index') !!}
-    <hr>
+
     <div id="app">
         <global-errors></global-errors>
         <cuenta-almacen-index
@@ -45,11 +45,11 @@
                                                     @{{ item.cuenta_almacen.cuenta }}
                                                 </td>
                                                 <td v-else>
-                                                    Cuenta sin Registrar
+                                                    ---
                                                 </td>
                                                 <td style="min-width: 90px;max-width: 90px">
                                                     <div class="btn-group">
-                                                        <button title="Editar" class="btn btn-xs btn-info" @click="editar(item)"> <i class="fa fa-edit"></i></button>
+                                                        <button title="Editar" class="btn-xs btn-info" type="button" @click="editar(item)"><i class="fa fa-edit"></i> </button>
                                                     </div>
                                                 </td>
                                             </tr>
@@ -92,13 +92,13 @@
                                     <div class="row">
                                         <div class="col-md-6">
                                             <div class="form-group">
-                                                <label class="control-label">Almacén</label>
-                                                <input disabled type="text" class="form-control" v-model="data.almacen_edit.descripcion">
+                                                <label class="control-label"><b>Almacén</b></label>
+                                                <p>@{{ data.almacen_edit.descripcion }}</p>
                                             </div>
                                         </div>
                                         <div class="col-md-6">
                                             <div class="form-group" :class="{'has-error': validation_errors.has('form_edit_cuenta.Cuenta Contable')}">
-                                                <label class="control-label">Cuenta Contable</label>
+                                                <label class="control-label"><b>Cuenta Contable</b></label>
                                                 <input id="cuenta_contable" :placeholder="datos_contables.FormatoCuenta" type="text" v-validate="'required|regex:' + datos_contables.FormatoCuentaRegExp" class="form-control" name="Cuenta Contable" v-model="form.cuenta_almacen.cuenta">
                                                 <label class="help" v-show="validation_errors.has('form_edit_cuenta.Cuenta Contable')">@{{ validation_errors.first('form_edit_cuenta.Cuenta Contable') }}</label>
                                             </div>

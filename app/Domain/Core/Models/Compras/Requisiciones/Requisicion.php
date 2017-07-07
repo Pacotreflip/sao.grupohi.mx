@@ -39,6 +39,7 @@ class Requisicion extends Transaccion
             // $model->id_obra =1;
             $model->id_obra = Context::getId();
         });
+
     }
 
     /**

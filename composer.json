@@ -10,7 +10,8 @@
         "acacha/admin-lte-template-laravel": "2.*",
         "laracasts/flash": "^3.0",
         "davejamesmiller/laravel-breadcrumbs": "^3.0",
-        "dingo/api": "1.0.*@dev"
+        "dingo/api": "1.0.*@dev",
+        "ghidev/fpdf": "dev-master"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",

@@ -1,6 +1,7 @@
 @extends('sistema_contable.layout')
 @section('title', 'Cuentas de Empresas')
 @section('contentheader_title', 'CUENTAS DE EMPRESAS')
+@section('contentheader_description', '(INDEX)')
 
 @section('main-content')
     {!! Breadcrumbs::render('sistema_contable.cuenta_empresa.index') !!}
@@ -33,8 +34,12 @@
                                             <td>{{$empresa->razon_social}}</td>
                                             <td>{{$empresa->total_cuentas}}</td>
                                             <td>
-                                                <a href="{{route('sistema_contable.cuenta_empresa.show',$empresa)}}" title="Ver" class="btn btn-xs btn-default"><i class="fa fa-eye"></i></a>
-                                                <a href="{{route('sistema_contable.cuenta_empresa.edit',$empresa)}}" title="Editar" class="btn btn-xs btn-info"><i class="fa fa-edit"></i></a>
+                                                <a href="{{route('sistema_contable.cuenta_empresa.show',$empresa)}}">
+                                                    <button title="Ver" class="btn-xs btn-default"><i class="fa fa-eye"></i></button>
+                                                </a>
+                                                <a href="{{route('sistema_contable.cuenta_empresa.edit',$empresa)}}">
+                                                    <button  title="Editar" class="btn-xs btn-info"><i class="fa fa-edit"></i></button>
+                                                </a>
                                             </td>
                                         </tr>
                                     @endforeach
