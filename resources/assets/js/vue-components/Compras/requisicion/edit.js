@@ -223,7 +223,7 @@ Vue.component('requisicion-edit', {
 
        update_item: function () {
             var self = this;
-            var url = App.host + '/item'+;
+            var url = App.host + '/item';
             var data = this.form.item;
 
             $.ajax({
