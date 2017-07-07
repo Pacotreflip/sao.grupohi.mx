@@ -175,7 +175,7 @@ Vue.component('cuenta-empresa-edit', {
                 },
                 success: function (data, textStatus, xhr) {
                     self.data.empresa.cuentas_empresa.push(data.data.cuenta_empresa);
-                    $('#add_movimiento_modal').modal('hide');
+                    self.close_modal('add_movimiento_modal');
                     swal({
                         type: 'success',
                         title: 'Correcto',

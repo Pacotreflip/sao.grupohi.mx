@@ -36735,34 +36735,6 @@ Vue.component('requisicion-edit', {
             });
         },
 
-        update_item: function update_item() {
-            var self = this;
-            var url = App.host + '/item';
-            var data = this.form.item;
-
-            $.ajax({
-                type: 'POST',
-                url: url,
-                data: data,
-                beforeSend: function beforeSend() {
-                    self.guardando = true;
-                },
-                success: function success(data, textStatus, xhr) {
-                    self.data.items.push(data.data.item);
-                    $('#add_item_modal').modal('hide');
-                    swal({
-                        title: '¡Correcto!',
-                        text: "Requisición actualizada correctamente.",
-                        type: "success",
-                        confirmButtonText: "Ok"
-                    });
-                },
-                complete: function complete() {
-                    self.guardando = false;
-                }
-            });
-        },
-
         validateForm: function validateForm(scope, funcion) {
             var _this = this;
 
@@ -36773,6 +36745,8 @@ Vue.component('requisicion-edit', {
                     _this.confirm_save_item();
                 } else if (funcion == 'edit_item') {
                     _this.confirm_update_item();
+                } else if (funcion == 'update_requisicion') {
+                    _this.confirm_update_requisicion();
                 }
             }).catch(function () {
                 swal({
@@ -37493,7 +37467,7 @@ Vue.component('cuenta-empresa-edit', {
                 },
                 success: function success(data, textStatus, xhr) {
                     self.data.empresa.cuentas_empresa.push(data.data.cuenta_empresa);
-                    $('#add_movimiento_modal').modal('hide');
+                    self.close_modal('add_movimiento_modal');
                     swal({
                         type: 'success',
                         title: 'Correcto',
