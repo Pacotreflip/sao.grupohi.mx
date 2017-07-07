@@ -1,5 +1,5 @@
 Vue.component('select2', {
-    props: ['options', 'value'],
+    props: ['options', 'value','name'],
     template: '<select><slot></slot></select>',
     mounted: function () {
         var vm = this
@@ -16,11 +16,10 @@ Vue.component('select2', {
         }
 
         data = data.sort(SortByName);
-
+        $(this.$el).attr('name',this.name)
         $(this.$el).select2({
                 data: data,
-                width: '100%',
-                dropdownParent: $('#add_item_modal')
+                width: '100%'
         })
             .val(this.value)
             .trigger('change')
@@ -36,7 +35,10 @@ Vue.component('select2', {
         },
         options: function (options) {
             // update options
-            $(this.$el).select2({ data: options })
+            $(this.$el).select2({
+                data: options,
+                width: '100%'
+            })
         }
     },
     destroyed: function () {

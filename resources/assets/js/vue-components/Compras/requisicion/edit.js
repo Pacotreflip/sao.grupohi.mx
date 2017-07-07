@@ -15,7 +15,8 @@ Vue.component('requisicion-edit', {
                     'id_material': '',
                     'observaciones': '',
                     'cantidad': '',
-                    'unidad': ''
+                    'unidad': this.unidad
+
                 }
             },
             data: {
@@ -32,15 +33,82 @@ Vue.component('requisicion-edit', {
             });
 
             return result;
+        },
+        materiales_unidad_list: function () {
+            var result = {};
+            this.materiales.forEach(function (material) {
+                result[material.id_material] = material.unidad;
+            });
+
+            return result;
+        },
+        unidad: function () {
+         this.form.item.unidad=this.materiales_unidad_list[this.form.item.id_material];
+           return this.materiales_unidad_list[this.form.item.id_material];
+
         }
-    },
+    }
+    ,
     methods:{
         show_add_item: function () {
+
+            $('#add_item_modal').removeAttr('tabindex');
             this.validation_errors.clear('form_add_item');
             $('#add_item_modal').modal('show');
             this.validation_errors.clear('form_add_item');
+
         },
+
+        confirm_remove_item: function (item) {
+            var self = this;
+            swal({
+                title: "Eliminar Partida",
+                text: "¿Estás seguro de que deseas eliminar la partida?",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonText: "Si, Continuar",
+                cancelButtonText: "No, Cancelar",
+            }).then(function () {
+                self.remove_item(item);
+            }).catch(swal.noop);
+        },
+
+        remove_item:function (item) {
+            var self = this;
+            var url = App.host + '/item/' + item.id_item;
+            var index = this.data.items.indexOf(item);
+
+            $.ajax({
+                type: 'POST',
+                url: url,
+                data: {
+                    _method: 'DELETE'
+                },
+                beforeSend: function () {
+                    self.guardando = true;
+                },
+                success: function (data, textStatus, xhr) {
+                    swal({
+                        title: '¡Correcto!',
+                        text: "Partida eliminada correctamente.",
+                        type: "success",
+                        confirmButtonText: "Ok"
+                    });
+                    Vue.delete(self.data.items, index);
+                },
+                complete: function () {
+                    self.guardando = false;
+                }
+            });
+        },
+
         show_edit_item: function (item) {
+
+            this.form.item.id_material=item.id_material;
+            this.form.item.observaciones=item.item_ext.observaciones;
+            this.form.item.unidad=item.unidad;
+            this.form.item.cantidad=item.cantidad;
+            $('#edit_item_modal').removeAttr('tabindex');
             this.validation_errors.clear('form_edit_item');
             $('#edit_item_modal').modal('show');
             this.validation_errors.clear('form_edit_item');
@@ -97,6 +165,19 @@ Vue.component('requisicion-edit', {
                 }
             })
         },
+        confirm_update_item: function () {
+            var self = this;
+            swal({
+                title: "Actualizar Partida",
+                text: "¿Estás seguro de que la información es correcta?",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonText: "Si, Continuar",
+                cancelButtonText: "No, Cancelar",
+            }).then(function () {
+                self.update_item();
+            }).catch(swal.noop);
+        },
         confirm_save_item: function () {
             var self = this;
             swal({
@@ -110,8 +191,62 @@ Vue.component('requisicion-edit', {
                 self.save_item();
             }).catch(swal.noop);
         },
-        save_item: function () {
 
+        save_item: function () {
+            var self = this;
+            var url = App.host + '/item';
+            var data = this.form.item;
+
+            $.ajax({
+                type: 'POST',
+                url: url,
+                data: data,
+                beforeSend: function () {
+                    self.guardando = true;
+                },
+                success: function (data, textStatus, xhr) {
+                    self.data.items.push(data.data.item);
+                    $('#add_item_modal').modal('hide');
+                    swal({
+                        title: '¡Correcto!',
+                        text: "Requisición actualizada correctamente.",
+                        type: "success",
+                        confirmButtonText: "Ok"
+                    });
+                },
+                complete: function () {
+                    self.guardando = false;
+                }
+            })
+        }
+        ,
+
+       update_item: function () {
+            var self = this;
+            var url = App.host + '/item'+;
+            var data = this.form.item;
+
+            $.ajax({
+                type: 'POST',
+                url: url,
+                data: data,
+                beforeSend: function () {
+                    self.guardando = true;
+                },
+                success: function (data, textStatus, xhr) {
+                    self.data.items.push(data.data.item);
+                    $('#add_item_modal').modal('hide');
+                    swal({
+                        title: '¡Correcto!',
+                        text: "Requisición actualizada correctamente.",
+                        type: "success",
+                        confirmButtonText: "Ok"
+                    });
+                },
+                complete: function () {
+                    self.guardando = false;
+                }
+            })
         }
         ,
         validateForm: function(scope, funcion) {
@@ -121,6 +256,9 @@ Vue.component('requisicion-edit', {
                 }else if(funcion=='save_item'){
                     this.confirm_save_item();
                }
+            else if(funcion=='edit_item'){
+                this.confirm_update_item();
+            }
             }).catch(() => {
                 swal({
                      type: 'warning',

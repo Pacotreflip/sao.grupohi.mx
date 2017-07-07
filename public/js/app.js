@@ -36452,7 +36452,8 @@ Vue.component('requisicion-edit', {
                     'id_material': '',
                     'observaciones': '',
                     'cantidad': '',
-                    'unidad': ''
+                    'unidad': this.unidad
+
                 }
             },
             data: {
@@ -36469,15 +36470,80 @@ Vue.component('requisicion-edit', {
             });
 
             return result;
+        },
+        materiales_unidad_list: function materiales_unidad_list() {
+            var result = {};
+            this.materiales.forEach(function (material) {
+                result[material.id_material] = material.unidad;
+            });
+
+            return result;
+        },
+        unidad: function unidad() {
+            this.form.item.unidad = this.materiales_unidad_list[this.form.item.id_material];
+            return this.materiales_unidad_list[this.form.item.id_material];
         }
     },
+
     methods: {
         show_add_item: function show_add_item() {
+
+            $('#add_item_modal').removeAttr('tabindex');
             this.validation_errors.clear('form_add_item');
             $('#add_item_modal').modal('show');
             this.validation_errors.clear('form_add_item');
         },
+
+        confirm_remove_item: function confirm_remove_item(item) {
+            var self = this;
+            swal({
+                title: "Eliminar Partida",
+                text: "¿Estás seguro de que deseas eliminar la partida?",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonText: "Si, Continuar",
+                cancelButtonText: "No, Cancelar"
+            }).then(function () {
+                self.remove_item(item);
+            }).catch(swal.noop);
+        },
+
+        remove_item: function remove_item(item) {
+            var self = this;
+            var url = App.host + '/item/' + item.id_item;
+            var index = this.data.items.indexOf(item);
+
+            $.ajax({
+                type: 'POST',
+                url: url,
+                data: {
+                    _method: 'DELETE'
+                },
+                beforeSend: function beforeSend() {
+                    self.guardando = true;
+                },
+                success: function success(data, textStatus, xhr) {
+                    swal({
+                        title: '¡Correcto!',
+                        text: "Partida eliminada correctamente.",
+                        type: "success",
+                        confirmButtonText: "Ok"
+                    });
+                    Vue.delete(self.data.items, index);
+                },
+                complete: function complete() {
+                    self.guardando = false;
+                }
+            });
+        },
+
         show_edit_item: function show_edit_item(item) {
+
+            this.form.item.id_material = item.id_material;
+            this.form.item.observaciones = item.item_ext.observaciones;
+            this.form.item.unidad = item.unidad;
+            this.form.item.cantidad = item.cantidad;
+            $('#edit_item_modal').removeAttr('tabindex');
             this.validation_errors.clear('form_edit_item');
             $('#edit_item_modal').modal('show');
             this.validation_errors.clear('form_edit_item');
@@ -36547,7 +36613,34 @@ Vue.component('requisicion-edit', {
                 self.save_item();
             }).catch(swal.noop);
         },
-        save_item: function save_item() {},
+
+        save_item: function save_item() {
+            var self = this;
+            var url = App.host + '/item';
+            var data = this.form.item;
+
+            $.ajax({
+                type: 'POST',
+                url: url,
+                data: data,
+                beforeSend: function beforeSend() {
+                    self.guardando = true;
+                },
+                success: function success(data, textStatus, xhr) {
+                    self.data.items.push(data.data.item);
+                    $('#add_item_modal').modal('hide');
+                    swal({
+                        title: '¡Correcto!',
+                        text: "Requisición actualizada correctamente.",
+                        type: "success",
+                        confirmButtonText: "Ok"
+                    });
+                },
+                complete: function complete() {
+                    self.guardando = false;
+                }
+            });
+        },
 
         validateForm: function validateForm(scope, funcion) {
             var _this = this;
@@ -36556,6 +36649,8 @@ Vue.component('requisicion-edit', {
                 if (funcion == 'save') {
                     _this.confirm_save();
                 } else if (funcion == 'save_item') {
+                    _this.confirm_save_item();
+                } else if (funcion == 'edit_item') {
                     _this.confirm_save_item();
                 }
             }).catch(function () {
@@ -37949,7 +38044,7 @@ Vue.component('global-errors', {
 'use strict';
 
 Vue.component('select2', {
-    props: ['options', 'value'],
+    props: ['options', 'value', 'name'],
     template: '<select><slot></slot></select>',
     mounted: function mounted() {
         var vm = this;
@@ -37966,11 +38061,10 @@ Vue.component('select2', {
         }
 
         data = data.sort(SortByName);
-
+        $(this.$el).attr('name', this.name);
         $(this.$el).select2({
             data: data,
-            width: '100%',
-            dropdownParent: $('#add_item_modal')
+            width: '100%'
         }).val(this.value).trigger('change')
         // emit event on change.
         .on('change', function () {
@@ -37984,7 +38078,10 @@ Vue.component('select2', {
         },
         options: function options(_options) {
             // update options
-            $(this.$el).select2({ data: _options });
+            $(this.$el).select2({
+                data: _options,
+                width: '100%'
+            });
         }
     },
     destroyed: function destroyed() {

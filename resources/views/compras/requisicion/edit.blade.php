@@ -92,11 +92,11 @@
                                         <td>@{{ item.material.descripcion}}</td>
                                         <td>@{{ item.material.numero_parte}}</td>
                                         <td>@{{ item.cantidad}}</td>
-                                        <td>@{{ item.material.unidad}}</td>
+                                        <td>@{{ item.unidad}}</td>
                                         <td></td>
                                         <td>@{{ item.item_ext.observaciones}}</td>
                                         <td>
-                                            <button class="btn-xs btn-danger" type="button" @click="confirm_remove_item(index)"><i class="fa fa-remove"></i> </button>
+                                            <button class="btn-xs btn-danger" type="button" @click="confirm_remove_item(item)"><i class="fa fa-remove"></i> </button>
                                             <button class="btn-xs btn-info" type="button" @click="show_edit_item(item)"><i class="fa fa-edit"></i> </button>
                                         </td>
                                     </tr>
@@ -115,18 +115,33 @@
                                 <button type="button" class="close" aria-label="Close" @click="close_add_item"><span aria-hidden="true">&times;</span></button>
                                 <h4 class="modal-title">Agregar Partida</h4>
                             </div>
-                            <form id="form_add_item"  data-vv-scope="form_add_item">
+                            <form id="form_add_item"  data-vv-scope="form_add_item" @submit.prevent="validateForm('form_add_item', 'save_item')" >
                             <div class="modal-body">
                                   <div class="row">
                                       <div class="col-md-6">
                                           <div class="form-group" :class="{'has-error': validation_errors.has('form_add_item.Material')}">
                                               <label for="">Material</label>
-                                              <br><select2 v-model="form.item.id_material" :options="materiales_list">
+                                              <select2 :name="'Material'" v-validate="'required'" v-model="form.item.id_material" :options="materiales_list" >
                                                   <option value disabled>[-SELECCIONE-]</option>
                                               </select2>
                                               <label class="help" v-show="validation_errors.has('form_add_item.Material')">@{{ validation_errors.first('form_add_item.Material') }}</label>
                                           </div>
                                       </div>
+                                      <div class="col-md-6">
+                                          <div class="form-group" :class="{'has-error': validation_errors.has('form_add_item.Cantidad')}">
+                                              <label for="">Cantidad</label>
+                                              <input type="number" v-validate="'required|numeric|min_value:1'" class="form-control" name="Cantidad" v-model="form.item.cantidad"/>
+                                              <label class="help" v-show="validation_errors.has('form_add_item.Cantidad')">@{{ validation_errors.first('form_add_item.Cantidad') }}</label>
+                                          </div>
+                                      </div>
+                                      <div class="col-md-12">
+                                          <div class="form-group" :class="{'has-error': validation_errors.has('form_add_item.Observaciones')}">
+                                              <label for="">Observaciones</label>
+                                              <textarea style="resize: none" v-validate="'required|max:1000'" class="form-control" name="Observaciones" v-model="form.item.observaciones"></textarea>
+                                              <label class="help" v-show="validation_errors.has('form_add_item.Observaciones')">@{{ validation_errors.first('form_add_item.Observaciones') }}</label>
+                                          </div>
+                                      </div>
+
                                   </div>
                             </div>
                             <div class="modal-footer">
@@ -144,9 +159,35 @@
                                 <button type="button" class="close" aria-label="Close" @click="close_add_item"><span aria-hidden="true">&times;</span></button>
                                 <h4 class="modal-title">Editar Partida</h4>
                             </div>
-                            <form id="form_edit_item"  data-vv-scope="form_edit_item">
+                            <form id="form_edit_item"  data-vv-scope="form_edit_item"  @submit.prevent="validateForm('form_edit_item', 'edit_item')">
                                 <div class="modal-body">
-
+                                    <div class="modal-body">
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="form-group" :class="{'has-error': validation_errors.has('form_add_item.Material')}">
+                                                    <label for="">Material</label>
+                                                    <select2 :name="'Material'" v-validate="'required'" v-model="form.item.id_material" :options="materiales_list" >
+                                                        <option value disabled>[-SELECCIONE-]</option>
+                                                    </select2>
+                                                    <label class="help" v-show="validation_errors.has('form_add_item.Material')">@{{ validation_errors.first('form_add_item.Material') }}</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group" :class="{'has-error': validation_errors.has('form_add_item.Cantidad')}">
+                                                    <label for="">Cantidad</label>
+                                                    <input type="number" v-validate="'required|numeric|min_value:1'" class="form-control" name="Cantidad" v-model="form.item.cantidad"/>
+                                                    <label class="help" v-show="validation_errors.has('form_add_item.Cantidad')">@{{ validation_errors.first('form_add_item.Cantidad') }}</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-12">
+                                                <div class="form-group" :class="{'has-error': validation_errors.has('form_add_item.Observaciones')}">
+                                                    <label for="">Observaciones</label>
+                                                    <textarea style="resize: none" v-validate="'required|max:1000'" class="form-control" name="Observaciones" v-model="form.item.observaciones"></textarea>
+                                                    <label class="help" v-show="validation_errors.has('form_add_item.Observaciones')">@{{ validation_errors.first('form_add_item.Observaciones') }}</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-default" @click="close_add_item">Cerrar</button>

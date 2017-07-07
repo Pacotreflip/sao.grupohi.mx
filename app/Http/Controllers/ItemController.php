@@ -42,7 +42,6 @@ class ItemController extends Controller
 
     public function destroy($id) {
         $this->item->delete($id);
-
         return $this->response->accepted();
     }
 }

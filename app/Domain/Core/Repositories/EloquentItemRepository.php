@@ -72,12 +72,10 @@ class EloquentItemRepository implements ItemRepository
             DB::connection('cadeco')->beginTransaction();
 
              $item = $this->model->create($data);
-             $this->ext->create(
-                 [
-                     'id_item'=>$item->id_item,
-                     'observaciones'=>$data['observaciones']
-                 ]
-             );
+             $this->ext->create([
+                 'id_item' => $item->id_item,
+                 'observaciones' => $data['observaciones']
+             ]);
 
             DB::connection('cadeco')->commit();
 
@@ -85,7 +83,8 @@ class EloquentItemRepository implements ItemRepository
             DB::connection('cadeco')->rollBack();
             throw $e;
         }
-        return $this->model->with('itemExt')->find($item->id_item);
+
+        return $this->model->with(['itemExt', 'material'])->find($item->id_item);
     }
 
 

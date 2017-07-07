@@ -88,3 +88,4 @@ Date.prototype.dateFormat = function() {
 function padValue(value) {
     return (value < 10) ? "0" + value : value;
 };
+
