@@ -14,7 +14,6 @@
         </div>
     </div>
     <br>
-    @if(count($polizas_tipo) > 0)
     <div class="row" >
         <div class="col-md-12">
             <div class="box box-info">
@@ -67,16 +66,16 @@
                                             @endif
                                         </td>
                                         <td style="min-width: 90px;max-width: 90px">
-                                            <div class="btn-group">
-                                                <a title="Ver" href="{{ route('sistema_contable.poliza_tipo.show', $item->id) }}" type="button" class="btn btn-xs btn-default">
+                                            <a title="Ver" href="{{ route('sistema_contable.poliza_tipo.show', $item->id) }}">
+                                                <button type="button" class="btn-xs btn-default">
                                                     <i class="fa fa-eye"></i>
-                                                </a>
-                                                <button title="Eliminar" type="button" class="btn btn-xs btn-danger" onclick=" delete_plantilla({{$item->id}})">
-                                                    <i class="fa fa-trash"></i>
                                                 </button>
-                                            </div>
+                                            </a>
+                                            <button title="Eliminar" type="button" class="btn-xs btn-danger" onclick=" delete_plantilla({{$item->id}})">
+                                                <i class="fa fa-trash"></i>
+                                            </button>
                                         </td>
-                                    </tr>i
+                                    </tr>
                                 @endforeach
                                 </tbody>
                                 <tfoot>
@@ -100,7 +99,6 @@
             </div>
         </div>
     </div>
-@endif
 @endsection
 @section('scripts-content')
     <script>
@@ -141,12 +139,9 @@
                         swal({
                                 type: "success",
                                 title: '¡Correcto!',
-                                text: 'Plantilla Eliminada con éxito',
-                                confirmButtonText: "Ok",
-                                closeOnConfirm: false
-                            }).then(function () {
-                            location.reload();
+                                text: 'Plantilla Eliminada con éxito'
                         });
+                        location.reload();
                     },
                     complete: function () {
 
