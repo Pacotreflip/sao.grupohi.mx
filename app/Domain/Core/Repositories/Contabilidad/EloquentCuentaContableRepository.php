@@ -56,11 +56,11 @@ class EloquentCuentaContableRepository implements CuentaContableRepository
     {
         try {
             DB::connection('cadeco')->beginTransaction();
-
             $item = $this->model->create([
                 'prefijo' => $data['con_prefijo'] == "true" ? $data['prefijo'] : null,
                 'cuenta_contable' => $data['con_prefijo'] == "true" ? null : $data['cuenta_contable'],
-                'id_int_tipo_cuenta_contable' => $data['id_int_tipo_cuenta_contable']
+                'id_int_tipo_cuenta_contable' => $data['id_int_tipo_cuenta_contable'],
+                'estatus' => 1
             ]);
 
             DB::connection('cadeco')->commit();
@@ -82,21 +82,29 @@ class EloquentCuentaContableRepository implements CuentaContableRepository
     public function update(array $data, $id)
     {
 
+
+
+
         try {
             DB::connection('cadeco')->beginTransaction();
             if (!$item = $this->model->find($id)) {
                 throw new HttpResponseException(new Response('No se encontró la cuenta contable que se desea actualizar', 404));
             }
 
-            $item->update([
-                'prefijo' => $data['data']['con_prefijo'] == "true" ? $data['data']['prefijo'] : null,
-                'cuenta_contable' => $data['data']['con_prefijo'] == "true" ? null : $data['data']['cuenta_contable']
-            ]);
+            $item->estatus = 0;
+            $item->update();
 
+            $data['prefijo'] = $data['data']['con_prefijo'] == "true" ? $data['data']['prefijo'] : null;
+            $data['cuenta_contable'] = $data['data']['con_prefijo'] == "true" ? null : $data['data']['cuenta_contable'];
+            $data['id_int_tipo_cuenta_contable'] = $item->id_int_tipo_cuenta_contable;
+            $data['estatus'] = 1;
+            $item = CuentaContable::create($data);
             DB::connection('cadeco')->commit();
 
         } catch (\Exception $e) {
             DB::connection('cadeco')->rollBack();
+            $item->estatus = 1;
+            $item->update();
             throw $e;
         }
         return $item->where('id_int_cuenta_contable', '=', $item->id_int_cuenta_contable)->with('tipoCuentaContable')->first();
@@ -119,7 +127,7 @@ class EloquentCuentaContableRepository implements CuentaContableRepository
      */
     public function with($relations)
     {
-         $this->model=$this->model->with($relations);
-         return $this;
+        $this->model = $this->model->with($relations);
+        return $this;
     }
 }
