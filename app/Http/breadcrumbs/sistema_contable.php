@@ -126,3 +126,11 @@ Breadcrumbs::register('sistema_contable.kardex_material.index', function ($bread
     $breadcrumb->parent('sistema_contable.index');
     $breadcrumb->push('KARDEX DE MATERIALES', route('sistema_contable.kardex_material.index'));
 });
+
+/**
+ *  Cuentas Materiales
+ */
+Breadcrumbs::register('sistema_contable.cuenta_material.index', function ($breadcrumb) {
+    $breadcrumb->parent('sistema_contable.index');
+    $breadcrumb->push('CUENTAS DE MATERIALES', route('sistema_contable.cuenta_material.index'));
+});

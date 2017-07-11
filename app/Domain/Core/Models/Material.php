@@ -3,6 +3,7 @@
 namespace Ghi\Domain\Core\Models;
 
 use Ghi\Domain\Core\MOdels\Transacciones\Item;
+use Ghi\Domain\Core\Models\Transacciones\Tipo;
 
 
 class Material extends BaseModel
@@ -44,7 +45,8 @@ class Material extends BaseModel
 
     public function scopeConTransaccionES($query) {
         return $query->whereHas('items.transaccion', function ($q){
-            $q->whereIn('transacciones.tipo_transaccion', [33, 34]);
+            $q->whereIn('transacciones.tipo_transaccion', Tipo::TIPO_TRANSACCION);
         });
     }
+
 }

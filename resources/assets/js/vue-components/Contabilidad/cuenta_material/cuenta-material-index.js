@@ -1,39 +1,29 @@
 Vue.component('cuenta-material-index', {
     data: function() {
         return {
+            'data' : {
+                'items': [],
+            },
             valor: '0',
-            items: '',
             guardando : false
         }
     },
-    method:{
-        material: function () {
-
-        }
-
-    },
-
-    computed:{
+    methods:{
         cambio: function () {
             var self = this;
             var id = self.valor;
             if(id != 0){
-                var url = App.host + '/sistema_contable/cuenta_material/findBy';
+                var url = App.host + '/sistema_contable/cuenta_material/';
                 $.ajax({
                     type: 'GET',
-                    url: url,
-                    data: {
-                        'value' : id
-                    },
+                    url: url + id,
 
                     success: function(response) {
-                        if(response.data.cuenta_material != null ) {
-                            self.items = response.data.cuenta_material;
-                            self.guardando = true;
-                        }
+                        self.data.items = response;
                     }
                 });
             }
         }
+
     }
 });

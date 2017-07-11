@@ -13,7 +13,9 @@ namespace Ghi\Domain\Core\Repositories;
 
 
 use Ghi\Domain\Core\Contracts\Ghi;
+use Ghi\Domain\Core\Contracts\los;
 use Ghi\Domain\Core\Contracts\MaterialRepository;
+use Ghi\Domain\Core\Contracts\valor;
 use Ghi\Domain\Core\Models\Material;
 
 class EloquentMaterialRepository implements MaterialRepository
@@ -68,5 +70,26 @@ class EloquentMaterialRepository implements MaterialRepository
     {
         $this->model = $this->model->$scope();
         return $this;
+    }
+
+    /**
+     * @param $value valor de busqueda de materiales de acuerdo a su tipo
+     * @return mixed
+     */
+    public function findBy($value)
+    {
+        return $this->model->where('tipo_material', $value)->where('nivel', 'like', '___.')->get();
+    }
+
+    /**
+     * @param $value los datos de busqueda para un material padre y materiales hijos
+     * @return mixed
+     */
+    public function find($value)
+    {
+        return $this->model->where(function($query, $value) {
+            $query->orWhere('nivel', 'LIKE', '001.')
+                ->orWhere('nivel', 'LIKE', '001.___.');
+        })->where('tipo_material', 1)->orderBy('nivel', 'asc')->get();
     }
 }

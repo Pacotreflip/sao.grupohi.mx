@@ -35,7 +35,6 @@ Vue.component('kardex-material-index', {
             var smaterial = 0;
             var svalor = 0;
 
-            if (self.valor != -1) {
                 url = url + material.id_material;
 
                 // Consulta de datos de kardex por material
@@ -74,7 +73,7 @@ Vue.component('kardex-material-index', {
                         self.form.totales.existencia = ematerial - smaterial;
                     }
                 });
-            }
+
         }
     },
 

@@ -39,4 +39,16 @@ interface MaterialRepository
      */
     public function scope($scope);
 
+    /**
+     * @param $value valor de busqueda de materiales de acuerdo a su tipo
+     * @return mixed
+     */
+    public function findBy($value);
+
+    /**
+     * @param $value los datos de busqueda para un material padre y materiales hijos
+     * @return mixed
+     */
+    public function find($value);
+
 }
