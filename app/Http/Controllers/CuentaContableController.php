@@ -32,8 +32,9 @@ class CuentaContableController extends Controller
      */
     public function index()
     {
-        $tipos_cuentas_contables = $this->tipo_cuenta_contable->with('cuentaContable')->scope('generales')->all();
-
+       $tipos_cuentas_contables = $this->tipo_cuenta_contable->with('cuentaContable.TipoCuentaContable')->scope('generales')->all();
+        $tipos_cuentas_contables=$this->cuenta_contable->with('TipoCuentaContable')->getBy('estatus','=',1);
+       dd($tipos_cuentas_contables);
         return view('sistema_contable.cuenta_contable.index')
             ->with('tipos_cuentas_contables', $tipos_cuentas_contables);
     }

@@ -1,5 +1,6 @@
 <?php namespace Ghi\Domain\Core\Repositories\Contabilidad;
 
+use Ghi\Domain\Core\Contracts\Contabilidad\Concepto;
 use Ghi\Domain\Core\Contracts\Contabilidad\CuentaContableRepository;
 use Ghi\Domain\Core\Models\Contabilidad\CuentaContable;
 use Illuminate\Http\Exception\HttpResponseException;
@@ -129,5 +130,18 @@ class EloquentCuentaContableRepository implements CuentaContableRepository
     {
         $this->model = $this->model->with($relations);
         return $this;
+    }
+
+
+    /**
+     * Buscar conceptos
+     * @param $attribute
+     * @param $operator
+     * @return \Illuminate\Database\Eloquent\Collection|Concepto
+     */
+
+    public function getBy($attribute, $operator, $value, $with = null)
+    {
+        return $this->model->where($attribute, $operator, $value)->get();
     }
 }

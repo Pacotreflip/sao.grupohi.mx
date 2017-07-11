@@ -47,4 +47,12 @@ interface CuentaContableRepository
      * @internal param array $array
      */
     public function with($relations);
+
+    /**
+     * Buscar conceptos
+     * @param $attribute
+     * @param $operator
+     * @return \Illuminate\Database\Eloquent\Collection|Concepto
+     */
+    public function getBy($attribute, $operator, $value);
 }

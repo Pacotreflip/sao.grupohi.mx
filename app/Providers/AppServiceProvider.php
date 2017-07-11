@@ -142,5 +142,10 @@ class AppServiceProvider extends ServiceProvider
             \Ghi\Domain\Core\Contracts\Compras\TipoRequisicionRepository::class,
             \Ghi\Domain\Core\Repositories\Compras\EloquentTipoRequisicionRepository::class
         );
+
+        $this->app->bind(
+            \Ghi\Domain\Core\Contracts\NotificacionRepository::class,
+            \Ghi\Domain\Core\Repositories\EloquentNotificacionRepository::class
+        );
     }
 }
