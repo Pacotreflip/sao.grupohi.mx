@@ -1,6 +1,9 @@
 <?php
 
+use Ghi\Domain\Core\Models\Obra;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
+
 
 class TiposCuentasGeneralesSeeder extends Seeder
 {
