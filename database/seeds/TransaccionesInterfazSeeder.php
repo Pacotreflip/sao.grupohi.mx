@@ -14,7 +14,7 @@ class TransaccionesInterfazSeeder extends Seeder
      */
     public function run()
     {
-        DB::statement('SET IDENTITY_INSERT dbo.int_transacciones_interfaz ON;');
+        DB::connection("cadeco")->statement('SET IDENTITY_INSERT Contabilidad.int_transacciones_interfaz ON;');
         DB::connection("cadeco")->table('Contabilidad.int_transacciones_interfaz')->insert( ['id_transaccion_interfaz' =>	1	,'descripcion' => 	'Póliza de Factura de Prestaciones',]);
         DB::connection("cadeco")->table('Contabilidad.int_transacciones_interfaz')->insert( ['id_transaccion_interfaz' =>	2	,'descripcion' => 	'Póliza de Provisión de Pasivo de Insumos',]);
         DB::connection("cadeco")->table('Contabilidad.int_transacciones_interfaz')->insert( ['id_transaccion_interfaz' =>	3	,'descripcion' => 	'Póliza de Factura Solo Materiales',]);
