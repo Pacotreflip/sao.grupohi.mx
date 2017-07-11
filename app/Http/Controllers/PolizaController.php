@@ -21,7 +21,7 @@ class PolizaController extends Controller
         parent::__construct();
         $this->middleware('auth');
         $this->middleware('context');
-        
+
         $this->poliza = $poliza;
         $this->tipoCuentaContable=$tipoCuenta;
         $this->cuenta_contable=$cuenta_contable;
