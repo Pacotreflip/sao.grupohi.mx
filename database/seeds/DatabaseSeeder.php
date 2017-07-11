@@ -12,7 +12,7 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
         $this->call(DatosContablesObraSeeder::class);
-        $this->call(TiposCuentasGeneralesObraSeeder::class);
+        $this->call(TiposCuentasGeneralesSeeder::class);
         $this->call(TiposCuentasSeeder::class);
         $this->call(TiposPolizasContpaqSeeder::class);
         $this->call(TiposMovimientosSeeder::class);
