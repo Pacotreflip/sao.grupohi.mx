@@ -3,7 +3,7 @@
 @section('contentheader_title', 'CUENTAS DE MATERIAL')
 @section('contentheader_description', '(DETALLE)')
 @section('main-content')
-    {!! Breadcrumbs::render('sistema_contable.cuenta_almacen.show', $familia) !!}
+    {!! Breadcrumbs::render('sistema_contable.cuenta_material.show', $familia) !!}
     <div id="app">
         <global-errors></global-errors>
         <cuenta-material-index

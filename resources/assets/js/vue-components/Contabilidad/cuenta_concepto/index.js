@@ -3,7 +3,8 @@ Vue.component('cuenta-concepto-index', {
     data: function () {
         return {
             'data': {
-                'conceptos' : this.conceptos
+                'conceptos' : this.conceptos,
+
             },
             'form': {
                 'concepto_edit' : {},
@@ -12,7 +13,7 @@ Vue.component('cuenta-concepto-index', {
                 'id' : '',
                 'id_concepto' : ''
             },
-            'cargando': false
+            'cargando': false,
         }
     },
 
@@ -37,7 +38,7 @@ Vue.component('cuenta-concepto-index', {
             return this.data.conceptos.sort(function(a,b) {return (a.nivel > b.nivel) ? 1 : ((b.nivel > a.nivel) ? -1 : 0);} );
 
         }
-    },
+        },
 
     methods: {
         tr_class: function(concepto) {
@@ -133,7 +134,7 @@ Vue.component('cuenta-concepto-index', {
         update_cuenta: function () {
             var self = this;
             var url = this.url_store_cuenta + '/' + this.form.id;
-            
+
             $.ajax({
                 type: 'POST',
                 url: url,
@@ -209,5 +210,29 @@ Vue.component('cuenta-concepto-index', {
             Vue.set(this.form, 'id', '');
             Vue.set(this.form, 'id_concepto', '');
         },
+        buscar_nodos:function () {
+         var texto=$('#texto').val();
+            var self = this;
+            var url = App.host+'/sistema_contable/cuenta_concepto/searchNodo';
+            $.ajax({
+                type: 'POST',
+                url: url,
+                data: {
+                    texto:texto
+                },
+                beforeSend: function () {
+                    self.cargando = true;
+                },
+                success: function (data, textStatus, xhr) {
+                 self.data.conceptos=data.data.concepto;
+                },
+                complete: function () {
+                    self.cargando = false;
+                }
+            });
+
+
+        }
+
     }
 });

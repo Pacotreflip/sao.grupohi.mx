@@ -19,6 +19,9 @@ class PolizaController extends Controller
     public function __construct(PolizaRepository $poliza,TipoCuentaContableRepository $tipoCuenta,CuentaContableRepository $cuenta_contable)
     {
         parent::__construct();
+        $this->middleware('auth');
+        $this->middleware('context');
+
         $this->poliza = $poliza;
         $this->tipoCuentaContable=$tipoCuenta;
         $this->cuenta_contable=$cuenta_contable;

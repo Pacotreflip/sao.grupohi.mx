@@ -32,10 +32,9 @@ class CuentaContableController extends Controller
      */
     public function index()
     {
-        $tipos_cuentas_contables = $this->tipo_cuenta_contable->with('cuentaContable')->scope('generales')->all();
-
+       $cuentas_contables=$this->cuenta_contable->with('tipoCuentaContable')->getBy('estatus','=',1);
         return view('sistema_contable.cuenta_contable.index')
-            ->with('tipos_cuentas_contables', $tipos_cuentas_contables);
+            ->with('cuentas_contables', $cuentas_contables);
     }
 
     /**
@@ -44,12 +43,11 @@ class CuentaContableController extends Controller
     public function store(Request $request)
     {
         $item = $this->cuenta_contable->create($request->all());
-        $tipos_cuentas_contables = $this->tipo_cuenta_contable->with('cuentaContable')->all();
-
+        $cuentas_contables=$this->cuenta_contable->with('tipoCuentaContable')->getBy('estatus','=',1);
         return response()->json(['data' =>
             [
                 'cuenta_contable' => $item,
-                'tipos_cuentas_contables' => $tipos_cuentas_contables
+                'cuentas_contables' => $cuentas_contables
             ]
         ], 200);
     }
@@ -59,12 +57,13 @@ class CuentaContableController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $item = $this->cuenta_contable->with('tipoCuentaContable')->update($request->all(), $id);
-        $tipos_cuentas_contables = $this->tipo_cuenta_contable->with('cuentaContable')->all();
+        $item = $this->cuenta_contable->update($request->all(), $id);
+        $cuentas_contables=$this->cuenta_contable->with('tipoCuentaContable')->getBy('estatus','=',1);
+
         return response()->json(['data' =>
             [
                 'cuenta_contable' => $item,
-                'tipos_cuentas_contables' => $tipos_cuentas_contables
+                'cuentas_contables' => $cuentas_contables
             ]
         ], 200);
     }
@@ -77,4 +76,6 @@ class CuentaContableController extends Controller
         $item = $this->cuenta_contable->with('tipoCuentaContable')->findBy($request->attribute, $request->value);
         return response()->json(['data' => ['cuenta_contable' => $item]], 200);
     }
+
+
 }

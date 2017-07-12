@@ -85,7 +85,10 @@ Breadcrumbs::register('sistema_contable.cuenta_almacen.index', function ($breadc
     $breadcrumb->parent('sistema_contable.index');
     $breadcrumb->push('CUENTAS DE ALMACENES', route('sistema_contable.cuenta_almacen.index'));
 });
-
+Breadcrumbs::register('sistema_contable.cuenta_almacen.show', function ($breadcrumb) {
+    $breadcrumb->parent('sistema_contable.cuenta_almacen.index');
+    $breadcrumb->push('VER CUENTAS DE ALMACENES', route('sistema_contable.cuenta_almacen.index'));
+});
 
 /**
  * Cuentas Empresa
@@ -104,10 +107,7 @@ Breadcrumbs::register('sistema_contable.cuenta_empresa.edit', function ($breadcr
     $breadcrumb->parent('sistema_contable.cuenta_empresa.show', $empresa);
     $breadcrumb->push('EDICIÓN', route('sistema_contable.cuenta_empresa.edit', $empresa));
 });
-Breadcrumbs::register('sistema_contable.cuenta_almacen.show', function ($breadcrumb) {
-    $breadcrumb->parent('sistema_contable.cuenta_almacen.index');
-    $breadcrumb->push('VER CUENTAS DE ALMACENES', route('sistema_contable.cuenta_almacen.index'));
-});
+
 
 /**
  * Datos Contables
@@ -133,4 +133,8 @@ Breadcrumbs::register('sistema_contable.kardex_material.index', function ($bread
 Breadcrumbs::register('sistema_contable.cuenta_material.index', function ($breadcrumb) {
     $breadcrumb->parent('sistema_contable.index');
     $breadcrumb->push('CUENTAS DE MATERIALES', route('sistema_contable.cuenta_material.index'));
+});
+Breadcrumbs::register('sistema_contable.cuenta_material.show', function ($breadcrumb) {
+    $breadcrumb->parent('sistema_contable.cuenta_material.index');
+    $breadcrumb->push('VER CUENTAS DE ALMACENES', route('sistema_contable.cuenta_material.index'));
 });
