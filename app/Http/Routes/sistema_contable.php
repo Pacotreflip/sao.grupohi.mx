@@ -93,7 +93,9 @@ Route::group(['prefix' => 'sistema_contable'], function () {
      */
     Route::get('cuenta_material', 'CuentaMaterialController@index')->name('sistema_contable.cuenta_material.index');
     Route::get('cuenta_material/{id}', 'CuentaMaterialController@findBy')->name('sistema_contable.cuenta_material.findby')->where(['id' => '[0-9]+']);
-    Route::get('cuenta_material/mat', 'CuentaMaterialController@show')->name('sistema_contable.cuenta_material.show')->where(['id' => '[0-9]+']);
+    Route::get('cuenta_material/{tipo}/material/{nivel}', 'CuentaMaterialController@show')->name('sistema_contable.cuenta_material.show');
+    Route::post('cuenta_material', 'CuentaMaterialController@store')->name('sistema_contable.cuenta_material.store');
+    Route::patch('cuenta_material/{id}', 'CuentaMaterialController@update')->name('sistema_contable.cuenta_material.update')->where(['id' => '[0-9]+']);
 
 
 });

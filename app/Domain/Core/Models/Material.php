@@ -2,6 +2,7 @@
 
 namespace Ghi\Domain\Core\Models;
 
+use Ghi\Domain\Core\Models\Contabilidad\CuentaMaterial;
 use Ghi\Domain\Core\MOdels\Transacciones\Item;
 use Ghi\Domain\Core\Models\Transacciones\Tipo;
 
@@ -47,6 +48,10 @@ class Material extends BaseModel
         return $query->whereHas('items.transaccion', function ($q){
             $q->whereIn('transacciones.tipo_transaccion', Tipo::TIPO_TRANSACCION);
         });
+    }
+
+    public function cuentaMaterial(){
+        return $this->hasOne(CuentaMaterial::class, 'id_material', 'id_material');
     }
 
 }

@@ -3,6 +3,7 @@
 namespace Ghi\Http\Controllers;
 
 use Dingo\Api\Routing\Helpers;
+use Ghi\Domain\Core\Contracts\Contabilidad\CuentaMaterialRepository;
 use Ghi\Domain\Core\Contracts\MaterialRepository;
 use Illuminate\Http\Request;
 
@@ -15,7 +16,11 @@ class CuentaMaterialController extends Controller
      */
     private $material;
 
-    public function __construct(MaterialRepository $material
+    private $cuenta_material;
+
+    public function __construct(
+        MaterialRepository $material,
+        CuentaMaterialRepository $cuenta_material
        )
     {
         parent::__construct();
@@ -24,6 +29,7 @@ class CuentaMaterialController extends Controller
         //$this->middleware('context');
 
         $this->material = $material;
+        $this->cuenta_material = $cuenta_material;
     }
 
 
@@ -45,9 +51,19 @@ class CuentaMaterialController extends Controller
         return $materiales;
     }
 
-    public function show($item){
-        $familia = $this->material->find($item);
+    public function show($tipo, $nivel){
+        $familia = $this->material->with('cuentaMaterial')->find($tipo, $nivel);
+        return view('sistema_contable.cuenta_material.show')->with('familia', $familia);
+    }
 
-        return $familia;
+    public function update(Request $request, $id) {
+
+        $item = $this->cuenta_material->update($request->all(), $id);
+        return response()->json(['data' => ['cuenta_material' => $item]],200);
+    }
+
+    public function store(Request $request) {
+        $item = $this->cuenta_material->create($request->all());
+        return response()->json(['data' => ['cuenta_material' => $item]],200);
     }
 }

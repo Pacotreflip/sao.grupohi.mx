@@ -49,6 +49,13 @@ interface MaterialRepository
      * @param $value los datos de busqueda para un material padre y materiales hijos
      * @return mixed
      */
-    public function find($value);
+    public function find($tipo, $nivel);
+
+    /**
+     * Crea relaciones con otros modelos
+     * @param $relations
+     * @return mixed
+     */
+    public function with($relations);
 
 }

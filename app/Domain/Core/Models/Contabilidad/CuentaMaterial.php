@@ -2,7 +2,8 @@
 
 namespace Ghi\Domain\Core\Models\Contabilidad;
 
-use Illuminate\Database\Eloquent\BaseModel;
+use Ghi\Domain\Core\Models\BaseModel;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class CuentaMaterial extends BaseModel
 {
@@ -12,7 +13,20 @@ class CuentaMaterial extends BaseModel
     protected $table = 'Contabilidad.cuentas_materiales';
     protected $primaryKey = 'id';
 
+    protected $fillable = [
+        'id_almacen',
+        'cuenta',
+        'id_tipo_cuenta_material',
+        'id_obra',
+        'registro',
+        'estatus'
+    ];
 
-
-
+    protected static function boot()
+    {
+        parent::boot();
+        static::creating(function ($model) {
+            $model->estatus = 1;
+        });
+    }
 }

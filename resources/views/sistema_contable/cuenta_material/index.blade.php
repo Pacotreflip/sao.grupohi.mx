@@ -68,7 +68,7 @@
                                                 <td>@{{ (new Date(item.FechaHoraRegistro)).dateFormat() }}</td>
                                                 <td style="min-width: 90px;max-width: 90px">
                                                     <div class="btn-group">
-                                                        <a title="Editar" href="{{ route('sistema_contable.cuenta_material.show') }}" type="button" class="btn btn-xs btn-default">
+                                                        <a title="Editar" @click="edit(item)" type="button" class="btn btn-xs btn-default">
                                                             <i class="fa fa-pencil"></i>
                                                         </a>
                                                     </div>

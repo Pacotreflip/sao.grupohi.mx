@@ -1,0 +1,169 @@
+@extends('sistema_contable.layout')
+@section('title', 'Cuentas de Materiales')
+@section('contentheader_title', 'CUENTAS DE MATERIAL')
+@section('contentheader_description', '(DETALLE)')
+@section('main-content')
+    {!! Breadcrumbs::render('sistema_contable.cuenta_almacen.show', $familia) !!}
+    <div id="app">
+        <global-errors></global-errors>
+        <cuenta-material-index
+                :familia="{{$familia}}"
+                :datos_contables="{{$currentObra->datosContables}}"
+                :url_cuenta_material_store="'{{route('sistema_contable.cuenta_material.store')}}'"
+                v-cloak
+                inline-template>
+            <section>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="box box-success">
+
+                            <div class="box box-solid">
+                                <div class="box-header with-border">
+                                    <h3 class="box-title">Cuenta de Materiales
+                                    </h3>
+                                </div>
+                                <!-- /.box-header -->
+                                <div class="box-body">
+                                    <div class="col-sm-6">
+                                        <dl>
+                                            <dt>ID</dt>
+                                            <dd>{{$familia[0]->nivel}}</dd>
+                                            <dt>DESCRIPCION</dt>
+                                            <dd>{{$familia[0]->descripcion}}</dd>
+                                        </dl>
+                                    </div>
+
+                                </div>
+                                <!-- /.box-body -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="box box-success">
+                            <div class="box-header">
+                                <h3 class="box-title">Cuentas Configuradas</h3>
+                                <div class="col-sm-12">
+                                    <div class="row">
+                                        <div class="box-body">
+                                            <table class="table table-bordered table-striped ">
+                                                <thead>
+                                                <tr>
+                                                    <th>#</th>
+                                                    <th>NIVEL</th>
+                                                    <th>DESCRIPCIÓN</th>
+                                                    <th>CUENTA</th>
+                                                    <th>FECHA Y HORA DE REGISTRO</th>
+                                                    <th>ACCIONES</th>
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+
+                                                    <tr v-for="(cuenta, index) in data.familia">
+                                                        <td>@{{index+1}}</td>
+                                                        <td>@{{cuenta.nivel}}</td>
+                                                        <td>@{{cuenta.descripcion}}</td>
+                                                        <td v-if="cuenta.cuenta_material != null">
+                                                            @{{ cuenta.cuenta_material.cuenta }}
+                                                        </td>
+                                                        <td v-else>
+                                                            ---
+                                                        </td>
+                                                        <td>@{{cuenta.FechaHoraRegistro}}</td>
+                                                        <td>
+                                                            <div class="btn-group">
+                                                                <button title="Editar" class="btn-xs btn-info" type="button" @click="editar(cuenta)"><i class="fa fa-edit"></i> </button>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+
+                                                </tbody>
+                                                <tfoot>
+                                                    <tr>
+                                                        <th>#</th>
+                                                        <th>NIVEL</th>
+                                                        <th>DESCRIPCIÓN</th>
+                                                        <th>CUENTA</th>
+                                                        <th>FECHA Y HORA DE REGISTRO</th>
+                                                        <th>ACCIONES</th>
+                                                    </tr>
+                                                </tfoot>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Modal Editar Configuración de Cuenta -->
+                <!-- Modal Edit Cuenta -->
+                <div id="edit_cuenta_modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="editCuentaModal" data-backdrop="static" data-keyboard="false">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" aria-label="Close" @click="close_edit_cuenta"><span aria-hidden="true">&times;</span></button>
+                                <h4 class="modal-title">
+                                    <span v-if="data.cuenta_material_edit.cuenta_material != null">
+                                        Actualizar Cuenta Material
+                                    </span>
+                                    <span v-else>
+                                        Registrar Cuenta Material
+                                    </span>
+                                </h4>
+                            </div>
+                            <form id="form_edit_cuenta" @submit.prevent="validateForm('form_edit_cuenta', data.cuenta_material_edit.cuenta_material != null ? 'confirm_update_cuenta' : 'confirm_save_cuenta')"  data-vv-scope="form_edit_cuenta">
+                                <div class="modal-body">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="control-label"><b>Material</b></label>
+                                                <p>@{{ data.cuenta_material_edit.descripcion }}</p>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group" :class="{'has-error': validation_errors.has('form_edit_cuenta.Cuenta Contable')}">
+                                                <label class="control-label"><b>Cuenta Contable</b></label>
+                                                <input id="cuenta_contable" :placeholder="datos_contables.FormatoCuenta" type="text" v-validate="'required|regex:' + datos_contables.FormatoCuentaRegExp" class="form-control" name="Cuenta Contable" v-model="form.cuenta_material.cuenta">
+                                                <label class="help" v-show="validation_errors.has('form_edit_cuenta.Cuenta Contable')">@{{ validation_errors.first('form_edit_cuenta.Cuenta Contable') }}</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="control-label"><b>Seleccionar</b></label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label class="control-label"><b>Tipo Cuenta de Material</b></label>
+                                            <select class="form-control input-sm" style="width: 80%" v-model="form.cuenta_material.id_tipo_cuenta_material"  >
+                                                <option :value="0">[-SELECCIONE-]</option>
+                                                <option :value="1">Materiales</option>
+                                                <option :value="2">Mano de Obra y Servicios</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-default" @click="close_edit_cuenta">Cerrar</button>
+                                    <button type="submit" class="btn btn-primary" >Guardar</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <!-- Modal Editar Configuración de Cuenta -->
+
+
+
+
+            </section>
+        </cuenta-material-index>
+    </div>
+
+
+@endsection

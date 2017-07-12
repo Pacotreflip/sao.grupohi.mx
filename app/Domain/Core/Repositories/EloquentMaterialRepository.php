@@ -17,6 +17,7 @@ use Ghi\Domain\Core\Contracts\los;
 use Ghi\Domain\Core\Contracts\MaterialRepository;
 use Ghi\Domain\Core\Contracts\valor;
 use Ghi\Domain\Core\Models\Material;
+use Illuminate\Support\Facades\DB;
 
 class EloquentMaterialRepository implements MaterialRepository
 {
@@ -78,18 +79,32 @@ class EloquentMaterialRepository implements MaterialRepository
      */
     public function findBy($value)
     {
-        return $this->model->where('tipo_material', $value)->where('nivel', 'like', '___.')->get();
+        return $this->model->where('tipo_material', $value)->where('nivel', 'like', '___.')->orderBy('nivel', 'asc')->get();
     }
 
     /**
      * @param $value los datos de busqueda para un material padre y materiales hijos
      * @return mixed
      */
-    public function find($value)
+    public function find($tipo, $nivel)
     {
-        return $this->model->where(function($query, $value) {
-            $query->orWhere('nivel', 'LIKE', '001.')
-                ->orWhere('nivel', 'LIKE', '001.___.');
-        })->where('tipo_material', 1)->orderBy('nivel', 'asc')->get();
+        //dd($value['nivel_hijos']);
+
+
+        return $this->model->where(function($query) use($tipo, $nivel){
+            $query->orWhere('nivel', 'LIKE', $nivel)
+                ->orWhere('nivel', 'LIKE', $nivel.'___.');
+        })->where('tipo_material', $tipo)->orderBy('nivel', 'asc')->get();
+    }
+
+    /**
+     * Crea relaciones con otros modelos
+     * @param $relations
+     * @return mixed
+     */
+    public function with($relations)
+    {
+        $this->model = $this->model->with($relations);
+        return $this;
     }
 }

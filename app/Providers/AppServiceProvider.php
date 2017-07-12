@@ -152,5 +152,10 @@ class AppServiceProvider extends ServiceProvider
             \Ghi\Domain\Core\Contracts\ItemsRepository::class,
             \Ghi\Domain\Core\Repositories\EloquentItemsRepository::class
         );
+
+        $this->app->bind(
+            \Ghi\Domain\Core\Contracts\Contabilidad\CuentaMaterialRepository::class,
+            \Ghi\Domain\Core\Repositories\Contabilidad\EloquentCuentaMaterialRepository::class
+        );
     }
 }
