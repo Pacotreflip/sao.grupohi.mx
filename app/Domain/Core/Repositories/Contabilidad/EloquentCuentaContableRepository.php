@@ -1,6 +1,5 @@
 <?php namespace Ghi\Domain\Core\Repositories\Contabilidad;
 
-use Ghi\Domain\Core\Contracts\Contabilidad\Concepto;
 use Ghi\Domain\Core\Contracts\Contabilidad\CuentaContableRepository;
 use Ghi\Domain\Core\Models\Contabilidad\CuentaContable;
 use Illuminate\Http\Exception\HttpResponseException;
@@ -82,11 +81,7 @@ class EloquentCuentaContableRepository implements CuentaContableRepository
      */
     public function update(array $data, $id)
     {
-
-
-
-
-        try {
+   try {
             DB::connection('cadeco')->beginTransaction();
             if (!$item = $this->model->find($id)) {
                 throw new HttpResponseException(new Response('No se encontró la cuenta contable que se desea actualizar', 404));
@@ -134,10 +129,10 @@ class EloquentCuentaContableRepository implements CuentaContableRepository
 
 
     /**
-     * Buscar conceptos
+     * Buscar Cuenta Contable
      * @param $attribute
      * @param $operator
-     * @return \Illuminate\Database\Eloquent\Collection|Concepto
+     * @return \Illuminate\Database\Eloquent\Collection|CuentaContable
      */
 
     public function getBy($attribute, $operator, $value, $with = null)

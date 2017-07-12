@@ -37130,17 +37130,21 @@ Vue.component('cuenta-concepto-index', {
 'use strict';
 
 Vue.component('cuenta-contable-index', {
-    props: ['datos_contables', 'cuenta_contable_url', 'tipos_cuentas_contables'],
+    props: ['datos_contables', 'cuenta_contable_url', 'cuentas_contables'],
     data: function data() {
         return {
             'data': {
-                'tipos_cuentas_contables': this.tipos_cuentas_contables
+                'cuentas_contables': this.cuentas_contables
             },
             'form': {
-                'tipo_cuenta_contable_edit': {
-                    'cuenta_contable': {
-                        'con_prefijo': false
-                    }
+                'cuenta_contable_edit': {
+                    'tipo_cuenta_contable': {
+                        'descripcion': ''
+                    },
+                    'cuenta_contable': '',
+                    'con_prefijo': '',
+                    'id_int_cuenta_contable': ''
+
                 }
             },
             'guardando': false
@@ -37180,10 +37184,10 @@ Vue.component('cuenta-contable-index', {
             var self = this;
             var url = self.cuenta_contable_url;
             var data = {
-                id_int_tipo_cuenta_contable: self.form.tipo_cuenta_contable_edit.id_int_tipo_cuenta_contable,
-                prefijo: self.form.tipo_cuenta_contable_edit.cuenta_contable.prefijo,
-                cuenta_contable: self.form.tipo_cuenta_contable_edit.cuenta_contable.cuenta_contable,
-                con_prefijo: self.form.tipo_cuenta_contable_edit.cuenta_contable.con_prefijo
+                id_int_tipo_cuenta_contable: self.form.cuenta_contable_edit.id_int_tipo_cuenta_contable,
+                prefijo: self.form.cuenta_contable_edit.prefijo,
+                cuenta_contable: self.form.cuenta_contable_edit.cuenta_contable,
+                con_prefijo: self.form.cuenta_contable_edit.con_prefijo
             };
 
             $.ajax({
@@ -37195,7 +37199,7 @@ Vue.component('cuenta-contable-index', {
                     self.guardando = true;
                 },
                 success: function success(data, textStatus, xhr) {
-                    Vue.set(self.data, 'tipos_cuentas_contables', data.data.tipos_cuentas_contables);
+                    Vue.set(self.data, 'cuentas_contables', data.data.cuentas_contables);
                     swal({
                         type: 'success',
                         title: 'Correcto',
@@ -37212,11 +37216,11 @@ Vue.component('cuenta-contable-index', {
         update_cuenta_contable: function update_cuenta_contable() {
             var self = this;
             var data = {
-                con_prefijo: this.form.tipo_cuenta_contable_edit.cuenta_contable.con_prefijo,
-                prefijo: this.form.tipo_cuenta_contable_edit.cuenta_contable.prefijo,
-                cuenta_contable: this.form.tipo_cuenta_contable_edit.cuenta_contable.cuenta_contable
+                con_prefijo: this.form.cuenta_contable_edit.con_prefijo,
+                prefijo: this.form.cuenta_contable_edit.prefijo,
+                cuenta_contable: this.form.cuenta_contable_edit.cuenta_contable
             };
-            var url = self.cuenta_contable_url + '/' + this.form.tipo_cuenta_contable_edit.cuenta_contable.id_int_cuenta_contable;
+            var url = self.cuenta_contable_url + '/' + this.form.cuenta_contable_edit.id_int_cuenta_contable;
             $.ajax({
                 type: 'POST',
                 url: url,
@@ -37228,7 +37232,7 @@ Vue.component('cuenta-contable-index', {
                     self.guardando = true;
                 },
                 success: function success(data, textStatus, xhr) {
-                    Vue.set(self.data, 'tipos_cuentas_contables', data.data.tipos_cuentas_contables);
+                    Vue.set(self.data, 'cuentas_contables', data.data.cuentas_contables);
                     swal({
                         type: 'success',
                         title: 'Correcto',
@@ -37262,33 +37266,22 @@ Vue.component('cuenta-contable-index', {
         },
 
         editar: function editar(item) {
-            Vue.set(this.form.tipo_cuenta_contable_edit, 'id_int_tipo_cuenta_contable', item.id_int_tipo_cuenta_contable);
-            Vue.set(this.form.tipo_cuenta_contable_edit, 'descripcion', item.descripcion);
 
-            Vue.set(this.form.tipo_cuenta_contable_edit.cuenta_contable, 'id_int_cuenta_contable', item.cuenta_contable.id_int_cuenta_contable);
-            Vue.set(this.form.tipo_cuenta_contable_edit.cuenta_contable, 'cuenta_contable', item.cuenta_contable.cuenta_contable);
-            Vue.set(this.form.tipo_cuenta_contable_edit.cuenta_contable, 'prefijo', item.cuenta_contable.prefijo);
-            Vue.set(this.form.tipo_cuenta_contable_edit.cuenta_contable, 'con_prefijo', item.cuenta_contable.prefijo ? true : false);
+            Vue.set(this.form.cuenta_contable_edit, 'cuenta_contable', item.cuenta_contable);
+            Vue.set(this.form.cuenta_contable_edit, 'tipo_cuenta_contable', item.tipo_cuenta_contable);
+            Vue.set(this.form.cuenta_contable_edit, 'id_int_cuenta_contable', item.id_int_cuenta_contable);
+            Vue.set(this.form.cuenta_contable_edit, 'con_prefijo', item.cuenta_contable.prefijo ? true : false);
         },
 
         configurar: function configurar(item) {
-            Vue.set(this.form.tipo_cuenta_contable_edit, 'id_int_tipo_cuenta_contable', item.id_tipo_cuenta_contable);
-            Vue.set(this.form.tipo_cuenta_contable_edit, 'descripcion', item.descripcion);
-
-            Vue.set(this.form.tipo_cuenta_contable_edit.cuenta_contable, 'id_int_cuenta_contable', '');
-            Vue.set(this.form.tipo_cuenta_contable_edit.cuenta_contable, 'cuenta_contable', '');
-            Vue.set(this.form.tipo_cuenta_contable_edit.cuenta_contable, 'prefijo', '');
-            Vue.set(this.form.tipo_cuenta_contable_edit.cuenta_contable, 'con_prefijo', false);
+            Vue.set(this.form, 'cuenta_contable_edit', item);
+            Vue.set(this.form.cuenta_contable_edit, 'con_prefijo', false);
         },
 
         reset_form: function reset_form() {
-            Vue.set(this.form.tipo_cuenta_contable_edit, 'id_int_tipo_cuenta_contable', '');
-            Vue.set(this.form.tipo_cuenta_contable_edit, 'descripcion', '');
-
-            Vue.set(this.form.tipo_cuenta_contable_edit.cuenta_contable, 'id_int_cuenta_contable', '');
-            Vue.set(this.form.tipo_cuenta_contable_edit.cuenta_contable, 'cuenta_contable', '');
-            Vue.set(this.form.tipo_cuenta_contable_edit.cuenta_contable, 'prefijo', '');
-            Vue.set(this.form.tipo_cuenta_contable_edit.cuenta_contable, 'con_prefijo', false);
+            Vue.set(this.form.cuenta_contable_edit, 'tipo_cuenta_contable', '');
+            Vue.set(this.form.cuenta_contable_edit, 'cuenta_contable', '');
+            Vue.set(this.form.cuenta_contable_edit, 'con_prefijo', false);
         }
     }
 });
