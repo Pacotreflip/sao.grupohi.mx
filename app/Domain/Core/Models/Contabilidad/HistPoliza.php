@@ -123,4 +123,23 @@ class HistPoliza extends Model
     public function getTotalAttribute($value) {
         return  $this->attributes['total'] = number_format((float)$value, 2, '.', '');
     }
+
+    public function  getEstatusStringAttribute(){
+        switch ($this->estatus){
+            case 0:
+                return "Registrada";
+                break;
+            case 1:
+                return "Lanzada";
+                break;
+            case -1:
+                return "No Lanzada";
+                break;
+            case -2:
+                return "Con errores";
+                break;
+            default:
+                break;
+        }
+    }
 }

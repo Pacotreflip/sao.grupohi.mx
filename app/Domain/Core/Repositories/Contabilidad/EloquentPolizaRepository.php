@@ -66,7 +66,7 @@ class EloquentPolizaRepository implements PolizaRepository
                 throw new HttpResponseException(new Response('No se encontró la poliza', 404));
             }
             $poliza->concepto = $data['poliza_generada']['concepto'];
-            $poliza->estatus = 0;
+
             $cuentas_debe = false;
             $cuentas_haber = false;
             $suma_debe = $data['poliza_generada']['suma_debe'];
@@ -107,7 +107,7 @@ class EloquentPolizaRepository implements PolizaRepository
             if ($suma_debe != $suma_haber) {
                 throw new HttpResponseException(new Response('Las sumas iguales no corresponden.', 404));
             }
-            if ($suma_debe != number_format($data['poliza_generada']['total'], 2) || $suma_haber != number_format($data['poliza_generada']['total'], 2)) {
+            if (number_format($suma_debe,2) != number_format($data['poliza_generada']['total'], 2) ||number_format($suma_haber,2) != number_format($data['poliza_generada']['total'], 2)) {
                 throw new HttpResponseException(new Response(
                     'Las sumas iguales deben ser iguales a $' . number_format($data['poliza_generada']['total'], 2, '.', ','), 404));
             }
@@ -128,7 +128,7 @@ class EloquentPolizaRepository implements PolizaRepository
                     $movimientoPoliza->importe = $polizaMovimiento['importe'];
                     $movimientoPoliza->id_tipo_movimiento_poliza = $polizaMovimiento['id_tipo_movimiento_poliza'];
                     $movimientoPoliza->id_tipo_cuenta_contable = $polizaMovimiento['id_tipo_cuenta_contable'];
-
+                    $movimientoPoliza->estatus = $polizaMovimiento['estatus'];
                     $movimientoPoliza->restore();
 
                 } else {
@@ -140,10 +140,14 @@ class EloquentPolizaRepository implements PolizaRepository
                     $movimientoPoliza->importe = $polizaMovimiento['importe'];
                     $movimientoPoliza->id_tipo_movimiento_poliza = $polizaMovimiento['id_tipo_movimiento_poliza'];
                     $movimientoPoliza->id_tipo_cuenta_contable = $polizaMovimiento['id_tipo_cuenta_contable'];
+                    $movimientoPoliza->estatus = $polizaMovimiento['estatus'];
+
                     $movimientoPoliza->save();
                 }
 
             }
+
+            $poliza->estatus = 0;
             $poliza->save();
             $poliza = $this->model->find($id);
             $poliza_hist = HistPoliza::create($poliza->toArray());
