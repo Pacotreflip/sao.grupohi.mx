@@ -52,6 +52,7 @@ Route::group(['prefix' => 'sistema_contable'], function () {
     Route::get('cuenta_concepto', 'CuentaConceptoController@index')->name('sistema_contable.cuenta_concepto.index');
     Route::patch('cuenta_concepto/{id}', 'CuentaConceptoController@update')->name('sistema_contable.cuenta_concepto.update');
     Route::post('cuenta_concepto', 'CuentaConceptoController@store')->name('sistema_contable.cuenta_concepto.store');
+    Route::post('cuenta_concepto/searchNodo', 'CuentaConceptoController@searchNodo')->name('sistema_contable.cuenta_concepto.searchNodo');
 
     /**
      * Conceptos

@@ -48,4 +48,18 @@ class CuentaConceptoController extends Controller
         $item = $this->cuenta_concepto->create($request->all());
         return response()->json(['data' => ['cuenta_concepto' => $item]],200);
     }
+
+    public function searchNodo(Request $request){
+
+        if(strlen($request->all()['texto'])>0) {
+            $conceptos = $this->concepto->getBy('descripcion', 'like', '%' . $request->all()['texto'] . '%');
+        }
+        else{
+            $conceptos = $this->concepto->getBy('nivel', 'like', '___.', 'cuentaConcepto');
+
+        }
+        return response()->json(['data' => ['concepto' => $conceptos]],200);
+
+
+    }
 }

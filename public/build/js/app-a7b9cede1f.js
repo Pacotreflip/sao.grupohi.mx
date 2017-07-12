@@ -36917,6 +36917,7 @@ Vue.component('cuenta-concepto-index', {
         return {
             'data': {
                 'conceptos': this.conceptos
+
             },
             'form': {
                 'concepto_edit': {},
@@ -37122,7 +37123,29 @@ Vue.component('cuenta-concepto-index', {
             Vue.set(this.form, 'concepto', '');
             Vue.set(this.form, 'id', '');
             Vue.set(this.form, 'id_concepto', '');
+        },
+        buscar_nodos: function buscar_nodos() {
+            var texto = $('#texto').val();
+            var self = this;
+            var url = App.host + '/sistema_contable/cuenta_concepto/searchNodo';
+            $.ajax({
+                type: 'POST',
+                url: url,
+                data: {
+                    texto: texto
+                },
+                beforeSend: function beforeSend() {
+                    self.cargando = true;
+                },
+                success: function success(data, textStatus, xhr) {
+                    self.data.conceptos = data.data.concepto;
+                },
+                complete: function complete() {
+                    self.cargando = false;
+                }
+            });
         }
+
     }
 });
 
