@@ -30,21 +30,47 @@ Vue.component('cuenta-concepto-index', {
                     saveState: true,
                 });
             }
+        },
+        typeahead: {
+            inserted: function (el) {
+                $(el).typeahead({
+                    highlight: true,
+                    limit: 10,
+                    displayKey: 'value',
+                    minLength: 3
+                }, {
+                    source: function(query, process) {
+                        $.getJSON('/sistema_contable/concepto/getBy', {attribute: 'descripcion', operator: 'like', value: '%' + query + '%'}, function(json) {
+                            var conceptos = [];
+
+                            $.each(json.data.conceptos, function(i, concepto) {
+                                conceptos.push({
+                                    value: concepto.descripcion,
+                                    id: concepto.id_concepto
+                                });
+                            });
+
+                            console.log(conceptos);
+                            return process(conceptos);
+                        });
+                    }
+                }).on('typeahead:selected', function(event, item, dataset) {
+                    $('#id_concepto').val(item.id);
+                });
+            }
         }
     },
 
     computed: {
         conceptos_ordenados: function () {
             return this.data.conceptos.sort(function(a,b) {return (a.nivel > b.nivel) ? 1 : ((b.nivel > a.nivel) ? -1 : 0);} );
-
         }
-        },
+    },
 
     methods: {
         tr_class: function(concepto) {
-
             var treegrid = "treegrid-" + concepto.id_concepto;
-            var treegrid_parent = concepto.id_padre != null ?  " treegrid-parent-" + concepto.id_padre : "";
+            var treegrid_parent = concepto.id_padre != null && concepto.id_concepto != parseInt($('#id_concepto').val()) ?  " treegrid-parent-" + concepto.id_padre : "";
             return treegrid + treegrid_parent;
         },
 
@@ -210,29 +236,33 @@ Vue.component('cuenta-concepto-index', {
             Vue.set(this.form, 'id', '');
             Vue.set(this.form, 'id_concepto', '');
         },
+
         buscar_nodos:function () {
-         var texto=$('#texto').val();
+            var id_concepto = $('#id_concepto').val();
+
             var self = this;
-            var url = App.host+'/sistema_contable/cuenta_concepto/searchNodo';
+            var url = App.host+'/sistema_contable/concepto/findBy';
             $.ajax({
-                type: 'POST',
+                type: 'GET',
                 url: url,
                 data: {
-                    texto:texto
+                    attribute : 'id_concepto',
+                    operator : '=',
+                    value : id_concepto,
+                    with: 'cuentaConcepto'
                 },
                 beforeSend: function () {
                     self.cargando = true;
                 },
                 success: function (data, textStatus, xhr) {
-                 self.data.conceptos=data.data.concepto;
+                 self.data.conceptos = [];
+                 self.data.conceptos.push(data.data.concepto);
+
                 },
                 complete: function () {
                     self.cargando = false;
                 }
             });
-
-
         }
-
     }
 });
