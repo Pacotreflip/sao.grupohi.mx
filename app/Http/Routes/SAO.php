@@ -22,3 +22,11 @@ Route::get('auth/logout', 'Auth\AuthController@getLogout')->name('auth.getLogout
 Route::post('item', 'ItemController@store')->name('item.store');
 Route::patch('item/{id}', 'ItemController@update')->name('item.update')->where(['id' => '[0-9]+']);
 Route::delete('item/{id}', 'ItemController@destroy')->name('item.destroy')->where(['id' => '[0-9]+']);
+
+/**
+ * Notificaciones
+ */
+Route::get('notificacion', 'NotificacionController@index')->name('notificacion');
+Route::get('notificacion/{id}', 'NotificacionController@show')->name('notificacion.show');
+
+

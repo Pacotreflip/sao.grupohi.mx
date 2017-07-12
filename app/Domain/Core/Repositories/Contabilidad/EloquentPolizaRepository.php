@@ -170,4 +170,13 @@ class EloquentPolizaRepository implements PolizaRepository
         $this->model = $this->model->with($relations);
         return $this;
     }
+
+
+    /**
+     * @param $array
+     * @return mixed \Illuminate\Database\Eloquent\Collection|Poliza
+     */
+    public function findWhereIn($array){
+       return  $this->model->find($array);
+      }
 }

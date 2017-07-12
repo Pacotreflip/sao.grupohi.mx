@@ -52,4 +52,8 @@ interface NotificacionRepository
      */
 
     public function scope($scope);
+
+
+
+
 }

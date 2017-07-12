@@ -15,7 +15,7 @@ class CreateNotificacionesTable extends Migration
         Schema::create('dbo.notificaciones', function (Blueprint $table) {
             $table->increments('id');
             $table->string('titulo',255);
-            $table->string('contenido',4000);
+            $table->string('idPolizas',300);
             $table->integer('total_polizas');
             $table->integer('id_usuario');
             $table->integer('id_obra');

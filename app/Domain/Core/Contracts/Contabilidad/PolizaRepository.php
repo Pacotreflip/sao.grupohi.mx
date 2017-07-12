@@ -33,4 +33,10 @@ interface PolizaRepository
      */
     public function with($relations);
 
+    /**
+     * @param $array |$ids Poliza
+     * @return mixed \Illuminate\Database\Eloquent\Collection|Poliza
+     */
+    public function findWhereIn($array);
+
 }

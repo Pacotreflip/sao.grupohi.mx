@@ -29,7 +29,6 @@ class PolizaController extends Controller
 
     public function index()
     {
-
         $polizas = $this->poliza->all();
         return view('sistema_contable.poliza_generada.index')->with('polizas', $polizas);
     }
