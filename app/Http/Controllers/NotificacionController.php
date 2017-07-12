@@ -13,7 +13,7 @@ use Ghi\Http\Requests;
 class NotificacionController extends Controller
 {
     /**
-     * @var Cuenta
+     * @var Notificacion
      */
     private $notificacion;
 
@@ -22,7 +22,7 @@ class NotificacionController extends Controller
      */
     private $poliza;
 
-    public function __construct(NotificacionRepository $notificacion,PolizaRepository $poliza)
+    public function __construct(NotificacionRepository $notificacion, PolizaRepository $poliza)
     {
         parent::__construct();
 
@@ -32,18 +32,26 @@ class NotificacionController extends Controller
         $this->poliza = $poliza;
     }
 
-    public function index(){
-
+    public function index()
+    {
         $notificaciones = $this->notificacion->with('obra')->all();
         return view('sistema_contable.notificaciones.index')
             ->with('notificaciones', $notificaciones);
     }
 
-   public function show($id){
-       $notificacion= $this->notificacion->find($id);
-      $polizas=$this->poliza->findWhereIn([30,30]);
-       return view('sistema_contable.notificaciones.show')
-           ->with('polizas', $polizas);
+    public function show($id)
+    {
+        $notificacion = $this->notificacion->find($id);
+        $integerIDs = array_map('intval', explode(',', $notificacion->idPolizas.'0'));
+        $polizas = $this->poliza->findWhereIn($integerIDs);
 
-   }
+        return view('sistema_contable.notificaciones.show')
+            ->with('polizas', $polizas)
+            ->with('notificacion', $notificacion);
+
+    }
+    public function notificaciones(){
+        $notificaciones = $this->notificacion->with('obra')->all()->count();
+        dd($notificaciones);
+    }
 }

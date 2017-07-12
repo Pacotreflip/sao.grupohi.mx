@@ -28,5 +28,7 @@ Route::delete('item/{id}', 'ItemController@destroy')->name('item.destroy')->wher
  */
 Route::get('notificacion', 'NotificacionController@index')->name('notificacion');
 Route::get('notificacion/{id}', 'NotificacionController@show')->name('notificacion.show');
+Route::post('notificacion', 'NotificacionController@notificaciones')->name('notificacion.notificaciones');
+
 
 

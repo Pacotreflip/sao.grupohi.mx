@@ -2,6 +2,7 @@
 
 namespace Ghi\Http\Controllers;
 
+use Ghi\Domain\Core\Contracts\NotificacionRepository;
 use Ghi\Domain\Core\Contracts\UserRepository;
 use Illuminate\Session\Store;
 
@@ -9,13 +10,18 @@ class PagesController extends Controller
 {
 
     private $session;
+    /**
+     * @var Notificacion
+     */
+    private $notificacion;
 
-    public function __construct(Store $session)
+    public function __construct(Store $session,NotificacionRepository $notificacion)
     {
         parent::__construct();
         $this->middleware('auth');
         $this->middleware('context', ['only' => 'sistema_contable']);
         $this->session = $session;
+        $this->notificacion=$notificacion;
     }
 
     public function index() {

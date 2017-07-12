@@ -17,7 +17,7 @@ class Notificacion extends Model
             'id_usuario',
             'id_obra'
         ];
-
+    protected $appends = ['total_notificaciones'];
     protected static function boot()
     {
         parent::boot();
@@ -36,5 +36,14 @@ class Notificacion extends Model
     public function obra() {
         return $this->belongsTo(\Ghi\Core\Models\Obra::class, 'id_obra');
     }
-
+    /**
+     * @return User
+     */
+    public function usuario()
+    {
+        return $this->belongsTo(User::class, 'id_usuario', 'idusuario');
+    }
+    public function getTotalNotificacionesAttribute(){
+        return  Notificacion::where('id_usuario', '=',auth()->user()->idusuario)->where('id_obra', '=',Context::getId())->where('estatus','=',1)->count();
+    }
 }

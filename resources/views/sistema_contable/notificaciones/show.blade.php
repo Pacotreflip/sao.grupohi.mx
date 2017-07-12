@@ -1,17 +1,41 @@
 @extends('sistema_contable.layout')
 @section('title', 'Notificaciones')
-@section('contentheader_title', 'Notificaciones')
-@section('contentheader_description', '(LISTA)')
+
 @section('main-content')
-    <div class="row">
-        <div class="col-md-12">
-            <div class="box box-success">
-                <div class="box-header with-border">
-                    <h3 class="box-title">Polizas</h3>
+
+    <div class="col-md-12">
+        <div class="box box-primary">
+            <div class="box-header with-border">
+                <h3 class="box-title">{{$notificacion->titulo}}</h3>
+                <div class="box-tools pull-right">
+
+                    <div class="mailbox-controls with-border text-center">
+                        <div class="btn-group">
+                            <a href="{{ route('notificacion')}}" type="button" class="btn btn-default btn-sm" data-toggle="tooltip" data-container="body" title="" data-original-title="Bandeja de Entrada">
+                                <i class="fa fa-reply"></i></a>
+                        </div>
+                      </div>
                 </div>
-                <div class="box-body">
+            </div>
+            <!-- /.box-header -->
+            <div class="box-body no-padding">
+                <div class="mailbox-read-info">
+                    <h3></h3>
+                    <h5>From: saoweb@grupohi.mx
+                        <span class="mailbox-read-time pull-right">{{$notificacion->created_at->format('Y-m-d h:i:s a')}}</span></h5>
+                </div>
+
+                <div class="mailbox-read-message">
+                    <p><b>Estimado:  {{$notificacion->usuario}}</b></p>
+                    <p>Le informamos que las siguentes polizas tienen un error, por lo cual no podran ser lanzadas hasta no ser corregidas.</p>
+                    <p>Sugerimos tomar acciones correctivas.</p>
+                    <p>Gracias,<br>SAO WEB</p>
+                </div>
+            </div>
+            <div class="box-footer">
+                <ul class="mailbox-attachments clearfix">
                     <div class="table-responsive">
-                        <table class="table table-bordered table-striped small index_table" id="example">
+                        <table class="table table-bordered table-striped small" >
                             <thead>
                             <tr>
                                 <th>#</th>
@@ -25,8 +49,6 @@
                             </tr>
                             </thead>
                             <tbody>
-
-
 
                             @foreach($polizas as $index => $item)
                                 <tr>
@@ -53,8 +75,17 @@
                             </tbody>
                         </table>
                     </div>
-                </div>
+                </ul>
             </div>
         </div>
     </div>
+
+
+
+
+
+
+
+
+
 @endsection

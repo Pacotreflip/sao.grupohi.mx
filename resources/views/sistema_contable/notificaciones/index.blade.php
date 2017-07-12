@@ -6,13 +6,11 @@
     <div class="row">
         <div class="col-md-12">
             <div class="box box-success">
-                <div class="box-header with-border">
-                    <h3 class="box-title">Notificaciones</h3>
-                </div>
+
                 <div class="box-body">
                     <div class="row table-responsive">
                         <div class="col-sm-12">
-                            <table class="table table-bordered table-striped dataTable index_table"
+                            <table class="table table-bordered table-striped dataTable"
                                    role="grid"
                                    aria-describedby="tipo_cuenta_info">
                                 <thead>
