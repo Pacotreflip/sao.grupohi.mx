@@ -76,4 +76,6 @@ class CuentaContableController extends Controller
         $item = $this->cuenta_contable->with('tipoCuentaContable')->findBy($request->attribute, $request->value);
         return response()->json(['data' => ['cuenta_contable' => $item]], 200);
     }
+
+
 }

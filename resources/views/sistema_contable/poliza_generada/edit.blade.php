@@ -28,38 +28,18 @@
                                   data-vv-scope="form_poliza">
                                 <div class="box-body">
                                     <div class="table-responsive">
-                                        <table class="table table-bordered ">
+
+                                        <table class="table table-bordered">
                                             <tr>
-                                                <th colspan="2" class="bg-gray-light">
-                                                    Póliza:
-                                                    <br><label>{{ $poliza->transaccionInterfaz}}</label></th>
-                                                <th class="bg-gray-light">
-                                                    Fecha de Solicitud:
-                                                    <br><label>{{ $poliza->created_at->format('Y-m-d h:i:s a')}}</label>
+                                                <th  class="bg-gray-light">Póliza:<br><label>{{ $poliza->transaccionInterfaz}}</label></th>
+                                                <th class="bg-gray-light">Fecha de Solicitud:<br><label>{{ $poliza->created_at->format('Y-m-d h:i:s a')}}</label></th>
+                                                <th  class="bg-gray-light">Usuario Solicita:<br><label> {{$poliza->usuario_solicita }}</label>
                                                 </th>
+
                                             </tr>
                                             <tr>
-                                                <th class="bg-gray-light" colspan="2" class="bg-gray-light form-group" :class="{'has-error': validation_errors.has('form_poliza.Concepto')}">
-                                                    Concepto:<br>
-                                                    <input name="Concepto" type="text" v-validate="'required'"
-                                                           class="form-control input-sm"
-                                                           v-model="data.poliza_edit.concepto">
-                                                    <label class="help"
-                                                           v-show="validation_errors.has('form_poliza.Concepto')">@{{ validation_errors.first('form_poliza.Concepto') }}</label>
-                                                </th>
-                                                <th  class="bg-gray-light">
-                                                    Usuario Solicita:
-                                                    <br><label> {{$poliza->usuario_solicita }}</label>
-                                                </th>
-                                            </tr>
-                                            <tr>
-                                                <th class="bg-gray-light">
-                                                    Cuadre:<br>
-                                                    <label>$ {{number_format($poliza->cuadre,'2','.',',')}}</label>
-                                                </th>
-                                                <th class="bg-gray-light">
-                                                    Estatus:<br>
-                                                    <label>   @if($poliza->estatus_string=='Registrada') <span class="label bg-blue">Registrada</span>@endif
+                                                <th class="bg-gray-light">Cuadre:<br><label>$ {{number_format($poliza->cuadre,'2','.',',')}}</label></th>
+                                                <th class="bg-gray-light">Estatus:<br><label>   @if($poliza->estatus_string=='Registrada') <span class="label bg-blue">Registrada</span>@endif
                                                         @if($poliza->estatus_string=='Lanzada') <span class="label bg-green">Lanzada</span>@endif
                                                         @if($poliza->estatus_string=='No lanzada') <span class="label bg-yellow">No lanzada</span>@endif
                                                         @if($poliza->estatus_string=='Con errores') <span class="label bg-red">Con errores</span>@endif</label>
@@ -69,8 +49,18 @@
                                                     <label>@if($poliza->id_poliza_contpaq>0){{$poliza->id_poliza_contpaq}}@else N/A @endif</label>
                                                 </th>
                                             </tr>
-
+                                            <tr>
+                                                <th class="bg-gray-light" colspan="3" class="bg-gray-light form-group" :class="{'has-error': validation_errors.has('form_poliza.Concepto')}">
+                                                    Concepto:<br>
+                                                    <textarea name="Concepto" type="text" v-validate="'required'"
+                                                           class="form-control input-sm"
+                                                              v-model="data.poliza_edit.concepto" style="resize: none"></textarea>
+                                                    <label class="help"
+                                                           v-show="validation_errors.has('form_poliza.Concepto')">@{{ validation_errors.first('form_poliza.Concepto') }}</label>
+                                                </th>
+                                            </tr>
                                         </table>
+
                                         <table class="table table-bordered">
                                             <thead>
                                             <tr>

@@ -24,6 +24,33 @@
                             </div>
                             <div class="box-body">
                                 <div class="table-responsive">
+                                    <div class="row">
+
+                                        <div class="col-sm-12">
+
+                                            <div class="input-group">
+                                                <input class="form-control" type="text" id="texto">
+                                                </input>
+                                                <input id="textNodo" class="form-control" type="hidden"/>
+                                                <div class="input-group-btn">
+                                                    <!-- Buttons -->
+                                                    <button class="btn btn-default" @click="buscar_nodos">
+                                                          <span v-if="cargando">
+                                                            <i class="fa fa-spin fa-spinner"></i>
+                                                              Buscando...
+                                                        </span>
+                                                        <span v-else>
+                                                            <i class="fa fa-search"></i>
+                                                            Buscar
+                                                        </span>
+
+                                                        </button>
+                                                </div>
+                                            </div>
+
+
+                                    <br>
+
                                     <table class="table table-bordered small" v-treegrid id="concepto_tree">
                                         <thead>
                                         <tr>
@@ -120,6 +147,8 @@
                         </div>
                     </div>
                 </div>
+
+
             </section>
         </cuenta-concepto-index>
     </div>
