@@ -10,24 +10,29 @@
         <div class="col-md-12">
             <div class="box box-info">
                 <div class="box-header with-border">
-                    <h3 class="box-title">Pólizas Generadas</h3>
+                    <h3 class="box-title">Opciones de Búusqueda</h3>
                 </div>
                 <div class="box-body">
+                    {!! Form::model(Request::only(['fechas', 'estatus']), ['method' => 'GET']) !!}
                     <div class="row">
-                        {!! Form::model(Request::only(['fechas', 'estatus']), ['method' => 'GET', 'class' => 'form-inline']) !!}
-                        <div class="col-md-5">
-                            {!! Form::text('fechas', null, ['class' => 'form-control input-sm rango_fechas',  'style' => 'width: 80% ', 'placeholder' => 'Fechas']) !!}
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label><b>Rango de Fechas</b></label>
+                                {!! Form::text('fechas', null, ['class' => 'form-control rango_fechas']) !!}
+                            </div>
                         </div>
-                        <div class="col-md-5">
-                            {!! Form::select('estatus', array('0' => 'Registrada', '1' => 'Lanzada', '-1' => 'No Lanzada', '-2' => 'Con Errores'), '0', array('class' => 'form-control input-sm','style' => 'width: 80% ')) !!}
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label><b>Estatus</b></label>
+                                {!! Form::select('estatus', array('0' => 'Registrada', '1' => 'Lanzada', '-1' => 'No Lanzada', '-2' => 'Con Errores'), '0', array('class' => 'form-control')) !!}
+                            </div>
                         </div>
-                        <div class="col-md-2">
-                            <button style="width: 80% " class="btn btn-sm btn-primary" type="submit">Buscar</button>
-                        </div>
-                        {!! Form::close() !!}
-                        <br>
                     </div>
                 </div>
+                <div class="box-footer">
+                    <button class="btn btn-sm btn-primary pull-right" type="submit">Buscar</button>
+                </div>
+                {!! Form::close() !!}
             </div>
         </div>
     </div>
@@ -42,7 +47,7 @@
                 </div>
                 <div class="box-body">
                     <div class="table-responsive">
-                        <table class="table table-bordered table-striped small index_table" id="example">
+                        <table class="table table-bordered table-striped small" id="example">
                             <thead>
                             <tr>
                                 <th>#</th>
