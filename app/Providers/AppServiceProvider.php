@@ -162,5 +162,11 @@ class AppServiceProvider extends ServiceProvider
             \Ghi\Domain\Core\Contracts\Contabilidad\CuentaMaterialRepository::class,
             \Ghi\Domain\Core\Repositories\Contabilidad\EloquentCuentaMaterialRepository::class
         );
+
+        $this->app->bind(
+            \Ghi\Domain\Core\Contracts\NotificacionRepository::class,
+            \Ghi\Domain\Core\Repositories\EloquentNotificacionRepository::class
+        );
+
     }
 }
