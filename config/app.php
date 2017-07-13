@@ -204,6 +204,11 @@ return [
          */
         Collective\Html\HtmlServiceProvider::class,
 
+        /*
+         * Zizaco
+         */
+        Zizaco\Entrust\EntrustServiceProvider::class,
+
     ],
 
     /*
@@ -258,6 +263,7 @@ return [
         'MC_Table' => Ghidev\Fpdf\Facades\MC_Table::class,
         'Form' => Collective\Html\FormFacade::class,
         'Html' => Collective\Html\HtmlFacade::class,
+        'Entrust'   => Zizaco\Entrust\EntrustFacade::class,
     ],
 
 ];
