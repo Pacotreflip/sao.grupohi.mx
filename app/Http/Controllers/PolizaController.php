@@ -6,7 +6,9 @@ use Dingo\Api\Routing\Helpers;
 use Ghi\Domain\Core\Contracts\Contabilidad\CuentaContableRepository;
 use Ghi\Domain\Core\Contracts\Contabilidad\PolizaRepository;
 use Ghi\Domain\Core\Contracts\Contabilidad\TipoCuentaContableRepository;
+use Ghi\Domain\Core\Models\Contabilidad\Poliza;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class PolizaController extends Controller
 {
@@ -27,11 +29,29 @@ class PolizaController extends Controller
         $this->cuenta_contable=$cuenta_contable;
     }
 
-    public function index()
+    public function index(Request $request)
     {
 
-        $polizas = $this->poliza->all();
-        return view('sistema_contable.poliza_generada.index')->with('polizas', $polizas);
+        if ($request->has('fechas')) {
+
+        $fecha_inicial = explode(" - ", $request->fechas)[0] . ' 00:00:00.000';
+        $fecha_final = explode(" - ", $request->fechas)[1] . ' 00:00:00.000';
+        $where = [
+            ['fecha', 'between', DB::raw("'{$fecha_inicial}' and '{$fecha_final}'")],
+            ['estatus', '=', $request->estatus]
+        ];
+
+        $polizas = $this->poliza->where($where)->paginate(100);
+    }else{
+        $polizas = $this->poliza->paginate(100);
+
+    }
+
+        return view('sistema_contable.poliza_generada.index')
+            ->with('polizas', $polizas)
+            ->with('fechas', $request->fechas)
+            ->with('estatus', $request->estatus);
+
     }
 
     public function show($id)

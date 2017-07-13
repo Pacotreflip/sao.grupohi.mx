@@ -9,8 +9,11 @@
 namespace Ghi\Domain\Core\Repositories\Contabilidad;
 
 
+use Ghi\Core\Facades\Context;
 use Ghi\Domain\Core\Contracts\Contabilidad\CuentaMaterialRepository;
 use Ghi\Domain\Core\Models\Contabilidad\CuentaMaterial;
+use Illuminate\Support\Facades\DB;
+
 
 class EloquentCuentaMaterialRepository implements CuentaMaterialRepository
 {
@@ -71,7 +74,7 @@ class EloquentCuentaMaterialRepository implements CuentaMaterialRepository
             }
 
             $new = $this->model->create([
-                'id_almacen' => $old->id_almacen,
+                'id_material' => $old->id_material,
                 'cuenta' => $data['cuenta'],
                 'id_tipo_cuenta_material' => $data['id_tipo_cuenta_material'],
                 'registro' => auth()->user()->idusuario,

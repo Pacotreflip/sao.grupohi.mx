@@ -174,4 +174,20 @@ class EloquentPolizaRepository implements PolizaRepository
         $this->model = $this->model->with($relations);
         return $this;
     }
+
+    /**
+     * Paginador
+     * @param $perPage
+     * @return mixed
+     */
+    public function paginate($perPage)
+    {
+        return $this->model->paginate($perPage);
+    }
+
+    public function where(array $where)
+    {
+        $this->model = $this->model->where($where);
+        return $this;
+    }
 }

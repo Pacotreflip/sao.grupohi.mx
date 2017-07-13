@@ -11,7 +11,8 @@
         "laracasts/flash": "^3.0",
         "davejamesmiller/laravel-breadcrumbs": "^3.0",
         "dingo/api": "1.0.*@dev",
-        "ghidev/fpdf": "dev-master"
+        "ghidev/fpdf": "dev-master",
+        "laravelcollective/html": "^5.2.0"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",

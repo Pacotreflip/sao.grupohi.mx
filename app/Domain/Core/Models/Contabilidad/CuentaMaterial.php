@@ -14,7 +14,7 @@ class CuentaMaterial extends BaseModel
     protected $primaryKey = 'id';
 
     protected $fillable = [
-        'id_almacen',
+        'id_material',
         'cuenta',
         'id_tipo_cuenta_material',
         'id_obra',

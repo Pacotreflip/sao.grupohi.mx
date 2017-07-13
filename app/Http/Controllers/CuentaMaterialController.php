@@ -25,8 +25,8 @@ class CuentaMaterialController extends Controller
     {
         parent::__construct();
 
-        //$this->middleware('auth');
-        //$this->middleware('context');
+        $this->middleware('auth');
+        $this->middleware('context');
 
         $this->material = $material;
         $this->cuenta_material = $cuenta_material;

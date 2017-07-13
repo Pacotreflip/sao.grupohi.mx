@@ -89,7 +89,7 @@ Vue.component('cuenta-material-index', {
 
         update_cuenta: function () {
             var self = this;
-            var url = this.url_cuenta_almacen_store + '/' + this.form.cuenta_material.id;
+            var url = this.url_cuenta_material_store + '/' + this.form.cuenta_material.id;
 
             $.ajax({
                 type: 'POST',
@@ -133,7 +133,7 @@ Vue.component('cuenta-material-index', {
 
         save_cuenta: function () {
             var self = this;
-            var url = this.url_cuenta_almacen_store;
+            var url = this.url_cuenta_material_store;
 
             $.ajax({
                 type: 'POST',
@@ -141,7 +141,9 @@ Vue.component('cuenta-material-index', {
                 data: {
                     cuenta: self.form.cuenta_material.cuenta,
                     id_almacen: self.form.cuenta_material.id_almacen,
-                    id_tipo_cuenta_material: self.form.cuenta_material.id_tipo_cuenta_material
+                    id_tipo_cuenta_material: self.form.cuenta_material.id_tipo_cuenta_material,
+                    id_material: self.form.cuenta_material.id_material
+
                 },
                 beforeSend: function () {
                     self.guardando = true;

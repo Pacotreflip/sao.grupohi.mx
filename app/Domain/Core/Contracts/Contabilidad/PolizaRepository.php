@@ -33,4 +33,13 @@ interface PolizaRepository
      */
     public function with($relations);
 
+    /**
+     * Paginador
+     * @param $perPage
+     * @return mixed
+     */
+    public function paginate($perPage);
+
+    public function where(array $where);
+
 }
