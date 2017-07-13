@@ -31,7 +31,7 @@ class EloquentConceptoRepository implements ConceptoRepository
     {
         if ($with != null)
             return $this->model->with($with)->where($attribute, $operator, $value)->get();
-        return $this->model->where($attribute, $operator, $value)->get();
+        return $this->model->where($attribute, $operator, $value)->limit(5)->get();
     }
 
     /**

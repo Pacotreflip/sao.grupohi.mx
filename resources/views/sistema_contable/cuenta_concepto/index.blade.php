@@ -70,14 +70,14 @@
                                                     </td>
                                                     <td  v-else>
                                                         @{{ concepto.descripcion}}
-                                                        <a :disabled="cargando" v-if="concepto.tiene_hijos > 0 && ! concepto.cargado" @click="get_hijos(concepto)">
+                                                        <button style="border: 0; background-color: transparent" :disabled="cargando" v-if="concepto.tiene_hijos > 0 && ! concepto.cargado" @click="get_hijos(concepto)">
                                                             <span v-if="cargando">
                                                                 <i class="fa fa-spin fa-spinner"></i>
                                                             </span>
                                                             <span v-else>
                                                                 <i class="fa fa-plus"></i>
                                                             </span>
-                                                        </a>
+                                                        </button>
                                                     </td>
                                                     <td >
                                                         @{{ concepto.cuenta_concepto != null ? concepto.cuenta_concepto.cuenta : '---' }}

@@ -88,4 +88,12 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
     {
         return $this->nombre . ' ' . $this->apaterno . ' ' . $this->amaterno;
     }
+
+    public function notificaciones() {
+        return $this->hasMany(Notificacion::class, 'id_usuario', 'idusuario');
+    }
+
+    public function notificacionesNoLeidas() {
+        return $this->hasMany(Notificacion::class, 'id_usuario', 'idusuario')->where('dbo.notificaciones.leida', '=', false);
+    }
 }

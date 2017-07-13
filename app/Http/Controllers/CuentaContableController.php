@@ -32,7 +32,7 @@ class CuentaContableController extends Controller
      */
     public function index()
     {
-       $cuentas_contables=$this->cuenta_contable->with('tipoCuentaContable')->getBy('estatus','=',1);
+       $cuentas_contables = $this->cuenta_contable->with('tipoCuentaContable')->getBy('estatus','=',1);
         return view('sistema_contable.cuenta_contable.index')
             ->with('cuentas_contables', $cuentas_contables);
     }

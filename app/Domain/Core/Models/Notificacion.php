@@ -34,7 +34,7 @@ class Notificacion extends Model
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function obra() {
-        return $this->belongsTo(\Ghi\Core\Models\Obra::class, 'id_obra');
+        return $this->belongsTo(Obra::class, 'id_obra');
     }
     /**
      * @return User
