@@ -43,6 +43,18 @@
                                         <label class="help" v-show="validation_errors.has('form_datos_obra.Formato de Cuentas')">@{{ validation_errors.first('form_datos_obra.Formato de Cuentas') }}</label>
                                     </div>
                                 </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="control-label"><b>Afectación Contable de Almacenes</b></label><br>
+                                        <input type="checkbox"  v-model="data.datos_contables.manejo_almacenes">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="control-label"><b>Costo por tipo de gasto</b></label><br>
+                                        <input type="checkbox" v-model="data.datos_contables.costo_en_tipo_gasto">
+                                    </div>
+                                </div>
                             </div>
                             <!-- /.box-body -->
                             <div class="box-footer">
