@@ -31,7 +31,6 @@ class PolizaController extends Controller
 
     public function index(Request $request)
     {
-
         if ($request->has('fechas')) {
 
         $fecha_inicial = explode(" - ", $request->fechas)[0] . ' 00:00:00.000';

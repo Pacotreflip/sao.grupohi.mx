@@ -144,6 +144,11 @@ class AppServiceProvider extends ServiceProvider
         );
 
         $this->app->bind(
+            \Ghi\Domain\Core\Contracts\NotificacionRepository::class,
+            \Ghi\Domain\Core\Repositories\EloquentNotificacionRepository::class
+        );
+
+        $this->app->bind(
             \Ghi\Domain\Core\Contracts\MaterialRepository::class,
             \Ghi\Domain\Core\Repositories\EloquentMaterialRepository::class
         );

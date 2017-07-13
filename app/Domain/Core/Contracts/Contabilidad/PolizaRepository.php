@@ -40,6 +40,17 @@ interface PolizaRepository
      */
     public function paginate($perPage);
 
+    /**
+     *  Contiene los parametros de búsqueda
+     * @param array $where
+     * @return mixed
+     */
     public function where(array $where);
+
+    /**
+     * @param $array |$ids Poliza
+     * @return mixed \Illuminate\Database\Eloquent\Collection|Poliza
+     */
+    public function findWhereIn($array);
 
 }

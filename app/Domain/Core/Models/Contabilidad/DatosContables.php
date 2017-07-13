@@ -12,11 +12,14 @@ class DatosContables extends BaseModel
 
     protected $connection = 'cadeco';
     protected $table = 'Contabilidad.datos_contables_obra';
+
     protected $fillable = [
         'BDContPaq',
         'NumobraContPaq',
         'FormatoCuenta',
-        'FormatoCuentaRegExp'
+        'FormatoCuentaRegExp',
+        'manejo_almacenes',
+        'costo_en_tipo_gasto'
     ];
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo|Obra

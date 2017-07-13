@@ -19,6 +19,8 @@
         <div class="navbar-custom-menu">
             <ul class="nav navbar-nav">
                 @if (Auth::check())
+                    @include('layouts.partials.notificaciones')
+
                     <!-- User Account Menu -->
                     <li class="dropdown user user-menu">
                         <!-- Menu Toggle Button -->

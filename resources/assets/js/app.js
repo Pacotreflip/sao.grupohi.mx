@@ -1,8 +1,8 @@
 /**
  * Created by JFEsquivel on 08/06/2017.
  */
-
 window.$ = window.jQuery = require('jquery');
+require('typeahead.js/dist/typeahead.jquery');
 require('bootstrap');
 require('admin-lte');
 require('admin-lte/plugins/select2/select2');
