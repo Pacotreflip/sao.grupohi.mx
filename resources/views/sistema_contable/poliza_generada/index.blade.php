@@ -71,10 +71,10 @@
                                     <td class="numerico">$ {{number_format($item->total,'2','.',',')}}</td>
                                     <td class="numerico">$ {{number_format($item->cuadre,'2','.',',')}}</td>
                                     <td class="">
-                                        @if($item->estatus_string=='Registrada') <span class="label bg-blue">Registrada</span>@endif
-                                        @if($item->estatus_string=='Lanzada') <span class="label bg-green">Lanzada</span>@endif
-                                        @if($item->estatus_string=='No lanzada') <span class="label bg-yellow">No lanzada</span>@endif
-                                        @if($item->estatus_string=='Con errores') <span class="label bg-red">Con errores</span>@endif
+                                        @if($item->estatus == $item::REGISTRADA) <span class="label bg-blue">Registrada</span>@endif
+                                        @if($item->estatus == $item::LANZADA) <span class="label bg-green">Lanzada</span>@endif
+                                        @if($item->estatus == $item::NO_LANZADA) <span class="label bg-yellow">No lanzada</span>@endif
+                                        @if($item->estatus == $item::CON_ERRORES) <span class="label bg-red">Con errores</span>@endif
                                     </td>
                                     <td>@if($item->id_poliza_contpaq>0){{$item->id_poliza_contpaq}}@else N/A @endif</td>
                                     <td style="min-width: 90px;max-width: 90px">

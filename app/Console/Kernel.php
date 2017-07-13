@@ -2,6 +2,7 @@
 
 namespace Ghi\Console;
 
+use Ghi\Console\Commands\SendNotificacion;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
@@ -13,7 +14,7 @@ class Kernel extends ConsoleKernel
      * @var array
      */
     protected $commands = [
-        // Commands\Inspire::class,
+        SendNotificacion::class
     ];
 
     /**
