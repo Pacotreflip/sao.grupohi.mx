@@ -60,7 +60,8 @@ class EloquentTipoCuentaContableRepository implements TipoCuentaContableReposito
             $tipo_cuenta_contable = $this->model->create([
                 'descripcion' => $data['descripcion'],
                 'registro' => auth()->user()->idusuario,
-                'id_obra' => Context::getId()
+                'id_obra' => Context::getId(),
+                'id_naturaleza_poliza'=> $data['id_naturaleza_poliza']
             ]);
 
             DB::connection('cadeco')->commit();

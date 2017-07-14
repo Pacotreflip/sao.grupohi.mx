@@ -38094,7 +38094,8 @@ Vue.component('tipo-cuenta-contable-create', {
         return {
             'form': {
                 'tipo_cuenta_contable': {
-                    'descripcion': ''
+                    'descripcion': '',
+                    'id_naturaleza_poliza': ''
                 }
             },
             'guardando': false

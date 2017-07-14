@@ -31,6 +31,7 @@
                                     <th class="sorting_asc" tabindex="0" aria-controls="tipo_cuenta" aria-sort="ascending">#</th>
                                     <th class="sorting" tabindex="0" aria-controls="tipo_cuenta">Descripción</th>
                                     <th class="sorting" tabindex="0" aria-controls="tipo_cuenta">Registró</th>
+                                    <th class="sorting" tabindex="0" aria-controls="tipo_cuenta">Naturaleza de Póliza</th>
                                     <th class="sorting" tabindex="0" aria-controls="tipo_cuenta">Fecha y Hora de Registro</th>
                                     <th class="sorting" tabindex="0" aria-controls="tipo_cuenta">Asignación a Cuenta Contable</th>
                                     <th class="sorting" tabindex="0" aria-controls="tipo_cuenta">Acciones</th>
@@ -43,6 +44,7 @@
                                         <td>{{ $index + 1 }}</td>
                                         <td>{{ $item->descripcion  }}</td>
                                         <td>{{ $item->userRegistro }}</td>
+                                        <td>{{ $item->naturalezaPoliza}}</td>
                                         <td>{{ $item->created_at->format('Y-m-d h:i:s a') }}</td>
                                         <td>
                                             @if($item->cuentaContable)
@@ -69,6 +71,7 @@
                                     <th>#</th>
                                     <th>Descripción</th>
                                     <th>Registró</th>
+                                    <th >Naturaleza de Póliza</th>
                                     <th>Fecha y Hora de Registro</th>
                                     <th>Asignación a Cuenta Contable</th>
                                     <th>Acciones</th>

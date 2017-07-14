@@ -21,7 +21,8 @@ class TipoCuentaContable extends Model
         'estatus',
         'registro',
         'id_obra',
-        'motivo'
+        'motivo',
+        'id_naturaleza_poliza'
     ];
     protected $dates = ['deleted_at'];
 
@@ -46,6 +47,10 @@ class TipoCuentaContable extends Model
         return $this->hasOne(CuentaContable::class, 'id_int_tipo_cuenta_contable')->where('Contabilidad.int_cuentas_contables.estatus', '=', 1);
     }
 
+    public function naturalezaPoliza() {
+        return $this->belongsTo(NaturalezaPoliza::class, 'id_naturaleza_poliza');
+
+    }
     /**
      * @return string
      */

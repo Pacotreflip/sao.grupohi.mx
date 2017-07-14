@@ -23,38 +23,62 @@
 
                 <!-- /.box-header -->
                 <div class="box-body">
-                    <div class="col-sm-6">
-                        <dl>
-                            <dt>ID</dt>
-                            <dd>{{$tipo_cuenta_contable->id_tipo_cuenta_contable}}</dd>
-                            <dt>DESCRIPCIÓN</dt>
-                            <dd>{{$tipo_cuenta_contable->descripcion}}</dd>
-                            <dt>USUARIO QUE REGISTRÓ</dt>
-                            <dd>{{$tipo_cuenta_contable->userRegistro}}</dd>
-                            <dt>FECHA Y HORA DE REGISTRO</dt>
-                            <dd>{{$tipo_cuenta_contable->created_at->format('Y-m-d h:i:s a')}} </dd>
-                        </dl>
+                    <div class="col-sm-12">
+                        <table class="table table-bordered">
+                            <tbody>
+                            <tr>
+                                <th>DESCRIPCIÓN</th>
+                                <td>{{$tipo_cuenta_contable->descripcion}}</td>
+                            </tr>
+                            <tr>
+                                <th>USUARIO QUE REGISTRÓ</th>
+                                <td>{{$tipo_cuenta_contable->userRegistro}}</td>
+                            </tr>
+                            <tr>
+                                <th>NATURALEZA DE PÓLIZA</th>
+                                <td>{{$tipo_cuenta_contable->naturalezaPoliza}}</td>
+                            </tr>
+                            <tr>
+                                <th>FECHA Y HORA DE REGISTRO</th>
+                                <td>{{$tipo_cuenta_contable->created_at->format('Y-m-d h:i:s a')}} </td>
+                            </tr>
+                            </tbody>
+                        </table>
                     </div>
 
-                        <div class="col-sm-6">
-                         @if($tipo_cuenta_contable->cuentaContable)
-                            <dl>
-                                <dt>CUENTA CONTABLE ASIGNADA</dt>
-                                <dd><br>    </dd>
-                                <dt>ID</dt>
-                                <dd>{{$tipo_cuenta_contable->cuentaContable->id_int_cuenta_contable}}</dd>
-                                @if($tipo_cuenta_contable->cuentaContable->prefijo == null)
-                                    <dt>CUENTA CONTABLE</dt>
-                                    <dd>{{$tipo_cuenta_contable->cuentaContable->cuenta_contable}}</dd>
-                                @else
-                                    <dt>PREFIJO</dt>
-                                    <dd>{{$tipo_cuenta_contable->cuentaContable->prefijo}}</dd>
-                                @endif
-                                <dt>FECHA Y HORA DE REGISTRO</dt>
-                                <dd>{{$tipo_cuenta_contable->cuentaContable->created_at->format('Y-m-d h:i:s a')}} </dd>
-                            </dl>
-                         @endif
-                        </div>
+                    <div class="col-sm-12">
+                        @if($tipo_cuenta_contable->cuentaContable)
+
+                            <table class="table table-bordered">
+                                <tbody>
+                                <tr>
+                                    <th colspan="2"><center>CUENTA CONTABLE ASIGNADA</center></th>
+
+                                </tr>
+                                <tr>
+                                    <th>CUENTA CONTABLE</th>
+                                    <td>{{$tipo_cuenta_contable->cuentaContable->cuenta_contable}}</td>
+                                </tr>
+                                <tr>
+                                    <th>PREFIJO</th>
+                                    <td>  @if($tipo_cuenta_contable->cuentaContable->prefijo == null)
+                                           CUENTA CONTABLE
+                                        @else
+                                         PREFIJO
+
+                                        @endif</td>
+                                </tr>
+
+                                <tr>
+                                    <th>FECHA Y HORA DE REGISTRO</th>
+                                    <td>{{$tipo_cuenta_contable->cuentaContable->created_at->format('Y-m-d h:i:s a')}} </td>
+                                </tr>
+
+                                </tbody>
+                            </table>
+
+                        @endif
+                    </div>
 
                 </div>
                 <!-- /.box-body -->
