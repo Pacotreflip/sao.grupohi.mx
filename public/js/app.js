@@ -44889,6 +44889,7 @@ Vue.component('cuenta-material-index', {
             },
             valor: '0',
             guardando: false
+
         };
     },
     methods: {
@@ -44934,10 +44935,16 @@ Vue.component('cuenta-material-index', {
             var _this = this;
 
             this.$validator.validateAll(scope).then(function () {
-                if (funcion == 'confirm_save_cuenta') {
+                if (funcion == 'confirm_save_cuenta' && _this.form.cuenta_material.id_tipo_cuenta_material != 0) {
                     _this.confirm_save_cuenta();
-                } else if (funcion == 'confirm_update_cuenta') {
+                } else if (funcion == 'confirm_update_cuenta' && _this.form.cuenta_material.id_tipo_cuenta_material != 0) {
                     _this.confirm_update_cuenta();
+                } else {
+                    swal({
+                        type: 'warning',
+                        title: 'Advertencia',
+                        text: 'Por favor seleccione un Tipo Cuenta de Material.'
+                    });
                 }
             }).catch(function () {
                 swal({
