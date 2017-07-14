@@ -3,7 +3,7 @@
 namespace Ghi\Domain\Core\Models\Contabilidad;
 
 use Carbon\Carbon;
-use Ghi\Core\Contracts\Context;
+use Ghi\Core\Facades\Context;
 use Ghi\Domain\Core\Models\BaseModel;
 use Ghi\Domain\Core\Models\Scopes\ObraScope;
 use Ghi\Domain\Core\Models\User;
@@ -14,12 +14,10 @@ class PolizaTipo extends BaseModel
 {
     use SoftDeletes;
 
-    var $id_obra;
-
     protected $connection = 'cadeco';
     protected $table = 'Contabilidad.poliza_tipo';
     protected $fillable = [
-        'id_transaccion_interfaz',
+        'id_poliza_tipo_sao',
         'registro',
         'aprobo',
         'cancelo',
@@ -31,23 +29,21 @@ class PolizaTipo extends BaseModel
     protected $dates = ['deleted_at', 'inicio_vigencia', 'fin_vigencia'];
     protected $appends=['vigencia'];
 
-    public function __construct(array $attributes = [])
-    {
-        $attributes['id_obra'] = \Ghi\Core\Facades\Context::getId();
-        parent::__construct($attributes);
-    }
-
     protected static function boot()
     {
         parent::boot();
         static::addGlobalScope(new ObraScope());
+
+        static::creating(function ($model) {
+            $model->id_obra = Context::getId();
+        });
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo|TransaccionInterfaz
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo|PolizaTipoSAO
      */
-    public function transaccion() {
-        return $this->belongsTo(TransaccionInterfaz::class, 'id_transaccion_interfaz');
+    public function polizaTipoSAO() {
+        return $this->belongsTo(PolizaTipoSAO::class, 'id_poliza_tipo_sao');
     }
 
     /**
@@ -112,11 +108,11 @@ class PolizaTipo extends BaseModel
     }
 
     /**
-     * @param integer $id_transaccion_interfaz
+     * @param integer $id_poliza_tipo_sao
      * @return null|string
      */
-    static public function fecha_minima($id_transaccion_interfaz) {
-        $item = PolizaTipo::select(DB::raw("MAX(inicio_vigencia) as min_date"))->where('id_transaccion_interfaz','=', $id_transaccion_interfaz)->get();
+    static public function fecha_minima($id_poliza_tipo_sao) {
+        $item = PolizaTipo::select(DB::raw("MAX(inicio_vigencia) as min_date"))->where('id_poliza_tipo_sao','=', $id_poliza_tipo_sao)->get();
         if (! $item[0]->min_date) {
             return null;
         }

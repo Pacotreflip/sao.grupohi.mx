@@ -36,7 +36,6 @@ class Requisicion extends Transaccion
             $model->tipo_transaccion = Tipo::REQUISICION;
             $model->opciones = 1;
             $model->fecha = Carbon::now();
-            // $model->id_obra =1;
             $model->id_obra = Context::getId();
         });
 

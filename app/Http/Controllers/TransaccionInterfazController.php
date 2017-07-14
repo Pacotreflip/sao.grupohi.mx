@@ -2,21 +2,21 @@
 
 namespace Ghi\Http\Controllers;
 
-use Ghi\Domain\Core\Contracts\Contabilidad\TransaccionInterfazRepository;
+use Ghi\Domain\Core\Contracts\Contabilidad\PolizaTipoSAORepository;
 use Illuminate\Http\Request;
 
 class TransaccionInterfazController extends Controller
 {
     /**
-     * @var  TransaccionInterfazRepository
+     * @var  PolizaTipoSAORepository
      */
     private $transaccion_interfaz;
 
     /**
      * TransaccionInterfazController constructor.
-     * @param TransaccionInterfazRepository $transaccion_interfaz
+     * @param PolizaTipoSAORepository $transaccion_interfaz
      */
-    public function __construct(TransaccionInterfazRepository $transaccion_interfaz)
+    public function __construct(PolizaTipoSAORepository $transaccion_interfaz)
     {
         parent::__construct();
 

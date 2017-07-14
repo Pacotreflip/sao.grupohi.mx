@@ -30209,10 +30209,10 @@ if (window.Sweetalert2) window.sweetAlert = window.swal = window.Sweetalert2;
     })();
 })(window.jQuery);
 },{}],29:[function(require,module,exports){
-!function(e,n){"object"==typeof exports&&"undefined"!=typeof module?module.exports=n():"function"==typeof define&&define.amd?define(n):(e.__vee_validate_locale__es=e.__vee_validate_locale__es||{},e.__vee_validate_locale__es.js=n())}(this,function(){"use strict";var e={name:"es",messages:{after:function(e,n){return"El campo "+e+" debe ser posterior a "+n[0]+"."},alpha_dash:function(e){return"El campo "+e+" solo debe contener letras, números y guiones."},alpha_num:function(e){return"El campo "+e+" solo debe contener letras y números."},alpha_spaces:function(e){return"El campo "+e+" solo debe contener letras y espacios."},alpha:function(e){return"El campo "+e+" solo debe contener letras."},before:function(e,n){return"El campo "+e+" debe ser anterior a "+n[0]+"."},between:function(e,n){return"El campo "+e+" debe estar entre "+n[0]+" y "+n[1]+"."},confirmed:function(e,n){return"El campo "+e+" no coincide con "+n[0]+"."},credit_card:function(e,n){n[0];return"El campo "+e+" es inválido."},date_between:function(e,n){return"El campo "+e+" debe estar entre "+n[0]+" y "+n[1]+"."},date_format:function(e,n){return"El campo "+e+" debe tener formato formato "+n[0]+"."},decimal:function(e,n){void 0===n&&(n=["*"]);var o=n[0];return"El campo "+e+" debe ser númerico y contener "+("*"===o?"":o)+" puntos decimales."},digits:function(e,n){return"El campo "+e+" debe ser númerico y contener exactamente "+n[0]+" dígitos."},dimensions:function(e,n){return"El campo "+e+" debe ser de "+n[0]+" pixeles por "+n[1]+" pixeles."},email:function(e){return"El campo "+e+" debe ser un correo electrónico válido."},ext:function(e){return"El campo "+e+" debe ser un archivo válido."},image:function(e){return"El campo "+e+" debe ser una imagen."},in:function(e){return"El campo "+e+" debe ser un valor válido."},ip:function(e){return"El campo "+e+" debe ser una dirección ip válida."},max:function(e,n){return"El campo "+e+" no debe ser mayor a "+n[0]+" caracteres."},max_value:function(e,n){return"El campo "+e+" debe de ser "+n[0]+" o menor."},mimes:function(e){return"El campo "+e+" debe ser un tipo de archivo válido."},min:function(e,n){return"El campo "+e+" debe tener al menos "+n[0]+" caracteres."},min_value:function(e,n){return"El campo "+e+" debe ser "+n[0]+" o superior."},not_in:function(e){return"El campo "+e+" debe ser un valor válido."},numeric:function(e){return"El campo "+e+" debe contener solo caracteres númericos."},regex:function(e){return"El formato del campo "+e+" no es válido."},required:function(e){return"El campo "+e+" es obligatorio."},size:function(e,n){return"El campo "+e+" debe ser menor a "+n[0]+" KB."},url:function(e){return"El campo "+e+" no es una URL válida."}},attributes:{}};return"undefined"!=typeof VeeValidate&&VeeValidate&&(VeeValidate.Validator,!0)&&VeeValidate.Validator.addLocale(e),e});
+!function(e,n){"object"==typeof exports&&"undefined"!=typeof module?module.exports=n():"function"==typeof define&&define.amd?define(n):(e.__locale__es=e.__locale__es||{},e.__locale__es.js=n())}(this,function(){"use strict";var e={after:function(e,n){return"El campo "+e+" debe ser posterior a "+n[0]+"."},alpha_dash:function(e){return"El campo "+e+" solo debe contener letras, números y guiones."},alpha_num:function(e){return"El campo "+e+" solo debe contener letras y números."},alpha_spaces:function(e){return"El campo "+e+" solo debe contener letras y espacios."},alpha:function(e){return"El campo "+e+" solo debe contener letras."},before:function(e,n){return"El campo "+e+" debe ser anterior a "+n[0]+"."},between:function(e,n){return"El campo "+e+" debe estar entre "+n[0]+" y "+n[1]+"."},confirmed:function(e,n){return"El campo "+e+" no coincide con "+n[0]+"."},credit_card:function(e,n){n[0];return"El campo "+e+" es inválido."},date_between:function(e,n){return"El campo "+e+" debe estar entre "+n[0]+" y "+n[1]+"."},date_format:function(e,n){return"El campo "+e+" debe tener formato formato "+n[0]+"."},decimal:function(e,n){void 0===n&&(n=["*"]);var o=n[0];return"El campo "+e+" debe ser númerico y contener "+("*"===o?"":o)+" puntos decimales."},digits:function(e,n){return"El campo "+e+" debe ser númerico y contener exactamente "+n[0]+" dígitos."},dimensions:function(e,n){return"El campo "+e+" debe ser de "+n[0]+" pixeles por "+n[1]+" pixeles."},email:function(e){return"El campo "+e+" debe ser un correo electrónico válido."},ext:function(e){return"El campo "+e+" debe ser un archivo válido."},image:function(e){return"El campo "+e+" debe ser una imagen."},in:function(e){return"El campo "+e+" debe ser un valor válido."},ip:function(e){return"El campo "+e+" debe ser una dirección ip válida."},max:function(e,n){return"El campo "+e+" no debe ser mayor a "+n[0]+" caracteres."},max_value:function(e,n){return"El campo "+e+" debe de ser "+n[0]+" o menor."},mimes:function(e){return"El campo "+e+" debe ser un tipo de archivo válido."},min:function(e,n){return"El campo "+e+" debe tener al menos "+n[0]+" caracteres."},min_value:function(e,n){return"El campo "+e+" debe ser "+n[0]+" o superior."},not_in:function(e){return"El campo "+e+" debe ser un valor válido."},numeric:function(e){return"El campo "+e+" debe contener solo caracteres númericos."},regex:function(e){return"El formato del campo "+e+" no es válido."},required:function(e){return"El campo "+e+" es obligatorio."},size:function(e,n){return"El campo "+e+" debe ser menor a "+n[0]+" KB."},url:function(e){return"El campo "+e+" no es una URL válida."}},n={name:"es",messages:e,attributes:{}};return"undefined"!=typeof VeeValidate&&VeeValidate&&(VeeValidate.Validator,!0)&&VeeValidate.Validator.addLocale(n),n});
 },{}],30:[function(require,module,exports){
 /**
- * vee-validate v2.0.0-rc.6
+ * vee-validate v2.0.0-rc.5
  * (c) 2017 Abdelrahman Awad
  * @license MIT
  */
@@ -30234,16 +30234,14 @@ var alpha$1 = {
   de: /^[A-ZÄÖÜß]*$/i,
   es: /^[A-ZÁÉÍÑÓÚÜ]*$/i,
   fr: /^[A-ZÀÂÆÇÉÈÊËÏÎÔŒÙÛÜŸ]*$/i,
-  lt: /^[A-ZĄČĘĖĮŠŲŪŽ]*$/i,
   nl: /^[A-ZÉËÏÓÖÜ]*$/i,
   hu: /^[A-ZÁÉÍÓÖŐÚÜŰ]*$/i,
   pl: /^[A-ZĄĆĘŚŁŃÓŻŹ]*$/i,
   pt: /^[A-ZÃÁÀÂÇÉÊÍÕÓÔÚÜ]*$/i,
   ru: /^[А-ЯЁ]*$/i,
-  sk: /^[A-ZÁÄČĎÉÍĹĽŇÓŔŠŤÚÝŽ]*$/i,
   sr: /^[A-ZČĆŽŠĐ]*$/i,
   tr: /^[A-ZÇĞİıÖŞÜ]*$/i,
-  uk: /^[А-ЩЬЮЯЄІЇҐ]*$/i,
+  uk: /^[А-ЩЬЮЯЄIЇҐ]*$/i,
   ar: /^[ءآأؤإئابةتثجحخدذرزسشصضطظعغفقكلمنهوىيًٌٍَُِّْٰ]*$/
 };
 
@@ -30254,16 +30252,14 @@ var alphaSpaces = {
   de: /^[A-ZÄÖÜß\s]*$/i,
   es: /^[A-ZÁÉÍÑÓÚÜ\s]*$/i,
   fr: /^[A-ZÀÂÆÇÉÈÊËÏÎÔŒÙÛÜŸ\s]*$/i,
-  lt: /^[A-ZĄČĘĖĮŠŲŪŽ\s]*$/i,
   nl: /^[A-ZÉËÏÓÖÜ\s]*$/i,
   hu: /^[A-ZÁÉÍÓÖŐÚÜŰ\s]*$/i,
   pl: /^[A-ZĄĆĘŚŁŃÓŻŹ\s]*$/i,
   pt: /^[A-ZÃÁÀÂÇÉÊÍÕÓÔÚÜ\s]*$/i,
   ru: /^[А-ЯЁ\s]*$/i,
-  sk: /^[A-ZÁÄČĎÉÍĹĽŇÓŔŠŤÚÝŽ\s]*$/i,
   sr: /^[A-ZČĆŽŠĐ\s]*$/i,
   tr: /^[A-ZÇĞİıÖŞÜ\s]*$/i,
-  uk: /^[А-ЩЬЮЯЄІЇҐ\s]*$/i,
+  uk: /^[А-ЩЬЮЯЄIЇҐ\s]*$/i,
   ar: /^[ءآأؤإئابةتثجحخدذرزسشصضطظعغفقكلمنهوىيًٌٍَُِّْٰ\s]*$/
 };
 
@@ -30274,16 +30270,14 @@ var alphanumeric = {
   de: /^[0-9A-ZÄÖÜß]*$/i,
   es: /^[0-9A-ZÁÉÍÑÓÚÜ]*$/i,
   fr: /^[0-9A-ZÀÂÆÇÉÈÊËÏÎÔŒÙÛÜŸ]*$/i,
-  lt: /^[0-9A-ZĄČĘĖĮŠŲŪŽ]*$/i,
   hu: /^[0-9A-ZÁÉÍÓÖŐÚÜŰ]*$/i,
   nl: /^[0-9A-ZÉËÏÓÖÜ]*$/i,
   pl: /^[0-9A-ZĄĆĘŚŁŃÓŻŹ]*$/i,
   pt: /^[0-9A-ZÃÁÀÂÇÉÊÍÕÓÔÚÜ]*$/i,
   ru: /^[0-9А-ЯЁ]*$/i,
-  sk: /^[0-9A-ZÁÄČĎÉÍĹĽŇÓŔŠŤÚÝŽ]*$/i,
   sr: /^[0-9A-ZČĆŽŠĐ]*$/i,
   tr: /^[0-9A-ZÇĞİıÖŞÜ]*$/i,
-  uk: /^[0-9А-ЩЬЮЯЄІЇҐ]*$/i,
+  uk: /^[0-9А-ЩЬЮЯЄIЇҐ]*$/i,
   ar: /^[٠١٢٣٤٥٦٧٨٩0-9ءآأؤإئابةتثجحخدذرزسشصضطظعغفقكلمنهوىيًٌٍَُِّْٰ]*$/
 };
 
@@ -30294,16 +30288,14 @@ var alphaDash = {
   de: /^[0-9A-ZÄÖÜß_-]*$/i,
   es: /^[0-9A-ZÁÉÍÑÓÚÜ_-]*$/i,
   fr: /^[0-9A-ZÀÂÆÇÉÈÊËÏÎÔŒÙÛÜŸ_-]*$/i,
-  lt: /^[0-9A-ZĄČĘĖĮŠŲŪŽ_-]*$/i,
   nl: /^[0-9A-ZÉËÏÓÖÜ_-]*$/i,
   hu: /^[0-9A-ZÁÉÍÓÖŐÚÜŰ_-]*$/i,
   pl: /^[0-9A-ZĄĆĘŚŁŃÓŻŹ_-]*$/i,
   pt: /^[0-9A-ZÃÁÀÂÇÉÊÍÕÓÔÚÜ_-]*$/i,
   ru: /^[0-9А-ЯЁ_-]*$/i,
-  sk: /^[0-9A-ZÁÄČĎÉÍĹĽŇÓŔŠŤÚÝŽ_-]*$/i,
   sr: /^[0-9A-ZČĆŽŠĐ_-]*$/i,
   tr: /^[0-9A-ZÇĞİıÖŞÜ_-]*$/i,
-  uk: /^[0-9А-ЩЬЮЯЄІЇҐ_-]*$/i,
+  uk: /^[0-9А-ЩЬЮЯЄIЇҐ_-]*$/i,
   ar: /^[٠١٢٣٤٥٦٧٨٩0-9ءآأؤإئابةتثجحخدذرزسشصضطظعغفقكلمنهوىيًٌٍَُِّْٰ_-]*$/
 };
 
@@ -30368,12 +30360,6 @@ var confirmed = function (value, ref, validatingField) {
   var field = confirmedField
     ? document.querySelector(("input[name='" + confirmedField + "']"))
     : document.querySelector(("input[name='" + validatingField + "_confirmation']"));
-
-  if (! field) {
-    field = confirmedField
-      ? document.querySelector(("input[data-vv-name='" + confirmedField + "']"))
-      : document.querySelector(("input[data-vv-name='" + validatingField + "_confirmation']"));
-  }
 
   return !! (field && String(value) === field.value);
 };
@@ -30901,7 +30887,7 @@ var required = function (value) {
     return !! value.length;
   }
 
-  if (value === undefined || value === null) {
+  if (value === undefined || value === null || value === false) {
     return false;
   }
 
@@ -31160,20 +31146,11 @@ ErrorBag.prototype.any = function any (scope) {
    * @param {String} scope The Scope name, optional.
    */
 ErrorBag.prototype.clear = function clear (scope) {
-    var this$1 = this;
-
   if (! scope) {
     scope = '__global__';
   }
 
-  var removeCondition = function (e) { return e.scope === scope; };
-
-  for (var i = 0; i < this.errors.length; ++i) {
-    if (removeCondition(this$1.errors[i])) {
-      this$1.errors.splice(i, 1);
-      --i;
-    }
-  }
+  this.errors = this.errors.filter(function (e) { return e.scope !== scope; });
 };
 
   /**
@@ -31242,7 +31219,7 @@ ErrorBag.prototype.first = function first (field, scope) {
     return this.firstByRule(selector.name, selector.rule, scope);
   }
 
-  for (var i = 0; i < this.errors.length; ++i) {
+  for (var i = 0; i < this.errors.length; i++) {
     if (this$1.errors[i].field === field && (this$1.errors[i].scope === scope)) {
       return this$1.errors[i].msg;
     }
@@ -31294,18 +31271,12 @@ ErrorBag.prototype.firstByRule = function firstByRule (name, rule, scope) {
    * @param {String} scope The Scope name, optional.
    */
 ErrorBag.prototype.remove = function remove (field, scope) {
-    var this$1 = this;
+  var filter = scope ? (function (e) { return e.field !== field || e.scope !== scope; }) :
+                         (function (e) { return e.field !== field || e.scope !== '__global__'; });
 
-  var removeCondition = scope ? (function (e) { return e.field === field && e.scope === scope; }) :
-                                  (function (e) { return e.field === field && e.scope === '__global__'; });
-
-  for (var i = 0; i < this.errors.length; ++i) {
-    if (removeCondition(this$1.errors[i])) {
-      this$1.errors.splice(i, 1);
-      --i;
-    }
-  }
+  this.errors = this.errors.filter(filter);
 };
+
 
   /**
    * Get the field attributes if there's a rule selector.
@@ -31343,25 +31314,17 @@ ErrorBag.prototype._scope = function _scope (field) {
   return null;
 };
 
-var ValidatorException = (function (Error) {
-  function ValidatorException() {
-    var args = [], len = arguments.length;
-    while ( len-- ) args[ len ] = arguments[ len ];
-
-    Error.apply(this, args);
-    if (Error.captureStackTrace) {
-      Error.captureStackTrace(this, ValidatorException);
-    }
-
-    this.message = "[vee-validate]: " + (this.message);
+var ValidatorException = (function () {
+  function anonymous(msg) {
+    this.msg = "[vee-validate]: " + msg;
   }
 
-  if ( Error ) ValidatorException.__proto__ = Error;
-  ValidatorException.prototype = Object.create( Error && Error.prototype );
-  ValidatorException.prototype.constructor = ValidatorException;
+  anonymous.prototype.toString = function toString () {
+    return this.msg;
+  };
 
-  return ValidatorException;
-}(Error));
+  return anonymous;
+}());
 
 /**
  * Gets the data attribute. the name must be kebab-case.
@@ -31390,9 +31353,10 @@ var getPath = function (propPath, target, def) {
   if ( def === void 0 ) def = undefined;
 
   if (!propPath || !target) { return def; }
+
   var value = target;
   propPath.split('.').every(function (prop) {
-    if (! Object.prototype.hasOwnProperty.call(value, prop) && value[prop] === undefined) {
+    if (! Object.prototype.hasOwnProperty.call(value, prop)) {
       value = def;
 
       return false;
@@ -31411,11 +31375,7 @@ var getPath = function (propPath, target, def) {
  */
 var debounce = function (callback, wait, immediate) {
   if ( wait === void 0 ) wait = 0;
-  if ( immediate === void 0 ) immediate = false;
-
-  if (wait === 0) {
-    return callback;
-  }
+  if ( immediate === void 0 ) immediate = true;
 
   var timeout;
 
@@ -31547,12 +31507,10 @@ var assign = function (target) {
  * @param {Function} predicate
  */
 var find = function (array, predicate) {
-  if (isObject(array)) {
-    array = Array.from(array);
-  }
   if (array.find) {
     return array.find(predicate);
   }
+
   var result;
   array.some(function (item) {
     if (predicate(item)) {
@@ -31588,14 +31546,6 @@ var getRules = function (expression, value, el) {
   }
 
   return value;
-};
-
-var getInputEventName = function (el) {
-  if (el.tagName === 'SELECT' || ~['radio', 'checkbox', 'file'].indexOf(el.type)) {
-    return 'change';
-  }
-
-  return 'input';
 };
 
 var Dictionary = function Dictionary(dictionary) {
@@ -31741,7 +31691,7 @@ var messages = {
     if ( ref === void 0 ) ref = ['*'];
     var decimals = ref[0];
 
-    return ("The " + field + " field must be numeric and may contain " + (!decimals || decimals === '*' ? '' : decimals) + " decimal points.");
+    return ("The " + field + " field must be numeric and may contain " + (decimals === '*' ? '' : decimals) + " decimal points.");
 },
   digits: function (field, ref) {
     var length = ref[0];
@@ -31870,15 +31820,13 @@ var date_between = function (moment) { return function (value, params) {
 var messages$1 = {
   after: function (field, ref) {
     var target = ref[0];
-    var inclusion = ref[1];
 
-    return ("The " + field + " must be after " + (inclusion ? 'or equal to ' : '') + target + ".");
+    return ("The " + field + " must be after " + target + ".");
 },
   before: function (field, ref) {
     var target = ref[0];
-    var inclusion = ref[1];
 
-    return ("The " + field + " must be before " + (inclusion ? 'or equal to ' : '') + target + ".");
+    return ("The " + field + " must be before " + target + ".");
 },
   date_between: function (field, ref) {
     var min = ref[0];
@@ -31915,7 +31863,7 @@ var DICTIONARY = new Dictionary({
 });
 
 var Validator = function Validator(validations, options) {
-  if ( options === void 0 ) options = { init: true, vm: null, fastExit: true };
+  if ( options === void 0 ) options = { init: true, vm: null };
 
   this.strictMode = STRICT_MODE;
   this.$scopes = { __global__: {} };
@@ -31923,7 +31871,6 @@ var Validator = function Validator(validations, options) {
   this.errorBag = new ErrorBag();
   this.fieldBag = {};
   this.paused = false;
-  this.fastExit = options.fastExit || false;
   this.$vm = options.vm;
 
   // Some fields will be later evaluated, because the vm isn't mounted yet
@@ -32004,6 +31951,12 @@ Validator._merge = function _merge (name, validator) {
  * @param{object} validator a validation rule object.
  */
 Validator._guardExtend = function _guardExtend (name, validator) {
+  if (Rules[name]) {
+    throw new ValidatorException(
+      ("Extension Error: There is an existing validator with the same name '" + name + "'.")
+    );
+  }
+
   if (isCallable(validator)) {
     return;
   }
@@ -32169,13 +32122,8 @@ Validator.prototype._resolveValuesFromGetters = function _resolveValuesFromGette
     var context = field.context;
     var fieldScope = this$1._resolveScope(field.scope);
     if (getter && context && (scope === '__global__' || fieldScope === scope)) {
-      var ctx = context();
-      if (ctx.disabled) {
-        return;
-      }
-
       values[name] = {
-        value: getter(ctx),
+        value: getter(context()),
         scope: fieldScope
       };
     }
@@ -32220,7 +32168,6 @@ Validator.prototype._createField = function _createField (name, checks, scope) {
   }
 
   var field = this.$scopes[scope][name];
-  field.name = name;
   field.validations = this._normalizeRules(name, checks, scope);
   field.required = this._isRequired(field);
 };
@@ -32248,7 +32195,7 @@ Validator.prototype._normalizeRules = function _normalizeRules (name, checks, sc
  * Checks if a field has a required rule.
  */
 Validator.prototype._isRequired = function _isRequired (field) {
-  return !! (field.validations && field.validations.required);
+  return field.validations && field.validations.required;
 };
 
 /**
@@ -32365,24 +32312,26 @@ Validator.prototype._parseRule = function _parseRule (rule) {
 /**
  * Formats an error message for field and a rule.
  *
- * @param{Object} field The field object.
+ * @param{string} field The field name.
  * @param{object} rule Normalized rule object.
  * @param {object} data Additional Information about the validation result.
+ * @param {string} scope The field scope.
  * @return {string} Formatted error message.
  */
-Validator.prototype._formatErrorMessage = function _formatErrorMessage (field, rule, data) {
+Validator.prototype._formatErrorMessage = function _formatErrorMessage (field, rule, data, scope) {
     if ( data === void 0 ) data = {};
+    if ( scope === void 0 ) scope = '__global__';
 
-  var name = this._getFieldDisplayName(field);
-  var params = this._getLocalizedParams(rule, field.scope);
+  var name = this._getFieldDisplayName(field, scope);
+  var params = this._getLocalizedParams(rule, scope);
   // Defaults to english message.
   if (! this.dictionary.hasLocale(LOCALE)) {
-    var msg$1 = this.dictionary.getFieldMessage('en', field.name, rule.name);
+    var msg$1 = this.dictionary.getFieldMessage('en', field, rule.name);
 
     return isCallable(msg$1) ? msg$1(name, params, data) : msg$1;
   }
 
-  var msg = this.dictionary.getFieldMessage(LOCALE, field.name, rule.name);
+  var msg = this.dictionary.getFieldMessage(LOCALE, field, rule.name);
 
   return isCallable(msg) ? msg(name, params, data) : msg;
 };
@@ -32393,7 +32342,8 @@ Validator.prototype._formatErrorMessage = function _formatErrorMessage (field, r
 Validator.prototype._getLocalizedParams = function _getLocalizedParams (rule, scope) {
     if ( scope === void 0 ) scope = '__global__';
 
-  if (~ ['after', 'before', 'confirmed'].indexOf(rule.name) && rule.params && rule.params[0]) {
+  if (~ ['after', 'before', 'confirmed'].indexOf(rule.name) &&
+      rule.params && rule.params[0]) {
     var param = this.$scopes[scope][rule.params[0]];
     if (param && param.name) { return [param.name]; }
     return [this.dictionary.getAttribute(LOCALE, rule.params[0], rule.params[0])];
@@ -32405,30 +32355,33 @@ Validator.prototype._getLocalizedParams = function _getLocalizedParams (rule, sc
 /**
  * Resolves an appropiate display name, first checking 'data-as' or the registered 'prettyName'
  * Then the dictionary, then fallsback to field name.
- * @param {Object} field The field object.
- * @return {String} The name to be used in the errors.
+ * @return {String} displayName The name to be used in the errors.
  */
-Validator.prototype._getFieldDisplayName = function _getFieldDisplayName (field) {
-  return field.as || this.dictionary.getAttribute(LOCALE, field.name, field.name);
+Validator.prototype._getFieldDisplayName = function _getFieldDisplayName (field, scope) {
+    if ( scope === void 0 ) scope = '__global__';
+
+  return this.$scopes[scope][field].as || this.dictionary.getAttribute(LOCALE, field, field);
 };
 
 /**
  * Tests a single input value against a rule.
  *
- * @param{Object} field The field under validation.
+ * @param{*} name The name of the field.
  * @param{*} valuethe value of the field.
  * @param{object} rule the rule object.
+ * @param {scope} scope The field scope.
  * @return {boolean} Whether it passes the check.
  */
-Validator.prototype._test = function _test (field, value, rule) {
+Validator.prototype._test = function _test (name, value, rule, scope) {
     var this$1 = this;
+    if ( scope === void 0 ) scope = '__global__';
 
   var validator = Rules[rule.name];
   if (! validator || typeof validator !== 'function') {
     throw new ValidatorException(("No such validator '" + (rule.name) + "' exists."));
   }
 
-  var result = validator(value, rule.params, field.name);
+  var result = validator(value, rule.params, name);
 
   // If it is a promise.
   if (isCallable(result.then)) {
@@ -32444,11 +32397,11 @@ Validator.prototype._test = function _test (field, value, rule) {
 
       if (! allValid) {
         this$1.errorBag.add(
-          field.name,
-          this$1._formatErrorMessage(field, rule, data),
-          rule.name,
-          field.scope
-        );
+                      name,
+                      this$1._formatErrorMessage(name, rule, data, scope),
+                      rule.name,
+                      scope
+                  );
       }
 
       return allValid;
@@ -32461,11 +32414,11 @@ Validator.prototype._test = function _test (field, value, rule) {
 
   if (! result.valid) {
     this.errorBag.add(
-      field.name,
-      this._formatErrorMessage(field, rule, result.data),
-      rule.name,
-      field.scope
-    );
+              name,
+              this._formatErrorMessage(name, rule, result.data, scope),
+              rule.name,
+              scope
+          );
   }
 
   return result.valid;
@@ -32510,7 +32463,6 @@ Validator.prototype._assignFlags = function _assignFlags (field) {
     pristine: true,
     valid: null,
     invalid: null,
-    validated: false,
     required: field.required,
     pending: false
   };
@@ -32545,6 +32497,7 @@ Validator.prototype.attach = function attach (name, checks, options) {
     this$1.updateField(name, checks, options);
     var field = this$1.$scopes[options.scope][name];
     field.scope = options.scope;
+    field.name = name;
     field.as = options.prettyName;
     field.getter = options.getter;
     field.context = options.context;
@@ -32597,7 +32550,15 @@ Validator.prototype.init = function init () {
  * @param {Object} flags
  */
 Validator.prototype.flag = function flag (name, flags) {
-  var field = this._resolveField(name);
+  var ref = name.split('.');
+    var scope = ref[0];
+    var fieldName = ref[1];
+  if (!fieldName) {
+    fieldName = scope;
+    scope = null;
+  }
+  var field = scope ? getPath((scope + "." + fieldName), this.$scopes) :
+                        this.$scopes.__global__[fieldName];
   if (! field) {
     return;
   }
@@ -32605,9 +32566,7 @@ Validator.prototype.flag = function flag (name, flags) {
   Object.keys(field.flags).forEach(function (flag) {
     field.flags[flag] = flags[flag] !== undefined ? flags[flag] : field.flags[flag];
   });
-  if (field.listeners && field.listeners.classes) {
-    field.listeners.classes.sync();
-  }
+  field.listeners.classes.sync();
 };
 
 /**
@@ -32767,103 +32726,103 @@ Validator.prototype.addScope = function addScope (scope) {
   }
 };
 
-Validator.prototype._resolveField = function _resolveField (name, scope) {
-  if (name && name.indexOf('.') > -1) {
-    // if no such field, try the scope form.
-    if (! this.$scopes.__global__[name]) {
-      var assign$$1;
-        (assign$$1 = name.split('.'), scope = assign$$1[0], name = assign$$1[1]);
-    }
-  }
-  if (! scope) { scope = '__global__'; }
-
-  if (!this.$scopes[scope]) { return null; }
-
-  return this.$scopes[scope][name];
-};
-
-Validator.prototype._handleFieldNotFound = function _handleFieldNotFound (name, scope) {
-  if (! this.strictMode) { return Promise.resolve(true); }
-
-  var fullName = scope === '__global__' ? name : (scope + "." + name);
-  throw new ValidatorException(
-      ("Validating a non-existant field: \"" + fullName + "\". Use \"attach()\" first.")
-    );
-};
-
-/**
- * Starts the validation process.
- *
- * @param {Object} field
- * @param {Promise} value
- */
-Validator.prototype._validate = function _validate (field, value) {
-    var this$1 = this;
-
-  if (! field.required && ~[null, undefined, ''].indexOf(value)) {
-    return Promise.resolve(true);
-  }
-
-  var promises = [];
-  var syncResult = Object.keys(field.validations)[this.fastExit ? 'every' : 'some'](function (rule) {
-    var result = this$1._test(
-      field,
-      value,
-      { name: rule, params: field.validations[rule] }
-    );
-
-    if (isCallable(result.then)) {
-      promises.push(result);
-      return true;
-    }
-
-    return result;
-  });
-
-  return Promise.all(promises).then(function (values) {
-    var valid = syncResult && values.every(function (t) { return t; });
-
-    return valid;
-  });
-};
-
 /**
  * Validates a value against a registered field validations.
  *
  * @param{string} name the field name.
  * @param{*} value The value to be validated.
  * @param {String} scope The scope of the field.
+ * @param {Boolean} throws If it should throw.
  * @return {Promise}
  */
-Validator.prototype.validate = function validate (name, value, scope) {
+Validator.prototype.validate = function validate (name, value, scope, throws) {
     var this$1 = this;
     if ( scope === void 0 ) scope = '__global__';
+    if ( throws === void 0 ) throws = true;
 
   if (this.paused) { return Promise.resolve(true); }
 
-  var field = this._resolveField(name, scope);
-  if (!field) {
-    return this._handleFieldNotFound(name, scope);
+  if (name && name.indexOf('.') > -1) {
+    // no such field, try the scope form.
+    if (! this.$scopes.__global__[name]) {
+      var assign$$1;
+        (assign$$1 = name.split('.'), scope = assign$$1[0], name = assign$$1[1]);
+    }
   }
-  this.errorBag.remove(field.name, field.scope);
+  if (! scope) { scope = '__global__'; }
+  if (! this.$scopes[scope] || ! this.$scopes[scope][name]) {
+    if (! this.strictMode) { return Promise.resolve(true); }
+
+    var fullName = scope === '__global__' ? name : (scope + "." + name);
+    warn(("Validating a non-existant field: \"" + fullName + "\". Use \"attach()\" first."));
+
+    throw new ValidatorException('Validation Failed');
+  }
+
+  var field = this.$scopes[scope][name];
   if (field.flags) {
     field.flags.pending = true;
   }
-
-  return this._validate(field, value).then(function (result) {
-    this$1._setAriaValidAttribute(field, result);
-    if (field.flags) {
-      field.flags.pending = false;
-      field.flags.valid = result;
-      field.flags.invalid = ! result;
-      field.flags.pending = false;
-      field.flags.validated = true;
-    }
+  this.errorBag.remove(name, scope);
+  // if its not required and is empty or null or undefined then it passes.
+  if (! field.required && ~[null, undefined, ''].indexOf(value)) {
+    this._setAriaValidAttribute(field, true);
     if (field.events && isCallable(field.events.after)) {
-      field.events.after({ valid: result });
+      field.events.after({ valid: true });
     }
-    return result;
-  });
+
+    return Promise.resolve(true);
+  }
+
+  try {
+    var promises = Object.keys(field.validations).map(function (rule) {
+      var result = this$1._test(
+        name,
+        value,
+        { name: rule, params: field.validations[rule] },
+        scope
+      );
+
+      if (isCallable(result.then)) {
+        return result;
+      }
+
+      // Early exit.
+      if (! result) {
+        if (field.events && isCallable(field.events.after)) {
+          field.events.after({ valid: false });
+        }
+        throw new ValidatorException('Validation Aborted.');
+      }
+
+      if (field.events && isCallable(field.events.after)) {
+        field.events.after({ valid: true });
+      }
+      return Promise.resolve(result);
+    });
+
+    return Promise.all(promises).then(function (values) {
+      var valid = values.every(function (t) { return t; });
+      this$1._setAriaValidAttribute(field, valid);
+
+      if (! valid && throws) {
+        if (field.events && isCallable(field.events.after)) {
+          field.events.after({ valid: false });
+        }
+        throw new ValidatorException('Failed Validation');
+      }
+      return valid;
+    });
+  } catch (error) {
+    if (error.msg === '[vee-validate]: Validation Aborted.') {
+      if (field.events && isCallable(field.events.after)) {
+        field.events.after({ valid: false });
+      }
+      return Promise.resolve(false);
+    }
+
+    throw error;
+  }
 };
 
 /**
@@ -32935,7 +32894,6 @@ Validator.prototype.validateAll = function validateAll (values, scope) {
       };
     });
   }
-
   var promises = Object.keys(normalizedValues).map(function (property) { return this$1.validate(
     property,
     normalizedValues[property].value,
@@ -32943,7 +32901,14 @@ Validator.prototype.validateAll = function validateAll (values, scope) {
     false // do not throw
   ); });
 
-  return Promise.all(promises).then(function (results) { return results.every(function (t) { return t; }); });
+  return Promise.all(promises).then(function (results) {
+    var valid = results.every(function (t) { return t; });
+    if (! valid) {
+      throw new ValidatorException('Validation Failed');
+    }
+
+    return valid;
+  });
 };
 
 /**
@@ -32957,15 +32922,11 @@ Validator.prototype.validateScopes = function validateScopes () {
 
   return Promise.all(
     Object.keys(this.$scopes).map(function (scope) { return this$1.validateAll(scope); })
-  ).then(function (results) { return results.every(function (t) { return t; }); });
+  );
 };
 
 Object.defineProperties( Validator.prototype, prototypeAccessors );
 
-/**
- * Checks if a parent validator instance was requested.
- * @param {Object|Array} injections
- */
 var validatorRequested = function (injections) {
   if (! injections) {
     return false;
@@ -32982,17 +32943,6 @@ var validatorRequested = function (injections) {
   return false;
 };
 
-/**
- * Creates a validator instance.
- * @param {Vue} vm
- * @param {Object} options
- */
-var createValidator = function (vm, options) { return new Validator(null, {
-  init: false,
-  vm: vm,
-  fastExit: options.fastExit
-}); };
-
 var makeMixin = function (Vue, options) {
   var mixin = {};
   mixin.provide = function providesValidator() {
@@ -33008,14 +32958,14 @@ var makeMixin = function (Vue, options) {
   mixin.beforeCreate = function beforeCreate() {
     // if its a root instance, inject anyways, or if it requested a new instance.
     if (this.$options.$validates || !this.$parent) {
-      this.$validator = createValidator(this, options);
+      this.$validator = new Validator(null, { init: false, vm: this });
     }
 
     var requested = validatorRequested(this.$options.inject);
 
     // if automatic injection is enabled and no instance was requested.
     if (! this.$validator && options.inject && !requested) {
-      this.$validator = createValidator(this, options);
+      this.$validator = new Validator(null, { init: false, vm: this });
     }
 
     // don't inject errors or fieldBag as no validator was resolved.
@@ -33113,10 +33063,10 @@ ClassListener.prototype.addFocusListener = function addFocusListener () {
     this$1.field.flags.touched = true;
     this$1.field.flags.untouched = false;
 
+    if (this$1.component) { return; }
+
     // only needed once.
-    if (!this$1.component) {
-      this$1.el.removeEventListener('focus', this$1.listeners.focus);
-    }
+    this$1.el.removeEventListener('focus', this$1.listeners.focus);
     this$1.listeners.focus = null;
   };
 
@@ -33131,24 +33081,23 @@ ClassListener.prototype.addInputListener = function addInputListener () {
     var this$1 = this;
 
   // listen for input.
-  var event = getInputEventName(this.el);
   this.listeners.input = function () {
     this$1.remove(this$1.classNames.pristine);
     this$1.add(this$1.classNames.dirty);
     this$1.field.flags.dirty = true;
     this$1.field.flags.pristine = false;
 
+    if (this$1.component) { return; }
+
     // only needed once.
-    if (!this$1.component) {
-      this$1.el.removeEventListener(event, this$1.listeners.input);
-    }
+    this$1.el.removeEventListener('input', this$1.listeners.input);
     this$1.listeners.input = null;
   };
 
   if (this.component) {
     this.component.$once('input', this.listeners.input);
   } else {
-    this.el.addEventListener(event, this.listeners.input);
+    this.el.addEventListener('input', this.listeners.input);
   }
 };
 
@@ -33178,6 +33127,9 @@ ClassListener.prototype.attach = function attach (field) {
   this.listeners.after = function (e) {
     this$1.remove(e.valid ? this$1.classNames.invalid : this$1.classNames.valid);
     this$1.add(e.valid ? this$1.classNames.valid : this$1.classNames.invalid);
+    this$1.field.flags.valid = e.valid;
+    this$1.field.flags.invalid = ! e.valid;
+    this$1.field.flags.pending = false;
   };
 
   this.validator.on('after', this.field.name, this.field.scope, this.listeners.after);
@@ -33245,8 +33197,7 @@ var config = {
   enableAutoClasses: false,
   classNames: {},
   events: 'input|blur',
-  inject: true,
-  fastExit: true
+  inject: true
 };
 
 var ListenerGenerator = function ListenerGenerator(el, binding, vnode, options) {
@@ -33259,7 +33210,7 @@ var ListenerGenerator = function ListenerGenerator(el, binding, vnode, options) 
   this.component = vnode.child;
   this.options = assign({}, config, options);
   this.fieldName = this._resolveFieldName();
-  this.model = this._resolveModel(vnode.data);
+  this.model = this._resolveModel(vnode.data.directives);
   this.classes = new ClassListener(el, this.vm.$validator, {
     component: this.component,
     enableAutoClasses: options.enableAutoClasses,
@@ -33268,45 +33219,13 @@ var ListenerGenerator = function ListenerGenerator(el, binding, vnode, options) 
 };
 
 /**
- * Checks if the node directives contains a v-model or a specified arg.
- * Args take priority over models.
- *
- * @param {Array} directives
- * @return {Object}
+ * Checks if the node directives contains a v-model.
  */
-ListenerGenerator.prototype._resolveModel = function _resolveModel (data) {
-  if (this.binding.arg) {
-    return {
-      watchable: true,
-      expression: this.binding.arg,
-      lazy: false
-    };
-  }
+ListenerGenerator.prototype._resolveModel = function _resolveModel (directives) {
+  var expRegex = /^[a-z_]+[0-9]*(\w*\.[a-z_]\w*)*$/i;
+  var model = find(directives, function (d) { return d.name === 'model' && expRegex.test(d.expression); });
 
-  if (isObject(this.binding.value) && this.binding.value.arg) {
-    return {
-      watchable: true,
-      expression: this.binding.value.arg,
-      lazy: false
-    };
-  }
-
-  var result = {
-    watchable: false,
-    expression: null,
-    lazy: false
-  };
-  var model = data.model || find(data.directives, function (d) { return d.name === 'model'; });
-  if (!model) {
-    return result;
-  }
-
-  result.expression = model.expression;
-  result.watchable = /^[a-z_]+[0-9]*(\w*\.[a-z_]\w*)*$/i.test(model.expression) &&
-                    this._isExistingPath(model.expression);
-  result.lazy = !! model.modifiers && model.modifiers.lazy;
-
-  return result;
+  return model && this._isExistingPath(model.expression) && model.expression;
 };
 
 /**
@@ -33351,7 +33270,7 @@ ListenerGenerator.prototype._hasFieldDependency = function _hasFieldDependency (
   if (isObject(rules)) {
     Object.keys(rules).forEach(function (r) { // eslint-disable-line
       if (/confirmed|after|before/.test(r)) {
-        fieldName = rules[r].split(',')[0];
+        fieldName = rules[r];
 
         return false;
       }
@@ -33426,13 +33345,9 @@ ListenerGenerator.prototype._checkboxListener = function _checkboxListener () {
    * Trigger the validation for a specific value.
    */
 ListenerGenerator.prototype._validate = function _validate (value) {
-  if ((this.component && this.component.disabled) || this.el.disabled) {
-    return Promise.resolve(true);
-  }
-
   return this.vm.$validator.validate(
     this.fieldName, value, this.scope || getScope(this.el)
-  );
+    ).catch(function (result) { return result; });
 };
 
   /**
@@ -33478,30 +33393,13 @@ ListenerGenerator.prototype._attachValidatorEvent = function _attachValidatorEve
   }
 };
 
-/**
- * Gets a listener that listens on bound models instead of elements.
- */
-ListenerGenerator.prototype._getModeledListener = function _getModeledListener () {
-    var this$1 = this;
-
-  if (!this.model.watchable) {
-    return null;
-  }
-
-  return function () {
-    this$1._validate(getPath(this$1.model.expression, this$1.vm));
-  };
-};
-
   /**
    * Determines a suitable listener for the element.
    */
 ListenerGenerator.prototype._getSuitableListener = function _getSuitableListener () {
   var listener;
   var overrides = {
-    // Models can be unwatchable and have a lazy modifier,
-    // so we make sure we listen on the proper event.
-    input: this.model.lazy ? 'change' : 'input',
+    input: 'input',
     blur: 'blur'
   };
 
@@ -33509,7 +33407,7 @@ ListenerGenerator.prototype._getSuitableListener = function _getSuitableListener
     overrides.input = 'change';
     listener = {
       names: ['change', 'blur'],
-      listener: this._getModeledListener() || this._inputListener
+      listener: this._inputListener
     };
   } else {
     // determine the suitable listener and events to handle
@@ -33528,7 +33426,7 @@ ListenerGenerator.prototype._getSuitableListener = function _getSuitableListener
       overrides.blur = null;
       listener = {
         names: ['change'],
-        listener: this._getModeledListener() || this._radioListener
+        listener: this._radioListener
       };
       break;
 
@@ -33537,14 +33435,14 @@ ListenerGenerator.prototype._getSuitableListener = function _getSuitableListener
       overrides.blur = null;
       listener = {
         names: ['change'],
-        listener: this._getModeledListener() || this._checkboxListener
+        listener: this._checkboxListener
       };
       break;
 
     default:
       listener = {
         names: ['input', 'blur'],
-        listener: this._getModeledListener() || this._inputListener
+        listener: this._inputListener
       };
       break;
     }
@@ -33568,21 +33466,8 @@ ListenerGenerator.prototype._attachComponentListeners = function _attachComponen
     this$1._validate(value);
   }, getDataAttribute(this.el, 'delay') || this.options.delay);
 
-  var events = getDataAttribute(this.el, 'validate-on') || this.options.events;
-  events.split('|').forEach(function (e) {
-    if (!e) {
-      return;
-    }
-    if (e === 'input') {
-      this$1.component.$on('input', this$1.componentListener);
-    } else if (e === 'blur') {
-      this$1.component.$on('blur', this$1.componentListener);
-    } else {
-      this$1.component.$on(e, this$1.componentListener);
-    }
-
-    this$1.componentPropUnwatch = this$1.component.$watch('value', this$1.componentListener);
-  });
+  this.component.$on('input', this.componentListener);
+  this.componentPropUnwatch = this.component.$watch('value', this.componentListener);
 };
 
 /**
@@ -33630,24 +33515,10 @@ ListenerGenerator.prototype._attachFieldListeners = function _attachFieldListene
 ListenerGenerator.prototype._resolveValueGetter = function _resolveValueGetter () {
     var this$1 = this;
 
-  if (this.model.watchable) {
-    return {
-      context: function () { return this$1.vm; },
-      // eslint-disable-next-line
-      getter: function (context) { 
-        return getPath(this$1.model.expression, context);
-      }
-    };
-  }
-
   if (this.component) {
     return {
       context: function () { return this$1.component; },
-      getter: function (context) {
-        var path = getDataAttribute(this$1.el, 'value-path');
-        if (path) {
-          return getPath(path, this$1.component);
-        }
+      getter: function getter(context) {
         return context.value;
       }
     };
@@ -33686,6 +33557,23 @@ ListenerGenerator.prototype._resolveValueGetter = function _resolveValueGetter (
   }
 };
 
+/*
+* Gets the arg string value, either from the directive or the expression value.
+*/
+ListenerGenerator.prototype._getArg = function _getArg () {
+  // Get it from the directive arg.
+  if (this.binding.arg) {
+    return this.binding.arg;
+  }
+
+  // Get it from v-model.
+  if (this.model) {
+    return this.model;
+  }
+
+  return isObject(this.binding.value) ? this.binding.value.arg : null;
+};
+
 /**
  * Attaches model watchers and extra listeners.
  */
@@ -33702,7 +33590,7 @@ ListenerGenerator.prototype._attachModelWatcher = function _attachModelWatcher (
       var debounced = debounce(function (value) {
         this$1.vm.$validator.validate(
           this$1.fieldName, value, this$1.scope || getScope(this$1.el)
-        );
+        ).catch(function (result) { return result; });
       }, getDataAttribute(this$1.el, 'delay') || this$1.options.delay);
       this$1.unwatch = this$1.vm.$watch(arg, debounced, { deep: true });
       // No need to attach it on element as it will use the vue watcher.
@@ -33743,8 +33631,9 @@ ListenerGenerator.prototype.attach = function attach () {
   }
 
   this._attachValidatorEvent();
-  if (this.model.watchable) {
-    this._attachModelWatcher(this.model.expression);
+  var arg = this._getArg();
+  if (arg) {
+    this._attachModelWatcher(arg);
     return;
   }
 
@@ -33757,7 +33646,6 @@ ListenerGenerator.prototype.attach = function attach () {
 ListenerGenerator.prototype.detach = function detach () {
   if (this.component) {
     this.component.$off('input', this.componentListener);
-    this.component.$off('blur', this.componentListener);
 
     if (isCallable(this.componentPropUnwatch)) {
       this.componentPropUnwatch();
@@ -33779,7 +33667,7 @@ ListenerGenerator.prototype.detach = function detach () {
 var listenersInstances = [];
 
 var makeDirective = function (options) { return ({
-  bind: function bind(el, binding, vnode) {
+  inserted: function inserted(el, binding, vnode) {
     if (! vnode.context.$validator) {
       var name = vnode.context.$options._componentTag;
       // eslint-disable-next-line
@@ -33890,7 +33778,7 @@ var index = {
   Validator: Validator,
   ErrorBag: ErrorBag,
   Rules: Rules,
-  version: '2.0.0-rc.6'
+  version: '2.0.0-rc.5'
 };
 
 return index;
@@ -44586,21 +44474,17 @@ Vue.component('cuenta-concepto-index', {
 'use strict';
 
 Vue.component('cuenta-contable-index', {
-    props: ['datos_contables', 'cuenta_contable_url', 'cuentas_contables'],
+    props: ['datos_contables', 'cuenta_contable_url', 'tipos_cuentas_contables'],
     data: function data() {
         return {
             'data': {
-                'cuentas_contables': this.cuentas_contables
+                'tipos_cuentas_contables': this.tipos_cuentas_contables
             },
             'form': {
-                'cuenta_contable_edit': {
-                    'tipo_cuenta_contable': {
-                        'descripcion': ''
-                    },
-                    'cuenta_contable': '',
-                    'con_prefijo': '',
-                    'id_int_cuenta_contable': ''
-
+                'tipo_cuenta_contable_edit': {
+                    'cuenta_contable': {
+                        'con_prefijo': false
+                    }
                 }
             },
             'guardando': false
@@ -44640,10 +44524,10 @@ Vue.component('cuenta-contable-index', {
             var self = this;
             var url = self.cuenta_contable_url;
             var data = {
-                id_int_tipo_cuenta_contable: self.form.cuenta_contable_edit.id_int_tipo_cuenta_contable,
-                prefijo: self.form.cuenta_contable_edit.prefijo,
-                cuenta_contable: self.form.cuenta_contable_edit.cuenta_contable,
-                con_prefijo: self.form.cuenta_contable_edit.con_prefijo
+                id_int_tipo_cuenta_contable: self.form.tipo_cuenta_contable_edit.id_int_tipo_cuenta_contable,
+                prefijo: self.form.tipo_cuenta_contable_edit.cuenta_contable.prefijo,
+                cuenta_contable: self.form.tipo_cuenta_contable_edit.cuenta_contable.cuenta_contable,
+                con_prefijo: self.form.tipo_cuenta_contable_edit.cuenta_contable.con_prefijo
             };
 
             $.ajax({
@@ -44655,7 +44539,7 @@ Vue.component('cuenta-contable-index', {
                     self.guardando = true;
                 },
                 success: function success(data, textStatus, xhr) {
-                    Vue.set(self.data, 'cuentas_contables', data.data.cuentas_contables);
+                    Vue.set(self.data, 'tipos_cuentas_contables', data.data.tipos_cuentas_contables);
                     swal({
                         type: 'success',
                         title: 'Correcto',
@@ -44672,11 +44556,11 @@ Vue.component('cuenta-contable-index', {
         update_cuenta_contable: function update_cuenta_contable() {
             var self = this;
             var data = {
-                con_prefijo: this.form.cuenta_contable_edit.con_prefijo,
-                prefijo: this.form.cuenta_contable_edit.prefijo,
-                cuenta_contable: this.form.cuenta_contable_edit.cuenta_contable
+                con_prefijo: this.form.tipo_cuenta_contable_edit.cuenta_contable.con_prefijo,
+                prefijo: this.form.tipo_cuenta_contable_edit.cuenta_contable.prefijo,
+                cuenta_contable: this.form.tipo_cuenta_contable_edit.cuenta_contable.cuenta_contable
             };
-            var url = self.cuenta_contable_url + '/' + this.form.cuenta_contable_edit.id_int_cuenta_contable;
+            var url = self.cuenta_contable_url + '/' + this.form.tipo_cuenta_contable_edit.cuenta_contable.id_int_cuenta_contable;
             $.ajax({
                 type: 'POST',
                 url: url,
@@ -44688,7 +44572,7 @@ Vue.component('cuenta-contable-index', {
                     self.guardando = true;
                 },
                 success: function success(data, textStatus, xhr) {
-                    Vue.set(self.data, 'cuentas_contables', data.data.cuentas_contables);
+                    Vue.set(self.data, 'tipos_cuentas_contables', data.data.tipos_cuentas_contables);
                     swal({
                         type: 'success',
                         title: 'Correcto',
@@ -44722,22 +44606,33 @@ Vue.component('cuenta-contable-index', {
         },
 
         editar: function editar(item) {
+            Vue.set(this.form.tipo_cuenta_contable_edit, 'id_int_tipo_cuenta_contable', item.id_int_tipo_cuenta_contable);
+            Vue.set(this.form.tipo_cuenta_contable_edit, 'descripcion', item.descripcion);
 
-            Vue.set(this.form.cuenta_contable_edit, 'cuenta_contable', item.cuenta_contable);
-            Vue.set(this.form.cuenta_contable_edit, 'tipo_cuenta_contable', item.tipo_cuenta_contable);
-            Vue.set(this.form.cuenta_contable_edit, 'id_int_cuenta_contable', item.id_int_cuenta_contable);
-            Vue.set(this.form.cuenta_contable_edit, 'con_prefijo', item.cuenta_contable.prefijo ? true : false);
+            Vue.set(this.form.tipo_cuenta_contable_edit.cuenta_contable, 'id_int_cuenta_contable', item.cuenta_contable.id_int_cuenta_contable);
+            Vue.set(this.form.tipo_cuenta_contable_edit.cuenta_contable, 'cuenta_contable', item.cuenta_contable.cuenta_contable);
+            Vue.set(this.form.tipo_cuenta_contable_edit.cuenta_contable, 'prefijo', item.cuenta_contable.prefijo);
+            Vue.set(this.form.tipo_cuenta_contable_edit.cuenta_contable, 'con_prefijo', item.cuenta_contable.prefijo ? true : false);
         },
 
         configurar: function configurar(item) {
-            Vue.set(this.form, 'cuenta_contable_edit', item);
-            Vue.set(this.form.cuenta_contable_edit, 'con_prefijo', false);
+            Vue.set(this.form.tipo_cuenta_contable_edit, 'id_int_tipo_cuenta_contable', item.id_tipo_cuenta_contable);
+            Vue.set(this.form.tipo_cuenta_contable_edit, 'descripcion', item.descripcion);
+
+            Vue.set(this.form.tipo_cuenta_contable_edit.cuenta_contable, 'id_int_cuenta_contable', '');
+            Vue.set(this.form.tipo_cuenta_contable_edit.cuenta_contable, 'cuenta_contable', '');
+            Vue.set(this.form.tipo_cuenta_contable_edit.cuenta_contable, 'prefijo', '');
+            Vue.set(this.form.tipo_cuenta_contable_edit.cuenta_contable, 'con_prefijo', false);
         },
 
         reset_form: function reset_form() {
-            Vue.set(this.form.cuenta_contable_edit, 'tipo_cuenta_contable', '');
-            Vue.set(this.form.cuenta_contable_edit, 'cuenta_contable', '');
-            Vue.set(this.form.cuenta_contable_edit, 'con_prefijo', false);
+            Vue.set(this.form.tipo_cuenta_contable_edit, 'id_int_tipo_cuenta_contable', '');
+            Vue.set(this.form.tipo_cuenta_contable_edit, 'descripcion', '');
+
+            Vue.set(this.form.tipo_cuenta_contable_edit.cuenta_contable, 'id_int_cuenta_contable', '');
+            Vue.set(this.form.tipo_cuenta_contable_edit.cuenta_contable, 'cuenta_contable', '');
+            Vue.set(this.form.tipo_cuenta_contable_edit.cuenta_contable, 'prefijo', '');
+            Vue.set(this.form.tipo_cuenta_contable_edit.cuenta_contable, 'con_prefijo', false);
         }
     }
 });
@@ -45165,11 +45060,9 @@ Vue.component('datos-contables-edit', {
         };
     },
 
-    computed: {
-        funcion: function funcion() {
-            Vue.set(this.data.datos_contables, 'manejo_almacenes', this.data.datos_contables.manejo_almacenes == '0' ? false : this.data.datos_contables.manejo_almacenes == '1' ? true : this.data.datos_contables.manejo_almacenes);
-            Vue.set(this.data.datos_contables, 'costo_en_tipo_gasto', this.data.datos_contables.costo_en_tipo_gasto == '0' ? false : this.data.datos_contables.costo_en_tipo_gasto == '1' ? true : this.data.datos_contables.costo_en_tipo_gasto);
-        }
+    created: function created() {
+        Vue.set(this.data.datos_contables, 'manejo_almacenes', this.data.datos_contables.manejo_almacenes == '0' ? false : this.data.datos_contables.manejo_almacenes == '1' ? true : this.data.datos_contables.manejo_almacenes);
+        Vue.set(this.data.datos_contables, 'costo_en_tipo_gasto', this.data.datos_contables.costo_en_tipo_gasto == '0' ? false : this.data.datos_contables.costo_en_tipo_gasto == '1' ? true : this.data.datos_contables.costo_en_tipo_gasto);
     },
 
     methods: {
@@ -45448,17 +45341,17 @@ Vue.component('poliza-generada-edit', {
 'use strict';
 
 Vue.component('poliza-tipo-create', {
-    props: ['cuentas_contables', 'tipos_movimiento', 'transacciones_interfaz'],
+    props: ['tipos_cuentas_contables', 'tipos_movimiento', 'polizas_tipo_sao'],
     data: function data() {
         return {
             'form': {
                 'poliza_tipo': {
-                    'id_transaccion_interfaz': '',
+                    'id_poliza_tipo_sao': '',
                     'movimientos': [],
                     'inicio_vigencia': ''
                 },
                 'movimiento': {
-                    'id_cuenta_contable': '',
+                    'id_tipo_cuenta_contable': '',
                     'id_tipo_movimiento': ''
                 },
                 'errors': []
@@ -45489,19 +45382,19 @@ Vue.component('poliza-tipo-create', {
             return a && b;
         },
 
-        cuentas_contables_disponibles: function cuentas_contables_disponibles() {
+        tipos_cuentas_contables_disponibles: function tipos_cuentas_contables_disponibles() {
             var self = this;
             var result = [];
-            $.each(this.cuentas_contables, function (index, cuenta_contable) {
+            $.each(this.tipos_cuentas_contables, function (index, tipo_cuenta_contable) {
                 var existe = false;
                 self.form.poliza_tipo.movimientos.forEach(function (movimiento) {
-                    if (cuenta_contable.id_int_cuenta_contable == movimiento.id_cuenta_contable) {
+                    if (tipo_cuenta_contable.id_tipo_cuenta_contable == movimiento.id_tipo_cuenta_contable) {
                         existe = true;
                     }
                 });
 
                 if (!existe) {
-                    result.push(cuenta_contable);
+                    result.push(tipo_cuenta_contable);
                 }
             });
 
@@ -45536,11 +45429,11 @@ Vue.component('poliza-tipo-create', {
         },
 
         add_movimiento: function add_movimiento() {
-            var id_cuenta_contable = $('#id_cuenta_contable').val();
+            var id_tipo_cuenta_contable = $('#id_tipo_cuenta_contable').val();
             var id_tipo_movimiento = $('#id_tipo_movimiento').val();
 
             this.form.poliza_tipo.movimientos.push({
-                id_cuenta_contable: id_cuenta_contable,
+                id_tipo_cuenta_contable: id_tipo_cuenta_contable,
                 id_tipo_movimiento: id_tipo_movimiento
             });
             this.reset_movimiento();
@@ -45550,19 +45443,19 @@ Vue.component('poliza-tipo-create', {
         },
 
         reset_movimiento: function reset_movimiento() {
-            Vue.set(this.form.movimiento, 'id_cuenta_contable', '');
+            Vue.set(this.form.movimiento, 'id_tipo_cuenta_contable', '');
             Vue.set(this.form.movimiento, 'id_tipo_movimiento', '');
         },
 
         check_duplicity: function check_duplicity() {
             var self = this;
-            var id = self.form.poliza_tipo.id_transaccion_interfaz;
+            var id = self.form.poliza_tipo.id_poliza_tipo_sao;
             var url = App.host + '/sistema_contable/poliza_tipo/findBy';
             $.ajax({
                 type: 'GET',
                 url: url,
                 data: {
-                    'attribute': 'id_transaccion_interfaz',
+                    'attribute': 'id_poliza_tipo_sao',
                     'value': id,
                     'with': 'movimientos'
                 },
@@ -45570,12 +45463,12 @@ Vue.component('poliza-tipo-create', {
                     if (response.data.poliza_tipo != null) {
                         var body = "";
                         $.each(response.data.poliza_tipo.movimientos, function (index, movimiento) {
-                            body += "<tr><td>" + (index + 1) + "</td><td style='text-align: left'>" + self.getTipoCuentaDescription(movimiento.id_cuenta_contable) + "</td><td>" + self.tipos_movimiento[movimiento.id_tipo_movimiento] + "</td></tr>";
+                            body += "<tr><td>" + (index + 1) + "</td><td style='text-align: left'>" + self.getTipoCuentaDescription(movimiento.id_tipo_cuenta_contable) + "</td><td>" + self.tipos_movimiento[movimiento.id_tipo_movimiento] + "</td></tr>";
                         });
 
                         swal({
                             title: "Advertencia",
-                            html: "Ya existe una Plantilla para el tipo de Póliza seleccionado con un estado <b>" + response.data.poliza_tipo.vigencia + "</b><br>" + "Con un inicio de vigencia el día <b>" + response.data.poliza_tipo.inicio_vigencia.split(" ")[0] + "</b><br><br>" + "<table class='table table-striped small'>" + "   <thead>" + "   <tr>" + "       <th style='text-align: center'>#</th>" + "       <th style='text-align: center'>Cuenta Contable</th>" + "       <th style='text-align: center'>Tipo</th>" + "   </tr>" + "   </thead>" + "   <tbody>" + body + "   </tbody>" + "</table>" + "<b>¿Deseas continuar con el registro?</b><br>" + "<small><small>(Se establecerá el fin de vigencia para la plantilla existente)</small></small>",
+                            html: "Ya existe una Plantilla para el tipo de Póliza seleccionado con un estado <b>" + response.data.poliza_tipo.vigencia + "</b><br>" + "Con un inicio de vigencia el día <b>" + response.data.poliza_tipo.inicio_vigencia.split(" ")[0] + "</b><br><br>" + "<table class='table table-striped small'>" + "   <thead>" + "   <tr>" + "       <th style='text-align: center'>#</th>" + "       <th style='text-align: center'>Tipo de Cuenta Contable</th>" + "       <th style='text-align: center'>Tipo</th>" + "   </tr>" + "   </thead>" + "   <tbody>" + body + "   </tbody>" + "</table>" + "<b>¿Deseas continuar con el registro?</b><br>" + "<small><small>(Se establecerá el fin de vigencia para la plantilla existente)</small></small>",
                             type: "warning",
                             showCancelButton: true,
                             cancelButtonText: 'No, Cancelar',
@@ -45620,7 +45513,7 @@ Vue.component('poliza-tipo-create', {
                 success: function success(data, textStatus, xhr) {
                     swal({
                         title: '¡Correcto!',
-                        html: "Se ha creado la plantilla para el Tipo de Póliza<br>" + "<b>" + self.transacciones_interfaz[self.form.poliza_tipo.id_transaccion_interfaz] + "</b>",
+                        html: "Se ha creado la plantilla para el Tipo de Póliza<br>" + "<b>" + self.polizas_tipo_sao[self.form.poliza_tipo.id_poliza_tipo_sao] + "</b>",
                         type: "success"
                     });
                     window.location = xhr.getResponseHeader('Location');
@@ -45637,9 +45530,9 @@ Vue.component('poliza-tipo-create', {
 
         getTipoCuentaDescription: function getTipoCuentaDescription(id) {
             var result = "";
-            $.each(this.cuentas_contables, function (index, cuenta_contable) {
-                if (cuenta_contable.id_int_cuenta_contable == id) {
-                    result = cuenta_contable.tipo_cuenta_contable.descripcion;
+            $.each(this.tipos_cuentas_contables, function (index, tipo_cuenta_contable) {
+                if (tipo_cuenta_contable.id_tipo_cuenta_contable == id) {
+                    result = tipo_cuenta_contable.descripcion;
                 }
             });
             return result;

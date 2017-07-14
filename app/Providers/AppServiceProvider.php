@@ -53,8 +53,8 @@ class AppServiceProvider extends ServiceProvider
         );
 
         $this->app->bind(
-            \Ghi\Domain\Core\Contracts\Contabilidad\TransaccionInterfazRepository::class,
-            \Ghi\Domain\Core\Repositories\Contabilidad\EloquentTransaccionInterfazRepository::class
+            \Ghi\Domain\Core\Contracts\Contabilidad\PolizaTipoSAORepository::class,
+            \Ghi\Domain\Core\Repositories\Contabilidad\EloquentPolizaTipoSAORepository::class
         );
 
         $this->app->bind(
