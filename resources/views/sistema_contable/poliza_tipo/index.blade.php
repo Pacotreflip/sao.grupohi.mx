@@ -23,7 +23,7 @@
                 <div class="box-body">
                     <div class="col-sm-12">
                         <div class="row table-responsive">
-                            <table  class="table table-bordered table-striped dataTable index_table" role="grid"
+                            <table  class="table table-bordered table-striped dataTable index_table small" role="grid"
                                    aria-describedby="polizas_tipo_info">
                                 <thead>
                                 <tr role="row">

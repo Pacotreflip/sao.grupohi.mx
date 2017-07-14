@@ -10,7 +10,7 @@
         <div class="col-md-12">
             <div class="box box-info">
                 <div class="box-header with-border">
-                    <h3 class="box-title">Opciones de Búusqueda</h3>
+                    <h3 class="box-title">Opciones de Búsqueda</h3>
                 </div>
                 <div class="box-body">
                     {!! Form::model(Request::only(['fechas', 'estatus']), ['method' => 'GET']) !!}
