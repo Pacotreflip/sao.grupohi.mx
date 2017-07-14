@@ -41,7 +41,7 @@
             </a>
             <ul class="treeview-menu">
                 <li ><a href="{{route('sistema_contable.datos_contables.edit', $currentObra->datosContables)}}"><i class='fa fa-circle-o'></i> <span>Configuración Contable</span></a></li>
-                <li ><a href="{{route('sistema_contable.poliza_generada.index')}}"><i class='fa fa-circle-o'></i> <span>Pólizas Generadas</span></a></li>
+                <li ><a href="{{route('sistema_contable.poliza_generada.index')}}"><i class='fa fa-circle-o'></i> <span>Pre-Pólizas Generadas</span></a></li>
             </ul>
         </li>
 

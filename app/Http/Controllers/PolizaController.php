@@ -55,7 +55,7 @@ class PolizaController extends Controller
 
     public function show($id)
     {
-        $polizas = $this->poliza->find($id);
+        $polizas = $this->poliza->with('polizaMovimientos')->find($id);
         return view('sistema_contable.poliza_generada.show')->with('poliza', $polizas);
     }
 

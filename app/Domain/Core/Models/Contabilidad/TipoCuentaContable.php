@@ -3,7 +3,6 @@
 namespace Ghi\Domain\Core\Models\Contabilidad;
 
 use Ghi\Domain\Core\Models\Scopes\ObraScope;
-use Ghi\Domain\Core\Models\Transacciones\Tipo;
 use Ghi\Domain\Core\Models\User;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -23,7 +22,8 @@ class TipoCuentaContable extends Model
         'registro',
         'id_obra',
         'motivo',
-        'tipo'
+        'tipo',
+        'id_naturaleza_poliza'
     ];
     protected $dates = ['deleted_at'];
 
@@ -52,6 +52,10 @@ class TipoCuentaContable extends Model
         return $this->hasOne(CuentaContable::class, 'id_int_tipo_cuenta_contable')->where('Contabilidad.int_cuentas_contables.estatus', '=', 1);
     }
 
+    public function naturalezaPoliza() {
+        return $this->belongsTo(NaturalezaPoliza::class, 'id_naturaleza_poliza');
+
+    }
     /**
      * @return string
      */
