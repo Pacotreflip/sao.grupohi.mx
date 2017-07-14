@@ -64,6 +64,7 @@ class CuentaMaterialController extends Controller
 
     public function store(Request $request) {
         $item = $this->cuenta_material->create($request->all());
+        //dd(response()->json(['data' => ['cuenta_material' => $item]],200));
         return response()->json(['data' => ['cuenta_material' => $item]],200);
     }
 }
