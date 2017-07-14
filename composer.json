@@ -13,7 +13,7 @@
         "dingo/api": "1.0.*@dev",
         "ghidev/fpdf": "dev-master",
         "laravelcollective/html": "^5.2.0",
-        "zizaco/entrust": "5.2.x-dev"
+        "zizaco/entrust": "dev-laravel-5"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",

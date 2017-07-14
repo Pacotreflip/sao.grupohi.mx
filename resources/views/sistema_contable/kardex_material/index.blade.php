@@ -73,14 +73,14 @@
                                             </thead>
                                             <tbody>
                                             <tr v-for="(item, index) in data.items">
-                                                <td>@{{ index }}</td>
+                                                <td>@{{ index +1  }}</td>
                                                 <td>@{{ (new Date(item.transaccion.FechaHoraRegistro)).dateFormat() }}</td>
                                                 <td>@{{ item.id_transaccion }}</td>
-                                                <td v-if="item.transaccion.tipo_transaccion == 33">@{{ parseFloat(item.cantidad) }} / @{{ parseFloat(item.precio_unitario )}}</td>
+                                                <td v-if="item.transaccion.tipo_transaccion == 33" style="text-align: right"> @{{ parseFloat(item.cantidad) }}  / $@{{ parseFloat(item.precio_unitario )}}</td>
                                                 <td v-else ></td>
-                                                <td v-if="item.transaccion.tipo_transaccion == 34">@{{ parseFloat(item.cantidad) }} / @{{ parseFloat(item.precio_unitario ) }}</td>
+                                                <td v-if="item.transaccion.tipo_transaccion == 34" style="text-align: right" >@{{ parseFloat(item.cantidad) }} / $@{{ parseFloat(item.precio_unitario) }}</td>
                                                 <td v-else ></td>
-                                                <td>@{{ parseFloat(item.cantidad) }}  /  @{{ item.cantidad * item.precio_unitario }}</td>
+                                                <td style="text-align: right" >@{{ parseFloat(item.cantidad) }}  /  $@{{ item.cantidad * item.precio_unitario }}</td>
                                             </tr>
                                             </tbody>
                                             <tfoot>
