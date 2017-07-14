@@ -6,6 +6,7 @@ use Dingo\Api\Routing\Helpers;
 use Ghi\Domain\Core\Contracts\Contabilidad\CuentaContableRepository;
 use Ghi\Domain\Core\Contracts\Contabilidad\PolizaRepository;
 use Ghi\Domain\Core\Contracts\Contabilidad\TipoCuentaContableRepository;
+use Ghi\Domain\Core\Models\Contabilidad\Poliza;
 use Illuminate\Http\Request;
 
 class PolizaController extends Controller
@@ -36,7 +37,7 @@ class PolizaController extends Controller
 
     public function show($id)
     {
-        $polizas = $this->poliza->find($id);
+        $polizas = $this->poliza->with('polizaMovimientos')->find($id);
         return view('sistema_contable.poliza_generada.show')->with('poliza', $polizas);
     }
 

@@ -1,6 +1,6 @@
 @extends('sistema_contable.layout')
 @section('title', 'Pólizas Generadas')
-@section('contentheader_title', 'PÓLIZAS GENERADAS')
+@section('contentheader_title', 'PRE-PÓLIZAS GENERADAS')
 @section('contentheader_description', '(EDICIÓN)')
 
 @section('main-content')
@@ -22,7 +22,7 @@
                     <div class="col-md-12">
                         <div class="box box-success">
                             <div class="box-header with-border">
-                                <h3 class="box-title">Detalle de Póliza</h3>
+                                <h3 class="box-title">Detalle de Pre-Póliza</h3>
                             </div>
                             <form id="form_poliza" @submit.prevent="validateForm('form_poliza','confirm_save')"
                                   data-vv-scope="form_poliza">
@@ -31,14 +31,13 @@
 
                                         <table class="table table-bordered">
                                             <tr>
-                                                <th  class="bg-gray-light">Póliza:<br><label>{{ $poliza->transaccionInterfaz}}</label></th>
+                                                <th  class="bg-gray-light">Pre-Póliza:<br><label>{{ $poliza->transaccionInterfaz}}</label></th>
                                                 <th class="bg-gray-light">Fecha de Solicitud:<br><label>{{ $poliza->created_at->format('Y-m-d h:i:s a')}}</label></th>
-                                                <th  class="bg-gray-light">Usuario Solicita:<br><label> {{$poliza->usuario_solicita }}</label>
-                                                </th>
+                                                <th  class="bg-gray-light">Usuario Solicita:<br><label> {{$poliza->usuario_solicita }}</label></th>
+                                                <th class="bg-gray-light">Cuadre:<br><label>$ {{number_format($poliza->cuadre,'2','.',',')}}</label></th>
 
                                             </tr>
                                             <tr>
-                                                <th class="bg-gray-light">Cuadre:<br><label>$ {{number_format($poliza->cuadre,'2','.',',')}}</label></th>
                                                 <th class="bg-gray-light">Estatus:<br><label>   @if($poliza->estatus_string=='Registrada') <span class="label bg-blue">Registrada</span>@endif
                                                         @if($poliza->estatus_string=='Lanzada') <span class="label bg-green">Lanzada</span>@endif
                                                         @if($poliza->estatus_string=='No lanzada') <span class="label bg-yellow">No lanzada</span>@endif
@@ -48,8 +47,20 @@
                                                     Póliza Contpaq:<br>
                                                     <label>@if($poliza->id_poliza_contpaq>0){{$poliza->id_poliza_contpaq}}@else N/A @endif</label>
                                                 </th>
+                                                <th class="bg-gray-light">
+                                                    Tipo de Transacción:
+                                                    <br><label> {{ $poliza->tipoPolizaContpaq}}</label>
+                                                </th>
+                                                <th class="bg-gray-light">
+                                                    Número de Folio:
+                                                    <br><label> {{ $poliza->transacciones->numero_folio}}</label>
+                                                </th>
                                             </tr>
                                             <tr>
+                                                <th class="bg-gray-light">
+                                                    Tipo Transacción Antecede:
+                                                    <br><label> {{ $poliza->transacciones->tipoTransaccion}}</label>
+                                                </th>
                                                 <th class="bg-gray-light" colspan="3" class="bg-gray-light form-group" :class="{'has-error': validation_errors.has('form_poliza.Concepto')}">
                                                     Concepto:<br>
                                                     <textarea name="Concepto" type="text" v-validate="'required'"
@@ -58,6 +69,7 @@
                                                     <label class="help"
                                                            v-show="validation_errors.has('form_poliza.Concepto')">@{{ validation_errors.first('form_poliza.Concepto') }}</label>
                                                 </th>
+
                                             </tr>
                                         </table>
 
@@ -74,7 +86,7 @@
                                                 <th class="bg-gray-light">Concepto</th>
                                                 <th class="bg-gray-light">
                                                     <button class="btn-xs btn-success" type="button"
-                                                            @click="show_add_movimiento"><i class="fa fa-plus"></i>
+                                                            @click="show_add_movimiento" title="Nuevo"><i class="fa fa-plus"></i>
                                                     </button>
                                                 </th>
                                             </tr>
@@ -148,7 +160,7 @@
                                                 </td>
                                                 <th class="bg-gray-light">
                                                     <button class="btn-xs btn-danger" type="button"
-                                                            @click="confirm_remove_movimiento(index)"><i
+                                                            @click="confirm_remove_movimiento(index)" title="Eliminar"><i
                                                                 class="fa fa-remove"></i></button>
                                                 </th>
                                             </tr>
@@ -169,7 +181,7 @@
                                             </tfoot>
                                         </table>
                                         <div class="col-sm-12" style="text-align: right">
-                                            <h4><b>Total de la Póliza:</b>
+                                            <h4><b>Total de la Pre-Póliza:</b>
                                                 $ @{{ (parseFloat(data.poliza_edit.total)).formatMoney(2,'.',',')}}</h4>
                                         </div>
                                     </div>

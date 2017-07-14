@@ -54,7 +54,7 @@ Breadcrumbs::register('sistema_contable.cuenta_contable.index', function ($bread
  */
 Breadcrumbs::register('sistema_contable.poliza_generada.index', function ($breadcrumb) {
     $breadcrumb->parent('sistema_contable.index');
-    $breadcrumb->push('PÓLIZAS GENERADAS', route('sistema_contable.poliza_generada.index'));
+    $breadcrumb->push('PRE-PÓLIZAS GENERADAS', route('sistema_contable.poliza_generada.index'));
 });
 Breadcrumbs::register('sistema_contable.poliza_generada.show', function ($breadcrumb, $poliza) {
     $breadcrumb->parent('sistema_contable.poliza_generada.index');

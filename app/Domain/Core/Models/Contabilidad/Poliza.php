@@ -6,6 +6,7 @@ namespace Ghi\Domain\Core\Models\Contabilidad;
 use Ghi\Core\Facades\Context;
 use Ghi\Domain\Core\Models\BaseModel;
 use Ghi\Domain\Core\Models\Scopes\ObraCadecoScope;
+use Ghi\Domain\Core\Models\Transacciones\Transaccion;
 use Ghi\Domain\Core\Models\User;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -80,7 +81,7 @@ class Poliza extends BaseModel
      */
     public function polizaMovimientos()
     {
-        return $this->hasMany(PolizaMovimiento::class, 'id_int_poliza');
+        return $this->hasMany(PolizaMovimiento::class, 'id_int_poliza')->orderBy('id_tipo_movimiento_poliza','asc')->orderBy('importe','desc');
     }
 
     /**

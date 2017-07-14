@@ -1,6 +1,6 @@
 @extends('sistema_contable.layout')
 @section('title', 'Póliza Generada')
-@section('contentheader_title', 'PÓLIZAS GENERADAS')
+@section('contentheader_title', 'PRE-PÓLIZAS GENERADAS')
 @section('contentheader_description', '(LISTA)')
 
 @section('main-content')
@@ -10,7 +10,7 @@
         <div class="col-md-12">
             <div class="box box-success">
                 <div class="box-header with-border">
-                    <h3 class="box-title">Pólizas Generadas</h3>
+                    <h3 class="box-title">Pre-Pólizas Generadas</h3>
                 </div>
                 <div class="box-body">
                     <div class="table-responsive">
@@ -19,6 +19,7 @@
                             <tr>
                                 <th>#</th>
                                 <th>Tipo de Póliza</th>
+                                <th>Tipo de Transaccion</th>
                                 <th>Concepto</th>
                                 <th>Total</th>
                                 <th>Cuadre</th>
@@ -34,6 +35,7 @@
 
                                     <td>{{ $index+1}}</td>
                                     <td>{{ $item->transaccionInterfaz}}</td>
+                                    <td>{{ $item->tipoPolizaContpaq}}</td>
                                     <td>{{ $item->concepto}}</td>
                                     <td class="numerico">$ {{number_format($item->total,'2','.',',')}}</td>
                                     <td class="numerico">$ {{number_format($item->cuadre,'2','.',',')}}</td>

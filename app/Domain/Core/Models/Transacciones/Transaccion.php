@@ -2,6 +2,7 @@
 
 namespace Ghi\Domain\Core\Models\Transacciones;
 
+use Ghi\Domain\Core\Models\TipoTransaccion;
 use Illuminate\Database\Eloquent\Model;
 
 class Transaccion extends Model
@@ -36,5 +37,10 @@ class Transaccion extends Model
     public function items()
     {
         return $this->hasMany(Item::class, 'id_transaccion', 'id_transaccion');
+    }
+
+      public function tipoTransaccion(){
+
+        return $this->belongsTo(TipoTransaccion::class, 'tipo_transaccion', 'tipo_transaccion')->where('opciones','=',$this->opciones);
     }
 }

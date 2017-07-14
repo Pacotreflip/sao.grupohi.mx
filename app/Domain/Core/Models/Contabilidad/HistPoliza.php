@@ -3,6 +3,7 @@
 namespace Ghi\Domain\Core\Models\Contabilidad;
 
 
+use Ghi\Domain\Core\Models\Transacciones\Transaccion;
 use Ghi\Domain\Core\Models\User;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -66,7 +67,7 @@ class HistPoliza extends Model
      */
     public function polizaMovimientos()
     {
-        return $this->hasMany(HistPolizaMovimiento::class, 'id_hist_int_poliza');
+        return $this->hasMany(HistPolizaMovimiento::class, 'id_hist_int_poliza')->orderBy('id_tipo_movimiento_poliza','asc')->orderBy('importe','desc');
     }
 
     /**
