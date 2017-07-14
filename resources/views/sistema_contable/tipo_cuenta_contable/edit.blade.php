@@ -1,14 +1,15 @@
 @extends('sistema_contable.layout')
 @section('title', 'Plantillas de Póliza')
 @section('contentheader_title', 'TIPO CUENTA CONTABLE')
-@section('contentheader_description', '(NUEVA)')
+@section('contentheader_description', '(EDICIÓN)')
 
 @section('main-content')
-    {!! Breadcrumbs::render('sistema_contable.tipo_cuenta_contable.create') !!}
+    {!! Breadcrumbs::render('sistema_contable.tipo_cuenta_contable.edit',$tipo_cuenta_contable) !!}
 
     <div id="app">
         <global-errors></global-errors>
-        <tipo-cuenta-contable-create
+        <tipo-cuenta-contable-update
+                :tipo_cuenta_contable="{{$tipo_cuenta_contable->toJson()}}"
                 v-cloak
                 inline-template>
             <section>
@@ -20,7 +21,7 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label for="descripcion" class="control-label">Descripción Tipo Cuenta Contable</label>
-                                <input type="text" name="descripcion" class="form-control" id="descripcion" v-model="form.tipo_cuenta_contable.descripcion">
+                                <input type="text" name="descripcion" class="form-control" id="descripcion" v-model="form.tipo_cuenta_contable.descripcion" readonly="true">
                             </div>
                         </div>
                         <div class="col-md-6">
@@ -53,6 +54,6 @@
                 </div>
 
             </section>
-        </tipo-cuenta-contable-create>
+        </tipo-cuenta-contable-update>
     </div>
 @endsection

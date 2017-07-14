@@ -77,4 +77,20 @@ class TipoCuentaContableController extends Controller
         $this->tipo_cuenta_contable->delete($request->only('motivo'), $id);
         return $this->response()->accepted();
     }
+
+    public function edit($id){
+        $tipo_cuenta_contable = $this->tipo_cuenta_contable->find($id);
+
+
+        return view('sistema_contable.tipo_cuenta_contable.edit')
+            ->with('tipo_cuenta_contable',$tipo_cuenta_contable);
+    }
+    public function update(Request $request,$id){
+
+        $data = $request->all();
+
+        $tipo_cuenta_contable = $this->tipo_cuenta_contable->update($data, $id);
+
+        return response()->json(['data' => ['tipo_cuenta_contable' => $tipo_cuenta_contable]],200);
+    }
 }

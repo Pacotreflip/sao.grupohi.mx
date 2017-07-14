@@ -35,6 +35,11 @@ Breadcrumbs::register('sistema_contable.tipo_cuenta_contable.create', function (
     $breadcrumb->parent('sistema_contable.tipo_cuenta_contable.index');
     $breadcrumb->push('CREAR', route('sistema_contable.tipo_cuenta_contable.create'));
 });
+
+Breadcrumbs::register('sistema_contable.tipo_cuenta_contable.edit', function ($breadcrumb, $tipo_cuenta_contable) {
+    $breadcrumb->parent('sistema_contable.tipo_cuenta_contable.show', $tipo_cuenta_contable);
+    $breadcrumb->push('EDICIÓN', route('sistema_contable.tipo_cuenta_contable.edit', $tipo_cuenta_contable));
+});
 Breadcrumbs::register('sistema_contable.tipo_cuenta_contable.show', function ($breadcrumb, $tipo_cuenta_contable) {
     $breadcrumb->parent('sistema_contable.tipo_cuenta_contable.index');
     $breadcrumb->push(mb_strtoupper($tipo_cuenta_contable->descripcion), route('sistema_contable.tipo_cuenta_contable.show', $tipo_cuenta_contable));

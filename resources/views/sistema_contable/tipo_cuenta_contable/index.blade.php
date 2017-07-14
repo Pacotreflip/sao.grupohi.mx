@@ -31,7 +31,7 @@
                                     <th class="sorting_asc" tabindex="0" aria-controls="tipo_cuenta" aria-sort="ascending">#</th>
                                     <th class="sorting" tabindex="0" aria-controls="tipo_cuenta">Descripción</th>
                                     <th class="sorting" tabindex="0" aria-controls="tipo_cuenta">Registró</th>
-                                    <th class="sorting" tabindex="0" aria-controls="tipo_cuenta">Naturaleza de Póliza</th>
+                                    <th class="sorting" tabindex="0" aria-controls="tipo_cuenta">Naturaleza de Cuenta</th>
                                     <th class="sorting" tabindex="0" aria-controls="tipo_cuenta">Fecha y Hora de Registro</th>
                                     <th class="sorting" tabindex="0" aria-controls="tipo_cuenta">Asignación a Cuenta Contable</th>
                                     <th class="sorting" tabindex="0" aria-controls="tipo_cuenta">Acciones</th>
@@ -55,12 +55,21 @@
                                         </td>
                                         <td style="min-width: 90px;max-width: 90px">
                                             <div class="btn-group">
-                                                <a title="Ver" href="{{ route('sistema_contable.tipo_cuenta_contable.show', $item->id_tipo_cuenta_contable) }}" type="button" class="btn btn-xs btn-default">
-                                                    <i class="fa fa-eye"></i>
+
+                                                    <a title="Ver" href="{{ route('sistema_contable.tipo_cuenta_contable.show', $item->id_tipo_cuenta_contable) }}">
+                                                        <button title="button" type="button" class="btn-xs btn-default">
+                                                            <i class="fa fa-eye"></i>
+                                                        </button>
+                                                    </a>
+
+
+                                                <a title="Editar" href="{{ route('sistema_contable.tipo_cuenta_contable.edit', $item->id_tipo_cuenta_contable) }}">
+                                                    <button title="button" type="button" class="btn-xs btn-info">
+                                                        <i class="fa fa-edit"></i>
+                                                    </button>
                                                 </a>
-                                                <button title="Eliminar" type="button" class="btn btn-xs btn-danger" onclick=" delete_tipo_cuenta_contable({{$item->id_tipo_cuenta_contable}})">
-                                                    <i class="fa fa-trash"></i>
-                                                </button>
+                                                    <button type="button" title="Eliminar" class="btn-xs btn-danger" onclick="delete_tipo_cuenta_contable({{$item->id_tipo_cuenta_contable}})"><i class="fa fa-trash"></i></button>
+
                                             </div>
                                         </td>
                                     </tr>
@@ -71,7 +80,7 @@
                                     <th>#</th>
                                     <th>Descripción</th>
                                     <th>Registró</th>
-                                    <th >Naturaleza de Póliza</th>
+                                    <th >Naturaleza de Cuenta</th>
                                     <th>Fecha y Hora de Registro</th>
                                     <th>Asignación a Cuenta Contable</th>
                                     <th>Acciones</th>

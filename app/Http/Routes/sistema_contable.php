@@ -29,7 +29,9 @@ Route::group(['prefix' => 'sistema_contable'], function () {
     Route::get('tipo_cuenta_contable/create', 'TipoCuentaContableController@create')->name('sistema_contable.tipo_cuenta_contable.create');
     Route::delete('tipo_cuenta_contable/{id}', 'TipoCuentaContableController@destroy')->name('sistema_contable.tipo_cuenta_contable.destroy')->where(['id'=>'[0-9]+']);
     Route::get('tipo_cuenta_contable/{id}', 'TipoCuentaContableController@show')->name('sistema_contable.tipo_cuenta_contable.show')->where(['id'=>'[0-9]+']);
+    Route::get('tipo_cuenta_contable/{id}/edit', 'TipoCuentaContableController@edit')->name('sistema_contable.tipo_cuenta_contable.edit')->where(['id'=>'[0-9]+']);
     Route::post('tipo_cuenta_contable', 'TipoCuentaContableController@store');
+    Route::patch('tipo_cuenta_contable/{id}', 'TipoCuentaContableController@update')->name('sistema_contable.tipo_cuenta_contable.update')->where(['id' => '[0-9]+']);
 
     /**
      * Datos Contables

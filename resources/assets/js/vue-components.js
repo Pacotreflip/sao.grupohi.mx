@@ -7,6 +7,7 @@ require('./vue-components/select2');
  */
 require('./vue-components/Contabilidad/poliza_tipo/poliza-tipo-create');
 require('./vue-components/Contabilidad/tipo_cuenta_contable/tipo-cuenta-contable-create');
+require('./vue-components/Contabilidad/tipo_cuenta_contable/tipo-cuenta-contable-update');
 require('./vue-components/Contabilidad/cuenta_contable/index');
 require('./vue-components/Contabilidad/poliza_generada/poliza-generada-edit');
 require('./vue-components/Contabilidad/cuenta_concepto/index');

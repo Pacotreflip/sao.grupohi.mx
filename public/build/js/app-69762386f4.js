@@ -36338,6 +36338,7 @@ require('./vue-components/select2');
  */
 require('./vue-components/Contabilidad/poliza_tipo/poliza-tipo-create');
 require('./vue-components/Contabilidad/tipo_cuenta_contable/tipo-cuenta-contable-create');
+require('./vue-components/Contabilidad/tipo_cuenta_contable/tipo-cuenta-contable-update');
 require('./vue-components/Contabilidad/cuenta_contable/index');
 require('./vue-components/Contabilidad/poliza_generada/poliza-generada-edit');
 require('./vue-components/Contabilidad/cuenta_concepto/index');
@@ -36352,7 +36353,7 @@ require('./vue-components/Contabilidad/datos_contables/edit');
 require('./vue-components/Compras/requisicion/create');
 require('./vue-components/Compras/requisicion/edit');
 
-},{"./vue-components/Compras/requisicion/create":31,"./vue-components/Compras/requisicion/edit":32,"./vue-components/Contabilidad/cuenta_almacen/index":33,"./vue-components/Contabilidad/cuenta_concepto/index":34,"./vue-components/Contabilidad/cuenta_contable/index":35,"./vue-components/Contabilidad/cuenta_empresa/cuenta-empresa-edit":36,"./vue-components/Contabilidad/cuenta_material/cuenta-material-index":37,"./vue-components/Contabilidad/datos_contables/edit":38,"./vue-components/Contabilidad/poliza_generada/poliza-generada-edit":39,"./vue-components/Contabilidad/poliza_tipo/poliza-tipo-create":40,"./vue-components/Contabilidad/tipo_cuenta_contable/tipo-cuenta-contable-create":41,"./vue-components/errors":42,"./vue-components/global-errors":43,"./vue-components/select2":44}],31:[function(require,module,exports){
+},{"./vue-components/Compras/requisicion/create":31,"./vue-components/Compras/requisicion/edit":32,"./vue-components/Contabilidad/cuenta_almacen/index":33,"./vue-components/Contabilidad/cuenta_concepto/index":34,"./vue-components/Contabilidad/cuenta_contable/index":35,"./vue-components/Contabilidad/cuenta_empresa/cuenta-empresa-edit":36,"./vue-components/Contabilidad/cuenta_material/cuenta-material-index":37,"./vue-components/Contabilidad/datos_contables/edit":38,"./vue-components/Contabilidad/poliza_generada/poliza-generada-edit":39,"./vue-components/Contabilidad/poliza_tipo/poliza-tipo-create":40,"./vue-components/Contabilidad/tipo_cuenta_contable/tipo-cuenta-contable-create":41,"./vue-components/Contabilidad/tipo_cuenta_contable/tipo-cuenta-contable-update":42,"./vue-components/errors":43,"./vue-components/global-errors":44,"./vue-components/select2":45}],31:[function(require,module,exports){
 'use strict';
 
 Vue.component('requisicion-create', {
@@ -38153,13 +38154,85 @@ Vue.component('tipo-cuenta-contable-create', {
 },{}],42:[function(require,module,exports){
 'use strict';
 
+/**
+ * Created by LERDES2 on 23/06/2017.
+ */
+
+Vue.component('tipo-cuenta-contable-update', {
+    props: ['tipo_cuenta_contable'],
+    data: function data() {
+        return {
+            'form': {
+                'tipo_cuenta_contable': {
+                    'id_tipo_cuenta_contable': this.tipo_cuenta_contable.id_tipo_cuenta_contable,
+                    'descripcion': this.tipo_cuenta_contable.descripcion,
+                    'id_naturaleza_poliza': this.tipo_cuenta_contable.id_naturaleza_poliza
+                }
+            },
+            'guardando': false
+        };
+    },
+
+    methods: {
+        confirm_save: function confirm_save() {
+            var self = this;
+            swal({
+                title: "Actualizar Tipo Cuenta Contable",
+                text: "¿Estás seguro de que la información es correcta?",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonText: "Si, Continuar",
+                cancelButtonText: "No, Cancelar"
+            }).then(function () {
+                self.save();
+            }).catch(swal.noop);
+        },
+
+        save: function save() {
+
+            var self = this;
+            var url = App.host + '/sistema_contable/tipo_cuenta_contable/' + self.form.tipo_cuenta_contable.id_tipo_cuenta_contable;
+
+            $.ajax({
+                type: 'POST',
+                url: url,
+                data: {
+                    _method: 'PATCH',
+                    id_naturaleza_poliza: self.form.tipo_cuenta_contable.id_naturaleza_poliza
+                },
+                beforeSend: function beforeSend() {
+                    self.guardando = true;
+                },
+                success: function success(data, textStatus, xhr) {
+                    swal({
+                        title: '¡Correcto!',
+                        html: "Se ha actualizado el Tipo de Cuenta Contable con éxito",
+                        type: "success",
+                        confirmButtonText: "Ok",
+                        closeOnConfirm: false
+                    }).then(function () {
+                        window.location = App.host + '/sistema_contable/tipo_cuenta_contable/' + data.data.tipo_cuenta_contable.id_tipo_cuenta_contable;
+                    }).catch(swal.noop);
+                },
+                complete: function complete() {
+                    self.guardando = false;
+                }
+            });
+        }
+    }
+
+});
+
+},{}],43:[function(require,module,exports){
+'use strict';
+
 Vue.component('app-errors', {
     props: ['form'],
 
     template: require('./templates/errors.html')
 });
 
-},{"./templates/errors.html":45}],43:[function(require,module,exports){
+},{"./templates/errors.html":46}],44:[function(require,module,exports){
 'use strict';
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
@@ -38185,7 +38258,7 @@ Vue.component('global-errors', {
   }
 });
 
-},{"./templates/global-errors.html":46}],44:[function(require,module,exports){
+},{"./templates/global-errors.html":47}],45:[function(require,module,exports){
 'use strict';
 
 Vue.component('select2', {
@@ -38234,9 +38307,9 @@ Vue.component('select2', {
     }
 });
 
-},{}],45:[function(require,module,exports){
-module.exports = '<div id="form-errors" v-cloak>\n  <div class="alert alert-danger" v-if="form.errors.length">\n    <ul>\n      <li v-for="error in form.errors">{{ error }}</li>\n    </ul>\n  </div>\n</div>';
 },{}],46:[function(require,module,exports){
+module.exports = '<div id="form-errors" v-cloak>\n  <div class="alert alert-danger" v-if="form.errors.length">\n    <ul>\n      <li v-for="error in form.errors">{{ error }}</li>\n    </ul>\n  </div>\n</div>';
+},{}],47:[function(require,module,exports){
 module.exports = '<div class="alert alert-danger" v-show="errors.length">\n  <ul>\n    <li v-for="error in errors">{{ error }}</li>\n  </ul>\n</div>';
 },{}]},{},[28]);
 

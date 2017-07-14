@@ -132,4 +132,22 @@ class EloquentTipoCuentaContableRepository implements TipoCuentaContableReposito
         $this->model = $this->model->$scope();
         return $this;
     }
+
+    /**
+     * @param array $data
+     * @param $id
+     * @return mixed \Illuminate\Database\Eloquent\Collection|TipoCuentaContable
+     * @throws \Exception
+     */
+    public function update(array $data, $id)
+    {
+        try {
+            $cuenta = $this->model->find($id);
+            $cuenta->update($data);
+        } catch (\Exception $e) {
+            throw $e;
+        }
+
+        return $cuenta;
+    }
 }

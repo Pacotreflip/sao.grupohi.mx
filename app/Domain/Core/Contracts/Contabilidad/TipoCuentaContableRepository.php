@@ -53,4 +53,13 @@ interface TipoCuentaContableRepository
      * @return mixed
      */
     public function scope($scope);
+
+    /**
+     * @param array $data
+     * @param $id
+     * @return mixed \Illuminate\Database\Eloquent\Collection|TipoCuentaContable
+     * @throws \Exception
+     */
+    public function update(array $data, $id);
+
 }
