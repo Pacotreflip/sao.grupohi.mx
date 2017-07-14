@@ -49,20 +49,20 @@ class EloquentPolizaTipoRepository implements PolizaTipoRepository
 
             $inicio_vigencia = Carbon::createFromFormat('Y-m-d H', $data['inicio_vigencia'] . ' 00');
             $fin_vigencia = Carbon::createFromFormat('Y-m-d H', $data['inicio_vigencia'] . ' 00')->subSecond();
-            $fecha_minima = $this->model->fecha_minima($data['id_transaccion_interfaz']);
+            $fecha_minima = $this->model->fecha_minima($data['id_poliza_tipo_sao']);
 
             if ($fecha_minima && $inicio_vigencia->lte($fecha_minima)) {
                 throw new HttpResponseException(new Response('La fecha de Inicio de Vigencia debe ser mayor a ' . $fecha_minima->ToDateString() . ', ya que existe una plantilla que entrará en vigor en esa fecha', 400));
             }
 
-            $ultima = $this->findBy('id_transaccion_interfaz', $data['id_transaccion_interfaz']);
+            $ultima = $this->findBy('id_poliza_tipo_sao', $data['id_poliza_tipo_sao']);
 
             if ($ultima) {
                 $ultima->update(['fin_vigencia' => $fin_vigencia]);
             }
 
             $poliza_tipo = $this->model->create([
-                'id_transaccion_interfaz' => $data['id_transaccion_interfaz'],
+                'id_poliza_tipo_sao' => $data['id_poliza_tipo_sao'],
                 'registro' => auth()->user()->idusuario,
                 'inicio_vigencia' => $inicio_vigencia
             ]);
@@ -140,5 +140,17 @@ class EloquentPolizaTipoRepository implements PolizaTipoRepository
     public function update($data, $id)
     {
         return $this->model->find($id)->update($data);
+    }
+
+    /**
+     * Crea relaciones eloquent
+     * @param array|string $relations
+     * @return mixed
+     * @internal param array $array
+     */
+    public function with($relations)
+    {
+        $this->model = $this->model->with($relations);
+        return $this;
     }
 }

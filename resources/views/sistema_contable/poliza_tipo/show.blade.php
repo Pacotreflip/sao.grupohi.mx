@@ -1,6 +1,6 @@
 @extends('sistema_contable.layout')
-@section('title', 'Plantillas de Póliza')
-@section('contentheader_title', 'PLANTILLAS DE PÓLIZA')
+@section('title', 'Plantillas de Pre-Pólizas')
+@section('contentheader_title', 'PLANTILLAS DE PRE-PÓLIZAS')
 @section('contentheader_description', '(DETALLE)')
 
 @section('main-content')
@@ -21,7 +21,7 @@
                             <tbody>
                             <tr>
                                 <th>TIPO DE PÓLIZA</th>
-                                <td>{{ $poliza_tipo->transaccion }}</td>
+                                <td>{{ $poliza_tipo->polizaTipoSAO }}</td>
                             </tr>
                             <tr>
                                 <th>USUARIO QUE REGISTRÓ</th>
@@ -67,7 +67,7 @@
                                     <table class="table table-bordered table-striped ">
                                         <thead>
                                         <tr>
-                                            <th>Cuenta Contable</th>
+                                            <th>Tipo de Cuenta Contable</th>
                                             <th>Cargo</th>
                                             <th>Abono</th>
                                         </tr>
@@ -75,7 +75,7 @@
                                         <tbody>
                                         @foreach($poliza_tipo->movimientos as $movimieto)
                                             <tr>
-                                                <td>{{$movimieto->cuentaContable->tipoCuentaContable}}</td>
+                                                <td>{{$movimieto->tipoCuentaContable}}</td>
                                                 <td>
                                                     @if($movimieto->tipoMovimiento->id == 1)
                                                         <span class="fa fa-check-circle"></span>

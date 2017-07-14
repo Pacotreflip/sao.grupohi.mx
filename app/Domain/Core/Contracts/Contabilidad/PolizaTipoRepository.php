@@ -38,4 +38,12 @@ interface PolizaTipoRepository
      * @param $id
      */
     public function delete($data, $id);
+
+    /**
+     * Crea relaciones eloquent
+     * @param array|string $relations
+     * @return mixed
+     * @internal param array $array
+     */
+    public function with($relations);
 }

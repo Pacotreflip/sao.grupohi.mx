@@ -4,9 +4,11 @@ use Dingo\Api\Routing\Helpers;
 use Ghi\Domain\Core\Contracts\Contabilidad\CuentaContableRepository;
 use Ghi\Domain\Core\Contracts\Contabilidad\MovimientoRepository;
 use Ghi\Domain\Core\Contracts\Contabilidad\PolizaTipoRepository;
+use Ghi\Domain\Core\Contracts\Contabilidad\TipoCuentaContableRepository;
 use Ghi\Domain\Core\Contracts\Contabilidad\TipoMovimientoRepository;
-use Ghi\Domain\Core\Contracts\Contabilidad\TransaccionInterfazRepository;
+use Ghi\Domain\Core\Contracts\Contabilidad\PolizaTipoSAORepository;
 
+use Ghi\Domain\Core\Models\Contabilidad\PolizaTipoSAO;
 use Illuminate\Http\Request;
 
 class PolizaTipoController extends Controller
@@ -18,14 +20,14 @@ class PolizaTipoController extends Controller
     private $poliza_tipo;
 
     /**
-     * @var TransaccionInterfazRepository
+     * @var PolizaTipoSAORepository
      */
-    private $transaccion_interfaz;
+    private $poliza_tipo_sao;
 
     /**
-     * @var CuentaContableRepository
+     * @var TipoCuentaContableRepository
      */
-    private $cuenta_contable;
+    private $tipo_cuenta_contable;
 
     /**
      * @var TipoMovimientoRepository
@@ -40,15 +42,15 @@ class PolizaTipoController extends Controller
     /**
      * PolizaTipoController constructor.
      * @param PolizaTipoRepository $poliza_tipo
-     * @param TransaccionInterfazRepository $transaccion_interfaz
-     * @param CuentaContableRepository $cuenta_contable
+     * @param PolizaTipoSAORepository $poliza_tipo_sao
+     * @param TipoCuentaContableRepository $tipo_cuenta_contable
      * @param TipoMovimientoRepository $tipo_movimiento
      * @param MovimientoRepository $movimiento
      */
     public function __construct(
         PolizaTipoRepository $poliza_tipo,
-        TransaccionInterfazRepository $transaccion_interfaz,
-        CuentaContableRepository $cuenta_contable,
+        PolizaTipoSAORepository $poliza_tipo_sao,
+        TipoCuentaContableRepository $tipo_cuenta_contable,
         TipoMovimientoRepository $tipo_movimiento,
         MovimientoRepository $movimiento)
     {
@@ -58,8 +60,8 @@ class PolizaTipoController extends Controller
         $this->middleware('context');
 
         $this->poliza_tipo = $poliza_tipo;
-        $this->transaccion_interfaz = $transaccion_interfaz;
-        $this->cuenta_contable = $cuenta_contable;
+        $this->poliza_tipo_sao = $poliza_tipo_sao;
+        $this->tipo_cuenta_contable = $tipo_cuenta_contable;
         $this->tipo_movimiento = $tipo_movimiento;
         $this->movimiento = $movimiento;
     }
@@ -71,6 +73,7 @@ class PolizaTipoController extends Controller
     public function index()
     {
         $polizas_tipo = $this->poliza_tipo->all();
+
         return view('sistema_contable.poliza_tipo.index')
         ->with('polizas_tipo', $polizas_tipo);
     }
@@ -81,13 +84,14 @@ class PolizaTipoController extends Controller
      */
     public function create()
     {
-        $transacciones_interfaz = $this->transaccion_interfaz->lists();
-        $cuentas_contables = $this->cuenta_contable->with('tipoCuentaContable')->all();
+        $polizas_tipo_sao = $this->poliza_tipo_sao->lists();
+        $tipos_cuentas_contables = $this->tipo_cuenta_contable->scope('generales')->all();
         $tipos_movimiento = $this->tipo_movimiento->lists();
+
         return view('sistema_contable.poliza_tipo.create')
             ->with([
-                'transacciones_interfaz' => $transacciones_interfaz,
-                'cuentas_contables' => $cuentas_contables,
+                'polizas_tipo_sao' => $polizas_tipo_sao,
+                'tipos_cuentas_contables' => $tipos_cuentas_contables,
                 'tipos_movimiento' => $tipos_movimiento
             ]);
     }
@@ -97,7 +101,7 @@ class PolizaTipoController extends Controller
     */
     public function show($id)
     {
-        $poliza_tipo = $this->poliza_tipo->all('movimientos')->find($id);
+        $poliza_tipo = $this->poliza_tipo->with('movimientos')->find($id);
 
         return view('sistema_contable.poliza_tipo.show')
             ->with('poliza_tipo', $poliza_tipo);

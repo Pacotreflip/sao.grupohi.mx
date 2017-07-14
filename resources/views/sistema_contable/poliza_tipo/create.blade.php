@@ -1,6 +1,6 @@
 @extends('sistema_contable.layout')
-@section('title', 'Plantillas de Póliza')
-@section('contentheader_title', 'PLANTILLAS DE PÓLIZA')
+@section('title', 'Plantillas de Pre-Pólizas')
+@section('contentheader_title', 'PLANTILLAS DE PRE-PÓLIZAS')
 @section('contentheader_description', '(NUEVA)')
 
 @section('main-content')
@@ -11,20 +11,20 @@
         <poliza-tipo-create
                 v-cloak
                 v-bind:tipos_movimiento="{{ $tipos_movimiento }}"
-                v-bind:cuentas_contables="{{ $cuentas_contables }}"
-                v-bind:transacciones_interfaz="{{ $transacciones_interfaz }}"
+                v-bind:tipos_cuentas_contables="{{ $tipos_cuentas_contables }}"
+                v-bind:polizas_tipo_sao="{{ $polizas_tipo_sao }}"
                 inline-template>
             <section>
                 <div class="box box-success">
                     <div class="box-header with-border">
-                        <h3 class="box-title">Información de la Póliza Tipo </h3>
+                        <h3 class="box-title">Datos de la Plantilla </h3>
                     </div>
                     <form id="form_save_poliza_tipo" @submit.prevent="validateForm('form_save_poliza_tipo', 'save')"  data-vv-scope="form_save_poliza_tipo">
                         <div class="box-body">
                             <div class="col-md-5">
                                 <div class="form-group" :class="{'has-error': validation_errors.has('form_save_poliza_tipo.Tipo de Póliza')}">
                                     <label for="id_transaccion_interfaz"><b>Tipo de Póliza</b></label>
-                                    <select2 :name="'Tipo de Póliza'" v-validate="'required'" class="form-control" :options="transacciones_interfaz" v-model="form.poliza_tipo.id_transaccion_interfaz">
+                                    <select2 :name="'Tipo de Póliza'" v-validate="'required'" class="form-control" :options="polizas_tipo_sao" v-model="form.poliza_tipo.id_poliza_tipo_sao">
                                         <option disabled value>[-SELECCIONE-]</option>
                                     </select2>
                                     <label class="help" v-show="validation_errors.has('form_save_poliza_tipo.Tipo de Póliza')">@{{ validation_errors.first('form_save_poliza_tipo.Tipo de Póliza') }}</label>
@@ -69,7 +69,7 @@
                             <thead>
                             <tr>
                                 <th>#</th>
-                                <th>Cuenta Contable</th>
+                                <th>Tipo de Cuenta Contable</th>
                                 <th>Tipo de Movimiento</th>
                                 <th>Quitar</th>
                             </tr>
@@ -77,7 +77,7 @@
                             <tbody>
                             <tr v-for="(item, index) in form.poliza_tipo.movimientos">
                                 <td>@{{ index + 1  }}</td>
-                                <td>@{{ getTipoCuentaDescription(item.id_cuenta_contable) }}</td>
+                                <td>@{{ getTipoCuentaDescription(item.id_tipo_cuenta_contable) }}</td>
                                 <td>@{{ tipos_movimiento[item.id_tipo_movimiento] }}</td>
                                 <td><button class="btn-xs btn-danger" @click="remove_movimiento(index)"><i class="fa fa-trash" /></button></td>
                             </tr>
@@ -99,13 +99,13 @@
                             <div class="modal-body">
                                 <div class="row">
                                     <div class="col-md-6">
-                                        <div class="form-group" :class="{'has-error': validation_errors.has('form_save_cuenta.Cuenta Contable')}">
-                                            <label for="id_cuenta_contable"><b>Cuenta Contable</b></label>
-                                            <select id="id_cuenta_contable" name="Cuenta Contable" v-validate="'required'" class="form-control" v-model="form.movimiento.id_cuenta_contable">
+                                        <div class="form-group" :class="{'has-error': validation_errors.has('form_save_cuenta.Tipo deCuenta Contable')}">
+                                            <label for="id_tipo_cuenta_contable"><b>Tipo de Cuenta Contable</b></label>
+                                            <select id="id_tipo_cuenta_contable" name="Tipo deCuenta Contable" v-validate="'required'" class="form-control" v-model="form.movimiento.id_tipo_cuenta_contable">
                                                 <option value>[-SELECCIONE-]</option>
-                                                <option v-for="cuenta_contable in cuentas_contables_disponibles" v-bind:value="cuenta_contable.id_int_cuenta_contable">@{{ cuenta_contable.tipo_cuenta_contable.descripcion }}</option>
+                                                <option v-for="tipo_cuenta_contable in tipos_cuentas_contables_disponibles" v-bind:value="tipo_cuenta_contable.id_tipo_cuenta_contable">@{{ tipo_cuenta_contable.descripcion }}</option>
                                             </select>
-                                            <label class="help" v-show="validation_errors.has('form_save_cuenta.Cuenta Contable')">@{{ validation_errors.first('form_save_cuenta.Cuenta Contable') }}</label>
+                                            <label class="help" v-show="validation_errors.has('form_save_cuenta.Tipo deCuenta Contable')">@{{ validation_errors.first('form_save_cuenta.Tipo de Cuenta Contable') }}</label>
                                         </div>
                                     </div>
                                     <div class="col-md-6">

@@ -1,15 +1,15 @@
 Vue.component('poliza-tipo-create', {
-    props: ['cuentas_contables', 'tipos_movimiento', 'transacciones_interfaz'],
+    props: ['tipos_cuentas_contables', 'tipos_movimiento', 'polizas_tipo_sao'],
     data: function() {
         return {
             'form' : {
                 'poliza_tipo' : {
-                    'id_transaccion_interfaz' : '',
+                    'id_poliza_tipo_sao' : '',
                     'movimientos' : [],
                     'inicio_vigencia' : ''
                 },
                 'movimiento' : {
-                    'id_cuenta_contable' : '',
+                    'id_tipo_cuenta_contable' : '',
                     'id_tipo_movimiento' : ''
                 },
                 'errors' : []
@@ -40,19 +40,19 @@ Vue.component('poliza-tipo-create', {
             return a && b;
         },
 
-        cuentas_contables_disponibles: function () {
+        tipos_cuentas_contables_disponibles: function () {
             var self = this;
             var result = [];
-            $.each(this.cuentas_contables, function (index, cuenta_contable) {
+            $.each(this.tipos_cuentas_contables, function (index, tipo_cuenta_contable) {
                 var existe = false;
                 self.form.poliza_tipo.movimientos.forEach(function (movimiento) {
-                    if(cuenta_contable.id_int_cuenta_contable == movimiento.id_cuenta_contable) {
+                    if(tipo_cuenta_contable.id_tipo_cuenta_contable == movimiento.id_tipo_cuenta_contable) {
                         existe = true;
                     }
                 });
 
                 if(! existe) {
-                    result.push(cuenta_contable);
+                    result.push(tipo_cuenta_contable);
                 }
             });
 
@@ -87,11 +87,11 @@ Vue.component('poliza-tipo-create', {
         },
 
         add_movimiento: function () {
-            var id_cuenta_contable = $('#id_cuenta_contable').val();
+            var id_tipo_cuenta_contable = $('#id_tipo_cuenta_contable').val();
             var id_tipo_movimiento = $('#id_tipo_movimiento').val();
 
             this.form.poliza_tipo.movimientos.push({
-                id_cuenta_contable: id_cuenta_contable,
+                id_tipo_cuenta_contable: id_tipo_cuenta_contable,
                 id_tipo_movimiento: id_tipo_movimiento
             });
             this.reset_movimiento();
@@ -101,19 +101,19 @@ Vue.component('poliza-tipo-create', {
         },
 
         reset_movimiento: function () {
-            Vue.set(this.form.movimiento, 'id_cuenta_contable', '');
+            Vue.set(this.form.movimiento, 'id_tipo_cuenta_contable', '');
             Vue.set(this.form.movimiento, 'id_tipo_movimiento', '');
         },
 
         check_duplicity: function () {
             var self = this;
-            var id = self.form.poliza_tipo.id_transaccion_interfaz;
+            var id = self.form.poliza_tipo.id_poliza_tipo_sao;
             var url = App.host + '/sistema_contable/poliza_tipo/findBy';
             $.ajax({
                 type: 'GET',
                 url: url,
                 data: {
-                    'attribute' : 'id_transaccion_interfaz',
+                    'attribute' : 'id_poliza_tipo_sao',
                     'value' : id,
                     'with' : 'movimientos'
                 },
@@ -121,7 +121,7 @@ Vue.component('poliza-tipo-create', {
                     if(response.data.poliza_tipo != null) {
                         var body = "";
                         $.each(response.data.poliza_tipo.movimientos, function (index, movimiento) {
-                            body += "<tr><td>"+(index+1)+"</td><td style='text-align: left'>"+ self.getTipoCuentaDescription(movimiento.id_cuenta_contable) +"</td><td>"+self.tipos_movimiento[movimiento.id_tipo_movimiento]+"</td></tr>"
+                            body += "<tr><td>"+(index+1)+"</td><td style='text-align: left'>"+ self.getTipoCuentaDescription(movimiento.id_tipo_cuenta_contable) +"</td><td>"+self.tipos_movimiento[movimiento.id_tipo_movimiento]+"</td></tr>"
                         });
 
                         swal({
@@ -132,7 +132,7 @@ Vue.component('poliza-tipo-create', {
                             "   <thead>" +
                             "   <tr>" +
                             "       <th style='text-align: center'>#</th>" +
-                            "       <th style='text-align: center'>Cuenta Contable</th>" +
+                            "       <th style='text-align: center'>Tipo de Cuenta Contable</th>" +
                             "       <th style='text-align: center'>Tipo</th>" +
                             "   </tr>" +
                             "   </thead>" +
@@ -188,7 +188,7 @@ Vue.component('poliza-tipo-create', {
                     swal({
                         title: '¡Correcto!',
                         html: "Se ha creado la plantilla para el Tipo de Póliza<br>" +
-                        "<b>" + self.transacciones_interfaz[self.form.poliza_tipo.id_transaccion_interfaz] + "</b>",
+                        "<b>" + self.polizas_tipo_sao[self.form.poliza_tipo.id_poliza_tipo_sao] + "</b>",
                         type: "success"
                     });
                     window.location = xhr.getResponseHeader('Location');
@@ -205,9 +205,9 @@ Vue.component('poliza-tipo-create', {
 
         getTipoCuentaDescription: function (id) {
             var result = "";
-            $.each(this.cuentas_contables, function (index, cuenta_contable) {
-                if(cuenta_contable.id_int_cuenta_contable == id) {
-                    result = cuenta_contable.tipo_cuenta_contable.descripcion;
+            $.each(this.tipos_cuentas_contables, function (index, tipo_cuenta_contable) {
+                if(tipo_cuenta_contable.id_tipo_cuenta_contable == id) {
+                    result = tipo_cuenta_contable.descripcion;
                 }
             });
             return result;

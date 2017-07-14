@@ -1,6 +1,6 @@
 @extends('sistema_contable.layout')
-@section('title', 'Plantillas de Póliza')
-@section('contentheader_title', 'PLANTILLAS DE PÓLIZA')
+@section('title', 'Plantillas de Pre-Pólizas')
+@section('contentheader_title', 'PLANTILLAS DE PRE-PÓLIZAS')
 @section('contentheader_description', '(LISTA)')
 
 @section('main-content')
@@ -18,7 +18,7 @@
         <div class="col-md-12">
             <div class="box box-info">
                 <div class="box-header with-border">
-                    <h3 class="box-title">Plantilla de Póliza</h3>
+                    <h3 class="box-title">Plantilla de Pre-Pólizas</h3>
                 </div>
                 <div class="box-body">
                     <div class="col-sm-12">
@@ -43,7 +43,7 @@
 
                                     <tr>
                                         <td>{{ $index + 1 }}</td>
-                                        <td>{{ $item->transaccion  }}</td>
+                                        <td>{{ $item->polizaTipoSAO  }}</td>
                                         <td>{{ $item->numMovimientos }}</td>
                                         <td>{{ $item->userRegistro }}</td>
                                         <td>{{ $item->created_at->format('Y-m-d h:i:s a') }}</td>

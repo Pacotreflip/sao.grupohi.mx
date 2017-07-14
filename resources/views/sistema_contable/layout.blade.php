@@ -27,7 +27,7 @@
                         <li ><a href="{{route('sistema_contable.tipo_cuenta_contable.index')}}"><i class='fa fa-circle-o'></i> <span>Cuenta - Contable</span></a></li>
                     </ul>
                 </li>
-                <li ><a href="{{route('sistema_contable.poliza_tipo.index')}}"><i class='fa fa-book'></i> <span>Plantillas de Póliza</span></a></li>
+                <li ><a href="{{route('sistema_contable.poliza_tipo.index')}}"><i class='fa fa-book'></i> <span>Plantillas de Pre-Pólizas</span></a></li>
             </ul>
         </li>
 
@@ -45,7 +45,7 @@
             </ul>
         </li>
 
-        <li class="treeview">
+        <!--li class="treeview">
             <a href="#">
                 <i class="fa fa-area-chart"></i>
                 <span>Reportes</span>
@@ -56,6 +56,6 @@
             <ul class="treeview-menu">
                 <li ><a href="{{route('sistema_contable.kardex_material.index')}}"><i class='fa fa-book'></i> <span>Kardex - Material</span></a></li>
             </ul>
-        </li>
+        </li -->
     </ul>
 @endsection
