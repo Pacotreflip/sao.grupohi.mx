@@ -1,14 +1,18 @@
 /**
  * Created by JFEsquivel on 08/06/2017.
  */
-
 window.$ = window.jQuery = require('jquery');
+require('typeahead.js/dist/typeahead.jquery');
 require('bootstrap');
 require('admin-lte');
 require('admin-lte/plugins/select2/select2');
 require('admin-lte/plugins/select2/i18n/es');
 require('admin-lte/plugins/datepicker/bootstrap-datepicker');
 require('admin-lte/plugins/datepicker/locales/bootstrap-datepicker.es');
+window.moment = require('moment');
+require('moment/locale/es');
+moment.locale('es');
+require('admin-lte/plugins/daterangepicker/daterangepicker');
 window.swal = require('sweetalert2');
 require('admin-lte/plugins/iCheck/icheck');
 require('jquery-treegrid/js/jquery.treegrid.js');

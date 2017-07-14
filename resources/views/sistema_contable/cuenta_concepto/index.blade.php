@@ -17,6 +17,27 @@
             <section>
                 <div class="row">
                     <div class="col-md-12">
+                        <div class="input-group">
+                            <input class="form-control" type="text" v-typeahead />
+                            <input name="id_concepto" id="id_concepto" class="form-control" type="hidden"/>
+                            <div class="input-group-btn">
+                                <button class="btn btn-success" @click="buscar_nodos">
+                                    <span v-if="cargando">
+                                        <i class="fa fa-spin fa-spinner"></i>
+                                        Buscando...
+                                    </span>
+                                    <span v-else>
+                                        <i class="fa fa-search"></i>
+                                        Buscar
+                                    </span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <br>
+                <div class="row">
+                    <div class="col-md-12">
                         <!-- Datos Concepto de la Cuenta -->
                         <div class="box box-info">
                             <div class="box-header with-border">
@@ -24,82 +45,55 @@
                             </div>
                             <div class="box-body">
                                 <div class="table-responsive">
-                                    <div class="row">
-
-                                        <div class="col-sm-12">
-
-                                            <div class="input-group">
-                                                <input class="form-control" type="text" id="texto">
-                                                </input>
-                                                <input id="textNodo" class="form-control" type="hidden"/>
-                                                <div class="input-group-btn">
-                                                    <!-- Buttons -->
-                                                    <button class="btn btn-default" @click="buscar_nodos">
-                                                          <span v-if="cargando">
-                                                            <i class="fa fa-spin fa-spinner"></i>
-                                                              Buscando...
-                                                        </span>
-                                                        <span v-else>
-                                                            <i class="fa fa-search"></i>
-                                                            Buscar
-                                                        </span>
-
-                                                        </button>
-                                                </div>
-                                            </div>
-
-
-                                    <br>
-
                                     <table class="table table-bordered small" v-treegrid id="concepto_tree">
-                                        <thead>
-                                        <tr>
-                                            <th>Concepto</th>
-                                            <th>Cuenta Contable</th>
-                                            <th>Usuario que Registró</th>
-                                            <th>Fecha y Hora de Registro</th>
-                                            <th>Acciones</th>
-                                        </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr  v-for="(concepto, index) in conceptos_ordenados" :class="tr_class(concepto)" :id="tr_id(concepto)" >
-                                                <td v-if="concepto.id_padre == null">
-                                                    @{{ concepto.descripcion }}
-                                                    <a :disabled="cargando" v-if="concepto.tiene_hijos > 0 && ! concepto.cargado" @click="get_hijos(concepto)">
-                                                        <span v-if="cargando">
-                                                            <i class="fa fa-spin fa-spinner"></i>
-                                                        </span>
-                                                        <span v-else>
-                                                            <i class="fa fa-plus"></i>
-                                                        </span>
-                                                    </a>
-                                                </td>
-                                                <td  v-else>
-                                                    @{{ concepto.descripcion}}
-                                                    <a :disabled="cargando" v-if="concepto.tiene_hijos > 0 && ! concepto.cargado" @click="get_hijos(concepto)">
-                                                        <span v-if="cargando">
-                                                            <i class="fa fa-spin fa-spinner"></i>
-                                                        </span>
-                                                        <span v-else>
-                                                            <i class="fa fa-plus"></i>
-                                                        </span>
-                                                    </a>
-                                                </td>
-                                                <td >
-                                                    @{{ concepto.cuenta_concepto != null ? concepto.cuenta_concepto.cuenta : '---' }}
-                                                </td>
-                                                <td>
-                                                    @{{ concepto.cuenta_concepto != null ? concepto.cuenta_concepto.usuario_registro : '---' }}
-                                                </td>
-                                                <td>
-                                                    @{{ concepto.cuenta_concepto != null ? (new Date(concepto.cuenta_concepto.created_at)).dateFormat() : '---' }}
-                                                </td>
-                                                <td>
-                                                    <button title="Editar" class="btn-xs btn-info" @click="edit_cuenta(concepto)"> <i class="fa fa-edit"></i></button>
-                                                </td>
+                                            <thead>
+                                            <tr>
+                                                <th>Concepto</th>
+                                                <th>Cuenta Contable</th>
+                                                <th>Usuario que Registró</th>
+                                                <th>Fecha y Hora de Registro</th>
+                                                <th>Acciones</th>
                                             </tr>
-                                        </tbody>
-                                    </table>
+                                            </thead>
+                                            <tbody>
+                                                <tr  v-for="(concepto, index) in conceptos_ordenados" :class="tr_class(concepto)" :id="tr_id(concepto)" >
+                                                    <td v-if="concepto.id_padre == null">
+                                                        @{{ concepto.descripcion }}
+                                                        <button style="border: 0; background-color: transparent" :disabled="cargando" v-if="concepto.tiene_hijos > 0 && ! concepto.cargado" @click="get_hijos(concepto)">
+                                                            <span v-if="cargando">
+                                                                <i class="fa fa-spin fa-spinner"></i>
+                                                            </span>
+                                                            <span v-else>
+                                                                <i class="fa fa-plus"></i>
+                                                            </span>
+                                                        </button>
+                                                    </td>
+                                                    <td  v-else>
+                                                        @{{ concepto.descripcion}}
+                                                        <button style="border: 0; background-color: transparent" :disabled="cargando" v-if="concepto.tiene_hijos > 0 && ! concepto.cargado" @click="get_hijos(concepto)">
+                                                            <span v-if="cargando">
+                                                                <i class="fa fa-spin fa-spinner"></i>
+                                                            </span>
+                                                            <span v-else>
+                                                                <i class="fa fa-plus"></i>
+                                                            </span>
+                                                        </button>
+                                                    </td>
+                                                    <td >
+                                                        @{{ concepto.cuenta_concepto != null ? concepto.cuenta_concepto.cuenta : '---' }}
+                                                    </td>
+                                                    <td>
+                                                        @{{ concepto.cuenta_concepto != null ? concepto.cuenta_concepto.usuario_registro : '---' }}
+                                                    </td>
+                                                    <td>
+                                                        @{{ concepto.cuenta_concepto != null ? (new Date(concepto.cuenta_concepto.created_at)).dateFormat() : '---' }}
+                                                    </td>
+                                                    <td>
+                                                        <button title="Editar" class="btn-xs btn-info" @click="edit_cuenta(concepto)"> <i class="fa fa-edit"></i></button>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
                                 </div>
                             </div>
                         </div>
@@ -147,8 +141,6 @@
                         </div>
                     </div>
                 </div>
-
-
             </section>
         </cuenta-concepto-index>
     </div>

@@ -38,7 +38,7 @@ class EloquentPolizaRepository implements PolizaRepository
      */
     public function all()
     {
-        return $this->model->get();
+        return $this->model->toSql();
     }
 
     /**
@@ -172,6 +172,37 @@ class EloquentPolizaRepository implements PolizaRepository
     public function with($relations)
     {
         $this->model = $this->model->with($relations);
+        return $this;
+    }
+
+    /**
+     * Paginador
+     * @param $perPage
+     * @return mixed
+     */
+    public function paginate($perPage)
+    {
+        return $this->model->paginate($perPage);
+    }
+
+    public function where(array $where)
+    {
+        $this->model = $this->model->where($where);
+        return $this;
+    }
+
+
+    /**
+     * @param $array
+     * @return mixed \Illuminate\Database\Eloquent\Collection|Poliza
+     */
+    public function findWhereIn($array){
+       return  $this->model->find($array);
+      }
+
+    public function scope($scope)
+    {
+        $this->model = $this->model->$scope();
         return $this;
     }
 }

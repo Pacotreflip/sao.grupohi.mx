@@ -15,8 +15,12 @@
     "ionicons": "^3.0.0",
     "jquery": "^3.2.1",
     "jquery-treegrid": "^0.3.0",
+    "moment": "^2.18.1",
+    "jquery-ui": "^1.12.1",
     "roboto-fontface": "^0.7.0",
     "sweetalert2": "^6.6.5",
+    "typeahead.js": "~0.10.5",
+    "underscore": "^1.8.3",
     "vee-validate": "^2.0.0-rc.5",
     "vue": "^2.3.4"
   }

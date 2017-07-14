@@ -28,7 +28,7 @@ class EloquentMovimientoRepository implements MovimientoRepository
     {
         $this->model->create([
             'id_poliza_tipo' => $data['id_poliza_tipo'],
-            'id_cuenta_contable' => $data['id_cuenta_contable'],
+            'id_tipo_cuenta_contable' => $data['id_tipo_cuenta_contable'],
             'id_tipo_movimiento' => $data['id_tipo_movimiento'],
             'registro' => auth()->user()->idusuario
         ]);

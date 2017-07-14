@@ -1,6 +1,9 @@
 <?php
 /**
  * Created by PhpStorm.
+ * User: LERDES2
+ * Date: 05/07/2017
+ * Time: 12:03 PM
  * User: EMARTINEZ
  * Date: 05/07/2017
  * Time: 01:50 PM
@@ -15,6 +18,8 @@ interface MaterialRepository
      * Obtiene todos los registros de Material
      *
      * @return \Illuminate\Database\Eloquent\Collection|\Ghi\Domain\Core\Models\Material
+     * @param
+     * @return Ghi\Domain\Core\Models\Material;
      */
     public function all();
 
@@ -33,4 +38,24 @@ interface MaterialRepository
      * @return mixed
      */
     public function scope($scope);
+
+    /**
+     * @param $value valor de busqueda de materiales de acuerdo a su tipo
+     * @return mixed
+     */
+    public function findBy($value);
+
+    /**
+     * @param $value los datos de busqueda para un material padre y materiales hijos
+     * @return mixed
+     */
+    public function find($tipo, $nivel);
+
+    /**
+     * Crea relaciones con otros modelos
+     * @param $relations
+     * @return mixed
+     */
+    public function with($relations);
+
 }

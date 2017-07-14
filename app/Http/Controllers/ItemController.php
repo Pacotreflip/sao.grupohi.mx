@@ -22,8 +22,8 @@ class ItemController extends Controller
     {
         parent::__construct();
 
-        //$this->middleware('auth');
-        //$this->middleware('context');
+        $this->middleware('auth');
+        $this->middleware('context');
 
         $this->item = $item;
     }
@@ -43,5 +43,10 @@ class ItemController extends Controller
     public function destroy($id) {
         $this->item->delete($id);
         return $this->response->accepted();
+    }
+
+    public function getBy($id)
+    {
+        return $this->item->scope('conTransaccionES')->with('transaccion')->getBy('id_material', '=', $id);
     }
 }

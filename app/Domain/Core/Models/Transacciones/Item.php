@@ -57,4 +57,21 @@ class Item extends Model
     {
         return $this->hasOne(ItemExt::class, 'id_item', 'id_item');
     }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne | Transaccion
+     */
+    public function transaccion(){
+        return $this->hasOne(Transaccion::class, 'id_transaccion','id_transaccion');
+    }
+
+    /**
+     * @param $query Consulta para obtener transacciones por cada Item
+     * @return mixed Item con Transacción
+     */
+    public function scopeConTransaccionES($query) {
+        return $query->whereHas('transaccion', function($q) {
+            $q->whereIn('transacciones.tipo_transaccion', Tipo::TIPO_TRANSACCION);
+        })->orderBy('id_item');
+    }
 }

@@ -53,8 +53,8 @@ class AppServiceProvider extends ServiceProvider
         );
 
         $this->app->bind(
-            \Ghi\Domain\Core\Contracts\Contabilidad\TransaccionInterfazRepository::class,
-            \Ghi\Domain\Core\Repositories\Contabilidad\EloquentTransaccionInterfazRepository::class
+            \Ghi\Domain\Core\Contracts\Contabilidad\PolizaTipoSAORepository::class,
+            \Ghi\Domain\Core\Repositories\Contabilidad\EloquentPolizaTipoSAORepository::class
         );
 
         $this->app->bind(
@@ -142,5 +142,31 @@ class AppServiceProvider extends ServiceProvider
             \Ghi\Domain\Core\Contracts\Compras\TipoRequisicionRepository::class,
             \Ghi\Domain\Core\Repositories\Compras\EloquentTipoRequisicionRepository::class
         );
+
+        $this->app->bind(
+            \Ghi\Domain\Core\Contracts\NotificacionRepository::class,
+            \Ghi\Domain\Core\Repositories\EloquentNotificacionRepository::class
+        );
+
+        $this->app->bind(
+            \Ghi\Domain\Core\Contracts\MaterialRepository::class,
+            \Ghi\Domain\Core\Repositories\EloquentMaterialRepository::class
+        );
+
+        $this->app->bind(
+            \Ghi\Domain\Core\Contracts\ItemsRepository::class,
+            \Ghi\Domain\Core\Repositories\EloquentItemsRepository::class
+        );
+
+        $this->app->bind(
+            \Ghi\Domain\Core\Contracts\Contabilidad\CuentaMaterialRepository::class,
+            \Ghi\Domain\Core\Repositories\Contabilidad\EloquentCuentaMaterialRepository::class
+        );
+
+        $this->app->bind(
+            \Ghi\Domain\Core\Contracts\NotificacionRepository::class,
+            \Ghi\Domain\Core\Repositories\EloquentNotificacionRepository::class
+        );
+
     }
 }

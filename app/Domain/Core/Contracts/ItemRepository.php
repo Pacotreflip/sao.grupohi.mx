@@ -46,4 +46,19 @@ interface ItemRepository
      * @return mixed
      */
     public function delete($id);
+
+    /**
+     *
+     * @param $attribute
+     * @param $operator
+     * @param $value
+     * @return mixed
+    */
+    public function getBy($attribute, $operator, $value);
+
+    /**
+     * @param $scope Para consulta mixta de Item con Transacción
+     * @return mixed
+     */
+    public function scope($scope);
 }

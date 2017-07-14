@@ -3,13 +3,12 @@
 @section('contentheader_title', 'PRE-PÓLIZAS GENERADAS')
 @section('contentheader_description', '(DETALLE)')
 
-
 @section('main-content')
     {!! Breadcrumbs::render('sistema_contable.poliza_generada.show', $poliza) !!}
 
     <div class="row">
         <div class="col-md-12">
-            <div class="box box-success">
+            <div class="box box-info">
                 <div class="box-header with-border">
                     <h3 class="box-title">Detalle de Pre-Póliza</h3>
                 </div>
@@ -31,8 +30,8 @@
                                         @if($poliza->estatus_string=='Con errores') <span class="label bg-red">Con errores</span>@endif</label>
                                 </th>
                                 <th class="bg-gray-light">
-                                    Póliza Contpaq:<br>
-                                    <label>@if($poliza->id_poliza_contpaq>0){{$poliza->id_poliza_contpaq}}@else N/A @endif</label>
+                                    Póliza Contpaq:
+                                    <br><label>{{$poliza->id_poliza_contpaq > 0 ? $poliza->id_poliza_contpaq : 'N/A' }}</label>
                                 </th>
                                 <th class="bg-gray-light">
                                     Tipo de Transacción:
@@ -68,23 +67,9 @@
                                 @foreach($poliza->polizaMovimientos as $movimiento)
                                     <tr>
                                         <td>{{$movimiento->cuenta_contable}}</td>
-                                        <td>
-                                            @if($movimiento->tipoCuentaContable)
-                                                {{$movimiento->tipoCuentaContable}}
-                                                @else
-                                                No Registrada
-                                            @endif
-                                           </td>
-                                        <td class="bg-gray-light numerico">
-                                            @if($movimiento->id_tipo_movimiento_poliza==1)
-                                                $ {{number_format($movimiento->importe,'2','.',',')}}
-                                            @endif
-                                        </td>
-                                        <td class="bg-gray-light numerico">
-                                            @if($movimiento->id_tipo_movimiento_poliza==2)
-                                                $ {{number_format($movimiento->importe,'2','.',',')}}
-                                            @endif
-                                        </td>
+                                        <td>{{$movimiento->tipoCuentaContable ? $movimiento->tipoCuentaContable : 'No Registrada' }}</td>
+                                        <td class="bg-gray-light numerico">{{$movimiento->id_tipo_movimiento_poliza == 1 ? '$' . number_format($movimiento->importe,'2','.',',') : '' }}</td>
+                                        <td class="bg-gray-light numerico">{{$movimiento->id_tipo_movimiento_poliza == 2 ? '$' . number_format($movimiento->importe,'2','.',',') : '' }}</td>
                                         <td>{{$movimiento->referencia}}</td>
                                         <td>{{$movimiento->concepto}}</td>
                                     </tr>

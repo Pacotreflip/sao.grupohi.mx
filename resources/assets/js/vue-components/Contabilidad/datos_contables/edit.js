@@ -5,12 +5,18 @@ Vue.component('datos-contables-edit', {
     ],
     data: function() {
         return {
-            'data' : {
+            'data': {
                 'datos_contables': this.datos_contables
             },
-            'guardando' : false
+            'guardando': false
         }
     },
+
+     created: function () {
+         Vue.set(this.data.datos_contables, 'manejo_almacenes', this.data.datos_contables.manejo_almacenes == '0' ? false : (this.data.datos_contables.manejo_almacenes == '1' ? true : this.data.datos_contables.manejo_almacenes));
+         Vue.set(this.data.datos_contables, 'costo_en_tipo_gasto', this.data.datos_contables.costo_en_tipo_gasto == '0' ? false : (this.data.datos_contables.costo_en_tipo_gasto == '1' ? true : this.data.datos_contables.costo_en_tipo_gasto));
+
+     },
 
     methods: {
         confirm_datos_obra: function () {
@@ -36,6 +42,8 @@ Vue.component('datos-contables-edit', {
                     BDContPaq : self.data.datos_contables.BDContPaq,
                     FormatoCuenta : self.data.datos_contables.FormatoCuenta,
                     NumobraContPaq : self.data.datos_contables.NumobraContPaq,
+                    costo_en_tipo_gasto : self.data.datos_contables.costo_en_tipo_gasto,
+                    manejo_almacenes : self.data.datos_contables.manejo_almacenes,
                     _method : 'PATCH'
                 },
                 beforeSend: function () {
@@ -43,6 +51,8 @@ Vue.component('datos-contables-edit', {
                 },
                 success: function (data, textStatus, xhr) {
                     self.data.datos_contables = data.data.datos_contables;
+                    var  costo_en_tipo_gasto = Vue.set(self.data.datos_contables, 'costo_en_tipo_gasto', data.data.datos_contables.costo_en_tipo_gasto == 'true' ? true : false);
+                    var  manejo_almacenes = Vue.set(self.data.datos_contables, 'manejo_almacenes', data.data.datos_contables.manejo_almacenes == 'true' ? true : false);
                     swal({
                         type: 'success',
                         title: 'Correcto',

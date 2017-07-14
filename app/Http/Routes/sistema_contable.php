@@ -84,4 +84,25 @@ Route::group(['prefix' => 'sistema_contable'], function () {
      * Datos Contables Routes...
      */
     Route::get('datos_contables/{id}/edit', 'DatosContablesController@edit')->name('sistema_contable.datos_contables.edit');
+
+    /**
+     * Kardex Materiales
+     */
+    Route::get('kardex_material', 'kardexMaterialController@index')->name('sistema_contable.kardex_material.index');
+    Route::get('kardex_material/{id}', 'ItemController@getBy')->name('sistema_contable.kardex_material.getBy')->where(['id' => '[0-9]+']);
+
+    /*
+     *  Cuentas de Materiales
+     */
+    Route::get('cuenta_material', 'CuentaMaterialController@index')->name('sistema_contable.cuenta_material.index');
+    Route::get('cuenta_material/{id}', 'CuentaMaterialController@findBy')->name('sistema_contable.cuenta_material.findby')->where(['id' => '[0-9]+']);
+    Route::get('cuenta_material/{tipo}/material/{nivel}', 'CuentaMaterialController@show')->name('sistema_contable.cuenta_material.show');
+    Route::post('cuenta_material', 'CuentaMaterialController@store')->name('sistema_contable.cuenta_material.store');
+    Route::patch('cuenta_material/{id}', 'CuentaMaterialController@update')->name('sistema_contable.cuenta_material.update')->where(['id' => '[0-9]+']);
+
+
+    /*
+     *  Mails Polizas
+     */
+    Route::get('emails/notificaciones', 'MailController@index')->name('sistema_contable.mails.notificaciones.index');
 });

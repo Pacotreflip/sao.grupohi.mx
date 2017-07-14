@@ -38,10 +38,12 @@
 
                                             </tr>
                                             <tr>
-                                                <th class="bg-gray-light">Estatus:<br><label>   @if($poliza->estatus_string=='Registrada') <span class="label bg-blue">Registrada</span>@endif
-                                                        @if($poliza->estatus_string=='Lanzada') <span class="label bg-green">Lanzada</span>@endif
-                                                        @if($poliza->estatus_string=='No lanzada') <span class="label bg-yellow">No lanzada</span>@endif
-                                                        @if($poliza->estatus_string=='Con errores') <span class="label bg-red">Con errores</span>@endif</label>
+                                                <th class="bg-gray-light">Cuadre:<br><label>$ {{number_format($poliza->cuadre,'2','.',',')}}</label></th>
+                                                <th class="bg-gray-light">Estatus:<br><label>
+                                                        @if($poliza->estatus == $poliza::REGISTRADA) <span class="label bg-blue">Registrada</span>@endif
+                                                        @if($poliza->estatus == $poliza::LANZADA) <span class="label bg-green">Lanzada</span>@endif
+                                                        @if($poliza->estatus == $poliza::NO_LANZADA) <span class="label bg-yellow">No lanzada</span>@endif
+                                                        @if($poliza->estatus == $poliza::CON_ERRORES) <span class="label bg-red">Con errores</span>@endif</label>
                                                 </th>
                                                 <th class="bg-gray-light">
                                                     Póliza Contpaq:<br>

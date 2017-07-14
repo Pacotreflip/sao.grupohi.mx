@@ -20,8 +20,8 @@ class TipoCuentaContableController extends Controller
     {
         parent::__construct();
 
-        $this->middleware('auth');
-        $this->middleware('context');
+        //$this->middleware('auth');
+        //$this->middleware('context');
 
         $this->tipo_cuenta_contable = $tipo_cuenta_contable;
     }
@@ -33,7 +33,7 @@ class TipoCuentaContableController extends Controller
     public function index()
     {
         $tipos_cuenta_contable = $this->tipo_cuenta_contable->all();
-        //dd($tipos_cuenta_contable);
+
         return view('sistema_contable.tipo_cuenta_contable.index')
             ->with('tipos_cuenta_contable', $tipos_cuenta_contable);
         //

@@ -22,6 +22,7 @@ class TipoCuentaContable extends Model
         'registro',
         'id_obra',
         'motivo',
+        'tipo',
         'id_naturaleza_poliza'
     ];
     protected $dates = ['deleted_at'];
@@ -31,6 +32,10 @@ class TipoCuentaContable extends Model
         parent::boot();
 
         static::addGlobalScope(new ObraScope());
+
+        static::creating(function($model) {
+            $model->tipo = 1;
+        });
     }
 
     /**

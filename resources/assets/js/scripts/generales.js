@@ -46,6 +46,11 @@ $(function () {
         'ordering': true,
         'info': true
     });
+    $('.rango_fechas').daterangepicker({
+        locale: {
+            format: 'YYYY-MM-DD'
+        }
+    });
 });
 
 Number.prototype.formatMoney = function(c, d, t) {

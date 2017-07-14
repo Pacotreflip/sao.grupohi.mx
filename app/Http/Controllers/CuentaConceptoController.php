@@ -59,7 +59,5 @@ class CuentaConceptoController extends Controller
 
         }
         return response()->json(['data' => ['concepto' => $conceptos]],200);
-
-
     }
 }

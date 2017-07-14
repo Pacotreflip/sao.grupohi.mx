@@ -13,7 +13,7 @@ class MovimientoPoliza extends Model
     protected $table = 'Contabilidad.movimientos_poliza';
     protected $fillable = [
         'id_poliza_tipo',
-        'id_cuenta_contable',
+        'id_tipo_cuenta_contable',
         'id_tipo_movimiento',
         'registro',
         'cancelo',
@@ -36,10 +36,9 @@ class MovimientoPoliza extends Model
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo|CuentaContable
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo|TipoCuentaContable
      */
-    public function cuentaContable() {
-        return $this->belongsTo(CuentaContable::class, 'id_cuenta_contable');
+    public function tipoCuentaContable() {
+        return $this->belongsTo(TipoCuentaContable::class, 'id_tipo_cuenta_contable');
     }
-
 }

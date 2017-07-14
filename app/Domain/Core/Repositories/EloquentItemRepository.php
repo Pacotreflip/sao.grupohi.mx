@@ -4,6 +4,7 @@ namespace Ghi\Domain\Core\Repositories;
 use Ghi\Domain\Core\Contracts\Compras\Identificador;
 
 use Ghi\Domain\Core\Contracts\ItemRepository;
+use Ghi\Domain\Core\Contracts\Para;
 use Ghi\Domain\Core\Models\Compras\Requisiciones\ItemExt;
 use Ghi\Domain\Core\Models\Transacciones\Item;
 use Illuminate\Http\Exception\HttpResponseException;
@@ -130,5 +131,27 @@ class EloquentItemRepository implements ItemRepository
 
         $item->delete();
        // $this->ext->destroy($id);
+    }
+
+    /**
+     * Obtiene un Item
+     * @param $attribute
+     * @param $operator
+     * @param $value
+     * @return mixed
+     */
+    public function getBy($attribute, $operator, $value)
+    {
+        return $this->model->where($attribute, $operator, $value)->get();
+    }
+
+    /**
+     * @param $scope Para consulta mixta de Item con Transacción
+     * @return mixed
+     */
+    public function scope($scope)
+    {
+        $this->model = $this->model->$scope();
+        return $this;
     }
 }
