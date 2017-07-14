@@ -35,7 +35,7 @@
                                 <td>{{$tipo_cuenta_contable->userRegistro}}</td>
                             </tr>
                             <tr>
-                                <th>NATURALEZA DE PÓLIZA</th>
+                                <th>NATURALEZA DE CUENTA</th>
                                 <td>{{$tipo_cuenta_contable->naturalezaPoliza}}</td>
                             </tr>
                             <tr>
