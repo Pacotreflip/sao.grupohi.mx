@@ -52,5 +52,11 @@ interface PolizaRepository
      * @return mixed \Illuminate\Database\Eloquent\Collection|Poliza
      */
     public function findWhereIn($array);
+    /**
+     * Obtiene un scope sobre el modelo
+     * @param string $scope
+     * @return mixed
+     */
 
+    public function scope($scope);
 }

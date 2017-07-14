@@ -1,8 +1,6 @@
 <?php
 namespace Ghi\Domain\Core\Contracts\Contabilidad;
 
-use Ghi\Domain\Core\Models\Contabilidad\CuentaContable;
-
 interface CuentaContableRepository
 {
     /**
@@ -49,11 +47,4 @@ interface CuentaContableRepository
      * @internal param array $array
      */
     public function with($relations);
-    /**
-     * Buscar Cuenta Contable
-     * @param $attribute
-     * @param $operator
-     * @return \Illuminate\Database\Eloquent\Collection|CuentaContable
-     */
-    public function getBy($attribute, $operator, $value);
 }

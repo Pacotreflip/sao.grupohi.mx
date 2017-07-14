@@ -126,17 +126,4 @@ class EloquentCuentaContableRepository implements CuentaContableRepository
         $this->model = $this->model->with($relations);
         return $this;
     }
-
-
-    /**
-     * Buscar Cuenta Contable
-     * @param $attribute
-     * @param $operator
-     * @return \Illuminate\Database\Eloquent\Collection|CuentaContable
-     */
-
-    public function getBy($attribute, $operator, $value, $with = null)
-    {
-        return $this->model->where($attribute, $operator, $value)->get();
-    }
 }

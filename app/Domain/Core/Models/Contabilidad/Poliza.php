@@ -13,6 +13,11 @@ class Poliza extends BaseModel
 {
     use SoftDeletes;
 
+    const CON_ERRORES = -2;
+    const REGISTRADA = 0;
+    const LANZADA = 1;
+    const NO_LANZADA = -1;
+
     protected $connection = 'cadeco';
     protected $table = 'Contabilidad.int_polizas';
     protected $primaryKey = 'id_int_poliza';
@@ -140,16 +145,16 @@ class Poliza extends BaseModel
 
     public function  getEstatusStringAttribute(){
         switch ($this->estatus){
-            case 0:
+            case $this::REGISTRADA :
                 return "Registrada";
                 break;
-            case 1:
+            case $this::LANZADA :
                 return "Lanzada";
                 break;
-            case -1:
+            case $this::NO_LANZADA :
                 return "No Lanzada";
                 break;
-            case -2:
+            case $this::CON_ERRORES :
                 return "Con errores";
                 break;
             default:
@@ -160,4 +165,8 @@ class Poliza extends BaseModel
     public function historicos() {
         return $this->hasMany(HistPoliza::class, 'id_int_poliza', 'id_int_poliza');
     }
+    public  function scopeConErrores($query){
+        return $query->where('Contabilidad.int_polizas.estatus', '=', static::CON_ERRORES);
+    }
+
 }

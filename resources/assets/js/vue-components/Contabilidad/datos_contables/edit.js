@@ -12,13 +12,11 @@ Vue.component('datos-contables-edit', {
         }
     },
 
-    computed : {
-        funcion: function () {
-            Vue.set(this.data.datos_contables, 'manejo_almacenes', this.data.datos_contables.manejo_almacenes == '0' ? false : (this.data.datos_contables.manejo_almacenes == '1' ? true : this.data.datos_contables.manejo_almacenes));
-            Vue.set(this.data.datos_contables, 'costo_en_tipo_gasto', this.data.datos_contables.costo_en_tipo_gasto == '0' ? false : (this.data.datos_contables.costo_en_tipo_gasto == '1' ? true : this.data.datos_contables.costo_en_tipo_gasto));
+     created: function () {
+         Vue.set(this.data.datos_contables, 'manejo_almacenes', this.data.datos_contables.manejo_almacenes == '0' ? false : (this.data.datos_contables.manejo_almacenes == '1' ? true : this.data.datos_contables.manejo_almacenes));
+         Vue.set(this.data.datos_contables, 'costo_en_tipo_gasto', this.data.datos_contables.costo_en_tipo_gasto == '0' ? false : (this.data.datos_contables.costo_en_tipo_gasto == '1' ? true : this.data.datos_contables.costo_en_tipo_gasto));
 
-        }
-    },
+     },
 
     methods: {
         confirm_datos_obra: function () {

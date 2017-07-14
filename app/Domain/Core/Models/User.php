@@ -2,6 +2,7 @@
 
 namespace Ghi\Domain\Core\Models;
 
+use Ghi\Core\Facades\Context;
 use Ghi\Core\Presenters\UserPresenter;
 use Illuminate\Auth\Passwords\CanResetPassword;
 use Illuminate\Database\Eloquent\Model;
@@ -9,10 +10,12 @@ use Ghi\Core\App\Auth\AuthenticatableIntranetUser;
 
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
+use Illuminate\Support\Facades\Config;
+use Zizaco\Entrust\Traits\EntrustUserTrait;
 
 class User extends Model implements AuthenticatableContract, CanResetPasswordContract
 {
-    use AuthenticatableIntranetUser, CanResetPassword;
+    use AuthenticatableIntranetUser, CanResetPassword, EntrustUserTrait;
 
     /**
      * The database table used by the model.
@@ -87,5 +90,20 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
     public function __toString()
     {
         return $this->nombre . ' ' . $this->apaterno . ' ' . $this->amaterno;
+    }
+
+    public function notificaciones() {
+        return $this->hasMany(Notificacion::class, 'id_usuario', 'idusuario');
+    }
+
+    public function notificacionesNoLeidas() {
+        return $this->hasMany(Notificacion::class, 'id_usuario', 'idusuario')->where('dbo.notificaciones.leida', '=', false);
+    }
+
+    public function roles()
+    {
+        return $this->belongsToMany(Config::get('entrust.role'), Config::get('entrust.role_user_table'), 'user_id', 'role_id')
+            ->where('id_obra', Context::getId())
+            ->where('proyecto', Context::getDatabaseName());
     }
 }

@@ -10,24 +10,29 @@
         <div class="col-md-12">
             <div class="box box-info">
                 <div class="box-header with-border">
-                    <h3 class="box-title">Pólizas Generadas</h3>
+                    <h3 class="box-title">Opciones de Búusqueda</h3>
                 </div>
                 <div class="box-body">
+                    {!! Form::model(Request::only(['fechas', 'estatus']), ['method' => 'GET']) !!}
                     <div class="row">
-                        {!! Form::model(Request::only(['fechas', 'estatus']), ['method' => 'GET', 'class' => 'form-inline']) !!}
-                        <div class="col-md-5">
-                            {!! Form::text('fechas', null, ['class' => 'form-control input-sm rango_fechas',  'style' => 'width: 80% ', 'placeholder' => 'Fechas']) !!}
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label><b>Rango de Fechas</b></label>
+                                {!! Form::text('fechas', null, ['class' => 'form-control rango_fechas']) !!}
+                            </div>
                         </div>
-                        <div class="col-md-5">
-                            {!! Form::select('estatus', array('0' => 'Registrada', '1' => 'Lanzada', '-1' => 'No Lanzada', '-2' => 'Con Errores'), '0', array('class' => 'form-control input-sm','style' => 'width: 80% ')) !!}
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label><b>Estatus</b></label>
+                                {!! Form::select('estatus', array('0' => 'Registrada', '1' => 'Lanzada', '-1' => 'No Lanzada', '-2' => 'Con Errores'), '0', array('class' => 'form-control')) !!}
+                            </div>
                         </div>
-                        <div class="col-md-2">
-                            <button style="width: 80% " class="btn btn-sm btn-primary" type="submit">Buscar</button>
-                        </div>
-                        {!! Form::close() !!}
-                        <br>
                     </div>
                 </div>
+                <div class="box-footer">
+                    <button class="btn btn-sm btn-primary pull-right" type="submit">Buscar</button>
+                </div>
+                {!! Form::close() !!}
             </div>
         </div>
     </div>
@@ -42,7 +47,7 @@
                 </div>
                 <div class="box-body">
                     <div class="table-responsive">
-                        <table class="table table-bordered table-striped small index_table" id="example">
+                        <table class="table table-bordered table-striped small" id="example">
                             <thead>
                             <tr>
                                 <th>#</th>
@@ -66,10 +71,10 @@
                                     <td class="numerico">$ {{number_format($item->total,'2','.',',')}}</td>
                                     <td class="numerico">$ {{number_format($item->cuadre,'2','.',',')}}</td>
                                     <td class="">
-                                        @if($item->estatus_string=='Registrada') <span class="label bg-blue">Registrada</span>@endif
-                                        @if($item->estatus_string=='Lanzada') <span class="label bg-green">Lanzada</span>@endif
-                                        @if($item->estatus_string=='No lanzada') <span class="label bg-yellow">No lanzada</span>@endif
-                                        @if($item->estatus_string=='Con errores') <span class="label bg-red">Con errores</span>@endif
+                                        @if($item->estatus == $item::REGISTRADA) <span class="label bg-blue">Registrada</span>@endif
+                                        @if($item->estatus == $item::LANZADA) <span class="label bg-green">Lanzada</span>@endif
+                                        @if($item->estatus == $item::NO_LANZADA) <span class="label bg-yellow">No lanzada</span>@endif
+                                        @if($item->estatus == $item::CON_ERRORES) <span class="label bg-red">Con errores</span>@endif
                                     </td>
                                     <td>@if($item->id_poliza_contpaq>0){{$item->id_poliza_contpaq}}@else N/A @endif</td>
                                     <td style="min-width: 90px;max-width: 90px">

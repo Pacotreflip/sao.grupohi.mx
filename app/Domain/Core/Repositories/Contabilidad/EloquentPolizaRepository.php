@@ -38,7 +38,7 @@ class EloquentPolizaRepository implements PolizaRepository
      */
     public function all()
     {
-        return $this->model->get();
+        return $this->model->toSql();
     }
 
     /**
@@ -199,4 +199,10 @@ class EloquentPolizaRepository implements PolizaRepository
     public function findWhereIn($array){
        return  $this->model->find($array);
       }
+
+    public function scope($scope)
+    {
+        $this->model = $this->model->$scope();
+        return $this;
+    }
 }

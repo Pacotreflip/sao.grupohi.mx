@@ -3,6 +3,7 @@
 namespace Ghi\Domain\Core\Models\Contabilidad;
 
 use Ghi\Domain\Core\Models\Scopes\ObraScope;
+use Ghi\Domain\Core\Models\Transacciones\Tipo;
 use Ghi\Domain\Core\Models\User;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -21,7 +22,8 @@ class TipoCuentaContable extends Model
         'estatus',
         'registro',
         'id_obra',
-        'motivo'
+        'motivo',
+        'tipo'
     ];
     protected $dates = ['deleted_at'];
 
@@ -30,6 +32,10 @@ class TipoCuentaContable extends Model
         parent::boot();
 
         static::addGlobalScope(new ObraScope());
+
+        static::creating(function($model) {
+            $model->tipo = 1;
+        });
     }
 
     /**
@@ -43,7 +49,7 @@ class TipoCuentaContable extends Model
      * @return \Illuminate\Database\Eloquent\Relations\HasOne|CuentaContable
      */
     public function cuentaContable() {
-        return $this->hasMany(CuentaContable::class, 'id_int_tipo_cuenta_contable')->where('Contabilidad.int_cuentas_contables.estatus', '=', 1);
+        return $this->hasOne(CuentaContable::class, 'id_int_tipo_cuenta_contable')->where('Contabilidad.int_cuentas_contables.estatus', '=', 1);
     }
 
     /**

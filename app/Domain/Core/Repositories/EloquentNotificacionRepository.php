@@ -9,10 +9,17 @@
 namespace Ghi\Domain\Core\Repositories;
 
 
+use Ghi\Core\Models\BaseDatosCadeco;
+use Ghi\Domain\Core\Contracts\Contabilidad\PolizaRepository;
 use Ghi\Domain\Core\Contracts\CuentaEmpresa;
 use Ghi\Domain\Core\Contracts\NotificacionRepository;
 use Ghi\Domain\Core\Models\Notificacion;
+use Ghi\Domain\Core\Models\Obra;
+use Ghi\Domain\Core\Models\User;
+use Ghi\Domain\Core\Models\UsuarioCadeco;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Contracts\Config\Repository;
 
 class EloquentNotificacionRepository implements NotificacionRepository
 {
@@ -23,12 +30,24 @@ class EloquentNotificacionRepository implements NotificacionRepository
     private $model;
 
     /**
+     * @var Repository
+     */
+    private $config;
+
+    /**
+     * @var PolizaRepository
+     */
+    private $poliza;
+
+    /**
      * EloquentNotificacionRepository constructor.
      * @param \Ghi\Domain\Core\Models\Notificacion $model
      */
-    public function __construct(Notificacion $model)
+    public function __construct(Notificacion $model, Repository $config, PolizaRepository $poliza)
     {
         $this->model = $model;
+        $this->config = $config;
+        $this->poliza = $poliza;
     }
     /**
      * Obtiene todas las Notificaciones
@@ -57,7 +76,6 @@ class EloquentNotificacionRepository implements NotificacionRepository
     {
         try {
             DB::connection('cadeco')->beginTransaction();
-            $data['estatus'] = 1;
             $item = $this->model->create($data);
             DB::connection('cadeco')->commit();
 
@@ -117,5 +135,68 @@ class EloquentNotificacionRepository implements NotificacionRepository
      */
     public function paginate($perPage = 15, $columns = array('*')) {
         return $this->model->paginate($perPage, $columns);
+    }
+
+    public function send() {
+
+        $basesDatos = BaseDatosCadeco::where('activa', true)->orderBy('nombre')->get();
+
+        foreach ($basesDatos as $bd) {
+            $this->config->set('database.connections.cadeco.database', $bd->nombre);
+            // hasta aqui toda va bien sin p2... creo
+
+
+            // TODO: Obtener todos los usuarios con rol de contador dentro de la base
+
+            /*foreach ($contadores as $contador) {
+                $obras = Obra::all();
+                foreach ($obras as $obra) {
+                    if(//TODO: $contador tiene rol en $obra) {
+                        $polizas = $this->poliza->scope('conErrores')->all();
+
+                        $this->model->create([
+                            'titulo' => 'Resumen de Errores',
+                            'id_usuario' => $idUsuario,
+                            'id_obra' => $obras->id_obra,
+                        ]);
+                    }
+                }
+            }*/
+
+
+            DB::disconnect('cadeco');
+        }
+
+    }
+
+    /**
+     * Obtiene el usuario cadeco asociado al usuario de intranet
+     *
+     * @param $id_usuario
+     * @return UsuarioCadeco
+     * @internal param $idUsuario
+     */
+    public function getUsuarioCadeco($usuario)
+    {
+        return UsuarioCadeco::where('usuario', $usuario->usuario)->first();
+    }
+
+    /**
+     * Obtiene las obras de un usuario cadeco
+     *
+     * @param UsuarioCadeco $usuarioCadeco
+     * @return \Illuminate\Database\Eloquent\Collection|Obra
+     */
+    private function getObrasUsuario($usuarioCadeco)
+    {
+        if (! $usuarioCadeco) {
+            return [];
+        }
+
+        if ($usuarioCadeco->tieneAccesoATodasLasObras()) {
+            return Obra::orderBy('nombre')->get();
+        }
+
+        return $usuarioCadeco->obras()->orderBy('nombre')->get();
     }
 }
