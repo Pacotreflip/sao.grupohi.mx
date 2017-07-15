@@ -1,6 +1,5 @@
 <?php
 
-
 Breadcrumbs::register('sistema_contable.index', function ($breadcrumb) {
     $breadcrumb->parent('index');
     $breadcrumb->push('SISTEMA CONTABLE', route('sistema_contable.index'));

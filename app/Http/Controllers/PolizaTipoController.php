@@ -85,7 +85,7 @@ class PolizaTipoController extends Controller
     public function create()
     {
         $polizas_tipo_sao = $this->poliza_tipo_sao->lists();
-        $tipos_cuentas_contables = $this->tipo_cuenta_contable->scope('generales')->all();
+        $tipos_cuentas_contables = $this->tipo_cuenta_contable->all();
         $tipos_movimiento = $this->tipo_movimiento->lists();
 
         return view('sistema_contable.poliza_tipo.create')

@@ -54,23 +54,17 @@
                                             @endif
                                         </td>
                                         <td style="min-width: 90px;max-width: 90px">
-                                            <div class="btn-group">
-
-                                                    <a title="Ver" href="{{ route('sistema_contable.tipo_cuenta_contable.show', $item->id_tipo_cuenta_contable) }}">
-                                                        <button title="button" type="button" class="btn-xs btn-default">
-                                                            <i class="fa fa-eye"></i>
-                                                        </button>
-                                                    </a>
-
-
-                                                <a title="Editar" href="{{ route('sistema_contable.tipo_cuenta_contable.edit', $item->id_tipo_cuenta_contable) }}">
-                                                    <button title="button" type="button" class="btn-xs btn-info">
-                                                        <i class="fa fa-edit"></i>
-                                                    </button>
-                                                </a>
-                                                    <button type="button" title="Eliminar" class="btn-xs btn-danger" onclick="delete_tipo_cuenta_contable({{$item->id_tipo_cuenta_contable}})"><i class="fa fa-trash"></i></button>
-
-                                            </div>
+                                            <a title="Ver" href="{{ route('sistema_contable.tipo_cuenta_contable.show', $item->id_tipo_cuenta_contable) }}">
+                                                <button title="Ver" type="button" class="btn btn-xs btn-default">
+                                                    <i class="fa fa-eye"></i>
+                                                </button>
+                                            </a>
+                                            <a title="Editar" href="{{ route('sistema_contable.tipo_cuenta_contable.edit', $item->id_tipo_cuenta_contable) }}">
+                                                <button title="Editar" type="button" class="btn btn-xs btn-info">
+                                                    <i class="fa fa-edit"></i>
+                                                </button>
+                                            </a>
+                                            <button type="button" title="Eliminar" class="btn btn-xs btn-danger" onclick="delete_tipo_cuenta_contable({{$item->id_tipo_cuenta_contable}})"><i class="fa fa-trash"></i></button>
                                         </td>
                                     </tr>
                                 @endforeach
