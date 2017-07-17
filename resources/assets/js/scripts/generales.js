@@ -50,7 +50,7 @@ $(function () {
         locale: {
             format: 'YYYY-MM-DD'
         }
-    });
+    }).val('');
 });
 
 Number.prototype.formatMoney = function(c, d, t) {
