@@ -30,3 +30,26 @@ Breadcrumbs::register('compras.requisicion.edit', function ($breadcrumb, $requis
     $breadcrumb->parent('compras.requisicion.show', $requisicion);
     $breadcrumb->push('EDICION', route('compras.requisicion.edit', $requisicion));
 });
+
+/*
+ * Materiales Breadcrumbs
+ */
+Breadcrumbs::register('compras.material.index', function ($breadcrumb) {
+    $breadcrumb->parent('compras.index');
+    $breadcrumb->push('MATERIALES', route('compras.material.index'));
+});
+
+Breadcrumbs::register('compras.material.show', function ($breadcrumb, $material) {
+    $breadcrumb->parent('compras.material.index');
+    $breadcrumb->push($material->folio, route('compras.material.show', $material));
+});
+
+Breadcrumbs::register('compras.material.create', function ($breadcrumb) {
+    $breadcrumb->parent('compras.material.index');
+    $breadcrumb->push('NUEVA', route('compras.material.create'));
+});
+
+Breadcrumbs::register('compras.material.edit', function ($breadcrumb, $material) {
+    $breadcrumb->parent('compras.material.show', $material);
+    $breadcrumb->push('EDICION', route('compras.material.edit', $material));
+});

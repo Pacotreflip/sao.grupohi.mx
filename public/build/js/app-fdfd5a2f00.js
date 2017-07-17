@@ -43839,7 +43839,7 @@ Vue.component('requisicion-create', {
 
 Vue.component('requisicion-edit', {
 
-    props: ['url_requisicion', 'requisicion', 'materiales', 'departamentos_responsables', 'tipos_requisiciones'],
+    props: ['url_requisicion', 'requisicion', 'material', 'departamentos_responsables', 'tipos_requisiciones'],
 
     data: function data() {
         return {
@@ -45857,7 +45857,7 @@ Vue.component('global-errors', {
 'use strict';
 
 Vue.component('kardex-material-index', {
-    props: ['materiales'],
+    props: ['material'],
     data: function data() {
         return {
             'data': {
