@@ -16,7 +16,7 @@
                     <div class="table-responsive">
                         <table class="table table-bordered">
                             <tr>
-                                <th  class="bg-gray-light">Pre-Póliza:<br><label>{{ $poliza->transaccionInterfaz}}</label></th>
+                                <th  class="bg-gray-light">Tipo Póliza SAO:<br><label>{{ $poliza->transaccionInterfaz}}</label></th>
                                 <th class="bg-gray-light">Fecha de Solicitud:<br><label>{{ $poliza->created_at->format('Y-m-d h:i:s a')}}</label></th>
                                 <th  class="bg-gray-light">Usuario Solicita:<br><label> {{$poliza->usuario_solicita }}</label></th>
                                 <th class="bg-gray-light">Cuadre:<br><label>$ {{number_format($poliza->cuadre,'2','.',',')}}</label></th>
@@ -34,20 +34,17 @@
                                     <br><label>{{$poliza->id_poliza_contpaq > 0 ? $poliza->id_poliza_contpaq : 'N/A' }}</label>
                                 </th>
                                 <th class="bg-gray-light">
-                                    Tipo de Transacción:
+                                    Tipo de Póliza:
                                     <br><label> {{ $poliza->tipoPolizaContpaq}}</label>
                                 </th>
                                 <th class="bg-gray-light">
-                                    Número de Folio:
-                                    <br><label> {{ $poliza->transacciones->numero_folio}}</label>
+                                    Transacción Antecedente:
+                                    <br><label>{{ $poliza->transacciones->tipoTransaccion}} - {{ $poliza->transacciones->numero_folio}}</label>
                                 </th>
                             </tr>
                             <tr>
-                                <th class="bg-gray-light">
-                                    Tipo Transacción Antecede:
-                                    <br><label> {{ $poliza->transacciones->tipoTransaccion}}</label>
-                                </th>
-                                <th class="bg-gray-light" colspan="3">
+
+                                <th class="bg-gray-light" colspan="4">
                                     Concepto:
                                     <br><label> {{$poliza->concepto }}</label>
                                 </th>
