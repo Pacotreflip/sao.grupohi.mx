@@ -40,13 +40,13 @@ class PolizaController extends Controller
             ['estatus', '=', $request->estatus]
         ];
 
-        $polizas = $this->poliza->where($where)->paginate(100);
+        $polizas = $this->poliza->where($where)->paginate(800);
         }elseif ($request->estatus != ""){
             $where = [
                 ['estatus', '=', $request->estatus]
             ];
 
-            $polizas = $this->poliza->where($where)->paginate(100);
+            $polizas = $this->poliza->where($where)->paginate(800);
         } elseif ($request->fechas){
             $fecha_inicial = explode(" - ", $request->fechas)[0] . ' 00:00:00.000';
             $fecha_final = explode(" - ", $request->fechas)[1] . ' 00:00:00.000';
@@ -54,9 +54,9 @@ class PolizaController extends Controller
                 ['fecha', 'between', DB::raw("'{$fecha_inicial}' and '{$fecha_final}'")]
             ];
 
-            $polizas = $this->poliza->where($where)->paginate(100);
+            $polizas = $this->poliza->where($where)->paginate(800);
         } else {
-            $polizas = $this->poliza->paginate(100);
+            $polizas = $this->poliza->paginate(800);
 
         }
 
