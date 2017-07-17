@@ -119,7 +119,7 @@
                                                 <td class="bg-gray-light numerico form-group"
                                                     :class="{'has-error': validation_errors.has('form_poliza.Importe [' + (index + 1) + ']')}">
                                                 <span v-if="movimiento.id_tipo_movimiento_poliza == 1">
-                                                    <input v-validate="'required|min_value:0'"
+                                                    <input v-validate="'required'"
                                                            :name="'Importe [' + (index + 1) + ']'" type="number"
                                                            step="any" class="form-control input-sm text-right"
                                                            v-model="movimiento.importe">
@@ -130,7 +130,7 @@
                                                 <td class="bg-gray-light numerico form-group"
                                                     :class="{'has-error': validation_errors.has('form_poliza.Importe [' + (index + 1) + ']')}">
                                                 <span v-if="movimiento.id_tipo_movimiento_poliza == 2">
-                                                    <input v-validate="'required|min_value:0'"
+                                                    <input v-validate="'required'"
                                                            :name="'Importe [' + (index + 1) + ']'" type="number"
                                                            step="any" class="form-control input-sm text-right"
                                                            v-model="movimiento.importe">
