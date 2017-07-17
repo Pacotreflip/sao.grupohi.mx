@@ -33,7 +33,7 @@ class MaterialController extends Controller
         return view('compras.material.edit');
     }
 
-    public function update($id) {
+    public function update(Request $request, $id) {
         //todo
     }
 

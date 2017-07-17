@@ -41,15 +41,15 @@ Breadcrumbs::register('compras.material.index', function ($breadcrumb) {
 
 Breadcrumbs::register('compras.material.show', function ($breadcrumb, $material) {
     $breadcrumb->parent('compras.material.index');
-    $breadcrumb->push($material->folio, route('compras.material.show', $material));
+    $breadcrumb->push($material->descripcion, route('compras.material.show', $material));
 });
 
 Breadcrumbs::register('compras.material.create', function ($breadcrumb) {
     $breadcrumb->parent('compras.material.index');
-    $breadcrumb->push('NUEVA', route('compras.material.create'));
+    $breadcrumb->push('NUEVO', route('compras.material.create'));
 });
 
 Breadcrumbs::register('compras.material.edit', function ($breadcrumb, $material) {
     $breadcrumb->parent('compras.material.show', $material);
-    $breadcrumb->push('EDICION', route('compras.material.edit', $material));
+    $breadcrumb->push('EDICIÓN', route('compras.material.edit', $material));
 });

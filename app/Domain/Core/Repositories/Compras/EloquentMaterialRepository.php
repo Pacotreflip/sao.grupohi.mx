@@ -55,7 +55,7 @@ class EloquentMaterialRepository implements MaterialRepository
      * @param $relations
      * @return mixed
      */
-    public function update($id)
+    public function update(array $data, $id)
     {
         // TODO: Implement update() method.
     }

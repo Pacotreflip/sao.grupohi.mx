@@ -29,7 +29,7 @@ interface MaterialRepository
      * @return mixed
      */
 
-    public function update($id);
+    public function update(array $data, $id);
 
     /**
      * Elimina un Material
