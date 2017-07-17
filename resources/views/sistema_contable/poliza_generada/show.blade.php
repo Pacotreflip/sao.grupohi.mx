@@ -8,6 +8,13 @@
 
     <div class="row">
         <div class="col-md-12">
+            <a href="{{route('sistema_contable.poliza_generada.edit', $poliza)}}" class="btn btn-app btn-info pull-right">
+                <i class="fa fa-edit"></i> Editar
+            </a>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
             <div class="box box-info">
                 <div class="box-header with-border">
                     <h3 class="box-title">Detalle de Pre-Póliza</h3>
@@ -20,8 +27,6 @@
                                 <th class="bg-gray-light">Fecha de Solicitud:<br><label>{{ $poliza->created_at->format('Y-m-d h:i:s a')}}</label></th>
                                 <th  class="bg-gray-light">Usuario Solicita:<br><label> {{$poliza->usuario_solicita }}</label></th>
                                 <th class="bg-gray-light">Cuadre:<br><label>$ {{number_format($poliza->cuadre,'2','.',',')}}</label></th>
-
-
                             </tr>
                             <tr>
                                 <th class="bg-gray-light">Estatus:<br><label>   @if($poliza->estatus_string=='Registrada') <span class="label bg-blue">Registrada</span>@endif
