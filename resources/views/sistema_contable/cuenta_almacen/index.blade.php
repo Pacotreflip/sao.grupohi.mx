@@ -25,8 +25,7 @@
                             <div class="box-body">
                                 <div class="col-sm-12">
                                     <div class="row table-responsive">
-                                        <table  class="table table-bordered table-striped small index_table" role="grid"
-                                                aria-describedby="tipo_cuenta_info">
+                                        <table class="table table-bordered table-striped small index_table" role="grid" aria-describedby="tipo_cuenta_info">
                                             <thead>
                                             <tr role="row">
                                                 <th class="sorting_asc" tabindex="0" aria-controls="tipo_cuenta" aria-sort="ascending">#</th>
@@ -49,7 +48,7 @@
                                                 </td>
                                                 <td style="min-width: 90px;max-width: 90px">
                                                     <div class="btn-group">
-                                                        <button title="Editar" class="btn-xs btn-info" type="button" @click="editar(item)"><i class="fa fa-edit"></i> </button>
+                                                        <button title="Editar" class="btn btn-xs btn-info" type="button" @click="editar(item)"><i class="fa fa-edit"></i> </button>
                                                     </div>
                                                 </td>
                                             </tr>
