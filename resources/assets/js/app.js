@@ -19,6 +19,8 @@ require('jquery-treegrid/js/jquery.treegrid.js');
 require('jquery-treegrid/js/jquery.treegrid.bootstrap3.js');
 require('jquery-treegrid/js/jquery.cookie.js');
 require('./scripts/generales');
+window.io = require('socket.io');
+require('bootstrap-notify');
 
 // Vue Dev
 window.Vue = require('vue/dist/vue.js');

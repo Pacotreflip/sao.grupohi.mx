@@ -100,9 +100,4 @@ Route::group(['prefix' => 'sistema_contable'], function () {
     Route::post('cuenta_material', 'CuentaMaterialController@store')->name('sistema_contable.cuenta_material.store');
     Route::patch('cuenta_material/{id}', 'CuentaMaterialController@update')->name('sistema_contable.cuenta_material.update')->where(['id' => '[0-9]+']);
 
-
-    /*
-     *  Mails Polizas
-     */
-    Route::get('emails/notificaciones', 'MailController@index')->name('sistema_contable.mails.notificaciones.index');
 });

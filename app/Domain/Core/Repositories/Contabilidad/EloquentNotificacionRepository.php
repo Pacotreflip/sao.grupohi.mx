@@ -21,6 +21,7 @@ use Ghi\Domain\Core\Models\Contabilidad\Poliza;
 use Ghi\Domain\Core\Models\Obra;
 use Ghi\Domain\Core\Models\User;
 use Ghi\Domain\Core\Models\UsuarioCadeco;
+use Ghi\Events\NewEmail;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Contracts\Config\Repository;
 use Illuminate\Support\Facades\Log;
@@ -212,7 +213,6 @@ class EloquentNotificacionRepository implements NotificacionRepository
                                 ]);
                                 array_push($polizasMail, $notificacion);
                             }
-
                         }
                         $data['polizas'] = $polizasMail;
                         $data['usuario'] = $this->usuario;
@@ -221,8 +221,7 @@ class EloquentNotificacionRepository implements NotificacionRepository
                             $message->from('saoweb@grupohi.mx', 'SAO WEB');
                             $message->to($this->usuario->correo, $this->usuario)->subject('Pólizas con errores');
                         });
-
-
+                        event(new NewEmail($item->id, 'Nuevo Correo de SAO' , $item->titulo, $this->usuario->idusuario));
                     } else {
                         Log::info('Notificaciones : NO EXISTEN POLIZAS CON ERRORES @ ' . Carbon::now());
                     }
