@@ -58,8 +58,5 @@ class NotificacionController extends Controller
             ->with('notificacion', $notificacion);
 
     }
-    public function notificaciones(){
-        $notificaciones = $this->notificacion->with('obra')->all()->count();
-        dd($notificaciones);
-    }
+
 }

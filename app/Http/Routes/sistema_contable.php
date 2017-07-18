@@ -27,9 +27,9 @@ Route::group(['prefix' => 'sistema_contable'], function () {
      */
     Route::get('tipo_cuenta_contable', 'TipoCuentaContableController@index')->name('sistema_contable.tipo_cuenta_contable.index');
     Route::get('tipo_cuenta_contable/create', 'TipoCuentaContableController@create')->name('sistema_contable.tipo_cuenta_contable.create');
-    Route::delete('tipo_cuenta_contable/{id}', 'TipoCuentaContableController@destroy')->name('sistema_contable.tipo_cuenta_contable.destroy')->where(['id'=>'[0-9]+']);
-    Route::get('tipo_cuenta_contable/{id}', 'TipoCuentaContableController@show')->name('sistema_contable.tipo_cuenta_contable.show')->where(['id'=>'[0-9]+']);
-    Route::get('tipo_cuenta_contable/{id}/edit', 'TipoCuentaContableController@edit')->name('sistema_contable.tipo_cuenta_contable.edit')->where(['id'=>'[0-9]+']);
+    Route::delete('tipo_cuenta_contable/{id}', 'TipoCuentaContableController@destroy')->name('sistema_contable.tipo_cuenta_contable.destroy')->where(['id' => '[0-9]+']);
+    Route::get('tipo_cuenta_contable/{id}', 'TipoCuentaContableController@show')->name('sistema_contable.tipo_cuenta_contable.show')->where(['id' => '[0-9]+']);
+    Route::get('tipo_cuenta_contable/{id}/edit', 'TipoCuentaContableController@edit')->name('sistema_contable.tipo_cuenta_contable.edit')->where(['id' => '[0-9]+']);
     Route::post('tipo_cuenta_contable', 'TipoCuentaContableController@store');
     Route::patch('tipo_cuenta_contable/{id}', 'TipoCuentaContableController@update')->name('sistema_contable.tipo_cuenta_contable.update')->where(['id' => '[0-9]+']);
 
@@ -99,5 +99,13 @@ Route::group(['prefix' => 'sistema_contable'], function () {
     Route::get('cuenta_material/{tipo}/material/{nivel}', 'CuentaMaterialController@show')->name('sistema_contable.cuenta_material.show');
     Route::post('cuenta_material', 'CuentaMaterialController@store')->name('sistema_contable.cuenta_material.store');
     Route::patch('cuenta_material/{id}', 'CuentaMaterialController@update')->name('sistema_contable.cuenta_material.update')->where(['id' => '[0-9]+']);
+
+
+    /**
+     *
+     * Notificaciones
+     */
+    Route::get('notificacion', 'NotificacionController@index')->name('sistema_contable.notificacion.index');
+    Route::get('notificacion/{id}', 'NotificacionController@show')->name('sistema_contable.notificacion.show');
 
 });
