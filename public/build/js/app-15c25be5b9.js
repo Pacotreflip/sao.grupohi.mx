@@ -43570,9 +43570,11 @@ $(function () {
     });
     $('.rango_fechas').daterangepicker({
         locale: {
-            format: 'YYYY-MM-DD'
+            format: 'YYYY-MM-DD',
+            applyLabel: 'Aplicar',
+            cancelLabel: 'Cancelar'
         }
-    });
+    }).val('');
 });
 
 Number.prototype.formatMoney = function (c, d, t) {

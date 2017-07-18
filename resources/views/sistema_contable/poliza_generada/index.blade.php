@@ -24,7 +24,7 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label><b>Estatus</b></label>
-                                {!! Form::select('estatus', array('0' => 'Registrada', '1' => 'Lanzada', '-1' => 'No Lanzada', '-2' => 'Con Errores'), '0', array('class' => 'form-control')) !!}
+                                {!! Form::select('estatus', array('' => 'Todas', '0' => 'Registrada', '1' => 'Lanzada', '-1' => 'No Lanzada', '-2' => 'Con Errores'), '', array('class' => 'form-control')) !!}
                             </div>
                         </div>
                     </div>
@@ -47,7 +47,7 @@
                 </div>
                 <div class="box-body">
                     <div class="table-responsive">
-                        <table class="table table-bordered table-striped small" id="example">
+                        <table class="table table-bordered table-striped small index_table" id="example">
                             <thead>
                             <tr>
                                 <th>#</th>
