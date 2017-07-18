@@ -5,9 +5,8 @@
 @section('main-content')
     {!! Breadcrumbs::render('compras.requisicion.create') !!}
 
-    <div id="app">
-        <global-errors></global-errors>
-        <requisicion-create
+    <global-errors></global-errors>
+    <requisicion-create
                 :tipos_requisiciones="{{$tipos_requisiciones}}"
                 :departamentos_responsables="{{$departamentos_responsables}}"
                 :url_requisicion="'{{route('compras.requisicion.index')}}'"
@@ -66,6 +65,4 @@
                 </div>
             </section>
         </requisicion-create>
-    </div>
-
 @endsection

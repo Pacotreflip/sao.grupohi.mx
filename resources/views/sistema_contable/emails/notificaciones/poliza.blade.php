@@ -1,5 +1,5 @@
 Estimado Colaborador: {{$usuario}} {{'\n\n\n\n'}}
-Se le informa que las siguientes pólizas han sido registradas y tienen errores que deben corregirse  para que puedan ser enviadas al Contpaq
+Se le informa que las siguientes pólizas han sido registradas y tienen errores que deben corregirse  para que puedan ser enviadas al Contpaq.
 @foreach($polizas as $index=>$poliza)
     Numero de pre-póliza: {{$poliza->id_int_poliza}}    {{'\n'}}
     Tipo de Póliza: {{$poliza->tipo_poliza}}   {{'\n'}}

@@ -7,9 +7,8 @@
     {!! Breadcrumbs::render('sistema_contable.kardex_material.index') !!}
 
     <hr xmlns:v-on="http://www.w3.org/1999/xhtml" xmlns:v-on="http://www.w3.org/1999/xhtml">
-    <div id="app">
-        <global-errors></global-errors>
-        <kardex-material-index
+    <global-errors></global-errors>
+    <kardex-material-index
                 :materiales="{{$materiales}}"
                 v-cloak
                 inline-template>
@@ -103,5 +102,4 @@
 
             </section>
         </kardex-material-index>
-    </div>
 @endsection

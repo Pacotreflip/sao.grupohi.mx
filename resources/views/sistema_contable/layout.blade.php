@@ -1,4 +1,41 @@
 @extends('layouts.app')
+@section('notifications')
+    <emails :user="{{ auth()->user()->toJson() }}" :emails="{{ auth()->user()->notificacionesNoLeidas()->get()->toJson() }}" :notificacion_url="'{{route('notificacion')}}'" v-cloak inline-template>
+        <li class="dropdown messages-menu">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true">
+
+            <i class="fa fa-envelope-o"></i>
+                <span class="label label-success">@{{ data.emails.length }}</span>
+            </a>
+            <ul class="dropdown-menu">
+                <li class="header">Usted tiene <span class="label label-success">@{{ data.emails.length  }}</span> mensajes</li>
+                <li>
+                    <ul class="menu">
+                        <li v-for="email in data.emails" v-if="data.emails.length > 0">
+                            <a :href="notificacion_url + '/' + email.id">
+                                <div class="pull-left">
+                                    <i class="fa fa-envelope-o fa-2x"></i>
+                                </div>
+                                <h4>
+                                    @{{ email.titulo }}
+                                </h4>
+                                <p>@{{ (new Date(email.created_at)).dateFormat() }}</p>
+                            </a>
+                        </li>
+                        <li v-else>
+                            <a>
+                                <h4>
+                                    Sin mensajes recientes.
+                                </h4>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="footer"><a :href="notificacion_url">Ver todos</a></li>
+            </ul>
+        </li>
+    </emails>
+@endsection
 @section('content-menu')
     <ul class="sidebar-menu">
         <li class="treeview">

@@ -6,9 +6,8 @@
 @section('main-content')
     {!! Breadcrumbs::render('sistema_contable.datos_contables.edit', $datos_contables) !!}
 
-    <div id="app">
-        <global-errors></global-errors>
-        <datos-contables-edit
+    <global-errors></global-errors>
+    <datos-contables-edit
                 :datos_contables_update_url="'{{route('sistema_contable.datos_contables.update', $datos_contables)}}'"
                 :datos_contables="{{$datos_contables}}"
                 v-cloak
@@ -76,5 +75,4 @@
                 </div>
             </section>
         </datos-contables-edit>
-    </div>
 @endsection

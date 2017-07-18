@@ -43878,7 +43878,54 @@ if ($('#app').length) {
     });
 }
 
-},{"./scripts/generales":35,"./vue-components":36,"admin-lte":1,"admin-lte/plugins/datepicker/bootstrap-datepicker":2,"admin-lte/plugins/datepicker/locales/bootstrap-datepicker.es":3,"admin-lte/plugins/daterangepicker/daterangepicker":4,"admin-lte/plugins/iCheck/icheck":5,"admin-lte/plugins/select2/i18n/es":6,"admin-lte/plugins/select2/select2":7,"bootstrap":9,"bootstrap-notify":8,"jquery":25,"jquery-treegrid/js/jquery.cookie.js":22,"jquery-treegrid/js/jquery.treegrid.bootstrap3.js":23,"jquery-treegrid/js/jquery.treegrid.js":24,"moment":27,"moment/locale/es":26,"socket.io/node_modules/socket.io-client/dist/socket.io":28,"sweetalert2":29,"typeahead.js/dist/typeahead.jquery":30,"vee-validate":32,"vee-validate/dist/locale/es":31,"vue/dist/vue.js":33}],35:[function(require,module,exports){
+if ($('#global').length) {
+    new Vue({
+        el: '#global',
+        components: require('./global/vue-components')
+    });
+}
+
+},{"./global/vue-components":35,"./scripts/generales":37,"./vue-components":38,"admin-lte":1,"admin-lte/plugins/datepicker/bootstrap-datepicker":2,"admin-lte/plugins/datepicker/locales/bootstrap-datepicker.es":3,"admin-lte/plugins/daterangepicker/daterangepicker":4,"admin-lte/plugins/iCheck/icheck":5,"admin-lte/plugins/select2/i18n/es":6,"admin-lte/plugins/select2/select2":7,"bootstrap":9,"bootstrap-notify":8,"jquery":25,"jquery-treegrid/js/jquery.cookie.js":22,"jquery-treegrid/js/jquery.treegrid.bootstrap3.js":23,"jquery-treegrid/js/jquery.treegrid.js":24,"moment":27,"moment/locale/es":26,"socket.io/node_modules/socket.io-client/dist/socket.io":28,"sweetalert2":29,"typeahead.js/dist/typeahead.jquery":30,"vee-validate":32,"vee-validate/dist/locale/es":31,"vue/dist/vue.js":33}],35:[function(require,module,exports){
+'use strict';
+
+require('./vue-components/emails');
+
+},{"./vue-components/emails":36}],36:[function(require,module,exports){
+'use strict';
+
+Vue.component('emails', {
+    props: ['user'],
+    data: function data() {
+        return {
+            emails: []
+        };
+    },
+
+    created: function created() {
+        var socket = io('http://localhost:3000');
+
+        socket.on('emails-channel:Ghi\\Events\\NewEmail', function (data) {
+            if (data.idusuario == this.user.idusuario) {
+                this.emails.push(data.email);
+                $.notify({
+                    // options
+                    icon: 'glyphicon glyphicon-envelope',
+                    title: data.title,
+                    message: data.message,
+                    url: App.host + '/notificacion/' + data.id
+                }, {
+                    // settings
+                    type: 'info',
+                    newest_on_top: true,
+                    icon_type: 'class',
+                    template: '<div data-notify="container" class="col-xs-11 col-sm-3 alert alert-{0}" role="alert">' + '<button type="button" aria-hidden="true" class="close" data-notify="dismiss">×</button>' + '<span data-notify="icon"></span> ' + '<span data-notify="title">{1}</span> ' + '<span data-notify="message">{2}</span>' + '<div class="progress" data-notify="progressbar">' + '<div class="progress-bar progress-bar-{0}" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%;"></div>' + '</div>' + '<a href="{3}" target="{4}" data-notify="url"></a>' + '</div>'
+                });
+            }
+        }.bind(this));
+    }
+});
+
+},{}],37:[function(require,module,exports){
 'use strict';
 
 /**
@@ -43977,7 +44024,7 @@ function padValue(value) {
     return value < 10 ? "0" + value : value;
 };
 
-},{}],36:[function(require,module,exports){
+},{}],38:[function(require,module,exports){
 'use strict';
 
 require('./vue-components/global-errors');
@@ -43987,8 +44034,6 @@ require('./vue-components/select2');
 /**
  * Contabilidad Components...
  */
-require('./vue-components/Contabilidad/emails');
-
 require('./vue-components/Contabilidad/poliza_tipo/poliza-tipo-create');
 require('./vue-components/Contabilidad/tipo_cuenta_contable/tipo-cuenta-contable-create');
 require('./vue-components/Contabilidad/tipo_cuenta_contable/tipo-cuenta-contable-update');
@@ -44007,7 +44052,7 @@ require('./vue-components/kardex_material/kardex-material-index');
 require('./vue-components/Compras/requisicion/create');
 require('./vue-components/Compras/requisicion/edit');
 
-},{"./vue-components/Compras/requisicion/create":37,"./vue-components/Compras/requisicion/edit":38,"./vue-components/Contabilidad/cuenta_almacen/index":39,"./vue-components/Contabilidad/cuenta_concepto/index":40,"./vue-components/Contabilidad/cuenta_contable/index":41,"./vue-components/Contabilidad/cuenta_empresa/cuenta-empresa-edit":42,"./vue-components/Contabilidad/cuenta_material/cuenta-material-index":43,"./vue-components/Contabilidad/datos_contables/edit":44,"./vue-components/Contabilidad/emails":45,"./vue-components/Contabilidad/poliza_generada/edit":46,"./vue-components/Contabilidad/poliza_tipo/poliza-tipo-create":47,"./vue-components/Contabilidad/tipo_cuenta_contable/tipo-cuenta-contable-create":48,"./vue-components/Contabilidad/tipo_cuenta_contable/tipo-cuenta-contable-update":49,"./vue-components/errors":50,"./vue-components/global-errors":51,"./vue-components/kardex_material/kardex-material-index":52,"./vue-components/select2":53}],37:[function(require,module,exports){
+},{"./vue-components/Compras/requisicion/create":39,"./vue-components/Compras/requisicion/edit":40,"./vue-components/Contabilidad/cuenta_almacen/index":41,"./vue-components/Contabilidad/cuenta_concepto/index":42,"./vue-components/Contabilidad/cuenta_contable/index":43,"./vue-components/Contabilidad/cuenta_empresa/cuenta-empresa-edit":44,"./vue-components/Contabilidad/cuenta_material/cuenta-material-index":45,"./vue-components/Contabilidad/datos_contables/edit":46,"./vue-components/Contabilidad/poliza_generada/edit":47,"./vue-components/Contabilidad/poliza_tipo/poliza-tipo-create":48,"./vue-components/Contabilidad/tipo_cuenta_contable/tipo-cuenta-contable-create":49,"./vue-components/Contabilidad/tipo_cuenta_contable/tipo-cuenta-contable-update":50,"./vue-components/errors":51,"./vue-components/global-errors":52,"./vue-components/kardex_material/kardex-material-index":53,"./vue-components/select2":54}],39:[function(require,module,exports){
 'use strict';
 
 Vue.component('requisicion-create', {
@@ -44087,7 +44132,7 @@ Vue.component('requisicion-create', {
     }
 });
 
-},{}],38:[function(require,module,exports){
+},{}],40:[function(require,module,exports){
 'use strict';
 
 Vue.component('requisicion-edit', {
@@ -44414,7 +44459,7 @@ Vue.component('requisicion-edit', {
     }
 });
 
-},{}],39:[function(require,module,exports){
+},{}],41:[function(require,module,exports){
 'use strict';
 
 Vue.component('cuenta-almacen-index', {
@@ -44563,7 +44608,7 @@ Vue.component('cuenta-almacen-index', {
     }
 });
 
-},{}],40:[function(require,module,exports){
+},{}],42:[function(require,module,exports){
 'use strict';
 
 Vue.component('cuenta-concepto-index', {
@@ -44836,7 +44881,7 @@ Vue.component('cuenta-concepto-index', {
     }
 });
 
-},{}],41:[function(require,module,exports){
+},{}],43:[function(require,module,exports){
 'use strict';
 
 Vue.component('cuenta-contable-index', {
@@ -45003,7 +45048,7 @@ Vue.component('cuenta-contable-index', {
     }
 });
 
-},{}],42:[function(require,module,exports){
+},{}],44:[function(require,module,exports){
 'use strict';
 
 Vue.component('cuenta-empresa-edit', {
@@ -45232,7 +45277,7 @@ Vue.component('cuenta-empresa-edit', {
     }
 });
 
-},{}],43:[function(require,module,exports){
+},{}],45:[function(require,module,exports){
 'use strict';
 
 Vue.component('cuenta-material-index', {
@@ -45419,7 +45464,7 @@ Vue.component('cuenta-material-index', {
 
 });
 
-},{}],44:[function(require,module,exports){
+},{}],46:[function(require,module,exports){
 'use strict';
 
 Vue.component('datos-contables-edit', {
@@ -45503,42 +45548,7 @@ Vue.component('datos-contables-edit', {
     }
 });
 
-},{}],45:[function(require,module,exports){
-'use strict';
-
-Vue.component('emails', {
-    props: ['user'],
-    data: function data() {
-        return {
-            emails: []
-        };
-    },
-
-    created: function created() {
-        var socket = io('http://localhost:3000');
-
-        socket.on('emails-channel:Ghi\\Events\\NewEmail', function (data) {
-            if (data.idusuario == this.user.idusuario) {
-                this.emails.push(data.email);
-                $.notify({
-                    // options
-                    icon: 'glyphicon glyphicon-envelope',
-                    title: data.title,
-                    message: data.message,
-                    url: App.host + '/notificacion/' + data.id
-                }, {
-                    // settings
-                    type: 'info',
-                    newest_on_top: true,
-                    icon_type: 'class',
-                    template: '<div data-notify="container" class="col-xs-11 col-sm-3 alert alert-{0}" role="alert">' + '<button type="button" aria-hidden="true" class="close" data-notify="dismiss">×</button>' + '<span data-notify="icon"></span> ' + '<span data-notify="title">{1}</span> ' + '<span data-notify="message">{2}</span>' + '<div class="progress" data-notify="progressbar">' + '<div class="progress-bar progress-bar-{0}" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%;"></div>' + '</div>' + '<a href="{3}" target="{4}" data-notify="url"></a>' + '</div>'
-                });
-            }
-        }.bind(this));
-    }
-});
-
-},{}],46:[function(require,module,exports){
+},{}],47:[function(require,module,exports){
 'use strict';
 
 Vue.component('poliza-generada-edit', {
@@ -45745,7 +45755,7 @@ Vue.component('poliza-generada-edit', {
     }
 });
 
-},{}],47:[function(require,module,exports){
+},{}],48:[function(require,module,exports){
 'use strict';
 
 Vue.component('poliza-tipo-create', {
@@ -45966,7 +45976,7 @@ Vue.component('poliza-tipo-create', {
     }
 });
 
-},{}],48:[function(require,module,exports){
+},{}],49:[function(require,module,exports){
 'use strict';
 
 /**
@@ -46034,7 +46044,7 @@ Vue.component('tipo-cuenta-contable-create', {
 
 });
 
-},{}],49:[function(require,module,exports){
+},{}],50:[function(require,module,exports){
 'use strict';
 
 /**
@@ -46106,7 +46116,7 @@ Vue.component('tipo-cuenta-contable-update', {
 
 });
 
-},{}],50:[function(require,module,exports){
+},{}],51:[function(require,module,exports){
 'use strict';
 
 Vue.component('app-errors', {
@@ -46115,7 +46125,7 @@ Vue.component('app-errors', {
     template: require('./templates/errors.html')
 });
 
-},{"./templates/errors.html":54}],51:[function(require,module,exports){
+},{"./templates/errors.html":55}],52:[function(require,module,exports){
 'use strict';
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
@@ -46141,7 +46151,7 @@ Vue.component('global-errors', {
   }
 });
 
-},{"./templates/global-errors.html":55}],52:[function(require,module,exports){
+},{"./templates/global-errors.html":56}],53:[function(require,module,exports){
 'use strict';
 
 Vue.component('kardex-material-index', {
@@ -46223,7 +46233,7 @@ Vue.component('kardex-material-index', {
 
 });
 
-},{}],53:[function(require,module,exports){
+},{}],54:[function(require,module,exports){
 'use strict';
 
 Vue.component('select2', {
@@ -46272,9 +46282,9 @@ Vue.component('select2', {
     }
 });
 
-},{}],54:[function(require,module,exports){
-module.exports = '<div id="form-errors" v-cloak>\n  <div class="alert alert-danger" v-if="form.errors.length">\n    <ul>\n      <li v-for="error in form.errors">{{ error }}</li>\n    </ul>\n  </div>\n</div>';
 },{}],55:[function(require,module,exports){
+module.exports = '<div id="form-errors" v-cloak>\n  <div class="alert alert-danger" v-if="form.errors.length">\n    <ul>\n      <li v-for="error in form.errors">{{ error }}</li>\n    </ul>\n  </div>\n</div>';
+},{}],56:[function(require,module,exports){
 module.exports = '<div class="alert alert-danger" v-show="errors.length">\n  <ul>\n    <li v-for="error in errors">{{ error }}</li>\n  </ul>\n</div>';
 },{}]},{},[34]);
 

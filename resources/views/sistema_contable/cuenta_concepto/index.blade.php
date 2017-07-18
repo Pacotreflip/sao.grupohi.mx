@@ -6,8 +6,7 @@
 @section('main-content')
     {!! Breadcrumbs::render('sistema_contable.cuenta_concepto.index') !!}
 
-    <div id="app">
-        <cuenta-concepto-index
+    <cuenta-concepto-index
                 :conceptos="{{$conceptos}}"
                 :url_concepto_get_by="'{{route('sistema_contable.concepto.getBy')}}'"
                 :url_store_cuenta="'{{route('sistema_contable.cuenta_concepto.store')}}'"
@@ -143,5 +142,4 @@
                 </div>
             </section>
         </cuenta-concepto-index>
-    </div>
 @endsection

@@ -100,9 +100,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
     public function notificacionesNoLeidas() {
         return $this->hasMany(Notificacion::class, 'id_usuario', 'idusuario')->where('Contabilidad.notificaciones.leida', '=', false);
     }
-    public function notificacionesNuevas() {
-        return $this->hasMany(Notificacion::class, 'id_usuario', 'idusuario')->where('Contabilidad.notificaciones.leida', '=', false)->limit(5);
-    }
+
     public function roles()
     {
         return $this->belongsToMany(Config::get('entrust.role'), Config::get('entrust.role_user_table'), 'user_id', 'role_id')

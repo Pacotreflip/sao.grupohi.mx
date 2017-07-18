@@ -6,9 +6,8 @@
 @section('main-content')
     {!! Breadcrumbs::render('sistema_contable.tipo_cuenta_contable.create') !!}
 
-    <div id="app">
-        <global-errors></global-errors>
-        <tipo-cuenta-contable-create
+    <global-errors></global-errors>
+    <tipo-cuenta-contable-create
                 v-cloak
                 inline-template>
             <section>
@@ -54,5 +53,4 @@
 
             </section>
         </tipo-cuenta-contable-create>
-    </div>
 @endsection

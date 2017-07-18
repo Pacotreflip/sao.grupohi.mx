@@ -6,9 +6,8 @@
 @section('main-content')
     {!! Breadcrumbs::render('sistema_contable.tipo_cuenta_contable.edit',$tipo_cuenta_contable) !!}
 
-    <div id="app">
-        <global-errors></global-errors>
-        <tipo-cuenta-contable-update
+    <global-errors></global-errors>
+    <tipo-cuenta-contable-update
                 :tipo_cuenta_contable="{{$tipo_cuenta_contable->toJson()}}"
                 v-cloak
                 inline-template>
@@ -55,5 +54,4 @@
 
             </section>
         </tipo-cuenta-contable-update>
-    </div>
 @endsection

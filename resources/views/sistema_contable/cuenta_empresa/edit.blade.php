@@ -6,8 +6,7 @@
 @section('main-content')
     {!! Breadcrumbs::render('sistema_contable.cuenta_empresa.edit', $empresa) !!}
 
-    <div id="app">
-        <cuenta-empresa-edit
+    <cuenta-empresa-edit
                 :empresa="{{$empresa}}"
                 :tipo_cuenta_empresa="{{$tipo_cuenta_empresa}}"
                 :cuenta_store_url="'{{route('sistema_contable.cuenta_empresa.store')}}'"
@@ -195,5 +194,4 @@
                 </div>
             </section>
         </cuenta-empresa-edit>
-    </div>
 @endsection

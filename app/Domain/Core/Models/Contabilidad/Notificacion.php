@@ -20,7 +20,7 @@ class Notificacion extends Model
             'id_usuario',
             'id_obra'
         ];
-    protected $appends = ['total_notificaciones'];
+
     protected static function boot()
     {
         parent::boot();
@@ -41,9 +41,7 @@ class Notificacion extends Model
     {
         return $this->belongsTo(User::class, 'id_usuario', 'idusuario');
     }
-    public function getTotalNotificacionesAttribute(){
-        return  Notificacion::where('id_usuario', '=',auth()->user()->idusuario)->where('id_obra', '=',Context::getId())->where('estatus','=',1)->count();
-    }
+
     public function scopeRecientes($query){
         return $query->where('leida','=','false')->orderBy('created_at','desc')->limit(5);
     }

@@ -4,9 +4,9 @@
 @section('contentheader_description', '(DETALLE)')
 @section('main-content')
     {!! Breadcrumbs::render('sistema_contable.cuenta_material.show', $familia) !!}
-    <div id="app">
-        <global-errors></global-errors>
-        <cuenta-material-index
+
+    <global-errors></global-errors>
+    <cuenta-material-index
                 :familia="{{$familia}}"
                 :datos_contables="{{$currentObra->datosContables}}"
                 :url_cuenta_material_store="'{{route('sistema_contable.cuenta_material.store')}}'"
@@ -163,7 +163,4 @@
 
             </section>
         </cuenta-material-index>
-    </div>
-
-
 @endsection

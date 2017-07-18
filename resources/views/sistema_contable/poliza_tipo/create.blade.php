@@ -6,9 +6,8 @@
 @section('main-content')
     {!! Breadcrumbs::render('sistema_contable.poliza_tipo.create') !!}
 
-    <div id="app">
-        <global-errors></global-errors>
-        <poliza-tipo-create
+    <global-errors></global-errors>
+    <poliza-tipo-create
                 v-cloak
                 v-bind:tipos_movimiento="{{ $tipos_movimiento }}"
                 v-bind:tipos_cuentas_contables="{{ $tipos_cuentas_contables }}"
@@ -134,5 +133,4 @@
                 </div>
             </section>
         </poliza-tipo-create>
-    </div>
 @endsection

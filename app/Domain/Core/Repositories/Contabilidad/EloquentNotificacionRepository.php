@@ -221,7 +221,7 @@ class EloquentNotificacionRepository implements NotificacionRepository
                             $message->from('saoweb@grupohi.mx', 'SAO WEB');
                             $message->to($this->usuario->correo, $this->usuario)->subject('Pólizas con errores');
                         });
-                        event(new NewEmail($item->id, 'Nuevo Correo de SAO' , $item->titulo, $this->usuario->idusuario));
+                        event(new NewEmail($item, $this->usuario->idusuario));
                     } else {
                         Log::info('Notificaciones : NO EXISTEN POLIZAS CON ERRORES @ ' . Carbon::now());
                     }
@@ -271,6 +271,6 @@ class EloquentNotificacionRepository implements NotificacionRepository
      */
     public function findBy($attribute, $value, $columns = array('*'))
     {
-        return $this->model->where($attribute, '=', $value)->get($columns);
+        return $this->model->where($attribute, '=', $value)->orderBy('created_at', 'DESC')->get($columns);
     }
 }

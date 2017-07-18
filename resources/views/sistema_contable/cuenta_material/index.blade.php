@@ -6,9 +6,8 @@
 @section('main-content')
     {!! Breadcrumbs::render('sistema_contable.cuenta_material.index') !!}
 
-    <div id="app">
-        <global-errors></global-errors>
-        <cuenta-material-index
+    <global-errors></global-errors>
+    <cuenta-material-index
                 v-cloak
                 inline-template>
             <section>
@@ -99,5 +98,4 @@
 
             </section>
         </cuenta-material-index>
-    </div>
 @endsection

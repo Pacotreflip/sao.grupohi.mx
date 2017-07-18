@@ -9,10 +9,8 @@ class NewEmail extends Event implements ShouldBroadcast
 {
     use SerializesModels;
 
-    public $id;
-    public $title;
-    public $message;
-    public $idusuario;
+
+    public $email;
 
     /**
      * NewEmail constructor.
@@ -21,12 +19,9 @@ class NewEmail extends Event implements ShouldBroadcast
      * @param $message
      * @param $idusuario
      */
-    public function __construct($id, $title, $message, $idusuario)
+    public function __construct($email)
     {
-        $this->id = $id;
-        $this->title = $title;
-        $this->message = $message;
-        $this->idusuario = $idusuario;
+        $this->email = $email->toArray();
     }
 
     /**

@@ -6,9 +6,8 @@
 @section('main-content')
     {!! Breadcrumbs::render('sistema_contable.cuenta_contable.configuracion') !!}
 
-    <div id="app">
-        <global-errors></global-errors>
-        <configuracion-contable
+    <global-errors></global-errors>
+    <configuracion-contable
                 :datos_contables_update_url="'{{route('sistema_contable.datos_contables.update', $currentObra->datosContables)}}'"
                 :cuenta_contable_url="'{{route('sistema_contable.cuenta_contable.index')}}'"
                 :tipos_cuentas_contables="{{$tipos_cuentas_contables}}"
@@ -217,5 +216,4 @@
                 </div>
             </section>
         </configuracion-contable>
-    </div>
 @endsection

@@ -4,7 +4,6 @@ This is a starter template page. Use this page to start your new project from
 scratch. This page gets rid of all links and provides the needed markup only.
 -->
 <html lang="es">
-
 @section('htmlheader')
     @include('layouts.partials.htmlheader')
     @include('scripts.globals')
@@ -31,6 +30,8 @@ desired effect
 |---------------------------------------------------------|
 -->
 <body class="skin-green sidebar-mini">
+<div id="app">
+
 <div class="wrapper">
 
     @include('layouts.partials.mainheader')
@@ -54,10 +55,11 @@ desired effect
 
 </div><!-- ./wrapper -->
 
+</div>
+
+</body>
 @section('scripts')
     @include('layouts.partials.scripts')
     @yield('scripts-content')
 @show
-
-</body>
 </html>

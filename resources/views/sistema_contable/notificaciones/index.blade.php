@@ -20,7 +20,6 @@
 
                                 @foreach($notificaciones as $index => $notificacion)
                                     <tr>
-                                        <td>{{$index+1}}</td>
                                         <td><i class="fa {{$notificacion->leida?'fa-envelope-open text-gray':'fa-envelope text-yellow'}}"></i></td>
                                         <td><a href="{{route('notificacion.show',$notificacion->id)}}">{{$notificacion->titulo}}</a></td>
                                         <td>{{$notificacion->total_polizas}} Polizas</td>
@@ -31,7 +30,6 @@
                                 </tbody>
                             </table>
                         </div>
-
                     </div>
                 </div>
             </div>

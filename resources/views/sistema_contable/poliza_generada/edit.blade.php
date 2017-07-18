@@ -6,8 +6,7 @@
 @section('main-content')
     {!! Breadcrumbs::render('sistema_contable.poliza_generada.edit', $poliza) !!}
 
-    <div id="app">
-        <poliza-generada-edit
+    <poliza-generada-edit
                 :poliza="{{$poliza}}"
                 :poliza_edit="{{$poliza}}"
                 :datos_contables="{{$currentObra->datosContables}}"
@@ -305,5 +304,4 @@
                 </div>
             </section>
         </poliza-generada-edit>
-    </div>
 @endsection

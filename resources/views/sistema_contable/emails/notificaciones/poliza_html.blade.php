@@ -49,12 +49,11 @@
 
     <div id="cuerpo">
         <div id="contenido">
-            <h1>Estimado {{$usuario}} </h1>
-            <h1>Se le informa que los siguientes documentos tienen más de 3 días hábiles con una recepción registrada a su nombre,
-                si ya entrego los documentos a otro usuario, por favor solicite que haga la recepción correspondiente en el sistema.</h1>
+            <h1>Estimado Colaborador: {{$usuario}} </h1>
+            <h1>Se le informa que las siguientes pólizas han sido registradas y tienen errores que deben corregirse  para que puedan ser enviadas al Contpaq.</h1>
             <div id="lista_contratos">
                 <table class="generica" style="width:100%">
-                    <caption>Contratos : <?php  ?></caption>
+                    <caption>Contratos :</caption>
                     <thead>
                     <tr>
                         <th>No</th>

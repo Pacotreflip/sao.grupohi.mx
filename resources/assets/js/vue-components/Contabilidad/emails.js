@@ -1,8 +1,10 @@
 Vue.component('emails', {
-    props: ['user'],
+    props: ['user', 'emails', 'notificacion_url'],
     data: function () {
         return {
-            emails: []
+            data : {
+                emails: this.emails
+            }
         }
     },
 
@@ -10,29 +12,22 @@ Vue.component('emails', {
         var socket = io('http://localhost:3000');
 
         socket.on('emails-channel:Ghi\\Events\\NewEmail', function (data) {
-            if (data.idusuario == this.user.idusuario) {
-                this.emails.push(data.email);
+            if (data.email.id_usuario == this.user.idusuario) {
+                this.data.emails.push(data.email);
                 $.notify({
                     // options
                     icon: 'glyphicon glyphicon-envelope',
-                    title: data.title,
-                    message: data.message,
-                    url: App.host + '/notificacion/' + data.id
+                    title: data.email.titulo,
+                    message: (new Date(data.email.created_at)).dateFormat(),
+                    url: App.host + '/notificacion/' + data.email.id
                 },{
                     // settings
-                    type: 'info',
+                    type: 'warning',
                     newest_on_top: true,
-                    icon_type: 'class',
-                    template: '<div data-notify="container" class="col-xs-11 col-sm-3 alert alert-{0}" role="alert">' +
-                    '<button type="button" aria-hidden="true" class="close" data-notify="dismiss">×</button>' +
-                    '<span data-notify="icon"></span> ' +
-                    '<span data-notify="title">{1}</span> ' +
-                    '<span data-notify="message">{2}</span>' +
-                    '<div class="progress" data-notify="progressbar">' +
-                    '<div class="progress-bar progress-bar-{0}" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%;"></div>' +
-                    '</div>' +
-                    '<a href="{3}" target="{4}" data-notify="url"></a>' +
-                    '</div>'
+                    placement: {
+                        from: "bottom",
+                        align: "right"
+                    },
                 });
             }
         }.bind(this));

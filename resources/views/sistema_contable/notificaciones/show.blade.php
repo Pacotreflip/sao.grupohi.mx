@@ -28,8 +28,7 @@
                 <div class="mailbox-read-message">
                     <p><b>Estimado Colaborador:  {{$notificacion->usuario}}</b></p>
                     <p>Se le informa que las siguientes pólizas han sido registradas y tienen errores que deben corregirse  para que puedan ser enviadas al Contpaq.</p>
-                    <p>Sugerimos tomar acciones correctivas.</p>
-                    <p>Gracias,<br>SAO WEB</p>
+
                 </div>
             </div>
             <div class="box-footer">
