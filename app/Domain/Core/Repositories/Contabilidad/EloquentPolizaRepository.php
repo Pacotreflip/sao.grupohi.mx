@@ -38,7 +38,7 @@ class EloquentPolizaRepository implements PolizaRepository
      */
     public function all()
     {
-        return $this->model->toSql();
+        return $this->model->get();
     }
 
     /**

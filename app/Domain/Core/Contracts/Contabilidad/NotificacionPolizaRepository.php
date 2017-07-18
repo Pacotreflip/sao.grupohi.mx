@@ -1,5 +1,5 @@
 <?php
-namespace Ghi\Domain\Core\Contracts;
+namespace Ghi\Domain\Core\Contracts\Contabilidad;
 
 
 interface NotificacionPolizaRepository
@@ -30,5 +30,8 @@ interface NotificacionPolizaRepository
      * @return mixed
      */
     public function with($relations);
+
+
+    public function findBy($attribute, $value, $columns = array('*'));
 
    }

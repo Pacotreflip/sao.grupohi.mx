@@ -1,15 +1,17 @@
 <?php
-namespace Ghi\Domain\Core\Models;
+namespace Ghi\Domain\Core\Models\Contabilidad;
 
 
 use Ghi\Core\Facades\Context;
+use Ghi\Domain\Core\Models\Obra;
 use Ghi\Domain\Core\Models\Scopes\ObraScope;
+use Ghi\Domain\Core\Models\User;
 use Illuminate\Database\Eloquent\Model;
 
 class Notificacion extends Model
 {
     protected $connection = 'cadeco';
-    protected $table = 'dbo.notificaciones';
+    protected $table = 'Contabilidad.notificaciones';
     protected $fillable =
         [
             'titulo',
@@ -25,11 +27,6 @@ class Notificacion extends Model
         static::addGlobalScope(new ObraScope());
     }
 
-    public function __construct(array $attributes = [])
-    {
-        $attributes['id_obra'] = Context::getId();
-        parent::__construct($attributes);
-    }
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
@@ -46,4 +43,11 @@ class Notificacion extends Model
     public function getTotalNotificacionesAttribute(){
         return  Notificacion::where('id_usuario', '=',auth()->user()->idusuario)->where('id_obra', '=',Context::getId())->where('estatus','=',1)->count();
     }
+
+    public function notificaionesPoliza(){
+        return $this->belongsTo(NotificacionPoliza::class, 'id_notificacion', 'id');
+
+    }
+
+
 }

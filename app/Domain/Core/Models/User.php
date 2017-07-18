@@ -4,6 +4,7 @@ namespace Ghi\Domain\Core\Models;
 
 use Ghi\Core\Facades\Context;
 use Ghi\Core\Presenters\UserPresenter;
+use Ghi\Domain\Core\Models\Contabilidad\Notificacion;
 use Illuminate\Auth\Passwords\CanResetPassword;
 use Illuminate\Database\Eloquent\Model;
 use Ghi\Core\App\Auth\AuthenticatableIntranetUser;
@@ -97,7 +98,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
     }
 
     public function notificacionesNoLeidas() {
-        return $this->hasMany(Notificacion::class, 'id_usuario', 'idusuario')->where('dbo.notificaciones.leida', '=', false);
+        return $this->hasMany(Notificacion::class, 'id_usuario', 'idusuario')->where('Contabilidad.notificaciones.leida', '=', false);
     }
 
     public function roles()

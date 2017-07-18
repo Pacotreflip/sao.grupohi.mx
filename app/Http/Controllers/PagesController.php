@@ -2,7 +2,7 @@
 
 namespace Ghi\Http\Controllers;
 
-use Ghi\Domain\Core\Contracts\NotificacionRepository;
+use Ghi\Domain\Core\Contracts\Contabilidad\NotificacionRepository;
 use Ghi\Domain\Core\Contracts\UserRepository;
 use Illuminate\Session\Store;
 

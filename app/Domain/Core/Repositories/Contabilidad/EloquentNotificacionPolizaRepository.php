@@ -6,13 +6,14 @@
  * Time: 02:24 PM
  */
 
-namespace Ghi\Domain\Core\Repositories;
+namespace Ghi\Domain\Core\Repositories\Contabilidad;
 
 
+use Ghi\Domain\Core\Contracts\Contabilidad\NotificacionPolizaRepository;
 use Ghi\Domain\Core\Contracts\Identificador;
-use Ghi\Domain\Core\Contracts\NotificacionPolizaRepository;
-use Ghi\Domain\Core\Contracts\NotificacionRepository;
-use Ghi\Domain\Core\Models\NotificacionPoliza;
+
+use Ghi\Domain\Core\Models\Contabilidad\NotificacionPoliza;
+
 
 class EloquentNotificacionPolizaRepository implements NotificacionPolizaRepository
 {
@@ -79,5 +80,17 @@ class EloquentNotificacionPolizaRepository implements NotificacionPolizaReposito
     {
         $this->model = $this->model->with($relations);
         return $this;
+    }
+
+    /**
+     * Las notificaciones que coincidan con la busqueda
+     * @param $attribute
+     * @param $value
+     * @param array $columns
+     * @return mixed
+     */
+    public function findBy($attribute, $value, $columns = array('*'))
+    {
+        return $this->model->where($attribute, '=', $value)->get($columns);
     }
 }

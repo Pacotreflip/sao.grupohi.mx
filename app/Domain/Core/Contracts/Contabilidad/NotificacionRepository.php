@@ -6,7 +6,7 @@
  * Time: 05:26 PM
  */
 
-namespace Ghi\Domain\Core\Contracts;
+namespace Ghi\Domain\Core\Contracts\Contabilidad;
 
 
 interface NotificacionRepository
@@ -53,7 +53,14 @@ interface NotificacionRepository
 
     public function scope($scope);
 
-
+    /**
+     * Las notificaciones que coincidan con la busqueda
+     * @param $attribute
+     * @param $value
+     * @param array $columns
+     * @return mixed
+     */
+    public function findBy($attribute, $value, $columns = array('*'));
 
 
 }

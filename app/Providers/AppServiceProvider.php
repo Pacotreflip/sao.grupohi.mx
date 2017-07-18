@@ -144,8 +144,8 @@ class AppServiceProvider extends ServiceProvider
         );
 
         $this->app->bind(
-            \Ghi\Domain\Core\Contracts\NotificacionRepository::class,
-            \Ghi\Domain\Core\Repositories\EloquentNotificacionRepository::class
+            \Ghi\Domain\Core\Contracts\Contabilidad\NotificacionPolizaRepository::class,
+            \Ghi\Domain\Core\Repositories\Contabilidad\EloquentNotificacionPolizaRepository::class
         );
 
         $this->app->bind(
@@ -164,8 +164,8 @@ class AppServiceProvider extends ServiceProvider
         );
 
         $this->app->bind(
-            \Ghi\Domain\Core\Contracts\NotificacionRepository::class,
-            \Ghi\Domain\Core\Repositories\EloquentNotificacionRepository::class
+            \Ghi\Domain\Core\Contracts\Contabilidad\NotificacionRepository::class,
+            \Ghi\Domain\Core\Repositories\Contabilidad\EloquentNotificacionRepository::class
         );
 
     }

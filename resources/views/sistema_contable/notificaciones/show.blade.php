@@ -26,8 +26,8 @@
                 </div>
 
                 <div class="mailbox-read-message">
-                    <p><b>Estimado:  {{$notificacion->usuario}}</b></p>
-                    <p>Le informamos que las siguentes polizas tienen un error, por lo cual no podran ser lanzadas hasta no ser corregidas.</p>
+                    <p><b>Estimado Colaborador:  {{$notificacion->usuario}}</b></p>
+                    <p>Se le informa que las siguientes pólizas han sido registradas y tienen errores que deben corregirse  para que puedan ser enviadas al Contpaq.</p>
                     <p>Sugerimos tomar acciones correctivas.</p>
                     <p>Gracias,<br>SAO WEB</p>
                 </div>
@@ -38,37 +38,35 @@
                         <table class="table table-bordered table-striped small" >
                             <thead>
                             <tr>
-                                <th>#</th>
+                                <th>No.</th>
+                                <th>Numero de Pre-Póliza</th>
                                 <th>Tipo de Póliza</th>
                                 <th>Concepto</th>
                                 <th>Total</th>
                                 <th>Cuadre</th>
                                 <th>Estatus</th>
                                 <th>Póliza ContPaq</th>
-                                <th>Acciones</th>
+                                <th>Editar</th>
+
                             </tr>
                             </thead>
                             <tbody>
-
-                            @foreach($polizas as $index => $item)
+                            <tbody>
+                            @foreach($notificacion_poliza as $index=>$notificacion)
                                 <tr>
-
-                                    <td>{{ $index+1}}</td>
-                                    <td>{{ $item->transaccionInterfaz}}</td>
-                                    <td>{{ $item->concepto}}</td>
-                                    <td class="numerico">$ {{number_format($item->total,'2','.',',')}}</td>
-                                    <td class="numerico">$ {{number_format($item->cuadre,'2','.',',')}}</td>
-                                    <td class="">
-                                        @if($item->estatus_string=='Registrada') <span class="label bg-blue">Registrada</span>@endif
-                                        @if($item->estatus_string=='Lanzada') <span class="label bg-green">Lanzada</span>@endif
-                                        @if($item->estatus_string=='No lanzada') <span class="label bg-yellow">No lanzada</span>@endif
-                                        @if($item->estatus_string=='Con errores') <span class="label bg-red">Con errores</span>@endif
-                                    </td>
-                                    <td>N/A</td>
+                                    <td>{{$index+1}}</td>
+                                    <td>{{$notificacion->id_int_poliza}}</td>
+                                    <td>{{$notificacion->tipo_poliza}}</td>
+                                    <td>{{$notificacion->concepto}}</td>
+                                    <td>{{$notificacion->total}}</td>
+                                    <td>{{$notificacion->cuadre}}</td>
+                                    <td> @if($notificacion->estatus == \Ghi\Domain\Core\Models\Contabilidad\Poliza::REGISTRADA) <span class="label bg-blue">Registrada</span>@endif
+                                        @if($notificacion->estatus == \Ghi\Domain\Core\Models\Contabilidad\Poliza::LANZADA) <span class="label bg-green">Lanzada</span>@endif
+                                        @if($notificacion->estatus ==\Ghi\Domain\Core\Models\Contabilidad\Poliza::NO_LANZADA) <span class="label bg-yellow">No lanzada</span>@endif
+                                        @if($notificacion->estatus == \Ghi\Domain\Core\Models\Contabilidad\Poliza::CON_ERRORES) <span class="label bg-red">Con errores</span>@endif</td>
+                                    <td>{{$notificacion->poliza_contpaq}}</td>
                                     <td style="min-width: 90px;max-width: 90px">
-                                        <a href="{{route('sistema_contable.poliza_generada.show',$item)}}" title="Ver" class="btn btn-xs btn-default"><i class="fa fa-eye"></i></a>
-                                        <a href="{{route('sistema_contable.poliza_generada.edit',$item)}}" title="Editar" class="btn btn-xs btn-info"><i class="fa fa-pencil"></i></a>
-                                        <a href="{{route('sistema_contable.poliza_generada.historico',$item)}}" title="Histórico" class="btn btn-xs btn-success {{$item->historicos()->count() > 0 ? '' : 'disabled' }}"><i class="fa fa-clock-o"></i></a>
+                                        <a href="{{route('sistema_contable.poliza_generada.edit',$notificacion->poliza)}}" title="Editar" class="btn btn-xs btn-info"><i class="fa fa-pencil"></i></a>
                                     </td>
                                 </tr>
                             @endforeach

@@ -1,6 +1,6 @@
 <?php
 
-namespace Ghi\Domain\Core\Models;
+namespace Ghi\Domain\Core\Models\Contabilidad;
 
 use Ghi\Domain\Core\Models\Contabilidad\Poliza;
 use Illuminate\Database\Eloquent\Model;
@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class NotificacionPoliza extends Model
 {
     protected $connection = 'cadeco';
-    protected $table = 'dbo.notificaciones_polizas';
+    protected $table = 'Contabilidad.notificaciones_polizas';
     protected $fillable =
         [
             'id_notificacion',
@@ -19,17 +19,20 @@ class NotificacionPoliza extends Model
             'fecha_solicitud',
             'usuario_solicita',
             'estatus',
-            'poliza_contpaq'
+            'poliza_contpaq',
+            'total'
         ];
+    public $timestamps = false;
 
-    public function poliza()
-    {
-        return $this->belongsTo(Poliza::class, 'id_tipo_poliza_contpaq');
 
-    }
 
     public function notificacion()
     {
         return $this->belongsTo(Notificacion::class, 'id_notificacion');
+    }
+
+    public function poliza()
+    {
+        return $this->hasOne(Poliza::class, 'id_int_poliza', 'id_int_poliza');
     }
 }

@@ -2,10 +2,12 @@
 
 namespace Ghi\Console\Commands;
 
+use Ghi\Domain\Core\Contracts\Contabilidad\NotificacionRepository;
 use Ghi\Domain\Core\Contracts\Contabilidad\PolizaRepository;
-use Ghi\Domain\Core\Contracts\NotificacionRepository;
+
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
 
 class SendNotificacion extends Command
 {
@@ -47,12 +49,6 @@ class SendNotificacion extends Command
      */
     public function handle()
     {
-
-        Log::info('fdsfdsfsdsfsdfsd');
-
-
-        Log::info($polizas);
-
-
+        $this->notificacion->send();
     }
 }
