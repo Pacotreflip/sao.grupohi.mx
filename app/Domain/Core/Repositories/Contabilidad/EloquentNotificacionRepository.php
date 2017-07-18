@@ -119,7 +119,7 @@ class EloquentNotificacionRepository implements NotificacionRepository
     {
         try {
             $notificacion = $this->model->find($id);
-            $notificacion->estatus = 0;
+            $notificacion->leida = true;
             $notificacion->update();
         } catch (\Exception $e) {
             throw $e;

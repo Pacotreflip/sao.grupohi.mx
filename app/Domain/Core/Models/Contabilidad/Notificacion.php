@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Notificacion extends Model
 {
+
     protected $connection = 'cadeco';
     protected $table = 'Contabilidad.notificaciones';
     protected $fillable =
@@ -42,6 +43,9 @@ class Notificacion extends Model
     }
     public function getTotalNotificacionesAttribute(){
         return  Notificacion::where('id_usuario', '=',auth()->user()->idusuario)->where('id_obra', '=',Context::getId())->where('estatus','=',1)->count();
+    }
+    public function scopeRecientes($query){
+        return $query->where('leida','=','false')->orderBy('created_at','desc')->limit(5);
     }
 
     public function notificaionesPoliza(){

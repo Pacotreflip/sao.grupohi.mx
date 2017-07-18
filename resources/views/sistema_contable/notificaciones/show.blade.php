@@ -58,8 +58,8 @@
                                     <td>{{$notificacion->id_int_poliza}}</td>
                                     <td>{{$notificacion->tipo_poliza}}</td>
                                     <td>{{$notificacion->concepto}}</td>
-                                    <td>{{$notificacion->total}}</td>
-                                    <td>{{$notificacion->cuadre}}</td>
+                                    <td style="text-align: right">$ {{$notificacion->total}}</td>
+                                    <td style="text-align: right">$ {{$notificacion->cuadre}}</td>
                                     <td> @if($notificacion->estatus == \Ghi\Domain\Core\Models\Contabilidad\Poliza::REGISTRADA) <span class="label bg-blue">Registrada</span>@endif
                                         @if($notificacion->estatus == \Ghi\Domain\Core\Models\Contabilidad\Poliza::LANZADA) <span class="label bg-green">Lanzada</span>@endif
                                         @if($notificacion->estatus ==\Ghi\Domain\Core\Models\Contabilidad\Poliza::NO_LANZADA) <span class="label bg-yellow">No lanzada</span>@endif

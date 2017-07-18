@@ -21,7 +21,7 @@
                                 @foreach($notificaciones as $index => $notificacion)
                                     <tr>
                                         <td>{{$index+1}}</td>
-                                        <td><i class="fa fa-envelope text-yellow"></i></td>
+                                        <td><i class="fa {{$notificacion->leida?'fa-envelope-open text-gray':'fa-envelope text-yellow'}}"></i></td>
                                         <td><a href="{{route('notificacion.show',$notificacion->id)}}">{{$notificacion->titulo}}</a></td>
                                         <td>{{$notificacion->total_polizas}} Polizas</td>
                                         <td>{{$notificacion->created_at->format('Y-m-d h:i:s a')}}</td>

@@ -58,8 +58,7 @@
                     <thead>
                     <tr>
                         <th>No</th>
-                        <th>Numero de pre-póliza</th>
-
+                        <th>Numero de Pre-Póliza</th>
                         <th>Tipo de Póliza</th>
                         <th>Concepto</th>
                         <th>Total</th>
@@ -75,8 +74,8 @@
                             <td>{{$poliza->id_int_poliza}}</td>
                             <td>{{$poliza->tipo_poliza}}</td>
                             <td>{{$poliza->concepto}}</td>
-                            <td>{{$poliza->total}}</td>
-                            <td>{{$poliza->cuadre}}</td>
+                            <td style="text-align: right;width: 100px">$ {{$poliza->total}}</td>
+                            <td style="text-align: right;width: 100px">$ {{$poliza->cuadre}}</td>
                             <td> @if($poliza->estatus == \Ghi\Domain\Core\Models\Contabilidad\Poliza::REGISTRADA) <span class="label bg-blue">Registrada</span>@endif
                                 @if($poliza->estatus == \Ghi\Domain\Core\Models\Contabilidad\Poliza::LANZADA) <span class="label bg-green">Lanzada</span>@endif
                                 @if($poliza->estatus ==\Ghi\Domain\Core\Models\Contabilidad\Poliza::NO_LANZADA) <span class="label bg-yellow">No lanzada</span>@endif

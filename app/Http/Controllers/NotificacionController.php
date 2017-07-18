@@ -51,6 +51,7 @@ class NotificacionController extends Controller
     public function show($id)
     {
         $notificacion = $this->notificacion->with('notificaionesPoliza')->find($id);
+        $notificacion=$this->notificacion->update(array(),$id);
         $notificacion_poliza=$this->notificaion_poliza->with('poliza')->findBy('id_notificacion',$id);
         return view('sistema_contable.notificaciones.show')
             ->with('notificacion_poliza', $notificacion_poliza)
