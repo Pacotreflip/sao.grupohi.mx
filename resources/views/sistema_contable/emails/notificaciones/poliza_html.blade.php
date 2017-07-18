@@ -49,7 +49,7 @@
 
     <div id="cuerpo">
         <div id="contenido">
-            <h1>Estimado Colaborador: {{$usuario}} </h1>
+            <h1>Estimado Colaborador {{$usuario}} </h1>
             <h1>Se le informa que las siguientes pólizas han sido registradas y tienen errores que deben corregirse  para que puedan ser enviadas al Contpaq.</h1>
             <div id="lista_contratos">
                 <table class="generica" style="width:100%">
