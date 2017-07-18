@@ -45515,7 +45515,7 @@ Vue.component('emails', {
     },
 
     created: function created() {
-        var socket = io();
+        var socket = io('http://localhost:3000');
 
         socket.on('emails-channel:Ghi\\Events\\NewEmail', function (data) {
             if (data.idusuario == this.user.idusuario) {
