@@ -5,6 +5,8 @@ require('./vue-components/select2');
 /**
  * Contabilidad Components...
  */
+require('./vue-components/Contabilidad/emails');
+
 require('./vue-components/Contabilidad/poliza_tipo/poliza-tipo-create');
 require('./vue-components/Contabilidad/tipo_cuenta_contable/tipo-cuenta-contable-create');
 require('./vue-components/Contabilidad/tipo_cuenta_contable/tipo-cuenta-contable-update');
