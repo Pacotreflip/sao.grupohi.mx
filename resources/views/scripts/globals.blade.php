@@ -4,7 +4,7 @@
         // Token CSRF de Laravel
         csrfToken: '{{ csrf_token() }}',
         host: '{{ url("/") }}',
-        ip: '{{Request::ip()}}',
+        ip: '{{request()->server('SERVER_ADDR');}}',
         // ID del Usuario Actual
         userId: {!! Auth::check() ? Auth::id() : 'null' !!},
 
