@@ -59,16 +59,18 @@ Vue.component('requisicion-create', {
         },
 
         validateForm: function(scope, funcion) {
-            this.$validator.validateAll(scope).then(() => {
-                if (funcion == 'save') {
-                    this.confirm_save();
+            this.$validator.validateAll(scope).then(result => {
+                if (result) {
+                    if (funcion == 'save') {
+                        this.confirm_save();
+                    }
+                } else {
+                    swal({
+                         type: 'warning',
+                         title: 'Advertencia',
+                         text: 'Por favor corrija los errores del formulario'
+                     });
                 }
-            }).catch(() => {
-                swal({
-                     type: 'warning',
-                     title: 'Advertencia',
-                     text: 'Por favor corrija los errores del formulario'
-                 });
             });
         }
     }

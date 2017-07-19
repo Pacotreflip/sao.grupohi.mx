@@ -55,18 +55,20 @@ Vue.component('poliza-edit', {
         },
 
         validateForm: function(scope, funcion) {
-            this.$validator.validateAll(scope).then(() => {
-                if(funcion == 'confirm_add_movimiento') {
-                    this.confirm_add_movimiento();
-                } else  if (funcion == 'confirm_save') {
-                    this.confirm_save();
+            this.$validator.validateAll(scope).then(result => {
+                if (result) {
+                    if(funcion == 'confirm_add_movimiento') {
+                        this.confirm_add_movimiento();
+                    } else  if (funcion == 'confirm_save') {
+                        this.confirm_save();
+                    }
+                } else {
+                    swal({
+                         type: 'warning',
+                         title: 'Advertencia',
+                         text: 'Por favor corrija los errores del formulario'
+                     });
                 }
-            }).catch(() => {
-                swal({
-                     type: 'warning',
-                     title: 'Advertencia',
-                     text: 'Por favor corrija los errores del formulario'
-                 });
             });
         },
 
