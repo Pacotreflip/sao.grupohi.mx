@@ -21,9 +21,9 @@
                                 <table class="table table-bordered">
                                     <tbody>
                                     <tr>
-                                        <th>SELECCIONAR TIPO DE MATERIAL</th>
+                                        <td>TIPO DE MATERIAL</td>
                                         <td>
-                                            <select class="form-control input-sm" style="width: 40%" v-model="valor" @change="cambio()" >
+                                            <select class="form-control input-sm"  v-model="valor" @change="cambio()" >
                                                 <option :value="0">[-SELECCIONE-]</option>
                                                 <option :value="1">Materiales</option>
                                                 <option :value="2">Mano de Obra y Servicios</option>
@@ -39,8 +39,17 @@
                         </div>
                     </div>
                 </div>
+                <div class="box box-info box-solid" v-show="guardando">
+                    <div class="box-header">
+                        <h3 class="box-title">Cargando el Tipo de Materiales</h3>
+                        <div class="overlay">
+                            <i class="fa fa-spinner fa-pulse" style="color: white"></i>
+                        </div>
+                    </div>
+                </div>
 
-                <div v-if="valor > 0">
+
+                <div v-if="valor > 0 && !guardando">
                     <div class="row">
                         <div class="col-md-12">
                             <div class="box box-info">
@@ -54,8 +63,8 @@
                                             <tr role="row">
                                                 <th class="sorting_asc" tabindex="0" aria-controls="tipo_cuenta" aria-sort="ascending">#</th>
                                                 <th class="sorting" tabindex="0" aria-controls="tipo_cuenta">NIVEL</th>
-                                                <th class="sorting" tabindex="0" aria-controls="tipo_cuenta">DESCRIPCION</th>
-                                                <th class="sorting" tabindex="0" aria-controls="tipo_cuenta">Fecha/Hora</th>
+                                                <th class="sorting" tabindex="0" aria-controls="tipo_cuenta">DESCRIPCIÓN</th>
+                                                <th class="sorting" tabindex="0" aria-controls="tipo_cuenta">FECHA/HORA</th>
                                                 <th>ACCIONES</th>
                                             </tr>
                                             </thead>
@@ -67,8 +76,8 @@
                                                 <td>@{{ (new Date(item.FechaHoraRegistro)).dateFormat() }}</td>
                                                 <td style="min-width: 90px;max-width: 90px">
                                                     <div class="btn-group">
-                                                        <a title="Editar" @click="edit(item)" type="button" class="btn btn-xs btn-default">
-                                                            <i class="fa fa-pencil"></i>
+                                                        <a title="Ver" @click="edit(item)" type="button" class="btn btn-xs btn-default">
+                                                            <i class="fa fa-eye"></i>
                                                         </a>
                                                     </div>
                                                 </td>
@@ -78,8 +87,8 @@
                                             <tr>
                                                 <th>#</th>
                                                 <th>NIVEL</th>
-                                                <th>DESCRIPCION</th>
-                                                <th>Fecha/Hora</th>
+                                                <th>DESCRIPCIÓN</th>
+                                                <th>FECHA/HORA</th>
                                                 <th>ACCIONES</th>
                                             </tr>
                                             </tfoot>

@@ -118,7 +118,7 @@
                             <form id="form_edit_cuenta" @submit.prevent="validateForm('form_edit_cuenta', data.cuenta_material_edit.cuenta_material != null ? 'confirm_update_cuenta' : 'confirm_save_cuenta')"  data-vv-scope="form_edit_cuenta">
                                 <div class="modal-body">
                                     <div class="row">
-                                        <div class="col-md-6">
+                                        <div class="col-md-12">
                                             <div class="form-group">
                                                 <label class="control-label"><b>Material</b></label>
                                                 <p>@{{ data.cuenta_material_edit.descripcion }}</p>
@@ -131,20 +131,16 @@
                                                 <label class="help" v-show="validation_errors.has('form_edit_cuenta.Cuenta Contable')">@{{ validation_errors.first('form_edit_cuenta.Cuenta Contable') }}</label>
                                             </div>
                                         </div>
-                                    </div>
-                                    <div class="row">
                                         <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label class="control-label"><b>Seleccionar</b></label>
+                                            <div class="form-group" :class="{'has-error': validation_errors.has('form_edit_cuenta.Tipo Cuenta de Material')}">
+                                                <label class="control-label"><b>Tipo Cuenta de Material</b></label>
+                                                <select class="form-control" v-model="form.cuenta_material.id_tipo_cuenta_material" name="Tipo Cuenta de Material" v-validate="'required'">
+                                                    <option value>[-SELECCIONE-]</option>
+                                                    <option value="1">Materiales</option>
+                                                    <option value="2">Mano de Obra y Servicios</option>
+                                                </select>
+                                                <label class="help" v-show="validation_errors.has('form_edit_cuenta.Tipo Cuenta de Material')">@{{ validation_errors.first('form_edit_cuenta.Tipo Cuenta de Material') }}</label>
                                             </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <label class="control-label"><b>Tipo Cuenta de Material</b></label>
-                                            <select class="form-control input-sm" style="width: 80%" v-model="form.cuenta_material.id_tipo_cuenta_material"  >
-                                                <option :value="0">[-SELECCIONE-]</option>
-                                                <option :value="1">Materiales</option>
-                                                <option :value="2">Mano de Obra y Servicios</option>
-                                            </select>
                                         </div>
                                     </div>
                                 </div>

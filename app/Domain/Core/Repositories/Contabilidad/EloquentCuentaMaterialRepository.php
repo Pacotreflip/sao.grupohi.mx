@@ -12,6 +12,8 @@ namespace Ghi\Domain\Core\Repositories\Contabilidad;
 use Ghi\Core\Facades\Context;
 use Ghi\Domain\Core\Contracts\Contabilidad\CuentaMaterialRepository;
 use Ghi\Domain\Core\Models\Contabilidad\CuentaMaterial;
+use Illuminate\Http\Exception\HttpResponseException;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
 
 
