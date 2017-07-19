@@ -20,7 +20,7 @@ require('jquery-treegrid/js/jquery.treegrid.bootstrap3.js');
 require('jquery-treegrid/js/jquery.cookie.js');
 require('jquery-mask-plugin');
 require('./scripts/generales');
-window.io = require('socket.io/node_modules/socket.io-client/dist/socket.io');
+window.io = require('socket.io-client');
 require('bootstrap-notify');
 
 // Vue Dev
