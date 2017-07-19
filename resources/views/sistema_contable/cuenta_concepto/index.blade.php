@@ -87,8 +87,11 @@
                                                     <td>
                                                         @{{ concepto.cuenta_concepto != null ? (new Date(concepto.cuenta_concepto.created_at)).dateFormat() : '---' }}
                                                     </td>
-                                                    <td>
-                                                        <button title="Editar" class="btn-xs btn-info" @click="edit_cuenta(concepto)"> <i class="fa fa-edit"></i></button>
+                                                    <td v-if="concepto.cuenta_concepto != null">
+                                                        <button title="Editar" class="btn btn-xs btn-info" @click="edit_cuenta(concepto)"> <i class="fa fa-edit"></i></button>
+                                                    </td>
+                                                    <td v-else>
+                                                        <button title="Registrar" class="btn btn-xs btn-success" @click="edit_cuenta(concepto)"> <i class="fa fa-edit"></i></button>
                                                     </td>
                                                 </tr>
                                             </tbody>
@@ -126,7 +129,7 @@
                                         <div class="col-md-6">
                                             <div class="form-group" :class="{'has-error': validation_errors.has('form_edit_cuenta.Cuenta Contable')}">
                                                 <label class="control-label"><b>Cuenta Contable</b></label>
-                                                <input id="cuenta_contable" :placeholder="datos_contables.FormatoCuenta" type="text" v-validate="'required|regex:' + datos_contables.FormatoCuentaRegExp" class="form-control" name="Cuenta Contable" v-model="form.cuenta">
+                                                <input id="cuenta_contable" :placeholder="datos_contables.FormatoCuenta" type="text" v-validate="'required|regex:' + datos_contables.FormatoCuentaRegExp" class="form-control formato_cuenta" name="Cuenta Contable" v-model="form.cuenta">
                                                 <label class="help" v-show="validation_errors.has('form_edit_cuenta.Cuenta Contable')">@{{ validation_errors.first('form_edit_cuenta.Cuenta Contable') }}</label>
                                             </div>
                                         </div>

@@ -82,7 +82,7 @@
                                                 <th class="bg-gray-light">Referencia</th>
                                                 <th class="bg-gray-light">Concepto</th>
                                                 <th class="bg-gray-light">
-                                                    <button class="btn-xs btn-success" type="button"
+                                                    <button class="btn btn-xs btn-success" type="button"
                                                             @click="show_add_movimiento" title="Nuevo"><i class="fa fa-plus"></i>
                                                     </button>
                                                 </th>
@@ -96,7 +96,7 @@
                                                     <input :placeholder="datos_contables.FormatoCuenta" type="text"
                                                            v-validate="'required|regex:' + datos_contables.FormatoCuentaRegExp"
                                                            :name="'CuentaContable [' + (index + 1) + ']'"
-                                                           class="form-control input-sm"
+                                                           class="form-control input-sm formato_cuenta"
                                                            v-model="movimiento.cuenta_contable">
                                                     <label class="help"
                                                            v-show="validation_errors.has('form_poliza.CuentaContable [' + (index + 1) + ']')">@{{ validation_errors.first('form_poliza.CuentaContable [' + (index + 1) + ']') }}</label>
@@ -156,7 +156,7 @@
                                                            v-show="validation_errors.has('form_poliza.Concepto [' + (index + 1) + ']')">@{{ validation_errors.first('form_poliza.Concepto [' + (index + 1) + ']') }}</label>
                                                 </td>
                                                 <th class="bg-gray-light">
-                                                    <button class="btn-xs btn-danger" type="button"
+                                                    <button class="btn btn-xs btn-danger" type="button"
                                                             @click="confirm_remove_movimiento(index)" title="Eliminar"><i
                                                                 class="fa fa-remove"></i></button>
                                                 </th>
@@ -233,7 +233,7 @@
                                                 <label for="">Cuenta Contable</label>
                                                 <input :placeholder="datos_contables.FormatoCuenta" type="text"
                                                        v-validate="'required|regex:' + datos_contables.FormatoCuentaRegExp"
-                                                       class="form-control" name="Cuenta Contable"
+                                                       class="form-control formato_cuenta" name="Cuenta Contable"
                                                        v-model="form.movimiento.cuenta_contable">
                                                 <label class="help"
                                                        v-show="validation_errors.has('form_add_movimiento.Cuenta Contable')">@{{ validation_errors.first('form_add_movimiento.Cuenta Contable') }}</label>

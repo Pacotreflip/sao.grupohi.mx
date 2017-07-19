@@ -56,7 +56,7 @@
                                         <th>#</th>
                                         <th>Cuenta contable</th>
                                         <th>Tipo de cuenta</th>
-                                        <th><button title="Configurar Cuenta" class="btn-xs btn-success" @click="create_cuenta_empresa"><i class="fa fa-plus"></i> </button> </th>
+                                        <th><button title="Configurar Cuenta" class="btn btn-xs btn-success" @click="create_cuenta_empresa"><i class="fa fa-plus"></i> </button> </th>
                                     </tr>
                                     </thead>
                                     <tbody>
@@ -65,12 +65,12 @@
                                         <td>@{{ cuenta.cuenta }}</td>
                                         <td>@{{ cuenta.tipo_cuenta_empresa.descripcion }}</td>
                                         <td>
-                                            <button type="button" class="btn-xs btn-danger"
+                                            <button type="button" class="btn btn-xs btn-danger"
                                                     title="Eliminar"
                                                     @click="confirm_elimina_cuenta(cuenta)">
                                                 <i class="fa fa-trash"></i>
                                             </button>
-                                            <button type="button" class="btn-xs btn-info" title="Editar"
+                                            <button type="button" class="btn btn-xs btn-info" title="Editar"
                                                     @click="edit_cuenta_empresa(cuenta)">
                                                 <i class="fa fa-edit"></i>
                                             </button>
@@ -125,7 +125,7 @@
                                                 <input type="text"
                                                        :placeholder="datos_contables.FormatoCuenta"
                                                        v-validate="'required|regex:' + datos_contables.FormatoCuentaRegExp"
-                                                       class="form-control" name="Cuenta Contable"
+                                                       class="form-control formato_cuenta" name="Cuenta Contable"
                                                        v-model="form.cuenta_empresa_create.cuenta">
                                                 <label class="help"
                                                        v-show="validation_errors.has('form_create_cuenta.Cuenta Contable')">@{{ validation_errors.first('form_create_cuenta.Cuenta Contable') }}</label>
@@ -175,7 +175,7 @@
                                                 <input type="text"
                                                        :placeholder="datos_contables.FormatoCuenta"
                                                        v-validate="'required|regex:' + datos_contables.FormatoCuentaRegExp"
-                                                       class="form-control" name="Cuenta Contable"
+                                                       class="form-control formato_cuenta" name="Cuenta Contable"
                                                        v-model="form.cuenta_empresa_create.cuenta">
                                                 <label class="help"
                                                        v-show="validation_errors.has('form_edit_cuenta.Cuenta Contable')">@{{ validation_errors.first('form_edit_cuenta.Cuenta Contable') }}</label>

@@ -21,10 +21,16 @@ class DatosContables extends BaseModel
         'manejo_almacenes',
         'costo_en_tipo_gasto'
     ];
+
+    protected $appends = ['mask'];
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo|Obra
      */
     public function obra() {
         return $this->belongsTo(Obra::class, 'id_obra');
+    }
+
+    public function getMaskAttribute() {
+        return str_replace('#', '0', $this->FormatoCuenta);
     }
 }

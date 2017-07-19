@@ -1,7 +1,7 @@
 @extends('sistema_contable.layout')
 @section('title', 'Cuentas Generales')
 @section('contentheader_title', 'CUENTAS GENERALES')
-@section('contentheader_description', '(LISTA)')
+@section('contentheader_description', '(INDEX)')
 
 @section('main-content')
     {!! Breadcrumbs::render('sistema_contable.cuenta_contable.index') !!}
@@ -40,14 +40,14 @@
                                             <td>@{{ item.cuenta_contable ? item.cuenta_contable.cuenta_contable : '' }}</td>
                                             <td v-if="item.cuenta_contable != null">
                                                 <div class="btn-group">
-                                                    <button title="Editar" type="button" class="btn-xs btn-info" data-toggle="modal" data-target="#modal-editar-cuenta" v-on:click="editar(item)">
+                                                    <button title="Editar" type="button" class="btn btn-xs btn-info" data-toggle="modal" data-target="#modal-editar-cuenta" v-on:click="editar(item)">
                                                         <i class="fa fa-edit"></i>
                                                     </button>
                                                 </div>
                                             </td>
                                             <td v-else>
                                                 <div class="btn-group">
-                                                    <button title="Configurar" type="button" class="btn-xs btn-info" data-toggle="modal" data-target="#modal-configurar-cuenta" v-on:click="configurar(item)">
+                                                    <button title="Configurar" type="button" class="btn btn-xs btn-info" data-toggle="modal" data-target="#modal-configurar-cuenta" v-on:click="configurar(item)">
                                                         <i class="fa fa-edit"></i>
                                                     </button>
                                                 </div>
@@ -93,7 +93,7 @@
                                         </div>
                                         <div v-show="! form.tipo_cuenta_contable_edit.cuenta_contable.con_prefijo" class="form-group" :class="{'has-error': validation_errors.has('form_update_cuenta.Cuenta Contable') }">
                                             <label for="cuenta"><b>Cuenta Contable</b></label>
-                                            <input :placeholder="datos_contables.FormatoCuenta" type="text"  v-validate="! form.tipo_cuenta_contable_edit.cuenta_contable.con_prefijo ? 'required|regex:' + datos_contables.FormatoCuentaRegExp : ''" class="form-control" name="Cuenta Contable" id="cuenta" v-model="form.tipo_cuenta_contable_edit.cuenta_contable.cuenta_contable"/>
+                                            <input :placeholder="datos_contables.FormatoCuenta" type="text"  v-validate="! form.tipo_cuenta_contable_edit.cuenta_contable.con_prefijo ? 'required|regex:' + datos_contables.FormatoCuentaRegExp : ''" class="form-control formato_cuenta" name="Cuenta Contable" id="cuenta" v-model="form.tipo_cuenta_contable_edit.cuenta_contable.cuenta_contable"/>
                                             <label class="help" v-show="validation_errors.has('form_update_cuenta.Cuenta Contable')">@{{ validation_errors.first('form_update_cuenta.Cuenta Contable') }}</label>
                                         </div>
                                     </div>
@@ -144,7 +144,7 @@
                                         </div>
                                         <div v-show="! form.tipo_cuenta_contable_edit.cuenta_contable.con_prefijo" class="form-group" :class="{'has-error': validation_errors.has('form_save_cuenta.Cuenta Contable') }">
                                             <label for="cuenta"><b>Cuenta Contable</b></label>
-                                            <input :placeholder="datos_contables.FormatoCuenta" type="text"  v-validate="! form.tipo_cuenta_contable_edit.cuenta_contable.con_prefijo ? 'required|regex:' + datos_contables.FormatoCuentaRegExp : ''" class="form-control" name="Cuenta Contable" id="cuenta" v-model="form.tipo_cuenta_contable_edit.cuenta_contable.cuenta_contable"/>
+                                            <input :placeholder="datos_contables.FormatoCuenta" type="text"  v-validate="! form.tipo_cuenta_contable_edit.cuenta_contable.con_prefijo ? 'required|regex:' + datos_contables.FormatoCuentaRegExp : ''" class="form-control formato_cuenta" name="Cuenta Contable" id="cuenta" v-model="form.tipo_cuenta_contable_edit.cuenta_contable.cuenta_contable"/>
                                             <label class="help" v-show="validation_errors.has('form_save_cuenta.Cuenta Contable')">@{{ validation_errors.first('form_save_cuenta.Cuenta Contable') }}</label>
                                         </div>
                                     </div>
