@@ -66,18 +66,16 @@ Vue.component('datos-contables-edit', {
         },
 
         validateForm: function(scope, funcion) {
-            this.$validator.validateAll(scope).then(result => {
-                if (result) {
-                    if(funcion == 'save_datos_obra') {
-                        this.confirm_datos_obra();
-                    }
-                } else {
-                    swal({
-                         type: 'warning',
-                         title: 'Advertencia',
-                         text: 'Por favor corrija los errores del formulario'
-                     });
+            this.$validator.validateAll(scope).then(() => {
+                if(funcion == 'save_datos_obra') {
+                    this.confirm_datos_obra();
                 }
+            }).catch(() => {
+                swal({
+                     type: 'warning',
+                     title: 'Advertencia',
+                     text: 'Por favor corrija los errores del formulario'
+                 });
             });
         }
     }
