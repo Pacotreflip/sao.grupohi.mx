@@ -78,7 +78,7 @@
                                         @if($item->estatus == $item::NO_LANZADA) <span class="label bg-yellow">No lanzada</span>@endif
                                         @if($item->estatus == $item::CON_ERRORES) <span class="label bg-red">Con errores</span>@endif
                                     </td>
-                                    <td>@if($item->id_poliza_contpaq>0){{$item->id_poliza_contpaq}}@else N/A @endif</td>
+                                    <td>{{$item->poliza_contpaq}}</td>
                                     <td style="min-width: 90px;max-width: 90px">
                                         <a href="{{route('sistema_contable.poliza_generada.show',$item)}}" title="Ver" class="btn btn-xs btn-default"><i class="fa fa-eye"></i></a>
                                         <a href="{{route('sistema_contable.poliza_generada.edit',$item)}}" title="Editar" class="btn btn-xs btn-info"><i class="fa fa-pencil"></i></a>

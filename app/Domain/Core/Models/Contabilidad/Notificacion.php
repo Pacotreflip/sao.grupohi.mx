@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Notificacion extends Model
 {
-
+    const REMITENTE_COMPRAS = "SAO WEB";
     protected $connection = 'cadeco';
     protected $table = 'Contabilidad.notificaciones';
     protected $fillable =
@@ -18,7 +18,8 @@ class Notificacion extends Model
             'titulo',
             'contenido',
             'id_usuario',
-            'id_obra'
+            'id_obra',
+            'remitente'
         ];
 
     protected static function boot()

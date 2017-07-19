@@ -18,7 +18,6 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class CuentaEmpresa extends BaseModel
 {
     use SoftDeletes;
-
     protected $connection = 'cadeco';
     protected $table = 'Contabilidad.cuentas_empresas';
     protected $fillable = [
@@ -37,7 +36,7 @@ class CuentaEmpresa extends BaseModel
         parent::__construct($attributes);
     }
     public function getTotalCuentasAttribute(){
-        return  CuentaEmpresa::where('id_empresa', '=', $this->id_empresa)->count();
+        return  CuentaEmpresa::where('id_empresa', '=', $this->id_empresa)->where('estatus','=','1')->count();
     }
 
     public function empresa() {

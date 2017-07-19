@@ -45,7 +45,7 @@
                                                 </th>
                                                 <th class="bg-gray-light">
                                                     Póliza Contpaq:<br>
-                                                    <label>@if($poliza->id_poliza_contpaq>0){{$poliza->id_poliza_contpaq}}@else N/A @endif</label>
+                                                    <label>{{$poliza->poliza_contpaq}}</label>
                                                 </th>
                                                 <th class="bg-gray-light">
                                                     Tipo de Póliza:

@@ -64,7 +64,7 @@
                                                                 </th>
                                                                 <th class="bg-gray-light">
                                                                     Póliza Contpaq:
-                                                                    <br><label>{{$poliza->id_poliza_contpaq > 0 ? $poliza->id_poliza_contpaq : 'N/A' }}</label>
+                                                                    <br><label>{{$poliza->poliza_contpaq}}</label>
                                                                 </th>
                                                                 <th class="bg-gray-light">
                                                                     Tipo de Póliza:

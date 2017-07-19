@@ -176,7 +176,8 @@ class EloquentNotificacionRepository implements NotificacionRepository
                         $item = $this->model->create([
                             'titulo' => 'Resumen de Errores',
                             'id_usuario' => $contador->user_id,
-                            'id_obra' => $obra->id_obra
+                            'id_obra' => $obra->id_obra,
+                            'remitente'=>Notificacion::REMITENTE_COMPRAS
                         ]);
                         foreach ($polizas as $poliza) {
                             Log::info('id_poliza= ' . $poliza->id_int_poliza);
