@@ -67,7 +67,7 @@ class EloquentPolizaRepository implements PolizaRepository
             }
 
 
-            if(count($data['poliza_generada'])>0) {
+            if(isset($data['poliza_generada']['poliza_movimientos'])) {
                 $cuentas_debe = false;
                 $cuentas_haber = false;
                 $suma_debe = $data['poliza_generada']['suma_debe'];

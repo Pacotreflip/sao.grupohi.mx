@@ -125,8 +125,10 @@
                 type: 'POST',
                 data: {
                     _method: "PATCH",
-                    'id_int_poliza':id,
-                    'poliza_generada':''
+                    'poliza_generada':{
+                        'estatus':1
+
+                    }
 
                 },
                 success: function (data, textStatus, xhr) {
