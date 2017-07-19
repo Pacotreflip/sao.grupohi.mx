@@ -25,6 +25,7 @@ Vue.component('cuenta-material-index', {
             var self = this;
             var id = self.valor;
             if(id != 0){
+                self.guardando = true;
                 var urla = App.host + '/sistema_contable/cuenta_material/';
                 $.ajax({
                     type: 'GET',
@@ -32,7 +33,15 @@ Vue.component('cuenta-material-index', {
 
                     success: function(response) {
                         self.data.items = response;
+                    },
+                    complete: function () {
+                        self.guardando = false;
+                    },
+                    error: function(error) {
+                        alert(error.responseText);
+                        self.guardando = false;
                     }
+
                 });
             }
         },

@@ -546,7 +546,7 @@
                 }
             ],
             "description": "A package which provides FPDF class functionality to Laravel 5",
-            "time": "2017-03-24 23:43:15"
+            "time": "2017-03-24T23:43:15+00:00"
         },
         {
             "name": "jakub-onderka/php-console-color",
@@ -1840,7 +1840,7 @@
         },
         {
             "name": "symfony/event-dispatcher",
-            "version": "v3.3.4",
+            "version": "v3.3.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/event-dispatcher.git",
@@ -4001,7 +4001,7 @@
         },
         {
             "name": "symfony/yaml",
-            "version": "v3.3.4",
+            "version": "v3.3.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/yaml.git",

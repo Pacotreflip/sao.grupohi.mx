@@ -143,6 +143,7 @@ class EloquentTipoCuentaContableRepository implements TipoCuentaContableReposito
     {
         try {
             $cuenta = $this->model->find($id);
+            $cuenta->registro = auth()->user()->idusuario;
             $cuenta->update($data);
         } catch (\Exception $e) {
             throw $e;
