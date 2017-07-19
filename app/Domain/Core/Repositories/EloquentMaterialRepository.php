@@ -79,7 +79,7 @@ class EloquentMaterialRepository implements MaterialRepository
      */
     public function findBy($value)
     {
-        return $this->model->where('tipo_material', $value)->where('nivel', 'like', '___.')->orderBy('nivel', 'asc')->get();
+        return $this->model->where('tipo_material', $value)->orderBy('nivel', 'asc')->get();
     }
 
     /**
@@ -88,9 +88,6 @@ class EloquentMaterialRepository implements MaterialRepository
      */
     public function find($tipo, $nivel)
     {
-        //dd($value['nivel_hijos']);
-
-
         return $this->model->where(function($query) use($tipo, $nivel){
             $query->orWhere('nivel', 'LIKE', $nivel)
                 ->orWhere('nivel', 'LIKE', $nivel.'___.');

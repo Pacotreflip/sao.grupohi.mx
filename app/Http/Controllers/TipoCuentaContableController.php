@@ -20,8 +20,8 @@ class TipoCuentaContableController extends Controller
     {
         parent::__construct();
 
-        //$this->middleware('auth');
-        //$this->middleware('context');
+        $this->middleware('auth');
+        $this->middleware('context');
 
         $this->tipo_cuenta_contable = $tipo_cuenta_contable;
     }
