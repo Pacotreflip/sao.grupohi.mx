@@ -27,7 +27,7 @@
                                     <div class="col-sm-6">
                                         <dl>
                                             <dt>ID</dt>
-                                            <dd>{{$familia[0]->nivel}}</dd>
+                                            <dd>{{$familia[0]->id_material}}</dd>
                                             <dt>DESCRIPCION</dt>
                                             <dd>{{$familia[0]->descripcion}}</dd>
                                         </dl>
@@ -48,23 +48,21 @@
                                 <div class="col-sm-12">
                                     <div class="row">
                                         <div class="box-body">
-                                            <table class="table table-bordered table-striped ">
+                                            <table class="table table-bordered table-striped small ">
                                                 <thead>
                                                 <tr>
                                                     <th>#</th>
-                                                    <th>NIVEL</th>
-                                                    <th>DESCRIPCIÓN</th>
-                                                    <th>CUENTA</th>
-                                                    <th>FECHA Y HORA DE REGISTRO</th>
-                                                    <th>ACCIONES</th>
+                                                    <th>Descripción</th>
+                                                    <th>Cuenta</th>
+                                                    <th>Fecha y Hora de Registro</th>
+                                                    <th>Acciones</th>
                                                 </tr>
                                                 </thead>
                                                 <tbody>
 
                                                     <tr v-for="(cuenta, index) in data.familia">
                                                         <td>@{{index+1}}</td>
-                                                        <td>@{{cuenta.nivel}}</td>
-                                                        <td>@{{cuenta.descripcion}}</td>
+                                                        <td width="65%">@{{cuenta.descripcion}}</td>
                                                         <td v-if="cuenta.cuenta_material != null">
                                                             @{{ cuenta.cuenta_material.cuenta }}
                                                         </td>
@@ -83,11 +81,10 @@
                                                 <tfoot>
                                                     <tr>
                                                         <th>#</th>
-                                                        <th>NIVEL</th>
-                                                        <th>DESCRIPCIÓN</th>
-                                                        <th>CUENTA</th>
-                                                        <th>FECHA Y HORA DE REGISTRO</th>
-                                                        <th>ACCIONES</th>
+                                                        <th>Descripción</th>
+                                                        <th>Cuenta</th>
+                                                        <th>Fecha y Hora de Registro</th>
+                                                        <th>Acciones</th>
                                                     </tr>
                                                 </tfoot>
                                             </table>
@@ -127,7 +124,9 @@
                                         <div class="col-md-6">
                                             <div class="form-group" :class="{'has-error': validation_errors.has('form_edit_cuenta.Cuenta Contable')}">
                                                 <label class="control-label"><b>Cuenta Contable</b></label>
-                                                <input id="cuenta_contable" :placeholder="datos_contables.FormatoCuenta" type="text" v-validate="'required|regex:' + datos_contables.FormatoCuentaRegExp" class="form-control" name="Cuenta Contable" v-model="form.cuenta_material.cuenta">
+                                                <input id="cuenta_contable" :placeholder="datos_contables.FormatoCuenta"
+                                                       type="text" v-validate="'required|regex:' + datos_contables.FormatoCuentaRegExp"
+                                                       class="form-control formato_cuenta" name="Cuenta Contable" v-model="form.cuenta_material.cuenta">
                                                 <label class="help" v-show="validation_errors.has('form_edit_cuenta.Cuenta Contable')">@{{ validation_errors.first('form_edit_cuenta.Cuenta Contable') }}</label>
                                             </div>
                                         </div>
