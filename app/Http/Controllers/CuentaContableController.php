@@ -44,7 +44,7 @@ class CuentaContableController extends Controller
     public function store(Request $request)
     {
         $item = $this->cuenta_contable->create($request->all());
-        $tipos_cuentas_contables = $this->tipo_cuenta_contable->with('cuentaContable')->all();
+        $tipos_cuentas_contables = $this->tipo_cuenta_contable->with('cuentaContable')->scope('generales')->all();
 
         return response()->json(['data' =>
             [
@@ -60,7 +60,7 @@ class CuentaContableController extends Controller
     public function update(Request $request, $id)
     {
         $item = $this->cuenta_contable->with('tipoCuentaContable')->update($request->all(), $id);
-        $tipos_cuentas_contables = $this->tipo_cuenta_contable->with('cuentaContable')->all();
+        $tipos_cuentas_contables = $this->tipo_cuenta_contable->with('cuentaContable')->scope('generales')->all();
         return response()->json(['data' =>
             [
                 'cuenta_contable' => $item,

@@ -35,10 +35,10 @@
                                             <td>{{$empresa->total_cuentas}}</td>
                                             <td>
                                                 <a href="{{route('sistema_contable.cuenta_empresa.show',$empresa)}}">
-                                                    <button title="Ver" class="btn-xs btn-default"><i class="fa fa-eye"></i></button>
+                                                    <button title="Ver" class="btn btn-xs btn-default"><i class="fa fa-eye"></i></button>
                                                 </a>
                                                 <a href="{{route('sistema_contable.cuenta_empresa.edit',$empresa)}}">
-                                                    <button  title="Editar" class="btn-xs btn-info"><i class="fa fa-edit"></i></button>
+                                                    <button  title="Editar" class="btn btn-xs btn-info"><i class="fa fa-edit"></i></button>
                                                 </a>
                                             </td>
                                         </tr>

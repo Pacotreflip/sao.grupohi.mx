@@ -24,4 +24,5 @@ require('./vue-components/kardex_material/kardex-material-index');
  */
 require('./vue-components/Compras/requisicion/create');
 require('./vue-components/Compras/requisicion/edit');
+require('./vue-components/Compras/material/index');
 

@@ -5,6 +5,7 @@
         csrfToken: '{{ csrf_token() }}',
         host: '{{ url("/") }}',
         ip: '{{request()->server('SERVER_ADDR')}}',
+        formato_cuenta: '{{$currentObra ? $currentObra->datosContables->mask : null }}',
         // ID del Usuario Actual
         userId: {!! Auth::check() ? Auth::id() : 'null' !!},
 

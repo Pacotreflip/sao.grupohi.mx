@@ -40,7 +40,7 @@
                     </div>
                 </div>
 
-                <div v-show="valor > 0">
+                <div v-if="valor > 0">
                     <div class="row">
                         <div class="col-md-12">
                             <div class="box box-info">

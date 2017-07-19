@@ -53,6 +53,8 @@ $(function () {
             cancelLabel: 'Cancelar',
         }
     }).val('');
+
+    $('.formato_cuenta').mask(App.formato_cuenta);
 });
 
 Number.prototype.formatMoney = function(c, d, t) {
