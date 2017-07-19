@@ -51,10 +51,9 @@
                                             <td>{{$notificacion->concepto}}</td>
                                             <td style="text-align: right">$ {{$notificacion->total}}</td>
                                             <td style="text-align: right">$ {{$notificacion->cuadre}}</td>
-                                            <td> @if($notificacion->estatus == \Ghi\Domain\Core\Models\Contabilidad\Poliza::REGISTRADA) <span class="label bg-blue">Registrada</span>@endif
-                                                @if($notificacion->estatus == \Ghi\Domain\Core\Models\Contabilidad\Poliza::LANZADA) <span class="label bg-green">Lanzada</span>@endif
-                                                @if($notificacion->estatus ==\Ghi\Domain\Core\Models\Contabilidad\Poliza::NO_LANZADA) <span class="label bg-yellow">No lanzada</span>@endif
-                                                @if($notificacion->estatus == \Ghi\Domain\Core\Models\Contabilidad\Poliza::CON_ERRORES) <span class="label bg-red">Con errores</span>@endif</td>
+                                            <td>
+                                                <span class="label bg-{{$notificacion->estatusPrepoliza->label}}">{{$notificacion->estatusPrepoliza}}</span>
+                                            </td>
                                             <td>{{$notificacion->poliza_contpaq}}</td>
                                             <td style="min-width: 90px;max-width: 90px">
                                                 <a href="{{route('sistema_contable.poliza_generada.edit',$notificacion->poliza)}}" title="Editar" class="btn btn-xs btn-info"><i class="fa fa-pencil"></i></a>

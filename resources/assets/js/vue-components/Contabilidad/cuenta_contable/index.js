@@ -117,18 +117,20 @@ Vue.component('cuenta-contable-index', {
         },
 
         validateForm: function(scope, funcion) {
-            this.$validator.validateAll(scope).then(() => {
-                if (funcion == 'save_cuenta') {
-                    this.confirm_cuenta_contable();
-                }else if (funcion == 'update_cuenta') {
-                    this.confirm_cuenta_contable_update();
+            this.$validator.validateAll(scope).then(result => {
+                if (result) {
+                    if (funcion == 'save_cuenta') {
+                        this.confirm_cuenta_contable();
+                    }else if (funcion == 'update_cuenta') {
+                        this.confirm_cuenta_contable_update();
+                    }
+                } else {
+                    swal({
+                         type: 'warning',
+                         title: 'Advertencia',
+                         text: 'Por favor corrija los errores del formulario'
+                     });
                 }
-            }).catch(() => {
-                swal({
-                     type: 'warning',
-                     title: 'Advertencia',
-                     text: 'Por favor corrija los errores del formulario'
-                 });
             });
         },
 

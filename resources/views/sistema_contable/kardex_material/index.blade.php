@@ -87,9 +87,9 @@
                                                 <th></th>
                                                 <th></th>
                                                 <th>TOTALES</th>
-                                                <th>@{{ form.totales.entrada_material }}  /  @{{ parseFloat(form.totales.entrada_valor) }}</th>
-                                                <th>@{{ form.totales.salida_material }}  /  @{{ parseFloat(form.totales.salida_valor) }}</th>
-                                                <th>@{{ form.totales.entrada_material - form.totales.salida_material }}   /   @{{ parseFloat((form.totales.entrada_valor * form.totales.entrada_material) -  (form.totales.salida_valor * form.totales.salida_material))}} </th>
+                                                <th style="text-align: right">@{{ form.totales.entrada_material }}  /  $@{{ parseFloat(form.totales.entrada_valor) }}</th>
+                                                <th style="text-align: right">@{{ form.totales.salida_material }}  /  $@{{ parseFloat(form.totales.salida_valor) }}</th>
+                                                <th style="text-align: right">@{{ form.totales.entrada_material - form.totales.salida_material }}   /   $@{{ parseFloat((form.totales.entrada_valor * form.totales.entrada_material) -  (form.totales.salida_valor * form.totales.salida_material))}} </th>
                                             </tr>
                                             </tfoot>
                                         </table>

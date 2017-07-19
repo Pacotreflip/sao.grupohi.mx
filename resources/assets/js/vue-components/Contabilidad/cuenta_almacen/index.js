@@ -32,21 +32,25 @@ Vue.component('cuenta-almacen-index', {
             $('#cuenta_contable').focus();
             this.validation_errors.clear('form_edit_cuenta');
         },
+
         validateForm: function(scope, funcion) {
-            this.$validator.validateAll(scope).then(() => {
-                if(funcion == 'confirm_save_cuenta') {
-                this.confirm_save_cuenta();
-            } else if (funcion == 'confirm_update_cuenta') {
-                this.confirm_update_cuenta();
-            }
-        }).catch(() => {
-                swal({
+            this.$validator.validateAll(scope).then(result => {
+                if (result) {
+                    if(funcion == 'confirm_save_cuenta') {
+                        this.confirm_save_cuenta();
+                    } else if (funcion == 'confirm_update_cuenta') {
+                        this.confirm_update_cuenta();
+                    }
+                } else {
+                    swal({
                          type: 'warning',
                          title: 'Advertencia',
                          text: 'Por favor corrija los errores del formulario'
                      });
-        });
+                }
+            });
         },
+
         confirm_update_cuenta: function () {
             var self = this;
             swal({
