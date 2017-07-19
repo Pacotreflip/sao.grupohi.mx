@@ -111,10 +111,3 @@
     </div>
 @endsection
 
-@section('scripts-content')
-    <script>
-   $('#tipo').select2();
-
-    </script>
-
-@endsection
