@@ -35,10 +35,11 @@ Vue.component('kardex-material-index', {
             var smaterial = 0;
             var svalor = 0;
 
-                url = url + material.id_material;
+
 
                 // Consulta de datos de kardex por material
-
+            if(self.valor > -1) {
+                url = url + material.id_material;
                 $.ajax({
                     type: 'GET',
                     url: url,
@@ -47,7 +48,7 @@ Vue.component('kardex-material-index', {
                     success: function (response) {
                         // Asignación de datos para vista de detalle
                         self.form.material.id_material = material.id_material;
-                        self.form.material.nivel =material.nivel;
+                        self.form.material.nivel = material.nivel;
                         self.form.material.n_padre = self.form.material.nivel.substr(0, 4);
                         self.form.material.descripcion = material.descripcion;
                         self.form.material.unidad = material.unidad;
@@ -56,11 +57,11 @@ Vue.component('kardex-material-index', {
                         self.data.items = response;
 
                         response.forEach(function (item) {
-                            if(item.transaccion.tipo_transaccion == 33){
+                            if (item.transaccion.tipo_transaccion == 33) {
                                 ematerial += parseFloat(item.cantidad);
                                 evalor += parseFloat(item.precio_unitario);
                             }
-                            if(item.transaccion.tipo_transaccion == 34){
+                            if (item.transaccion.tipo_transaccion == 34) {
                                 smaterial += parseFloat(item.cantidad);
                                 svalor += parseFloat(item.precio_unitario);
                             }
@@ -73,7 +74,20 @@ Vue.component('kardex-material-index', {
                         self.form.totales.existencia = ematerial - smaterial;
                     }
                 });
-
+            }else{
+                self.form.material.id_material = '';
+                self.form.material.nivel = '';
+                self.form.material.n_padre = '';
+                self.form.material.descripcion ='';
+                self.form.material.unidad = '';
+                self.form.material.d_padre = '';
+                self.form.totales.existencia = '';
+                self.form.totales.entrada_material = '';
+                self.form.totales.entrada_valor = '';
+                self.form.totales.salida_material='';
+                self.form.totales.salida_valor = '';
+                self.form.totales.existencia = '';
+            }
         }
     },
 

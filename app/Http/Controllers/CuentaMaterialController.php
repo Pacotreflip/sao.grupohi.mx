@@ -47,7 +47,7 @@ class CuentaMaterialController extends Controller
      * @return mixed
      */
     public function findBy($valor){
-        $materiales = $this->material->findBy($valor);
+        $materiales = $this->material->scope('Familias')->findBy($valor);
         return $materiales;
     }
 
@@ -64,7 +64,6 @@ class CuentaMaterialController extends Controller
 
     public function store(Request $request) {
         $item = $this->cuenta_material->create($request->all());
-        //dd(response()->json(['data' => ['cuenta_material' => $item]],200));
         return response()->json(['data' => ['cuenta_material' => $item]],200);
     }
 }
