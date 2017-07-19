@@ -37,11 +37,10 @@
 
                                             </tr>
                                             <tr>
-                                               <th class="bg-gray-light">Estatus:<br><label>
-                                                        @if($poliza->estatus == $poliza::REGISTRADA) <span class="label bg-blue">Registrada</span>@endif
-                                                        @if($poliza->estatus == $poliza::LANZADA) <span class="label bg-green">Lanzada</span>@endif
-                                                        @if($poliza->estatus == $poliza::NO_LANZADA) <span class="label bg-yellow">No lanzada</span>@endif
-                                                        @if($poliza->estatus == $poliza::CON_ERRORES) <span class="label bg-red">Con errores</span>@endif</label>
+                                               <th class="bg-gray-light">Estatus:<br>
+                                                   <label>
+                                                       <span class="label bg-{{$poliza->estatusPrepoliza->label}}">{{$poliza->estatusPrepoliza}}</span>
+                                                   </label>
                                                 </th>
                                                 <th class="bg-gray-light">
                                                     Póliza Contpaq:<br>

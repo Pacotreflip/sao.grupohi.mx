@@ -38,6 +38,10 @@ class HistPoliza extends Model
         'registro'
     ];
 
+    public function estatusPrepoliza() {
+        return $this->belongsTo(EstatusPrePoliza::class, 'estatus', 'estatus');
+    }
+
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */

@@ -82,7 +82,7 @@
             </ul>
         </li>
 
-        <!--li class="treeview">
+        <li class="treeview">
             <a href="#">
                 <i class="fa fa-area-chart"></i>
                 <span>Reportes</span>
@@ -93,6 +93,6 @@
             <ul class="treeview-menu">
                 <li ><a href="{{route('sistema_contable.kardex_material.index')}}"><i class='fa fa-book'></i> <span>Kardex - Material</span></a></li>
             </ul>
-        </li -->
+        </li>
     </ul>
 @endsection

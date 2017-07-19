@@ -1,7 +1,7 @@
 @extends('sistema_contable.layout')
 @section('title', 'Póliza Generada')
 @section('contentheader_title', 'PRE-PÓLIZAS GENERADAS')
-@section('contentheader_description', '(LISTA)')
+@section('contentheader_description', '(INDEX)')
 
 @section('main-content')
     {!! Breadcrumbs::render('sistema_contable.poliza_generada.index') !!}
@@ -65,18 +65,14 @@
 
                             @foreach($polizas as $index => $item)
                                 <tr>
-
                                     <td>{{ $index+1}}</td>
                                     <td>{{ $item->transaccionInterfaz}}</td>
                                     <td>{{ $item->tipoPolizaContpaq}}</td>
                                     <td>{{ $item->concepto}}</td>
                                     <td class="numerico">$ {{number_format($item->total,'2','.',',')}}</td>
                                     <td class="numerico">$ {{number_format($item->cuadre,'2','.',',')}}</td>
-                                    <td class="">
-                                        @if($item->estatus == $item::REGISTRADA) <span class="label bg-blue">Registrada</span>@endif
-                                        @if($item->estatus == $item::LANZADA) <span class="label bg-green">Lanzada</span>@endif
-                                        @if($item->estatus == $item::NO_LANZADA) <span class="label bg-yellow">No lanzada</span>@endif
-                                        @if($item->estatus == $item::CON_ERRORES) <span class="label bg-red">Con errores</span>@endif
+                                    <td>
+                                        <span class="label bg-{{$item->estatusPrepoliza->label}}">{{$item->estatusPrepoliza}}</span>
                                     </td>
                                     <td>{{$item->poliza_contpaq}}</td>
                                     <td style="min-width: 90px;max-width: 90px">

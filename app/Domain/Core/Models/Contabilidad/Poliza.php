@@ -57,6 +57,10 @@ class Poliza extends BaseModel
         });
     }
 
+    public function estatusPrepoliza() {
+        return $this->belongsTo(EstatusPrePoliza::class, 'estatus', 'estatus');
+    }
+
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
@@ -144,30 +148,10 @@ class Poliza extends BaseModel
         return true;
     }
 
-    public function  getEstatusStringAttribute(){
-        switch ($this->estatus){
-            case $this::REGISTRADA :
-                return "Registrada";
-                break;
-            case $this::LANZADA :
-                return "Lanzada";
-                break;
-            case $this::NO_LANZADA :
-                return "No Lanzada";
-                break;
-            case $this::CON_ERRORES :
-                return "Con errores";
-                break;
-            default:
-                break;
-        }
-    }
-
     public function historicos() {
         return $this->hasMany(HistPoliza::class, 'id_int_poliza', 'id_int_poliza');
     }
     public  function scopeConErrores($query){
         return $query->where('Contabilidad.int_polizas.estatus', '=', static::CON_ERRORES);
     }
-
 }
