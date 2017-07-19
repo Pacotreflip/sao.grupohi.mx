@@ -11,6 +11,12 @@
             <a href="{{route('sistema_contable.poliza_generada.edit', $poliza)}}" class="btn btn-app btn-info pull-right">
                 <i class="fa fa-edit"></i> Editar
             </a>
+
+            @if($poliza->estatus==0)
+                <a  class="btn btn-app btn-info pull-right" onclick="validar_prepoliza({{$poliza->id_int_poliza}})">
+                    <i class="fa fa-check-square-o"></i> Validar
+                </a>
+            @endif
         </div>
     </div>
     <div class="row">
@@ -99,4 +105,47 @@
             </div>
         </div>
     </div>
+@endsection
+@section('scripts-content')
+    <script>
+        function validar_prepoliza(id) {
+
+            var url=App.host +"/sistema_contable/poliza_generada/" + id;
+            swal({
+                title: "¡Validar Pre-Póliza!",
+                text: "¿Esta seguro de que deseas validar la Pre-Póliza?",
+                confirmButtonText: "Si, Validar",
+                cancelButtonText: "No, Cancelar",
+                showCancelButton: true,
+                showLoaderOnConfirm: true,
+                allowOutsideClick: false
+            }).then(function (inputValue)
+            { $.ajax({
+                url: url,
+                type: 'POST',
+                data: {
+                    _method: "PATCH",
+                    'id_int_poliza':id,
+                    'poliza_generada':''
+
+                },
+                success: function (data, textStatus, xhr) {
+                    swal({
+                        type: "success",
+                        title: '¡Correcto!',
+                        text: 'Pre-Póliza validada con éxito',
+                        confirmButtonText: "Ok",
+                        closeOnConfirm: false
+                    }).then(function () {
+                        location.reload();
+                    });
+                },
+                complete: function () {
+
+                }
+            });
+            }) .catch(swal.noop);
+
+        }
+    </script>
 @endsection

@@ -96,12 +96,7 @@ class PolizaController extends Controller
             $polizas = $this->poliza->paginate(800);
 
         }
-
-
-
         $tipo_polizas = $this->transaccion_interfaz->all();
-
-
         return view('sistema_contable.poliza_generada.index')
             ->with('polizas', $polizas)
             ->with('fechas', $request->fechas)
