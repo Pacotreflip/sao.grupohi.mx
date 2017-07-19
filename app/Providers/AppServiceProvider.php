@@ -168,5 +168,10 @@ class AppServiceProvider extends ServiceProvider
             \Ghi\Domain\Core\Repositories\Contabilidad\EloquentNotificacionRepository::class
         );
 
+        $this->app->bind(
+            \Ghi\Domain\Core\Contracts\Contabilidad\TransaccionesInterfazRepository::class,
+            \Ghi\Domain\Core\Repositories\Contabilidad\EloquentTransaccionesInterfazRepository::class
+        );
+
     }
 }
