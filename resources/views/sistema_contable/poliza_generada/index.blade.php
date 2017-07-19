@@ -15,24 +15,36 @@
                 <div class="box-body">
                     {!! Form::model(Request::only(['fechas', 'estatus']), ['method' => 'GET']) !!}
                     <div class="row">
-                        <div class="col-md-6">
+                        <div class="col-md-4">
                             <div class="form-group">
                                 <label><b>Rango de Fechas</b></label>
                                 {!! Form::text('fechas', null, ['class' => 'form-control rango_fechas']) !!}
                             </div>
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-md-4">
                             <div class="form-group">
                                 <label><b>Estatus</b></label>
-                                {!! Form::select('estatus', array('' => 'Todas', '0' => 'Registrada', '1' => 'Lanzada', '-1' => 'No Lanzada', '-2' => 'Con Errores'), '', array('class' => 'form-control')) !!}
+                                {!! Form::select('estatus', array('' => 'Todas', '-2' => 'No lanzada', '-1' => 'Con Errores', '0' => 'No Validada', '1' => 'Validada','2'=>'Lanzada'), '', array('class' => 'form-control')) !!}
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label><b>Tipo de Poliza</b></label>
+                                <Select class="form-control" name="tipo" id="tipo">
+                                    <option value="">Todas</option>
+                                    @foreach($tipo_polizas as $tipo_poliza)
+                                        <option value="{{$tipo_poliza->id_transaccion_interfaz}}" {{$tipo_poliza->id_transaccion_interfaz==$tipo?'selected':''}}>{{$tipo_poliza->descripcion}}</option>
+                                    @endforeach
+                                </Select>
                             </div>
                         </div>
                     </div>
+
+                    <div class="box-footer">
+                        <button class="btn btn-sm btn-primary pull-right" type="submit">Buscar</button>
+                    </div>
+                    {!! Form::close() !!}
                 </div>
-                <div class="box-footer">
-                    <button class="btn btn-sm btn-primary pull-right" type="submit">Buscar</button>
-                </div>
-                {!! Form::close() !!}
             </div>
         </div>
     </div>
@@ -76,9 +88,14 @@
                                     </td>
                                     <td>{{$item->poliza_contpaq}}</td>
                                     <td style="min-width: 90px;max-width: 90px">
-                                        <a href="{{route('sistema_contable.poliza_generada.show',$item)}}" title="Ver" class="btn btn-xs btn-default"><i class="fa fa-eye"></i></a>
-                                        <a href="{{route('sistema_contable.poliza_generada.edit',$item)}}" title="Editar" class="btn btn-xs btn-info"><i class="fa fa-pencil"></i></a>
-                                        <a href="{{route('sistema_contable.poliza_generada.historico',$item)}}" title="Histórico" class="btn btn-xs btn-success {{$item->historicos()->count() > 0 ? '' : 'disabled' }}"><i class="fa fa-clock-o"></i></a>
+                                        <a href="{{route('sistema_contable.poliza_generada.show',$item)}}" title="Ver"
+                                           class="btn btn-xs btn-default"><i class="fa fa-eye"></i></a>
+                                        <a href="{{route('sistema_contable.poliza_generada.edit',$item)}}"
+                                           title="Editar" class="btn btn-xs btn-info"><i class="fa fa-pencil"></i></a>
+                                        <a href="{{route('sistema_contable.poliza_generada.historico',$item)}}"
+                                           title="Histórico"
+                                           class="btn btn-xs btn-success {{$item->historicos()->count() > 0 ? '' : 'disabled' }}"><i
+                                                    class="fa fa-clock-o"></i></a>
                                     </td>
                                 </tr>
                             @endforeach
@@ -92,4 +109,12 @@
             </div>
         </div>
     </div>
+@endsection
+
+@section('scripts-content')
+    <script>
+   $('#tipo').select2();
+
+    </script>
+
 @endsection
