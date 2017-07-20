@@ -51518,16 +51518,18 @@ Vue.component('requisicion-create', {
         validateForm: function validateForm(scope, funcion) {
             var _this = this;
 
-            this.$validator.validateAll(scope).then(function () {
-                if (funcion == 'save') {
-                    _this.confirm_save();
+            this.$validator.validateAll(scope).then(function (result) {
+                if (result) {
+                    if (funcion == 'save') {
+                        _this.confirm_save();
+                    }
+                } else {
+                    swal({
+                        type: 'warning',
+                        title: 'Advertencia',
+                        text: 'Por favor corrija los errores del formulario'
+                    });
                 }
-            }).catch(function () {
-                swal({
-                    type: 'warning',
-                    title: 'Advertencia',
-                    text: 'Por favor corrija los errores del formulario'
-                });
             });
         }
     }
@@ -51806,7 +51808,6 @@ Vue.component('requisicion-edit', {
                 }
             });
         },
-
         update_requisicion: function update_requisicion() {
 
             var self = this;
@@ -52272,7 +52273,9 @@ Vue.component('cuenta-concepto-index', {
                 },
                 success: function success(data, textStatus, xhr) {
                     self.data.conceptos = [];
-                    self.data.conceptos.push(data.data.concepto);
+                    if (data.data.concepto != null) {
+                        self.data.conceptos.push(data.data.concepto);
+                    }
                 },
                 complete: function complete() {
                     self.cargando = false;
@@ -52982,7 +52985,7 @@ Vue.component('emails', {
                     icon: 'fa fa-envelope-o fa-2x ',
                     title: data.email.titulo,
                     message: new Date(data.email.created_at).dateFormat(),
-                    url: App.host + '/notificacion/' + data.email.id
+                    url: App.host + '/sistema_contable/notificacion/' + data.email.id
                 }, {
                     // settings
                     type: 'warning',
@@ -53640,43 +53643,56 @@ Vue.component('kardex-material-index', {
             var smaterial = 0;
             var svalor = 0;
 
-            url = url + material.id_material;
-
             // Consulta de datos de kardex por material
+            if (self.valor > -1) {
+                url = url + material.id_material;
+                $.ajax({
+                    type: 'GET',
+                    url: url,
+                    beforeSend: function beforeSend() {},
+                    success: function success(response) {
+                        // Asignación de datos para vista de detalle
+                        self.form.material.id_material = material.id_material;
+                        self.form.material.nivel = material.nivel;
+                        self.form.material.n_padre = self.form.material.nivel.substr(0, 4);
+                        self.form.material.descripcion = material.descripcion;
+                        self.form.material.unidad = material.unidad;
+                        self.form.material.d_padre = material.d_padre[0].descripcion;
 
-            $.ajax({
-                type: 'GET',
-                url: url,
-                beforeSend: function beforeSend() {},
-                success: function success(response) {
-                    // Asignación de datos para vista de detalle
-                    self.form.material.id_material = material.id_material;
-                    self.form.material.nivel = material.nivel;
-                    self.form.material.n_padre = self.form.material.nivel.substr(0, 4);
-                    self.form.material.descripcion = material.descripcion;
-                    self.form.material.unidad = material.unidad;
-                    self.form.material.d_padre = material.d_padre[0].descripcion;
+                        self.data.items = response;
 
-                    self.data.items = response;
-
-                    response.forEach(function (item) {
-                        if (item.transaccion.tipo_transaccion == 33) {
-                            ematerial += parseFloat(item.cantidad);
-                            evalor += parseFloat(item.precio_unitario);
-                        }
-                        if (item.transaccion.tipo_transaccion == 34) {
-                            smaterial += parseFloat(item.cantidad);
-                            svalor += parseFloat(item.precio_unitario);
-                        }
-                    });
-                    // Asignacion de valores totales de Transacciones
-                    self.form.totales.entrada_material = ematerial;
-                    self.form.totales.entrada_valor = evalor;
-                    self.form.totales.salida_material = smaterial;
-                    self.form.totales.salida_valor = svalor;
-                    self.form.totales.existencia = ematerial - smaterial;
-                }
-            });
+                        response.forEach(function (item) {
+                            if (item.transaccion.tipo_transaccion == 33) {
+                                ematerial += parseFloat(item.cantidad);
+                                evalor += parseFloat(item.precio_unitario);
+                            }
+                            if (item.transaccion.tipo_transaccion == 34) {
+                                smaterial += parseFloat(item.cantidad);
+                                svalor += parseFloat(item.precio_unitario);
+                            }
+                        });
+                        // Asignacion de valores totales de Transacciones
+                        self.form.totales.entrada_material = ematerial;
+                        self.form.totales.entrada_valor = evalor;
+                        self.form.totales.salida_material = smaterial;
+                        self.form.totales.salida_valor = svalor;
+                        self.form.totales.existencia = ematerial - smaterial;
+                    }
+                });
+            } else {
+                self.form.material.id_material = '';
+                self.form.material.nivel = '';
+                self.form.material.n_padre = '';
+                self.form.material.descripcion = '';
+                self.form.material.unidad = '';
+                self.form.material.d_padre = '';
+                self.form.totales.existencia = '';
+                self.form.totales.entrada_material = '';
+                self.form.totales.entrada_valor = '';
+                self.form.totales.salida_material = '';
+                self.form.totales.salida_valor = '';
+                self.form.totales.existencia = '';
+            }
         }
     }
 

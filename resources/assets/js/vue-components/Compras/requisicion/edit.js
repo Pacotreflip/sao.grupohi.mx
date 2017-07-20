@@ -303,26 +303,25 @@ Vue.component('requisicion-edit', {
         },
 
         validateForm: function(scope, funcion) {
-            this.$validator.validateAll(scope).then(result => {
-                if (result) {
-                    if (funcion == 'save') {
-                        this.confirm_save();
-                    }else if(funcion=='save_item'){
-                        this.confirm_save_item();
-                    }
-                    else if(funcion=='edit_item'){
-                        this.confirm_update_item();
-                    }
-                    else if(funcion=='update_requisicion'){
-                        this.confirm_update_requisicion();
-                    }
-                } else {
-                    swal({
-                         type: 'warning',
-                         title: 'Advertencia',
-                         text: 'Por favor corrija los errores del formulario'
-                     });
-                }
+            this.$validator.validateAll(scope).then(() => {
+                if (funcion == 'save') {
+                    this.confirm_save();
+                }else if(funcion=='save_item'){
+                    this.confirm_save_item();
+               }
+            else if(funcion=='edit_item'){
+                this.confirm_update_item();
+            }
+            else if(funcion=='update_requisicion'){
+                this.confirm_update_requisicion();
+            }
+
+            }).catch(() => {
+                swal({
+                     type: 'warning',
+                     title: 'Advertencia',
+                     text: 'Por favor corrija los errores del formulario'
+                 });
             });
         }
     }

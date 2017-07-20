@@ -189,21 +189,19 @@ Vue.component('cuenta-empresa-edit', {
         },
 
         validateForm: function(scope, funcion) {
-            this.$validator.validateAll(scope).then(result => {
-                if (result) {
-                    if (funcion == 'confirm_edit_cuenta') {
-                        this.confirm_cuenta_update();
-                    }
-                    else if (funcion == 'confirm_create_cuenta') {
-                        this.confirm_cuenta_create();
-                    }
-                } else {
-                    swal({
-                         type: 'warning',
-                         title: 'Advertencia',
-                         text: 'Por favor corrija los errores del formulario'
-                     });
+            this.$validator.validateAll(scope).then(() => {
+                if (funcion == 'confirm_edit_cuenta') {
+                    this.confirm_cuenta_update();
                 }
+                else if (funcion == 'confirm_create_cuenta') {
+                    this.confirm_cuenta_create();
+                }
+            }).catch(() => {
+                swal({
+                     type: 'warning',
+                     title: 'Advertencia',
+                     text: 'Por favor corrija los errores del formulario'
+                 });
             });
         }
     },

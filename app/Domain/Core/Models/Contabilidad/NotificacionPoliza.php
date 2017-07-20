@@ -24,7 +24,9 @@ class NotificacionPoliza extends Model
         ];
     public $timestamps = false;
 
-
+    public function estatusPrepoliza() {
+        return $this->belongsTo(EstatusPrePoliza::class, 'estatus', 'estatus');
+    }
 
     public function notificacion()
     {

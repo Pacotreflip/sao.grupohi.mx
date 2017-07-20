@@ -128,20 +128,18 @@ Vue.component('cuenta-concepto-index', {
         },
 
         validateForm: function(scope, funcion) {
-            this.$validator.validateAll(scope).then(result => {
-                if (result) {
-                    if(funcion == 'confirm_save_cuenta') {
-                        this.confirm_save_cuenta();
-                    } else if (funcion == 'confirm_update_cuenta') {
-                        this.confirm_update_cuenta();
-                    }
-                } else {
-                    swal({
-                         type: 'warning',
-                         title: 'Advertencia',
-                         text: 'Por favor corrija los errores del formulario'
-                     });
+            this.$validator.validateAll(scope).then(() => {
+                if(funcion == 'confirm_save_cuenta') {
+                    this.confirm_save_cuenta();
+                } else if (funcion == 'confirm_update_cuenta') {
+                   this.confirm_update_cuenta();
                 }
+            }).catch(() => {
+                swal({
+                     type: 'warning',
+                     title: 'Advertencia',
+                     text: 'Por favor corrija los errores del formulario'
+                });
             });
         },
 
@@ -257,9 +255,10 @@ Vue.component('cuenta-concepto-index', {
                     self.cargando = true;
                 },
                 success: function (data, textStatus, xhr) {
-                 self.data.conceptos = [];
-                 self.data.conceptos.push(data.data.concepto);
-
+                    self.data.conceptos = [];
+                    if (data.data.concepto != null) {
+                        self.data.conceptos.push(data.data.concepto);
+                    }
                 },
                 complete: function () {
                     self.cargando = false;

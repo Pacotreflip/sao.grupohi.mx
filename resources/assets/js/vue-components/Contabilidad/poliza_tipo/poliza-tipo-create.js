@@ -214,20 +214,18 @@ Vue.component('poliza-tipo-create', {
         },
 
         validateForm: function(scope, funcion) {
-            this.$validator.validateAll(scope).then(result => {
-                if (result) {
-                    if(funcion == 'save_cuenta') {
-                        this.add_movimiento();
-                    } else if (funcion == 'save') {
-                        this.check_duplicity();
-                    }
-                } else {
-                    swal({
-                         type: 'warning',
-                         title: 'Advertencia',
-                         text: 'Por favor corrija los errores del formulario'
-                    });
+            this.$validator.validateAll(scope).then(() => {
+                if(funcion == 'save_cuenta') {
+                    this.add_movimiento();
+                } else if (funcion == 'save') {
+                    this.check_duplicity();
                 }
+            }).catch(() => {
+                swal({
+                     type: 'warning',
+                     title: 'Advertencia',
+                     text: 'Por favor corrija los errores del formulario'
+                 });
             });
         }
     }

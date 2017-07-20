@@ -11,7 +11,7 @@ Vue.component('cuenta-material-index', {
                 'cuenta_material': {
                     'id': '',
                     'cuenta': '',
-                    'id_tipo_cuenta_material' : '',
+                    'id_tipo_cuenta_material' : 0,
                     'id_material':''
                 }
             },
@@ -61,20 +61,25 @@ Vue.component('cuenta-material-index', {
             }else{
                 Vue.set(this.form.cuenta_material, 'cuenta', '');
                 Vue.set(this.form.cuenta_material, 'id', '');
-                Vue.set(this.form.cuenta_material, 'id_tipo_cuenta_material', '');
+                Vue.set(this.form.cuenta_material, 'id_tipo_cuenta_material',0);
             }
             this.validation_errors.clear('form_edit_cuenta');
             $('#edit_cuenta_modal').modal('show');
             $('#cuenta_contable').focus();
             this.validation_errors.clear('form_edit_cuenta');
         },
-
         validateForm: function(scope, funcion) {
             this.$validator.validateAll(scope).then(() => {
-                if(funcion == 'confirm_save_cuenta') {
+                if(funcion == 'confirm_save_cuenta' && this.form.cuenta_material.id_tipo_cuenta_material != 0 ) {
                 this.confirm_save_cuenta();
-            } else if (funcion == 'confirm_update_cuenta') {
+            } else if (funcion == 'confirm_update_cuenta' && this.form.cuenta_material.id_tipo_cuenta_material != 0) {
                 this.confirm_update_cuenta();
+            }else{
+                swal({
+                    type: 'warning',
+                    title: 'Advertencia',
+                    text: 'Por favor seleccione un Tipo Cuenta de Material.'
+                });
             }
         }).catch(() => {
                 swal({
@@ -160,7 +165,7 @@ Vue.component('cuenta-material-index', {
                     self.guardando = true;
                 },
                 success: function (data, textStatus, xhr) {
-                    self.data.cuenta_material_edit.cuenta_material = data.data.cuenta_material;
+                    self.data.cuenta_material_edit.cuent_material = data.data.cuenta_material;
                     self.close_edit_cuenta();
                     swal({
                         type: 'success',
@@ -178,7 +183,7 @@ Vue.component('cuenta-material-index', {
             Vue.set(this.form.cuenta_material, 'cuenta', '');
             Vue.set(this.form.cuenta_material, 'id', '');
             Vue.set(this.form.cuenta_material, 'id_material', '');
-            Vue.set(this.form.cuenta_material, 'id_tipo_cuenta_material', '');
+            Vue.set(this.form.cuenta_material, 'id_tipo_cuenta_material', 0);
         }
     }
 

@@ -52,7 +52,7 @@
                                             <td style="text-align: right">$ {{$notificacion->total}}</td>
                                             <td style="text-align: right">$ {{$notificacion->cuadre}}</td>
                                             <td>
-                                                <span class="label bg-{{$notificacion->estatusPrepoliza->label}}">{{$notificacion->estatusPrepoliza}}</span>
+                                                <span class="label bg-{{$notificacion->estatusPrepoliza->label }}">{{$notificacion->estatusPrepoliza}}</span>
                                             </td>
                                             <td>{{$notificacion->poliza_contpaq}}</td>
                                             <td style="min-width: 90px;max-width: 90px">
