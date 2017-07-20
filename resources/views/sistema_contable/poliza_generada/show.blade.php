@@ -13,7 +13,7 @@
                 <i class="fa fa-edit"></i> Editar
             </a>
             @endif
-            @if($poliza->estatus==0)
+            @if($poliza->estatus==0||$poliza->estatus==-2)
                 <a  class="btn btn-app btn-info pull-right" onclick="validar_prepoliza({{$poliza->id_int_poliza}})">
                     <i class="fa fa-check-square-o"></i> Validar
                 </a>
