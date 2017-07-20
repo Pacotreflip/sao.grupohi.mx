@@ -128,7 +128,7 @@
                     _method: "PATCH",
                     'poliza_generada':{
                         'estatus':1,
-                        'lanzada':1
+                        'lanzable':'True'
 
                     }
 
