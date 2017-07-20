@@ -52273,7 +52273,9 @@ Vue.component('cuenta-concepto-index', {
                 },
                 success: function success(data, textStatus, xhr) {
                     self.data.conceptos = [];
-                    self.data.conceptos.push(data.data.concepto);
+                    if (data.data.concepto != null) {
+                        self.data.conceptos.push(data.data.concepto);
+                    }
                 },
                 complete: function complete() {
                     self.cargando = false;

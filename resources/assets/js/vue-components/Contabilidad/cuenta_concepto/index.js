@@ -255,9 +255,10 @@ Vue.component('cuenta-concepto-index', {
                     self.cargando = true;
                 },
                 success: function (data, textStatus, xhr) {
-                 self.data.conceptos = [];
-                 self.data.conceptos.push(data.data.concepto);
-
+                    self.data.conceptos = [];
+                    if (data.data.concepto != null) {
+                        self.data.conceptos.push(data.data.concepto);
+                    }
                 },
                 complete: function () {
                     self.cargando = false;
