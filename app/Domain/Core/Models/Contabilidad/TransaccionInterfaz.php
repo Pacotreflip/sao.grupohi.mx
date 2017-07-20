@@ -3,9 +3,11 @@
 namespace Ghi\Domain\Core\Models\Contabilidad;
 
 use Ghi\Domain\Core\Models\BaseModel;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class TransaccionInterfaz extends BaseModel
 {
+    use softDeletes;
     protected $connection = 'cadeco';
     protected $table = 'Contabilidad.int_transacciones_interfaz';
     protected $primaryKey = 'id_transaccion_interfaz';

@@ -150,6 +150,8 @@ class EloquentPolizaRepository implements PolizaRepository
 
                 $poliza->concepto = $data['poliza_generada']['concepto'];
                 $poliza->estatus = 0;
+                $poliza->cuadre =$suma_debe-$suma_haber;
+
                 $poliza->save();
                 $poliza = $this->model->find($id);
                 $poliza_hist = HistPoliza::create($poliza->toArray());
@@ -158,6 +160,7 @@ class EloquentPolizaRepository implements PolizaRepository
                     $hist_movimiento = HistPolizaMovimiento::create($movimiento->toArray());
                 }
             }else{
+
                 $poliza->update($data['poliza_generada']);
             }
 
@@ -211,29 +214,5 @@ class EloquentPolizaRepository implements PolizaRepository
         return $this;
     }
 
-    public function validar($id){
-        /*
-         * solo estatus 0
-         * pasar a estatus 1
-         */
 
-        try {
-
-            DB::connection('cadeco')->beginTransaction();
-
-            if (!$poliza = $this->model->find($id)) {
-                throw new HttpResponseException(new Response('No se encontró la poliza', 404));
-            }
-            $poliza->estatus = 1;
-            $poliza->save();
-
-            DB::connection('cadeco')->commit();
-        } catch (\Exception $e) {
-            DB::connection('cadeco')->rollback();
-            throw $e;
-        }
-        return $this->find($id, ['polizaMovimientos', 'tipoPolizaContpaq']);
-
-
-    }
 }
