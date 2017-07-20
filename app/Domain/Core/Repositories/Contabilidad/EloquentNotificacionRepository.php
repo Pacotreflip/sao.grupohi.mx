@@ -194,7 +194,7 @@ class EloquentNotificacionRepository implements NotificacionRepository
                                     'estatus',
                                     'Contabilidad.int_polizas.created_at',
                                     'Contabilidad.int_polizas.registro',
-                                    'Contabilidad.int_polizas.id_tipo_poliza_contpaq'
+                                    'Contabilidad.int_polizas.poliza_contpaq'
                                 )
                                 ->where('id_int_poliza', '=', $poliza->id_int_poliza)
                                 ->get());
@@ -210,7 +210,7 @@ class EloquentNotificacionRepository implements NotificacionRepository
                                     'usuario_solicita' => $polizaError->registro,
                                     'estatus' => $polizaError->estatus,
                                     'total' => number_format($poliza->total, 2),
-                                    'poliza_contpaq' => $polizaError->id_tipo_poliza_contpaq > 0 ? $polizaError->id_tipo_poliza_contpaq : "N/A"
+                                    'poliza_contpaq' => $polizaError->poliza_contpaq
                                 ]);
                                 array_push($polizasMail, $notificacion);
                             }
