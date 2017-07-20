@@ -52985,7 +52985,7 @@ Vue.component('emails', {
                     icon: 'fa fa-envelope-o fa-2x ',
                     title: data.email.titulo,
                     message: new Date(data.email.created_at).dateFormat(),
-                    url: App.host + '/notificacion/' + data.email.id
+                    url: App.host + '/sistema_contable/notificacion/' + data.email.id
                 }, {
                     // settings
                     type: 'warning',
