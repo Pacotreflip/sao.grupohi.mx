@@ -22,7 +22,7 @@ class CreateContabilidadNotificacionesPolizaTable extends Migration
             $table->date('fecha_solicitud');
             $table->integer('usuario_solicita');
             $table->string('estatus');
-            $table->string('poliza_contpaq');
+            $table->string('poliza_contpaq')->nullable();
 
             $table->foreign('id_notificacion')
                 ->references('id')
