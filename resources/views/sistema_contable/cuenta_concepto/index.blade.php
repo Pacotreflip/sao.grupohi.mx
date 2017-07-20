@@ -20,7 +20,7 @@
                             <input class="form-control" type="text" v-typeahead />
                             <input name="id_concepto" id="id_concepto" class="form-control" type="hidden"/>
                             <div class="input-group-btn">
-                                <button :disabled="" class="btn btn-success" @click="buscar_nodos">
+                                <button class="btn btn-success" @click="buscar_nodos">
                                     <span v-if="cargando">
                                         <i class="fa fa-spin fa-spinner"></i>
                                         Buscando...
