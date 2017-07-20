@@ -68,8 +68,8 @@
                         })
                     };
                 },
-                onSelect: function(item) {
-                    console.log(item);
+                error: function(error) {
+
                 },
                 cache: true
             },
