@@ -10,7 +10,7 @@ Breadcrumbs::register('sistema_contable.index', function ($breadcrumb) {
  */
 Breadcrumbs::register('sistema_contable.poliza_tipo.index', function ($breadcrumb) {
     $breadcrumb->parent('sistema_contable.index');
-    $breadcrumb->push('PLANTILLAS DE PRE-PÓLIZAS', route('sistema_contable.poliza_tipo.index'));
+    $breadcrumb->push('PLANTILLAS DE PREPÓLIZAS', route('sistema_contable.poliza_tipo.index'));
 });
 Breadcrumbs::register('sistema_contable.poliza_tipo.create', function ($breadcrumb) {
     $breadcrumb->parent('sistema_contable.poliza_tipo.index');
@@ -58,7 +58,7 @@ Breadcrumbs::register('sistema_contable.cuenta_contable.index', function ($bread
  */
 Breadcrumbs::register('sistema_contable.poliza_generada.index', function ($breadcrumb) {
     $breadcrumb->parent('sistema_contable.index');
-    $breadcrumb->push('PRE-PÓLIZAS GENERADAS', route('sistema_contable.poliza_generada.index'));
+    $breadcrumb->push('PREPÓLIZAS GENERADAS', route('sistema_contable.poliza_generada.index'));
 });
 Breadcrumbs::register('sistema_contable.poliza_generada.show', function ($breadcrumb, $poliza) {
     $breadcrumb->parent('sistema_contable.poliza_generada.index');

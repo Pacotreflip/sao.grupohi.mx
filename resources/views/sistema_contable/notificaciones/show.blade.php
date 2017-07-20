@@ -30,7 +30,7 @@
                                     <thead>
                                     <tr>
                                         <th>No.</th>
-                                        <th>Numero de Pre-Póliza</th>
+                                        <th>Numero de Prepóliza</th>
                                         <th>Tipo de Póliza</th>
                                         <th>Concepto</th>
                                         <th>Total</th>

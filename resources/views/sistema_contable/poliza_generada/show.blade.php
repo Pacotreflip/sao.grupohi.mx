@@ -1,6 +1,6 @@
 @extends('sistema_contable.layout')
 @section('title', 'Póliza General')
-@section('contentheader_title', 'PRE-PÓLIZAS GENERADAS')
+@section('contentheader_title', 'PREPÓLIZAS GENERADAS')
 @section('contentheader_description', '(DETALLE)')
 
 @section('main-content')
@@ -24,7 +24,7 @@
         <div class="col-md-12">
             <div class="box box-info">
                 <div class="box-header with-border">
-                    <h3 class="box-title">Detalle de Pre-Póliza</h3>
+                    <h3 class="box-title">Detalle de Prepóliza</h3>
                 </div>
                 <div class="box-body">
                     <div class="table-responsive">
@@ -98,7 +98,7 @@
                                 </tr>
                             </table>
                             <div class="col-sm-12" style="text-align: right">
-                                <h4><b>Total de la Pre-Póliza:</b>  $ {{number_format($poliza->total,'2','.',',')}}</h4>
+                                <h4><b>Total de la Prepóliza:</b>  $ {{number_format($poliza->total,'2','.',',')}}</h4>
                             </div>
                         @endif
                     </div>
@@ -113,8 +113,8 @@
 
             var url=App.host +"/sistema_contable/poliza_generada/" + id;
             swal({
-                title: "¡Validar Pre-Póliza!",
-                text: "¿Esta seguro de que deseas validar la Pre-Póliza?",
+                title: "¡Validar Prepóliza!",
+                text: "¿Esta seguro de que deseas validar la Prepóliza?",
                 confirmButtonText: "Si, Validar",
                 cancelButtonText: "No, Cancelar",
                 showCancelButton: true,
@@ -137,7 +137,7 @@
                     swal({
                         type: "success",
                         title: '¡Correcto!',
-                        text: 'Pre-Póliza validada con éxito',
+                        text: 'Prepóliza validada con éxito',
                         confirmButtonText: "Ok",
                         closeOnConfirm: false
                     }).then(function () {

@@ -1,6 +1,6 @@
 @extends('sistema_contable.layout')
-@section('title', 'Plantillas de Pre-Pólizas')
-@section('contentheader_title', 'PLANTILLAS DE PRE-PÓLIZAS')
+@section('title', 'Plantillas de Prepólizas')
+@section('contentheader_title', 'PLANTILLAS DE PREPÓLIZAS')
 @section('contentheader_description', '(LISTA)')
 
 @section('main-content')
@@ -18,7 +18,7 @@
         <div class="col-md-12">
             <div class="box box-info">
                 <div class="box-header with-border">
-                    <h3 class="box-title">Plantilla de Pre-Pólizas</h3>
+                    <h3 class="box-title">Plantilla de Prepólizas</h3>
                 </div>
                 <div class="box-body">
                     <div class="col-sm-12">

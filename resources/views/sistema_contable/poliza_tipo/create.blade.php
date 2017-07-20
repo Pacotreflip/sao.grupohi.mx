@@ -1,6 +1,6 @@
 @extends('sistema_contable.layout')
-@section('title', 'Plantillas de Pre-Pólizas')
-@section('contentheader_title', 'PLANTILLAS DE PRE-PÓLIZAS')
+@section('title', 'Plantillas de Prepólizas')
+@section('contentheader_title', 'PLANTILLAS DE PREPÓLIZAS')
 @section('contentheader_description', '(NUEVA)')
 
 @section('main-content')

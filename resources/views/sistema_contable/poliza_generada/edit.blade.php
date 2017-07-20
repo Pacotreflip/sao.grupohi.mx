@@ -1,6 +1,6 @@
 @extends('sistema_contable.layout')
 @section('title', 'Pólizas Generadas')
-@section('contentheader_title', 'PRE-PÓLIZAS GENERADAS')
+@section('contentheader_title', 'PREPÓLIZAS GENERADAS')
 @section('contentheader_description', '(EDICIÓN)')
 
 @section('main-content')
@@ -21,7 +21,7 @@
                     <div class="col-md-12">
                         <div class="box box-success">
                             <div class="box-header with-border">
-                                <h3 class="box-title">Detalle de Pre-Póliza</h3>
+                                <h3 class="box-title">Detalle de Prepóliza</h3>
                             </div>
                             <form id="form_poliza" @submit.prevent="validateForm('form_poliza','confirm_save')"
                                   data-vv-scope="form_poliza">
@@ -177,7 +177,7 @@
                                             </tfoot>
                                         </table>
                                         <div class="col-sm-12" style="text-align: right">
-                                            <h4><b>Total de la Pre-Póliza:</b>
+                                            <h4><b>Total de la Prepóliza:</b>
                                                 $ @{{ (parseFloat(data.poliza_edit.total)).formatMoney(2,'.',',')}}</h4>
                                         </div>
                                     </div>

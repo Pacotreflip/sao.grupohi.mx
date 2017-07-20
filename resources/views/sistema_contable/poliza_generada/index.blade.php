@@ -1,6 +1,6 @@
 @extends('sistema_contable.layout')
 @section('title', 'Póliza Generada')
-@section('contentheader_title', 'PRE-PÓLIZAS GENERADAS')
+@section('contentheader_title', 'PREPÓLIZAS GENERADAS')
 @section('contentheader_description', '(INDEX)')
 
 @section('main-content')
@@ -55,7 +55,7 @@
         <div class="col-md-12">
             <div class="box box-success">
                 <div class="box-header with-border">
-                    <h3 class="box-title">Pre-Pólizas Generadas</h3>
+                    <h3 class="box-title">Prepólizas Generadas</h3>
                 </div>
                 <div class="box-body">
                     <div class="table-responsive">

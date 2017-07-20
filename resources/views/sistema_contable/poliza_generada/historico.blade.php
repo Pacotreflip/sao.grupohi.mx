@@ -1,6 +1,6 @@
 @extends('sistema_contable.layout')
 @section('title', 'Póliza General')
-@section('contentheader_title', 'PRE-PÓLIZAS GENERADAS')
+@section('contentheader_title', 'PREPÓLIZAS GENERADAS')
 @section('contentheader_description', '(HISTORICO)')
 
 @section('main-content')
@@ -17,7 +17,7 @@
         <div class="col-md-12">
             <div class="box box-success">
                 <div class="box-header with-border">
-                    <h3 class="box-title">Histórico de Pre-Póliza</h3>
+                    <h3 class="box-title">Histórico de Prepóliza</h3>
 
                 </div>
 
@@ -134,7 +134,7 @@
 
                                                             </table>
                                                             <div class="col-sm-12" style="text-align: right"><h4><b>Total
-                                                                        de la Pre-Póliza:</b>
+                                                                        de la Prepóliza:</b>
                                                                     ${{number_format($poliza->total,'2','.',',')}}</h4>
                                                             </div>
                                                         @endif
