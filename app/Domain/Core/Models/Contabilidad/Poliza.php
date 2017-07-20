@@ -41,7 +41,8 @@ class Poliza extends BaseModel
         'usuario_lanzamiento',
         'id_poliza_contpaq',
         'poliza_contpaq',
-        'registro'
+        'registro',
+        'lanzable'
     ];
 
     protected $appends = ['suma_debe', 'suma_haber'];

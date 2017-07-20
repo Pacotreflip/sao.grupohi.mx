@@ -150,6 +150,8 @@ class EloquentPolizaRepository implements PolizaRepository
 
                 $poliza->concepto = $data['poliza_generada']['concepto'];
                 $poliza->estatus = 0;
+                $poliza->cuadre =$suma_debe-$suma_haber;
+
                 $poliza->save();
                 $poliza = $this->model->find($id);
                 $poliza_hist = HistPoliza::create($poliza->toArray());
@@ -158,6 +160,7 @@ class EloquentPolizaRepository implements PolizaRepository
                     $hist_movimiento = HistPolizaMovimiento::create($movimiento->toArray());
                 }
             }else{
+
                 $poliza->update($data['poliza_generada']);
             }
 
