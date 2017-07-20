@@ -3,19 +3,43 @@
 @section('contentheader_title', 'OBRAS')
 
 @section('main-content')
-    <ul class="list-group">
-        @foreach($obras->groupBy('databaseName') as $baseDatos=>$obrasBd)
-            <li class="list-group-item disabled">
-                <i class="fa fa-fw fa-database"></i>{{$baseDatos}}
-            </li>
-            @foreach($obrasBd as $obra)
-                <a class="list-group-item" href="{{route('context.set',[$obra->databaseName, $obra])}}">
-                    {{mb_strtoupper($obra->nombre)}}
-                </a>
-            @endforeach
+    <div class="row">
+        <div class="col-md-12">
+            <div class="box box-info">
+                <div class="box-header with-border">
+                    <h3 class="box-title">Buscar Obra</h3>
+                </div>
+                <div class="box-body">
+                    <div class="col-md-9">
+                        <select class="form-control" id="obras_select">
+                            <option value disabled="disabled">[--SELECCIONE--]</option>
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <button id="context_set" style="width: 100%;" class="btn btn-info"><i class="fa fa-arrow-circle-o-right"></i> IR </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <ul class="list-group">
+                @foreach($obras->groupBy('databaseName') as $baseDatos=>$obrasBd)
+                    <li class="list-group-item disabled">
+                        <i class="fa fa-fw fa-database"></i>{{$baseDatos}}
+                    </li>
+                    @foreach($obrasBd as $obra)
+                        <a class="list-group-item" href="{{route('context.set',[$obra->databaseName, $obra])}}">
+                            {{mb_strtoupper($obra->nombre)}}
+                        </a>
+                    @endforeach
 
-        @endforeach
-    </ul>
+                @endforeach
+            </ul>
+        </div>
+    </div>
+
     <div class="text-center">
         {!! $obras->render() !!}
     </div>
@@ -23,6 +47,38 @@
 
 @section('scripts-content')
     <script>
-        $('.select2').select2();
+        $("#obras_select").select2({
+            ajax: {
+                url: '{{route('obra.search')}}',
+                dataType: 'json',
+                delay: 250,
+                data: function (params) {
+                    return {
+                        q: params.term
+                    };
+                },
+                processResults: function (data) {
+                    return {
+                        results: $.map(data, function (item) {
+                            return {
+                                text:'[' + item.databaseName + '] ' + item.nombre,
+                                id: item.id_obra,
+                                url: App.host + '/context/' + item.databaseName + '/' + item.id_obra
+                            }
+                        })
+                    };
+                },
+                onSelect: function(item) {
+                    console.log(item);
+                },
+                cache: true
+            },
+            escapeMarkup: function (markup) { return markup; }, // let our custom formatter work
+            minimumInputLength: 1
+        });
+        $('#context_set').on('click', function() {
+            if($('#obras_select option:selected').data())
+            window.location = $('#obras_select option:selected').data().data.url;
+        })
     </script>
 @endsection
