@@ -23,5 +23,7 @@ Route::post('item', 'ItemController@store')->name('item.store');
 Route::patch('item/{id}', 'ItemController@update')->name('item.update')->where(['id' => '[0-9]+']);
 Route::delete('item/{id}', 'ItemController@destroy')->name('item.destroy')->where(['id' => '[0-9]+']);
 
-
-
+/**
+ * Obra Routes...
+ */
+Route::get('obra/search', 'ObraController@search')->name('obra.search');
