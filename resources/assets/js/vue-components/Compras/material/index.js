@@ -25,6 +25,7 @@ Vue.component('material-index', {
             var self = this;
             var id = self.valor;
             if (id != 0) {
+                self.guardando = true;
                 var urla = App.host + '/compras/material/';
                 $.ajax({
                     type: 'GET',
@@ -32,6 +33,13 @@ Vue.component('material-index', {
 
                     success: function (response) {
                         self.data.items = response;
+                    },
+                    complete: function () {
+                        self.guardando = false;
+                    },
+                    error: function(error) {
+                        alert(error.responseText);
+                        self.guardando = false;
                     }
                 });
             }
