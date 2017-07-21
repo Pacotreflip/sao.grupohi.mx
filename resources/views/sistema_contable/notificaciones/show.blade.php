@@ -57,7 +57,7 @@
                                                 <td>{{$notificacion->concepto}}</td>
                                                 <td style="text-align: right">$ {{$notificacion->total}}</td>
                                                 <td style="text-align: right">
-                                                    $ {{number_format($notificacion->cuadre,'2','.',',')}}</td>
+                                                    $ {{$notificacion->cuadre}}</td>
                                                 <td>
                                                     <span class="label bg-{{$notificacion->estatusPrepoliza->label }}">{{$notificacion->estatusPrepoliza}}</span>
                                                 </td>
@@ -97,7 +97,7 @@
                                                 <td>{{$notificacion->concepto}}</td>
                                                 <td style="text-align: right">$ {{$notificacion->total}}</td>
                                                 <td style="text-align: right">
-                                                    $ {{number_format($notificacion->cuadre,'2','.',',')}}</td>
+                                                    $ {{$notificacion->cuadre}}</td>
                                                 <td>
                                                     <span class="label bg-{{$notificacion->estatusPrepoliza->label }}">{{$notificacion->estatusPrepoliza}}</span>
                                                 </td>
@@ -139,7 +139,7 @@
                                                 <td>{{$notificacion->concepto}}</td>
                                                 <td style="text-align: right">$ {{$notificacion->total}}</td>
                                                 <td style="text-align: right">
-                                                    $ {{number_format($notificacion->cuadre,'2','.',',')}}</td>
+                                                    $ {{$notificacion->cuadre}}</td>
                                                 <td>
                                                     <span class="label bg-{{$notificacion->estatusPrepoliza->label }}">{{$notificacion->estatusPrepoliza}}</span>
                                                 </td>
