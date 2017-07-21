@@ -37,4 +37,5 @@ class NotificacionPoliza extends Model
     {
         return $this->hasOne(Poliza::class, 'id_int_poliza', 'id_int_poliza');
     }
+
 }

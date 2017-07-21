@@ -13,11 +13,12 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Poliza extends BaseModel
 {
     use SoftDeletes;
+    const NO_LANZADA = -2;
+    const CON_ERRORES = -1;
+    const NO_VALIDADA=0;
+    const VALIDADA=1;
+    const LANZADA = 2;
 
-    const CON_ERRORES = -2;
-    const REGISTRADA = 0;
-    const LANZADA = 1;
-    const NO_LANZADA = -1;
 
     protected $connection = 'cadeco';
     protected $table = 'Contabilidad.int_polizas';

@@ -39,6 +39,9 @@ class EstatusPrePoliza extends Model
             case 'Lanzada':
                 return 'green';
                 break;
+            case 'Omitir':
+                return 'gray';
+                break;
         }
     }
 }
