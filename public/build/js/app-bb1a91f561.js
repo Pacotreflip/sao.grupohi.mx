@@ -51848,22 +51848,24 @@ Vue.component('requisicion-edit', {
         validateForm: function validateForm(scope, funcion) {
             var _this = this;
 
-            this.$validator.validateAll(scope).then(function () {
-                if (funcion == 'save') {
-                    _this.confirm_save();
-                } else if (funcion == 'save_item') {
-                    _this.confirm_save_item();
-                } else if (funcion == 'edit_item') {
-                    _this.confirm_update_item();
-                } else if (funcion == 'update_requisicion') {
-                    _this.confirm_update_requisicion();
+            this.$validator.validateAll(scope).then(function (result) {
+                if (result) {
+                    if (funcion == 'save') {
+                        _this.confirm_save();
+                    } else if (funcion == 'save_item') {
+                        _this.confirm_save_item();
+                    } else if (funcion == 'edit_item') {
+                        _this.confirm_update_item();
+                    } else if (funcion == 'update_requisicion') {
+                        _this.confirm_update_requisicion();
+                    }
+                } else {
+                    swal({
+                        type: 'warning',
+                        title: 'Advertencia',
+                        text: 'Por favor corrija los errores del formulario'
+                    });
                 }
-            }).catch(function () {
-                swal({
-                    type: 'warning',
-                    title: 'Advertencia',
-                    text: 'Por favor corrija los errores del formulario'
-                });
             });
         }
     }
@@ -51906,23 +51908,27 @@ Vue.component('cuenta-almacen-index', {
             $('#cuenta_contable').focus();
             this.validation_errors.clear('form_edit_cuenta');
         },
+
         validateForm: function validateForm(scope, funcion) {
             var _this = this;
 
-            this.$validator.validateAll(scope).then(function () {
-                if (funcion == 'confirm_save_cuenta') {
-                    _this.confirm_save_cuenta();
-                } else if (funcion == 'confirm_update_cuenta') {
-                    _this.confirm_update_cuenta();
+            this.$validator.validateAll(scope).then(function (result) {
+                if (result) {
+                    if (funcion == 'confirm_save_cuenta') {
+                        _this.confirm_save_cuenta();
+                    } else if (funcion == 'confirm_update_cuenta') {
+                        _this.confirm_update_cuenta();
+                    }
+                } else {
+                    swal({
+                        type: 'warning',
+                        title: 'Advertencia',
+                        text: 'Por favor corrija los errores del formulario'
+                    });
                 }
-            }).catch(function () {
-                swal({
-                    type: 'warning',
-                    title: 'Advertencia',
-                    text: 'Por favor corrija los errores del formulario'
-                });
             });
         },
+
         confirm_update_cuenta: function confirm_update_cuenta() {
             var self = this;
             swal({
@@ -52153,18 +52159,20 @@ Vue.component('cuenta-concepto-index', {
         validateForm: function validateForm(scope, funcion) {
             var _this = this;
 
-            this.$validator.validateAll(scope).then(function () {
-                if (funcion == 'confirm_save_cuenta') {
-                    _this.confirm_save_cuenta();
-                } else if (funcion == 'confirm_update_cuenta') {
-                    _this.confirm_update_cuenta();
+            this.$validator.validateAll(scope).then(function (result) {
+                if (result) {
+                    if (funcion == 'confirm_save_cuenta') {
+                        _this.confirm_save_cuenta();
+                    } else if (funcion == 'confirm_update_cuenta') {
+                        _this.confirm_update_cuenta();
+                    }
+                } else {
+                    swal({
+                        type: 'warning',
+                        title: 'Advertencia',
+                        text: 'Por favor corrija los errores del formulario'
+                    });
                 }
-            }).catch(function () {
-                swal({
-                    type: 'warning',
-                    title: 'Advertencia',
-                    text: 'Por favor corrija los errores del formulario'
-                });
             });
         },
 
@@ -52281,9 +52289,7 @@ Vue.component('cuenta-concepto-index', {
                 },
                 success: function success(data, textStatus, xhr) {
                     self.data.conceptos = [];
-                    if (data.data.concepto != null) {
-                        self.data.conceptos.push(data.data.concepto);
-                    }
+                    self.data.conceptos.push(data.data.concepto);
                 },
                 complete: function complete() {
                     self.cargando = false;
@@ -52413,18 +52419,20 @@ Vue.component('cuenta-contable-index', {
         validateForm: function validateForm(scope, funcion) {
             var _this = this;
 
-            this.$validator.validateAll(scope).then(function () {
-                if (funcion == 'save_cuenta') {
-                    _this.confirm_cuenta_contable();
-                } else if (funcion == 'update_cuenta') {
-                    _this.confirm_cuenta_contable_update();
+            this.$validator.validateAll(scope).then(function (result) {
+                if (result) {
+                    if (funcion == 'save_cuenta') {
+                        _this.confirm_cuenta_contable();
+                    } else if (funcion == 'update_cuenta') {
+                        _this.confirm_cuenta_contable_update();
+                    }
+                } else {
+                    swal({
+                        type: 'warning',
+                        title: 'Advertencia',
+                        text: 'Por favor corrija los errores del formulario'
+                    });
                 }
-            }).catch(function () {
-                swal({
-                    type: 'warning',
-                    title: 'Advertencia',
-                    text: 'Por favor corrija los errores del formulario'
-                });
             });
         },
 
@@ -52650,18 +52658,20 @@ Vue.component('cuenta-empresa-edit', {
         validateForm: function validateForm(scope, funcion) {
             var _this = this;
 
-            this.$validator.validateAll(scope).then(function () {
-                if (funcion == 'confirm_edit_cuenta') {
-                    _this.confirm_cuenta_update();
-                } else if (funcion == 'confirm_create_cuenta') {
-                    _this.confirm_cuenta_create();
+            this.$validator.validateAll(scope).then(function (result) {
+                if (result) {
+                    if (funcion == 'confirm_edit_cuenta') {
+                        _this.confirm_cuenta_update();
+                    } else if (funcion == 'confirm_create_cuenta') {
+                        _this.confirm_cuenta_create();
+                    }
+                } else {
+                    swal({
+                        type: 'warning',
+                        title: 'Advertencia',
+                        text: 'Por favor corrija los errores del formulario'
+                    });
                 }
-            }).catch(function () {
-                swal({
-                    type: 'warning',
-                    title: 'Advertencia',
-                    text: 'Por favor corrija los errores del formulario'
-                });
             });
         }
     },
@@ -52705,7 +52715,7 @@ Vue.component('cuenta-material-index', {
                 'cuenta_material': {
                     'id': '',
                     'cuenta': '',
-                    'id_tipo_cuenta_material': 0,
+                    'id_tipo_cuenta_material': '',
                     'id_material': ''
                 }
             },
@@ -52755,27 +52765,22 @@ Vue.component('cuenta-material-index', {
             } else {
                 Vue.set(this.form.cuenta_material, 'cuenta', '');
                 Vue.set(this.form.cuenta_material, 'id', '');
-                Vue.set(this.form.cuenta_material, 'id_tipo_cuenta_material', 0);
+                Vue.set(this.form.cuenta_material, 'id_tipo_cuenta_material', '');
             }
             this.validation_errors.clear('form_edit_cuenta');
             $('#edit_cuenta_modal').modal('show');
             $('#cuenta_contable').focus();
             this.validation_errors.clear('form_edit_cuenta');
         },
+
         validateForm: function validateForm(scope, funcion) {
             var _this = this;
 
             this.$validator.validateAll(scope).then(function () {
-                if (funcion == 'confirm_save_cuenta' && _this.form.cuenta_material.id_tipo_cuenta_material != 0) {
+                if (funcion == 'confirm_save_cuenta') {
                     _this.confirm_save_cuenta();
-                } else if (funcion == 'confirm_update_cuenta' && _this.form.cuenta_material.id_tipo_cuenta_material != 0) {
+                } else if (funcion == 'confirm_update_cuenta') {
                     _this.confirm_update_cuenta();
-                } else {
-                    swal({
-                        type: 'warning',
-                        title: 'Advertencia',
-                        text: 'Por favor seleccione un Tipo Cuenta de Material.'
-                    });
                 }
             }).catch(function () {
                 swal({
@@ -52861,7 +52866,7 @@ Vue.component('cuenta-material-index', {
                     self.guardando = true;
                 },
                 success: function success(data, textStatus, xhr) {
-                    self.data.cuenta_material_edit.cuent_material = data.data.cuenta_material;
+                    self.data.cuenta_material_edit.cuenta_material = data.data.cuenta_material;
                     self.close_edit_cuenta();
                     swal({
                         type: 'success',
@@ -52879,7 +52884,7 @@ Vue.component('cuenta-material-index', {
             Vue.set(this.form.cuenta_material, 'cuenta', '');
             Vue.set(this.form.cuenta_material, 'id', '');
             Vue.set(this.form.cuenta_material, 'id_material', '');
-            Vue.set(this.form.cuenta_material, 'id_tipo_cuenta_material', 0);
+            Vue.set(this.form.cuenta_material, 'id_tipo_cuenta_material', '');
         }
     }
 
@@ -52954,16 +52959,18 @@ Vue.component('datos-contables-edit', {
         validateForm: function validateForm(scope, funcion) {
             var _this = this;
 
-            this.$validator.validateAll(scope).then(function () {
-                if (funcion == 'save_datos_obra') {
-                    _this.confirm_datos_obra();
+            this.$validator.validateAll(scope).then(function (result) {
+                if (result) {
+                    if (funcion == 'save_datos_obra') {
+                        _this.confirm_datos_obra();
+                    }
+                } else {
+                    swal({
+                        type: 'warning',
+                        title: 'Advertencia',
+                        text: 'Por favor corrija los errores del formulario'
+                    });
                 }
-            }).catch(function () {
-                swal({
-                    type: 'warning',
-                    title: 'Advertencia',
-                    text: 'Por favor corrija los errores del formulario'
-                });
             });
         }
     }
@@ -52993,7 +53000,7 @@ Vue.component('emails', {
                     icon: 'fa fa-envelope-o fa-2x ',
                     title: data.email.titulo,
                     message: new Date(data.email.created_at).dateFormat(),
-                    url: App.host + '/sistema_contable/notificacion/' + data.email.id
+                    url: App.host + '/notificacion/' + data.email.id
                 }, {
                     // settings
                     type: 'warning',
@@ -53084,18 +53091,20 @@ Vue.component('poliza-generada-edit', {
         validateForm: function validateForm(scope, funcion) {
             var _this = this;
 
-            this.$validator.validateAll(scope).then(function () {
-                if (funcion == 'confirm_add_movimiento') {
-                    _this.confirm_add_movimiento();
-                } else if (funcion == 'confirm_save') {
-                    _this.confirm_save();
+            this.$validator.validateAll(scope).then(function (result) {
+                if (result) {
+                    if (funcion == 'confirm_add_movimiento') {
+                        _this.confirm_add_movimiento();
+                    } else if (funcion == 'confirm_save') {
+                        _this.confirm_save();
+                    }
+                } else {
+                    swal({
+                        type: 'warning',
+                        title: 'Advertencia',
+                        text: 'Por favor corrija los errores del formulario'
+                    });
                 }
-            }).catch(function () {
-                swal({
-                    type: 'warning',
-                    title: 'Advertencia',
-                    text: 'Por favor corrija los errores del formulario'
-                });
             });
         },
 
@@ -53419,18 +53428,20 @@ Vue.component('poliza-tipo-create', {
         validateForm: function validateForm(scope, funcion) {
             var _this = this;
 
-            this.$validator.validateAll(scope).then(function () {
-                if (funcion == 'save_cuenta') {
-                    _this.add_movimiento();
-                } else if (funcion == 'save') {
-                    _this.check_duplicity();
+            this.$validator.validateAll(scope).then(function (result) {
+                if (result) {
+                    if (funcion == 'save_cuenta') {
+                        _this.add_movimiento();
+                    } else if (funcion == 'save') {
+                        _this.check_duplicity();
+                    }
+                } else {
+                    swal({
+                        type: 'warning',
+                        title: 'Advertencia',
+                        text: 'Por favor corrija los errores del formulario'
+                    });
                 }
-            }).catch(function () {
-                swal({
-                    type: 'warning',
-                    title: 'Advertencia',
-                    text: 'Por favor corrija los errores del formulario'
-                });
             });
         }
     }
