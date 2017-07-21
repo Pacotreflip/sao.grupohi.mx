@@ -104,4 +104,53 @@ class EloquentMaterialRepository implements MaterialRepository
         $this->model = $this->model->with($relations);
         return $this;
     }
+
+    /**
+     * Obtiene el nivel siguiente disponible de un tipo de material
+     * @param $tipo
+     * @return string
+     */
+    public function getNivelDisponible($tipo, $nivel = null)
+    {
+        if ($nivel) {
+            $niveles = $this->model->where('nivel', 'like', $nivel)->where('tipo_material', '=', $tipo)->orderBy('nivel')->get();
+            for($i = 0; $i < $niveles->count(); $i++) {
+                $nivel_str = explode('.', $niveles[$i]->nivel)[1];
+                if($i != intval($nivel_str)) {
+                    return  explode('.',$niveles[$i]->nivel)[0].'.'.str_pad($i, 3, '0', STR_PAD_LEFT). '.';
+                }
+            }
+        } else {
+            $niveles = $this->model->familias()->where('tipo_material', '=', $tipo)->orderBy('nivel')->get(['nivel']);
+            for($i = 0; $i < $niveles->count(); $i++) {
+                if($i != intval($niveles[$i]->nivel)) {
+                    return str_pad($i, 3, '0', STR_PAD_LEFT). '.';
+                }
+            }
+        }
+    }
+
+    /**
+     * @param array $data
+     * @return Material
+     * @throws \Exception
+     */
+    public function create($data)
+    {
+        try {
+            DB::connection('cadeco')->beginTransaction();
+
+
+            //$data['nivel'] = $this->getNivelDisponible(tipo, nivel_fam)
+
+
+            $material = $this->model->create($data);
+
+
+            DB::commit();
+        } catch (\Exception $e) {
+            DB::rollBack();
+            throw $e;
+        }
+    }
 }

@@ -13,58 +13,62 @@
                 inline-template>
             <section>
                 <div class="row">
+                    <div class="col-sm-12">
+                        <a  href="{{'compras.material.create'}}" class="btn btn-success btn-app" style="float:right">
+                            <i class="glyphicon glyphicon-plus-sign"></i>Nueva
+                        </a>
+                    </div>
                     <div class="col-md-12">
                         <div class="box box-info">
                             <div class="box-header with-border">
-                                div class="row">
-                                <div class="col-sm-12">
-                                    <a  href="{{ route('compras.material.create') }}" class="btn btn-success btn-app" style="float:right">
-                                        <i class="glyphicon glyphicon-plus-sign"></i>Nueva
-                                    </a>
-                                </div>
-                                <h3 class="box-title">Compras Material</h3>
+                                <h3 class="box-title">Cuentas por Material</h3>
                             </div>
                             <div class="box-body">
-                                <
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="descripcion" class="control-label">Tipo de Material</label>
+                                    </div>
                                 </div>
-                                <table class="table table-bordered">
-                                    <tbody>
-                                    <tr>
-                                        <th>SELECCIONAR TIPO DE MATERIAL</th>
-                                        <td>
-                                            <select class="form-control input-sm" style="width: 40%" v-model="valor" @change="cambio()" >
-                                                <option :value="0">[-SELECCIONE-]</option>
-                                                <option :value="1">Materiales</option>
-                                                <option :value="2">Mano de Obra y Servicios</option>
-                                                <option :value="4">Herramienta y Equipo</option>
-                                                <option :value="8">Maquinaria</option>
-                                            </select>
-                                        </td>
-                                    </tr>
-
-                                    </tbody>
-                                </table>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <select class="form-control input-sm"  v-model="valor" @change="cambio()" >
+                                            <option :value="0">[-SELECCIONE-]</option>
+                                            <option :value="1">Materiales</option>
+                                            <option :value="2">Mano de Obra y Servicios</option>
+                                            <option :value="4">Herramienta y Equipo</option>
+                                            <option :value="8">Maquinaria</option>
+                                        </select>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <div v-show="valor > 0">
+                <div class="box box-info box-solid" v-show="guardando">
+                    <div class="box-header">
+                        <h3 class="box-title">Cargando el Tipo de Materiales</h3>
+                        <div class="overlay">
+                            <i class="fa fa-spinner fa-pulse" style="color: white"></i>
+                        </div>
+                    </div>
+                </div>
+                <div v-show="valor > 0 && !guardando">
                     <div class="row">
                         <div class="col-md-12">
-                            <div class="box box-success">
+                            <div class="box box-info">
                                 <div class="box-header">
                                     <h3 class="box-title">Detalle de Cuentas de Material</h3>
                                 </div>
                                 <div class="box-body">
                                     <div class="table-responsive">
-                                        <table  class="table table-bordered table-striped small index_table" id="example">
+                                        <table  class="table table-bordered small table-striped" id="example">
                                             <thead>
                                             <tr role="row">
                                                 <th class="sorting_asc" tabindex="0" aria-controls="tipo_cuenta" aria-sort="ascending">#</th>
-                                                <th class="sorting" tabindex="0" aria-controls="tipo_cuenta">DESCRIPCION</th>
+                                                <th class="sorting" tabindex="0" aria-controls="tipo_cuenta">Descripción</th>
                                                 <th class="sorting" tabindex="0" aria-controls="tipo_cuenta">Fecha/Hora</th>
-                                                <th>ACCIONES</th>
+                                                <th>Acciones</th>
                                             </tr>
                                             </thead>
                                             <tbody>
@@ -83,9 +87,9 @@
                                             <tfoot>
                                             <tr>
                                                 <th>#</th>
-                                                <th>DESCRIPCION</th>
+                                                <th>Descripción</th>
                                                 <th>Fecha/Hora</th>
-                                                <th>ACCIONES</th>
+                                                <th>Acciones</th>
                                             </tr>
                                             </tfoot>
                                         </table>

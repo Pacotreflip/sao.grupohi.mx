@@ -27,6 +27,10 @@ class MaterialController extends Controller
 
     }
     public function index() {
+        $nivel_familia = $this->material->getNivelDisponible(1);
+        $nivel_hijo = $this->material->getNivelDisponible(1, '001.___.');
+
+
         $materiales = $this->material->all();
         return view('compras.material.index');
     }
