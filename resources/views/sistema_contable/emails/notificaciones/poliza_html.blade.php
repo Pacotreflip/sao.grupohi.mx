@@ -50,40 +50,115 @@
     <div id="cuerpo">
         <div id="contenido">
             <h1>Estimado Colaborador {{$usuario}} </h1>
-            <h1>Se le informa que las siguientes pólizas han sido registradas y tienen errores que deben corregirse  para que puedan ser enviadas al Contpaq.</h1>
+            <h1>Se le informa que las siguientes prepólizas requieren de revisión para poder ser emitidas correctamente.</h1>
+            <h1>Proyecto: {{$obra->nombre}}</h1>
             <div id="lista_contratos">
-                <table class="generica" style="width:100%">
-                    <caption>Contratos :</caption>
-                    <thead>
-                    <tr>
-                        <th>No</th>
-                        <th>Numero de Prepóliza</th>
-                        <th>Tipo de Póliza</th>
-                        <th>Concepto</th>
-                        <th>Total</th>
-                        <th>Cuadre</th>
-                        <th>Estatus</th>
-                        <th>Póliza ContPaq</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    @foreach($polizas as $index=>$poliza)
+                @if(count($polizas_errores))
+                    <table class="generica" style="width:100%">
+                        <thead>
                         <tr>
-                            <td>{{$index+1}}</td>
-                            <td>{{$poliza->id_int_poliza}}</td>
-                            <td>{{$poliza->tipo_poliza}}</td>
-                            <td>{{$poliza->concepto}}</td>
-                            <td style="text-align: right;width: 100px">$ {{$poliza->total}}</td>
-                            <td style="text-align: right;width: 100px">$ {{$poliza->cuadre}}</td>
-                            <td> @if($poliza->estatus == \Ghi\Domain\Core\Models\Contabilidad\Poliza::REGISTRADA) <span class="label bg-blue">Registrada</span>@endif
-                                @if($poliza->estatus == \Ghi\Domain\Core\Models\Contabilidad\Poliza::LANZADA) <span class="label bg-green">Lanzada</span>@endif
-                                @if($poliza->estatus ==\Ghi\Domain\Core\Models\Contabilidad\Poliza::NO_LANZADA) <span class="label bg-yellow">No lanzada</span>@endif
-                                @if($poliza->estatus == \Ghi\Domain\Core\Models\Contabilidad\Poliza::CON_ERRORES) <span class="label bg-red">Con errores</span>@endif</td>
-                            <td>{{$poliza->poliza_contpaq}}</td>
+                            <th colspan="9" style="text-align: left">PREPÓLIZAS CON ERRORES</th>
                         </tr>
-                    @endforeach
-                    </tbody>
-                </table>
+                        <tr>
+                            <th>No</th>
+                            <th>Número de Prepóliza</th>
+                            <th>Tipo de Póliza</th>
+                            <th>Concepto</th>
+                            <th>Total</th>
+                            <th>Cuadre</th>
+                            <th>Estatus</th>
+                            <th>Póliza ContPaq</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        @foreach($polizas_errores as $index=>$poliza)
+                            <tr>
+                                <td>{{$index+1}}</td>
+                                <td>{{$poliza->id_int_poliza}}</td>
+                                <td>{{$poliza->tipo_poliza}}</td>
+                                <td>{{$poliza->concepto}}</td>
+                                <td style="text-align: right;width: 100px">$ {{$poliza->total}}</td>
+                                <td style="text-align: right;width: 100px">$ {{$poliza->cuadre}}</td>
+                                <td>  <span class="label bg-{{$poliza->estatusPrepoliza->label}}">{{$poliza->estatusPrepoliza}}</span></td>
+                                <td>{{$poliza->poliza_contpaq}}</td>
+                            </tr>
+                        @endforeach
+                        </tbody>
+                    </table>
+                @endif
+
+                @if(count($polizas_no_lanzadas))
+                    <br/>
+                    <table class="generica" style="width:100%">
+
+                        <thead>
+                        <tr>
+                            <th colspan="9" style="text-align: left">PREPÓLIZAS NO LANZADAS</th>
+                        </tr>
+                        <tr>
+                            <th>No</th>
+                            <th>Número de Prepóliza</th>
+                            <th>Tipo de Póliza</th>
+                            <th>Concepto</th>
+                            <th>Total</th>
+                            <th>Cuadre</th>
+                            <th>Estatus</th>
+                            <th>Póliza ContPaq</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        @foreach($polizas_no_lanzadas as $index=>$poliza)
+                            <tr>
+                                <td>{{$index+1}}</td>
+                                <td>{{$poliza->id_int_poliza}}</td>
+                                <td>{{$poliza->tipo_poliza}}</td>
+                                <td>{{$poliza->concepto}}</td>
+                                <td style="text-align: right;width: 100px">$ {{$poliza->total}}</td>
+                                <td style="text-align: right;width: 100px">$ {{$poliza->cuadre}}</td>
+                                <td>  <span class="label bg-{{$poliza->estatusPrepoliza->label}}">{{$poliza->estatusPrepoliza}}</span></td>
+                                <td>{{$poliza->poliza_contpaq}}</td>
+                            </tr>
+                        @endforeach
+                        </tbody>
+                    </table>
+                @endif
+
+                @if(count($polizas_no_validadas))
+                    <br/>
+                    <table class="generica" style="width:100%">
+
+                        <thead>
+                        <tr>
+                            <th colspan="9" style="text-align: left">PREPÓLIZAS NO VALIDADAS</th>
+                        </tr>
+                        <tr>
+                            <th>No</th>
+                            <th>Número de Prepóliza</th>
+                            <th>Tipo de Póliza</th>
+                            <th>Concepto</th>
+                            <th>Total</th>
+                            <th>Cuadre</th>
+                            <th>Estatus</th>
+                            <th>Póliza ContPaq</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        @foreach($polizas_no_validadas as $index=>$poliza)
+                            <tr>
+                                <td>{{$index+1}}</td>
+                                <td>{{$poliza->id_int_poliza}}</td>
+                                <td>{{$poliza->tipo_poliza}}</td>
+                                <td>{{$poliza->concepto}}</td>
+                                <td style="text-align: right;width: 100px">$ {{$poliza->total}}</td>
+                                <td style="text-align: right;width: 100px">$ {{$poliza->cuadre}}</td>
+                                <td>  <span class="label bg-{{$poliza->estatusPrepoliza->label}}">{{$poliza->estatusPrepoliza}}</span></td>
+                                <td>{{$poliza->poliza_contpaq}}</td>
+                            </tr>
+                        @endforeach
+                        </tbody>
+                    </table>
+                @endif
+
             </div>
         </div>
 

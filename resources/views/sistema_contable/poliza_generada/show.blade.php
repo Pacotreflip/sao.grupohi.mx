@@ -18,6 +18,9 @@
                     <i class="fa fa-check-square-o"></i> Validar
                 </a>
             @endif
+                <a  class="btn btn-app btn-info pull-right" onclick="omitir_prepoliza({{$poliza->id_int_poliza}})">
+                    <i class="glyphicon glyphicon-thumbs-down"></i> Omitir
+                </a>
         </div>
     </div>
     <div class="row">
@@ -138,6 +141,49 @@
                         type: "success",
                         title: '¡Correcto!',
                         text: 'Prepóliza validada con éxito',
+                        confirmButtonText: "Ok",
+                        closeOnConfirm: false
+                    }).then(function () {
+                        location.reload();
+                    });
+                },
+                complete: function () {
+
+                }
+            });
+            }) .catch(swal.noop);
+
+        }
+
+        function omitir_prepoliza(id) {
+
+            var url=App.host +"/sistema_contable/poliza_generada/" + id;
+            swal({
+                title: "¡Omitir Prepóliza!",
+                text: "¿Esta seguro de que deseas Omitir la Prepóliza?",
+                confirmButtonText: "Si, Omitir",
+                cancelButtonText: "No, Cancelar",
+                showCancelButton: true,
+                showLoaderOnConfirm: true,
+                allowOutsideClick: false
+            }).then(function (inputValue)
+            { $.ajax({
+                url: url,
+                type: 'POST',
+                data: {
+                    _method: "PATCH",
+                    'poliza_generada':{
+                        'estatus':-3,
+                        'lanzable':'True'
+
+                    }
+
+                },
+                success: function (data, textStatus, xhr) {
+                    swal({
+                        type: "success",
+                        title: '¡Correcto!',
+                        text: 'Prepóliza Omitida con éxito',
                         confirmButtonText: "Ok",
                         closeOnConfirm: false
                     }).then(function () {

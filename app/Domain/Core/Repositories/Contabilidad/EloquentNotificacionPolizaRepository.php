@@ -93,4 +93,14 @@ class EloquentNotificacionPolizaRepository implements NotificacionPolizaReposito
     {
         return $this->model->where($attribute, '=', $value)->get($columns);
     }
+
+    /**
+     *  Contiene los parametros de búsqueda
+     * @param array $where
+     * @return mixed
+     */
+    public function where($where)
+    {
+        return $this->model->where($where)->get();
+    }
 }

@@ -37,6 +37,7 @@ class Material extends BaseModel
     public function scopeMateriales($query){
         return $query->where('tipo_material','=',$this::TIPO_MATERIALES);
     }
+
     public function getDPadreAttribute(){
         $nv = substr($this->nivel, 0,4);
         return $this->select('descripcion')->where('nivel', '=', $nv)->where('tipo_material', '=', 1)->get();

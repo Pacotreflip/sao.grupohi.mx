@@ -33,5 +33,10 @@ interface NotificacionPolizaRepository
 
 
     public function findBy($attribute, $value, $columns = array('*'));
-
+    /**
+     *  Contiene los parametros de búsqueda
+     * @param array $where
+     * @return mixed
+     */
+    public function where($where);
    }

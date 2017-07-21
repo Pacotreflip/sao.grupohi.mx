@@ -12,6 +12,8 @@
 namespace Ghi\Domain\Core\Contracts;
 
 
+use Ghi\Domain\Core\Models\Material;
+
 interface MaterialRepository
 {
     /**
@@ -58,4 +60,17 @@ interface MaterialRepository
      */
     public function with($relations);
 
+    /**
+     * Obtiene el nivel siguiente disponible de un tipo de material
+     * @param $tipo
+     * @return string
+     */
+    public function getNivelDisponible($tipo);
+
+    /**
+     * @param array $data
+     * @return Material
+     * @throws \Exception
+     */
+    public function create($data);
 }
