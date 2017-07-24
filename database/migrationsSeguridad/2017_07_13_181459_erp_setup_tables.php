@@ -2,7 +2,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 
-class EntrustSetupTables extends Migration
+class ErpSetupTables extends Migration
 {
     /**
      * Run the migrations.
@@ -11,6 +11,28 @@ class EntrustSetupTables extends Migration
      */
     public function up()
     {
+
+        // Create table for storing proyectos
+        Schema::create('proyectos', function (Blueprint $table) {
+            $table->increments('id');
+            $table->string('base_datos')->unique();
+            $table->string('description')->nullable();
+            $table->timestamps();
+        });
+
+        // Create table for storing obras
+        Schema::create('obras', function (Blueprint $table) {
+            $table->increments('id');
+            $table->integer('id_proyecto')->unsigned();
+            $table->longText('logo')->nullable();
+            $table->timestamps();
+
+            $table->foreign('id_proyecto')->references('id')->on('proyectos')
+                ->onUpdate('cascade')->onDelete('cascade');
+
+        });
+
+
         // Create table for storing roles
         Schema::create('roles', function (Blueprint $table) {
             $table->increments('id');
@@ -18,21 +40,25 @@ class EntrustSetupTables extends Migration
             $table->string('display_name')->nullable();
             $table->string('description')->nullable();
             $table->timestamps();
+
+
         });
 
         // Create table for associating roles to users (Many-to-Many)
         Schema::create('role_user', function (Blueprint $table) {
             $table->integer('user_id');
             $table->integer('role_id')->unsigned();
-            $table->integer('id_obra');
-            $table->string('proyecto');
-
+            $table->integer('id_obra')->unsigned();
 
 
             $table->foreign('role_id')->references('id')->on('roles')
                 ->onUpdate('cascade')->onDelete('cascade');
 
+            $table->foreign('id_obra')->references('id')->on('obras')
+                ->onUpdate('cascade')->onDelete('cascade');
+
             $table->primary(['user_id', 'role_id', 'id_obra']);
+
         });
 
         // Create table for storing permissions
@@ -65,9 +91,12 @@ class EntrustSetupTables extends Migration
      */
     public function down()
     {
+
         Schema::drop('permission_role');
         Schema::drop('permissions');
         Schema::drop('role_user');
         Schema::drop('roles');
+        Schema::drop('obras');
+        Schema::drop('proyectos');
     }
 }
