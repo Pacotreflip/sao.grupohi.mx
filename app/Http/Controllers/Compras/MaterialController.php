@@ -57,21 +57,21 @@ class MaterialController extends Controller
     }
 
     public function edit($id) {
-        $material = $this->material->find($id);
         $this->material->scope('familias')->all();
 
         return view('compras.material.edit');
     }
 
     public function update(Request $request, $id) {
-        //todo
+        $this->material->update($request->all(), $id);
     }
 
     public function store(Request $request) {
-        //TODO
+        $this->material->create($request->all());
+
     }
 
     public function destroy($id) {
-        //TODO
+        $this->material->delete($id);
     }
 }

@@ -86,12 +86,15 @@ class EloquentMaterialRepository implements MaterialRepository
      * @param $value los datos de busqueda para un material padre y materiales hijos
      * @return mixed
      */
-    public function find($tipo, $nivel)
+    public function find($tipo, $nivel = null)
     {
-        return $this->model->where(function($query) use($tipo, $nivel){
-            $query->orWhere('nivel', 'LIKE', $nivel)
-                ->orWhere('nivel', 'LIKE', $nivel.'___.');
-        })->where('tipo_material', $tipo)->orderBy('nivel', 'asc')->get();
+        if($nivel) {
+            return $this->model->where(function ($query) use ($tipo, $nivel) {
+                $query->orWhere('nivel', 'LIKE', $nivel)
+                    ->orWhere('nivel', 'LIKE', $nivel . '___.');
+            })->where('tipo_material', $tipo)->orderBy('nivel', 'asc')->get();
+        }
+        return $this->model->find($tipo);
     }
 
     /**
@@ -139,17 +142,52 @@ class EloquentMaterialRepository implements MaterialRepository
     {
         try {
             DB::connection('cadeco')->beginTransaction();
-
-
-            //$data['nivel'] = $this->getNivelDisponible(tipo, nivel_fam)
-
-
+            if($data->nivel){
+                $data['nivel'] = $this->getNivelDisponible($data->tipo_material, $data->nivel);
+            }else{
+                $data['nivel'] = $this->getNivelDisponible($data->tipo_material, null);
+            }
+            $data['UsuarioRegistro'] = auth()->user()->idusuario;
             $material = $this->model->create($data);
-
-
             DB::commit();
         } catch (\Exception $e) {
             DB::rollBack();
+            throw $e;
+        }
+        return $material;
+    }
+
+    /**
+     * Actualiza el material seleccionado
+     * @param $data
+     * @param $id
+     * @return \Ghi\Domain\Core\Models\PolizaTipo
+     */
+    public function update($data, $id)
+    {
+        return $this->model->find($id)->update($data);
+    }
+
+    /**
+     * Elimina el material seleccionado
+     * @param $data
+     * @param $id
+     * @return mixed
+     * @throws \Exception
+     */
+    public function delete($data, $id)
+    {
+        try {
+            DB::connection('cadeco')->beginTransaction();
+
+            if (!$item = $this->model->find($id)) {
+                throw new HttpResponseException(new Response('No se encontró la plantilla que se desea eliminar', 404));
+            }
+            $item->destroy($id);
+
+            DB::connection('cadeco')->commit();
+        } catch (\Exception $e) {
+            DB::connection('cadeco')->rollBack();
             throw $e;
         }
     }

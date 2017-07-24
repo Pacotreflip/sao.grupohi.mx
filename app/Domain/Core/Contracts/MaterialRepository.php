@@ -73,4 +73,20 @@ interface MaterialRepository
      * @throws \Exception
      */
     public function create($data);
+
+    /**
+     * Actualiza el material seleccionado
+     * @param $data
+     * @param $id
+     * @return \Ghi\Domain\Core\Models\Material
+     */
+    public function update($data, $id);
+
+    /**
+     * Elimina el material seleccionado
+     * @param $data
+     * @param $id
+     * @return mixed
+     */
+    public function delete($data, $id);
 }
