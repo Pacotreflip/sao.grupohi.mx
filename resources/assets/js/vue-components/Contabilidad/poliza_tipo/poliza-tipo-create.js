@@ -41,22 +41,7 @@ Vue.component('poliza-tipo-create', {
         },
 
         tipos_cuentas_contables_disponibles: function () {
-            var self = this;
-            var result = [];
-            $.each(this.tipos_cuentas_contables, function (index, tipo_cuenta_contable) {
-                var existe = false;
-                self.form.poliza_tipo.movimientos.forEach(function (movimiento) {
-                    if(tipo_cuenta_contable.id_tipo_cuenta_contable == movimiento.id_tipo_cuenta_contable) {
-                        existe = true;
-                    }
-                });
-
-                if(! existe) {
-                    result.push(tipo_cuenta_contable);
-                }
-            });
-
-            return result;
+            return this.tipos_cuentas_contables;
         }
     },
 
