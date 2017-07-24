@@ -91,14 +91,7 @@ class EloquentPolizaRepository implements PolizaRepository
                     if (!$tipoCuentaContable) {
                         throw new HttpResponseException(new Response('No se encontró la Cuenta Contable.', 404));
                     }
-                    foreach ($data['poliza_generada']['poliza_movimientos'] as $movimiento_aux) {
-                        if ($polizaMovimiento['cuenta_contable'] == $movimiento_aux['cuenta_contable']) {
-                            $repetido++;
-                        }
-                    }
-                    if ($repetido > 1) {
-                        throw new HttpResponseException(new Response('Existe una cuenta repetida en los movimientos', 404));
-                    }
+
 
                 }
 
@@ -129,7 +122,7 @@ class EloquentPolizaRepository implements PolizaRepository
                         $movimientoPoliza->importe = $polizaMovimiento['importe'];
                         $movimientoPoliza->id_tipo_movimiento_poliza = $polizaMovimiento['id_tipo_movimiento_poliza'];
                         $movimientoPoliza->id_tipo_cuenta_contable = $polizaMovimiento['id_tipo_cuenta_contable'];
-                        $movimientoPoliza->estatus = $polizaMovimiento['estatus'];
+                        $movimientoPoliza->estatus = 1;
                         $movimientoPoliza->restore();
 
                     } else {
@@ -141,7 +134,7 @@ class EloquentPolizaRepository implements PolizaRepository
                         $movimientoPoliza->importe = $polizaMovimiento['importe'];
                         $movimientoPoliza->id_tipo_movimiento_poliza = $polizaMovimiento['id_tipo_movimiento_poliza'];
                         $movimientoPoliza->id_tipo_cuenta_contable = $polizaMovimiento['id_tipo_cuenta_contable'];
-                        $movimientoPoliza->estatus = $polizaMovimiento['estatus'];
+                        $movimientoPoliza->estatus = 1;
 
                         $movimientoPoliza->save();
                     }
