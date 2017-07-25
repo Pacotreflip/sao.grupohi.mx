@@ -92,7 +92,7 @@
                                                 <td>@{{ index + 1 }}</td>
                                                 <td class="form-group"
                                                     :class="{'has-error': validation_errors.has('form_poliza.CuentaContable [' + (index + 1) + ']')}">
-                                                    <input :placeholder="datos_contables.FormatoCuenta" type="text"
+                                                    <input :disabled="movimiento.id_tipo_cuenta_contable == 1" :placeholder="datos_contables.FormatoCuenta" type="text"
                                                            v-validate="'required|regex:' + datos_contables.FormatoCuentaRegExp"
                                                            :name="'CuentaContable [' + (index + 1) + ']'"
                                                            class="form-control input-sm formato_cuenta"
