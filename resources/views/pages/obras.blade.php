@@ -3,25 +3,24 @@
 @section('contentheader_title', 'OBRAS')
 
 @section('main-content')
+<section>
     <div class="row">
         <div class="col-md-12">
-            <div class="box box-info">
-                <div class="box-header with-border">
-                    <h3 class="box-title">Buscar Obra</h3>
-                </div>
-                <div class="box-body">
-                    <div class="col-md-9">
-                        <select class="form-control" id="obras_select">
-                            <option value disabled="disabled">[--SELECCIONE--]</option>
-                        </select>
-                    </div>
-                    <div class="col-md-3">
-                        <button id="context_set" style="width: 100%;" class="btn btn-info"><i class="fa fa-arrow-circle-o-right"></i> IR </button>
-                    </div>
-                </div>
+            <div class="box-header with-border">
+                <h3 class="box-title">Buscar Obra</h3>
             </div>
+                <div class="input-group">
+                    <select class="form-control" id="obras_select">
+                        <option value disabled="disabled">[--SELECCIONE--]</option>
+                    </select>
+                    <div class="input-group-btn">
+                        <button id="context_set" style="width: 100%;" class="btn btn-success"><i></i>&nbsp;&nbsp;&nbsp; IR &nbsp;&nbsp;&nbsp;</button>
+                    </div>
+                </div>
+            <br><br>
         </div>
     </div>
+</section>
     <div class="row">
         <div class="col-md-12">
             <ul class="list-group">
@@ -48,6 +47,7 @@
 @section('scripts-content')
     <script>
         $("#obras_select").select2({
+            width:'100%',
             ajax: {
                 url: '{{route('obra.search')}}',
                 dataType: 'json',

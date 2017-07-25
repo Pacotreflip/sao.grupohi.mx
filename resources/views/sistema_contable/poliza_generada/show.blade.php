@@ -18,7 +18,7 @@
                     <i class="fa fa-check-square-o"></i> Validar
                 </a>
             @endif
-            @if($poliza->estatus==0)
+            @if($poliza->estatus==0||$poliza->estatus==-2||$poliza->estatus==-1)
                 <a  class="btn btn-app btn-info pull-right" onclick="omitir_prepoliza({{$poliza->id_int_poliza}})">
                     <i class="glyphicon glyphicon-thumbs-down"></i> Omitir
                 </a>
