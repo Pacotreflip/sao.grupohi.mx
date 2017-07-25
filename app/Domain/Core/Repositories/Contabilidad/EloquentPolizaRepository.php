@@ -63,9 +63,12 @@ class EloquentPolizaRepository implements PolizaRepository
             DB::connection('cadeco')->beginTransaction();
 
             if (!$poliza = $this->model->find($id)) {
-                throw new HttpResponseException(new Response('No se encontró la poliza', 404));
+                throw new HttpResponseException(new Response('No se encontró la prepóliza', 404));
             }
 
+            if($poliza->estatus == 1 || $poliza->estatus == 2 ) {
+                throw new HttpResponseException(new Response('No se puede editar la prepóliza ya que su estatus es '.  $poliza->estatusPrepoliza , 404));
+            }
 
             if(isset($data['poliza_generada']['poliza_movimientos'])) {
                 $cuentas_debe = false;
@@ -152,7 +155,7 @@ class EloquentPolizaRepository implements PolizaRepository
                     $movimiento->id_hist_int_poliza = $poliza_hist->id_hist_int_poliza;
                     $hist_movimiento = HistPolizaMovimiento::create($movimiento->toArray());
                 }
-            }else{
+            } else {
 
                 $poliza->update($data['poliza_generada']);
             }

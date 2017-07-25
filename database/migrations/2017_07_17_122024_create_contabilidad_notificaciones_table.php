@@ -12,7 +12,7 @@ class CreateContabilidadNotificacionesTable extends Migration
      */
     public function up()
     {
-        Schema::create('Contabilidad.notificaciones', function (Blueprint $table) {
+        Schema::create('Contabilidad.notificaciones_html', function (Blueprint $table) {
             $table->increments('id');
             $table->string('titulo',255);
             $table->integer('id_usuario');
@@ -31,6 +31,6 @@ class CreateContabilidadNotificacionesTable extends Migration
      */
     public function down()
     {
-        Schema::drop('Contabilidad.notificaciones');
+        Schema::drop('Contabilidad.notificaciones_html');
     }
 }

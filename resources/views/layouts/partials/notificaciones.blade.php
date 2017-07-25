@@ -1,5 +1,5 @@
 
-@if(Auth::user()->has('notificaciones'))
+@if(Auth::user()->has('notificaciones_html'))
     <li class="dropdown messages-menu">
         <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true">
             <i class="fa fa-envelope-o"></i>

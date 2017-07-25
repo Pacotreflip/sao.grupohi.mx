@@ -91,7 +91,7 @@
                                         <a href="{{route('sistema_contable.poliza_generada.show',$item)}}" title="Ver"
                                            class="btn btn-xs btn-default"><i class="fa fa-eye"></i></a>
                                         <a href="{{route('sistema_contable.poliza_generada.edit',$item)}}"
-                                           title="Editar" class="btn btn-xs btn-info  {{$item->estatus==1 ? 'disabled' : '' }}"><i class="fa fa-pencil"></i></a>
+                                           title="Editar" class="btn btn-xs btn-info  {{$item->estatus==1||$item->estatus==2 ? 'disabled' : '' }}"><i class="fa fa-pencil"></i></a>
                                         <a href="{{route('sistema_contable.poliza_generada.historico',$item)}}"
                                            title="Histórico"
                                            class="btn btn-xs btn-success {{$item->historicos()->count() > 0 ? '' : 'disabled' }}"><i

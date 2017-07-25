@@ -83,7 +83,7 @@ class EloquentNotificacionPolizaRepository implements NotificacionPolizaReposito
     }
 
     /**
-     * Las notificaciones que coincidan con la busqueda
+     * Las notificaciones_html que coincidan con la busqueda
      * @param $attribute
      * @param $value
      * @param array $columns

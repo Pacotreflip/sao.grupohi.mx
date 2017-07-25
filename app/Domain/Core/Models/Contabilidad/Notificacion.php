@@ -19,7 +19,9 @@ class Notificacion extends Model
             'contenido',
             'id_usuario',
             'id_obra',
-            'remitente'
+            'remitente',
+            'body',
+            'leida'
         ];
 
     protected static function boot()

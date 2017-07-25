@@ -42,6 +42,9 @@ class EstatusPrePoliza extends Model
             case 'Omitir':
                 return 'gray';
                 break;
+            case 'Registro Manual':
+                return 'green';
+                break;
         }
     }
 }

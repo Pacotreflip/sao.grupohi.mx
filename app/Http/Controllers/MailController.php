@@ -9,6 +9,6 @@ use Ghi\Http\Requests;
 class MailController extends Controller
 {
     public function index(){
-        return view('sistema_contable.emails.notificaciones.poliza');
+        return view('sistema_contable.emails.notificaciones_html.poliza');
     }
 }

@@ -53,7 +53,7 @@ class CuentaMaterialController extends Controller
 
     public function show($tipo, $nivel){
         $familia = $this->material->with('cuentaMaterial')->find($tipo, $nivel);
-        return view('sistema_contable.cuenta_material.show')->with('familia', $familia);
+      return view('sistema_contable.cuenta_material.show')->with('familia', $familia);
     }
 
     public function update(Request $request, $id) {
