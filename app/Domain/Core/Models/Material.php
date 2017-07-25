@@ -58,6 +58,7 @@ class Material extends BaseModel
     }
 
     public function scopeFamilias($query) {
+
         return $query->where('nivel', 'like', $this::NIVEL_FAMILIA);
     }
 }

@@ -36,7 +36,7 @@ class DropDboNotificacionesPolizaTable extends Migration
 
             $table->foreign('id_notificacion')
                 ->references('id')
-                ->on('dbo.notificaciones')
+                ->on('dbo.notificaciones_html')
                 ->onDelete('cascade');
 
             $table->foreign('id_int_poliza')

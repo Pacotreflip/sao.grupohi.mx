@@ -12,7 +12,7 @@ class AlterContabilidadNotificacionesTable extends Migration
      */
     public function up()
     {
-        Schema::table('Contabilidad.notificaciones', function (Blueprint $table) {
+        Schema::table('Contabilidad.notificaciones_html', function (Blueprint $table) {
             $table->string('remitente')->nullable();
         });
     }
@@ -24,7 +24,7 @@ class AlterContabilidadNotificacionesTable extends Migration
      */
     public function down()
     {
-        Schema::table('Contabilidad.notificaciones', function (Blueprint $table) {
+        Schema::table('Contabilidad.notificaciones_html', function (Blueprint $table) {
             $table->dropColumn('remitente');
         });
     }
