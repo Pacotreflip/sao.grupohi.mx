@@ -24,13 +24,8 @@ class NotificacionController extends Controller
      */
     private $poliza;
 
-    /**
-     * @var NotificacionPolizaRepository
-     */
-    private $notificaion_poliza;
 
-
-    public function __construct(NotificacionRepository $notificacion, PolizaRepository $poliza, NotificacionPolizaRepository $notificaion_poliza)
+    public function __construct(NotificacionRepository $notificacion, PolizaRepository $poliza)
     {
         parent::__construct();
 
@@ -38,7 +33,7 @@ class NotificacionController extends Controller
         $this->middleware('context');
         $this->notificacion = $notificacion;
         $this->poliza = $poliza;
-        $this->notificaion_poliza = $notificaion_poliza;
+
     }
 
     public function index()
@@ -50,18 +45,10 @@ class NotificacionController extends Controller
 
     public function show($id)
     {
-        $notificacion = $this->notificacion->with('notificaionesPoliza')->find($id);
+        $notificacion = $this->notificacion->find($id);
         $notificacion = $this->notificacion->update(['leida' => true], $id);
-
-        $polizas_errores = $this->notificaion_poliza->where([['estatus', '=', Poliza::CON_ERRORES], ['id_notificacion', '=', $id]]);
-        $polizas_no_lanzadas = $this->notificaion_poliza->where([['estatus', '=', Poliza::NO_LANZADA], ['id_notificacion', '=', $id]]);
-        $polizas_no_validadas = $this->notificaion_poliza->where([['estatus', '=', Poliza::NO_VALIDADA], ['id_notificacion', '=', $id]]);
-
         return view('sistema_contable.notificaciones.show')
-            ->with('notificacion',$notificacion)
-            ->with('polizas_errores', $polizas_errores)
-            ->with('polizas_no_lanzadas', $polizas_no_lanzadas)
-            ->with('polizas_no_validadas', $polizas_no_validadas);
+            ->with('notificacion', $notificacion);
 
     }
 
