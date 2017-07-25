@@ -30,7 +30,7 @@ class EstatusPrePoliza extends Model
             case 'Con Errores':
                 return 'red';
                 break;
-            case 'No Validada':
+            case 'Por Validar':
                 return 'yellow';
                 break;
             case 'Validada':
