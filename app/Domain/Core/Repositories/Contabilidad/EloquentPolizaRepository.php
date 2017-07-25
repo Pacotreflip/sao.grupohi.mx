@@ -155,7 +155,7 @@ class EloquentPolizaRepository implements PolizaRepository
                     $movimiento->id_hist_int_poliza = $poliza_hist->id_hist_int_poliza;
                     $hist_movimiento = HistPolizaMovimiento::create($movimiento->toArray());
                 }
-            }else{
+            } else {
 
                 $poliza->update($data['poliza_generada']);
             }
