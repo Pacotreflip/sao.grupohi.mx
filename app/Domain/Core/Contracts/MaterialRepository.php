@@ -88,5 +88,5 @@ interface MaterialRepository
      * @param $id
      * @return mixed
      */
-    public function delete($data, $id);
+    public function delete($id);
 }

@@ -116,12 +116,18 @@ class EloquentMaterialRepository implements MaterialRepository
     public function getNivelDisponible($tipo, $nivel = null)
     {
         if ($nivel) {
-            $niveles = $this->model->where('nivel', 'like', $nivel)->where('tipo_material', '=', $tipo)->orderBy('nivel')->get();
+            $niveles = $this->model->where('nivel', 'like', $nivel.'___.')->where('tipo_material', '=', $tipo)->orderBy('nivel')->get();
+
             for($i = 0; $i < $niveles->count(); $i++) {
                 $nivel_str = explode('.', $niveles[$i]->nivel)[1];
                 if($i != intval($nivel_str)) {
                     return  explode('.',$niveles[$i]->nivel)[0].'.'.str_pad($i, 3, '0', STR_PAD_LEFT). '.';
                 }
+            }
+            if($niveles->count() > 0) {
+                return  explode('.',$niveles[0]->nivel)[0].'.'.str_pad($i, 3, '0', STR_PAD_LEFT). '.';
+            }else{
+                return $nivel . str_pad($i, 3, '0', STR_PAD_LEFT) . '.';
             }
         } else {
             $niveles = $this->model->familias()->where('tipo_material', '=', $tipo)->orderBy('nivel')->get(['nivel']);
@@ -141,17 +147,19 @@ class EloquentMaterialRepository implements MaterialRepository
     public function create($data)
     {
         try {
+            //dd($data['nivel']);
             DB::connection('cadeco')->beginTransaction();
-            if($data->nivel){
-                $data['nivel'] = $this->getNivelDisponible($data->tipo_material, $data->nivel);
+            if($data['nivel']){
+                $data['nivel'] = $this->getNivelDisponible($data['tipo_material'], $data['nivel']);
             }else{
-                $data['nivel'] = $this->getNivelDisponible($data->tipo_material, null);
+                $data['nivel'] = $this->getNivelDisponible($data['tipo_material'], null);
             }
-            $data['UsuarioRegistro'] = auth()->user()->idusuario;
+            $data['UsuarioRegistro'] = 'aoro';//auth()->user()->idusuario;
             $material = $this->model->create($data);
-            DB::commit();
+            DB::connection('cadeco')->commit();
         } catch (\Exception $e) {
-            DB::rollBack();
+            DB::connection('cadeco')->rollBack();
+            dd($e);
             throw $e;
         }
         return $material;
@@ -165,7 +173,7 @@ class EloquentMaterialRepository implements MaterialRepository
      */
     public function update($data, $id)
     {
-        return $this->model->find($id)->update($data);
+         return $this->model->find($id)->update($data);
     }
 
     /**
@@ -175,7 +183,7 @@ class EloquentMaterialRepository implements MaterialRepository
      * @return mixed
      * @throws \Exception
      */
-    public function delete($data, $id)
+    public function delete($id)
     {
         try {
             DB::connection('cadeco')->beginTransaction();

@@ -18,10 +18,10 @@ class MaterialController extends Controller
 
     public function __construct(MaterialRepository $material)
     {
-        parent::__construct();
+        //parent::__construct();
 
-        $this->middleware('auth');
-        $this->middleware('context');
+        //$this->middleware('auth');
+        //$this->middleware('context');
 
         $this->material = $material;
 
@@ -46,7 +46,6 @@ class MaterialController extends Controller
 
     public function show($id) {
         $material = $this->material->find($id);
-
         return view('compras.material.show')
             ->with('material', $material);
     }
@@ -67,8 +66,8 @@ class MaterialController extends Controller
     }
 
     public function store(Request $request) {
-        $this->material->create($request->all());
-
+        $material = $this->material->create($request->all());
+        return $material;
     }
 
     public function destroy($id) {
