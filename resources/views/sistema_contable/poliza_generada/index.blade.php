@@ -29,7 +29,7 @@
                         </div>
                         <div class="col-md-4">
                             <div class="form-group">
-                                <label><b>Tipo de Poliza</b></label>
+                                <label><b>Tipo de Póliza</b></label>
                                 <Select class="form-control" name="tipo" id="tipo">
                                     <option value="">Todas</option>
                                     @foreach($tipo_polizas as $tipo_poliza)
