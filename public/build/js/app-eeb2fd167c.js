@@ -42005,7 +42005,7 @@ Vue.component('cuenta-concepto-index', {
         select2: {
             inserted: function inserted(el) {
                 $(el).select2({
-                    width: '100%',
+                    width: 'element',
                     ajax: {
                         url: App.host + '/sistema_contable/concepto/getBy',
                         dataType: 'json',
