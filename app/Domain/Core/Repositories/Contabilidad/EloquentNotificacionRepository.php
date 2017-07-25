@@ -10,6 +10,7 @@ namespace Ghi\Domain\Core\Repositories\Contabilidad;
 
 
 use Carbon\Carbon;
+use Ghi\Core\Models\Material;
 use Ghi\Domain\Core\Contracts\Contabilidad\NotificacionRepository;
 use Ghi\Domain\Core\Contracts\Contabilidad\PolizaRepository;
 use Ghi\Domain\Core\Contracts\CuentaEmpresa;
@@ -184,19 +185,12 @@ class EloquentNotificacionRepository implements NotificacionRepository
                         $polizas_no_lanzadas = collect(DB::connection('cadeco')->table('Contabilidad.int_polizas')->where('estatus', '=', Poliza::NO_LANZADA)->get());
                         $this->usuario = User::find($contador->user_id);
 
-                       // Log::info('Obra ->' .$bd->base_datos.'  usuario->'.$this->usuario);
 
                         /*
                          * Notifcacion polizas con detalles
                          */
 
                         if (count($polizas_errores) > 0 || count($polizas_validar) > 0 || count($polizas_no_lanzadas) > 0) {
-                            $item = $this->model->create([
-                                'titulo' => 'Resumen de Errores',
-                                'id_usuario' => $contador->user_id,
-                                'id_obra' => $obra->id_obra,
-                                'remitente' => Notificacion::REMITENTE_COMPRAS
-                            ]);
 
                             if (count($polizas_errores) > 0) {
 
@@ -220,8 +214,8 @@ class EloquentNotificacionRepository implements NotificacionRepository
                                         ->get());
 
                                     foreach ($polizasError as $polizaError) {
-                                        $notificacion = NotificacionPoliza::create([
-                                            'id_notificacion' => $item->id,
+
+                                        $notificacion = [
                                             'id_int_poliza' => $poliza->id_int_poliza,
                                             'tipo_poliza' => $polizaError->poliza_sao,
                                             'concepto' => $polizaError->concepto,
@@ -231,7 +225,7 @@ class EloquentNotificacionRepository implements NotificacionRepository
                                             'estatus' => $polizaError->estatus,
                                             'total' => number_format($poliza->total, 2),
                                             'poliza_contpaq' => $polizaError->poliza_contpaq
-                                        ]);
+                                        ];
                                         array_push($polizasErrores, $notificacion);
                                     }
                                 }
@@ -241,10 +235,7 @@ class EloquentNotificacionRepository implements NotificacionRepository
                             }
 
                             if (count($polizas_validar) > 0) {
-
                                 foreach ($polizas_validar as $poliza) {
-
-
                                     $polizasValida = collect(DB::connection('cadeco')
                                         ->table('Contabilidad.int_polizas')
                                         ->leftJoin('Contabilidad.int_transacciones_interfaz', 'Contabilidad.int_transacciones_interfaz.id_transaccion_interfaz', '=', 'Contabilidad.int_polizas.id_tipo_poliza_interfaz')
@@ -263,8 +254,7 @@ class EloquentNotificacionRepository implements NotificacionRepository
                                         ->get());
 
                                     foreach ($polizasValida as $polizaValidar) {
-                                        $notificacion = NotificacionPoliza::create([
-                                            'id_notificacion' => $item->id,
+                                        $notificacion = [
                                             'id_int_poliza' => $poliza->id_int_poliza,
                                             'tipo_poliza' => $polizaValidar->poliza_sao,
                                             'concepto' => $polizaValidar->concepto,
@@ -274,7 +264,7 @@ class EloquentNotificacionRepository implements NotificacionRepository
                                             'estatus' => $polizaValidar->estatus,
                                             'total' => number_format($poliza->total, 2),
                                             'poliza_contpaq' => $polizaValidar->poliza_contpaq
-                                        ]);
+                                        ];
                                         array_push($polizasNoValidadas, $notificacion);
                                     }
                                 }
@@ -284,11 +274,7 @@ class EloquentNotificacionRepository implements NotificacionRepository
                             }
 
                             if (count($polizas_no_lanzadas) > 0) {
-
-
                                 foreach ($polizas_no_lanzadas as $poliza) {
-
-
                                     $polizasNoLanzadas = collect(DB::connection('cadeco')
                                         ->table('Contabilidad.int_polizas')
                                         ->leftJoin('Contabilidad.int_transacciones_interfaz', 'Contabilidad.int_transacciones_interfaz.id_transaccion_interfaz', '=', 'Contabilidad.int_polizas.id_tipo_poliza_interfaz')
@@ -307,8 +293,8 @@ class EloquentNotificacionRepository implements NotificacionRepository
                                         ->get());
 
                                     foreach ($polizasNoLanzadas as $polizaNoLanzada) {
-                                        $notificacion = NotificacionPoliza::create([
-                                            'id_notificacion' => $item->id,
+                                        $notificacion = [
+
                                             'id_int_poliza' => $poliza->id_int_poliza,
                                             'tipo_poliza' => $polizaNoLanzada->poliza_sao,
                                             'concepto' => $polizaNoLanzada->concepto,
@@ -318,7 +304,7 @@ class EloquentNotificacionRepository implements NotificacionRepository
                                             'estatus' => $polizaNoLanzada->estatus,
                                             'total' => number_format($poliza->total, 2),
                                             'poliza_contpaq' => $polizaNoLanzada->poliza_contpaq
-                                        ]);
+                                        ];
                                         array_push($polizasSinLanzar, $notificacion);
                                     }
                                 }
@@ -326,25 +312,29 @@ class EloquentNotificacionRepository implements NotificacionRepository
                             } else {
                                 Log::info('Notificaciones : NO EXISTEN POLIZAS NO LANZADAS @ ' . Carbon::now());
                             }
-
-
                             $data['polizas_errores'] = $polizasErrores;
                             $data['polizas_no_validadas'] = $polizasNoValidadas;
                             $data['polizas_no_lanzadas'] = $polizasSinLanzar;
                             $data['usuario'] = $this->usuario;
                             $data['obra'] = $obra;
+                            $html = View::make('sistema_contable.emails.notificaciones_body.poliza', $data)->render();
+                            $item = $this->model->create([
+                                        'titulo' => 'Polizas con errores',
+                                        'id_usuario' => $contador->user_id,
+                                        'id_obra' => $obra->id_obra,
+                                        'remitente' => Notificacion::REMITENTE_COMPRAS,
+                                        'body'=>$html
+                                    ]);
 
-                            Mail::send(['sistema_contable.emails.notificaciones_html.poliza_html', 'sistema_contable.emails.notificaciones_text.poliza'], $data, function ($message) {
-                                $message->from('saoweb@grupohi.mx', 'SAO WEB');
-                                $message->to($this->usuario->correo, $this->usuario)->subject('Pólizas con errores');
-                            });
-                            event(new NewEmail($item, $this->usuario->idusuario));
+
+                             Mail::send(['sistema_contable.emails.notificaciones_html.poliza_html', 'sistema_contable.emails.notificaciones_text.poliza'], $data, function ($message) {
+                                    $message->from('saoweb@grupohi.mx', 'SAO WEB');
+                                    $message->to($this->usuario->correo, $this->usuario)->subject('Pólizas con errores');
+                                });
+                              event(new NewEmail($item,$bd->base_datos));
+
 
                         }
-
-
-/*
-
                         $cuentas_materiales = array();
                         $cuentas_empresa = collect(DB::Connection('cadeco')
                             ->table('Contabilidad.cuentas_empresas')
@@ -361,15 +351,20 @@ class EloquentNotificacionRepository implements NotificacionRepository
                             $data['cuentas_empresa'] = $cuentas_empresa;
                             $data['usuario'] = $this->usuario;
                             $data['obra'] = $obra;
-
-                            Mail::send('sistema_contable.emails.notificaciones_html.cuenta_empresa', $data, function ($message) {
-                                $message->from('saoweb@grupohi.mx', 'SAO WEB');
-                                $message->to($this->usuario->correo, $this->usuario)->subject('Cuentas de empresa');
-                            });
-                                 // event(new NewEmail($item, $this->usuario->idusuario));
+                            $html = View::make('sistema_contable.emails.notificaciones_body.cuenta_empresa', $data)->render();
+                            $item = $this->model->create([
+                                'titulo' => 'Cuentas de Empresa',
+                                'id_usuario' => $contador->user_id,
+                                'id_obra' => $obra->id_obra,
+                                'remitente' => Notificacion::REMITENTE_COMPRAS,
+                                'body'=>$html
+                            ]);
+                                Mail::send(['sistema_contable.emails.notificaciones_html.cuenta_empresa','sistema_contable.emails.notificaciones_text.cuenta_empresa'], $data, function ($message) {
+                                   $message->from('saoweb@grupohi.mx', 'SAO WEB');
+                                   $message->to($this->usuario->correo, $this->usuario)->subject('Cuentas de Empresa');
+                               });
+                               event(new NewEmail($item,$bd->base_datos));
                         }
-
-
                         //////Material configurado
                         $material_configurado = collect(DB::Connection('cadeco')
                             ->table('Contabilidad.cuentas_materiales')->rightJoin('dbo.materiales', 'Contabilidad.cuentas_materiales.id_material', '=', 'dbo.materiales.id_material')
@@ -434,9 +429,7 @@ class EloquentNotificacionRepository implements NotificacionRepository
                         $data['usuario'] = $this->usuario;
                         $data['obra'] = $obra;
                           if($data['material_restante']>0||$data['mano_restante']>0||$data['herramienta_restante']>0||$data['maquinaria_restante']>0){
-
-
-                              $html = View::make('sistema_contable.emails.notificaciones_html.cuenta_material_body', $data)->render();
+                              $html = View::make('sistema_contable.emails.notificaciones_body.cuenta_material', $data)->render();
                               $item = $this->model->create([
                                   'titulo' => 'Cuentas de Materiales',
                                   'id_usuario' => $contador->user_id,
@@ -444,16 +437,12 @@ class EloquentNotificacionRepository implements NotificacionRepository
                                   'remitente' => Notificacion::REMITENTE_COMPRAS,
                                   'body'=>$html
                               ]);
-
-
-                              Mail::send('sistema_contable.emails.notificaciones_html.cuenta_material', $data, function ($message) {
+                              Mail::send(['sistema_contable.emails.notificaciones_html.cuenta_material','sistema_contable.emails.notificaciones_text.cuenta_material'], $data, function ($message) {
                                   $message->from('saoweb@grupohi.mx', 'SAO WEB');
                                   $message->to($this->usuario->correo, $this->usuario)->subject('Cuentas de Materiales');
                               });
-                             // event(new NewEmail($item, $this->usuario->idusuario));
+                              event(new NewEmail($item,$bd->base_datos));
                           }
-*/
-
                     }
                 }
                 DB::disconnect('cadeco');

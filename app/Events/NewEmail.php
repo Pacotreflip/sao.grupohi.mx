@@ -11,6 +11,7 @@ class NewEmail extends Event implements ShouldBroadcast
 
 
     public $email;
+    public $db;
 
     /**
      * NewEmail constructor.
@@ -19,9 +20,10 @@ class NewEmail extends Event implements ShouldBroadcast
      * @param $message
      * @param $idusuario
      */
-    public function __construct($email)
+    public function __construct($email,$db)
     {
         $this->email = $email->toArray();
+        $this->db=$db;
     }
 
     /**

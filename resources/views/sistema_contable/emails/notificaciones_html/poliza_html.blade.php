@@ -53,7 +53,7 @@
             <h1>Se le informa que las siguientes prepólizas requieren de revisión para poder ser emitidas correctamente.</h1>
             <h1>Proyecto: {{$obra->nombre}}</h1>
             <div id="lista_contratos">
-                @if(count($polizas_errores))
+                @if(count($polizas_errores)>0)
                     <table class="generica" style="width:100%">
                         <thead>
                         <tr>
@@ -61,33 +61,33 @@
                         </tr>
                         <tr>
                             <th>No</th>
-                            <th>Número de Prepóliza</th>
                             <th>Tipo de Póliza</th>
                             <th>Concepto</th>
                             <th>Total</th>
                             <th>Cuadre</th>
                             <th>Estatus</th>
                             <th>Póliza ContPaq</th>
+
                         </tr>
                         </thead>
                         <tbody>
                         @foreach($polizas_errores as $index=>$poliza)
                             <tr>
                                 <td>{{$index+1}}</td>
-                                <td>{{$poliza->id_int_poliza}}</td>
-                                <td>{{$poliza->tipo_poliza}}</td>
-                                <td>{{$poliza->concepto}}</td>
-                                <td style="text-align: right;width: 100px">$ {{$poliza->total}}</td>
-                                <td style="text-align: right;width: 100px">$ {{$poliza->cuadre}}</td>
-                                <td>  <span class="label bg-{{$poliza->estatusPrepoliza->label}}">{{$poliza->estatusPrepoliza}}</span></td>
-                                <td>{{$poliza->poliza_contpaq}}</td>
+                                <td>{{$poliza['tipo_poliza']}}</td>
+                                <td>{{$poliza['concepto']}}</td>
+                                <td style="text-align: right;width: 100px">$ {{$poliza['total']}}</td>
+                                <td style="text-align: right;width: 100px">$ {{$poliza['cuadre']}}</td>
+                                <td>  <span class="label bg-red">Con errores</span></td>
+                                <td>{{$poliza['poliza_contpaq']}}</td>
+
                             </tr>
                         @endforeach
                         </tbody>
                     </table>
                 @endif
 
-                @if(count($polizas_no_lanzadas))
+                @if(count($polizas_no_lanzadas)>0)
                     <br/>
                     <table class="generica" style="width:100%">
 
@@ -97,33 +97,33 @@
                         </tr>
                         <tr>
                             <th>No</th>
-                            <th>Número de Prepóliza</th>
                             <th>Tipo de Póliza</th>
                             <th>Concepto</th>
                             <th>Total</th>
                             <th>Cuadre</th>
                             <th>Estatus</th>
                             <th>Póliza ContPaq</th>
+
                         </tr>
                         </thead>
                         <tbody>
                         @foreach($polizas_no_lanzadas as $index=>$poliza)
                             <tr>
                                 <td>{{$index+1}}</td>
-                                <td>{{$poliza->id_int_poliza}}</td>
-                                <td>{{$poliza->tipo_poliza}}</td>
-                                <td>{{$poliza->concepto}}</td>
-                                <td style="text-align: right;width: 100px">$ {{$poliza->total}}</td>
-                                <td style="text-align: right;width: 100px">$ {{$poliza->cuadre}}</td>
-                                <td>  <span class="label bg-{{$poliza->estatusPrepoliza->label}}">{{$poliza->estatusPrepoliza}}</span></td>
-                                <td>{{$poliza->poliza_contpaq}}</td>
+                                <td>{{$poliza['tipo_poliza']}}</td>
+                                <td>{{$poliza['concepto']}}</td>
+                                <td style="text-align: right;width: 100px">$ {{$poliza['total']}}</td>
+                                <td style="text-align: right;width: 100px">$ {{$poliza['cuadre']}}</td>
+                                <td>  <span class="label bg-red">No lanzada</span></td>
+                                <td>{{$poliza['poliza_contpaq']}}</td>
+
                             </tr>
                         @endforeach
                         </tbody>
                     </table>
                 @endif
 
-                @if(count($polizas_no_validadas))
+                @if(count($polizas_no_validadas)>0)
                     <br/>
                     <table class="generica" style="width:100%">
 
@@ -133,7 +133,6 @@
                         </tr>
                         <tr>
                             <th>No</th>
-                            <th>Número de Prepóliza</th>
                             <th>Tipo de Póliza</th>
                             <th>Concepto</th>
                             <th>Total</th>
@@ -146,13 +145,13 @@
                         @foreach($polizas_no_validadas as $index=>$poliza)
                             <tr>
                                 <td>{{$index+1}}</td>
-                                <td>{{$poliza->id_int_poliza}}</td>
-                                <td>{{$poliza->tipo_poliza}}</td>
-                                <td>{{$poliza->concepto}}</td>
-                                <td style="text-align: right;width: 100px">$ {{$poliza->total}}</td>
-                                <td style="text-align: right;width: 100px">$ {{$poliza->cuadre}}</td>
-                                <td>  <span class="label bg-{{$poliza->estatusPrepoliza->label}}">{{$poliza->estatusPrepoliza}}</span></td>
-                                <td>{{$poliza->poliza_contpaq}}</td>
+                                <td>{{$poliza['tipo_poliza']}}</td>
+                                <td>{{$poliza['concepto']}}</td>
+                                <td style="text-align: right;width: 100px">$ {{$poliza['total']}}</td>
+                                <td style="text-align: right;width: 100px">$ {{$poliza['cuadre']}}</td>
+                                <td>  <span class="label bg-yellow">No validada</span></td>
+                                <td>{{$poliza['poliza_contpaq']}}</td>
+
                             </tr>
                         @endforeach
                         </tbody>
