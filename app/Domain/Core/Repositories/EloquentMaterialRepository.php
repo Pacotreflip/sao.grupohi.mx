@@ -86,12 +86,15 @@ class EloquentMaterialRepository implements MaterialRepository
      * @param $value los datos de busqueda para un material padre y materiales hijos
      * @return mixed
      */
-    public function find($tipo, $nivel)
+    public function find($tipo, $nivel = null)
     {
-        return $this->model->where(function($query) use($tipo, $nivel){
-            $query->orWhere('nivel', 'LIKE', $nivel)
-                ->orWhere('nivel', 'LIKE', $nivel.'___.');
-        })->where('tipo_material', $tipo)->orderBy('nivel', 'asc')->get();
+        if($nivel) {
+            return $this->model->where(function ($query) use ($tipo, $nivel) {
+                $query->orWhere('nivel', 'LIKE', $nivel)
+                    ->orWhere('nivel', 'LIKE', $nivel . '___.');
+            })->where('tipo_material', $tipo)->orderBy('nivel', 'asc')->get();
+        }
+        return $this->model->find($tipo);
     }
 
     /**
@@ -113,12 +116,18 @@ class EloquentMaterialRepository implements MaterialRepository
     public function getNivelDisponible($tipo, $nivel = null)
     {
         if ($nivel) {
-            $niveles = $this->model->where('nivel', 'like', $nivel)->where('tipo_material', '=', $tipo)->orderBy('nivel')->get();
+            $niveles = $this->model->where('nivel', 'like', $nivel.'___.')->where('tipo_material', '=', $tipo)->orderBy('nivel')->get();
+
             for($i = 0; $i < $niveles->count(); $i++) {
                 $nivel_str = explode('.', $niveles[$i]->nivel)[1];
                 if($i != intval($nivel_str)) {
                     return  explode('.',$niveles[$i]->nivel)[0].'.'.str_pad($i, 3, '0', STR_PAD_LEFT). '.';
                 }
+            }
+            if($niveles->count() > 0) {
+                return  explode('.',$niveles[0]->nivel)[0].'.'.str_pad($i, 3, '0', STR_PAD_LEFT). '.';
+            }else{
+                return $nivel . str_pad($i, 3, '0', STR_PAD_LEFT) . '.';
             }
         } else {
             $niveles = $this->model->familias()->where('tipo_material', '=', $tipo)->orderBy('nivel')->get(['nivel']);
@@ -138,18 +147,55 @@ class EloquentMaterialRepository implements MaterialRepository
     public function create($data)
     {
         try {
+            //dd($data['nivel']);
+            DB::connection('cadeco')->beginTransaction();
+            if($data['nivel']){
+                $data['nivel'] = $this->getNivelDisponible($data['tipo_material'], $data['nivel']);
+            }else{
+                $data['nivel'] = $this->getNivelDisponible($data['tipo_material'], null);
+            }
+            $data['UsuarioRegistro'] = 'aoro';//auth()->user()->idusuario;
+            $material = $this->model->create($data);
+            DB::connection('cadeco')->commit();
+        } catch (\Exception $e) {
+            DB::connection('cadeco')->rollBack();
+            dd($e);
+            throw $e;
+        }
+        return $material;
+    }
+
+    /**
+     * Actualiza el material seleccionado
+     * @param $data
+     * @param $id
+     * @return \Ghi\Domain\Core\Models\PolizaTipo
+     */
+    public function update($data, $id)
+    {
+         return $this->model->find($id)->update($data);
+    }
+
+    /**
+     * Elimina el material seleccionado
+     * @param $data
+     * @param $id
+     * @return mixed
+     * @throws \Exception
+     */
+    public function delete($id)
+    {
+        try {
             DB::connection('cadeco')->beginTransaction();
 
+            if (!$item = $this->model->find($id)) {
+                throw new HttpResponseException(new Response('No se encontró la plantilla que se desea eliminar', 404));
+            }
+            $item->destroy($id);
 
-            //$data['nivel'] = $this->getNivelDisponible(tipo, nivel_fam)
-
-
-            $material = $this->model->create($data);
-
-
-            DB::commit();
+            DB::connection('cadeco')->commit();
         } catch (\Exception $e) {
-            DB::rollBack();
+            DB::connection('cadeco')->rollBack();
             throw $e;
         }
     }
