@@ -45,9 +45,12 @@
                                             <td v-else>
                                                 ---
                                             </td>
-                                            <td style="min-width: 90px;max-width: 90px">
-                                                <div class="btn-group">
+                                            <td style="min-width: 90px;max-width: 90px" >
+                                                <div class="btn-group" v-if="item.cuenta_almacen != null">
                                                     <button title="Editar" class="btn btn-xs btn-info" type="button" @click="editar(item)"><i class="fa fa-edit"></i> </button>
+                                                </div>
+                                                <div class="btn-group" v-else>
+                                                    <button title="Registrar" class="btn btn-xs btn-success" type="button" @click="editar(item)"> <i class="fa fa-edit"></i></button>
                                                 </div>
                                             </td>
                                         </tr>
