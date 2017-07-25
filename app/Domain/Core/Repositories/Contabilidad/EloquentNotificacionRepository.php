@@ -20,6 +20,7 @@ use Ghi\Domain\Core\Models\Contabilidad\NotificacionPoliza;
 use Ghi\Domain\Core\Models\Contabilidad\Poliza;
 use Ghi\Domain\Core\Models\Material;
 use Ghi\Domain\Core\Models\Obra;
+use Ghi\Domain\Core\Models\Seguridad\Proyecto;
 use Ghi\Domain\Core\Models\User;
 use Ghi\Domain\Core\Models\UsuarioCadeco;
 use Ghi\Events\NewEmail;
@@ -154,9 +155,9 @@ class EloquentNotificacionRepository implements NotificacionRepository
     public function send()
     {
         try {
-            $basesDatos = BaseDatosCadeco::where('activa', true)->orderBy('nombre')->get();
+            $basesDatos = Proyecto::get();
             foreach ($basesDatos as $bd) {
-                $this->config->set('database.connections.cadeco.database', $bd->nombre);
+                $this->config->set('database.connections.cadeco.database', $bd->base_datos);
                 $obras = Obra::all();
 
 
@@ -169,7 +170,7 @@ class EloquentNotificacionRepository implements NotificacionRepository
                         ->leftJoin('proyectos', 'obras.id_proyecto', '=', 'proyectos.id')
                         ->select('role_user.user_id')
                         ->where('role_user.id_obra', '=', $obra->id_obra)
-                        ->where('proyectos.base_datos', '=', $bd->nombre)
+                        ->where('proyectos.base_datos', '=', $bd->base_datos)
                         ->where('roles.name', '=', 'contador')
                         ->get());
 
@@ -181,9 +182,9 @@ class EloquentNotificacionRepository implements NotificacionRepository
                         $polizasSinLanzar = array();
 
 
-                        $polizas_errores = collect(DB::Connection('cadeco')->table('Contabilidad.int_polizas')->where('estatus', '=', Poliza::CON_ERRORES)->get());
-                        $polizas_validar = collect(DB::Connection('cadeco')->table('Contabilidad.int_polizas')->where('estatus', '=', Poliza::NO_VALIDADA)->get());
-                        $polizas_no_lanzadas = collect(DB::Connection('cadeco')->table('Contabilidad.int_polizas')->where('estatus', '=', Poliza::NO_LANZADA)->get());
+                        $polizas_errores = collect(DB::connection('cadeco')->table('Contabilidad.int_polizas')->where('estatus', '=', Poliza::CON_ERRORES)->get());
+                        $polizas_validar = collect(DB::connection('cadeco')->table('Contabilidad.int_polizas')->where('estatus', '=', Poliza::NO_VALIDADA)->get());
+                        $polizas_no_lanzadas = collect(DB::connection('cadeco')->table('Contabilidad.int_polizas')->where('estatus', '=', Poliza::NO_LANZADA)->get());
                         $this->usuario = User::find($contador->user_id);
 
 
@@ -203,7 +204,7 @@ class EloquentNotificacionRepository implements NotificacionRepository
 
                                 foreach ($polizas_errores as $poliza) {
 
-                                    $polizasError = collect(DB::Connection('cadeco')
+                                    $polizasError = collect(DB::connection('cadeco')
                                         ->table('Contabilidad.int_polizas')
                                         ->leftJoin('Contabilidad.int_transacciones_interfaz', 'Contabilidad.int_transacciones_interfaz.id_transaccion_interfaz', '=', 'Contabilidad.int_polizas.id_tipo_poliza_interfaz')
                                         ->leftJoin('Contabilidad.int_tipos_polizas_contpaq', 'Contabilidad.int_tipos_polizas_contpaq.id_int_tipo_poliza_contpaq', '=', 'Contabilidad.int_polizas.id_tipo_poliza_contpaq')
@@ -246,7 +247,7 @@ class EloquentNotificacionRepository implements NotificacionRepository
                                 foreach ($polizas_validar as $poliza) {
 
 
-                                    $polizasValida = collect(DB::Connection('cadeco')
+                                    $polizasValida = collect(DB::connection('cadeco')
                                         ->table('Contabilidad.int_polizas')
                                         ->leftJoin('Contabilidad.int_transacciones_interfaz', 'Contabilidad.int_transacciones_interfaz.id_transaccion_interfaz', '=', 'Contabilidad.int_polizas.id_tipo_poliza_interfaz')
                                         ->leftJoin('Contabilidad.int_tipos_polizas_contpaq', 'Contabilidad.int_tipos_polizas_contpaq.id_int_tipo_poliza_contpaq', '=', 'Contabilidad.int_polizas.id_tipo_poliza_contpaq')
@@ -290,7 +291,7 @@ class EloquentNotificacionRepository implements NotificacionRepository
                                 foreach ($polizas_no_lanzadas as $poliza) {
 
 
-                                    $polizasNoLanzadas = collect(DB::Connection('cadeco')
+                                    $polizasNoLanzadas = collect(DB::connection('cadeco')
                                         ->table('Contabilidad.int_polizas')
                                         ->leftJoin('Contabilidad.int_transacciones_interfaz', 'Contabilidad.int_transacciones_interfaz.id_transaccion_interfaz', '=', 'Contabilidad.int_polizas.id_tipo_poliza_interfaz')
                                         ->leftJoin('Contabilidad.int_tipos_polizas_contpaq', 'Contabilidad.int_tipos_polizas_contpaq.id_int_tipo_poliza_contpaq', '=', 'Contabilidad.int_polizas.id_tipo_poliza_contpaq')
