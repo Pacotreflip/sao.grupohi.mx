@@ -17,7 +17,9 @@
                 <div class="row">
                     <div class="col-md-12">
                         <div class="input-group">
-                            <input class="form-control" type="text" v-typeahead />
+                            <select class="form-control" id="obras_selection" v-select2>
+                                <option value disabled="disabled">[--SELECCIONE--]</option>
+                            </select>
                             <input name="id_concepto" id="id_concepto" class="form-control" type="hidden"/>
                             <div class="input-group-btn">
                                 <button class="btn btn-success" @click="buscar_nodos">
@@ -34,6 +36,7 @@
                         </div>
                     </div>
                 </div>
+
                 <br>
                 <div class="row">
                     <div class="col-md-12">

@@ -25,8 +25,25 @@ class Material extends BaseModel
         ,'tipo_material'
         ,'descripcion'
         ,'id_material'
+         ,'unidad'
+         ,'unidad_compra'
+         ,'unidad_capacidad'
+         ,'equivalencia'
+         ,'marca'
+         ,'id_insumo'
+         ,'consumo'
+         ,'codigo_externo'
+         ,'merma'
+         ,'secuencia'
+         ,'cuenta_contable'
+         ,'numero_parte'
+         ,'IDMarca'
+         ,'IDModelo'
+         ,'FechaHoraRegistro'
+        ,'UsuarioRegistro'
     ];
 
+    public $timestamps = false;
 
     protected $appends = ['nivel_hijos', 'd_padre'];
 

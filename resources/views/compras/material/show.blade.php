@@ -1,10 +1,11 @@
-<div id="app">
-    <global-errors></global-errors>
-    <material-create
-            :familia="{{$familia}}"
-            v-cloak
-            inline-template>
-        <section>
+@extends('compras.layout')
+@section('title', 'Materiales')
+@section('contentheader_title', 'MATERIALES')
+@section('contentheader_description', '(VISTA)')
+
+@section('main-content')
+    {!! Breadcrumbs::render('compras.material.show', $material) !!}
+
             <div class="row">
                 <div class="col-md-12">
                     <div class="box box-success">
@@ -19,9 +20,9 @@
                                 <div class="col-sm-6">
                                     <dl>
                                         <dt>ID</dt>
-                                        <dd>{{$familia[0]->nivel}}</dd>
+                                        <dd>{{$material->nivel}}</dd>
                                         <dt>DESCRIPCION</dt>
-                                        <dd>{{$familia[0]->descripcion}}</dd>
+                                        <dd>{{$material->descripcion}}</dd>
                                     </dl>
                                 </div>
 
@@ -32,7 +33,7 @@
                 </div>
             </div>
 
-            <div class="row">
+            <div class="row" v-show="false">
                 <div class="col-md-12">
                     <div class="box box-success">
                         <div class="box-header">
@@ -53,24 +54,6 @@
                                             </thead>
                                             <tbody>
 
-                                            <tr v-for="(cuenta, index) in data.familia">
-                                                <td>@{{index+1}}</td>
-                                                <td>@{{cuenta.nivel}}</td>
-                                                <td>@{{cuenta.descripcion}}</td>
-                                                <td v-if="cuenta.cuenta_material != null">
-                                                    @{{ cuenta.cuenta_material.cuenta }}
-                                                </td>
-                                                <td v-else>
-                                                    ---
-                                                </td>
-                                                <td>@{{cuenta.FechaHoraRegistro}}</td>
-                                                <td>
-                                                    <div class="btn-group">
-                                                        <button title="Editar" class="btn-xs btn-info" type="button" @click="editar(cuenta)"><i class="fa fa-edit"></i> </button>
-                                                    </div>
-                                                </td>
-                                            </tr>
-
                                             </tbody>
                                             <tfoot>
                                             <tr>
@@ -90,6 +73,4 @@
                     </div>
                 </div>
             </div>
-        </section>
-    </material-create>
-</div>
+@endsection
