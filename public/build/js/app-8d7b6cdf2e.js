@@ -42002,31 +42002,40 @@ Vue.component('cuenta-concepto-index', {
                 });
             }
         },
-        typeahead: {
+        select2: {
             inserted: function inserted(el) {
-                $(el).typeahead({
-                    highlight: true,
-                    limit: 10,
-                    displayKey: 'value',
-                    minLength: 3
-                }, {
-                    source: function source(query, process) {
-                        $.getJSON('/sistema_contable/concepto/getBy', { attribute: 'descripcion', operator: 'like', value: '%' + query + '%' }, function (json) {
-                            var conceptos = [];
-
-                            $.each(json.data.conceptos, function (i, concepto) {
-                                conceptos.push({
-                                    value: concepto.descripcion,
-                                    id: concepto.id_concepto
-                                });
-                            });
-
-                            console.log(conceptos);
-                            return process(conceptos);
-                        });
-                    }
-                }).on('typeahead:selected', function (event, item, dataset) {
-                    $('#id_concepto').val(item.id);
+                $(el).select2({
+                    width: '100%',
+                    ajax: {
+                        url: App.host + '/sistema_contable/concepto/getBy',
+                        dataType: 'json',
+                        delay: 500,
+                        data: function data(params) {
+                            return {
+                                attribute: 'descripcion',
+                                operator: 'like',
+                                value: '%' + params.term + '%'
+                            };
+                        },
+                        processResults: function processResults(data) {
+                            return {
+                                results: $.map(data.data.conceptos, function (item) {
+                                    return {
+                                        text: item.descripcion,
+                                        id: item.id_concepto
+                                    };
+                                })
+                            };
+                        },
+                        error: function error(_error) {},
+                        cache: true
+                    },
+                    escapeMarkup: function escapeMarkup(markup) {
+                        return markup;
+                    }, // let our custom formatter work
+                    minimumInputLength: 1
+                }).on('select2:select', function () {
+                    $('#id_concepto').val($('#obras_selection option:selected').data().data.id);
                 });
             }
         }
