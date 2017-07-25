@@ -154,6 +154,7 @@ class EloquentNotificacionRepository implements NotificacionRepository
     {
         try {
             $basesDatos = Proyecto::get();
+
             foreach ($basesDatos as $bd) {
                 $this->config->set('database.connections.cadeco.database', $bd->base_datos);
                 $obras = Obra::all();
@@ -164,14 +165,12 @@ class EloquentNotificacionRepository implements NotificacionRepository
                     $contadores = collect(DB::connection('seguridad')
                         ->table('role_user')
                         ->leftJoin('roles', 'role_user.role_id', '=', 'roles.id')
-                        ->leftJoin('obras', 'role_user.id_obra', '=', 'obras.id')
-                        ->leftJoin('proyectos', 'obras.id_proyecto', '=', 'proyectos.id')
+                        ->leftJoin('proyectos', 'role_user.id_proyecto', '=', 'proyectos.id')
                         ->select('role_user.user_id')
                         ->where('role_user.id_obra', '=', $obra->id_obra)
                         ->where('proyectos.base_datos', '=', $bd->base_datos)
                         ->where('roles.name', '=', 'contador')
                         ->get());
-
 
                     foreach ($contadores as $contador) {
 
@@ -185,6 +184,7 @@ class EloquentNotificacionRepository implements NotificacionRepository
                         $polizas_no_lanzadas = collect(DB::connection('cadeco')->table('Contabilidad.int_polizas')->where('estatus', '=', Poliza::NO_LANZADA)->get());
                         $this->usuario = User::find($contador->user_id);
 
+                       // Log::info('Obra ->' .$bd->base_datos.'  usuario->'.$this->usuario);
 
                         /*
                          * Notifcacion polizas con detalles
