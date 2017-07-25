@@ -6,6 +6,7 @@ use Dingo\Api\Routing\Helpers;
 use Ghi\Core\Models\BaseDatosCadeco;
 use Ghi\Domain\Core\Contracts\ObraRepository;
 use Ghi\Domain\Core\Models\Obra;
+use Ghi\Domain\Core\Models\Seguridad\Proyecto;
 use Ghi\Domain\Core\Models\UsuarioCadeco;
 use Illuminate\Contracts\Config\Repository;
 use Illuminate\Database\Eloquent\Collection;
@@ -35,17 +36,17 @@ class ObraController extends Controller
     {
         $obrasUsuario = new Collection();
 
-        $basesDatos = BaseDatosCadeco::where('activa', true)->orderBy('nombre')->get();
+        $basesDatos = Proyecto::orderBy('description')->get();
 
         foreach ($basesDatos as $bd) {
-            $this->config->set('database.connections.cadeco.database', $bd->nombre);
+            $this->config->set('database.connections.cadeco.database', $bd->base_datos);
 
             $usuarioCadeco = UsuarioCadeco::where('usuario', auth()->user()->usuario)->first();
 
             $obras = $this->getObrasUsuario($usuarioCadeco, $request->q);
 
             foreach ($obras as $obra) {
-                $obra->databaseName = $bd->nombre;
+                $obra->databaseName = $bd->base_datos;
 
                 $obrasUsuario->push($obra);
             }

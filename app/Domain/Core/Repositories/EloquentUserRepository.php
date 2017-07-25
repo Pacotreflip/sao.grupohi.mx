@@ -3,12 +3,12 @@
 namespace Ghi\Domain\Core\Repositories;
 
 use Ghi\Domain\Core\Models\Obra;
+use Ghi\Domain\Core\Models\Seguridad\Proyecto;
 use Ghidev\Core\Models\User;
 use Illuminate\Config\Repository;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Collection;
-use Ghi\Core\Models\BaseDatosCadeco;
 use Illuminate\Support\Facades\DB;
 use Ghi\Domain\Core\Models\UsuarioCadeco;
 
@@ -71,17 +71,17 @@ class EloquentUserRepository extends \Ghi\Core\Repositories\EloquentUserReposito
     {
         $obrasUsuario = new Collection();
 
-        $basesDatos = BaseDatosCadeco::where('activa', true)->orderBy('nombre')->get();
+        $basesDatos = Proyecto::orderBy('description')->get();
 
         foreach ($basesDatos as $bd) {
-            $this->config->set('database.connections.cadeco.database', $bd->nombre);
+            $this->config->set('database.connections.cadeco.database', $bd->base_datos);
 
             $usuarioCadeco = $this->getUsuarioCadeco($idUsuario);
 
             $obras = $this->getObrasUsuario($usuarioCadeco);
 
             foreach ($obras as $obra) {
-                $obra->databaseName = $bd->nombre;
+                $obra->databaseName = $bd->base_datos;
 
                 $obrasUsuario->push($obra);
             }
