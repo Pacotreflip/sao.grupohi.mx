@@ -234,7 +234,8 @@
                 data: {
                     _method: 'PATCH',
                     poliza_generada: {
-                        poliza_contpaq: inputValue
+                        poliza_contpaq: inputValue,
+                        estatus: 3
                     }
                 },
                 success: function (data, textStatus, xhr) {

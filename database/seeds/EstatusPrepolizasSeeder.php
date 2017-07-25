@@ -12,15 +12,16 @@ class EstatusPrepolizasSeeder extends Seeder
      */
     public function run()
     {
+        DB::connection('cadeco')->table('Contabilidad.estatus_prepolizas')->delete();
+
         DB::connection('cadeco')->table('Contabilidad.estatus_prepolizas')->insert ([
-            ['estatus' => -3, 'descripcion' => 'No Lanzable'],        
             ['estatus' => -2, 'descripcion' => 'No Lanzada'],
             ['estatus' => -1, 'descripcion' => 'Con Errores'],
             ['estatus' => 0, 'descripcion' => 'No Validada'],
             ['estatus' => 1, 'descripcion' => 'Validada'],
             ['estatus' => 2, 'descripcion' => 'Lanzada'],
             ['estatus' => -3, 'descripcion' => 'Omitir'],
-
+            ['estatus' => 3, 'descripcion' => 'Registro Manual']
         ]);
     }
 }
