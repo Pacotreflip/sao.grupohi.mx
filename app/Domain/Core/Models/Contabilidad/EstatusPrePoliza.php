@@ -39,7 +39,7 @@ class EstatusPrePoliza extends Model
             case 'Lanzada':
                 return 'green';
                 break;
-            case 'Omitir':
+            case 'Omitida':
                 return 'gray';
                 break;
             case 'Registro Manual':
