@@ -222,6 +222,9 @@
                                 reject("¡Escriba el folio Contpaq!");
                                 return false
                             }
+                            if(! $.isNumeric(inputValue)) {
+                                reject("¡Ingrese solo números!");
+                            }
                             resolve()
                         },500)
                     })
