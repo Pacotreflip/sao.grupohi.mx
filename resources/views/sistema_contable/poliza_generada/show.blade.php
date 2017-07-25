@@ -9,23 +9,25 @@
     <div class="row">
         <div class="col-md-12">
 
-            @if($poliza->estatus!=1&&$poliza->estatus!=2)
+            @if($poliza->estatus== -2  || $poliza->estatus == -1 || $poliza->estatus == 0)
             <a href="{{route('sistema_contable.poliza_generada.edit', $poliza)}}" class="btn btn-app btn-info pull-right">
                 <i class="fa fa-edit"></i> Editar
             </a>
             @endif
-            @if($poliza->estatus==0||$poliza->estatus==-2)
+            @if($poliza->estatus== -2 || $poliza->estatus== 0)
                 <a  class="btn btn-app btn-info pull-right" onclick="validar_prepoliza({{$poliza->id_int_poliza}})">
                     <i class="fa fa-check-square-o"></i> Validar
                 </a>
             @endif
-            @if($poliza->estatus==0||$poliza->estatus==-2||$poliza->estatus==-1)
-                    <a  class="btn btn-app btn-info pull-right" onclick="ingresar_folio_contpaq({{$poliza->id_int_poliza}})">
-                        <i class="fa fa-i-cursor"></i> Ingrear Folio Contpaq
-                    </a>
-                    <a  class="btn btn-app btn-info pull-right" onclick="omitir_prepoliza({{$poliza->id_int_poliza}})">
-                        <i class="glyphicon glyphicon-thumbs-down"></i> Omitir
-                    </a>
+            @if($poliza->estatus == 0 || $poliza->estatus== -2 || $poliza->estatus == -1)
+                <a  class="btn btn-app btn-info pull-right" onclick="omitir_prepoliza({{$poliza->id_int_poliza}})">
+                    <i class="glyphicon glyphicon-thumbs-down"></i> Omitir
+                </a>
+            @endif
+                @if($poliza->estatus == -1 || $poliza->estatus == 0)
+                <a  class="btn btn-app btn-info pull-right" onclick="ingresar_folio_contpaq({{$poliza->id_int_poliza}})">
+                    <i class="fa fa-i-cursor"></i> Ingrear Folio Contpaq
+                </a>
             @endif
         </div>
     </div>
@@ -223,7 +225,7 @@
                                 return false
                             }
                             if(! $.isNumeric(inputValue)) {
-                                reject("¡Ingrese solo números!");
+                                reject("¡Ingrese solo caracteres numéricos");
                             }
                             resolve()
                         },500)

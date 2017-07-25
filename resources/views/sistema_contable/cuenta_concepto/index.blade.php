@@ -16,9 +16,9 @@
             <section>
                 <div class="row">
                     <div class="col-md-12">
-                        <div class="input-group">
+                        <div class="input-group" >
                             <select class="form-control" id="obras_selection" v-select2>
-                                <option value disabled="disabled">[--SELECCIONE--]</option>
+                                <option value disabled="disabled" style="text-anchor: @parent">[--SELECCIONE--]</option>
                             </select>
                             <input name="id_concepto" id="id_concepto" class="form-control" type="hidden"/>
                             <div class="input-group-btn">
