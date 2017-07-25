@@ -8,7 +8,7 @@
 
     <div class="row">
         <div class="col-md-12">
-            @if($poliza->estatus!=1)
+            @if($poliza->estatus!=1&&$poliza->estatus!=2)
             <a href="{{route('sistema_contable.poliza_generada.edit', $poliza)}}" class="btn btn-app btn-info pull-right">
                 <i class="fa fa-edit"></i> Editar
             </a>
