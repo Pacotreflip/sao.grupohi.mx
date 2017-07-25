@@ -10,7 +10,6 @@ namespace Ghi\Domain\Core\Repositories\Contabilidad;
 
 
 use Carbon\Carbon;
-use Ghi\Core\Models\BaseDatosCadeco;
 use Ghi\Domain\Core\Contracts\Contabilidad\NotificacionRepository;
 use Ghi\Domain\Core\Contracts\Contabilidad\PolizaRepository;
 use Ghi\Domain\Core\Contracts\CuentaEmpresa;
@@ -18,14 +17,13 @@ use Ghi\Domain\Core\Contracts\CuentaEmpresa;
 use Ghi\Domain\Core\Models\Contabilidad\Notificacion;
 use Ghi\Domain\Core\Models\Contabilidad\NotificacionPoliza;
 use Ghi\Domain\Core\Models\Contabilidad\Poliza;
-use Ghi\Domain\Core\Models\Material;
 use Ghi\Domain\Core\Models\Obra;
 use Ghi\Domain\Core\Models\Seguridad\Proyecto;
 use Ghi\Domain\Core\Models\User;
 use Ghi\Domain\Core\Models\UsuarioCadeco;
 use Ghi\Events\NewEmail;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Contracts\Config\Repository;
+use Illuminate\Config\Repository;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\View;
