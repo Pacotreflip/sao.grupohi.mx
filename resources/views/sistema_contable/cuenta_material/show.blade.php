@@ -71,8 +71,11 @@
                                                         </td>
                                                         <td>@{{cuenta.FechaHoraRegistro}}</td>
                                                         <td>
-                                                            <div class="btn-group">
-                                                                <button title="Editar" class="btn-xs btn-info" type="button" @click="editar(cuenta)"><i class="fa fa-edit"></i> </button>
+                                                            <div class="btn-group" v-if="cuenta.cuenta_material != null">
+                                                                <button title="Editar" class="btn-xs btn btn-info" type="button" @click="editar(cuenta)"><i class="fa fa-edit"></i> </button>
+                                                            </div>
+                                                            <div class="btn-group" v-else>
+                                                                <button title="Registrar" class="btn-xs btn btn-success" type="button" @click="editar(cuenta)"><i class="fa fa-edit"></i> </button>
                                                             </div>
                                                         </td>
                                                     </tr>

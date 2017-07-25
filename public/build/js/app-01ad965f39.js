@@ -42818,7 +42818,7 @@ Vue.component('cuenta-material-index', {
                     self.guardando = true;
                 },
                 success: function success(data, textStatus, xhr) {
-                    self.data.cuenta_material_edit.cuent_material = data.data.cuenta_material;
+                    self.data.cuenta_material_edit.cuenta_material = data.data.cuenta_material;
                     self.close_edit_cuenta();
                     swal({
                         type: 'success',
