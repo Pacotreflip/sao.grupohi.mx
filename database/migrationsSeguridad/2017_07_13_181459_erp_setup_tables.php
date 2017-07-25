@@ -20,17 +20,6 @@ class ErpSetupTables extends Migration
             $table->timestamps();
         });
 
-        // Create table for storing obras
-        Schema::create('obras', function (Blueprint $table) {
-            $table->increments('id');
-            $table->integer('id_proyecto')->unsigned();
-            $table->longText('logo')->nullable();
-            $table->timestamps();
-
-            $table->foreign('id_proyecto')->references('id')->on('proyectos')
-                ->onUpdate('cascade')->onDelete('cascade');
-
-        });
 
 
         // Create table for storing roles
@@ -48,16 +37,14 @@ class ErpSetupTables extends Migration
         Schema::create('role_user', function (Blueprint $table) {
             $table->integer('user_id');
             $table->integer('role_id')->unsigned();
-            $table->integer('id_obra')->unsigned();
+            $table->integer('id_obra');
+            $table->integer('id_proyecto')->unsigned();
 
-
+            $table->foreign('id_proyecto')->references('id')->on('proyectos')
+                ->onUpdate('cascade')->onDelete('cascade');
             $table->foreign('role_id')->references('id')->on('roles')
                 ->onUpdate('cascade')->onDelete('cascade');
-
-            $table->foreign('id_obra')->references('id')->on('obras')
-                ->onUpdate('cascade')->onDelete('cascade');
-
-            $table->primary(['user_id', 'role_id', 'id_obra']);
+            $table->primary(['user_id', 'role_id', 'id_obra','id_proyecto']);
 
         });
 
@@ -96,7 +83,6 @@ class ErpSetupTables extends Migration
         Schema::drop('permissions');
         Schema::drop('role_user');
         Schema::drop('roles');
-        Schema::drop('obras');
         Schema::drop('proyectos');
     }
 }
