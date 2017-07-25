@@ -8,6 +8,7 @@
 
     <div class="row">
         <div class="col-md-12">
+
             @if($poliza->estatus!=1&&$poliza->estatus!=2)
             <a href="{{route('sistema_contable.poliza_generada.edit', $poliza)}}" class="btn btn-app btn-info pull-right">
                 <i class="fa fa-edit"></i> Editar
@@ -19,9 +20,12 @@
                 </a>
             @endif
             @if($poliza->estatus==0||$poliza->estatus==-2||$poliza->estatus==-1)
-                <a  class="btn btn-app btn-info pull-right" onclick="omitir_prepoliza({{$poliza->id_int_poliza}})">
-                    <i class="glyphicon glyphicon-thumbs-down"></i> Omitir
-                </a>
+                    <a  class="btn btn-app btn-info pull-right" onclick="ingresar_folio_contpaq({{$poliza->id_int_poliza}})">
+                        <i class="fa fa-i-cursor"></i> Ingrear Folio Contpaq
+                    </a>
+                    <a  class="btn btn-app btn-info pull-right" onclick="omitir_prepoliza({{$poliza->id_int_poliza}})">
+                        <i class="glyphicon glyphicon-thumbs-down"></i> Omitir
+                    </a>
             @endif
         </div>
     </div>
@@ -177,9 +181,7 @@
                     'poliza_generada':{
                         'estatus':-3,
                         'lanzable':'True'
-
                     }
-
                 },
                 success: function (data, textStatus, xhr) {
                     swal({
@@ -198,6 +200,60 @@
             });
             }) .catch(swal.noop);
 
+        }
+
+        function ingresar_folio_contpaq(id) {
+
+            var url=App.host +"/sistema_contable/poliza_generada/" + id;
+            swal({
+                title: "¡Ingresar Folio Contpaq!",
+                text: "Por favor especifique el folio Contpaq para la prepóliza",
+                input: 'text',
+                inputPlaceholder: "Folio Contpaq",
+                confirmButtonText: "Guardar",
+                cancelButtonText: "Cancelar",
+                showCancelButton: true,
+                showLoaderOnConfirm: true,
+                preConfirm: function (inputValue) {
+                    return new Promise(function (resolve, reject) {
+                        setTimeout(function() {
+                            if (inputValue === false) return false;
+                            if (inputValue === "") {
+                                reject("¡Escriba el folio Contpaq!");
+                                return false
+                            }
+                            if(! $.isNumeric(inputValue)) {
+                                reject("¡Ingrese solo números!");
+                            }
+                            resolve()
+                        },500)
+                    })
+                },
+                allowOutsideClick: false
+            }).then(function (inputValue)
+            { $.ajax({
+                url: url,
+                type: 'POST',
+                data: {
+                    _method: 'PATCH',
+                    poliza_generada: {
+                        poliza_contpaq: inputValue,
+                        estatus: 3
+                    }
+                },
+                success: function (data, textStatus, xhr) {
+                    swal({
+                        type: "success",
+                        title: '¡Correcto!',
+                        text: 'Folio Contpaq ingresado correctamente'
+                    });
+                    location.reload();
+                },
+                complete: function () {
+
+                }
+            });
+            }) .catch(swal.noop);
         }
     </script>
 @endsection

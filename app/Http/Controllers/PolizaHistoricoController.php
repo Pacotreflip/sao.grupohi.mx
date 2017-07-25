@@ -26,8 +26,8 @@ class PolizaHistoricoController extends Controller
     {
         parent::__construct();
 
-        //$this->middleware('auth');
-        //$this->middleware('context');
+        $this->middleware('auth');
+        $this->middleware('context');
         $this->polizaHistorico = $polizaHistorico;
         $this->poliza=$poliza;
 
