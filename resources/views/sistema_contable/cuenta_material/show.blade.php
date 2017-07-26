@@ -56,11 +56,12 @@
                                                     <th>Descripción</th>
                                                     <th>Cuenta</th>
                                                     <th>Fecha y Hora de Registro</th>
+                                                    @permission(['editar_cuenta_material', 'registrar_cuenta_material'])
                                                     <th>Acciones</th>
+                                                    @endpermission
                                                 </tr>
                                                 </thead>
                                                 <tbody>
-
                                                     <tr v-for="(cuenta, index) in data.familia">
                                                         <td>@{{index+1}}</td>
                                                         <td width="65%">@{{cuenta.descripcion}}</td>
@@ -71,16 +72,23 @@
                                                             ---
                                                         </td>
                                                         <td>@{{cuenta.FechaHoraRegistro}}</td>
-                                                        <td>
-                                                            <div class="btn-group" v-if="cuenta.cuenta_material != null">
+                                                        @permission(['editar_cuenta_material', 'registrar_cuenta_material'])
+                                                        <td v-if="cuenta.cuenta_material != null">
+                                                            @permission('editar_cuenta_material')
+                                                            <div class="btn-group" >
                                                                 <button title="Editar" class="btn-xs btn btn-info" type="button" @click="editar(cuenta)"><i class="fa fa-edit"></i> </button>
                                                             </div>
-                                                            <div class="btn-group" v-else>
+                                                            @endpermission
+                                                        </td>
+                                                        <td v-else>
+                                                            @permission('registrar_cuenta_material')
+                                                            <div class="btn-group" >
                                                                 <button title="Registrar" class="btn-xs btn btn-success" type="button" @click="editar(cuenta)"><i class="fa fa-edit"></i> </button>
                                                             </div>
+                                                            @endpermission
                                                         </td>
+                                                        @endpermission
                                                     </tr>
-
                                                 </tbody>
                                                 <tfoot>
                                                     <tr>
@@ -88,7 +96,9 @@
                                                         <th>Descripción</th>
                                                         <th>Cuenta</th>
                                                         <th>Fecha y Hora de Registro</th>
+                                                        @permission(['editar_cuenta_material', 'registrar_cuenta_material'])
                                                         <th>Acciones</th>
+                                                        @endpermission
                                                     </tr>
                                                 </tfoot>
                                             </table>

@@ -40,7 +40,6 @@ class CuentaAlmacenController extends Controller
             ->with('almacenes', $almacenes);
     }
 
-
     public function update(Request $request, $id) {
         $item = $this->cuenta_almacen->update($request->all(), $id);
         return response()->json(['data' => ['cuenta_almacen' => $item]],200);
@@ -50,6 +49,4 @@ class CuentaAlmacenController extends Controller
         $item = $this->cuenta_almacen->create($request->all());
         return response()->json(['data' => ['cuenta_almacen' => $item]],200);
     }
-
-
 }

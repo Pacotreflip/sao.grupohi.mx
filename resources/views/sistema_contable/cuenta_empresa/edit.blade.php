@@ -56,7 +56,13 @@
                                         <th>#</th>
                                         <th>Cuenta contable</th>
                                         <th>Tipo de cuenta</th>
-                                        <th><button title="Registrar Cuenta" class="btn btn-xs btn-success" @click="create_cuenta_empresa"><i class="fa fa-plus"></i> </button> </th>
+                                        @permission(['eliminar_cuenta_empresa', 'editar_cuenta_empresa', 'registrar_cuenta_empresa'])
+                                        <th>
+                                            @permission('registrar_cuenta_empresa')
+                                            <button title="Registrar Cuenta" class="btn btn-xs btn-success" @click="create_cuenta_empresa"><i class="fa fa-plus"></i> </button>
+                                            @endpermission
+                                        </th>
+                                        @endpermission
                                     </tr>
                                     </thead>
                                     <tbody>
@@ -64,17 +70,23 @@
                                         <td>@{{ index + 1 }}</td>
                                         <td>@{{ cuenta.cuenta }}</td>
                                         <td>@{{ cuenta.tipo_cuenta_empresa.descripcion }}</td>
+                                        @permission(['eliminar_cuenta_empresa', 'editar_cuenta_empresa', 'registrar_cuenta_empresa'])
                                         <td>
+                                            @permission('eliminar_cuenta_empresa')
                                             <button type="button" class="btn btn-xs btn-danger"
                                                     title="Eliminar"
                                                     @click="confirm_elimina_cuenta(cuenta)">
                                                 <i class="fa fa-trash"></i>
                                             </button>
+                                            @endpermission
+                                            @permission('editar_cuenta_empresa')
                                             <button type="button" class="btn btn-xs btn-info" title="Editar"
                                                     @click="edit_cuenta_empresa(cuenta)">
                                                 <i class="fa fa-edit"></i>
                                             </button>
+                                            @endpermission
                                         </td>
+                                        @endpermission
                                     </tr>
                                     </tbody>
                                 </table>

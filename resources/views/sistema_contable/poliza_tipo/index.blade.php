@@ -56,8 +56,6 @@
                                                 <span class="label label-info">{{$item->vigencia}}</span>
                                             @endif
                                         </td>
-
-
                                         <td>{{$item->inicio_vigencia->format('Y-m-d h:i:s a')}}</td>
                                         <td>
                                             @if($item->fin_vigencia){{$item->fin_vigencia->format('Y-m-d h:i:s a')}}
@@ -71,9 +69,11 @@
                                                     <i class="fa fa-eye"></i>
                                                 </button>
                                             </a>
+                                            @permission('eliminar_plantilla_prepoliza')
                                             <button title="Eliminar" type="button" class="btn-xs btn-danger" onclick=" delete_plantilla({{$item->id}})">
                                                 <i class="fa fa-trash"></i>
                                             </button>
+                                            @endpermission
                                         </td>
                                     </tr>
                                 @endforeach

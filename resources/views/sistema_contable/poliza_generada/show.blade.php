@@ -8,7 +8,7 @@
 
     <div class="row">
         <div class="col-md-12">
-
+            @permission('editar_prepolizas_generadas')
             @if($poliza->estatus== -2  || $poliza->estatus == -1 || $poliza->estatus == 0)
             <a href="{{route('sistema_contable.poliza_generada.edit', $poliza)}}" class="btn btn-app btn-info pull-right">
                 <i class="fa fa-edit"></i> Editar
@@ -29,6 +29,7 @@
                     <i class="fa fa-i-cursor"></i> Ingrear Folio Contpaq
                 </a>
             @endif
+            @endpermission
         </div>
     </div>
     <div class="row">
@@ -66,7 +67,6 @@
                                 </th>
                             </tr>
                             <tr>
-
                                 <th class="bg-gray-light" colspan="4">
                                     Concepto:
                                     <br><label> {{$poliza->concepto }}</label>
