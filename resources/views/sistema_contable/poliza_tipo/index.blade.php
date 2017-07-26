@@ -6,14 +6,18 @@
 @section('main-content')
     {!! Breadcrumbs::render('sistema_contable.poliza_tipo.index') !!}
 
+    @permission(['registrar_plantilla_prepoliza'])
     <div class="row">
         <div class="col-sm-12">
+            @permission('registrar_plantilla_prepoliza')
             <a  href="{{ route('sistema_contable.poliza_tipo.create') }}" class="btn btn-success btn-app" style="float:right">
                 <i class="glyphicon glyphicon-plus-sign"></i>Nueva
             </a>
+            @endpermission
         </div>
     </div>
     <br>
+    @endpermission
     <div class="row" >
         <div class="col-md-12">
             <div class="box box-info">

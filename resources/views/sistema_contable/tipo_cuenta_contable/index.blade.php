@@ -6,14 +6,19 @@
 @section('main-content')
     {!! Breadcrumbs::render('sistema_contable.tipo_cuenta_contable.index') !!}
 
+    @permission(['registrar_tipo_cuenta_contable'])
     <div class="row">
         <div class="col-sm-12">
+            @permission('registrar_tipo_cuenta_contable')
             <a  href="{{ route('sistema_contable.tipo_cuenta_contable.create') }}" class="btn btn-success btn-app" style="float:right">
                 <i class="glyphicon glyphicon-plus-sign"></i>Nuevo
             </a>
+            @endpermission
         </div>
     </div>
     <br>
+    @endpermission
+
     @if(count($tipos_cuenta_contable) > 0)
     <div class="row" >
         <div class="col-md-12">
