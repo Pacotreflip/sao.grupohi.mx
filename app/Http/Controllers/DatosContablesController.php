@@ -26,6 +26,8 @@ class DatosContablesController extends Controller
         $this->middleware('auth');
         $this->middleware('context');
 
+        $this->middleware('permission:editar_configuracion_contable', ['only' => ['edit', 'update']]);
+
         $this->datos_contables = $datos_contables;
     }
 

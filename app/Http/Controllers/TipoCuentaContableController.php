@@ -23,6 +23,11 @@ class TipoCuentaContableController extends Controller
         $this->middleware('auth');
         $this->middleware('context');
 
+        $this->middleware('permission:consultar_tipo_cuenta_contable', ['only' => ['index', 'show']]);
+        $this->middleware('permission:editar_tipo_cuenta_contable', ['only' => ['edit', 'update']]);
+        $this->middleware('permission:eliminar_tipo_cuenta_contable', ['only' => ['destroy']]);
+        $this->middleware('permission:registrar_tipo_cuenta_contable', ['only' => ['create', 'store']]);
+
         $this->tipo_cuenta_contable = $tipo_cuenta_contable;
     }
 

@@ -5,7 +5,6 @@ namespace Ghi\Http\Controllers;
 use Ghi\Domain\Core\Contracts\MaterialRepository;
 use Dingo\Api\Routing\Helpers;
 
-
 class KardexMaterialController extends Controller
 {
     use Helpers;
@@ -15,13 +14,14 @@ class KardexMaterialController extends Controller
      */
     private $material;
 
-    public function __construct(
-        MaterialRepository $material)
+    public function __construct(MaterialRepository $material)
     {
         parent::__construct();
 
         $this->middleware('auth');
         $this->middleware('context');
+
+        $this->middleware('permission:consultar_kardex_material', ['only' => ['index']]);
 
         $this->material = $material;
     }
@@ -33,9 +33,8 @@ class KardexMaterialController extends Controller
     public function index()
     {
         $materiales = $this->material->scope('ConTransaccionES')->all();
+
         return view('sistema_contable.kardex_material.index')
             ->with('materiales', $materiales);
     }
-
-
 }

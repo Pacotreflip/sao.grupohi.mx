@@ -26,6 +26,9 @@ class PolizaController extends Controller
         $this->middleware('auth');
         $this->middleware('context');
 
+        $this->middleware('permission:consultar_prepolizas_generadas', ['only' => ['index', 'show']]);
+        $this->middleware('permission:editar_prepolizas_generadas', ['only' => ['edit', 'update']]);
+
         $this->poliza = $poliza;
         $this->tipoCuentaContable = $tipoCuenta;
         $this->cuenta_contable = $cuenta_contable;

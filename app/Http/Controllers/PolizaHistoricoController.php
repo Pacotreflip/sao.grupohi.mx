@@ -28,6 +28,10 @@ class PolizaHistoricoController extends Controller
 
         $this->middleware('auth');
         $this->middleware('context');
+
+        $this->middleware('permission:consultar_prepolizas_generadas', ['only' => ['index']]);
+
+
         $this->polizaHistorico = $polizaHistorico;
         $this->poliza=$poliza;
 
