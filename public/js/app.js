@@ -52066,7 +52066,7 @@ Vue.component('cuenta-concepto-index', {
         select2: {
             inserted: function inserted(el) {
                 $(el).select2({
-                    width: 'element',
+                    width: '100%',
                     ajax: {
                         url: App.host + '/sistema_contable/concepto/getBy',
                         dataType: 'json',
@@ -52992,7 +52992,7 @@ Vue.component('datos-contables-edit', {
 'use strict';
 
 Vue.component('emails', {
-    props: ['user', 'emails', 'notificacion_url'],
+    props: ['user', 'emails', 'notificacion_url', 'db', 'id_obra'],
     data: function data() {
         return {
             data: {
@@ -53002,10 +53002,11 @@ Vue.component('emails', {
     },
 
     created: function created() {
-        var socket = io('http://' + App.ip + ':3000');
+        var socket = io(App.socket_host);
 
         socket.on('emails-channel:Ghi\\Events\\NewEmail', function (data) {
-            if (data.email.id_usuario == this.user.idusuario) {
+            console.log(data);
+            if (data.email.id_usuario == this.user.idusuario && data.db == this.db && data.email.id_obra == this.id_obra) {
                 this.data.emails.push(data.email);
                 $.notify({
                     // options
