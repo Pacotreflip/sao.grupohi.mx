@@ -49,10 +49,6 @@ class Notificacion extends Model
         return $query->where('leida','=','false')->orderBy('created_at','desc')->limit(5);
     }
 
-    public function notificaionesPoliza(){
-        return $this->belongsTo(NotificacionPoliza::class, 'id_notificacion', 'id');
-
-    }
 
 
 }

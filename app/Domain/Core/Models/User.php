@@ -5,6 +5,7 @@ namespace Ghi\Domain\Core\Models;
 use Ghi\Core\Facades\Context;
 use Ghi\Core\Presenters\UserPresenter;
 use Ghi\Domain\Core\Models\Contabilidad\Notificacion;
+use Ghi\Domain\Core\Models\Seguridad\Proyecto;
 use Illuminate\Auth\Passwords\CanResetPassword;
 use Illuminate\Database\Eloquent\Model;
 use Ghi\Core\App\Auth\AuthenticatableIntranetUser;
@@ -105,6 +106,6 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
     {
         return $this->belongsToMany(Config::get('entrust.role'), Config::get('entrust.role_user_table'), 'user_id', 'role_id')
             ->where('id_obra', Context::getId())
-            ->where('proyecto', Context::getDatabaseName());
+            ->where('id_proyecto', Proyecto::where('base_datos', '=',Context::getDatabaseName())->first()->id);
     }
 }

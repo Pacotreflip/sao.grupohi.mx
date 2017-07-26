@@ -7,7 +7,7 @@ if (count($cuentas_empresa)) {
     echo "CUENTAS SIN CONFIGURAR";
     foreach ($cuentas_empresa as $index => $cuenta) {
         echo utf8_decode("
-    Cuenta: " . $cuenta_empresa->razon_social . "
+    Cuenta: " . $cuenta->razon_social . "
     Estatus: Sin configurar
     ______________________________________________________________
     ");

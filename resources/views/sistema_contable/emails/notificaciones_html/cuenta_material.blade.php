@@ -128,8 +128,7 @@
     <div id="cuerpo">
         <div id="contenido">
             <h1>Estimado Colaborador {{$usuario}} </h1>
-            <h1>Se le informa que los siguientes Materiales no cuentan con cuenta contable asignada favor de
-                verificarlas.</h1>
+            <h1>Se le informa que los siguientes Materiales no cuentan con cuenta contable asignada favor de verificarlas.</h1>
             <h1>Proyecto: {{$obra->nombre}}</h1>
             <div id="lista_contratos">
                 @if($material_restante>0)

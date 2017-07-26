@@ -1,5 +1,5 @@
 Vue.component('emails', {
-    props: ['user', 'emails', 'notificacion_url'],
+    props: ['user', 'emails', 'notificacion_url','db','id_obra'],
     data: function () {
         return {
             data : {
@@ -9,10 +9,11 @@ Vue.component('emails', {
     },
 
     created: function () {
-        var socket = io('http://' + App.ip + ':3000');
+        var socket = io(App.socket_host);
 
         socket.on('emails-channel:Ghi\\Events\\NewEmail', function (data) {
-            if (data.email.id_usuario == this.user.idusuario) {
+            console.log(data);
+            if (data.email.id_usuario == this.user.idusuario&&data.db==this.db&&data.email.id_obra==this.id_obra) {
                 this.data.emails.push(data.email);
                 $.notify({
                     // options

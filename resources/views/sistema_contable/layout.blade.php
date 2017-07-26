@@ -1,6 +1,6 @@
 @extends('layouts.app')
 @section('notifications')
-    <emails :user="{{ auth()->user()->toJson() }}" :emails="{{ auth()->user()->notificacionesNoLeidas()->get()->toJson() }}" :notificacion_url="'{{route('sistema_contable.notificacion.index')}}'" v-cloak inline-template>
+    <emails :user="{{ auth()->user()->toJson() }}" :emails="{{ auth()->user()->notificacionesNoLeidas()->get()->toJson() }}" :id_obra="'{{$currentObra->id_obra}}'" :db="'{{\Ghi\Core\Facades\Context::getDatabaseName()}}'" :notificacion_url="'{{route('sistema_contable.notificacion.index')}}'" v-cloak inline-template>
         <li class="dropdown messages-menu">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true">
 

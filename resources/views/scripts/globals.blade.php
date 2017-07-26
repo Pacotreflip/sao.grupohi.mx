@@ -4,7 +4,7 @@
         // Token CSRF de Laravel
         csrfToken: '{{ csrf_token() }}',
         host: '{{ url("/") }}',
-        ip: '{{request()->server('SERVER_ADDR')}}',
+        socket_host: 'http://sao-notificaciones.grupohi.mx:3000',
         formato_cuenta: '{{$currentObra ? $currentObra->datosContables->mask : null }}',
         // ID del Usuario Actual
         userId: {!! Auth::check() ? Auth::id() : 'null' !!},
