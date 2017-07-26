@@ -56,7 +56,7 @@
                                         <th>#</th>
                                         <th>Cuenta contable</th>
                                         <th>Tipo de cuenta</th>
-                                        <th><button title="Configurar Cuenta" class="btn btn-xs btn-success" @click="create_cuenta_empresa"><i class="fa fa-plus"></i> </button> </th>
+                                        <th><button title="Registrar Cuenta" class="btn btn-xs btn-success" @click="create_cuenta_empresa"><i class="fa fa-plus"></i> </button> </th>
                                     </tr>
                                     </thead>
                                     <tbody>
@@ -93,7 +93,7 @@
                                     <span aria-hidden="true">×</span></button>
                                 <h4 class="modal-title">
                                     <span v-if="nuevo_registro">
-                                        Configurar Cuenta Contable
+                                        Registrar Cuenta Contable
                                     </span>
                                     <span v-else>
                                         Actualizar Cuenta Contable

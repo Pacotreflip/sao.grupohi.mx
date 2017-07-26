@@ -24,8 +24,8 @@ window.io = require('socket.io-client');
 require('bootstrap-notify');
 
 // Vue Dev
-//window.Vue = require('vue/dist/vue.js');
-// Vue Prod
+window.Vue = require('vue/dist/vue.js');
+//Vue Prod
 window.Vue = require('vue/dist/vue.min');
 
 window.VeeValidate = require('vee-validate');

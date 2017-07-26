@@ -8,6 +8,7 @@
     <global-errors></global-errors>
     <cuenta-material-index
                 :familia="{{$familia}}"
+                :tipo_cuenta_material="{{$tipo_cuenta_material}}"
                 :datos_contables="{{$currentObra->datosContables}}"
                 :url_cuenta_material_store="'{{route('sistema_contable.cuenta_material.store')}}'"
                 v-cloak
@@ -136,10 +137,10 @@
                                         <div class="col-md-6">
                                             <div class="form-group" :class="{'has-error': validation_errors.has('form_edit_cuenta.Tipo Cuenta de Material')}">
                                                 <label class="control-label"><b>Tipo Cuenta de Material</b></label>
-                                                <select class="form-control" v-model="form.cuenta_material.id_tipo_cuenta_material" name="Tipo Cuenta de Material" v-validate="'required'">
-                                                    <option value>[-SELECCIONE-]</option>
-                                                    <option value="1">Materiales</option>
-                                                    <option value="2">Mano de Obra y Servicios</option>
+                                                <select class="form-control" v-model="form.cuenta_material.id_tipo_cuenta_material" name="Tipo Cuenta de Material" v-validate="'required|numeric'">
+                                                    <option value value="">[-SELECCIONE-]</option>
+                                                    <option v-for="option in data.tipo_cuenta_material" :value="option.id">@{{ option.descripcion }}</option>
+
                                                 </select>
                                                 <label class="help" v-show="validation_errors.has('form_edit_cuenta.Tipo Cuenta de Material')">@{{ validation_errors.first('form_edit_cuenta.Tipo Cuenta de Material') }}</label>
                                             </div>
