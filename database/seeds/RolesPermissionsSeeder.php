@@ -28,7 +28,7 @@ class RolesPermissionsSeeder extends Seeder
             // Cuentas Empresas
             ['name' => 'editar_cuenta_empresa', 'display_name' => 'Editar Cuenta de Empresa', 'description' => 'Permiso para editar una cuenta contable registrada en una Empresa', 'created_at' => $now, 'updated_at' => $now],
             ['name' => 'registrar_cuenta_empresa', 'display_name' => 'Registrar Cuenta de Empresa', 'description' => 'Permiso para registrar una cuenta contable en una Empresa', 'created_at' => $now, 'updated_at' => $now],
-            ['name' => 'cnsultar_cuenta_empresa', 'display_name' => 'Consultar Cuenta de Empresa', 'description' => 'Permiso para consultar una o varias cuentas contables de Empresa', 'created_at' => $now, 'updated_at' => $now],
+            ['name' => 'consultar_cuenta_empresa', 'display_name' => 'Consultar Cuenta de Empresa', 'description' => 'Permiso para consultar una o varias cuentas contables de Empresa', 'created_at' => $now, 'updated_at' => $now],
 
             // Cuentas Generales
             ['name' => 'consultar_cuenta_general', 'display_name' => 'Consultar Cuenta General', 'description' => 'Permiso para consultar una o varias Cuentas Contables Generales', 'created_at' => $now, 'updated_at' => $now],

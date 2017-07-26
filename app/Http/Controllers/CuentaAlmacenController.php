@@ -25,6 +25,9 @@ class CuentaAlmacenController extends Controller
 
         $this->middleware('auth');
         $this->middleware('context');
+        $this->middleware('permission:consultar_cuenta_almacen', ['only' => ['index']]);
+        $this->middleware('permission:registrar_cuenta_almacen', ['only' => ['store']]);
+        $this->middleware('permission:editar_cuenta_almacen', ['only' => ['update']]);
 
         $this->cuenta_almacen = $cuenta_almacen;
         $this->almacen = $almacen;

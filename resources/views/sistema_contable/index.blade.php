@@ -174,25 +174,22 @@
             type: 'bar',
             data: {
                 labels: ["Almacenes", "Conceptos", "Materiales", "Empresas"],
-                datasets: [{
-                    label: 'Total',
-                    backgroundColor: window.chartColors.blue,
-                    data: [
-                        1560, 15000, 5909, 1400
-                    ]
-                }, {
-                    label: 'Sin Cuenta Contable',
-                    backgroundColor: window.chartColors.red,
-                    data: [
-                        500, 10999, 909, 300
-                    ]
-                },  {
-                    label: 'Con Cuenta Contable',
-                    backgroundColor: window.chartColors.green,
-                    data: [
-                        1560-500, 15000-10999, 5909-909, 1400-300
-                    ]
-                }]
+                datasets: [
+                    {
+                        label: 'Con Cuenta Contable',
+                        backgroundColor: window.chartColors.green,
+                        data: [
+                            1560-500, 15000-10999, 5909-909, 1400-300
+                        ]
+                    },
+                    {
+                        label: 'Sin Cuenta Contable',
+                        backgroundColor: window.chartColors.red,
+                        data: [
+                            500, 10999, 909, 300
+                        ]
+                    }
+                ]
             },
             options: {
                 title:{
