@@ -1,7 +1,7 @@
 @extends('sistema_contable.layout')
 @section('title', 'Cuentas Almacenes')
 @section('contentheader_title', 'CUENTAS DE ALMACENES')
-@section('contentheader_description', '(LISTA)')
+@section('contentheader_description', '(INDEX)')
 
 @section('main-content')
     {!! Breadcrumbs::render('sistema_contable.cuenta_almacen.index') !!}
@@ -47,10 +47,10 @@
                                             </td>
                                             <td style="min-width: 90px;max-width: 90px" >
                                                 <div class="btn-group" v-if="item.cuenta_almacen != null">
-                                                    <button title="Editar" class="btn btn-xs btn-info" type="button" @click="editar(item)"><i class="fa fa-edit"></i> </button>
+                                                    <button disabled="{{ ! Entrust::can('editar_cuenta_almacen') ? 'diabled' : ''}}" title="Editar" class="btn btn-xs btn-info" type="button" @click="editar(item)"><i class="fa fa-edit"></i> </button>
                                                 </div>
                                                 <div class="btn-group" v-else>
-                                                    <button title="Registrar" class="btn btn-xs btn-success" type="button" @click="editar(item)"> <i class="fa fa-edit"></i></button>
+                                                    <button disabled="{{ ! Entrust::can('registrar_cuenta_almacen') ? 'diabled' : ''}}" title="Registrar" class="btn btn-xs btn-success" type="button" @click="editar(item)"> <i class="fa fa-edit"></i></button>
                                                 </div>
                                             </td>
                                         </tr>
