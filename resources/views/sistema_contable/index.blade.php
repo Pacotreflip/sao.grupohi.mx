@@ -18,7 +18,7 @@
             </div>
         </div>
 
-        <div class="col-md-9">
+        <!-- div class="col-md-9">
             <div class="box box-info">
                 <div class="box-header with-border">
                     <h3 class="box-title">Información de Cuentas Contables</h3>
@@ -29,7 +29,7 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div -->
 
     </div>
 
