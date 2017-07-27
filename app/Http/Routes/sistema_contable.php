@@ -108,4 +108,10 @@ Route::group(['prefix' => 'sistema_contable'], function () {
     Route::get('notificacion', 'NotificacionController@index')->name('sistema_contable.notificacion.index');
     Route::get('notificacion/{id}', 'NotificacionController@show')->name('sistema_contable.notificacion.show');
 
+    /**
+     * Poliza Movimientos
+     */
+    Route::get('poliza_movimientos/{id}', 'PolizaMovimientosController@edit')->name('sistema_contable.poliza_movimientos.edit')->where(['id' => '[0-9]+']);
+    Route::patch('poliza_movimientos/{id}', 'PolizaMovimientosController@update')->name('sistema_contable.poliza_movimientos.update')->where(['id' => '[0-9]+']);
+
 });

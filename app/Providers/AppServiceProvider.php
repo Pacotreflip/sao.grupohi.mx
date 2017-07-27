@@ -170,5 +170,9 @@ class AppServiceProvider extends ServiceProvider
             \Ghi\Domain\Core\Repositories\Contabilidad\EloquentTransaccionesInterfazRepository::class
         );
 
+        $this->app->bind(
+            \Ghi\Domain\Core\Contracts\Contabilidad\PolizaMovimientoRepository::class,
+            \Ghi\Domain\Core\Repositories\Contabilidad\EloquentPolizaMovimientoRepository::class
+        );
     }
 }

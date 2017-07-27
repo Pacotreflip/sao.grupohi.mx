@@ -62,14 +62,10 @@ class EloquentCuentaEmpresaRepository implements CuentaEmpresaRepository
     public function create($data)
     {
         try {
-            DB::connection('cadeco')->beginTransaction();
-            $modelo = $this->model;
-            $modelo->registro = auth()->user()->idusuario;
-            $modelo->id_empresa = $data['id_empresa'];
-            $modelo->cuenta = $data['cuenta'];
-            $modelo->id_tipo_cuenta_empresa = $data['id_tipo_cuenta_empresa'];
 
-            $modelo->save();
+//   dd($data['id_empresa'],$data['cuenta'],$data['id_tipo_cuenta_empresa']);
+            DB::connection('cadeco')->beginTransaction();
+            $modelo = $this->model->create($data);
 
             DB::connection('cadeco')->commit();
 
@@ -77,6 +73,8 @@ class EloquentCuentaEmpresaRepository implements CuentaEmpresaRepository
             DB::connection('cadeco')->rollBack();
             throw $e;
         }
+
+
         return $this->model->with('tipoCuentaEmpresa')->find($modelo->id);
     }
 
@@ -114,7 +112,7 @@ class EloquentCuentaEmpresaRepository implements CuentaEmpresaRepository
         } catch (\Exception $e) {
             throw $e;
         }
-
+        return $this->model->with('tipoCuentaEmpresa')->find($id);
 
     }
 
@@ -125,6 +123,17 @@ class EloquentCuentaEmpresaRepository implements CuentaEmpresaRepository
     public function with($relations)
     {
         $this->model = $this->model->with($relations);
+        return $this;
+    }
+
+    /**
+     *  Contiene los parametros de búsqueda
+     * @param array $where
+     * @return mixed
+     */
+    public function where(array $where)
+    {
+        $this->model = $this->model->where($where);
         return $this;
     }
 }

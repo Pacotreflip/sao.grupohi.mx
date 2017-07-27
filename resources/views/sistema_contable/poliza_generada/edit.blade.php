@@ -19,6 +19,13 @@
             <section>
                 <div class="row">
                     <div class="col-md-12">
+                        <a  class="btn btn-app btn-info pull-right" v-on:click="ingresarCuenta({{$poliza->id_int_poliza}})">
+                            <i class="fa fa-dollar"></i> Ingresar Cuenta
+                        </a>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
                         <div class="box box-success">
                             <div class="box-header with-border">
                                 <h3 class="box-title">Detalle de Prepóliza</h3>
@@ -301,6 +308,58 @@
                         </div>
                     </div>
                 </div>
+
+
+                <!-- Modal Agregar Cuenta -->
+                <div id="add_cuenta_modal" class="modal fade" tabindex="-1" role="dialog"
+                     aria-labelledby="addCuentaModal" data-backdrop="static" data-keyboard="false">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content modal-lg">
+                            <div class="modal-header">
+                                <button type="button" class="close" aria-label="Close" @click="close_cuenta_modal">
+                                    <span aria-hidden="true">&times;</span></button>
+
+                                 <h4  class="modal-title">Cuentas de : @{{data.empresa.razon_social }}</h4>
+
+                            </div>
+                            <form id="form_cuenta" @submit.prevent="validateForm('form_cuenta','confirm_save_cuenta')"
+                                  data-vv-scope="form_cuenta">
+                                <div class="box-body">
+                                    <div class="table-responsive">
+                                        <table class="table table-bordered">
+                                           <tr v-for="(movimiento, index) in data.movimientos">
+                                               <td>
+                                                   @{{index+1}}
+                                               </td>
+                                               <td>
+                                                    @{{movimiento.tipo_cuenta_contable?movimiento.tipo_cuenta_contable.descripcion:'No registrada'}}
+                                                </td>
+                                                <td class="form-group" style="white-space: nowrap"  :class="{'has-error': validation_errors.has('form_cuenta.cuenta_contable [' + (index + 1) + ']')}">
+                                                    <input :name="'cuenta_contable [' + (index + 1) + ']'" :disabled="movimiento.id_tipo_cuenta_contable == 1" :placeholder="datos_contables.FormatoCuenta" type="text" style="width: 200px"
+                                                           v-validate="'required|regex:' + datos_contables.FormatoCuentaRegExp"
+                                                           :name="'CuentaContable [' + (index + 1) + ']'"
+                                                           class="form-control input-sm formato_cuenta"
+                                                           v-model="movimiento.cuenta_contable">
+                                                    <label class="help"  v-show="validation_errors.has('form_cuenta.cuenta_contable [' + (index + 1) + ']')">@{{ validation_errors.first('form_cuenta.cuenta_contable [' + (index + 1) + ']') }}</label>
+                                                </td>
+                                            </tr>
+                                        </table>
+
+                                    </div>
+                                </div>
+                                <div class="box-footer">
+                                    <div class="col-md-12">
+                                        <button  class="btn btn-info pull-right" type="submit">
+                                            Guardar Cambios
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
+
+                        </div>
+                    </div>
+                </div>
+
             </section>
         </poliza-generada-edit>
 @endsection

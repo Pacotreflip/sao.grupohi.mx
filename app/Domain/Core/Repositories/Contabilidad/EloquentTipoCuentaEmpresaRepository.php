@@ -11,6 +11,7 @@ namespace Ghi\Domain\Core\Repositories\Contabilidad;
 
 use Ghi\Domain\Core\Contracts\Contabilidad\TipoCuentaEmpresaRepository;
 use Ghi\Domain\Core\Models\Contabilidad\TipoCuentaEmpresa;
+use Illuminate\Support\Facades\DB;
 
 class EloquentTipoCuentaEmpresaRepository implements TipoCuentaEmpresaRepository
 {
@@ -46,5 +47,50 @@ class EloquentTipoCuentaEmpresaRepository implements TipoCuentaEmpresaRepository
     {
         $this->model = $this->model->with($relations);
         return $this;
+    }
+
+    /**
+     *  Contiene los parametros de búsqueda
+     * @param array $where
+     * @return mixed
+     */
+    public function where(array $where)
+    {
+        $this->model = $this->model->where($where);
+        return $this;
+    }
+
+    /**
+     * @param $id
+     * @return mixed \Illuminate\Database\Eloquent\Collection|TipoCuentaEmpresa
+     */
+    public function find($id)
+    {
+        return $this->model->find($id);
+    }
+
+    /**
+     * Guarda un nuevo registro de TipoCuentaEmpresa
+     *
+     * @param $data
+     * @return \Ghi\Domain\Core\Models\Contabilidad\TipoCuentaEmpresa
+     * @throws \Exception
+     */
+    public function create($data)
+    {
+        try {
+            DB::connection('cadeco')->beginTransaction();
+            $modelo = $this->model;
+            $modelo->descripcion = $data['descripcion'];
+            $modelo->id_tipo_cuenta_contable = $data['id_tipo_cuenta_contable'];
+            $modelo->save();
+
+            DB::connection('cadeco')->commit();
+
+        } catch (\Exception $e) {
+            DB::connection('cadeco')->rollBack();
+            throw $e;
+        }
+        return $this->find($modelo->id);
     }
 }
