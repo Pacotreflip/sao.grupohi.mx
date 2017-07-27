@@ -32,6 +32,10 @@ class CuentaMaterialController extends Controller
         $this->middleware('auth');
         $this->middleware('context');
 
+        $this->middleware('permission:consultar_cuenta_material', ['only' => ['index', 'show']]);
+        $this->middleware('permission:editar_cuenta_material', ['only' => ['update']]);
+        $this->middleware('permission:registrar_cuenta_material', ['only' => ['store']]);
+
         $this->material = $material;
         $this->cuenta_material = $cuenta_material;
         $this->tipo_cuenta_material = $tipo_cuenta_material;

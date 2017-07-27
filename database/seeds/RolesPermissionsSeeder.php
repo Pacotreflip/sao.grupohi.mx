@@ -28,7 +28,8 @@ class RolesPermissionsSeeder extends Seeder
             // Cuentas Empresas
             ['name' => 'editar_cuenta_empresa', 'display_name' => 'Editar Cuenta de Empresa', 'description' => 'Permiso para editar una cuenta contable registrada en una Empresa', 'created_at' => $now, 'updated_at' => $now],
             ['name' => 'registrar_cuenta_empresa', 'display_name' => 'Registrar Cuenta de Empresa', 'description' => 'Permiso para registrar una cuenta contable en una Empresa', 'created_at' => $now, 'updated_at' => $now],
-            ['name' => 'cnsultar_cuenta_empresa', 'display_name' => 'Consultar Cuenta de Empresa', 'description' => 'Permiso para consultar una o varias cuentas contables de Empresa', 'created_at' => $now, 'updated_at' => $now],
+            ['name' => 'consultar_cuenta_empresa', 'display_name' => 'Consultar Cuenta de Empresa', 'description' => 'Permiso para consultar una o varias cuentas contables de Empresa', 'created_at' => $now, 'updated_at' => $now],
+            ['name' => 'eliminar_cuenta_empresa', 'display_name' => 'Eliminar Cuenta de Empresa', 'description' => 'Permiso para eliminar cuentas contables de Empresa', 'created_at' => $now, 'updated_at' => $now],
 
             // Cuentas Generales
             ['name' => 'consultar_cuenta_general', 'display_name' => 'Consultar Cuenta General', 'description' => 'Permiso para consultar una o varias Cuentas Contables Generales', 'created_at' => $now, 'updated_at' => $now],
@@ -49,7 +50,6 @@ class RolesPermissionsSeeder extends Seeder
             // Plantillas de Prepólizas
             ['name' => 'consultar_plantilla_prepoliza', 'display_name' => 'Consultar Plantilla de Prepóliza', 'description' => 'Permiso para consultar una o varias plantillas de Prepólizas', 'created_at' => $now, 'updated_at' => $now],
             ['name' => 'registrar_plantilla_prepoliza', 'display_name' => 'Registrar Plantilla de Prepóliza', 'description' => 'Permiso para registrar  plantillas de Prepólizas', 'created_at' => $now, 'updated_at' => $now],
-            ['name' => 'editar_plantilla_prepoliza', 'display_name' => 'Editar Plantilla de Prepóliza', 'description' => 'Permiso para editar  plantillas de Prepólizas', 'created_at' => $now, 'updated_at' => $now],
             ['name' => 'eliminar_plantilla_prepoliza', 'display_name' => 'Eliminar Plantilla de Prepóliza', 'description' => 'Permiso para eliminar plantillas de Prepólizas', 'created_at' => $now, 'updated_at' => $now],
 
             // Configuración contable

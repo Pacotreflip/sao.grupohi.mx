@@ -37,9 +37,11 @@
                                                 <a href="{{route('sistema_contable.cuenta_empresa.show',$empresa)}}">
                                                     <button title="Ver" class="btn btn-xs btn-default"><i class="fa fa-eye"></i></button>
                                                 </a>
+                                                @permission('editar_cuenta_empresa')
                                                 <a href="{{route('sistema_contable.cuenta_empresa.edit',$empresa)}}">
                                                     <button  title="Editar" class="btn btn-xs btn-info"><i class="fa fa-edit"></i></button>
                                                 </a>
+                                                @endpermission
                                             </td>
                                         </tr>
                                     @endforeach

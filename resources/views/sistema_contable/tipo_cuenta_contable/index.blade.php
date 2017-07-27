@@ -6,14 +6,19 @@
 @section('main-content')
     {!! Breadcrumbs::render('sistema_contable.tipo_cuenta_contable.index') !!}
 
+    @permission(['registrar_tipo_cuenta_contable'])
     <div class="row">
         <div class="col-sm-12">
+            @permission('registrar_tipo_cuenta_contable')
             <a  href="{{ route('sistema_contable.tipo_cuenta_contable.create') }}" class="btn btn-success btn-app" style="float:right">
                 <i class="glyphicon glyphicon-plus-sign"></i>Nuevo
             </a>
+            @endpermission
         </div>
     </div>
     <br>
+    @endpermission
+
     @if(count($tipos_cuenta_contable) > 0)
     <div class="row" >
         <div class="col-md-12">
@@ -59,12 +64,16 @@
                                                     <i class="fa fa-eye"></i>
                                                 </button>
                                             </a>
+                                            @permission('editar_tipo_cuenta_contable')
                                             <a title="Editar" href="{{ route('sistema_contable.tipo_cuenta_contable.edit', $item->id_tipo_cuenta_contable) }}">
                                                 <button title="Editar" type="button" class="btn btn-xs btn-info">
                                                     <i class="fa fa-edit"></i>
                                                 </button>
                                             </a>
+                                            @endpermission
+                                            @permission('eliminar_tipo_cuenta_contable')
                                             <button type="button" title="Eliminar" class="btn btn-xs btn-danger" onclick="delete_tipo_cuenta_contable({{$item->id_tipo_cuenta_contable}})"><i class="fa fa-trash"></i></button>
+                                            @endpermission
                                         </td>
                                     </tr>
                                 @endforeach

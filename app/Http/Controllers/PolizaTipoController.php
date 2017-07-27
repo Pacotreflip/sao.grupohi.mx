@@ -59,6 +59,11 @@ class PolizaTipoController extends Controller
         $this->middleware('auth');
         $this->middleware('context');
 
+        $this->middleware('permission:consultar_plantilla_prepoliza', ['only' => ['index', 'show']]);
+        $this->middleware('permission:eliminar_plantilla_prepoliza', ['only' => ['destroy']]);
+        $this->middleware('permission:registrar_plantilla_prepoliza', ['only' => ['create', 'store']]);
+
+
         $this->poliza_tipo = $poliza_tipo;
         $this->poliza_tipo_sao = $poliza_tipo_sao;
         $this->tipo_cuenta_contable = $tipo_cuenta_contable;

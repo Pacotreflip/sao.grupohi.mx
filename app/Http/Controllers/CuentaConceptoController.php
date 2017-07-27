@@ -26,6 +26,10 @@ class CuentaConceptoController extends Controller
         $this->middleware('auth');
         $this->middleware('context');
 
+        $this->middleware('permission:consultar_cuenta_concepto', ['only' => ['index']]);
+        $this->middleware('permission:registrar_cuenta_concepto', ['only' => ['store']]);
+        $this->middleware('permission:editar_cuenta_concepto', ['only' => ['update']]);
+
         $this->concepto = $concepto;
         $this->cuenta_concepto = $cuenta_concepto;
     }
