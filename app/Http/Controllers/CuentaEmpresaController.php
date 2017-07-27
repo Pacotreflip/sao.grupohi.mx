@@ -106,7 +106,7 @@ class CuentaEmpresaController extends Controller
         foreach ($movimientos as $movimiento) {
             if($movimiento->cuenta_contable==null) {
             $poliza = $this->poliza->find($movimiento->id_int_poliza);
-            if ($poliza->estatus != 1 || $poliza->estatus != 2) {
+            if ($poliza->estatus != 1 && $poliza->estatus != 2) {
                 $dataUpdate['cuenta_contable'] = $cuenta->cuenta;
                 $this->poliza_movimiento->update($dataUpdate, $movimiento->id_int_poliza_movimiento);
             }   }
@@ -128,7 +128,7 @@ class CuentaEmpresaController extends Controller
         foreach ($movimientos as $movimiento) {
             if($movimiento->cuenta_contable==null) {
                 $poliza = $this->poliza->find($movimiento->id_int_poliza);
-                if ($poliza->estatus != 1 || $poliza->estatus != 2) {
+                if ($poliza->estatus != 1 && $poliza->estatus != 2) {
                     $dataUpdate['cuenta_contable'] = $cuenta->cuenta;
                     $this->poliza_movimiento->update($dataUpdate, $movimiento->id_int_poliza_movimiento);
                 }
