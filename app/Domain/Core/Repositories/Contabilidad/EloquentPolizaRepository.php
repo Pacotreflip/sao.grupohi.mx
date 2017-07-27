@@ -160,6 +160,11 @@ class EloquentPolizaRepository implements PolizaRepository
                 }
             } else {
 
+                if (isset($data['poliza_generada']['fecha'])) {
+                    $poliza->update([
+                        'fecha_original' => $poliza->fecha
+                    ]);
+                }
                 $poliza->update($data['poliza_generada']);
             }
 
@@ -292,4 +297,40 @@ class EloquentPolizaRepository implements PolizaRepository
         return $this->model->where('fecha', '=', $date)
                     ->where('estatus', '=', $tipo)->count();
     }
+
+    /**
+     * Ingresa manualmente el folio contpaq para la prepóliza
+     * @param $data
+     * @param $id
+     * @return mixed
+     * @throws \Exception
+     */
+    public function ingresarFolio($data, $id)
+    {
+        try {
+
+            DB::connection('cadeco')->beginTransaction();
+
+            if (!$poliza = $this->model->find($id)) {
+                throw new HttpResponseException(new Response('No se encontró la prepóliza', 404));
+            }
+
+            if($poliza->estatus == 1 || $poliza->estatus == 2 ) {
+                throw new HttpResponseException(new Response('No se puede editar la prepóliza ya que su estatus es '.  $poliza->estatusPrepoliza , 404));
+            }
+
+            $poliza->update([
+                'estatus' => 3,
+                'fecha_original' => $poliza->fecha
+            ]);
+
+            $poliza->update($data);
+
+
+            DB::connection('cadeco')->commit();
+        } catch (\Exception $e) {
+            DB::connection('cadeco')->rollback();
+            throw $e;
+        }
+        return $this->find($id);    }
 }
