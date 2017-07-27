@@ -47,101 +47,15 @@
             grey: 'rgb(201, 203, 207)'
         };
 
+        var data = {!! json_encode($config)!!};
         var config_prepolizas = {
             type: 'line',
-            data: {
-                labels: ["2017-07-18", "2017-07-19", "2017-07-20", "2017-07-21", "2017-07-22", "2017-07-23", "2017-07-24"],
-                datasets: [{
-                    label: "Lanzadas",
-                    backgroundColor: chartColors.green,
-                    borderColor: chartColors.green,
-                    data: [
-                        Math.floor((Math.random() * 20) + 1),
-                        Math.floor((Math.random() * 20) + 1),
-                        Math.floor((Math.random() * 20) + 1),
-                        Math.floor((Math.random() * 20) + 1),
-                        Math.floor((Math.random() * 20) + 1),
-                        Math.floor((Math.random() * 20) + 1),
-                        Math.floor((Math.random() * 20) + 1)
-                    ],
-                    fill: false,
-                }, {
-                    label: "No Lanzadas",
-                    fill: false,
-                    backgroundColor: chartColors.orange,
-                    borderColor: chartColors.orange,
-                    data: [
-                        Math.floor((Math.random() * 20) + 1),
-                        Math.floor((Math.random() * 20) + 1),
-                        Math.floor((Math.random() * 20) + 1),
-                        Math.floor((Math.random() * 20) + 1),
-                        Math.floor((Math.random() * 20) + 1),
-                        Math.floor((Math.random() * 20) + 1),
-                        Math.floor((Math.random() * 20) + 1)
-                    ],
-                }, {
-                        label: "Validadas",
-                        fill: false,
-                        backgroundColor: chartColors.blue,
-                        borderColor: chartColors.blue,
-                        data: [
-                            Math.floor((Math.random() * 20) + 1),
-                            Math.floor((Math.random() * 20) + 1),
-                            Math.floor((Math.random() * 20) + 1),
-                            Math.floor((Math.random() * 20) + 1),
-                            Math.floor((Math.random() * 20) + 1),
-                            Math.floor((Math.random() * 20) + 1),
-                            Math.floor((Math.random() * 20) + 1)
-                        ],
-                    }, {
-                        label: "No Validadas",
-                        fill: false,
-                        backgroundColor: chartColors.yellow,
-                        borderColor: chartColors.yellow,
-                        data: [
-                            Math.floor((Math.random() * 20) + 1),
-                            Math.floor((Math.random() * 20) + 1),
-                            Math.floor((Math.random() * 20) + 1),
-                            Math.floor((Math.random() * 20) + 1),
-                            Math.floor((Math.random() * 20) + 1),
-                            Math.floor((Math.random() * 20) + 1),
-                            Math.floor((Math.random() * 20) + 1)
-                        ],
-                    }, {
-                    label: "Con Errores",
-                    fill: false,
-                    backgroundColor: chartColors.red,
-                    borderColor: chartColors.red,
-                    data: [
-                        Math.floor((Math.random() * 20) + 1),
-                        Math.floor((Math.random() * 20) + 1),
-                        Math.floor((Math.random() * 20) + 1),
-                        Math.floor((Math.random() * 20) + 1),
-                        Math.floor((Math.random() * 20) + 1),
-                        Math.floor((Math.random() * 20) + 1),
-                        Math.floor((Math.random() * 20) + 1)
-                    ],
-                }, {
-                    label: "Omitidas",
-                    fill: false,
-                    backgroundColor: chartColors.grey,
-                    borderColor: chartColors.grey,
-                    data: [
-                        Math.floor((Math.random() * 20) + 1),
-                        Math.floor((Math.random() * 20) + 1),
-                        Math.floor((Math.random() * 20) + 1),
-                        Math.floor((Math.random() * 20) + 1),
-                        Math.floor((Math.random() * 20) + 1),
-                        Math.floor((Math.random() * 20) + 1),
-                        Math.floor((Math.random() * 20) + 1)
-                    ],
-                }]
-            },
+            data: data,
             options: {
                 responsive: true,
                 title:{
                     display:true,
-                    text:'Del 2017-07-17 al 2017-07-21'
+                    text:'Del {{$config['labels'][0]}} al {{$config['labels'][count($config['labels']) -1]}}'
                 },
                 tooltips: {
                     mode: 'index',

@@ -2,8 +2,11 @@
 
 namespace Ghi\Domain\Core\Repositories\Contabilidad;
 
+use Carbon\Carbon;
+use Carbon\CarbonInterval;
 use Ghi\Domain\Core\Contracts\Contabilidad\PolizaRepository;
 use Ghi\Domain\Core\Models\Contabilidad\CuentaContable;
+use Ghi\Domain\Core\Models\Contabilidad\EstatusPrePoliza;
 use Ghi\Domain\Core\Models\Contabilidad\HistPoliza;
 use Ghi\Domain\Core\Models\Contabilidad\HistPolizaMovimiento;
 use Ghi\Domain\Core\Models\Contabilidad\Poliza;
@@ -211,4 +214,82 @@ class EloquentPolizaRepository implements PolizaRepository
     }
 
 
+    /**
+     * recupera un array con los últimos 7 diasa partir de la fecha
+     * actual
+     * @return mixed
+     *
+     */
+    public function getDates()
+    {
+        $fechas = [];
+        $hoy = Carbon::now();
+        $pasado = Carbon::now()->subDays(7);
+
+
+        for($date = $pasado; $date->lte($hoy); $date->addDay()) {
+            $fechas[] = $date->format('Y/m/d');
+        }
+
+        return $fechas;
+    }
+
+    /**
+     * Obtiene los datos para las estadisticas iniciales
+     * @return mixed
+     *
+     */
+    public function getChartInfo()
+    {
+        $fechas = $this->getDates();
+
+        $config = [
+            'labels' => $fechas,
+            'datasets' => []
+        ];
+
+        foreach (EstatusPrePoliza::all() as $estatus) {
+            $d = [];
+            $resp = collect( DB::connection('cadeco')->table('Contabilidad.int_polizas')->select(DB::raw("FORMAT(fecha, 'yyyy/MM/dd') as fecha_"), DB::raw(" COUNT(*) AS count"))
+                    ->whereBetween('Contabilidad.int_polizas.fecha', [$fechas[0], $fechas[count($fechas)-1]])
+                    ->where('Contabilidad.int_polizas.estatus', '=', $estatus->estatus)
+                    ->groupBy('Contabilidad.int_polizas.fecha')->get());
+
+            if(count($resp) > 0) {
+                for ($i = 0; $i < count($fechas); $i++) {
+                    foreach ($resp as $r){
+                        if ($fechas[$i] == $r->fecha_){
+                            $d[$i] = $r->count;
+                            break;
+                        }
+                        $d[$i] = 0;
+                    }
+                }
+            } else {
+                for ($j = 0; $j < count($fechas); $j++) {
+                    $d[$j] = 0;
+                }
+            }
+
+            array_push($config['datasets'], [
+                'label' => $estatus->descripcion,
+                'backgroundColor' => $estatus->rgb,
+                'borderColor' => $estatus->rgb,
+                'data' => $d,
+                'fill' => false
+            ]);
+        }
+        return $config;
+    }
+
+    /**
+     * Retorna el conteo de cada tipo de poliza por fecha ingresada
+     * @return mixed
+     */
+    public function getCountDate($date, $tipo)
+    {
+
+        return $this->model->where('fecha', '=', $date)
+                    ->where('estatus', '=', $tipo)->count();
+    }
 }
