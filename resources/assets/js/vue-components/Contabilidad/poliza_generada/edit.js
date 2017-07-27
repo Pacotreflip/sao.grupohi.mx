@@ -1,22 +1,28 @@
 Vue.component('poliza-generada-edit', {
-    props: ['poliza', 'poliza_edit', 'datos_contables', 'url_cuenta_contable_findby', 'url_poliza_generada_update','tipo_cuenta_contable','cuentas_contables'],
+    props: ['poliza', 'poliza_edit', 'datos_contables', 'url_cuenta_contable_findby', 'url_poliza_generada_update', 'tipo_cuenta_contable', 'cuentas_contables'],
     data: function () {
         return {
             'data': {
                 'poliza': this.poliza,
                 'poliza_edit': this.poliza_edit,
-                'cuentas_contables':this.cuentas_contables
+                'cuentas_contables': this.cuentas_contables,
+                'movimientos': '',
+                'empresa': ''
             },
             'form': {
-                'movimiento' : {
-                    'id_int_poliza' : this.poliza.id_int_poliza,
-                    'cuenta_contable' : '',
-                    'id_tipo_movimiento_poliza' : '',
-                    'importe' : '',
-                    'referencia':'',
-                    'concepto':'',
-                    'id_tipo_cuenta_contable':''
+                'movimiento': {
+                    'id_int_poliza': this.poliza.id_int_poliza,
+                    'cuenta_contable': '',
+                    'id_tipo_movimiento_poliza': '',
+                    'importe': '',
+                    'referencia': '',
+                    'concepto': '',
+                    'id_tipo_cuenta_contable': ''
                 },
+                'movimiento_cuenta': {
+                    'id_int_poliza_movimiento': '',
+                    'cuenta': ''
+                }
             },
             'guardando': false
         }
@@ -30,7 +36,7 @@ Vue.component('poliza-generada-edit', {
         suma_haber: function () {
             var suma_haber = 0;
             this.data.poliza_edit.poliza_movimientos.forEach(function (movimiento) {
-                if(movimiento.id_tipo_movimiento_poliza == 2) {
+                if (movimiento.id_tipo_movimiento_poliza == 2) {
                     suma_haber += parseFloat(movimiento.importe);
                 }
             });
@@ -40,7 +46,7 @@ Vue.component('poliza-generada-edit', {
         suma_debe: function () {
             var suma_debe = 0;
             this.data.poliza_edit.poliza_movimientos.forEach(function (movimiento) {
-                if(movimiento.id_tipo_movimiento_poliza == 1) {
+                if (movimiento.id_tipo_movimiento_poliza == 1) {
                     suma_debe += parseFloat(movimiento.importe);
                 }
             });
@@ -50,15 +56,15 @@ Vue.component('poliza-generada-edit', {
 
     methods: {
 
-        obtener_numero_cuenta:function (idTipoCuenta) {
+        obtener_numero_cuenta: function (idTipoCuenta) {
             var self = this;
             this.data.cuentas_contables.forEach(function (cuenta) {
-                if(cuenta.id_int_tipo_cuenta_contable==idTipoCuenta) {
-                    self.form.movimiento.cuenta_contable=cuenta.cuenta_contable;
+                if (cuenta.id_int_tipo_cuenta_contable == idTipoCuenta) {
+                    self.form.movimiento.cuenta_contable = cuenta.cuenta_contable;
                 }
             });
-            if(self.form.movimiento.cuenta_contable=='NULL'){
-                self.form.movimiento.cuenta_contable='';
+            if (self.form.movimiento.cuenta_contable == 'NULL') {
+                self.form.movimiento.cuenta_contable = '';
             }
         },
 
@@ -68,25 +74,29 @@ Vue.component('poliza-generada-edit', {
             this.validation_errors.clear('form_add_movimiento');
         },
 
-        validateForm: function(scope, funcion) {
+       validateForm: function(scope, funcion) {
             this.$validator.validateAll(scope).then(() => {
                 if(funcion == 'confirm_add_movimiento') {
-                    this.confirm_add_movimiento();
-                } else  if (funcion == 'confirm_save') {
-                    this.confirm_save();
-                }
-            }).catch(() => {
+                this.confirm_add_movimiento();
+            } else  if (funcion == 'confirm_save') {
+                this.confirm_save();
+            }
+           else  if (funcion == 'confirm_save_cuenta') {
+               this.confirm_save_cuenta();
+           }
+
+       }).catch(() => {
                 swal({
-                     type: 'warning',
-                     title: 'Advertencia',
-                     text: 'Por favor corrija los errores del formulario'
-                 });
-            });
+                         type: 'warning',
+                         title: 'Advertencia',
+                         text: 'Por favor corrija los errores del formulario'
+                     });
+        });
         },
 
         close_add_movimiento: function () {
             $('#add_movimiento_modal').modal('hide');
-            this.form.movimiento =  {
+            this.form.movimiento = {
                 'id_int_poliza': this.poliza.id_int_poliza,
                 'cuenta_contable': '',
                 'id_tipo_movimiento_poliza': '',
@@ -94,7 +104,7 @@ Vue.component('poliza-generada-edit', {
             };
         },
 
-        confirm_add_movimiento: function() {
+        confirm_add_movimiento: function () {
             var self = this;
             swal({
                 title: "Agregar Movimiento",
@@ -109,15 +119,15 @@ Vue.component('poliza-generada-edit', {
         },
 
         add_movimiento: function () {
-           var self = this;
+            var self = this;
             var url = this.url_cuenta_contable_findby;
             $.ajax({
                 type: 'GET',
                 url: url,
                 data: {
-                    attribute : 'cuenta_contable',
-                    value : self.form.movimiento.cuenta_contable,
-                    with : 'tipoCuentaContable'
+                    attribute: 'cuenta_contable',
+                    value: self.form.movimiento.cuenta_contable,
+                    with: 'tipoCuentaContable'
                 },
                 success: function (data, textStatus, xhr) {
                     if (data.data.cuenta_contable) {
@@ -134,7 +144,7 @@ Vue.component('poliza-generada-edit', {
             });
         },
 
-        confirm_remove_movimiento: function(index) {
+        confirm_remove_movimiento: function (index) {
             var self = this;
             swal({
                 title: "Quitar Movimiento",
@@ -165,20 +175,33 @@ Vue.component('poliza-generada-edit', {
                 self.save();
             }).catch(swal.noop);
         },
+        confirm_save_cuenta: function () {
+            var self = this;
+            swal({
+                title: "Guardar Cambios de la cuenta: " + self.data.empresa.razon_social,
+                text: "¿Estás seguro de que la información es correcta?",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonText: "Si, Continuar",
+                cancelButtonText: "No, Cancelar",
+            }).then(function () {
+                self.save_cuenta();
+            }).catch(swal.noop);
+        },
 
         save: function () {
             var self = this;
 
-            Vue.set(this.data.poliza_edit,'suma_haber',this.suma_haber);
-            Vue.set(this.data.poliza_edit,'suma_debe',this.suma_debe);
+            Vue.set(this.data.poliza_edit, 'suma_haber', this.suma_haber);
+            Vue.set(this.data.poliza_edit, 'suma_debe', this.suma_debe);
 
 
             $.ajax({
                 type: 'POST',
                 url: self.url_poliza_generada_update,
                 data: {
-                    _method : 'PATCH',
-                    poliza_generada : self.data.poliza_edit
+                    _method: 'PATCH',
+                    poliza_generada: self.data.poliza_edit
                 },
                 beforeSend: function () {
                     self.guardando = true;
@@ -186,18 +209,150 @@ Vue.component('poliza-generada-edit', {
                 success: function (data, textStatus, xhr) {
                     swal({
                         title: '¡Correcto!',
-                        html: 'Póliza  <b>' +self.data.poliza_edit.transaccion_interfaz.descripcion + '</b> actualizada correctamente',
+                        html: 'Póliza  <b>' + self.data.poliza_edit.transaccion_interfaz.descripcion + '</b> actualizada correctamente',
                         type: 'success',
                         confirmButtonText: "Ok",
                         closeOnConfirm: false
                     }).then(function () {
                         window.location = xhr.getResponseHeader('Location');
-                    })  .catch(swal.noop);
+                    }).catch(swal.noop);
                 },
                 complete: function () {
                     self.guardando = false;
                 }
             });
+        },
+
+        ingresarCuenta: function (idPoliza) {
+            var self = this;
+            $.ajax({
+                type: 'GET',
+                url: App.host + "/sistema_contable/poliza_movimientos/" + idPoliza,
+                data: {
+                    id_poliza: idPoliza
+                },
+                beforeSend: function () {
+                    self.guardando = true;
+                },
+                success: function (data, textStatus, xhr) {
+                    self.data.movimientos = data.data.movimientos;
+
+                    if (self.data.movimientos.length > 0) {
+                        self.data.empresa = self.data.movimientos[0].empresa_cadeco;
+                        $('#add_cuenta_modal').modal('show');
+                    }
+                    else{
+                        swal('Las cuentas están completas.');
+                    }
+
+                },
+                complete: function () {
+                    self.guardando = false;
+                }
+            });
+
+
+        },
+        save_cuenta: function () {
+            var self = this;
+            $.ajax({
+                type: 'POST',
+                url: App.host + "/sistema_contable/poliza_movimientos/"+self.data.poliza.id_int_poliza,
+                data: {
+                    _method: 'PATCH',
+                    data:self.data.movimientos,
+                    validar:true
+                },
+                beforeSend: function () {
+                    self.guardando = true;
+                },
+                success: function (data, textStatus, xhr) {
+                   if(data.data.cambio){
+                        var datos="";
+                       for (var i = 0; i <data.data.cambio.length; i++) {
+                           data.data.cambio[i];
+                           datos+="<tr><td>"+data.data.cambio[i].tipo_cuenta_empresa.descripcion+"</td>";
+                           datos+="<td>"+data.data.cambio[i].cuenta+"</td>";
+                           datos+="<td>"+data.data.cambio[i].nuevo+"</td></tr>";
+                       }
+                       swal({
+                               title: "Advertencia",
+                               html: "El numero de cuenta que trata de ingresar no corresponde al actual" +
+                               "<table class='table table-striped small'>" +
+                               "   <thead>" +
+                               "   <tr>" +
+                               "       <th style='text-align: center'>Tipo de Cuenta Contable</th>" +
+                               "       <th style='text-align: center'>Actual</th>" +
+                               "       <th style='text-align: center'>Nuevo</th>" +
+                               "   </tr>" +
+                               "   </thead>" +
+                               "   <tbody>" +datos
+                               +"   </tbody>" +
+                               "</table>" +
+                               "<b>¿Deseas reemplazar la cuenta contable?</b><br>",
+                               type: "warning",
+                               showCancelButton: true,
+                               cancelButtonText: 'No, Cancelar',
+                               confirmButtonText: 'Si, Continuar',
+                           }
+                       ).then(function (){
+
+                           $.ajax({
+                               type: 'POST',
+                               url: App.host + "/sistema_contable/poliza_movimientos/"+self.data.poliza.id_int_poliza,
+                               data: {
+                                   _method: 'PATCH',
+                                   data:self.data.movimientos,
+                                   validar:false
+                               },
+                               beforeSend: function () {
+                                   self.guardando = true;
+                               },
+                               success: function (data, textStatus, xhr) {
+                                self.data.poliza=data.data.poliza;
+                                   swal({
+                                       title: '¡Correcto!',
+                                       html: 'La Cuenta:'+self.data.empresa.razon_social+' fue actualizada correctamente',
+                                       type: 'success',
+                                       confirmButtonText: "Ok",
+                                       closeOnConfirm: false
+                                   }).then(function () {
+                                   }).catch(swal.noop);
+                                   window.location.reload(true);
+                                   $('#add_cuenta_modal').modal('hide');
+                                   },
+                               complete: function () {
+                                   self.guardando = false;
+                               }
+                           });
+
+                       }).catch(swal.noop);
+
+                   }else{
+                       self.data.poliza=data.data.poliza;
+                       swal({
+                           title: '¡Correcto!',
+                           html: 'La Cuenta:'+self.data.empresa.razon_social+' fue actualizada correctamente',
+                           type: 'success',
+                           confirmButtonText: "Ok",
+                           closeOnConfirm: false
+                       }).then(function () {
+                       }).catch(swal.noop);
+                       $('#add_cuenta_modal').modal('hide');
+                       window.location.reload(true);
+                   }
+
+                },
+                complete: function () {
+                    self.guardando = false;
+                }
+            });
+
+
+        },
+
+        close_cuenta_modal: function () {
+            $('#add_cuenta_modal').modal('hide');
         }
     }
 });

@@ -60,4 +60,12 @@ interface PolizaRepository
 
     public function scope($scope);
 
+    /**
+     * Ingresa manualmente el folio contpaq para la prepóliza
+     * @param $data
+     * @param $id
+     * @return mixed
+     * @throws \Exception
+     */
+    public function ingresarFolio($data, $id);
 }

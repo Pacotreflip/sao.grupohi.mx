@@ -27,7 +27,7 @@ class PolizaController extends Controller
         $this->middleware('context');
 
         $this->middleware('permission:consultar_prepolizas_generadas', ['only' => ['index', 'show']]);
-        $this->middleware('permission:editar_prepolizas_generadas', ['only' => ['edit', 'update']]);
+        $this->middleware('permission:editar_prepolizas_generadas', ['only' => ['edit', 'update', 'ingresarFolio']]);
 
         $this->poliza = $poliza;
         $this->tipoCuentaContable = $tipoCuenta;
@@ -128,6 +128,12 @@ class PolizaController extends Controller
     public function update(Request $request, $id)
     {
         $item = $this->poliza->update($request->all(), $id);
+        return $this->response->created(route('sistema_contable.poliza_generada.show', $item));
+    }
+
+    public function ingresarFolio(Request $request, $id) {
+
+        $item = $this->poliza->ingresarFolio($request->all(), $id);
         return $this->response->created(route('sistema_contable.poliza_generada.show', $item));
     }
 }

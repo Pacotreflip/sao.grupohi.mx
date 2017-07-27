@@ -158,6 +158,11 @@ class EloquentPolizaRepository implements PolizaRepository
                 }
             } else {
 
+                if (isset($data['poliza_generada']['fecha'])) {
+                    $poliza->update([
+                        'fecha_original' => $poliza->fecha
+                    ]);
+                }
                 $poliza->update($data['poliza_generada']);
             }
 
@@ -187,12 +192,12 @@ class EloquentPolizaRepository implements PolizaRepository
      */
     public function paginate($perPage)
     {
-        return $this->model->paginate($perPage);
+        return $this->model->orderBy('created_at', 'DESC')->paginate($perPage);
     }
 
     public function where(array $where)
     {
-        $this->model = $this->model->where($where);
+        $this->model = $this->model->where($where)->orderBy('created_at', 'DESC');
         return $this;
     }
 
@@ -292,45 +297,38 @@ class EloquentPolizaRepository implements PolizaRepository
     }
 
     /**
-     * Retorna el acumilado de Polizas Tipo de acuerdo al total por estatus
+     * Ingresa manualmente el folio contpaq para la prepóliza
+     * @param $data
+     * @param $id
      * @return mixed
+     * @throws \Exception
      */
-    public function getChartAcumuladoInfo()
+    public function ingresarFolio($data, $id)
     {
-        $labels=[];
-        $data = [];
-        $backgroundColor = [];
+        try {
 
-        $acumulado = $this->model->select(DB::raw(" COUNT(*) AS count"), 'estatus')->groupBy('estatus')->get();
+            DB::connection('cadeco')->beginTransaction();
 
-        foreach (EstatusPrePoliza::all() as $estatus) {
-            for($i = 0; $i < count($acumulado); $i++){
-                if($acumulado[$i]->estatus == $estatus->estatus){
-                    $labels[] = $estatus->descripcion;
-                    $data[] = $acumulado[$i]->count;
-                    $backgroundColor[] = $estatus->rgb;
-                    break;
-                }
+            if (!$poliza = $this->model->find($id)) {
+                throw new HttpResponseException(new Response('No se encontró la prepóliza', 404));
             }
+
+            if($poliza->estatus == 1 || $poliza->estatus == 2 ) {
+                throw new HttpResponseException(new Response('No se puede editar la prepóliza ya que su estatus es '.  $poliza->estatusPrepoliza , 404));
+            }
+
+            $poliza->update([
+                'estatus' => 3,
+                'fecha_original' => $poliza->fecha
+            ]);
+
+            $poliza->update($data);
+
+
+            DB::connection('cadeco')->commit();
+        } catch (\Exception $e) {
+            DB::connection('cadeco')->rollback();
+            throw $e;
         }
-
-        $acum = [
-            'labels' => $labels,
-            'datasets' => [[
-                'data'=> $data,
-                'backgroundColor'=> $backgroundColor
-            ]]
-        ];
-
-        return $acum;
-    }
-
-    /**
-     * Regresa los datos para el Chart informativo de Cuentas Contables
-     * @return mixed
-     */
-    public function getChartCuentaContableInfo()
-    {
-
-    }
+        return $this->find($id);    }
 }

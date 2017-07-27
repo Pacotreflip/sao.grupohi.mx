@@ -56,5 +56,11 @@ interface CuentaEmpresaRepository
      */
     public function with($relations);
 
+    /**
+     *  Contiene los parametros de búsqueda
+     * @param array $where
+     * @return mixed
+     */
+    public function where(array $where);
 
 }

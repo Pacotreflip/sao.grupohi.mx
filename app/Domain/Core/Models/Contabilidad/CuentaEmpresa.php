@@ -10,8 +10,10 @@ namespace Ghi\Domain\Core\Models\Contabilidad;
 
 
 
+use Ghi\Core\Facades\Context;
 use Ghi\Domain\Core\Models\BaseModel;
 use Ghi\Domain\Core\Models\Empresa;
+use Ghi\Domain\Core\Models\Scopes\ObraScope;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 
@@ -29,12 +31,19 @@ class CuentaEmpresa extends BaseModel
       ,'estatus'
     ];
 
-    public function __construct(array $attributes = [])
+
+    protected static function boot()
     {
-        $attributes['estatus'] = 1;
-        $attributes['id_obra'] = \Ghi\Core\Facades\Context::getId();
-        parent::__construct($attributes);
+        parent::boot();
+        static::addGlobalScope(new ObraScope());
+
+        static::creating(function ($model) {
+            $model->estatus = 1;
+            $model->registro = auth()->user()->idusuario;
+            $model->id_obra = Context::getId();
+        });
     }
+
     public function getTotalCuentasAttribute(){
         return  CuentaEmpresa::where('id_empresa', '=', $this->id_empresa)->where('estatus','=','1')->count();
     }

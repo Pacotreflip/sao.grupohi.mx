@@ -47,6 +47,7 @@ Route::group(['prefix' => 'sistema_contable'], function () {
     Route::get('poliza_generada/{id}/edit', 'PolizaController@edit')->name('sistema_contable.poliza_generada.edit')->where(['id' => '[0-9]+']);
     Route::get('poliza_generada/{poliza}/historico', 'PolizaHistoricoController@index')->name('sistema_contable.poliza_generada.historico')->where(['id' => '[0-9]+']);
     Route::patch('poliza_generada/{id}', 'PolizaController@update')->name('sistema_contable.poliza_generada.update')->where(['id' => '[0-9]+']);
+    Route::patch('poliza_generada/{id}/ingresar_folio', 'PolizaController@ingresarFolio')->name('sistema_contable.poliza_generada.ingresar_folio')->where(['id' => '[0-9]+']);
 
     /**
      * Relación Cuentas Concepto
@@ -107,5 +108,11 @@ Route::group(['prefix' => 'sistema_contable'], function () {
      */
     Route::get('notificacion', 'NotificacionController@index')->name('sistema_contable.notificacion.index');
     Route::get('notificacion/{id}', 'NotificacionController@show')->name('sistema_contable.notificacion.show');
+
+    /**
+     * Poliza Movimientos
+     */
+    Route::get('poliza_movimientos/{id}', 'PolizaMovimientosController@edit')->name('sistema_contable.poliza_movimientos.edit')->where(['id' => '[0-9]+']);
+    Route::patch('poliza_movimientos/{id}', 'PolizaMovimientosController@update')->name('sistema_contable.poliza_movimientos.update')->where(['id' => '[0-9]+']);
 
 });

@@ -1,0 +1,9 @@
+
+                                                                  
+  [Symfony\Component\Console\Exception\CommandNotFoundException]  
+  Command "config" is not defined.                                
+  Did you mean one of these?                                      
+      config:clear                                                
+      config:cache                                                
+                                                                  
+
