@@ -3,7 +3,6 @@
 namespace Ghi\Domain\Core\Repositories\Contabilidad;
 
 use Carbon\Carbon;
-use Carbon\CarbonInterval;
 use Ghi\Domain\Core\Contracts\Contabilidad\PolizaRepository;
 use Ghi\Domain\Core\Models\Contabilidad\CuentaContable;
 use Ghi\Domain\Core\Models\Contabilidad\EstatusPrePoliza;
@@ -13,7 +12,6 @@ use Ghi\Domain\Core\Models\Contabilidad\Poliza;
 use Ghi\Domain\Core\Models\Contabilidad\PolizaMovimiento;
 use Illuminate\Http\Exception\HttpResponseException;
 use Illuminate\Support\Facades\DB;
-use Mockery\Exception;
 use Symfony\Component\HttpFoundation\Response;
 
 
@@ -291,5 +289,48 @@ class EloquentPolizaRepository implements PolizaRepository
 
         return $this->model->where('fecha', '=', $date)
                     ->where('estatus', '=', $tipo)->count();
+    }
+
+    /**
+     * Retorna el acumilado de Polizas Tipo de acuerdo al total por estatus
+     * @return mixed
+     */
+    public function getChartAcumuladoInfo()
+    {
+        $labels=[];
+        $data = [];
+        $backgroundColor = [];
+
+        $acumulado = $this->model->select(DB::raw(" COUNT(*) AS count"), 'estatus')->groupBy('estatus')->get();
+
+        foreach (EstatusPrePoliza::all() as $estatus) {
+            for($i = 0; $i < count($acumulado); $i++){
+                if($acumulado[$i]->estatus == $estatus->estatus){
+                    $labels[] = $estatus->descripcion;
+                    $data[] = $acumulado[$i]->count;
+                    $backgroundColor[] = $estatus->rgb;
+                    break;
+                }
+            }
+        }
+
+        $acum = [
+            'labels' => $labels,
+            'datasets' => [[
+                'data'=> $data,
+                'backgroundColor'=> $backgroundColor
+            ]]
+        ];
+
+        return $acum;
+    }
+
+    /**
+     * Regresa los datos para el Chart informativo de Cuentas Contables
+     * @return mixed
+     */
+    public function getChartCuentaContableInfo()
+    {
+
     }
 }
