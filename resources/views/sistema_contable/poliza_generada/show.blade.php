@@ -15,19 +15,19 @@
             </a>
             @endif
             @if($poliza->estatus== -2 || $poliza->estatus== 0)
-                <a  class="btn btn-app btn-info pull-right" onclick="validar_prepoliza({{$poliza->id_int_poliza}})">
-                    <i class="fa fa-check-square-o"></i> Validar
-                </a>
+            <a  class="btn btn-app btn-info pull-right" onclick="validar_prepoliza({{$poliza->id_int_poliza}})">
+                <i class="fa fa-check-square-o"></i> Validar
+            </a>
             @endif
             @if($poliza->estatus == 0 || $poliza->estatus== -2 || $poliza->estatus == -1)
-                <a  class="btn btn-app btn-info pull-right" onclick="omitir_prepoliza({{$poliza->id_int_poliza}})">
-                    <i class="glyphicon glyphicon-thumbs-down"></i> Omitir
-                </a>
+            <a  class="btn btn-app btn-info pull-right" onclick="omitir_prepoliza({{$poliza->id_int_poliza}})">
+                <i class="glyphicon glyphicon-thumbs-down"></i> Omitir
+            </a>
             @endif
-                @if($poliza->estatus == -1 || $poliza->estatus == 0)
-                <a  class="btn btn-app btn-info pull-right" onclick="ingresar_folio_contpaq({{$poliza->id_int_poliza}})">
-                    <i class="fa fa-i-cursor"></i> Ingrear Folio Contpaq
-                </a>
+            @if($poliza->estatus == -1 || $poliza->estatus == 0)
+            <a  class="btn btn-app btn-info pull-right" data-toggle="modal" data-target="#folioContpaqModal">
+                <i class="fa fa-i-cursor"></i> Ingrear Folio Contpaq
+            </a>
             @endif
             @endpermission
         </div>
@@ -43,7 +43,7 @@
                         <table class="table table-bordered">
                             <tr>
                                 <th  class="bg-gray-light">Tipo Póliza SAO:<br><label>{{ $poliza->transaccionInterfaz}}</label></th>
-                                <th class="bg-gray-light">Fecha de Solicitud:<br><label>{{ $poliza->created_at->format('Y-m-d h:i:s a')}}</label></th>
+                                <th class="bg-gray-light">Fecha de Prepóliza:<br><label>{{ $poliza->fecha->format('Y-m-d h:i:s a')}}</label></th>
                                 <th  class="bg-gray-light">Usuario Solicita:<br><label> {{$poliza->usuario_solicita }}</label></th>
                                 <th class="bg-gray-light">Cuadre:<br><label>$ {{number_format($poliza->cuadre,'2','.',',')}}</label></th>
                             </tr>
@@ -117,6 +117,42 @@
             </div>
         </div>
     </div>
+
+    <!-- Modal Folio Contpaq-->
+    <div class="modal fade" id="folioContpaqModal" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" >Ingresar Folio Contpaq</h4>
+                </div>
+                <form id="folio_contpaq_form" action="{{route('sistema_contable.poliza_generada.ingresar_folio', $poliza)}}">
+                    <input type="hidden" name="estatus" value="3">
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="folio_contpaq"><strong>Número de Folio</strong></label>
+                                <input type="number" id="folio_contpaq" name="poliza_contpaq" class="form-control" required>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="fecha"><strong>Fecha de Prepóliza</strong></label>
+                                <input type="text" id="fecha" class="fecha form-control" name="fecha" data-date-end-date="0d" required>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                    <button type="submit" class="btn btn-primary">Guardar</button>
+                </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
 @endsection
 @section('scripts-content')
     <script>
@@ -132,35 +168,34 @@
                 showLoaderOnConfirm: true,
                 allowOutsideClick: false
             }).then(function (inputValue)
-            { $.ajax({
-                url: url,
-                type: 'POST',
-                data: {
-                    _method: "PATCH",
-                    'poliza_generada':{
-                        'estatus':1,
-                        'lanzable':'True'
+            {
+                $.ajax({
+                    url: url,
+                    type: 'POST',
+                    data: {
+                        _method: "PATCH",
+                        'poliza_generada':{
+                            'estatus':1,
+                            'lanzable':'True'
+                        }
+
+                    },
+                    success: function (data, textStatus, xhr) {
+                        swal({
+                            type: "success",
+                            title: '¡Correcto!',
+                            text: 'Prepóliza validada con éxito',
+                            confirmButtonText: "Ok",
+                            closeOnConfirm: false
+                        }).then(function () {
+                            location.reload();
+                        });
+                    },
+                    complete: function () {
 
                     }
-
-                },
-                success: function (data, textStatus, xhr) {
-                    swal({
-                        type: "success",
-                        title: '¡Correcto!',
-                        text: 'Prepóliza validada con éxito',
-                        confirmButtonText: "Ok",
-                        closeOnConfirm: false
-                    }).then(function () {
-                        location.reload();
-                    });
-                },
-                complete: function () {
-
-                }
-            });
+                });
             }) .catch(swal.noop);
-
         }
 
         function omitir_prepoliza(id) {
@@ -201,61 +236,42 @@
                 }
             });
             }) .catch(swal.noop);
-
         }
 
-        function ingresar_folio_contpaq(id) {
+        $('#folio_contpaq_form').on('submit', function(e) {
+            e.preventDefault();
 
-            var url=App.host +"/sistema_contable/poliza_generada/" + id;
+            var url = $('#folio_contpaq_form').attr('action');
+
             swal({
-                title: "¡Ingresar Folio Contpaq!",
-                text: "Por favor especifique el folio Contpaq para la prepóliza",
-                input: 'text',
-                inputPlaceholder: "Folio Contpaq",
-                confirmButtonText: "Guardar",
-                cancelButtonText: "Cancelar",
+                title: "Guardar Plantilla",
+                text: "¿Estás seguro de que la información es correcta?",
+                type: "warning",
                 showCancelButton: true,
-                showLoaderOnConfirm: true,
-                preConfirm: function (inputValue) {
-                    return new Promise(function (resolve, reject) {
-                        setTimeout(function() {
-                            if (inputValue === false) return false;
-                            if (inputValue === "") {
-                                reject("¡Escriba el folio Contpaq!");
-                                return false
-                            }
-                            if(! $.isNumeric(inputValue)) {
-                                reject("¡Ingrese solo caracteres numéricos");
-                            }
-                            resolve()
-                        },500)
-                    })
-                },
-                allowOutsideClick: false
-            }).then(function (inputValue)
-            { $.ajax({
-                url: url,
-                type: 'POST',
-                data: {
-                    _method: 'PATCH',
-                    poliza_generada: {
-                        poliza_contpaq: inputValue,
-                        estatus: 3
-                    }
-                },
-                success: function (data, textStatus, xhr) {
-                    swal({
-                        type: "success",
-                        title: '¡Correcto!',
-                        text: 'Folio Contpaq ingresado correctamente'
-                    });
-                    location.reload();
-                },
-                complete: function () {
+                confirmButtonText: "Si, Continuar",
+                cancelButtonText: "No, Cancelar",
+            }).then(function () {
+                $.ajax({
+                    url: url,
+                    type: 'POST',
+                    data: {
+                        _method: 'PATCH',
+                        fecha: $('#fecha').val(),
+                        poliza_contpaq: $('#folio_contpaq').val()
+                    },
+                    success: function (data, textStatus, xhr) {
+                        swal({
+                            type: "success",
+                            title: '¡Correcto!',
+                            text: 'Folio Contpaq ingresado correctamente'
+                        });
+                        location.reload();
+                    },
+                    complete: function () {
 
-                }
-            });
-            }) .catch(swal.noop);
-        }
+                    }
+                });
+            }).catch(swal.noop);
+        });
     </script>
 @endsection

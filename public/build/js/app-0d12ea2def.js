@@ -64062,8 +64062,15 @@ $(function () {
             cancelLabel: 'Cancelar'
         }
     }).val('');
-
     $('.formato_cuenta').mask(App.formato_cuenta);
+    $('.fecha').datepicker({
+        autoclose: true,
+        language: 'es',
+        todayHighlight: true,
+        clearBtn: true,
+        cleartxt: 'Limpiar',
+        format: 'yyyy-mm-dd'
+    });
 });
 
 Number.prototype.formatMoney = function (c, d, t) {

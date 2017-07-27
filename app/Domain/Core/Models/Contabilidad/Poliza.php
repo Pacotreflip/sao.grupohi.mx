@@ -43,8 +43,11 @@ class Poliza extends BaseModel
         'id_poliza_contpaq',
         'poliza_contpaq',
         'registro',
-        'lanzable'
+        'lanzable',
+        'fecha_original'
     ];
+
+    protected $dates = ['fecha'];
 
     protected $appends = ['suma_debe', 'suma_haber'];
 

@@ -80,4 +80,13 @@ interface PolizaRepository
      * @return mixed
      */
     public function getCountDate($date, $tipo);
+
+    /**
+     * Ingresa manualmente el folio contpaq para la prepóliza
+     * @param $data
+     * @param $id
+     * @return mixed
+     * @throws \Exception
+     */
+    public function ingresarFolio($data, $id);
 }
