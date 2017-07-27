@@ -65776,9 +65776,7 @@ Vue.component('poliza-generada-edit', {
             'data': {
                 'poliza': this.poliza,
                 'poliza_edit': this.poliza_edit,
-                'cuentas_contables': this.cuentas_contables,
-                'movimientos': '',
-                'empresa': ''
+                'cuentas_contables': this.cuentas_contables
             },
             'form': {
                 'movimiento': {
@@ -65789,10 +65787,6 @@ Vue.component('poliza-generada-edit', {
                     'referencia': '',
                     'concepto': '',
                     'id_tipo_cuenta_contable': ''
-                },
-                'movimiento_cuenta': {
-                    'id_int_poliza_movimiento': '',
-                    'cuenta': ''
                 }
             },
             'guardando': false
@@ -65853,8 +65847,6 @@ Vue.component('poliza-generada-edit', {
                     _this.confirm_add_movimiento();
                 } else if (funcion == 'confirm_save') {
                     _this.confirm_save();
-                } else if (funcion == 'confirm_save_cuenta') {
-                    _this.confirm_save_cuenta();
                 }
             }).catch(function () {
                 swal({
@@ -65945,19 +65937,6 @@ Vue.component('poliza-generada-edit', {
                 self.save();
             }).catch(swal.noop);
         },
-        confirm_save_cuenta: function confirm_save_cuenta() {
-            var self = this;
-            swal({
-                title: "Guardar Cambios de la cuenta: " + self.data.empresa.razon_social,
-                text: "¿Estás seguro de que la información es correcta?",
-                type: "warning",
-                showCancelButton: true,
-                confirmButtonText: "Si, Continuar",
-                cancelButtonText: "No, Cancelar"
-            }).then(function () {
-                self.save_cuenta();
-            }).catch(swal.noop);
-        },
 
         save: function save() {
             var self = this;
@@ -65990,114 +65969,6 @@ Vue.component('poliza-generada-edit', {
                     self.guardando = false;
                 }
             });
-        },
-
-        ingresarCuenta: function ingresarCuenta(idPoliza) {
-            var self = this;
-            $.ajax({
-                type: 'GET',
-                url: App.host + "/sistema_contable/poliza_movimientos/" + idPoliza,
-                data: {
-                    id_poliza: idPoliza
-                },
-                beforeSend: function beforeSend() {
-                    self.guardando = true;
-                },
-                success: function success(data, textStatus, xhr) {
-                    self.data.movimientos = data.data.movimientos;
-
-                    if (self.data.movimientos.length > 0) {
-                        self.data.empresa = self.data.movimientos[0].empresa_cadeco;
-                        $('#add_cuenta_modal').modal('show');
-                    } else {
-                        swal('Las cuentas están completas.');
-                    }
-                },
-                complete: function complete() {
-                    self.guardando = false;
-                }
-            });
-        },
-        save_cuenta: function save_cuenta() {
-            var self = this;
-            $.ajax({
-                type: 'POST',
-                url: App.host + "/sistema_contable/poliza_movimientos/" + self.data.poliza.id_int_poliza,
-                data: {
-                    _method: 'PATCH',
-                    data: self.data.movimientos,
-                    validar: true
-                },
-                beforeSend: function beforeSend() {
-                    self.guardando = true;
-                },
-                success: function success(data, textStatus, xhr) {
-                    if (data.data.cambio) {
-                        var datos = "";
-                        for (var i = 0; i < data.data.cambio.length; i++) {
-                            data.data.cambio[i];
-                            datos += "<tr><td>" + data.data.cambio[i].tipo_cuenta_empresa.descripcion + "</td>";
-                            datos += "<td>" + data.data.cambio[i].cuenta + "</td>";
-                            datos += "<td>" + data.data.cambio[i].nuevo + "</td></tr>";
-                        }
-                        swal({
-                            title: "Advertencia",
-                            html: "El numero de cuenta que trata de ingresar no corresponde al actual" + "<table class='table table-striped small'>" + "   <thead>" + "   <tr>" + "       <th style='text-align: center'>Tipo de Cuenta Contable</th>" + "       <th style='text-align: center'>Actual</th>" + "       <th style='text-align: center'>Nuevo</th>" + "   </tr>" + "   </thead>" + "   <tbody>" + datos + "   </tbody>" + "</table>" + "<b>¿Deseas reemplazar la cuenta contable?</b><br>",
-                            type: "warning",
-                            showCancelButton: true,
-                            cancelButtonText: 'No, Cancelar',
-                            confirmButtonText: 'Si, Continuar'
-                        }).then(function () {
-
-                            $.ajax({
-                                type: 'POST',
-                                url: App.host + "/sistema_contable/poliza_movimientos/" + self.data.poliza.id_int_poliza,
-                                data: {
-                                    _method: 'PATCH',
-                                    data: self.data.movimientos,
-                                    validar: false
-                                },
-                                beforeSend: function beforeSend() {
-                                    self.guardando = true;
-                                },
-                                success: function success(data, textStatus, xhr) {
-                                    self.data.poliza = data.data.poliza;
-                                    swal({
-                                        title: '¡Correcto!',
-                                        html: 'La Cuenta:' + self.data.empresa.razon_social + ' fue actualizada correctamente',
-                                        type: 'success',
-                                        confirmButtonText: "Ok",
-                                        closeOnConfirm: false
-                                    }).then(function () {}).catch(swal.noop);
-                                    window.location.reload(true);
-                                    $('#add_cuenta_modal').modal('hide');
-                                },
-                                complete: function complete() {
-                                    self.guardando = false;
-                                }
-                            });
-                        }).catch(swal.noop);
-                    } else {
-                        self.data.poliza = data.data.poliza;
-                        swal({
-                            title: '¡Correcto!',
-                            html: 'La Cuenta:' + self.data.empresa.razon_social + ' fue actualizada correctamente',
-                            type: 'success',
-                            confirmButtonText: "Ok",
-                            closeOnConfirm: false
-                        }).then(function () {}).catch(swal.noop);
-                        $('#add_cuenta_modal').modal('hide');
-                        window.location.reload(true);
-                    }
-                },
-                complete: function complete() {
-                    self.guardando = false;
-                }
-            });
-        },
-
-        close_cuenta_modal: function close_cuenta_modal() {
-            $('#add_cuenta_modal').modal('hide');
         }
     }
 });

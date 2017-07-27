@@ -23,6 +23,10 @@ class CuentaContableController extends Controller
         $this->middleware('auth');
         $this->middleware('context');
 
+        $this->middleware('permission:consultar_cuenta_general', ['only' => ['index']]);
+        $this->middleware('permission:editar_cuenta_general', ['only' => ['update']]);
+        $this->middleware('permission:registrar_cuenta_general', ['only' => ['store']]);
+
         $this->cuenta_contable = $cuenta_contable;
         $this->tipo_cuenta_contable = $tipo_cuenta_contable;
     }

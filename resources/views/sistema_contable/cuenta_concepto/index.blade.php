@@ -54,7 +54,9 @@
                                                 <th>Cuenta Contable</th>
                                                 <th>Usuario que Registró</th>
                                                 <th>Fecha y Hora de Registro</th>
+                                                @permission(['editar_cuenta_concepto', 'registrar_cuenta_concepto'])
                                                 <th>Acciones</th>
+                                                @endpermission
                                             </tr>
                                             </thead>
                                             <tbody>
@@ -90,12 +92,18 @@
                                                     <td>
                                                         @{{ concepto.cuenta_concepto != null ? (new Date(concepto.cuenta_concepto.created_at)).dateFormat() : '---' }}
                                                     </td>
+                                                    @permission(['editar_cuenta_concepto', 'registrar_cuenta_concepto'])
                                                     <td v-if="concepto.cuenta_concepto != null">
+                                                        @permission('editar_cuenta_concepto')
                                                         <button title="Editar" class="btn btn-xs btn-info" @click="edit_cuenta(concepto)"> <i class="fa fa-edit"></i></button>
+                                                        @endpermission
                                                     </td>
                                                     <td v-else>
+                                                        @permission('registrar_cuenta_concepto')
                                                         <button title="Registrar" class="btn btn-xs btn-success" @click="edit_cuenta(concepto)"> <i class="fa fa-edit"></i></button>
+                                                        @endpermission
                                                     </td>
+                                                    @endpermission
                                                 </tr>
                                             </tbody>
                                         </table>

@@ -2,7 +2,9 @@
 
 namespace Ghi\Http\Controllers;
 
+use Dingo\Api\Http\Response\Format\Json;
 use Ghi\Domain\Core\Contracts\Contabilidad\NotificacionRepository;
+use Ghi\Domain\Core\Contracts\Contabilidad\PolizaRepository;
 use Ghi\Domain\Core\Contracts\UserRepository;
 use Illuminate\Session\Store;
 
@@ -15,13 +17,16 @@ class PagesController extends Controller
      */
     private $notificacion;
 
-    public function __construct(Store $session,NotificacionRepository $notificacion)
+    private $poliza;
+
+    public function __construct(Store $session,NotificacionRepository $notificacion, PolizaRepository $poliza)
     {
         parent::__construct();
         $this->middleware('auth');
         $this->middleware('context', ['only' => 'sistema_contable']);
         $this->session = $session;
         $this->notificacion=$notificacion;
+        $this->poliza = $poliza;
     }
 
     public function index() {
@@ -47,8 +52,11 @@ class PagesController extends Controller
     }
 
     public function sistema_contable() {
-        return view('sistema_contable.index');
+        $config = $this->poliza->getChartInfo();
+
+        return view('sistema_contable.index')->with('config', $config);
     }
+
     public function compras() {
         return view('compras.index');
     }

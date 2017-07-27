@@ -1,7 +1,7 @@
 @extends('sistema_contable.layout')
 @section('title', 'Cuentas Almacenes')
 @section('contentheader_title', 'CUENTAS DE ALMACENES')
-@section('contentheader_description', '(LISTA)')
+@section('contentheader_description', '(INDEX)')
 
 @section('main-content')
     {!! Breadcrumbs::render('sistema_contable.cuenta_almacen.index') !!}
@@ -31,7 +31,9 @@
                                             <th class="sorting" tabindex="0" aria-controls="tipo_cuenta">Almacén</th>
                                             <th class="sorting" tabindex="0" aria-controls="tipo_cuenta">Tipo de Almacén</th>
                                             <th class="sorting" tabindex="0" aria-controls="tipo_cuenta">Cuenta Contable</th>
+                                            @permission(['editar_cuenta_almacen', 'registrar_cuenta_almacen'])
                                             <th class="sorting" tabindex="0" aria-controls="tipo_cuenta">Acciones</th>
+                                            @endpermission
                                         </tr>
                                         </thead>
                                         <tbody>
@@ -45,11 +47,20 @@
                                             <td v-else>
                                                 ---
                                             </td>
-                                            <td style="min-width: 90px;max-width: 90px">
-                                                <div class="btn-group">
+                                            @permission(['editar_cuenta_almacen', 'registrar_cuenta_almacen'])
+                                            <td style="min-width: 90px;max-width: 90px" >
+                                                @permission('editar_cuenta_almacen')
+                                                <div class="btn-group" v-if="item.cuenta_almacen != null">
                                                     <button title="Editar" class="btn btn-xs btn-info" type="button" @click="editar(item)"><i class="fa fa-edit"></i> </button>
                                                 </div>
+                                                @endpermission
+                                                @permission('registrar_cuenta_almacen')
+                                                <div class="btn-group" v-else>
+                                                    <button title="Registrar" class="btn btn-xs btn-success" type="button" @click="editar(item)"> <i class="fa fa-edit"></i></button>
+                                                </div>
+                                                @endpermission
                                             </td>
+                                            @endpermission
                                         </tr>
                                         </tbody>
                                         <tfoot>
@@ -58,7 +69,9 @@
                                                 <th>Almacén</th>
                                                 <th>Tipo de Almacén</th>
                                                 <th>Cuenta Contable</th>
+                                                @permission(['editar_cuenta_almacen', 'registrar_cuenta_almacen'])
                                                 <th>Acciones</th>
+                                                @endpermission
                                             </tr>
                                         </tfoot>
                                     </table>

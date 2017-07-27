@@ -8,6 +8,7 @@
     <global-errors></global-errors>
     <cuenta-material-index
                 :familia="{{$familia}}"
+                :tipo_cuenta_material="{{$tipo_cuenta_material}}"
                 :datos_contables="{{$currentObra->datosContables}}"
                 :url_cuenta_material_store="'{{route('sistema_contable.cuenta_material.store')}}'"
                 v-cloak
@@ -55,11 +56,12 @@
                                                     <th>Descripción</th>
                                                     <th>Cuenta</th>
                                                     <th>Fecha y Hora de Registro</th>
+                                                    @permission(['editar_cuenta_material', 'registrar_cuenta_material'])
                                                     <th>Acciones</th>
+                                                    @endpermission
                                                 </tr>
                                                 </thead>
                                                 <tbody>
-
                                                     <tr v-for="(cuenta, index) in data.familia">
                                                         <td>@{{index+1}}</td>
                                                         <td width="65%">@{{cuenta.descripcion}}</td>
@@ -70,13 +72,23 @@
                                                             ---
                                                         </td>
                                                         <td>@{{cuenta.FechaHoraRegistro}}</td>
-                                                        <td>
-                                                            <div class="btn-group">
-                                                                <button title="Editar" class="btn-xs btn-info" type="button" @click="editar(cuenta)"><i class="fa fa-edit"></i> </button>
+                                                        @permission(['editar_cuenta_material', 'registrar_cuenta_material'])
+                                                        <td v-if="cuenta.cuenta_material != null">
+                                                            @permission('editar_cuenta_material')
+                                                            <div class="btn-group" >
+                                                                <button title="Editar" class="btn-xs btn btn-info" type="button" @click="editar(cuenta)"><i class="fa fa-edit"></i> </button>
                                                             </div>
+                                                            @endpermission
                                                         </td>
+                                                        <td v-else>
+                                                            @permission('registrar_cuenta_material')
+                                                            <div class="btn-group" >
+                                                                <button title="Registrar" class="btn-xs btn btn-success" type="button" @click="editar(cuenta)"><i class="fa fa-edit"></i> </button>
+                                                            </div>
+                                                            @endpermission
+                                                        </td>
+                                                        @endpermission
                                                     </tr>
-
                                                 </tbody>
                                                 <tfoot>
                                                     <tr>
@@ -84,7 +96,9 @@
                                                         <th>Descripción</th>
                                                         <th>Cuenta</th>
                                                         <th>Fecha y Hora de Registro</th>
+                                                        @permission(['editar_cuenta_material', 'registrar_cuenta_material'])
                                                         <th>Acciones</th>
+                                                        @endpermission
                                                     </tr>
                                                 </tfoot>
                                             </table>
@@ -133,10 +147,10 @@
                                         <div class="col-md-6">
                                             <div class="form-group" :class="{'has-error': validation_errors.has('form_edit_cuenta.Tipo Cuenta de Material')}">
                                                 <label class="control-label"><b>Tipo Cuenta de Material</b></label>
-                                                <select class="form-control" v-model="form.cuenta_material.id_tipo_cuenta_material" name="Tipo Cuenta de Material" v-validate="'required'">
-                                                    <option value>[-SELECCIONE-]</option>
-                                                    <option value="1">Materiales</option>
-                                                    <option value="2">Mano de Obra y Servicios</option>
+                                                <select class="form-control" v-model="form.cuenta_material.id_tipo_cuenta_material" name="Tipo Cuenta de Material" v-validate="'required|numeric'">
+                                                    <option value value="">[-SELECCIONE-]</option>
+                                                    <option v-for="option in data.tipo_cuenta_material" :value="option.id">@{{ option.descripcion }}</option>
+
                                                 </select>
                                                 <label class="help" v-show="validation_errors.has('form_edit_cuenta.Tipo Cuenta de Material')">@{{ validation_errors.first('form_edit_cuenta.Tipo Cuenta de Material') }}</label>
                                             </div>

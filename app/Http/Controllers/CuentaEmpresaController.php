@@ -44,6 +44,11 @@ class CuentaEmpresaController extends Controller
         $this->middleware('auth');
         $this->middleware('context');
 
+        $this->middleware('permission:consultar_cuenta_empresa', ['only' => ['index', 'show']]);
+        $this->middleware('permission:editar_cuenta_empresa', ['only' => ['edit', 'update']]);
+        $this->middleware('permission:registrar_cuenta_empresa', ['only' => ['store']]);
+        $this->middleware('permission:eliminar_cuenta_empresa', ['only' => ['destroy']]);
+
         $this->cuenta_empresa = $cuenta_empresa;
         $this->empresa = $empresa;
         $this->tipo_cuenta_empresa = $tipo_cuenta_empresa;
@@ -77,7 +82,7 @@ class CuentaEmpresaController extends Controller
         return view('sistema_contable.cuenta_empresa.edit')->with('empresa', $empresa)->with('tipo_cuenta_empresa', $tipoCuentaEmpresa);
     }
 
-    public function delete(Request $request, $id)
+    public function destroy(Request $request, $id)
     {
         $data = $request->all();
         $this->cuenta_empresa->delete($data, $id);

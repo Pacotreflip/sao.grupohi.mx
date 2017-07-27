@@ -38,6 +38,7 @@
 @endsection
 @section('content-menu')
     <ul class="sidebar-menu">
+        @permission(['consultar_cuenta_almacen', 'consultar_cuenta_concepto', 'consultar_cuenta_empresa', 'consultar_cuenta_general', 'consultar_cuenta_material', 'consultar_tipo_cuenta_contable', 'consultar_plantilla_prepoliza'])
         <li class="treeview">
             <a href="#">
                 <i class="fa fa-book"></i>
@@ -47,6 +48,7 @@
             </span>
             </a>
             <ul class="treeview-menu">
+                @permission(['consultar_cuenta_almacen', 'consultar_cuenta_concepto', 'consultar_cuenta_empresa', 'consultar_cuenta_general', 'consultar_cuenta_material', 'consultar_tipo_cuenta_contable'])
                 <li class="treeview">
                     <a href="#">
                         <i class="fa fa-book"></i>
@@ -56,18 +58,34 @@
                         </span>
                     </a>
                     <ul class="treeview-menu">
-                        <li ><a href="{{route('sistema_contable.cuenta_almacen.index')}}"><i class='fa  fa-circle-o'></i> <span>Cuentas - Almacenes</span></a></li>
-                        <li ><a href="{{route('sistema_contable.cuenta_concepto.index')}}"><i class='fa fa-circle-o'></i> <span>Cuentas - Conceptos</span></a></li>
-                        <li ><a href="{{route('sistema_contable.cuenta_empresa.index')}}"><i class='fa fa-circle-o'></i> <span>Cuentas - Empresas</span></a></li>
-                        <li ><a href="{{route('sistema_contable.cuenta_contable.index')}}"><i class='fa fa-circle-o'></i> <span>Cuentas - Generales</span></a></li>
-                        <li ><a href="{{route('sistema_contable.cuenta_material.index')}}"><i class='fa fa-circle-o'></i> <span>Cuentas - Materiales</span></a></li>
-                        <li ><a href="{{route('sistema_contable.tipo_cuenta_contable.index')}}"><i class='fa fa-circle-o'></i> <span>Cuenta - Contable</span></a></li>
+                    @permission('consultar_cuenta_almacen')
+                    <li ><a href="{{route('sistema_contable.cuenta_almacen.index')}}"><i class='fa  fa-circle-o'></i> <span>Cuentas - Almacenes</span></a></li>
+                    @endpermission
+                    @permission('consultar_cuenta_concepto')
+                    <li ><a href="{{route('sistema_contable.cuenta_concepto.index')}}"><i class='fa fa-circle-o'></i> <span>Cuentas - Conceptos</span></a></li>
+                    @endpermission
+                    @permission('consultar_cuenta_empresa')
+                    <li ><a href="{{route('sistema_contable.cuenta_empresa.index')}}"><i class='fa fa-circle-o'></i> <span>Cuentas - Empresas</span></a></li>
+                    @endpermission
+                    @permission('consultar_cuenta_general')
+                    <li ><a href="{{route('sistema_contable.cuenta_contable.index')}}"><i class='fa fa-circle-o'></i> <span>Cuentas - Generales</span></a></li>
+                    @endpermission
+                    @permission('consultar_cuenta_material')
+                    <li ><a href="{{route('sistema_contable.cuenta_material.index')}}"><i class='fa fa-circle-o'></i> <span>Cuentas - Materiales</span></a></li>
+                    @endpermission
+                    @permission('consultar_tipo_cuenta_contable')
+                    <li ><a href="{{route('sistema_contable.tipo_cuenta_contable.index')}}"><i class='fa fa-circle-o'></i> <span>Cuenta - Contable</span></a></li>
+                    @endpermission
                     </ul>
                 </li>
+                @endpermission
+                @permission('consultar_plantilla_prepoliza')
                 <li ><a href="{{route('sistema_contable.poliza_tipo.index')}}"><i class='fa fa-book'></i> <span>Plantillas de Prepólizas</span></a></li>
+                @endpermission
             </ul>
         </li>
-
+        @endpermission
+        @permission(['editar_configuracion_contable', 'consultar_prepolizas_generadas'])
         <li class="treeview">
             <a href="#">
                 <i class="fa fa-cubes"></i>
@@ -77,11 +95,16 @@
             </span>
             </a>
             <ul class="treeview-menu">
+                @permission('editar_configuracion_contable')
                 <li ><a href="{{route('sistema_contable.datos_contables.edit', $currentObra->datosContables)}}"><i class='fa fa-circle-o'></i> <span>Configuración Contable</span></a></li>
+                @endpermission
+                @permission('consultar_prepolizas_generadas')
                 <li ><a href="{{route('sistema_contable.poliza_generada.index')}}"><i class='fa fa-circle-o'></i> <span>Prepólizas Generadas</span></a></li>
+                @endpermission
             </ul>
         </li>
-
+        @endpermission
+        @permission('consultar_kardex_material')
         <li class="treeview">
             <a href="#">
                 <i class="fa fa-area-chart"></i>
@@ -91,8 +114,11 @@
             </span>
             </a>
             <ul class="treeview-menu">
+                @permission('consultar_kardex_material')
                 <li ><a href="{{route('sistema_contable.kardex_material.index')}}"><i class='fa fa-book'></i> <span>Kardex - Material</span></a></li>
+                @endpermission
             </ul>
         </li>
+        @endpermission
     </ul>
 @endsection

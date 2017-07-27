@@ -9,7 +9,7 @@ Vue.component('emails', {
     },
 
     created: function () {
-        var socket = io('http://' + App.ip + ':3000');
+        var socket = io(App.socket_host);
 
         socket.on('emails-channel:Ghi\\Events\\NewEmail', function (data) {
             console.log(data);

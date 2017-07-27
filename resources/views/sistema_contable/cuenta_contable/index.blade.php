@@ -29,7 +29,9 @@
                                             <th>Tipo de Cuenta</th>
                                             <th>Prefijo</th>
                                             <th>Cuenta</th>
+                                            @permission(['editar_cuenta_general', 'registrar_cuenta_general'])
                                             <th>Acciones</th>
+                                            @endpermission
                                         </tr>
                                         </thead>
                                         <tbody>
@@ -38,20 +40,26 @@
                                             <td>@{{ item.descripcion }}</td>
                                             <td>@{{ item.cuenta_contable ? item.cuenta_contable.prefijo : '' }}</td>
                                             <td>@{{ item.cuenta_contable ? item.cuenta_contable.cuenta_contable : '' }}</td>
+                                            @permission(['editar_cuenta_general', 'registrar_cuenta_general'])
                                             <td v-if="item.cuenta_contable != null">
+                                                @permission('editar_cuenta_general')
                                                 <div class="btn-group">
                                                     <button title="Editar" type="button" class="btn btn-xs btn-info" data-toggle="modal" data-target="#modal-editar-cuenta" v-on:click="editar(item)">
                                                         <i class="fa fa-edit"></i>
                                                     </button>
                                                 </div>
+                                                @endpermission
                                             </td>
                                             <td v-else>
+                                                @permission('registrar_cuenta_general')
                                                 <div class="btn-group">
-                                                    <button title="Configurar" type="button" class="btn btn-xs btn-info" data-toggle="modal" data-target="#modal-configurar-cuenta" v-on:click="configurar(item)">
+                                                    <button title="Registrar" type="button" class="btn btn-xs btn-info" data-toggle="modal" data-target="#modal-configurar-cuenta" v-on:click="configurar(item)">
                                                         <i class="fa fa-edit"></i>
                                                     </button>
                                                 </div>
+                                                @endpermission
                                             </td>
+                                            @endpermission
                                         </tr>
                                         </tbody>
                                     </table>

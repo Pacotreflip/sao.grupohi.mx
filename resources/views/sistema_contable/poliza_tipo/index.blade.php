@@ -6,14 +6,18 @@
 @section('main-content')
     {!! Breadcrumbs::render('sistema_contable.poliza_tipo.index') !!}
 
+    @permission(['registrar_plantilla_prepoliza'])
     <div class="row">
         <div class="col-sm-12">
+            @permission('registrar_plantilla_prepoliza')
             <a  href="{{ route('sistema_contable.poliza_tipo.create') }}" class="btn btn-success btn-app" style="float:right">
                 <i class="glyphicon glyphicon-plus-sign"></i>Nueva
             </a>
+            @endpermission
         </div>
     </div>
     <br>
+    @endpermission
     <div class="row" >
         <div class="col-md-12">
             <div class="box box-info">
@@ -56,8 +60,6 @@
                                                 <span class="label label-info">{{$item->vigencia}}</span>
                                             @endif
                                         </td>
-
-
                                         <td>{{$item->inicio_vigencia->format('Y-m-d h:i:s a')}}</td>
                                         <td>
                                             @if($item->fin_vigencia){{$item->fin_vigencia->format('Y-m-d h:i:s a')}}
@@ -71,9 +73,11 @@
                                                     <i class="fa fa-eye"></i>
                                                 </button>
                                             </a>
+                                            @permission('eliminar_plantilla_prepoliza')
                                             <button title="Eliminar" type="button" class="btn-xs btn-danger" onclick=" delete_plantilla({{$item->id}})">
                                                 <i class="fa fa-trash"></i>
                                             </button>
+                                            @endpermission
                                         </td>
                                     </tr>
                                 @endforeach

@@ -1,17 +1,18 @@
 Vue.component('cuenta-material-index', {
-    props: ['datos_contables', 'url_cuenta_material_store', 'familia'],
+    props: ['datos_contables', 'url_cuenta_material_store', 'familia', 'tipo_cuenta_material'],
     data: function() {
         return {
             'data' : {
                 'familia': this.familia,
                 'items': [],
-                'cuenta_material_edit': {}
+                'cuenta_material_edit': {},
+                'tipo_cuenta_material': this.tipo_cuenta_material
             },
             'form': {
                 'cuenta_material': {
                     'id': '',
                     'cuenta': '',
-                    'id_tipo_cuenta_material' : 0,
+                    'id_tipo_cuenta_material' : '',
                     'id_material':''
                 }
             },
@@ -165,7 +166,7 @@ Vue.component('cuenta-material-index', {
                     self.guardando = true;
                 },
                 success: function (data, textStatus, xhr) {
-                    self.data.cuenta_material_edit.cuent_material = data.data.cuenta_material;
+                    self.data.cuenta_material_edit.cuenta_material = data.data.cuenta_material;
                     self.close_edit_cuenta();
                     swal({
                         type: 'success',

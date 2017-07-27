@@ -66,8 +66,8 @@ Vue.component('cuenta-empresa-edit', {
         confirm_cuenta_create: function () {
             var self = this;
             swal({
-                title: "Configurar Cuenta Contable",
-                text: "¿Estás seguro que desea configurar la Cuenta Contable?",
+                title: "Registrar Cuenta Contable",
+                text: "¿Estás seguro que desea registrar la Cuenta Contable?",
                 type: "warning",
                 showCancelButton: true,
                 confirmButtonText: "Si, Continuar",
@@ -179,7 +179,7 @@ Vue.component('cuenta-empresa-edit', {
                     swal({
                         type: 'success',
                         title: 'Correcto',
-                        html: 'La cuenta: <b>' + data.data.cuenta_empresa.tipo_cuenta_empresa.descripcion + '</b> fue configurada correctamente',
+                        html: 'La cuenta: <b>' + data.data.cuenta_empresa.tipo_cuenta_empresa.descripcion + '</b> fue registrada correctamente',
                     });
                 },
                 complete: function () {
