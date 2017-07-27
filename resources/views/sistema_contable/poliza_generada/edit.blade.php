@@ -327,6 +327,13 @@
                                 <div class="box-body">
                                     <div class="table-responsive">
                                         <table class="table table-bordered">
+                                           <thead>
+                                           <tr>
+                                                <th>No.</th>
+                                                <th>Tipo Cuenta Contable</th>
+                                                <th>Cuenta Contable</th>
+                                            </tr>
+                                           </thead>
                                            <tr v-for="(movimiento, index) in data.movimientos">
                                                <td>
                                                    @{{index+1}}
