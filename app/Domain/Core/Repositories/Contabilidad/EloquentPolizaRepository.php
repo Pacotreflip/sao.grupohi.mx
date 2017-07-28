@@ -3,7 +3,6 @@
 namespace Ghi\Domain\Core\Repositories\Contabilidad;
 
 use Carbon\Carbon;
-use Carbon\CarbonInterval;
 use Ghi\Domain\Core\Contracts\Contabilidad\PolizaRepository;
 use Ghi\Domain\Core\Models\Contabilidad\CuentaContable;
 use Ghi\Domain\Core\Models\Contabilidad\EstatusPrePoliza;
@@ -13,7 +12,6 @@ use Ghi\Domain\Core\Models\Contabilidad\Poliza;
 use Ghi\Domain\Core\Models\Contabilidad\PolizaMovimiento;
 use Illuminate\Http\Exception\HttpResponseException;
 use Illuminate\Support\Facades\DB;
-use Mockery\Exception;
 use Symfony\Component\HttpFoundation\Response;
 
 
@@ -199,7 +197,7 @@ class EloquentPolizaRepository implements PolizaRepository
 
     public function where(array $where)
     {
-        $this->model = $this->model->where($where)->orderBy('created_at', 'DESC');
+        $this->model = $this->model->where($where);
         return $this;
     }
 

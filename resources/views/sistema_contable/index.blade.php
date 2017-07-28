@@ -12,30 +12,42 @@
                 </div>
                 <div class="box-body">
                     <div class="chart">
-                        <canvas id="prepolizas" width="1428" height="300" style="display: block; width: 1428px; height: 300px;"></canvas>
+                        <canvas id="prepolizas" width="1428" height="300" ></canvas>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- div class="col-md-9">
+        <div class="col-md-8">
             <div class="box box-info">
                 <div class="box-header with-border">
                     <h3 class="box-title">Información de Cuentas Contables</h3>
                 </div>
                 <div class="box-body">
                     <div class="chart">
-                        <canvas id="cuentas_contables" width="1428" height="300" style="display: block; width: 1428px; height: 300px;"></canvas>
+                        <canvas id="cuentas_contables" width="1428" height="450" style="display: block; width: 1428px; height: 300px;"></canvas>
                     </div>
                 </div>
             </div>
-        </div -->
+        </div>
+
+        <div class="col-md-4">
+            <div class="box box-info">
+                <div class="box-header with-border">
+                    <h3 class="box-title">Acumulados de Prepólizas</h3>
+                </div>
+                <div class="box-body">
+                    <div class="chart">
+                        <canvas id="acumulado" width="762" height="500"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
 
     </div>
 
 @endsection
 @section('scripts-content')
-
     <script>
         var chartColors = {
             red: 'rgb(255, 99, 132)',
@@ -48,6 +60,9 @@
         };
 
         var data = {!! json_encode($config)!!};
+        var dataAcumulado = {!! json_encode($acumulado)!!};
+        var cuentas_contables = {!! json_encode($cuentas_contables)!!};
+
         var config_prepolizas = {
             type: 'line',
             data: data,
@@ -83,28 +98,9 @@
                 }
             }
         };
-
         var config_cuentas_contables = {
             type: 'bar',
-            data: {
-                labels: ["Almacenes", "Conceptos", "Materiales", "Empresas"],
-                datasets: [
-                    {
-                        label: 'Con Cuenta Contable',
-                        backgroundColor: window.chartColors.green,
-                        data: [
-                            1560-500, 15000-10999, 5909-909, 1400-300
-                        ]
-                    },
-                    {
-                        label: 'Sin Cuenta Contable',
-                        backgroundColor: window.chartColors.red,
-                        data: [
-                            500, 10999, 909, 300
-                        ]
-                    }
-                ]
-            },
+            data: cuentas_contables,
             options: {
                 title:{
                     display:true,
@@ -117,21 +113,44 @@
                 responsive: true,
                 scales: {
                     xAxes: [{
-                        stacked: true,
+                        stacked: false,
                     }],
                     yAxes: [{
-                        stacked: true
+                        stacked: false
                     }]
                 }
             }
         };
-
-        window.onload = function() {
-            var prepolizas = document.getElementById("prepolizas").getContext("2d");
-            window.myLine = new Chart(prepolizas, config_prepolizas);
-
-            var cuentas_contables = document.getElementById("cuentas_contables").getContext("2d");
-            window.myBar = new Chart(cuentas_contables, config_cuentas_contables);
+        var fecha = new Date();
+        var config_acumulado = {
+            type: 'doughnut',
+            data: dataAcumulado,
+            options: {
+                responsive: true,
+                legend: {
+                    position: 'top',
+                },
+                title: {
+                    display: true,
+                    text: fecha.getDate()+' / '+(fecha.getMonth() + 1)+' / '+fecha.getFullYear()
+                },
+                animation: {
+                    animateScale: true,
+                    animateRotate: true
+                }
+            }
         };
+
+        $(document).ready(function() {
+            var prepolizas = $("#prepolizas")[0].getContext("2d");
+           var line = new Chart(prepolizas, config_prepolizas);
+
+            var cuentas_contables = $("#cuentas_contables")[0].getContext("2d");
+            var bar = new Chart(cuentas_contables, config_cuentas_contables);
+
+            var acumulado = $("#acumulado")[0].getContext("2d");
+            var doughnut = new Chart(acumulado, config_acumulado);
+        });
+
     </script>
 @endsection

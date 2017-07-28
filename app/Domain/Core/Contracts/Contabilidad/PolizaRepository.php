@@ -61,27 +61,6 @@ interface PolizaRepository
     public function scope($scope);
 
     /**
-     * recupera un array con los últimos 7 diasa partir de la fecha
-     * actual
-     * @return mixed
-     *
-     */
-    public function getDates();
-
-    /**
-     * Obtiene los datos para las estadisticas iniciales
-     * @return mixed
-     *
-     */
-    public function getChartInfo();
-
-    /**
-     * Retorna el conteo de cada tipo de poliza por fecha ingresada
-     * @return mixed
-     */
-    public function getCountDate($date, $tipo);
-
-    /**
      * Ingresa manualmente el folio contpaq para la prepóliza
      * @param $data
      * @param $id
