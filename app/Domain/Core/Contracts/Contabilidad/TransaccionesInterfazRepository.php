@@ -22,4 +22,10 @@ interface TransaccionesInterfazRepository
      * @return array
      */
     public function lists();
+
+    /**
+     * @param $scope
+     * @return mixed
+     */
+    public function scope($scope);
 }

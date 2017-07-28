@@ -67311,7 +67311,7 @@ Vue.component('poliza-generada-edit', {
                                     self.data.poliza = data.data.poliza;
                                     swal({
                                         title: '¡Correcto!',
-                                        html: 'La Cuenta:' + self.data.empresa.razon_social + ' fue actualizada correctamente',
+                                        html: 'Las cuentas se configurarón exitosamente',
                                         type: 'success',
                                         confirmButtonText: "Ok",
                                         closeOnConfirm: false
@@ -67325,10 +67325,10 @@ Vue.component('poliza-generada-edit', {
                             });
                         }).catch(swal.noop);
                     } else {
-                        self.data.poliza = data.data.poliza;
+
                         swal({
                             title: '¡Correcto!',
-                            html: 'La Cuenta:' + self.data.empresa.razon_social + ' fue actualizada correctamente',
+                            html: 'Las cuentas se configurarón exitosamente',
                             type: 'success',
                             confirmButtonText: "Ok",
                             closeOnConfirm: false

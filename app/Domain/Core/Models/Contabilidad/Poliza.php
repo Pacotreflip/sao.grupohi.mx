@@ -71,7 +71,7 @@ class Poliza extends BaseModel
      */
     public function transaccionInterfaz()
     {
-        return $this->belongsTo(TransaccionInterfaz::class, 'id_tipo_poliza_interfaz');
+        return $this->belongsTo(TransaccionInterfaz::class, 'id_tipo_poliza_interfaz', 'id_transaccion_interfaz');
     }
 
     /**

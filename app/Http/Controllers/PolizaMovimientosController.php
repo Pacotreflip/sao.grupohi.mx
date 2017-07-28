@@ -8,6 +8,7 @@ use Ghi\Domain\Core\Contracts\Contabilidad\PolizaRepository;
 use Ghi\Domain\Core\Contracts\Contabilidad\TipoCuentaEmpresaRepository;
 use Ghi\Domain\Core\Models\Contabilidad\CuentaEmpresa;
 use Ghi\Domain\Core\Models\Contabilidad\PolizaMovimiento;
+use Ghi\Domain\Core\Models\Contabilidad\TipoCuentaEmpresa;
 use Illuminate\Http\Request;
 
 use Ghi\Http\Requests;
@@ -86,23 +87,21 @@ class PolizaMovimientosController extends Controller
 
         foreach ($request->all()['data'] as $item) {
             /////////// obtener tipo de cuenta
-            $tipos_ctas_empresas = $this->tipo_cuenta_empresa->where([['id_tipo_cuenta_contable', '=', $item['id_tipo_cuenta_contable']]])->all();
+            $tipos_ctas_empresas =  TipoCuentaEmpresa::where([['id_tipo_cuenta_contable', '=', $item['tipo_cuenta_contable']['id_tipo_cuenta_contable']]])->get();
             if (count($tipos_ctas_empresas) > 0) {
                 foreach ($tipos_ctas_empresas as $cta_empresa) {
                     $tipo_cta_empresa=$cta_empresa;
                 }
-            }
-            ///////// Si no hay tipo de cuenta inserto
-            if ($tipo_cta_empresa == null) { //inserto
+            }else{
                 $dataCtaInsert['descripcion'] = $item['tipo_cuenta_contable']['descripcion'];
                 $dataCtaInsert['id_tipo_cuenta_contable'] = $item['tipo_cuenta_contable']['id_tipo_cuenta_contable'];
-                $tipo_cta_empresa = $this->tipo_cuenta_empresa->create($dataCtaInsert);
+
+                $tipo_cta_empresa=TipoCuentaEmpresa::create($dataCtaInsert);
             }
             $where = [
                 ['id_empresa', '=', $item['empresa_cadeco']['id_empresa']],
                 ['id_tipo_cuenta_empresa', '=', $tipo_cta_empresa->id]
             ];
-
 
             /////////////////// buscar la cuenta de la empresa con el idtipo cuenta empresa
             $cuentas_empresas = $this->cuenta_empresa->where($where)->all();

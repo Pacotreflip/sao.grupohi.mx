@@ -19,7 +19,8 @@ class TipoCuentaEmpresa extends BaseModel
     protected $connection = 'cadeco';
     protected $table = 'Contabilidad.tipos_cuentas_empresas';
     protected $fillable = [
-        'descripcion'
+        'descripcion',
+        'id_tipo_cuenta_contable'
     ];
 
     /**

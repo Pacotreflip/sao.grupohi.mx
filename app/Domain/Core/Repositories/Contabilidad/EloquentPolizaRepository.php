@@ -197,7 +197,7 @@ class EloquentPolizaRepository implements PolizaRepository
 
     public function where(array $where)
     {
-        $this->model = $this->model->where($where)->orderBy('created_at', 'DESC');
+        $this->model = $this->model->where($where);
         return $this;
     }
 
