@@ -115,4 +115,8 @@ Route::group(['prefix' => 'sistema_contable'], function () {
     Route::get('poliza_movimientos/{id}', 'PolizaMovimientosController@edit')->name('sistema_contable.poliza_movimientos.edit')->where(['id' => '[0-9]+']);
     Route::patch('poliza_movimientos/{id}', 'PolizaMovimientosController@update')->name('sistema_contable.poliza_movimientos.update')->where(['id' => '[0-9]+']);
 
+    /**
+     * Reevaluaciones
+     */
+    Route::get('reevaluaciones', 'ReevaluacionesController@index')->name('sistema_contable.reevaluaciones.index');
 });

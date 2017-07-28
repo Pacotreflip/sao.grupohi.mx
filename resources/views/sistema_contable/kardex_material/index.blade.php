@@ -1,7 +1,6 @@
 @extends('sistema_contable.layout')
 @section('title', 'Kardex de Materiales')
 @section('contentheader_title', 'KARDEX DE MATERIALES')
-@section('contentheader_description', '(LISTA)')
 
 @section('main-content')
     {!! Breadcrumbs::render('sistema_contable.kardex_material.index') !!}
