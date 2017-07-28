@@ -141,15 +141,28 @@
             }
         };
 
-        $(document).ready(function() {
-            var prepolizas = $("#prepolizas")[0].getContext("2d");
-           var line = new Chart(prepolizas, config_prepolizas);
+        $(document).ready( function() {
+            var prepolizas = document.getElementById("prepolizas").getContext("2d");
+            window.myLine = new Chart(prepolizas, config_prepolizas);
 
-            var cuentas_contables = $("#cuentas_contables")[0].getContext("2d");
-            var bar = new Chart(cuentas_contables, config_cuentas_contables);
+            var cuentas_contables = document.getElementById("cuentas_contables").getContext("2d");
+            window.myBar = new Chart(cuentas_contables, config_cuentas_contables);
 
-            var acumulado = $("#acumulado")[0].getContext("2d");
-            var doughnut = new Chart(acumulado, config_acumulado);
+            var acum = $("#acumulado")[0].getContext("2d");
+            var doughnut = new Chart (acum, config_acumulado);
+
+            $("#acumulado").click(
+                function(evt){
+
+                    var activePoints = doughnut.getElementAtEvent(evt);
+                    if( activePoints[0]) {
+                        var estatu = activePoints[0]._chart.config.data.estatus;
+                        console.log(activePoints[0], estatu );
+                        var url = App.host + '/sistema_contable/poliza_generada?estatus=' + estatu[activePoints[0]._index];
+                        window.location = url;
+                    }
+                }
+            );
         });
 
     </script>
