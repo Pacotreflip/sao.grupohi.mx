@@ -124,15 +124,17 @@ class EloquentGraficasRepository implements GraficasRepository
         $labels=[];
         $data = [];
         $backgroundColor = [];
+        $estatus=[];
 
         $acumulado = $this->poliza_model->select(DB::raw(" COUNT(*) AS count"), 'estatus')->groupBy('estatus')->get();
 
-        foreach (EstatusPrePoliza::all() as $estatus) {
+        foreach (EstatusPrePoliza::all() as $status) {
             for($i = 0; $i < count($acumulado); $i++){
-                if($acumulado[$i]->estatus == $estatus->estatus){
-                    $labels[] = $estatus->descripcion;
+                if($acumulado[$i]->estatus == $status->estatus){
+                    $labels[] = $status->descripcion;
                     $data[] = $acumulado[$i]->count;
-                    $backgroundColor[] = $estatus->rgb;
+                    $backgroundColor[] = $status->rgb;
+                    $estatus[] = $status->estatus;
                     break;
                 }
             }
@@ -140,12 +142,12 @@ class EloquentGraficasRepository implements GraficasRepository
 
         $acum = [
             'labels' => $labels,
+            'estatus'=> $estatus,
             'datasets' => [[
                 'data'=> $data,
                 'backgroundColor'=> $backgroundColor
             ]]
         ];
-
         return $acum;
     }
 
