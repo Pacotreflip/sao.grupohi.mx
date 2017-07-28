@@ -141,16 +141,16 @@
             }
         };
 
-        window.onload = function() {
-            var prepolizas = document.getElementById("prepolizas").getContext("2d");
-            window.myLine = new Chart(prepolizas, config_prepolizas);
+        $(document).ready(function() {
+            var prepolizas = $("#prepolizas")[0].getContext("2d");
+           var line = new Chart(prepolizas, config_prepolizas);
 
-            var cuentas_contables = document.getElementById("cuentas_contables").getContext("2d");
-            window.myBar = new Chart(cuentas_contables, config_cuentas_contables);
+            var cuentas_contables = $("#cuentas_contables")[0].getContext("2d");
+            var bar = new Chart(cuentas_contables, config_cuentas_contables);
 
-            var acumulado = document.getElementById("acumulado").getContext("2d");
-            window.myDoughnut = new Chart(acumulado, config_acumulado);
-        };
+            var acumulado = $("#acumulado")[0].getContext("2d");
+            var doughnut = new Chart(acumulado, config_acumulado);
+        });
 
     </script>
 @endsection
