@@ -8,6 +8,7 @@ use Ghi\Domain\Core\Contracts\Contabilidad\PolizaRepository;
 use Ghi\Domain\Core\Contracts\Contabilidad\TipoCuentaContableRepository;
 use Ghi\Domain\Core\Contracts\Contabilidad\TransaccionesInterfazRepository;
 use Ghi\Domain\Core\Models\Contabilidad\Poliza;
+use Ghi\Domain\Core\Models\Contabilidad\TransaccionInterfaz;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -49,8 +50,7 @@ class PolizaController extends Controller
             ];
 
             $polizas = $this->poliza->where($where)->paginate(800);
-        }
-        elseif ($request->has('fechas')&&$request->has('tipo')) {
+        } elseif ($request->has('fechas') && $request->has('tipo')) {
 
             $fecha_inicial = explode(" - ", $request->fechas)[0] . ' 00:00:00.000';
             $fecha_final = explode(" - ", $request->fechas)[1] . ' 00:00:00.000';
@@ -60,8 +60,7 @@ class PolizaController extends Controller
             ];
 
             $polizas = $this->poliza->where($where)->paginate(800);
-        }
-        elseif ($request->estatus != ""&& $request->tipo != "") {
+        } elseif ($request->estatus != "" && $request->tipo != "") {
             $where = [
                 ['estatus', '=', $request->estatus],
                 ['id_tipo_poliza_interfaz', '=', $request->tipo]
@@ -69,24 +68,21 @@ class PolizaController extends Controller
 
 
             $polizas = $this->poliza->where($where)->paginate(800);
-        }
-        elseif ($request->estatus != "") {
+        } elseif ($request->estatus != "") {
             $where = [
                 ['estatus', '=', $request->estatus]
             ];
 
 
             $polizas = $this->poliza->where($where)->paginate(800);
-        }
-        elseif ($request->tipo>0) {
+        } elseif ($request->tipo > 0) {
             $where = [
                 ['id_tipo_poliza_interfaz', '=', $request->tipo]
             ];
 
 
             $polizas = $this->poliza->where($where)->paginate(800);
-        }
-        elseif ($request->fechas) {
+        } elseif ($request->fechas) {
             $fecha_inicial = explode(" - ", $request->fechas)[0] . ' 00:00:00.000';
             $fecha_final = explode(" - ", $request->fechas)[1] . ' 00:00:00.000';
             $where = [
@@ -99,12 +95,13 @@ class PolizaController extends Controller
             $polizas = $this->poliza->paginate(800);
 
         }
-        $tipo_polizas = $this->transaccion_interfaz->all();
+        $tipo_polizas = $this->transaccion_interfaz->scope('ocupadas')->all();
+
         return view('sistema_contable.poliza_generada.index')
             ->with('polizas', $polizas)
             ->with('fechas', $request->fechas)
             ->with('estatus', $request->estatus)
-            ->with('tipo',$request->tipo)
+            ->with('tipo', $request->tipo)
             ->with('tipo_polizas', $tipo_polizas);
 
     }
@@ -131,7 +128,8 @@ class PolizaController extends Controller
         return $this->response->created(route('sistema_contable.poliza_generada.show', $item));
     }
 
-    public function ingresarFolio(Request $request, $id) {
+    public function ingresarFolio(Request $request, $id)
+    {
 
         $item = $this->poliza->ingresarFolio($request->all(), $id);
         return $this->response->created(route('sistema_contable.poliza_generada.show', $item));

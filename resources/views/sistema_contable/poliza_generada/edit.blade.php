@@ -20,7 +20,7 @@
                 <div class="row">
                     <div class="col-md-12">
                         <a  class="btn btn-app btn-info pull-right" v-on:click="ingresarCuenta({{$poliza->id_int_poliza}})">
-                            <i class="fa fa-dollar"></i> Ingresar Cuenta
+                            <i class="fa fa-dollar"></i> Ingresar cuentas faltantes
                         </a>
                     </div>
                 </div>
@@ -319,7 +319,7 @@
                                 <button type="button" class="close" aria-label="Close" @click="close_cuenta_modal">
                                     <span aria-hidden="true">&times;</span></button>
 
-                                 <h4  class="modal-title">Cuentas de : @{{data.empresa.razon_social }}</h4>
+                                 <h4  class="modal-title">Cuentas faltantes de la Póliza</h4>
 
                             </div>
                             <form id="form_cuenta" @submit.prevent="validateForm('form_cuenta','confirm_save_cuenta')"

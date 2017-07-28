@@ -39,4 +39,13 @@ class TransaccionInterfaz extends BaseModel
     {
         return $query->has('polizasTipo', '=', 0);
     }
+
+    public function polizas(){
+        return $this->hasMany(Poliza::class,'id_tipo_poliza_interfaz', 'id_transaccion_interfaz');
+    }
+
+    public function scopeOcupadas($query)
+    {
+        return $query->has('polizas');
+    }
 }

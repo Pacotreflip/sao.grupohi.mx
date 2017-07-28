@@ -46,4 +46,10 @@ class EloquentTransaccionesInterfazRepository implements TransaccionesInterfazRe
         return $this->model->orderBy('descripcion', 'ASC')->lists('descripcion', 'id_transaccion_interfaz');
     }
 
+    public function scope($scope)
+    {
+        $this->model = $this->model->$scope();
+        return $this;
+    }
+
 }
