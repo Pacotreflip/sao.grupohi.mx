@@ -4,7 +4,7 @@
 @section('contentheader_description', '(INDEX)')
 
 @section('main-content')
-    {!! Breadcrumbs::render('revaluacion') !!}
+    {!! Breadcrumbs::render('sistema_contable.revaluacion.index') !!}
 
     <div class="row">
         <div class="col-md-12">

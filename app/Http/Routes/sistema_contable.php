@@ -119,4 +119,5 @@ Route::group(['prefix' => 'sistema_contable'], function () {
      * Revaluaciones
      */
     Route::get('revaluacion', 'RevaluacionesController@index')->name('sistema_contable.revaluacion.index');
+    Route::get('revaluacion/create', 'RevaluacionesController@create')->name('sistema_contable.revaluacion.create');
 });

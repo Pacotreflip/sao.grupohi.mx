@@ -14,7 +14,7 @@ use Illuminate\Database\Eloquent\Model;
 class Revaluacion extends Model
 {
     protected $connection = 'cadeco';
-    protected $table = 'Contabilidad.revaluacion';
+    protected $table = 'Contabilidad.revaluaciones';
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany | Factura
