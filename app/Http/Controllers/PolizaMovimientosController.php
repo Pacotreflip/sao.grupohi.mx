@@ -53,8 +53,22 @@ class PolizaMovimientosController extends Controller
         $where = [
             ['id_int_poliza', '=', $idPoliza]
         ];
+
+        $movArray = [];
         $movimientos = $this->poliza_movimientos->with(['empresaCadeco', 'tipoCuentaContable'])->where($where)->scope('notnull')->scope('ordered')->all();
-        return response()->json(['data' => ['movimientos' => $movimientos]], 200);
+
+        foreach ($movimientos as $index => $movimiento) {
+            $numveces = 0;
+            foreach ($movArray as $indexAux => $movimientoAux) {
+                if ($movimiento->id_tipo_cuenta_contable ==$movimientoAux->id_tipo_cuenta_contable) {
+                    $numveces++;
+                }
+            }
+            if ($numveces==0) {
+                array_push($movArray, $movimiento);
+            }
+        }
+        return response()->json(['data' => ['movimientos' => $movArray]], 200);
     }
 
     public function update(Request $request, $idPoliza)
@@ -88,16 +102,23 @@ class PolizaMovimientosController extends Controller
         foreach ($request->all()['data'] as $item) {
             /////////// obtener tipo de cuenta
             $tipos_ctas_empresas =  TipoCuentaEmpresa::where([['id_tipo_cuenta_contable', '=', $item['tipo_cuenta_contable']['id_tipo_cuenta_contable']]])->get();
+
+
             if (count($tipos_ctas_empresas) > 0) {
+
+
                 foreach ($tipos_ctas_empresas as $cta_empresa) {
                     $tipo_cta_empresa=$cta_empresa;
                 }
             }else{
+
+
                 $dataCtaInsert['descripcion'] = $item['tipo_cuenta_contable']['descripcion'];
                 $dataCtaInsert['id_tipo_cuenta_contable'] = $item['tipo_cuenta_contable']['id_tipo_cuenta_contable'];
 
                 $tipo_cta_empresa=TipoCuentaEmpresa::create($dataCtaInsert);
             }
+
             $where = [
                 ['id_empresa', '=', $item['empresa_cadeco']['id_empresa']],
                 ['id_tipo_cuenta_empresa', '=', $tipo_cta_empresa->id]
@@ -105,10 +126,16 @@ class PolizaMovimientosController extends Controller
 
             /////////////////// buscar la cuenta de la empresa con el idtipo cuenta empresa
             $cuentas_empresas = $this->cuenta_empresa->where($where)->all();
+
+
+
             if (count($cuentas_empresas) > 0) { ///actualizo cuenta_empresa
-                $dataUpdate['data']['cuenta'] = $item['cuenta_contable'];
+
                 foreach ($cuentas_empresas as $cuentaEmp) {
-                    $cuentas_empresas = $this->cuenta_empresa->update($dataUpdate, $cuentaEmp->id);
+                    $cuentas_empresas = CuentaEmpresa::find($cuentaEmp->id);
+                    $cuentas_empresas->cuenta = $item['cuenta_contable'];
+                    $cuentas_empresas->save();
+
                 }
 
             } else { //////inserto cuenta_empresa
@@ -118,13 +145,20 @@ class PolizaMovimientosController extends Controller
                 CuentaEmpresa::create($dataInsert);
             }
             //////////////Actualizo el movimiento
+            $where = [
+                ['id_int_poliza', '=',$idPoliza],
+                ['id_tipo_cuenta_contable', '=', $item['tipo_cuenta_contable']['id_tipo_cuenta_contable']]
+            ];
+            $movimientoUpd=PolizaMovimiento::where($where)->get();
+            foreach ($movimientoUpd as $movUp){
+                    $PolMov = PolizaMovimiento::find($movUp->id_int_poliza_movimiento);
+                    $PolMov->cuenta_contable = $item['cuenta_contable'];
+                    $PolMov->save();
+       }
             $movimiento = $this->poliza_movimientos->find($item['id_int_poliza_movimiento']);
-            if ($movimiento->cuenta_contable == null) {
-                $PolMov = PolizaMovimiento::find($movimiento->id_int_poliza_movimiento);
-                $PolMov->cuenta_contable = $item['cuenta_contable'];
-                $PolMov->save();
 
-            }
+
+
         }
 
 

@@ -29,6 +29,15 @@ Vue.component('poliza-generada-edit', {
     },
 
     computed: {
+        color:function () {
+         if(this.data.poliza.cuadrado){
+             return "bg-gray"
+         }
+         else{
+             return "bg-red";
+         }
+        }
+        ,
         cambio: function () {
             return JSON.stringify(this.data.poliza) !== JSON.stringify(this.data.poliza_edit);
         },
@@ -178,7 +187,7 @@ Vue.component('poliza-generada-edit', {
         confirm_save_cuenta: function () {
             var self = this;
             swal({
-                title: "Guardar Cambios de la cuenta: " + self.data.empresa.razon_social,
+                title: "Guardar Cambios de las cuentas faltantes",
                 text: "¿Estás seguro de que la información es correcta?",
                 type: "warning",
                 showCancelButton: true,
