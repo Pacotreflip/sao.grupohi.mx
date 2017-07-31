@@ -186,5 +186,9 @@ class AppServiceProvider extends ServiceProvider
             \Ghi\Domain\Core\Contracts\Contabilidad\RevaluacionRepository::class,
             \Ghi\Domain\Core\Repositories\Contabilidad\EloquentRevaluacionRepository::class
         );
+        $this->app->bind(
+            \Ghi\Domain\Core\Contracts\Seguridad\DiaFestivoRepository::class,
+            \Ghi\Domain\Core\Repositories\Seguridad\EloquentDiaFestivoRepository::class
+        );
     }
 }

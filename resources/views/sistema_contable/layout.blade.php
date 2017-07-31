@@ -101,7 +101,7 @@
                 @permission('consultar_prepolizas_generadas')
                 <li ><a href="{{route('sistema_contable.poliza_generada.index')}}"><i class='fa fa-circle-o'></i> <span>Prepólizas Generadas</span></a></li>
                 @endpermission
-                <li ><a href="{{route('revaluacion')}}"><i class='fa fa-circle-o'></i> <span>Revaluaciones</span></a></li>
+                <li ><a href="{{route('sistema_contable.revaluacion.index')}}"><i class='fa fa-circle-o'></i> <span>Revaluaciones</span></a></li>
             </ul>
         </li>
         @endpermission
