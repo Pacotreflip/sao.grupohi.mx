@@ -142,3 +142,11 @@ Breadcrumbs::register('sistema_contable.cuenta_material.show', function ($breadc
     $breadcrumb->parent('sistema_contable.cuenta_material.index');
     $breadcrumb->push('VER CUENTAS DE ALMACENES', route('sistema_contable.cuenta_material.index'));
 });
+
+/**
+ * Reevaluaciones
+ */
+Breadcrumbs::register('sistema_contable.reevaluaciones.index', function($breadcrumbs) {
+    $breadcrumbs->parent('sistema_contable.index');
+    $breadcrumbs->push('REEVALUACIONES', route('sistema_contable.reevaluaciones.index'));
+});

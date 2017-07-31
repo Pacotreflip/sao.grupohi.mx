@@ -182,5 +182,9 @@ class AppServiceProvider extends ServiceProvider
             \Ghi\Domain\Core\Contracts\GraficasRepository::class,
             \Ghi\Domain\Core\Repositories\EloquentGraficasRepository::class
         );
+        $this->app->bind(
+            \Ghi\Domain\Core\Contracts\Contabilidad\ReevaluacionRepository::class,
+            \Ghi\Domain\Core\Repositories\Contabilidad\EloquentReevaluacionRepository::class
+        );
     }
 }
