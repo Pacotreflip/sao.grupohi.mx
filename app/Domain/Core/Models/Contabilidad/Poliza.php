@@ -49,7 +49,7 @@ class Poliza extends BaseModel
 
     protected $dates = ['fecha'];
 
-    protected $appends = ['suma_debe', 'suma_haber'];
+    protected $appends = ['suma_debe', 'suma_haber','cuadrado'];
 
     protected static function boot()
     {

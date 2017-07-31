@@ -170,16 +170,16 @@
                                             </tbody>
                                             <tfoot>
                                             <tr>
-                                                <th colspan="4" class="bg-gray text-right">
+                                                <th colspan="4" class="bg-gray text-right" v-bind:class="color">
                                                     <b>Sumas Iguales</b>
                                                 </th>
-                                                <th class="bg-gray numerico">
+                                                <th class="bg-gray numerico" v-bind:class="color">
                                                     <b>$ @{{(parseFloat(suma_debe)).formatMoney(2,'.',',')}}</b>
                                                 </th>
-                                                <th class="bg-gray numerico">
+                                                <th class="bg-gray numerico" v-bind:class="color">
                                                     <b>$ @{{(parseFloat(suma_haber)).formatMoney(2,'.',',')}}</b>
                                                 </th>
-                                                <th class="bg-gray" colspan="3"></th>
+                                                <th class="bg-gray" colspan="3" v-bind:class="color"></th>
                                             </tr>
                                             </tfoot>
                                         </table>

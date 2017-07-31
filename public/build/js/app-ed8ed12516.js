@@ -67047,6 +67047,14 @@ Vue.component('poliza-generada-edit', {
     },
 
     computed: {
+        color: function color() {
+            if (this.data.poliza.cuadrado) {
+                return "bg-gray";
+            } else {
+                return "bg-red";
+            }
+        },
+
         cambio: function cambio() {
             return JSON.stringify(this.data.poliza) !== JSON.stringify(this.data.poliza_edit);
         },

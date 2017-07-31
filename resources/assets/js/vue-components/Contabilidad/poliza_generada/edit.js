@@ -29,6 +29,15 @@ Vue.component('poliza-generada-edit', {
     },
 
     computed: {
+        color:function () {
+         if(this.data.poliza.cuadrado){
+             return "bg-gray"
+         }
+         else{
+             return "bg-red";
+         }
+        }
+        ,
         cambio: function () {
             return JSON.stringify(this.data.poliza) !== JSON.stringify(this.data.poliza_edit);
         },
