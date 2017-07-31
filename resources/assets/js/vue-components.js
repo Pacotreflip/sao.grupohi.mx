@@ -18,6 +18,7 @@ require('./vue-components/Contabilidad/cuenta_empresa/cuenta-empresa-edit');
 require('./vue-components/Contabilidad/cuenta_almacen/index');
 require('./vue-components/Contabilidad/datos_contables/edit');
 require('./vue-components/kardex_material/kardex-material-index');
+require('./vue-components/Contabilidad/modulos/revaluacion/create');
 
 /**
  * Compras Components

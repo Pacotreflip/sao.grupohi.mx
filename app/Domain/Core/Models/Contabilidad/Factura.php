@@ -36,7 +36,7 @@ class Factura extends Transaccion
         return $this->hasOne(OrdenPago::class, 'id_referente', 'id_transaccion');
     }
 
-    public function reevaluaciones() {
-        return $this->belongsToMany(Reevaluacion::class, 'Contabilidad.reevaluacion_transaccion', 'id_transaccion', 'id_reevaluacion');
+    public function revaluaciones() {
+        return $this->belongsToMany(Revaluacion::class, 'Contabilidad.revaluacion_transaccion', 'id_transaccion', 'id_revaluacion');
     }
 }

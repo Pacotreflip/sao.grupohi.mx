@@ -1,16 +1,16 @@
 @extends('sistema_contable.layout')
-@section('title', 'Reevaluaciones')
-@section('contentheader_title', 'REEVALUACIONES')
+@section('title', 'Revaluaciones')
+@section('contentheader_title', 'REVALUACIONES')
 @section('contentheader_description', '(INDEX)')
 
 @section('main-content')
-    {!! Breadcrumbs::render('sistema_contable.reevaluaciones.index') !!}
+    {!! Breadcrumbs::render('revaluacion') !!}
 
     <div class="row">
         <div class="col-md-12">
             <div class="box box-solid">
                 <div class="box-header with-border">
-                    <h3 class="box-title">Listado de Reevaluaciones</h3>
+                    <h3 class="box-title">Listado de Revaluaciones</h3>
                 </div>
                 <div class="box-body">
                     <div class="table-responsive">
@@ -22,11 +22,11 @@
                             </tr>
                             </thead>
                             <tbody>
-                            @foreach($reevaluaciones as $reevaluacion)
+                            @foreach($revaluaciones as $index => $revaluacion)
                             <tr>
-                                <td>1</td>
+                                <td>{{ $index + 1 }}</td>
                                 <td>
-                                    <a href="{{route('sistema_contable.reevaluaciones.show', $reevaluacion)}}" class="btn btn-xs btn-info"><i class="fa fa-edit"></i> </a>
+                                    <a href="{{route('revaluacion', $revaluacion)}}" class="btn btn-xs btn-info"><i class="fa fa-edit"></i> </a>
                                     <a href="" class="btn btn-xs btn-default"><i class="fa fa-eye"></i> </a>
                                 </td>
                             </tr>

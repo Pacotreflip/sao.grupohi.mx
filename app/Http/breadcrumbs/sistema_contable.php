@@ -144,9 +144,9 @@ Breadcrumbs::register('sistema_contable.cuenta_material.show', function ($breadc
 });
 
 /**
- * Reevaluaciones
+ * Revaluaciones
  */
-Breadcrumbs::register('sistema_contable.reevaluaciones.index', function($breadcrumbs) {
+Breadcrumbs::register('sistema_contable.revaluacion.index', function($breadcrumbs) {
     $breadcrumbs->parent('sistema_contable.index');
-    $breadcrumbs->push('REEVALUACIONES', route('sistema_contable.reevaluaciones.index'));
+    $breadcrumbs->push('REVALUACIONES', route('sistema_contable.revaluacion.index'));
 });

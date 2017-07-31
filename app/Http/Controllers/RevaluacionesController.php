@@ -3,26 +3,26 @@
 namespace Ghi\Http\Controllers;
 
 use Dingo\Api\Routing\Helpers;
-use Ghi\Domain\Core\Contracts\Contabilidad\ReevaluacionRepository;
+use Ghi\Domain\Core\Contracts\Contabilidad\RevaluacionRepository;
 use Illuminate\Http\Request;
 
 use Ghi\Http\Requests;
 
-class ReevaluacionesController extends Controller
+class RevaluacionesController extends Controller
 {
 
     use Helpers;
 
-    private $reevaluacion;
+    private $revaluacion;
     /**
-     * ReevaluacionesController constructor.
+     * RevaluacionesController constructor.
      */
-    public function __construct(ReevaluacionRepository $reevaluacion)
+    public function __construct(RevaluacionRepository $revaluacion)
     {
         $this->middleware('auth');
         $this->middleware('context');
 
-        $this->reevaluacion = $reevaluacion;
+        $this->revaluacion = $revaluacion;
     }
 
 
@@ -33,9 +33,9 @@ class ReevaluacionesController extends Controller
      */
     public function index()
     {
-        $reevaluaciones = $this->reevaluacion->all();
-        return view('sistema_contable.modulos.reevaluaciones.index')
-            ->with('reevaluaciones', $reevaluaciones);
+        $revaluaciones = $this->revaluacion->all();
+        return view('sistema_contable.modulos.revaluacion.index')
+            ->with('revaluacion', $revaluaciones);
     }
 
     /**
