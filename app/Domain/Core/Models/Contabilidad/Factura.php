@@ -4,6 +4,7 @@ namespace Ghi\Domain\Core\Models\Contabilidad;
 
 use Carbon\Carbon;
 use Ghi\Core\Facades\Context;
+use Ghi\Domain\Core\Models\Moneda;
 use Ghi\Domain\Core\Models\Scopes\FacturaScope;
 use Ghi\Domain\Core\Models\Scopes\ObraScope;
 use Ghi\Domain\Core\Models\Transacciones\Tipo;
@@ -38,5 +39,11 @@ class Factura extends Transaccion
 
     public function revaluaciones() {
         return $this->belongsToMany(Revaluacion::class, 'Contabilidad.revaluacion_transaccion', 'id_transaccion', 'id_revaluacion');
+    }
+
+
+    public function scopePorRevaluar($query){
+        return $query->where('id_moneda','=',Moneda::DOLARES)
+            ->has('ordenPago','=',0);
     }
 }

@@ -23,7 +23,7 @@ class EloquentFacturaRepository implements FacturaRepository
 
     /**
      * EloquentFacturaRepository constructor.
-     * @param \Ghi\Domain\Core\Models\CuentaContable $model
+     * @param \Ghi\Domain\Core\Models\Contabilidad\Factura $model
      */
     public function __construct(Factura $model)
     {
@@ -103,6 +103,17 @@ class EloquentFacturaRepository implements FacturaRepository
     public function where(array $where)
     {
         $this->model = $this->model->where($where);
+        return $this;
+    }
+
+    /**
+     * Obtiene un scope sobre el modelo
+     * @param string $scope
+     * @return mixed
+     */
+    public function scope($scope)
+    {
+        $this->model = $this->model->$scope();
         return $this;
     }
 }

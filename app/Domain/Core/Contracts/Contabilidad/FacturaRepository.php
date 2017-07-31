@@ -64,4 +64,12 @@ interface FacturaRepository
      * @return mixed
      */
     public function where(array $where);
+
+    /**
+     * Obtiene un scope sobre el modelo
+     * @param string $scope
+     * @return mixed
+     */
+
+    public function scope($scope);
 }

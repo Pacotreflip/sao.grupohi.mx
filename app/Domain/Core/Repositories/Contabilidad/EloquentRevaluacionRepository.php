@@ -30,4 +30,24 @@ class EloquentRevaluacionRepository implements RevaluacionRepository
     {
         return $this->model->get();
     }
+
+    /**
+     * Guarda un registro de Revaluacion
+     * @param array $data
+     * @return \Ghi\Domain\Core\Models\Contabilidad\Revaluacion
+     * @throws \Exception
+     */
+    public function create(array $data)
+    {
+        try {
+            DB::connection('cadeco')->beginTransaction();
+            $item = $this->model->create($data);
+            DB::connection('cadeco')->commit();
+        } catch (\Exception $e) {
+            DB::connection('cadeco')->rollBack();
+            throw $e;
+        }
+        return $item;
+    }
+
 }

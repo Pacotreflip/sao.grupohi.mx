@@ -17,6 +17,22 @@ class Revaluacion extends Model
     protected $table = 'Contabilidad.revaluaciones';
 
     /**
+     * Aplicar Scope Global para recuperar solo las transacciones de tipo Factura
+     */
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::creating(function ($model) {
+            $model->tipo_transaccion = Tipo::FACTURA;
+            $model->opciones = 0;
+            $model->fecha = Carbon::now();
+            $model->id_obra = Context::getId();
+        });
+    }
+
+
+    /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany | Factura
      */
     public function facturas() {
