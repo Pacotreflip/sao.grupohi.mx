@@ -190,5 +190,9 @@ class AppServiceProvider extends ServiceProvider
             \Ghi\Domain\Core\Contracts\Seguridad\DiaFestivoRepository::class,
             \Ghi\Domain\Core\Repositories\Seguridad\EloquentDiaFestivoRepository::class
         );
+        $this->app->bind(
+            \Ghi\Domain\Core\Contracts\Contabilidad\FacturaRepository::class,
+            \Ghi\Domain\Core\Repositories\Contabilidad\EloquentFacturaRepository::class
+        );
     }
 }
