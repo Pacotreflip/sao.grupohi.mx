@@ -178,7 +178,7 @@ Vue.component('poliza-generada-edit', {
         confirm_save_cuenta: function () {
             var self = this;
             swal({
-                title: "Guardar Cambios de la cuenta: " + self.data.empresa.razon_social,
+                title: "Guardar Cambios de las cuentas faltantes",
                 text: "¿Estás seguro de que la información es correcta?",
                 type: "warning",
                 showCancelButton: true,

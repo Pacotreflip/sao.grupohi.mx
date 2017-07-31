@@ -152,9 +152,11 @@ class EloquentPolizaRepository implements PolizaRepository
                 $poliza->save();
                 $poliza = $this->model->find($id);
                 $fecha=Carbon::parse($poliza->fecha)->format('Y-m-d H:i:s');
+
                 $polizaArray=$poliza->toArray();
-                $polizaArray['fecha']=$fecha;
-                $poliza_hist = HistPoliza::create($polizaArray);
+                dd($polizaArray[]);
+
+                $poliza_hist = HistPoliza::create($poliza->toArray());
                 foreach ($poliza->polizaMovimientos as $movimiento) {
                     $movimiento->id_hist_int_poliza = $poliza_hist->id_hist_int_poliza;
                     $hist_movimiento = HistPolizaMovimiento::create($movimiento->toArray());

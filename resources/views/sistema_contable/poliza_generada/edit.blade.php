@@ -341,7 +341,7 @@
                                                <td>
                                                     @{{movimiento.tipo_cuenta_contable?movimiento.tipo_cuenta_contable.descripcion:'No registrada'}}
                                                 </td>
-                                                <td class="form-group" style="white-space: nowrap"  :class="{'has-error': validation_errors.has('form_cuenta.cuenta_contable [' + (index + 1) + ']')}">
+                                                <td class="form-group" style="white-space: nowrap;width: 200px"  :class="{'has-error': validation_errors.has('form_cuenta.cuenta_contable [' + (index + 1) + ']')}">
                                                     <input :name="'cuenta_contable [' + (index + 1) + ']'" :disabled="movimiento.id_tipo_cuenta_contable == 1" :placeholder="datos_contables.FormatoCuenta" type="text" style="width: 200px"
                                                            v-validate="'required|regex:' + datos_contables.FormatoCuentaRegExp"
                                                            :name="'CuentaContable [' + (index + 1) + ']'"

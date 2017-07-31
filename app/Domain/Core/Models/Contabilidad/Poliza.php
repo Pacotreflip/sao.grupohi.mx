@@ -147,8 +147,8 @@ class Poliza extends BaseModel
      */
     public function getCuadradoAttribute()
     {
-        if(abs(abs($this->SumaHaber)-$this->total)>0.1||abs(abs($this->SumaDebe)-$this->total)>0.1){
-            return false;
+        if(abs($this->SumaDebe-$this->SumaHaber)>.99){
+           return false;
         }
         return true;
     }
