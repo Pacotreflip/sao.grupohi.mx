@@ -13,7 +13,7 @@ class AddIdCancelacionToIntPolizas extends Migration
     public function up()
     {
         Schema::table('Contabilidad.int_polizas', function (Blueprint $table) {
-            $table->unsignedInteger('id_transaccion_cancelada');
+            $table->unsignedInteger('id_transaccion_cancelada')->nullable();
             $table->foreign('id_transaccion_cancelada')
                 ->references('id')
                 ->on('Contabilidad.transacciones_canceladas');
