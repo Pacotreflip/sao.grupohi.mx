@@ -14,20 +14,11 @@
             </div>
             <div class="box-body">
                 <table class="table table-bordered">
-                    <tbody>
                     <tr>
-                        <th>RAZÓN SOCIAL</th>
-                        <td>{{ $empresa->razon_social }}</td>
+                        <th class="bg-gray-light" width="33%">Razón Social<br><label>{{ $empresa->razon_social }}</label></th>
+                        <th class="bg-gray-light" width="33%">RFC<br><label>{{ $empresa->rfc }}</label></th>
+                        <th class="bg-gray-light" width="33%">Usuario que Registró<br><label>{{$empresa->user_registro ? $empresa->user_registro : '---' }}</label></th>
                     </tr>
-                    <tr>
-                        <th>RFC</th>
-                        <td>{{ $empresa->rfc }}</td>
-                    </tr>
-                    <tr>
-                        <th>USUARIO QUE REGISTRÓ</th>
-                        <td>{{$empresa->user_registro ? $empresa->user_registro : '---' }}</td>
-                    </tr>
-                    </tbody>
                 </table>
             </div>
         </div>
