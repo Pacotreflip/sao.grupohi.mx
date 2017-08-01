@@ -77,7 +77,8 @@ class RevaluacionesController extends Controller
      */
     public function show($id)
     {
-        $revaluacion = $this->revaluacion->find($id);
-        dd('show',$revaluacion);
+        $revaluacion = $this->revaluacion->with('facturas')->find($id);
+        return view('sistema_contable.modulos.revaluacion.show')
+            ->with('revaluacion', $revaluacion);
     }
 }
