@@ -5,18 +5,22 @@
 
 @section('main-content')
     {!! Breadcrumbs::render('sistema_contable.revaluacion.create') !!}
-    <revaluacion-create :facturas="{{ $facturas->toJson() }}" inline-template>
+    <revaluacion-create
+            :facturas="{{ $facturas->toJson() }}"
+            :url_revaluacion="'{{route('sistema_contable.revaluacion.store')}}'"
+            inline-template>
     <section >
 
         <div class="box box-solid">
-            <form action="{{route('sistema_contable.revaluacion.store')}}" method="POST">
+            <form id="form_facturas"  @submit.prevent="validateForm('form_facturas','confirm_save_facturas')"  data-vv-scope="form_facturas" >
                 {!! Form::token() !!}
                 <div class="box-header with-border">
                     <h3 class="box-title">Facturas por Reevaluar</h3>
                     <hr>
-                    <div class="col-md-6">
-                        <label for="tipo_cambio"><strong>Tipo de Cambio</strong></label>
-                        <input type="number" step="any" name="tipo_cambio" class="form-control" value="{{$tipo_cambio}}" />
+                    <div class="col-md-6"  class="bg-gray-light" class="bg-gray-light form-group" :class="{'has-error': validation_errors.has('form_facturas.Tipo de Cambio')}">
+                        <label for="Tipo de Cambio"><strong>Tipo de Cambio</strong></label>
+                        <input type="number" step="any" name="Tipo de Cambio" class="form-control"   v-validate="'required'"  value="{{$tipo_cambio}}"/>
+                        <label class="help" v-show="validation_errors.has('form_facturas.Tipo de Cambio')">@{{ validation_errors.first('form_facturas.Tipo de Cambio') }}</label>
                     </div>
                 </div>
                 <div class="box-body">
