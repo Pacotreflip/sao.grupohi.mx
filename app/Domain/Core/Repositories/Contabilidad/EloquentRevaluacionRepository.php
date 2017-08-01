@@ -50,9 +50,13 @@ class EloquentRevaluacionRepository implements RevaluacionRepository
      */
     public function create(array $data)
     {
+        $month = $this->getFechaRevaluacion()->month == Carbon::now()->month ? 'this' : 'last';
         try {
             DB::connection('cadeco')->beginTransaction();
 
+            if (! $this->esRevaluable()) {
+                throw new HttpResponseException(new Response('No es posible crear la revaluación debido a que se encuentra fuera del rango permitido: (Del "'. $this->getPrimerDiaRevaluacion($month)->toDateString() . '" Al "' . $this->getUltimoDiaRevaluacion($month)->toDateString() . '")', 400));
+            }
             $data['fecha'] = $this->getFechaRevaluacion();
             if(! isset($data['id_transaccion'])) {
                 throw new HttpResponseException(new Response('Debe seleccionar al menos una Factura para la Revaluación', 400));

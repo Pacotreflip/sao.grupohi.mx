@@ -26,6 +26,7 @@
                             <tr>
                                 <th>#</th>
                                 <th>Fecha de Revaluación</th>
+                                <th>Registró</th>
                                 <th>Tipo de Cambio</th>
                                 <th>Moneda</th>
                                 <th>Número de Facturas Revaluadas</th>
@@ -37,9 +38,10 @@
                             <tr>
                                 <td>{{ $index + 1 }}</td>
                                 <td>{{$revaluacion->fecha->format('Y-m')}}</td>
+                                <td>{{$revaluacion->usuario_registro}}</td>
                                 <td class="text-right">$ {{number_format($revaluacion->tipo_cambio,4)}}</td>
                                 <td>{{$revaluacion->moneda}}</td>
-                                <td>{{$revaluacion->facturas()->count()}}</td>
+                                <td class="text-right">{{$revaluacion->facturas()->count()}}</td>
                                 <td>
                                     <a href="{{route('sistema_contable.revaluacion.show', $revaluacion)}}" class="btn btn-xs btn-default"><i class="fa fa-eye"></i> </a>
 

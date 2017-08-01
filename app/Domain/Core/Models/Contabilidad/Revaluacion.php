@@ -12,6 +12,7 @@ namespace Ghi\Domain\Core\Models\Contabilidad;
 use Carbon\Carbon;
 use Ghi\Core\Facades\Context;
 use Ghi\Domain\Core\Models\Moneda;
+use Ghi\Domain\Core\Models\User;
 use Illuminate\Database\Eloquent\Model;
 
 class Revaluacion extends Model
@@ -53,5 +54,9 @@ class Revaluacion extends Model
 
     public function moneda() {
         return $this->belongsTo(Moneda::class, 'id_moneda', 'id_moneda');
+    }
+
+    public function usuario_registro() {
+        return $this->belongsTo(User::class, 'user_registro', 'idusuario');
     }
 }

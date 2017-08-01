@@ -8,6 +8,7 @@ use Ghi\Domain\Core\Contracts\Contabilidad\FacturaRepository;
 use Illuminate\Http\Request;
 
 use Ghi\Http\Requests;
+use Laracasts\Flash\Flash;
 
 class RevaluacionesController extends Controller
 {
@@ -49,7 +50,13 @@ class RevaluacionesController extends Controller
      */
     public function create()
     {
+
         $facturas = $this->factura->getFacturasPorRevaluar();
+
+        if(! $facturas->count()) {
+            Flash::warning('No existen facturas pendientes de revaluación');
+            return redirect()->back();
+        }
         $tipo_cambio= $this->revaluacion->getTipoCambio();
 
         return view('sistema_contable.modulos.revaluacion.create')
