@@ -5,7 +5,6 @@ namespace Ghi\Domain\Core\Models\Contabilidad;
 use Carbon\Carbon;
 use Ghi\Core\Facades\Context;
 use Ghi\Domain\Core\Models\Empresa;
-use Ghi\Domain\Core\Models\Moneda;
 use Ghi\Domain\Core\Models\Scopes\FacturaScope;
 use Ghi\Domain\Core\Models\Scopes\ObraScope;
 use Ghi\Domain\Core\Models\Transacciones\Tipo;
