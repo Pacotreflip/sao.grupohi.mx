@@ -65,9 +65,8 @@ class RevaluacionesController extends Controller
      */
     public function store(Request $request)
     {
-        dd($request->all());
         $revaluacion = $this->revaluacion->create($request->all());
-        dd($revaluacion);
+        return $this->response->created(route('sistema_contable.revaluacion.show', $revaluacion));
     }
 
     /**
@@ -79,6 +78,6 @@ class RevaluacionesController extends Controller
     public function show($id)
     {
         $revaluacion = $this->revaluacion->find($id);
-        dd($revaluacion);
+        dd('show',$revaluacion);
     }
 }

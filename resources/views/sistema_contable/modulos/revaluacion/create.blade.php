@@ -57,7 +57,7 @@
                     </div>
                 </div>
                 <div class="box-footer">
-                    <button type="submit" class="btn btn-success pull-right">
+                    <button type="submit" class="btn btn-success pull-right" :disabled="guardando">
                         <span v-if="guardando">
                             <i class="fa fa-spin fa-spinner"></i> Guardando
                         </span>

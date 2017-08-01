@@ -39,11 +39,19 @@ Vue.component('revaluacion-create', {
                 type: 'POST',
                 url: url,
                 data: data,
+                beforeSend: function() {
+                    self.guardando = true;
+                },
                 success: function (data, textStatus, xhr) {
-
+                    swal({
+                        type: "success",
+                        title: '¡Correcto!',
+                        text: 'Revaluación guardada correctamente'
+                    });
+                    window.location = xhr.getResponseHeader('Location');
                 },
                 complete: function () {
-
+                    self.guardando = false;
                 }
             });
         },

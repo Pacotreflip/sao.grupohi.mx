@@ -65818,8 +65818,20 @@ Vue.component('revaluacion-create', {
                 type: 'POST',
                 url: url,
                 data: data,
-                success: function success(data, textStatus, xhr) {},
-                complete: function complete() {}
+                beforeSend: function beforeSend() {
+                    self.guardando = true;
+                },
+                success: function success(data, textStatus, xhr) {
+                    swal({
+                        type: "success",
+                        title: '¡Correcto!',
+                        text: 'Revaluación guardada correctamente'
+                    });
+                    window.location = xhr.getResponseHeader('Location');
+                },
+                complete: function complete() {
+                    self.guardando = false;
+                }
             });
         },
         validateForm: function validateForm(scope, funcion) {
