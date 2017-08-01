@@ -57,7 +57,14 @@
                     </div>
                 </div>
                 <div class="box-footer">
-                    <button type="submit">Guardar</button>
+                    <button type="submit" class="btn btn-success pull-right">
+                        <span v-if="guardando">
+                            <i class="fa fa-spin fa-spinner"></i> Guardando
+                        </span>
+                        <span v-else>
+                            <i class="fa fa-save"></i> Guardar
+                        </span>
+                    </button>
                 </div>
             </form>
         </div>

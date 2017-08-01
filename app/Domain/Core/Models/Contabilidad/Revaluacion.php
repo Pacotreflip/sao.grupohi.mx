@@ -46,4 +46,8 @@ class Revaluacion extends Model
     public function facturas() {
         return $this->belongsToMany(Factura::class, 'Contabilidad.revaluacion_transaccion', 'id_revaluacion', 'id_transaccion');
     }
+
+    public function moneda() {
+        return $this->belongsTo(Moneda::class, 'id_moneda', 'id_moneda');
+    }
 }
