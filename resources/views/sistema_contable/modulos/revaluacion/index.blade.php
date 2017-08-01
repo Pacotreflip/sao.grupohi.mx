@@ -53,6 +53,7 @@
                             <tr>
                                 <th>#</th>
                                 <th>Fecha de Revaluación</th>
+                                <th>Registró</th>
                                 <th>Tipo de Cambio</th>
                                 <th>Moneda</th>
                                 <th>Número de Facturas Revaluadas</th>
