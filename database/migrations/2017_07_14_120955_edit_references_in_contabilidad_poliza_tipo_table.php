@@ -28,7 +28,7 @@ class EditReferencesInContabilidadPolizaTipoTable extends Migration
             $table->dropForeign('contabilidad_poliza_tipo_id_transaccion_interfaz_foreign');
             $table->dropColumn('id_transaccion_interfaz');
 
-            $table->integer('id_poliza_tipo_sao')->unsigned();
+            $table->integer('id_poliza_tipo_sao')->unsigned()->nullable();
             $table->foreign('id_poliza_tipo_sao')->references('id')->on('Contabilidad.poliza_tipo_sao')->onDelete('cascade');
         });
     }

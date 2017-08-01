@@ -13,7 +13,7 @@ class AlterContabilidadRevaluacionesTable extends Migration
     public function up()
     {
         Schema::table('Contabilidad.revaluaciones', function(Blueprint $table) {
-            $table->integer('user_registro');
+            $table->integer('user_registro')->nullable();
         });
     }
 
