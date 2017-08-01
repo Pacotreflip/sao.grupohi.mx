@@ -26,6 +26,9 @@ class Revaluacion extends Model
         'id_obra',
         'user_registro'
     ];
+
+    protected $dates=['fecha'];
+
     /**
      * Aplicar Scope Global para recuperar solo las transacciones de tipo Factura
      */
