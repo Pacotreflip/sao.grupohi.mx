@@ -53,6 +53,6 @@ class Factura extends Transaccion
     public function scopePorRevaluar($query)
     {
         return $query->where('id_moneda', '=', Moneda::DOLARES)->has('revaluaciones','=',0)
-            ->has('ordenPago', '=', 0)
+            ->has('ordenPago', '=', 0);
     }
 }
