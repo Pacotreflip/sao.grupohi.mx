@@ -3,11 +3,15 @@
 namespace Ghi\Domain\Core\Repositories\Contabilidad;
 
 use Carbon\Carbon;
+use Ghi\Domain\Core\Contracts\Contabilidad\FacturaRepository;
 use Ghi\Domain\Core\Contracts\Contabilidad\RevaluacionRepository;
 use Ghi\Domain\Core\Models\Cambio;
+use Ghi\Domain\Core\Models\Contabilidad\Factura;
 use Ghi\Domain\Core\Models\Contabilidad\Revaluacion;
 use Ghi\Domain\Core\Models\Moneda;
 use Ghi\Domain\Core\Models\Seguridad\DiaFestivo;
+use Illuminate\Http\Exception\HttpResponseException;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
 
 class EloquentRevaluacionRepository implements RevaluacionRepository
@@ -17,14 +21,16 @@ class EloquentRevaluacionRepository implements RevaluacionRepository
      * @var Revaluacion
      */
     protected $model;
+    protected $factura;
 
     /**
      * EloquentRevaluacionRepository constructor.
      * @param \Ghi\Domain\Core\Models\Contabilidad\Revaluacion $model
      */
-    public function __construct(Revaluacion $model)
+    public function __construct(Revaluacion $model, Factura $factura)
     {
         $this->model = $model;
+        $this->factura = $factura;
     }
 
     /**
@@ -44,10 +50,26 @@ class EloquentRevaluacionRepository implements RevaluacionRepository
      */
     public function create(array $data)
     {
+        $month = $this->getFechaRevaluacion()->month == Carbon::now()->month ? 'this' : 'last';
         try {
             DB::connection('cadeco')->beginTransaction();
+
+            if (! $this->esRevaluable()) {
+                throw new HttpResponseException(new Response('No es posible crear la revaluación debido a que se encuentra fuera del rango permitido: (Del "'. $this->getPrimerDiaRevaluacion($month)->toDateString() . '" Al "' . $this->getUltimoDiaRevaluacion($month)->toDateString() . '")', 400));
+            }
+            $data['fecha'] = $this->getFechaRevaluacion();
+            if(! isset($data['id_transaccion'])) {
+                throw new HttpResponseException(new Response('Debe seleccionar al menos una Factura para la Revaluación', 400));
+            }
+
             $item = $this->model->create($data);
+
             foreach ($data['id_transaccion'] as $key => $value) {
+                $factura = $this->factura->find($key);
+                $factura->fecha_revaluacion = $this->getFechaRevaluacion();
+                if ($factura->revaluacionesActuales()->count()) {
+                    throw new HttpResponseException(new Response('Una de las facturas que intenta revaluar ya se encuentra revaluada ('. $factura->observaciones.')', 400));
+                }
               $item->facturas()->attach($key);
             }
             DB::connection('cadeco')->commit();

@@ -26,7 +26,7 @@ class CreateDboNotificacionesPolizaTable extends Migration
 
             $table->foreign('id_notificacion')
                 ->references('id')
-                ->on('dbo.notificaciones_html')
+                ->on('dbo.notificaciones')
                 ->onDelete('cascade');
 
             $table->foreign('id_int_poliza')

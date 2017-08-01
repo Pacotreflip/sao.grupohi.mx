@@ -26,7 +26,7 @@ class CreateContabilidadNotificacionesPolizaTable extends Migration
 
             $table->foreign('id_notificacion')
                 ->references('id')
-                ->on('Contabilidad.notificaciones_html')
+                ->on('Contabilidad.notificaciones')
                 ->onDelete('cascade');
 
             $table->foreign('id_int_poliza')

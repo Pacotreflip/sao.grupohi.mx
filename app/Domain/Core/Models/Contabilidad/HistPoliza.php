@@ -38,7 +38,8 @@ class HistPoliza extends Model
         'registro'
     ];
 
-    public function estatusPrepoliza() {
+    public function estatusPrepoliza()
+    {
         return $this->belongsTo(EstatusPrePoliza::class, 'estatus', 'estatus');
     }
 
@@ -71,7 +72,7 @@ class HistPoliza extends Model
      */
     public function polizaMovimientos()
     {
-        return $this->hasMany(HistPolizaMovimiento::class, 'id_hist_int_poliza')->orderBy('id_tipo_movimiento_poliza','asc')->orderBy('importe','desc');
+        return $this->hasMany(HistPolizaMovimiento::class, 'id_hist_int_poliza')->orderBy('id_tipo_movimiento_poliza', 'asc')->orderBy('importe', 'desc');
     }
 
     /**
@@ -125,8 +126,9 @@ class HistPoliza extends Model
      * @param total
      * @return total con 2 decimales
      */
-    public function getTotalAttribute($value) {
-        return  $this->attributes['total'] = number_format((float)$value, 2, '.', '');
+    public function getTotalAttribute($value)
+    {
+        return $this->attributes['total'] = number_format((float)$value, 2, '.', '');
     }
 
     /**
@@ -134,13 +136,15 @@ class HistPoliza extends Model
      */
     public function getCuadradoAttribute()
     {
-        if(abs(abs($this->SumaHaber)-$this->total)>0.1||abs(abs($this->SumaDebe)-$this->total)>0.1){
+        if (abs($this->SumaDebe - $this->SumaHaber) > .99) {
             return false;
         }
         return true;
     }
-    public function  getEstatusStringAttribute(){
-        switch ($this->estatus){
+
+    public function getEstatusStringAttribute()
+    {
+        switch ($this->estatus) {
             case 0:
                 return "Registrada";
                 break;

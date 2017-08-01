@@ -99,13 +99,16 @@ class EloquentPolizaRepository implements PolizaRepository
 
                 }
 
+
+
+
                 if (!$cuentas_debe || !$cuentas_haber) {
                     throw new HttpResponseException(new Response('La póliza debe contener al menos un movimiento de cada tipo (Debe, Haber)', 404));
                 }
-                if ($suma_debe != $suma_haber) {
+                if (abs($suma_debe-$suma_haber)>.99) {
                     throw new HttpResponseException(new Response('Las sumas iguales no corresponden.', 404));
                 }
-                if (number_format($suma_debe, 2) != number_format($data['poliza_generada']['total'], 2) || number_format($suma_haber, 2) != number_format($data['poliza_generada']['total'], 2)) {
+                if (intval($suma_debe) != intval($data['poliza_generada']['total']) || intval($suma_haber) != intval($data['poliza_generada']['total'])) {
                     throw new HttpResponseException(new Response(
                         'Las sumas iguales deben ser iguales a $' . number_format($data['poliza_generada']['total'], 2, '.', ','), 404));
                 }
@@ -154,9 +157,8 @@ class EloquentPolizaRepository implements PolizaRepository
                 $fecha=Carbon::parse($poliza->fecha)->format('Y-m-d H:i:s');
 
                 $polizaArray=$poliza->toArray();
-                dd($polizaArray[]);
-
-                $poliza_hist = HistPoliza::create($poliza->toArray());
+                $polizaArray['fecha']=$fecha;
+                $poliza_hist = HistPoliza::create($polizaArray);
                 foreach ($poliza->polizaMovimientos as $movimiento) {
                     $movimiento->id_hist_int_poliza = $poliza_hist->id_hist_int_poliza;
                     $hist_movimiento = HistPolizaMovimiento::create($movimiento->toArray());

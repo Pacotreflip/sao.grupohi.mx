@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateRevaluacionTransaccionTable extends Migration
+class CreateContabilidadTransaccionesCanceladas extends Migration
 {
     /**
      * Run the migrations.
@@ -12,18 +12,17 @@ class CreateRevaluacionTransaccionTable extends Migration
      */
     public function up()
     {
-        Schema::create('Contabilidad.revaluacion_transaccion', function (Blueprint $table) {
+        Schema::create('Contabilidad.transacciones_canceladas', function (Blueprint $table) {
             $table->increments('id');
-            $table->unsignedInteger('id_revaluacion');
             $table->unsignedInteger('id_transaccion');
-
-            $table->foreign('id_revaluacion')
-                ->references('id')
-                ->on('Contabilidad.revaluaciones');
-
+            $table->string("registro",100);
+            $table->timestamps();
+            $table->softDeletes();
+            
             $table->foreign('id_transaccion')
                 ->references('id_transaccion')
-                ->on('dbo.transacciones');
+                ->on('transacciones');
+
         });
     }
 
@@ -34,6 +33,6 @@ class CreateRevaluacionTransaccionTable extends Migration
      */
     public function down()
     {
-        Schema::drop('Contabilidad.revaluacion_transaccion');
+        Schema::drop('Contabilidad.transacciones_canceladas');
     }
 }

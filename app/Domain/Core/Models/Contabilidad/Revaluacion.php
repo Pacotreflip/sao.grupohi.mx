@@ -12,6 +12,7 @@ namespace Ghi\Domain\Core\Models\Contabilidad;
 use Carbon\Carbon;
 use Ghi\Core\Facades\Context;
 use Ghi\Domain\Core\Models\Moneda;
+use Ghi\Domain\Core\Models\User;
 use Illuminate\Database\Eloquent\Model;
 
 class Revaluacion extends Model
@@ -20,10 +21,10 @@ class Revaluacion extends Model
     protected $table = 'Contabilidad.revaluaciones';
 
     protected $fillable=[
-        'fecha'
-        ,'tipo_cambio'
-        ,'id_moneda'
-        ,'id_obra',
+        'fecha',
+        'tipo_cambio',
+        'id_moneda',
+        'id_obra',
         'user_registro'
     ];
 
@@ -37,10 +38,9 @@ class Revaluacion extends Model
         parent::boot();
 
         static::creating(function ($model) {
-            $model->fecha = Carbon::now();
             $model->id_obra = Context::getId();
             $model->id_moneda=Moneda::DOLARES;
-            $model->user_registro=auth()->user()->idusuario;
+            $model->user_registro = auth()->user()->idusuario;
         });
     }
 
@@ -54,5 +54,9 @@ class Revaluacion extends Model
 
     public function moneda() {
         return $this->belongsTo(Moneda::class, 'id_moneda', 'id_moneda');
+    }
+
+    public function usuario_registro() {
+        return $this->belongsTo(User::class, 'user_registro', 'idusuario');
     }
 }

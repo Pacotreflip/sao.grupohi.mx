@@ -12,7 +12,7 @@ class CreateNotificacionesTable extends Migration
      */
     public function up()
     {
-        Schema::create('dbo.notificaciones_html', function (Blueprint $table) {
+        Schema::create('dbo.notificaciones', function (Blueprint $table) {
             $table->increments('id');
             $table->string('titulo',255);
             $table->string('idPolizas',300);
@@ -33,6 +33,6 @@ class CreateNotificacionesTable extends Migration
      */
     public function down()
     {
-        Schema::drop('dbo.notificaciones_html');
+        Schema::drop('dbo.notificaciones');
     }
 }
