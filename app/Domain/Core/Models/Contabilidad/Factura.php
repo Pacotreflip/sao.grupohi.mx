@@ -4,11 +4,13 @@ namespace Ghi\Domain\Core\Models\Contabilidad;
 
 use Carbon\Carbon;
 use Ghi\Core\Facades\Context;
+use Ghi\Domain\Core\Models\Empresa;
 use Ghi\Domain\Core\Models\Moneda;
 use Ghi\Domain\Core\Models\Scopes\FacturaScope;
 use Ghi\Domain\Core\Models\Scopes\ObraScope;
 use Ghi\Domain\Core\Models\Transacciones\Tipo;
 use Ghi\Domain\Core\Models\Transacciones\Transaccion;
+use Illuminate\Support\Facades\DB;
 
 class Factura extends Transaccion
 {
@@ -33,17 +35,24 @@ class Factura extends Transaccion
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasOne | OrdenPago
      */
-    public function ordenPago() {
+    public function ordenPago()
+    {
         return $this->hasOne(OrdenPago::class, 'id_referente', 'id_transaccion');
     }
 
-    public function revaluaciones() {
+    public function revaluaciones()
+    {
         return $this->belongsToMany(Revaluacion::class, 'Contabilidad.revaluacion_transaccion', 'id_transaccion', 'id_revaluacion');
     }
 
+    public function empresa()
+    {
+        return $this->belongsTo(Empresa::class, 'id_empresa');
+    }
 
-    public function scopePorRevaluar($query){
-        return $query->where('id_moneda','=',Moneda::DOLARES)
-            ->has('ordenPago','=',0);
+    public function scopePorRevaluar($query)
+    {
+        return $query->where('id_moneda', '=', Moneda::DOLARES)->has('revaluaciones','=',0)
+            ->has('ordenPago', '=', 0)
     }
 }

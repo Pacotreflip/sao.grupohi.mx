@@ -26,7 +26,7 @@
                             <tr>
                                 <td>{{ $index + 1 }}</td>
                                 <td>
-                                    <a href="{{route('revaluacion', $revaluacion)}}" class="btn btn-xs btn-info"><i class="fa fa-edit"></i> </a>
+                                    <a href="{{route('sistema_contable.revaluacion.show', $revaluacion)}}" class="btn btn-xs btn-info"><i class="fa fa-edit"></i> </a>
                                     <a href="" class="btn btn-xs btn-default"><i class="fa fa-eye"></i> </a>
                                 </td>
                             </tr>

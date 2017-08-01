@@ -16,6 +16,7 @@ class RevaluacionesController extends Controller
 
     private $revaluacion;
     private $factura;
+
     /**
      * RevaluacionesController constructor.
      */
@@ -48,30 +49,37 @@ class RevaluacionesController extends Controller
      */
     public function create()
     {
-        $facturas = $this->factura->scope('porRevaluar')->all();
+        $facturas = $this->factura->with('empresa')->scope('porRevaluar')->all();
+        dd($facturas);
+        $tipo_cambio= $this->revaluacion->getTipoCambio();
         return view('sistema_contable.modulos.revaluacion.create')
-            ->with('facturas', $facturas);
+            ->with('facturas', $facturas)
+            ->with('tipo_cambio', $tipo_cambio);
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
     {
-        dd($request->all());
+
+        $revaluacion = $this->revaluacion->create($request->all());
+        dd($revaluacion);
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function show($id)
     {
-        //
+
+        $revaluacion = $this->revaluacion->find($id);
+        dd($revaluacion);
     }
 }

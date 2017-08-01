@@ -9,6 +9,9 @@
 namespace Ghi\Domain\Core\Models\Contabilidad;
 
 
+use Carbon\Carbon;
+use Ghi\Core\Facades\Context;
+use Ghi\Domain\Core\Models\Moneda;
 use Illuminate\Database\Eloquent\Model;
 
 class Revaluacion extends Model
@@ -16,6 +19,12 @@ class Revaluacion extends Model
     protected $connection = 'cadeco';
     protected $table = 'Contabilidad.revaluaciones';
 
+    protected $fillable=[
+        'fecha'
+        ,'tipo_cambio'
+        ,'id_moneda'
+        ,'id_obra'
+    ];
     /**
      * Aplicar Scope Global para recuperar solo las transacciones de tipo Factura
      */
@@ -24,10 +33,9 @@ class Revaluacion extends Model
         parent::boot();
 
         static::creating(function ($model) {
-            $model->tipo_transaccion = Tipo::FACTURA;
-            $model->opciones = 0;
             $model->fecha = Carbon::now();
             $model->id_obra = Context::getId();
+            $model->id_moneda=Moneda::DOLARES;
         });
     }
 
