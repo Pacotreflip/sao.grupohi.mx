@@ -126,6 +126,8 @@ class EloquentFacturaRepository implements FacturaRepository
         $factura->fecha_revaluacion = $this->revaluacion->getFechaRevaluacion();
         return $factura->where('id_moneda', '=', Moneda::DOLARES)
             ->has('ordenPago', '=', 0)
-            ->has('revaluacionesActuales', '=', 0)->get();
+            ->has('revaluacionesActuales', '=', 0)
+            ->with('empresa')
+            ->get();
     }
 }
