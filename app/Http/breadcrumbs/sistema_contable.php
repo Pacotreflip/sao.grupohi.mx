@@ -154,3 +154,8 @@ Breadcrumbs::register('sistema_contable.revaluacion.create', function($breadcrum
     $breadcrumbs->parent('sistema_contable.revaluacion.index');
     $breadcrumbs->push('NUEVA', route('sistema_contable.revaluacion.create'));
 });
+
+Breadcrumbs::register('sistema_contable.revaluacion.show', function ($breadcrumb) {
+    $breadcrumb->parent('sistema_contable.revaluacion.index');
+    $breadcrumb->push('VER REVALUACIÓN', route('sistema_contable.revaluacion.index'));
+});
