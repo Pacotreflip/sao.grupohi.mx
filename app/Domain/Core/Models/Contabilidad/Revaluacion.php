@@ -20,10 +20,11 @@ class Revaluacion extends Model
     protected $table = 'Contabilidad.revaluaciones';
 
     protected $fillable=[
-        'fecha'
-        ,'tipo_cambio'
-        ,'id_moneda'
-        ,'id_obra'
+        'fecha',
+        'tipo_cambio',
+        'id_moneda',
+        'id_obra',
+        'user_registro'
     ];
     /**
      * Aplicar Scope Global para recuperar solo las transacciones de tipo Factura
@@ -33,9 +34,9 @@ class Revaluacion extends Model
         parent::boot();
 
         static::creating(function ($model) {
-            $model->fecha = Carbon::now();
             $model->id_obra = Context::getId();
             $model->id_moneda=Moneda::DOLARES;
+            $model->user_registro = auth()->user()->idusuario;
         });
     }
 

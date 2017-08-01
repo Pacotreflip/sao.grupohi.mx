@@ -46,6 +46,8 @@ class EloquentRevaluacionRepository implements RevaluacionRepository
     {
         try {
             DB::connection('cadeco')->beginTransaction();
+
+            $data['fecha'] = $this->getFechaRevaluacion();
             $item = $this->model->create($data);
             foreach ($data['id_transaccion'] as $key => $value) {
               $item->facturas()->attach($key);
