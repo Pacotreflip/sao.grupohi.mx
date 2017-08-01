@@ -19,7 +19,7 @@ class CreateRevaluacionTransaccionTable extends Migration
 
             $table->foreign('id_revaluacion')
                 ->references('id')
-                ->on('Contabilidad.revaluacion');
+                ->on('Contabilidad.revaluaciones');
 
             $table->foreign('id_transaccion')
                 ->references('id_transaccion')

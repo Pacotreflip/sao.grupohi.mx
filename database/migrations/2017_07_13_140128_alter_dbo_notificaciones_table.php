@@ -22,7 +22,7 @@ class AlterDboNotificacionesTable extends Migration
      */
     public function down()
     {
-        Schema::table('notificaciones_html', function(Blueprint $table) {
+        Schema::table('notificaciones', function(Blueprint $table) {
             $table->dropColumn('idPolizas');
             $table->dropColumn('total_polizas');
             $table->dropColumn('estatus');

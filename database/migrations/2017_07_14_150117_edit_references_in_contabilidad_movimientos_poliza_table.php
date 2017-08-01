@@ -17,7 +17,7 @@ class EditReferencesInContabilidadMovimientosPolizaTable extends Migration
             $table->dropForeign('contabilidad_movimientos_poliza_id_cuenta_contable_foreign');
             $table->dropColumn('id_cuenta_contable');
 
-            $table->integer('id_tipo_cuenta_contable')->unsigned();
+            $table->integer('id_tipo_cuenta_contable')->unsigned()->nullable();
             $table->foreign('id_tipo_cuenta_contable')->references('id_tipo_cuenta_contable')->on('Contabilidad.int_tipos_cuentas_contables')->onDelete('cascade');
         });
     }

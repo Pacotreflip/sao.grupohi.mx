@@ -12,7 +12,7 @@ class AddLeidaToNotificacionesTable extends Migration
      */
     public function up()
     {
-        Schema::table('dbo.notificaciones_html', function (Blueprint $table) {
+        Schema::table('dbo.notificaciones', function (Blueprint $table) {
             $table->boolean('leida')->default(false);
         });
     }
@@ -24,7 +24,7 @@ class AddLeidaToNotificacionesTable extends Migration
      */
     public function down()
     {
-        Schema::table('dbo.notificaciones_html', function (Blueprint $table) {
+        Schema::table('dbo.notificaciones', function (Blueprint $table) {
             $table->dropColumn('leida');
         });
     }

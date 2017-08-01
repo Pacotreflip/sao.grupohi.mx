@@ -12,16 +12,23 @@ class CreateRevaluacionesTable extends Migration
      */
     public function up()
     {
-        Schema::create('Contabilidad.revaluacion', function (Blueprint $table) {
+        Schema::create('Contabilidad.revaluaciones', function (Blueprint $table) {
             $table->increments('id');
             $table->date('fecha');
             $table->float('tipo_cambio');
             $table->integer('id_moneda')->unsigned();
+            $table->integer('user_registro');
+            $table->integer('id_obra')->unsigned();
             $table->timestamps();
 
             $table->foreign('id_moneda')
                 ->references('id_moneda')
                 ->on('dbo.monedas');
+
+            $table->foreign('id_obra')
+                ->references('id_obra')
+                ->on('dbo.obras')
+                ->onDelete('cascade');
         });
     }
 
@@ -32,6 +39,6 @@ class CreateRevaluacionesTable extends Migration
      */
     public function down()
     {
-        Schema::drop('Contabilidad.revaluacion');
+        Schema::drop('Contabilidad.revaluaciones');
     }
 }
