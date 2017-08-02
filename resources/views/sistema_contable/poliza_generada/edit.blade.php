@@ -99,7 +99,7 @@
                                                 <td style="white-space: nowrap">@{{ index + 1 }}</td>
                                                 <td class="form-group"
                                                     :class="{'has-error': validation_errors.has('form_poliza.CuentaContable [' + (index + 1) + ']')}">
-                                                    <input :disabled="movimiento.id_tipo_cuenta_contable == 1&& movimiento.cuenta_contable!=null" :placeholder="datos_contables.FormatoCuenta" type="text"
+                                                    <input :disabled="movimiento.id_tipo_cuenta_contable == 1&&poliza.poliza_movimientos[index].cuenta_contable!=null" :placeholder="datos_contables.FormatoCuenta" type="text"
                                                            v-validate="'required|regex:' + datos_contables.FormatoCuentaRegExp"
                                                            :name="'CuentaContable [' + (index + 1) + ']'"
                                                            class="form-control input-sm formato_cuenta"
@@ -342,7 +342,7 @@
                                                     @{{movimiento.tipo_cuenta_contable?movimiento.tipo_cuenta_contable.descripcion:'No registrada'}}
                                                 </td>
                                                 <td class="form-group" style="white-space: nowrap;width: 200px"  :class="{'has-error': validation_errors.has('form_cuenta.cuenta_contable [' + (index + 1) + ']')}">
-                                                    <input :name="'cuenta_contable [' + (index + 1) + ']'" :disabled="movimiento.id_tipo_cuenta_contable == 1 && movimiento.cuenta_contable!=null" :placeholder="datos_contables.FormatoCuenta" type="text" style="width: 200px"
+                                                    <input :name="'cuenta_contable [' + (index + 1) + ']'"  :placeholder="datos_contables.FormatoCuenta" type="text" style="width: 200px"
                                                            v-validate="'required|regex:' + datos_contables.FormatoCuentaRegExp"
                                                            :name="'CuentaContable [' + (index + 1) + ']'"
                                                            class="form-control input-sm formato_cuenta"
