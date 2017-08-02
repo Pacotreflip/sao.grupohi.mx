@@ -16,7 +16,7 @@
                         <table class="table table-bordered">
                             <tr>
                                 <th class="bg-gray-light">Fecha de
-                                    Revaluación<br><label>{{$revaluacion->fecha->format('Y-m')}}</label></th>
+                                    Revaluación<br><label>{{$revaluacion->fecha->format('M-Y')}}</label></th>
                                 <th class="bg-gray-light">Tipo de
                                     Cambio<br><label>$ {{number_format($revaluacion->tipo_cambio,4)}}</label></th>
                                 <th class="bg-gray-light">Moneda<br><label>{{$revaluacion->moneda}}</label></th>
@@ -45,7 +45,7 @@
                                         <td>{{$factura->referencia}}</td>
                                         <td>{{$factura->id_antecedente}}</td>
                                         <td>{{$factura->observaciones}}</td>
-                                        <td>{{$factura->fecha->format('Y-m-d h:i:s a')}}</td>
+                                        <td>{{$factura->fecha->format('Y-m-d')}}</td>
                                         <td style="text-align: right">$ {{number_format($factura->monto,2)}}</td>
                                     </tr>
                                 @endforeach

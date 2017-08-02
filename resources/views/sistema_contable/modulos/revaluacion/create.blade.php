@@ -15,12 +15,14 @@
             <form id="form_facturas"  @submit.prevent="validateForm('form_facturas','confirm_save_facturas')"  data-vv-scope="form_facturas" >
                 {!! Form::token() !!}
                 <div class="box-header with-border">
-                    <h3 class="box-title">Facturas por Reevaluar</h3>
+                    <h3 class="box-title">Facturas por Revaluar</h3>
                     <hr>
-                    <div class="form-group" :class="{'has-error': validation_errors.has('form_facturas.tipo_cambio')}">
-                        <label for="tipo_cambio"><strong>Tipo de Cambio</strong></label>
-                        <input type="number" step="any" name="tipo_cambio" class="form-control"   v-validate="'required|decimal|min_value:0'"  value="{{number_format($tipo_cambio,4)}}"/>
-                        <label class="help" v-show="validation_errors.has('form_facturas.tipo_cambio')">@{{ validation_errors.first('form_facturas.tipo_cambio') }}</label>
+                    <div class="col-md-3">
+                        <div class="form-group" :class="{'has-error': validation_errors.has('form_facturas.tipo_cambio')}">
+                            <label for="tipo_cambio"><strong>Tipo de Cambio</strong></label>
+                            <input type="number" step="any" name="tipo_cambio" class="form-control"   v-validate="'required|decimal|min_value:0'"  value="{{number_format($tipo_cambio,4)}}"/>
+                            <label class="help" v-show="validation_errors.has('form_facturas.tipo_cambio')">@{{ validation_errors.first('form_facturas.tipo_cambio') }}</label>
+                        </div>
                     </div>
                 </div>
                 <div class="box-body">
@@ -47,7 +49,7 @@
                                 <td>@{{factura.referencia}}</td>
                                 <td>@{{factura.id_antecedente}}</td>
                                 <td>@{{factura.observaciones}}</td>
-                                <td>@{{ (new Date(factura.fecha)).dateFormat() }}</td>
+                                <td>@{{ (new Date(factura.fecha)).dateShortFormat() }}</td>
                                 <td style="text-align: right">$ @{{  (parseFloat(factura.monto)).formatMoney(2,'.',',') }}</td>
                                 <td>
                                     <input type="checkbox" :name="'id_transaccion[' + factura.id_transaccion + ']'" checked v-icheck>

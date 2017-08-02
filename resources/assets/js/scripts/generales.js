@@ -101,6 +101,15 @@ Date.prototype.dateFormat = function() {
     return sYear + "-" + sMonth + "-" + sDay + " " + sHour + ":" + sMinute + ":" + sSecond + " " + sAMPM;
 };
 
+Date.prototype.dateShortFormat = function() {
+    var date = this;
+    var sMonth = padValue(date.getMonth() + 1);
+    var sDay = padValue(date.getDate());
+    var sYear = date.getFullYear();
+
+    return sYear + "-" + sMonth + "-" + sDay;
+};
+
 function padValue(value) {
     return (value < 10) ? "0" + value : value;
 };
