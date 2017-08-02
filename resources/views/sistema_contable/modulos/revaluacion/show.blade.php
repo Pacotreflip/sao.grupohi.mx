@@ -16,7 +16,7 @@
                         <table class="table table-bordered">
                             <tr>
                                 <th class="bg-gray-light">Fecha de
-                                    Revaluación<br><label>{{$revaluacion->fecha->format('Y-m')}}</label></th>
+                                    Revaluación<br><label>{{$revaluacion->fecha->format('M-Y')}}</label></th>
                                 <th class="bg-gray-light">Tipo de
                                     Cambio<br><label>$ {{number_format($revaluacion->tipo_cambio,4)}}</label></th>
                                 <th class="bg-gray-light">Moneda<br><label>{{$revaluacion->moneda}}</label></th>

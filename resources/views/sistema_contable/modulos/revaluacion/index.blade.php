@@ -37,14 +37,13 @@
                             @foreach($revaluaciones as $index => $revaluacion)
                             <tr>
                                 <td>{{ $index + 1 }}</td>
-                                <td>{{$revaluacion->fecha->format('Y-m')}}</td>
+                                <td>{{$revaluacion->fecha->format('M-Y')}}</td>
                                 <td>{{$revaluacion->usuario_registro}}</td>
                                 <td class="text-right">$ {{number_format($revaluacion->tipo_cambio,4)}}</td>
                                 <td>{{$revaluacion->moneda}}</td>
                                 <td class="text-right">{{$revaluacion->facturas()->count()}}</td>
                                 <td>
                                     <a href="{{route('sistema_contable.revaluacion.show', $revaluacion)}}" class="btn btn-xs btn-default"><i class="fa fa-eye"></i> </a>
-
                                 </td>
                             </tr>
                             @endforeach
