@@ -199,7 +199,7 @@ class EloquentPolizaRepository implements PolizaRepository
      */
     public function paginate($perPage)
     {
-        return $this->model->orderBy('created_at', 'DESC')->paginate($perPage);
+        return $this->model->orderBy('id_int_poliza', 'DESC')->paginate($perPage);
     }
 
     public function where(array $where)
