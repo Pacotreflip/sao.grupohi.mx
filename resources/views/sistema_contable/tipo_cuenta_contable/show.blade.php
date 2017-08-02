@@ -26,21 +26,12 @@
                     <div class="col-sm-12">
                         <table class="table table-bordered">
                             <tbody>
+
                             <tr>
-                                <th>DESCRIPCIÓN</th>
-                                <td>{{$tipo_cuenta_contable->descripcion}}</td>
-                            </tr>
-                            <tr>
-                                <th>USUARIO QUE REGISTRÓ</th>
-                                <td>{{$tipo_cuenta_contable->userRegistro}}</td>
-                            </tr>
-                            <tr>
-                                <th>NATURALEZA DE CUENTA</th>
-                                <td>{{$tipo_cuenta_contable->naturalezaPoliza}}</td>
-                            </tr>
-                            <tr>
-                                <th>FECHA Y HORA DE REGISTRO</th>
-                                <td>{{$tipo_cuenta_contable->created_at->format('Y-m-d h:i:s a')}} </td>
+                                <th  class="bg-gray-light">Descripción<br><label>{{$tipo_cuenta_contable->descripcion}}</label></th>
+                                <th  class="bg-gray-light">Usuario que Registró:<br><label> {{$tipo_cuenta_contable->userRegistro}}</label></th>
+                                <th class="bg-gray-light">Naturaleza de Cuenta:<br><label>{{$tipo_cuenta_contable->naturalezaPoliza}}</label></th>
+                                <th class="bg-gray-light">Fecha y Hora de Registro:<br><label>{{$tipo_cuenta_contable->created_at->format('Y-m-d h:i:s a')}} </label></th>
                             </tr>
                             </tbody>
                         </table>
@@ -52,7 +43,7 @@
                             <table class="table table-bordered">
                                 <tbody>
                                 <tr>
-                                    <th colspan="2"><center>CUENTA CONTABLE ASIGNADA</center></th>
+                                    <th colspan="2" class="text-center">CUENTA CONTABLE ASIGNADA</th>
 
                                 </tr>
                                 <tr>

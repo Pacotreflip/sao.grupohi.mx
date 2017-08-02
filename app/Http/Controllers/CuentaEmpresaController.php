@@ -95,7 +95,7 @@ class CuentaEmpresaController extends Controller
     {
 
         $data = $request->all();
-        $cuenta=$this->cuenta_empresa->update($data, $id);
+        $cuenta = $this->cuenta_empresa->update($data, $id);
         $empresa = $this->empresa->with('cuentasEmpresa.tipoCuentaEmpresa')->find($data['data']['id_empresa']);
 
         $where = [
@@ -103,13 +103,16 @@ class CuentaEmpresaController extends Controller
             ['id_empresa_cadeco', '=', $empresa->id_empresa],
         ];
         $movimientos = $this->poliza_movimiento->where($where)->all();
+
         foreach ($movimientos as $movimiento) {
-            if($movimiento->cuenta_contable==null) {
-            $poliza = $this->poliza->find($movimiento->id_int_poliza);
-            if ($poliza->estatus != 1 && $poliza->estatus != 2) {
-                $dataUpdate['cuenta_contable'] = $cuenta->cuenta;
-                $this->poliza_movimiento->update($dataUpdate, $movimiento->id_int_poliza_movimiento);
-            }   }
+            if ($movimiento->cuenta_contable == null) {
+                $poliza = $this->poliza->find($movimiento->id_int_poliza);
+                if ($poliza->estatus != 1 && $poliza->estatus != 2) {
+                    $dataUpdate['cuenta_contable'] = $cuenta->cuenta;
+                    $movUpdate = PolizaMovimiento::find($movimiento->id_int_poliza_movimiento);
+                    $movUpdate->update($dataUpdate);
+                }
+            }
         }
 
         return response()->json(['data' => ['empresa' => $empresa]], 200);
@@ -126,14 +129,15 @@ class CuentaEmpresaController extends Controller
         ];
         $movimientos = $this->poliza_movimiento->where($where)->all();
         foreach ($movimientos as $movimiento) {
-            if($movimiento->cuenta_contable==null) {
+            if ($movimiento->cuenta_contable == null) {
                 $poliza = $this->poliza->find($movimiento->id_int_poliza);
                 if ($poliza->estatus != 1 && $poliza->estatus != 2) {
                     $dataUpdate['cuenta_contable'] = $cuenta->cuenta;
-                    $this->poliza_movimiento->update($dataUpdate, $movimiento->id_int_poliza_movimiento);
+                    $movUpdate = PolizaMovimiento::find($movimiento->id_int_poliza_movimiento);
+                    $movUpdate->update($dataUpdate);
                 }
             }
-            }
+        }
         return response()->json(['data' => ['cuenta_empresa' => $cuenta]], 200);
     }
 }
