@@ -49,7 +49,7 @@
                                 <td>@{{factura.referencia}}</td>
                                 <td>@{{factura.id_antecedente}}</td>
                                 <td>@{{factura.observaciones}}</td>
-                                <td>@{{ (new Date(factura.fecha)).dateFormat() }}</td>
+                                <td>@{{ (new Date(factura.fecha)).dateShortFormat() }}</td>
                                 <td style="text-align: right">$ @{{  (parseFloat(factura.monto)).formatMoney(2,'.',',') }}</td>
                                 <td>
                                     <input type="checkbox" :name="'id_transaccion[' + factura.id_transaccion + ']'" checked v-icheck>

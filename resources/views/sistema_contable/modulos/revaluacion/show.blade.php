@@ -45,7 +45,7 @@
                                         <td>{{$factura->referencia}}</td>
                                         <td>{{$factura->id_antecedente}}</td>
                                         <td>{{$factura->observaciones}}</td>
-                                        <td>{{$factura->fecha->format('Y-m-d h:i:s a')}}</td>
+                                        <td>{{$factura->fecha->format('Y-m-d')}}</td>
                                         <td style="text-align: right">$ {{number_format($factura->monto,2)}}</td>
                                     </tr>
                                 @endforeach
