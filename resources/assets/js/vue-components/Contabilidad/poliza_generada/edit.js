@@ -251,9 +251,13 @@ Vue.component('poliza-generada-edit', {
                         $('#add_cuenta_modal').modal('show');
                     }
                     else{
-                        swal('Las cuentas están completas.');
+                        swal({
+                            title: "¡Atención!",
+                            text: "Las cuentas están completas.",
+                            type: "warning",
+                            confirmButtonText: "Aceptar"
+                        });
                     }
-
                 },
                 complete: function () {
                     self.guardando = false;

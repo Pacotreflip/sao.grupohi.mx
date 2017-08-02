@@ -160,14 +160,14 @@
 
             var url=App.host +"/sistema_contable/poliza_generada/" + id;
             swal({
-                title: "¡Validar Prepóliza!",
+                title: "Validar Prepóliza",
                 text: "¿Esta seguro de que deseas validar la Prepóliza?",
-                confirmButtonText: "Si, Validar",
-                cancelButtonText: "No, Cancelar",
+                type: "warning",
                 showCancelButton: true,
-                showLoaderOnConfirm: true,
-                allowOutsideClick: false
-            }).then(function (inputValue)
+                confirmButtonText: "Si, Continuar",
+                cancelButtonText: "No, Cancelar",
+
+            }).then(function ()
             {
                 $.ajax({
                     url: url,
@@ -202,14 +202,13 @@
 
             var url=App.host +"/sistema_contable/poliza_generada/" + id;
             swal({
-                title: "¡Omitir Prepóliza!",
+                title: "Omitir Prepóliza",
                 text: "¿Esta seguro de que deseas Omitir la Prepóliza?",
-                confirmButtonText: "Si, Omitir",
-                cancelButtonText: "No, Cancelar",
+                type: "warning",
                 showCancelButton: true,
-                showLoaderOnConfirm: true,
-                allowOutsideClick: false
-            }).then(function (inputValue)
+                confirmButtonText: "Si, Continuar",
+                cancelButtonText: "No, Cancelar",
+            }).then(function ()
             { $.ajax({
                 url: url,
                 type: 'POST',

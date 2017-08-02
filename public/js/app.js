@@ -67344,7 +67344,12 @@ Vue.component('poliza-generada-edit', {
                         self.data.empresa = self.data.movimientos[0].empresa_cadeco;
                         $('#add_cuenta_modal').modal('show');
                     } else {
-                        swal('Las cuentas están completas.');
+                        swal({
+                            title: "¡Atención!",
+                            text: "Las cuentas están completas.",
+                            type: "warning",
+                            confirmButtonText: "Aceptar"
+                        });
                     }
                 },
                 complete: function complete() {
