@@ -15,8 +15,8 @@ class Poliza extends BaseModel
     use SoftDeletes;
     const NO_LANZADA = -2;
     const CON_ERRORES = -1;
-    const NO_VALIDADA=0;
-    const VALIDADA=1;
+    const NO_VALIDADA = 0;
+    const VALIDADA = 1;
     const LANZADA = 2;
 
 
@@ -49,7 +49,7 @@ class Poliza extends BaseModel
 
     protected $dates = ['fecha'];
 
-    protected $appends = ['suma_debe', 'suma_haber','cuadrado'];
+    protected $appends = ['suma_debe', 'suma_haber', 'cuadrado'];
 
     protected static function boot()
     {
@@ -62,7 +62,8 @@ class Poliza extends BaseModel
         });
     }
 
-    public function estatusPrepoliza() {
+    public function estatusPrepoliza()
+    {
         return $this->belongsTo(EstatusPrePoliza::class, 'estatus', 'estatus');
     }
 
@@ -95,7 +96,7 @@ class Poliza extends BaseModel
      */
     public function polizaMovimientos()
     {
-        return $this->hasMany(PolizaMovimiento::class, 'id_int_poliza')->orderBy('id_tipo_movimiento_poliza','asc')->orderBy('importe','desc');
+        return $this->hasMany(PolizaMovimiento::class, 'id_int_poliza')->orderBy('id_tipo_movimiento_poliza', 'asc')->orderBy('importe', 'desc');
     }
 
     /**
@@ -105,14 +106,27 @@ class Poliza extends BaseModel
     {
         return $this->belongsTo(User::class, 'registro', 'idusuario');
     }
+
     /**
      * @return usuario registro
      */
     public function getUsuarioSolicitaAttribute()
     {
-        $usuarioRegistro = substr($this->usuario_registro, 23, -1);
-        return $usuarioRegistro;
+        $usuarioBase = str_split($this->usuario_registro);
+        $usuario = '';
+        $auxiliar = 0;
+        for ($a = 0; $a < count($usuarioBase); $a++) {
+            if ($auxiliar == 1&&$usuarioBase[$a] != '|') {
+                $usuario .= $usuarioBase[$a];
+            }
+
+            if ($usuarioBase[$a] == '|') {
+                $auxiliar++;
+            }
+        }
+        return $usuario;
     }
+
     /**
      * @return int
      */
@@ -147,16 +161,19 @@ class Poliza extends BaseModel
      */
     public function getCuadradoAttribute()
     {
-        if(abs($this->SumaDebe-$this->SumaHaber)>.99){
-           return false;
+        if (abs($this->SumaDebe - $this->SumaHaber) > .99) {
+            return false;
         }
         return true;
     }
 
-    public function historicos() {
+    public function historicos()
+    {
         return $this->hasMany(HistPoliza::class, 'id_int_poliza', 'id_int_poliza');
     }
-    public  function scopeConErrores($query){
+
+    public function scopeConErrores($query)
+    {
         return $query->where('Contabilidad.int_polizas.estatus', '=', static::CON_ERRORES);
     }
 }
