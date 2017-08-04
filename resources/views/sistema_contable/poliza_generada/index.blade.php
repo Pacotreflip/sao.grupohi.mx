@@ -49,7 +49,7 @@
         </div>
     </div>
 
-
+@if($polizas)
     <br>
     <div class="row">
         <div class="col-md-12">
@@ -66,6 +66,7 @@
                                 <th>Tipo de Póliza</th>
                                 <th>Tipo de Transaccion</th>
                                 <th>Concepto</th>
+                                <th>Fecha de Prepóliza</th>
                                 <th>Total</th>
                                 <th>Cuadre</th>
                                 <th>Estatus</th>
@@ -81,6 +82,7 @@
                                     <td>{{ $item->transaccionInterfaz}}</td>
                                     <td>{{ $item->tipoPolizaContpaq}}</td>
                                     <td>{{ $item->concepto}}</td>
+                                    <td>{{ $item->fecha->format('Y-m-d h:i:s a')}}</td>
                                     <td class="numerico">$ {{number_format($item->total,'2','.',',')}}</td>
                                     <td class="numerico">$ {{number_format($item->cuadre,'2','.',',')}}</td>
                                     <td>
@@ -103,13 +105,13 @@
                             @endforeach
                             </tbody>
                         </table>
-                        <div class="text-center">
-                            {!! $polizas->appends(['fechas' => $fechas, 'estatus' => $estatus])->render() !!}
-                        </div>
+
                     </div>
                 </div>
             </div>
         </div>
     </div>
+
+@endif
 @endsection
 

@@ -14,6 +14,7 @@
                 :url_poliza_generada_update="'{{route('sistema_contable.poliza_generada.update', $poliza)}}'"
                 :cuentas_contables="{{$cuentasContables}}"
                 :tipo_cuenta_contable="{{$tipoCuentaContable}}"
+                :movimientos_cta="{{$movimientosCuenta}}"
                 inline-template
                 v-cloak>
             <section>
@@ -99,7 +100,7 @@
                                                 <td style="white-space: nowrap">@{{ index + 1 }}</td>
                                                 <td class="form-group"
                                                     :class="{'has-error': validation_errors.has('form_poliza.CuentaContable [' + (index + 1) + ']')}">
-                                                    <input :disabled="movimiento.id_tipo_cuenta_contable == 1&&poliza.poliza_movimientos[index].cuenta_contable!=null" :placeholder="datos_contables.FormatoCuenta" type="text"
+                                                    <input :disabled="movimiento.id_tipo_cuenta_contable == 1&&poliza_edit.poliza_movimientos[index]?poliza_edit.poliza_movimientos[index].cuenta_contable!=null?true:false:false" :placeholder="datos_contables.FormatoCuenta" type="text"
                                                            v-validate="'required|regex:' + datos_contables.FormatoCuentaRegExp"
                                                            :name="'CuentaContable [' + (index + 1) + ']'"
                                                            class="form-control input-sm formato_cuenta"

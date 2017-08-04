@@ -120,8 +120,7 @@
 
                                                                     <td colspan="2"
                                                                         class="bg-gray @if($poliza->cuadrado!=1) bg-red @endif" style="text-align: right">
-                                                                        <b>Sumas
-                                                                            Iguales </b></td>
+                                                                        <b>Sumas Iguales </b></td>
                                                                     <td class="bg-gray numerico @if($poliza->cuadrado!=1) bg-red @endif">
                                                                         <b>${{number_format($poliza->sumaDebe,'2','.',',')}}</b>
                                                                     </td>
@@ -133,8 +132,7 @@
                                                                 </tr>
 
                                                             </table>
-                                                            <div class="col-sm-12" style="text-align: right"><h4><b>Total
-                                                                        de la Prepóliza:</b>
+                                                            <div class="col-sm-12" style="text-align: right"><h4><b>Total de la Prepóliza:</b>
                                                                     ${{number_format($poliza->total,'2','.',',')}}</h4>
                                                             </div>
                                                         @endif

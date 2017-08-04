@@ -1,12 +1,12 @@
 Vue.component('poliza-generada-edit', {
-    props: ['poliza', 'poliza_edit', 'datos_contables', 'url_cuenta_contable_findby', 'url_poliza_generada_update', 'tipo_cuenta_contable', 'cuentas_contables'],
+    props: ['poliza', 'poliza_edit', 'datos_contables', 'url_cuenta_contable_findby', 'url_poliza_generada_update', 'tipo_cuenta_contable', 'cuentas_contables','movimientos_cta'],
     data: function () {
         return {
             'data': {
                 'poliza': this.poliza,
                 'poliza_edit': this.poliza_edit,
                 'cuentas_contables': this.cuentas_contables,
-                'movimientos': '',
+                'movimientos': this.movimientos_cta,
                 'empresa': ''
             },
             'form': {
@@ -130,6 +130,7 @@ Vue.component('poliza-generada-edit', {
         add_movimiento: function () {
             var self = this;
             var url = this.url_cuenta_contable_findby;
+
             $.ajax({
                 type: 'GET',
                 url: url,
@@ -147,17 +148,21 @@ Vue.component('poliza-generada-edit', {
                     }
                 },
                 complete: function () {
+
                     self.data.poliza_edit.poliza_movimientos.push(self.form.movimiento);
                     self.close_add_movimiento();
                 }
             });
+
+
+
         },
 
         confirm_remove_movimiento: function (index) {
             var self = this;
             swal({
                 title: "Quitar Movimiento",
-                text: "¿Estás seguro de que deseas quitar el movimiento de la Póliza?",
+                text: "¿Estás seguro de que deseas quitar el movimiento de la Prepóliza?",
                 type: "warning",
                 showCancelButton: true,
                 confirmButtonText: "Si, Continuar",
@@ -174,7 +179,7 @@ Vue.component('poliza-generada-edit', {
         confirm_save: function () {
             var self = this;
             swal({
-                title: "Guardar Cambios de la Póliza",
+                title: "Guardar Cambios de la Prepóliza",
                 text: "¿Estás seguro de que la información es correcta?",
                 type: "warning",
                 showCancelButton: true,
@@ -218,13 +223,14 @@ Vue.component('poliza-generada-edit', {
                 success: function (data, textStatus, xhr) {
                     swal({
                         title: '¡Correcto!',
-                        html: 'Póliza  <b>' + self.data.poliza_edit.transaccion_interfaz.descripcion + '</b> actualizada correctamente',
+                        html: 'Prepóliza  <b>' + self.data.poliza_edit.transaccion_interfaz.descripcion + '</b> actualizada correctamente',
                         type: 'success',
                         confirmButtonText: "Ok",
                         closeOnConfirm: false
-                    }).then(function () {
-                        window.location = xhr.getResponseHeader('Location');
                     }).catch(swal.noop);
+                    window.location = xhr.getResponseHeader('Location');
+
+
                 },
                 complete: function () {
                     self.guardando = false;
@@ -244,7 +250,11 @@ Vue.component('poliza-generada-edit', {
                     self.guardando = true;
                 },
                 success: function (data, textStatus, xhr) {
-                    self.data.movimientos = data.data.movimientos;
+
+
+                    $('#add_cuenta_modal').modal('show');
+
+                   /* self.data.movimientos = data.data.movimientos;
 
                     if (self.data.movimientos.length > 0) {
                         self.data.empresa = self.data.movimientos[0].empresa_cadeco;
@@ -258,6 +268,7 @@ Vue.component('poliza-generada-edit', {
                             confirmButtonText: "Aceptar"
                         });
                     }
+                */
                 },
                 complete: function () {
                     self.guardando = false;

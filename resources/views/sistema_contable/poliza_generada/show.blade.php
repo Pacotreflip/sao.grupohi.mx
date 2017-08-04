@@ -99,17 +99,17 @@
                                         <b>Sumas Iguales</b>
                                     </td>
                                     <td class="bg-gray numerico {{$poliza->cuadrado != 1 ? 'bg-red' : ''}}">
-                                        <b>$ {{number_format($poliza->sumaDebe,'2','.',',')}}</b>
+                                        <b>${{number_format($poliza->sumaDebe,'2','.',',')}}</b>
                                     </td>
                                     <td class="bg-gray numerico {{$poliza->cuadrado != 1 ? 'bg-red' : ''}}">
-                                        <b>$ {{number_format($poliza->sumaHaber,'2','.',',')}}</b>
+                                        <b>${{number_format($poliza->sumaHaber,'2','.',',')}}</b>
                                     </td>
                                     <td class="bg-gray {{$poliza->cuadrado != 1 ? 'bg-red' : ''}}"></td>
                                     <td class="bg-gray {{$poliza->cuadrado != 1 ? 'bg-red' : ''}}"></td>
                                 </tr>
                             </table>
                             <div class="col-sm-12" style="text-align: right">
-                                <h4><b>Total de la Prepóliza:</b>  $ {{number_format($poliza->total,'2','.',',')}}</h4>
+                                <h4><b>Total de la Prepóliza:</b>  ${{number_format($poliza->total,'2','.',',')}}</h4>
                             </div>
                         @endif
                     </div>

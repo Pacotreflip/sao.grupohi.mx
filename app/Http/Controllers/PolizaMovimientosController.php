@@ -53,21 +53,23 @@ class PolizaMovimientosController extends Controller
         $where = [
             ['id_int_poliza', '=', $idPoliza]
         ];
-
-        $movArray = [];
         $movimientos = $this->poliza_movimientos->with(['empresaCadeco', 'tipoCuentaContable'])->where($where)->scope('notnull')->scope('ordered')->all();
-
-        foreach ($movimientos as $index => $movimiento) {
+        $movArray = $movimientos->filter(function ($movimiento) use ($movimientos) {
             $numveces = 0;
-            foreach ($movArray as $indexAux => $movimientoAux) {
-                if ($movimiento->id_tipo_cuenta_contable ==$movimientoAux->id_tipo_cuenta_contable) {
+            foreach ($movimientos as $indexAux => $movimientoAux) {
+                if ($movimiento->id_tipo_cuenta_contable == $movimientoAux->id_tipo_cuenta_contable) {
                     $numveces++;
+                    unset($movimientos[$indexAux]);
                 }
             }
-            if ($numveces==0) {
-                array_push($movArray, $movimiento);
+            if ($numveces > 0) {
+                return true;
+            } else {
+                return false;
             }
-        }
+
+        })->values();
+
         return response()->json(['data' => ['movimientos' => $movArray]], 200);
     }
 
