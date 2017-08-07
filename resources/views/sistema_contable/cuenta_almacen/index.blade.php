@@ -24,7 +24,7 @@
                         <div class="box-body">
                             <div class="col-sm-12">
                                 <div class="row table-responsive">
-                                    <table class="table table-bordered table-striped small index_table" role="grid" aria-describedby="tipo_cuenta_info">
+                                    <table class="table table-bordered table-striped index_table" role="grid" aria-describedby="tipo_cuenta_info">
                                         <thead>
                                         <tr role="row">
                                             <th class="sorting_asc" tabindex="0" aria-controls="tipo_cuenta" aria-sort="ascending">#</th>

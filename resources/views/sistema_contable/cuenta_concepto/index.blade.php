@@ -16,13 +16,13 @@
             <section>
                 <div class="row">
                     <div class="col-md-12">
-                        <div class="input-group" >
-                            <select class="form-control" id="obras_selection" v-select2>
-                                <option value disabled="disabled" style="text-anchor: @parent">[--SELECCIONE--]</option>
+                        <form>
+                        <div class="input-group">
+                            <select style="max-height: 300px;" class="form-control" id="obras_selection" data-placeholder="BUSCAR CONCEPTO" v-select2>
                             </select>
                             <input name="id_concepto" id="id_concepto" class="form-control" type="hidden"/>
                             <div class="input-group-btn">
-                                <button class="btn btn-success" @click="buscar_nodos">
+                                <button class="btn btn-success" type="submit" @click="buscar_nodos">
                                     <span v-if="cargando">
                                         <i class="fa fa-spin fa-spinner"></i>
                                         Buscando...
@@ -34,6 +34,7 @@
                                 </button>
                             </div>
                         </div>
+                        </form>
                     </div>
                 </div>
 
@@ -47,7 +48,7 @@
                             </div>
                             <div class="box-body">
                                 <div class="table-responsive">
-                                    <table class="table table-bordered small" v-treegrid id="concepto_tree">
+                                    <table class="table table-bordered table-striped" v-treegrid id="concepto_tree">
                                             <thead>
                                             <tr>
                                                 <th>Concepto</th>

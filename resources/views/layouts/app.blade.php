@@ -29,7 +29,7 @@ desired effect
 |               | sidebar-mini                            |
 |---------------------------------------------------------|
 -->
-<body class="skin-green sidebar-mini">
+<body class="skin-green sidebar-mini fixed sidebar-collapse">
 <div id="app">
 
 <div class="wrapper">
@@ -41,7 +41,7 @@ desired effect
     <!-- Content Wrapper. Contains page content -->
     <div class="content-wrapper">
         <!-- Main content -->
-        <section class="content" style="width: 98%;">
+        <section class="content small" style="width: 98%;">
             @include('layouts.partials.contentheader')
                 <br>
         <!-- Your Page Content Here -->

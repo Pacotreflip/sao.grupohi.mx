@@ -37,7 +37,7 @@ Breadcrumbs::register('sistema_contable.tipo_cuenta_contable.create', function (
 
 Breadcrumbs::register('sistema_contable.tipo_cuenta_contable.edit', function ($breadcrumb, $tipo_cuenta_contable) {
     $breadcrumb->parent('sistema_contable.tipo_cuenta_contable.show', $tipo_cuenta_contable);
-    $breadcrumb->push('EDICIÓN', route('sistema_contable.tipo_cuenta_contable.edit', $tipo_cuenta_contable));
+    $breadcrumb->push('EDITAR', route('sistema_contable.tipo_cuenta_contable.edit', $tipo_cuenta_contable));
 });
 Breadcrumbs::register('sistema_contable.tipo_cuenta_contable.show', function ($breadcrumb, $tipo_cuenta_contable) {
     $breadcrumb->parent('sistema_contable.tipo_cuenta_contable.index');
@@ -66,7 +66,7 @@ Breadcrumbs::register('sistema_contable.poliza_generada.show', function ($breadc
 });
 Breadcrumbs::register('sistema_contable.poliza_generada.edit', function ($breadcrumb, $poliza) {
     $breadcrumb->parent('sistema_contable.poliza_generada.show', $poliza);
-    $breadcrumb->push('EDICIÓN', route('sistema_contable.poliza_generada.edit', $poliza));
+    $breadcrumb->push('EDITAR', route('sistema_contable.poliza_generada.edit', $poliza));
 });
 Breadcrumbs::register('sistema_contable.poliza_generada.historico', function ($breadcrumb, $poliza) {
     $breadcrumb->parent('sistema_contable.poliza_generada.index');
@@ -109,7 +109,7 @@ Breadcrumbs::register('sistema_contable.cuenta_empresa.show', function ($breadcr
 
 Breadcrumbs::register('sistema_contable.cuenta_empresa.edit', function ($breadcrumb, $empresa) {
     $breadcrumb->parent('sistema_contable.cuenta_empresa.show', $empresa);
-    $breadcrumb->push('EDICIÓN', route('sistema_contable.cuenta_empresa.edit', $empresa));
+    $breadcrumb->push('EDITAR', route('sistema_contable.cuenta_empresa.edit', $empresa));
 });
 
 
