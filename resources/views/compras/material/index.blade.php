@@ -62,7 +62,7 @@
                                 </div>
                                 <div class="box-body">
                                     <div class="table-responsive">
-                                        <table  class="table table-bordered small table-striped" id="example">
+                                        <table  class="table table-bordered table-striped" id="example">
                                             <thead>
                                             <tr role="row">
                                                 <th class="sorting_asc" tabindex="0" aria-controls="tipo_cuenta" aria-sort="ascending">#</th>

@@ -49,7 +49,7 @@
                                 <div class="col-sm-12">
                                     <div class="row">
                                         <div class="box-body">
-                                            <table class="table table-bordered table-striped small ">
+                                            <table class="table table-bordered table-striped">
                                                 <thead>
                                                 <tr>
                                                     <th>#</th>

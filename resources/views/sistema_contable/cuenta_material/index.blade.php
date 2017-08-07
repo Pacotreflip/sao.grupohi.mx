@@ -13,6 +13,25 @@
         <section>
             <div class="row">
                 <div class="col-md-12">
+                    <div class="input-group">
+                        <select class="form-control" id="obras_selection" data-placeholder="BUSCAR FAMILIA" v-select2>
+                        </select>
+                        <input name="id_concepto" id="id_concepto" class="form-control" type="hidden"/>
+                        <div class="input-group-btn">
+                            <button class="btn btn-success" type="submit" @click="buscar_nodos">
+                                    <span v-if="cargando">
+                                        <i class="fa fa-spin fa-spinner"></i>
+                                        Buscando...
+                                    </span>
+                                <span v-else>
+                                        <i class="fa fa-search"></i>
+                                        Buscar
+                                    </span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-12">
                     <div class="box box-info">
                         <div class="box-header with-border">
                             <h3 class="box-title">Cuentas por Material</h3>

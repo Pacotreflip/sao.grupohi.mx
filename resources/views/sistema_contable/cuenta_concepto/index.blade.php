@@ -15,26 +15,23 @@
                 inline-template>
             <section>
                 <div class="row">
-                    <div class="col-md-12">
-                        <form>
-                        <div class="input-group">
-                            <select style="max-height: 300px;" class="form-control" id="obras_selection" data-placeholder="BUSCAR CONCEPTO" v-select2>
-                            </select>
-                            <input name="id_concepto" id="id_concepto" class="form-control" type="hidden"/>
-                            <div class="input-group-btn">
-                                <button class="btn btn-success" type="submit" @click="buscar_nodos">
-                                    <span v-if="cargando">
-                                        <i class="fa fa-spin fa-spinner"></i>
-                                        Buscando...
-                                    </span>
-                                    <span v-else>
-                                        <i class="fa fa-search"></i>
-                                        Buscar
-                                    </span>
-                                </button>
-                            </div>
+                    <div class="form-group">
+                        <div class="col-xs-10">
+                            <select class="form-control" id="concepto_select" data-placeholder="BUSCAR CONCEPTO" v-select2></select>
                         </div>
-                        </form>
+                        <input name="id_concepto" id="id_concepto" class="form-control" type="hidden"/>
+                        <div class="col-xs-2">
+                            <button class="btn btn-success btn-block" :disabled="cargando" @click="buscar_nodos">
+                                <span v-if="cargando">
+                                    <i class="fa fa-spin fa-spinner"></i>
+                                    Buscando...
+                                </span>
+                                <span v-else>
+                                    <i class="fa fa-search"></i>
+                                    Buscar
+                                </span>
+                            </button>
+                        </div>
                     </div>
                 </div>
 

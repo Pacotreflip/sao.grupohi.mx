@@ -1,7 +1,7 @@
 @extends('sistema_contable.layout')
 @section('title', 'Plantillas de Prepólizas')
 @section('contentheader_title', 'PLANTILLAS DE PREPÓLIZAS')
-@section('contentheader_description', '(LISTA)')
+@section('contentheader_description', '(INDEX)')
 
 @section('main-content')
     {!! Breadcrumbs::render('sistema_contable.poliza_tipo.index') !!}
@@ -27,7 +27,7 @@
                 <div class="box-body">
                     <div class="col-sm-12">
                         <div class="row table-responsive">
-                            <table  class="table table-bordered table-striped dataTable index_table small" role="grid"
+                            <table  class="table table-bordered table-striped dataTable index_table" role="grid"
                                    aria-describedby="polizas_tipo_info">
                                 <thead>
                                 <tr role="row">
@@ -69,12 +69,12 @@
                                         </td>
                                         <td style="min-width: 90px;max-width: 90px">
                                             <a title="Ver" href="{{ route('sistema_contable.poliza_tipo.show', $item->id) }}">
-                                                <button type="button" class="btn-xs btn-default">
+                                                <button type="button" class="btn btn-xs btn-default">
                                                     <i class="fa fa-eye"></i>
                                                 </button>
                                             </a>
                                             @permission('eliminar_plantilla_prepoliza')
-                                            <button title="Eliminar" type="button" class="btn-xs btn-danger" onclick=" delete_plantilla({{$item->id}})">
+                                            <button title="Eliminar" type="button" class="btn btn-xs btn-danger" onclick=" delete_plantilla({{$item->id}})">
                                                 <i class="fa fa-trash"></i>
                                             </button>
                                             @endpermission

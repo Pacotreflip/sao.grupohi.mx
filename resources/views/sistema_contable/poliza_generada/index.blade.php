@@ -59,7 +59,7 @@
                 </div>
                 <div class="box-body">
                     <div class="table-responsive">
-                        <table class="table table-bordered table-striped small index_table" id="example">
+                        <table class="table table-bordered table-striped index_table">
                             <thead>
                             <tr>
                                 <th>#</th>

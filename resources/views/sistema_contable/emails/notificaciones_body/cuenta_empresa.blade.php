@@ -17,7 +17,7 @@
         <div class="table-responsive">
 
             @if(count($cuentas_empresa))
-                <table class="table table-bordered small"  style="width: 100% !important;text-size-adjust: auto;">
+                <table class="table table-bordered"  style="width: 100% !important;text-size-adjust: auto;">
                     <thead>
                     <tr>
                         <th  class="bg-gray" colspan="9" style="text-align: left">CUENTAS EMPRESAS</th>

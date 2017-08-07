@@ -21,7 +21,7 @@
                 </div>
                 <div class="box-body">
                     <div class="table-responsive">
-                        <table class="table table-bordered table-striped dataTable index_table small" role="grid">
+                        <table class="table table-bordered table-striped dataTable index_table" role="grid">
                             <thead>
                             <tr>
                                 <th>#</th>

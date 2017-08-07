@@ -26,7 +26,7 @@
                         </table>
                         @if(count($revaluacion->facturas)>0)
 
-                            <table class="table table-bordered small table-striped">
+                            <table class="table table-bordered table-striped">
                                 <thead>
                                 <tr>
                                     <th>#</th>

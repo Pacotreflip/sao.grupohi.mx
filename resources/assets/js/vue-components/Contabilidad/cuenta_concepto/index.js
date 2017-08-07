@@ -64,7 +64,7 @@ Vue.component('cuenta-concepto-index', {
                     escapeMarkup: function (markup) { return markup; }, // let our custom formatter work
                     minimumInputLength: 1
                 }).on('select2:select', function () {
-                    $('#id_concepto').val($('#obras_selection option:selected').data().data.id);
+                    $('#id_concepto').val($('#concepto_select option:selected').data().data.id);
                 });
             }
         }

@@ -17,7 +17,7 @@
     <ul class="mailbox-attachments clearfix">
         <div class="table-responsive">
 
-            <table class="table table-bordered small"
+            <table class="table table-bordered table-striped"
                    style="width: 100% !important;text-size-adjust: auto;">
 
                 @if(count($polizas_errores)>0)
