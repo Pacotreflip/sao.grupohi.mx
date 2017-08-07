@@ -13,6 +13,7 @@ namespace Ghi\Domain\Core\Contracts;
 
 
 use Ghi\Domain\Core\Models\Material;
+use Illuminate\Database\Eloquent\Collection;
 
 interface MaterialRepository
 {
@@ -89,4 +90,18 @@ interface MaterialRepository
      * @return mixed
      */
     public function delete($id);
+
+    /**
+     * Obtiene todas las familias de materiales que sean del tipo $tipo
+     * @param $tipo
+     * @return Collection|Material
+     */
+    public function getFamiliasByTipo($tipo);
+
+    /**
+     * Obtiene los hijos de un material
+     * @param $id
+     * @return Collection|Material
+     */
+    public function getHijos($id);
 }

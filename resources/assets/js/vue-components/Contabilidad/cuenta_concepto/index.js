@@ -27,7 +27,7 @@ Vue.component('cuenta-concepto-index', {
             },
             componentUpdated:function (el) {
                 $(el).treegrid({
-                    saveState: true,
+                    saveState: true
                 });
             }
         },

@@ -1,10 +1,9 @@
 <?php
 
-namespace Ghi\Http\Controllers\Compras;
+namespace Ghi\Http\Controllers;
 
 use Dingo\Api\Routing\Helpers;
 use Ghi\Domain\Core\Contracts\MaterialRepository;
-use Ghi\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
 class MaterialController extends Controller
@@ -18,10 +17,10 @@ class MaterialController extends Controller
 
     public function __construct(MaterialRepository $material)
     {
-        //parent::__construct();
+        parent::__construct();
 
-        //$this->middleware('auth');
-        //$this->middleware('context');
+        $this->middleware('auth');
+        $this->middleware('context');
 
         $this->material = $material;
 
@@ -30,9 +29,18 @@ class MaterialController extends Controller
         $nivel_familia = $this->material->getNivelDisponible(1);
         $nivel_hijo = $this->material->getNivelDisponible(1, '001.___.');
 
-
         $materiales = $this->material->all();
         return view('compras.material.index');
+    }
+
+    public function getFamiliasByTipo(Request $request) {
+        $materiales = $this->material->with(['cuentaMaterial.tipoCuentaMaterial'])->getFamiliasByTipo($request->tipo_material);
+        return response()->json(['data' => ['materiales' => $materiales]], 200);
+    }
+
+    public function getHijos($id) {
+        $materiales = $this->material->with('cuentaMaterial.tipoCuentaMaterial')->getHijos($id);
+        return response()->json(['data' => ['materiales' => $materiales]], 200);
     }
 
     /**

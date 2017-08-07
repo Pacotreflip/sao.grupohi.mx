@@ -64637,7 +64637,7 @@ require('./vue-components/Contabilidad/tipo_cuenta_contable/tipo-cuenta-contable
 require('./vue-components/Contabilidad/cuenta_contable/index');
 require('./vue-components/Contabilidad/poliza_generada/edit');
 require('./vue-components/Contabilidad/cuenta_concepto/index');
-require('./vue-components/Contabilidad/cuenta_material/cuenta-material-index');
+require('./vue-components/Contabilidad/cuenta_material/index');
 require('./vue-components/Contabilidad/cuenta_empresa/cuenta-empresa-edit');
 require('./vue-components/Contabilidad/cuenta_almacen/index');
 require('./vue-components/Contabilidad/datos_contables/edit');
@@ -64651,7 +64651,7 @@ require('./vue-components/Compras/requisicion/create');
 require('./vue-components/Compras/requisicion/edit');
 require('./vue-components/Compras/material/index');
 
-},{"./vue-components/Compras/material/index":129,"./vue-components/Compras/requisicion/create":130,"./vue-components/Compras/requisicion/edit":131,"./vue-components/Contabilidad/cuenta_almacen/index":132,"./vue-components/Contabilidad/cuenta_concepto/index":133,"./vue-components/Contabilidad/cuenta_contable/index":134,"./vue-components/Contabilidad/cuenta_empresa/cuenta-empresa-edit":135,"./vue-components/Contabilidad/cuenta_material/cuenta-material-index":136,"./vue-components/Contabilidad/datos_contables/edit":137,"./vue-components/Contabilidad/emails":138,"./vue-components/Contabilidad/modulos/revaluacion/create":139,"./vue-components/Contabilidad/poliza_generada/edit":140,"./vue-components/Contabilidad/poliza_tipo/poliza-tipo-create":141,"./vue-components/Contabilidad/tipo_cuenta_contable/tipo-cuenta-contable-create":142,"./vue-components/Contabilidad/tipo_cuenta_contable/tipo-cuenta-contable-update":143,"./vue-components/errors":144,"./vue-components/global-errors":145,"./vue-components/kardex_material/kardex-material-index":146,"./vue-components/select2":147}],129:[function(require,module,exports){
+},{"./vue-components/Compras/material/index":129,"./vue-components/Compras/requisicion/create":130,"./vue-components/Compras/requisicion/edit":131,"./vue-components/Contabilidad/cuenta_almacen/index":132,"./vue-components/Contabilidad/cuenta_concepto/index":133,"./vue-components/Contabilidad/cuenta_contable/index":134,"./vue-components/Contabilidad/cuenta_empresa/cuenta-empresa-edit":135,"./vue-components/Contabilidad/cuenta_material/index":136,"./vue-components/Contabilidad/datos_contables/edit":137,"./vue-components/Contabilidad/emails":138,"./vue-components/Contabilidad/modulos/revaluacion/create":139,"./vue-components/Contabilidad/poliza_generada/edit":140,"./vue-components/Contabilidad/poliza_tipo/poliza-tipo-create":141,"./vue-components/Contabilidad/tipo_cuenta_contable/tipo-cuenta-contable-create":142,"./vue-components/Contabilidad/tipo_cuenta_contable/tipo-cuenta-contable-update":143,"./vue-components/errors":144,"./vue-components/global-errors":145,"./vue-components/kardex_material/kardex-material-index":146,"./vue-components/select2":147}],129:[function(require,module,exports){
 'use strict';
 
 Vue.component('material-index', {
@@ -65964,90 +65964,139 @@ Vue.component('cuenta-empresa-edit', {
 'use strict';
 
 Vue.component('cuenta-material-index', {
-    props: ['datos_contables', 'url_cuenta_material_store', 'familia', 'tipo_cuenta_material'],
+    props: ['material_url', 'url_store_cuenta', 'datos_contables', 'tipos_cuenta_material'],
     data: function data() {
         return {
-            'data': {
-                'familia': this.familia,
-                'items': [],
-                'cuenta_material_edit': {},
-                'tipo_cuenta_material': this.tipo_cuenta_material
-            },
-            'form': {
-                'cuenta_material': {
-                    'id': '',
-                    'cuenta': '',
-                    'id_tipo_cuenta_material': '',
-                    'id_material': ''
-                }
-            },
-            valor: '0',
-            guardando: false
+            materiales: [],
+            form: {
+                id_tipo_cuenta_material: '',
+                tipo_material: '',
+                material_edit: {},
+                cuenta: '',
+                material: '',
+                id: '',
 
+                id_material: ''
+            },
+            cargando: false
         };
     },
-    methods: {
-        cambio: function cambio() {
-            var self = this;
-            var id = self.valor;
-            if (id != 0) {
-                self.guardando = true;
-                var urla = App.host + '/sistema_contable/cuenta_material/';
-                $.ajax({
-                    type: 'GET',
-                    url: urla + id,
 
-                    success: function success(response) {
-                        self.data.items = response;
-                    },
-                    complete: function complete() {
-                        self.guardando = false;
-                    },
-                    error: function error(_error) {
-                        alert(_error.responseText);
-                        self.guardando = false;
-                    }
-
+    directives: {
+        treegrid: {
+            inserted: function inserted(el) {
+                $(el).treegrid({
+                    saveState: true,
+                    initialState: 'collapsed'
+                });
+            },
+            componentUpdated: function componentUpdated(el) {
+                $(el).treegrid({
+                    saveState: true,
+                    initialState: 'collapsed'
                 });
             }
         },
 
-        edit: function edit(item) {
-            var urle = App.host + '/sistema_contable/cuenta_material/' + item.tipo_material + '/material/' + item.nivel;
-            window.location = urle;
+        select2: {
+            inserted: function inserted(el) {
+                $(el).select2({
+                    width: '100%'
+                });
+            }
+        }
+    },
+
+    computed: {
+        materiales_ordenados: function materiales_ordenados() {
+            return this.materiales.sort(function (a, b) {
+                return a.nivel > b.nivel ? 1 : b.nivel > a.nivel ? -1 : 0;
+            });
+        }
+    },
+
+    methods: {
+        fetch_materiales: function fetch_materiales() {
+            var self = this;
+            $.ajax({
+                type: 'GET',
+                url: self.material_url + '/getFamiliasByTipo',
+                data: {
+                    tipo_material: self.form.tipo_material
+                },
+                beforeSend: function beforeSend() {
+                    self.cargando = true;
+                },
+                success: function success(data, textStatus, xhr) {
+                    self.materiales = data.data.materiales;
+                },
+                complete: function complete() {
+                    self.cargando = false;
+                }
+            });
         },
 
-        editar: function editar(material) {
-            this.data.cuenta_material_edit = material;
-            Vue.set(this.form.cuenta_material, 'id_material', material.id_material);
+        tr_class: function tr_class(material) {
+            var treegrid = "treegrid-" + material.id_material;
+            var treegrid_parent = material.id_padre != null ? " treegrid-parent-" + material.id_padre : "";
+            return treegrid + treegrid_parent;
+        },
+
+        tr_id: function tr_id(material) {
+            return material.id_padre == null || material.tiene_hijos > 0 ? "tnode-" + material.id_material : "";
+        },
+
+        get_hijos: function get_hijos(material) {
+            var self = this;
+
+            $.ajax({
+                type: 'GET',
+                url: self.material_url + '/' + material.id_material + '/getHijos',
+                beforeSend: function beforeSend() {
+                    self.cargando = true;
+                },
+                success: function success(data, textStatus, xhr) {
+                    data.data.materiales.forEach(function (material) {
+                        self.materiales.push(material);
+                    });
+                    material.cargado = true;
+                },
+                complete: function complete() {
+                    self.cargando = false;
+                    setTimeout(function () {
+                        $('#tnode-' + material.id_material).treegrid('expandRecursive');
+                    }, 500);
+                }
+            });
+        },
+
+        edit_cuenta: function edit_cuenta(material) {
+            this.form.material_edit = material;
+            Vue.set(this.form, 'material', material.descripcion);
+            Vue.set(this.form, 'id_material', material.id_material);
             if (material.cuenta_material != null) {
-                Vue.set(this.form.cuenta_material, 'cuenta', material.cuenta_material.cuenta);
-                Vue.set(this.form.cuenta_material, 'id', material.cuenta_material.id);
-                Vue.set(this.form.cuenta_material, 'id_tipo_cuenta_material', material.cuenta_material.id_tipo_cuenta_material);
+                Vue.set(this.form, 'cuenta', material.cuenta_material.cuenta);
+                Vue.set(this.form, 'id', material.cuenta_material.id);
+                Vue.set(this.form, 'id_tipo_cuenta_material', material.cuenta_material.id_tipo_cuenta_material);
             } else {
-                Vue.set(this.form.cuenta_material, 'cuenta', '');
-                Vue.set(this.form.cuenta_material, 'id', '');
-                Vue.set(this.form.cuenta_material, 'id_tipo_cuenta_material', 0);
+                Vue.set(this.form, 'cuenta', '');
+                Vue.set(this.form, 'id', '');
+                Vue.set(this.form, 'id_tipo_cuenta_material', '');
             }
             this.validation_errors.clear('form_edit_cuenta');
             $('#edit_cuenta_modal').modal('show');
             $('#cuenta_contable').focus();
             this.validation_errors.clear('form_edit_cuenta');
         },
+
         validateForm: function validateForm(scope, funcion) {
             var _this = this;
 
             this.$validator.validateAll(scope).then(function () {
-                if (funcion == 'confirm_save_cuenta' && _this.form.cuenta_material.id_tipo_cuenta_material != 0) {
+                if (funcion == 'confirm_save_cuenta') {
                     _this.confirm_save_cuenta();
-                } else if (funcion == 'confirm_update_cuenta' && _this.form.cuenta_material.id_tipo_cuenta_material != 0) {
+                } else if (funcion == 'confirm_update_cuenta') {
                     _this.confirm_update_cuenta();
-                } else {
-                    swal({
-                        type: 'warning',
-                        title: 'Advertencia',
-                        text: 'Por favor seleccione un Tipo Cuenta de Material.'
-                    });
                 }
             }).catch(function () {
                 swal({
@@ -66057,6 +66106,7 @@ Vue.component('cuenta-material-index', {
                 });
             });
         },
+
         confirm_update_cuenta: function confirm_update_cuenta() {
             var self = this;
             swal({
@@ -66073,26 +66123,26 @@ Vue.component('cuenta-material-index', {
 
         update_cuenta: function update_cuenta() {
             var self = this;
-            var url = this.url_cuenta_material_store + '/' + this.form.cuenta_material.id;
+            var url = this.url_store_cuenta + '/' + this.form.id;
 
             $.ajax({
                 type: 'POST',
                 url: url,
                 data: {
                     _method: 'PATCH',
-                    cuenta: self.form.cuenta_material.cuenta,
-                    id_tipo_cuenta_material: self.form.cuenta_material.id_tipo_cuenta_material
+                    cuenta: self.form.cuenta,
+                    id_tipo_cuenta_material: self.form.id_tipo_cuenta_material
                 },
                 beforeSend: function beforeSend() {
                     self.guardando = true;
                 },
                 success: function success(data, textStatus, xhr) {
-                    self.data.cuenta_material_edit.cuenta_material = data.data.cuenta_material;
+                    self.form.material_edit.cuenta_material = data.data.cuenta_material;
                     self.close_edit_cuenta();
                     swal({
                         type: 'success',
                         title: 'Correcto',
-                        html: 'Cuenta Material actualizada correctamente'
+                        html: 'Cuenta Contable actualizada correctamente'
                     });
                 },
                 complete: function complete() {
@@ -66104,7 +66154,7 @@ Vue.component('cuenta-material-index', {
         confirm_save_cuenta: function confirm_save_cuenta() {
             var self = this;
             swal({
-                title: "Registrar Cuenta de Material",
+                title: "Registrar Cuenta Contable",
                 text: "¿Estás seguro de que la información es correcta?",
                 type: "warning",
                 showCancelButton: true,
@@ -66117,23 +66167,21 @@ Vue.component('cuenta-material-index', {
 
         save_cuenta: function save_cuenta() {
             var self = this;
-            var url = this.url_cuenta_material_store;
+            var url = this.url_store_cuenta;
 
             $.ajax({
                 type: 'POST',
                 url: url,
                 data: {
-                    cuenta: self.form.cuenta_material.cuenta,
-                    id_almacen: self.form.cuenta_material.id_almacen,
-                    id_tipo_cuenta_material: self.form.cuenta_material.id_tipo_cuenta_material,
-                    id_material: self.form.cuenta_material.id_material
-
+                    cuenta: self.form.cuenta,
+                    id_material: self.form.id_material,
+                    id_tipo_cuenta_material: self.form.id_tipo_cuenta_material
                 },
                 beforeSend: function beforeSend() {
                     self.guardando = true;
                 },
                 success: function success(data, textStatus, xhr) {
-                    self.data.cuenta_material_edit.cuenta_material = data.data.cuenta_material;
+                    self.form.material_edit.cuenta_material = data.data.cuenta_material;
                     self.close_edit_cuenta();
                     swal({
                         type: 'success',
@@ -66146,15 +66194,16 @@ Vue.component('cuenta-material-index', {
                 }
             });
         },
+
         close_edit_cuenta: function close_edit_cuenta() {
             $('#edit_cuenta_modal').modal('hide');
-            Vue.set(this.form.cuenta_material, 'cuenta', '');
-            Vue.set(this.form.cuenta_material, 'id', '');
-            Vue.set(this.form.cuenta_material, 'id_material', '');
-            Vue.set(this.form.cuenta_material, 'id_tipo_cuenta_material', 0);
+            Vue.set(this.form, 'cuenta', '');
+            Vue.set(this.form, 'material', '');
+            Vue.set(this.form, 'id', '');
+            Vue.set(this.form, 'id_tipo_cuenta_material', '');
+            Vue.set(this.form, 'id_material', '');
         }
     }
-
 });
 
 },{}],137:[function(require,module,exports){

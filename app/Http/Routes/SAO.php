@@ -27,3 +27,10 @@ Route::delete('item/{id}', 'ItemController@destroy')->name('item.destroy')->wher
  * Obra Routes...
  */
 Route::get('obra/search', 'ObraController@search')->name('obra.search');
+
+/**
+ * Material Routes...
+ */
+Route::get('material', 'MaterialController@index')->name('material.index');
+Route::get('material/getFamiliasByTipo', 'MaterialController@getFamiliasByTipo')->name('materiales.getFamiliasByTipo');
+Route::get('material/{id}/getHijos', 'MaterialController@getHijos')->name('material.getHijos');

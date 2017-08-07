@@ -45,7 +45,12 @@ class Material extends BaseModel
 
     public $timestamps = false;
 
-    protected $appends = ['nivel_hijos', 'd_padre'];
+    protected $appends = [
+        'nivel_hijos',
+        'nivel_padre',
+        'id_padre',
+        'tiene_hijos',
+    ];
 
     public function getNivelHijosAttribute() {
         return $this->nivel . '___.';
@@ -53,11 +58,6 @@ class Material extends BaseModel
 
     public function scopeMateriales($query){
         return $query->where('tipo_material','=',$this::TIPO_MATERIALES);
-    }
-
-    public function getDPadreAttribute(){
-        $nv = substr($this->nivel, 0,4);
-        return $this->select('descripcion')->where('nivel', '=', $nv)->where('tipo_material', '=', 1)->get();
     }
 
     public function items() {
@@ -77,5 +77,36 @@ class Material extends BaseModel
     public function scopeFamilias($query) {
 
         return $query->where('nivel', 'like', $this::NIVEL_FAMILIA);
+    }
+
+    public function getIdPadreAttribute() {
+        if($this->nivel_padre != '') {
+            return Material::where('nivel', '=', $this->nivel_padre)
+                ->where('tipo_material', '=', $this->tipo_material)->first()->id_material;
+        }
+        return null;
+    }
+
+    /**
+     * @return bool|string
+     */
+    public function getNivelPadreAttribute() {
+        return substr($this->nivel, 0, strlen($this->nivel) - 4);
+    }
+
+    /**
+     * @return integer
+     */
+    public function getTieneHijosAttribute() {
+        return  Material::where('nivel', 'like', $this->nivel_hijos)
+            ->where('tipo_material', '=', $this->tipo_material)
+            ->count();
+    }
+
+    /**
+     * @return bool
+     */
+    public function getCargadoAttribute() {
+        return false;
     }
 }

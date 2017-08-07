@@ -42,34 +42,14 @@ class CuentaMaterialController extends Controller
     }
 
 
-    /**
-     * Muestra la vista del listado del Material para visualizar en el Kardex
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
-     */
     public function index()
     {
-        return view('sistema_contable.cuenta_material.index');
-    }
-
-    /**
-     * @param $valor id del tipo de materiales que se desea consultar
-     * @return mixed
-     */
-    public function findBy($valor){
-        $materiales = $this->material->scope('Familias')->findBy($valor);
-        return $materiales;
-    }
-
-    public function show($tipo, $nivel){
-        $familia = $this->material->with('cuentaMaterial')->find($tipo, $nivel);
-        $tipo_cuenta_material = $this->tipo_cuenta_material->all();
-      return view('sistema_contable.cuenta_material.show')
-                        ->with('familia', $familia)
-                        ->with('tipo_cuenta_material', $tipo_cuenta_material);
+        $tipos_cuenta_material = $this->tipo_cuenta_material->all();
+        return view('sistema_contable.cuenta_material.index')
+            ->with('tipos_cuenta_material', $tipos_cuenta_material);
     }
 
     public function update(Request $request, $id) {
-
         $item = $this->cuenta_material->update($request->all(), $id);
         return response()->json(['data' => ['cuenta_material' => $item]],200);
     }

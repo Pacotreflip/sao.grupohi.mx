@@ -13,7 +13,6 @@ namespace Ghi\Domain\Core\Repositories;
 
 
 use Ghi\Domain\Core\Contracts\Ghi;
-use Ghi\Domain\Core\Contracts\los;
 use Ghi\Domain\Core\Contracts\MaterialRepository;
 use Ghi\Domain\Core\Contracts\valor;
 use Ghi\Domain\Core\Models\Material;
@@ -21,8 +20,6 @@ use Illuminate\Support\Facades\DB;
 
 class EloquentMaterialRepository implements MaterialRepository
 {
-
-
     /**
      * @var \Ghi\Domain\Core\Models\Material
      */
@@ -198,5 +195,28 @@ class EloquentMaterialRepository implements MaterialRepository
             DB::connection('cadeco')->rollBack();
             throw $e;
         }
+    }
+
+    /**
+     * Obtiene todas las familias de materiales que sean del tipo $tipo
+     * @param $tipo
+     * @return Collection|Material
+     */
+    public function getFamiliasByTipo($tipo) {
+        return $this->model->where('nivel', 'like', Material::NIVEL_FAMILIA)
+            ->where('tipo_material', '=', $tipo)
+            ->get();
+    }
+
+    /**
+     * Obtiene los hijos de un material
+     * @param $id
+     * @return Collection|Material
+     */
+    public function getHijos($id) {
+        $padre = Material::find($id);
+        return $this->model->where('nivel', 'like', $padre->nivel_hijos)
+            ->where('tipo_material', '=', $padre->tipo_material)
+            ->get();
     }
 }

@@ -52,7 +52,7 @@ class EloquentCuentaMaterialRepository implements CuentaMaterialRepository
             DB::connection('cadeco')->rollBack();
             throw $e;
         }
-        return $item;
+        return $this->model->with('tipoCuentaMaterial')->find($item->id);
     }
 
     /**
@@ -90,6 +90,6 @@ class EloquentCuentaMaterialRepository implements CuentaMaterialRepository
             DB::connection('cadeco')->rollBack();
             throw $e;
         }
-        return $new;
+        return $this->model->with('tipoCuentaMaterial')->find($new->id);
     }
 }
