@@ -90,8 +90,8 @@ Route::group(['prefix' => 'sistema_contable'], function () {
      * Kardex Materiales
      */
     Route::get('kardex_material', 'kardexMaterialController@index')->name('sistema_contable.kardex_material.index');
-    Route::get('kardex_material/{id}', 'ItemController@getBy')->name('sistema_contable.kardex_material.getBy')->where(['id' => '[0-9]+']);
-
+    Route::get('kardex_material/{id}', 'ItemController@show')->name('sistema_contable.kardex_material.show')->where(['id' => '[0-9]+']);
+    Route::get('kardex_material/getBy', 'kardexMaterialController@getBy')->name('sistema_contable.kardex_material.getBy');
     /*
      *  Cuentas de Materiales
      */

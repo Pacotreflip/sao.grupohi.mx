@@ -4,6 +4,8 @@ namespace Ghi\Http\Controllers;
 
 use Dingo\Api\Routing\Helpers;
 use Ghi\Domain\Core\Contracts\ItemRepository;
+use Ghi\Domain\Core\Contracts\MaterialRepository;
+use Ghi\Domain\Core\Models\Material;
 use Illuminate\Http\Request;
 
 use Ghi\Http\Requests;
@@ -12,19 +14,23 @@ class ItemController extends Controller
 {
     use Helpers;
 
+    /**
+     * @var MaterialRepository
+     */
+    private $material;
     protected $item;
 
     /**
      * ItemController constructor.
      * @param ItemRepository $item
      */
-    public function __construct(ItemRepository $item)
+    public function __construct(ItemRepository $item,MaterialRepository $material)
     {
         parent::__construct();
 
         $this->middleware('auth');
         $this->middleware('context');
-
+        $this->material = $material;
         $this->item = $item;
     }
 
@@ -45,8 +51,11 @@ class ItemController extends Controller
         return $this->response->accepted();
     }
 
-    public function getBy($id)
+    public function show($id)
     {
-        return $this->item->scope('conTransaccionES')->with('transaccion')->getBy('id_material', '=', $id);
+        $material = $this->material->scope('ConTransaccionES')->find($id);
+        $items=$this->item->scope('conTransaccionES')->with('transaccion')->getBy('id_material', '=', $id);
+        $padre=Material::find($material->id_padre);
+        return response()->json(['data' => ['items' => $items,'material'=>$material,'padre'=>$padre]], 200);
     }
 }

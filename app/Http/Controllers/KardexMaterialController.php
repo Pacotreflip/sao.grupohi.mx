@@ -4,6 +4,7 @@ namespace Ghi\Http\Controllers;
 
 use Ghi\Domain\Core\Contracts\MaterialRepository;
 use Dingo\Api\Routing\Helpers;
+use Illuminate\Http\Request;
 
 class KardexMaterialController extends Controller
 {
@@ -32,9 +33,18 @@ class KardexMaterialController extends Controller
      */
     public function index()
     {
-        $materiales = $this->material->scope('ConTransaccionES')->all();
-
-        return view('sistema_contable.kardex_material.index')
-            ->with('materiales', $materiales);
+        return view('sistema_contable.kardex_material.index');
     }
+
+    /**
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function getBy(Request $request) {
+        $items = $this->material->scope('ConTransaccionES')->getBy($request->attribute, $request->operator, $request->value);
+        return response()->json(['data' => ['materiales' => $items]], 200);
+
+    }
+
+
 }

@@ -250,25 +250,18 @@ Vue.component('poliza-generada-edit', {
                     self.guardando = true;
                 },
                 success: function (data, textStatus, xhr) {
-
-
-                    $('#add_cuenta_modal').modal('show');
-
-                   /* self.data.movimientos = data.data.movimientos;
-
                     if (self.data.movimientos.length > 0) {
                         self.data.empresa = self.data.movimientos[0].empresa_cadeco;
                         $('#add_cuenta_modal').modal('show');
                     }
                     else{
                         swal({
-                            title: "¡Atención!",
+                            title: "¡Información!",
                             text: "Las cuentas están completas.",
-                            type: "warning",
+                            type: "info",
                             confirmButtonText: "Aceptar"
                         });
                     }
-                */
                 },
                 complete: function () {
                     self.guardando = false;

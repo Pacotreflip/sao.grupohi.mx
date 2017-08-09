@@ -83,8 +83,8 @@
                                     <td>{{ $item->tipoPolizaContpaq}}</td>
                                     <td>{{ $item->concepto}}</td>
                                     <td>{{ $item->fecha->format('Y-m-d h:i:s a')}}</td>
-                                    <td class="numerico">$ {{number_format($item->total,'2','.',',')}}</td>
-                                    <td class="numerico">$ {{number_format($item->cuadre,'2','.',',')}}</td>
+                                    <td class="numerico">${{number_format($item->total,'2','.',',')}}</td>
+                                    <td class="numerico">${{number_format($item->cuadre,'2','.',',')}}</td>
                                     <td>
                                         <span class="label bg-{{$item->estatusPrepoliza->label}}">{{$item->estatusPrepoliza}}</span>
                                     </td>
