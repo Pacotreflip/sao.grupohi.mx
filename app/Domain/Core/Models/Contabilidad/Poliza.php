@@ -3,6 +3,7 @@
 namespace Ghi\Domain\Core\Models\Contabilidad;
 
 
+use Carbon\Carbon;
 use Ghi\Core\Facades\Context;
 use Ghi\Domain\Core\Models\BaseModel;
 use Ghi\Domain\Core\Models\Scopes\ObraCadecoScope;
@@ -175,5 +176,9 @@ class Poliza extends BaseModel
     public function scopeConErrores($query)
     {
         return $query->where('Contabilidad.int_polizas.estatus', '=', static::CON_ERRORES);
+    }
+
+    public function getFechaAttribute($fecha) {
+        return Carbon::parse($fecha)->format('Y-m-d');
     }
 }

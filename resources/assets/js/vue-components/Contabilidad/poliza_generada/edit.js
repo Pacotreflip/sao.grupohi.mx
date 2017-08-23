@@ -28,6 +28,27 @@ Vue.component('poliza-generada-edit', {
         }
     },
 
+    mounted: function() {
+        var self = this;
+        $("#fecha").datepicker().on("changeDate",function () {
+            Vue.set(self.data.poliza_edit, 'fecha', $('#fecha').val())
+        });
+    },
+
+    directives: {
+        datepicker: {
+            inserted: function (el) {
+                $(el).datepicker({
+                    autoclose: true,
+                    language: 'es',
+                    todayHighlight: true,
+                    clearBtn: true,
+                    format: 'yyyy-mm-dd'
+                });
+            }
+        }
+    },
+
     computed: {
         color:function () {
          if(this.data.poliza.cuadrado){

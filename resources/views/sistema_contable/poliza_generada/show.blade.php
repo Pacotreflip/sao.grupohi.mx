@@ -43,7 +43,7 @@
                         <table class="table table-bordered">
                             <tr>
                                 <th  class="bg-gray-light">Tipo Póliza SAO:<br><label>{{ $poliza->transaccionInterfaz}}</label></th>
-                                <th class="bg-gray-light">Fecha de Prepóliza:<br><label>{{ $poliza->fecha->format('Y-m-d h:i:s a')}}</label></th>
+                                <th class="bg-gray-light">Fecha de Prepóliza:<br><label>{{ $poliza->fecha}}</label></th>
                                 <th  class="bg-gray-light">Usuario Solicita:<br><label> {{$poliza->usuario_solicita }}</label></th>
                                 <th class="bg-gray-light">Cuadre:<br><label>$ {{number_format($poliza->cuadre,'2','.',',')}}</label></th>
                             </tr>
