@@ -24,8 +24,6 @@ class EstatusPrePoliza extends Model
 
     public function getLabelAttribute() {
         switch ($this->descripcion) {
-            case 'No Lanzable' :
-                return 'gray';
             case 'No Lanzada' :
                 return 'red';
                 break;
@@ -46,6 +44,8 @@ class EstatusPrePoliza extends Model
                 break;
             case 'Registro Manual':
                 return 'green';
+            case 'No Lanzable' :
+                return 'gray';
                 break;
         }
     }
