@@ -44,6 +44,8 @@ class EstatusPrePoliza extends Model
                 break;
             case 'Registro Manual':
                 return 'green';
+            case 'No Lanzable' :
+                return 'gray';
                 break;
         }
     }
