@@ -108,10 +108,10 @@ class EloquentPolizaRepository implements PolizaRepository
                 if (abs($suma_debe-$suma_haber)>.99) {
                     throw new HttpResponseException(new Response('Las sumas iguales no corresponden.', 404));
                 }
-                if (abs($data['poliza_generada']['total'] - $suma_haber) > .99 || abs($data['poliza_generada']['total'] - $suma_debe) > .99) {
+                /*if (abs($data['poliza_generada']['total'] - $suma_haber) > .99 || abs($data['poliza_generada']['total'] - $suma_debe) > .99) {
                     throw new HttpResponseException(new Response(
                         'Las sumas iguales deben ser iguales a $' . number_format($data['poliza_generada']['total'], 2, '.', ','), 404));
-                }
+                }*/
 
 
                 $movimientos_actuales = PolizaMovimiento::where('id_int_poliza', $poliza->id_int_poliza)->get();
@@ -151,7 +151,8 @@ class EloquentPolizaRepository implements PolizaRepository
 
                 $poliza->concepto = $data['poliza_generada']['concepto'];
                 $poliza->estatus = 0;
-                $poliza->cuadre =$suma_debe-$suma_haber;
+                $poliza->cuadre = $suma_debe-$suma_haber;
+                $poliza->total = $suma_debe > $suma_haber ? $suma_debe : $suma_haber;
 
                 $poliza->save();
                 $poliza = $this->model->find($id);
