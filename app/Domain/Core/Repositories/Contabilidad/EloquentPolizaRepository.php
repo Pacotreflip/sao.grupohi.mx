@@ -71,6 +71,13 @@ class EloquentPolizaRepository implements PolizaRepository
                 throw new HttpResponseException(new Response('No se puede editar la prepóliza ya que su estatus es '.  $poliza->estatusPrepoliza , 404));
             }
 
+            if (isset($data['poliza_generada']['fecha'])) {
+                $poliza->update([
+                    'fecha_original' => $poliza->fecha,
+                    'fecha' => $data['poliza_generada']['fecha']
+                ]);
+            }
+
             if(isset($data['poliza_generada']['poliza_movimientos'])) {
                 $cuentas_debe = false;
                 $cuentas_haber = false;
@@ -166,12 +173,6 @@ class EloquentPolizaRepository implements PolizaRepository
                     $hist_movimiento = HistPolizaMovimiento::create($movimiento->toArray());
                 }
             } else {
-
-                if (isset($data['poliza_generada']['fecha'])) {
-                    $poliza->update([
-                        'fecha_original' => $poliza->fecha
-                    ]);
-                }
                 $poliza->update($data['poliza_generada']);
             }
 
