@@ -66007,6 +66007,14 @@ Vue.component('cuenta-material-index', {
         }
     },
 
+    computed: {
+        materiales_ordenados: function materiales_ordenados() {
+            return this.materiales.sort(function (a, b) {
+                return a.nivel > b.nivel ? 1 : b.nivel > a.nivel ? -1 : 0;
+            });
+        }
+    },
+
     methods: {
         fetch_materiales: function fetch_materiales() {
             var self = this;
@@ -66021,9 +66029,6 @@ Vue.component('cuenta-material-index', {
                 },
                 success: function success(data, textStatus, xhr) {
                     self.materiales = data.data.materiales;
-                    self.materiales.sort(function (a, b) {
-                        return a.nivel > b.nivel ? 1 : b.nivel > a.nivel ? -1 : 0;
-                    });
                 },
                 complete: function complete() {
                     self.cargando = false;
@@ -66054,10 +66059,6 @@ Vue.component('cuenta-material-index', {
                     data.data.materiales.forEach(function (material) {
                         self.materiales.push(material);
                     });
-                    self.materiales.sort(function (a, b) {
-                        return a.nivel > b.nivel ? 1 : b.nivel > a.nivel ? -1 : 0;
-                    });
-
                     material.cargado = true;
                 },
                 complete: function complete() {
@@ -66654,23 +66655,17 @@ Vue.component('poliza-generada-edit', {
                     self.guardando = true;
                 },
                 success: function success(data, textStatus, xhr) {
-
-                    $('#add_cuenta_modal').modal('show');
-
-                    /* self.data.movimientos = data.data.movimientos;
-                       if (self.data.movimientos.length > 0) {
-                         self.data.empresa = self.data.movimientos[0].empresa_cadeco;
-                         $('#add_cuenta_modal').modal('show');
-                     }
-                     else{
-                         swal({
-                             title: "¡Atención!",
-                             text: "Las cuentas están completas.",
-                             type: "warning",
-                             confirmButtonText: "Aceptar"
-                         });
-                     }
-                    */
+                    if (self.data.movimientos.length > 0) {
+                        self.data.empresa = self.data.movimientos[0].empresa_cadeco;
+                        $('#add_cuenta_modal').modal('show');
+                    } else {
+                        swal({
+                            title: "¡Información!",
+                            text: "Las cuentas están completas.",
+                            type: "info",
+                            confirmButtonText: "Aceptar"
+                        });
+                    }
                 },
                 complete: function complete() {
                     self.guardando = false;
@@ -67150,7 +67145,8 @@ Vue.component('kardex-material-index', {
     data: function data() {
         return {
             'data': {
-                'items': []
+                'items': [],
+                'materiales': ''
             },
             'form': {
                 'material': {
@@ -67159,7 +67155,8 @@ Vue.component('kardex-material-index', {
                     'descripcion': '',
                     'unidad': '',
                     'n_padre': '',
-                    'd_padre': ''
+                    'd_padre': '',
+                    'usuario_registro': ''
                 },
                 'totales': {
                     'entrada_material': '',
@@ -67169,38 +67166,88 @@ Vue.component('kardex-material-index', {
                     'existencia': ''
                 }
             },
-            valor: -1
+            valor: -1,
+            'cargando': false
         };
     },
+    directives: {
+        select2: {
+
+            inserted: function inserted(el) {
+
+                $(el).select2({
+                    width: '100%',
+                    ajax: {
+                        url: App.host + '/sistema_contable/kardex_material/getBy',
+                        dataType: 'json',
+                        delay: 500,
+                        data: function data(params) {
+                            return {
+                                attribute: 'descripcion',
+                                operator: 'like',
+                                value: '%' + params.term + '%'
+                            };
+                        },
+
+                        processResults: function processResults(data) {
+
+                            return {
+
+                                results: $.map(data.data.materiales, function (item) {
+                                    return {
+                                        text: item.descripcion,
+                                        id: item.id_material
+                                    };
+                                })
+                            };
+                        },
+                        error: function error(_error) {},
+                        cache: true
+                    },
+                    escapeMarkup: function escapeMarkup(markup) {
+                        return markup;
+                    }, // let our custom formatter work
+                    minimumInputLength: 1
+                }).on('select2:select', function () {
+                    $('#material_select').val($('#material_select option:selected').data().data.id);
+                });
+            }
+        }
+    },
     methods: {
+
         datos: function datos() {
             var self = this;
-            var material = self.materiales[self.valor];
+            var material = self.valor;
             var url = App.host + '/sistema_contable/kardex_material/';
             var ematerial = 0;
             var evalor = 0;
             var smaterial = 0;
             var svalor = 0;
-
             // Consulta de datos de kardex por material
-            if (self.valor > -1) {
-                url = url + material.id_material;
+            if (self.valor >= 0) {
+                url = url + material;
                 $.ajax({
                     type: 'GET',
                     url: url,
-                    beforeSend: function beforeSend() {},
+                    beforeSend: function beforeSend() {
+                        self.cargando = true;
+                    },
                     success: function success(response) {
+
+                        material = response.data.material;
                         // Asignación de datos para vista de detalle
                         self.form.material.id_material = material.id_material;
                         self.form.material.nivel = material.nivel;
                         self.form.material.n_padre = self.form.material.nivel.substr(0, 4);
                         self.form.material.descripcion = material.descripcion;
                         self.form.material.unidad = material.unidad;
-                        self.form.material.d_padre = material.d_padre[0].descripcion;
+                        self.form.material.d_padre = response.data.padre.descripcion;
+                        self.form.material.usuario_registro = material.UsuarioRegistro;
 
-                        self.data.items = response;
+                        self.data.items = response.data.items;
 
-                        response.forEach(function (item) {
+                        response.data.items.forEach(function (item) {
                             if (item.transaccion.tipo_transaccion == 33) {
                                 ematerial += parseFloat(item.cantidad);
                                 evalor += parseFloat(item.precio_unitario);
@@ -67216,6 +67263,9 @@ Vue.component('kardex-material-index', {
                         self.form.totales.salida_material = smaterial;
                         self.form.totales.salida_valor = svalor;
                         self.form.totales.existencia = ematerial - smaterial;
+                    },
+                    complete: function complete() {
+                        self.cargando = false;
                     }
                 });
             } else {
