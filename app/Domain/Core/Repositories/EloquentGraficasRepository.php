@@ -157,6 +157,13 @@ class EloquentGraficasRepository implements GraficasRepository
      */
     public function getChartCuentaContableInfo()
     {
+        /*
+         * Se definen estas variables para resolver el incidente del día 24/08/2017 (No se cargaban las gráficas del Dashboard)
+         */
+        $total_conceptos = Concepto::count();
+        $total_conceptos_cc = Concepto::has('CuentaConcepto')->count();
+        $total_conceptos_sc = $total_conceptos - $total_conceptos_cc;
+
         $cuentas = [
             'labels'=> ["Almacenes", "Conceptos", "Empresas", "Materiales"],
             'datasets'=> [[
@@ -164,7 +171,7 @@ class EloquentGraficasRepository implements GraficasRepository
                     'backgroundColor' => 'rgb(75, 192, 192)',
                     'data'            => [
                         number_format((Almacen::has('cuentaAlmacen')->count() * 100) / Almacen::count(), 2),
-                        number_format((Concepto::has('cuentaConcepto')->count() * 100) / Concepto::count(), 2),
+                        number_format(($total_conceptos_cc * 100) / $total_conceptos, 2),
                         number_format((Empresa::has('cuentasEmpresa')->count() * 100) / Empresa::count(),2),
                         number_format((Material::has('cuentaMaterial')->count() * 100) / Material::count(),2),
                     ]
@@ -173,7 +180,7 @@ class EloquentGraficasRepository implements GraficasRepository
                     'backgroundColor' => 'rgb(255, 99, 132)',
                     'data'            => [
                         number_format((Almacen::has('cuentaAlmacen', '=', 0)->count() * 100) / Almacen::count(),2),
-                        number_format((Concepto::has('cuentaConcepto', '=', 0)->count() * 100) / Concepto::count(),2),
+                        number_format(($total_conceptos_sc * 100) / $total_conceptos,2),
                         number_format((Empresa::has('cuentasEmpresa', '=', 0)->count() * 100) / Empresa::count(),2),
                         number_format((Material::has('cuentaMaterial', '=', 0)->count() * 100) / Material::count(),2),
                     ]
