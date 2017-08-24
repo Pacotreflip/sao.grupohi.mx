@@ -72,7 +72,8 @@ class EloquentGraficasRepository implements GraficasRepository
 
         foreach (EstatusPrePoliza::all() as $estatus) {
             $d = [];
-            $resp = collect( DB::connection('cadeco')->table('Contabilidad.int_polizas')->select(DB::raw("FORMAT(fecha, 'yyyy/MM/dd') as fecha_"), DB::raw(" COUNT(*) AS count"))
+            $resp = collect( DB::connection('cadeco')->table(DB::raw('Contabilidad.int_polizas WITH (NOLOCK)'))->select(DB::raw("FORMAT(fecha, 'yyyy/MM/dd') as fecha_"), DB::raw(" COUNT(1) AS count"))
+            //$resp = collect( DB::connection('cadeco')->table('Contabilidad.int_polizas')->select(DB::raw("FORMAT(fecha, 'yyyy/MM/dd') as fecha_"), DB::raw(" COUNT(1) AS count"))
                 ->whereBetween('Contabilidad.int_polizas.fecha', [$fechas[0], $fechas[count($fechas)-1]])
                 ->where('Contabilidad.int_polizas.estatus', '=', $estatus->estatus)
                 ->groupBy('Contabilidad.int_polizas.fecha')->get());
@@ -126,8 +127,7 @@ class EloquentGraficasRepository implements GraficasRepository
         $backgroundColor = [];
         $estatus=[];
 
-        $acumulado = $this->poliza_model->select(DB::raw(" COUNT(*) AS count"), 'estatus')->groupBy('estatus')->get();
-
+        $acumulado = $this->poliza_model->select(DB::raw("COUNT(1) AS count"), 'estatus')->groupBy('estatus')->get();
         foreach (EstatusPrePoliza::all() as $status) {
             for($i = 0; $i < count($acumulado); $i++){
                 if($acumulado[$i]->estatus == $status->estatus){
@@ -180,7 +180,6 @@ class EloquentGraficasRepository implements GraficasRepository
                 ]
             ]
         ];
-
         return $cuentas;
     }
 }
