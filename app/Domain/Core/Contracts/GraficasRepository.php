@@ -47,7 +47,7 @@ interface GraficasRepository
      * Retorna el acumilado de Polizas Tipo de acuerdo al total por estatus
      * @return mixed
      */
-    public function getChartAcumuladoModal();
+    public function getChartAcumuladoModal($polizas);
 
 
 }

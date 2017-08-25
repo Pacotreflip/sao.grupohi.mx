@@ -9,6 +9,7 @@ use Ghi\Domain\Core\Contracts\Contabilidad\PolizaRepository;
 use Ghi\Domain\Core\Contracts\Contabilidad\TipoCuentaContableRepository;
 use Ghi\Domain\Core\Contracts\Contabilidad\TransaccionesInterfazRepository;
 use Ghi\Domain\Core\Contracts\GraficasRepository;
+use Ghi\Domain\Core\Models\Contabilidad\EstatusPrePoliza;
 use Ghi\Domain\Core\Models\Contabilidad\Poliza;
 use Ghi\Domain\Core\Models\Contabilidad\TransaccionInterfaz;
 use Illuminate\Http\Request;
@@ -100,18 +101,23 @@ class PolizaController extends Controller
         } else {
             $polizas = $this->poliza->all();
         }
-        $tipo_polizas = $this->transaccion_interfaz->scope('ocupadas')->all();
 
-        $acumulado=$this->graficas->getChartAcumuladoModal();
-        $acumulado_chart=$this->graficas->getChartAcumuladoInfo();
+
+        $acumulado=$this->graficas->getChartAcumuladoModal( $polizas);
+        $tipo_polizas = $this->transaccion_interfaz->scope('ocupadas')->all();
+        $acumulado_chart=$acumulado;
+        $est_prepolizas = EstatusPrePoliza::orderBy('descripcion')->lists('descripcion', 'estatus');
+
         return view('sistema_contable.poliza_generada.index')
             ->with('polizas', $polizas)
             ->with('fechas', $request->fechas)
             ->with('estatus', $request->estatus)
             ->with('tipo', $request->tipo)
             ->with('tipo_polizas', $tipo_polizas)
-            ->with('acumulado',$acumulado)
-            ->with('acumulado_chart',$acumulado_chart);
+            ->with('acumulado',$acumulado['acumulado'])
+            ->with('acumulado_chart',$acumulado_chart)
+            ->with('est_prepolizas', $est_prepolizas)
+            ->with('total_polizas',count($polizas));
 
     }
 

@@ -25,7 +25,12 @@
                         <div class="col-md-4">
                             <div class="form-group">
                                 <label><b>Estatus</b></label>
-                                {!! Form::select('estatus', array('' => 'Todas', '-2' => 'No lanzada', '-1' => 'Con Errores', '0' => 'No Validada', '1' => 'Validada','2'=>'Lanzada'), '', array('class' => 'form-control')) !!}
+                                <Select class="form-control" name="estatus" id="estatus">
+                                    <option value="">Todas</option>index
+                                    @foreach($est_prepolizas as $key=>$value)
+                                        <option value="{{$key}}">{{$value}}</option>
+                                    @endforeach
+                                </Select>
                             </div>
                         </div>
                         <div class="col-md-4">
@@ -138,19 +143,19 @@
                               <table class="table table-bordered table-striped">
                                   <thead>
                                   <tr>
-                                      @foreach($acumulado['labels'] as $label)
-                                          <th>{{$label}}</th>
+                                      @foreach($est_prepolizas as $key=>$value)
+                                          <th>{{$value}}</th>
                                       @endforeach
                                           <th>Total</th>
                                   </tr>
                                   </thead>
                                   <tbody>
                                   <tr>
-                                      @foreach($acumulado['data'] as $catidad)
+                                      @foreach($acumulado as $catidad)
                                           <td class="text-center">{{$catidad}}</td>
                                       @endforeach
                                           <td class="text-center">
-                                          {{$acumulado['total']}}
+                                          {{$total_polizas}}
                                           </td>
                                   </tr>
 

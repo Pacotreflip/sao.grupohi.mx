@@ -155,31 +155,42 @@ class EloquentGraficasRepository implements GraficasRepository
      * Retorna el acumilado de Polizas Tipo de acuerdo al total por estatus
      * @return mixed
      */
-    public function getChartAcumuladoModal()
+    public function getChartAcumuladoModal($polizas)
     {
+
+        $estatus = EstatusPrePoliza::orderBy('descripcion')->lists('descripcion', 'estatus');
+
+        $acumulado=[];
+        $indice=0;
         $labels=[];
         $data = [];
-        $estatus=[];
-        $total=0;
+        $backgroundColor = [];
 
-        $acumulado = $this->poliza_model->select(DB::raw("COUNT(1) AS count"), 'estatus')->groupBy('estatus')->get();
-        foreach (EstatusPrePoliza::all() as $status) {
-            for($i = 0; $i < count($acumulado); $i++){
-                if($acumulado[$i]->estatus == $status->estatus){
-                    $labels[] = $status->descripcion;
-                    $data[] = $acumulado[$i]->count;
-                    $total+=$acumulado[$i]->count;
-                    $estatus[] = $status->estatus;
-                    break;
+        foreach ($estatus as $key=>$est_prepoliza) {
+            $estatPoliza=EstatusPrePoliza::where("estatus",'=',$key)->first();
+            $contador=0;
+            foreach ($polizas  as $poliza){
+                if($poliza->estatus==$key){
+                    $contador++;
                 }
             }
+            $labels[] = $estatPoliza->descripcion;
+            $data[] = $contador;
+            $backgroundColor[] = $estatPoliza->rgb;
+            $estatus[] = $estatPoliza->estatus;
+            $acumulado[$indice]=$contador;
+            $indice++;
         }
         $acum = [
             'labels' => $labels,
             'estatus'=> $estatus,
-            'data'=> $data,
-            'total'=>$total
+            'acumulado'=>$acumulado,
+            'datasets' => [[
+                'data'=> $data,
+                'backgroundColor'=> $backgroundColor
+            ]]
         ];
+
         return $acum;
     }
 
