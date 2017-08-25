@@ -152,6 +152,38 @@ class EloquentGraficasRepository implements GraficasRepository
     }
 
     /**
+     * Retorna el acumilado de Polizas Tipo de acuerdo al total por estatus
+     * @return mixed
+     */
+    public function getChartAcumuladoModal()
+    {
+        $labels=[];
+        $data = [];
+        $estatus=[];
+        $total=0;
+
+        $acumulado = $this->poliza_model->select(DB::raw("COUNT(1) AS count"), 'estatus')->groupBy('estatus')->get();
+        foreach (EstatusPrePoliza::all() as $status) {
+            for($i = 0; $i < count($acumulado); $i++){
+                if($acumulado[$i]->estatus == $status->estatus){
+                    $labels[] = $status->descripcion;
+                    $data[] = $acumulado[$i]->count;
+                    $total+=$acumulado[$i]->count;
+                    $estatus[] = $status->estatus;
+                    break;
+                }
+            }
+        }
+        $acum = [
+            'labels' => $labels,
+            'estatus'=> $estatus,
+            'data'=> $data,
+            'total'=>$total
+        ];
+        return $acum;
+    }
+
+    /**
      * Regresa los datos para el Chart informativo de Cuentas Contables
      * @return mixed
      */

@@ -6,6 +6,7 @@
 @section('main-content')
     {!! Breadcrumbs::render('sistema_contable.poliza_generada.index') !!}
 
+
     <div class="row">
         <div class="col-md-12">
             <div class="box box-info">
@@ -50,7 +51,13 @@
     </div>
 
 @if($polizas)
+    <div class="row" style="float:right">
+        <div class="col-sm-12">
+            <button class="btn btn-sm btn-primary pull-right" data-toggle="modal"  data-target="#add_movimiento_modal"data-dismiss="modal">Acumulado</button>
+        </div>
+    </div>
     <br>
+    <br> <br>
     <div class="row">
         <div class="col-md-12">
             <div class="box box-success">
@@ -112,6 +119,128 @@
         </div>
     </div>
 
+ <!-- Modal Detalle de Cuentas -->
+    <div id="add_movimiento_modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="editCuentaModal" data-backdrop="static" data-keyboard="false">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close"  aria-label="Close" data-dismiss="modal">
+                        <span aria-hidden="true">×</span></button>
+                    <h4 class="modal-title">
+                        <span >
+                            Acumulados
+                        </span>
+                    </h4>
+                </div>
+                <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-12">
+                              <table class="table table-bordered table-striped">
+                                  <thead>
+                                  <tr>
+                                      @foreach($acumulado['labels'] as $label)
+                                          <th>{{$label}}</th>
+                                      @endforeach
+                                          <th>Total</th>
+                                  </tr>
+                                  </thead>
+                                  <tbody>
+                                  <tr>
+                                      @foreach($acumulado['data'] as $catidad)
+                                          <td class="text-center">{{$catidad}}</td>
+                                      @endforeach
+                                          <td class="text-center">
+                                          {{$acumulado['total']}}
+                                          </td>
+                                  </tr>
+
+                                  </tbody>
+
+                              </table>
+                            </div>
+
+                        </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="box box-info">
+                                <div class="box-header with-border">
+                                    <h3 class="box-title">Acumulados de Prepólizas</h3>
+                                </div>
+                                <div class="box-body">
+                                    <div class="chart">
+                                        <canvas id="acumulado" width="762" height="500"></canvas>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default"  data-dismiss="modal">Cerrar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+
 @endif
 @endsection
 
+@section('scripts-content')
+    <script>
+        var chartColors = {
+            red: 'rgb(255, 99, 132)',
+            orange: 'rgb(255, 159, 64)',
+            yellow: 'rgb(255, 205, 86)',
+            green: 'rgb(75, 192, 192)',
+            blue: 'rgb(54, 162, 235)',
+            purple: 'rgb(153, 102, 255)',
+            grey: 'rgb(201, 203, 207)'
+        };
+
+
+        var dataAcumulado = {!! json_encode($acumulado_chart)!!};
+        var fecha = new Date();
+        var config_acumulado = {
+            type: 'doughnut',
+            data: dataAcumulado,
+            options: {
+                responsive: true,
+                legend: {
+                    position: 'top',
+                },
+                title: {
+                    display: true,
+                    text: fecha.getDate()+' / '+(fecha.getMonth() + 1)+' / '+fecha.getFullYear()
+                },
+                animation: {
+                    animateScale: true,
+                    animateRotate: true
+                }
+            }
+        };
+
+        $(document).ready( function() {
+
+
+            var acum = $("#acumulado")[0].getContext("2d");
+            var doughnut = new Chart (acum, config_acumulado);
+
+            $("#acumulado").click(
+                function(evt){
+
+                    var activePoints = doughnut.getElementAtEvent(evt);
+                    if( activePoints[0]) {
+                        var estatu = activePoints[0]._chart.config.data.estatus;
+                        console.log(activePoints[0], estatu );
+                        var url = App.host + '/sistema_contable/poliza_generada?estatus=' + estatu[activePoints[0]._index];
+                        window.location = url;
+                    }
+                }
+            );
+        });
+
+    </script>
+@endsection

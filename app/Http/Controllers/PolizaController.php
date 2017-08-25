@@ -8,6 +8,7 @@ use Ghi\Domain\Core\Contracts\Contabilidad\PolizaMovimientoRepository;
 use Ghi\Domain\Core\Contracts\Contabilidad\PolizaRepository;
 use Ghi\Domain\Core\Contracts\Contabilidad\TipoCuentaContableRepository;
 use Ghi\Domain\Core\Contracts\Contabilidad\TransaccionesInterfazRepository;
+use Ghi\Domain\Core\Contracts\GraficasRepository;
 use Ghi\Domain\Core\Models\Contabilidad\Poliza;
 use Ghi\Domain\Core\Models\Contabilidad\TransaccionInterfaz;
 use Illuminate\Http\Request;
@@ -22,8 +23,9 @@ class PolizaController extends Controller
     protected $cuenta_contable;
     protected $transaccion_interfaz;
     protected $poliza_movimientos;
+    protected $graficas;
 
-    public function __construct(PolizaRepository $poliza, TipoCuentaContableRepository $tipoCuenta, CuentaContableRepository $cuenta_contable, TransaccionesInterfazRepository $transaccion_interfaz, PolizaMovimientoRepository $poliza_movimientos)
+    public function __construct(PolizaRepository $poliza, TipoCuentaContableRepository $tipoCuenta, CuentaContableRepository $cuenta_contable, TransaccionesInterfazRepository $transaccion_interfaz, PolizaMovimientoRepository $poliza_movimientos,GraficasRepository $graficas)
     {
         parent::__construct();
         $this->middleware('auth');
@@ -37,6 +39,7 @@ class PolizaController extends Controller
         $this->cuenta_contable = $cuenta_contable;
         $this->transaccion_interfaz = $transaccion_interfaz;
         $this->poliza_movimientos = $poliza_movimientos;
+        $this->graficas=$graficas;
     }
 
     public function index(Request $request)
@@ -99,12 +102,16 @@ class PolizaController extends Controller
         }
         $tipo_polizas = $this->transaccion_interfaz->scope('ocupadas')->all();
 
+        $acumulado=$this->graficas->getChartAcumuladoModal();
+        $acumulado_chart=$this->graficas->getChartAcumuladoInfo();
         return view('sistema_contable.poliza_generada.index')
             ->with('polizas', $polizas)
             ->with('fechas', $request->fechas)
             ->with('estatus', $request->estatus)
             ->with('tipo', $request->tipo)
-            ->with('tipo_polizas', $tipo_polizas);
+            ->with('tipo_polizas', $tipo_polizas)
+            ->with('acumulado',$acumulado)
+            ->with('acumulado_chart',$acumulado_chart);
 
     }
 
