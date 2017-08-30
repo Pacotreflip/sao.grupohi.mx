@@ -152,10 +152,12 @@
                                   <tbody>
                                   <tr>
                                       @foreach($acumulado as $catidad)
-                                          <td class="text-center">{{$catidad}}</td>
+                                          <td class="text-right">
+                                              {{number_format($catidad)}}
+                                            </td>
                                       @endforeach
-                                          <td class="text-center">
-                                          {{$total_polizas}}
+                                          <td class="text-right">
+                                          {{number_format($total_polizas)}}
                                           </td>
                                   </tr>
 

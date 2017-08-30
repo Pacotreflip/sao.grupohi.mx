@@ -269,7 +269,7 @@
                                                  :class="{'has-error': validation_errors.has('form_add_movimiento.Importe')}">
                                                 <label for="">Importe</label>
                                                 <input type="number" step="any"
-                                                       v-validate="'required|decimal|min_value:0'" class="form-control"
+                                                       v-validate="'required|decimal'" class="form-control"
                                                        name="Importe" v-model="form.movimiento.importe">
                                                 <label class="help"
                                                        v-show="validation_errors.has('form_add_movimiento.Importe')">@{{ validation_errors.first('form_add_movimiento.Importe') }}</label>

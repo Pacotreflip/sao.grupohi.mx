@@ -67,7 +67,19 @@ class PolizaController extends Controller
             ];
 
             $polizas = $this->poliza->where($where)->all();
-        } elseif ($request->estatus != "" && $request->tipo != "") {
+        }
+        elseif ($request->has('fechas') && $request->has('estatus')) {
+
+            $fecha_inicial = explode(" - ", $request->fechas)[0] . ' 00:00:00.000';
+            $fecha_final = explode(" - ", $request->fechas)[1] . ' 00:00:00.000';
+            $where = [
+                ['fecha', 'between', DB::raw("'{$fecha_inicial}' and '{$fecha_final}'")],
+                ['estatus', '=', $request->estatus]
+            ];
+
+            $polizas = $this->poliza->where($where)->all();
+        }
+        elseif ($request->estatus != "" && $request->tipo != "") {
             $where = [
                 ['estatus', '=', $request->estatus],
                 ['id_tipo_poliza_interfaz', '=', $request->tipo]
