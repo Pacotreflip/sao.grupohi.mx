@@ -6,6 +6,7 @@
         host: '{{ url("/") }}',
         socket_host: 'http://sao-notificaciones.grupohi.mx:3000',
         formato_cuenta: '{{$currentObra ? $currentObra->datosContables->mask : null }}',
+        regex_cuenta: {!! $currentObra ? json_encode($currentObra->datosContables->FormatoCuentaRegExp) : null !!},
         // ID del Usuario Actual
         userId: {!! Auth::check() ? Auth::id() : 'null' !!},
 

@@ -18,7 +18,7 @@ require('admin-lte/plugins/iCheck/icheck');
 require('jquery-treegrid/js/jquery.treegrid.js');
 require('jquery-treegrid/js/jquery.treegrid.bootstrap3.js');
 require('jquery-treegrid/js/jquery.cookie.js');
-require('jquery-mask-plugin');
+window.Inputmask = require('inputmask');
 require('./scripts/generales');
 window.io = require('socket.io-client');
 require('bootstrap-notify');

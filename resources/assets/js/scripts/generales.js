@@ -53,7 +53,9 @@ $(function () {
             cancelLabel: 'Cancelar',
         }
     }).val('');
-    $('.formato_cuenta').mask(App.formato_cuenta);
+
+    Inputmask({ regex: App.regex_cuenta }).mask($('.formato_cuenta'));
+
     $('.fecha').datepicker({
         autoclose: true,
         language: 'es',
