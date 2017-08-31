@@ -8,7 +8,6 @@ interface RevaluacionRepository
     /**
      * Obtiene todas las revaluacion
      * @return \Illuminate\Database\Eloquent\Collection | \Ghi\Domain\Core\Models\Contabilidad\Revaluacion;
-
      */
     public function all();
 
@@ -28,7 +27,7 @@ interface RevaluacionRepository
     public function find($id);
 
     /**Crea relaciones con otros modelos
-     * @param array $array
+     * @param $relations
      * @return mixed
      */
     public function with($relations);
@@ -39,5 +38,8 @@ interface RevaluacionRepository
      */
     public function getTipoCambio();
 
+    public function esRevaluable();
+
+    public function getFechaRevaluacion();
 
 }

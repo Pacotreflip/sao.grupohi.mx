@@ -10,7 +10,9 @@ namespace Ghi\Domain\Core\Repositories\Contabilidad;
 
 
 use Ghi\Domain\Core\Contracts\Contabilidad\FacturaRepository;
+use Ghi\Domain\Core\Contracts\Contabilidad\RevaluacionRepository;
 use Ghi\Domain\Core\Models\Contabilidad\Factura;
+use Ghi\Domain\Core\Models\Moneda;
 
 class EloquentFacturaRepository implements FacturaRepository
 {
@@ -20,14 +22,15 @@ class EloquentFacturaRepository implements FacturaRepository
      * @var \Ghi\Domain\Core\Models\Contabilidad\Factura
      */
     protected $model;
-
+    protected $revaluacion;
     /**
      * EloquentFacturaRepository constructor.
      * @param \Ghi\Domain\Core\Models\Contabilidad\Factura $model
      */
-    public function __construct(Factura $model)
+    public function __construct(Factura $model, RevaluacionRepository $revaluacion)
     {
         $this->model = $model;
+        $this->revaluacion = $revaluacion;
     }
 
     /**
@@ -115,5 +118,14 @@ class EloquentFacturaRepository implements FacturaRepository
     {
         $this->model = $this->model->$scope();
         return $this;
+    }
+
+    public function getFacturasPorRevaluar()
+    {
+        $factura = new Factura();
+        $factura->fecha_revaluacion = $this->revaluacion->getFechaRevaluacion();
+        return $factura->where('id_moneda', '=', Moneda::DOLARES)
+            ->has('ordenPago', '=', 0)
+            ->has('revaluacionesActuales', '=', 0)->get();
     }
 }

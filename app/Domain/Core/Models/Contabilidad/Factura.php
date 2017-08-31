@@ -14,6 +14,9 @@ use Illuminate\Support\Facades\DB;
 
 class Factura extends Transaccion
 {
+
+    public $fecha_revaluacion;
+
     /**
      * Aplicar Scope Global para recuperar solo las transacciones de tipo Factura
      */
@@ -32,6 +35,7 @@ class Factura extends Transaccion
         });
     }
 
+
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasOne | OrdenPago
      */
@@ -45,14 +49,15 @@ class Factura extends Transaccion
         return $this->belongsToMany(Revaluacion::class, 'Contabilidad.revaluacion_transaccion', 'id_transaccion', 'id_revaluacion');
     }
 
+    public function revaluacionesActuales()
+    {
+        return $this->belongsToMany(Revaluacion::class, 'Contabilidad.revaluacion_transaccion', 'id_transaccion', 'id_revaluacion')
+            ->where(DB::raw("MONTH(Contabilidad.revaluaciones.fecha)"), '=', $this->fecha_revaluacion->month)
+            ->where(DB::raw("YEAR(Contabilidad.revaluaciones.fecha)"), '=', $this->fecha_revaluacion->year);
+    }
+
     public function empresa()
     {
         return $this->belongsTo(Empresa::class, 'id_empresa');
-    }
-
-    public function scopePorRevaluar($query)
-    {
-        return $query->where('id_moneda', '=', Moneda::DOLARES)->has('revaluaciones','=',0)
-            ->has('ordenPago', '=', 0);
     }
 }

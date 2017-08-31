@@ -53,8 +53,9 @@ interface FacturaRepository
     public function update(array $data, $id);
 
     /**Crea relaciones con otros modelos
-     * @param array $array
+     * @param $relations
      * @return mixed
+     * @internal param array $array
      */
     public function with($relations);
 
@@ -70,6 +71,7 @@ interface FacturaRepository
      * @param string $scope
      * @return mixed
      */
-
     public function scope($scope);
+
+    public function getFacturasPorRevaluar();
 }

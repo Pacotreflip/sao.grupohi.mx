@@ -2,13 +2,11 @@
 @section('title', 'Revaluaciones')
 @section('contentheader_title', 'REVALUACIONES')
 
-
 @section('main-content')
     {!! Breadcrumbs::render('sistema_contable.revaluacion.create') !!}
     <revaluacion-create :facturas="{{ $facturas->toJson() }}" inline-template>
-    <section >
-
-        <div class="box box-solid">
+        <section >
+            <div class="box box-solid">
             <form action="{{route('sistema_contable.revaluacion.store')}}" method="POST">
                 {!! Form::token() !!}
                 <div class="box-header with-border">
@@ -46,7 +44,7 @@
                                 <td>@{{ (new Date(factura.fecha)).dateFormat() }}</td>
                                 <td style="text-align: right">$ @{{  (parseFloat(factura.monto)).formatMoney(2,'.',',') }}</td>
                                 <td>
-                                    <input type="checkbox" :name="'id_transaccion[' + factura.id_transaccion + ']'" checked>
+                                    <input type="checkbox" :name="'id_transaccion[' + factura.id_transaccion + ']'" checked v-icheck>
                                 </td>
                             </tr>
                             </tbody>
@@ -58,6 +56,6 @@
                 </div>
             </form>
         </div>
-    </section>
+        </section>
     </revaluacion-create>
 @endsection

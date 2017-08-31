@@ -49,9 +49,9 @@ class RevaluacionesController extends Controller
      */
     public function create()
     {
-        $facturas = $this->factura->with('empresa')->scope('porRevaluar')->all();
-        dd($facturas);
+        $facturas = $this->factura->getFacturasPorRevaluar();
         $tipo_cambio= $this->revaluacion->getTipoCambio();
+
         return view('sistema_contable.modulos.revaluacion.create')
             ->with('facturas', $facturas)
             ->with('tipo_cambio', $tipo_cambio);
@@ -65,7 +65,7 @@ class RevaluacionesController extends Controller
      */
     public function store(Request $request)
     {
-
+        dd($request->all());
         $revaluacion = $this->revaluacion->create($request->all());
         dd($revaluacion);
     }
@@ -78,7 +78,6 @@ class RevaluacionesController extends Controller
      */
     public function show($id)
     {
-
         $revaluacion = $this->revaluacion->find($id);
         dd($revaluacion);
     }

@@ -65787,7 +65787,15 @@ Vue.component('revaluacion-create', {
             guardando: false
         };
     },
-    methods: {}
+    directives: {
+        icheck: {
+            inserted: function inserted(el) {
+                $(el).iCheck({
+                    checkboxClass: 'icheckbox_minimal-grey'
+                });
+            }
+        }
+    }
 });
 
 },{}],139:[function(require,module,exports){
