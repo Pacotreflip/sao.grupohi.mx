@@ -92,6 +92,7 @@ Route::group(['prefix' => 'sistema_contable'], function () {
     Route::get('kardex_material', 'kardexMaterialController@index')->name('sistema_contable.kardex_material.index');
     Route::get('kardex_material/{id}', 'ItemController@show')->name('sistema_contable.kardex_material.show')->where(['id' => '[0-9]+']);
     Route::get('kardex_material/getBy', 'kardexMaterialController@getBy')->name('sistema_contable.kardex_material.getBy');
+
     /*
      *  Cuentas de Materiales
      */
@@ -122,4 +123,12 @@ Route::group(['prefix' => 'sistema_contable'], function () {
     Route::get('revaluacion/create', 'RevaluacionesController@create')->name('sistema_contable.revaluacion.create');
     Route::post('revaluacion', 'RevaluacionesController@store')->name('sistema_contable.revaluacion.store');
     Route::get('revaluacion/{id}', 'RevaluacionesController@show')->name('sistema_contable.revaluacion.show')->where(['id' => '[0-9]+']);
+
+    /**
+     * Cuentas de Fondos
+     */
+    Route::get('cuenta_fondo', 'CuentaFondoController@index')->name('sistema_contable.cuenta_fondo.index');
+    Route::post('cuenta_fondo', 'CuentaFondoController@store')->name('sistema_contable.cuenta_fondo.store');
+    Route::get('cuenta_fondo/{id}', 'CuentaFondoController@show')->name('sistema_contable.cuenta_fondo.show')->where(['id' => '[0-9]+']);
+    Route::patch('cuenta_fondo/{id}', 'CuentaFondoController@update')->name('sistema_contable.cuenta_fondo.update')->where(['id' => '[0-9]+']);
 });
