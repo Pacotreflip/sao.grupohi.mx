@@ -62,11 +62,11 @@ class EloquentCuentaFondoRepository implements CuentaFondoRepository
             DB::connection('cadeco')->beginTransaction();
 
             if (! $old = $this->model->find($id)) {
-                throw new HttpResponseException(new Response('No se encontró la Cuenta del Almacén que se desea Actualizar', 404));
+                throw new HttpResponseException(new Response('No se encontró la Cuenta del Fondo que se desea Actualizar', 404));
             }
 
             if($old->cuenta == $data['cuenta']) {
-                throw new HttpResponseException(new Response('La cuenta de Almacén que intentas actualizar es la misma', 404));
+                throw new HttpResponseException(new Response('La cuenta de Fondo que intentas actualizar es la misma', 404));
             }
 
             $new = $this->model->create([
