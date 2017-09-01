@@ -159,3 +159,11 @@ Breadcrumbs::register('sistema_contable.revaluacion.show', function ($breadcrumb
     $breadcrumb->parent('sistema_contable.revaluacion.index');
     $breadcrumb->push('VER REVALUACIÓN', route('sistema_contable.revaluacion.index'));
 });
+
+/**
+ * Cuentas Fondos
+ */
+Breadcrumbs::register('sistema_contable.cuenta_fondo.index', function($breadcrumbs) {
+    $breadcrumbs->parent('sistema_contable.index');
+    $breadcrumbs->push('CUENTA FONDOS', route('sistema_contable.cuenta_fondo.index'));
+});

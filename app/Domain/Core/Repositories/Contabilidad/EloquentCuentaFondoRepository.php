@@ -70,7 +70,7 @@ class EloquentCuentaFondoRepository implements CuentaFondoRepository
             }
 
             $new = $this->model->create([
-                'id_almacen' => $old->id_almacen,
+                'id_fondo' => $old->id_fondo,
                 'cuenta' => $data['cuenta'],
                 'registro' => auth()->user()->idusuario
             ]);

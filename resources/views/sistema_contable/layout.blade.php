@@ -67,6 +67,9 @@
                     @permission('consultar_cuenta_empresa')
                     <li ><a href="{{route('sistema_contable.cuenta_empresa.index')}}"><i class='fa fa-circle-o'></i> <span>Cuentas - Empresas</span></a></li>
                     @endpermission
+                    @permission('consultar_cuenta_fondo')
+                    <li ><a href="{{route('sistema_contable.cuenta_fondo.index')}}"><i class='fa fa-circle-o'></i> <span>Cuentas - Fondos</span></a></li>
+                    @endpermission
                     @permission('consultar_cuenta_general')
                     <li ><a href="{{route('sistema_contable.cuenta_contable.index')}}"><i class='fa fa-circle-o'></i> <span>Cuentas - Generales</span></a></li>
                     @endpermission

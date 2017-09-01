@@ -10,6 +10,8 @@ use Ghi\Domain\Core\Contracts\Contabilidad\TipoCuentaContableRepository;
 use Ghi\Domain\Core\Contracts\Contabilidad\TransaccionesInterfazRepository;
 use Ghi\Domain\Core\Contracts\GraficasRepository;
 use Ghi\Domain\Core\Models\Contabilidad\EstatusPrePoliza;
+use Ghi\Domain\Core\Contracts\GraficasRepository;
+use Ghi\Domain\Core\Models\Contabilidad\EstatusPrePoliza;
 use Ghi\Domain\Core\Models\Contabilidad\Poliza;
 use Ghi\Domain\Core\Models\Contabilidad\TransaccionInterfaz;
 use Illuminate\Http\Request;
@@ -120,6 +122,8 @@ class PolizaController extends Controller
         $acumulado_chart=$acumulado;
         $est_prepolizas = EstatusPrePoliza::orderBy('descripcion')->lists('descripcion', 'estatus');
 
+        $est_prepolizas = EstatusPrePoliza::orderBy('descripcion')->lists('descripcion', 'estatus');
+
         return view('sistema_contable.poliza_generada.index')
             ->with('polizas', $polizas)
             ->with('fechas', $request->fechas)
@@ -130,6 +134,7 @@ class PolizaController extends Controller
             ->with('acumulado_chart',$acumulado_chart)
             ->with('est_prepolizas', $est_prepolizas)
             ->with('total_polizas',count($polizas));
+
 
     }
 
