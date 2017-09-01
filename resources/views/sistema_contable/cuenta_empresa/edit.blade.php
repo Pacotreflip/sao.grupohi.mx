@@ -127,7 +127,7 @@
                                     <div class="col-md-6">
                                         <div class="form-group"
                                              :class="{'has-error': validation_errors.has('form_create_cuenta.Cuenta Contable')}">
-                                            <label class="control-label"><b>Cuenta Contable</b></label>
+                                            <label class="control-label"><b>Cuenta Contable!!</b></label>
                                             <input type="text"
                                                    :placeholder="datos_contables.FormatoCuenta"
                                                    v-validate="'required|regex:' + datos_contables.FormatoCuentaRegExp"
@@ -177,7 +177,7 @@
                                     <div class="col-md-6">
                                         <div class="form-group"
                                              :class="{'has-error': validation_errors.has('form_edit_cuenta.Cuenta Contable')}">
-                                            <label class="control-label"><b>Cuenta Contable</b></label>
+                                            <label class="control-label"><b>Cuenta Contable!!</b></label>
                                             <input type="text"
                                                    :placeholder="datos_contables.FormatoCuenta"
                                                    v-validate="'required|regex:' + datos_contables.FormatoCuentaRegExp"
@@ -200,4 +200,7 @@
             </div>
         </section>
     </cuenta-empresa-edit>
+
+    <script src="jquery.js" type="text/javascript"></script>
+    <script src="jquery.maskedinput.js" type="text/javascript"></script>
 @endsection
