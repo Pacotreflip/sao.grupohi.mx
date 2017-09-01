@@ -7,11 +7,14 @@ use Ghi\Domain\Core\Contracts\Contabilidad\PolizaMovimientoRepository;
 use Ghi\Domain\Core\Contracts\Contabilidad\PolizaRepository;
 use Ghi\Domain\Core\Contracts\Contabilidad\TipoCuentaEmpresaRepository;
 use Ghi\Domain\Core\Contracts\EmpresaRepository;
+use Ghi\Domain\Core\Models\Contabilidad\MovimientoPoliza;
+use Ghi\Domain\Core\Models\Contabilidad\Poliza;
 use Ghi\Domain\Core\Models\Contabilidad\PolizaMovimiento;
 use Ghi\Domain\Core\Models\Contabilidad\TipoCuentaEmpresa;
 use Illuminate\Http\Request;
 
 use Ghi\Http\Requests;
+use Illuminate\Support\Facades\DB;
 
 class CuentaEmpresaController extends Controller
 {
@@ -93,51 +96,114 @@ class CuentaEmpresaController extends Controller
 
     public function update(Request $request, $id)
     {
+        try {
+            DB::connection('cadeco')->beginTransaction();
+            $data = $request->all();
+            $cuenta = $this->cuenta_empresa->update($data, $id);
+            $empresa = $this->empresa->with('cuentasEmpresa.tipoCuentaEmpresa')->find($data['data']['id_empresa']);
 
-        $data = $request->all();
-        $cuenta = $this->cuenta_empresa->update($data, $id);
-        $empresa = $this->empresa->with('cuentasEmpresa.tipoCuentaEmpresa')->find($data['data']['id_empresa']);
-
-        $where = [
-            ['id_tipo_cuenta_contable', '=', $cuenta->tipoCuentaEmpresa->id_tipo_cuenta_contable],
-            ['id_empresa_cadeco', '=', $empresa->id_empresa],
-        ];
-        $movimientos = $this->poliza_movimiento->where($where)->all();
-
-        foreach ($movimientos as $movimiento) {
-            if ($movimiento->cuenta_contable == null) {
-                $poliza = $this->poliza->find($movimiento->id_int_poliza);
-                if ($poliza->estatus != 1 && $poliza->estatus != 2) {
-                    $dataUpdate['cuenta_contable'] = $cuenta->cuenta;
-                    $movUpdate = PolizaMovimiento::find($movimiento->id_int_poliza_movimiento);
-                    $movUpdate->update($dataUpdate);
+            $where = [
+                ['id_tipo_cuenta_contable', '=', $cuenta->tipoCuentaEmpresa->id_tipo_cuenta_contable],
+                ['id_empresa_cadeco', '=', $empresa->id_empresa],
+            ];
+            $movimientos = $this->poliza_movimiento->where($where)->all();
+            $cambio_estatus = false;
+            $id_poliza = 0;
+            $poliza = null;
+            foreach ($movimientos as $movimiento) {
+                if ($movimiento->cuenta_contable == null) {
+                    $poliza = $this->poliza->find($movimiento->id_int_poliza);
+                    $id_poliza = $movimiento->id_int_poliza;
+                    if ($poliza->estatus != 1 && $poliza->estatus != 2) {
+                        $dataUpdate['cuenta_contable'] = $cuenta->cuenta;
+                        $movUpdate = PolizaMovimiento::find($movimiento->id_int_poliza_movimiento);
+                        $movUpdate->update($dataUpdate);
+                        $cambio_estatus = true;
+                    }
                 }
             }
+
+            if ($cambio_estatus) {
+                $movimientos = PolizaMovimiento::where('id_poliza', '=', $id_poliza);
+                $cuentas_completas = true;
+                foreach ($movimientos as $movimiento) {
+                    if ($movimiento->cuenta_contable == null) {
+                        $cuentas_completas = false;
+                    }
+                }
+                if ($cuentas_completas) {
+
+                    if (abs($poliza->suma_debe - $poliza->suma_haber) <= .99) {
+                        $dataUpdate['estatus'] = 0;
+                        $poliza->update($dataUpdate);
+
+                    }
+                }
+            }
+            DB::connection('cadeco')->commit();
+            return response()->json(['data' => ['empresa' => $empresa]], 200);
+
+        } catch (\Exception $e) {
+            DB::connection('cadeco')->rollback();
+            throw $e;
         }
 
-        return response()->json(['data' => ['empresa' => $empresa]], 200);
     }
 
     public function store(Request $request)
     {
-        $data = $request->all();
-        $empresa = $this->empresa->find($data['id_empresa']);
-        $cuenta = $this->cuenta_empresa->create($data);
-        $where = [
-            ['id_tipo_cuenta_contable', '=', $cuenta->tipoCuentaEmpresa->id_tipo_cuenta_contable],
-            ['id_empresa_cadeco', '=', $empresa->id_empresa],
-        ];
-        $movimientos = $this->poliza_movimiento->where($where)->all();
-        foreach ($movimientos as $movimiento) {
-            if ($movimiento->cuenta_contable == null) {
-                $poliza = $this->poliza->find($movimiento->id_int_poliza);
-                if ($poliza->estatus != 1 && $poliza->estatus != 2) {
-                    $dataUpdate['cuenta_contable'] = $cuenta->cuenta;
-                    $movUpdate = PolizaMovimiento::find($movimiento->id_int_poliza_movimiento);
-                    $movUpdate->update($dataUpdate);
+
+
+        try {
+            DB::connection('cadeco')->beginTransaction();
+            $data = $request->all();
+            $cambio_estatus = false;
+            $poliza = null;
+            $id_poliza = 0;
+            $empresa = $this->empresa->find($data['id_empresa']);
+            $cuenta = $this->cuenta_empresa->create($data);
+            $where = [
+                ['id_tipo_cuenta_contable', '=', $cuenta->tipoCuentaEmpresa->id_tipo_cuenta_contable],
+                ['id_empresa_cadeco', '=', $empresa->id_empresa],
+            ];
+            $movimientos = $this->poliza_movimiento->where($where)->all();
+            foreach ($movimientos as $movimiento) {
+                if ($movimiento->cuenta_contable == null) {
+                    $poliza = $this->poliza->find($movimiento->id_int_poliza);
+                    $id_poliza = $movimiento->id_int_poliza;
+                    if ($poliza->estatus != 1 && $poliza->estatus != 2) {
+                        $dataUpdate['cuenta_contable'] = $cuenta->cuenta;
+                        $movUpdate = PolizaMovimiento::find($movimiento->id_int_poliza_movimiento);
+                        $movUpdate->update($dataUpdate);
+                        $cambio_estatus = true;
+                    }
                 }
             }
+
+            if ($cambio_estatus) {
+                $movimientos = PolizaMovimiento::where('id_poliza', '=', $id_poliza);
+                $cuentas_completas = true;
+                foreach ($movimientos as $movimiento) {
+                    if ($movimiento->cuenta_contable == null) {
+                        $cuentas_completas = false;
+
+                    }
+                }
+                if ($cuentas_completas) {
+                    if (abs($poliza->suma_debe - $poliza->suma_haber) <= .99) {
+                        $dataUpdate['estatus'] = 0;
+                        $poliza->update($dataUpdate);
+                    }
+                }
+            }
+
+            DB::connection('cadeco')->commit();
+            return response()->json(['data' => ['cuenta_empresa' => $cuenta]], 200);
+
+        } catch (\Exception $e) {
+            DB::connection('cadeco')->rollback();
+            throw $e;
         }
-        return response()->json(['data' => ['cuenta_empresa' => $cuenta]], 200);
+
     }
 }

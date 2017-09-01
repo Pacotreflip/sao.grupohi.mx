@@ -320,7 +320,7 @@
                                 <button type="button" class="close" aria-label="Close" @click="close_cuenta_modal">
                                     <span aria-hidden="true">&times;</span></button>
 
-                                 <h4  class="modal-title">Cuentas faltantes de la Póliza</h4>
+                                 <h4  class="modal-title">Cuentas faltantes de la Prepóliza</h4>
 
                             </div>
                             <form id="form_cuenta" @submit.prevent="validateForm('form_cuenta','confirm_save_cuenta')"
