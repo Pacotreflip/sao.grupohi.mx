@@ -10,8 +10,6 @@ use Ghi\Domain\Core\Contracts\Contabilidad\TipoCuentaContableRepository;
 use Ghi\Domain\Core\Contracts\Contabilidad\TransaccionesInterfazRepository;
 use Ghi\Domain\Core\Contracts\GraficasRepository;
 use Ghi\Domain\Core\Models\Contabilidad\EstatusPrePoliza;
-use Ghi\Domain\Core\Models\Contabilidad\Poliza;
-use Ghi\Domain\Core\Models\Contabilidad\TransaccionInterfaz;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
