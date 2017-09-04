@@ -50,7 +50,7 @@
                             <tr>
                                 <th class="bg-gray-light">Estatus:<br>
                                     <label>
-                                        <span class="label bg-{{$poliza->estatusPrepoliza->label}}">{{$poliza->estatusPrepoliza}}</span>
+                                        <span class="label" style="background-color: {{$poliza->estatusPrepoliza->label}}">{{$poliza->estatusPrepoliza}}</span>
                                     </label>
                                 </th>
                                 <th class="bg-gray-light">
