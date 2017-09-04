@@ -20,7 +20,7 @@ class EstatusPrepolizasSeeder extends Seeder
             ['estatus' => 0, 'descripcion' => 'Por Validar'],
             ['estatus' => 1, 'descripcion' => 'Validada'],
             ['estatus' => 2, 'descripcion' => 'Lanzada'],
-            ['estatus' => -3, 'descripcion' => 'No Lanzable'],
+            ['estatus' => -3, 'descripcion' => 'Omitida'],
             ['estatus' => 3, 'descripcion' => 'Registro Manual']
         ]);
     }

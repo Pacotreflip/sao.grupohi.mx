@@ -16,7 +16,7 @@ class EstatusPrepolizaLabelsSeeder extends Seeder
         \Ghi\Domain\Core\Models\Contabilidad\EstatusPrePoliza::where('descripcion' ,'=','Por Validar')->update(['label'=>'#f39c12']);
         \Ghi\Domain\Core\Models\Contabilidad\EstatusPrePoliza::where('descripcion' ,'=','Validada')->update(['label'=>'#0073b7']);
         \Ghi\Domain\Core\Models\Contabilidad\EstatusPrePoliza::where('descripcion' ,'=','Lanzada')->update(['label'=>'#00a65a']);
-        \Ghi\Domain\Core\Models\Contabilidad\EstatusPrePoliza::where('descripcion' ,'=','No Lanzable')->update(['label'=>'#d2d6de']);
+        \Ghi\Domain\Core\Models\Contabilidad\EstatusPrePoliza::where('descripcion' ,'=','Omitida')->update(['label'=>'#d2d6de']);
         \Ghi\Domain\Core\Models\Contabilidad\EstatusPrePoliza::where('descripcion' ,'=','Registro Manual')->update(['label'=>'#00a65a']);
     }
 }
