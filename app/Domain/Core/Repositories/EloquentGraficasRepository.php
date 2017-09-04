@@ -96,8 +96,8 @@ class EloquentGraficasRepository implements GraficasRepository
 
             array_push($config['datasets'], [
                 'label' => $estatus->descripcion,
-                'backgroundColor' => $estatus->rgb,
-                'borderColor' => $estatus->rgb,
+                'backgroundColor' => $estatus->label,
+                'borderColor' => $estatus->label,
                 'data' => $d,
                 'fill' => false
             ]);
@@ -133,7 +133,7 @@ class EloquentGraficasRepository implements GraficasRepository
                 if($acumulado[$i]->estatus == $status->estatus){
                     $labels[] = $status->descripcion;
                     $data[] = $acumulado[$i]->count;
-                    $backgroundColor[] = $status->rgb;
+                    $backgroundColor[] = $status->label;
                     $estatus[] = $status->estatus;
                     break;
                 }
@@ -176,7 +176,7 @@ class EloquentGraficasRepository implements GraficasRepository
             }
             $labels[] = $estatPoliza->descripcion;
             $data[] = $contador;
-            $backgroundColor[] = $estatPoliza->rgb;
+            $backgroundColor[] = $estatPoliza->label;
             $estatus[] = $estatPoliza->estatus;
             $acumulado[$indice]=$contador;
             $indice++;
@@ -211,7 +211,7 @@ class EloquentGraficasRepository implements GraficasRepository
             'labels'=> ["Almacenes", "Conceptos", "Empresas", "Materiales"],
             'datasets'=> [[
                     'label'           => '% Con Cuenta Contable',
-                    'backgroundColor' => 'rgb(75, 192, 192)',
+                    'backgroundColor' => '#00a65a',
                     'data'            => [
                         number_format((Almacen::has('cuentaAlmacen')->count() * 100) / Almacen::count(), 2),
                         number_format(($total_conceptos_cc * 100) / $total_conceptos, 2),
@@ -220,7 +220,7 @@ class EloquentGraficasRepository implements GraficasRepository
                     ]
                 ],[
                     'label'           => '% Sin Cuenta Contable',
-                    'backgroundColor' => 'rgb(255, 99, 132)',
+                    'backgroundColor' => '#dd4b39',
                     'data'            => [
                         number_format((Almacen::has('cuentaAlmacen', '=', 0)->count() * 100) / Almacen::count(),2),
                         number_format(($total_conceptos_sc * 100) / $total_conceptos,2),
