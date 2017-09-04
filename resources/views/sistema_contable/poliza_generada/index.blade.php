@@ -101,7 +101,7 @@
                                         <td class="numerico">${{number_format($item->total,'2','.',',')}}</td>
                                         <td class="numerico">${{number_format($item->cuadre,'2','.',',')}}</td>
                                         <td>
-                                            <span class="label bg-{{$item->estatusPrepoliza->label}}">{{$item->estatusPrepoliza}}</span>
+                                            <span class="label" style="background-color: {{$poliza->estatusPrepoliza->label}}">{{$item->estatusPrepoliza}}</span>
                                         </td>
                                         <td>{{$item->poliza_contpaq}}</td>
                                         <td style="min-width: 90px;max-width: 90px">
