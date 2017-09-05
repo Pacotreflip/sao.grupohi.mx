@@ -169,7 +169,7 @@ return [
         /*
          * Acacha / dminLTETemplateLaravel Service Provider...
          */
-        Acacha\AdminLTETemplateLaravel\Providers\AdminLTETemplateServiceProvider::class,
+        //Acacha\AdminLTETemplateLaravel\Providers\AdminLTETemplateServiceProvider::class,
 
         /*
         * Ghidev / IntranetAuth Service Provider...

@@ -1,4 +1,5 @@
 <?php
+
 namespace Ghi\Domain\Core\Repositories;
 
 use Ghi\Domain\Core\Contracts\Compras\Identificador;
@@ -26,11 +27,12 @@ class EloquentItemRepository implements ItemRepository
      * EloquentItemRepository constructor.
      * @param \Ghi\Domain\Core\Models\Transacciones\Item $model
      */
-    public function __construct(Item $model,ItemExt $ext)
+    public function __construct(Item $model, ItemExt $ext)
     {
         $this->model = $model;
         $this->ext = $ext;
     }
+
     /**
      * Obtiene todos los registros de Item
      *
@@ -72,11 +74,14 @@ class EloquentItemRepository implements ItemRepository
         try {
             DB::connection('cadeco')->beginTransaction();
 
-             $item = $this->model->create($data);
-             $this->ext->create([
-                 'id_item' => $item->id_item,
-                 'observaciones' => $data['observaciones']
-             ]);
+            $item = $this->model->create($data);
+
+            if (isset($data['observaciones'])) {
+                $this->ext->create([
+                    'id_item' => $item->id_item,
+                    'observaciones' => $data['observaciones']
+                ]);
+            }
 
             DB::connection('cadeco')->commit();
 
@@ -101,7 +106,7 @@ class EloquentItemRepository implements ItemRepository
         try {
             DB::connection('cadeco')->beginTransaction();
 
-            if (! $item = $this->model->find($id)) {
+            if (!$item = $this->model->find($id)) {
                 throw new HttpResponseException(new Response('No se encontró el Item', 404));
             }
 
@@ -114,7 +119,7 @@ class EloquentItemRepository implements ItemRepository
             DB::connection('cadeco')->rollBack();
             throw $e;
         }
-        return $this->model->with(['itemExt','material'])->find($item->id_item);
+        return $this->model->with(['itemExt', 'material'])->find($item->id_item);
     }
 
 
@@ -125,12 +130,12 @@ class EloquentItemRepository implements ItemRepository
      */
     public function delete($id)
     {
-        if (! $item = $this->model->find($id)) {
+        if (!$item = $this->model->find($id)) {
             throw new HttpResponseException(new Response('No se encontró el Item', 404));
         }
 
         $item->delete();
-       // $this->ext->destroy($id);
+        // $this->ext->destroy($id);
     }
 
     /**

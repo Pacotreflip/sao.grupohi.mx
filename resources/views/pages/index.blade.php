@@ -25,6 +25,26 @@
                 </div>
             </div>
 
+         <div class="col-lg-3 col-xs-6">
+
+                <div class="small-box bg-yellow">
+                    <div class="inner">
+                        <h4>Finanzas</h4>
+                        <p>
+                            <br/>
+                        </p>
+                    </div>
+                    <div class="icon">
+                        <i class="fa fa-area-chart fa-fw "></i>
+                    </div>
+
+                    <a href="{{route('finanzas.index')}}" class="small-box-footer">
+                        Ingresar <i class="fa fa-arrow-circle-right"></i>
+                    </a>
+                </div>
+         </div>
+
+
            <!-- <div class="col-lg-3 col-xs-6">
 
                 <div class="small-box bg-green">

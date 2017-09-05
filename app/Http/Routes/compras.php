@@ -20,7 +20,7 @@ Route::group(['prefix' => 'compras'], function () {
 
     /**
      * Materiles Routes
-     */
+
     Route::get('material', 'Compras\MaterialController@index')->name('compras.material.index');
     Route::get('material/{id}/tipo', 'Compras\MaterialController@findBy')->name('compras.material.findby')->where(['id' => '[0-9]+']);
     Route::get('material/{id}', 'Compras\MaterialController@show')->name('compras.material.show')->where(['id' => '[0-9]+']);
@@ -29,6 +29,7 @@ Route::group(['prefix' => 'compras'], function () {
     Route::post('material', 'Compras\MaterialController@store')->name('compras.material.store');
     Route::patch('material/{id}', 'Compras\MaterialController@update')->name('compras.material.update')->where(['id' => '[0-9]+']);
     Route::delete('material/{id}', 'Compras\MaterialController@destroy')->name('compras.material.destroy')->where(['id' => '[0-9]+']);
+     */
 
 });
 
