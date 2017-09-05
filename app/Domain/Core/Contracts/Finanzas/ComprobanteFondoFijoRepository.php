@@ -19,12 +19,11 @@ interface ComprobanteFondoFijoRepository
 
     /**
      * Elimina el Comprobante de Fondo Fijo
-     * @param array $data
      * @param $id
      * @return mixed
      *
      */
-    public function delete(array $data, $id);
+    public function delete($id);
 
     /**
      * Crea relaciones con otros modelos
