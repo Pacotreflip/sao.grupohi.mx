@@ -3,25 +3,28 @@
 namespace Ghi\Http\Controllers;
 
 use Dingo\Api\Routing\Helpers;
+use Ghi\Domain\Core\Repositories\EloquentFondoRepository;
 use Illuminate\Http\Request;
-use \Ghi\Domain\Core\Contracts\Finanzas\ComprobanteFondoFijoRepository;
+use Ghi\Domain\Core\Contracts\Finanzas\ComprobanteFondoFijoRepository;
 
 class ComprobanteFondoFijoController extends Controller
 {
 
     use Helpers;
     protected $comprobante_fondo_fijo;
+    protected $eloquentFondoRepository;
 
     /**
      * ComprobanteFondoFijoController constructor.
      */
-    public function __construct(ComprobanteFondoFijoRepository $comprobante_fondo_fijo)
+    public function __construct(ComprobanteFondoFijoRepository $comprobante_fondo_fijo, EloquentFondoRepository $eloquentFondoRepository)
     {
         parent::__construct();
 
         $this->middleware('auth');
         $this->middleware('context');
         $this->comprobante_fondo_fijo = $comprobante_fondo_fijo;
+        $this->eloquentFondoRepository = $eloquentFondoRepository;
     }
 
 
@@ -35,7 +38,7 @@ class ComprobanteFondoFijoController extends Controller
         $items = $this->comprobante_fondo_fijo->all();
 
         return view("finanzas.comprobante_fondo_fijo.index")
-            ->with("comprobantes_fondo_fijo",$items);
+            ->with("comprobantes_fondo_fijo", $items);
     }
 
     /**
@@ -45,7 +48,12 @@ class ComprobanteFondoFijoController extends Controller
      */
     public function create()
     {
-        //
+
+        $fondos = $this->eloquentFondoRepository->lists();
+
+
+        return view("finanzas.comprobante_fondo_fijo.create")
+            ->with("fondos",$fondos);
     }
 
     /**

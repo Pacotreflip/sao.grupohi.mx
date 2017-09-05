@@ -26,4 +26,10 @@ interface FondoRepository
      * @return mixed
      */
     public function with($relations);
+
+    /**
+     * Obtienes los fondos en lista para combo
+     * @return array
+     */
+    public function lists();
 }

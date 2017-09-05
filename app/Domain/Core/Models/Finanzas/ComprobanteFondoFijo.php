@@ -2,6 +2,7 @@
 
 namespace Ghi\Domain\Core\Models\Finanzas;
 
+use Ghi\Domain\Core\Models\Fondo;
 use Ghi\Domain\Core\Models\Scopes\ComprobanteFondoFijoScope;
 use Ghi\Domain\Core\Models\Scopes\ObraScope;
 use Ghi\Domain\Core\Models\Transacciones\Item;
@@ -33,4 +34,7 @@ class ComprobanteFondoFijo extends Transaccion
         return $this->belongsTo(Item::class, "id_transaccion", "id_transaccion");
     }
 
+    public function fondoFijo(){
+        return $this->belongsTo(Fondo::class,"id_referente","id_fondo");
+    }
 }

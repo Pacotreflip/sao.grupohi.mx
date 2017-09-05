@@ -1,8 +1,9 @@
 @extends('finanzas.layout')
 @section('title', 'Sistema de Finanzas')
 @section('contentheader_title', 'SISTEMA DE FINANZAS')
+@section('contentheader_description', '(INDEX)')
 @section('main-content')
-    {!! Breadcrumbs::render('finanzas.index') !!}
+    {!! Breadcrumbs::render('finanzas.comprobante_fondo_fijo.index') !!}
 
     <div class="row">
         <div class="col-sm-12">
@@ -25,19 +26,19 @@
                         <table class="table table-bordered table-striped index_table">
                             <thead>
                             <tr>
-                                <th>#</th>
-                                <th>Folio</th>
+                                <th># Folio</th>
                                 <th>Fondo Fijo</th>
+                                <th>Monto</th>
                                 <th>Fecha</th>
                                 <th>Referencia</th>
                             </tr>
                             </thead>
                             <tbody>
-                            @foreach($comprobantes_fondo_fijo as $index => $item)
+                            @foreach($comprobantes_fondo_fijo as $item)
                                 <tr>
-                                    <td>{{ $index+1}}</td>
                                     <td>{{ $item->numero_folio}}</td>
-                                    <td>{{ $item->fondo_fijo}}</td>
+                                    <td>{{ $item->FondoFijo}}</td>
+                                    <td class="text-right">${{ number_format($item->monto, 2, ",", ".") }}</td>
                                     <td>{{ $item->fecha->format("Y-m-d")}}</td>
                                     <td>{{ $item->referencia }}</td>
                                 </tr>

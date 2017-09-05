@@ -51,4 +51,13 @@ class EloquentFondoRepository implements FondoRepository
         $this->model = $this->model->with($relations);
         return $this;
     }
+
+    /**
+     * Obtienes los fondos en lista para combo
+     * @return array
+     */
+    public function lists()
+    {
+        return $this->model->orderBy('descripcion', 'ASC')->lists('descripcion', 'id_fondo');
+    }
 }

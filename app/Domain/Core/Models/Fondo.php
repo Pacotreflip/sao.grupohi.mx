@@ -29,4 +29,9 @@ class Fondo extends BaseModel
     public function cuentaFondo() {
         return $this->hasOne(CuentaFondo::class, 'id_fondo', 'id_fondo')->where('Contabilidad.cuentas_fondos.estatus', '=', 1);
     }
+
+    public function __toString()
+    {
+        return $this->descripcion;
+    }
 }

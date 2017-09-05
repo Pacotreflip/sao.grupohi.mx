@@ -10,48 +10,56 @@
                     <h3 class="box-title">Información del Comprobante</h3>
                 </div>
                 <div class="box-body">
-                    <div class="col-md-6">
+                    <div class="col-md-4">
                         <div class="form-group">
-                            <label for="descripcion" class="control-label">Fondo Fijo</label>
-                            <input type="text" name="descripcion" class="form-control">
+                            <label for="descripcion" class="control-label"><strong>Fondo Fijo</strong></label>
+                            <select name="id_referente" class="form-control input-sm" v-model="form.comprobante.id_referente">
+                                <option value>[--SELECCIONE--]</option>
+                                @foreach($fondos as $key=>$value)
+                                    <option value="{{$key}}">{{$value}}</option>
+                                @endforeach
+                            </select>
+
+
+                            <input type="text" name="descripcion" class="form-control input-sm">
                         </div>
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-md-4">
                         <div class="form-group">
-                            <label for="descripcion" class="control-label">Referencia</label>
-                            <input type="text" name="descripcion" class="form-control">
+                            <label for="descripcion" class="control-label"><strong>Referencia</strong></label>
+                            <input type="text" name="descripcion" class="form-control input-sm">
                         </div>
                     </div>
 
-                    <div class="col-md-6">
+                    <div class="col-md-4">
                         <div class="form-group">
-                            <label for="descripcion" class="control-label">Fecha</label>
-                            <input type="text" name="descripcion" class="form-control">
+                            <label for="descripcion" class="control-label"><strong>Fecha</strong></label>
+                            <input type="text" name="descripcion" class="form-control input-sm">
                         </div>
                     </div>
 
-                    <div class="col-md-6">
+                    <div class="col-md-4">
                         <div class="form-group">
-                            <label for="descripcion" class="control-label">Naturaleza</label>
-                            <input type="text" name="descripcion" class="form-control">
+                            <label for="descripcion" class="control-label"><strong>Naturaleza</strong></label>
+                            <input type="text" name="descripcion" class="form-control input-sm">
                         </div>
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-md-4">
                         <div class="form-group">
-                            <label for="descripcion" class="control-label">Requisicion</label>
-                            <input type="text" name="descripcion" class="form-control">
+                            <label for="descripcion" class="control-label"><strong>Requisicion</strong></label>
+                            <input type="text" name="descripcion" class="form-control input-sm">
                         </div>
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-md-4">
                         <div class="form-group">
-                            <label for="descripcion" class="control-label">Salida</label>
-                            <input type="text" name="descripcion" class="form-control">
+                            <label for="descripcion" class="control-label"><strong>Salida</strong></label>
+                            <input type="text" name="descripcion" class="form-control input-sm">
                         </div>
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-md-12">
                         <div class="form-group">
-                            <label for="descripcion" class="control-label">Concepto</label>
-                            <input type="text" name="descripcion" class="form-control">
+                            <label for="descripcion" class="control-label"><strong>Concepto</strong></label>
+                            <input type="text" name="descripcion" class="form-control input-sm">
                         </div>
                     </div>
                 </div>

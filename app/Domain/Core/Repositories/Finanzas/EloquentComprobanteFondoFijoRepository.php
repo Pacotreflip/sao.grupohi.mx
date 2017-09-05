@@ -2,6 +2,9 @@
 
 namespace Ghi\Domain\Core\Repositories\Finanzas;
 
+use Ghi\Domain\Core\Contracts\Finanzas\ComprobanteFondoFijoRepository;
+use Ghi\Domain\Core\Models\Finanzas\ComprobanteFondoFijo;
+
 class EloquentComprobanteFondoFijoRepository implements ComprobanteFondoFijoRepository
 {
     /**
