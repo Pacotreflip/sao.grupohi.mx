@@ -56797,7 +56797,12 @@ require('./vue-components/Compras/requisicion/create');
 require('./vue-components/Compras/requisicion/edit');
 require('./vue-components/Compras/material/index');
 
-},{"./vue-components/Compras/material/index":137,"./vue-components/Compras/requisicion/create":138,"./vue-components/Compras/requisicion/edit":139,"./vue-components/Contabilidad/cuenta_almacen/index":140,"./vue-components/Contabilidad/cuenta_concepto/index":141,"./vue-components/Contabilidad/cuenta_contable/index":142,"./vue-components/Contabilidad/cuenta_empresa/cuenta-empresa-edit":143,"./vue-components/Contabilidad/cuenta_fondo/index":144,"./vue-components/Contabilidad/cuenta_material/index":145,"./vue-components/Contabilidad/datos_contables/edit":146,"./vue-components/Contabilidad/emails":147,"./vue-components/Contabilidad/modulos/revaluacion/create":148,"./vue-components/Contabilidad/poliza_generada/edit":149,"./vue-components/Contabilidad/poliza_tipo/poliza-tipo-create":150,"./vue-components/Contabilidad/tipo_cuenta_contable/tipo-cuenta-contable-create":151,"./vue-components/Contabilidad/tipo_cuenta_contable/tipo-cuenta-contable-update":152,"./vue-components/errors":153,"./vue-components/global-errors":154,"./vue-components/kardex_material/kardex-material-index":155,"./vue-components/select2":156}],137:[function(require,module,exports){
+/**
+ * Finanzas Components
+ */
+require('./vue-components/Finanzas/comprobante_fondo_fijo/create');
+
+},{"./vue-components/Compras/material/index":137,"./vue-components/Compras/requisicion/create":138,"./vue-components/Compras/requisicion/edit":139,"./vue-components/Contabilidad/cuenta_almacen/index":140,"./vue-components/Contabilidad/cuenta_concepto/index":141,"./vue-components/Contabilidad/cuenta_contable/index":142,"./vue-components/Contabilidad/cuenta_empresa/cuenta-empresa-edit":143,"./vue-components/Contabilidad/cuenta_fondo/index":144,"./vue-components/Contabilidad/cuenta_material/index":145,"./vue-components/Contabilidad/datos_contables/edit":146,"./vue-components/Contabilidad/emails":147,"./vue-components/Contabilidad/modulos/revaluacion/create":148,"./vue-components/Contabilidad/poliza_generada/edit":149,"./vue-components/Contabilidad/poliza_tipo/poliza-tipo-create":150,"./vue-components/Contabilidad/tipo_cuenta_contable/tipo-cuenta-contable-create":151,"./vue-components/Contabilidad/tipo_cuenta_contable/tipo-cuenta-contable-update":152,"./vue-components/Finanzas/comprobante_fondo_fijo/create":153,"./vue-components/errors":154,"./vue-components/global-errors":155,"./vue-components/kardex_material/kardex-material-index":156,"./vue-components/select2":157}],137:[function(require,module,exports){
 'use strict';
 
 Vue.component('material-index', {
@@ -59421,13 +59426,30 @@ Vue.component('tipo-cuenta-contable-update', {
 },{}],153:[function(require,module,exports){
 'use strict';
 
+Vue.component('comprobante-fondo-fijo-create', {
+    data: function data() {
+        return {
+            'form': {
+                'comprobante': {
+                    'id_referente': ''
+                }
+            }
+        };
+    },
+
+    methods: {}
+});
+
+},{}],154:[function(require,module,exports){
+'use strict';
+
 Vue.component('app-errors', {
     props: ['form'],
 
     template: require('./templates/errors.html')
 });
 
-},{"./templates/errors.html":157}],154:[function(require,module,exports){
+},{"./templates/errors.html":158}],155:[function(require,module,exports){
 'use strict';
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
@@ -59453,7 +59475,7 @@ Vue.component('global-errors', {
   }
 });
 
-},{"./templates/global-errors.html":158}],155:[function(require,module,exports){
+},{"./templates/global-errors.html":159}],156:[function(require,module,exports){
 'use strict';
 
 Vue.component('kardex-material-index', {
@@ -59603,7 +59625,7 @@ Vue.component('kardex-material-index', {
 
 });
 
-},{}],156:[function(require,module,exports){
+},{}],157:[function(require,module,exports){
 'use strict';
 
 Vue.component('select2', {
@@ -59652,9 +59674,9 @@ Vue.component('select2', {
     }
 });
 
-},{}],157:[function(require,module,exports){
-module.exports = '<div id="form-errors" v-cloak>\n  <div class="alert alert-danger" v-if="form.errors.length">\n    <ul>\n      <li v-for="error in form.errors">{{ error }}</li>\n    </ul>\n  </div>\n</div>';
 },{}],158:[function(require,module,exports){
+module.exports = '<div id="form-errors" v-cloak>\n  <div class="alert alert-danger" v-if="form.errors.length">\n    <ul>\n      <li v-for="error in form.errors">{{ error }}</li>\n    </ul>\n  </div>\n</div>';
+},{}],159:[function(require,module,exports){
 module.exports = '<div class="alert alert-danger" v-show="errors.length">\n  <ul>\n    <li v-for="error in errors">{{ error }}</li>\n  </ul>\n</div>';
 },{}]},{},[134]);
 

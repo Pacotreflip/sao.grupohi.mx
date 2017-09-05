@@ -28,3 +28,8 @@ require('./vue-components/Compras/requisicion/create');
 require('./vue-components/Compras/requisicion/edit');
 require('./vue-components/Compras/material/index');
 
+/**
+ * Finanzas Components
+ */
+require('./vue-components/Finanzas/comprobante_fondo_fijo/create');
+
