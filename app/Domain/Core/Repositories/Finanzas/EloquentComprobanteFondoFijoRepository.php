@@ -48,7 +48,7 @@ class EloquentComprobanteFondoFijoRepository implements ComprobanteFondoFijoRepo
      */
     public function delete($id)
     {
-        $this->model->find('id', '=', $id)->delete();
+        $this->model->find($id)->delete();
     }
 
     /**
