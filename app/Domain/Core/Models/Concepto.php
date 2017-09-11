@@ -4,6 +4,7 @@ namespace Ghi\Domain\Core\Models;
 
 use Ghi\Domain\Core\Models\Contabilidad\CuentaConcepto;
 use Ghi\Domain\Core\Models\Scopes\ObraScope;
+use Illuminate\Support\Facades\DB;
 
 class Concepto extends BaseModel
 {
@@ -66,7 +67,7 @@ class Concepto extends BaseModel
     public function getTieneHijosAttribute()
     {
         return Concepto::where('nivel', 'like', $this->nivel_hijos)->count();
-    }
+}
 
     /**
      * @return bool

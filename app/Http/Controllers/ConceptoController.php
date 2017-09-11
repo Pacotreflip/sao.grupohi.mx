@@ -5,6 +5,7 @@ namespace Ghi\Http\Controllers;
 use Dingo\Api\Routing\Helpers;
 
 use Ghi\Domain\Core\Contracts\Contabilidad\ConceptoRepository;
+use Ghi\Domain\Core\Models\Concepto;
 use Illuminate\Http\Request;
 
 class ConceptoController extends Controller

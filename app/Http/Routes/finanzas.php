@@ -15,5 +15,9 @@ Route::group(['prefix' => 'finanzas'], function () {
     Route::post('comprobante_fondo_fijo/{id}', 'ComprobanteFondoFijoController@store')->name('finanzas.comprobante_fondo_fijo.store')->where(['id' => '[0-9]+']);;
     Route::post('comprobante_fondo_fijo/{id}', 'ComprobanteFondoFijoController@destroy')->name('finanzas.comprobante_fondo_fijo.destroy')->where(['id' => '[0-9]+']);;
 
+ /**
+  * Materiales
+  */
 
+    Route::get('material/getBy', 'MaterialController@getBy')->name('finanzas.material.getBy');
 });

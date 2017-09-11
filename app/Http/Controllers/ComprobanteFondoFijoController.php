@@ -4,6 +4,7 @@ namespace Ghi\Http\Controllers;
 
 use Dingo\Api\Routing\Helpers;
 use Ghi\Domain\Core\Repositories\EloquentFondoRepository;
+use Ghi\Domain\Core\Repositories\EloquentMaterialRepository;
 use Illuminate\Http\Request;
 use Ghi\Domain\Core\Contracts\Finanzas\ComprobanteFondoFijoRepository;
 
@@ -13,11 +14,12 @@ class ComprobanteFondoFijoController extends Controller
     use Helpers;
     protected $comprobante_fondo_fijo;
     protected $eloquentFondoRepository;
+    protected $materiales;
 
     /**
      * ComprobanteFondoFijoController constructor.
      */
-    public function __construct(ComprobanteFondoFijoRepository $comprobante_fondo_fijo, EloquentFondoRepository $eloquentFondoRepository)
+    public function __construct(ComprobanteFondoFijoRepository $comprobante_fondo_fijo, EloquentFondoRepository $eloquentFondoRepository,EloquentMaterialRepository $materiales)
     {
         parent::__construct();
 
@@ -25,6 +27,7 @@ class ComprobanteFondoFijoController extends Controller
         $this->middleware('context');
         $this->comprobante_fondo_fijo = $comprobante_fondo_fijo;
         $this->eloquentFondoRepository = $eloquentFondoRepository;
+        $this->materiales=$materiales;
     }
 
 
@@ -48,12 +51,12 @@ class ComprobanteFondoFijoController extends Controller
      */
     public function create()
     {
-
         $fondos = $this->eloquentFondoRepository->lists();
-
+        $materiales=  $this->materiales->scope("materiales")->all();
 
         return view("finanzas.comprobante_fondo_fijo.create")
-            ->with("fondos",$fondos);
+            ->with("fondos",$fondos)
+            ->with("materiales",$materiales);
     }
 
     /**

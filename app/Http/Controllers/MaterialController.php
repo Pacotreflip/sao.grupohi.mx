@@ -81,4 +81,13 @@ class MaterialController extends Controller
     public function destroy($id) {
         $this->material->delete($id);
     }
+
+    /**
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function getBy(Request $request) {
+        $items = $this->material->scope("materiales")->getBy($request->attribute, $request->operator, $request->value, $request->with);
+        return response()->json(['data' => ['materiales' => $items]], 200);
+    }
 }

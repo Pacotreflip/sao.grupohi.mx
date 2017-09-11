@@ -70728,11 +70728,44 @@ Vue.component('comprobante-fondo-fijo-create', {
                     'cumplimiento': '',
                     'fecha': '',
                     'id_naturaleza': '',
-                    'id_concepto': ''
-                }
+                    'id_concepto': '',
+                    'id_transaccion': ''
+                },
+                'items': [],
+                'total': '',
+                'subtotal': ''
             }
+
         };
     },
+
+    computed: {
+
+        total: function total() {
+            var self = this;
+            var total = 0;
+            if (this.form.items) {
+                this.form.items.forEach(function (item) {
+                    total += item.cantidad * item.precio_unitario;
+                });
+            }
+
+            return parseFloat(total).formatMoney(2, '.', ',');
+        },
+        subtotal: function subtotal() {
+            var self = this;
+            var total = 0;
+            if (this.form.items) {
+                this.form.items.forEach(function (item) {
+                    total += item.cantidad * item.precio_unitario;
+                });
+            }
+
+            return parseFloat(total).formatMoney(2, '.', ',');
+        }
+
+    },
+
     mounted: function mounted() {
         var self = this;
         $("#cumplimiento").datepicker().on("changeDate", function () {
@@ -70745,7 +70778,6 @@ Vue.component('comprobante-fondo-fijo-create', {
     },
 
     directives: {
-
         datepicker: {
             inserted: function inserted(el) {
                 $(el).datepicker({
@@ -70793,9 +70825,122 @@ Vue.component('comprobante-fondo-fijo-create', {
                     $('#id_concepto').val($('#concepto_select option:selected').data().data.id);
                 });
             }
+        },
+        select_material: {
+            inserted: function inserted(el) {
+                $(el).select2({
+                    width: '100%',
+                    ajax: {
+                        url: App.host + '/finanzas/material/getBy',
+                        dataType: 'json',
+                        delay: 500,
+                        data: function data(params) {
+                            return {
+                                attribute: 'descripcion',
+                                operator: 'like',
+                                value: '%' + params.term + '%'
+                            };
+                        },
+                        processResults: function processResults(data) {
+                            return {
+                                results: $.map(data.data.materiales, function (item) {
+                                    return {
+                                        text: item.descripcion,
+                                        id: item.id_material,
+                                        unidad: item.unidad
+                                    };
+                                })
+                            };
+                        },
+                        error: function error(_error2) {},
+                        cache: true
+                    },
+                    escapeMarkup: function escapeMarkup(markup) {
+                        return markup;
+                    }, // let our custom formatter work
+                    minimumInputLength: 1
+                }).on('select2:select', function () {
+                    var id = el.id;
+                    $('#I' + id).val($('#' + id + ' option:selected').data().data.id);
+                    $('#L' + id).text($('#' + id + ' option:selected').data().data.unidad);
+                });
+            }
         }
     },
-    methods: {}
+    methods: {
+
+        validateForm: function validateForm(scope, funcion) {
+            var _this = this;
+
+            this.$validator.validateAll(scope).then(function () {
+                if (funcion == 'confirm_save_fondo') {
+                    _this.confirm_add_movimiento();
+                }
+            }).catch(function () {
+                swal({
+                    type: 'warning',
+                    title: 'Advertencia',
+                    text: 'Por favor corrija los errores del formulario'
+                });
+            });
+        },
+
+        confirm_add_movimiento: function confirm_add_movimiento() {
+            var self = this;
+            swal({
+                title: "Guardar Comprobante de Fondo Fijo",
+                text: "¿Estás seguro de que la información es correcta?",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonText: "Si, Continuar",
+                cancelButtonText: "No, Cancelar"
+            }).then(function () {
+                self.save_comprobante_fondo_fijo();
+            }).catch(swal.noop);
+        },
+
+        save_comprobante_fondo_fijo: function save_comprobante_fondo_fijo() {
+            var self = this;
+            self.form.comprobante.id_concepto = $('#id_concepto').val();
+            $.ajax({
+                type: 'POST',
+                url: self.url_poliza_generada_update,
+                data: {
+                    _method: 'PATCH',
+                    poliza_generada: self.data.poliza_edit
+                },
+                beforeSend: function beforeSend() {
+                    self.guardando = true;
+                },
+                success: function success(data, textStatus, xhr) {
+                    swal({
+                        title: '¡Correcto!',
+                        html: 'Prepóliza  <b>' + self.data.poliza_edit.transaccion_interfaz.descripcion + '</b> actualizada correctamente',
+                        type: 'success',
+                        confirmButtonText: "Ok",
+                        closeOnConfirm: false
+                    }).catch(swal.noop);
+                    window.location = xhr.getResponseHeader('Location');
+                },
+                complete: function complete() {
+                    self.guardando = false;
+                }
+            });
+        },
+
+        add_item: function add_item() {
+            var self = this;
+            self.form.items.push({
+                'id_transaccion': '',
+                'id_concepto': '',
+                'id_material': '',
+                'cantidad': '',
+                'precio_unitario': '',
+                'importe': ''
+            });
+        }
+
+    }
 });
 
 },{}],164:[function(require,module,exports){
