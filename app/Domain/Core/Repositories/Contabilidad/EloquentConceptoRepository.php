@@ -48,4 +48,41 @@ class EloquentConceptoRepository implements ConceptoRepository
         }
         return $this->model->where($attribute, '=', $value)->first();
     }
+
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getDescendantsOf($id)
+    {
+        if (is_null($id)) {
+            return $this->getRootLevels();
+        }
+
+        $concepto = $this->getById($id);
+
+        return $this->model->where('nivel', 'like', $concepto->nivel_hijos)->get();
+
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getRootLevels()
+    {
+       // $idObra = $this->context->getId();
+
+        return Concepto::whereRaw('LEN(nivel) = 4')
+            ->orderBy('nivel')
+            ->get();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getById($id)
+    {
+        return Concepto::where('id_concepto', $id)
+            ->firstOrFail();
+    }
 }

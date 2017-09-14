@@ -1,23 +1,14 @@
-Vue.component('comprobante-fondo-fijo-create', {
-    props: ['url_comprobante_fondo_fijo_create'],
+Vue.component('comprobante-fondo-fijo-edit', {
+    props: ['url_comprobante_fondo_fijo_update','url_comprobante_fondo_fijo_show','comprobante_items','comprobante'],
 
     data: function () {
         return {
             'form': {
-                'comprobante': {
-                    'id_referente': '',
-                    'referencia': '',
-                    'cumplimiento': '',
-                    'fecha':'',
-                    'id_naturaleza': '',
-                    'id_concepto':'',
-                    'id_transaccion':'',
-                    'observaciones':''
-                },
-                'items':[],
+                'comprobante':this.comprobante,
+                'items':this.comprobante_items,
                 'total':'',
                 'subtotal':'',
-                'iva':16,
+                'iva':0.0,
                 'cambio_iva':false
             },
             current_item : {},
@@ -59,6 +50,14 @@ Vue.component('comprobante-fondo-fijo-create', {
     mounted: function () {
         var self = this;
 
+        $('#id_concepto').val(self.form.comprobante.id_concepto);
+        $.each( self.form.items, function( key, item ) {
+            $('#I'+(key+1)).val(item.id_material);
+            $('#L'+(key+1)).text(item.unidad);
+
+
+        });
+
         $('#concepto_select').on('select2:select', function () {
             $('#id_concepto').val($('#concepto_select option:selected').data().data.id);
             self.form.comprobante.id_concepto = $('#concepto_select option:selected').data().data.id;
@@ -66,6 +65,7 @@ Vue.component('comprobante-fondo-fijo-create', {
                 item.destino='';
 
             });
+
         });
 
         $("#cumplimiento").datepicker().on("changeDate", function () {
@@ -257,7 +257,7 @@ Vue.component('comprobante-fondo-fijo-create', {
         confirm_add_movimiento: function () {
             var self = this;
             swal({
-                title: "Guardar Comprobante de Fondo Fijo",
+                title: "Actualizar Comprobante de Fondo Fijo",
                 text: "¿Estás seguro de que la información es correcta?",
                 type: "warning",
                 showCancelButton: true,
@@ -294,22 +294,7 @@ Vue.component('comprobante-fondo-fijo-create', {
              this.current_item = item;
          }
          ,
-        confirm_remove_item: function (index) {
-            var self = this;
-            swal({
-                title: "Quitar Item",
-                text: "¿Estás seguro de que deseas quitar el Item del comprobante?",
-                type: "warning",
-                showCancelButton: true,
-                confirmButtonText: "Si, Continuar",
-                cancelButtonText: "No, Cancelar",
-            }).then(function () {
-                self.remove_item(index);
-            }).catch(swal.noop);
-        },
-        remove_item:function (index) {
-           Vue.delete(this.form.items, index);
-        },
+
         habilitaIva:function () {
             var self = this;
             if( self.form.cambio_iva){
@@ -324,9 +309,10 @@ Vue.component('comprobante-fondo-fijo-create', {
         },
         save_comprobante_fondo_fijo: function () {
             var self = this;
-            var url = this.url_comprobante_fondo_fijo_create;
+            var url = this.url_comprobante_fondo_fijo_update;
             var data = self.form;
-            console.log(url);
+            data['_method']='PATCH';
+
             $.ajax({
                 type: 'POST',
                 url:url,
@@ -337,12 +323,12 @@ Vue.component('comprobante-fondo-fijo-create', {
                 success: function (data, textStatus, xhr) {
                     swal({
                         title: '¡Correcto!',
-                        html: 'Comprobante de Fondo Fijo guardado correctamente',
+                        html: 'Comprobante de Fondo Fijo actualizado correctamente',
                         type: 'success',
                         confirmButtonText: "Ok",
                         closeOnConfirm: false
                     }).catch(swal.noop);
-                    window.location = App.host+"/finanzas/comprobante_fondo_fijo/"+data.data.comprobante.id_transaccion;
+                    window.location = self.url_comprobante_fondo_fijo_show;
 
                 },
                 complete: function () {

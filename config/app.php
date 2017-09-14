@@ -209,6 +209,9 @@ return [
          */
         Zizaco\Entrust\EntrustServiceProvider::class,
 
+        Themsaid\Langman\LangmanServiceProvider::class,
+        Themsaid\Transformers\TransformersServiceProvider::class
+
     ],
 
     /*

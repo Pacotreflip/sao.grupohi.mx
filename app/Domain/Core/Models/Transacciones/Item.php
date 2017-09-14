@@ -3,6 +3,7 @@
 namespace Ghi\Domain\Core\Models\Transacciones;
 
 use Ghi\Domain\Core\Models\Compras\Requisiciones\ItemExt;
+use Ghi\Domain\Core\Models\Concepto;
 use Ghi\Domain\Core\Models\Material;
 use Illuminate\Database\Eloquent\Model;
 
@@ -35,7 +36,12 @@ class Item extends Model
         'id_transaccion',
         'id_material',
         'unidad',
-        'cantidad'
+        'cantidad',
+        'id_concepto',
+        'precio_unitario',
+        'importe',
+        'referencia',
+        'estado'
     ];
 
     public $timestamps = false;
@@ -61,17 +67,31 @@ class Item extends Model
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasOne | Transaccion
      */
-    public function transaccion(){
-        return $this->hasOne(Transaccion::class, 'id_transaccion','id_transaccion');
+    public function transaccion()
+    {
+        return $this->hasOne(Transaccion::class, 'id_transaccion', 'id_transaccion');
     }
 
     /**
      * @param $query Consulta para obtener transacciones por cada Item
      * @return mixed Item con Transacción
      */
-    public function scopeConTransaccionES($query) {
-        return $query->whereHas('transaccion', function($q) {
+    public function scopeConTransaccionES($query)
+    {
+        return $query->whereHas('transaccion', function ($q) {
             $q->whereIn('transacciones.tipo_transaccion', Tipo::TIPO_TRANSACCION);
         })->orderBy('id_item');
     }
+
+
+    /**
+     * Concepto relacionado con este item
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo|Concepto
+     */
+    public function concepto()
+    {
+        return $this->belongsTo(Concepto::class, 'id_concepto', 'id_concepto');
+    }
+
 }

@@ -1,11 +1,15 @@
 @extends('finanzas.layout')
 @section('title', 'Sistema de Finanzas')
-@section('contentheader_title', 'SISTEMA DE FINANZAS')
+@section('contentheader_title', 'COMPROBANTE DE FONDO FIJO')
+@section('contentheader_description', '(EDIT)')
 @section('main-content')
     {!! Breadcrumbs::render('finanzas.comprobante_fondo_fijo.create') !!}
 
-    <comprobante-fondo-fijo-create
-            :url_comprobante_fondo_fijo_create="'{{route('finanzas.comprobante_fondo_fijo.store')}}'"
+    <comprobante-fondo-fijo-edit
+            :url_comprobante_fondo_fijo_update="'{{route('finanzas.comprobante_fondo_fijo.update',$comprobante_fondo_fijo)}}'"
+            :url_comprobante_fondo_fijo_show="'{{route('finanzas.comprobante_fondo_fijo.show',$comprobante_fondo_fijo)}}'"
+            :comprobante_items="{{$items}}"
+            :comprobante="{{$comprobante_fondo_fijo}}"
             inline-template
             v-cloak>
         <section>
@@ -24,7 +28,7 @@
                                          :class="{'has-error': validation_errors.has('form_fondo_fijo.Fecha')}">
                                         <label for="Fecha" class="control-label"><strong>Fecha</strong></label>
                                         <input type="text" name="Fecha" class="form-control input-sm " id="fecha"
-                                               v-validate="'required'"  v-model="form.comprobante.fecha"
+                                               v-validate="'required'" v-model="form.comprobante.fecha"
                                                v-datepicker>
                                         <label class="help"
                                                v-show="validation_errors.has('form_fondo_fijo.Fecha')">@{{ validation_errors.first('form_fondo_fijo.Fecha') }}</label>
@@ -103,8 +107,8 @@
                                              :class="{'has-error': validation_errors.has('form_fondo_fijo.Concepto')}">
                                             <label for="Concepto"
                                                    class="control-label"><strong>Concepto</strong></label>
-                                            <select class="form-control"  id="concepto_select"
-                                                    data-placeholder="BUSCAR CONCEPTO"
+                                            <select class="form-control" id="concepto_select"
+                                                     :data-placeholder="form.comprobante.concepto.path"
                                                     v-select2></select>
                                             <input id="id_concepto" class="form-control" type="hidden" name="Concepto" v-validate="'required'"/>
 
@@ -139,7 +143,7 @@
                                                 <td style="white-space: nowrap">@{{ index + 1 }}</td>
                                                 <td class="form-group" :class="{'has-error': validation_errors.has('form_fondo_fijo.Item [' + (index + 1) + ']')}" v-show="form.comprobante.id_naturaleza==1"  >
 
-                                                    <select class="form-control" :name="'Item [' + (index + 1) + ']'" :id="(index+1)" v-validate="form.comprobante.id_naturaleza==1 ? 'required' : ''" data-placeholder="BUSCAR MATERIAL"
+                                                    <select class="form-control" :name="'Item [' + (index + 1) + ']'" :id="(index+1)" v-validate="form.comprobante.id_naturaleza==1 ? 'required' : ''"  :data-placeholder="item.material"
                                                             v-select_material v-model="item.id_material"  ></select>
                                                     <input :id="'I'+(index+1)+''" class="form-control" type="hidden" :name="'Item [' + (index + 1) + ']'" v-validate="form.comprobante.id_naturaleza==1 ? 'required' : ''"/>
                                                     <label class="help" v-show="validation_errors.has('form_fondo_fijo.Item [' + (index + 1) + ']')">@{{ validation_errors.first('form_fondo_fijo.Item [' + (index + 1) + ']') }}</label>
@@ -178,9 +182,6 @@
 
                                                 </td>
                                                 <td style="white-space: nowrap">
-                                                    <button class="btn btn-xs btn-danger" type="button"
-                                                            @click="confirm_remove_item(index)" title="Eliminar"><i
-                                                                class="fa fa-remove"></i></button>
                                                 </td>
                                             </tr>
                                             </tbody>
@@ -270,6 +271,6 @@
             </div>
 
         </section>
-    </comprobante-fondo-fijo-create>
+    </comprobante-fondo-fijo-edit>
 
 @endsection

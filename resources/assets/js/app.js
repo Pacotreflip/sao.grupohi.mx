@@ -24,6 +24,8 @@ window.io = require('socket.io-client');
 require('bootstrap-notify');
 window.Chart = require('chart.js');
 require('jquery-slimscroll');
+require('jstree/dist/jstree.js');
+
 // Vue Dev
 window.Vue = require('vue/dist/vue.js');
 //Vue Prod

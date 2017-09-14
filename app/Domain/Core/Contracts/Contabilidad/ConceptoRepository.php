@@ -26,4 +26,24 @@ interface ConceptoRepository
      * @return \Illuminate\Database\Eloquent\Model|Concepto
      */
     public function findBy($attribute, $value, $with = null);
+
+    /**
+     * Obtiene los conceptos raiz del presupuesto de obra
+     *
+     * @return Collection|Concepto
+     */
+    public function getRootLevels();
+
+    /**
+     * Obtiene los descendientes de un concepto
+     *
+     * @param $id
+     * @return Collection|Concepto
+     */
+    public function getDescendantsOf($id);
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getById($id);
 }

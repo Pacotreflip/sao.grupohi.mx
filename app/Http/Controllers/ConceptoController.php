@@ -4,9 +4,12 @@ namespace Ghi\Http\Controllers;
 
 use Dingo\Api\Routing\Helpers;
 
+
 use Ghi\Domain\Core\Contracts\Contabilidad\ConceptoRepository;
 use Ghi\Domain\Core\Models\Concepto;
+use Ghi\Domain\Core\Transformers\ConceptoTreeTransformer;
 use Illuminate\Http\Request;
+use League\Fractal\Resource\Collection;
 
 class ConceptoController extends Controller
 {
@@ -45,5 +48,30 @@ class ConceptoController extends Controller
     public function getBy(Request $request) {
         $items = $this->concepto->getBy($request->attribute, $request->operator, $request->value, $request->with);
         return response()->json(['data' => ['conceptos' => $items]], 200);
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @return Response
+     */
+    public function getRoot()
+    {
+        $roots = $this->concepto->getRootLevels();
+        $resp=ConceptoTreeTransformer::transform($roots);
+        return response()->json($resp, 200);
+
+    }
+
+    public function getNode($id)
+    {
+        $node = $this->concepto->getDescendantsOf($id);
+
+
+        $resp=ConceptoTreeTransformer::transform($node);
+
+       // $data = Fractal::createData($resource);
+        return response()->json($resp, 200);
+
     }
 }

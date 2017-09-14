@@ -110,5 +110,9 @@ class Material extends BaseModel
         return false;
     }
 
+    public function __toString()
+    {
+        return $this->descripcion;
+    }
 
 }

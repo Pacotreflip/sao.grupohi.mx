@@ -85,4 +85,50 @@ class Concepto extends BaseModel
              return Concepto::find($this->id_padre)->path . ' -> ' . $this->descripcion;
          }
     }
+
+
+    /**
+     * Indica si este concepto tiene descendientes
+     *
+     * @return bool
+     */
+    public function tieneDescendientes()
+    {
+        return static::where('id_obra', $this->id_obra)
+            ->where('nivel', '<>', $this->nivel)
+            ->whereRaw("LEFT(nivel, LEN('{$this->nivel}')) = '{$this->nivel}'")
+            ->exists();
+    }
+
+    /**
+     * Indica si este concepto es un material
+     *
+     * @return bool
+     */
+    public function esMaterial()
+    {
+        if ($this->id_material) {
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * Indica si el concepto es medible
+     *
+     * @return bool
+     */
+    public function esMedible()
+    {
+        if ($this->concepto_medible == 3 || $this->concepto_medible == 1) {
+            return true;
+        }
+        return false;
+    }
+
+
+    public function __toString()
+    {
+        return $this->descripcion;
+    }
 }
