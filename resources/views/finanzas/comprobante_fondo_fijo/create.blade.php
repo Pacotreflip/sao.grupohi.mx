@@ -233,9 +233,11 @@
                             <div class="box-footer">
 
                                 <div class="col-md-12">
+                                    @permission('registrar_comprobante_fondo_fijo')
                                     <button type="submit" class="btn btn-primary pull-right">
                                         <i class="fa fa-save"></i> Guardar
                                     </button>
+                                    @endpermission
                                 </div>
 
                             </div>

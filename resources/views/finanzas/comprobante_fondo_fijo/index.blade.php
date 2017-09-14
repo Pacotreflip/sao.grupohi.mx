@@ -7,10 +7,11 @@
 
     <div class="row">
         <div class="col-sm-12">
-
+            @permission('registrar_comprobante_fondo_fijo')
             <a  href="{{ route('finanzas.comprobante_fondo_fijo.create') }}" class="btn btn-success btn-app" style="float:right">
                 <i class="glyphicon glyphicon-plus-sign"></i>Nuevo
             </a>
+            @endpermission
 
         </div>
     </div>
@@ -49,18 +50,22 @@
                                     <td>{{ $item->referencia }}</td>
                                     <td>{{ $item->FechaHoraRegistro }}</td>
                                     <td style="min-width: 90px;max-width: 90px">
+                                        @permission('consultar_comprobante_fondo_fijo')
                                         <a href="{{route('finanzas.comprobante_fondo_fijo.show',$item)}}"
                                            title="Ver"
                                            class="btn btn-xs btn-default"><i class="fa fa-eye"></i></a>
-
+                                        @endpermission
+                                        @permission('editar_comprobante_fondo_fijo')
                                         <a href="{{route('finanzas.comprobante_fondo_fijo.edit',$item)}}"
                                            title="Editar"
                                            class="btn btn-xs btn-info">
                                             <i class="fa fa-pencil"></i></a>
-
+                                        @endpermission
+                                        @permission('eliminar_comprobante_fondo_fijo')
                                         <button title="Eliminar" type="button" class="btn btn-xs btn-danger" onclick=" delete_comprobante({{$item->id_transaccion}})">
                                             <i class="fa fa-trash"></i>
                                         </button>
+                                        @endpermission
 
                                     </td>
                                 </tr>
