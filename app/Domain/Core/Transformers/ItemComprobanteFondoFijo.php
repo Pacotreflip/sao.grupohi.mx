@@ -22,8 +22,9 @@ class ItemComprobanteFondoFijo extends AbstractTransformer
             "unidad" => $item->unidad,
             "precio_unitario" => $item->precio_unitario,
             "importe" => $item->importe,
-            "destino" => $item->concepto->descripcion,
+            "destino" => $item->destino->descripcion,
             "gastos_varios"=>$item->referencia,
+            "tipo_concepto"=>$item->id_almacen?'almacen':'',
             "material"=>$item->id_material?$item->material->descripcion:'',
 
         ];

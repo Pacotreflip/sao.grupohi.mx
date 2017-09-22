@@ -6,7 +6,6 @@
     {!! Breadcrumbs::render('finanzas.comprobante_fondo_fijo.show', $comprobante_fondo_fijo) !!}
 
 
-
     <div class="row">
         <div class="col-md-3">
             <div class="box box-primary">
@@ -54,10 +53,10 @@
                                     <thead>
                                     <tr>
                                         <th class="bg-gray-light">#</th>
-                                        <th class="bg-gray-light">Item</th>
-                                        <th class="bg-gray-light">Unidad</th>
+                                        <th class="bg-gray-light">{{$comprobante_fondo_fijo->Naturaleza==1 ? 'Item' : 'Concepto'}}</th>
+                                       @if($comprobante_fondo_fijo->Naturaleza==1)<th class="bg-gray-light">Unidad</th>@endif
                                         <th class="bg-gray-light">Cantidad</th>
-                                        <th class="bg-gray-light">Precio</th>
+                                        @if($comprobante_fondo_fijo->Naturaleza==1) <th class="bg-gray-light">Precio</th>@endif
                                         <th class="bg-gray-light">Monto</th>
                                         <th class="bg-gray-light">Destino</th>
                                     </tr>
@@ -67,28 +66,31 @@
                                         <tr>
                                             <td style="white-space: nowrap">{{$index+1}}</td>
 
-                                            <td style="white-space: nowrap" class="form-group">
+                                            <td style="word-wrap:break-word;text-align: left" class="form-group" >
                                                 @if($item->id_material)
                                                     {{$item->material}}
                                                 @else
                                                     {{$item->referencia}}
                                                 @endif
                                             </td>
-                                            <td style="white-space: nowrap">
-                                                {{$item->unidad}}
+                                            @if($comprobante_fondo_fijo->Naturaleza==1)
+                                                <td style="white-space: nowrap">
+                                                {{$item->unidad?$item->unidad:$item->material->unidad}}
                                             </td>
+                                            @endif
                                             <td class="form-group">
                                                 {{$item->cantidad}}
                                             </td>
-
+                                            @if($comprobante_fondo_fijo->Naturaleza==1)
                                             <td class="form-group">
                                                 {{$item->precio_unitario}}
                                             </td>
+                                            @endif
                                             <td style="white-space: nowrap" class="numerico">
-                                                $ {{$item->precio_unitario*$item->cantidad}}
+                                                $ {{$item->Monto}}
                                             </td>
                                             <td class="form-group">
-                                                {{$item->concepto}}
+                                                {{$item->destino}}
                                             </td>
                                         </tr>
                                     @endforeach
@@ -110,8 +112,8 @@
                                         <td class="bg-gray-light">
                                             <strong>IVA</strong>
                                         </td>
-                                        <th class="bg-gray-light text-right"><strong>  {{$comprobante_fondo_fijo->impuesto}}
-                                                %</strong></th>
+                                        <th class="bg-gray-light text-right"><strong> ${{number_format(($comprobante_fondo_fijo->impuesto),'2','.',',')}}
+                                                </strong></th>
                                     </tr>
                                     <tr>
 

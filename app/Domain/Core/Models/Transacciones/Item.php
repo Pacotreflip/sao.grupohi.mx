@@ -2,6 +2,7 @@
 
 namespace Ghi\Domain\Core\Models\Transacciones;
 
+use Ghi\Domain\Core\Models\Almacen;
 use Ghi\Domain\Core\Models\Compras\Requisiciones\ItemExt;
 use Ghi\Domain\Core\Models\Concepto;
 use Ghi\Domain\Core\Models\Material;
@@ -38,6 +39,7 @@ class Item extends Model
         'unidad',
         'cantidad',
         'id_concepto',
+        'id_almacen',
         'precio_unitario',
         'importe',
         'referencia',
@@ -94,4 +96,26 @@ class Item extends Model
         return $this->belongsTo(Concepto::class, 'id_concepto', 'id_concepto');
     }
 
+    /**
+     * Concepto relacionado con este item
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo|Concepto
+     */
+    public function destino()
+    {
+
+        if($this->id_almacen) {
+            return $this->belongsTo(Almacen::class, 'id_almacen', 'id_almacen');
+        }
+        if($this->id_concepto) {
+            return $this->belongsTo(Concepto::class, 'id_concepto', 'id_concepto');
+
+        }
+    }
+
+
+    public function getMontoAttribute()
+    {
+        return $this->importe;
+    }
 }

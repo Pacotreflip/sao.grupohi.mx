@@ -41,3 +41,10 @@ Route::get('material/{id}/getHijos', 'MaterialController@getHijos')->name('mater
 
 Route::get('conceptos/jstree', 'ConceptoController@getRoot');
 Route::get('conceptos/{id}/jstree', 'ConceptoController@getNode');
+
+/**
+ * Almacen tree Routes
+ */
+
+Route::get('almacen/jstree', 'AlmacenController@getRoot');
+Route::get('almacen/{id}/jstree', 'AlmacenController@getNode');

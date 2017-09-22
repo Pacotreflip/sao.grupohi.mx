@@ -13,11 +13,13 @@ class Almacen extends BaseModel
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany|CuentaAlmacen
      */
-    public function cuentaAlmacen(){
+    public function cuentaAlmacen()
+    {
         return $this->hasOne(CuentaAlmacen::class, "id_almacen")->where('Contabilidad.cuentas_almacenes.estatus', '=', 1);
     }
 
-    public function getTipoAlmacenAttribute($tipo_almacen) {
+    public function getTipoAlmacenAttribute($tipo_almacen)
+    {
         switch ($tipo_almacen) {
             case 0:
                 return 'Almacén Materiales';
@@ -38,5 +40,10 @@ class Almacen extends BaseModel
                 return 'Almacén Herramientas';
                 break;
         }
+    }
+
+    public function __toString()
+    {
+        return $this->descripcion;
     }
 }
