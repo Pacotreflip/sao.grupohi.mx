@@ -9,6 +9,7 @@ namespace Ghi\Domain\Core\Models\Transacciones;
  * Time: 01:25 PM
  */
 
+use Ghi\Domain\Core\Models\Empresa;
 use Ghi\Domain\Core\Models\Scopes\ObraScope;
 use Ghi\Domain\Core\Models\Scopes\SubcontratoScope;
 
@@ -23,5 +24,18 @@ class Subcontrato extends Transaccion
 
         static::addGlobalScope(new SubcontratoScope());
         static::addGlobalScope(new ObraScope());
+    }
+
+    public function __toString()
+    {
+        return $this->referencia;
+    }
+
+    public function empresa() {
+        return $this->hasOne(Empresa::class, 'id_empresa', 'id_empresa');
+    }
+
+    public function getMontoSubcontratoAttribute() {
+        return $this->monto - $this->impuesto;
     }
 }

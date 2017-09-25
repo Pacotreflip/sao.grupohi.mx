@@ -42,4 +42,8 @@ class Empresa extends BaseModel
             ->whereIn('dbo.transacciones.tipo_transaccion', [Tipo::ESTIMACION, Tipo::SUBCONTRATO])
             ->orderBy('dbo.empresas.razon_social');
     }
+    public function __toString()
+    {
+        return $this->razon_social;
+    }
 }

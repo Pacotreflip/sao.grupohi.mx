@@ -3,6 +3,7 @@ namespace Ghi\Domain\Core\Reportes\Subcontratos;
 
 use Ghi\Core\Facades\Context;
 use Ghi\Domain\Core\Models\Obra;
+use Ghi\Domain\Core\Models\Transacciones\Subcontrato;
 use Ghidev\Fpdf\Rotation;
 
 class Estimacion extends Rotation {
@@ -107,44 +108,44 @@ class Estimacion extends Rotation {
         $this->SetX(6);
         $this->SetFont('Arial', '', 10);
         $this->Cell(4, 0.4, 'Subcontrato No. :', 0, 0, 'R');
-        $this->CellFitScale(10, 0.4, $this->estimacion->id_transaccion, 'B', 1, 'C');
+        $this->CellFitScale(10, 0.4, $this->estimacion->subcontrato, 'B', 1, 'C');
         $this->Ln(0.1);
 
         $this->SetX(6);
         $this->SetFont('Arial', '', 8);
         $this->Cell(4, 1, 'Objeto del Contrato :', 0, 0, 'R');
-        $this->CellFitScale(10, 1, '[referencia_subcontrato]', 1, 1, 'C');
+        $this->CellFitScale(10, 1, '', 1, 1, 'C');
         $this->Ln(0.1);
 
         $this->SetX(6);
         $this->SetFont('Arial', '', 8);
         $this->Cell(4, 0.4, 'Fecha :', 0, 0, 'R');
-        $this->CellFitScale(10, 0.4, '[fecha]', 'B', 1, 'C');
+        $this->CellFitScale(10, 0.4, $this->estimacion->fecha->format('d/m/Y'), 'B', 1, 'C');
         $this->Ln(0.1);
 
         $this->SetX(6);
         $this->SetFont('Arial', '', 8);
         $this->Cell(4, 0.4, 'Monto del Contrato :', 0, 0, 'R');
-        $this->CellFitScale(10, 0.4, '[monto_subcontrato]', 'B', 1, 'C');
+        $this->CellFitScale(10, 0.4,'$' . number_format($this->estimacion->subcontrato->monto_subcontrato, 2, '.', ','), 'B', 1, 'C');
         $this->Ln(0.1);
 
         $this->SetX(6);
         $this->SetFont('Arial', '', 8);
         $this->Cell(4, 0.35, 'Contratista :', 0, 0, 'R');
-        $this->CellFitScale(10, 0.35, '[empresa]', 'B', 1, 'C');
+        $this->CellFitScale(10, 0.35, $this->estimacion->subcontrato->empresa, 'B', 1, 'C');
         $this->Ln(0.1);
 
         $this->SetX(6);
         $this->SetFont('Arial', '', 8);
         $this->Cell(4, 0.35, utf8_decode('Estimación :'), 0, 0, 'R');
-        $this->CellFitScale(10, 0.35, '[]', 'B', 1, 'C');
+        $this->CellFitScale(10, 0.35, '', 'B', 1, 'C');
         $this->Ln(0.1);
 
         $this->SetX(6   );
         $this->SetFont('Arial', '', 8);
         $this->Cell(4, 0.35, 'Periodo :', 0, 0, 'R');
-        $this->CellFitScale(5, 0.35, 'Del : [cumplimiento]', 'B', 0, 'C');
-        $this->CellFitScale(5, 0.35, 'Al : [Vencimiento]', 'B', 1, 'C');
+        $this->CellFitScale(5, 0.35, 'Del : ' . $this->estimacion->cumplimiento->format('d/m/Y'), 'B', 0, 'C');
+        $this->CellFitScale(5, 0.35, 'Al : ' . $this->estimacion->vencimiento->format('d/m/Y'), 'B', 1, 'C');
 
         $this->Ln();
     }
