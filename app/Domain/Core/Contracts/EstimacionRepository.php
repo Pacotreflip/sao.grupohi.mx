@@ -31,4 +31,13 @@ interface EstimacionRepository
      * @return mixed
      */
     public function with($relations);
+
+    /**
+     * Obtiene las estimaciones que coincidan con los campos de búsqueda
+     * @param $attribute
+     * @param $operator
+     * @param $value
+     * @return Collection
+     */
+    public function getBy($attribute, $operator, $value);
 }

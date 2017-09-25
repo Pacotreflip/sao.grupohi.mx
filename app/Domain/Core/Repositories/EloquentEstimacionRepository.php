@@ -56,4 +56,16 @@ class EloquentEstimacionRepository implements EstimacionRepository
         $this->model = $this->model->with($relations);
         return $this;
     }
+
+    /**
+     * Obtiene las estimaciones que coincidan con los campos de búsqueda
+     * @param $attribute
+     * @param $operator
+     * @param $value
+     * @return Collection
+     */
+    public function getBy($attribute, $operator, $value)
+    {
+        return $this->model->where($attribute, $operator, $value)->get();
+    }
 }

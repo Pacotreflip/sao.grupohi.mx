@@ -28,3 +28,8 @@ require('./vue-components/Compras/requisicion/create');
 require('./vue-components/Compras/requisicion/edit');
 require('./vue-components/Compras/material/index');
 
+/**
+ * Reportes Components
+ */
+require('./vue-components/Reportes/subcontratos-estimacion');
+

@@ -34,3 +34,15 @@ Route::get('obra/search', 'ObraController@search')->name('obra.search');
 Route::get('material', 'MaterialController@index')->name('material.index');
 Route::get('material/getFamiliasByTipo', 'MaterialController@getFamiliasByTipo')->name('materiales.getFamiliasByTipo');
 Route::get('material/{id}/getHijos', 'MaterialController@getHijos')->name('material.getHijos');
+
+/**
+ * Subcontratos Routes...
+ */
+Route::get('subcontrato', 'SubcontratoController@index')->name('subcontrato.index');
+Route::get('subcontrato/getBy', 'SubcontratoController@getBy');
+
+/**
+ * Estimaciones Routes...
+ */
+Route::get('estimacion', 'EstimacionController@index')->name('estimacion.index');
+Route::get('estimacion/getBy', 'EstimacionController@getBy');
