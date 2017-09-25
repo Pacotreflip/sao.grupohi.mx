@@ -49,7 +49,7 @@
                                     <td>{{ $item->fecha}}</td>
                                     <td>{{ $item->referencia }}</td>
                                     <td>{{ $item->FechaHoraRegistro }}</td>
-                                    <td style="width: 10px">
+                                    <td style="width: 80px">
                                         @permission('consultar_comprobante_fondo_fijo')
                                         <a href="{{route('finanzas.comprobante_fondo_fijo.show',$item)}}"
                                            title="Ver"
