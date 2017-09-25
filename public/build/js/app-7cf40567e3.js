@@ -69560,6 +69560,12 @@ Vue.component('subcontratos-estimacion', {
                     self.cargando = false;
                 }
             });
+        },
+
+        pdf: function pdf(id_estimacion) {
+            var url = App.host + '/reportes/subcontratos/estimacion/' + id_estimacion;
+            $("#PDFModal .modal-body").html('<iframe src="' + url + '"  frameborder="0" height="100%" width="99.6%">d</iframe>');
+            $("#PDFModal").modal("show");
         }
     }
 });
