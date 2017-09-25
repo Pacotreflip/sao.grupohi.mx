@@ -3,6 +3,7 @@
 namespace Ghi\Domain\Core\Models;
 
 use Ghi\Domain\Core\Models\Contabilidad\DatosContables;
+use Ghi\Domain\ModulosSAO\Models\Logotipo;
 
 class Obra extends \Ghi\Core\Models\Obra
 {
@@ -43,5 +44,16 @@ class Obra extends \Ghi\Core\Models\Obra
      */
     public function datosContables() {
         return $this->hasOne(DatosContables::class, 'id_obra');
+    }
+
+    public function getLogotipoAttribute() {
+
+        if ($this->nombre == 'PISTA 3 NAICM') {
+            return Logotipo::where('Descripcion', '=', 'Logotipo NAICM')->first()->LogotipoReportes;
+        } else if ($this->nombre == 'TERMINAL NAICM') {
+            return Logotipo::where('Descripcion', '=', 'Logotipo Terminal Naicm')->first()->LogotipoReportes;
+        } else {
+            return Logotipo::where('EsDelGrupo', '=', 1)->where('EstaVigente', '=', 1)->first()->LogotipoReportes;
+        }
     }
 }

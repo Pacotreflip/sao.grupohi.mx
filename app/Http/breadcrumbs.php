@@ -6,3 +6,4 @@ Breadcrumbs::register('index', function ($b) {
 
 include ('breadcrumbs/sistema_contable.php');
 include ('breadcrumbs/compras.php');
+include ('breadcrumbs/reportes.php');

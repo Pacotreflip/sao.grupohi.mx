@@ -3,6 +3,8 @@
 namespace Ghi\Domain\Core\Models;
 
 use Ghi\Domain\Core\Models\Contabilidad\CuentaEmpresa;
+use Ghi\Domain\Core\Models\Transacciones\Tipo;
+use Illuminate\Support\Facades\DB;
 
 class Empresa extends BaseModel
 {
@@ -31,5 +33,13 @@ class Empresa extends BaseModel
     public function user_registro()
     {
         return $this->belongsTo(User::class, 'UsuarioRegistro', 'idusuario');
+    }
+
+    public function scopeSubcontratos($query) {
+        return $query
+            ->select(DB::raw('DISTINCT dbo.empresas.id_empresa, dbo.empresas.razon_social'))
+            ->join('dbo.transacciones', 'dbo.empresas.id_empresa', '=', 'dbo.transacciones.id_empresa')
+            ->whereIn('dbo.transacciones.tipo_transaccion', [Tipo::ESTIMACION, Tipo::SUBCONTRATO])
+            ->orderBy('dbo.empresas.razon_social');
     }
 }

@@ -10,7 +10,7 @@
 | and give it the controller to call when that URI is requested.
 |
 */
-
+include('routes/compras.php');
+include('routes/reportes.php');
 include('routes/SAO.php');
 include('routes/sistema_contable.php');
-include('routes/compras.php');

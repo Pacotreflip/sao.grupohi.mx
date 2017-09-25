@@ -202,5 +202,9 @@ class AppServiceProvider extends ServiceProvider
             \Ghi\Domain\Core\Contracts\FondoRepository::class,
             \Ghi\Domain\Core\Repositories\EloquentFondoRepository::class
         );
+        $this->app->bind(
+            \Ghi\Domain\Core\Contracts\EstimacionRepository::class,
+            \Ghi\Domain\Core\Repositories\EloquentEstimacionRepository::class
+        );
     }
 }

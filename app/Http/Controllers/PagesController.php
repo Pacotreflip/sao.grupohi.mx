@@ -64,4 +64,8 @@ class PagesController extends Controller
     public function compras() {
         return view('compras.index');
     }
+
+    public function reportes() {
+        return view('reportes.index');
+    }
 }

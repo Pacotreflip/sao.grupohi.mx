@@ -28,4 +28,9 @@ interface EmpresaRepository
      * @return mixed
      */
     public function with($relations);
+
+    /**
+     * Aplica un scope a la consulta de Empresas
+     */
+    public function scope($scope);
 }
