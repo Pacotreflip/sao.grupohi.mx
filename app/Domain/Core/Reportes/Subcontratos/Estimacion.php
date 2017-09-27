@@ -195,9 +195,9 @@ class Estimacion extends Rotation {
             $this->encola = 'partidas';
             $this->Row([
                 '',
-                $item->contrato,
+                utf8_decode($item->contrato),
                 '$ ' . number_format($item->importe, 2, '.', ','),
-                $item->concepto->padre() ? $item->concepto->padre() : '',
+                utf8_decode($item->concepto->padre() ? $item->concepto->padre() : ''),
                 '',
                 ''
             ]);

@@ -168,7 +168,7 @@ class NumberToLetterConverter {
         }
         $tex = $neg . substr($tex, 1) . $fin;
         //Zi hack --> return ucfirst($tex);
-        $end_num=ucfirst($tex).' pesos '.$float[1].'/100 M.N.';
+        $end_num=ucfirst($tex).' pesos '.(isset($float[1]) ? $float[1] : '00').'/100 M.N.';
         return $end_num;
     }
 
