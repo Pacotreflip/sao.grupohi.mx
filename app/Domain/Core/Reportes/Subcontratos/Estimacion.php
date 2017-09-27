@@ -303,7 +303,7 @@ class Estimacion extends Rotation {
         $this->SetX(($this->w) * 0.45);
         $this->SetFont('Arial', '', 8);
         $this->Cell(($this->w - 2) * 0.30, 0.4, utf8_decode('Retención de Fondo de Garantia Estimación :'), 0, 0, 'R');
-        $this->CellFitScale(($this->w - 2) * 0.25, 0.4, number_format($this->estimacion->subcontratoEstimacion->ImporteFondoGarantia, 2, '.', ','), 'B', 1, 'R');
+        $this->CellFitScale(($this->w - 2) * 0.25, 0.4, number_format($this->estimacion->subcontratoEstimacion ? $this->estimacion->subcontratoEstimacion->ImporteFondoGarantia : 0, 2, '.', ','), 'B', 1, 'R');
         $this->Ln(0.1);
 
         $this->SetX(($this->w) * 0.45);
@@ -339,7 +339,7 @@ class Estimacion extends Rotation {
         $this->SetX(($this->w) * 0.45);
         $this->SetFont('Arial', '', 8);
         $this->Cell(($this->w - 2) * 0.30, 0.4, 'Total Anticipo a Liberar :', 0, 0, 'R');
-        $this->CellFitScale(($this->w - 2) * 0.25, 0.4, number_format($this->estimacion->subcontratoEstimacion->ImporteAnticipoLiberar, 2, '.', ','), 'B', 1, 'R');
+        $this->CellFitScale(($this->w - 2) * 0.25, 0.4, number_format($this->estimacion->subcontratoEstimacion ?$this->estimacion->subcontratoEstimacion->ImporteAnticipoLiberar : 0, 2, '.', ','), 'B', 1, 'R');
         $this->Ln(0.1);
 
         $this->SetX(($this->w) * 0.45);

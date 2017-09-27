@@ -78637,6 +78637,10 @@ Vue.component('subcontratos-estimacion', {
                 },
                 success: function success(response) {
                     self.subcontratos = response.data.subcontratos;
+                    self.estimaciones = [];
+
+                    Vue.set(self.form, 'id_subcontrato', '');
+                    Vue.set(self.form, 'id_estimacion', '');
                 },
                 complete: function complete() {
                     self.cargando = false;
@@ -78660,6 +78664,7 @@ Vue.component('subcontratos-estimacion', {
                 },
                 success: function success(response) {
                     self.estimaciones = response.data.estimaciones;
+                    Vue.set(self.form, 'id_estimacion', '');
                 },
                 complete: function complete() {
                     self.cargando = false;

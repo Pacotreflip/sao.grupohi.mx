@@ -79,12 +79,13 @@ class Estimacion extends Transaccion
     {
         return (
             $this->monto
-            - $this->subcontratoEstimacion->ImporteFondoGarantia
+
+            - ($this->subcontratoEstimacion ? $this->subcontratoEstimacion->ImporteFondoGarantia : 0)
             - $this->descuentos->sum('importe')
             - $this->retenciones->sum('importe')
             - $this->IVARetenido
             + $this->liberaciones->sum('importe')
-            + $this->subcontratoEstimacion->ImporteAnticipoLiberar
+            + ($this->subcontratoEstimacion ? $this->subcontratoEstimacion->ImporteAnticipoLiberar : 0)
         );
     }
 

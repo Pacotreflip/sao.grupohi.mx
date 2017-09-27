@@ -10,8 +10,6 @@
                 </span>
             </a>
             <ul class="treeview-menu">
-                <li ><a href="{{route('compras.material.index')}}"><i class='fa  fa-circle-o'></i> <span>Materiales</span></a></li>
-
             </ul>
         </li>
         <li class="treeview">

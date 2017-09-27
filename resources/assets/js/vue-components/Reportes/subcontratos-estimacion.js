@@ -31,6 +31,10 @@ Vue.component('subcontratos-estimacion', {
                 },
                 success: function (response) {
                     self.subcontratos = response.data.subcontratos;
+                    self.estimaciones = [];
+
+                    Vue.set(self.form, 'id_subcontrato', '');
+                    Vue.set(self.form, 'id_estimacion', '');
                 },
                 complete: function () {
                     self.cargando = false;
@@ -54,6 +58,8 @@ Vue.component('subcontratos-estimacion', {
                 },
                 success: function (response) {
                     self.estimaciones = response.data.estimaciones;
+                    Vue.set(self.form, 'id_estimacion', '');
+
                 },
                 complete: function () {
                     self.cargando = false;
