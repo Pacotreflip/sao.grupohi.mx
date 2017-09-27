@@ -23,7 +23,7 @@ class Concepto extends BaseModel
     protected static function boot()
     {
         parent::boot();
-       // static::addGlobalScope(new ObraScope());
+        static::addGlobalScope(new ObraScope());
     }
 
     /**
@@ -37,25 +37,22 @@ class Concepto extends BaseModel
     /**
      * @return string
      */
-    public function getNivelHijosAttribute()
-    {
-        return $this->nivel . '___.';
+    public function getNivelHijosAttribute() {
+        return $this->nivel.'___.';
     }
 
     /**
      * @return bool|string
      */
-    public function getNivelPadreAttribute()
-    {
+    public function getNivelPadreAttribute() {
         return substr($this->nivel, 0, strlen($this->nivel) - 4);
     }
 
     /**
      * @return integer
      */
-    public function getIdPadreAttribute()
-    {
-        if ($this->nivel_padre != '') {
+    public function getIdPadreAttribute() {
+        if($this->nivel_padre != '') {
             return Concepto::where('nivel', '=', $this->nivel_padre)->first()->id_concepto;
         }
         return null;
@@ -64,16 +61,14 @@ class Concepto extends BaseModel
     /**
      * @return integer
      */
-    public function getTieneHijosAttribute()
-    {
-        return Concepto::where('nivel', 'like', $this->nivel_hijos)->count();
-}
+    public function getTieneHijosAttribute() {
+        return  Concepto::where('nivel', 'like', $this->nivel_hijos)->count();
+    }
 
     /**
      * @return bool
      */
-    public function getCargadoAttribute()
-    {
+    public function getCargadoAttribute() {
         return false;
     }
 
@@ -126,9 +121,12 @@ class Concepto extends BaseModel
         return false;
     }
 
-
     public function __toString()
     {
         return $this->descripcion;
+    }
+
+    public function padre() {
+        return Concepto::where('nivel', '=', $this->nivel_padre)->first();
     }
 }

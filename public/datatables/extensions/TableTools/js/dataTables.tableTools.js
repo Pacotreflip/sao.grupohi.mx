@@ -962,8 +962,8 @@ TableTools.prototype = {
 
 	/**
 	 * Calculate a unity array with the column width by proportion for a set of columns to be
-	 * included for a button. This is particularly useful for PDF creation, where we can use the
-	 * column widths calculated by the browser to size the columns in the PDF.
+	 * included for a button. This is particularly useful for Orden de Pago Estimacion creation, where we can use the
+	 * column widths calculated by the browser to size the columns in the Orden de Pago Estimacion.
 	 *  @param   {Object} oConfig Button configuration object
 	 *  @returns {Array} Unity array of column ratios
 	 */
@@ -2885,7 +2885,7 @@ TableTools.BUTTONS = {
 		"sNewLine": "\n",
 		"sFileName": "*.pdf",
 		"sButtonClass": "DTTT_button_pdf",
-		"sButtonText": "PDF",
+		"sButtonText": "Orden de Pago Estimacion",
 		"sPdfOrientation": "portrait",
 		"sPdfSize": "A4",
 		"sPdfMessage": "",

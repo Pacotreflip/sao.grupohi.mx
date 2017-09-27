@@ -41,3 +41,15 @@ Route::get('material/{id}/getHijos', 'MaterialController@getHijos')->name('mater
 
 Route::get('conceptos/jstree', 'ConceptoController@getRoot');
 Route::get('conceptos/{id}/jstree', 'ConceptoController@getNode');
+
+/**
+ * Subcontratos Routes...
+ */
+Route::get('subcontrato', 'SubcontratoController@index')->name('subcontrato.index');
+Route::get('subcontrato/getBy', 'SubcontratoController@getBy');
+
+/**
+ * Estimaciones Routes...
+ */
+Route::get('estimacion', 'EstimacionController@index')->name('estimacion.index');
+Route::get('estimacion/getBy', 'EstimacionController@getBy');

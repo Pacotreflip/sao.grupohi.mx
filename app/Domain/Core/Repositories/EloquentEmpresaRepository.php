@@ -58,4 +58,13 @@ class EloquentEmpresaRepository implements EmpresaRepository
         $this->model = $this->model->with($relations);
         return $this;
     }
+
+    /**
+     * Aplica un scope a la consulta de Empresas
+     */
+    public function scope($scope)
+    {
+        $this->model = $this->model->$scope();
+        return $this;
+    }
 }

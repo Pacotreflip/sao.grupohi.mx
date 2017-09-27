@@ -33,3 +33,8 @@ require('./vue-components/Compras/material/index');
  */
 require('./vue-components/Finanzas/comprobante_fondo_fijo/create');
 require('./vue-components/Finanzas/comprobante_fondo_fijo/edit');
+/**
+ * Reportes Components
+ */
+require('./vue-components/Reportes/subcontratos-estimacion');
+

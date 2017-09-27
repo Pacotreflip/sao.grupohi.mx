@@ -70,4 +70,8 @@ class PagesController extends Controller
     }
 
 
+
+    public function reportes() {
+        return view('reportes.index');
+    }
 }

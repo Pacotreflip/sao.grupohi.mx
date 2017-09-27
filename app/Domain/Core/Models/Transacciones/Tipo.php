@@ -9,4 +9,6 @@ class Tipo
     const FACTURA = 65;
     const ORDEN_PAGO = 68;
     const COMPROBANTE_FONDO_FIJO = 101;
+    const SUBCONTRATO = 51;
+    const ESTIMACION = 52;
 }
