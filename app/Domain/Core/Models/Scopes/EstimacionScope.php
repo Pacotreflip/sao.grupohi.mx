@@ -19,6 +19,7 @@ class EstimacionScope implements Scope
     public function apply(Builder $builder, Model $model)
     {
         return $builder->where('tipo_transaccion', '=', Tipo::ESTIMACION)
-            ->where('opciones', '=', 0);
+            ->where('opciones', '=', 0)
+            ->where('estado', '!=', -2);
     }
 }

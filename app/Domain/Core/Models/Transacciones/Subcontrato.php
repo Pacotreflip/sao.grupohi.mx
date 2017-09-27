@@ -38,4 +38,8 @@ class Subcontrato extends Transaccion
     public function getMontoSubcontratoAttribute() {
         return $this->monto - $this->impuesto;
     }
+
+    public function estimaciones() {
+        return $this->hasMany(Estimacion::class, 'id_antecedente', 'id_transaccion');
+    }
 }

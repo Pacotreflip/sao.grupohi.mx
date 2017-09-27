@@ -69,4 +69,13 @@ class Concepto extends BaseModel
     public function getCargadoAttribute() {
         return false;
     }
+
+    public function __toString()
+    {
+        return $this->descripcion;
+    }
+
+    public function padre() {
+        return Concepto::where('nivel', '=', $this->nivel_padre)->first();
+    }
 }

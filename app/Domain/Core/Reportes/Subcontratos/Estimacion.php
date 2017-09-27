@@ -4,6 +4,7 @@ namespace Ghi\Domain\Core\Reportes\Subcontratos;
 use Ghi\Core\Facades\Context;
 use Ghi\Domain\Core\Models\Obra;
 use Ghi\Domain\Core\Models\Transacciones\Subcontrato;
+use Ghi\Utils\NumberToLetterConverter;
 use Ghidev\Fpdf\Rotation;
 
 class Estimacion extends Rotation {
@@ -175,7 +176,8 @@ class Estimacion extends Rotation {
             '%',
             'Cuenta'
         ]);
-        for ($i = 0; $i < 69; $i++) {
+        $total = 0;
+        foreach ($this->estimacion->items as $item) {
             $this->SetFont('Arial', '', 7);
             $this->SetWidths([
                 ($this->w - 2) * 0.07,
@@ -190,16 +192,16 @@ class Estimacion extends Rotation {
             $this->SetTextColors(['0,0,0', '0,0,0', '0,0,0', '0,0,0', '0,0,0', '0,0,0']);
             $this->SetHeights([0.35]);
             $this->SetAligns(['L', 'L', 'R', 'L', 'L', 'L']);
-
             $this->encola = 'partidas';
             $this->Row([
                 '',
-                '[descripcion]',
-                '[importe]',
-                '[ConceptoPadre]',
+                $item->contrato,
+                '$ ' . number_format($item->importe, 2, '.', ','),
+                $item->concepto->padre() ? $item->concepto->padre() : '',
                 '',
                 ''
             ]);
+            $total += $item->importe;
         }
 
         $this->SetFont('Arial', '', 7);
@@ -218,7 +220,7 @@ class Estimacion extends Rotation {
 
         $this->Row([
             'Importe Total :',
-            '[Sum(importe)]',
+            '$ ' . number_format($total, 2, '.', ','),
             ''
         ]);
 
@@ -251,10 +253,10 @@ class Estimacion extends Rotation {
         $this->Row(['Monto Anticipo', 'Saldo Anterior', utf8_decode('Amortización de esta Estimación'), 'Saldo Actual']);
         $this->SetAligns(['R', 'R', 'R', 'R']);
         $this->Row([
-            '[anticipo_subcontrato]',
-            '[saldo_anterior]',
-            '[monto_anticipo_aplicado]',
-            '[saldo_actual]'
+            '$ ' . number_format($this->estimacion->subcontrato->anticipo_monto, 2, '.', ','),
+            '$ ' . number_format(0, 2, '.', ','),
+            '$ ' . number_format($this->estimacion->monto_anticipo_aplicado, 2, '.', ','),
+            '$ ' . number_format($this->estimacion->subcontrato->anticipo_monto - $this->estimacion->monto_anticipo_aplicado, 2, '.', ',')
         ]);
     }
 
@@ -264,91 +266,92 @@ class Estimacion extends Rotation {
         $this->SetX(($this->w) * 0.45);
         $this->SetFont('Arial', '', 8);
         $this->Cell(($this->w - 2) * 0.30, 0.4, utf8_decode('Importes Estimación :'), 0, 0, 'R');
-        $this->CellFitScale(($this->w - 2) * 0.25, 0.4, '[]', 'B', 1, 'C');
+        $this->CellFitScale(($this->w - 2) * 0.25, 0.4, number_format($this->estimacion->importes, 2, '.', ','), 'B', 1, 'R');
         $this->Ln(0.1);
 
         $this->SetX(($this->w) * 0.45);
         $this->SetFont('Arial', '', 8);
         $this->Cell(($this->w - 2) * 0.30, 0.4, 'Amortizacion de Anticipo :', 0, 0, 'R');
-        $this->CellFitScale(($this->w - 2) * 0.25, 0.4, '[]', 'B', 1, 'C');
+        $this->CellFitScale(($this->w - 2) * 0.10, 0.4, ($this->estimacion->monto_anticipo_aplicado / $this->estimacion->suma_importes) * 100 . ' %', 'B', 0, 'L');
+        $this->CellFitScale(($this->w - 2) * 0.15, 0.4, number_format($this->estimacion->monto_anticipo_aplicado, 2 ,'.', ','), 'B', 1, 'R');
         $this->Ln(0.1);
 
         $this->SetX(($this->w) * 0.45);
         $this->SetFont('Arial', '', 8);
         $this->Cell(($this->w - 2) * 0.30, 0.4, 'Subtotal :', 0, 0, 'R');
-        $this->CellFitScale(($this->w - 2) * 0.25, 0.4, '[]', 'B', 1, 'C');
+        $this->CellFitScale(($this->w - 2) * 0.25, 0.4, number_format($this->estimacion->importes - $this->estimacion->monto_anticipo_aplicado, 2, '.', ','), 'B', 1, 'R');
         $this->Ln(0.1);
 
         $this->SetX(($this->w) * 0.45);
         $this->SetFont('Arial', '', 8);
         $this->Cell(($this->w - 2) * 0.30, 0.4, 'I.V.A :', 0, 0, 'R');
-        $this->CellFitScale(($this->w - 2) * 0.25, 0.4, '[]', 'B', 1, 'C');
+        $this->CellFitScale(($this->w - 2) * 0.25, 0.4, number_format($this->estimacion->impuesto, 2, '.', ','), 'B', 1, 'R');
         $this->Ln(0.1);
 
         $this->SetX(($this->w) * 0.45);
         $this->SetFont('Arial', '', 8);
         $this->Cell(($this->w - 2) * 0.30, 0.4, '', 0, 0, 'R');
-        $this->CellFitScale(($this->w - 2) * 0.25, 0.4, '[]', 'B', 1, 'C');
+        $this->CellFitScale(($this->w - 2) * 0.25, 0.4, '', 'B', 1, 'C');
         $this->Ln(0.1);
 
         $this->SetX(($this->w) * 0.45);
         $this->SetFont('Arial', '', 8);
         $this->Cell(($this->w - 2) * 0.30, 0.4, 'Total :', 0, 0, 'R');
-        $this->CellFitScale(($this->w - 2) * 0.25, 0.4, '[]', 'B', 1, 'C');
+        $this->CellFitScale(($this->w - 2) * 0.25, 0.4, number_format($this->estimacion->monto, 2, '.', ','), 'B', 1, 'R');
         $this->Ln(0.1);
 
         $this->SetX(($this->w) * 0.45);
         $this->SetFont('Arial', '', 8);
         $this->Cell(($this->w - 2) * 0.30, 0.4, utf8_decode('Retención de Fondo de Garantia Estimación :'), 0, 0, 'R');
-        $this->CellFitScale(($this->w - 2) * 0.25, 0.4, '[]', 'B', 1, 'C');
+        $this->CellFitScale(($this->w - 2) * 0.25, 0.4, number_format($this->estimacion->subcontratoEstimacion->ImporteFondoGarantia, 2, '.', ','), 'B', 1, 'R');
         $this->Ln(0.1);
 
         $this->SetX(($this->w) * 0.45);
         $this->SetFont('Arial', '', 8);
         $this->Cell(($this->w - 2) * 0.30, 0.4, '', 0, 0, 'R');
-        $this->CellFitScale(($this->w - 2) * 0.25, 0.4, '[]', 'B', 1, 'C');
+        $this->CellFitScale(($this->w - 2) * 0.25, 0.4, '', 'B', 1, 'C');
         $this->Ln(0.1);
 
         $this->SetX(($this->w) * 0.45);
         $this->SetFont('Arial', '', 8);
         $this->Cell(($this->w - 2) * 0.30, 0.4, 'Total Deductivas :', 0, 0, 'R');
-        $this->CellFitScale(($this->w - 2) * 0.25, 0.4, '[]', 'B', 1, 'C');
+        $this->CellFitScale(($this->w - 2) * 0.25, 0.4, number_format($this->estimacion->descuentos->sum('importe'), 2, '.', ','), 'B', 1, 'R');
         $this->Ln(0.1);
 
         $this->SetX(($this->w) * 0.45);
         $this->SetFont('Arial', '', 8);
         $this->Cell(($this->w - 2) * 0.30, 0.4, 'Total Retenciones :', 0, 0, 'R');
-        $this->CellFitScale(($this->w - 2) * 0.25, 0.4, '[]', 'B', 1, 'C');
+        $this->CellFitScale(($this->w - 2) * 0.25, 0.4, number_format($this->estimacion->retenciones->sum('importe'), 2, '.', ','), 'B', 1, 'R');
         $this->Ln(0.1);
 
         $this->SetX(($this->w) * 0.45);
         $this->SetFont('Arial', '', 8);
         $this->Cell(($this->w - 2) * 0.30, 0.4, utf8_decode('Retención de IVA :'), 0, 0, 'R');
-        $this->CellFitScale(($this->w - 2) * 0.25, 0.4, '[]', 'B', 1, 'C');
+        $this->CellFitScale(($this->w - 2) * 0.25, 0.4, number_format($this->estimacion->iva_retenido, 2, '.', ','), 'B', 1, 'R');
         $this->Ln(0.1);
 
         $this->SetX(($this->w) * 0.45);
         $this->SetFont('Arial', '', 8);
         $this->Cell(($this->w - 2) * 0.30, 0.4, 'Total Retenciones Liberadas :', 0, 0, 'R');
-        $this->CellFitScale(($this->w - 2) * 0.25, 0.4, '[]', 'B', 1, 'C');
+        $this->CellFitScale(($this->w - 2) * 0.25, 0.4, number_format($this->estimacion->liberaciones->sum('importe'), 2, '.', ','), 'B', 1, 'R');
         $this->Ln(0.1);
 
         $this->SetX(($this->w) * 0.45);
         $this->SetFont('Arial', '', 8);
         $this->Cell(($this->w - 2) * 0.30, 0.4, 'Total Anticipo a Liberar :', 0, 0, 'R');
-        $this->CellFitScale(($this->w - 2) * 0.25, 0.4, '[]', 'B', 1, 'C');
+        $this->CellFitScale(($this->w - 2) * 0.25, 0.4, number_format($this->estimacion->subcontratoEstimacion->ImporteAnticipoLiberar, 2, '.', ','), 'B', 1, 'R');
         $this->Ln(0.1);
 
         $this->SetX(($this->w) * 0.45);
         $this->SetFont('Arial', '', 8);
         $this->Cell(($this->w - 2) * 0.30, 0.4, 'Total de la Orden de Pago :', 0, 0, 'R');
-        $this->CellFitScale(($this->w - 2) * 0.25, 0.4, '[]', 'B', 1, 'C');
+        $this->CellFitScale(($this->w - 2) * 0.25, 0.4, number_format($this->estimacion->monto_a_pagar, 2, '.', ','), 'B', 1, 'R');
         $this->Ln(0.1);
 
         $this->SetX(($this->w) * 0.45);
         $this->SetFont('Arial', '', 8);
         $this->Cell(($this->w - 2) * 0.30, 0.4, 'Importe con letra :', 0, 0, 'R');
-        $this->CellFitScale(($this->w - 2) * 0.25, 1, '[]', 1, 1, 'C');
+        $this->MultiCell(($this->w - 2) * 0.25, 0.35,strtoupper((new NumberToLetterConverter())->num2letras(round($this->estimacion->monto_a_pagar, 2))), 1, 1, 'L');
 
         $y_final = $this->GetY();
 
@@ -356,11 +359,11 @@ class Estimacion extends Rotation {
 
         $this->SetFont('Arial', '', 8);
         $this->Cell(($this->w - 2) * 0.125, 0.4, 'Retenido Anterior :', 0, 0, 'L');
-        $this->CellFitScale(($this->w - 2) * 0.125, 0.4, '[]', 'B', 1, 'R');
+        $this->CellFitScale(($this->w - 2) * 0.125, 0.4, '$ ' .  number_format($this->estimacion->retenido_anterior, 2, '.', ','), 'B', 1, 'R');
 
         $this->SetFont('Arial', '', 8);
         $this->Cell(($this->w - 2) * 0.125, 0.4, 'Retenido Origen :', 0, 0, 'L');
-        $this->CellFitScale(($this->w - 2) * 0.125, 0.4, '[]', 'B', 1, 'R');
+        $this->CellFitScale(($this->w - 2) * 0.125, 0.4, '$ ' .  number_format($this->estimacion->retenido_origen, 2, '.', ','), 'B', 1, 'R');
 
         $this->SetY($y_final);
 

@@ -3,6 +3,8 @@
 namespace Ghi\Domain\Core\Models\Transacciones;
 
 use Ghi\Domain\Core\Models\Compras\Requisiciones\ItemExt;
+use Ghi\Domain\Core\Models\Concepto;
+use Ghi\Domain\Core\Models\Contrato;
 use Ghi\Domain\Core\Models\Material;
 use Illuminate\Database\Eloquent\Model;
 
@@ -73,5 +75,13 @@ class Item extends Model
         return $query->whereHas('transaccion', function($q) {
             $q->whereIn('transacciones.tipo_transaccion', Tipo::TIPO_TRANSACCION);
         })->orderBy('id_item');
+    }
+
+    public function contrato() {
+        return $this->belongsTo(Contrato::class, 'item_antecedente', 'id_concepto');
+    }
+
+    public function concepto() {
+        return $this->belongsTo(Concepto::class, 'id_concepto', 'id_concepto');
     }
 }
