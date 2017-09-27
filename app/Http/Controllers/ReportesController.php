@@ -22,6 +22,8 @@ class ReportesController extends Controller
         $this->middleware('auth');
         $this->middleware('context');
 
+        $this->middleware('permission:consultar_reporte_estimacion', ['only' => ['estimacion_pdf', 'estimacion']]);
+
         $this->estimacion = $estimacion;
         $this->empresa = $empresa;
 
