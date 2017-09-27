@@ -7,7 +7,7 @@
     {!! Breadcrumbs::render('sistema_contable.cuenta_empresa.edit', $empresa) !!}
 
     <cuenta-empresa-edit
-            :empresa="{{$empresa}}"
+            :empresa="{{$empresa->toJson()}}"
             :tipo_cuenta_empresa="{{$tipo_cuenta_empresa}}"
             :cuenta_store_url="'{{route('sistema_contable.cuenta_empresa.store')}}'"
             :datos_contables="{{$currentObra->datosContables}}"
@@ -127,7 +127,7 @@
                                     <div class="col-md-6">
                                         <div class="form-group"
                                              :class="{'has-error': validation_errors.has('form_create_cuenta.Cuenta Contable')}">
-                                            <label class="control-label"><b>Cuenta Contable!!</b></label>
+                                            <label class="control-label"><b>Cuenta Contable</b></label>
                                             <input type="text"
                                                    :placeholder="datos_contables.FormatoCuenta"
                                                    v-validate="'required|regex:' + datos_contables.FormatoCuentaRegExp"
@@ -177,7 +177,7 @@
                                     <div class="col-md-6">
                                         <div class="form-group"
                                              :class="{'has-error': validation_errors.has('form_edit_cuenta.Cuenta Contable')}">
-                                            <label class="control-label"><b>Cuenta Contable!!</b></label>
+                                            <label class="control-label"><b>Cuenta Contable</b></label>
                                             <input type="text"
                                                    :placeholder="datos_contables.FormatoCuenta"
                                                    v-validate="'required|regex:' + datos_contables.FormatoCuentaRegExp"
@@ -200,7 +200,4 @@
             </div>
         </section>
     </cuenta-empresa-edit>
-
-    <script src="jquery.js" type="text/javascript"></script>
-    <script src="jquery.maskedinput.js" type="text/javascript"></script>
 @endsection
