@@ -22,7 +22,7 @@ class PagesController extends Controller
     {
         parent::__construct();
         $this->middleware('auth');
-        $this->middleware('context', ['only' => 'sistema_contable']);
+        $this->middleware('context', ['only' => ['sistema_contable', 'reportes', 'finanzas']]);
         $this->session = $session;
         $this->notificacion=$notificacion;
         $this->grafica = $grafica;
@@ -68,8 +68,6 @@ class PagesController extends Controller
     public function finanzas() {
         return view('finanzas.index');
     }
-
-
 
     public function reportes() {
         return view('reportes.index');
