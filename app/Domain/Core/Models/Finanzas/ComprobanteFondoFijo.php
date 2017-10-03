@@ -23,6 +23,8 @@ class ComprobanteFondoFijo extends Transaccion
         "id_concepto",
         "impuesto",
         "monto",
+        "id_moneda",
+        "opciones",
         "observaciones"
 
     ];
@@ -40,7 +42,7 @@ class ComprobanteFondoFijo extends Transaccion
 
         static::creating(function ($model) {
             $model->tipo_transaccion = Tipo::COMPROBANTE_FONDO_FIJO;
-            $model->opciones = 1;
+            $model->opciones = 0;
             $model->id_obra = Context::getId();
         });
     }
@@ -100,5 +102,7 @@ class ComprobanteFondoFijo extends Transaccion
     public function getFechaAttribute($fecha) {
         return $fecha?Carbon::parse($fecha)->format('Y-m-d'):'';
     }
+
+
 
 }

@@ -18,7 +18,6 @@ class ComprobanteFondoFijoScope implements Scope
      */
     public function apply(Builder $builder, Model $model)
     {
-        return $builder->where('tipo_transaccion', '=', Tipo::COMPROBANTE_FONDO_FIJO)
-            ->where('opciones', '=', 1);
+        return $builder->where('tipo_transaccion', '=', Tipo::COMPROBANTE_FONDO_FIJO);
     }
 }

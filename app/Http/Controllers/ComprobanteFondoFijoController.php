@@ -39,7 +39,6 @@ class ComprobanteFondoFijoController extends Controller
         $this->middleware('permission:eliminar_comprobante_fondo_fijo', ['only' => ['destroy']]);
 
 
-
         $this->comprobante_fondo_fijo = $comprobante_fondo_fijo;
         $this->eloquentFondoRepository = $eloquentFondoRepository;
         $this->materiales = $materiales;
@@ -84,7 +83,6 @@ class ComprobanteFondoFijoController extends Controller
     public function store(Request $request)
     {
         $data = $request->all();
-
         if (!isset($data['items'])) {
             throw new HttpResponseException(new Response('Capture por lo menos un item.', 404));
         }
@@ -102,6 +100,7 @@ class ComprobanteFondoFijoController extends Controller
                 "id_concepto" => $comprobante_fondo_fijo["id_concepto"],
                 "impuesto" => $data['iva'],
                 "monto" => $data['total'],
+                "id_moneda" => 1,
                 "observaciones" => $comprobante_fondo_fijo['observaciones']
             ];
             $comprobante = $this->comprobante_fondo_fijo->create($dataInsert);
@@ -111,20 +110,27 @@ class ComprobanteFondoFijoController extends Controller
 
                 $dataInsertItem = [
                     "id_transaccion" => $comprobante->id_transaccion,
-                    "id_concepto" => $item['id_concepto'],
                     "cantidad" => $item['cantidad'],
                     "precio_unitario" => $item['precio_unitario'],
-                    "importe" => ($item['precio_unitario'] * $item['cantidad']),
                     "estado" => 0,
                 ];
 
+                if ($item['tipo_concepto'] == 'almacen') {
+
+                    $dataInsertItem['id_almacen'] = $item['id_concepto'];
+                } else {
+                    $dataInsertItem['id_concepto'] = $item['id_concepto'];
+                }
+
                 if ($comprobante_fondo_fijo["id_naturaleza"] == 0) {
                     //Gastos varios
+                    $dataInsertItem["importe"] = $item['importe'];
                     $dataInsertItem["referencia"] = $item['gastos_varios'];
                 } else {
                     $material = Material::find($item['id_material']);
                     $dataInsertItem["id_material"] = $material->id_material;
                     $dataInsertItem["unidad"] = $material->unidad;
+                    $dataInsertItem["importe"] = ($item['precio_unitario'] * $item['cantidad']);
                 }
 
                 \Ghi\Domain\Core\Models\Transacciones\Item::create($dataInsertItem);
@@ -153,6 +159,7 @@ class ComprobanteFondoFijoController extends Controller
     {
         $comprobante = $this->comprobante_fondo_fijo->find($id);
         $items = $this->items->with(['material', 'concepto'])->getBy('id_transaccion', '=', $comprobante->id_transaccion);
+
         return view("finanzas.comprobante_fondo_fijo.show")
             ->with("comprobante_fondo_fijo", $comprobante)
             ->with("items", $items);
@@ -180,7 +187,8 @@ class ComprobanteFondoFijoController extends Controller
             "monto",
             "referencia",
             "comentario",
-            "observaciones"
+            "observaciones",
+            "impuesto"
         ];
         $comprobante = $this->comprobante_fondo_fijo->with('concepto')->columns($array)->find($id);
         $items = $this->items->with(['material', 'concepto'])->getBy('id_transaccion', '=', $comprobante->id_transaccion);
@@ -234,21 +242,33 @@ class ComprobanteFondoFijoController extends Controller
                     //update
                     $dataInsertItem = [
                         "id_transaccion" => $comprobante->id_transaccion,
-                        "id_concepto" => $item['id_concepto'],
                         "cantidad" => $item['cantidad'],
                         "precio_unitario" => $item['precio_unitario'],
                         "importe" => ($item['precio_unitario'] * $item['cantidad'])
                     ];
+
+                    if ($item['tipo_concepto'] == 'almacen') {
+
+                        $dataInsertItem['id_almacen'] = $item['id_concepto'];
+                        $dataInsertItem['id_concepto'] = NULL;
+                    } else {
+                        $dataInsertItem['id_concepto'] = $item['id_concepto'];
+                        $dataInsertItem['id_almacen'] = NULL;
+                    }
+
+
                     if ($comprobante_fondo_fijo["id_naturaleza"] == 0) {
                         //Gastos varios
                         $dataInsertItem["referencia"] = $item['gastos_varios'];
                         $dataInsertItem["id_material"] = NULL;
                         $dataInsertItem["unidad"] = NULL;
+                        $dataInsertItem["importe"] = $item['importe'];
                     } else {
                         $material = Material::find($item['id_material']);
                         $dataInsertItem["referencia"] = NULL;
                         $dataInsertItem["id_material"] = $material->id_material;
                         $dataInsertItem["unidad"] = $material->unidad;
+                        $dataInsertItem["importe"] = ($item['precio_unitario'] * $item['cantidad']);
                     }
 
                     $item_update = \Ghi\Domain\Core\Models\Transacciones\Item::find($item['id_item']);
@@ -258,11 +278,19 @@ class ComprobanteFondoFijoController extends Controller
 
                     $dataInsertItem = [
                         "id_transaccion" => $comprobante->id_transaccion,
-                        "id_concepto" => $item['id_concepto'],
                         "cantidad" => $item['cantidad'],
                         "precio_unitario" => $item['precio_unitario'],
                         "importe" => ($item['precio_unitario'] * $item['cantidad']),
                     ];
+
+                    if ($item['tipo_concepto'] == 'almacen') {
+
+                        $dataInsertItem['id_almacen'] = $item['id_concepto'];
+
+                    } else {
+                        $dataInsertItem['id_concepto'] = $item['id_concepto'];
+                    }
+
                     if ($comprobante_fondo_fijo["id_naturaleza"] == 0) {
                         //Gastos varios
                         $dataInsertItem["referencia"] = $item['gastos_varios'];

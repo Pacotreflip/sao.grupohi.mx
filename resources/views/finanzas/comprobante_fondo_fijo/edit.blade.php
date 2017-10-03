@@ -125,10 +125,10 @@
                                             <thead>
                                             <tr>
                                                 <th class="bg-gray-light">#</th>
-                                                <th class="bg-gray-light">Item</th>
-                                                <th class="bg-gray-light">Unidad</th>
+                                                <th class="bg-gray-light">@{{form.comprobante.id_naturaleza==1 ? 'Item' : 'Concepto'}}</th>
+                                                <th class="bg-gray-light" v-show="form.comprobante.id_naturaleza==1">Unidad</th>
                                                 <th class="bg-gray-light">Cantidad</th>
-                                                <th class="bg-gray-light">Precio</th>
+                                                <th class="bg-gray-light" v-show="form.comprobante.id_naturaleza==1">Precio</th>
                                                 <th class="bg-gray-light">Monto</th>
                                                 <th class="bg-gray-light">Destino</th>
                                                 <th class="bg-gray-light">
@@ -153,7 +153,7 @@
                                                 <label class="help" v-show="validation_errors.has('form_fondo_fijo.Item  [' + (index + 1) + ']')">@{{ validation_errors.first('form_fondo_fijo.Item  [' + (index + 1) + ']') }}</label>
                                                 </td>
 
-                                                <td style="white-space: nowrap">
+                                                <td style="white-space: nowrap" v-show="form.comprobante.id_naturaleza==1">
                                                     <label :id="'L'+(index+1)+''">
                                                     </label>
                                                     <input type="hidden" v-model="item.unidad" :id="'UL'+(index+1)+''">
@@ -164,13 +164,20 @@
                                                     <label class="help" v-show="validation_errors.has('form_fondo_fijo.Cantidad [' + (index + 1) + ']')">@{{ validation_errors.first('form_fondo_fijo.Cantidad [' + (index + 1) + ']') }}</label>
                                                 </td>
 
-                                                <td  class="form-group" :class="{'has-error': validation_errors.has('form_fondo_fijo.Precio [' + (index + 1) + ']')}">
-                                                    <input :name="'Precio [' + (index + 1) + ']'" class="form-control input-sm text-right" v-model="item.precio_unitario" v-validate="'required|decimal'"/>
+                                                <td  class="form-group" :class="{'has-error': validation_errors.has('form_fondo_fijo.Precio [' + (index + 1) + ']')}" v-show="form.comprobante.id_naturaleza==1">
+                                                    <input :name="'Precio [' + (index + 1) + ']'" class="form-control input-sm text-right" v-model="item.precio_unitario" v-validate="form.comprobante.id_naturaleza==1?'required|decimal':''"/>
                                                     <label class="help" v-show="validation_errors.has('form_fondo_fijo.Precio [' + (index + 1) + ']')">@{{ validation_errors.first('form_fondo_fijo.Precio [' + (index + 1) + ']') }}</label>
 
                                                 </td>
-                                                <td style="white-space: nowrap" class="numerico">
+                                                <td style="white-space: nowrap" class="numerico" v-show="form.comprobante.id_naturaleza==1">
                                                     $@{{(parseFloat(item.cantidad*item.precio_unitario)).formatMoney(2,'.',',')}}</td>
+
+                                                <td style="white-space: nowrap"  class="form-group" :class="{'has-error': validation_errors.has('form_fondo_fijo.Monto  [' + (index + 1) + ']')}" v-show="form.comprobante.id_naturaleza==0">
+
+                                                    <input  class="form-control input-sm text-right" type="text" :name="'Monto  [' + (index + 1) + ']'" v-validate="form.comprobante.id_naturaleza==0 ? 'required' : ''" v-model="item.importe"/>
+                                                    <label class="help" v-show="validation_errors.has('form_fondo_fijo.Monto  [' + (index + 1) + ']')">@{{ validation_errors.first('form_fondo_fijo.Monto  [' + (index + 1) + ']') }}</label>
+                                                </td>
+
                                                 <td  class="form-group" :class="{'has-error': validation_errors.has('form_fondo_fijo.Destino [' + (index + 1) + ']')}">
                                                     <label v-text="item.destino" v-show="item.destino" ></label>
 
@@ -212,7 +219,7 @@
                                                     </button>
                                                 </td>
                                                 <td class="bg-gray-light" >
-                                                        <input class="form-control input-sm text-right" type="text" v-model="form.iva" :disabled="!form.cambio_iva" width="10px"/>
+                                                       <input class="form-control input-sm text-right" type="text" v-model="form.iva" :disabled="!form.cambio_iva" width="10px"/>
                                                 </td>
                                             </tr>
                                             <tr>
@@ -256,12 +263,13 @@
                             <button type="button" class="close"  aria-label="Close" data-dismiss="modal">
                                 <span aria-hidden="true">×</span></button>
                             <h4 class="modal-title">
-                        <span >
+                        <span>
                             Conceptos
                         </span>
                             </h4>
                         </div>
                         <div class="modal-body" style="overflow-x: auto;">
+                            <div id="jstreeM" v-show="form.comprobante.id_naturaleza==1"></div>
                             <div id="jstree"></div>
                         </div>
                         <div class="modal-footer">

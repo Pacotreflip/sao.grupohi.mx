@@ -8,7 +8,7 @@ Vue.component('comprobante-fondo-fijo-edit', {
                 'items':this.comprobante_items,
                 'total':'',
                 'subtotal':'',
-                'iva':0.0,
+                'iva':parseFloat(Number(this.comprobante.impuesto)).formatMoney(2,'.',','),
                 'cambio_iva':false
             },
             current_item : {},
@@ -19,20 +19,13 @@ Vue.component('comprobante-fondo-fijo-edit', {
     computed:{
 
         total: function () {
-           var self=this;
-            var total=0;
-            if(this.form.items) {
-               this.form.items.forEach(function (item) {
-                   total+=(item.cantidad * item.precio_unitario);
-               });
-           }
-            var calculo=self.form.iva/100;
-           if(self.form.iva>0){
-               total=(total*calculo)+total;
-           }
+            var self=this;
+            var impuesto=parseFloat(self.form.iva);
+            var subtotal=parseFloat(this.subtotal);
+            var total=impuesto+subtotal;
+            self.form.total=total;
+            return parseFloat(total).formatMoney(2,'.',',');
 
-           self.form.total=total;
-           return parseFloat(total).formatMoney(2,'.',',');
         },
         subtotal: function () {
             var self=this;
@@ -42,6 +35,7 @@ Vue.component('comprobante-fondo-fijo-edit', {
                     total+=(item.cantidad * item.precio_unitario);
                 });
             }
+
             return parseFloat(total).formatMoney(2,'.',',');
         }
 
@@ -83,9 +77,14 @@ Vue.component('comprobante-fondo-fijo-edit', {
                 'multiple': false,
                 'data': {
                     "url": function(node) {
+
+                        var conceptos="";
+                        var materiales="";
+
                         if(node.id === "#") {
                             return App.host + '/conceptos/' + $('#id_concepto').val() + '/jstree';
                         }
+
                         return App.host + '/conceptos/' + node.id + '/jstree';
                     },
                     "data": function (node) {
@@ -122,18 +121,80 @@ Vue.component('comprobante-fondo-fijo-edit', {
             }
         });
 
+
+        /////////Arbol Materiales
+
+        // JsTree Configuration
+        var jstreeConfM = {
+            'core' : {
+                'multiple': false,
+                'data': {
+                    "url": function(node) {
+                        if(node.id === "#") {
+                            return App.host + '/almacen/jstree';
+                        }
+                        return App.host + '/almacen/' + node.id + '/jstree';
+                    },
+                    "data": function (node) {
+                        return {
+                            "id" : node.id
+                        };
+                    }
+                }
+            },
+            'types': {
+                'folder': {
+                    'icon': 'fa fa-folder-o text-success'
+                },
+                'almacen' : {
+                    'icon': 'fa fa-briefcase'
+                }
+
+            },
+            'plugins': ['types']
+        };
+
+        $('#jstreeM').on("after_open.jstree", function (e, data) {
+            if (data.instance.get_type(data.node) == 'default') {
+                data.instance.set_type(data.node, 'opened');
+            }
+        }).on("after_close.jstree", function (e, data) {
+            if (data.instance.get_type(data.node) == 'opened') {
+                data.instance.set_type(data.node, 'default');
+            }
+        });
+
         // On hide the BS modal, get the selected node and destroy the jstree
         $('#myModal').on('shown.bs.modal', function (e) {
+            $('#jstreeM').jstree(jstreeConfM);
             $('#jstree').jstree(jstreeConf);
         }).on('hidden.bs.modal', function (e) {
+
             var jstree = $('#jstree').jstree(true);
             var node = jstree.get_selected(true)[0];
+            var jstree2 = $('#jstreeM').jstree(true);
+            var node2 = jstree2.get_selected(true)[0];
 
             if (node) {
                 self.current_item.id_concepto = node.id;
+                self.current_item.tipo_concepto ="";
                 self.current_item.destino = node.text;
+            }else {
+
+
+                self.current_item.id_concepto = "";
+                self.current_item.tipo_concepto = "";
+                self.current_item.destino = "";
+
+                if (node2) {
+                    if (node2.type == 'almacen')
+                        self.current_item.id_concepto = node2.id;
+                    self.current_item.tipo_concepto = node2.type;
+                    self.current_item.destino = node2.text;
+                }
             }
             jstree.destroy();
+            jstree2.destroy();
         });
     },
 
@@ -279,6 +340,7 @@ Vue.component('comprobante-fondo-fijo-edit', {
                'importe':'',
                'destino':'',
                'unidad':'',
+
                'gastos_varios':''
            });
         },

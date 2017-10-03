@@ -53,3 +53,10 @@ Route::get('subcontrato/getBy', 'SubcontratoController@getBy');
  */
 Route::get('estimacion', 'EstimacionController@index')->name('estimacion.index');
 Route::get('estimacion/getBy', 'EstimacionController@getBy');
+
+/**
+ * Almacen tree Routes
+ */
+
+Route::get('almacen/jstree', 'AlmacenController@getRoot');
+Route::get('almacen/{id}/jstree', 'AlmacenController@getNode');
