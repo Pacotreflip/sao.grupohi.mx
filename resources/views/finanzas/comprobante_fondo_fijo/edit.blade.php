@@ -1,9 +1,9 @@
 @extends('finanzas.layout')
 @section('title', 'Sistema de Finanzas')
 @section('contentheader_title', 'COMPROBANTE DE FONDO FIJO')
-@section('contentheader_description', '(EDIT)')
+@section('contentheader_description', '(EDITAR)')
 @section('main-content')
-    {!! Breadcrumbs::render('finanzas.comprobante_fondo_fijo.create') !!}
+    {!! Breadcrumbs::render('finanzas.comprobante_fondo_fijo.edit',$comprobante_fondo_fijo) !!}
 
     <comprobante-fondo-fijo-edit
             :url_comprobante_fondo_fijo_update="'{{route('finanzas.comprobante_fondo_fijo.update',$comprobante_fondo_fijo)}}'"
@@ -219,7 +219,7 @@
                                                     </button>
                                                 </td>
                                                 <td class="bg-gray-light" >
-                                                       <input class="form-control input-sm text-right" type="text" v-model="form.iva" :disabled="!form.cambio_iva" width="10px"/>
+                                                       <input class="form-control input-sm text-right" type="text" v-model="form.iva"  width="10px"/>
                                                 </td>
                                             </tr>
                                             <tr>

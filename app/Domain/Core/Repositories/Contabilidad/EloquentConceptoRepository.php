@@ -61,7 +61,7 @@ class EloquentConceptoRepository implements ConceptoRepository
 
         $concepto = $this->getById($id);
 
-        return $this->model->where('nivel', 'like', $concepto->nivel_hijos)->get();
+        return $this->model ->orderBy('descripcion', 'desc')->where('nivel', 'like', $concepto->nivel_hijos)->get();
 
     }
 

@@ -20,6 +20,12 @@ Breadcrumbs::register('finanzas.comprobante_fondo_fijo.create', function ($bread
     $breadcrumb->push('NUEVO', route('finanzas.comprobante_fondo_fijo.create'));
 });
 
+Breadcrumbs::register('finanzas.comprobante_fondo_fijo.edit', function ($breadcrumb, $comprobante_fondo_fijo) {
+    $breadcrumb->parent('finanzas.comprobante_fondo_fijo.show',$comprobante_fondo_fijo);
+    $breadcrumb->push("EDITAR", route('finanzas.comprobante_fondo_fijo.edit', $comprobante_fondo_fijo));
+});
+
+
 Breadcrumbs::register('finanzas.comprobante_fondo_fijo.show', function ($breadcrumb, $comprobante_fondo_fijo) {
     $breadcrumb->parent('finanzas.comprobante_fondo_fijo.index');
     $breadcrumb->push(mb_strtoupper($comprobante_fondo_fijo->FondoFijo), route('finanzas.comprobante_fondo_fijo.show', $comprobante_fondo_fijo));

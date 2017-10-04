@@ -17,7 +17,7 @@ class ConceptoTreeTransformer extends AbstractTransformer
             'nivel'    => $concepto->nivel,
             'text'     => $concepto->clave_concepto ? $concepto->clave_concepto.' - '.$concepto->descripcion : $concepto->descripcion,
             'children' => $concepto->tieneDescendientes(),
-            'type'     => $concepto->esMaterial() ? 'material' : ($concepto->esMedible() ? 'medible' : 'concepto'),
+            'type'     => $concepto->activo==1?$concepto->esMaterial()&&$concepto->activo==1?'material': ($concepto->tieneDescendientes() ? 'concepto' : 'medible'):'inactivo',
 
         ];
         return $output;

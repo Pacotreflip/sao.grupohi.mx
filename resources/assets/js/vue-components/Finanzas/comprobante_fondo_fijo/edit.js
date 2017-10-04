@@ -8,7 +8,7 @@ Vue.component('comprobante-fondo-fijo-edit', {
                 'items':this.comprobante_items,
                 'total':'',
                 'subtotal':'',
-                'iva':parseFloat(Number(this.comprobante.impuesto)).formatMoney(2,'.',','),
+                'iva':this.comprobante.impuesto,
                 'cambio_iva':false
             },
             current_item : {},
@@ -24,7 +24,7 @@ Vue.component('comprobante-fondo-fijo-edit', {
             var subtotal=parseFloat(this.subtotal);
             var total=impuesto+subtotal;
             self.form.total=total;
-            return parseFloat(total).formatMoney(2,'.',',');
+            return total;
 
         },
         subtotal: function () {
@@ -32,17 +32,25 @@ Vue.component('comprobante-fondo-fijo-edit', {
             var total=0;
             if(this.form.items) {
                 this.form.items.forEach(function (item) {
-                    total+=(item.cantidad * item.precio_unitario);
+
+                    if(self.form.comprobante.id_naturaleza==1) {
+                        total += parseFloat(item.cantidad * item.precio_unitario);
+                    }else{
+                        total += parseFloat(item.importe);
+                    }
                 });
             }
 
-            return parseFloat(total).formatMoney(2,'.',',');
+            return parseFloat(total);
         }
 
-        },
+    },
 
     mounted: function () {
         var self = this;
+        var jstree = "";
+        var jstree2 = "";
+
 
         $('#id_concepto').val(self.form.comprobante.id_concepto);
         $.each( self.form.items, function( key, item ) {
@@ -53,13 +61,16 @@ Vue.component('comprobante-fondo-fijo-edit', {
         });
 
         $('#concepto_select').on('select2:select', function () {
+            jstree.destroy();
+            jstree2.destroy();
+            carga_arbol();
+
             $('#id_concepto').val($('#concepto_select option:selected').data().data.id);
             self.form.comprobante.id_concepto = $('#concepto_select option:selected').data().data.id;
             $.each( self.form.items, function( key, item ) {
                 item.destino='';
 
             });
-
         });
 
         $("#cumplimiento").datepicker().on("changeDate", function () {
@@ -70,132 +81,200 @@ Vue.component('comprobante-fondo-fijo-edit', {
             Vue.set(self.form.comprobante, 'fecha', $('#fecha').val())
         });
 
+        function carga_arbol() {
+            // JsTree Configuration
+            var jstreeConf = {
+                'core': {
+                    'multiple': false,
+                    'data': {
+                        "url": function (node) {
 
-        // JsTree Configuration
-        var jstreeConf = {
-            'core' : {
-                'multiple': false,
-                'data': {
-                    "url": function(node) {
+                            var conceptos = "";
+                            var materiales = "";
 
-                        var conceptos="";
-                        var materiales="";
+                            if (node.id === "#") {
+                                return App.host + '/conceptos/' + $('#id_concepto').val() + '/jstree';
+                            }
 
-                        if(node.id === "#") {
-                            return App.host + '/conceptos/' + $('#id_concepto').val() + '/jstree';
+                            return App.host + '/conceptos/' + node.id + '/jstree';
+                        },
+                        "data": function (node) {
+                            return {
+                                "id": node.id
+                            };
                         }
-
-                        return App.host + '/conceptos/' + node.id + '/jstree';
+                    }
+                },
+                'types': {
+                    'default': {
+                        'icon': 'fa fa-folder-o text-success'
                     },
-                    "data": function (node) {
-                        return {
-                            "id" : node.id
-                        };
+                    'medible': {
+                        'icon': 'fa fa-file-text'
+                    },
+                    'material': {
+                        'icon': 'fa fa-briefcase'
+                    },
+                    'opened': {
+                        'icon': 'fa fa-folder-open-o text-success'
+                    },
+                    'inactivo': {
+                        'icon': 'fa fa-exclamation-triangle'
+                    }
+                },
+                'plugins': ['types']
+            };
+
+            $('#jstreeM').on("select_node.jstree", function (e, data) {
+                if (data.node.original.type == 'folder') {
+                    $('#jstreeM').jstree(true).deselect_node(data.node);
+                }
+            });
+
+            $('#jstree').on("after_open.jstree", function (e, data) {
+                if (data.instance.get_type(data.node) == 'default') {
+                    data.instance.set_type(data.node, 'opened');
+                }
+            }).on("after_close.jstree", function (e, data) {
+                if (data.instance.get_type(data.node) == 'opened') {
+                    data.instance.set_type(data.node, 'default');
+                }
+            });
+
+
+            /////////Arbol Materiales
+
+            // JsTree Configuration
+            var jstreeConfM = {
+                'core': {
+                    'multiple': false,
+                    'data': {
+                        "url": function (node) {
+                            if (node.id === "#") {
+                                return App.host + '/almacen/jstree';
+                            }
+                            return App.host + '/almacen/' + node.id + '/jstree';
+                        },
+                        "data": function (node) {
+                            return {
+                                "id": node.id
+                            };
+                        }
+                    }
+                },
+                'types': {
+                    'folder': {
+                        'icon': 'fa fa-folder-o text-success'
+                    },
+                    'almacen': {
+                        'icon': 'fa fa-briefcase'
+                    },
+                    'inactivo': {
+                        'icon': 'fa fa-exclamation-triangle'
+                    }
+
+                },
+                'plugins': ['types']
+            };
+
+            $('#jstreeM').on("select_node.jstree", function (e, data) {
+                var jstreeD = $('#jstree').jstree(true);
+                var node = jstreeD.get_selected(true)[0];
+                $('#jstree').jstree(true).deselect_node(node);
+                if (data.node.original.type == 'concepto' || data.node.original.type == 'inactivo') {
+                    $('#jstreeM').jstree(true).deselect_node(data.node);
+                }
+            });
+
+            $('#jstree').on("select_node.jstree", function (e, data) {
+
+                var jstreeM = $('#jstreeM').jstree(true);
+                var node = jstreeM.get_selected(true)[0];
+                $('#jstreeM').jstree(true).deselect_node(node);
+
+                if (data.node.original.type == 'concepto' || data.node.original.type == 'inactivo') {
+                    $('#jstree').jstree(true).deselect_node(data.node);
+                }
+            });
+            $('#jstree').on("after_open.jstree", function (e, data) {
+                if (data.instance.get_type(data.node) == 'default') {
+                    data.instance.set_type(data.node, 'opened');
+                }
+                estilos_nodos();
+
+            }).on("after_close.jstree", function (e, data) {
+                if (data.instance.get_type(data.node) == 'opened') {
+                    data.instance.set_type(data.node, 'default');
+                }
+            });
+
+            $('#jstreeM').on("loaded.jstree", function (e, data) {
+                estilos_nodos();
+            });
+
+            $('#jstree').on("loaded.jstree", function (e, data) {
+                estilos_nodos();
+            });
+
+
+            $('#jstreeM').on("after_open.jstree", function (e, data) {
+                if (data.instance.get_type(data.node) == 'default') {
+                    data.instance.set_type(data.node, 'opened');
+                }
+                estilos_nodos();
+
+            }).on("after_close.jstree", function (e, data) {
+                if (data.instance.get_type(data.node) == 'opened') {
+                    data.instance.set_type(data.node, 'default');
+                }
+            });
+
+            // On hide the BS modal, get the selected node and destroy the jstree
+            $('#myModal').on('shown.bs.modal', function (e) {
+                $('#jstreeM').jstree(jstreeConfM);
+                $('#jstree').jstree(jstreeConf);
+            }).on('hidden.bs.modal', function (e) {
+
+                jstree = $('#jstree').jstree(true);
+                var node = jstree.get_selected(true)[0];
+                jstree2 = $('#jstreeM').jstree(true);
+                var node2 = jstree2.get_selected(true)[0];
+
+                if (node) {
+                    self.current_item.id_concepto = node.id;
+                    self.current_item.tipo_concepto = "";
+                    self.current_item.destino = node.text;
+                } else {
+
+
+                    self.current_item.id_concepto = "";
+                    self.current_item.tipo_concepto = "";
+                    self.current_item.destino = "";
+
+                    if (node2) {
+                        if (node2.type == 'almacen')
+                            self.current_item.id_concepto = node2.id;
+                        self.current_item.tipo_concepto = node2.type;
+                        self.current_item.destino = node2.text;
                     }
                 }
-            },
-            'types': {
-                'default': {
-                    'icon': 'fa fa-folder-o text-success'
-                },
-                'medible': {
-                    'icon': 'fa fa-file-text'
-                },
-                'material' : {
-                    'icon': 'fa fa-briefcase'
-                },
-                'opened' : {
-                    'icon': 'fa fa-folder-open-o text-success'
-                }
-            },
-            'plugins': ['types']
-        };
+                //   jstree.destroy();
+                //  jstree2.destroy();
+            });
+        }
 
-        $('#jstree').on("after_open.jstree", function (e, data) {
-            if (data.instance.get_type(data.node) == 'default') {
-                data.instance.set_type(data.node, 'opened');
-            }
-        }).on("after_close.jstree", function (e, data) {
-            if (data.instance.get_type(data.node) == 'opened') {
-                data.instance.set_type(data.node, 'default');
-            }
-        });
+        function estilos_nodos() {
+            $(".fa-folder-o").parent( "a" ).css( "color", "gray" );
+            $(".fa-folder-o").parent( "a" ).css( "cursor", "not-allowed" );
+            $(".fa-folder-open-o").parent( "a" ).css( "color", "gray" );
+            $(".fa-folder-open-o").parent( "a" ).css( "cursor", "not-allowed" );
+            $(".fa-exclamation-triangle").parent( "a" ).css( "color", "gray" );
+            $(".fa-exclamation-triangle").parent( "a" ).css( "text-decoration", "line-through" );
+            $(".fa-exclamation-triangle").parent( "a" ).css( "cursor", "not-allowed" );
+            $(".fa-folder-o").parent( "a" ).unbind( "click" );
+        }
+        carga_arbol();
 
-
-        /////////Arbol Materiales
-
-        // JsTree Configuration
-        var jstreeConfM = {
-            'core' : {
-                'multiple': false,
-                'data': {
-                    "url": function(node) {
-                        if(node.id === "#") {
-                            return App.host + '/almacen/jstree';
-                        }
-                        return App.host + '/almacen/' + node.id + '/jstree';
-                    },
-                    "data": function (node) {
-                        return {
-                            "id" : node.id
-                        };
-                    }
-                }
-            },
-            'types': {
-                'folder': {
-                    'icon': 'fa fa-folder-o text-success'
-                },
-                'almacen' : {
-                    'icon': 'fa fa-briefcase'
-                }
-
-            },
-            'plugins': ['types']
-        };
-
-        $('#jstreeM').on("after_open.jstree", function (e, data) {
-            if (data.instance.get_type(data.node) == 'default') {
-                data.instance.set_type(data.node, 'opened');
-            }
-        }).on("after_close.jstree", function (e, data) {
-            if (data.instance.get_type(data.node) == 'opened') {
-                data.instance.set_type(data.node, 'default');
-            }
-        });
-
-        // On hide the BS modal, get the selected node and destroy the jstree
-        $('#myModal').on('shown.bs.modal', function (e) {
-            $('#jstreeM').jstree(jstreeConfM);
-            $('#jstree').jstree(jstreeConf);
-        }).on('hidden.bs.modal', function (e) {
-
-            var jstree = $('#jstree').jstree(true);
-            var node = jstree.get_selected(true)[0];
-            var jstree2 = $('#jstreeM').jstree(true);
-            var node2 = jstree2.get_selected(true)[0];
-
-            if (node) {
-                self.current_item.id_concepto = node.id;
-                self.current_item.tipo_concepto ="";
-                self.current_item.destino = node.text;
-            }else {
-
-
-                self.current_item.id_concepto = "";
-                self.current_item.tipo_concepto = "";
-                self.current_item.destino = "";
-
-                if (node2) {
-                    if (node2.type == 'almacen')
-                        self.current_item.id_concepto = node2.id;
-                    self.current_item.tipo_concepto = node2.type;
-                    self.current_item.destino = node2.text;
-                }
-            }
-            jstree.destroy();
-            jstree2.destroy();
-        });
     },
 
     directives: {
@@ -284,7 +363,7 @@ Vue.component('comprobante-fondo-fijo-edit', {
                     }, // let our custom formatter work
                     minimumInputLength: 1
                 }).on('select2:select', function () {
-                   var id=el.id;
+                    var id=el.id;
 
 
                     $('#I'+id).val($('#'+id+' option:selected').data().data.id);
@@ -329,20 +408,20 @@ Vue.component('comprobante-fondo-fijo-edit', {
             }).catch(swal.noop);
         },
 
-             add_item: function () {
-           var self=this;
-           self.form.items.push({
-               'id_transaccion':'',
-               'id_concepto':'',
-               'id_material':'',
-               'cantidad':'',
-               'precio_unitario':'',
-               'importe':'',
-               'destino':'',
-               'unidad':'',
+        add_item: function () {
+            var self=this;
+            self.form.items.push({
+                'id_transaccion':'',
+                'id_concepto':'',
+                'id_material':'',
+                'cantidad':'',
+                'precio_unitario':'',
+                'importe':'',
+                'destino':'',
+                'unidad':'',
 
-               'gastos_varios':''
-           });
+                'gastos_varios':''
+            });
         },
 
         item_material:function (id,item) {
@@ -350,22 +429,16 @@ Vue.component('comprobante-fondo-fijo-edit', {
             this.current_item = item;
             this.current_item.id_material =  $('#I'+idELemnt).val();
         }
-         ,
+        ,
 
         curent_item:function (item) {
-             this.current_item = item;
-         }
-         ,
+            this.current_item = item;
+        }
+        ,
 
         habilitaIva:function () {
             var self = this;
-            if( self.form.cambio_iva){
-                self.form.iva=0.0;
-                self.form.cambio_iva=false;
-            }
-            else{
-                self.form.cambio_iva=true;
-            }
+            self.form.iva=self.subtotal*.16;
 
 
         },

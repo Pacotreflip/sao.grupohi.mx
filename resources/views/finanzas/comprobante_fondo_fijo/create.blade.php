@@ -221,7 +221,7 @@
                                                     </button>
                                                 </td>
                                                 <td class="bg-gray-light" >
-                                                       <input class="form-control input-sm text-right" type="text" v-model="form.iva" :disabled="!form.cambio_iva" width="10px"/>
+                                                       <input class="form-control input-sm text-right" type="text" v-model="form.iva"  width="10px"/>
                                                 </td>
                                             </tr>
                                             <tr>
