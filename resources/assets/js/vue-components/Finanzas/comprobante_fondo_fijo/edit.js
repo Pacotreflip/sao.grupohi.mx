@@ -23,7 +23,9 @@ Vue.component('comprobante-fondo-fijo-edit', {
             var impuesto=parseFloat(self.form.iva);
             var subtotal=parseFloat(this.subtotal);
             var total=impuesto+subtotal;
-            self.form.total=total;
+            self.form.total=total.toFixed(2);
+
+            total=total.toFixed(2);
             return total;
 
         },
@@ -40,7 +42,7 @@ Vue.component('comprobante-fondo-fijo-edit', {
                     }
                 });
             }
-
+            total=total.toFixed(2);
             return parseFloat(total);
         }
 
@@ -245,12 +247,6 @@ Vue.component('comprobante-fondo-fijo-edit', {
                     self.current_item.tipo_concepto = "";
                     self.current_item.destino = node.text;
                 } else {
-
-
-                    self.current_item.id_concepto = "";
-                    self.current_item.tipo_concepto = "";
-                    self.current_item.destino = "";
-
                     if (node2) {
                         if (node2.type == 'almacen')
                             self.current_item.id_concepto = node2.id;
