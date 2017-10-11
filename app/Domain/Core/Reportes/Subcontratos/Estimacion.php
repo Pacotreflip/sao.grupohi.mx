@@ -266,7 +266,7 @@ class Estimacion extends Rotation {
         $this->SetX(($this->w) * 0.45);
         $this->SetFont('Arial', '', 8);
         $this->Cell(($this->w - 2) * 0.30, 0.4, utf8_decode('Importes Estimación :'), 0, 0, 'R');
-        $this->CellFitScale(($this->w - 2) * 0.25, 0.4, number_format($this->estimacion->importes, 2, '.', ','), 'B', 1, 'R');
+        $this->CellFitScale(($this->w - 2) * 0.25, 0.4, number_format($this->estimacion->suma_importes, 2, '.', ','), 'B', 1, 'R');
         $this->Ln(0.1);
 
         $this->SetX(($this->w) * 0.45);
@@ -279,7 +279,7 @@ class Estimacion extends Rotation {
         $this->SetX(($this->w) * 0.45);
         $this->SetFont('Arial', '', 8);
         $this->Cell(($this->w - 2) * 0.30, 0.4, 'Subtotal :', 0, 0, 'R');
-        $this->CellFitScale(($this->w - 2) * 0.25, 0.4, number_format($this->estimacion->importes - $this->estimacion->monto_anticipo_aplicado, 2, '.', ','), 'B', 1, 'R');
+        $this->CellFitScale(($this->w - 2) * 0.25, 0.4, number_format($this->estimacion->suma_importes - $this->estimacion->monto_anticipo_aplicado, 2, '.', ','), 'B', 1, 'R');
         $this->Ln(0.1);
 
         $this->SetX(($this->w) * 0.45);
@@ -352,7 +352,7 @@ class Estimacion extends Rotation {
         $this->SetX(($this->w) * 0.45);
         $this->SetFont('Arial', '', 8);
         $this->Cell(($this->w - 2) * 0.30, 0.4, 'Importe con letra :', 0, 0, 'R');
-        $this->MultiCell(($this->w - 2) * 0.25, 0.35,strtoupper((new NumberToLetterConverter())->num2letras(round($this->estimacion->monto_a_pagar, 2))), 1, 1, 'L');
+        $this->MultiCell(($this->w - 2) * 0.25, 0.35, utf8_decode(strtoupper((new NumberToLetterConverter())->num2letras(round($this->estimacion->monto_a_pagar, 2)))), 1, 1, 'L');
 
         $y_final = $this->GetY();
 

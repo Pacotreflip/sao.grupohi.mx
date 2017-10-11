@@ -99,18 +99,22 @@ class Estimacion extends Transaccion
     }
 
     public function getRetenidoAnteriorAttribute() {
-        $sumatoria = 0;
-        foreach ($this->subcontrato->estimaciones as $estimacion) {
-            $sumatoria += $estimacion->SumMontoRetencion;
-        }
-        return $sumatoria - $this->SumMontoRetencion;
-    }
+        $estimaciones_anteriores = $this->subcontrato->estimaciones()->where('id_transaccion', '<', $this->id_transaccion)->get();
 
-    public function getRetenidoOrigenAttribute() {
         $sumatoria = 0;
-        foreach ($this->subcontrato->estimaciones as $estimacion) {
+        foreach ($estimaciones_anteriores as $estimacion) {
             $sumatoria += $estimacion->SumMontoRetencion;
         }
         return $sumatoria;
+    }
+
+    public function getRetenidoOrigenAttribute() {
+        $estimaciones_anteriores = $this->subcontrato->estimaciones()->where('id_transaccion', '<', $this->id_transaccion)->get();
+
+        $sumatoria = 0;
+        foreach ($estimaciones_anteriores as $estimacion) {
+            $sumatoria += $estimacion->SumMontoRetencion;
+        }
+        return $sumatoria + $this->SumMontoRetencion;
     }
 }
