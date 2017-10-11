@@ -42,7 +42,7 @@ class ComprobanteFondoFijo extends Transaccion
 
         static::creating(function ($model) {
             $model->tipo_transaccion = Tipo::COMPROBANTE_FONDO_FIJO;
-            $model->opciones = 0;
+            $model->opciones = 1;
             $model->id_obra = Context::getId();
         });
     }
