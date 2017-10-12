@@ -214,5 +214,9 @@ class AppServiceProvider extends ServiceProvider
             \Ghi\Domain\Core\Contracts\SubcontratoRepository::class,
             \Ghi\Domain\Core\Repositories\EloquentSubcontratoRepository::class
         );
+        $this->app->bind(
+            \Ghi\Domain\Core\Contracts\Contabilidad\TraspasoCuentasRepository::class,
+            \Ghi\Domain\Core\Repositories\Contabilidad\EloquentTraspasoCuentasRepository::class
+        );
     }
 }

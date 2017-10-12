@@ -167,3 +167,11 @@ Breadcrumbs::register('sistema_contable.cuenta_fondo.index', function($breadcrum
     $breadcrumbs->parent('sistema_contable.index');
     $breadcrumbs->push('CUENTAS DE FONDOS', route('sistema_contable.cuenta_fondo.index'));
 });
+
+/**
+ * Traspaso entre cuentas
+ */
+Breadcrumbs::register('sistema_contable.traspaso_cuentas.index', function($breadcrumbs) {
+    $breadcrumbs->parent('sistema_contable.index');
+    $breadcrumbs->push('TRASPASO ENTRE CUENTAS', route('sistema_contable.traspaso_cuentas.index'));
+});
