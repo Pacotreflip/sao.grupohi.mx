@@ -176,7 +176,6 @@ class Estimacion extends Rotation {
             '%',
             'Cuenta'
         ]);
-        $total = 0;
         foreach ($this->estimacion->items as $item) {
             $this->SetFont('Arial', '', 7);
             $this->SetWidths([
@@ -201,7 +200,6 @@ class Estimacion extends Rotation {
                 '',
                 ''
             ]);
-            $total += $item->importe;
         }
 
         $this->SetFont('Arial', '', 7);
@@ -220,7 +218,7 @@ class Estimacion extends Rotation {
 
         $this->Row([
             'Importe Total :',
-            '$ ' . number_format($total, 2, '.', ','),
+            '$ ' . number_format($this->estimacion->suma_importes, 2, '.', ','),
             ''
         ]);
 
@@ -248,15 +246,20 @@ class Estimacion extends Rotation {
         ]);
         $this->SetFills(['255,255,255', '255,255,255', '255,255,255', '255,255,255']);
         $this->SetTextColors(['0,0,0', '0,0,0', '0,0,0', '0,0,0']);
-        $this->SetAligns(['C']);
+        $this->SetAligns(['C', 'C', 'C', 'C']);
         $this->SetHeights([0.35]);
-        $this->Row(['Monto Anticipo', 'Saldo Anterior', utf8_decode('Amortización de esta Estimación'), 'Saldo Actual']);
+        $this->Row([
+            'Monto Anticipo',
+            utf8_decode('Amortización Pendiente Anterior'),
+            utf8_decode('Amortización de esta Estimación'),
+            utf8_decode('Amortización Pendiente')
+        ]);
         $this->SetAligns(['R', 'R', 'R', 'R']);
         $this->Row([
             '$ ' . number_format($this->estimacion->subcontrato->anticipo_monto, 2, '.', ','),
-            '$ ' . number_format(0, 2, '.', ','),
+            '$ ' . number_format($this->estimacion->amortizacion_pendiente_anterior, 2, '.', ','),
             '$ ' . number_format($this->estimacion->monto_anticipo_aplicado, 2, '.', ','),
-            '$ ' . number_format($this->estimacion->subcontrato->anticipo_monto - $this->estimacion->monto_anticipo_aplicado, 2, '.', ',')
+            '$ ' . number_format($this->estimacion->amortizacion_pendiente, 2, '.', ',')
         ]);
     }
 
