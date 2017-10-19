@@ -2,12 +2,12 @@
 <header class="main-header">
 
     <!-- Logo -->
-    <span class="logo">
+    <a href="{{url("/")}}" class="logo">
         <figure class="nav-company pull-left">
             <img src="{{ asset('img/company-icon.png') }}"/>
         </figure>
-        {{ trans('strings.app-name') }}
-    </span>
+        S A O
+    </a>
 
     <!-- Header Navbar -->
     <nav class="navbar navbar-static-top" role="navigation">
@@ -35,7 +35,6 @@
                             <!-- User image -->
                             <li class="user-header">
                                 <i class="fa fa-user fa-5x img-circle" style="color:white"></i>
-
                                 <p>
                                     {{ auth()->user() }}
                                     <small>{{$currentObra ? $currentObra->nombre : ''}}</small>

@@ -48,6 +48,10 @@
 </div><!-- /.login-box-body -->
 
 </div><!-- /.login-box -->
+
+<script>
+    document.querySelector('input[name="usuario"]').focus();
+</script>
 </body>
 
 @endsection
