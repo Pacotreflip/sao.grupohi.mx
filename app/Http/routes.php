@@ -16,3 +16,4 @@ include('routes/sistema_contable.php');
 include('routes/compras.php');
 include('routes/finanzas.php');
 include('routes/reportes.php');
+include('routes/tesoreria.php');

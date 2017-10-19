@@ -39,7 +39,6 @@ require('./vue-components/Finanzas/comprobante_fondo_fijo/edit');
 require('./vue-components/Reportes/subcontratos-estimacion');
 
 /**
- * Traspaso Cuentas Components
+ * Tesoreria Components
  */
-require('./vue-components/Contabilidad/traspaso_cuentas/index');
-
+require('./vue-components/Tesoreria/traspaso_cuentas/index');

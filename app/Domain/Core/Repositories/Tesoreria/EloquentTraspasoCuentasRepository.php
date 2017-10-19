@@ -1,11 +1,11 @@
 <?php
 
-namespace Ghi\Domain\Core\Repositories\Contabilidad;
+namespace Ghi\Domain\Core\Repositories\Tesoreria;
 
 use Illuminate\Http\Exception\HttpResponseException;
 use Illuminate\Support\Facades\DB;
-use Ghi\Domain\Core\Contracts\Contabilidad\TraspasoCuentasRepository;
-use Ghi\Domain\Core\Models\Contabilidad\TraspasoCuentas;
+use Ghi\Domain\Core\Contracts\Tesoreria\TraspasoCuentasRepository;
+use Ghi\Domain\Core\Models\Tesoreria\TraspasoCuentas;
 use Ghi\Domain\Core\Models\Cuenta;
 
 class EloquentTraspasoCuentasRepository implements TraspasoCuentasRepository

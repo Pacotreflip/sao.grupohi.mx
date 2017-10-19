@@ -1,6 +1,6 @@
 <?php
 
-namespace Ghi\Domain\Core\Models\Contabilidad;
+namespace Ghi\Domain\Core\Models\Tesoreria;
 
 use Ghi\Domain\Core\Models\BaseModel;
 use Ghi\Domain\Core\Models\Cuenta;

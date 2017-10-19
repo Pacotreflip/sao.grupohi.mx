@@ -4,7 +4,7 @@ namespace Ghi\Http\Controllers;
 
 use Ghi\Domain\Core\Models\Cuenta;
 use Illuminate\Http\Request;
-use Ghi\Domain\Core\Contracts\Contabilidad\TraspasoCuentasRepository;
+use Ghi\Domain\Core\Contracts\Tesoreria\TraspasoCuentasRepository;
 use Illuminate\View\View;
 
 class TraspasoCuentasController extends Controller
@@ -36,7 +36,7 @@ class TraspasoCuentasController extends Controller
         $cuentas = Cuenta::paraTraspaso()->with('empresa')->get();
         $traspasos = $this->traspaso->with(['cuenta_destino.empresa', 'cuenta_origen.empresa'])->all();
 
-        return view('sistema_contable.traspaso_cuentas.index')
+        return view('tesoreria.traspaso_cuentas.index')
             ->with('cuentas', $cuentas)
             ->with('traspasos', $traspasos);
     }

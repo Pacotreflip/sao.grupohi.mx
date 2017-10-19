@@ -8,3 +8,4 @@ include ('breadcrumbs/sistema_contable.php');
 include ('breadcrumbs/compras.php');
 include ('breadcrumbs/finanzas.php');
 include ('breadcrumbs/reportes.php');
+include ('breadcrumbs/tesoreria.php');

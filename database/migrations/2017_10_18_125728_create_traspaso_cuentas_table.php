@@ -12,7 +12,7 @@ class CreateTraspasoCuentasTable extends Migration
      */
     public function up()
     {
-        Schema::create('Contabilidad.traspaso_cuentas', function (Blueprint $table) {
+        Schema::create('Tesoreria.traspaso_cuentas', function (Blueprint $table) {
             $table->increments('id_traspaso');
             $table->integer("estatus");
             $table->integer("id_cuenta_origen")->unsigned();
@@ -41,6 +41,6 @@ class CreateTraspasoCuentasTable extends Migration
      */
     public function down()
     {
-        Schema::drop('Contabilidad.traspaso_cuentas');
+        Schema::drop('Tesoreria.traspaso_cuentas');
     }
 }

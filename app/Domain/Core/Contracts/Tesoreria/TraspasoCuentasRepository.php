@@ -1,8 +1,8 @@
 <?php
 
-namespace Ghi\Domain\Core\Contracts\Contabilidad;
+namespace Ghi\Domain\Core\Contracts\Tesoreria;
 
-use Ghi\Domain\Core\Models\Contabilidad\TraspasoCuentas;
+use Ghi\Domain\Core\Models\Tesoreria\TraspasoCuentas;
 
 interface TraspasoCuentasRepository
 {

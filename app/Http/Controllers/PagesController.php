@@ -22,7 +22,7 @@ class PagesController extends Controller
     {
         parent::__construct();
         $this->middleware('auth');
-        $this->middleware('context', ['only' => ['sistema_contable', 'reportes', 'finanzas']]);
+        $this->middleware('context', ['only' => ['sistema_contable', 'reportes', 'finanzas', 'tesoreria']]);
         $this->session = $session;
         $this->notificacion=$notificacion;
         $this->grafica = $grafica;
@@ -33,7 +33,7 @@ class PagesController extends Controller
     }
 
     /**
-     * Lista de obras asociadas al usaurio
+     * Lista de obras asociadas al usuario
      * @param UserRepository $repository
      * @return \Illuminate\View\View
      */
@@ -71,5 +71,9 @@ class PagesController extends Controller
 
     public function reportes() {
         return view('reportes.index');
+    }
+
+    public function tesoreria() {
+        return view('tesoreria.index');
     }
 }

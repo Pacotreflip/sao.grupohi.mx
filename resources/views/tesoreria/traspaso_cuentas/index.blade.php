@@ -1,14 +1,12 @@
-@extends('sistema_contable.layout')
+@extends('tesoreria.layout')
 @section('title', 'Traspaso entre cuentas')
 @section('contentheader_title', 'TRASPASO ENTRE CUENTAS')
-@section('contentheader_description', '(LISTA)')
-
 @section('main-content')
-    {!! Breadcrumbs::render('sistema_contable.traspaso_cuentas.index') !!}
+    {!! Breadcrumbs::render('tesoreria.traspaso_cuentas.index') !!}
 
     <global-errors></global-errors>
     <traspaso-cuentas-index
-            :url_traspaso_cuentas_index="'{{ route('sistema_contable.traspaso_cuentas.index') }}'"
+            :url_traspaso_cuentas_index="'{{ route('tesoreria.traspaso_cuentas.index') }}'"
             :cuentas="{{$cuentas->toJson()}}"
             :traspasos="{{$traspasos->toJson()}}"
             inline-template

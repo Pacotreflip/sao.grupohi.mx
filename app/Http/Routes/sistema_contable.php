@@ -132,11 +132,4 @@ Route::group(['prefix' => 'sistema_contable'], function () {
     Route::get('cuenta_fondo/{id}', 'CuentaFondoController@show')->name('sistema_contable.cuenta_fondo.show')->where(['id' => '[0-9]+']);
     Route::patch('cuenta_fondo/{id}', 'CuentaFondoController@update')->name('sistema_contable.cuenta_fondo.update')->where(['id' => '[0-9]+']);
 
-    /**
-     * Traspaso entre cuentas
-     */
-    Route::get('traspaso_cuentas', 'TraspasoCuentasController@index')->name('sistema_contable.traspaso_cuentas.index');
-    Route::post('traspaso_cuentas', 'TraspasoCuentasController@store')->name('sistema_contable.traspaso_cuentas.store');
-    Route::patch('traspaso_cuentas/{id}', 'TraspasoCuentasController@update')->name('sistema_contable.traspaso_cuentas.update');
-    Route::get('traspaso_cuentas/{id}', 'TraspasoCuentasController@destroy')->name('sistema_contable.traspaso_cuentas.destroy')->where(['id' => '[0-9]+']);
 });
