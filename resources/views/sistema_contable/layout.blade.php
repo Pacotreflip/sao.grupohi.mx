@@ -88,7 +88,7 @@
             </ul>
         </li>
         @endpermission
-        @permission(['editar_configuracion_contable', 'consultar_prepolizas_generadas'])
+        @permission(['editar_configuracion_contable', 'consultar_prepolizas_generadas', 'consultar_traspaso_cuenta'])
         <li class="treeview">
             <a href="#">
                 <i class="fa fa-cubes"></i>
@@ -105,6 +105,9 @@
                 <li ><a href="{{route('sistema_contable.poliza_generada.index')}}"><i class='fa fa-circle-o'></i> <span>Prepólizas Generadas</span></a></li>
                 @endpermission
                 <li ><a href="{{route('sistema_contable.revaluacion.index')}}"><i class='fa fa-circle-o'></i> <span>Revaluaciones</span></a></li>
+                @permission('consultar_traspaso_cuenta')
+                <li ><a href="{{route('sistema_contable.traspaso_cuentas.index')}}"><i class='fa fa-circle-o'></i> <span>Traspaso Entre Cuentas</span></a></li>
+                @endpermission
             </ul>
         </li>
         @endpermission

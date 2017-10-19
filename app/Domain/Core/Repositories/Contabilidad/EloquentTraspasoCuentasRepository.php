@@ -2,9 +2,11 @@
 
 namespace Ghi\Domain\Core\Repositories\Contabilidad;
 
+use Illuminate\Http\Exception\HttpResponseException;
 use Illuminate\Support\Facades\DB;
 use Ghi\Domain\Core\Contracts\Contabilidad\TraspasoCuentasRepository;
 use Ghi\Domain\Core\Models\Contabilidad\TraspasoCuentas;
+use Ghi\Domain\Core\Models\Cuenta;
 
 class EloquentTraspasoCuentasRepository implements TraspasoCuentasRepository
 {
@@ -12,6 +14,10 @@ class EloquentTraspasoCuentasRepository implements TraspasoCuentasRepository
      * @var TraspasoCuentas $model
      */
     private $model;
+    /**
+     * @var Cuentas $cuenta
+     */
+    private $cuenta;
 
     /**
      * EloquentTraspasoCuentasRepository constructor.
@@ -20,6 +26,7 @@ class EloquentTraspasoCuentasRepository implements TraspasoCuentasRepository
     public function __construct(TraspasoCuentas $model)
     {
         $this->model = $model;
+        $this->cuentas = new Cuenta;
     }
 
     /**
@@ -31,27 +38,78 @@ class EloquentTraspasoCuentasRepository implements TraspasoCuentasRepository
         return $this->model->get();
     }
 
-    public function cuentas()
-    {
-        $cuentas = DB::connection('cadeco')
-            ->table('cuentas')
-            ->join('empresas', 'empresas.id_empresa', '=', 'cuentas.id_empresa')
-            ->select('empresas.*', 'cuentas.*')
-            ->where('tipo_empresa', 8)
-            ->where('cuentas.cuenta_contable', 'like', '%[0-9\-]%')
-            ->whereRaw("ISNUMERIC(numero) = 1")
-            ->get();
-
-        return $cuentas;
-    }
-
+    /**
+     * Guartdar un nuevo registro
+     * @param array $data
+     * @return TraspasoCuentas
+     * @throws \Exception
+     */
     public function create($data)
     {
         try {
             DB::connection('cadeco')->beginTransaction();
-            $modelo = $this->model;
+            $record = $this->model->create($data);
+            DB::connection('cadeco')->commit();
+        } catch (\Exception $e) {
+            DB::connection('cadeco')->rollBack();
+            throw $e;
+        }
+        return $this->model->where('id_traspaso', '=', $record->id_traspaso)->with(['cuenta_destino.empresa', 'cuenta_origen.empresa'])->first();
+    }
 
-            $modelo->save();
+    public function with($relations) {
+        $this->model = $this->model->with($relations);
+        return $this;
+    }
+
+    /**
+     * Aplica un SoftDelete al Tipo de Traspaso entre cuentas seleccionado
+     * @param $id Identificador del registro de Tipo de Traspaso entre cuentas que se va a eliminar
+     * @return mixed|void
+     * @throws \Exception
+     */
+    public function delete($id)
+    {
+        try {
+            DB::connection('cadeco')->beginTransaction();
+
+            $item = $this->model->where('id_traspaso', '=', $id);
+
+            if (!$item) {
+                throw new HttpResponseException(new Response('No se encontró el traspaso que se desea eliminar', 404));
+            }
+
+            $item->delete($id);
+
+            DB::connection('cadeco')->commit();
+        } catch (\Exception $e) {
+            DB::connection('cadeco')->rollBack();
+            throw $e;
+        }
+
+        return $id;
+    }
+
+    /**
+     *  Edita el tipo de traspaso entre cuentas seleccionado
+     * @param $data
+     * @param $id
+     * @return int $id
+     * @throws \Exception
+     */
+    public function update($data, $id)
+    {
+        try {
+            DB::connection('cadeco')->beginTransaction();
+
+
+            $item = $this->model->find($id);
+
+            if (!$item) {
+                throw new HttpResponseException(new Response('No se encontró el traspaso que se desea eliminar', 404));
+            }
+
+            $item->update($data);
 
             DB::connection('cadeco')->commit();
 
@@ -59,6 +117,7 @@ class EloquentTraspasoCuentasRepository implements TraspasoCuentasRepository
             DB::connection('cadeco')->rollBack();
             throw $e;
         }
-        return $this->find($modelo->id);
+
+        return $this->model->with(['cuenta_origen.empresa', 'cuenta_destino.empresa'])->find($item->id_traspaso);
     }
 }

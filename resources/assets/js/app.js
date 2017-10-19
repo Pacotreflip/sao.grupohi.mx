@@ -25,6 +25,7 @@ require('bootstrap-notify');
 window.Chart = require('chart.js');
 require('jquery-slimscroll');
 require('jstree/dist/jstree.js');
+window._ = require('underscore');
 
 // Vue Dev
 window.Vue = require('vue/dist/vue.js');
