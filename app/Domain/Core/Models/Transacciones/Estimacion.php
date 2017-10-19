@@ -38,11 +38,8 @@ class Estimacion extends Transaccion
 
     public function getSumaImportesAttribute()
     {
-        $suma = 0;
-        foreach ($this->items as $item) {
-            $suma += $item->importe;
-        }
-        return $suma;
+        return $this->items()->sum('importe');
+
     }
 
     public function getMontoAnticipoAplicadoAttribute()
@@ -99,18 +96,37 @@ class Estimacion extends Transaccion
     }
 
     public function getRetenidoAnteriorAttribute() {
-        $sumatoria = 0;
-        foreach ($this->subcontrato->estimaciones as $estimacion) {
-            $sumatoria += $estimacion->SumMontoRetencion;
-        }
-        return $sumatoria - $this->SumMontoRetencion;
-    }
+        $estimaciones_anteriores = $this->subcontrato->estimaciones()->where('id_transaccion', '<', $this->id_transaccion)->get();
 
-    public function getRetenidoOrigenAttribute() {
         $sumatoria = 0;
-        foreach ($this->subcontrato->estimaciones as $estimacion) {
+        foreach ($estimaciones_anteriores as $estimacion) {
             $sumatoria += $estimacion->SumMontoRetencion;
         }
         return $sumatoria;
+    }
+
+    public function getRetenidoOrigenAttribute() {
+        $estimaciones_anteriores = $this->subcontrato->estimaciones()->where('id_transaccion', '<', $this->id_transaccion)->get();
+
+        $sumatoria = 0;
+        foreach ($estimaciones_anteriores as $estimacion) {
+            $sumatoria += $estimacion->SumMontoRetencion;
+        }
+        return $sumatoria + $this->SumMontoRetencion;
+    }
+
+    public function getAmortizacionPendienteAttribute() {
+        $estimaciones_anteriores = $this->subcontrato->estimaciones()->where('id_transaccion', '<', $this->id_transaccion)->get();
+            return $this->subcontrato->anticipo_monto - $estimaciones_anteriores->sum('monto_anticipo_aplicado') - $this->monto_anticipo_aplicado;
+    }
+
+    public function getAmortizacionPendienteAnteriorAttribute() {
+        $estimacion_anterior = $this->subcontrato->estimaciones()->where('id_transaccion', '<', $this->id_transaccion)->orderBy('id_transaccion', 'DESC')->first();
+
+        if($estimacion_anterior) {
+            return $estimacion_anterior->amortizacion_pendiente;
+        } else {
+            return 0;
+        }
     }
 }
