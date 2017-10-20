@@ -3,10 +3,16 @@
 
     <!-- Logo -->
     <a href="{{url("/")}}" class="logo">
-        <figure class="nav-company pull-left">
-            <img src="{{ asset('img/company-icon.png') }}"/>
-        </figure>
-        S A O
+        <span class="logo-mini">
+            <figure class="nav-company">
+                <img src="{{ asset('img/company-icon.png') }}"/>
+            </figure>
+        </span>
+        <span class="logo-lg">
+            <figure class="nav-company pull-left">
+                <img src="{{ asset('img/company-icon.png') }}"/>
+            </figure> SAO
+        </span>
     </a>
 
     <!-- Header Navbar -->
