@@ -1,7 +1,6 @@
 @extends('sistema_contable.layout')
 @section('title', 'Plantillas de Póliza')
 @section('contentheader_title', 'TIPO CUENTA CONTABLE')
-@section('contentheader_description', '(EDICIÓN)')
 
 @section('main-content')
     {!! Breadcrumbs::render('sistema_contable.tipo_cuenta_contable.edit',$tipo_cuenta_contable) !!}

@@ -1,7 +1,6 @@
 @extends('sistema_contable.layout')
 @section('title', 'Revaluaciones')
 @section('contentheader_title', 'REVALUACIONES')
-@section('contentheader_description', '(INDEX)')
 
 @section('main-content')
     {!! Breadcrumbs::render('sistema_contable.revaluacion.index') !!}

@@ -1,7 +1,6 @@
 @extends('sistema_contable.layout')
 @section('title', 'Póliza General')
 @section('contentheader_title', 'PREPÓLIZAS GENERADAS')
-@section('contentheader_description', '(HISTORICO)')
 
 @section('main-content')
     {!! Breadcrumbs::render('sistema_contable.poliza_generada.historico', @$poliza) !!}

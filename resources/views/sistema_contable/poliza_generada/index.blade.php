@@ -1,7 +1,6 @@
 @extends('sistema_contable.layout')
 @section('title', 'Póliza Generada')
 @section('contentheader_title', 'PREPÓLIZAS GENERADAS')
-@section('contentheader_description', '(INDEX)')
 
 @section('main-content')
     {!! Breadcrumbs::render('sistema_contable.poliza_generada.index') !!}

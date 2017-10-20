@@ -1,7 +1,6 @@
 @extends('sistema_contable.layout')
 @section('title', 'REVALUACIÓN')
 @section('contentheader_title', 'REVALUACIÓN')
-@section('contentheader_description', '(DETALLE)')
 
 @section('main-content')
     {!! Breadcrumbs::render('sistema_contable.revaluacion.show') !!}

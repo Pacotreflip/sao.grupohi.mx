@@ -1,7 +1,6 @@
 @extends('sistema_contable.layout')
 @section('title', 'Cuentas Fondos')
 @section('contentheader_title', 'CUENTAS DE FONDOS')
-@section('contentheader_description', '(INDEX)')
 
 @section('main-content')
     {!! Breadcrumbs::render('sistema_contable.cuenta_fondo.index') !!}

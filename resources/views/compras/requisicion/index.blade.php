@@ -1,7 +1,6 @@
 @extends('compras.layout')
 @section('title', 'Requisiciones')
 @section('contentheader_title', 'REQUISICIONES')
-@section('contentheader_description', '(INDEX)')
 
 @section('main-content')
     {!! Breadcrumbs::render('compras.requisicion.index') !!}

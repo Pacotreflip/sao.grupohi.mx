@@ -1,7 +1,6 @@
 @extends('finanzas.layout')
 @section('title', 'Sistema de Finanzas')
 @section('contentheader_title', 'COMPROBANTE DE FONDO FIJO')
-@section('contentheader_description', '(INDEX)')
 @section('main-content')
     {!! Breadcrumbs::render('finanzas.comprobante_fondo_fijo.index') !!}
 

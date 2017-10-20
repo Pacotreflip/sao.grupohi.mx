@@ -1,7 +1,6 @@
 @extends('sistema_contable.layout')
 @section('title', 'Cuentas de Materiales')
 @section('contentheader_title', 'CUENTAS DE MATERIALES')
-@section('contentheader_description', '(INDEX)')
 
 @section('main-content')
     {!! Breadcrumbs::render('sistema_contable.cuenta_material.index') !!}
