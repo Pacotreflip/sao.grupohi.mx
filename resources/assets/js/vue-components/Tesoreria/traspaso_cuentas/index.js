@@ -1,16 +1,21 @@
 Vue.component('traspaso-cuentas-index', {
-    props: ['url_traspaso_cuentas_index', 'cuentas', 'traspasos'],
+    props: ['url_traspaso_cuentas_index', 'cuentas', 'traspasos', 'monedas'],
     data : function () {
         return {
             'data' : {
                 'traspasos' : this.traspasos,
-                'cuentas': this.cuentas
+                'cuentas': this.cuentas,
+                'monedas': this.monedas
             },
             'form' : {
                 'id_cuenta_origen': '',
                 'id_cuenta_destino': '',
                 'observaciones': '',
-                'importe': ''
+                'importe': '',
+                'fecha': moment().format('YYYY-MM-DD'),
+                'cumplimiento': '',
+                'vencimiento': '',
+                'referencia': ''
             },
             'traspaso_edit': {
                 'id_cuenta_origen': '',
@@ -18,7 +23,14 @@ Vue.component('traspaso-cuentas-index', {
                 'observaciones': '',
                 'importe': '',
                 'cuenta_origen': {},
-                'cuenta_destino': {}
+                'cuenta_destino': {},
+                'traspaso_transaccion': {
+                    'transaccion_debito': {}
+                },
+                'fecha': '',
+                'cumplimiento': '',
+                'vencimiento': '',
+                'referencia': ''
             },
             'guardando' : false
         }
@@ -30,6 +42,27 @@ Vue.component('traspaso-cuentas-index', {
                 return cuenta.id_cuenta != self.form.id_cuenta_origen;
             });
         }
+    },
+    mounted: function()
+    {
+        var self = this;
+        $("#cumplimiento").datepicker().on("changeDate",function () {
+            Vue.set(self.form, 'vencimiento', $('#cumplimiento').val());
+            Vue.set(self.form, 'cumplimiento', $('#cumplimiento').val());
+        });
+    },
+    directives: {
+        datepicker: {
+            inserted: function (el) {
+                $(el).datepicker({
+                    autoclose: true,
+                    language: 'es',
+                    todayHighlight: true,
+                    clearBtn: true,
+                    format: 'yyyy-mm-dd'
+                });
+            }
+        },
     },
     methods: {
         datos_cuenta: function (id) {
@@ -58,7 +91,7 @@ Vue.component('traspaso-cuentas-index', {
                 beforeSend: function () {
                     self.guardando = true;
                 },
-                success: function (data, textStatus, xhr) {
+                success: function (data, textStatus, xhr) {console.log(data);
                     self.data.traspasos.push(data.data.traspaso);
                     swal({
                         type: 'success',
@@ -108,7 +141,12 @@ Vue.component('traspaso-cuentas-index', {
         },
         modal_editar: function (traspaso){
             this.traspaso_edit = _.clone(traspaso);
-            this.traspaso_edit_ref = traspaso;
+            this.traspaso_edit.fecha = this.traspaso_edit.traspaso_transaccion.transaccion_debito.fecha.substring(0,10);
+            this.traspaso_edit.vencimiento = this.traspaso_edit.traspaso_transaccion.transaccion_debito.vencimiento.substring(0,10);
+            this.traspaso_edit.cumplimiento = this.traspaso_edit.traspaso_transaccion.transaccion_debito.cumplimiento.substring(0,10);
+            this.traspaso_edit.referencia = this.traspaso_edit.traspaso_transaccion.transaccion_debito.referencia;
+            delete this.traspaso_edit.traspaso_transaccion;
+
             this.validation_errors.clear('form_editar_traspaso');
             $('#edit_traspaso_modal').modal('show');
             $('#edit_id_cuenta_origen').focus();
@@ -136,7 +174,7 @@ Vue.component('traspaso-cuentas-index', {
                 data: self.traspaso_edit,
                 beforeSend: function () {
                 },
-                success: function (data, textStatus, xhr) {
+                success: function (data, textStatus, xhr) {console.log(data);
 
                     self.data.traspasos.forEach(function (traspaso) {
                         if (traspaso.id_traspaso === data.data.traspaso.id_traspaso) {

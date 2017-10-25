@@ -5,8 +5,12 @@ namespace Ghi\Domain\Core\Repositories\Tesoreria;
 use Illuminate\Http\Exception\HttpResponseException;
 use Illuminate\Support\Facades\DB;
 use Ghi\Domain\Core\Contracts\Tesoreria\TraspasoCuentasRepository;
+use Ghi\Domain\Core\Contracts\Tesoreria\TraspasoTransaccionRepository;
 use Ghi\Domain\Core\Models\Tesoreria\TraspasoCuentas;
 use Ghi\Domain\Core\Models\Cuenta;
+use Ghi\Domain\Core\Models\Tesoreria\TraspasoTransaccion;
+use Ghi\Domain\Core\Models\Transacciones\Transaccion;
+use Ghi\Domain\Core\Models\Obra;
 
 class EloquentTraspasoCuentasRepository implements TraspasoCuentasRepository
 {
@@ -27,6 +31,7 @@ class EloquentTraspasoCuentasRepository implements TraspasoCuentasRepository
     {
         $this->model = $model;
         $this->cuentas = new Cuenta;
+        $this->traspaso_transaccion = new TraspasoTransaccion;
     }
 
     /**
@@ -54,7 +59,13 @@ class EloquentTraspasoCuentasRepository implements TraspasoCuentasRepository
             DB::connection('cadeco')->rollBack();
             throw $e;
         }
-        return $this->model->where('id_traspaso', '=', $record->id_traspaso)->with(['cuenta_destino.empresa', 'cuenta_origen.empresa'])->first();
+
+        return TraspasoCuentas::where('id_traspaso', '=', $record->id_traspaso)->with(['cuenta_destino.empresa', 'cuenta_origen.empresa', 'traspaso_transaccion.transaccion_debito'])->first();
+    }
+
+    public function regresaTraspaso($id)
+    {
+
     }
 
     public function with($relations) {
@@ -80,6 +91,13 @@ class EloquentTraspasoCuentasRepository implements TraspasoCuentasRepository
             }
 
             $item->delete($id);
+
+            // Obtener el id de las transacciones a eliminar
+            $transacciones = TraspasoTransaccion::where('id_traspaso', '=', $id)->get();
+
+            foreach ($transacciones as $tr)
+                Transaccion::where('id_transaccion', $tr->id_transaccion)
+                    ->update(['estado' => '-2']);
 
             DB::connection('cadeco')->commit();
         } catch (\Exception $e) {
@@ -118,6 +136,11 @@ class EloquentTraspasoCuentasRepository implements TraspasoCuentasRepository
             throw $e;
         }
 
-        return $this->model->with(['cuenta_origen.empresa', 'cuenta_destino.empresa'])->find($item->id_traspaso);
+        return $this->model->with(['cuenta_origen.empresa', 'cuenta_destino.empresa', 'traspaso_transaccion.transaccion_debito'])->find($item->id_traspaso);
+    }
+
+    public function obras()
+    {
+        return Obra::all();
     }
 }

@@ -12,7 +12,7 @@ class TraspasoCuentas extends BaseModel
 
     protected $dates = ['deleted_at'];
     protected $connection = 'cadeco';
-    protected $table = 'Contabilidad.traspaso_cuentas';
+    protected $table = 'Tesoreria.traspaso_cuentas';
     protected $primaryKey = 'id_traspaso';
     protected $fillable = [
         'estatus',
@@ -37,5 +37,10 @@ class TraspasoCuentas extends BaseModel
 
     public function cuenta_origen() {
         return $this->belongsTo(Cuenta::class, 'id_cuenta_origen', 'id_cuenta');
+    }
+
+    public function traspaso_transaccion()
+    {
+        return $this->belongsTo(TraspasoTransaccion::class, 'id_traspaso', 'id_traspaso');
     }
 }

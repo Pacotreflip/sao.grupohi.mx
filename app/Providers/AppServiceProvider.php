@@ -218,5 +218,9 @@ class AppServiceProvider extends ServiceProvider
             \Ghi\Domain\Core\Contracts\Tesoreria\TraspasoCuentasRepository::class,
             \Ghi\Domain\Core\Repositories\Tesoreria\EloquentTraspasoCuentasRepository::class
         );
+        $this->app->bind(
+            \Ghi\Domain\Core\Contracts\Tesoreria\TraspasoTransaccionRepository::class,
+            \Ghi\Domain\Core\Repositories\Tesoreria\EloquentTraspasoTransaccionRepository::class
+        );
     }
 }
