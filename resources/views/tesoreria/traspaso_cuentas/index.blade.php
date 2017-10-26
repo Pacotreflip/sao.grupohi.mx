@@ -213,7 +213,7 @@
                                     <div class="form-group"
                                          :class="{'has-error': validation_errors.has('form_editar_traspaso.Edit Fecha')}">
                                         <label for="Edit Fecha" class="control-label"><b>Fecha</b></label>
-                                        <input type="text" name="Edit Fecha" class="form-control input-sm " id="edit_fecha"
+                                        <input type="text" name="Edit Fecha" class="form-control input-sm fechas_edit" id="edit_fecha"
                                                v-model="traspaso_edit.fecha"
                                                v-datepicker>
                                         <label class="help"
@@ -225,7 +225,7 @@
                                     <div class="form-group"
                                          :class="{'has-error': validation_errors.has('form_editar_traspaso.Editar Cumplimiento')}">
                                         <label for="Edit Cumplimiento" class="control-label"><b>Cumplimiento</b></label>
-                                        <input type="text" name="Editar Cumplimiento" class="form-control input-sm " id="edit_cumplimiento"
+                                        <input type="text" name="Editar Cumplimiento" class="form-control input-sm fechas_edit" id="edit_cumplimiento"
                                                v-model="traspaso_edit.cumplimiento"
                                                v-datepicker>
                                         <label class="help"
@@ -236,7 +236,7 @@
                                 <div class="col-md-4">
                                     <div class="form-group">
                                         <label for="Edit Vencimiento" class="control-label"><b>Vencimiento</b></label>
-                                        <input type="text" name="Edit Vencimiento" class="form-control input-sm " id="edit_vencimiento" v-model="traspaso_edit.vencimiento" v-datepicker>
+                                        <input type="text" name="Edit Vencimiento" class="form-control input-sm fechas_edit" id="edit_vencimiento" v-model="traspaso_edit.vencimiento" v-datepicker>
                                     </div>
                                 </div>
                                 {{--Importe Edit--}}
