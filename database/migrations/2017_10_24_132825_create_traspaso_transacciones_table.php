@@ -12,7 +12,7 @@ class CreateTraspasoTransaccionesTable extends Migration
      */
     public function up()
     {
-        Schema::create('traspaso_transacciones', function (Blueprint $table) {
+        Schema::create('Tesoreria.traspaso_transacciones', function (Blueprint $table) {
             $table->increments('id_traspaso_transaccion');
             $table->integer("id_traspaso");
             $table->integer("id_transaccion")->unsigned();
@@ -39,6 +39,6 @@ class CreateTraspasoTransaccionesTable extends Migration
      */
     public function down()
     {
-        Schema::drop('traspaso_transacciones');
+        Schema::drop('Tesoreria.traspaso_transacciones');
     }
 }

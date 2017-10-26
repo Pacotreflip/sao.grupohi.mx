@@ -12,7 +12,7 @@ class TraspasoTransaccion extends BaseModel
 
     protected $dates = ['deleted_at'];
     protected $connection = 'cadeco';
-    protected $table = 'traspaso_transacciones';
+    protected $table = 'Tesoreria.traspaso_transacciones';
     protected $primaryKey = 'id_traspaso_transaccion';
     protected $fillable = [
         'id_traspaso',
