@@ -135,7 +135,7 @@ class TraspasoCuentasController extends Controller
 
         return response()->json(['data' =>
             [
-                'traspaso' => $traspaso
+                'traspaso' => TraspasoCuentas::where('id_traspaso', '=', $traspaso->id_traspaso)->with(['cuenta_destino.empresa', 'cuenta_origen.empresa', 'traspaso_transaccion.transaccion_debito'])->first()
             ]
         ], 200);
     }
