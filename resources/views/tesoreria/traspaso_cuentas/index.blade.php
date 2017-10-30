@@ -15,12 +15,21 @@
             @permission(['registrar_traspaso_cuenta'])
             <div class="row">
                 <div class="col-md-12">
-                    <div class="box box-info">
-                        <div class="box-header with-border">
-                            <h3 class="box-title">Realizar traspaso</h3>
-                        </div>
-                        <div class="box-body">
-                            <form  id="form_guardar_traspaso" @submit.prevent="validateForm('form_guardar_traspaso', 'confirm_guardar')"  data-vv-scope="form_guardar_traspaso">
+                    <button class="btn btn-sm btn-primary pull-right" v-on:click="modal_traspaso()">Crear Traspaso</button>
+                </div>
+                <div class="col-md-12">
+                    &nbsp;
+                </div>
+            </div>
+            <div id="traspaso_modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="TraspasoModal" data-backdrop="static" data-keyboard="false">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <form  id="form_guardar_traspaso" @submit.prevent="validateForm('form_guardar_traspaso', 'confirm_guardar')"  data-vv-scope="form_guardar_traspaso">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                <h4 class="modal-title">Realizar Traspaso</h4>
+                            </div>
+                            <div class="modal-body">
                                 <div class="row">
                                     {{--Cuenta origen--}}
                                     <div class="col-md-6">
@@ -101,14 +110,15 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="box-footer">
-                                    <button class="btn btn-sm btn-primary pull-right" type="submit">Traspasar</button>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                                <button type="submit" class="btn btn-primary">Guardar</button>
+                            </div>
+                        </form>
+                    </div><!-- /.modal-content -->
+                </div><!-- /.modal-dialog -->
+            </div><!-- /.modal -->
             @endpermission
 
             @permission(['consultar_traspaso_cuenta'])
@@ -124,11 +134,10 @@
                                     <thead>
                                     <tr>
                                         <th>#</th>
+                                        <th>Fecha</th>
                                         <th>Cuenta Origen</th>
                                         <th>Cuenta Destino</th>
                                         <th>Importe</th>
-                                        <th>Observaciones</th>
-                                        <th>Fecha</th>
                                         <th>Referencia</th>
                                         @permission(['eliminar_traspaso_cuenta', 'editar_traspaso_cuenta'])
                                         <th>Acciones</th>
@@ -138,11 +147,10 @@
                                     <tbody>
                                         <tr v-for="(item, index) in data.traspasos">
                                             <td >@{{ index + 1  }}</td>
+                                            <td>@{{trim_fecha(item.traspaso_transaccion.transaccion_debito.fecha)}}</td>
                                             <td>@{{item.cuenta_origen.numero }} @{{item.cuenta_origen.abreviatura }} (@{{item.cuenta_origen.empresa.razon_social}})</td>
                                             <td>@{{item.cuenta_destino.numero }} @{{item.cuenta_destino.abreviatura }} (@{{item.cuenta_destino.empresa.razon_social}})</td>
                                             <td>@{{item.importe}}</td>
-                                            <td >@{{item.observaciones}}</td>
-                                            <td>@{{item.traspaso_transaccion.transaccion_debito.fecha}}</td>
                                             <td>@{{item.traspaso_transaccion.transaccion_debito.referencia}}</td>
                                             @permission(['eliminar_traspaso_cuenta', 'editar_traspaso_cuenta'])
                                             <td>
@@ -167,7 +175,14 @@
                 </div>
             </div>
             @endpermission
+            <div class="row">
+                <div class="col-md-12">
+                    <button class="btn btn-sm btn-primary pull-right" v-on:click="modal_traspaso()">Crear Traspaso</button>
+                </div>
+                <div class="col-md-12">
 
+                </div>
+            </div>
             <!-- Modal Edit Cuenta -->
             @permission(['editar_traspaso_cuenta'])
             <div id="edit_traspaso_modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="editTraspasoModal" data-backdrop="static" data-keyboard="false">

@@ -82097,7 +82097,6 @@ Vue.component('traspaso-cuentas-index', {
                     self.guardando = true;
                 },
                 success: function success(data, textStatus, xhr) {
-                    console.log(data);
                     self.data.traspasos.push(data.data.traspaso);
                     swal({
                         type: 'success',
@@ -82107,6 +82106,7 @@ Vue.component('traspaso-cuentas-index', {
                 },
                 complete: function complete() {
                     self.guardando = false;
+                    self.close_traspaso();
                 }
             });
         },
@@ -82145,6 +82145,13 @@ Vue.component('traspaso-cuentas-index', {
                 complete: function complete() {}
             });
         },
+        modal_traspaso: function modal_traspaso() {
+            $('#traspaso_modal').modal('show');
+            $('#id_cuenta_origen').focus();
+        },
+        close_traspaso: function close_traspaso() {
+            $('#traspaso_modal').modal('hide');
+        },
         modal_editar: function modal_editar(traspaso) {
 
             Vue.set(this.traspaso_edit, 'id_traspaso', traspaso.id_traspaso);
@@ -82152,9 +82159,9 @@ Vue.component('traspaso-cuentas-index', {
             Vue.set(this.traspaso_edit, 'id_cuenta_destino', traspaso.id_cuenta_destino);
             Vue.set(this.traspaso_edit, 'observaciones', traspaso.observaciones);
             Vue.set(this.traspaso_edit, 'importe', traspaso.importe);
-            Vue.set(this.traspaso_edit, 'fecha', traspaso.traspaso_transaccion.transaccion_debito.fecha.substring(0, 10));
-            Vue.set(this.traspaso_edit, 'cumplimiento', traspaso.traspaso_transaccion.transaccion_debito.cumplimiento.substring(0, 10));
-            Vue.set(this.traspaso_edit, 'vencimiento', traspaso.traspaso_transaccion.transaccion_debito.vencimiento.substring(0, 10));
+            Vue.set(this.traspaso_edit, 'fecha', this.trim_fecha(traspaso.traspaso_transaccion.transaccion_debito.fecha));
+            Vue.set(this.traspaso_edit, 'cumplimiento', this.trim_fecha(traspaso.traspaso_transaccion.transaccion_debito.cumplimiento));
+            Vue.set(this.traspaso_edit, 'vencimiento', this.trim_fecha(traspaso.traspaso_transaccion.transaccion_debito.vencimiento));
             Vue.set(this.traspaso_edit, 'referencia', traspaso.traspaso_transaccion.transaccion_debito.referencia);
 
             this.validation_errors.clear('form_editar_traspaso');
@@ -82184,7 +82191,6 @@ Vue.component('traspaso-cuentas-index', {
                 data: self.traspaso_edit,
                 beforeSend: function beforeSend() {},
                 success: function success(data, textStatus, xhr) {
-                    console.log(data);
 
                     self.data.traspasos.forEach(function (traspaso) {
                         if (traspaso.id_traspaso === data.data.traspaso.id_traspaso) {
@@ -82222,6 +82228,9 @@ Vue.component('traspaso-cuentas-index', {
                     text: 'Por favor corrija los errores del formulario'
                 });
             });
+        },
+        trim_fecha: function trim_fecha(fecha) {
+            return fecha.substring(0, 10);
         }
     }
 });
