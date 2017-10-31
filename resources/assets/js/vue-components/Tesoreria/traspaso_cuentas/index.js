@@ -104,6 +104,7 @@ Vue.component('traspaso-cuentas-index', {
                 complete: function () {
                     self.guardando = false;
                     self.close_traspaso();
+                    self.reset_form($("#form_guardar_traspaso"));
                 }
             });
         },
@@ -229,6 +230,12 @@ Vue.component('traspaso-cuentas-index', {
         },
         trim_fecha: function (fecha){
             return fecha.substring(0,10);
+        },
+        reset_form: function($form) {
+            $form.find('input:text, input:password, input:file, select, textarea').val('');
+            $form.find('input:radio, input:checkbox')
+                .removeAttr('checked').removeAttr('selected');
+            $form.get(0).reset();
         }
     }
 });
