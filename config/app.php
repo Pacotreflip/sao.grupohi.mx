@@ -167,11 +167,6 @@ return [
         Tymon\JWTAuth\Providers\JWTAuthServiceProvider::class,
 
         /*
-         * Acacha / dminLTETemplateLaravel Service Provider...
-         */
-        //Acacha\AdminLTETemplateLaravel\Providers\AdminLTETemplateServiceProvider::class,
-
-        /*
         * Ghidev / IntranetAuth Service Provider...
         */
         Ghidev\IntranetAuth\IntranetAuthServiceProvider::class,

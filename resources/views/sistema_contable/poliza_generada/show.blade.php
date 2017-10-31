@@ -1,9 +1,10 @@
 @extends('sistema_contable.layout')
 @section('title', 'Póliza General')
 @section('contentheader_title', 'PREPÓLIZAS GENERADAS')
-
-@section('main-content')
+@section('breadcrumb')
     {!! Breadcrumbs::render('sistema_contable.poliza_generada.show', $poliza) !!}
+@endsection
+@section('main-content')
 
     <div class="row">
         <div class="col-md-12">

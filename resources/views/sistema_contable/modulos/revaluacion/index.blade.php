@@ -1,9 +1,10 @@
 @extends('sistema_contable.layout')
 @section('title', 'Revaluaciones')
 @section('contentheader_title', 'REVALUACIONES')
-
-@section('main-content')
+@section('breadcrumb')
     {!! Breadcrumbs::render('sistema_contable.revaluacion.index') !!}
+@endsection
+@section('main-content')
     <div class="row">
         <div class="col-sm-12">
             <a  href="{{ route('sistema_contable.revaluacion.create') }}" class="btn btn-success btn-app" style="float:right">

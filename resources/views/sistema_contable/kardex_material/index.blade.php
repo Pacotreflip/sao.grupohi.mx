@@ -1,8 +1,10 @@
 @extends('sistema_contable.layout')
 @section('title', 'Kardex de Materiales')
 @section('contentheader_title', 'KARDEX DE MATERIALES')
-@section('main-content')
+@section('breadcrumb')
     {!! Breadcrumbs::render('sistema_contable.kardex_material.index') !!}
+@endsection
+@section('main-content')
     <global-errors></global-errors>
     <kardex-material-index
             v-cloak

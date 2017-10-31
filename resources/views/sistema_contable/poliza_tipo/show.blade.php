@@ -1,9 +1,10 @@
 @extends('sistema_contable.layout')
 @section('title', 'Plantillas de Prepólizas')
 @section('contentheader_title', 'PLANTILLAS DE PREPÓLIZAS')
-
-@section('main-content')
+@section('breadcrumb')
     {!! Breadcrumbs::render('sistema_contable.poliza_tipo.show', $poliza_tipo) !!}
+@endsection
+@section('main-content')
 
     <div class="row">
         <div class="col-md-3">

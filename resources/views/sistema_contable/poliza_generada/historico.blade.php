@@ -1,9 +1,10 @@
 @extends('sistema_contable.layout')
 @section('title', 'Póliza General')
 @section('contentheader_title', 'PREPÓLIZAS GENERADAS')
-
-@section('main-content')
+@section('breadcrumb')
     {!! Breadcrumbs::render('sistema_contable.poliza_generada.historico', @$poliza) !!}
+@endsection
+@section('main-content')
 
     @if(count($polizas)==0)
         <div class="alert alert-danger alert-dismissible">

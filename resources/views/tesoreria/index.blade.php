@@ -1,8 +1,10 @@
 @extends('tesoreria.layout')
 @section('title', 'Tesorería')
 @section('contentheader_title', 'TESORERÍA')
-@section('main-content')
+@section('breadcrumb')
     {!! Breadcrumbs::render('tesoreria.index') !!}
+@endsection
+@section('main-content')
 
     <div class="row">
         <div class="col-md-12">

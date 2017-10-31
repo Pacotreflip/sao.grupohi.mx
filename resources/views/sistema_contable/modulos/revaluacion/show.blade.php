@@ -1,9 +1,10 @@
 @extends('sistema_contable.layout')
 @section('title', 'REVALUACIÓN')
 @section('contentheader_title', 'REVALUACIÓN')
-
-@section('main-content')
+@section('breadcrumb')
     {!! Breadcrumbs::render('sistema_contable.revaluacion.show') !!}
+@endsection
+@section('main-content')
     <div class="row">
         <div class="col-md-12">
             <div class="box box-info">

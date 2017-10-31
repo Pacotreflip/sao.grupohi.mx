@@ -1,8 +1,10 @@
 @extends('sistema_contable.layout')
 @section('title', 'Tipos de Cuentas Contables')
 @section('contentheader_title', 'TIPOS CUENTAS CONTABLES')
-@section('main-content')
+@section('breadcrumb')
     {!! Breadcrumbs::render('sistema_contable.tipo_cuenta_contable.show', $tipo_cuenta_contable) !!}
+@endsection
+@section('main-content')
 
     <div class="row">
         <div class="col-md-12">

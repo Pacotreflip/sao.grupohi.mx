@@ -1,9 +1,10 @@
 @extends('finanzas.layout')
 @section('title', 'Sistema de Finanzas')
 @section('contentheader_title', 'COMPROBANTE DE FONDO FIJO')
-@section('main-content')
+@section('breadcrumb')
     {!! Breadcrumbs::render('finanzas.comprobante_fondo_fijo.show', $comprobante_fondo_fijo) !!}
-
+@endsection
+@section('main-content')
 
     <div class="row">
         <div class="col-md-3">

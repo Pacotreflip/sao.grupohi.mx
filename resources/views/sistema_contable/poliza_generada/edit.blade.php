@@ -1,9 +1,10 @@
 @extends('sistema_contable.layout')
 @section('title', 'Pólizas Generadas')
 @section('contentheader_title', 'PREPÓLIZAS GENERADAS')
-
-@section('main-content')
+@section('breadcrumb')
     {!! Breadcrumbs::render('sistema_contable.poliza_generada.edit', $poliza) !!}
+@endsection
+@section('main-content')
 
     <poliza-generada-edit
                 :poliza="{{$poliza}}"
