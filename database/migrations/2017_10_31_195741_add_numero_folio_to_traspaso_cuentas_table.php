@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AddContabilidadNotificacionesTable extends Migration
+class AddNumeroFolioToTraspasoCuentasTable extends Migration
 {
     /**
      * Run the migrations.
@@ -12,8 +12,10 @@ class AddContabilidadNotificacionesTable extends Migration
      */
     public function up()
     {
-        Schema::table('Contabilidad.notificaciones', function (Blueprint $table) {
+        Schema::table('Tesoreria.traspaso_cuentas', function (Blueprint $table) {
             $table->integer("id_obra")->unsigned();
+            $table->integer("numero_folio")->unsigned();
+            $table->text("fecha");
         });
     }
 
@@ -25,7 +27,9 @@ class AddContabilidadNotificacionesTable extends Migration
     public function down()
     {
         Schema::table('Contabilidad.notificaciones', function (Blueprint $table) {
-            $table->dropColumn('body');
+            $table->dropColumn('fecha');
+            $table->dropColumn('numero_folio');
+            $table->dropColumn('id_obra');
         });
     }
 }

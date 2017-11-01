@@ -50,10 +50,21 @@ class TraspasoCuentasController extends Controller
 
     public function store(Request $request)
     {
-        $record = $this->traspaso->create($request->all());
         $obras = $this->traspaso->obras();
         $id_obra = $request->session()->get('id');
+        $create_data = $request->all();
+        $create_data['id_obra'] = $id_obra;
+        $record = $this->traspaso->create($create_data);
         $id_moneda = 0;
+
+        // Crear el nuevo folio de acuerdo con el id de la obra
+        $folio = TraspasoCuentas::where('id_obra', $id_obra)->max('numero_folio');
+        $folio = (int) $folio + 1;
+
+        TraspasoCuentas::where('id_traspaso', $record->id_traspaso)
+            ->update([
+                'numero_folio' => $folio,
+            ]);
 
         foreach ($obras as $o)
             if ($o->id_obra == $id_obra)

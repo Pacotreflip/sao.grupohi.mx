@@ -19,7 +19,10 @@ class TraspasoCuentas extends BaseModel
         'id_cuenta_origen',
         'id_cuenta_destino',
         'importe',
-        'observaciones'
+        'observaciones',
+        'id_obra',
+        'folio',
+        'fecha',
     ];
 
     protected static function boot()

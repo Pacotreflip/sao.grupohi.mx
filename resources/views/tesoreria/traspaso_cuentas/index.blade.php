@@ -58,9 +58,10 @@
                                         <div class="form-group"
                                              :class="{'has-error': validation_errors.has('form_guardar_traspaso.Fecha')}">
                                             <label for="Fecha" class="control-label"><b>Fecha</b></label>
-                                            <input type="text" name="Fecha" class="form-control input-sm " id="fecha"
+                                            <input type="text" name="Fecha" class="form-control input-sm " id="Fecha"
                                                    v-model="form.fecha"
-                                                   v-datepicker>
+                                                   v-datepicker
+                                                   v-validate="'required'">
                                             <label class="help"
                                                    v-show="validation_errors.has('form_guardar_traspaso.Fecha')">@{{ validation_errors.first('form_guardar_traspaso.Fecha') }}</label>
                                         </div>
