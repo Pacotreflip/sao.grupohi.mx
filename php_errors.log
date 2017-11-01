@@ -1,0 +1,2 @@
+[31-Oct-2017 20:19:27 America/Mexico_City] PHP Fatal error:  Class 'AddNumeroFolioToTraspasoCuentasTable' not found in C:\httpd\www\php56.loc\sao.grupohi.mx\vendor\laravel\framework\src\Illuminate\Database\Migrations\Migrator.php on line 335
+[31-Oct-2017 20:19:50 America/Mexico_City] PHP Fatal error:  Class 'AddNumeroFolioToTraspasoCuentasTable' not found in C:\httpd\www\php56.loc\sao.grupohi.mx\vendor\laravel\framework\src\Illuminate\Database\Migrations\Migrator.php on line 335

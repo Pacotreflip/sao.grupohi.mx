@@ -26,7 +26,7 @@ class AddNumeroFolioToTraspasoCuentasTable extends Migration
      */
     public function down()
     {
-        Schema::table('Contabilidad.notificaciones', function (Blueprint $table) {
+        Schema::table('Tesoreria.traspaso_cuentas', function (Blueprint $table) {
             $table->dropColumn('fecha');
             $table->dropColumn('numero_folio');
             $table->dropColumn('id_obra');
