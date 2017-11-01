@@ -16,12 +16,12 @@ class AddNumeroFolioToTraspasoCuentasTable extends Migration
             $table->integer("id_obra")->unsigned();
             $table->integer("numero_folio")->unsigned();
             $table->date("fecha");
-        });
-
-        $table->foreign('id_obra')
+            
+            $table->foreign('id_obra')
             ->references('id_obra')
             ->on('dbo.obras')
             ->onDelete('no action');
+        });
     }
 
     /**
