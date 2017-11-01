@@ -26,7 +26,7 @@
                     <div class="modal-content">
                         <form  id="form_guardar_traspaso" @submit.prevent="validateForm('form_guardar_traspaso', 'confirm_guardar')"  data-vv-scope="form_guardar_traspaso">
                             <div class="modal-header">
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                <button type="button" class="close" v-on:click="close_traspaso()" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                                 <h4 class="modal-title">Realizar Traspaso</h4>
                             </div>
                             <div class="modal-body">
@@ -113,7 +113,7 @@
                                 </div>
                             </div>
                             <div class="modal-footer">
-                                <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                                <button type="button" class="btn btn-default" v-on:click="close_traspaso()">Cerrar</button>
                                 <button type="submit" class="btn btn-primary">Guardar</button>
                             </div>
                         </form>
