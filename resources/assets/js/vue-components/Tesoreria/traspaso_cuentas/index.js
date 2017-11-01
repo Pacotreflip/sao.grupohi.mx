@@ -104,7 +104,7 @@ Vue.component('traspaso-cuentas-index', {
                 complete: function () {
                     self.guardando = false;
                     self.close_traspaso();
-                    self.reset_form($("#form_guardar_traspaso"));
+
                 }
             });
         },
@@ -144,10 +144,13 @@ Vue.component('traspaso-cuentas-index', {
             });
         },
         modal_traspaso: function () {
+            this.validation_errors.clear('form_guardar_traspaso');
+            this.$validator.clean();
             $('#traspaso_modal').modal('show');
             $('#id_cuenta_origen').focus();
         },
         close_traspaso: function () {
+            this.reset_form();
             $('#traspaso_modal').modal('hide');
         },
         modal_editar: function (traspaso){
@@ -231,11 +234,16 @@ Vue.component('traspaso-cuentas-index', {
         trim_fecha: function (fecha){
             return fecha.substring(0,10);
         },
-        reset_form: function($form) {
-            $form.find('input:text, input:password, input:file, select, textarea').val('');
-            $form.find('input:radio, input:checkbox')
-                .removeAttr('checked').removeAttr('selected');
-            $form.get(0).reset();
+        reset_form: function() {
+            Vue.set(this.form, 'id_traspaso', '');
+            Vue.set(this.form, 'id_cuenta_origen', '');
+            Vue.set(this.form, 'id_cuenta_destino', '');
+            Vue.set(this.form, 'observaciones', '');
+            Vue.set(this.form, 'importe', '');
+            Vue.set(this.form, 'fecha', '');
+            Vue.set(this.form, 'cumplimiento', '');
+            Vue.set(this.form, 'vencimiento', '');
+            Vue.set(this.form, 'referencia', '');
         }
     }
 });
