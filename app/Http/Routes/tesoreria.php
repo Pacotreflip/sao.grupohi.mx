@@ -14,5 +14,10 @@ Route::group(['prefix' => 'tesoreria'], function () {
     Route::post('traspaso_cuentas', 'TraspasoCuentasController@store')->name('tesoreria.traspaso_cuentas.store');
     Route::patch('traspaso_cuentas/{id}', 'TraspasoCuentasController@update')->name('tesoreria.traspaso_cuentas.update');
     Route::get('traspaso_cuentas/{id}', 'TraspasoCuentasController@destroy')->name('tesoreria.traspaso_cuentas.destroy')->where(['id' => '[0-9]+']);
+
+    /**
+     * Intereses
+     */
+    Route::get('intereses', 'InteresesController@index')->name('tesoreria.intereses.index');
 });
 
