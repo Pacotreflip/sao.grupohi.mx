@@ -15,8 +15,13 @@ class AddNumeroFolioToTraspasoCuentasTable extends Migration
         Schema::table('Tesoreria.traspaso_cuentas', function (Blueprint $table) {
             $table->integer("id_obra")->unsigned();
             $table->integer("numero_folio")->unsigned();
-            $table->text("fecha");
+            $table->date("fecha");
         });
+
+        $table->foreign('id_obra')
+            ->references('id_obra')
+            ->on('dbo.obras')
+            ->onDelete('no action');
     }
 
     /**
