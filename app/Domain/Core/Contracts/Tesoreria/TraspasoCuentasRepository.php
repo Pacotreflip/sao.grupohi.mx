@@ -8,7 +8,7 @@ interface TraspasoCuentasRepository
 {
     /**
      * Obtiene todos los elementos
-     * @return \Illuminate\Database\Eloquent\Collection|\Ghi\Domain\Core\Contracts\Contabilidad\TraspasoCuentasRepository
+     * @return \Illuminate\Database\Eloquent\Collection|\Ghi\Domain\Core\Contracts\Tesoreria\TraspasoCuentasRepository
      */
 
     /**

@@ -78368,8 +78368,9 @@ require('./vue-components/Reportes/subcontratos-estimacion');
  * Tesoreria Components
  */
 require('./vue-components/Tesoreria/traspaso_cuentas/index');
+require('./vue-components/Tesoreria/movimientos_bancarios/index');
 
-},{"./vue-components/Compras/material/index":147,"./vue-components/Compras/requisicion/create":148,"./vue-components/Compras/requisicion/edit":149,"./vue-components/Contabilidad/cuenta_almacen/index":150,"./vue-components/Contabilidad/cuenta_concepto/index":151,"./vue-components/Contabilidad/cuenta_contable/index":152,"./vue-components/Contabilidad/cuenta_empresa/cuenta-empresa-edit":153,"./vue-components/Contabilidad/cuenta_fondo/index":154,"./vue-components/Contabilidad/cuenta_material/index":155,"./vue-components/Contabilidad/datos_contables/edit":156,"./vue-components/Contabilidad/emails":157,"./vue-components/Contabilidad/modulos/revaluacion/create":158,"./vue-components/Contabilidad/poliza_generada/edit":159,"./vue-components/Contabilidad/poliza_tipo/poliza-tipo-create":160,"./vue-components/Contabilidad/tipo_cuenta_contable/tipo-cuenta-contable-create":161,"./vue-components/Contabilidad/tipo_cuenta_contable/tipo-cuenta-contable-update":162,"./vue-components/Finanzas/comprobante_fondo_fijo/create":163,"./vue-components/Finanzas/comprobante_fondo_fijo/edit":164,"./vue-components/Reportes/subcontratos-estimacion":165,"./vue-components/Tesoreria/traspaso_cuentas/index":166,"./vue-components/errors":167,"./vue-components/global-errors":168,"./vue-components/kardex_material/kardex-material-index":169,"./vue-components/select2":170}],147:[function(require,module,exports){
+},{"./vue-components/Compras/material/index":147,"./vue-components/Compras/requisicion/create":148,"./vue-components/Compras/requisicion/edit":149,"./vue-components/Contabilidad/cuenta_almacen/index":150,"./vue-components/Contabilidad/cuenta_concepto/index":151,"./vue-components/Contabilidad/cuenta_contable/index":152,"./vue-components/Contabilidad/cuenta_empresa/cuenta-empresa-edit":153,"./vue-components/Contabilidad/cuenta_fondo/index":154,"./vue-components/Contabilidad/cuenta_material/index":155,"./vue-components/Contabilidad/datos_contables/edit":156,"./vue-components/Contabilidad/emails":157,"./vue-components/Contabilidad/modulos/revaluacion/create":158,"./vue-components/Contabilidad/poliza_generada/edit":159,"./vue-components/Contabilidad/poliza_tipo/poliza-tipo-create":160,"./vue-components/Contabilidad/tipo_cuenta_contable/tipo-cuenta-contable-create":161,"./vue-components/Contabilidad/tipo_cuenta_contable/tipo-cuenta-contable-update":162,"./vue-components/Finanzas/comprobante_fondo_fijo/create":163,"./vue-components/Finanzas/comprobante_fondo_fijo/edit":164,"./vue-components/Reportes/subcontratos-estimacion":165,"./vue-components/Tesoreria/movimientos_bancarios/index":166,"./vue-components/Tesoreria/traspaso_cuentas/index":167,"./vue-components/errors":168,"./vue-components/global-errors":169,"./vue-components/kardex_material/kardex-material-index":170,"./vue-components/select2":171}],147:[function(require,module,exports){
 'use strict';
 
 Vue.component('material-index', {
@@ -82002,6 +82003,55 @@ Vue.component('subcontratos-estimacion', {
 },{}],166:[function(require,module,exports){
 'use strict';
 
+Vue.component('movimientos_bancarios-index', {
+    props: ['url_movimientos_bancarios_index', 'cuentas', 'tipos'],
+    data: function data() {
+        return {
+            'data': {
+                'cuentas': this.cuentas,
+                'tipos': this.tipos
+            },
+            'form': {
+                'id_tipo_movimiento': '',
+                'estatus': '',
+                'id_cuenta': '',
+                'impuesto': '',
+                'importe': '',
+                'observaciones': ''
+            },
+            'traspaso_edit': {
+                'id_tipo_movimiento': '',
+                'estatus': '',
+                'id_cuenta': '',
+                'impuesto': '',
+                'importe': '',
+                'observaciones': ''
+            },
+            'guardando': false
+        };
+    },
+    computed: {},
+    mounted: function mounted() {
+        var self = this;
+    },
+    directives: {},
+    methods: {
+        datos_cuenta: function datos_cuenta(id) {
+            return this.cuentas[id];
+        },
+        confirm_guardar: function confirm_guardar() {
+            var self = this;
+        },
+        guardar: function guardar() {
+            var self = this;
+        },
+        validateForm: function validateForm(scope, funcion) {}
+    }
+});
+
+},{}],167:[function(require,module,exports){
+'use strict';
+
 Vue.component('traspaso-cuentas-index', {
     props: ['url_traspaso_cuentas_index', 'cuentas', 'traspasos', 'monedas'],
     data: function data() {
@@ -82235,7 +82285,7 @@ Vue.component('traspaso-cuentas-index', {
     }
 });
 
-},{}],167:[function(require,module,exports){
+},{}],168:[function(require,module,exports){
 'use strict';
 
 Vue.component('app-errors', {
@@ -82244,7 +82294,7 @@ Vue.component('app-errors', {
     template: require('./templates/errors.html')
 });
 
-},{"./templates/errors.html":171}],168:[function(require,module,exports){
+},{"./templates/errors.html":172}],169:[function(require,module,exports){
 'use strict';
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
@@ -82270,7 +82320,7 @@ Vue.component('global-errors', {
   }
 });
 
-},{"./templates/global-errors.html":172}],169:[function(require,module,exports){
+},{"./templates/global-errors.html":173}],170:[function(require,module,exports){
 'use strict';
 
 Vue.component('kardex-material-index', {
@@ -82420,7 +82470,7 @@ Vue.component('kardex-material-index', {
 
 });
 
-},{}],170:[function(require,module,exports){
+},{}],171:[function(require,module,exports){
 'use strict';
 
 Vue.component('select2', {
@@ -82469,9 +82519,9 @@ Vue.component('select2', {
     }
 });
 
-},{}],171:[function(require,module,exports){
-module.exports = '<div id="form-errors" v-cloak>\n  <div class="alert alert-danger" v-if="form.errors.length">\n    <ul>\n      <li v-for="error in form.errors">{{ error }}</li>\n    </ul>\n  </div>\n</div>';
 },{}],172:[function(require,module,exports){
+module.exports = '<div id="form-errors" v-cloak>\n  <div class="alert alert-danger" v-if="form.errors.length">\n    <ul>\n      <li v-for="error in form.errors">{{ error }}</li>\n    </ul>\n  </div>\n</div>';
+},{}],173:[function(require,module,exports){
 module.exports = '<div class="alert alert-danger" v-show="errors.length">\n  <ul>\n    <li v-for="error in errors">{{ error }}</li>\n  </ul>\n</div>';
 },{}]},{},[144]);
 

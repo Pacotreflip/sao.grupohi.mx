@@ -3,25 +3,23 @@
 namespace Ghi\Http\Controllers;
 
 use Ghi\Domain\Core\Models\Cuenta;
-use Ghi\Domain\Core\Models\Transacciones\Transaccion;
-use Ghi\Domain\Core\Models\Tesoreria\TraspasoTransaccion;
-use Ghi\Domain\Core\Models\Tesoreria\TraspasoCuentas;
+use Ghi\Domain\Core\Models\Tesoreria\MovimientosBancarios;
+use Ghi\Domain\Core\Models\Tesoreria\TiposMovimientos;
 use Illuminate\Http\Request;
-use Ghi\Domain\Core\Contracts\Tesoreria\InteresTransaccionRepository;
 use Illuminate\View\View;
 
-class InteresesController extends Controller
+class MovimientosBancariosController extends Controller
 {
     /**
      *
      */
-    public function __construct(InteresTransaccionRepository $interes_transaccion)
+    public function __construct()
     {
         parent::__construct();
         $this->middleware('auth');
         $this->middleware('context');
 
-        $this->interes_transaccion = $traspaso_transaccion;
+        $this->movimientos = new MovimientosBancarios;
     }
 
     /**
@@ -31,9 +29,12 @@ class InteresesController extends Controller
      */
     public function index(Request $request)
     {
-        $dataView = [ ];
+        $dataView = [
+            'cuentas' => Cuenta::paraTraspaso()->with('empresa')->get(),
+            'tipos' => TiposMovimientos::get(),
+        ];
 
-        return view('tesoreria.interes.index')
+        return view('tesoreria.movimientos_bancarios.index')
             ->with('dataView', $dataView);
     }
 

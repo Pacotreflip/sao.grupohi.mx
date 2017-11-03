@@ -18,6 +18,6 @@ Route::group(['prefix' => 'tesoreria'], function () {
     /**
      * Intereses
      */
-    Route::get('intereses', 'InteresesController@index')->name('tesoreria.intereses.index');
+    Route::get('movimientos_bancarios', 'MovimientosBancariosController@index')->name('tesoreria.movimientos_bancarios.index');
 });
 

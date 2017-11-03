@@ -13,6 +13,7 @@
                             @permission(['consultar_traspaso_cuenta'])
                             <li><a href="{{ route('tesoreria.traspaso_cuentas.index') }}">TRASPASO ENTRE CUENTAS</a></li>
                             @endpermission
+                            <li><a href="{{ route('tesoreria.movimientos_bancarios.index') }}">MOVIMIENTOS BANCARIOS</a></li>
                         </ul>
                     </div>
                 </div>

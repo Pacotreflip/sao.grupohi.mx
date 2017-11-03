@@ -16,8 +16,8 @@ Breadcrumbs::register('tesoreria.traspaso_cuentas.index', function($breadcrumbs)
 /**
  * Intereses
  */
-Breadcrumbs::register('tesoreria.intereses.index', function($breadcrumbs) {
+Breadcrumbs::register('tesoreria.movimientos_bancarios.index', function($breadcrumbs) {
     $breadcrumbs->parent('tesoreria.index');
-    $breadcrumbs->push('INTERESES', route('tesoreria.intereses.index'));
+    $breadcrumbs->push('MOVIMIENTOS BANCARIOS', route('tesoreria.movimientos_bancarios.index'));
 });
 
