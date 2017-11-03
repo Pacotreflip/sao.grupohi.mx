@@ -63,6 +63,6 @@ class VerifyContextApi
      */
     private function setContext()
     {
-        $this->config->set('database.connections.sca.database', $this->context->getDatabaseName());
+        $this->config->set('database.connections.cadeco.database', $this->context->getDatabaseName());
     }
 }

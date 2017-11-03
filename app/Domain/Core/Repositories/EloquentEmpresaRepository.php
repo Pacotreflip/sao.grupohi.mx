@@ -9,9 +9,14 @@
 namespace Ghi\Domain\Core\Repositories;
 
 
+use Couchbase\Exception;
+use Dingo\Api\Exception\StoreResourceFailedException;
+use Dingo\Api\Http\Response;
 use Ghi\Domain\Core\Contracts\EmpresaRepository;
 use Ghi\Domain\Core\Contracts\Ghi;
+use Ghi\Domain\Core\Models\Contabilidad\CuentaEmpresa;
 use Ghi\Domain\Core\Models\Empresa;
+use Illuminate\Support\Facades\DB;
 
 
 class EloquentEmpresaRepository implements EmpresaRepository
@@ -31,8 +36,8 @@ class EloquentEmpresaRepository implements EmpresaRepository
     }
 
     /**
-     * @param $with
-     * @return  Illuminate\Support\Collection\Empresa
+     * @return Empresa
+     * @internal param $with
      */
     public function all()
     {
@@ -41,7 +46,7 @@ class EloquentEmpresaRepository implements EmpresaRepository
 
     /**
      * @param $id
-     * @return Ghi\Domain\Core\Models\Contabilidad\CuentaEmpresa
+     * @return CuentaEmpresa
      */
     public function find($id)
     {
@@ -66,5 +71,43 @@ class EloquentEmpresaRepository implements EmpresaRepository
     {
         $this->model = $this->model->$scope();
         return $this;
+    }
+
+    /**
+     * Crea una nueva Empresa
+     */
+    public function create(array $data) {
+        DB::connection('cadeco')->beginTransaction();
+
+        try {
+            //Reglas de validación para crear una empresa
+            $rules = [
+                'rfc' => ['required', 'unique:cadeco.empresas'],
+                'tipo_empresa' => ['required'],
+                'razon_social' => ['required', 'unique:cadeco.empresas']
+            ];
+
+            //Mensajes de error personalizados para cada regla de validación
+            $messages = [
+                'rfc.unique' => 'Ya existe una Empresa con el RFC proporcionado',
+                'razon_social.unique' => 'Ya existe una Empresa con la Razón Social proporcionada'
+            ];
+
+            //Validar los datos recibidos con las reglas de validación
+            $validator = app('validator')->make($data, $rules, $messages);
+
+            if(count($validator->errors()->all())) {
+                //Caer en excepción si alguna regla de validación falla
+                throw new StoreResourceFailedException('Error al crear la empresa', $validator->errors());
+            } else {
+                //Crear empresa nueva si la validación no arroja ningún error
+                $empresa = $this->model->create($data);
+                DB::connection('cadeco')->commit();
+                return $empresa;
+            }
+        } catch (\Exception $e) {
+            DB::connection('cadeco')->rollback();
+            throw $e;
+        }
     }
 }

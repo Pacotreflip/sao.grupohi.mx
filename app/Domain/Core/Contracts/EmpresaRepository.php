@@ -33,4 +33,9 @@ interface EmpresaRepository
      * Aplica un scope a la consulta de Empresas
      */
     public function scope($scope);
+
+    /**
+     * Crea una nueva Empreas
+     */
+    public function create(array $data);
 }
