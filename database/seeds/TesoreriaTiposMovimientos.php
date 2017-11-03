@@ -12,14 +12,16 @@ class TesoreriaTiposMovimientos extends Seeder
      */
     public function run()
     {
-        // Tesoreria Tipos de Movimientos
+        // Naturaleza 2 tipo transaccion 84
         DB::connection("cadeco")->table('Tesoreria.tipos_movimientos')->insert([
             'descripcion' => 'Intereses',
-            'naturaleza' => 1,
+            'naturaleza' => 2,
             'estatus' => 1,
             'registro' => 1,
             'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
         ]);
+
+        // Naturaleza 1 tipo transaccion 83
         DB::connection("cadeco")->table('Tesoreria.tipos_movimientos')->insert([
             'descripcion' => 'Intereses Ganados',
             'naturaleza' => 1,
@@ -27,16 +29,20 @@ class TesoreriaTiposMovimientos extends Seeder
             'registro' => 1,
             'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
         ]);
+
+        // Naturaleza 2 tipo transaccion 84
         DB::connection("cadeco")->table('Tesoreria.tipos_movimientos')->insert([
             'descripcion' => 'Pago de ISR',
-            'naturaleza' => 1,
+            'naturaleza' => 2,
             'estatus' => 1,
             'registro' => 1,
             'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
         ]);
+
+        // Naturaleza 2 tipo transaccion 84
         DB::connection("cadeco")->table('Tesoreria.tipos_movimientos')->insert([
             'descripcion' => 'Comisiones Bancarias',
-            'naturaleza' => 1,
+            'naturaleza' => 2,
             'estatus' => 1,
             'registro' => 1,
             'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
