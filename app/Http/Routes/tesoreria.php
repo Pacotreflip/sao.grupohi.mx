@@ -16,8 +16,9 @@ Route::group(['prefix' => 'tesoreria'], function () {
     Route::get('traspaso_cuentas/{id}', 'TraspasoCuentasController@destroy')->name('tesoreria.traspaso_cuentas.destroy')->where(['id' => '[0-9]+']);
 
     /**
-     * Intereses
+     * Movimientos Bancarios
      */
     Route::get('movimientos_bancarios', 'MovimientosBancariosController@index')->name('tesoreria.movimientos_bancarios.index');
+    Route::post('movimientos_bancarios', 'MovimientosBancariosControllerr@store')->name('tesoreria.movimientos_bancarios.store');
 });
 

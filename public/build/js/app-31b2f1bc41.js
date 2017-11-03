@@ -82045,7 +82045,29 @@ Vue.component('movimientos_bancarios-index', {
         guardar: function guardar() {
             var self = this;
         },
-        validateForm: function validateForm(scope, funcion) {}
+        modal_movimiento: function modal_movimiento() {
+            $('#movimiento_modal').modal('show');
+            $('#id_tipo_movimiento').focus();
+        },
+        close_modal_movimiento: function close_modal_movimiento() {
+            $('#movimiento_modal').modal('hide');
+        },
+        validateForm: function validateForm(scope, funcion) {
+            self = this;
+            this.$validator.validateAll(scope).then(function () {
+                if (funcion === 'confirm_guardar') {
+                    self.confirm_guardar();
+                } else if (funcion === 'confirm_editar') {
+                    self.confirm_editar();
+                }
+            }).catch(function () {
+                swal({
+                    type: 'warning',
+                    title: 'Advertencia',
+                    text: 'Por favor corrija los errores del formulario'
+                });
+            });
+        }
     }
 });
 

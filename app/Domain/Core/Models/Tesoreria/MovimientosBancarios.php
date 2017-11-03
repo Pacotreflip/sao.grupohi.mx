@@ -21,6 +21,7 @@ class MovimientosBancarios extends BaseModel
         'impuesto',
         'importe',
         'observaciones',
+        'registro',
     ];
 
     protected static function boot()
@@ -29,6 +30,7 @@ class MovimientosBancarios extends BaseModel
 
         static::creating(function ($model) {
             $model->estatus = 1;
+            $model->registro = auth()->user()->usuario;
         });
     }
 
@@ -42,6 +44,6 @@ class MovimientosBancarios extends BaseModel
 
     public function traspaso_transaccion()
     {
-        return $this->belongsTo(TraspasoTransaccion::class, 'id_traspaso', 'id_traspaso');
+        return $this->belongsTo(MovimientoTransacciones::class, 'id_movimiento_bancario', 'id_movimiento_bancario');
     }
 }

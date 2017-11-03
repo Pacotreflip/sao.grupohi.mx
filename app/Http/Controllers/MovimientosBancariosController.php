@@ -38,9 +38,41 @@ class MovimientosBancariosController extends Controller
             ->with('dataView', $dataView);
     }
 
+    /**
+     * @param Request $request
+     */
     public function store(Request $request)
     {
+        $record = $this->traspaso->create($request->all());
 
+        // Naturaloeza => tipo de transaccion
+        $tipos_transaccion = [
+            1 => 83,
+            2 => 84
+        ];
+        $naturaleza = 0;
+
+        $tipos_movimientos = TiposMovimientos::get();
+
+        foreach ( $tipos_movimientos as $t)
+            if ($t->)
+
+        $transaccion = [
+            'tipo_transaccion' => 83,
+            'fecha' => $request->input('fecha') ? $request->input('fecha') : date('Y-m-d'),
+            'estado' => 1,
+            'id_obra' => $id_obra,
+            'id_cuenta' => $request->input('id_cuenta_destino'),
+            'id_moneda' => $id_moneda,
+            'cumplimiento' => $request->input('cumplimiento') ? $request->input('cumplimiento') : date('Y-m-d'),
+            'vencimiento' => $request->input('vencimiento') ? $request->input('vencimiento') : date('Y-m-d'),
+            'opciones' => 1,
+            'monto' => $request->input('importe'),
+            'referencia' => $request->input('referencia'),
+            'comentario' => "I;". date("d/m/Y") ." ". date("h:s") .";". auth()->user()->usuario,
+            'observaciones' => $request->input('observaciones'),
+            'FechaHoraRegistro' => date('Y-m-d h:i:s'),
+        ];
     }
     public function destroy($id)
     {
