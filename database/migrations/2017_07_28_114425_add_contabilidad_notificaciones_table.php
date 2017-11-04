@@ -13,7 +13,7 @@ class AddContabilidadNotificacionesTable extends Migration
     public function up()
     {
         Schema::table('Contabilidad.notificaciones', function (Blueprint $table) {
-            $table->longText('body')->nullable();
+            $table->integer("id_obra")->unsigned();
         });
     }
 

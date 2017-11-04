@@ -29,6 +29,23 @@ class Transaccion extends Model
 
     protected $dates=['fecha'];
 
+    protected $fillable = [
+        'tipo_transaccion',
+        'fecha',
+        'estado',
+        'id_obra',
+        'id_cuenta',
+        'id_moneda',
+        'cumplimiento',
+        'vencimiento',
+        'opciones',
+        'monto',
+        'referencia',
+        'comentario',
+        'observaciones',
+        'FechaHoraRegistro',
+    ];
+
     /**
      * Items relacionados con esta transaccion
      *

@@ -78365,11 +78365,11 @@ require('./vue-components/Finanzas/comprobante_fondo_fijo/edit');
 require('./vue-components/Reportes/subcontratos-estimacion');
 
 /**
- * Traspaso Cuentas Components
+ * Tesoreria Components
  */
-require('./vue-components/Contabilidad/traspaso_cuentas/index');
+require('./vue-components/Tesoreria/traspaso_cuentas/index');
 
-},{"./vue-components/Compras/material/index":147,"./vue-components/Compras/requisicion/create":148,"./vue-components/Compras/requisicion/edit":149,"./vue-components/Contabilidad/cuenta_almacen/index":150,"./vue-components/Contabilidad/cuenta_concepto/index":151,"./vue-components/Contabilidad/cuenta_contable/index":152,"./vue-components/Contabilidad/cuenta_empresa/cuenta-empresa-edit":153,"./vue-components/Contabilidad/cuenta_fondo/index":154,"./vue-components/Contabilidad/cuenta_material/index":155,"./vue-components/Contabilidad/datos_contables/edit":156,"./vue-components/Contabilidad/emails":157,"./vue-components/Contabilidad/modulos/revaluacion/create":158,"./vue-components/Contabilidad/poliza_generada/edit":159,"./vue-components/Contabilidad/poliza_tipo/poliza-tipo-create":160,"./vue-components/Contabilidad/tipo_cuenta_contable/tipo-cuenta-contable-create":161,"./vue-components/Contabilidad/tipo_cuenta_contable/tipo-cuenta-contable-update":162,"./vue-components/Contabilidad/traspaso_cuentas/index":163,"./vue-components/Finanzas/comprobante_fondo_fijo/create":164,"./vue-components/Finanzas/comprobante_fondo_fijo/edit":165,"./vue-components/Reportes/subcontratos-estimacion":166,"./vue-components/errors":167,"./vue-components/global-errors":168,"./vue-components/kardex_material/kardex-material-index":169,"./vue-components/select2":170}],147:[function(require,module,exports){
+},{"./vue-components/Compras/material/index":147,"./vue-components/Compras/requisicion/create":148,"./vue-components/Compras/requisicion/edit":149,"./vue-components/Contabilidad/cuenta_almacen/index":150,"./vue-components/Contabilidad/cuenta_concepto/index":151,"./vue-components/Contabilidad/cuenta_contable/index":152,"./vue-components/Contabilidad/cuenta_empresa/cuenta-empresa-edit":153,"./vue-components/Contabilidad/cuenta_fondo/index":154,"./vue-components/Contabilidad/cuenta_material/index":155,"./vue-components/Contabilidad/datos_contables/edit":156,"./vue-components/Contabilidad/emails":157,"./vue-components/Contabilidad/modulos/revaluacion/create":158,"./vue-components/Contabilidad/poliza_generada/edit":159,"./vue-components/Contabilidad/poliza_tipo/poliza-tipo-create":160,"./vue-components/Contabilidad/tipo_cuenta_contable/tipo-cuenta-contable-create":161,"./vue-components/Contabilidad/tipo_cuenta_contable/tipo-cuenta-contable-update":162,"./vue-components/Finanzas/comprobante_fondo_fijo/create":163,"./vue-components/Finanzas/comprobante_fondo_fijo/edit":164,"./vue-components/Reportes/subcontratos-estimacion":165,"./vue-components/Tesoreria/traspaso_cuentas/index":166,"./vue-components/errors":167,"./vue-components/global-errors":168,"./vue-components/kardex_material/kardex-material-index":169,"./vue-components/select2":170}],147:[function(require,module,exports){
 'use strict';
 
 Vue.component('material-index', {
@@ -80993,188 +80993,6 @@ Vue.component('tipo-cuenta-contable-update', {
 },{}],163:[function(require,module,exports){
 'use strict';
 
-Vue.component('traspaso-cuentas-index', {
-    props: ['url_traspaso_cuentas_index', 'cuentas', 'traspasos'],
-    data: function data() {
-        return {
-            'data': {
-                'traspasos': this.traspasos,
-                'cuentas': this.cuentas
-            },
-            'form': {
-                'id_cuenta_origen': '',
-                'id_cuenta_destino': '',
-                'observaciones': '',
-                'importe': ''
-            },
-            'traspaso_edit': {
-                'id_cuenta_origen': '',
-                'id_cuenta_destino': '',
-                'observaciones': '',
-                'importe': '',
-                'cuenta_origen': {},
-                'cuenta_destino': {}
-            },
-            'guardando': false
-        };
-    },
-    computed: {
-        cuentas_disponibles: function cuentas_disponibles() {
-            var self = this;
-            return this.cuentas.filter(function (cuenta) {
-                return cuenta.id_cuenta != self.form.id_cuenta_origen;
-            });
-        }
-    },
-    methods: {
-        datos_cuenta: function datos_cuenta(id) {
-            return this.cuentas[id];
-        },
-        confirm_guardar: function confirm_guardar() {
-            var self = this;
-            swal({
-                title: "Guardar traspaso",
-                text: "¿Estás seguro/a de que la información es correcta?",
-                type: "warning",
-                showCancelButton: true,
-                confirmButtonText: "Si, Continuar",
-                cancelButtonText: "No, Cancelar"
-            }).then(function () {
-                self.guardar();
-            }).catch(swal.noop);
-        },
-        guardar: function guardar() {
-            var self = this;
-
-            $.ajax({
-                type: 'POST',
-                url: self.url_traspaso_cuentas_index,
-                data: self.form,
-                beforeSend: function beforeSend() {
-                    self.guardando = true;
-                },
-                success: function success(data, textStatus, xhr) {
-                    self.data.traspasos.push(data.data.traspaso);
-                    swal({
-                        type: 'success',
-                        title: 'Correcto',
-                        html: 'Traspaso guardado correctamente'
-                    });
-                },
-                complete: function complete() {
-                    self.guardando = false;
-                }
-            });
-        },
-        confirm_eliminar: function confirm_eliminar(id_traspaso) {
-            var self = this;
-            swal({
-                title: "Eliminar traspaso",
-                text: "¿Estás seguro/a de que deseas eliminar este traspaso?",
-                type: "warning",
-                showCancelButton: true,
-                confirmButtonText: "Si, Continuar",
-                cancelButtonText: "No, Cancelar"
-            }).then(function () {
-                self.eliminar(id_traspaso);
-            }).catch(swal.noop);
-        },
-        eliminar: function eliminar(id_traspaso) {
-            var self = this;
-            $.ajax({
-                type: 'GET',
-                url: self.url_traspaso_cuentas_index + '/' + id_traspaso,
-                beforeSend: function beforeSend() {},
-                success: function success(data, textStatus, xhr) {
-                    self.data.traspasos.forEach(function (traspaso) {
-                        if (traspaso.id_traspaso === id_traspaso) {
-                            self.data.traspasos.splice(self.data.traspasos.indexOf(traspaso), 1);
-                        }
-                    });
-
-                    swal({
-                        type: 'success',
-                        title: 'Correcto',
-                        html: 'Traspaso eliminado'
-                    });
-                },
-                complete: function complete() {}
-            });
-        },
-        modal_editar: function modal_editar(traspaso) {
-            this.traspaso_edit = _.clone(traspaso);
-            this.traspaso_edit_ref = traspaso;
-            this.validation_errors.clear('form_editar_traspaso');
-            $('#edit_traspaso_modal').modal('show');
-            $('#edit_id_cuenta_origen').focus();
-        },
-        confirm_editar: function confirm_editar() {
-            var self = this;
-            swal({
-                title: "Editar traspaso",
-                text: "¿Estás seguro/a de que la información es correcta?",
-                type: "warning",
-                showCancelButton: true,
-                confirmButtonText: "Si, Continuar",
-                cancelButtonText: "No, Cancelar"
-            }).then(function () {
-                self.editar();
-            }).catch(swal.noop);
-        },
-        editar: function editar() {
-            var self = this;
-
-            self.traspaso_edit._method = 'PATCH';
-            $.ajax({
-                type: 'POST',
-                url: self.url_traspaso_cuentas_index + '/' + self.traspaso_edit.id_traspaso,
-                data: self.traspaso_edit,
-                beforeSend: function beforeSend() {},
-                success: function success(data, textStatus, xhr) {
-
-                    self.data.traspasos.forEach(function (traspaso) {
-                        if (traspaso.id_traspaso === data.data.traspaso.id_traspaso) {
-                            Vue.set(self.data.traspasos, self.data.traspasos.indexOf(traspaso), data.data.traspaso);
-                        }
-                    });
-                    swal({
-                        type: 'success',
-                        title: 'Correcto',
-                        html: 'Traspaso guardado correctamente'
-                    });
-
-                    self.close_edit_traspaso();
-                },
-                complete: function complete() {
-                    self.guardando = false;
-                }
-            });
-        },
-        close_edit_traspaso: function close_edit_traspaso() {
-            $('#edit_traspaso_modal').modal('hide');
-        },
-        validateForm: function validateForm(scope, funcion) {
-            self = this;
-            this.$validator.validateAll(scope).then(function () {
-                if (funcion === 'confirm_guardar') {
-                    self.confirm_guardar();
-                } else if (funcion === 'confirm_editar') {
-                    self.confirm_editar();
-                }
-            }).catch(function () {
-                swal({
-                    type: 'warning',
-                    title: 'Advertencia',
-                    text: 'Por favor corrija los errores del formulario'
-                });
-            });
-        }
-    }
-});
-
-},{}],164:[function(require,module,exports){
-'use strict';
-
 Vue.component('comprobante-fondo-fijo-create', {
     props: ['url_comprobante_fondo_fijo_create'],
 
@@ -81648,7 +81466,7 @@ Vue.component('comprobante-fondo-fijo-create', {
     }
 });
 
-},{}],165:[function(require,module,exports){
+},{}],164:[function(require,module,exports){
 'use strict';
 
 Vue.component('comprobante-fondo-fijo-edit', {
@@ -82102,7 +81920,7 @@ Vue.component('comprobante-fondo-fijo-edit', {
     }
 });
 
-},{}],166:[function(require,module,exports){
+},{}],165:[function(require,module,exports){
 'use strict';
 
 Vue.component('subcontratos-estimacion', {
@@ -82177,6 +81995,256 @@ Vue.component('subcontratos-estimacion', {
             var url = App.host + '/reportes/subcontratos/estimacion/' + id_estimacion;
             $("#PDFModal .modal-body").html('<iframe src="' + url + '"  frameborder="0" height="100%" width="99.6%">d</iframe>');
             $("#PDFModal").modal("show");
+        }
+    }
+});
+
+},{}],166:[function(require,module,exports){
+'use strict';
+
+Vue.component('traspaso-cuentas-index', {
+    props: ['url_traspaso_cuentas_index', 'cuentas', 'traspasos', 'monedas'],
+    data: function data() {
+        return {
+            'data': {
+                'traspasos': this.traspasos,
+                'cuentas': this.cuentas,
+                'monedas': this.monedas
+            },
+            'form': {
+                'id_cuenta_origen': '',
+                'id_cuenta_destino': '',
+                'observaciones': '',
+                'importe': '',
+                'fecha': moment().format('YYYY-MM-DD'),
+                'cumplimiento': '',
+                'vencimiento': '',
+                'referencia': ''
+            },
+            'traspaso_edit': {
+                'id_traspaso': '',
+                'id_cuenta_origen': '',
+                'id_cuenta_destino': '',
+                'observaciones': '',
+                'importe': '',
+                'fecha': '',
+                'cumplimiento': '',
+                'vencimiento': '',
+                'referencia': ''
+            },
+            'guardando': false
+        };
+    },
+    computed: {
+        cuentas_disponibles: function cuentas_disponibles() {
+            var self = this;
+            return this.cuentas.filter(function (cuenta) {
+                return cuenta.id_cuenta != self.form.id_cuenta_origen;
+            });
+        }
+    },
+    mounted: function mounted() {
+        var self = this;
+        $("#cumplimiento").datepicker().on("changeDate", function () {
+            Vue.set(self.form, 'vencimiento', $('#cumplimiento').val());
+            Vue.set(self.form, 'cumplimiento', $('#cumplimiento').val());
+        });
+
+        $(".fechas_edit").datepicker().on("changeDate", function () {
+            var thisElement = $(this);
+            var id = thisElement.attr('id').replace('edit_', '');
+            Vue.set(self.traspaso_edit, id, thisElement.val());
+        });
+    },
+    directives: {
+        datepicker: {
+            inserted: function inserted(el) {
+                $(el).datepicker({
+                    autoclose: true,
+                    language: 'es',
+                    todayHighlight: true,
+                    clearBtn: true,
+                    format: 'yyyy-mm-dd'
+                });
+            }
+        }
+    },
+    methods: {
+        datos_cuenta: function datos_cuenta(id) {
+            return this.cuentas[id];
+        },
+        confirm_guardar: function confirm_guardar() {
+            var self = this;
+            swal({
+                title: "Guardar traspaso",
+                text: "¿Estás seguro/a de que la información es correcta?",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonText: "Si, Continuar",
+                cancelButtonText: "No, Cancelar"
+            }).then(function () {
+                self.guardar();
+            }).catch(swal.noop);
+        },
+        guardar: function guardar() {
+            var self = this;
+
+            $.ajax({
+                type: 'POST',
+                url: self.url_traspaso_cuentas_index,
+                data: self.form,
+                beforeSend: function beforeSend() {
+                    self.guardando = true;
+                },
+                success: function success(data, textStatus, xhr) {
+                    self.data.traspasos.push(data.data.traspaso);
+                    swal({
+                        type: 'success',
+                        title: 'Correcto',
+                        html: 'Traspaso guardado correctamente'
+                    });
+                },
+                complete: function complete() {
+                    self.guardando = false;
+                    self.close_traspaso();
+                }
+            });
+        },
+        confirm_eliminar: function confirm_eliminar(id_traspaso) {
+            var self = this;
+            swal({
+                title: "Eliminar traspaso",
+                text: "¿Estás seguro/a de que deseas eliminar este traspaso?",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonText: "Si, Continuar",
+                cancelButtonText: "No, Cancelar"
+            }).then(function () {
+                self.eliminar(id_traspaso);
+            }).catch(swal.noop);
+        },
+        eliminar: function eliminar(id_traspaso) {
+            var self = this;
+            $.ajax({
+                type: 'GET',
+                url: self.url_traspaso_cuentas_index + '/' + id_traspaso,
+                beforeSend: function beforeSend() {},
+                success: function success(data, textStatus, xhr) {
+                    self.data.traspasos.forEach(function (traspaso) {
+                        if (traspaso.id_traspaso === id_traspaso) {
+                            self.data.traspasos.splice(self.data.traspasos.indexOf(traspaso), 1);
+                        }
+                    });
+
+                    swal({
+                        type: 'success',
+                        title: 'Correcto',
+                        html: 'Traspaso eliminado'
+                    });
+                },
+                complete: function complete() {}
+            });
+        },
+        modal_traspaso: function modal_traspaso() {
+            this.validation_errors.clear('form_guardar_traspaso');
+            this.$validator.clean();
+            $('#traspaso_modal').modal('show');
+            $('#id_cuenta_origen').focus();
+        },
+        close_traspaso: function close_traspaso() {
+            this.reset_form();
+            $('#traspaso_modal').modal('hide');
+        },
+        modal_editar: function modal_editar(traspaso) {
+
+            Vue.set(this.traspaso_edit, 'id_traspaso', traspaso.id_traspaso);
+            Vue.set(this.traspaso_edit, 'id_cuenta_origen', traspaso.id_cuenta_origen);
+            Vue.set(this.traspaso_edit, 'id_cuenta_destino', traspaso.id_cuenta_destino);
+            Vue.set(this.traspaso_edit, 'observaciones', traspaso.observaciones);
+            Vue.set(this.traspaso_edit, 'importe', traspaso.importe);
+            Vue.set(this.traspaso_edit, 'fecha', this.trim_fecha(traspaso.traspaso_transaccion.transaccion_debito.fecha));
+            Vue.set(this.traspaso_edit, 'cumplimiento', this.trim_fecha(traspaso.traspaso_transaccion.transaccion_debito.cumplimiento));
+            Vue.set(this.traspaso_edit, 'vencimiento', this.trim_fecha(traspaso.traspaso_transaccion.transaccion_debito.vencimiento));
+            Vue.set(this.traspaso_edit, 'referencia', traspaso.traspaso_transaccion.transaccion_debito.referencia);
+
+            this.validation_errors.clear('form_editar_traspaso');
+            $('#edit_traspaso_modal').modal('show');
+            $('#edit_id_cuenta_origen').focus();
+        },
+        confirm_editar: function confirm_editar() {
+            var self = this;
+            swal({
+                title: "Editar traspaso",
+                text: "¿Estás seguro/a de que la información es correcta?",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonText: "Si, Continuar",
+                cancelButtonText: "No, Cancelar"
+            }).then(function () {
+                self.editar();
+            }).catch(swal.noop);
+        },
+        editar: function editar() {
+            var self = this;
+
+            self.traspaso_edit._method = 'PATCH';
+            $.ajax({
+                type: 'POST',
+                url: self.url_traspaso_cuentas_index + '/' + self.traspaso_edit.id_traspaso,
+                data: self.traspaso_edit,
+                beforeSend: function beforeSend() {},
+                success: function success(data, textStatus, xhr) {
+
+                    self.data.traspasos.forEach(function (traspaso) {
+                        if (traspaso.id_traspaso === data.data.traspaso.id_traspaso) {
+                            Vue.set(self.data.traspasos, self.data.traspasos.indexOf(traspaso), data.data.traspaso);
+                        }
+                    });
+                    swal({
+                        type: 'success',
+                        title: 'Correcto',
+                        html: 'Traspaso guardado correctamente'
+                    });
+
+                    self.close_edit_traspaso();
+                },
+                complete: function complete() {
+                    self.guardando = false;
+                }
+            });
+        },
+        close_edit_traspaso: function close_edit_traspaso() {
+            $('#edit_traspaso_modal').modal('hide');
+        },
+        validateForm: function validateForm(scope, funcion) {
+            self = this;
+            this.$validator.validateAll(scope).then(function () {
+                if (funcion === 'confirm_guardar') {
+                    self.confirm_guardar();
+                } else if (funcion === 'confirm_editar') {
+                    self.confirm_editar();
+                }
+            }).catch(function () {
+                swal({
+                    type: 'warning',
+                    title: 'Advertencia',
+                    text: 'Por favor corrija los errores del formulario'
+                });
+            });
+        },
+        trim_fecha: function trim_fecha(fecha) {
+            return fecha.substring(0, 10);
+        },
+        reset_form: function reset_form() {
+            Vue.set(this.form, 'id_traspaso', '');
+            Vue.set(this.form, 'id_cuenta_origen', '');
+            Vue.set(this.form, 'id_cuenta_destino', '');
+            Vue.set(this.form, 'observaciones', '');
+            Vue.set(this.form, 'importe', '');
+            Vue.set(this.form, 'fecha', '');
+            Vue.set(this.form, 'cumplimiento', '');
+            Vue.set(this.form, 'vencimiento', '');
+            Vue.set(this.form, 'referencia', '');
         }
     }
 });
