@@ -87,7 +87,7 @@ class Poliza extends BaseModel
     
     public function traspaso()
     {
-        return $this->hasOne(TraspasoCuentas::class, 'id_traspaso');
+        return $this->belongsTo(TraspasoCuentas::class, 'id_traspaso');
     }
 
     /**
