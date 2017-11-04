@@ -3,7 +3,9 @@
 namespace Ghi\Domain\Core\Repositories\Tesoreria;
 
 use Ghi\Domain\Core\Contracts\Tesoreria\MovimientosBancariosRepository;
+use Ghi\Domain\Core\Models\Tesoreria\MovimientosBancarios;
 use Ghi\Domain\Core\Models\Tesoreria\MovimientoTransacciones;
+use Ghi\Domain\Core\Models\Tesoreria\TiposMovimientos;
 use Illuminate\Http\Exception\HttpResponseException;
 use Illuminate\Support\Facades\DB;
 use Ghi\Domain\Core\Models\Tesoreria\TraspasoCuentas;
@@ -49,16 +51,71 @@ class EloquentMovimientosBancariosRepository implements MovimientosBancariosRepo
      */
     public function create($data)
     {
+        // Naturaloeza => tipo de transaccion
+        $tipos_transaccion = [
+            1 => 83,
+            2 => 84
+        ];
+        $tipo = 0;
+
+        $tipos_movimientos = TiposMovimientos::get();
+
+        $obras = $this->obras();
+        $id_obra = session()->get('id');
+        $id_moneda = 0;
+
+        foreach ($obras as $o)
+            if ($o->id_obra == $id_obra)
+                $id_moneda = $o->id_moneda;
+
+        foreach ( $tipos_movimientos as $t)
+            if ($t->id_tipo_movimiento == $data['id_tipo_movimiento'])
+                $tipo = $tipos_transaccion[$t->naturaleza];
+
         try {
             DB::connection('cadeco')->beginTransaction();
-            $record = $this->model->create($data);
+
+            $record = MovimientosBancarios::create($data);
             DB::connection('cadeco')->commit();
+
+            $transaccion = Transaccion::create([
+                'tipo_transaccion' => $tipo,
+                'fecha' => $data['fecha'] ? $data['fecha'] : date('Y-m-d'),
+                'id_obra' => $id_obra,
+                'id_cuenta' => $data['id_cuenta'],
+                'id_moneda' => $id_moneda,
+                'cumplimiento' => $data['cumplimiento'] ? $data['cumplimiento'] : date('Y-m-d'),
+                'vencimiento' => $data['vencimiento'] ? $data['vencimiento'] : date('Y-m-d'),
+                'opciones' => 1,
+                'monto' => $data['importe'],
+                'referencia' => $data['referencia'],
+                'comentario' => "I;". date("d/m/Y") ." ". date("h:s") .";". auth()->user()->usuario,
+                'observaciones' => $data['observaciones'],
+                'FechaHoraRegistro' => date('Y-m-d h:i:s'),
+            ]);
+
+            // Revisa si la transaccion se guardó
+            $transaccion_realizo = Transaccion::where('id_transaccion', $transaccion->id_transaccion);
+
+            if (!$transaccion_realizo)
+            {
+                DB::connection('cadeco')->rollBack();
+                return 'No se pudo concretar la transacción';
+            }
+
+            // Enlaza la transacción con su respectivo movimiento.
+            MovimientoTransacciones::create([
+                'id_movimiento_bancario' => $record->id_traspaso,
+                'id_transaccion' => $transaccion->id_transaccion,
+                'tipo_transaccion' => $tipo,
+            ]);
+
         } catch (\Exception $e) {
             DB::connection('cadeco')->rollBack();
             throw $e;
         }
 
-        return MovimientosBancarios::where('id_traspaso', '=', $record->id_traspaso)->with(['cuenta_destino.empresa', 'cuenta_origen.empresa', 'traspaso_transaccion.transaccion_debito'])->first();
+        return MovimientosBancarios::where('id_tipo_movimiento', '=', $record->id_tipo_movimiento)->with(['cuenta_destino.empresa', 'cuenta_origen.empresa', 'movimiento_transaccion.transaccion_debito'])->first();
     }
 
     public function with($relations) {

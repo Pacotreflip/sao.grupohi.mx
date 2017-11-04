@@ -42,7 +42,7 @@ class MovimientosBancarios extends BaseModel
         return $this->belongsTo(Cuenta::class, 'id_cuenta_origen', 'id_cuenta');
     }
 
-    public function traspaso_transaccion()
+    public function movimiento_transaccion()
     {
         return $this->belongsTo(MovimientoTransacciones::class, 'id_movimiento_bancario', 'id_movimiento_bancario');
     }

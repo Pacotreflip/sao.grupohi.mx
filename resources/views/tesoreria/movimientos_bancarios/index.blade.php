@@ -53,7 +53,7 @@
                                         </div>
                                     </div>
                                     {{--Impuesto--}}
-                                    <div class="col-md-8" v-if="form.id_tipo_movimiento === 4">
+                                    <div class="col-md-4" v-if="form.id_tipo_movimiento === 4">
                                         <div class="form-group" :class="{'has-error': validation_errors.has('form_guadar_movimiento.Impuesto')}">
                                             <label><b>Impuesto</b></label>
                                             <input type="text" class="form-control pull-right" id="impuesto" value="" name="Impuesto" v-model="form.impuesto" v-validate="'required'">
@@ -61,11 +61,23 @@
                                         </div>
                                     </div>
                                     {{--Importe--}}
-                                    <div class="col-md-8">
+                                    <div class="col-md-4">
                                         <div class="form-group" :class="{'has-error': validation_errors.has('form_guadar_movimiento.Importe')}">
                                             <label><b>Importe</b></label>
                                             <input type="text" class="form-control pull-right" id="importe" value="" name="Importe" v-model="form.importe" v-validate="'required|decimal:6'">
                                             <label class="help" v-show="validation_errors.has('form_guadar_movimiento.Importe')">@{{ validation_errors.first('form_guadar_movimiento.Importe') }}</label>
+                                        </div>
+                                    </div>
+                                    {{--Fecha--}}
+                                    <div class="col-md-4">
+                                        <div class="form-group"
+                                             :class="{'has-error': validation_errors.has('form_guardar_movimiento.Fecha')}">
+                                            <label for="Fecha" class="control-label"><b>Fecha</b></label>
+                                            <input type="text" name="Fecha" class="form-control input-sm " id="fecha"
+                                                   v-model="form.fecha"
+                                                   v-datepicker>
+                                            <label class="help"
+                                                   v-show="validation_errors.has('form_guardar_movimiento.Fecha')">@{{ validation_errors.first('form_guardar_movimiento.Fecha') }}</label>
                                         </div>
                                     </div>
                                     {{--Observaciones--}}

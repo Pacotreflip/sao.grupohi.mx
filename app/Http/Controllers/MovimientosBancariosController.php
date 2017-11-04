@@ -2,6 +2,7 @@
 
 namespace Ghi\Http\Controllers;
 
+use Ghi\Domain\Core\Contracts\Tesoreria\MovimientosBancariosRepository;
 use Ghi\Domain\Core\Models\Cuenta;
 use Ghi\Domain\Core\Models\Tesoreria\MovimientosBancarios;
 use Ghi\Domain\Core\Models\Tesoreria\TiposMovimientos;
@@ -11,15 +12,20 @@ use Illuminate\View\View;
 class MovimientosBancariosController extends Controller
 {
     /**
-     *
+     * @var MovimientosBancariosRepository
      */
-    public function __construct()
+    private $movimientos;
+
+    /**
+     * @param MovimientosBancariosRepository $movimientos
+     */
+    public function __construct(MovimientosBancariosRepository $movimientos)
     {
         parent::__construct();
-        $this->middleware('auth');
-        $this->middleware('context');
+//        $this->middleware('auth');
+//        $this->middleware('context');
 
-        $this->movimientos = new MovimientosBancarios;
+        $this->movimientos = $movimientos;
     }
 
     /**
@@ -43,36 +49,7 @@ class MovimientosBancariosController extends Controller
      */
     public function store(Request $request)
     {
-        $record = $this->traspaso->create($request->all());
-
-        // Naturaloeza => tipo de transaccion
-        $tipos_transaccion = [
-            1 => 83,
-            2 => 84
-        ];
-        $naturaleza = 0;
-
-        $tipos_movimientos = TiposMovimientos::get();
-
-        foreach ( $tipos_movimientos as $t)
-            if ($t->)
-
-        $transaccion = [
-            'tipo_transaccion' => 83,
-            'fecha' => $request->input('fecha') ? $request->input('fecha') : date('Y-m-d'),
-            'estado' => 1,
-            'id_obra' => $id_obra,
-            'id_cuenta' => $request->input('id_cuenta_destino'),
-            'id_moneda' => $id_moneda,
-            'cumplimiento' => $request->input('cumplimiento') ? $request->input('cumplimiento') : date('Y-m-d'),
-            'vencimiento' => $request->input('vencimiento') ? $request->input('vencimiento') : date('Y-m-d'),
-            'opciones' => 1,
-            'monto' => $request->input('importe'),
-            'referencia' => $request->input('referencia'),
-            'comentario' => "I;". date("d/m/Y") ." ". date("h:s") .";". auth()->user()->usuario,
-            'observaciones' => $request->input('observaciones'),
-            'FechaHoraRegistro' => date('Y-m-d h:i:s'),
-        ];
+        $record = $this->movimientos->create($request->all());
     }
     public function destroy($id)
     {

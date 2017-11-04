@@ -25,11 +25,8 @@ class MovimientoTransacciones extends BaseModel
         parent::boot();
     }
 
-    public function transaccion_debito() {
+    public function transaccion() {
         return $this->belongsTo(Transaccion::class, 'id_transaccion', 'id_transaccion');
     }
 
-    public function transaccion_credito() {
-        return $this->belongsTo(Transaccion::class, 'id_transaccion', 'id_transaccion');
-    }
 }
