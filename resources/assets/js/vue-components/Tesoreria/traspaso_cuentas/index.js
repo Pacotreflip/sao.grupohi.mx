@@ -42,14 +42,23 @@ Vue.component('traspaso-cuentas-index', {
     mounted: function()
     {
         var self = this;
+
         $("#cumplimiento").datepicker().on("changeDate",function () {
             Vue.set(self.form, 'vencimiento', $('#cumplimiento').val());
             Vue.set(self.form, 'cumplimiento', $('#cumplimiento').val());
         });
+        $("#Fecha").datepicker().on("changeDate",function () {
+            var thisElement = $(this);
 
+            Vue.set(self.form, 'fecha', thisElement.val());
+            thisElement.datepicker('hide');
+            thisElement.blur();
+            self.$validator.validate('required', self.form.fecha);
+        });
         $(".fechas_edit").datepicker().on("changeDate",function () {
             var thisElement = $(this);
             var id = thisElement.attr('id').replace('edit_','');
+
             Vue.set(self.traspaso_edit, id, thisElement.val());
         });
     },
@@ -94,12 +103,23 @@ Vue.component('traspaso-cuentas-index', {
                     self.guardando = true;
                 },
                 success: function (data, textStatus, xhr) {
-                    self.data.traspasos.push(data.data.traspaso);
-                    swal({
-                        type: 'success',
-                        title: 'Correcto',
-                        html: 'Traspaso guardado correctamente'
-                    });
+
+                    // Si data.traspaso es un string hubo un error al guardar el traspaso
+                    if (typeof data.data.traspaso === 'string'){
+                        swal({
+                            type: 'warning',
+                            title: 'Error',
+                            html: data.data.traspaso
+                        });
+                    }
+                    else{
+                        self.data.traspasos.push(data.data.traspaso);
+                        swal({
+                            type: 'success',
+                            title: 'Correcto',
+                            html: 'Traspaso guardado correctamente'
+                        });
+                    }
                 },
                 complete: function () {
                     self.guardando = false;
