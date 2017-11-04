@@ -1,0 +1,2 @@
+[03-Nov-2017 16:14:42 America/Mexico_City] PHP Fatal error:  Call to undefined method Illuminate\Database\SqlServerConnection::execute() in C:\httpd\www\php56.loc\sao.grupohi.mx\app\Domain\Core\Repositories\Tesoreria\EloquentTraspasoCuentasRepository.php on line 76
+[03-Nov-2017 17:33:01 America/Mexico_City] PHP Fatal error:  Cannot access empty property in C:\httpd\www\php56.loc\sao.grupohi.mx\vendor\laravel\framework\src\Illuminate\Database\Connection.php on line 347
