@@ -9,10 +9,10 @@
 namespace Ghi\Domain\Core\Repositories;
 
 
-use Dingo\Api\Exception\ResourceException;
+use Dingo\Api\Exception\StoreResourceFailedException;
 use Ghi\Domain\Core\Contracts\SucursalRepository;
 use Ghi\Domain\Core\Models\Sucursal;
-use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Facades\DB;
 
 class EloquentSucursalRepository implements SucursalRepository
 {
@@ -30,29 +30,6 @@ class EloquentSucursalRepository implements SucursalRepository
         $this->model = $model;
     }
 
-
-    /**
-     * Obtiene todas las sucursales
-     * @return Collection|Sucursal
-     */
-    public function all()
-    {
-        return $this->model->get();
-    }
-
-    /**
-     * Obtiene una Sucursal por si ID
-     * @return Sucursal
-     */
-    public function find(int $id)
-    {
-        if($item = $this->model->find($id)) {
-            return $item;
-        } else {
-            throw new ResourceException('No existe una Sucursal con el ID proporcionado');
-        }
-    }
-
     /**
      * Crea un nuevo registro de Sucursal
      * @param array $data
@@ -65,19 +42,30 @@ class EloquentSucursalRepository implements SucursalRepository
         try {
             //Reglas de validación para crear una sucursal
             $rules = [
-                //'' => ['required'],
-                //'' => ['required'],
-                //'' => ['required']
+                'id_empresa' => ['required', 'integer', 'exists:cadeco.empresas,id_empresa'],
+                'descripcion' => ['required', 'string', 'max:255'],
+                'direccion' =>  ['string', 'max:255'],
+                'ciudad' => ['string', 'max:255'],
+                'estado' => ['string', 'max:255'],
+                'codigo_postal' => ['digits:5'],
+                'telefono' => ['string', 'max:255'],
+                'fax' => ['string', 'max:255'],
+                'contacto' => ['string', 'max:255'],
+                'casa_central' => ['string', 'max:1', 'regex:"[sSnN]"'],
+                'email' => ['string', 'max:50'],
+                'cargo' => ['string', 'max:50'],
+                'telefono_movil' => ['string', 'max:50'],
+                'observaciones' => ['string', 'max:500']
             ];
 
             //Mensajes de error personalizados para cada regla de validación
-            $messages = [
+            //$messages = [
                 //'' => '',
                 //'' => ''
-            ];
+           // ];
 
             //Validar los datos recibidos con las reglas de validación
-            $validator = app('validator')->make($data, $rules, $messages);
+            $validator = app('validator')->make($data, $rules);
 
             if(count($validator->errors()->all())) {
                 //Caer en excepción si alguna regla de validación falla

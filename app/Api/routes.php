@@ -10,7 +10,8 @@ $api->version('v1', ['middleware' => 'cors'], function ($api) {
 
     $api->group(['middleware' => ['jwt.auth', 'api.context']], function($api) {
         $api->post('empresa', 'Ghi\Api\Controllers\EmpresaController@store');
-        $api->get('empresa/{id_empresa}', 'Ghi\Api\Controllers\EmpresaController@show');
+
+        $api->post('sucursal', 'Ghi\Api\Controllers\SucursalController@store');
     });
 });
 

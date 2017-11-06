@@ -62,9 +62,4 @@ class EmpresaController extends Controller
         $empresa = $this->empresa->create($request->all());
         return $this->response->item($empresa, new EmpresaTransformer());
     }
-
-    public function show($id) {
-        $empresa = $this->empresa->find($id);
-        return $this->response->item($empresa, new EmpresaTransformer());
-    }
 }
