@@ -1,9 +1,10 @@
 @extends('sistema_contable.layout')
 @section('title', 'Revaluaciones')
 @section('contentheader_title', 'REVALUACIONES')
-
-@section('main-content')
+@section('breadcrumb')
     {!! Breadcrumbs::render('sistema_contable.revaluacion.create') !!}
+@endsection
+@section('main-content')
     <revaluacion-create
             :facturas="{{ $facturas->toJson() }}"
             :url_revaluacion="'{{route('sistema_contable.revaluacion.store')}}'"

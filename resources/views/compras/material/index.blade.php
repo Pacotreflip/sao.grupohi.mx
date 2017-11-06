@@ -1,10 +1,10 @@
 @extends('compras.layout')
 @section('title', 'Materiales')
 @section('contentheader_title', 'MATERIALES')
-@section('contentheader_description', '(INDEX)')
-
-@section('main-content')
+@section('breadcrumb')
     {!! Breadcrumbs::render('compras.material.index') !!}
+@endsection
+@section('main-content')
     <div id="app">
         <global-errors></global-errors>
         <material-index

@@ -1,7 +1,6 @@
 @extends('sistema_contable.layout')
 @section('title', 'Notificaciones')
 @section('contentheader_title', 'Notificaciones')
-@section('contentheader_description', '(LISTA)')
 @section('main-content')
     <div class="row" >
         <div class="col-md-12">

@@ -2,12 +2,18 @@
 <header class="main-header">
 
     <!-- Logo -->
-    <span class="logo">
-        <figure class="nav-company pull-left">
-            <img src="{{ asset('img/company-icon.png') }}"/>
-        </figure>
-        {{ trans('strings.app-name') }}
-    </span>
+    <a href="{{url("/")}}" class="logo">
+        <span class="logo-mini">
+            <figure class="nav-company">
+                <img src="{{ asset('img/company-icon.png') }}"/>
+            </figure>
+        </span>
+        <span class="logo-lg">
+            <figure class="nav-company pull-left">
+                <img src="{{ asset('img/company-icon.png') }}"/>
+            </figure> SAO
+        </span>
+    </a>
 
     <!-- Header Navbar -->
     <nav class="navbar navbar-static-top" role="navigation">
@@ -35,7 +41,6 @@
                             <!-- User image -->
                             <li class="user-header">
                                 <i class="fa fa-user fa-5x img-circle" style="color:white"></i>
-
                                 <p>
                                     {{ auth()->user() }}
                                     <small>{{$currentObra ? $currentObra->nombre : ''}}</small>
@@ -55,6 +60,10 @@
                         </ul>
                     </li>
                 @endif
+                <!-- Control Sidebar Toggle Button -->
+                    <li>
+                        <a href="#" data-toggle="control-sidebar"><i class="fa fa-gears"></i></a>
+                    </li>
             </ul>
         </div>
     </nav>

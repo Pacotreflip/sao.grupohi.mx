@@ -1,10 +1,10 @@
 @extends('sistema_contable.layout')
 @section('title', 'Cuentas de Empresas')
 @section('contentheader_title', 'CUENTAS DE EMPRESAS')
-@section('contentheader_description', '(DETALLE)')
-
-@section('main-content')
+@section('breadcrumb')
     {!! Breadcrumbs::render('sistema_contable.cuenta_empresa.show', $empresa) !!}
+@endsection
+@section('main-content')
 
     <div class="row">
         <div class="col-md-3">

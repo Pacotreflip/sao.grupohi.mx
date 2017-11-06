@@ -1,10 +1,10 @@
 @extends('compras.layout')
 @section('title', 'Materiales')
 @section('contentheader_title', 'MATERIALES')
-@section('contentheader_description', '(VISTA)')
-
-@section('main-content')
+@section('breadcrumb')
     {!! Breadcrumbs::render('compras.material.show', $material) !!}
+@endsection
+@section('main-content')
 
             <div class="row">
                 <div class="col-md-12">

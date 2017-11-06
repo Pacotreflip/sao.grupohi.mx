@@ -1,8 +1,10 @@
 @extends('finanzas.layout')
 @section('title', 'Sistema de Finanzas')
 @section('contentheader_title', 'SISTEMA DE FINANZAS')
-@section('main-content')
+@section('breadcrumb')
     {!! Breadcrumbs::render('finanzas.comprobante_fondo_fijo.create') !!}
+@endsection
+@section('main-content')
 
     <comprobante-fondo-fijo-create
             :url_comprobante_fondo_fijo_create="'{{route('finanzas.comprobante_fondo_fijo.store')}}'"

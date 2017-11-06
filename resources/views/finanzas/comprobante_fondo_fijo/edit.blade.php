@@ -1,9 +1,10 @@
 @extends('finanzas.layout')
 @section('title', 'Sistema de Finanzas')
 @section('contentheader_title', 'COMPROBANTE DE FONDO FIJO')
-@section('contentheader_description', '(EDITAR)')
-@section('main-content')
+@section('breadcrumb')
     {!! Breadcrumbs::render('finanzas.comprobante_fondo_fijo.edit',$comprobante_fondo_fijo) !!}
+@endsection
+@section('main-content')
 
     <comprobante-fondo-fijo-edit
             :url_comprobante_fondo_fijo_update="'{{route('finanzas.comprobante_fondo_fijo.update',$comprobante_fondo_fijo)}}'"

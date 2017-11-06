@@ -1,11 +1,10 @@
 @extends('compras.layout')
 @section('title', 'Requisiciones')
 @section('contentheader_title', 'REQUISICIONES')
-@section('contentheader_description', '(INDEX)')
-
-@section('main-content')
+@section('breadcrumb')
     {!! Breadcrumbs::render('compras.requisicion.index') !!}
-
+@endsection
+@section('main-content')
 
     <div class="row">
         <div class="col-md-12">

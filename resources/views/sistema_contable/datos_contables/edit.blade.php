@@ -1,10 +1,10 @@
 @extends('sistema_contable.layout')
 @section('title', 'Datos Contables')
 @section('contentheader_title', 'DATOS CONTABLES')
-@section('contentheader_description', '(EDICION)')
-
-@section('main-content')
+@section('breadcrumb')
     {!! Breadcrumbs::render('sistema_contable.datos_contables.edit', $datos_contables) !!}
+@endsection
+@section('main-content')
 
     <global-errors></global-errors>
     <datos-contables-edit

@@ -1,10 +1,10 @@
 @extends('sistema_contable.layout')
 @section('title', 'Plantillas de Prepólizas')
 @section('contentheader_title', 'PLANTILLAS DE PREPÓLIZAS')
-@section('contentheader_description', '(NUEVA)')
-
-@section('main-content')
+@section('breadcrumb')
     {!! Breadcrumbs::render('sistema_contable.poliza_tipo.create') !!}
+@endsection
+@section('main-content')
 
     <global-errors></global-errors>
     <poliza-tipo-create
