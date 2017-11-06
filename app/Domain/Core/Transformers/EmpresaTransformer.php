@@ -14,6 +14,12 @@ use League\Fractal\TransformerAbstract;
 class EmpresaTransformer extends TransformerAbstract {
 
     public function transform(Empresa $empresa) {
-        return $empresa->toArray();
+
+        return [
+            "id_empresa" => $empresa->id_empresa,
+            "tipo_empresa" => $empresa->tipo_empresa,
+            "razon_social" => $empresa->razon_social,
+            "rfc" => $empresa->rfc
+        ];
     }
 }
