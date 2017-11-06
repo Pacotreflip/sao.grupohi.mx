@@ -3,6 +3,7 @@
 namespace Ghi\Http;
 
 use Ghi\Http\Middleware\EntrustPermission;
+use Ghi\Api\Middleware\EntrustPermission as ApiEntrustPermission;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
 
 class Kernel extends HttpKernel
@@ -57,6 +58,7 @@ class Kernel extends HttpKernel
         'jwt.refresh' => 'Tymon\JWTAuth\Middleware\RefreshToken',
         'role' => \Zizaco\Entrust\Middleware\EntrustRole::class,
         'permission' => EntrustPermission::class,
+        'api.permission' => ApiEntrustPermission::class,
         'ability' => \Zizaco\Entrust\Middleware\EntrustAbility::class,
     ];
 }

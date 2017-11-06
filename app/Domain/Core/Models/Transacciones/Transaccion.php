@@ -60,4 +60,9 @@ class Transaccion extends Model
 
         return $this->belongsTo(TipoTransaccion::class, 'tipo_transaccion', 'tipo_transaccion')->where('opciones','=',$this->opciones);
     }
+
+    public function getAppends() {
+        $vars = get_class_vars(__CLASS__);
+        return $vars['appends'];
+    }
 }

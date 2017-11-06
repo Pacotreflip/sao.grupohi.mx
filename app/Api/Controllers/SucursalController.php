@@ -31,9 +31,14 @@ class SucursalController extends Controller
     }
 
     /**
-     * @api {post} /sucursal Registrar Sucursa
+     * @api {post} /sucursal Registrar Sucursal
      * @apiVersion 1.0.0
      * @apiGroup Sucursal
+     *
+     * @apiHeader {String} Authorization Token de autorización
+     * @apiHeader {string} database_name Nombre de la Base de Datos para establecer contexto
+     * @apiHeader {string} id_obra ID De la obra sobre la que se desea extablecer el contexto
+     *
      * @apiParam {Number} id_empresa Identificador de la Empresa a la que pertenecerá la Sucursal
      * @apiParam {String{max:255}} descripcion Descripción de la Sucursal
      * @apiParam {String{max:255}} [direccion] Dirección de la Sucursal
@@ -50,7 +55,7 @@ class SucursalController extends Controller
      * @apiParam {String{max:500}} [observaciones] Observaciones
      *
      * @apiError StoreResourceFailedException Error al registrar una Sucursal
-     * @apiErrorExample Error-Response:
+     * @apiErrorExample Error-Response
      *   HTTP/1.1 422 Unprocessable Entity
      *   {
      *     "message": "error descropton",

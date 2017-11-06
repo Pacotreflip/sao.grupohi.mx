@@ -24,12 +24,18 @@ class EmpresaController extends Controller
     public function __construct(EloquentEmpresaRepository $empresa)
     {
         $this->empresa = $empresa;
+        $this->middleware('api.permission:consultar_cuenta_empresas', ['only' => ['store']]);
     }
 
     /**
      * @api {post} /empresa Registrar Empresa
      * @apiVersion 1.0.0
      * @apiGroup Empresa
+     *
+     * @apiHeader {String} Authorization Token de autorización
+     * @apiHeader {string} database_name Nombre de la Base de Datos para establecer contexto
+     * @apiHeader {string} id_obra ID De la obra sobre la que se desea extablecer el contexto
+     *
      * @apiParam {String{max:16}} rfc RFC de la Empresa
      * @apiParam {String{max:255}} razon_social Razón Social de la Empresa
      * @apiParam {Number} tipo_empresa Tipo de Empresa
@@ -42,7 +48,7 @@ class EmpresaController extends Controller
      * @apiParam {Nmber} [personalidad] Personalidad
      *
      * @apiError StoreResourceFailedException Error al registrar una Empresa
-     * @apiErrorExample Error-Response:
+     * @apiErrorExample Error-Response
      *   HTTP/1.1 422 Unprocessable Entity
      *   {
      *     "message": "error descropton",
