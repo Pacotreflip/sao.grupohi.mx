@@ -35,7 +35,7 @@ class SucursalController extends Controller
      * @apiVersion 1.0.0
      * @apiGroup Sucursal
      * @apiParam {Number} id_empresa Identificador de la Empresa a la que pertenecerá la Sucursal
-     * @apiParam {String} descripcion Descripción de la Sucursal
+     * @apiParam {String{max:255}} descripcion Descripción de la Sucursal
      * @apiParam {String{max:255}} [direccion] Dirección de la Sucursal
      * @apiParam {String{max:255}} [ciudad] Ciudad de la Sucursal
      * @apiParam {String{max:255}} [estado] Estado de la Sucursal
@@ -70,7 +70,8 @@ class SucursalController extends Controller
      *       "id_empresa": "123",
      *       "descripcion": "Descripción",
      *       "UsuarioRegistro": "0001",
-     *       "FechaHoraRegistro": "2000-01-01 12:00:00"
+     *       "FechaHoraRegistro": "2000-01-01 12:00:00",
+     *       ...
      *     }
      *   }
      */

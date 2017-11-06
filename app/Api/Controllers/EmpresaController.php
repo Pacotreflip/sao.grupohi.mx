@@ -30,7 +30,7 @@ class EmpresaController extends Controller
      * @api {post} /empresa Registrar Empresa
      * @apiVersion 1.0.0
      * @apiGroup Empresa
-     * @apiParam {String} rfc RFC de la Empresa
+     * @apiParam {String{max:16}} rfc RFC de la Empresa
      * @apiParam {String{max:255}} razon_social Razón Social de la Empresa
      * @apiParam {Number} tipo_empresa Tipo de Empresa
      * @apiParam {Number} [dias_credito] Días de Crédito
