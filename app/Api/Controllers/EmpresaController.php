@@ -23,7 +23,6 @@ class EmpresaController extends Controller
 
     public function __construct(EloquentEmpresaRepository $empresa)
     {
-        $this->middleware('api.context');
         $this->empresa = $empresa;
     }
 
