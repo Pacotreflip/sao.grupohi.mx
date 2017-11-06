@@ -49,7 +49,7 @@ class SucursalController extends Controller
      * @apiParam {String} [telefono_movil] Teléfono Móvil de la Sucursal
      * @apiParam {String} [observaciones] Observaciones
      *
-     * @apiError StoreResourceFailedException Error al registrar una Empresa
+     * @apiError StoreResourceFailedException Error al registrar una Sucursal
      * @apiErrorExample Error-Response:
      *   HTTP/1.1 422 Unprocessable Entity
      *   {
@@ -61,15 +61,16 @@ class SucursalController extends Controller
      *     "status_code": 422
      *   }
      *
-     * @apiSuccess (200) {Object} data Datos de la Empresa Registrada
+     * @apiSuccess (200) {Object} data Datos de la Sucursal Registrada
      * @apiSuccessExample Success-Response
      *   HTTP/1.1 200 OK
      *   {
      *     "data": {
-     *       "id_empresa": "xxx",
-     *       "tipo_empresa": "x",
-     *       "razon_social": "Razón Social",
-     *       "rfc": "000000XXX"
+     *       "id_sucursal": "123",
+     *       "id_empresa": "123",
+     *       "descripcion": "Descripción",
+     *       "UsuarioRegistro": "0001",
+     *       "FechaHoraRegistro": "2000-01-01 12:00:00"
      *     }
      *   }
      */

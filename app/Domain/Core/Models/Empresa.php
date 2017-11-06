@@ -14,9 +14,19 @@ class Empresa extends BaseModel
     protected $primaryKey = 'id_empresa';
     protected $appends = ['total_cuentas'];
     protected $fillable = [
-        'rfc',
+        'tipo_empresa',
         'razon_social',
-        'tipo_empresa'
+        'rfc',
+        'dias_credito',
+        'formato',
+        'cuenta_contable',
+        'tipo_cliente',
+        'porcentaje',
+        'no_proveedor_virtual',
+        'FechaHoraRegistro',
+        'UsuarioRegistro',
+        'UsuarioValido',
+        'personalidad'
     ];
 
     public $timestamps = false;
@@ -64,5 +74,10 @@ class Empresa extends BaseModel
     public function __toString()
     {
         return $this->razon_social;
+    }
+
+    public function getAppends() {
+        $vars = get_class_vars(__CLASS__);
+        return $vars['appends'];
     }
 }

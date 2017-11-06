@@ -82,9 +82,16 @@ class EloquentEmpresaRepository implements EmpresaRepository
         try {
             //Reglas de validación para crear una empresa
             $rules = [
-                'rfc' => ['required', 'unique:cadeco.empresas'],
-                'tipo_empresa' => ['required'],
-                'razon_social' => ['required', 'unique:cadeco.empresas']
+                'rfc' => ['required', 'unique:cadeco.empresas', 'string', 'max:16'],
+                'tipo_empresa' => ['required', 'integer'],
+                'razon_social' => ['required', 'unique:cadeco.empresas', 'string', 'max:255'],
+                'dias_credito' => ['integer'],
+                'formato' => ['string', 'max:64'],
+                'cuenta_contable' => ['string', 'max:16'],
+                'tipo_cliente' => ['integer'],
+                'porcentaje' => ['numeric', 'min:0'],
+                'no_proveedor_virtual' => ['integer'],
+                'personalidad' => ['integer']
             ];
 
             //Mensajes de error personalizados para cada regla de validación

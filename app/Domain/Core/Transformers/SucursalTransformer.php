@@ -14,6 +14,6 @@ use League\Fractal\TransformerAbstract;
 class SucursalTransformer extends TransformerAbstract {
 
     public function transform(Sucursal $sucursal) {
-        return $sucursal->toArray();
+        return $sucursal->attributesToArray();
     }
 }

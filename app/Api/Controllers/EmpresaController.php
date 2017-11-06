@@ -32,6 +32,14 @@ class EmpresaController extends Controller
      * @apiGroup Empresa
      * @apiParam {String} rfc RFC de la Empresa
      * @apiParam {String} razon_social Razón Social de la Empresa
+     * @apiParam {Number} tipo_empresa Tipo de Empresa
+     * @apiParam {Number} [dias_credito]
+     * @apiParam {}
+     * @apiParam {}
+     * @apiParam {}
+     * @apiParam {}
+     * @apiParam {}
+     * @apiParam {}
      *
      * @apiError StoreResourceFailedException Error al registrar una Empresa
      * @apiErrorExample Error-Response:
