@@ -22,15 +22,25 @@ class MovimientosBancarios extends BaseModel
         'importe',
         'observaciones',
         'registro',
+        'fecha',
+        'id_obra',
+        'numero_folio',
     ];
 
     protected static function boot()
     {
         parent::boot();
 
-        static::creating(function ($model) {
+        // Crear el nuevo folio de acuerdo con el id de la obra
+        $id_obra = session()->get('id');
+        $folio = MovimientosBancarios::where('id_obra', $id_obra)->max('numero_folio');
+        $folio = (int) $folio + 1;
+
+        static::creating(function ($model) use($id_obra, $folio) {
             $model->estatus = 1;
             $model->registro = auth()->user()->idusuario;
+            $model->id_obra = $id_obra;
+            $model->numero_folio = $folio;
         });
     }
 
