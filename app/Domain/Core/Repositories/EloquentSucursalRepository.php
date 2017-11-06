@@ -51,18 +51,18 @@ class EloquentSucursalRepository implements SucursalRepository
                 'telefono' => ['string', 'max:255'],
                 'fax' => ['string', 'max:255'],
                 'contacto' => ['string', 'max:255'],
-                'casa_central' => ['string', 'max:1', 'regex:"[sSnN]"'],
-                'email' => ['string', 'max:50'],
+                'casa_central' => ['string', 'max:1', 'regex:"[SN]"'],
+                'email' => ['string', 'max:50', 'email'],
                 'cargo' => ['string', 'max:50'],
                 'telefono_movil' => ['string', 'max:50'],
                 'observaciones' => ['string', 'max:500']
             ];
 
             //Mensajes de error personalizados para cada regla de validación
-            //$messages = [
-                //'' => '',
+            $messages = [
+                'casa_central' => 'El campo CASA CENTRAL solo acepta los tipos S y N'
                 //'' => ''
-           // ];
+            ];
 
             //Validar los datos recibidos con las reglas de validación
             $validator = app('validator')->make($data, $rules);

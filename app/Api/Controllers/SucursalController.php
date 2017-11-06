@@ -36,18 +36,18 @@ class SucursalController extends Controller
      * @apiGroup Sucursal
      * @apiParam {Number} id_empresa Identificador de la Empresa a la que pertenecerá la Sucursal
      * @apiParam {String} descripcion Descripción de la Sucursal
-     * @apiParam {String} [direccion] Dirección de la Sucursal
-     * @apiParam {String} [ciudad] Ciudad de la Sucursal
-     * @apiParam {String} [estado] Estado de la Sucursal
-     * @apiParam {Number} [codigo_postal] CP de la Sucursal
-     * @apiParam {String} [telefono] Teléfono de la Sucursal
-     * @apiParam {String} [fax] FAX de la Sucursal
-     * @apiParam {String} [contacto] Nombre del Contacto de la Sucursal
+     * @apiParam {String{255}} [direccion] Dirección de la Sucursal
+     * @apiParam {String{255}} [ciudad] Ciudad de la Sucursal
+     * @apiParam {String{255}} [estado] Estado de la Sucursal
+     * @apiParam {Number{5}} [codigo_postal] CP de la Sucursal
+     * @apiParam {String{255}} [telefono] Teléfono de la Sucursal
+     * @apiParam {String{255}} [fax] FAX de la Sucursal
+     * @apiParam {String{255}} [contacto] Nombre del Contacto de la Sucursal
      * @apiParam {String{1}="N","S"} [casa_central] Indica si es o no Casa Central
-     * @apiParam {String} [email] Email de la Sucursal
-     * @apiParam {String} [cargo] Cargo de la Sucursal
-     * @apiParam {String} [telefono_movil] Teléfono Móvil de la Sucursal
-     * @apiParam {String} [observaciones] Observaciones
+     * @apiParam {String{50}} [email] Email de la Sucursal
+     * @apiParam {String{50}} [cargo] Cargo de la Sucursal
+     * @apiParam {String{50}} [telefono_movil] Teléfono Móvil de la Sucursal
+     * @apiParam {String{500}} [observaciones] Observaciones
      *
      * @apiError StoreResourceFailedException Error al registrar una Sucursal
      * @apiErrorExample Error-Response:
