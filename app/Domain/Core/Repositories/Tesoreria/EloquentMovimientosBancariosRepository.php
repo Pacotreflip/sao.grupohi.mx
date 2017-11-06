@@ -100,12 +100,14 @@ class EloquentMovimientosBancariosRepository implements MovimientosBancariosRepo
             if (!$transaccion_realizo)
             {
                 DB::connection('cadeco')->rollBack();
-                return 'No se pudo concretar la transacción';
+                $error = 'No se pudo concretar la transacción';
+                throw new HttpResponseException(new Response($error, 404));
+                return $error;
             }
 
             // Enlaza la transacción con su respectivo movimiento.
             MovimientoTransacciones::create([
-                'id_movimiento_bancario' => $record->id_traspaso,
+                'id_movimiento_bancario' => $record->id_movimiento_bancario,
                 'id_transaccion' => $transaccion->id_transaccion,
                 'tipo_transaccion' => $tipo,
             ]);
@@ -115,7 +117,7 @@ class EloquentMovimientosBancariosRepository implements MovimientosBancariosRepo
             throw $e;
         }
 
-        return MovimientosBancarios::where('id_tipo_movimiento', '=', $record->id_tipo_movimiento)->with(['cuenta_destino.empresa', 'cuenta_origen.empresa', 'movimiento_transaccion.transaccion_debito'])->first();
+        return MovimientosBancarios::where('id_movimiento_bancario', '=', $record->id_movimiento_bancario)->with(['tipo', 'cuenta.empresa', 'movimiento_transaccion.transaccion'])->first();
     }
 
     public function with($relations) {
@@ -131,25 +133,36 @@ class EloquentMovimientosBancariosRepository implements MovimientosBancariosRepo
      */
     public function delete($id)
     {
-        try {
-            DB::connection('cadeco')->beginTransaction();
+        // Define el error a mostrar
+        $error = 'No se encontró el movimiento bancario que se desea eliminar';
 
+        try {
             $item = $this->model->where('id_movimiento_bancario', '=', $id);
 
             if (!$item) {
-                throw new HttpResponseException(new Response('No se encontró el movimiento bancario que se desea eliminar', 404));
+                throw new HttpResponseException(new Response($error, 404));
+
+                return $error;
             }
 
+            DB::connection('cadeco')->beginTransaction();
             $item->delete($id);
+            DB::connection('cadeco')->commit();
 
             // Obtener el id de los movimientos_transacciones a eliminar
             $transacciones = MovimientoTransacciones::where('id_movimiento_bancario', '=', $id)->get();
+
+            // No existen transacciones asociadas con este movimiento.
+            if (empty($transacciones)) {
+                throw new HttpResponseException(new Response($error, 404));
+
+                return $error;
+            }
 
             foreach ($transacciones as $tr)
                 Transaccion::where('id_transaccion', $tr->id_transaccion)
                     ->update(['estado' => '-2']);
 
-            DB::connection('cadeco')->commit();
         } catch (\Exception $e) {
             DB::connection('cadeco')->rollBack();
             throw $e;
@@ -167,26 +180,40 @@ class EloquentMovimientosBancariosRepository implements MovimientosBancariosRepo
      */
     public function update($data, $id)
     {
+        // Define el error a mostrar
+        $error = 'No se encontró el movimiento que se desea editar';
+
         try {
-            DB::connection('cadeco')->beginTransaction();
-
-
             $item = $this->model->find($id);
 
             if (!$item) {
-                throw new HttpResponseException(new Response('No se encontró el movimiento que se desea eliminar', 404));
+                throw new HttpResponseException(new Response($error, 404));
+
+                return $error;
             }
 
+            DB::connection('cadeco')->beginTransaction();
             $item->update($data);
-
             DB::connection('cadeco')->commit();
+
+            // Obtener el id de las transacciones a editar
+            $transacciones = MovimientoTransacciones::where('id_movimiento_bancario', '=', $id)->get();
+
+            foreach ($transacciones as $tr)
+                Transaccion::where('id_transaccion', $tr->id_transaccion)
+                    ->update([
+                        'fecha' => $data['fecha'],
+                        'vencimiento' => $data['vencimiento'],
+                        'cumplimiento' =>$data['cumplimiento'],
+                        'referencia' => $data['referencia'],
+                    ]);
 
         } catch (\Exception $e) {
             DB::connection('cadeco')->rollBack();
             throw $e;
         }
 
-        return $this->model->with(['cuenta_origen.empresa', 'cuenta_destino.empresa', 'traspaso_transaccion.transaccion_debito'])->find($item->id_traspaso);
+        return $this->model->with(['tipo', 'cuenta.empresa', 'movimiento_transaccion.transaccion'])->find($item->id_movimiento_bancario);
     }
 
     public function obras()

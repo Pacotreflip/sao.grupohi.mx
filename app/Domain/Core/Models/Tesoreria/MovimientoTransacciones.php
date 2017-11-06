@@ -12,7 +12,7 @@ class MovimientoTransacciones extends BaseModel
 
     protected $dates = ['deleted_at'];
     protected $connection = 'cadeco';
-    protected $table = 'Tesoreria.traspaso_transacciones';
+    protected $table = 'Tesoreria.movimiento_transacciones';
     protected $primaryKey = 'id_movimiento_transaccion';
     protected $fillable = [
         'id_movimiento_bancario',

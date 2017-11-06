@@ -19,6 +19,8 @@ Route::group(['prefix' => 'tesoreria'], function () {
      * Movimientos Bancarios
      */
     Route::get('movimientos_bancarios', 'MovimientosBancariosController@index')->name('tesoreria.movimientos_bancarios.index');
-    Route::post('movimientos_bancarios', 'MovimientosBancariosControllerr@store')->name('tesoreria.movimientos_bancarios.store');
+    Route::post('movimientos_bancarios', 'MovimientosBancariosController@store')->name('tesoreria.movimientos_bancarios.store');
+    Route::patch('movimientos_bancarios/{id}', 'MovimientosBancariosController@update')->name('tesoreria.movimientos_bancarios.update');
+    Route::get('movimientos_bancarios/{id}', 'MovimientosBancariosController@destroy')->name('tesoreria.movimientos_bancarios.destroy')->where(['id' => '[0-9]+']);
 });
 

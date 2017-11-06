@@ -30,20 +30,21 @@ class MovimientosBancarios extends BaseModel
 
         static::creating(function ($model) {
             $model->estatus = 1;
-            $model->registro = auth()->user()->usuario;
+            $model->registro = auth()->user()->idusuario;
         });
     }
 
-    public function cuenta_destino() {
-        return $this->belongsTo(Cuenta::class, 'id_cuenta_destino', 'id_cuenta');
+    public function cuenta() {
+        return $this->belongsTo(Cuenta::class, 'id_cuenta', 'id_cuenta');
     }
 
-    public function cuenta_origen() {
-        return $this->belongsTo(Cuenta::class, 'id_cuenta_origen', 'id_cuenta');
-    }
 
     public function movimiento_transaccion()
     {
         return $this->belongsTo(MovimientoTransacciones::class, 'id_movimiento_bancario', 'id_movimiento_bancario');
+    }
+
+    public function tipo() {
+        return $this->belongsTo(TiposMovimientos::class, 'id_tipo_movimiento', 'id_tipo_movimiento');
     }
 }

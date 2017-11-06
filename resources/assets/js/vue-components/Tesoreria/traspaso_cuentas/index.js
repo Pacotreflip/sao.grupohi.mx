@@ -43,9 +43,9 @@ Vue.component('traspaso-cuentas-index', {
     {
         var self = this;
         $("#cumplimiento").datepicker().on("changeDate",function () {
-            Vue.set(self.form, 'vencimiento', $('#cumplimiento').val());
-            Vue.set(self.form, 'cumplimiento', $('#cumplimiento').val());
-        });
+        Vue.set(self.form, 'vencimiento', $('#cumplimiento').val());
+        Vue.set(self.form, 'cumplimiento', $('#cumplimiento').val());
+    });
 
         $(".fechas_edit").datepicker().on("changeDate",function () {
             var thisElement = $(this);

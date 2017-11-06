@@ -22,8 +22,8 @@ class MovimientosBancariosController extends Controller
     public function __construct(MovimientosBancariosRepository $movimientos)
     {
         parent::__construct();
-//        $this->middleware('auth');
-//        $this->middleware('context');
+        $this->middleware('auth');
+        $this->middleware('context');
 
         $this->movimientos = $movimientos;
     }
@@ -35,13 +35,12 @@ class MovimientosBancariosController extends Controller
      */
     public function index(Request $request)
     {
-        $dataView = [
+        return view('tesoreria.movimientos_bancarios.index')
+            ->with('dataView', [
             'cuentas' => Cuenta::paraTraspaso()->with('empresa')->get(),
             'tipos' => TiposMovimientos::get(),
-        ];
-
-        return view('tesoreria.movimientos_bancarios.index')
-            ->with('dataView', $dataView);
+            'movimientos' => MovimientosBancarios::with(['tipo', 'cuenta.empresa', 'movimiento_transaccion.transaccion'])->get(),
+        ]);
     }
 
     /**
@@ -50,14 +49,32 @@ class MovimientosBancariosController extends Controller
     public function store(Request $request)
     {
         $record = $this->movimientos->create($request->all());
+
+        return response()->json(['data' =>
+            [
+                'movimiento' => $record
+            ]
+        ], 200);
     }
     public function destroy($id)
     {
+        $this->movimientos->delete($id);
 
+        return response()->json(['data' =>
+            [
+                'id_movimiento_bancario' => $id
+            ]
+        ], 200);
     }
 
     public function update(Request $request, $id)
     {
+        $movimiento = $this->movimientos->update($request->all(), $id);
 
+        return response()->json(['data' =>
+            [
+                'movimiento' => $movimiento
+            ]
+        ], 200);
     }
 }
