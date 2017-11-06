@@ -159,7 +159,7 @@ Vue.component('movimientos_bancarios-index', {
                 beforeSend: function () {},
                 success: function (data, textStatus, xhr) {
                     self.data.movimientos.forEach(function (movimiento) {
-                        if (movimiento.id_movimiento_bancario === data.data.id_movimiento_bancario) {
+                        if (movimiento.id_movimiento_bancario == data.data.id_movimiento_bancario) {
                             self.data.movimientos.splice(self.data.movimientos.indexOf(movimiento), 1);
                         }
                     });

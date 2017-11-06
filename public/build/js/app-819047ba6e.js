@@ -82016,7 +82016,7 @@ Vue.component('movimientos_bancarios-index', {
                 'id_tipo_movimiento': '',
                 'estatus': '',
                 'id_cuenta': '',
-                'impuesto': '',
+                'impuesto': '0',
                 'importe': '',
                 'observaciones': '',
                 'fecha': moment().format('YYYY-MM-DD'),
@@ -82158,7 +82158,7 @@ Vue.component('movimientos_bancarios-index', {
                 beforeSend: function beforeSend() {},
                 success: function success(data, textStatus, xhr) {
                     self.data.movimientos.forEach(function (movimiento) {
-                        if (movimiento.id_movimiento_bancario === data.data.id_movimiento_bancario) {
+                        if (movimiento.id_movimiento_bancario == data.data.id_movimiento_bancario) {
                             self.data.movimientos.splice(self.data.movimientos.indexOf(movimiento), 1);
                         }
                     });
