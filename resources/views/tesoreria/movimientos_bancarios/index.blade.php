@@ -25,18 +25,18 @@
             <div id="movimiento_modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="MovimientoModal" data-backdrop="static" data-keyboard="false">
                 <div class="modal-dialog" role="document">
                     <div class="modal-content">
-                        <form  id="form_guardar_movimiento" @submit.prevent="validateForm('form_guardar_movimiento', 'confirm_guardar')"  data-vv-scope="form_guardar_movimiento">
+                        <form  id="form_guardar_movimiento" name="form_guardar_movimiento" @submit.prevent="validateForm('form_guardar_movimiento', 'confirm_guardar')"  data-vv-scope="form_guardar_movimiento">
                             <div class="modal-header">
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                                <h4 class="modal-title">Realizar Traspaso</h4>
+                                <button type="button" class="close" v-on:click="close_modal_movimiento()" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                <h4 class="modal-title">Realizar Movimiento</h4>
                             </div>
                             <div class="modal-body">
                                 <div class="row">
                                     {{--Tipo movimiento--}}
                                     <div class="col-md-6">
-                                        <div class="form-group" :class="{'has-error': validation_errors.has('form_guadar_movimiento.id_tipo_movimiento')}">
+                                        <div class="form-group" :class="{'has-error': validation_errors.has('form_guadar_movimiento.tipo_movimiento')}">
                                             <label><b>Tipo de movimiento</b></label>
-                                            <Select class="form-control" name="id_tipo_movimiento" id="id_tipo_movimiento" v-model="form.id_tipo_movimiento"  v-validate="'required'">
+                                            <Select class="form-control" name="tipo_movimiento" id="tipo_movimiento" v-model="form.id_tipo_movimiento"  v-validate="'required'">
                                                 <option value>[--SELECCIONE--]</option>
                                                 <option v-for="(item, index) in tipos" :value="item.id_tipo_movimiento">@{{item.descripcion}}</option>
                                             </Select>
@@ -47,7 +47,7 @@
                                     <div class="col-md-6">
                                         <div class="form-group" :class="{'has-error': validation_errors.has('form_guadar_movimiento.Cuenta')}">
                                             <label><b>Cuenta</b></label>
-                                            <Select class="form-control" name="Cuenta" id="id_cuenta" v-model="form.id_cuenta" v-validate="'required'">
+                                            <Select class="form-control" name="Cuenta" id="Cuenta" v-model="form.id_cuenta" v-validate="'required'">
                                                 <option value>[--SELECCIONE--]</option>
                                                 <option v-for="item in cuentas" :value="item.id_cuenta">@{{item.numero }} @{{item.abreviatura }} (@{{item.empresa.razon_social}}) </option>
                                             </Select>
@@ -58,7 +58,7 @@
                                     <div class="col-md-6" v-if="form.id_tipo_movimiento === 4">
                                         <div class="form-group" :class="{'has-error': validation_errors.has('form_guadar_movimiento.Impuesto')}">
                                             <label><b>Impuesto</b></label>
-                                            <input type="text" class="form-control pull-right" id="impuesto" value="" name="Impuesto" v-model="form.impuesto" v-validate="'required'">
+                                            <input type="text" class="form-control pull-right" id="Impuesto" value="" name="Impuesto" v-model="form.impuesto">
                                             <label class="help" v-show="validation_errors.has('form_guadar_movimiento.Impuesto')">@{{ validation_errors.first('form_guadar_movimiento.Impuesto') }}</label>
                                         </div>
                                     </div>
@@ -66,7 +66,7 @@
                                     <div class="col-md-6">
                                         <div class="form-group" :class="{'has-error': validation_errors.has('form_guadar_movimiento.Importe')}">
                                             <label><b>Importe</b></label>
-                                            <input type="text" class="form-control pull-right" id="importe" value="" name="Importe" v-model="form.importe" v-validate="'required|decimal:6'">
+                                            <input type="text" class="form-control pull-right" id="Importe" name="Importe" v-model="form.importe" v-validate="'required|decimal:6'">
                                             <label class="help" v-show="validation_errors.has('form_guadar_movimiento.Importe')">@{{ validation_errors.first('form_guadar_movimiento.Importe') }}</label>
                                         </div>
                                     </div>
@@ -74,7 +74,7 @@
                                     <div class="col-md-12">
                                         <div class="form-group" :class="{'has-error': validation_errors.has('form_guadar_movimiento.Referencia')}">
                                             <label><b>Referencia</b></label>
-                                            <input type="text" class="form-control pull-right" id="referencia" value="" name="Referencia" v-model="form.referencia" v-validate="'required'">
+                                            <input type="text" class="form-control pull-right" id="Referencia" value="" name="Referencia" v-model="form.referencia" v-validate="'required'">
                                             <label class="help" v-show="validation_errors.has('form_guadar_movimiento.Referencia')">@{{ validation_errors.first('form_guadar_movimiento.Referencia') }}</label>
                                         </div>
                                     </div>
@@ -83,7 +83,7 @@
                                         <div class="form-group"
                                              :class="{'has-error': validation_errors.has('form_guardar_movimiento.Fecha')}">
                                             <label for="Fecha" class="control-label"><b>Fecha</b></label>
-                                            <input type="text" name="Fecha" class="form-control input-sm " id="fecha"
+                                            <input type="text" name="Fecha" class="form-control input-sm " id="Fecha"
                                                    v-model="form.fecha"
                                                    v-datepicker>
                                             <label class="help"
@@ -95,7 +95,7 @@
                                         <div class="form-group"
                                              :class="{'has-error': validation_errors.has('form_guardar_movimiento.Cumplimiento')}">
                                             <label for="Cumplimiento" class="control-label"><b>Cumplimiento</b></label>
-                                            <input type="text" name="Cumplimiento" class="form-control input-sm " id="cumplimiento"
+                                            <input type="text" name="Cumplimiento" class="form-control input-sm " id="Cumplimiento"
                                                    v-model="form.cumplimiento"
                                                    v-datepicker>
                                             <label class="help"
@@ -106,7 +106,7 @@
                                     <div class="col-md-4">
                                         <div class="form-group">
                                             <label for="Vencimiento" class="control-label"><b>Vencimiento</b></label>
-                                            <input type="text" name="Vencimiento" class="form-control input-sm " id="vencimiento"  :value="form.vencimiento" v-model="form.vencimiento"
+                                            <input type="text" name="Vencimiento" class="form-control input-sm " id="Vencimiento"  :value="form.vencimiento" v-model="form.vencimiento"
                                                    disabled >
                                         </div>
                                     </div>
@@ -114,14 +114,14 @@
                                     <div class="col-md-12">
                                         <div class="form-group" :class="{'has-error': validation_errors.has('form_guadar_movimiento.Observaciones')}">
                                             <label for="comment"><b>Observaciones</b></label>
-                                            <textarea class="form-control" rows="8" id="observaciones" name="Observaciones" v-model="form.observaciones" v-validate="'required'"></textarea>
+                                            <textarea class="form-control" rows="8" id="Observaciones" name="Observaciones" v-model="form.observaciones" v-validate="'required'"></textarea>
                                             <label class="help" v-show="validation_errors.has('form_guadar_movimiento.Observaciones')">@{{ validation_errors.first('form_guadar_movimiento.Observaciones') }}</label>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                             <div class="modal-footer">
-                                <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                                <button type="button" class="btn btn-default" v-on:click="close_modal_movimiento()">Cerrar</button>
                                 <button type="submit" class="btn btn-primary">Guardar</button>
                             </div>
                         </form>
@@ -210,92 +210,92 @@
                             <div class="modal-body row">
                                 {{--Tipo movimiento Edit--}}
                                 <div class="col-md-6">
-                                    <div class="form-group" :class="{'has-error': validation_errors.has('form_editar_movimiento.Edit id_tipo_movimiento')}">
+                                    <div class="form-group" :class="{'has-error': validation_errors.has('form_editar_movimiento.Editar id_tipo_movimiento')}">
                                         <label><b>Tipo de movimiento</b></label>
-                                        <Select class="form-control" name="Edit id_tipo_movimiento" id="Edit id_tipo_movimiento" v-model="movimiento_edit.id_tipo_movimiento"  v-validate="'required'">
+                                        <Select class="form-control" name="Editar id_tipo_movimiento" id="Editar id_tipo_movimiento" v-model="movimiento_edit.id_tipo_movimiento"  v-validate="'required'">
                                             <option value>[--SELECCIONE--]</option>
                                             <option v-for="(item, index) in tipos"
                                                 :value="item.id_tipo_movimiento"
                                                 :selected="movimiento_edit.id_tipo_movimiento == item.id_tipo_movimiento ? 'selected' : ''">@{{item.descripcion}}</option>
                                         </Select>
-                                        <label class="help" v-show="validation_errors.has('form_editar_movimiento.Edit id_tipo_movimiento')">@{{ validation_errors.first('form_editar_movimiento.Edit id_tipo_movimiento') }}</label>
+                                        <label class="help" v-show="validation_errors.has('form_editar_movimiento.Editar id_tipo_movimiento')">@{{ validation_errors.first('form_editar_movimiento.Editar id_tipo_movimiento') }}</label>
                                     </div>
                                 </div>
                                 {{--Cuenta--}}
                                 <div class="col-md-6">
-                                    <div class="form-group" :class="{'has-error': validation_errors.has('form_editar_movimiento.Edit Cuenta')}">
+                                    <div class="form-group" :class="{'has-error': validation_errors.has('form_editar_movimiento.Editar Cuenta')}">
                                         <label><b>Cuenta</b></label>
-                                        <Select class="form-control" name="Edit Cuenta" id="Edit Cuenta" v-model="movimiento_edit.id_cuenta" v-validate="'required'">
+                                        <Select class="form-control" name="Editar Cuenta" id="Editar Cuenta" v-model="movimiento_edit.id_cuenta" v-validate="'required'">
                                             <option value>[--SELECCIONE--]</option>
                                             <option v-for="item in cuentas"
                                                 :value="item.id_cuenta"
                                                 :selected="movimiento_edit.id_cuenta == item.id_cuenta ? 'selected' : ''">@{{item.numero }} @{{item.abreviatura }} (@{{item.empresa.razon_social}}) </option>
                                         </Select>
-                                        <label class="help" v-show="validation_errors.has('form_editar_movimiento.Edit Cuenta')">@{{ validation_errors.first('form_editar_movimiento.Edit Cuenta') }}</label>
+                                        <label class="help" v-show="validation_errors.has('form_editar_movimiento.Editar Cuenta')">@{{ validation_errors.first('form_editar_movimiento.Editar Cuenta') }}</label>
                                     </div>
                                 </div>
                                 {{--Impuesto--}}
-                                <div class="col-md-6" v-if="movimiento_edit.id_tipo_movimiento === 4">
-                                    <div class="form-group" :class="{'has-error': validation_errors.has('form_editar_movimiento.Edit Impuesto')}">
+                                <div class="col-md-6" v-if="movimiento_edit.id_tipo_movimiento == 4">
+                                    <div class="form-group" :class="{'has-error': validation_errors.has('form_editar_movimiento.Editar Impuesto')}">
                                         <label><b>Impuesto</b></label>
-                                        <input type="text" class="form-control pull-right" id="Edit Impuesto" value="" name="Edit Impuesto" v-model="movimiento_edit.impuesto" v-validate="'required|digits:20'">
-                                        <label class="help" v-show="validation_errors.has('form_editar_movimiento.Edit Impuesto')">@{{ validation_errors.first('form_editar_movimiento.Edit Impuesto') }}</label>
+                                        <input type="text" class="form-control pull-right" id="Editar Impuesto" value="" name="Editar Impuesto" v-model="movimiento_edit.impuesto">
+                                        <label class="help" v-show="validation_errors.has('form_editar_movimiento.Editar Impuesto')">@{{ validation_errors.first('form_editar_movimiento.Editar Impuesto') }}</label>
                                     </div>
                                 </div>
                                 {{--Importe--}}
                                 <div class="col-md-6">
-                                    <div class="form-group" :class="{'has-error': validation_errors.has('form_editar_movimiento.Edit Importe')}">
+                                    <div class="form-group" :class="{'has-error': validation_errors.has('form_editar_movimiento.Editar Importe')}">
                                         <label><b>Importe</b></label>
-                                        <input type="text" class="form-control pull-right" id="Edit Importe" value="" name="Edit Importe" v-model="movimiento_edit.importe" v-validate="'required|decimal:6'">
-                                        <label class="help" v-show="validation_errors.has('form_editar_movimiento.Edit Importe')">@{{ validation_errors.first('form_editar_movimiento.Edit Importe') }}</label>
+                                        <input type="text" class="form-control pull-right" id="Editar Importe" value="" name="Editar Importe" v-model="movimiento_edit.importe" v-validate="'required|decimal:6'">
+                                        <label class="help" v-show="validation_errors.has('form_editar_movimiento.Editar Importe')">@{{ validation_errors.first('form_editar_movimiento.Editar Importe') }}</label>
                                     </div>
                                 </div>
                                 {{--Referencia--}}
                                 <div class="col-md-12">
-                                    <div class="form-group" :class="{'has-error': validation_errors.has('form_editar_movimiento.Edit Referencia')}">
+                                    <div class="form-group" :class="{'has-error': validation_errors.has('form_editar_movimiento.Editar Referencia')}">
                                         <label><b>Referencia</b></label>
-                                        <input type="text" class="form-control pull-right" id="referencia" value="" name="Edit Referencia" v-model="movimiento_edit.referencia" v-validate="'required'">
-                                        <label class="help" v-show="validation_errors.has('form_editar_movimiento.Edit Referencia')">@{{ validation_errors.first('form_editar_movimiento.Edit Referencia') }}</label>
+                                        <input type="text" class="form-control pull-right" id="referencia" value="" name="Editar Referencia" v-model="movimiento_edit.referencia" v-validate="'required'">
+                                        <label class="help" v-show="validation_errors.has('form_editar_movimiento.Editar Referencia')">@{{ validation_errors.first('form_editar_movimiento.Editar Referencia') }}</label>
                                     </div>
                                 </div>
                                 {{--Fecha--}}
                                 <div class="col-md-4">
                                     <div class="form-group"
-                                         :class="{'has-error': validation_errors.has('form_editar_movimiento.Edit Fecha')}">
+                                         :class="{'has-error': validation_errors.has('form_editar_movimiento.Editar Fecha')}">
                                         <label for="Fecha" class="control-label"><b>Fecha</b></label>
-                                        <input type="text" name="Edit Fecha" class="form-control input-sm " id="Edit Fecha"
+                                        <input type="text" name="Editar Fecha" class="form-control input-sm " id="Editar Fecha"
                                                v-model="movimiento_edit.fecha"
                                                v-datepicker>
                                         <label class="help"
-                                               v-show="validation_errors.has('form_editar_movimiento.Edit Fecha')">@{{ validation_errors.first('form_editar_movimiento.Edit Fecha') }}</label>
+                                               v-show="validation_errors.has('form_editar_movimiento.Editar Fecha')">@{{ validation_errors.first('form_editar_movimiento.Editar Fecha') }}</label>
                                     </div>
                                 </div>
                                 {{--Cumplimiento--}}
                                 <div class="col-md-4">
                                     <div class="form-group"
-                                         :class="{'has-error': validation_errors.has('form_editar_movimiento.Edit Cumplimiento')}">
+                                         :class="{'has-error': validation_errors.has('form_editar_movimiento.Editar Cumplimiento')}">
                                         <label for="Cumplimiento" class="control-label"><b>Cumplimiento</b></label>
-                                        <input type="text" name="Edit Cumplimiento" class="form-control input-sm " id="Edit Cumplimiento"
+                                        <input type="text" name="Editar Cumplimiento" class="form-control input-sm " id="edit_cumplimiento"
                                                v-model="movimiento_edit.cumplimiento"
                                                v-datepicker>
                                         <label class="help"
-                                               v-show="validation_errors.has('form_editar_movimiento.Edit Cumplimiento')">@{{ validation_errors.first('form_editar_movimiento.Edit Cumplimiento') }}</label>
+                                               v-show="validation_errors.has('form_editar_movimiento.Editar Cumplimiento')">@{{ validation_errors.first('form_editar_movimiento.Editar Cumplimiento') }}</label>
                                     </div>
                                 </div>
                                 {{--Vencimiento--}}
                                 <div class="col-md-4">
                                     <div class="form-group">
                                         <label for="Vencimiento" class="control-label"><b>Vencimiento</b></label>
-                                        <input type="text" name="Edit Vencimiento" class="form-control input-sm " id="Edit Vencimiento"  :value="movimiento_edit.vencimiento" v-model="movimiento_edit.vencimiento"
+                                        <input type="text" name="Editar Vencimiento" class="form-control input-sm " id="Editar Vencimiento"  :value="movimiento_edit.vencimiento" v-model="movimiento_edit.vencimiento"
                                                disabled >
                                     </div>
                                 </div>
                                 {{--Observaciones--}}
                                 <div class="col-md-12">
-                                    <div class="form-group" :class="{'has-error': validation_errors.has('form_editar_movimiento.Edit Observaciones')}">
+                                    <div class="form-group" :class="{'has-error': validation_errors.has('form_editar_movimiento.Editar Observaciones')}">
                                         <label for="comment"><b>Observaciones</b></label>
-                                        <textarea class="form-control" rows="8" id="Edit Observaciones" name="Edit Observaciones" v-model="movimiento_edit.observaciones" v-validate="'required'"></textarea>
-                                        <label class="help" v-show="validation_errors.has('form_editar_movimiento.Edit Observaciones')">@{{ validation_errors.first('form_editar_movimiento.Edit Observaciones') }}</label>
+                                        <textarea class="form-control" rows="8" id="Editar Observaciones" name="Editar Observaciones" v-model="movimiento_edit.observaciones" v-validate="'required'"></textarea>
+                                        <label class="help" v-show="validation_errors.has('form_editar_movimiento.Editar Observaciones')">@{{ validation_errors.first('form_editar_movimiento.Editar Observaciones') }}</label>
                                     </div>
                                 </div>
                             </div>

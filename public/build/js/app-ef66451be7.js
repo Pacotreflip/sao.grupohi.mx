@@ -82043,11 +82043,15 @@ Vue.component('movimientos_bancarios-index', {
     computed: {},
     mounted: function mounted() {
         var self = this;
-        $("#cumplimiento").datepicker().on("changeDate", function () {
-            Vue.set(self.form, 'vencimiento', $('#cumplimiento').val());
-            Vue.set(self.form, 'cumplimiento', $('#cumplimiento').val());
-        });
 
+        $("#Cumplimiento").datepicker().on("changeDate", function () {
+            Vue.set(self.form, 'vencimiento', $('#Cumplimiento').val());
+            Vue.set(self.form, 'cumplimiento', $('#Cumplimiento').val());
+        });
+        $("#edit_cumplimiento").datepicker().on("changeDate", function () {
+            Vue.set(self.movimiento_edit, 'vencimiento', $('#edit_cumplimiento').val());
+            Vue.set(self.movimiento_edit, 'cumplimiento', $('#edit_cumplimiento').val());
+        });
         $("#Fecha").datepicker().on("changeDate", function () {
             var thisElement = $(this);
 
@@ -82056,11 +82060,11 @@ Vue.component('movimientos_bancarios-index', {
             thisElement.blur();
             self.$validator.validate('required', self.form.fecha);
         });
-
         $(".fechas_edit").datepicker().on("changeDate", function () {
             var thisElement = $(this);
             var id = thisElement.attr('id').replace('edit_', '');
-            Vue.set(self.movimiento_edit, id, thisElement.val());
+
+            Vue.set(self.traspaso_edit, id, thisElement.val());
         });
     },
     directives: {
@@ -82130,6 +82134,7 @@ Vue.component('movimientos_bancarios-index', {
             $('#id_tipo_movimiento').focus();
         },
         close_modal_movimiento: function close_modal_movimiento() {
+            this.reset_form();
             $('#movimiento_modal').modal('hide');
         },
         confirm_eliminar: function confirm_eliminar(id_movimiento_bancario) {
@@ -82254,6 +82259,18 @@ Vue.component('movimientos_bancarios-index', {
         },
         trim_fecha: function trim_fecha(fecha) {
             return fecha.substring(0, 10);
+        },
+        reset_form: function reset_form() {
+            Vue.set(this.form, 'id_tipo_movimiento', '');
+            Vue.set(this.form, 'estatus', '');
+            Vue.set(this.form, 'id_cuenta', '');
+            Vue.set(this.form, 'impuesto', '');
+            Vue.set(this.form, 'observaciones', '');
+            Vue.set(this.form, 'importe', '');
+            Vue.set(this.form, 'fecha', '');
+            Vue.set(this.form, 'cumplimiento', '');
+            Vue.set(this.form, 'vencimiento', '');
+            Vue.set(this.form, 'referencia', '');
         }
     }
 });
