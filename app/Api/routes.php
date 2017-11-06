@@ -14,4 +14,3 @@ $api->version('v1', ['middleware' => 'cors'], function ($api) {
         $api->post('sucursal', 'Ghi\Api\Controllers\SucursalController@store');
     });
 });
-

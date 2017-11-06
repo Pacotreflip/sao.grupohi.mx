@@ -31,15 +31,15 @@ class EmpresaController extends Controller
      * @apiVersion 1.0.0
      * @apiGroup Empresa
      * @apiParam {String} rfc RFC de la Empresa
-     * @apiParam {String} razon_social Razón Social de la Empresa
+     * @apiParam {String{max:255}} razon_social Razón Social de la Empresa
      * @apiParam {Number} tipo_empresa Tipo de Empresa
-     * @apiParam {Number} [dias_credito]
-     * @apiParam {}
-     * @apiParam {}
-     * @apiParam {}
-     * @apiParam {}
-     * @apiParam {}
-     * @apiParam {}
+     * @apiParam {Number} [dias_credito] Días de Crédito
+     * @apiParam {String{max:64}} [formato] Formato de la Empresa
+     * @apiParam {String{max:16}} [cuenta_contable] Cuenta Contable de la empresa
+     * @apiParam {Number} [tipo_cliente] Tipo de Cliente
+     * @apiParam {Number{min:0}} [porcentaje] Porcentaje
+     * @apiParam {Number} [no_proveedor_virtual] Número de Proovedor Virtual
+     * @apiParam {Nmber} [personalidad] Personalidad
      *
      * @apiError StoreResourceFailedException Error al registrar una Empresa
      * @apiErrorExample Error-Response:
@@ -61,7 +61,8 @@ class EmpresaController extends Controller
      *       "id_empresa": "xxx",
      *       "tipo_empresa": "x",
      *       "razon_social": "Razón Social",
-     *       "rfc": "000000XXX"
+     *       "rfc": "000000XXX",
+     *       ...
      *     }
      *   }
      */
