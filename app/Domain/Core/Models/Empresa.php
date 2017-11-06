@@ -27,7 +27,7 @@ class Empresa extends BaseModel
 
         static::creating(function($model) {
             $model->UsuarioRegistro = auth()->user()->idusuario;
-            $model->FechaHoraRegistro = Carbon::now();
+            $model->FechaHoraRegistro = Carbon::now()->toDateTimeString();
         });
     }
 
