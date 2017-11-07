@@ -13,7 +13,7 @@
             inline-template
             v-cloak>
         <section>
-            {{--@permission(['registrar_movimiento_bancario'])--}}
+            @permission(['registrar_movimiento_bancario'])
             <div class="row">
                 <div class="col-md-12">
                     <button class="btn btn-sm btn-primary pull-right" v-on:click="modal_movimiento()">Realizar Movimiento</button>
@@ -128,9 +128,9 @@
                     </div><!-- /.modal-content -->
                 </div><!-- /.modal-dialog -->
             </div><!-- /.modal -->
-            {{--@endpermission--}}
+            @endpermission
 
-            {{--@permission(['consultar_movimiento_bancario'])--}}
+            @permission(['consultar_movimiento_bancario'])
             <div class="row">
                 <div class="col-md-12">
                     <div class="box box-success">
@@ -183,8 +183,8 @@
                     </div>
                 </div>
             </div>
-            {{--@endpermission--}}
-            {{--@permission(['registrar_movimiento_bancario'])--}}
+            @endpermission
+            @permission(['registrar_movimiento_bancario'])
             <div class="row">
                 <div class="col-md-12">
                     <button class="btn btn-sm btn-primary pull-right" v-on:click="modal_traspaso()">Realizar Movimiento</button>
@@ -193,10 +193,10 @@
 
                 </div>
             </div>
-            {{--@endpermission--}}
+            @endpermission
 
             <!-- Modal Edit Cuenta -->
-            {{--@permission(['editar_traspaso_cuenta'])--}}
+            @permission(['editar_traspaso_cuenta'])
             <div id="edit_movimiento_modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="editMovimientoModal" data-backdrop="static" data-keyboard="false">
                 <form  id="form_editar_movimiento" @submit.prevent="validateForm('form_editar_movimiento','confirm_editar')"  data-vv-scope="form_editar_movimiento">
                     <div class="modal-dialog" role="document">
@@ -307,7 +307,7 @@
                     </div>
                 </form>
             </div>
-            {{--@endpermission--}}
+            @endpermission
         </section>
     </movimientos_bancarios-index>
 
