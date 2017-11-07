@@ -228,7 +228,11 @@ class AppServiceProvider extends ServiceProvider
         );
         $this->app->bind(
             \Ghi\Domain\Core\Contracts\ContratoProyectadoRepository::class,
-            \Ghi\Domain\Core\Contracts\EloquentContratoProyectacoRepository::class
+            \Ghi\Domain\Core\Repositories\EloquentContratoProyectadoRepository::class
+        );
+        $this->app->bind(
+            \Ghi\Domain\Core\Contracts\ContratoRepository::class,
+            \Ghi\Domain\Core\Repositories\EloquentContratoRepository::class
         );
     }
 }
