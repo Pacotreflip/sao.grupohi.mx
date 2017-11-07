@@ -11,7 +11,6 @@ namespace Ghi\Api\Controllers;
 
 use Dingo\Api\Http\Request;
 use Dingo\Api\Routing\Helpers;
-use Ghi\Domain\Core\Models\Transacciones\ContratoProyectado;
 use Ghi\Domain\Core\Repositories\EloquentContratoProyectadoRepository;
 use Ghi\Domain\Core\Transformers\TransaccionTransformer;
 use Ghi\Http\Controllers\Controller;
@@ -75,10 +74,6 @@ class ContratoProyectadoController extends Controller
     public function store(Request $request)
     {
         $contrato_proyectado = $this->contrato_proyectado->create($request->all());
-        return $this->response->item($contrato_proyectado, new ContratoPro());
-    }
-
-    public function update() {
-
+        return $this->response->item($contrato_proyectado, new TransaccionTransformer());
     }
 }

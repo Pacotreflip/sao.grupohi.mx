@@ -17,10 +17,4 @@ interface ContratoProyectadoRepository
      * @return Sucursal
      */
     public function create(array $data);
-
-    public function edit();
-
-    public function addItem();
-
-    public function removeItem();
 }

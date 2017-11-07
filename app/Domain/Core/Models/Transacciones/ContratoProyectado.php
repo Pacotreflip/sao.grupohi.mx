@@ -9,11 +9,29 @@
 namespace Ghi\Domain\Core\Models\Transacciones;
 
 
+use Carbon\Carbon;
+use Ghi\Core\Facades\Context;
 use Ghi\Domain\Core\Models\Scopes\ContratoProyectadoScope;
 use Ghi\Domain\Core\Models\Scopes\ObraScope;
 
 class ContratoProyectado extends Transaccion
 {
+
+    protected $fillable = [
+        'tipo_transaccion',
+        'numero_folio',
+        'fecha',
+        'estado',
+        'impreso',
+        'id_obra',
+        'opciones',
+        'comentario',
+        'observaciones',
+        'FechaHoraRegistro',
+        'cumplimiento',
+        'vencimiento'
+    ];
+
     /**
      * Aplicar Scope Global para recuperar solo las transacciones de tipo Contrato Proyectado
      */
@@ -23,5 +41,13 @@ class ContratoProyectado extends Transaccion
 
         static::addGlobalScope(new ContratoProyectadoScope());
         static::addGlobalScope(new ObraScope());
+
+        static::creating(function($model) {
+            $model->id_obra = Context::getId();
+            $model->FechaHoraRegistro = Carbon::now()->toDateTimeString();
+            $model->tipo_transaccion = Tipo::CONTRATO_PROYECTADO;
+            $model->opciones = 1026;
+            $model->comentario = "I;" . date('d/m/Y') . " " . date('h:m:s') . ";SCR|" . auth()->user()->usuario . "|";
+        });
     }
 }

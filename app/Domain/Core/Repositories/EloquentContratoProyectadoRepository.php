@@ -9,33 +9,65 @@
 namespace Ghi\Domain\Core\Repositories;
 
 
+use Dingo\Api\Exception\StoreResourceFailedException;
 use Ghi\Domain\Core\Contracts\ContratoProyectadoRepository;
-use Ghi\Domain\Core\Contracts\Sucursal;
+use Ghi\Domain\Core\Models\Transacciones\ContratoProyectado;
+use Illuminate\Support\Facades\DB;
 
 class EloquentContratoProyectadoRepository implements ContratoProyectadoRepository
 {
 
     /**
+     * @var ContratoProyectado
+     */
+    private $model;
+
+    /**
+     * EloquentContratoProyectadoRepository constructor.
+     * @param ContratoProyectado $model
+     */
+    public function __construct(ContratoProyectado $model)
+    {
+        $this->model = $model;
+    }
+
+    /**
      * Crea un nuevo registro de Contrato Proyectado
+     * @param array $data
      * @return Sucursal
+     * @throws \Exception
      */
     public function create(array $data)
     {
-        // TODO: Implement create() method.
-    }
+        DB::connection('cadeco')->beginTransaction();
+        try {
+            //Reglas de validación para crear un contrato proyectado
+            $rules = [
+                //Validaciones de Transaccion
+                'fecha' => ['required', 'date'],
+                'referencia' => ['required', 'string', 'max:64'],
+                'cumplimiento' => ['required', 'date'],
+                'vencimiento' => ['required', 'date', 'after:cumplimiento'],
+                'contratos.*.dato1' => ['required', 'integer']
+            ];
 
-    public function edit()
-    {
-        // TODO: Implement edit() method.
-    }
+            //Validar los datos recibidos con las reglas de validación
+            $validator = app('validator')->make($data, $rules);
 
-    public function addItem()
-    {
-        // TODO: Implement addItem() method.
-    }
-
-    public function removeItem()
-    {
-        // TODO: Implement removeItem() method.
+            if(count($validator->errors()->all())) {
+                //Caer en excepción si alguna regla de validación falla
+                throw new StoreResourceFailedException('Error al crear el Contrato Proyectado', $validator->errors());
+            } else {
+                dd('paso');
+                //Crear empresa nueva si la validación no arroja ningún error
+                $empresa = $this->model->create($data);
+                DB::connection('cadeco')->commit();
+                return $empresa;
+            }
+            DB::connection('cadeco')->commit();
+        } catch (\Exception $e) {
+            DB::connection('cadeco')->rollback();
+            throw $e;
+        }
     }
 }
