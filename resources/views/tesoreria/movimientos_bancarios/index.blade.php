@@ -54,20 +54,20 @@
                                             <label class="help" v-show="validation_errors.has('form_guadar_movimiento.Cuenta')">@{{ validation_errors.first('form_guadar_movimiento.Cuenta') }}</label>
                                         </div>
                                     </div>
-                                    {{--Impuesto--}}
-                                    <div class="col-md-6" v-if="form.id_tipo_movimiento === 4">
-                                        <div class="form-group" :class="{'has-error': validation_errors.has('form_guadar_movimiento.Impuesto')}">
-                                            <label><b>Impuesto</b></label>
-                                            <input type="text" class="form-control pull-right" id="Impuesto" value="" name="Impuesto" v-model="form.impuesto">
-                                            <label class="help" v-show="validation_errors.has('form_guadar_movimiento.Impuesto')">@{{ validation_errors.first('form_guadar_movimiento.Impuesto') }}</label>
-                                        </div>
-                                    </div>
                                     {{--Importe--}}
                                     <div class="col-md-6">
                                         <div class="form-group" :class="{'has-error': validation_errors.has('form_guadar_movimiento.Importe')}">
                                             <label><b>Importe</b></label>
                                             <input type="text" class="form-control pull-right" id="Importe" name="Importe" v-model="form.importe" v-validate="'required|decimal:6'">
                                             <label class="help" v-show="validation_errors.has('form_guadar_movimiento.Importe')">@{{ validation_errors.first('form_guadar_movimiento.Importe') }}</label>
+                                        </div>
+                                    </div>
+                                    {{--Impuesto--}}
+                                    <div class="col-md-6" v-if="form.id_tipo_movimiento === 4">
+                                        <div class="form-group" :class="{'has-error': validation_errors.has('form_guadar_movimiento.Impuesto')}">
+                                            <label><b>Impuesto</b></label>
+                                            <input type="text" class="form-control pull-right" id="Impuesto" value="" name="Impuesto" v-model="form.impuesto">
+                                            <label class="help" v-show="validation_errors.has('form_guadar_movimiento.Impuesto')">@{{ validation_errors.first('form_guadar_movimiento.Impuesto') }}</label>
                                         </div>
                                     </div>
                                     {{--Referencia--}}
@@ -143,10 +143,11 @@
                                     <thead>
                                     <tr>
                                         <th>#</th>
+                                        <th>Folio</th>
                                         <th>Fecha</th>
                                         <th>Tipo</th>
                                         <th>Cuenta</th>
-                                        <th>Importe | Impuesto</th>
+                                        <th>Importe | Total</th>
                                         <th>Referencia</th>
                                         @permission(['eliminar_movimiento_bancario', 'editar_movimiento_bancario'])
                                         <th>Acciones</th>
@@ -156,10 +157,11 @@
                                     <tbody>
                                         <tr v-for="(item, index) in data.movimientos">
                                             <td >@{{ index + 1  }}</td>
+                                            <td>@{{ item.numero_folio }}</td>
                                             <td>@{{trim_fecha(item.movimiento_transaccion.transaccion.fecha)}}</td>
                                             <td>@{{item.tipo.descripcion }}</td>
                                             <td>@{{item.cuenta.numero }} @{{item.cuenta.abreviatura }} (@{{item.cuenta.empresa.razon_social}})</td>
-                                            <td>@{{item.importe}} | @{{item.impuesto}}</td>
+                                            <td>@{{item.importe}} | @{{total(item.importe, item.impuesto)}}</td>
                                             <td>@{{item.movimiento_transaccion.transaccion.referencia}}</td>
                                             @permission(['eliminar_movimiento_bancario', 'editar_movimiento_bancario'])
                                             <td>
@@ -234,20 +236,20 @@
                                         <label class="help" v-show="validation_errors.has('form_editar_movimiento.Editar Cuenta')">@{{ validation_errors.first('form_editar_movimiento.Editar Cuenta') }}</label>
                                     </div>
                                 </div>
-                                {{--Impuesto--}}
-                                <div class="col-md-6" v-if="movimiento_edit.id_tipo_movimiento == 4">
-                                    <div class="form-group" :class="{'has-error': validation_errors.has('form_editar_movimiento.Editar Impuesto')}">
-                                        <label><b>Impuesto</b></label>
-                                        <input type="text" class="form-control pull-right" id="Editar Impuesto" value="" name="Editar Impuesto" v-model="movimiento_edit.impuesto">
-                                        <label class="help" v-show="validation_errors.has('form_editar_movimiento.Editar Impuesto')">@{{ validation_errors.first('form_editar_movimiento.Editar Impuesto') }}</label>
-                                    </div>
-                                </div>
                                 {{--Importe--}}
                                 <div class="col-md-6">
                                     <div class="form-group" :class="{'has-error': validation_errors.has('form_editar_movimiento.Editar Importe')}">
                                         <label><b>Importe</b></label>
                                         <input type="text" class="form-control pull-right" id="Editar Importe" value="" name="Editar Importe" v-model="movimiento_edit.importe" v-validate="'required|decimal:6'">
                                         <label class="help" v-show="validation_errors.has('form_editar_movimiento.Editar Importe')">@{{ validation_errors.first('form_editar_movimiento.Editar Importe') }}</label>
+                                    </div>
+                                </div>
+                                {{--Impuesto--}}
+                                <div class="col-md-6" v-if="movimiento_edit.id_tipo_movimiento == 4">
+                                    <div class="form-group" :class="{'has-error': validation_errors.has('form_editar_movimiento.Editar Impuesto')}">
+                                        <label><b>Impuesto</b></label>
+                                        <input type="text" class="form-control pull-right" id="Editar Impuesto" value="" name="Editar Impuesto" v-model="movimiento_edit.impuesto">
+                                        <label class="help" v-show="validation_errors.has('form_editar_movimiento.Editar Impuesto')">@{{ validation_errors.first('form_editar_movimiento.Editar Impuesto') }}</label>
                                     </div>
                                 </div>
                                 {{--Referencia--}}

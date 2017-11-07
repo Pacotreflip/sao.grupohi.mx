@@ -1,6 +1,6 @@
 @extends('tesoreria.layout')
-@section('title', 'Traspaso entre cuentas')
-@section('contentheader_title', 'TRASPASO ENTRE CUENTAS')
+@section('title', 'Traspaso entre cuentas bancarias')
+@section('contentheader_title', 'TRASPASO ENTRE CUENTAS BANCARIAS')
 @section('main-content')
     {!! Breadcrumbs::render('tesoreria.traspaso_cuentas.index') !!}
 
@@ -27,7 +27,7 @@
                         <form  id="form_guardar_traspaso" @submit.prevent="validateForm('form_guardar_traspaso', 'confirm_guardar')"  data-vv-scope="form_guardar_traspaso">
                             <div class="modal-header">
                                 <button type="button" class="close" v-on:click="close_traspaso()" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                                <h4 class="modal-title">Realizar Traspaso</h4>
+                                <h4 class="modal-title">Realizar Traspaso Bancario</h4>
                             </div>
                             <div class="modal-body">
                                 <div class="row">
@@ -127,7 +127,7 @@
                 <div class="col-md-12">
                     <div class="box box-success">
                         <div class="box-header with-border">
-                            <h3 class="box-title">Traspasos</h3>
+                            <h3 class="box-title">Traspasos Bancarios</h3>
                         </div>
                         <div class="box-body">
                             <div class="table-responsive">
@@ -135,6 +135,7 @@
                                     <thead>
                                     <tr>
                                         <th>#</th>
+                                        <th>Folio</th>
                                         <th>Fecha</th>
                                         <th>Cuenta Origen</th>
                                         <th>Cuenta Destino</th>
@@ -148,6 +149,7 @@
                                     <tbody>
                                         <tr v-for="(item, index) in data.traspasos">
                                             <td >@{{ index + 1  }}</td>
+                                            <td>@{{ item.numero_folio }}</td>
                                             <td>@{{trim_fecha(item.traspaso_transaccion.transaccion_debito.fecha)}}</td>
                                             <td>@{{item.cuenta_origen.numero }} @{{item.cuenta_origen.abreviatura }} (@{{item.cuenta_origen.empresa.razon_social}})</td>
                                             <td>@{{item.cuenta_destino.numero }} @{{item.cuenta_destino.abreviatura }} (@{{item.cuenta_destino.empresa.razon_social}})</td>
@@ -192,7 +194,7 @@
                         <div class="modal-header">
                             <button type="button" class="close" aria-label="Close" @click="close_edit_traspaso"><span aria-hidden="true">&times;</span></button>
                             <h4 class="modal-title">
-                                    Editar traspaso
+                                    Editar traspaso bancario
                             </h4>
                         </div>
                         <form  id="form_editar_traspaso" @submit.prevent="validateForm('form_editar_traspaso','confirm_editar')"  data-vv-scope="form_editar_traspaso">
@@ -292,7 +294,6 @@
                                 <button type="button" class="btn btn-default" @click="close_edit_traspaso">Cerrar</button>
                                 <button type="submit" class="btn btn-primary" >Guardar</button>
                             </div>
-
                         </form>
                     </div>
                 </div>

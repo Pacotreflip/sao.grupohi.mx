@@ -35,8 +35,7 @@ Vue.component('movimientos_bancarios-index', {
             'guardando' : false
         }
     },
-    computed: {
-    },
+    computed: {},
     mounted: function()
     {
         var self = this;
@@ -277,6 +276,10 @@ Vue.component('movimientos_bancarios-index', {
             Vue.set(this.form, 'cumplimiento', '');
             Vue.set(this.form, 'vencimiento', '');
             Vue.set(this.form, 'referencia', '');
+        },
+        total: function (importe, impuesto) {
+            var importeInt = Math.floor(importe);
+            return impuesto > 0 ? importeInt + ((importeInt * impuesto) / 100) : importeInt;
         }
     }
 });
