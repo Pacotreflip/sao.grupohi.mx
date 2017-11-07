@@ -148,9 +148,9 @@
                                         <th>Cuenta</th>
                                         <th>Importe | Impuesto</th>
                                         <th>Referencia</th>
-                                        {{--@permission(['eliminar_movimiento_bancario', 'editar_movimiento_bancario'])--}}
+                                        @permission(['eliminar_movimiento_bancario', 'editar_movimiento_bancario'])
                                         <th>Acciones</th>
-                                        {{--@endpermission--}}
+                                        @endpermission
                                     </tr>
                                     </thead>
                                     <tbody>
@@ -161,20 +161,20 @@
                                             <td>@{{item.cuenta.numero }} @{{item.cuenta.abreviatura }} (@{{item.cuenta.empresa.razon_social}})</td>
                                             <td>@{{item.importe}} | @{{item.impuesto}}</td>
                                             <td>@{{item.movimiento_transaccion.transaccion.referencia}}</td>
-                                            {{--@permission(['eliminar_movimiento_bancario', 'editar_movimiento_bancario'])--}}
+                                            @permission(['eliminar_movimiento_bancario', 'editar_movimiento_bancario'])
                                             <td>
-                                                {{--@permission(['eliminar_movimiento_bancario'])--}}
+                                                @permission(['eliminar_movimiento_bancario'])
                                                 <div class="btn-group">
                                                     <button type="button" title="Eliminar" class="btn btn-xs btn-danger" v-on:click="confirm_eliminar(item.id_movimiento_bancario)"><i class="fa fa-trash"></i></button>
                                                 </div>
-                                                {{--@endpermission--}}
-                                                {{--@permission(['editar_movimiento_bancario'])--}}
+                                                @endpermission
+                                                @permission(['editar_movimiento_bancario'])
                                                 <div class="btn-group">
                                                     <button title="Editar" class="btn btn-xs btn-info" type="button" v-on:click="modal_editar(item)"> <i class="fa fa-edit"></i></button>
                                                 </div>
-                                                {{--@endpermission--}}
+                                                @endpermission
                                             </td>
-                                            {{--@endpermission--}}
+                                            @endpermission
                                         </tr>
                                     </tbody>
                                 </table>
@@ -187,7 +187,7 @@
             @permission(['registrar_movimiento_bancario'])
             <div class="row">
                 <div class="col-md-12">
-                    <button class="btn btn-sm btn-primary pull-right" v-on:click="modal_traspaso()">Realizar Movimiento</button>
+                    <button class="btn btn-sm btn-primary pull-right" v-on:click="modal_movimiento()">Realizar Movimiento</button>
                 </div>
                 <div class="col-md-12">
 
@@ -196,7 +196,7 @@
             @endpermission
 
             <!-- Modal Edit Cuenta -->
-            @permission(['editar_traspaso_cuenta'])
+            @permission(['editar_movimiento_bancario'])
             <div id="edit_movimiento_modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="editMovimientoModal" data-backdrop="static" data-keyboard="false">
                 <form  id="form_editar_movimiento" @submit.prevent="validateForm('form_editar_movimiento','confirm_editar')"  data-vv-scope="form_editar_movimiento">
                     <div class="modal-dialog" role="document">
@@ -204,7 +204,7 @@
                             <div class="modal-header">
                                 <button type="button" class="close" aria-label="Close" @click="close_edit_movimiento"><span aria-hidden="true">&times;</span></button>
                                 <h4 class="modal-title">
-                                    Editar traspaso
+                                    Editar movimiento
                                 </h4>
                             </div>
                             <div class="modal-body row">
