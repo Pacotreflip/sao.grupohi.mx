@@ -38,77 +38,62 @@ define({ "api": [
           {
             "group": "Parameter",
             "type": "String",
-            "size": "max:16",
             "optional": false,
-            "field": "rfc",
-            "description": "<p>RFC de la Empresa</p>"
+            "field": "fecha",
+            "description": "<p>Fecha de Registro del Contrato Proyectado</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "size": "max:64",
+            "optional": false,
+            "field": "referencia",
+            "description": "<p>Referencia del nuevo Contrato Proyectado</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "DateTime",
+            "optional": false,
+            "field": "cumplimiento",
+            "description": "<p>Fecha del inicio de cumplimiento del Contrato Proyectado</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "DateTime",
+            "optional": false,
+            "field": "vencimiento",
+            "description": "<p>Fecha de Vencimiento del Contrato Proyectado</p>"
           },
           {
             "group": "Parameter",
             "type": "String",
             "size": "max:255",
             "optional": false,
-            "field": "razon_social",
-            "description": "<p>Razón Social de la Empresa</p>"
-          },
-          {
-            "group": "Parameter",
-            "type": "Number",
-            "optional": false,
-            "field": "tipo_empresa",
-            "description": "<p>Tipo de Empresa</p>"
-          },
-          {
-            "group": "Parameter",
-            "type": "Number",
-            "optional": true,
-            "field": "dias_credito",
-            "description": "<p>Días de Crédito</p>"
+            "field": "Nivel",
+            "description": "<p>Nivel del nuevo Contrato adjunto al Contrato Proyectado.</p>"
           },
           {
             "group": "Parameter",
             "type": "String",
-            "size": "max:64",
-            "optional": true,
-            "field": "formato",
-            "description": "<p>Formato de la Empresa</p>"
+            "size": "max:255",
+            "optional": false,
+            "field": "descripcion",
+            "description": "<p>Descripcion del nuevo contrato adjunto al Contrato Proyectado</p>"
           },
           {
             "group": "Parameter",
             "type": "String",
             "size": "max:16",
             "optional": true,
-            "field": "cuenta_contable",
-            "description": "<p>Cuenta Contable de la empresa</p>"
+            "field": "unidad",
+            "description": "<p>Unidad de medida del nuevo contrato adjunto al Contrato Proyectado</p>"
           },
           {
             "group": "Parameter",
             "type": "Number",
             "optional": true,
-            "field": "tipo_cliente",
-            "description": "<p>Tipo de Cliente</p>"
-          },
-          {
-            "group": "Parameter",
-            "type": "Number",
-            "size": "min:0",
-            "optional": true,
-            "field": "porcentaje",
-            "description": "<p>Porcentaje</p>"
-          },
-          {
-            "group": "Parameter",
-            "type": "Number",
-            "optional": true,
-            "field": "no_proveedor_virtual",
-            "description": "<p>Número de Proovedor Virtual</p>"
-          },
-          {
-            "group": "Parameter",
-            "type": "Nmber",
-            "optional": true,
-            "field": "personalidad",
-            "description": "<p>Personalidad</p>"
+            "field": "cantidad_original",
+            "description": "<p>Cantidad Original del nuevo contrato adjunto al Contrato Proyectado</p>"
           }
         ]
       }
@@ -120,14 +105,14 @@ define({ "api": [
             "group": "Error 4xx",
             "optional": false,
             "field": "StoreResourceFailedException",
-            "description": "<p>Error al registrar una Empresa</p>"
+            "description": "<p>Error al registrar un Contrato Proyectado</p>"
           }
         ]
       },
       "examples": [
         {
           "title": "Error-Response",
-          "content": "HTTP/1.1 422 Unprocessable Entity\n{\n  \"message\": \"error descropton\",\n  \"errors\": {\n    \"param\": [\"error 1\", \"error 2\"]\n    ...\n  },\n  \"status_code\": 422\n}",
+          "content": "HTTP/1.1 422 Unprocessable Entity\n{\n  \"message\": \"error description\",\n  \"errors\": {\n    \"param\": [\"error 1\", \"error 2\"]\n    ...\n  },\n  \"status_code\": 422\n}",
           "type": "json"
         }
       ]
@@ -140,7 +125,7 @@ define({ "api": [
             "type": "Object",
             "optional": false,
             "field": "data",
-            "description": "<p>Datos de la Empresa Registrada</p>"
+            "description": "<p>Datos del Contrato Proyectado</p>"
           }
         ]
       },

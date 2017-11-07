@@ -35,22 +35,23 @@ class ContratoProyectadoController extends Controller
      * @apiHeader {string} database_name Nombre de la Base de Datos para establecer contexto
      * @apiHeader {string} id_obra ID De la obra sobre la que se desea extablecer el contexto
      *
-     * @apiParam {String{max:16}} rfc RFC de la Empresa
-     * @apiParam {String{max:255}} razon_social Razón Social de la Empresa
-     * @apiParam {Number} tipo_empresa Tipo de Empresa
-     * @apiParam {Number} [dias_credito] Días de Crédito
-     * @apiParam {String{max:64}} [formato] Formato de la Empresa
-     * @apiParam {String{max:16}} [cuenta_contable] Cuenta Contable de la empresa
-     * @apiParam {Number} [tipo_cliente] Tipo de Cliente
-     * @apiParam {Number{min:0}} [porcentaje] Porcentaje
-     * @apiParam {Number} [no_proveedor_virtual] Número de Proovedor Virtual
-     * @apiParam {Nmber} [personalidad] Personalidad
      *
-     * @apiError StoreResourceFailedException Error al registrar una Empresa
+     * @apiParam {String} fecha Fecha de Registro del Contrato Proyectado
+     * @apiParam {String{max:64}} referencia Referencia del nuevo Contrato Proyectado
+     * @apiParam {DateTime} cumplimiento Fecha del inicio de cumplimiento del Contrato Proyectado
+     * @apiParam {DateTime} vencimiento Fecha de Vencimiento del Contrato Proyectado
+     *
+     * @apiParam {String{max:255}} Nivel Nivel del nuevo Contrato adjunto al Contrato Proyectado.
+     * @apiParam {String{max:255}} descripcion Descripcion del nuevo contrato adjunto al Contrato Proyectado
+     * @apiParam {String{max:16}} [unidad] Unidad de medida del nuevo contrato adjunto al Contrato Proyectado
+     * @apiParam {Number} [cantidad_original] Cantidad Original del nuevo contrato adjunto al Contrato Proyectado
+     *
+     *
+     * @apiError StoreResourceFailedException Error al registrar un Contrato Proyectado
      * @apiErrorExample Error-Response
      *   HTTP/1.1 422 Unprocessable Entity
      *   {
-     *     "message": "error descropton",
+     *     "message": "error description",
      *     "errors": {
      *       "param": ["error 1", "error 2"]
      *       ...
@@ -58,7 +59,7 @@ class ContratoProyectadoController extends Controller
      *     "status_code": 422
      *   }
      *
-     * @apiSuccess (200) {Object} data Datos de la Empresa Registrada
+     * @apiSuccess (200) {Object} data Datos del Contrato Proyectado
      * @apiSuccessExample Success-Response
      *   HTTP/1.1 200 OK
      *   {
