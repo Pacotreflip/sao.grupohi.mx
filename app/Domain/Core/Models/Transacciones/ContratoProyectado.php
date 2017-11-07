@@ -18,6 +18,7 @@ class ContratoProyectado extends Transaccion
 {
 
     protected $fillable = [
+        'referencia',
         'tipo_transaccion',
         'numero_folio',
         'fecha',
@@ -28,6 +29,12 @@ class ContratoProyectado extends Transaccion
         'comentario',
         'observaciones',
         'FechaHoraRegistro',
+        'cumplimiento',
+        'vencimiento'
+    ];
+
+    protected $dates = [
+        'fecha',
         'cumplimiento',
         'vencimiento'
     ];

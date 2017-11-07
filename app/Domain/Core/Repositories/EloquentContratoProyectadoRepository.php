@@ -11,6 +11,7 @@ namespace Ghi\Domain\Core\Repositories;
 
 use Dingo\Api\Exception\StoreResourceFailedException;
 use Ghi\Domain\Core\Contracts\ContratoProyectadoRepository;
+use Ghi\Domain\Core\Models\Contrato;
 use Ghi\Domain\Core\Models\Transacciones\ContratoProyectado;
 use Illuminate\Support\Facades\DB;
 
@@ -48,7 +49,16 @@ class EloquentContratoProyectadoRepository implements ContratoProyectadoReposito
                 'referencia' => ['required', 'string', 'max:64'],
                 'cumplimiento' => ['required', 'date'],
                 'vencimiento' => ['required', 'date', 'after:cumplimiento'],
-                'contratos.*.dato1' => ['required', 'integer']
+                'contratos' => ['required', 'array'],
+                'contratos.*.nivel' => ['required', 'string', 'max:255'],
+                'contratos.*.descripcion' => ['required', 'string', 'max:255'],
+                'contratos.*.unidad' => ['string', 'max:16', 'exists:cadeco.unidades,unidad'],
+                'contratos.*.cantidad_original' => ['numeric', 'required_with:contratos.*.unidad'],
+                'contratos.*.clave' => ['string', 'max:140'],
+                'contratos.*.id_marca' => ['integer'],
+                'contratos.*.id_modelo' => ['integer'],
+                'contratos.*.destino' => ['required_with:unidad,cantidad_original'],
+                'contratos.*.destino.id_concepto' => ['required_with:destino', 'integer', 'exists:cadeco.conceptos,id_concepto']
             ];
 
             //Validar los datos recibidos con las reglas de validación
@@ -58,11 +68,24 @@ class EloquentContratoProyectadoRepository implements ContratoProyectadoReposito
                 //Caer en excepción si alguna regla de validación falla
                 throw new StoreResourceFailedException('Error al crear el Contrato Proyectado', $validator->errors());
             } else {
-                dd('paso');
                 //Crear empresa nueva si la validación no arroja ningún error
-                $empresa = $this->model->create($data);
+                $contrato_proyectado = $this->model->create($data);
+
+                foreach ($data['contratos'] as $key => $contrato) {
+                    $contrato['id_transaccion'] = $contrato_proyectado->id_transaccion;
+
+                    $contrato['cantidad_presupuestada'] = array_key_exists('cantidad_original', $contrato) ? $contrato['cantidad_original'] : 0;
+                    $new_contrato = Contrato::create($contrato);
+
+                    if(array_key_exists('destinos', $contrato)) {
+                        foreach ($contrato['destinos'] as $destino) {
+                            $new_contrato->conceptos()->attach($destino['id_concepto'], ['id_transaccion' => $contrato_proyectado->id_transaccion]);
+                        }
+                    }
+                }
+
                 DB::connection('cadeco')->commit();
-                return $empresa;
+                return $contrato_proyectado;
             }
             DB::connection('cadeco')->commit();
         } catch (\Exception $e) {

@@ -17,6 +17,7 @@ class Contrato extends Model
     protected $table = 'dbo.contratos';
     protected $primaryKey = 'id_concepto';
     protected $fillable = [
+        'id_transaccion',
         'nivel',
         'descripcion',
         'unidad',

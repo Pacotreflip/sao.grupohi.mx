@@ -36,16 +36,21 @@ class ContratoProyectadoController extends Controller
      * @apiHeader {string} id_obra ID De la obra sobre la que se desea extablecer el contexto
      *
      *
-     * @apiParam {String} fecha Fecha de Registro del Contrato Proyectado
+     * @apiParam {Date} fecha Fecha de Registro del Contrato Proyectado
      * @apiParam {String{max:64}} referencia Referencia del nuevo Contrato Proyectado
      * @apiParam {DateTime} cumplimiento Fecha del inicio de cumplimiento del Contrato Proyectado
      * @apiParam {DateTime} vencimiento Fecha de Vencimiento del Contrato Proyectado
+     * @apiParam {Object[]} contratos Contratos para el Contrato Proyectado
      *
-     * @apiParam {String{max:255}} Nivel Nivel del nuevo Contrato adjunto al Contrato Proyectado.
-     * @apiParam {String{max:255}} descripcion Descripcion del nuevo contrato adjunto al Contrato Proyectado
-     * @apiParam {String{max:16}} [unidad] Unidad de medida del nuevo contrato adjunto al Contrato Proyectado
-     * @apiParam {Number} [cantidad_original] Cantidad Original del nuevo contrato adjunto al Contrato Proyectado
-     *
+     * @apiParam {String{max:255}} contratos.nivel Nivel del nuevo contrato adjunto al contrato proyectado
+     * @apiParam {String{max:255}} contratos.descripcion Descripción del nuevo contrato adjunto al contrato proyectado
+     * @apiParam {String{max:16}} [contratos.unidad] Unidad de medida del nuevo contrato adjunto al contrato proyectado
+     * @apiParam {Number{max:16}} [contratos.cantidad_original] Cantidad del nuevo contrato adjunto al contrato proyectado
+     * @apiParam {String{max:140}} [contratos.clave] Clave del nuevo contrato adjunto al contrato proyectado
+     * @apiParam {Integer} [contratos.id_marca] Marca del nuevo contrato adjunto al contrato proyectado
+     * @apiParam {Integer} [contratos.id_modelo] Modelo del nuevo contrato adjunto al contrato proyectado
+     * @apiParam {Object[]} [contratos.destinos] Destino del contrato
+     * @apiParam {Integer} contratos.destinos.id_concepto Concepto asociado al contrato
      *
      * @apiError StoreResourceFailedException Error al registrar un Contrato Proyectado
      * @apiErrorExample Error-Response
@@ -64,11 +69,16 @@ class ContratoProyectadoController extends Controller
      *   HTTP/1.1 200 OK
      *   {
      *     "data": {
-     *       "id_empresa": "xxx",
-     *       "tipo_empresa": "x",
-     *       "razon_social": "Razón Social",
-     *       "rfc": "000000XXX",
-     *       ...
+     *       "id_transaccion": 31557
+     *       "fecha": "2017-11-07 00:00:00.000",
+     *       "referencia": "CONTRATO PROYECTADO NUEVO 07-11-2017",
+     *       "cumplimiento": "2017-11-06 00:00:00.000",
+     *       "vencimiento": "2017-11-07 00:00:00.000",
+     *       "id_obra": "1",
+     *       "FechaHoraRegistro": "2017-11-07 16:36:15",
+     *       "tipo_transaccion": 49,
+     *       "opciones": 1026,
+     *       "comentario": "I;07/11/2017 04:11:15;SCR|jfesquivel|",
      *     }
      *   }
      */

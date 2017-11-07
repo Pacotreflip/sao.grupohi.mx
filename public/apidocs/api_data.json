@@ -37,7 +37,7 @@
         "Parameter": [
           {
             "group": "Parameter",
-            "type": "String",
+            "type": "Date",
             "optional": false,
             "field": "fecha",
             "description": "<p>Fecha de Registro del Contrato Proyectado</p>"
@@ -66,34 +66,78 @@
           },
           {
             "group": "Parameter",
-            "type": "String",
-            "size": "max:255",
+            "type": "Object[]",
             "optional": false,
-            "field": "Nivel",
-            "description": "<p>Nivel del nuevo Contrato adjunto al Contrato Proyectado.</p>"
+            "field": "contratos",
+            "description": "<p>Contratos para el Contrato Proyectado</p>"
           },
           {
             "group": "Parameter",
             "type": "String",
             "size": "max:255",
             "optional": false,
-            "field": "descripcion",
-            "description": "<p>Descripcion del nuevo contrato adjunto al Contrato Proyectado</p>"
+            "field": "contratos.nivel",
+            "description": "<p>Nivel del nuevo contrato adjunto al contrato proyectado</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "size": "max:255",
+            "optional": false,
+            "field": "contratos.descripcion",
+            "description": "<p>Descripción del nuevo contrato adjunto al contrato proyectado</p>"
           },
           {
             "group": "Parameter",
             "type": "String",
             "size": "max:16",
             "optional": true,
-            "field": "unidad",
-            "description": "<p>Unidad de medida del nuevo contrato adjunto al Contrato Proyectado</p>"
+            "field": "contratos.unidad",
+            "description": "<p>Unidad de medida del nuevo contrato adjunto al contrato proyectado</p>"
           },
           {
             "group": "Parameter",
             "type": "Number",
+            "size": "max:16",
             "optional": true,
-            "field": "cantidad_original",
-            "description": "<p>Cantidad Original del nuevo contrato adjunto al Contrato Proyectado</p>"
+            "field": "contratos.cantidad_original",
+            "description": "<p>Cantidad del nuevo contrato adjunto al contrato proyectado</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "size": "max:140",
+            "optional": true,
+            "field": "contratos.clave",
+            "description": "<p>Clave del nuevo contrato adjunto al contrato proyectado</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Integer",
+            "optional": true,
+            "field": "contratos.id_marca",
+            "description": "<p>Marca del nuevo contrato adjunto al contrato proyectado</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Integer",
+            "optional": true,
+            "field": "contratos.id_modelo",
+            "description": "<p>Modelo del nuevo contrato adjunto al contrato proyectado</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Object[]",
+            "optional": true,
+            "field": "contratos.destinos",
+            "description": "<p>Destino del contrato</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Integer",
+            "optional": false,
+            "field": "contratos.destinos.id_concepto",
+            "description": "<p>Concepto asociado al contrato</p>"
           }
         ]
       }
@@ -132,7 +176,7 @@
       "examples": [
         {
           "title": "Success-Response",
-          "content": "HTTP/1.1 200 OK\n{\n  \"data\": {\n    \"id_empresa\": \"xxx\",\n    \"tipo_empresa\": \"x\",\n    \"razon_social\": \"Razón Social\",\n    \"rfc\": \"000000XXX\",\n    ...\n  }\n}",
+          "content": "HTTP/1.1 200 OK\n{\n  \"data\": {\n    \"id_transaccion\": 31557\n    \"fecha\": \"2017-11-07 00:00:00.000\",\n    \"referencia\": \"CONTRATO PROYECTADO NUEVO 07-11-2017\",\n    \"cumplimiento\": \"2017-11-06 00:00:00.000\",\n    \"vencimiento\": \"2017-11-07 00:00:00.000\",\n    \"id_obra\": \"1\",\n    \"FechaHoraRegistro\": \"2017-11-07 16:36:15\",\n    \"tipo_transaccion\": 49,\n    \"opciones\": 1026,\n    \"comentario\": \"I;07/11/2017 04:11:15;SCR|jfesquivel|\",\n  }\n}",
           "type": "json"
         }
       ]
