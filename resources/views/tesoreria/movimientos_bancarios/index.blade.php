@@ -16,7 +16,7 @@
             @permission(['registrar_movimiento_bancario'])
             <div class="row">
                 <div class="col-md-12">
-                    <button class="btn btn-sm btn-primary pull-right" v-on:click="modal_movimiento()">Realizar Movimiento</button>
+                    <button class="btn btn-sm btn-primary pull-right" v-on:click="modal_movimiento()">Registrar Movimiento</button>
                 </div>
                 <div class="col-md-12">
                     &nbsp;
@@ -28,7 +28,7 @@
                         <form  id="form_guardar_movimiento" name="form_guardar_movimiento" @submit.prevent="validateForm('form_guardar_movimiento', 'confirm_guardar')"  data-vv-scope="form_guardar_movimiento">
                             <div class="modal-header">
                                 <button type="button" class="close" v-on:click="close_modal_movimiento()" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                                <h4 class="modal-title">Realizar Movimiento</h4>
+                                <h4 class="modal-title">Registrar Movimiento</h4>
                             </div>
                             <div class="modal-body">
                                 <div class="row">
@@ -135,7 +135,7 @@
                 <div class="col-md-12">
                     <div class="box box-success">
                         <div class="box-header with-border">
-                            <h3 class="box-title">Movimientos</h3>
+                            <h3 class="box-title">Movimientos Bancarios</h3>
                         </div>
                         <div class="box-body">
                             <div class="table-responsive">
@@ -189,7 +189,7 @@
             @permission(['registrar_movimiento_bancario'])
             <div class="row">
                 <div class="col-md-12">
-                    <button class="btn btn-sm btn-primary pull-right" v-on:click="modal_movimiento()">Realizar Movimiento</button>
+                    <button class="btn btn-sm btn-primary pull-right" v-on:click="modal_movimiento()">Registrar Movimiento</button>
                 </div>
                 <div class="col-md-12">
 

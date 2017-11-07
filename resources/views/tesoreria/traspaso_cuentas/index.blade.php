@@ -15,7 +15,7 @@
             @permission(['registrar_traspaso_cuenta'])
             <div class="row">
                 <div class="col-md-12">
-                    <button class="btn btn-sm btn-primary pull-right" v-on:click="modal_traspaso()">Crear Traspaso</button>
+                    <button class="btn btn-sm btn-primary pull-right" v-on:click="modal_traspaso()">Registrar Traspaso</button>
                 </div>
                 <div class="col-md-12">
                     &nbsp;
@@ -27,7 +27,7 @@
                         <form  id="form_guardar_traspaso" @submit.prevent="validateForm('form_guardar_traspaso', 'confirm_guardar')"  data-vv-scope="form_guardar_traspaso">
                             <div class="modal-header">
                                 <button type="button" class="close" v-on:click="close_traspaso()" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                                <h4 class="modal-title">Realizar Traspaso Bancario</h4>
+                                <h4 class="modal-title">Registrar Traspaso Bancario</h4>
                             </div>
                             <div class="modal-body">
                                 <div class="row">
@@ -180,7 +180,7 @@
             @endpermission
             <div class="row">
                 <div class="col-md-12">
-                    <button class="btn btn-sm btn-primary pull-right" v-on:click="modal_traspaso()">Crear Traspaso</button>
+                    <button class="btn btn-sm btn-primary pull-right" v-on:click="modal_traspaso()">Registrar Traspaso</button>
                 </div>
                 <div class="col-md-12">
 
