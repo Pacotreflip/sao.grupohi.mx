@@ -135,7 +135,7 @@
                 <div class="col-md-12">
                     <div class="box box-success">
                         <div class="box-header with-border">
-                            <h3 class="box-title">Traspasos</h3>
+                            <h3 class="box-title">Movimientos</h3>
                         </div>
                         <div class="box-body">
                             <div class="table-responsive">
