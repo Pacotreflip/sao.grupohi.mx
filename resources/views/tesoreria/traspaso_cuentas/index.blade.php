@@ -26,7 +26,7 @@
                     <div class="modal-content">
                         <form  id="form_guardar_traspaso" @submit.prevent="validateForm('form_guardar_traspaso', 'confirm_guardar')"  data-vv-scope="form_guardar_traspaso">
                             <div class="modal-header">
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                <button type="button" class="close" v-on:click="close_traspaso()" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                                 <h4 class="modal-title">Realizar Traspaso</h4>
                             </div>
                             <div class="modal-body">
@@ -58,9 +58,10 @@
                                         <div class="form-group"
                                              :class="{'has-error': validation_errors.has('form_guardar_traspaso.Fecha')}">
                                             <label for="Fecha" class="control-label"><b>Fecha</b></label>
-                                            <input type="text" name="Fecha" class="form-control input-sm " id="fecha"
+                                            <input type="text" name="Fecha" class="form-control input-sm " id="Fecha"
                                                    v-model="form.fecha"
-                                                   v-datepicker>
+                                                   v-datepicker
+                                                   v-validate="'required'">
                                             <label class="help"
                                                    v-show="validation_errors.has('form_guardar_traspaso.Fecha')">@{{ validation_errors.first('form_guardar_traspaso.Fecha') }}</label>
                                         </div>
@@ -112,7 +113,7 @@
                                 </div>
                             </div>
                             <div class="modal-footer">
-                                <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                                <button type="button" class="btn btn-default" v-on:click="close_traspaso()">Cerrar</button>
                                 <button type="submit" class="btn btn-primary">Guardar</button>
                             </div>
                         </form>

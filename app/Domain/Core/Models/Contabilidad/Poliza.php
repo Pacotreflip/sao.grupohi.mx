@@ -10,6 +10,7 @@ use Ghi\Domain\Core\Models\Scopes\ObraCadecoScope;
 use Ghi\Domain\Core\Models\Transacciones\Transaccion;
 use Ghi\Domain\Core\Models\User;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Ghi\Domain\Core\Models\Tesoreria\TraspasoCuentas;
 
 class Poliza extends BaseModel
 {
@@ -82,6 +83,11 @@ class Poliza extends BaseModel
     public function transacciones()
     {
         return $this->belongsTo(Transaccion::class, 'id_transaccion_sao');
+    }
+    
+    public function traspaso()
+    {
+        return $this->belongsTo(TraspasoCuentas::class, 'id_traspaso');
     }
 
     /**

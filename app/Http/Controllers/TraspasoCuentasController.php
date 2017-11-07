@@ -29,7 +29,6 @@ class TraspasoCuentasController extends Controller
 
         $this->traspaso = $traspaso;
         $this->traspaso_transaccion = $traspaso_transaccion;
-        $this->transaccion = new Transaccion;
     }
 
     /**
@@ -50,60 +49,15 @@ class TraspasoCuentasController extends Controller
 
     public function store(Request $request)
     {
-        $record = $this->traspaso->create($request->all());
-        $obras = $this->traspaso->obras();
         $id_obra = $request->session()->get('id');
-        $id_moneda = 0;
+        $create_data = $request->all();
+        $create_data['id_obra'] = $id_obra;
+        $record = $this->traspaso->create($create_data);
 
-        foreach ($obras as $o)
-            if ($o->id_obra == $id_obra)
-                $id_moneda = $o->id_moneda;
-
-        $credito = [
-            'tipo_transaccion' => 83,
-            'fecha' => $request->input('fecha') ? $request->input('fecha') : date('Y-m-d'),
-            'estado' => 1,
-            'id_obra' => $id_obra,
-            'id_cuenta' => $request->input('id_cuenta_destino'),
-            'id_moneda' => $id_moneda,
-            'cumplimiento' => $request->input('cumplimiento') ? $request->input('cumplimiento') : date('Y-m-d'),
-            'vencimiento' => $request->input('vencimiento') ? $request->input('vencimiento') : date('Y-m-d'),
-            'opciones' => 1,
-            'monto' => $request->input('importe'),
-            'referencia' => $request->input('referencia'),
-            'comentario' => "I;". date("d/m/Y") ." ". date("h:s") .";". auth()->user()->usuario,
-            'observaciones' => $request->input('observaciones'),
-            'FechaHoraRegistro' => date('Y-m-d h:i:s'),
-        ];
-
-        $debito = $credito;
-        $debito['tipo_transaccion'] = 84;
-        $debito['id_cuenta'] = $request->input('id_cuenta_origen');
-        $debito['monto'] = '-'. $request->input('importe');
-
-       // Crear transaccion Débito
-        $transaccion_debito = $this->transaccion->create($debito);
-
-       // Crear transaccion Crédito
-        $transaccion_credito = $this->transaccion->create($credito);
-
-        // Enlaza las transacciones con su respectivo traspaso. Debito
-        TraspasoTransaccion::create([
-            'id_traspaso' => $record->id_traspaso,
-            'id_transaccion' => $transaccion_debito->id_transaccion,
-            'tipo_transaccion' => $debito['tipo_transaccion'],
-        ]);
-
-        // Enlaza las transacciones con su respectivo traspaso. Credito
-        TraspasoTransaccion::create([
-            'id_traspaso' => $record->id_traspaso,
-            'id_transaccion' => $transaccion_credito->id_transaccion,
-            'tipo_transaccion' => $credito['tipo_transaccion'],
-        ]);
-
+        // Si $record es un string hubo un error al guardar el traspaso
         return response()->json(['data' =>
             [
-                'traspaso' => TraspasoCuentas::where('id_traspaso', '=', $record->id_traspaso)->with(['cuenta_destino.empresa', 'cuenta_origen.empresa', 'traspaso_transaccion.transaccion_debito'])->first()
+                'traspaso' => (is_string($record) ? $record : TraspasoCuentas::where('id_traspaso', '=', $record->id_traspaso)->with(['cuenta_destino.empresa', 'cuenta_origen.empresa', 'traspaso_transaccion.transaccion_debito'])->first())
             ]
         ], 200);
     }

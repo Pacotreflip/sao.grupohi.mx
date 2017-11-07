@@ -19,15 +19,24 @@ class TraspasoCuentas extends BaseModel
         'id_cuenta_origen',
         'id_cuenta_destino',
         'importe',
-        'observaciones'
+        'observaciones',
+        'id_obra',
+        'folio',
+        'fecha',
     ];
 
     protected static function boot()
     {
         parent::boot();
 
-        static::creating(function ($model) {
+        // Crear el nuevo folio de acuerdo con el id de la obra
+        $id_obra = session()->get('id');
+        $folio = TraspasoCuentas::where('id_obra', $id_obra)->max('numero_folio');
+        $folio = (int) $folio + 1;
+
+        static::creating(function ($model) use($folio) {
             $model->estatus = 1;
+            $model->numero_folio = $folio;
         });
     }
 

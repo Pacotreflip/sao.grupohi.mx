@@ -5,7 +5,6 @@ namespace Ghi\Domain\Core\Repositories\Tesoreria;
 use Illuminate\Http\Exception\HttpResponseException;
 use Illuminate\Support\Facades\DB;
 use Ghi\Domain\Core\Contracts\Tesoreria\TraspasoCuentasRepository;
-use Ghi\Domain\Core\Contracts\Tesoreria\TraspasoTransaccionRepository;
 use Ghi\Domain\Core\Models\Tesoreria\TraspasoCuentas;
 use Ghi\Domain\Core\Models\Cuenta;
 use Ghi\Domain\Core\Models\Tesoreria\TraspasoTransaccion;
@@ -51,10 +50,73 @@ class EloquentTraspasoCuentasRepository implements TraspasoCuentasRepository
      */
     public function create($data)
     {
+        $obras = $this->obras();
+        $id_obra = session()->get('id');
+        $id_moneda = 0;
+
+        foreach ($obras as $o)
+            if ($o->id_obra == $id_obra)
+                $id_moneda = $o->id_moneda;
+
         try {
             DB::connection('cadeco')->beginTransaction();
             $record = $this->model->create($data);
             DB::connection('cadeco')->commit();
+
+            $credito = [
+                'tipo_transaccion' => 83,
+                'fecha' => $data['fecha'] ? $data['fecha'] : date('Y-m-d'),
+                'estado' => 1,
+                'id_obra' => $id_obra,
+                'id_cuenta' => $data['id_cuenta_destino'],
+                'id_moneda' => $id_moneda,
+                'cumplimiento' => $data['cumplimiento'] ? $data['cumplimiento'] : date('Y-m-d'),
+                'vencimiento' => $data['vencimiento'] ? $data['vencimiento'] : date('Y-m-d'),
+                'opciones' => 1,
+                'monto' => $data['importe'],
+                'referencia' => $data['referencia'],
+                'comentario' => "I;". date("d/m/Y") ." ". date("h:s") .";". auth()->user()->usuario,
+                'observaciones' => $data['observaciones'],
+                'FechaHoraRegistro' => date('Y-m-d h:i:s'),
+            ];
+
+            $debito = $credito;
+            $debito['tipo_transaccion'] = 84;
+            $debito['id_cuenta'] = $data['id_cuenta_origen'];
+            $debito['monto'] = '-'. $data['importe'];
+
+            // Crear transaccion Débito
+            $transaccion_debito = Transaccion::create($debito);
+
+            // Crear transaccion Crédito
+            $transaccion_credito = Transaccion::create($credito);
+
+            // Revisa si la transacción se realizó
+            $debito_realizo = Transaccion::where('id_transaccion', $transaccion_debito->id_transaccion)->first();
+            $credito_realizo = Transaccion::where('id_transaccion', $transaccion_credito->id_transaccion)->first();
+
+            // Si alguna de las transacciones no se registró, regresa un error
+            if (!$debito_realizo || !$credito_realizo)
+            {
+                DB::connection('cadeco')->rollBack();
+
+                return 'El traspaso no se pudo concretar';
+            }
+
+            // Enlaza las transacciones con su respectivo traspaso. Debito
+            TraspasoTransaccion::create([
+                'id_traspaso' => $record->id_traspaso,
+                'id_transaccion' => $transaccion_debito->id_transaccion,
+                'tipo_transaccion' => $debito['tipo_transaccion'],
+            ]);
+
+            // Enlaza las transacciones con su respectivo traspaso. Credito
+            TraspasoTransaccion::create([
+                'id_traspaso' => $record->id_traspaso,
+                'id_transaccion' => $transaccion_credito->id_transaccion,
+                'tipo_transaccion' => $credito['tipo_transaccion'],
+            ]);
+
         } catch (\Exception $e) {
             DB::connection('cadeco')->rollBack();
             throw $e;

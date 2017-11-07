@@ -63,7 +63,11 @@
                                 </th>
                                 <th class="bg-gray-light">
                                     Transacción Antecedente:
+                                    @if($poliza->transacciones)
                                     <br><label>{{ $poliza->transacciones->tipoTransaccion}} - {{ $poliza->transacciones->numero_folio}}</label>
+                                    @elseif($poliza->traspaso)
+                                    <br><label>Traspaso - {{ $poliza->traspaso->numero_folio}}</label>
+                                    @endif
                                 </th>
                             </tr>
                             <tr>
