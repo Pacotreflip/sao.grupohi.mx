@@ -78368,8 +78368,9 @@ require('./vue-components/Reportes/subcontratos-estimacion');
  * Tesoreria Components
  */
 require('./vue-components/Tesoreria/traspaso_cuentas/index');
+require('./vue-components/Tesoreria/movimientos_bancarios/index');
 
-},{"./vue-components/Compras/material/index":147,"./vue-components/Compras/requisicion/create":148,"./vue-components/Compras/requisicion/edit":149,"./vue-components/Contabilidad/cuenta_almacen/index":150,"./vue-components/Contabilidad/cuenta_concepto/index":151,"./vue-components/Contabilidad/cuenta_contable/index":152,"./vue-components/Contabilidad/cuenta_empresa/cuenta-empresa-edit":153,"./vue-components/Contabilidad/cuenta_fondo/index":154,"./vue-components/Contabilidad/cuenta_material/index":155,"./vue-components/Contabilidad/datos_contables/edit":156,"./vue-components/Contabilidad/emails":157,"./vue-components/Contabilidad/modulos/revaluacion/create":158,"./vue-components/Contabilidad/poliza_generada/edit":159,"./vue-components/Contabilidad/poliza_tipo/poliza-tipo-create":160,"./vue-components/Contabilidad/tipo_cuenta_contable/tipo-cuenta-contable-create":161,"./vue-components/Contabilidad/tipo_cuenta_contable/tipo-cuenta-contable-update":162,"./vue-components/Finanzas/comprobante_fondo_fijo/create":163,"./vue-components/Finanzas/comprobante_fondo_fijo/edit":164,"./vue-components/Reportes/subcontratos-estimacion":165,"./vue-components/Tesoreria/traspaso_cuentas/index":166,"./vue-components/errors":167,"./vue-components/global-errors":168,"./vue-components/kardex_material/kardex-material-index":169,"./vue-components/select2":170}],147:[function(require,module,exports){
+},{"./vue-components/Compras/material/index":147,"./vue-components/Compras/requisicion/create":148,"./vue-components/Compras/requisicion/edit":149,"./vue-components/Contabilidad/cuenta_almacen/index":150,"./vue-components/Contabilidad/cuenta_concepto/index":151,"./vue-components/Contabilidad/cuenta_contable/index":152,"./vue-components/Contabilidad/cuenta_empresa/cuenta-empresa-edit":153,"./vue-components/Contabilidad/cuenta_fondo/index":154,"./vue-components/Contabilidad/cuenta_material/index":155,"./vue-components/Contabilidad/datos_contables/edit":156,"./vue-components/Contabilidad/emails":157,"./vue-components/Contabilidad/modulos/revaluacion/create":158,"./vue-components/Contabilidad/poliza_generada/edit":159,"./vue-components/Contabilidad/poliza_tipo/poliza-tipo-create":160,"./vue-components/Contabilidad/tipo_cuenta_contable/tipo-cuenta-contable-create":161,"./vue-components/Contabilidad/tipo_cuenta_contable/tipo-cuenta-contable-update":162,"./vue-components/Finanzas/comprobante_fondo_fijo/create":163,"./vue-components/Finanzas/comprobante_fondo_fijo/edit":164,"./vue-components/Reportes/subcontratos-estimacion":165,"./vue-components/Tesoreria/movimientos_bancarios/index":166,"./vue-components/Tesoreria/traspaso_cuentas/index":167,"./vue-components/errors":168,"./vue-components/global-errors":169,"./vue-components/kardex_material/kardex-material-index":170,"./vue-components/select2":171}],147:[function(require,module,exports){
 'use strict';
 
 Vue.component('material-index', {
@@ -82002,6 +82003,281 @@ Vue.component('subcontratos-estimacion', {
 },{}],166:[function(require,module,exports){
 'use strict';
 
+Vue.component('movimientos_bancarios-index', {
+    props: ['url_movimientos_bancarios_index', 'cuentas', 'tipos', 'movimientos'],
+    data: function data() {
+        return {
+            'data': {
+                'cuentas': this.cuentas,
+                'tipos': this.tipos,
+                'movimientos': this.movimientos
+            },
+            'form': {
+                'id_tipo_movimiento': '',
+                'estatus': '',
+                'id_cuenta': '',
+                'impuesto': '0',
+                'importe': '',
+                'observaciones': '',
+                'fecha': moment().format('YYYY-MM-DD'),
+                'cumplimiento': '',
+                'vencimiento': '',
+                'referencia': ''
+            },
+            'movimiento_edit': {
+                'id_movimiento_bancario': '',
+                'id_tipo_movimiento': '',
+                'estatus': '',
+                'id_cuenta': '',
+                'impuesto': '',
+                'importe': '',
+                'observaciones': '',
+                'fecha': '',
+                'cumplimiento': '',
+                'vencimiento': '',
+                'referencia': ''
+            },
+            'guardando': false
+        };
+    },
+    computed: {},
+    mounted: function mounted() {
+        var self = this;
+
+        $("#Cumplimiento").datepicker().on("changeDate", function () {
+            Vue.set(self.form, 'vencimiento', $('#Cumplimiento').val());
+            Vue.set(self.form, 'cumplimiento', $('#Cumplimiento').val());
+        });
+        $("#edit_cumplimiento").datepicker().on("changeDate", function () {
+            Vue.set(self.movimiento_edit, 'vencimiento', $('#edit_cumplimiento').val());
+            Vue.set(self.movimiento_edit, 'cumplimiento', $('#edit_cumplimiento').val());
+        });
+        $("#Fecha").datepicker().on("changeDate", function () {
+            var thisElement = $(this);
+
+            Vue.set(self.form, 'fecha', thisElement.val());
+            thisElement.datepicker('hide');
+            thisElement.blur();
+            self.$validator.validate('required', self.form.fecha);
+        });
+        $(".fechas_edit").datepicker().on("changeDate", function () {
+            var thisElement = $(this);
+            var id = thisElement.attr('id').replace('edit_', '');
+
+            Vue.set(self.traspaso_edit, id, thisElement.val());
+        });
+    },
+    directives: {
+        datepicker: {
+            inserted: function inserted(el) {
+                $(el).datepicker({
+                    autoclose: true,
+                    language: 'es',
+                    todayHighlight: true,
+                    clearBtn: true,
+                    format: 'yyyy-mm-dd'
+                });
+            }
+        }
+    },
+    methods: {
+        datos_cuenta: function datos_cuenta(id) {
+            return this.cuentas[id];
+        },
+        confirm_guardar: function confirm_guardar() {
+            var self = this;
+            swal({
+                title: "Guardar movimiento",
+                text: "¿Estás seguro/a de que la información es correcta?",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonText: "Si, Continuar",
+                cancelButtonText: "No, Cancelar"
+            }).then(function () {
+                self.guardar();
+            }).catch(swal.noop);
+        },
+        guardar: function guardar() {
+            var self = this;
+
+            $.ajax({
+                type: 'POST',
+                url: self.url_movimientos_bancarios_index,
+                data: self.form,
+                beforeSend: function beforeSend() {
+                    self.guardando = true;
+                },
+                success: function success(data, textStatus, xhr) {
+                    if (typeof data.data.movimiento === 'string') {
+                        swal({
+                            type: 'warning',
+                            title: 'Error',
+                            html: data.data.movimiento
+                        });
+                    } else {
+                        self.data.movimientos.push(data.data.movimiento);
+                        swal({
+                            type: 'success',
+                            title: 'Correcto',
+                            html: 'Movimiento guardado correctamente'
+                        });
+                    }
+                },
+                complete: function complete() {
+                    self.guardando = false;
+                    self.close_modal_movimiento();
+                }
+            });
+        },
+        modal_movimiento: function modal_movimiento() {
+            $('#movimiento_modal').modal('show');
+            $('#id_tipo_movimiento').focus();
+        },
+        close_modal_movimiento: function close_modal_movimiento() {
+            this.reset_form();
+            $('#movimiento_modal').modal('hide');
+        },
+        confirm_eliminar: function confirm_eliminar(id_movimiento_bancario) {
+            var self = this;
+            swal({
+                title: "Eliminar movimiento",
+                text: "¿Estás seguro/a de que deseas eliminar este movimiento?",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonText: "Si, Continuar",
+                cancelButtonText: "No, Cancelar"
+            }).then(function () {
+                self.eliminar(id_movimiento_bancario);
+            }).catch(swal.noop);
+        },
+        eliminar: function eliminar(id_movimiento_bancario) {
+            var self = this;
+            $.ajax({
+                type: 'GET',
+                url: self.url_movimientos_bancarios_index + '/' + id_movimiento_bancario,
+                beforeSend: function beforeSend() {},
+                success: function success(data, textStatus, xhr) {
+                    self.data.movimientos.forEach(function (movimiento) {
+                        if (movimiento.id_movimiento_bancario == data.data.id_movimiento_bancario) {
+                            self.data.movimientos.splice(self.data.movimientos.indexOf(movimiento), 1);
+                        }
+                    });
+
+                    swal({
+                        type: 'success',
+                        title: 'Correcto',
+                        html: 'Movimiento eliminado'
+                    });
+                },
+                complete: function complete() {}
+            });
+        },
+        modal_editar: function modal_editar(movimiento) {
+            Vue.set(this.movimiento_edit, 'id_movimiento_bancario', movimiento.id_movimiento_bancario);
+            Vue.set(this.movimiento_edit, 'id_tipo_movimiento', movimiento.id_tipo_movimiento);
+            Vue.set(this.movimiento_edit, 'estatus', movimiento.estatus);
+            Vue.set(this.movimiento_edit, 'id_cuenta', movimiento.id_cuenta);
+            Vue.set(this.movimiento_edit, 'impuesto', movimiento.impuesto);
+            Vue.set(this.movimiento_edit, 'importe', movimiento.importe);
+            Vue.set(this.movimiento_edit, 'observaciones', movimiento.observaciones);
+            Vue.set(this.movimiento_edit, 'fecha', this.trim_fecha(movimiento.movimiento_transaccion.transaccion.fecha));
+            Vue.set(this.movimiento_edit, 'cumplimiento', this.trim_fecha(movimiento.movimiento_transaccion.transaccion.cumplimiento));
+            Vue.set(this.movimiento_edit, 'vencimiento', this.trim_fecha(movimiento.movimiento_transaccion.transaccion.vencimiento));
+            Vue.set(this.movimiento_edit, 'referencia', movimiento.movimiento_transaccion.transaccion.referencia);
+
+            this.validation_errors.clear('form_editar_movimiento');
+            $('#edit_movimiento_modal').modal('show');
+            $('#edit_id_cuenta').focus();
+        },
+        confirm_editar: function confirm_editar() {
+            var self = this;
+            swal({
+                title: "Editar movimiento",
+                text: "¿Estás seguro/a de que la información es correcta?",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonText: "Si, Continuar",
+                cancelButtonText: "No, Cancelar"
+            }).then(function () {
+                self.editar();
+            }).catch(swal.noop);
+        },
+        editar: function editar() {
+            var self = this;
+
+            self.movimiento_edit._method = 'PATCH';
+            $.ajax({
+                type: 'POST',
+                url: self.url_movimientos_bancarios_index + '/' + self.movimiento_edit.id_movimiento_bancario,
+                data: self.movimiento_edit,
+                beforeSend: function beforeSend() {},
+                success: function success(data, textStatus, xhr) {
+                    if (typeof data.data.movimiento === 'string') {
+                        swal({
+                            type: 'warning',
+                            title: 'Error',
+                            html: data.data.movimiento
+                        });
+                    } else {
+                        self.data.movimientos.forEach(function (movimiento) {
+                            if (movimiento.id_movimiento_bancario === data.data.movimiento.id_movimiento_bancario) {
+                                Vue.set(self.data.movimientos, self.data.movimientos.indexOf(movimiento), data.data.movimiento);
+                            }
+                        });
+                        swal({
+                            type: 'success',
+                            title: 'Correcto',
+                            html: 'movimiento guardado correctamente'
+                        });
+                    }
+
+                    self.close_edit_movimiento();
+                },
+                complete: function complete() {
+                    self.guardando = false;
+                }
+            });
+        },
+        close_edit_movimiento: function close_edit_movimiento() {
+            $('#edit_movimiento_modal').modal('hide');
+        },
+        validateForm: function validateForm(scope, funcion) {
+            self = this;
+            this.$validator.validateAll(scope).then(function () {
+                if (funcion === 'confirm_guardar') {
+                    self.confirm_guardar();
+                } else if (funcion === 'confirm_editar') {
+                    self.confirm_editar();
+                }
+            }).catch(function () {
+                swal({
+                    type: 'warning',
+                    title: 'Advertencia',
+                    text: 'Por favor corrija los errores del formulario'
+                });
+            });
+        },
+        trim_fecha: function trim_fecha(fecha) {
+            return fecha.substring(0, 10);
+        },
+        reset_form: function reset_form() {
+            Vue.set(this.form, 'id_tipo_movimiento', '');
+            Vue.set(this.form, 'estatus', '');
+            Vue.set(this.form, 'id_cuenta', '');
+            Vue.set(this.form, 'impuesto', '');
+            Vue.set(this.form, 'observaciones', '');
+            Vue.set(this.form, 'importe', '');
+            Vue.set(this.form, 'fecha', '');
+            Vue.set(this.form, 'cumplimiento', '');
+            Vue.set(this.form, 'vencimiento', '');
+            Vue.set(this.form, 'referencia', '');
+        }
+    }
+});
+
+},{}],167:[function(require,module,exports){
+'use strict';
+
 Vue.component('traspaso-cuentas-index', {
     props: ['url_traspaso_cuentas_index', 'cuentas', 'traspasos', 'monedas'],
     data: function data() {
@@ -82268,7 +82544,7 @@ Vue.component('traspaso-cuentas-index', {
     }
 });
 
-},{}],167:[function(require,module,exports){
+},{}],168:[function(require,module,exports){
 'use strict';
 
 Vue.component('app-errors', {
@@ -82277,7 +82553,7 @@ Vue.component('app-errors', {
     template: require('./templates/errors.html')
 });
 
-},{"./templates/errors.html":171}],168:[function(require,module,exports){
+},{"./templates/errors.html":172}],169:[function(require,module,exports){
 'use strict';
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
@@ -82303,7 +82579,7 @@ Vue.component('global-errors', {
   }
 });
 
-},{"./templates/global-errors.html":172}],169:[function(require,module,exports){
+},{"./templates/global-errors.html":173}],170:[function(require,module,exports){
 'use strict';
 
 Vue.component('kardex-material-index', {
@@ -82453,7 +82729,7 @@ Vue.component('kardex-material-index', {
 
 });
 
-},{}],170:[function(require,module,exports){
+},{}],171:[function(require,module,exports){
 'use strict';
 
 Vue.component('select2', {
@@ -82502,9 +82778,9 @@ Vue.component('select2', {
     }
 });
 
-},{}],171:[function(require,module,exports){
-module.exports = '<div id="form-errors" v-cloak>\n  <div class="alert alert-danger" v-if="form.errors.length">\n    <ul>\n      <li v-for="error in form.errors">{{ error }}</li>\n    </ul>\n  </div>\n</div>';
 },{}],172:[function(require,module,exports){
+module.exports = '<div id="form-errors" v-cloak>\n  <div class="alert alert-danger" v-if="form.errors.length">\n    <ul>\n      <li v-for="error in form.errors">{{ error }}</li>\n    </ul>\n  </div>\n</div>';
+},{}],173:[function(require,module,exports){
 module.exports = '<div class="alert alert-danger" v-show="errors.length">\n  <ul>\n    <li v-for="error in errors">{{ error }}</li>\n  </ul>\n</div>';
 },{}]},{},[144]);
 
