@@ -42,3 +42,4 @@ require('./vue-components/Reportes/subcontratos-estimacion');
  * Tesoreria Components
  */
 require('./vue-components/Tesoreria/traspaso_cuentas/index');
+require('./vue-components/Tesoreria/movimientos_bancarios/index');
