@@ -13,8 +13,8 @@ Vue.component('datos-contables-edit', {
     },
 
      created: function () {
-         Vue.set(this.data.datos_contables, 'manejo_almacenes', this.data.datos_contables.manejo_almacenes == '0' ? false : (this.data.datos_contables.manejo_almacenes == '1' ? true : this.data.datos_contables.manejo_almacenes));
-         Vue.set(this.data.datos_contables, 'costo_en_tipo_gasto', this.data.datos_contables.costo_en_tipo_gasto == '0' ? false : (this.data.datos_contables.costo_en_tipo_gasto == '1' ? true : this.data.datos_contables.costo_en_tipo_gasto));
+         Vue.set(this.data.datos_contables, 'manejo_almacenes', Boolean(Number(this.data.datos_contables.manejo_almacenes)));
+         Vue.set(this.data.datos_contables, 'costo_en_tipo_gasto', Boolean(Number(this.data.datos_contables.costo_en_tipo_gasto)));
 
      },
 
@@ -23,7 +23,12 @@ Vue.component('datos-contables-edit', {
             var self = this;
             swal({
                 title: "Guardar Datos Contables de la Obra",
-                text: "¿Estás seguro de que la información es correcta?",
+                html: "<div class=\"alert alert-danger\">\n" +
+                "  <strong>Atención</strong> Una vez guardados los datos no va a ser posible editarlos" +
+                "</div>" +
+                "<div class=\"alert alert-warning\">\n" +
+                "¿Estás seguro de que la información es correcta? " +
+                "</div>",
                 type: "warning",
                 showCancelButton: true,
                 confirmButtonText: "Si, Continuar",
