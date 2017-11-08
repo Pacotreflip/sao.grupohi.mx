@@ -57,8 +57,8 @@ class EloquentContratoProyectadoRepository implements ContratoProyectadoReposito
                 'contratos.*.clave' => ['string', 'max:140'],
                 'contratos.*.id_marca' => ['integer'],
                 'contratos.*.id_modelo' => ['integer'],
-                'contratos.*.destino' => ['required_with:unidad,cantidad_original'],
-                'contratos.*.destino.id_concepto' => ['required_with:destino', 'integer', 'exists:cadeco.conceptos,id_concepto']
+                'contratos.*.destinos' => ['required_with:contratos.*.unidad,contratos.*.cantidad_original'],
+                'contratos.*.destinos.*.id_concepto' => ['required_with:contratos.*.destinos', 'integer', 'exists:cadeco.conceptos,id_concepto']
             ];
 
             //Validar los datos recibidos con las reglas de validación

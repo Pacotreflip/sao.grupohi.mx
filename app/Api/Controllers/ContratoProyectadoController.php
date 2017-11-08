@@ -49,8 +49,8 @@ class ContratoProyectadoController extends Controller
      * @apiParam {String{max:140}} [contratos.clave] Clave del nuevo contrato adjunto al contrato proyectado
      * @apiParam {Integer} [contratos.id_marca] Marca del nuevo contrato adjunto al contrato proyectado
      * @apiParam {Integer} [contratos.id_modelo] Modelo del nuevo contrato adjunto al contrato proyectado
-     * @apiParam {Object[]} [contratos.destinos] Destino del contrato
-     * @apiParam {Integer} contratos.destinos.id_concepto Concepto asociado al contrato
+     * @apiParam {Object[]} [contratos.destinos] Destinos del contrato
+     * @apiParam {Integer} contratos.destinos.id_concepto ID del Concepto asociado al contrato
      *
      * @apiError StoreResourceFailedException Error al registrar un Contrato Proyectado
      * @apiErrorExample Error-Response

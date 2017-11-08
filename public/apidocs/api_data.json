@@ -130,14 +130,14 @@
             "type": "Object[]",
             "optional": true,
             "field": "contratos.destinos",
-            "description": "<p>Destino del contrato</p>"
+            "description": "<p>Destinos del contrato</p>"
           },
           {
             "group": "Parameter",
             "type": "Integer",
             "optional": false,
             "field": "contratos.destinos.id_concepto",
-            "description": "<p>Concepto asociado al contrato</p>"
+            "description": "<p>ID del Concepto asociado al contrato</p>"
           }
         ]
       }
