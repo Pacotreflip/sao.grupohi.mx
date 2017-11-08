@@ -1,6 +1,156 @@
 [
   {
     "type": "post",
+    "url": "/contrato",
+    "title": "Registrar Contrato",
+    "version": "1.0.0",
+    "group": "Contrato",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>Token de autorización</p>"
+          },
+          {
+            "group": "Header",
+            "type": "string",
+            "optional": false,
+            "field": "database_name",
+            "description": "<p>Nombre de la Base de Datos para establecer contexto</p>"
+          },
+          {
+            "group": "Header",
+            "type": "string",
+            "optional": false,
+            "field": "id_obra",
+            "description": "<p>ID De la obra sobre la que se desea extablecer el contexto</p>"
+          }
+        ]
+      }
+    },
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "size": "max:255",
+            "optional": false,
+            "field": "nivel",
+            "description": "<p>Nivel del nuevo contrato</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "size": "max:255",
+            "optional": false,
+            "field": "descripcion",
+            "description": "<p>Descripción del nuevo contrato</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "size": "max:16",
+            "optional": true,
+            "field": "unidad",
+            "description": "<p>Unidad de medida del nuevo contrato</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "size": "max:16",
+            "optional": true,
+            "field": "cantidad_original",
+            "description": "<p>Cantidad del nuevo contrato</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "size": "max:140",
+            "optional": true,
+            "field": "clave",
+            "description": "<p>Clave del nuevo contrato</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Integer",
+            "optional": true,
+            "field": "id_marca",
+            "description": "<p>Marca del nuevo contrato</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Integer",
+            "optional": true,
+            "field": "id_modelo",
+            "description": "<p>Modelo del nuevo contrato</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Object[]",
+            "optional": true,
+            "field": "destinos",
+            "description": "<p>Destinos del contrato</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Integer",
+            "optional": false,
+            "field": "destinos.id_concepto",
+            "description": "<p>ID del Concepto asociado al contrato</p>"
+          }
+        ]
+      }
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "StoreResourceFailedException",
+            "description": "<p>Error al registrar un Contrato</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Error-Response",
+          "content": "HTTP/1.1 422 Unprocessable Entity\n{\n  \"message\": \"error description\",\n  \"errors\": {\n    \"param\": [\"error 1\", \"error 2\"]\n    ...\n  },\n  \"status_code\": 422\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "success": {
+      "fields": {
+        "200": [
+          {
+            "group": "200",
+            "type": "Object",
+            "optional": false,
+            "field": "data",
+            "description": "<p>Datos del Contrato</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response",
+          "content": "HTTP/1.1 200 OK\n{\n  \"data\": {\n    \"id_concepto\": 1234\n    \"id_transaccion\": 31557\n  }\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "app/Api/Controllers/ContratoController.php",
+    "groupTitle": "Contrato",
+    "name": "PostContrato"
+  },
+  {
+    "type": "post",
     "url": "/contrato_proyectado",
     "title": "Registrar Contrato Proyectado",
     "version": "1.0.0",
