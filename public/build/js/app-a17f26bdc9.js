@@ -85077,7 +85077,7 @@ Vue.component('cuenta-material-index', {
 'use strict';
 
 Vue.component('datos-contables-edit', {
-    props: ['datos_contables', 'datos_contables_update_url'],
+    props: ['datos_contables', 'datos_contables_update_url', 'referencia'],
     data: function data() {
         return {
             'data': {
@@ -85086,12 +85086,55 @@ Vue.component('datos-contables-edit', {
             'guardando': false
         };
     },
+    mounted: function mounted() {
+        var self = this;
 
-    created: function created() {
-        Vue.set(this.data.datos_contables, 'manejo_almacenes', Boolean(Number(this.data.datos_contables.manejo_almacenes)));
-        Vue.set(this.data.datos_contables, 'costo_en_tipo_gasto', Boolean(Number(this.data.datos_contables.costo_en_tipo_gasto)));
+        // Iniciar evento al dar clic en un radio button
+        $('.checkboxes').on('ifClicked', function (e) {
+            var elem = $(this),
+                value = self.toBoolean(elem.data('value')),
+                name = elem.data('name'),
+                substring = "si";
+
+            var id = elem.attr('id');
+            var reference = name === 'manejo' ? 'manejo_almacenes' : 'costo_en_tipo_gasto';
+            var contraparte = "#" + (id.indexOf(substring) !== -1 ? name + "_no" : name + "_si");
+
+            elem.iCheck('check');
+            $(contraparte).iCheck('uncheck');
+            Vue.set(self.data.datos_contables, reference, value);
+        });
+
+        $("label.control-label").css({
+            'font-size': '1.5em'
+        });
+
+        $("div.iradio_line-blue").css({
+            'margin': '4px'
+        });
     },
+    created: function created() {
+        // Convierte "0" y "1" en false y true respectivamente
+        Vue.set(this.data.datos_contables, 'manejo_almacenes', this.toBoolean(this.data.datos_contables.manejo_almacenes));
+        Vue.set(this.data.datos_contables, 'costo_en_tipo_gasto', this.toBoolean(this.data.datos_contables.costo_en_tipo_gasto));
+    },
+    directives: {
+        icheck: {
+            inserted: function inserted(el, binding, vnode) {
+                var elem = $(el),
+                    label = elem.next(),
+                    label_text = label.text(),
+                    vm = vnode.context;
 
+                label.remove();
+                elem.iCheck({
+                    checkboxClass: 'icheckbox_line-blue',
+                    radioClass: 'iradio_line-blue',
+                    insert: '<div class="icheck_line-icon"></div>' + label_text
+                });
+            }
+        }
+    },
     methods: {
         confirm_datos_obra: function confirm_datos_obra() {
             var self = this;
@@ -85153,6 +85196,17 @@ Vue.component('datos-contables-edit', {
                     text: 'Por favor corrija los errores del formulario'
                 });
             });
+        },
+        toBoolean: function toBoolean(sVar) {
+            return Boolean(Number(sVar));
+        },
+        checkBox: function checkBox(toCheck, bVar) {
+            toCheck = toCheck == null ? false : toCheck;
+
+            return toCheck === bVar;
+        },
+        editando: function editando() {
+            return this.toBoolean(this.referencia);
         }
     }
 });
