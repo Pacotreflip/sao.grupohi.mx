@@ -35,7 +35,7 @@ class EloquentContratoProyectadoRepository implements ContratoProyectadoReposito
     /**
      * Crea un nuevo registro de Contrato Proyectado
      * @param array $data
-     * @return Sucursal
+     * @return ContratoProyectado
      * @throws \Exception
      */
     public function create(array $data)
@@ -87,6 +87,27 @@ class EloquentContratoProyectadoRepository implements ContratoProyectadoReposito
                 DB::connection('cadeco')->commit();
                 return $contrato_proyectado;
             }
+            DB::connection('cadeco')->commit();
+        } catch (\Exception $e) {
+            DB::connection('cadeco')->rollback();
+            throw $e;
+        }
+    }
+
+    /**
+     * Actualiza un Contrato Proyectado
+     * @param array $data
+     * @param $id
+     * @return ContratoProyectado
+     * @throws \Exception
+     */
+    public function update(array $data, $id)
+    {
+        DB::connection('cadeco')->beginTransaction();
+        try {
+
+
+
             DB::connection('cadeco')->commit();
         } catch (\Exception $e) {
             DB::connection('cadeco')->rollback();

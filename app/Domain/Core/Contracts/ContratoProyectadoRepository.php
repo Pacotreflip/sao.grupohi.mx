@@ -10,11 +10,25 @@ namespace Ghi\Domain\Core\Contracts;
 
 
 
+use Ghi\Domain\Core\Models\Transacciones\ContratoProyectado;
+
 interface ContratoProyectadoRepository
 {
+
     /**
      * Crea un nuevo registro de Contrato Proyectado
-     * @return Sucursal
+     * @param array $data
+     * @return ContratoProyectado
+     * @throws \Exception
      */
     public function create(array $data);
+
+    /**
+     * Actualiza un Contrato Proyectado
+     * @param array $data
+     * @param $id
+     * @return ContratoProyectado
+     * @throws \Exception
+     */
+    public function update(array $data, $id);
 }
