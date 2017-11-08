@@ -25,4 +25,12 @@ interface ContratoRepository
      * @return Contrato
      */
     public function find($id);
+
+    /**
+     * Crea un nuevo Contrato adjunto a un Contrato Proyectado
+     * @param array $data
+     * @return contrato
+     * @throws \Exception
+     */
+    public function create(array $data);
 }

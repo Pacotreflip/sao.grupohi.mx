@@ -33,4 +33,8 @@ class ContratoController extends Controller
         $contrato = $this->contrato->update($request->all(), $id);
         return $this->response->item($contrato, new ContratoTransformer());
     }
+
+    public function store(Request $request){
+        $contrato = $this->contrato->create($request->all());
+    }
 }

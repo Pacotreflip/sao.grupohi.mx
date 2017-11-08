@@ -79,5 +79,61 @@ class EloquentContratoRepository implements ContratoRepository
     public function find($id)
     {
         return $this->model->find($id);
+
+    }
+
+    /**
+     * Crea un nuevo Contrato adjunto a un Contrato Proyectado
+     * @param array $data
+     * @return contrato
+     * @throws \Exception
+     */
+    public function create(array $data)
+    {
+        DB::connection('cadeco')->beginTransaction();
+        try{
+            //Reglas de validación para crear un contrato
+            $rules = [
+                //Validaciones de Transaccion
+                'contratos' => ['required', 'array'],
+                'contratos.*.id_transaccion' => ['required', 'integer'],
+                'contratos.*.nivel' => ['required', 'string', 'max:255'],
+                'contratos.*.descripcion' => ['required', 'string', 'max:255'],
+                'contratos.*.unidad' => ['string', 'max:16', 'exists:cadeco.unidades,unidad'],
+                'contratos.*.cantidad_original' => ['numeric', 'required_with:contratos.*.unidad'],
+                'contratos.*.clave' => ['string', 'max:140'],
+                'contratos.*.id_marca' => ['integer'],
+                'contratos.*.id_modelo' => ['integer'],
+                'contratos.*.destinos' => ['required_with:contratos.*.unidad,contratos.*.cantidad_original'],
+                'contratos.*.destinos.*.id_concepto' => ['required_with:contratos.*.destinos', 'integer', 'exists:cadeco.conceptos,id_concepto']
+            ];
+
+            //Validar los datos recibidos con las reglas de validación
+            $validator = app('validator')->make($data, $rules);
+            if(count($validator->errors()->all())) {
+                //Caer en excepción si alguna regla de validación falla
+                throw new StoreResourceFailedException('Error al crear el Contrato', $validator->errors());
+            } else {
+                $contratos[] = new Contrato();
+                foreach ($data['contratos'] as $key => $contrato) {
+                    $contrato['cantidad_presupuestada'] = array_key_exists('cantidad_original', $contrato) ? $contrato['cantidad_original'] : 0;
+                    $new_contrato = Contrato::create($contrato);
+
+                    if(array_key_exists('destinos', $contrato)) {
+                        foreach ($contrato['destinos'] as $destino) {
+                            $new_contrato->conceptos()->attach($destino['id_concepto'], ['id_transaccion' => $contrato->id_transaccion]);
+                        }
+                    }
+                    array_push($contratos, $new_contrato);
+                }
+            }
+
+            DB::connection('cadeco')->commit();
+            return $contratos;
+        }catch(\Exception $e){
+            DB::connection('cadeco')->rollback();
+            throw $e;
+        }
+
     }
 }
