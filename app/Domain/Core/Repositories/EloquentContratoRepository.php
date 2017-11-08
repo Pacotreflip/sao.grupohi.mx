@@ -95,17 +95,16 @@ class EloquentContratoRepository implements ContratoRepository
             //Reglas de validación para crear un contrato
             $rules = [
                 //Validaciones de Transaccion
-                'contratos' => ['required', 'array'],
-                'contratos.*.id_transaccion' => ['required', 'integer'],
-                'contratos.*.nivel' => ['required', 'string', 'max:255'],
-                'contratos.*.descripcion' => ['required', 'string', 'max:255'],
-                'contratos.*.unidad' => ['string', 'max:16', 'exists:cadeco.unidades,unidad'],
-                'contratos.*.cantidad_original' => ['numeric', 'required_with:contratos.*.unidad'],
-                'contratos.*.clave' => ['string', 'max:140'],
-                'contratos.*.id_marca' => ['integer'],
-                'contratos.*.id_modelo' => ['integer'],
-                'contratos.*.destinos' => ['required_with:contratos.*.unidad,contratos.*.cantidad_original'],
-                'contratos.*.destinos.*.id_concepto' => ['required_with:contratos.*.destinos', 'integer', 'exists:cadeco.conceptos,id_concepto']
+                'id_transaccion' => ['required', 'integer'],
+                'nivel' => ['required', 'string', 'max:255'],
+                'descripcion' => ['required', 'string', 'max:255'],
+                'unidad' => ['string', 'max:16', 'exists:cadeco.unidades,unidad'],
+                'cantidad_original' => ['numeric', 'required_with:unidad'],
+                'clave' => ['string', 'max:140'],
+                'id_marca' => ['integer'],
+                'id_modelo' => ['integer'],
+                'destinos' => ['required_with:unidad,cantidad_original'],
+                'destinos.*.id_concepto' => ['required_with:destinos', 'integer', 'distinct', 'exists:cadeco.conceptos,id_concepto']
             ];
 
             //Validar los datos recibidos con las reglas de validación
@@ -113,27 +112,22 @@ class EloquentContratoRepository implements ContratoRepository
             if(count($validator->errors()->all())) {
                 //Caer en excepción si alguna regla de validación falla
                 throw new StoreResourceFailedException('Error al crear el Contrato', $validator->errors());
-            } else {
-                $contratos[] = new Contrato();
-                foreach ($data['contratos'] as $key => $contrato) {
-                    $contrato['cantidad_presupuestada'] = array_key_exists('cantidad_original', $contrato) ? $contrato['cantidad_original'] : 0;
-                    $new_contrato = Contrato::create($contrato);
+            }else{
+                ! array_key_exists('cantidad_original', $data) ? : $data['cantidad_presupuestada'] = $data['cantidad_original'] ;
 
-                    if(array_key_exists('destinos', $contrato)) {
-                        foreach ($contrato['destinos'] as $destino) {
-                            $new_contrato->conceptos()->attach($destino['id_concepto'], ['id_transaccion' => $contrato->id_transaccion]);
-                        }
+                $contrato = Contrato::create($data);
+
+                if(array_key_exists('destinos', $data)) {
+                    foreach ($data['destinos'] as $destino) {
+                        $contrato->conceptos()->attach($destino['id_concepto'], ['id_transaccion' => $contrato->id_transaccion]);
                     }
-                    array_push($contratos, $new_contrato);
                 }
             }
-
             DB::connection('cadeco')->commit();
-            return $contratos;
-        }catch(\Exception $e){
+            return $contrato;
+        }catch (\Exception $e){
             DB::connection('cadeco')->rollback();
             throw $e;
         }
-
     }
 }
