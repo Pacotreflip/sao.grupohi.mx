@@ -28,12 +28,23 @@ Vue.component('datos-contables-edit', {
             var parent_elem = elem.parent();
             var parent_contraparte = $(contraparte).parent();
 
-            parent_elem.addClass('iradio_line-green').removeClass('iradio_line-blue').removeClass('iradio_line-grey');
-            parent_contraparte.addClass('iradio_line-grey').removeClass('iradio_line-blue').removeClass('iradio_line-green');
+            parent_elem.addClass('iradio_line-green').removeClass('iradio_line-grey');
+            parent_contraparte.addClass('iradio_line-grey').removeClass('iradio_line-green');
             elem.iCheck('check');
             $(contraparte).iCheck('uncheck');
             Vue.set(self.data.datos_contables, reference, value);
         });
+
+        // Cambia el estilo a los elementos previamente seleccionados
+        $('.checkboxes').each(function( index ) {
+            var elem = $(this);
+            var parent = elem.parent();
+
+            if(elem.is(':checked')) {
+                parent.addClass('iradio_line-green').removeClass('iradio_line-grey');console.log(parent);
+            }
+        });
+
 
         $("label.control-label").css({
             'font-size': '1.5em'
@@ -41,7 +52,7 @@ Vue.component('datos-contables-edit', {
         $("div.box-body > .alert-danger").css({
             'font-size': '1.3em'
         });
-        $("div.iradio_line-blue").css({
+        $("div.iradio_line-grey").css({
             'margin': '4px'
         });
     },
@@ -60,8 +71,8 @@ Vue.component('datos-contables-edit', {
 
                 label.remove();
                 elem.iCheck({
-                    checkboxClass: 'icheckbox_line-blue',
-                    radioClass: 'iradio_line-blue',
+                    checkboxClass: 'icheckbox_line-grey',
+                    radioClass: 'iradio_line-grey',
                     insert: '<div class="icheck_line-icon"></div>' + label_text
                 });
             }
