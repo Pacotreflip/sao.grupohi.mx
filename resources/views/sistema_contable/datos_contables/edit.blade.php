@@ -23,7 +23,7 @@
                         <form id="form_datos_obra" @submit.prevent="validateForm('form_datos_obra', 'save_datos_obra')"  data-vv-scope="form_datos_obra">
                             <div class="box-body">
                                 <div class="alert alert-danger col-md-12">
-                                 <strong>Atención</strong> Una vez guardados los datos no va a ser posible editarlos
+                                 <strong>Atención</strong> @{{mostrar_mensaje()}}
                                 </div>
                                 <div class="col-md-4">
                                     <div class="form-group" :class="{'has-error': validation_errors.has('form_datos_obra.Base de Datos CONTPAQ') }">

@@ -25,7 +25,11 @@ Vue.component('datos-contables-edit', {
             var id = elem.attr('id');
             var reference = (name === 'manejo' ? 'manejo_almacenes' : 'costo_en_tipo_gasto');
             var contraparte = "#"+ (id.indexOf(substring) !== -1 ? name + "_no" : name + "_si");
+            var parent_elem = elem.parent();
+            var parent_contraparte = $(contraparte).parent();
 
+            parent_elem.addClass('iradio_line-green').removeClass('iradio_line-blue').removeClass('iradio_line-grey');
+            parent_contraparte.addClass('iradio_line-grey').removeClass('iradio_line-blue').removeClass('iradio_line-green');
             elem.iCheck('check');
             $(contraparte).iCheck('uncheck');
             Vue.set(self.data.datos_contables, reference, value);
@@ -34,7 +38,9 @@ Vue.component('datos-contables-edit', {
         $("label.control-label").css({
             'font-size': '1.5em'
         });
-
+        $("div.box-body > .alert-danger").css({
+            'font-size': '1.3em'
+        });
         $("div.iradio_line-blue").css({
             'margin': '4px'
         });
@@ -137,6 +143,9 @@ Vue.component('datos-contables-edit', {
         },
         editando: function () {
             return this.toBoolean(this.referencia);
+        },
+        mostrar_mensaje: function () {
+            return this.editando() ? 'Los datos no pueden ser modificados porque ya han sido guardados previamente' : 'Una vez guardados los datos no va a ser posible editarlos';
         }
     }
 });
