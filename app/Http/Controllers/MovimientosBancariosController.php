@@ -25,6 +25,11 @@ class MovimientosBancariosController extends Controller
         $this->middleware('auth');
         $this->middleware('context');
 
+        // Permisos
+        $this->middleware('permission:consultar_movimiento_bancario', ['only' => ['index']]);
+        $this->middleware('permission:eliminar_movimiento_bancario', ['only' => ['destroy']]);
+        $this->middleware('permission:editar_movimiento_bancario', ['only' => ['update']]);
+
         $this->movimientos = $movimientos;
     }
 
