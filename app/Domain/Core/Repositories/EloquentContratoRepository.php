@@ -60,6 +60,8 @@ class EloquentContratoRepository implements ContratoRepository
                 throw new StoreResourceFailedException('Error al actualizar el Contrato', $validator->errors());
             }
 
+            ! array_key_exists('cantidad_original', $data) ? : $data['cantidad_presupuestada'] = $data['cantidad_original'] ;
+
             $contrato->update($data);
 
             DB::connection('cadeco')->commit();
