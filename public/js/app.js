@@ -87349,8 +87349,7 @@ Vue.component('movimientos_bancarios-index', {
             return this.form.impuesto > 0 ? importeInt + importeInt * this.form.impuesto / 100 : importeInt;
         },
         total_edit: function total_edit(importe, impuesto) {
-            var importeInt = Math.floor(importe);
-            return impuesto > 0 ? importeInt + importeInt * impuesto / 100 : importeInt;
+            return impuesto > 0 ? importeInt + impuesto : importeInt;
         }
     }
 });
