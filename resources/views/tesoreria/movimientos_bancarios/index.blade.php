@@ -74,7 +74,7 @@
                                     <div class="col-md-4" v-if="form.id_tipo_movimiento == 4">
                                         <div class="form-group" :class="{'has-error': validation_errors.has('form_guadar_movimiento.Total')}">
                                             <label><b>Total</b></label>
-                                            <input type="text" class="form-control pull-right" id="Total" value="" name="Total" v-model="total()" disabled>
+                                            <input type="text" class="form-control pull-right" id="Total" value="" name="Total" v-model="total_create()" disabled>
                                             <label class="help" v-show="validation_errors.has('form_guadar_movimiento.Total')">@{{ validation_errors.first('form_guadar_movimiento.Total') }}</label>
                                         </div>
                                     </div>

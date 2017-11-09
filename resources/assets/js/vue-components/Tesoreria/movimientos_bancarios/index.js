@@ -283,6 +283,12 @@ Vue.component('movimientos_bancarios-index', {
 
             return impuesto > 0 ?  parseFloat(importe) + parseFloat(impuesto) : importe;
         },
+        total_create: function () {
+            var importe = this.form.importe == null ? 0 : this.form.importe,
+                impuesto = this.form.impuesto == null ? 0 : this.form.impuesto;
+
+            return impuesto > 0 ?  parseFloat(importe) + parseFloat(impuesto) : importe;
+        },
         total: function (importe, impuesto) {
             var importe = importe == null ? 0 : importe,
                 impuesto = impuesto == null ? 0 : impuesto;
