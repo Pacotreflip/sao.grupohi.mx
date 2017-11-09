@@ -173,7 +173,7 @@
                                             <td>@{{item.cuenta.numero }} @{{item.cuenta.abreviatura }} (@{{item.cuenta.empresa.razon_social}})</td>
                                             <td>@{{item.importe}}</td>
                                             <td>@{{ item.impuesto }}</td>
-                                            <td>@{{total_edit(item.importe, item.impuesto)}}</td>
+                                            <td>@{{total(item.importe, item.impuesto)}}</td>
                                             <td>@{{item.movimiento_transaccion.transaccion.referencia}}</td>
                                             @permission(['eliminar_movimiento_bancario', 'editar_movimiento_bancario'])
                                             <td>
@@ -268,7 +268,7 @@
                                 <div class="col-md-4" v-if="movimiento_edit.id_tipo_movimiento == 4">
                                     <div class="form-group" :class="{'has-error': validation_errors.has('form_editar_movimiento.Editar Total')}">
                                         <label><b>Total</b></label>
-                                        <input type="text" class="form-control pull-right" id="Editar Total" value="" name="Editar Total" v-model="total_edit(movimiento_edit.importe, movimiento_edit.impuesto)" disabled>
+                                        <input type="text" class="form-control pull-right" id="Editar Total" value="" name="Editar Total" v-model="total_edit()" disabled>
                                         <label class="help" v-show="validation_errors.has('form_guadar_movimiento.Editar Total')">@{{ validation_errors.first('form_editar_movimiento.Editar Total') }}</label>
                                     </div>
                                 </div>

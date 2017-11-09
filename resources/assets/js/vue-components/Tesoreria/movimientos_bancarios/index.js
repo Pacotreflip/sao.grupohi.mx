@@ -24,8 +24,8 @@ Vue.component('movimientos_bancarios-index', {
                 'id_tipo_movimiento' : '',
                 'estatus' : '',
                 'id_cuenta': '',
-                'impuesto': '',
-                'importe': '',
+                'impuesto': 0,
+                'importe': 0,
                 'observaciones': '',
                 'fecha': '',
                 'cumplimiento': '',
@@ -277,12 +277,17 @@ Vue.component('movimientos_bancarios-index', {
             Vue.set(this.form, 'vencimiento', '');
             Vue.set(this.form, 'referencia', '');
         },
-        total: function () {
-            var importeInt = Math.floor(this.form.importe);
-            return this.form.impuesto > 0 ? importeInt + ((importeInt * this.form.impuesto) / 100) : importeInt;
+        total_edit: function () {
+            var importe = this.movimiento_edit.importe == null ? 0 : this.movimiento_edit.importe,
+                impuesto = this.movimiento_edit.impuesto == null ? 0 : this.movimiento_edit.impuesto;
+
+            return impuesto > 0 ?  parseFloat(importe) + parseFloat(impuesto) : importe;
         },
-        total_edit: function (importe, impuesto) {
-            return impuesto > 0 ? importeInt + impuesto : importeInt;
+        total: function (importe, impuesto) {
+            var importe = importe == null ? 0 : importe,
+                impuesto = impuesto == null ? 0 : impuesto;
+
+            return impuesto > 0 ?  parseFloat(importe) + parseFloat(impuesto) : importe;
         }
     }
 });
