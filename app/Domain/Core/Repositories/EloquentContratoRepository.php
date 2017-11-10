@@ -13,6 +13,7 @@ use Dingo\Api\Exception\StoreResourceFailedException;
 use Ghi\Domain\Core\Contracts\ContratoRepository;
 use Ghi\Domain\Core\Models\Contrato;
 use Illuminate\Support\Facades\DB;
+use PhpParser\Node\Expr\Array_;
 
 class EloquentContratoRepository implements ContratoRepository
 {
@@ -92,6 +93,7 @@ class EloquentContratoRepository implements ContratoRepository
      */
     public function create(array $data)
     {
+        $this->validarContrato($data);
         DB::connection('cadeco')->beginTransaction();
         try{
             //Reglas de validación para crear un contrato
@@ -131,5 +133,27 @@ class EloquentContratoRepository implements ContratoRepository
             DB::connection('cadeco')->rollback();
             throw $e;
         }
+    }
+    private function validarContrato(array $data){
+        $niveles = $this->model->select('nivel')->where('id_transaccion', '=', $data['id_transaccion'])->get()->toArray();
+        $niv = [];
+        foreach ($niveles as $key => $nivel){
+            array_push($niv, $nivel['nivel']);
+        }
+        if(in_array( $data['nivel'], $niv)){
+            return false;
+        }
+
+        if(strlen($data['nivel']) >4){
+            $padre = substr($data['nivel'], 0,strlen($data['nivel'])-4);
+            //$resp = in_array( $padre, $niv)? true :  false;
+            if(in_array( $padre, $niv)){
+                $fam = $this->model->where('nivel', '=', $padre)
+                            ->where('id_transaccion', '=', $data['id_transaccion'])->get();
+
+            }
+
+        }
+
     }
 }
