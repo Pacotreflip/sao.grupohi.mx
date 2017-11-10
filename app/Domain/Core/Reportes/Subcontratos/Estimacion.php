@@ -32,7 +32,7 @@ class Estimacion extends Rotation {
     }
 
     function Header() {
-        $this->logo();
+        //$this->logo();
         $this->detalles();
         $this->Ln(1);
 
@@ -80,6 +80,13 @@ class Estimacion extends Rotation {
 
     function Footer() {
         $this->firmas();
+        $this->SetY($this->GetPageHeight() - 0.5);
+        $this->SetFont('Arial', '', 6);
+        $this->Cell(6.5, .4, utf8_decode('Formato generado desde SAO.'), 0, 0, 'L');
+        $this->SetFont('Arial', 'B', 6);
+        $this->Cell(6.5, .4, '', 0, 0, 'C');
+        $this->Cell(6.5, .4, utf8_decode('Página ') . $this->PageNo() . '/{nb}', 0, 0, 'R');
+
     }
 
     function logo() {
@@ -424,6 +431,7 @@ class Estimacion extends Rotation {
         $this->Cell(($this->GetPageWidth() - 4) / 5, 0.4, 'CONTROL DE OBRA', 'TRLB', 0, 'C', 1);
         $this->Cell(0.5);
         $this->Cell(($this->GetPageWidth() - 4) / 5, 0.4, 'ADMINISTRADOR', 'TRLB', 0, 'C', 1);
+
     }
 
     function create() {
