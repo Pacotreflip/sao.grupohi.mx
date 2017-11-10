@@ -139,7 +139,7 @@ class Estimacion extends Rotation {
         $this->SetX(6);
         $this->SetFont('Arial', '', 8);
         $this->Cell(4, 0.35, utf8_decode('Estimación :'), 0, 0, 'R');
-        $this->CellFitScale(10, 0.35, '', 'B', 1, 'C');
+        $this->CellFitScale(10, 0.35, utf8_decode("#".$this->estimacion->numero_folio . " - " . $this->estimacion->observaciones), 'B', 1, 'C');
         $this->Ln(0.1);
 
         $this->SetX(6   );
@@ -275,7 +275,7 @@ class Estimacion extends Rotation {
         $this->SetX(($this->w) * 0.45);
         $this->SetFont('Arial', '', 8);
         $this->Cell(($this->w - 2) * 0.30, 0.4, 'Amortizacion de Anticipo :', 0, 0, 'R');
-        $this->CellFitScale(($this->w - 2) * 0.10, 0.4, ($this->estimacion->monto_anticipo_aplicado / $this->estimacion->suma_importes) * 100 . ' %', 'B', 0, 'L');
+        $this->CellFitScale(($this->w - 2) * 0.10, 0.4, round($this->estimacion->anticipo, 2) . ' %', 'B', 0, 'L');
         $this->CellFitScale(($this->w - 2) * 0.15, 0.4, number_format($this->estimacion->monto_anticipo_aplicado, 2 ,'.', ','), 'B', 1, 'R');
         $this->Ln(0.1);
 
@@ -306,7 +306,7 @@ class Estimacion extends Rotation {
         $this->SetX(($this->w) * 0.45);
         $this->SetFont('Arial', '', 8);
         $this->Cell(($this->w - 2) * 0.30, 0.4, utf8_decode('Retención de Fondo de Garantia Estimación :'), 0, 0, 'R');
-        $this->CellFitScale(($this->w - 2) * 0.10, 0.4, number_format($this->estimacion->subcontratoEstimacion ? $this->estimacion->subcontratoEstimacion->PorcentajeFondoGarantia : 0, 2, '.', ',') . ' %', 'B', 0, 'L');
+        $this->CellFitScale(($this->w - 2) * 0.10, 0.4, round($this->estimacion->retencion, 2) . ' %', 'B', 0, 'L');
         $this->CellFitScale(($this->w - 2) * 0.15, 0.4, number_format($this->estimacion->subcontratoEstimacion ? $this->estimacion->subcontratoEstimacion->ImporteFondoGarantia : 0, 2, '.', ','), 'B', 1, 'R');
         $this->Ln(0.1);
 
@@ -362,11 +362,11 @@ class Estimacion extends Rotation {
         $this->SetY($y_inicial + (($y_final - $y_inicial) / 2) - 1);
 
         $this->SetFont('Arial', '', 8);
-        $this->Cell(($this->w - 2) * 0.125, 0.4, 'Retenido Anterior :', 0, 0, 'L');
+        $this->Cell(($this->w - 2) * 0.21, 0.4, 'Acumulado Retenido Anterior :', 0, 0, 'L');
         $this->CellFitScale(($this->w - 2) * 0.125, 0.4, '$ ' .  number_format($this->estimacion->retenido_anterior, 2, '.', ','), 'B', 1, 'R');
 
         $this->SetFont('Arial', '', 8);
-        $this->Cell(($this->w - 2) * 0.125, 0.4, 'Retenido Origen :', 0, 0, 'L');
+        $this->Cell(($this->w - 2) * 0.21, 0.4, 'Retenido Origen :', 0, 0, 'L');
         $this->CellFitScale(($this->w - 2) * 0.125, 0.4, '$ ' .  number_format($this->estimacion->retenido_origen, 2, '.', ','), 'B', 1, 'R');
 
         $this->SetY($y_final);
