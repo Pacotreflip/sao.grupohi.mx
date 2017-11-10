@@ -185,7 +185,7 @@
                                             <td>@{{item.cuenta.numero }} @{{item.cuenta.abreviatura }} (@{{item.cuenta.empresa.razon_social}})</td>
                                             <td class="text-right">@{{comma_format(item.importe)}}</td>
                                             <td class="text-right">@{{comma_format(item.impuesto)}}</td>
-                                            <td class="text-right">@{{total(item.importe, item.impuesto)}}</td>
+                                            <td class="text-right">@{{comma_format(total(item.importe, item.impuesto))}}</td>
                                             <td>@{{item.movimiento_transaccion.transaccion.referencia}}</td>
                                             @permission(['eliminar_movimiento_bancario', 'editar_movimiento_bancario', 'consultar_movimiento_bancario'])
                                             <td>
