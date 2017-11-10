@@ -54,6 +54,9 @@
                                             <label class="help" v-show="validation_errors.has('form_guadar_movimiento.Cuenta')">@{{ validation_errors.first('form_guadar_movimiento.Cuenta') }}</label>
                                         </div>
                                     </div>
+                                    <div class="col-md-12">
+                                        &nbsp;
+                                    </div>
                                     {{--Importe--}}
                                     <div class="col-md-4">
                                         <div class="form-group" :class="{'has-error': validation_errors.has('form_guadar_movimiento.Importe')}">
@@ -78,6 +81,9 @@
                                             <label class="help" v-show="validation_errors.has('form_guadar_movimiento.Total')">@{{ validation_errors.first('form_guadar_movimiento.Total') }}</label>
                                         </div>
                                     </div>
+                                    <div class="col-md-12">
+                                        &nbsp;
+                                    </div>
                                     {{--Referencia--}}
                                     <div class="col-md-12">
                                         <div class="form-group" :class="{'has-error': validation_errors.has('form_guadar_movimiento.Referencia')}">
@@ -85,6 +91,9 @@
                                             <input type="text" class="form-control pull-right" id="Referencia" value="" name="Referencia" v-model="form.referencia" v-validate="'required'">
                                             <label class="help" v-show="validation_errors.has('form_guadar_movimiento.Referencia')">@{{ validation_errors.first('form_guadar_movimiento.Referencia') }}</label>
                                         </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        &nbsp;
                                     </div>
                                     {{--Fecha--}}
                                     <div class="col-md-4">
@@ -117,6 +126,9 @@
                                             <input type="text" name="Vencimiento" class="form-control input-sm " id="Vencimiento"  :value="form.vencimiento" v-model="form.vencimiento"
                                                    disabled >
                                         </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        &nbsp;
                                     </div>
                                     {{--Observaciones--}}
                                     <div class="col-md-12">
@@ -159,8 +171,8 @@
                                         <th>Impuesto</th>
                                         <th>Total</th>
                                         <th>Referencia</th>
-                                        @permission(['eliminar_movimiento_bancario', 'editar_movimiento_bancario'])
-                                        <th>Acciones</th>
+                                        @permission(['eliminar_movimiento_bancario', 'editar_movimiento_bancario', 'consultar_movimiento_bancario'])
+                                        <th width="150">Acciones</th>
                                         @endpermission
                                     </tr>
                                     </thead>
@@ -208,9 +220,6 @@
                 <div class="col-md-12">
                     <button class="btn btn-sm btn-primary pull-right" v-on:click="modal_movimiento()">Registrar Movimiento</button>
                 </div>
-                <div class="col-md-12">
-
-                </div>
             </div>
             @endpermission
 
@@ -253,6 +262,9 @@
                                         <label class="help" v-show="validation_errors.has('form_editar_movimiento.Editar Cuenta')">@{{ validation_errors.first('form_editar_movimiento.Editar Cuenta') }}</label>
                                     </div>
                                 </div>
+                                <div class="col-md-12">
+                                    &nbsp;
+                                </div>
                                 {{--Importe--}}
                                 <div class="col-md-4">
                                     <div class="form-group" :class="{'has-error': validation_errors.has('form_editar_movimiento.Editar Importe')}">
@@ -277,6 +289,9 @@
                                         <label class="help" v-show="validation_errors.has('form_guadar_movimiento.Editar Total')">@{{ validation_errors.first('form_editar_movimiento.Editar Total') }}</label>
                                     </div>
                                 </div>
+                                <div class="col-md-12">
+                                    &nbsp;
+                                </div>
                                 {{--Referencia--}}
                                 <div class="col-md-12">
                                     <div class="form-group" :class="{'has-error': validation_errors.has('form_editar_movimiento.Editar Referencia')}">
@@ -284,6 +299,9 @@
                                         <input type="text" class="form-control pull-right" id="referencia" value="" name="Editar Referencia" v-model="movimiento_edit.referencia" v-validate="'required'">
                                         <label class="help" v-show="validation_errors.has('form_editar_movimiento.Editar Referencia')">@{{ validation_errors.first('form_editar_movimiento.Editar Referencia') }}</label>
                                     </div>
+                                </div>
+                                <div class="col-md-12">
+                                    &nbsp;
                                 </div>
                                 {{--Fecha--}}
                                 <div class="col-md-4">
@@ -316,6 +334,9 @@
                                         <input type="text" name="Editar Vencimiento" class="form-control input-sm " id="Editar Vencimiento"  :value="movimiento_edit.vencimiento" v-model="movimiento_edit.vencimiento"
                                                disabled >
                                     </div>
+                                </div>
+                                <div class="col-md-12">
+                                    &nbsp;
                                 </div>
                                 {{--Observaciones--}}
                                 <div class="col-md-12">

@@ -17,9 +17,7 @@
                 <div class="col-md-12">
                     <button class="btn btn-sm btn-primary pull-right" v-on:click="modal_traspaso()">Registrar Traspaso</button>
                 </div>
-                <div class="col-md-12">
-                    &nbsp;
-                </div>
+                <div class="col-md-12">&nbsp;</div>
             </div>
             <div id="traspaso_modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="TraspasoModal" data-backdrop="static" data-keyboard="false">
                 <div class="modal-dialog" role="document">
@@ -53,6 +51,7 @@
                                             <label class="help" v-show="validation_errors.has('form_guardar_traspaso.Cuenta Destino')">@{{ validation_errors.first('form_guardar_traspaso.Cuenta Destino') }}</label>
                                         </div>
                                     </div>
+                                    <div class="col-md-12">&nbsp;</div>
                                     {{--Fecha--}}
                                     <div class="col-md-4">
                                         <div class="form-group"
@@ -86,6 +85,7 @@
                                                    disabled >
                                         </div>
                                     </div>
+                                    <div class="col-md-12">&nbsp;</div>
                                     {{--Importe--}}
                                     <div class="col-md-4">
                                         <div class="form-group" :class="{'has-error': validation_errors.has('form_guardar_traspaso.Importe')}">
@@ -102,6 +102,7 @@
                                             <label class="help" v-show="validation_errors.has('form_guardar_traspaso.Referencia')">@{{ validation_errors.first('form_guardar_traspaso.Referencia') }}</label>
                                         </div>
                                     </div>
+                                    <div class="col-md-12">&nbsp;</div>
                                     {{--Observaciones--}}
                                     <div class="col-md-12">
                                         <div class="form-group" :class="{'has-error': validation_errors.has('form_guardar_traspaso.Observaciones')}">
@@ -142,7 +143,7 @@
                                         <th>Importe</th>
                                         <th>Referencia</th>
                                         @permission(['eliminar_traspaso_cuenta', 'editar_traspaso_cuenta'])
-                                        <th>Acciones</th>
+                                        <th width="150">Acciones</th>
                                         @endpermission
                                     </tr>
                                     </thead>
@@ -226,6 +227,7 @@
                                         <label class="help" v-show="validation_errors.has('form_editar_traspaso.Cuenta Destino')">@{{ validation_errors.first('form_editar_traspaso.Editar Cuenta Destino') }}</label>
                                     </div>
                                 </div>
+                                <div class="col-md-12">&nbsp;</div>
                                 {{--Fecha Edit--}}
                                 <div class="col-md-4">
                                     <div class="form-group"
@@ -257,6 +259,7 @@
                                         <input type="text" name="Edit Vencimiento" class="form-control input-sm fechas_edit" id="edit_vencimiento" v-model="traspaso_edit.vencimiento" v-datepicker>
                                     </div>
                                 </div>
+                                <div class="col-md-12">&nbsp;</div>
                                 {{--Importe Edit--}}
                                 <div class="col-md-6">
                                     <div class="form-group" :class="{'has-error': validation_errors.has('form_editar_traspaso.Editar Importe')}">
@@ -277,6 +280,7 @@
                                         <label class="help" v-show="validation_errors.has('form_editar_traspaso.Referencia')">@{{ validation_errors.first('form_editar_traspaso.Referencia') }}</label>
                                     </div>
                                 </div>
+                                <div class="col-md-12">&nbsp;</div>
                                 {{--Observaciones Edit--}}
                                 <div class="col-md-12">
                                     <div class="form-group" :class="{'has-error': validation_errors.has('form_editar_traspaso.Editar Observaciones')}">

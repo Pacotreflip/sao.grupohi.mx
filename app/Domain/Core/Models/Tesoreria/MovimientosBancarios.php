@@ -2,8 +2,10 @@
 
 namespace Ghi\Domain\Core\Models\Tesoreria;
 
+use Ghi\Core\Facades\Context;
 use Ghi\Domain\Core\Models\BaseModel;
 use Ghi\Domain\Core\Models\Cuenta;
+use Ghi\Domain\Core\Models\Scopes\ObraScope;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class MovimientosBancarios extends BaseModel
@@ -30,16 +32,16 @@ class MovimientosBancarios extends BaseModel
     protected static function boot()
     {
         parent::boot();
+        static::addGlobalScope(new ObraScope());
 
-        // Crear el nuevo folio de acuerdo con el id de la obra
-        $id_obra = session()->get('id');
-        $folio = MovimientosBancarios::where('id_obra', $id_obra)->max('numero_folio');
-        $folio = (int) $folio + 1;
+        static::creating(function ($model) {
 
-        static::creating(function ($model) use($id_obra, $folio) {
+            $mov = MovimientosBancarios::orderBy('numero_folio', 'DESC')->first();
+            $folio = $mov ? $mov->numero_folio + 1 : 1;
+
             $model->estatus = 1;
             $model->registro = auth()->user()->idusuario;
-            $model->id_obra = $id_obra;
+            $model->id_obra = Context::getId();
             $model->numero_folio = $folio;
         });
     }
