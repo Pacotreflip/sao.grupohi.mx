@@ -175,8 +175,13 @@
                                             <td>@{{ item.impuesto }}</td>
                                             <td>@{{total(item.importe, item.impuesto)}}</td>
                                             <td>@{{item.movimiento_transaccion.transaccion.referencia}}</td>
-                                            @permission(['eliminar_movimiento_bancario', 'editar_movimiento_bancario'])
+                                            @permission(['eliminar_movimiento_bancario', 'editar_movimiento_bancario', 'consultar_movimiento_bancario'])
                                             <td>
+                                                @permission(['consultar_movimiento_bancario'])
+                                                <div class="btn-group">
+                                                    <button type="button" title="Ver" class="btn btn-xs btn-success" v-on:click="modal_movimiento_ver(item)"><i class="fa fa-eye"></i></button>
+                                                </div>
+                                                @endpermission
                                                 @permission(['eliminar_movimiento_bancario'])
                                                 <div class="btn-group">
                                                     <button type="button" title="Eliminar" class="btn btn-xs btn-danger" v-on:click="confirm_eliminar(item.id_movimiento_bancario)"><i class="fa fa-trash"></i></button>
@@ -330,6 +335,90 @@
                 </form>
             </div>
             @endpermission
+
+            {{--Modal ver cuenta--}}
+            <div id="ver_movimiento_modal" class="modal face" tabindex="-1" rola="dialog" aria-labelledby="verMovimientoModal" data-backdrop="static" data-keyboard="false">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" aria-label="Close" @click="close_modal_movimiento_ver"><span aria-hidden="true">&times;</span></button>
+                            <h4 class="modal-title">
+                                Ver movimiento
+                            </h4>
+                        </div>
+                        <div class="modal-body">
+                            {{--Número de folio--}}
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label class="control-label"><b>Número de folio</b></label><br>
+                                    @{{data.ver.numero_folio }}
+                                </div>
+                                {{--Tipo movimiento ver--}}
+                                <div class="col-md-6">
+                                    <label class="control-label"><b>Tipo de Movimiento</b></label><br>
+                                    @{{data.ver.tipo_texto }}
+                                </div>
+                                <div class="col-md-12">&nbsp;</div>
+                                {{--Cuenta--}}
+                                <div class="col-md-6">
+                                    <label class="control-label"><b>Cuenta</b></label><br>
+                                    @{{data.ver.cuenta_texto }}
+                                </div>
+                                {{--Referencia--}}
+                                <div class="col-md-6">
+                                    <label class="control-label"><b>Referencia</b></label><br>
+                                    @{{data.ver.referencia }}
+                                </div>
+                                <div class="col-md-12">&nbsp;</div>
+                            </div>
+                            {{--Importe--}}
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <label class="control-label"><b>Importe</b></label><br>
+                                    @{{data.ver.importe }}
+                                </div>
+                                {{--Impuesto--}}
+                                <div class="col-md-4">
+                                    <label class="control-label"><b>Impuesto</b></label><br>
+                                    @{{data.ver.impuesto }}
+                                </div>
+                                {{--Total--}}
+                                <div class="col-md-4">
+                                    <label class="control-label"><b>Total</b></label><br>
+                                    @{{total(data.ver.importe, data.ver.impuesto)}}
+                                </div>
+                                <div class="col-md-12">&nbsp;</div>
+                                {{--Fecha--}}
+                                <div class="col-md-4">
+                                    <label class="control-label"><b>Fecha</b></label><br>
+                                    @{{data.ver.fecha }}
+                                </div>
+                                {{--Cumplimiento--}}
+                                <div class="col-md-4">
+                                    <label class="control-label"><b>Cumplimiento</b></label><br>
+                                    @{{data.ver.cumplimiento }}
+                                </div>
+                                {{--Vencimiento--}}
+                                <div class="col-md-4">
+                                    <label class="control-label"><b>Vencimiento</b></label><br>
+                                    @{{data.ver.vencimiento }}
+                                </div>
+                                <div class="col-md-12">&nbsp;</div>
+                            </div>
+                            {{--Observaciones--}}
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <label class="control-label"><b>Observaciones</b></label><br>
+                                    @{{data.ver.observaciones }}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" @click="close_modal_movimiento_ver">Cerrar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </section>
     </movimientos_bancarios-index>
 

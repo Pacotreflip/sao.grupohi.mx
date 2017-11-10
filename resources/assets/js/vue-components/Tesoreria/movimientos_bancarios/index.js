@@ -5,7 +5,8 @@ Vue.component('movimientos_bancarios-index', {
             'data' : {
                 'cuentas': this.cuentas,
                 'tipos': this.tipos,
-                'movimientos': this.movimientos
+                'movimientos': this.movimientos,
+                'ver': []
             },
             'form' : {
                 'id_tipo_movimiento' : '',
@@ -20,6 +21,19 @@ Vue.component('movimientos_bancarios-index', {
                 'referencia': ''
             },
             'movimiento_edit': {
+                'id_movimiento_bancario' : '',
+                'id_tipo_movimiento' : '',
+                'estatus' : '',
+                'id_cuenta': '',
+                'impuesto': 0,
+                'importe': 0,
+                'observaciones': '',
+                'fecha': '',
+                'cumplimiento': '',
+                'vencimiento': '',
+                'referencia': ''
+            },
+            'movimiento_ver': {
                 'id_movimiento_bancario' : '',
                 'id_tipo_movimiento' : '',
                 'estatus' : '',
@@ -79,6 +93,22 @@ Vue.component('movimientos_bancarios-index', {
     methods: {
         datos_cuenta: function (id) {
             return this.cuentas[id];
+        },
+        modal_movimiento_ver: function (item) {
+            console.log(item);
+            Vue.set(this.data, 'ver', item);
+            Vue.set(this.data.ver, 'tipo_texto', item.tipo.descripcion);
+            Vue.set(this.data.ver, 'cuenta_texto', item.cuenta.numero  +' '+ item.cuenta.abreviatura +' ('+ item.cuenta.empresa.razon_social +')');
+            Vue.set(this.data.ver, 'referencia', item.movimiento_transaccion.transaccion.referencia);
+            Vue.set(this.data.ver, 'cumplimiento', this.trim_fecha(item.movimiento_transaccion.transaccion.cumplimiento));
+            Vue.set(this.data.ver, 'vencimiento', this.trim_fecha(item.movimiento_transaccion.transaccion.vencimiento));
+
+            $('#ver_movimiento_modal').modal('show');
+        },
+        close_modal_movimiento_ver: function () {
+
+            $('#ver_movimiento_modal').modal('hide');
+            Vue.set(this.data, 'ver', {});
         },
         confirm_guardar: function() {
             var self = this;
