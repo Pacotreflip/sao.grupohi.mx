@@ -154,10 +154,15 @@
                                             <td>@{{trim_fecha(item.traspaso_transaccion.transaccion_debito.fecha)}}</td>
                                             <td>@{{item.cuenta_origen.numero }} @{{item.cuenta_origen.abreviatura }} (@{{item.cuenta_origen.empresa.razon_social}})</td>
                                             <td>@{{item.cuenta_destino.numero }} @{{item.cuenta_destino.abreviatura }} (@{{item.cuenta_destino.empresa.razon_social}})</td>
-                                            <td>@{{item.importe}}</td>
+                                            <td class="text-right">@{{comma_format(item.importe)}}</td>
                                             <td>@{{item.traspaso_transaccion.transaccion_debito.referencia}}</td>
-                                            @permission(['eliminar_traspaso_cuenta', 'editar_traspaso_cuenta'])
+                                            @permission(['eliminar_traspaso_cuenta', 'editar_traspaso_cuenta', 'consultar_traspaso_cuenta'])
                                             <td>
+                                                @permission(['consultar_traspaso_cuenta'])
+                                                <div class="btn-group">
+                                                    <button type="button" title="Ver" class="btn btn-xs btn-success" v-on:click="modal_ver_traspaso(item)"><i class="fa fa-eye"></i></button>
+                                                </div>
+                                                @endpermission
                                                 @permission(['eliminar_traspaso_cuenta'])
                                                 <div class="btn-group">
                                                     <button type="button" title="Eliminar" class="btn btn-xs btn-danger" v-on:click="confirm_eliminar(item.id_traspaso)"><i class="fa fa-trash"></i></button>
@@ -187,7 +192,7 @@
 
                 </div>
             </div>
-            <!-- Modal Edit Cuenta -->
+            <!-- Modal Editar Traspaso -->
             @permission(['editar_traspaso_cuenta'])
             <div id="edit_traspaso_modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="editTraspasoModal" data-backdrop="static" data-keyboard="false">
                 <div class="modal-dialog" role="document">
@@ -299,6 +304,80 @@
                                 <button type="submit" class="btn btn-primary" >Guardar</button>
                             </div>
                         </form>
+                    </div>
+                </div>
+            </div>
+            @endpermission
+
+            <!-- Modal Ver Traspaso -->
+            @permission(['consultar_traspaso_cuenta'])
+            <div id="ver_traspaso_modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="verTraspasoModal" data-backdrop="static" data-keyboard="false">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" aria-label="Close" @click="close_modal_ver_traspaso"><span aria-hidden="true">&times;</span></button>
+                            <h4 class="modal-title">
+                                Ver traspaso bancario
+                            </h4>
+                        </div>
+                        <div class="modal-body row">
+                            {{--Número de Folio--}}
+                            <div class="col-md-3">
+                                <label class="control-label"><b>Número de folio</b></label><br>
+                                @{{data.ver.numero_folio }}
+                            </div>
+                            {{--Cuenta Origen--}}
+                            <div class="col-md-5">
+                                <div class="form-group" :class="{'has-error': validation_errors.has('form_guardar_traspaso.Editar Cuenta Origen')}">
+                                    <label><b>Cuenta origen</b></label><br>
+                                    @{{  data.ver.cuenta_origen_texto }}
+                                </div>
+                            </div>
+                            {{--Cuenta Destino--}}
+                            <div class="col-md-4">
+                                <div class="form-group" :class="{'has-error': validation_errors.has('form_editar_traspaso.Editar Cuenta Destino')}">
+                                    <label><b>Cuenta destino</b></label><br>
+                                    @{{  data.ver.cuenta_destino_texto }}
+                                    <label class="help" v-show="validation_errors.has('form_editar_traspaso.Cuenta Destino')">@{{ validation_errors.first('form_editar_traspaso.Editar Cuenta Destino') }}</label>
+                                </div>
+                            </div>
+                            <div class="col-md-12">&nbsp;</div>
+                            {{--Fecha--}}
+                            <div class="col-md-4">
+                                <label class="control-label"><b>Fecha</b></label><br>
+                                @{{  data.ver.fecha }}
+                            </div>
+                            {{--Cumplimiento--}}
+                            <div class="col-md-4">
+                                <label class="control-label"><b>Cumplimiento</b></label><br>
+                                @{{  data.ver.cumplimiento }}
+                            </div>
+                            {{--Vencimiento--}}
+                            <div class="col-md-4">
+                                <label class="control-label"><b>Vencimiento</b></label><br>
+                                @{{  data.ver.vencimiento }}
+                            </div>
+                            <div class="col-md-12">&nbsp;</div>
+                            {{--Importe--}}
+                            <div class="col-md-6">
+                                <label class="control-label"><b>Importe</b></label><br>
+                                @{{ data.ver.importe }}
+                            </div>
+                            {{--Referencia--}}
+                            <div class="col-md-6">
+                                <label class="control-label"><b>Referencia</b></label><br>
+                                @{{  data.ver.referencia }}
+                            </div>
+                            <div class="col-md-12">&nbsp;</div>
+                            {{--Observaciones Edit--}}
+                            <div class="col-md-12">
+                                <label class="control-label"><b>Observaciones</b></label><br>
+                                @{{  data.ver.observaciones }}
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" @click="close_modal_ver_traspaso">Cerrar</button>
+                        </div>
                     </div>
                 </div>
             </div>

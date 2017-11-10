@@ -95,9 +95,10 @@ Vue.component('movimientos_bancarios-index', {
             return this.cuentas[id];
         },
         modal_movimiento_ver: function (item) {
-            console.log(item);
             Vue.set(this.data, 'ver', item);
             Vue.set(this.data.ver, 'tipo_texto', item.tipo.descripcion);
+            Vue.set(this.data.ver, 'importe', this.comma_format(item.importe));
+            Vue.set(this.data.ver, 'impuesto', this.comma_format(item.impuesto));
             Vue.set(this.data.ver, 'cuenta_texto', item.cuenta.numero  +' '+ item.cuenta.abreviatura +' ('+ item.cuenta.empresa.razon_social +')');
             Vue.set(this.data.ver, 'referencia', item.movimiento_transaccion.transaccion.referencia);
             Vue.set(this.data.ver, 'cumplimiento', this.trim_fecha(item.movimiento_transaccion.transaccion.cumplimiento));
@@ -324,6 +325,27 @@ Vue.component('movimientos_bancarios-index', {
                 impuesto = impuesto == null ? 0 : impuesto;
 
             return impuesto > 0 ?  parseFloat(importe) + parseFloat(impuesto) : importe;
+        },
+        comma_format: function (number) {
+            var n = !isFinite(+number) ? 0 : +number,
+                decimals = 4,
+                prec = !isFinite(+decimals) ? 0 : Math.abs(decimals),
+                sep = (typeof thousands_sep === 'undefined') ? ',' : thousands_sep,
+                dec = (typeof dec_point === 'undefined') ? '.' : dec_point,
+                toFixedFix = function (n, prec) {
+                    // Fix for IE parseFloat(0.55).toFixed(0) = 0;
+                    var k = Math.pow(10, prec);
+                    return Math.round(n * k) / k;
+                },
+                s = (prec ? toFixedFix(n, prec) : Math.round(n)).toString().split('.');
+            if (s[0].length > 3) {
+                s[0] = s[0].replace(/\B(?=(?:\d{3})+(?!\d))/g, sep);
+            }
+            if ((s[1] || '').length < prec) {
+                s[1] = s[1] || '';
+                s[1] += new Array(prec - s[1].length + 1).join('0');
+            }
+            return s.join(dec);
         }
     }
 });

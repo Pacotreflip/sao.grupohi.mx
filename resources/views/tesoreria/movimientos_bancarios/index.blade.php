@@ -183,9 +183,9 @@
                                             <td>@{{trim_fecha(item.movimiento_transaccion.transaccion.fecha)}}</td>
                                             <td>@{{item.tipo.descripcion }}</td>
                                             <td>@{{item.cuenta.numero }} @{{item.cuenta.abreviatura }} (@{{item.cuenta.empresa.razon_social}})</td>
-                                            <td>@{{item.importe}}</td>
-                                            <td>@{{ item.impuesto }}</td>
-                                            <td>@{{total(item.importe, item.impuesto)}}</td>
+                                            <td class="text-right">@{{comma_format(item.importe)}}</td>
+                                            <td class="text-right">@{{comma_format(item.impuesto)}}</td>
+                                            <td class="text-right">@{{total(item.importe, item.impuesto)}}</td>
                                             <td>@{{item.movimiento_transaccion.transaccion.referencia}}</td>
                                             @permission(['eliminar_movimiento_bancario', 'editar_movimiento_bancario', 'consultar_movimiento_bancario'])
                                             <td>
@@ -358,6 +358,7 @@
             @endpermission
 
             {{--Modal ver cuenta--}}
+            @permission(['editar_movimiento_bancario'])
             <div id="ver_movimiento_modal" class="modal face" tabindex="-1" rola="dialog" aria-labelledby="verMovimientoModal" data-backdrop="static" data-keyboard="false">
                 <div class="modal-dialog" role="document">
                     <div class="modal-content">
@@ -440,6 +441,7 @@
                     </div>
                 </div>
             </div>
+            @endpermission
         </section>
     </movimientos_bancarios-index>
 
