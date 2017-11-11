@@ -37,7 +37,7 @@ class Contrato extends Model
         return $this->descripcion;
     }
 
-    public function conceptos() {
+    public function destinos() {
         return $this->belongsToMany(Concepto::class, 'destinos', 'id_concepto_contrato', 'id_concepto')->withPivot(['id_transaccion', 'id_concepto_original']);
     }
 }

@@ -10,7 +10,9 @@ namespace Ghi\Domain\Core\Contracts;
 
 
 
+use Ghi\Domain\Core\Models\Contrato;
 use Ghi\Domain\Core\Models\Transacciones\ContratoProyectado;
+use Illuminate\Database\Eloquent\Collection;
 
 interface ContratoProyectadoRepository
 {
@@ -31,4 +33,13 @@ interface ContratoProyectadoRepository
      * @throws \Exception
      */
     public function update(array $data, $id);
+
+    /**
+     * Agrega nuevos Contratos al Contrato Proyectado
+     * @param array $data
+     * @param $id
+     * @return Collection|Contrato
+     * @throws \Exception
+     */
+    public function addContratos(array $data, $id);
 }
