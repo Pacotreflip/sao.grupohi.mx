@@ -123,6 +123,13 @@ Vue.component('datos-contables-edit', {
                         title: 'Correcto',
                         html: 'Datos Contables de la Obra actualizados correctamente'
                     });
+
+                    self.referencia = "1";
+
+                    $('.checkboxes').each(function( index ) {
+                        var elem = $(this);
+                        elem.iCheck('disable');
+                    });
                 },
                 complete: function () {
                     self.guardando = false;
