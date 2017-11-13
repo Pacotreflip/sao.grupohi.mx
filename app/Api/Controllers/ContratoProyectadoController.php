@@ -99,6 +99,7 @@ class ContratoProyectadoController extends Controller
      * @apiHeader {string} database_name Nombre de la Base de Datos para establecer contexto
      * @apiHeader {string} id_obra ID De la obra sobre la que se desea extablecer el contexto
      *
+     * @apiParam {Object[]} contratos Arreglo de Objetos que contiene los contrato a registrar
      * @apiParam {String{max:255}} contratos.nivel Nivel del nuevo contrato adjunto al contrato proyectado
      * @apiParam {String{max:255}} contratos.descripcion Descripción del nuevo contrato adjunto al contrato proyectado
      * @apiParam {String{max:16}} [contratos.unidad] Unidad de medida del nuevo contrato adjunto al contrato proyectado
@@ -121,25 +122,30 @@ class ContratoProyectadoController extends Controller
      *     "status_code": 422
      *   }
      *
-     * @apiSuccess (200) {Object} data Datos del Contrato Proyectado
+     * @apiSuccess (200) {Object[]} data Contratos agregados al Contrato Proyectado
      * @apiSuccessExample Success-Response
      *   HTTP/1.1 200 OK
      *   {
-     *     "data": {
-     *       "id_transaccion": 0000
-     *       "descripcion": "ABCDE.....",
-     *       "nivel": "000.000.000.",
-     *       "unidad": "ABCDE",
-     *       "cantidad_original": "000",
-     *       "cantidad_proyectada": "000",
-     *       "clave": "XXXXX",
-     *       "id_marca": 0000,
-     *       "id_modelo": 0000,
-     *       "destinos": " [
-     *                      "id_concepto": 00000
-     *                  ]
-     *              ",
-     *     }
+     *     "data": [
+     *       {
+     *         "id_concepto": 0000,
+     *         "id_transaccion": 1111,
+     *         "descripcion": "ABCDE.....",
+     *         "nivel": "000.000.000.",
+     *         "unidad": "ABCDE",
+     *         "cantidad_original": "000",
+     *         "cantidad_proyectada": "000",
+     *         "clave": "XXXXX",
+     *         "id_marca": 0000,
+     *         "id_modelo": 0000,
+     *         "destinos": " [
+     *           {
+     *             "id_concepto": 00000
+     *           }
+     *         ]
+     *       },
+     *       ...
+     *     ]
      *   }
      */
     public function addContratos(Request $request, $id) {

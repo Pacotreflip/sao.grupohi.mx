@@ -216,8 +216,9 @@ class EloquentContratoProyectadoRepository implements ContratoProyectadoReposito
     {
         foreach ($contratos as $contrato) {
             if (starts_with($contrato['nivel'], $nivel) && (strlen($nivel) < strlen($contrato['nivel']))) {
-                return false;
+                return true;;
             }
         }
+        return false;
     }
 }
