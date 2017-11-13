@@ -34,8 +34,12 @@ class DatosContablesController extends Controller
     public function edit($id) {
         $datos_contables = $this->datos_contables->find($id);
 
+        // Referencia para indicar si existen datos
+        $referencia = isset($datos_contables->FormatoCuenta) ? "1" : "0";
+
         return view('sistema_contable.datos_contables.edit')
-            ->with('datos_contables', $datos_contables);
+            ->with('datos_contables', $datos_contables)
+            ->with('referencia', $referencia);
     }
 
     /**

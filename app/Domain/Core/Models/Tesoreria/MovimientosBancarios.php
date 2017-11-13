@@ -8,23 +8,25 @@ use Ghi\Domain\Core\Models\Cuenta;
 use Ghi\Domain\Core\Models\Scopes\ObraScope;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class TraspasoCuentas extends BaseModel
+class MovimientosBancarios extends BaseModel
 {
     use SoftDeletes;
 
     protected $dates = ['deleted_at'];
     protected $connection = 'cadeco';
-    protected $table = 'Tesoreria.traspaso_cuentas';
-    protected $primaryKey = 'id_traspaso';
+    protected $table = 'Tesoreria.movimientos_bancarios';
+    protected $primaryKey = 'id_movimiento_bancario';
     protected $fillable = [
+        'id_tipo_movimiento',
         'estatus',
-        'id_cuenta_origen',
-        'id_cuenta_destino',
+        'id_cuenta',
+        'impuesto',
         'importe',
         'observaciones',
-        'id_obra',
-        'folio',
+        'registro',
         'fecha',
+        'id_obra',
+        'numero_folio',
     ];
 
     protected static function boot()
@@ -38,21 +40,23 @@ class TraspasoCuentas extends BaseModel
             $folio = $mov ? $mov->numero_folio + 1 : 1;
 
             $model->estatus = 1;
+            $model->registro = auth()->user()->idusuario;
             $model->id_obra = Context::getId();
             $model->numero_folio = $folio;
         });
     }
 
-    public function cuenta_destino() {
-        return $this->belongsTo(Cuenta::class, 'id_cuenta_destino', 'id_cuenta');
+    public function cuenta() {
+        return $this->belongsTo(Cuenta::class, 'id_cuenta', 'id_cuenta');
     }
 
-    public function cuenta_origen() {
-        return $this->belongsTo(Cuenta::class, 'id_cuenta_origen', 'id_cuenta');
-    }
 
-    public function traspaso_transaccion()
+    public function movimiento_transaccion()
     {
-        return $this->belongsTo(TraspasoTransaccion::class, 'id_traspaso', 'id_traspaso');
+        return $this->belongsTo(MovimientoTransacciones::class, 'id_movimiento_bancario', 'id_movimiento_bancario');
+    }
+
+    public function tipo() {
+        return $this->belongsTo(TiposMovimientos::class, 'id_tipo_movimiento', 'id_tipo_movimiento');
     }
 }
