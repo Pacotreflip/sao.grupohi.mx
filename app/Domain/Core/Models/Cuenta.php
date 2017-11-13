@@ -16,7 +16,7 @@ class Cuenta extends BaseModel
         return $query->whereHas('empresa', function ($q) {
             $q->where('tipo_empresa', '=', 8);
         })
-            ->where('cuenta_contable', 'like', '%[0-9\-]%')
+            // ->where('cuenta_contable', 'like', '%[0-9\-]%')
             ->whereRaw('ISNUMERIC(numero) = 1');
     }
 }
