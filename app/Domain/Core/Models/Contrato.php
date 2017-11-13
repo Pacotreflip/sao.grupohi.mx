@@ -18,7 +18,6 @@ class Contrato extends Model
     protected $primaryKey = 'id_concepto';
     protected $fillable = [
         'id_transaccion',
-        'nivel',
         'descripcion',
         'unidad',
         'cantidad_original',

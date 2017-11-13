@@ -91,7 +91,8 @@ class EloquentContratoProyectadoRepository implements ContratoProyectadoReposito
 
                     $contrato['cantidad_presupuestada'] = array_key_exists('cantidad_original', $contrato) ? $contrato['cantidad_original'] : 0;
                     $new_contrato = Contrato::create($contrato);
-
+                    $new_contrato->nivel = $contrato['nivel'];
+                    $new_contrato->save();
                     if (array_key_exists('destinos', $contrato)) {
                         foreach ($contrato['destinos'] as $destino) {
                             $new_contrato->destinos()->attach($destino['id_concepto'], ['id_transaccion' => $contrato_proyectado->id_transaccion]);
@@ -190,6 +191,8 @@ class EloquentContratoProyectadoRepository implements ContratoProyectadoReposito
                 foreach ($data['contratos'] as $contrato) {
                     $contrato['id_transaccion'] = $id;
                     $new_contrato = Contrato::create($contrato);
+                    $new_contrato->nivel = $contrato['nivel'];
+                    $new_contrato->save();
                     array_push($contratos, $new_contrato);
                     if (array_key_exists('destinos', $contrato)) {
                         foreach ($contrato['destinos'] as $destino) {
@@ -212,11 +215,11 @@ class EloquentContratoProyectadoRepository implements ContratoProyectadoReposito
      * @param string $nivel
      * @return bool
      */
-    public function validarNivel(array $contratos, $nivel)
+    public static function validarNivel(array $contratos, $nivel)
     {
         foreach ($contratos as $contrato) {
             if (starts_with($contrato['nivel'], $nivel) && (strlen($nivel) < strlen($contrato['nivel']))) {
-                return true;;
+                return true;
             }
         }
         return false;
