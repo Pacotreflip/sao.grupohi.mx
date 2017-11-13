@@ -32,7 +32,7 @@ class Estimacion extends Rotation {
     }
 
     function Header() {
-        //$this->logo();
+        $this->logo();
         $this->detalles();
         $this->Ln(1);
 
