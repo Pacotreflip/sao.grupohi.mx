@@ -5,7 +5,8 @@ Vue.component('traspaso-cuentas-index', {
             'data' : {
                 'traspasos' : this.traspasos,
                 'cuentas': this.cuentas,
-                'monedas': this.monedas
+                'monedas': this.monedas,
+                'ver': []
             },
             'form' : {
                 'id_cuenta_origen': '',
@@ -163,6 +164,22 @@ Vue.component('traspaso-cuentas-index', {
                 complete: function () { }
             });
         },
+        modal_ver_traspaso: function (item) {
+            Vue.set(this.data, 'ver', item);
+            Vue.set(this.data.ver, 'fecha', this.trim_fecha(item.traspaso_transaccion.transaccion_debito.fecha));
+            Vue.set(this.data.ver, 'importe', this.comma_format(item.importe));
+            Vue.set(this.data.ver, 'cumplimiento', this.trim_fecha(item.traspaso_transaccion.transaccion_debito.cumplimiento));
+            Vue.set(this.data.ver, 'vencimiento', this.trim_fecha(item.traspaso_transaccion.transaccion_debito.vencimiento));
+            Vue.set(this.data.ver, 'referencia', item.traspaso_transaccion.transaccion_debito.referencia);
+            Vue.set(this.data.ver, 'cuenta_origen_texto', item.cuenta_origen.numero +' '+ item.cuenta_origen.abreviatura +' ('+ item.cuenta_origen.empresa.razon_social +')');
+            Vue.set(this.data.ver, 'cuenta_destino_texto', item.cuenta_destino.numero +' '+ item.cuenta_destino.abreviatura +' ('+ item.cuenta_destino.empresa.razon_social +')');
+
+            $('#ver_traspaso_modal').modal('show');
+        },
+        close_modal_ver_traspaso: function () {
+            $('#ver_traspaso_modal').modal('hide');
+            Vue.set(this.data, 'ver', []);
+        },
         modal_traspaso: function () {
             this.validation_errors.clear('form_guardar_traspaso');
             this.$validator.clean();
@@ -264,6 +281,27 @@ Vue.component('traspaso-cuentas-index', {
             Vue.set(this.form, 'cumplimiento', '');
             Vue.set(this.form, 'vencimiento', '');
             Vue.set(this.form, 'referencia', '');
+        },
+        comma_format: function (number) {
+            var n = !isFinite(+number) ? 0 : +number,
+                decimals = 4,
+                prec = !isFinite(+decimals) ? 0 : Math.abs(decimals),
+                sep = (typeof thousands_sep === 'undefined') ? ',' : thousands_sep,
+                dec = (typeof dec_point === 'undefined') ? '.' : dec_point,
+                toFixedFix = function (n, prec) {
+                    // Fix for IE parseFloat(0.55).toFixed(0) = 0;
+                    var k = Math.pow(10, prec);
+                    return Math.round(n * k) / k;
+                },
+                s = (prec ? toFixedFix(n, prec) : Math.round(n)).toString().split('.');
+            if (s[0].length > 3) {
+                s[0] = s[0].replace(/\B(?=(?:\d{3})+(?!\d))/g, sep);
+            }
+            if ((s[1] || '').length < prec) {
+                s[1] = s[1] || '';
+                s[1] += new Array(prec - s[1].length + 1).join('0');
+            }
+            return s.join(dec);
         }
     }
 });

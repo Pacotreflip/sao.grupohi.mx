@@ -13,7 +13,10 @@
                     <div class="tab-pane active" id="subcontratos">
                         <ul class="nav nav-stacked">
                             @permission(['consultar_traspaso_cuenta'])
-                            <li><a href="{{ route('tesoreria.traspaso_cuentas.index') }}">TRASPASO ENTRE CUENTAS</a></li>
+                            <li><a href="{{ route('tesoreria.traspaso_cuentas.index') }}">TRASPASO ENTRE CUENTAS BANCARIAS</a></li>
+                            @endpermission
+                            @permission(['consultar_movimiento_bancario'])
+                            <li><a href="{{ route('tesoreria.movimientos_bancarios.index') }}">MOVIMIENTOS BANCARIOS</a></li>
                             @endpermission
                         </ul>
                     </div>

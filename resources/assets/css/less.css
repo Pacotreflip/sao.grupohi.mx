@@ -19174,8 +19174,12 @@ body.swal2-iosfix {
 .swal2-container {
   display: -ms-flexbox;
   display: flex;
+  -ms-flex-direction: row;
+  flex-direction: row;
   -ms-flex-align: center;
   align-items: center;
+  -ms-flex-pack: center;
+  justify-content: center;
   position: fixed;
   top: 0;
   left: 0;
@@ -19185,6 +19189,116 @@ body.swal2-iosfix {
   background-color: transparent;
   z-index: 1060;
 }
+.swal2-container.swal2-top {
+  -ms-flex-align: start;
+  align-items: flex-start;
+}
+.swal2-container.swal2-top-left {
+  -ms-flex-align: start;
+  align-items: flex-start;
+  -ms-flex-pack: start;
+  justify-content: flex-start;
+}
+.swal2-container.swal2-top-right {
+  -ms-flex-align: start;
+  align-items: flex-start;
+  -ms-flex-pack: end;
+  justify-content: flex-end;
+}
+.swal2-container.swal2-center {
+  -ms-flex-align: center;
+  align-items: center;
+}
+.swal2-container.swal2-center-left {
+  -ms-flex-align: center;
+  align-items: center;
+  -ms-flex-pack: start;
+  justify-content: flex-start;
+}
+.swal2-container.swal2-center-right {
+  -ms-flex-align: center;
+  align-items: center;
+  -ms-flex-pack: end;
+  justify-content: flex-end;
+}
+.swal2-container.swal2-bottom {
+  -ms-flex-align: end;
+  align-items: flex-end;
+}
+.swal2-container.swal2-bottom-left {
+  -ms-flex-align: end;
+  align-items: flex-end;
+  -ms-flex-pack: start;
+  justify-content: flex-start;
+}
+.swal2-container.swal2-bottom-right {
+  -ms-flex-align: end;
+  align-items: flex-end;
+  -ms-flex-pack: end;
+  justify-content: flex-end;
+}
+.swal2-container.swal2-grow-fullscreen > .swal2-modal {
+  display: -ms-flexbox !important;
+  display: flex !important;
+  -ms-flex: 1;
+  flex: 1;
+  -ms-flex-item-align: stretch;
+  align-self: stretch;
+  -ms-flex-pack: center;
+  justify-content: center;
+}
+.swal2-container.swal2-grow-row > .swal2-modal {
+  display: -ms-flexbox !important;
+  display: flex !important;
+  -ms-flex: 1;
+  flex: 1;
+  -ms-flex-line-pack: center;
+  align-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+}
+.swal2-container.swal2-grow-column {
+  -ms-flex: 1;
+  flex: 1;
+  -ms-flex-direction: column;
+  flex-direction: column;
+}
+.swal2-container.swal2-grow-column.swal2-top,
+.swal2-container.swal2-grow-column.swal2-center,
+.swal2-container.swal2-grow-column.swal2-bottom {
+  -ms-flex-align: center;
+  align-items: center;
+}
+.swal2-container.swal2-grow-column.swal2-top-left,
+.swal2-container.swal2-grow-column.swal2-center-left,
+.swal2-container.swal2-grow-column.swal2-bottom-left {
+  -ms-flex-align: start;
+  align-items: flex-start;
+}
+.swal2-container.swal2-grow-column.swal2-top-right,
+.swal2-container.swal2-grow-column.swal2-center-right,
+.swal2-container.swal2-grow-column.swal2-bottom-right {
+  -ms-flex-align: end;
+  align-items: flex-end;
+}
+.swal2-container.swal2-grow-column > .swal2-modal {
+  display: -ms-flexbox !important;
+  display: flex !important;
+  -ms-flex: 1;
+  flex: 1;
+  -ms-flex-line-pack: center;
+  align-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+}
+.swal2-container:not(.swal2-top):not(.swal2-top-left):not(.swal2-top-right):not(.swal2-center-left):not(.swal2-center-right):not(.swal2-bottom):not(.swal2-bottom-left):not(.swal2-bottom-right) > .swal2-modal {
+  margin: auto;
+}
+@media all and (-ms-high-contrast: none), (-ms-high-contrast: active) {
+  .swal2-container .swal2-modal {
+    margin: 0 !important;
+  }
+}
 .swal2-container.swal2-fade {
   transition: background-color 0.1s;
 }
@@ -19192,12 +19306,13 @@ body.swal2-iosfix {
   background-color: rgba(0, 0, 0, 0.4);
 }
 .swal2-modal {
+  -ms-flex-direction: column;
+  flex-direction: column;
   background-color: #fff;
   font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
   border-radius: 5px;
   box-sizing: border-box;
   text-align: center;
-  margin: auto;
   overflow-x: hidden;
   overflow-y: auto;
   display: none;
