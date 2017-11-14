@@ -14,4 +14,12 @@ interface SubcontratoRepository
      * @return Collection
      */
     public function getBy($attribute, $operator, $value);
+
+    /**
+     * Almacena un nuevo SubContrato
+     * @param array $data
+     * @return mixed
+     * @throws \Exception
+     */
+    public function create(array $data);
 }

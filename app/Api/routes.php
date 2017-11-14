@@ -17,5 +17,7 @@ $api->version('v1', ['middleware' => 'cors'], function ($api) {
         $api->post('contrato_proyectado/{id}/addContratos', 'Ghi\Api\Controllers\ContratoProyectadoController@addContratos');
 
         $api->patch('contrato/{id}', 'Ghi\Api\Controllers\ContratoController@update');
+
+        $api->post('subcontrato', 'Ghi\Api\Controllers\SubcontratoController@store');
     });
 });

@@ -27,6 +27,10 @@ class Subcontrato extends Transaccion
 
         static::creating(function($model) {
             $model->opciones = 2;
+            $model->id_obra = Context::getId();
+            $model->FechaHoraRegistro = Carbon::now()->toDateTimeString();
+            $model->tipo_transaccion = Tipo::SUBCONTRATO;
+            $model->comentario = "I;" . date('d/m/Y') . " " . date('h:m:s') . ";SCR|" . auth()->user()->usuario . "|";
         });
     }
 
