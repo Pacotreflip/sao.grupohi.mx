@@ -40,6 +40,7 @@ class Transaccion extends Model
         'vencimiento',
         'opciones',
         'monto',
+        'impuesto',
         'referencia',
         'comentario',
         'observaciones',
