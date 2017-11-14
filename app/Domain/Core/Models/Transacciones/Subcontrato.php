@@ -24,6 +24,10 @@ class Subcontrato extends Transaccion
 
         static::addGlobalScope(new SubcontratoScope());
         static::addGlobalScope(new ObraScope());
+
+        static::creating(function($model) {
+            $model->opciones = 2;
+        });
     }
 
     public function __toString()

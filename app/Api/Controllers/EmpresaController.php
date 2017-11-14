@@ -24,7 +24,6 @@ class EmpresaController extends Controller
     public function __construct(EloquentEmpresaRepository $empresa)
     {
         $this->empresa = $empresa;
-        $this->middleware('api.permission:consultar_cuenta_empresas', ['only' => ['store']]);
     }
 
     /**
