@@ -84,7 +84,7 @@ class EloquentTraspasoCuentasRepository implements TraspasoCuentasRepository
             $debito = $credito;
             $debito['tipo_transaccion'] = 84;
             $debito['id_cuenta'] = $data['id_cuenta_origen'];
-            $debito['monto'] = (float) '-'. $data['importe'];
+            $debito['monto'] = (float)  ($data['importe'] * -1);
 
             // Crear transaccion Débito
             $transaccion_debito = Transaccion::create($debito);
