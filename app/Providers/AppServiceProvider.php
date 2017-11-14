@@ -226,5 +226,9 @@ class AppServiceProvider extends ServiceProvider
             \Ghi\Domain\Core\Contracts\Tesoreria\MovimientosBancariosRepository::class,
             \Ghi\Domain\Core\Repositories\Tesoreria\EloquentMovimientosBancariosRepository::class
         );
+        $this->app->bind(
+            \Ghi\Domain\Core\Contracts\Contabilidad\CuentaBancosRepository::class,
+            \Ghi\Domain\Core\Repositories\Contabilidad\EloquentCuentaBancosRepository::class
+        );
     }
 }

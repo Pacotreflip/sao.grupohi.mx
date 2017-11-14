@@ -175,3 +175,21 @@ Breadcrumbs::register('sistema_contable.traspaso_cuentas.index', function($bread
     $breadcrumbs->parent('sistema_contable.index');
     $breadcrumbs->push('TRASPASO ENTRE CUENTAS', route('sistema_contable.traspaso_cuentas.index'));
 });
+
+/**
+ * Cuentas Contables Bancarias
+ */
+Breadcrumbs::register('sistema_contable.cuentas_contables_bancarias.index', function($breadcrumbs) {
+    $breadcrumbs->parent('sistema_contable.index');
+    $breadcrumbs->push('CUENTAS CONTABLES BANCARIAS', route('sistema_contable.cuentas_contables_bancarias.index'));
+});
+
+Breadcrumbs::register('sistema_contable.cuentas_contables_bancarias.show', function($breadcrumbs, $id_cuenta) {
+    $breadcrumbs->parent('sistema_contable.cuentas_contables_bancarias.index');
+    $breadcrumbs->push('CUENTA BANCARIA DETALLE', route('sistema_contable.cuentas_contables_bancarias.show', $id_cuenta));
+});
+
+Breadcrumbs::register('sistema_contable.cuentas_contables_bancarias.edit', function($breadcrumbs, $id_cuenta) {
+    $breadcrumbs->parent('sistema_contable.cuentas_contables_bancarias.index');
+    $breadcrumbs->push('EDITAR CUENTA BANCARIA', route('sistema_contable.cuentas_contables_bancarias.edit', $id_cuenta));
+});
