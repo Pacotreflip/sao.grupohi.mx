@@ -44,7 +44,7 @@ class Estimacion extends Transaccion
 
     public function getMontoAnticipoAplicadoAttribute()
     {
-        return $this->suma_importes * ($this->subcontrato->anticipo / 100);
+        return $this->suma_importes * ($this->anticipo / 100);
     }
 
     public function getImportesAttribute()
@@ -84,11 +84,6 @@ class Estimacion extends Transaccion
             + $this->liberaciones->sum('importe')
             + ($this->subcontratoEstimacion ? $this->subcontratoEstimacion->ImporteAnticipoLiberar : 0)
         );
-    }
-
-    public function getSumMontoAnticipoAplicadoAttribute()
-    {
-        return  ($this->suma_importes -($this->importes) - ($this->suma_importes * ($this->retencion / 100)));
     }
 
     public function getSumMontoRetencionAttribute() {

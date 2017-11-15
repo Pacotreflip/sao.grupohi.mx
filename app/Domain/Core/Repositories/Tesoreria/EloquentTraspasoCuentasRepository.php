@@ -74,6 +74,7 @@ class EloquentTraspasoCuentasRepository implements TraspasoCuentasRepository
                 'vencimiento' => $data['vencimiento'] ? $data['vencimiento'] : date('Y-m-d'),
                 'opciones' => 1,
                 'monto' => $data['importe'],
+                'impuesto' => 0,
                 'referencia' => $data['referencia'],
                 'comentario' => "I;". date("d/m/Y") ." ". date("h:s") .";". auth()->user()->usuario,
                 'observaciones' => $data['observaciones'],
@@ -83,7 +84,7 @@ class EloquentTraspasoCuentasRepository implements TraspasoCuentasRepository
             $debito = $credito;
             $debito['tipo_transaccion'] = 84;
             $debito['id_cuenta'] = $data['id_cuenta_origen'];
-            $debito['monto'] = '-'. $data['importe'];
+            $debito['monto'] = (float)  ($data['importe'] * -1);
 
             // Crear transaccion Débito
             $transaccion_debito = Transaccion::create($debito);

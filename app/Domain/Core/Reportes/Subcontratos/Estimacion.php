@@ -80,6 +80,13 @@ class Estimacion extends Rotation {
 
     function Footer() {
         $this->firmas();
+        $this->SetY($this->GetPageHeight() - 0.5);
+        $this->SetFont('Arial', '', 6);
+        $this->Cell(6.5, .4, utf8_decode('Formato generado desde SAO.'), 0, 0, 'L');
+        $this->SetFont('Arial', 'B', 6);
+        $this->Cell(6.5, .4, '', 0, 0, 'C');
+        $this->Cell(6.5, .4, utf8_decode('Página ') . $this->PageNo() . '/{nb}', 0, 0, 'R');
+
     }
 
     function logo() {
@@ -139,7 +146,7 @@ class Estimacion extends Rotation {
         $this->SetX(6);
         $this->SetFont('Arial', '', 8);
         $this->Cell(4, 0.35, utf8_decode('Estimación :'), 0, 0, 'R');
-        $this->CellFitScale(10, 0.35, '', 'B', 1, 'C');
+        $this->CellFitScale(10, 0.35, utf8_decode("#".$this->estimacion->numero_folio . " - " . $this->estimacion->observaciones), 'B', 1, 'C');
         $this->Ln(0.1);
 
         $this->SetX(6   );
@@ -275,7 +282,7 @@ class Estimacion extends Rotation {
         $this->SetX(($this->w) * 0.45);
         $this->SetFont('Arial', '', 8);
         $this->Cell(($this->w - 2) * 0.30, 0.4, 'Amortizacion de Anticipo :', 0, 0, 'R');
-        $this->CellFitScale(($this->w - 2) * 0.10, 0.4, ($this->estimacion->monto_anticipo_aplicado / $this->estimacion->suma_importes) * 100 . ' %', 'B', 0, 'L');
+        $this->CellFitScale(($this->w - 2) * 0.10, 0.4, round($this->estimacion->anticipo, 2) . ' %', 'B', 0, 'L');
         $this->CellFitScale(($this->w - 2) * 0.15, 0.4, number_format($this->estimacion->monto_anticipo_aplicado, 2 ,'.', ','), 'B', 1, 'R');
         $this->Ln(0.1);
 
@@ -306,7 +313,7 @@ class Estimacion extends Rotation {
         $this->SetX(($this->w) * 0.45);
         $this->SetFont('Arial', '', 8);
         $this->Cell(($this->w - 2) * 0.30, 0.4, utf8_decode('Retención de Fondo de Garantia Estimación :'), 0, 0, 'R');
-        $this->CellFitScale(($this->w - 2) * 0.10, 0.4, number_format($this->estimacion->subcontratoEstimacion ? $this->estimacion->subcontratoEstimacion->PorcentajeFondoGarantia : 0, 2, '.', ',') . ' %', 'B', 0, 'L');
+        $this->CellFitScale(($this->w - 2) * 0.10, 0.4, round($this->estimacion->retencion, 2) . ' %', 'B', 0, 'L');
         $this->CellFitScale(($this->w - 2) * 0.15, 0.4, number_format($this->estimacion->subcontratoEstimacion ? $this->estimacion->subcontratoEstimacion->ImporteFondoGarantia : 0, 2, '.', ','), 'B', 1, 'R');
         $this->Ln(0.1);
 
@@ -362,11 +369,11 @@ class Estimacion extends Rotation {
         $this->SetY($y_inicial + (($y_final - $y_inicial) / 2) - 1);
 
         $this->SetFont('Arial', '', 8);
-        $this->Cell(($this->w - 2) * 0.125, 0.4, 'Retenido Anterior :', 0, 0, 'L');
+        $this->Cell(($this->w - 2) * 0.21, 0.4, 'Acumulado Retenido Anterior :', 0, 0, 'L');
         $this->CellFitScale(($this->w - 2) * 0.125, 0.4, '$ ' .  number_format($this->estimacion->retenido_anterior, 2, '.', ','), 'B', 1, 'R');
 
         $this->SetFont('Arial', '', 8);
-        $this->Cell(($this->w - 2) * 0.125, 0.4, 'Retenido Origen :', 0, 0, 'L');
+        $this->Cell(($this->w - 2) * 0.21, 0.4, 'Retenido Origen :', 0, 0, 'L');
         $this->CellFitScale(($this->w - 2) * 0.125, 0.4, '$ ' .  number_format($this->estimacion->retenido_origen, 2, '.', ','), 'B', 1, 'R');
 
         $this->SetY($y_final);
@@ -395,35 +402,30 @@ class Estimacion extends Rotation {
         $this->SetFont('Arial', '', 6);
         $this->SetFillColor(180, 180, 180);
 
-        $this->Cell(($this->GetPageWidth() - 4) / 5, 0.4, utf8_decode('Realizó'), 'TRLB', 0, 'C', 1);
-        $this->Cell(0.5);
-        $this->Cell(($this->GetPageWidth() - 4) / 5, 0.4, utf8_decode('Avaló'), 'TRLB', 0, 'C', 1);
-        $this->Cell(0.5);
-        $this->Cell(($this->GetPageWidth() - 4) / 5, 0.4, utf8_decode('Autorizó'), 'TRLB', 0, 'C', 1);
-        $this->Cell(0.5);
-        $this->Cell(($this->GetPageWidth() - 4) / 5, 0.4, utf8_decode('Autorizó'), 'TRLB', 0, 'C', 1);
-        $this->Cell(0.5);
-        $this->Cell(($this->GetPageWidth() - 4) / 5, 0.4, utf8_decode('Recibió'), 'TRLB', 1, 'C', 1);
+        $this->Cell(($this->GetPageWidth() - 4) / 4, 0.4, utf8_decode('Realizó'), 'TRLB', 0, 'C', 1);
+        $this->Cell(0.73);
+        $this->Cell(($this->GetPageWidth() - 4) / 4, 0.4, utf8_decode('Autorizó'), 'TRLB', 0, 'C', 1);
+        $this->Cell(0.73);
+        $this->Cell(($this->GetPageWidth() - 4) / 4, 0.4, utf8_decode('Autorizó'), 'TRLB', 0, 'C', 1);
+        $this->Cell(0.73);
+        $this->Cell(($this->GetPageWidth() - 4) / 4, 0.4, utf8_decode('Recibió'), 'TRLB', 1, 'C', 1);
 
-        $this->Cell(($this->GetPageWidth() - 4) / 5, 1.2, '', 'TRLB', 0, 'C');
-        $this->Cell(0.5);
-        $this->Cell(($this->GetPageWidth() - 4) / 5, 1.2, '', 'TRLB', 0, 'C');
-        $this->Cell(0.5);
-        $this->Cell(($this->GetPageWidth() - 4) / 5, 1.2, '', 'TRLB', 0, 'C');
-        $this->Cell(0.5);
-        $this->Cell(($this->GetPageWidth() - 4) / 5, 1.2, '', 'TRLB', 0, 'C');
-        $this->Cell(0.5);
-        $this->Cell(($this->GetPageWidth() - 4) / 5, 1.2, '', 'TRLB', 1, 'C');
+        $this->Cell(($this->GetPageWidth() - 4) / 4, 1.2, '', 'TRLB', 0, 'C');
+        $this->Cell(0.73);
+        $this->Cell(($this->GetPageWidth() - 4) / 4, 1.2, '', 'TRLB', 0, 'C');
+        $this->Cell(0.73);
+        $this->Cell(($this->GetPageWidth() - 4) / 4, 1.2, '', 'TRLB', 0, 'C');
+        $this->Cell(0.73);
+        $this->Cell(($this->GetPageWidth() - 4) / 4, 1.2, '', 'TRLB', 1, 'C');
 
-        $this->Cell(($this->GetPageWidth() - 4) / 5, 0.4, 'SUBCONTRATOS', 'TRLB', 0, 'C', 1);
-        $this->Cell(0.5);
-        $this->Cell(($this->GetPageWidth() - 4) / 5, 0.4, 'SUPERINTENDENTE DE OBRA', 'TRLB', 0, 'C', 1);
-        $this->Cell(0.5);
-        $this->Cell(($this->GetPageWidth() - 4) / 5, 0.4, 'GERENTE DE OBRA', 'TRLB', 0, 'C', 1);
-        $this->Cell(0.5);
-        $this->Cell(($this->GetPageWidth() - 4) / 5, 0.4, 'CONTROL DE OBRA', 'TRLB', 0, 'C', 1);
-        $this->Cell(0.5);
-        $this->Cell(($this->GetPageWidth() - 4) / 5, 0.4, 'ADMINISTRADOR', 'TRLB', 0, 'C', 1);
+        $this->Cell(($this->GetPageWidth() - 4) / 4, 0.4, 'RESPONSABLE DE AREA', 'TRLB', 0, 'C', 1);
+        $this->Cell(0.73);
+        $this->Cell(($this->GetPageWidth() - 4) / 4, 0.4, 'GERENCIA DE AREA', 'TRLB', 0, 'C', 1);
+        $this->Cell(0.73);
+        $this->Cell(($this->GetPageWidth() - 4) / 4, 0.4, 'DIRECCION DE AREA', 'TRLB', 0, 'C', 1);
+        $this->Cell(0.73);
+        $this->Cell(($this->GetPageWidth() - 4) / 4, 0.4, 'ADMINISTRACION', 'TRLB', 0, 'C', 1);
+
     }
 
     function create() {

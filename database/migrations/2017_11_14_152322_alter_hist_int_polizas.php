@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AddIdTraspasoToIntPolizas extends Migration
+class AlterHistIntPolizas extends Migration
 {
     /**
      * Run the migrations.
@@ -12,7 +12,8 @@ class AddIdTraspasoToIntPolizas extends Migration
      */
     public function up()
     {
-        Schema::table('Contabilidad.int_polizas', function (Blueprint $table) {
+        Schema::table('Contabilidad.hist_int_polizas', function (Blueprint $table) {
+            $table->unsignedInteger('id_transaccion_sao')->nullable()->change();
             $table->unsignedInteger('id_traspaso')->nullable();
             $table->foreign('id_traspaso')
                 ->references('id_traspaso')
@@ -27,8 +28,9 @@ class AddIdTraspasoToIntPolizas extends Migration
      */
     public function down()
     {
-        Schema::table('Contabilidad.int_polizas', function (Blueprint $table) {
-            $table->dropForeign('contabilidad_int_polizas_id_traspaso_foreign');
+        Schema::table('Contabilidad.hist_int_polizas', function (Blueprint $table) {
+            $table->unsignedInteger('id_transaccion_sao')->change();
+            $table->dropForeign('contabilidad_hist_int_polizas_id_traspaso_foreign');
             $table->dropColumn('id_traspaso');
         });
     }

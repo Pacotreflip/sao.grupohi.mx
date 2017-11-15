@@ -34,7 +34,7 @@ class TraspasoCuentas extends BaseModel
 
         static::creating(function ($model) {
 
-            $mov = MovimientosBancarios::orderBy('numero_folio', 'DESC')->first();
+            $mov = TraspasoCuentas::orderBy('numero_folio', 'DESC')->first();
             $folio = $mov ? $mov->numero_folio + 1 : 1;
 
             $model->estatus = 1;

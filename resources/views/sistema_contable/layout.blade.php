@@ -76,12 +76,13 @@
                     @permission('consultar_cuenta_material')
                     <li ><a href="{{route('sistema_contable.cuenta_material.index')}}"><i class='fa fa-circle-o'></i> <span>Cuentas - Materiales</span></a></li>
                     @endpermission
-                    @permission('consultar_tipo_cuenta_contable')
-                    <li ><a href="{{route('sistema_contable.tipo_cuenta_contable.index')}}"><i class='fa fa-circle-o'></i> <span>Cuenta - Contable</span></a></li>
-                    @endpermission
                     @permission('consultar_cuenta_contable_bancaria')
-                    <li ><a href="{{route('sistema_contable.cuentas_contables_bancarias.index')}}"><i class='fa fa-circle-o'></i> <span>Cuentas - Bancos</span></a></li>
+                    <li ><a href="{{route('sistema_contable.cuentas_contables_bancarias.index')}}"><i class='fa fa-circle-o'></i> <span>Cuentas - Cuentas Bancos</span></a></li>
                     @endpermission
+                    @permission('consultar_tipo_cuenta_contable')
+                    <li ><a href="{{route('sistema_contable.tipo_cuenta_contable.index')}}"><i class='fa fa-circle-o'></i> <span>Cuentas Generales</span></a></li>
+                    @endpermission
+                    
                     </ul>
                 </li>
                 @endpermission
