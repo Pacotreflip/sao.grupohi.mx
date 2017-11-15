@@ -1,41 +1,49 @@
 <?php
+/**
+ * Created by PhpStorm.
+ * User: LERDES2
+ * Date: 14/11/2017
+ * Time: 04:14 PM
+ */
 
 namespace Ghi\Api\Controllers;
 
+use Ghi\Domain\Core\Repositories\EloquentItemRepository;
+use Ghi\Domain\Core\Transformers\ItemTransformer;
+use Ghi\Http\Controllers\Controller;
 use Dingo\Api\Http\Request;
 use Dingo\Api\Routing\Helpers;
-use Ghi\Domain\Core\Repositories\EloquentSubcontratoRepository;
-use Ghi\Http\Controllers\Controller;
 
-class SubcontratoController extends Controller
+
+class ItemController extends Controller
 {
     use Helpers;
 
 
     /**
-     * @var EloquentSubcontratoRepository
+     * @var EloquentItemRepository
      */
-    private $subcontrato;
+    private $item;
 
     /**
-     * SubcontratoController constructor.
-     * @param EloquentSubcontratoRepository $subcontrato
+     * ItemController constructor.
+     * @param EloquentItemRepository $item
      */
-    public function __construct(EloquentSubcontratoRepository $subcontrato)
+    public function __construct(EloquentItemRepository $item)
     {
-        $this->subcontrato = $subcontrato;
+        $this->item = $item;
     }
 
     /**
-     * @api {post} /subcontrato Registrar Subcontrato
+     * @api {post} /subcontrato/item Registrar Item adjunto a un Subcontrato
      * @apiVersion 1.0.0
-     * @apiGroup Subcontrato
+     * @apiGroup Items
      *
      * @apiHeader {String} Authorization Token de autorización
      * @apiHeader {string} database_name Nombre de la Base de Datos para establecer contexto
      * @apiHeader {string} id_obra ID De la obra sobre la que se desea extablecer el contexto
      *
-     * @apiError StoreResourceFailedException Error al registrar un Subcontrato
+     * @apiError StoreResourceFailedException Error al registrar un Item adjunto a un Subcontrato
      * @apiErrorExample Error-Response
      *   HTTP/1.1 422 Unprocessable Entity
      *   {
@@ -47,7 +55,7 @@ class SubcontratoController extends Controller
      *     "status_code": 422
      *   }
      *
-     * @apiSuccess (200) {Object} data Datos del Subcontrato Registrado
+     * @apiSuccess (200) {Object} data Datos del Item adjunto a un Subcontrato
      * @apiSuccessExample Success-Response
      *   HTTP/1.1 200 OK
      *   {
@@ -59,7 +67,9 @@ class SubcontratoController extends Controller
      */
     public function store(Request $request)
     {
-        $subcontrato = $this->subcontrato->create($request->all());
-        return $this->response->item($subcontrato, new SubcontratoTransformer());
+        $item = $this->item->create($request->all());
+        return $this->response->item($item, new ItemTransformer());
     }
+
+
 }

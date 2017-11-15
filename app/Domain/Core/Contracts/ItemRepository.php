@@ -61,4 +61,10 @@ interface ItemRepository
      * @return mixed
      */
     public function scope($scope);
+
+    /**
+     * @param array $data
+     * @return mixed
+     */
+    public function createItemSubcontrato(array $data);
 }

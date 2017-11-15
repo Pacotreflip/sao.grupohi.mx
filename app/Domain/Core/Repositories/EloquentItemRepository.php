@@ -94,6 +94,8 @@ class EloquentItemRepository implements ItemRepository
     }
 
 
+
+
     /**
      * Actualiza la información de las partidas de una requisición
      * @param array $data
@@ -158,5 +160,37 @@ class EloquentItemRepository implements ItemRepository
     {
         $this->model = $this->model->$scope();
         return $this;
+    }
+
+    /**
+     * @param array $data
+     * @return mixed
+     * @throws \Exception
+     */
+    public function createItemSubcontrato(array $data)
+    {
+        DB::connection('cadeco')->beginTransaction();
+        try {
+            //Reglas de validación para crear un subcontrat
+            $rules = [
+                //Validaciones de Subcontrato
+                'id_antecedente' => ['required', 'Integer', 'exists:cadeco.transacciones,id_transaccion'],
+                'fecha' => ['required', 'date'],
+                'id_costo' => ['Integer', 'exists:cadeco.costos,id_costo'],
+                'id_empresa' => ['Integer', 'exists:cadeco.empresas,id_empresa'],
+                'id_moneda' => ['Integer', 'exists:cadeco.monedas,id_moneda'],
+                'monto' => ['Numeric'],
+                'saldo' => ['Numeric'],
+                'impuesto' => ['Numeric'],
+                'referencia' => ['String'],
+                'observaciones' => ['String']
+            ];
+            //Validar los datos recibidos con las reglas de validación
+            $validator = app('validator')->make($data, $rules);
+            DB::connection('cadeco')->commit();
+        } catch (\Exception $e) {
+            DB::connection('cadeco')->rollback();
+            throw $e;
+        }
     }
 }
