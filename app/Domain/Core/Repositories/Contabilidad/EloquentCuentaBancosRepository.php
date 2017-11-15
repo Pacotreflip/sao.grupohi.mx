@@ -31,15 +31,40 @@ class EloquentCuentaBancosRepository implements CuentaBancosRepository
 
     public function create($data)
     {
+        $item = [];
 
+        try {
+            DB::connection('cadeco')->beginTransaction();
+
+            $record = CuentaBancos::create($data);
+            DB::connection('cadeco')->commit();
+
+            $item = CuentaBancos::with('tipoCuentaContable')->where('id_cuenta_contable_bancaria', $record->id_cuenta_contable_bancaria)->first();
+
+         } catch (\Exception $e) {
+            DB::connection('cadeco')->rollBack();
+            throw $e;
+        }
+
+        return $item;
     }
 
     public function delete(array $data, $id)
     {
+        $error = 'No se encontró la cuenta que se desea editar';
+
         try {
-            $cuenta = $this->model->find($id);
-            $cuenta->estatus = 0;
-            $cuenta->save();
+            $item = $this->model->find($id);
+
+            if (!$item) {
+                throw new HttpResponseException(new Response($error, 404));
+
+                return $error;
+            }
+
+            $item->estatus = 0;
+            $item->save();
+
         } catch (\Exception $e) {
             throw $e;
         }
@@ -51,7 +76,34 @@ class EloquentCuentaBancosRepository implements CuentaBancosRepository
      */
     public function update(array $data, $id)
     {
+        $error = 'No se encontró la cuenta que se desea editar';
 
+        try {
+            $item = $this->model->find($id);
+
+            if (!$item) {
+                throw new HttpResponseException(new Response($error, 404));
+
+                return $error;
+            }
+
+            DB::connection('cadeco')->beginTransaction();
+
+            // Cambia el estado de la actual cuenta.
+            $item->estatus = 0;
+            $item->save();
+
+            // Crea una nueva cuenta con la misma información
+            $nuevo_item = $this->create($data['data']);
+
+            DB::connection('cadeco')->commit();
+
+        } catch (\Exception $e) {
+            DB::connection('cadeco')->rollback();
+            throw $e;
+        }
+
+        return $nuevo_item;
     }
 
     /**
@@ -87,6 +139,14 @@ class EloquentCuentaBancosRepository implements CuentaBancosRepository
     }
 
     public function getCount($id_cuenta){
-        return $this->model->where('id_cuenta', '=', $id_cuenta)->count();
+        return $this->model->where(['id_cuenta' => $id_cuenta, 'estatus' => 1])->count();
+    }
+
+    /**
+     * @return \Ghi\Domain\Core\Models\CuentaBancos
+     */
+    public function tipos()
+    {
+        return $this->model->tipos();
     }
 }

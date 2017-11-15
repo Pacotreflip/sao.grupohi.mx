@@ -13,10 +13,10 @@ class CreateTableCuentasContablesBancarias extends Migration
     public function up()
     {
         Schema::create('Contabilidad.cuentas_contables_bancarias', function (Blueprint $table) {
-            $table->increments('id_cuentas_contables_bancarias');
+            $table->increments('id_cuenta_contable_bancaria');
             $table->unsignedInteger("id_cuenta")->nullable();
             $table->unsignedInteger("id_tipo_cuenta_contable")->nullable();
-            $table->unsignedInteger("numero")->nullable();
+            $table->string("cuenta",254);
             $table->unsignedInteger("estatus")->nullable();
             $table->unsignedInteger("registro")->nullable();
             $table->timestamps();

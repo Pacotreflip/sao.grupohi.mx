@@ -83345,6 +83345,7 @@ require('./vue-components/Contabilidad/datos_contables/edit');
 require('./vue-components/kardex_material/kardex-material-index');
 require('./vue-components/Contabilidad/modulos/revaluacion/create');
 require('./vue-components/Contabilidad/cuenta_fondo/index');
+require('./vue-components/Contabilidad/cuenta_bancos/cuenta-bancaria-edit');
 
 /**
  * Compras Components
@@ -83369,7 +83370,7 @@ require('./vue-components/Reportes/subcontratos-estimacion');
 require('./vue-components/Tesoreria/traspaso_cuentas/index');
 require('./vue-components/Tesoreria/movimientos_bancarios/index');
 
-},{"./vue-components/Compras/material/index":146,"./vue-components/Compras/requisicion/create":147,"./vue-components/Compras/requisicion/edit":148,"./vue-components/Contabilidad/cuenta_almacen/index":149,"./vue-components/Contabilidad/cuenta_concepto/index":150,"./vue-components/Contabilidad/cuenta_contable/index":151,"./vue-components/Contabilidad/cuenta_empresa/cuenta-empresa-edit":152,"./vue-components/Contabilidad/cuenta_fondo/index":153,"./vue-components/Contabilidad/cuenta_material/index":154,"./vue-components/Contabilidad/datos_contables/edit":155,"./vue-components/Contabilidad/emails":156,"./vue-components/Contabilidad/modulos/revaluacion/create":157,"./vue-components/Contabilidad/poliza_generada/edit":158,"./vue-components/Contabilidad/poliza_tipo/poliza-tipo-create":159,"./vue-components/Contabilidad/tipo_cuenta_contable/tipo-cuenta-contable-create":160,"./vue-components/Contabilidad/tipo_cuenta_contable/tipo-cuenta-contable-update":161,"./vue-components/Finanzas/comprobante_fondo_fijo/create":162,"./vue-components/Finanzas/comprobante_fondo_fijo/edit":163,"./vue-components/Reportes/subcontratos-estimacion":164,"./vue-components/Tesoreria/movimientos_bancarios/index":165,"./vue-components/Tesoreria/traspaso_cuentas/index":166,"./vue-components/errors":167,"./vue-components/global-errors":168,"./vue-components/kardex_material/kardex-material-index":169,"./vue-components/select2":170}],146:[function(require,module,exports){
+},{"./vue-components/Compras/material/index":146,"./vue-components/Compras/requisicion/create":147,"./vue-components/Compras/requisicion/edit":148,"./vue-components/Contabilidad/cuenta_almacen/index":149,"./vue-components/Contabilidad/cuenta_bancos/cuenta-bancaria-edit":150,"./vue-components/Contabilidad/cuenta_concepto/index":151,"./vue-components/Contabilidad/cuenta_contable/index":152,"./vue-components/Contabilidad/cuenta_empresa/cuenta-empresa-edit":153,"./vue-components/Contabilidad/cuenta_fondo/index":154,"./vue-components/Contabilidad/cuenta_material/index":155,"./vue-components/Contabilidad/datos_contables/edit":156,"./vue-components/Contabilidad/emails":157,"./vue-components/Contabilidad/modulos/revaluacion/create":158,"./vue-components/Contabilidad/poliza_generada/edit":159,"./vue-components/Contabilidad/poliza_tipo/poliza-tipo-create":160,"./vue-components/Contabilidad/tipo_cuenta_contable/tipo-cuenta-contable-create":161,"./vue-components/Contabilidad/tipo_cuenta_contable/tipo-cuenta-contable-update":162,"./vue-components/Finanzas/comprobante_fondo_fijo/create":163,"./vue-components/Finanzas/comprobante_fondo_fijo/edit":164,"./vue-components/Reportes/subcontratos-estimacion":165,"./vue-components/Tesoreria/movimientos_bancarios/index":166,"./vue-components/Tesoreria/traspaso_cuentas/index":167,"./vue-components/errors":168,"./vue-components/global-errors":169,"./vue-components/kardex_material/kardex-material-index":170,"./vue-components/select2":171}],146:[function(require,module,exports){
 'use strict';
 
 Vue.component('material-index', {
@@ -84001,6 +84002,269 @@ Vue.component('cuenta-almacen-index', {
 },{}],150:[function(require,module,exports){
 'use strict';
 
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+
+Vue.component('cuenta-bancaria-edit', {
+    props: ['cuenta', 'tipos', 'cuenta_store_url', 'cuentas_asociadas', 'datos_contables', 'tipos_disponibles'],
+
+    data: function data() {
+        return {
+            'asociadas': this.cuentas_asociadas,
+            'form': {
+                'id_tipo_cuenta_contable': '',
+                'cuenta': ''
+            },
+            'cuenta_descripcion': '',
+            'cuenta_edit_id': 0,
+            'guardando': false,
+            'nuevo_registro': false
+        };
+    },
+    methods: {
+        close_modal: function close_modal(modal) {
+            $('#' + modal).modal('hide');
+            this.form.id_tipo_cuenta_contable = '';
+            this.form.cuenta = '';
+        },
+        confirm_elimina_cuenta: function confirm_elimina_cuenta(cuenta) {
+            var self = this;
+            this.cuenta_edit_id = cuenta.id_cuenta_contable_bancaria;
+
+            swal({
+                title: "Eliminar Cuenta Contable",
+                html: "¿Estás seguro que desea eliminar la cuenta " + cuenta.cuenta + "?",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonText: "Si, Continuar",
+                cancelButtonText: "No, Cancelar"
+            }).then(function () {
+
+                self.elimina_cuenta();
+            }).catch(swal.noop);
+        },
+        confirm_cuenta_update: function confirm_cuenta_update() {
+            var self = this;
+            swal({
+                title: "Actualizar Cuenta Contable",
+                text: "¿Estás seguro que desea actualizar la Cuenta Contable?",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonText: "Si, Continuar",
+                cancelButtonText: "No, Cancelar"
+            }).then(function () {
+
+                self.update_cuenta_bancaria();
+            }).catch(swal.noop);
+        },
+        confirm_cuenta_create: function confirm_cuenta_create() {
+            var self = this;
+            swal({
+                title: "Registrar Cuenta Contable",
+                text: "¿Estás seguro que desea registrar la Cuenta Contable?",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonText: "Si, Continuar",
+                cancelButtonText: "No, Cancelar"
+            }).then(function () {
+                self.save_cuenta_bancaria();
+            }).catch(swal.noop);
+        },
+        elimina_cuenta: function elimina_cuenta() {
+            var self = this;
+            var data = self.form;
+            var url = App.host + '/sistema_contable/cuentas_contables_bancarias/' + this.cuenta_edit_id;
+            var toRemove = this.cuenta_edit_id;
+            $.ajax({
+                type: 'POST',
+                url: url,
+                data: {
+                    data: data,
+                    _method: 'DELETE'
+                },
+                beforeSend: function beforeSend() {
+                    self.guardando = true;
+                },
+                success: function success(data, textStatus, xhr) {
+                    $.each(self.asociadas, function (index, tipo_cuenta) {
+                        if (toRemove == tipo_cuenta.id_cuenta_contable_bancaria) {
+                            self.asociadas.splice(index, 1);
+                        }
+                    });
+
+                    $('#add_movimiento_modal').modal('hide');
+                    swal({
+                        type: 'success',
+                        title: 'Correcto',
+                        html: 'La cuenta: fué eliminada correctamente'
+                    });
+                },
+                complete: function complete() {
+                    self.guardando = false;
+                    this.cuenta_descripcion = '';
+                    this.cuenta_edit_id = 0;
+                }
+            });
+        },
+        create_cuenta_bancaria: function create_cuenta_bancaria() {
+            this.form.id_tipo_cuenta_contable = '';
+            this.form.cuenta = '';
+            this.nuevo_registro = true;
+            this.obtener_tipos_disponibles();
+
+            this.validation_errors.clear('form_create_cuenta');
+            $('#add_movimiento_modal').modal('show');
+            this.validation_errors.clear('form_create_cuenta');
+        },
+        edit_cuenta_bancaria: function edit_cuenta_bancaria(cuenta) {
+            this.nuevo_registro = false;
+            this.form.id_tipo_cuenta_contable = cuenta.id_tipo_cuenta_contable;
+            this.form.cuenta = cuenta.cuenta;
+            this.cuenta_descripcion = cuenta.tipo_cuenta_contable.descripcion;
+            this.cuenta_edit_id = cuenta.id_cuenta_contable_bancaria;
+
+            this.validation_errors.clear('form_update_cuenta');
+            $('#edit_movimiento_modal').modal('show');
+            this.validation_errors.clear('form_update_cuenta');
+        },
+        update_cuenta_bancaria: function update_cuenta_bancaria() {
+            var self = this;
+            var data = self.form;
+            var url = App.host + '/sistema_contable/cuentas_contables_bancarias/' + this.cuenta_edit_id;
+            var toRemove = this.cuenta_edit_id;
+
+            data.id_cuenta = self.cuenta.id_cuenta;
+            $.ajax({
+                type: 'POST',
+                url: url,
+                data: {
+                    data: data,
+                    _method: 'PATCH'
+                },
+                beforeSend: function beforeSend() {
+                    self.validation_errors.clear('form_update_cuenta');
+                    self.guardando = true;
+                },
+                success: function success(data, textStatus, xhr) {
+                    $.each(self.asociadas, function (index, tipo_cuenta) {
+                        if (toRemove == tipo_cuenta.id_cuenta_contable_bancaria) {
+                            self.asociadas.splice(index, 1);
+                        }
+                    });
+                    self.asociadas.push(data.data);
+
+                    $('#edit_movimiento_modal').modal('hide');
+                    swal({
+                        type: 'success',
+                        title: 'Correcto',
+                        html: 'La cuenta:' + data.data.cuenta + '</b> fué actualizada correctamente'
+                    });
+                },
+                complete: function complete() {
+                    self.guardando = false;
+                    this.cuenta_descripcion = '';
+                    this.cuenta_edit_id = 0;
+                    this.form.id_tipo_cuenta_contable = '';
+                    this.form.cuenta = '';
+                }
+            });
+        },
+        save_cuenta_bancaria: function save_cuenta_bancaria() {
+            var self = this;
+            var url = self.cuenta_store_url;
+            var data = self.form;
+
+            data.id_cuenta = self.cuenta.id_cuenta;
+            $.ajax({
+                type: 'POST',
+                url: url,
+                data: data,
+                beforeSend: function beforeSend() {
+                    self.validation_errors.clear('form_create_cuenta');
+                    self.guardando = true;
+                },
+                success: function success(data, textStatus, xhr) {
+                    self.asociadas.push(data.data);
+                    self.close_modal('add_movimiento_modal');
+                    swal({
+                        type: 'success',
+                        title: 'Correcto',
+                        html: 'La cuenta: <b>' + data.data.cuenta + '</b> fue registrada correctamente'
+                    });
+                },
+                complete: function complete() {
+                    self.guardando = false;
+                    this.form.id_tipo_cuenta_contable = '';
+                    this.form.cuenta = '';
+                }
+            });
+        },
+
+        validateForm: function validateForm(scope, funcion) {
+            var _this = this;
+
+            this.$validator.validateAll(scope).then(function () {
+                if (funcion == 'confirm_edit_cuenta') {
+                    _this.confirm_cuenta_update();
+                } else if (funcion == 'confirm_create_cuenta') {
+                    _this.confirm_cuenta_create();
+                }
+            }).catch(function () {
+                swal({
+                    type: 'warning',
+                    title: 'Advertencia',
+                    text: 'Por favor corrija los errores del formulario'
+                });
+            });
+        },
+        tipo_info: function tipo_info(id) {
+            var self = this,
+                info = {};
+
+            $.each(self.tipos, function (index, tipo_cuenta) {
+                if (id == tipo_cuenta.id_tipo_cuenta_contable) info = tipo_cuenta;
+            });
+
+            return info;
+        },
+        obtener_tipos_disponibles: function obtener_tipos_disponibles() {
+            var self = this,
+                tipos = [];
+
+            self.tipos_disponibles = [];
+
+            $.each(self.tipos, function (indexTipo, tipo) {
+                $.each(self.asociadas, function (index, aso) {
+                    if (tipo.id_tipo_cuenta_contable == aso.id_tipo_cuenta_contable) {
+                        return true;
+                    } else {
+                        tipos.push(tipo.id_tipo_cuenta_contable);
+                    }
+                });
+            });
+            tipos = self.uniq(tipos);
+
+            $.each(tipos, function (index, tipo) {
+                self.tipos_disponibles.push(self.tipo_info(tipo));
+            });
+        },
+        uniq: function uniq(a) {
+            var prims = { "boolean": {}, "number": {}, "string": {} },
+                objs = [];
+
+            return a.filter(function (item) {
+                var type = typeof item === 'undefined' ? 'undefined' : _typeof(item);
+                if (type in prims) return prims[type].hasOwnProperty(item) ? false : prims[type][item] = true;else return objs.indexOf(item) >= 0 ? false : objs.push(item);
+            });
+        }
+    },
+    mounted: function mounted() {
+        this.tipos_disponibles = [];
+    }
+});
+
+},{}],151:[function(require,module,exports){
+'use strict';
+
 Vue.component('cuenta-concepto-index', {
     props: ['conceptos', 'url_concepto_get_by', 'datos_contables', 'url_store_cuenta'],
     data: function data() {
@@ -84282,7 +84546,7 @@ Vue.component('cuenta-concepto-index', {
     }
 });
 
-},{}],151:[function(require,module,exports){
+},{}],152:[function(require,module,exports){
 'use strict';
 
 Vue.component('cuenta-contable-index', {
@@ -84449,7 +84713,7 @@ Vue.component('cuenta-contable-index', {
     }
 });
 
-},{}],152:[function(require,module,exports){
+},{}],153:[function(require,module,exports){
 'use strict';
 
 Vue.component('cuenta-empresa-edit', {
@@ -84678,7 +84942,7 @@ Vue.component('cuenta-empresa-edit', {
     }
 });
 
-},{}],153:[function(require,module,exports){
+},{}],154:[function(require,module,exports){
 'use strict';
 
 Vue.component('cuenta-fondo-index', {
@@ -84827,7 +85091,7 @@ Vue.component('cuenta-fondo-index', {
     }
 });
 
-},{}],154:[function(require,module,exports){
+},{}],155:[function(require,module,exports){
 'use strict';
 
 Vue.component('cuenta-material-index', {
@@ -85073,7 +85337,7 @@ Vue.component('cuenta-material-index', {
     }
 });
 
-},{}],155:[function(require,module,exports){
+},{}],156:[function(require,module,exports){
 'use strict';
 
 Vue.component('datos-contables-edit', {
@@ -85237,7 +85501,7 @@ Vue.component('datos-contables-edit', {
     }
 });
 
-},{}],156:[function(require,module,exports){
+},{}],157:[function(require,module,exports){
 'use strict';
 
 Vue.component('emails', {
@@ -85277,7 +85541,7 @@ Vue.component('emails', {
     }
 });
 
-},{}],157:[function(require,module,exports){
+},{}],158:[function(require,module,exports){
 'use strict';
 
 Vue.component('revaluacion-create', {
@@ -85355,7 +85619,7 @@ Vue.component('revaluacion-create', {
     }
 });
 
-},{}],158:[function(require,module,exports){
+},{}],159:[function(require,module,exports){
 'use strict';
 
 Vue.component('poliza-generada-edit', {
@@ -85724,7 +85988,7 @@ Vue.component('poliza-generada-edit', {
     }
 });
 
-},{}],159:[function(require,module,exports){
+},{}],160:[function(require,module,exports){
 'use strict';
 
 Vue.component('poliza-tipo-create', {
@@ -85930,7 +86194,7 @@ Vue.component('poliza-tipo-create', {
     }
 });
 
-},{}],160:[function(require,module,exports){
+},{}],161:[function(require,module,exports){
 'use strict';
 
 /**
@@ -85998,7 +86262,7 @@ Vue.component('tipo-cuenta-contable-create', {
 
 });
 
-},{}],161:[function(require,module,exports){
+},{}],162:[function(require,module,exports){
 'use strict';
 
 /**
@@ -86070,7 +86334,7 @@ Vue.component('tipo-cuenta-contable-update', {
 
 });
 
-},{}],162:[function(require,module,exports){
+},{}],163:[function(require,module,exports){
 'use strict';
 
 Vue.component('comprobante-fondo-fijo-create', {
@@ -86546,7 +86810,7 @@ Vue.component('comprobante-fondo-fijo-create', {
     }
 });
 
-},{}],163:[function(require,module,exports){
+},{}],164:[function(require,module,exports){
 'use strict';
 
 Vue.component('comprobante-fondo-fijo-edit', {
@@ -87000,7 +87264,7 @@ Vue.component('comprobante-fondo-fijo-edit', {
     }
 });
 
-},{}],164:[function(require,module,exports){
+},{}],165:[function(require,module,exports){
 'use strict';
 
 Vue.component('subcontratos-estimacion', {
@@ -87079,7 +87343,7 @@ Vue.component('subcontratos-estimacion', {
     }
 });
 
-},{}],165:[function(require,module,exports){
+},{}],166:[function(require,module,exports){
 'use strict';
 
 Vue.component('movimientos_bancarios-index', {
@@ -87424,7 +87688,7 @@ Vue.component('movimientos_bancarios-index', {
     }
 });
 
-},{}],166:[function(require,module,exports){
+},{}],167:[function(require,module,exports){
 'use strict';
 
 Vue.component('traspaso-cuentas-index', {
@@ -87731,7 +87995,7 @@ Vue.component('traspaso-cuentas-index', {
     }
 });
 
-},{}],167:[function(require,module,exports){
+},{}],168:[function(require,module,exports){
 'use strict';
 
 Vue.component('app-errors', {
@@ -87740,7 +88004,7 @@ Vue.component('app-errors', {
     template: require('./templates/errors.html')
 });
 
-},{"./templates/errors.html":171}],168:[function(require,module,exports){
+},{"./templates/errors.html":172}],169:[function(require,module,exports){
 'use strict';
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
@@ -87766,7 +88030,7 @@ Vue.component('global-errors', {
   }
 });
 
-},{"./templates/global-errors.html":172}],169:[function(require,module,exports){
+},{"./templates/global-errors.html":173}],170:[function(require,module,exports){
 'use strict';
 
 Vue.component('kardex-material-index', {
@@ -87916,7 +88180,7 @@ Vue.component('kardex-material-index', {
 
 });
 
-},{}],170:[function(require,module,exports){
+},{}],171:[function(require,module,exports){
 'use strict';
 
 Vue.component('select2', {
@@ -87965,9 +88229,9 @@ Vue.component('select2', {
     }
 });
 
-},{}],171:[function(require,module,exports){
-module.exports = '<div id="form-errors" v-cloak>\n  <div class="alert alert-danger" v-if="form.errors.length">\n    <ul>\n      <li v-for="error in form.errors">{{ error }}</li>\n    </ul>\n  </div>\n</div>';
 },{}],172:[function(require,module,exports){
+module.exports = '<div id="form-errors" v-cloak>\n  <div class="alert alert-danger" v-if="form.errors.length">\n    <ul>\n      <li v-for="error in form.errors">{{ error }}</li>\n    </ul>\n  </div>\n</div>';
+},{}],173:[function(require,module,exports){
 module.exports = '<div class="alert alert-danger" v-show="errors.length">\n  <ul>\n    <li v-for="error in errors">{{ error }}</li>\n  </ul>\n</div>';
 },{}]},{},[143]);
 

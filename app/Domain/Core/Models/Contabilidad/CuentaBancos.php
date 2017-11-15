@@ -14,11 +14,14 @@ class CuentaBancos extends BaseModel
     use SoftDeletes;
     protected $connection = 'cadeco';
     protected $table = 'Contabilidad.cuentas_contables_bancarias';
+    protected $dates = ['deleted_at'];
+    protected $primaryKey = 'id_cuenta_contable_bancaria';
     protected $fillable = [
         'id_cuenta',
         'id_tipo_cuenta_contable',
-        'numero',
+        'cuenta',
         'estatus',
+        'registro',
     ];
 
     protected static function boot()
@@ -29,10 +32,6 @@ class CuentaBancos extends BaseModel
             $model->estatus = 1;
             $model->registro = auth()->user()->idusuario;
         });
-    }
-
-    public function empresa() {
-        return $this->belongsTo(Empresa::class, 'id_empresa');
     }
 
     public function cuentas() {

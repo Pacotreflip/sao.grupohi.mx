@@ -23,9 +23,6 @@
                     <strong>Abreviatura</strong>
                     <p>{{ $cuenta->abreviatura }}</p>
                     <hr>
-                    <strong>Cuenta Contable</strong>
-                    <p>{{ $cuenta->cuenta_contable }}</p>
-                    <hr>
                 </div>
                 <!-- /.box-body -->
             </div>
@@ -50,8 +47,8 @@
                                 @foreach($cuenta->cuentas_asociadas as $index => $c)
                                     <tr>
                                         <td>{{ $index + 1 }}</td>
-                                        <td>{{ $c->id_cuenta }}</td>
-                                        <td>{{ $c->numero }}</td>
+                                        <td>{{ $c->cuenta }}</td>
+                                        <td>{{ $c->tipoCuentaContable->descripcion }}</td>
                                     </tr>
                                 @endforeach
                                 </tbody>
