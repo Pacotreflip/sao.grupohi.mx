@@ -40,4 +40,12 @@ interface EstimacionRepository
      * @return Collection
      */
     public function getBy($attribute, $operator, $value);
+
+    /**
+     * Registra una nueva Estimación
+     * @param array $data
+     * @return Estimacion
+     * @throws \Exception
+     */
+    public function create(array $data);
 }

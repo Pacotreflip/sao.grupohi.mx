@@ -54,7 +54,7 @@ class ContratoProyectado extends Transaccion
             $model->FechaHoraRegistro = Carbon::now()->toDateTimeString();
             $model->tipo_transaccion = Tipo::CONTRATO_PROYECTADO;
             $model->opciones = 1026;
-            $model->comentario = "I;" . date('d/m/Y') . " " . date('h:m:s') . ";SCR|" . auth()->user()->usuario . "|";
+            $model->comentario = "I;" . date('d/m/Y') . " " . date('h:m:s') . ";SAO|" . auth()->user()->usuario . "|";
         });
     }
 }

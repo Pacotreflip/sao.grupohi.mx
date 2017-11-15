@@ -2,6 +2,7 @@
 
 namespace Ghi\Domain\Core\Contracts;
 
+use Dingo\Api\Http\Request;
 use Illuminate\Database\Eloquent\Collection;
 
 interface SubcontratoRepository
@@ -21,5 +22,5 @@ interface SubcontratoRepository
      * @return mixed
      * @throws \Exception
      */
-    public function create(array $data);
+    public function create(Request $request);
 }

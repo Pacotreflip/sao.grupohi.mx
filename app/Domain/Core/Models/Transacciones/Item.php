@@ -36,6 +36,7 @@ class Item extends Model
 
     protected $fillable = [
         'id_transaccion',
+        'id_antecedente',
         'id_material',
         'unidad',
         'cantidad',
@@ -44,7 +45,9 @@ class Item extends Model
         'precio_unitario',
         'importe',
         'referencia',
-        'estado'
+        'estado',
+        'cantidad_original1',
+        'precio_original1'
     ];
 
     public $timestamps = false;

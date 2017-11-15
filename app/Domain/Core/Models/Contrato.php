@@ -9,6 +9,7 @@
 namespace Ghi\Domain\Core\Models;
 
 
+use Ghi\Domain\Core\Models\Transacciones\Item;
 use Illuminate\Database\Eloquent\Model;
 
 class Contrato extends Model
@@ -38,5 +39,10 @@ class Contrato extends Model
 
     public function destinos() {
         return $this->belongsToMany(Concepto::class, 'destinos', 'id_concepto_contrato', 'id_concepto')->withPivot(['id_transaccion', 'id_concepto_original']);
+    }
+
+    public function items() {
+        return $this->hasMany(Item::class, 'id_concepto', 'id_concepto')
+            ->where('items.id_antecedente', '=', $this->id_transaccion);
     }
 }

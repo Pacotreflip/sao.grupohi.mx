@@ -4,42 +4,43 @@ namespace Ghi\Api\Controllers;
 
 use Dingo\Api\Http\Request;
 use Dingo\Api\Routing\Helpers;
-use Ghi\Domain\Core\Repositories\EloquentSubcontratoRepository;
+use Ghi\Domain\Core\Repositories\EloquentEstimacionRepository;
+use Ghi\Domain\Core\Transformers\TransaccionTransformer;
 use Ghi\Http\Controllers\Controller;
 
-class SubcontratoController extends Controller
+class EstimacionController extends Controller
 {
     use Helpers;
 
 
     /**
-     * @var EloquentSubcontratoRepository
+     * @var EloquentEstimacionRepository
      */
-    private $subcontrato;
+    private $estimacion;
 
     /**
      * SubcontratoController constructor.
-     * @param EloquentSubcontratoRepository $subcontrato
+     * @param EloquentEstimacionRepository $estimacion
      */
-    public function __construct(EloquentSubcontratoRepository $subcontrato)
+    public function __construct(EloquentEstimacionRepository $estimacion)
     {
-        $this->subcontrato = $subcontrato;
+        $this->estimacion = $estimacion;
     }
 
     /**
-     * @api {post} /subcontrato Registrar Subcontrato
+     * @api {post} /estimacion Registrar Estimación
      * @apiVersion 1.0.0
-     * @apiGroup Subcontrato
+     * @apiGroup Estimación
      *
      * @apiHeader {String} Authorization Token de autorización
      * @apiHeader {string} database_name Nombre de la Base de Datos para establecer contexto
      * @apiHeader {string} id_obra ID De la obra sobre la que se desea extablecer el contexto
      *
-     * @apiError StoreResourceFailedException Error al registrar un Subcontrato
+     * @apiError StoreResourceFailedException Error al registrar una Estimación
      * @apiErrorExample Error-Response
      *   HTTP/1.1 422 Unprocessable Entity
      *   {
-     *     "message": "error description",
+     *     "message": "error descropton",
      *     "errors": {
      *       "param": ["error 1", "error 2"]
      *       ...
@@ -47,7 +48,7 @@ class SubcontratoController extends Controller
      *     "status_code": 422
      *   }
      *
-     * @apiSuccess (200) {Object} data Datos del Subcontrato Registrado
+     * @apiSuccess (200) {Object} data Datos de la Estimación Registrada
      * @apiSuccessExample Success-Response
      *   HTTP/1.1 200 OK
      *   {
@@ -59,7 +60,7 @@ class SubcontratoController extends Controller
      */
     public function store(Request $request)
     {
-        $subcontrato = $this->subcontrato->create($request);
-        return $this->response->item($subcontrato, new SubcontratoTransformer());
+        $estimacion = $this->estimacion->create($request->all());
+        return $this->response->item($estimacion, new TransaccionTransformer());
     }
 }

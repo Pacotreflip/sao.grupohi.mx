@@ -9,8 +9,12 @@
 namespace Ghi\Domain\Core\Repositories;
 
 use Dingo\Api\Exception\StoreResourceFailedException;
+use Dingo\Api\Http\Request;
 use Ghi\Domain\Core\Contracts\SubcontratoRepository;
+use Ghi\Domain\Core\Models\Contrato;
+use Ghi\Domain\Core\Models\Transacciones\Item;
 use Ghi\Domain\Core\Models\Transacciones\Subcontrato;
+use Ghi\Domain\Core\Models\Transacciones\Tipo;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\DB;
 
@@ -48,33 +52,61 @@ class EloquentSubcontratoRepository implements SubcontratoRepository
      * @return mixed
      * @throws \Exception
      */
-    public function create(array $data)
+    public function create(Request $request)
     {
         DB::connection('cadeco')->beginTransaction();
         try {
             //Reglas de validación para crear un subcontrat
             $rules = [
                 //Validaciones de Subcontrato
-                'id_antecedente' => ['required', 'Integer', 'exists:cadeco.transacciones,id_transaccion'],
+                'id_antecedente' => ['required', 'integer', 'exists:cadeco.transacciones,id_transaccion,tipo_transaccion,' . Tipo::CONTRATO_PROYECTADO],
                 'fecha' => ['required', 'date'],
-                'id_costo' => ['Integer', 'exists:cadeco.costos,id_costo'],
-                'id_empresa' => ['Integer', 'exists:cadeco.empresas,id_empresa'],
-                'id_moneda' => ['Integer', 'exists:cadeco.monedas,id_moneda'],
-                'monto' => ['Numeric'],
-                'saldo' => ['Numeric'],
-                'impuesto' => ['Numeric'],
-                'referencia' => ['String'],
-                'observaciones' => ['String']
+                'id_costo' => ['required', 'integer', 'exists:cadeco.costos,id_costo'],
+                'id_empresa' => ['required', 'integer', 'exists:cadeco.empresas,id_empresa'],
+                'id_moneda' => ['required', 'integer', 'exists:cadeco.monedas,id_moneda'],
+                'anticipo' => ['numeric'],
+                'retencion' => ['numeric'],
+                'referencia' => ['string', 'required', 'max:64', 'unique:cadeco.transacciones,referencia,NULL,id_transaccion,tipo_transaccion,' . Tipo::SUBCONTRATO],
+                'observaciones' => ['string', 'max:4096'],
+                'items' => ['required', 'array'],
+                'items.*.id_concepto' => ['required', 'exists:cadeco.contratos,id_concepto,id_transaccion,' . $request->id_antecedente],
+                'items.*.cantidad' => ['required', 'numeric'],
+                'items.*.precio_unitario' => ['required', 'numeric']
             ];
+
             //Validar los datos recibidos con las reglas de validación
-            $validator = app('validator')->make($data, $rules);
+            $validator = app('validator')->make($request->all(), $rules);
 
             if (count($validator->errors()->all())) {
                 //Caer en excepción si alguna regla de validación falla
                 throw new StoreResourceFailedException('Error al crear el Subcontrato', $validator->errors());
             } else {
-                dd('pandita');
-                $subcontrato = $this->model->create($data);
+                $subcontrato = $this->model->create($request->all());
+
+                foreach ($request->items as $item) {
+                    $contrato = Contrato::findOrFail($item['id_concepto']);
+                    $proyectado = $contrato->cantidad_presupuestada;
+                    $contratado = $contrato->items()->sum('cantidad');
+                    $por_contratar = $proyectado - $contratado;
+
+                    if($item['cantidad'] > $por_contratar) {
+                        $contrato->cantidad_presupuestada += $item['cantidad'] - $por_contratar  ;
+                        $contrato->save();
+                    }
+
+                    $item['cantidad_original1'] = $item['cantidad'];
+                    $item['precio_original1'] = $item['precio_unitario'];
+                    $item['id_transaccion'] = $subcontrato->id_transaccion;
+                    $item['id_antecedente'] = $subcontrato->id_antecedente;
+
+                    Item::create($item);
+                }
+
+                $subcontrato->monto = $subcontrato->saldo = $subcontrato->items()->sum(DB::raw('cantidad * precio_unitario'));
+                $subcontrato->impuesto = (0.16 * $subcontrato->monto) / 1.16;
+                $subcontrato->anticipo_monto = $subcontrato->anticipo_saldo = ($subcontrato->monto - $subcontrato->impuesto) * ($subcontrato->anticipo / 100);
+
+                $subcontrato->save();
                 DB::connection('cadeco')->commit();
                 return $subcontrato;
             }
