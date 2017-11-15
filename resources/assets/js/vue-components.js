@@ -20,6 +20,7 @@ require('./vue-components/Contabilidad/datos_contables/edit');
 require('./vue-components/kardex_material/kardex-material-index');
 require('./vue-components/Contabilidad/modulos/revaluacion/create');
 require('./vue-components/Contabilidad/cuenta_fondo/index');
+require('./vue-components/Contabilidad/cuenta_bancos/cuenta-bancaria-edit');
 
 /**
  * Compras Components
