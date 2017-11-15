@@ -37,18 +37,18 @@
                                                 <a href="{{route('sistema_contable.cuentas_contables_bancarias.show',$c->id_cuenta)}}">
                                                     <button title="Ver" class="btn btn-xs btn-default"><i class="fa fa-eye"></i></button>
                                                 </a>
-                                                {{--@permission('editar_cuenta_contable_bancaria')--}}
+                                                @permission('editar_cuenta_contable_bancaria')
                                                 <a href="{{route('sistema_contable.cuentas_contables_bancarias.edit',$c->id_cuenta)}}">
                                                     <button  title="Editar" class="btn btn-xs btn-info"><i class="fa fa-edit"></i></button>
                                                 </a>
-                                                {{--@endpermission--}}
+                                                @endpermission
                                             </td>
                                         </tr>
                                     @endforeach
                                     </tbody>
                                     <tfoot>
                                     <th >#</th>
-                                    <th>Empresa</th>
+                                    <th>Cuenta</th>
                                     <th>Número de Cuentas Configuradas</th>
                                     <th>Acciones</th>
                                     </tfoot>

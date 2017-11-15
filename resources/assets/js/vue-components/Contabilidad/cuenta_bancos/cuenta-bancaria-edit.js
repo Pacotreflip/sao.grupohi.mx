@@ -1,5 +1,5 @@
 Vue.component('cuenta-bancaria-edit', {
-    props: ['cuenta', 'tipos','cuenta_store_url','cuentas_asociadas', 'datos_contables', 'tipos_disponibles'],
+    props: ['cuenta', 'tipos','cuenta_store_url','cuentas_asociadas', 'datos_contables'],
 
     data: function () {
         return {
@@ -224,11 +224,26 @@ Vue.component('cuenta-bancaria-edit', {
 
             return info;
         },
+        uniq: function (a) {
+            var prims = {"boolean":{}, "number":{}, "string":{}}, objs = [];
+
+            return a.filter(function(item) {
+                var type = typeof item;
+                if(type in prims)
+                    return prims[type].hasOwnProperty(item) ? false : (prims[type][item] = true);
+                else
+                    return objs.indexOf(item) >= 0 ? false : objs.push(item);
+            });
+        },
         obtener_tipos_disponibles: function () {
             var self = this,
-                tipos = [];
+                tipos = [],
+                tipos_disponibles = [];
 
-            self.tipos_disponibles = [];
+            // No existen cuentas asociadas
+            if (self.asociadas.length == 0) {
+                return self.tipos;
+            }
 
             $.each(self.tipos, function (indexTipo, tipo) {
                 $.each(self.asociadas, function (index, aso) {
@@ -244,22 +259,10 @@ Vue.component('cuenta-bancaria-edit', {
             tipos = self.uniq(tipos);
 
             $.each(tipos, function (index, tipo) {
-                self.tipos_disponibles.push(self.tipo_info(tipo));
+                tipos_disponibles.push(self.tipo_info(tipo));
             });
-        },
-        uniq: function (a) {
-            var prims = {"boolean":{}, "number":{}, "string":{}}, objs = [];
 
-            return a.filter(function(item) {
-                var type = typeof item;
-                if(type in prims)
-                    return prims[type].hasOwnProperty(item) ? false : (prims[type][item] = true);
-                else
-                    return objs.indexOf(item) >= 0 ? false : objs.push(item);
-            });
+            return tipos_disponibles;
         }
-    },
-    mounted: function () {
-        this.tipos_disponibles = [];
     }
 });

@@ -118,7 +118,7 @@
                                                     v-model="form.id_tipo_cuenta_contable"
                                                     v-validate="'required'" id="id_int_tipo_cuenta_empresa">
                                                 <option value value="">[-SELECCIONE-]</option>
-                                                <option v-for="tipo in tipos_disponibles"
+                                                <option v-for="tipo in obtener_tipos_disponibles()"
                                                         :value="tipo.id_tipo_cuenta_contable">@{{tipo.descripcion}}</option>
                                             </select>
                                             <label class="help" v-show="validation_errors.has('form_create_cuenta.Tipo de Cuenta')">@{{ validation_errors.first('form_create_cuenta.Tipo de Cuenta') }}</label>
