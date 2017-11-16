@@ -84242,6 +84242,8 @@ Vue.component('cuenta-bancaria-edit', {
         obtener_tipos_disponibles: function obtener_tipos_disponibles() {
             var self = this,
                 tipos = [],
+                tipos_temp = [],
+                asociadas_tipos = [],
                 tipos_disponibles = [];
 
             // No existen cuentas asociadas
@@ -84249,18 +84251,21 @@ Vue.component('cuenta-bancaria-edit', {
                 return self.tipos;
             }
 
-            $.each(self.tipos, function (indexTipo, tipo) {
-                $.each(self.asociadas, function (index, aso) {
-                    if (tipo.id_tipo_cuenta_contable == aso.id_tipo_cuenta_contable) {
-                        return true;
-                    } else {
-                        tipos.push(tipo.id_tipo_cuenta_contable);
-                    }
-                });
+            $.each(self.asociadas, function (index, aso) {
+                asociadas_tipos.push(parseInt(aso.id_tipo_cuenta_contable));
             });
-            tipos = self.uniq(tipos);
 
-            $.each(tipos, function (index, tipo) {
+            $.each(self.tipos, function (indexTipo, tipo) {
+                tipos.push(tipo.id_tipo_cuenta_contable);
+            });
+
+            tipos_temp = tipos.filter(function (v) {
+                return !asociadas_tipos.includes(v);
+            });
+
+            tipos_temp = self.uniq(tipos_temp);
+
+            $.each(tipos_temp, function (index, tipo) {
                 tipos_disponibles.push(self.tipo_info(tipo));
             });
 
