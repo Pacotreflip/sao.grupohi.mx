@@ -149,10 +149,9 @@ Vue.component('cuenta-bancaria-edit', {
                 success: function (data, textStatus, xhr) {
                     $.each(self.asociadas, function (index, tipo_cuenta) {
                         if (toRemove == tipo_cuenta.id_cuenta_contable_bancaria) {
-                            self.asociadas.splice(index, 1);
+                            self.asociadas.splice(index, 1, data.data);
                         }
                     });
-                    self.asociadas.push(data.data);
 
                     $('#edit_movimiento_modal').modal('hide');
                     swal({
