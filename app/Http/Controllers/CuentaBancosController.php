@@ -63,6 +63,7 @@ class CuentaBancosController extends Controller
     public function destroy(Request $request, $id)
     {
         $data = $request->all();
+
         $this->cuenta_bancos->delete($data, $id);
 
         return response()->json(['data' => 'ok'], 200);
@@ -72,6 +73,7 @@ class CuentaBancosController extends Controller
     public function update(Request $request, $id)
     {
         $data = $request->all();
+
         $item = $this->cuenta_bancos->update($data, $id);
 
         return response()->json(['data' => $item], 200);

@@ -84029,6 +84029,8 @@ Vue.component('cuenta-bancaria-edit', {
         confirm_elimina_cuenta: function confirm_elimina_cuenta(cuenta) {
             var self = this;
             this.cuenta_edit_id = cuenta.id_cuenta_contable_bancaria;
+            this.form.id_tipo_cuenta_contable = cuenta.id_tipo_cuenta_contable;
+            this.form.cuenta = cuenta.cuenta;
 
             swal({
                 title: "Eliminar Cuenta Contable",
@@ -84102,6 +84104,8 @@ Vue.component('cuenta-bancaria-edit', {
                     self.guardando = false;
                     this.cuenta_descripcion = '';
                     this.cuenta_edit_id = 0;
+                    this.form.id_tipo_cuenta_contable = '';
+                    this.form.cuenta = '';
                 }
             });
         },

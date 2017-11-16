@@ -7,6 +7,7 @@ class Cuenta extends BaseModel
     protected $connection = 'cadeco';
     protected $table = 'cuentas';
     protected $primaryKey = 'id_cuenta';
+    public $timestamps = false;
 
     public function empresa() {
         return $this->belongsTo(Empresa::class, 'id_empresa');

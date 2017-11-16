@@ -3,7 +3,7 @@
 namespace Ghi\Domain\Core\Repositories\Contabilidad;
 
 use Ghi\Domain\Core\Contracts\Contabilidad\CuentaBancosRepository;
-
+use Ghi\Domain\Core\Models\Cuenta;
 use Ghi\Domain\Core\Models\Contabilidad\CuentaBancos;
 use Illuminate\Http\Exception\HttpResponseException;
 use Illuminate\Support\Facades\DB;
@@ -15,6 +15,7 @@ class EloquentCuentaBancosRepository implements CuentaBancosRepository
      * @var \Ghi\Domain\Core\Models\CuentaBancos
      */
     protected $model;
+    const CUENTA_DE_BANCO = 15;
 
     public function __construct(CuentaBancos $model)
     {
@@ -37,9 +38,17 @@ class EloquentCuentaBancosRepository implements CuentaBancosRepository
             DB::connection('cadeco')->beginTransaction();
 
             $record = CuentaBancos::create($data);
-            DB::connection('cadeco')->commit();
 
             $item = CuentaBancos::with('tipoCuentaContable')->where('id_cuenta_contable_bancaria', $record->id_cuenta_contable_bancaria)->first();
+
+            // Si es una cuenta de banco, actualiza la cuenta principal.
+            if ($data['id_tipo_cuenta_contable'] == static::CUENTA_DE_BANCO)
+            {
+                Cuenta::where('id_cuenta', $data['id_cuenta'])
+                    ->update(['cuenta_contable' => $data['cuenta']]);
+            }
+
+            DB::connection('cadeco')->commit();
 
          } catch (\Exception $e) {
             DB::connection('cadeco')->rollBack();
@@ -64,6 +73,13 @@ class EloquentCuentaBancosRepository implements CuentaBancosRepository
 
             $item->estatus = 0;
             $item->save();
+
+            // Si es una cuenta de banco, actualiza la cuenta principal.
+            if ($data['data']['id_tipo_cuenta_contable'] == static::CUENTA_DE_BANCO)
+            {
+                Cuenta::where('id_cuenta', $item->id_cuenta)
+                    ->update(['cuenta_contable' => null]);
+            }
 
         } catch (\Exception $e) {
             throw $e;
@@ -95,6 +111,13 @@ class EloquentCuentaBancosRepository implements CuentaBancosRepository
 
             // Crea una nueva cuenta con la misma información
             $nuevo_item = $this->create($data['data']);
+
+            // Si es una cuenta de banco, actualiza la cuenta principal.
+            if ($data['data']['id_tipo_cuenta_contable'] == static::CUENTA_DE_BANCO)
+            {
+                Cuenta::where('id_cuenta', $data['data']['id_cuenta'])
+                    ->update(['cuenta_contable' => $data['data']['cuenta']]);
+            }
 
             DB::connection('cadeco')->commit();
 
