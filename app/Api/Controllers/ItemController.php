@@ -8,7 +8,7 @@
 
 namespace Ghi\Api\Controllers;
 
-use Ghi\Domain\Core\Repositories\EloquentItemRepository;
+use Ghi\Domain\Core\Contracts\ItemRepository;
 use Ghi\Domain\Core\Transformers\ItemTransformer;
 use Ghi\Http\Controllers\Controller;
 use Dingo\Api\Http\Request;
@@ -19,7 +19,6 @@ class ItemController extends Controller
 {
     use Helpers;
 
-
     /**
      * @var EloquentItemRepository
      */
@@ -27,23 +26,23 @@ class ItemController extends Controller
 
     /**
      * ItemController constructor.
-     * @param EloquentItemRepository $item
+     * @param ItemRepository $item
      */
-    public function __construct(EloquentItemRepository $item)
+    public function __construct(ItemRepository $item)
     {
         $this->item = $item;
     }
 
     /**
-     * @api {post} /subcontrato/item Registrar Item adjunto a un Subcontrato
+     * @api {post} /item Registrar Item
      * @apiVersion 1.0.0
-     * @apiGroup Items
+     * @apiGroup Item
      *
      * @apiHeader {String} Authorization Token de autorización
      * @apiHeader {string} database_name Nombre de la Base de Datos para establecer contexto
      * @apiHeader {string} id_obra ID De la obra sobre la que se desea extablecer el contexto
      *
-     * @apiError StoreResourceFailedException Error al registrar un Item adjunto a un Subcontrato
+     * @apiError StoreResourceFailedException Error al registrar un Item
      * @apiErrorExample Error-Response
      *   HTTP/1.1 422 Unprocessable Entity
      *   {
@@ -55,7 +54,7 @@ class ItemController extends Controller
      *     "status_code": 422
      *   }
      *
-     * @apiSuccess (200) {Object} data Datos del Item adjunto a un Subcontrato
+     * @apiSuccess (200) {Object} data Datos del Item
      * @apiSuccessExample Success-Response
      *   HTTP/1.1 200 OK
      *   {
@@ -67,9 +66,7 @@ class ItemController extends Controller
      */
     public function store(Request $request)
     {
-        $item = $this->item->create($request->all());
+        $item = $this->item->create($request);
         return $this->response->item($item, new ItemTransformer());
     }
-
-
 }

@@ -15,6 +15,6 @@ use League\Fractal\TransformerAbstract;
 class ItemTransformer extends TransformerAbstract
 {
     public function transform(Item $item) {
-        return $item->setHidden($item->getAppends())->attributesToArray();
+        return $item->attributesToArray();
     }
 }

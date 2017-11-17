@@ -2,12 +2,18 @@
 
 namespace Ghi\Domain\Core\Repositories;
 
+use Dingo\Api\Exception\StoreResourceFailedException;
+use Dingo\Api\Http\Request;
 use Ghi\Domain\Core\Contracts\Compras\Identificador;
 
 use Ghi\Domain\Core\Contracts\ItemRepository;
 use Ghi\Domain\Core\Contracts\Para;
 use Ghi\Domain\Core\Models\Compras\Requisiciones\ItemExt;
+use Ghi\Domain\Core\Models\Contrato;
 use Ghi\Domain\Core\Models\Transacciones\Item;
+use Ghi\Domain\Core\Models\Transacciones\Subcontrato;
+use Ghi\Domain\Core\Models\Transacciones\Tipo;
+use Ghi\Domain\Core\Models\Transacciones\Transaccion;
 use Illuminate\Http\Exception\HttpResponseException;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
@@ -69,7 +75,7 @@ class EloquentItemRepository implements ItemRepository
      * @return \Ghi\Domain\Core\Models\Transacciones\Item
      * @throws \Exception
      */
-    public function create(array $data)
+    /*public function create(array $data)
     {
         try {
             DB::connection('cadeco')->beginTransaction();
@@ -91,9 +97,85 @@ class EloquentItemRepository implements ItemRepository
         }
 
         return $this->model->with(['itemExt', 'material'])->find($item->id_item);
+    }*/
+
+    public function create(Request $request) {
+        $rules = [
+            'id_transaccion' => ['required', 'exists:cadeco.transacciones,id_transaccion'],
+            'id_antedecente' => ['exists:cadeco.transacciones,id_transaccion'],
+            'cantidad' => ['numeric'],
+            'precio_unitario' => ['numeric']
+        ];
+
+        $validator = app('validator')->make($request->all(), $rules);
+
+        $transaccion = Transaccion::find($request->id_transaccion);
+
+        // Valida que el campo id_antecedente sea requerido dependieno del tipo de transacción a la que pertenece,
+        // pudiendose agregar mas tipos de transacción como sea necesario.
+        $validator->sometimes('id_antecedente', 'required', function ($input) use ($transaccion) {
+            if($transaccion) {
+                // Se pueden agregar mas tipos de transacción como se requieran
+                return in_array($transaccion->tipo_transaccion, [Tipo::SUBCONTRATO, Tipo::ESTIMACION]);
+            }
+        });
+
+        // Valida que el campo id_concepto sea requerido y exista en la tabla conceptos siempre y cuando el tipo de
+        // Transacción así lo requiera
+        $validator->sometimes('id_concepto', ['required', 'exists:cadeco.contratos,id_concepto'], function ($input) use ($transaccion) {
+            if($transaccion) {
+                // Se pueden agregar mas tipos de transacción como se requieran
+                return in_array($transaccion->tipo_transaccion, [Tipo::SUBCONTRATO]);
+            }
+        });
+
+        $validator->sometimes('cantidad', 'required', function($input) use ($transaccion) {
+            if($transaccion) {
+                return in_array($transaccion->tipo_transaccion, [Tipo::SUBCONTRATO]);
+            }
+        });
+
+        $validator->sometimes('precio_unitario', 'required', function($input) use ($transaccion) {
+            if($transaccion) {
+                return in_array($transaccion->tipo_transaccion, [Tipo::SUBCONTRATO]);
+            }
+        });
+
+        try {
+            DB::connection('cadeco')->beginTransaction();
+
+            if (count($validator->errors()->all())) {
+                throw new StoreResourceFailedException('No se pudo crear el Item', $validator->errors());
+            } else {
+                $item = $this->model->create($request->all());
+
+                switch ($transaccion->tipo_transaccion) {
+                    // Registro de un Item para un Subcontrato
+                    case Tipo::SUBCONTRATO :
+                        $item->cantidad_original1 = $item->cantidad;
+                        $item->precio_original1 = $item->precio_unitario;
+                        $item->save();
+
+                        $contrato = Contrato::findOrFail($item->id_concepto);
+                        $proyectado = $contrato->cantidad_presupuestada;
+                        $contratado = $contrato->items()->sum('cantidad');
+                        $por_contratar = $proyectado - $contratado;
+
+                        if($item->cantidad > $por_contratar) {
+                            $contrato->cantidad_presupuestada += $item->cantidad - $por_contratar;
+                            $contrato->save();
+                        }
+                        break;
+                }
+                DB::connection('cadeco')->commit();
+
+                return $item;
+            }
+        } catch (\Exception $e) {
+            DB::connection('cadeco')->rollback();
+            throw $e;
+        }
     }
-
-
 
 
     /**
@@ -160,37 +242,5 @@ class EloquentItemRepository implements ItemRepository
     {
         $this->model = $this->model->$scope();
         return $this;
-    }
-
-    /**
-     * @param array $data
-     * @return mixed
-     * @throws \Exception
-     */
-    public function createItemSubcontrato(array $data)
-    {
-        DB::connection('cadeco')->beginTransaction();
-        try {
-            //Reglas de validación para crear un subcontrat
-            $rules = [
-                //Validaciones de Subcontrato
-                'id_antecedente' => ['required', 'Integer', 'exists:cadeco.transacciones,id_transaccion'],
-                'fecha' => ['required', 'date'],
-                'id_costo' => ['Integer', 'exists:cadeco.costos,id_costo'],
-                'id_empresa' => ['Integer', 'exists:cadeco.empresas,id_empresa'],
-                'id_moneda' => ['Integer', 'exists:cadeco.monedas,id_moneda'],
-                'monto' => ['Numeric'],
-                'saldo' => ['Numeric'],
-                'impuesto' => ['Numeric'],
-                'referencia' => ['String'],
-                'observaciones' => ['String']
-            ];
-            //Validar los datos recibidos con las reglas de validación
-            $validator = app('validator')->make($data, $rules);
-            DB::connection('cadeco')->commit();
-        } catch (\Exception $e) {
-            DB::connection('cadeco')->rollback();
-            throw $e;
-        }
     }
 }

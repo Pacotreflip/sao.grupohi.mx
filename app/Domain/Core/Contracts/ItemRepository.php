@@ -2,6 +2,8 @@
 
 namespace Ghi\Domain\Core\Contracts;
 
+use Dingo\Api\Http\Request;
+
 interface ItemRepository
 {
     /**
@@ -22,8 +24,8 @@ interface ItemRepository
      * @return \Ghi\Domain\Core\Models\Transacciones\Item
      * @throws \Exception
      */
-    public function create(array $data);
-
+    //public function create(array $data);
+    public function create(Request $request);
     /**
      * Crea relaciones con otros modelos
      * @param $relations
@@ -61,10 +63,4 @@ interface ItemRepository
      * @return mixed
      */
     public function scope($scope);
-
-    /**
-     * @param array $data
-     * @return mixed
-     */
-    public function createItemSubcontrato(array $data);
 }

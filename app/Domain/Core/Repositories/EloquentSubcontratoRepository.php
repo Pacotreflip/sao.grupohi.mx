@@ -48,9 +48,10 @@ class EloquentSubcontratoRepository implements SubcontratoRepository
 
     /**
      * Almacena un nuevo SubContrato
-     * @param array $data
+     * @param Request $request
      * @return mixed
      * @throws \Exception
+     * @internal param array $data
      */
     public function create(Request $request)
     {
