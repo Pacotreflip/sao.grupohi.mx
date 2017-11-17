@@ -11,7 +11,7 @@ namespace Ghi\Api\Controllers;
 
 use Dingo\Api\Http\Request;
 use Dingo\Api\Routing\Helpers;
-use Ghi\Domain\Core\Repositories\EloquentEmpresaRepository;
+use Ghi\Domain\Core\Contracts\EmpresaRepository;
 use Ghi\Domain\Core\Transformers\EmpresaTransformer;
 use Ghi\Http\Controllers\Controller;
 
@@ -21,7 +21,7 @@ class EmpresaController extends Controller
 
     private $empresa;
 
-    public function __construct(EloquentEmpresaRepository $empresa)
+    public function __construct(EmpresaRepository $empresa)
     {
         $this->empresa = $empresa;
     }

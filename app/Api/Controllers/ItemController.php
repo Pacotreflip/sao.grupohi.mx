@@ -69,4 +69,10 @@ class ItemController extends Controller
         $item = $this->item->create($request);
         return $this->response->item($item, new ItemTransformer());
     }
+
+    public function update(Request $request, $id)
+    {
+        $item = $this->item->update($request, $id);
+        return $this->response->item($item, new ItemTransformer());
+    }
 }

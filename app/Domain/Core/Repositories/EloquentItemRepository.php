@@ -2,6 +2,7 @@
 
 namespace Ghi\Domain\Core\Repositories;
 
+use Dingo\Api\Exception\ResourceException;
 use Dingo\Api\Exception\StoreResourceFailedException;
 use Dingo\Api\Http\Request;
 use Ghi\Domain\Core\Contracts\Compras\Identificador;
@@ -11,7 +12,6 @@ use Ghi\Domain\Core\Contracts\Para;
 use Ghi\Domain\Core\Models\Compras\Requisiciones\ItemExt;
 use Ghi\Domain\Core\Models\Contrato;
 use Ghi\Domain\Core\Models\Transacciones\Item;
-use Ghi\Domain\Core\Models\Transacciones\Subcontrato;
 use Ghi\Domain\Core\Models\Transacciones\Tipo;
 use Ghi\Domain\Core\Models\Transacciones\Transaccion;
 use Illuminate\Http\Exception\HttpResponseException;
@@ -179,13 +179,14 @@ class EloquentItemRepository implements ItemRepository
 
 
     /**
-     * Actualiza la información de las partidas de una requisición
-     * @param array $data
+     * Actualiza la información de un Item
+     * @param Request $request
      * @param $id
      * @return mixed
      * @throws \Exception
+     * @internal param Request $data
      */
-    public function update(array $data, $id)
+    /*public function update(Request $data, $id)
     {
         try {
             DB::connection('cadeco')->beginTransaction();
@@ -204,8 +205,56 @@ class EloquentItemRepository implements ItemRepository
             throw $e;
         }
         return $this->model->with(['itemExt', 'material'])->find($item->id_item);
-    }
+    }*/
 
+    public function update(Request $request, $id) {
+
+        $rules = [
+            'cantidad' => ['numeric'],
+        ];
+
+        $validator = app('validator')->make($request->all(), $rules);
+
+        try {
+            DB::connection('cadeco')->beginTransaction();
+
+            if (count($validator->errors()->all())) {
+                throw new StoreResourceFailedException('Error al actualizar el Item', $validator->errors());
+            } else {
+                if(! $item = $this->model->find($id)) {
+                    throw new ResourceException('No se encontró el Item que se quiere actualizar');
+                } else {
+
+                    $transaccion = $item->transaccion;
+                    switch ($transaccion->tipo_transaccion) {
+                        case Tipo::SUBCONTRATO:
+                            $item->update($request->all());
+                            $item->cantidad_original1 = $item->cantidad;
+                            $item->save();
+
+                            $contrato = Contrato::findOrFail($item->id_concepto);
+                            $proyectado = $contrato->cantidad_presupuestada;
+                            $contratado = $contrato->items()->sum('cantidad');
+                            $por_contratar = $proyectado - $contratado;
+
+                            if ($por_contratar < 0) {
+                                $contrato->cantidad_presupuestada = $contratado;
+                                $contrato->save();
+                            }
+
+                            break;
+                    }
+                }
+
+                DB::connection('cadeco')->commit();
+
+                return $item;
+            }
+        } catch (\Exception $e) {
+            DB::connection('cadeco')->rollback();
+            throw $e;
+        }
+    }
 
     /**
      * Elimina un Item

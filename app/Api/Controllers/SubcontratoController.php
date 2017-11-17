@@ -4,7 +4,7 @@ namespace Ghi\Api\Controllers;
 
 use Dingo\Api\Http\Request;
 use Dingo\Api\Routing\Helpers;
-use Ghi\Domain\Core\Repositories\EloquentSubcontratoRepository;
+use Ghi\Domain\Core\Contracts\SubcontratoRepository;
 use Ghi\Http\Controllers\Controller;
 
 class SubcontratoController extends Controller
@@ -13,15 +13,15 @@ class SubcontratoController extends Controller
 
 
     /**
-     * @var EloquentSubcontratoRepository
+     * @var SubcontratoRepository
      */
     private $subcontrato;
 
     /**
      * SubcontratoController constructor.
-     * @param EloquentSubcontratoRepository $subcontrato
+     * @param SubcontratoRepository $subcontrato
      */
-    public function __construct(EloquentSubcontratoRepository $subcontrato)
+    public function __construct(SubcontratoRepository $subcontrato)
     {
         $this->subcontrato = $subcontrato;
     }

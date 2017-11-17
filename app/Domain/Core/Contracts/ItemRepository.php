@@ -34,13 +34,13 @@ interface ItemRepository
     public function with($relations);
 
     /**
-     * Actualiza la información de las partidas de una requisición
-     * @param array $data
+     * Actualiza la información de un Item
+     * @param Request $data
      * @param $id
      * @return mixed
      * @throws \Exception
      */
-    public function update(array $data, $id);
+    public function update(Request $data, $id);
 
     /**
      * Elimina un Item

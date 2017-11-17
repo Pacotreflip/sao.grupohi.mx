@@ -31,7 +31,7 @@ class ContratoController extends Controller
     }
 
     /**
-     * @api {post} /contrato/{id} Actualizar Contrato
+     * @api {patch} /contrato/{id} Actualizar Contrato
      * @apiVersion 1.0.0
      * @apiGroup Contrato
      *

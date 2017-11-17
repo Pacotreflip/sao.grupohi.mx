@@ -11,7 +11,7 @@ namespace Ghi\Api\Controllers;
 
 use Dingo\Api\Http\Request;
 use Dingo\Api\Routing\Helpers;
-use Ghi\Domain\Core\Repositories\EloquentContratoProyectadoRepository;
+use Ghi\Domain\Core\Contracts\ContratoProyectadoRepository;
 use Ghi\Domain\Core\Transformers\ContratoTransformer;
 use Ghi\Domain\Core\Transformers\TransaccionTransformer;
 use Ghi\Http\Controllers\Controller;
@@ -22,7 +22,7 @@ class ContratoProyectadoController extends Controller
 
     private $contrato_proyectado;
 
-    public function __construct(EloquentContratoProyectadoRepository $contrato_proyectado)
+    public function __construct(ContratoProyectadoRepository $contrato_proyectado)
     {
         $this->contrato_proyectado = $contrato_proyectado;
     }

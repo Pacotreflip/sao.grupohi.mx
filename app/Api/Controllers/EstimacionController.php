@@ -4,7 +4,7 @@ namespace Ghi\Api\Controllers;
 
 use Dingo\Api\Http\Request;
 use Dingo\Api\Routing\Helpers;
-use Ghi\Domain\Core\Repositories\EloquentEstimacionRepository;
+use Ghi\Domain\Core\Contracts\EstimacionRepository;
 use Ghi\Domain\Core\Transformers\TransaccionTransformer;
 use Ghi\Http\Controllers\Controller;
 
@@ -14,15 +14,15 @@ class EstimacionController extends Controller
 
 
     /**
-     * @var EloquentEstimacionRepository
+     * @var EstimacionRepository
      */
     private $estimacion;
 
     /**
      * SubcontratoController constructor.
-     * @param EloquentEstimacionRepository $estimacion
+     * @param EstimacionRepository $estimacion
      */
-    public function __construct(EloquentEstimacionRepository $estimacion)
+    public function __construct(EstimacionRepository $estimacion)
     {
         $this->estimacion = $estimacion;
     }

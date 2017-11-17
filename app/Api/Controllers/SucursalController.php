@@ -11,7 +11,7 @@ namespace Ghi\Api\Controllers;
 
 use Dingo\Api\Http\Request;
 use Dingo\Api\Routing\Helpers;
-use Ghi\Domain\Core\Repositories\EloquentSucursalRepository;
+use Ghi\Domain\Core\Contracts\SucursalRepository;
 use Ghi\Domain\Core\Transformers\SucursalTransformer;
 use Ghi\Http\Controllers\Controller;
 
@@ -23,9 +23,9 @@ class SucursalController extends Controller
 
     /**
      * SucursalController constructor.
-     * @param EloquentSucursalRepository $sucursal
+     * @param SucursalRepository $sucursal
      */
-    public function __construct(EloquentSucursalRepository $sucursal)
+    public function __construct(SucursalRepository $sucursal)
     {
         $this->sucursal = $sucursal;
     }
