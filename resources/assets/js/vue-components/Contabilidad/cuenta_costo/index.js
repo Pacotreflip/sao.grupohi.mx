@@ -264,12 +264,10 @@ Vue.component('cuenta-costo-index', {
                     self.guardando = true;
                 },
                 success: function (data, textStatus, xhr) {
-                    self.costos.forEach(function (costo, i) {console.log(i);
-                        if (costo.cuenta_costo != null && id_cuenta_costo == costo.cuenta_costo.id_cuenta_costo) {
-                            Vue.set(costo, "cuenta_costo", null);
-                            Vue.set(self.costos, i, costo);
-                            self.costos.splice(i, 1, costo);
-                            console.log(costo);
+                    self.data.costos.forEach(function (costo, i) {
+                        if (typeof costo.cuenta_costo !== "undefined" && id_cuenta_costo == costo.cuenta_costo.id_cuenta_costo) {
+                            Vue.set(costo, 'cuenta_costo', null);
+                            Vue.set(self.data.costos, i, costo);
                         }
                     });
 

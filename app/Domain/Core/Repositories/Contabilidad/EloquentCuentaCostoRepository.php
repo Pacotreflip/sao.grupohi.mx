@@ -84,14 +84,24 @@ class EloquentCuentaCostoRepository implements CuentaCostoRepository
     {
         // Define el error a mostrar
         $error = 'No se encontró la cuenta contable que se desea eliminar';
+        $already = 'La cuenta ya se ha eliminado anteriormente';
 
         try {
             $item = $this->model->find($id);
 
-            if (!$item) {
+            if (!$item)
+            {
                 throw new HttpResponseException(new Response($error, 404));
 
                 return $error;
+            }
+
+            // Ya se ha eliminado anteriormente
+            if ($item->estatus == 0)
+            {
+                throw new HttpResponseException(new Response($already, 404));
+
+                return $already;
             }
 
             DB::connection('cadeco')->beginTransaction();

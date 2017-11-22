@@ -72,6 +72,6 @@ class CuentaCostoController extends Controller
     {
         $this->cuenta_costo->delete($id);
 
-        return response()->json(['data' => ['cuenta_costo' => '']],200);
+        return response()->json(['data' => ['id_cuenta_costo' => $id]],200);
     }
 }
