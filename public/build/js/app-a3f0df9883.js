@@ -84728,6 +84728,8 @@ Vue.component('cuenta-contable-index', {
 },{}],153:[function(require,module,exports){
 'use strict';
 
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+
 Vue.component('cuenta-costo-index', {
     props: ['costos', 'url_costo_get_by', 'datos_contables', 'url_cuenta_costo_index'],
     data: function data() {
@@ -84998,12 +85000,19 @@ Vue.component('cuenta-costo-index', {
                 },
                 success: function success(data, textStatus, xhr) {
                     self.data.costos.forEach(function (costo, i) {
-                        if (typeof costo.cuenta_costo !== "undefined" && id_cuenta_costo == costo.cuenta_costo.id_cuenta_costo) {
+                        console.log(_typeof(costo.cuenta_costo));
+
+                        if (costo.cuenta_costo == null) {
+                            return;
+                        }
+
+                        if (id_cuenta_costo == costo.cuenta_costo.id_cuenta_costo) {
                             Vue.set(costo, 'cuenta_costo', null);
                             Vue.set(self.data.costos, i, costo);
+                            return;
                         }
                     });
-                    console.log(self.data.costos);
+
                     swal({
                         type: 'success',
                         title: 'Correcto',
