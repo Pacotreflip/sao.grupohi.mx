@@ -52,7 +52,7 @@
                                                 <th>Cuenta Contable</th>
                                                 <th>Usuario que Registró</th>
                                                 <th>Fecha y Hora de Registro</th>
-                                                @permission(['editar_cuenta_concepto', 'registrar_cuenta_concepto'])
+                                                @permission(['editar_cuenta_costo', 'registrar_cuenta_costo'])
                                                 <th>Acciones</th>
                                                 @endpermission
                                             </tr>
@@ -90,14 +90,14 @@
                                                     <td>
                                                         @{{ concepto.cuenta_concepto != null ? (new Date(concepto.cuenta_concepto.created_at)).dateFormat() : '---' }}
                                                     </td>
-                                                    @permission(['editar_cuenta_concepto', 'registrar_cuenta_concepto'])
+                                                    @permission(['editar_cuenta_costo', 'registrar_cuenta_costo'])
                                                     <td v-if="concepto.cuenta_concepto != null">
-                                                        @permission('editar_cuenta_concepto')
+                                                        @permission('editar_cuenta_costo')
                                                         <button title="Editar" class="btn btn-xs btn-info" @click="edit_cuenta(concepto)"> <i class="fa fa-edit"></i></button>
                                                         @endpermission
                                                     </td>
                                                     <td v-else>
-                                                        @permission('registrar_cuenta_concepto')
+                                                        @permission('registrar_cuenta_costo')
                                                         <button title="Registrar" class="btn btn-xs btn-success" @click="edit_cuenta(concepto)"> <i class="fa fa-edit"></i></button>
                                                         @endpermission
                                                     </td>

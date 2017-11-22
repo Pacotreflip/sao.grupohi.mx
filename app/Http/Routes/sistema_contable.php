@@ -142,4 +142,18 @@ Route::group(['prefix' => 'sistema_contable'], function () {
     Route::delete('cuentas_contables_bancarias/{id}', 'CuentaBancosController@destroy')->name('sistema_contable.cuentas_contables_bancarias.delete')->where(['id' => '[0-9]+']);
     Route::patch('cuentas_contables_bancarias/{id}', 'CuentaBancosController@update')->name('sistema_contable.cuentas_contables_bancarias.update')->where(['id' => '[0-9]+']);
 
+    /**
+     * Cuentas Costo
+     */
+    Route::get('cuenta_costo', 'CuentaCostoController@index')->name('sistema_contable.cuenta_costo.index');
+    Route::patch('cuenta_costo/{id}', 'CuentaCostoController@update')->name('sistema_contable.cuenta_costo.update');
+    Route::post('cuenta_costo', 'CuentaCostoController@store')->name('sistema_contable.cuenta_costo.store');
+    Route::delete('cuenta_costo/{id}', 'CuentaCostoController@destroy')->name('sistema_contable.cuenta_costo.delete')->where(['id' => '[0-9]+']);
+    Route::post('cuenta_costo/searchNodo', 'CuentaCostoController@searchNodo')->name('sistema_contable.cuenta_costo.searchNodo');
+
+    /**
+     * Costos
+     */
+    Route::get('costo/findBy', 'CostoController@findBy')->name('sistema_contable.costo.findBy');
+    Route::get('costo/getBy', 'CostoController@getBy')->name('sistema_contable.costo.getBy');
 });
