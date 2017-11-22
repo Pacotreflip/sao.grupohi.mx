@@ -60,7 +60,7 @@ class EstimacionController extends Controller
      */
     public function store(Request $request)
     {
-        $estimacion = $this->estimacion->create($request->all());
+        $estimacion = $this->estimacion->create($request);
         return $this->response->item($estimacion, new TransaccionTransformer());
     }
 }
