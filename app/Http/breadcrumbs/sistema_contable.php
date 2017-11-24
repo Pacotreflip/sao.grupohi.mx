@@ -193,3 +193,11 @@ Breadcrumbs::register('sistema_contable.cuentas_contables_bancarias.edit', funct
     $breadcrumbs->parent('sistema_contable.cuentas_contables_bancarias.index');
     $breadcrumbs->push('EDITAR CUENTA BANCARIA', route('sistema_contable.cuentas_contables_bancarias.edit', $id_cuenta));
 });
+
+/**
+ * Cuenta Costo
+ */
+Breadcrumbs::register('sistema_contable.cuenta_costo.index', function ($breadcrumb) {
+    $breadcrumb->parent('sistema_contable.index');
+    $breadcrumb->push('CUENTAS DE COSTOS', route('sistema_contable.cuenta_costo.index'));
+});

@@ -230,5 +230,13 @@ class AppServiceProvider extends ServiceProvider
             \Ghi\Domain\Core\Contracts\Contabilidad\CuentaBancosRepository::class,
             \Ghi\Domain\Core\Repositories\Contabilidad\EloquentCuentaBancosRepository::class
         );
+        $this->app->bind(
+            \Ghi\Domain\Core\Contracts\Contabilidad\CuentaCostoRepository::class,
+            \Ghi\Domain\Core\Repositories\Contabilidad\EloquentCuentaCostoRepository::class
+        );
+        $this->app->bind(
+            \Ghi\Domain\Core\Contracts\Contabilidad\CostoRepository::class,
+            \Ghi\Domain\Core\Repositories\Contabilidad\EloquentCostoRepository::class
+        );
     }
 }

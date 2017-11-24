@@ -83346,6 +83346,7 @@ require('./vue-components/kardex_material/kardex-material-index');
 require('./vue-components/Contabilidad/modulos/revaluacion/create');
 require('./vue-components/Contabilidad/cuenta_fondo/index');
 require('./vue-components/Contabilidad/cuenta_bancos/cuenta-bancaria-edit');
+require('./vue-components/Contabilidad/cuenta_costo/index');
 
 /**
  * Compras Components
@@ -83370,7 +83371,7 @@ require('./vue-components/Reportes/subcontratos-estimacion');
 require('./vue-components/Tesoreria/traspaso_cuentas/index');
 require('./vue-components/Tesoreria/movimientos_bancarios/index');
 
-},{"./vue-components/Compras/material/index":146,"./vue-components/Compras/requisicion/create":147,"./vue-components/Compras/requisicion/edit":148,"./vue-components/Contabilidad/cuenta_almacen/index":149,"./vue-components/Contabilidad/cuenta_bancos/cuenta-bancaria-edit":150,"./vue-components/Contabilidad/cuenta_concepto/index":151,"./vue-components/Contabilidad/cuenta_contable/index":152,"./vue-components/Contabilidad/cuenta_empresa/cuenta-empresa-edit":153,"./vue-components/Contabilidad/cuenta_fondo/index":154,"./vue-components/Contabilidad/cuenta_material/index":155,"./vue-components/Contabilidad/datos_contables/edit":156,"./vue-components/Contabilidad/emails":157,"./vue-components/Contabilidad/modulos/revaluacion/create":158,"./vue-components/Contabilidad/poliza_generada/edit":159,"./vue-components/Contabilidad/poliza_tipo/poliza-tipo-create":160,"./vue-components/Contabilidad/tipo_cuenta_contable/tipo-cuenta-contable-create":161,"./vue-components/Contabilidad/tipo_cuenta_contable/tipo-cuenta-contable-update":162,"./vue-components/Finanzas/comprobante_fondo_fijo/create":163,"./vue-components/Finanzas/comprobante_fondo_fijo/edit":164,"./vue-components/Reportes/subcontratos-estimacion":165,"./vue-components/Tesoreria/movimientos_bancarios/index":166,"./vue-components/Tesoreria/traspaso_cuentas/index":167,"./vue-components/errors":168,"./vue-components/global-errors":169,"./vue-components/kardex_material/kardex-material-index":170,"./vue-components/select2":171}],146:[function(require,module,exports){
+},{"./vue-components/Compras/material/index":146,"./vue-components/Compras/requisicion/create":147,"./vue-components/Compras/requisicion/edit":148,"./vue-components/Contabilidad/cuenta_almacen/index":149,"./vue-components/Contabilidad/cuenta_bancos/cuenta-bancaria-edit":150,"./vue-components/Contabilidad/cuenta_concepto/index":151,"./vue-components/Contabilidad/cuenta_contable/index":152,"./vue-components/Contabilidad/cuenta_costo/index":153,"./vue-components/Contabilidad/cuenta_empresa/cuenta-empresa-edit":154,"./vue-components/Contabilidad/cuenta_fondo/index":155,"./vue-components/Contabilidad/cuenta_material/index":156,"./vue-components/Contabilidad/datos_contables/edit":157,"./vue-components/Contabilidad/emails":158,"./vue-components/Contabilidad/modulos/revaluacion/create":159,"./vue-components/Contabilidad/poliza_generada/edit":160,"./vue-components/Contabilidad/poliza_tipo/poliza-tipo-create":161,"./vue-components/Contabilidad/tipo_cuenta_contable/tipo-cuenta-contable-create":162,"./vue-components/Contabilidad/tipo_cuenta_contable/tipo-cuenta-contable-update":163,"./vue-components/Finanzas/comprobante_fondo_fijo/create":164,"./vue-components/Finanzas/comprobante_fondo_fijo/edit":165,"./vue-components/Reportes/subcontratos-estimacion":166,"./vue-components/Tesoreria/movimientos_bancarios/index":167,"./vue-components/Tesoreria/traspaso_cuentas/index":168,"./vue-components/errors":169,"./vue-components/global-errors":170,"./vue-components/kardex_material/kardex-material-index":171,"./vue-components/select2":172}],146:[function(require,module,exports){
 'use strict';
 
 Vue.component('material-index', {
@@ -84727,6 +84728,344 @@ Vue.component('cuenta-contable-index', {
 },{}],153:[function(require,module,exports){
 'use strict';
 
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+
+Vue.component('cuenta-costo-index', {
+    props: ['costos', 'url_costo_get_by', 'datos_contables', 'url_cuenta_costo_index'],
+    data: function data() {
+        return {
+            'data': {
+                'costos': this.costos
+
+            },
+            'form': {
+                'costo_edit': {},
+                'cuenta': '',
+                'costo': '',
+                'id_cuenta_costo': '',
+                'id_costo': ''
+            },
+            'cargando': false
+        };
+    },
+
+    directives: {
+        treegrid: {
+            inserted: function inserted(el) {
+                $(el).treegrid({
+                    saveState: true,
+                    initialState: 'collapsed'
+                });
+            },
+            componentUpdated: function componentUpdated(el) {
+                $(el).treegrid({
+                    saveState: true
+                });
+            }
+        },
+        select2: {
+            inserted: function inserted(el) {
+                $(el).select2({
+                    width: '100%',
+                    ajax: {
+                        url: App.host + '/sistema_contable/costo/getBy',
+                        dataType: 'json',
+                        delay: 500,
+                        data: function data(params) {
+                            return {
+                                attribute: 'descripcion',
+                                operator: 'like',
+                                value: '%' + params.term + '%'
+                            };
+                        },
+                        processResults: function processResults(data) {
+                            return {
+                                results: $.map(data.data.costos, function (item) {
+                                    return {
+                                        text: item.descripcion,
+                                        id: item.id_costo
+                                    };
+                                })
+                            };
+                        },
+                        error: function error(_error) {},
+                        cache: true
+                    },
+                    escapeMarkup: function escapeMarkup(markup) {
+                        return markup;
+                    }, // let our custom formatter work
+                    minimumInputLength: 1
+                }).on('select2:select', function () {
+                    $('#id_costo').val($('#costo_select option:selected').data().data.id);
+                });
+            }
+        }
+    },
+
+    computed: {
+        costos_ordenados: function costos_ordenados() {
+            return this.data.costos.sort(function (a, b) {
+                return a.nivel > b.nivel ? 1 : b.nivel > a.nivel ? -1 : 0;
+            });
+        }
+    },
+
+    methods: {
+        tr_class: function tr_class(costo) {
+            var treegrid = "treegrid-" + costo.id_costo;
+            var treegrid_parent = costo.id_padre != null && costo.id_costo != parseInt($('#id_costo').val()) ? " treegrid-parent-" + costo.id_padre : "";
+            return treegrid + treegrid_parent;
+        },
+
+        tr_id: function tr_id(costo) {
+            return costo.id_padre == null || costo.tiene_hijos > 0 ? "tnode-" + costo.id_costo : "";
+        },
+
+        get_hijos: function get_hijos(costo) {
+            var self = this;
+
+            $.ajax({
+                type: 'GET',
+                url: self.url_costo_get_by,
+                data: {
+                    attribute: 'nivel',
+                    operator: 'like',
+                    value: costo.nivel_hijos,
+                    with: 'cuentaCosto'
+                },
+                beforeSend: function beforeSend() {
+                    self.cargando = true;
+                },
+                success: function success(data, textStatus, xhr) {
+                    data.data.costos.forEach(function (costo) {
+                        self.data.costos.push(costo);
+                    });
+                    costo.cargado = true;
+                },
+                complete: function complete() {
+                    self.cargando = false;
+                    setTimeout(function () {
+                        $('#tnode-' + costo.id_costo).treegrid('expand');
+                    }, 500);
+                }
+            });
+        },
+
+        edit_cuenta: function edit_cuenta(costo) {
+            this.form.costo_edit = costo;
+            Vue.set(this.form, 'costo', costo.descripcion);
+            Vue.set(this.form, 'id_costo', costo.id_costo);
+            if (costo.cuenta_costo != null) {
+                Vue.set(this.form, 'cuenta', costo.cuenta_costo.cuenta);
+                Vue.set(this.form, 'id_cuenta_costo', costo.cuenta_costo.id_cuenta_costo);
+            } else {
+                Vue.set(this.form, 'cuenta', '');
+                Vue.set(this.form, 'id_cuenta_costo', '');
+            }
+            this.validation_errors.clear('form_edit_cuenta');
+            $('#edit_cuenta_modal').modal('show');
+            $('#cuenta_contable').focus();
+            this.validation_errors.clear('form_edit_cuenta');
+        },
+
+        validateForm: function validateForm(scope, funcion) {
+            var _this = this;
+
+            this.$validator.validateAll(scope).then(function () {
+                if (funcion == 'confirm_save_cuenta') {
+                    _this.confirm_save_cuenta();
+                } else if (funcion == 'confirm_update_cuenta') {
+                    _this.confirm_update_cuenta();
+                }
+            }).catch(function () {
+                swal({
+                    type: 'warning',
+                    title: 'Advertencia',
+                    text: 'Por favor corrija los errores del formulario'
+                });
+            });
+        },
+
+        confirm_update_cuenta: function confirm_update_cuenta() {
+            var self = this;
+            swal({
+                title: "Actualizar Cuenta Contable",
+                text: "¿Estás seguro de que la información es correcta?",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonText: "Si, Continuar",
+                cancelButtonText: "No, Cancelar"
+            }).then(function () {
+                self.update_cuenta();
+            }).catch(swal.noop);
+        },
+
+        update_cuenta: function update_cuenta() {
+            var self = this;
+            var url = this.url_cuenta_costo_index + '/' + this.form.id_cuenta_costo;
+
+            $.ajax({
+                type: 'POST',
+                url: url,
+                data: {
+                    _method: 'PATCH',
+                    data: self.form
+                },
+                beforeSend: function beforeSend() {
+                    self.guardando = true;
+                },
+                success: function success(data, textStatus, xhr) {
+                    console.log(data);
+                    self.form.costo_edit.cuenta_costo = data.data.cuenta_costo;
+                    self.close_edit_cuenta();
+                    swal({
+                        type: 'success',
+                        title: 'Correcto',
+                        html: 'Cuenta Contable actualizada correctamente'
+                    });
+                },
+                complete: function complete() {
+                    self.guardando = false;
+                }
+            });
+        },
+
+        confirm_save_cuenta: function confirm_save_cuenta() {
+            var self = this;
+            swal({
+                title: "Registrar Cuenta Contable",
+                text: "¿Estás seguro de que la información es correcta?",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonText: "Si, Continuar",
+                cancelButtonText: "No, Cancelar"
+            }).then(function () {
+                self.save_cuenta();
+            }).catch(swal.noop);
+        },
+
+        save_cuenta: function save_cuenta() {
+            var self = this;
+            var url = this.url_cuenta_costo_index;
+
+            $.ajax({
+                type: 'POST',
+                url: url,
+                data: {
+                    cuenta: self.form.cuenta,
+                    id_costo: self.form.id_costo
+                },
+                beforeSend: function beforeSend() {
+                    self.guardando = true;
+                },
+                success: function success(data, textStatus, xhr) {
+                    self.form.costo_edit.cuenta_costo = data.data.cuenta_costo;
+                    self.close_edit_cuenta();
+                    swal({
+                        type: 'success',
+                        title: 'Correcto',
+                        html: 'Cuenta Contable registrada correctamente'
+                    });
+                },
+                complete: function complete() {
+                    self.guardando = false;
+                }
+            });
+        },
+        confirm_delete_cuenta: function confirm_delete_cuenta(id_cuenta_costo) {
+            var self = this;
+            swal({
+                title: "Eliminar Cuenta Contable",
+                text: "¿Estás seguro que desea eliminar la cuenta contable?",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonText: "Si, Continuar",
+                cancelButtonText: "No, Cancelar"
+            }).then(function () {
+                self.delete_cuenta(id_cuenta_costo);
+            }).catch(swal.noop);
+        },
+        delete_cuenta: function delete_cuenta(id_cuenta_costo) {
+            var self = this,
+                url = this.url_cuenta_costo_index + '/' + id_cuenta_costo;
+
+            $.ajax({
+                type: 'DELETE',
+                url: url,
+                data: {
+                    _method: 'DELETE'
+                },
+                beforeSend: function beforeSend() {
+                    self.guardando = true;
+                },
+                success: function success(data, textStatus, xhr) {
+                    self.data.costos.forEach(function (costo, i) {
+                        console.log(_typeof(costo.cuenta_costo));
+
+                        if (costo.cuenta_costo == null) {
+                            return;
+                        }
+
+                        if (id_cuenta_costo == costo.cuenta_costo.id_cuenta_costo) {
+                            Vue.set(costo, 'cuenta_costo', null);
+                            Vue.set(self.data.costos, i, costo);
+                            return;
+                        }
+                    });
+
+                    swal({
+                        type: 'success',
+                        title: 'Correcto',
+                        text: 'Cuenta Contable eliminada correctamente'
+                    });
+                },
+                complete: function complete() {
+                    self.guardando = false;
+                }
+            });
+        },
+        close_edit_cuenta: function close_edit_cuenta() {
+            $('#edit_cuenta_modal').modal('hide');
+            Vue.set(this.form, 'cuenta', '');
+            Vue.set(this.form, 'costo', '');
+            Vue.set(this.form, 'id_cuenta_costo', '');
+            Vue.set(this.form, 'id_costo', '');
+        },
+
+        buscar_nodos: function buscar_nodos() {
+            var id_costo = $('#id_costo').val();
+
+            var self = this;
+            var url = self.url_costo_find_by;
+            $.ajax({
+                type: 'GET',
+                url: url,
+                data: {
+                    attribute: 'id_costo',
+                    operator: '=',
+                    value: id_costo,
+                    with: 'cuentaCosto'
+                },
+                beforeSend: function beforeSend() {
+                    self.cargando = true;
+                },
+                success: function success(data, textStatus, xhr) {
+                    self.data.costos = [];
+                    if (data.data.costo != null) {
+                        self.data.costos.push(data.data.costo);
+                    }
+                },
+                complete: function complete() {
+                    self.cargando = false;
+                }
+            });
+        }
+    }
+});
+
+},{}],154:[function(require,module,exports){
+'use strict';
+
 Vue.component('cuenta-empresa-edit', {
     props: ['empresa', 'tipo_cuenta_empresa', 'cuenta_store_url', 'datos_contables'],
 
@@ -84953,7 +85292,7 @@ Vue.component('cuenta-empresa-edit', {
     }
 });
 
-},{}],154:[function(require,module,exports){
+},{}],155:[function(require,module,exports){
 'use strict';
 
 Vue.component('cuenta-fondo-index', {
@@ -85102,7 +85441,7 @@ Vue.component('cuenta-fondo-index', {
     }
 });
 
-},{}],155:[function(require,module,exports){
+},{}],156:[function(require,module,exports){
 'use strict';
 
 Vue.component('cuenta-material-index', {
@@ -85348,7 +85687,7 @@ Vue.component('cuenta-material-index', {
     }
 });
 
-},{}],156:[function(require,module,exports){
+},{}],157:[function(require,module,exports){
 'use strict';
 
 Vue.component('datos-contables-edit', {
@@ -85512,7 +85851,7 @@ Vue.component('datos-contables-edit', {
     }
 });
 
-},{}],157:[function(require,module,exports){
+},{}],158:[function(require,module,exports){
 'use strict';
 
 Vue.component('emails', {
@@ -85552,7 +85891,7 @@ Vue.component('emails', {
     }
 });
 
-},{}],158:[function(require,module,exports){
+},{}],159:[function(require,module,exports){
 'use strict';
 
 Vue.component('revaluacion-create', {
@@ -85630,7 +85969,7 @@ Vue.component('revaluacion-create', {
     }
 });
 
-},{}],159:[function(require,module,exports){
+},{}],160:[function(require,module,exports){
 'use strict';
 
 Vue.component('poliza-generada-edit', {
@@ -85999,7 +86338,7 @@ Vue.component('poliza-generada-edit', {
     }
 });
 
-},{}],160:[function(require,module,exports){
+},{}],161:[function(require,module,exports){
 'use strict';
 
 Vue.component('poliza-tipo-create', {
@@ -86205,7 +86544,7 @@ Vue.component('poliza-tipo-create', {
     }
 });
 
-},{}],161:[function(require,module,exports){
+},{}],162:[function(require,module,exports){
 'use strict';
 
 /**
@@ -86273,7 +86612,7 @@ Vue.component('tipo-cuenta-contable-create', {
 
 });
 
-},{}],162:[function(require,module,exports){
+},{}],163:[function(require,module,exports){
 'use strict';
 
 /**
@@ -86345,7 +86684,7 @@ Vue.component('tipo-cuenta-contable-update', {
 
 });
 
-},{}],163:[function(require,module,exports){
+},{}],164:[function(require,module,exports){
 'use strict';
 
 Vue.component('comprobante-fondo-fijo-create', {
@@ -86821,7 +87160,7 @@ Vue.component('comprobante-fondo-fijo-create', {
     }
 });
 
-},{}],164:[function(require,module,exports){
+},{}],165:[function(require,module,exports){
 'use strict';
 
 Vue.component('comprobante-fondo-fijo-edit', {
@@ -87275,7 +87614,7 @@ Vue.component('comprobante-fondo-fijo-edit', {
     }
 });
 
-},{}],165:[function(require,module,exports){
+},{}],166:[function(require,module,exports){
 'use strict';
 
 Vue.component('subcontratos-estimacion', {
@@ -87354,7 +87693,7 @@ Vue.component('subcontratos-estimacion', {
     }
 });
 
-},{}],166:[function(require,module,exports){
+},{}],167:[function(require,module,exports){
 'use strict';
 
 Vue.component('movimientos_bancarios-index', {
@@ -87699,7 +88038,7 @@ Vue.component('movimientos_bancarios-index', {
     }
 });
 
-},{}],167:[function(require,module,exports){
+},{}],168:[function(require,module,exports){
 'use strict';
 
 Vue.component('traspaso-cuentas-index', {
@@ -88006,7 +88345,7 @@ Vue.component('traspaso-cuentas-index', {
     }
 });
 
-},{}],168:[function(require,module,exports){
+},{}],169:[function(require,module,exports){
 'use strict';
 
 Vue.component('app-errors', {
@@ -88015,7 +88354,7 @@ Vue.component('app-errors', {
     template: require('./templates/errors.html')
 });
 
-},{"./templates/errors.html":172}],169:[function(require,module,exports){
+},{"./templates/errors.html":173}],170:[function(require,module,exports){
 'use strict';
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
@@ -88041,7 +88380,7 @@ Vue.component('global-errors', {
   }
 });
 
-},{"./templates/global-errors.html":173}],170:[function(require,module,exports){
+},{"./templates/global-errors.html":174}],171:[function(require,module,exports){
 'use strict';
 
 Vue.component('kardex-material-index', {
@@ -88191,7 +88530,7 @@ Vue.component('kardex-material-index', {
 
 });
 
-},{}],171:[function(require,module,exports){
+},{}],172:[function(require,module,exports){
 'use strict';
 
 Vue.component('select2', {
@@ -88240,9 +88579,9 @@ Vue.component('select2', {
     }
 });
 
-},{}],172:[function(require,module,exports){
-module.exports = '<div id="form-errors" v-cloak>\n  <div class="alert alert-danger" v-if="form.errors.length">\n    <ul>\n      <li v-for="error in form.errors">{{ error }}</li>\n    </ul>\n  </div>\n</div>';
 },{}],173:[function(require,module,exports){
+module.exports = '<div id="form-errors" v-cloak>\n  <div class="alert alert-danger" v-if="form.errors.length">\n    <ul>\n      <li v-for="error in form.errors">{{ error }}</li>\n    </ul>\n  </div>\n</div>';
+},{}],174:[function(require,module,exports){
 module.exports = '<div class="alert alert-danger" v-show="errors.length">\n  <ul>\n    <li v-for="error in errors">{{ error }}</li>\n  </ul>\n</div>';
 },{}]},{},[143]);
 

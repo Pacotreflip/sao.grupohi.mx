@@ -21,6 +21,7 @@ require('./vue-components/kardex_material/kardex-material-index');
 require('./vue-components/Contabilidad/modulos/revaluacion/create');
 require('./vue-components/Contabilidad/cuenta_fondo/index');
 require('./vue-components/Contabilidad/cuenta_bancos/cuenta-bancaria-edit');
+require('./vue-components/Contabilidad/cuenta_costo/index');
 
 /**
  * Compras Components
