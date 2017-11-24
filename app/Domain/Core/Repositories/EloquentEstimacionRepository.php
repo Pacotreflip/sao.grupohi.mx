@@ -11,7 +11,6 @@ namespace Ghi\Domain\Core\Repositories;
 use Dingo\Api\Exception\StoreResourceFailedException;
 use Dingo\Api\Http\Request;
 use Ghi\Domain\Core\Contracts\EstimacionRepository;
-use Ghi\Domain\Core\Models\Concepto;
 use Ghi\Domain\Core\Models\Contrato;
 use Ghi\Domain\Core\Models\Transacciones\Estimacion;
 use Ghi\Domain\Core\Models\Transacciones\Item;
@@ -122,11 +121,25 @@ class EloquentEstimacionRepository implements EstimacionRepository
                 //Caer en excepción si alguna regla de validación falla
                 throw new StoreResourceFailedException('Error al crear la Estimación', $validator->errors());
             } else {
-                // TODO : Registrar la estimación y después cada uno de sus Items
-            }
+                $estimacion = $this->model->create($request->all());
 
+                foreach ($request->items as $item) {
+                    $item_subcontrato = Item::where('id_concepto', '=', $item['item_antecedente'])->where('id_transaccion', '=', $request->id_antecedente)->first();
+                    $contrato = Contrato::find($item['item_antecedente']);
+                    $destino = $contrato->destinos()->first();
+
+                    $item['id_transaccion'] = $estimacion->id_transaccion;
+                    $item['id_antecedente'] = $request->id_antecedente;
+                    $item['id_concepto'] = $destino->id_concepto;
+                    $item['precio_unitario'] = $item_subcontrato->precio_unitario;
+                    $item['importe'] = $item['cantidad'] * $item['precio_unitario'];
+
+                    dd($item);
+                    $new_item = Item::create($item);
+                }
+            }
             DB::connection('cadeco')->commit();
-        } catch (\Exception $e) {
+        } catch(\Exception $e) {
             DB::connection('cadeco')->rollback();
             throw $e;
         }
