@@ -18,9 +18,8 @@ interface SubcontratoRepository
 
     /**
      * Almacena un nuevo SubContrato
-     * @param array $data
-     * @return mixed
-     * @throws \Exception
+     * @param  array $data
+     * @return Subcontrato
      */
-    public function create(Request $request);
+    public function create(array $data);
 }

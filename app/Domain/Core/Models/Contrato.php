@@ -27,7 +27,8 @@ class Contrato extends Model
         'estado',
         'clave',
         'id_marca',
-        'id_modelo'
+        'id_modelo',
+        'nivel'
     ];
 
     public $timestamps = false;

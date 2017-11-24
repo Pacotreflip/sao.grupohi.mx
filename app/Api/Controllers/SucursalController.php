@@ -9,11 +9,13 @@
 
 namespace Ghi\Api\Controllers;
 
+use Dingo\Api\Exception\StoreResourceFailedException;
 use Dingo\Api\Http\Request;
 use Dingo\Api\Routing\Helpers;
 use Ghi\Domain\Core\Contracts\SucursalRepository;
 use Ghi\Domain\Core\Transformers\SucursalTransformer;
 use Ghi\Http\Controllers\Controller;
+use Illuminate\Support\Facades\DB;
 
 class SucursalController extends Controller
 {
@@ -82,7 +84,48 @@ class SucursalController extends Controller
      */
     public function store(Request $request)
     {
-        $sucursal = $this->sucursal->create($request->all());
-        return $this->response->item($sucursal, new SucursalTransformer());
+        //Reglas de validación para crear una sucursal
+        $rules = [
+            'id_empresa' => ['required', 'integer', 'exists:cadeco.empresas,id_empresa'],
+            'descripcion' => ['required', 'string', 'max:255', 'unique:cadeco.sucursales,descripcion,NULL,id_sucursal,id_empresa,' . $request->id_empresa],
+            'direccion' =>  ['string', 'max:255'],
+            'ciudad' => ['string', 'max:255'],
+            'estado' => ['string', 'max:255'],
+            'codigo_postal' => ['digits:5'],
+            'telefono' => ['string', 'max:255'],
+            'fax' => ['string', 'max:255'],
+            'contacto' => ['string', 'max:255'],
+            'casa_central' => ['string', 'max:1', 'regex:"[SN]"'],
+            'email' => ['string', 'max:50', 'email'],
+            'cargo' => ['string', 'max:50'],
+            'telefono_movil' => ['string', 'max:50'],
+            'observaciones' => ['string', 'max:500']
+        ];
+
+        //Mensajes de error personalizados para cada regla de validación
+        $messages = [
+            'casa_central' => 'El campo CASA CENTRAL solo acepta los tipos S y N'
+        ];
+
+        //Validar los datos recibidos con las reglas de validación
+        $validator = app('validator')->make($request->all(), $rules, $messages);
+
+        try {
+            if(count($validator->errors()->all())) {
+                //Caer en excepción si alguna regla de validación falla
+                throw new StoreResourceFailedException('Error al crear la sucursal', $validator->errors());
+            } else {
+                DB::connection('cadeco')->beginTransaction();
+
+                $sucursal = $this->sucursal->create($request->all());
+
+                DB::connection('cadeco')->commit();
+
+                return $this->response->item($sucursal, new SucursalTransformer());
+            }
+        } catch (\Exception $e) {
+            DB::connection('cadeco')->rollback();
+            throw $e;
+        }
     }
 }

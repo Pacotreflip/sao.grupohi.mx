@@ -9,6 +9,8 @@
 namespace Ghi\Domain\Core\Contracts;
 
 
+use Ghi\Domain\Core\Models\Empresa;
+
 interface EmpresaRepository
 {
     /**
@@ -35,7 +37,9 @@ interface EmpresaRepository
     public function scope($scope);
 
     /**
-     * Crea una nueva Empreas
+     * Crea un registro de Empresa
+     * @param array $data
+     * @return Empresa
      */
     public function create(array $data);
 }

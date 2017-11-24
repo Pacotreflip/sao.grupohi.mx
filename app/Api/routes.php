@@ -14,7 +14,6 @@ $api->version('v1', ['middleware' => 'cors'], function ($api) {
         $api->post('sucursal', 'Ghi\Api\Controllers\SucursalController@store');
 
         $api->post('contrato_proyectado', 'Ghi\Api\Controllers\ContratoProyectadoController@store');
-        $api->get('contrato_proyectado/{id_cntrato_proyectado}', 'Ghi\Api\Controllers\ContratoProyectadoController@find');
         $api->post('contrato_proyectado/{id_contrato_proyectado}/addContratos', 'Ghi\Api\Controllers\ContratoProyectadoController@addContratos');
 
         $api->patch('contrato/{id}', 'Ghi\Api\Controllers\ContratoController@update');

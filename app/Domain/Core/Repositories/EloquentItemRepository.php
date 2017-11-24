@@ -102,7 +102,6 @@ class EloquentItemRepository implements ItemRepository
     public function create(Request $request) {
         $rules = [
             'id_transaccion' => ['required', 'exists:cadeco.transacciones,id_transaccion'],
-            'id_antedecente' => ['exists:cadeco.transacciones,id_transaccion'],
             'cantidad' => ['numeric'],
             'precio_unitario' => ['numeric']
         ];
@@ -111,18 +110,10 @@ class EloquentItemRepository implements ItemRepository
 
         $transaccion = Transaccion::find($request->id_transaccion);
 
-        // Valida que el campo id_antecedente sea requerido dependieno del tipo de transacción a la que pertenece,
-        // pudiendose agregar mas tipos de transacción como sea necesario.
-        $validator->sometimes('id_antecedente', 'required', function ($input) use ($transaccion) {
-            if($transaccion) {
-                // Se pueden agregar mas tipos de transacción como se requieran
-                return in_array($transaccion->tipo_transaccion, [Tipo::SUBCONTRATO, Tipo::ESTIMACION]);
-            }
-        });
-
         // Valida que el campo id_concepto sea requerido y exista en la tabla conceptos siempre y cuando el tipo de
         // Transacción así lo requiera
-        $validator->sometimes('id_concepto', ['required', 'exists:cadeco.contratos,id_concepto'], function ($input) use ($transaccion) {
+
+        $validator->sometimes('id_concepto', ['unique:cadeco.items,id_concepto,NULL,id_item,id_transaccion,' . $transaccion->id_transaccion, 'required', 'exists:cadeco.contratos,id_concepto,id_transaccion,' . $transaccion->id_antecedente . ',unidad,NOT_NULL'], function ($input) use ($transaccion) {
             if($transaccion) {
                 // Se pueden agregar mas tipos de transacción como se requieran
                 return in_array($transaccion->tipo_transaccion, [Tipo::SUBCONTRATO]);
@@ -154,6 +145,7 @@ class EloquentItemRepository implements ItemRepository
                     case Tipo::SUBCONTRATO :
                         $item->cantidad_original1 = $item->cantidad;
                         $item->precio_original1 = $item->precio_unitario;
+                        $item->id_antecedente = $transaccion->id_antecedente;
                         $item->save();
 
                         $contrato = Contrato::findOrFail($item->id_concepto);

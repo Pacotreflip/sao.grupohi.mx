@@ -10,13 +10,12 @@ namespace Ghi\Domain\Core\Contracts;
 
 
 use Ghi\Domain\Core\Models\Sucursal;
-use Illuminate\Database\Eloquent\Collection;
 
 interface SucursalRepository
 {
-
     /**
      * Crea un nuevo registro de Sucursal
+     * @param array $data
      * @return Sucursal
      */
     public function create(array $data);

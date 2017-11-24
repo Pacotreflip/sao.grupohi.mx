@@ -9,11 +9,15 @@
 
 namespace Ghi\Api\Controllers;
 
+use Dingo\Api\Exception\ResourceException;
 use Dingo\Api\Http\Request;
 use Dingo\Api\Routing\Helpers;
 use Ghi\Domain\Core\Contracts\ContratoRepository;
+use Ghi\Domain\Core\Models\Contrato;
+use Ghi\Domain\Core\Repositories\EloquentContratoProyectadoRepository;
 use Ghi\Domain\Core\Transformers\ContratoTransformer;
 use Ghi\Http\Controllers\Controller;
+use Illuminate\Support\Facades\DB;
 
 class ContratoController extends Controller
 {
@@ -76,7 +80,42 @@ class ContratoController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $contrato = $this->contrato->update($request->all(), $id);
-        return $this->response->item($contrato, new ContratoTransformer());
+        try {
+            DB::connection('cadeco')->beginTransaction();
+            if (!$contrato = $this->contrato->find($id)) {
+                throw new ResourceException('No se encontró el Contrato que se desea actualizar');
+            }
+            if (EloquentContratoProyectadoRepository::validarNivel(Contrato::where('id_transaccion', '=', $contrato->id_transaccion)->get(['nivel'])->toArray(), $contrato->nivel)) {
+                //Exception cuando no es un contrato hijo
+                throw new ResourceException('El Contrato no Puede se Actualizado ya que Cuenta con Niveles Subsecuentes');
+            }
+
+            $rules = [
+                //'descripcion' => ['max:255', 'filled', 'unique:cadeco.contratos,descripcion,' . $id . ',id_concepto,id_transaccion,' . $contrato->id_transaccion],
+                //'unidad' => ['max:16', 'exists:cadeco.unidades,unidad', 'filled'],
+                'cantidad_original' => ['numeric', 'min:0', 'filled'],
+                'cantidad_presupuestada' => ['numeric', 'min:0', 'filled'],
+                //'clave' => ['max:140', 'string', 'filled'],
+                //'id_marca' => ['integer'],
+                //'id_modelo' => ['integer']
+            ];
+
+            $validator = app('validator')->make($request->all(), $rules);
+
+            if (count($validator->errors()->all())) {
+                //Caer en excepción si alguna regla de validación falla
+                throw new UpdateResourceFailedException('Error al actualizar el Contrato', $validator->errors());
+            } else {
+
+                $contrato = $this->contrato->update($request->all(), $id);
+
+                DB::connection('cadeco')->commit();
+
+                return $this->response()->item($contrato, new ContratoTransformer());
+            }
+        } catch (\Exception $e) {
+            DB::connection('cadeco')->rollback();
+            throw $e;
+        }
     }
 }

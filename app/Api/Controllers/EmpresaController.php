@@ -9,11 +9,13 @@
 
 namespace Ghi\Api\Controllers;
 
+use Dingo\Api\Exception\StoreResourceFailedException;
 use Dingo\Api\Http\Request;
 use Dingo\Api\Routing\Helpers;
 use Ghi\Domain\Core\Contracts\EmpresaRepository;
 use Ghi\Domain\Core\Transformers\EmpresaTransformer;
 use Ghi\Http\Controllers\Controller;
+use Illuminate\Support\Facades\DB;
 
 class EmpresaController extends Controller
 {
@@ -73,7 +75,47 @@ class EmpresaController extends Controller
      */
     public function store(Request $request)
     {
-        $empresa = $this->empresa->create($request->all());
-        return $this->response->item($empresa, new EmpresaTransformer());
+        //Reglas de validación para crear una empresa
+        $rules = [
+            'rfc' => ['required', 'unique:cadeco.empresas', 'string', 'max:16'],
+            'tipo_empresa' => ['required', 'integer'],
+            'razon_social' => ['required', 'unique:cadeco.empresas', 'string', 'max:255'],
+            'dias_credito' => ['integer'],
+            'formato' => ['string', 'max:64'],
+            'cuenta_contable' => ['string', 'max:16'],
+            'tipo_cliente' => ['integer'],
+            'porcentaje' => ['numeric', 'min:0'],
+            'no_proveedor_virtual' => ['integer'],
+            'personalidad' => ['integer']
+        ];
+
+        //Mensajes de error personalizados para cada regla de validación
+        $messages = [
+            'rfc.unique' => 'Ya existe una Empresa con el RFC proporcionado',
+            'razon_social.unique' => 'Ya existe una Empresa con la Razón Social proporcionada'
+        ];
+
+        //Validar los datos recibidos con las reglas de validación
+        $validator = app('validator')->make($request->all(), $rules, $messages);
+
+        try {
+            if(count($validator->errors()->all())) {
+                //Caer en excepción si alguna regla de validación falla
+                throw new StoreResourceFailedException('Error al crear la empresa', $validator->errors());
+            } else {
+                DB::connection('cadeco')->beginTransaction();
+
+                //Crear empresa nueva si la validación no arroja ningún error
+                $empresa = $this->empresa->create($request->all());
+
+                DB::connection('cadeco')->commit();
+
+                return $this->response->item($empresa, new EmpresaTransformer());
+            }
+        } catch (\Exception $e) {
+            DB::connection('cadeco')->rollback();
+            throw $e;
+        }
+
     }
 }

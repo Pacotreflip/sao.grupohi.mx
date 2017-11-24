@@ -74,47 +74,12 @@ class EloquentEmpresaRepository implements EmpresaRepository
     }
 
     /**
-     * Crea una nueva Empresa
+     * Crea un registro de Empresa
+     * @param array $data
+     * @return Empresa
      */
-    public function create(array $data) {
-        DB::connection('cadeco')->beginTransaction();
-
-        try {
-            //Reglas de validación para crear una empresa
-            $rules = [
-                'rfc' => ['required', 'unique:cadeco.empresas', 'string', 'max:16'],
-                'tipo_empresa' => ['required', 'integer'],
-                'razon_social' => ['required', 'unique:cadeco.empresas', 'string', 'max:255'],
-                'dias_credito' => ['integer'],
-                'formato' => ['string', 'max:64'],
-                'cuenta_contable' => ['string', 'max:16'],
-                'tipo_cliente' => ['integer'],
-                'porcentaje' => ['numeric', 'min:0'],
-                'no_proveedor_virtual' => ['integer'],
-                'personalidad' => ['integer']
-            ];
-
-            //Mensajes de error personalizados para cada regla de validación
-            $messages = [
-                'rfc.unique' => 'Ya existe una Empresa con el RFC proporcionado',
-                'razon_social.unique' => 'Ya existe una Empresa con la Razón Social proporcionada'
-            ];
-
-            //Validar los datos recibidos con las reglas de validación
-            $validator = app('validator')->make($data, $rules, $messages);
-
-            if(count($validator->errors()->all())) {
-                //Caer en excepción si alguna regla de validación falla
-                throw new StoreResourceFailedException('Error al crear la empresa', $validator->errors());
-            } else {
-                //Crear empresa nueva si la validación no arroja ningún error
-                $empresa = $this->model->create($data);
-                DB::connection('cadeco')->commit();
-                return $empresa;
-            }
-        } catch (\Exception $e) {
-            DB::connection('cadeco')->rollback();
-            throw $e;
-        }
+    public function create(array $data)
+    {
+        return $this->model->create($data);
     }
 }

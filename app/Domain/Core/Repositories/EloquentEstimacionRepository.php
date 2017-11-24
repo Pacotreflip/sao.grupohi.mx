@@ -11,6 +11,8 @@ namespace Ghi\Domain\Core\Repositories;
 use Dingo\Api\Exception\StoreResourceFailedException;
 use Dingo\Api\Http\Request;
 use Ghi\Domain\Core\Contracts\EstimacionRepository;
+use Ghi\Domain\Core\Models\Concepto;
+use Ghi\Domain\Core\Models\Contrato;
 use Ghi\Domain\Core\Models\Transacciones\Estimacion;
 use Ghi\Domain\Core\Models\Transacciones\Item;
 use Ghi\Domain\Core\Models\Transacciones\Subcontrato;
