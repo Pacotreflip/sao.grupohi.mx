@@ -84728,10 +84728,8 @@ Vue.component('cuenta-contable-index', {
 },{}],153:[function(require,module,exports){
 'use strict';
 
-var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
-
 Vue.component('cuenta-costo-index', {
-    props: ['costos', 'url_costo_get_by', 'datos_contables', 'url_cuenta_costo_index'],
+    props: ['costos', 'url_costo_get_by', 'url_costo_find_by', 'datos_contables', 'url_cuenta_costo_index'],
     data: function data() {
         return {
             'data': {
@@ -84765,6 +84763,7 @@ Vue.component('cuenta-costo-index', {
         },
         select2: {
             inserted: function inserted(el) {
+
                 $(el).select2({
                     width: '100%',
                     ajax: {
@@ -84775,7 +84774,8 @@ Vue.component('cuenta-costo-index', {
                             return {
                                 attribute: 'descripcion',
                                 operator: 'like',
-                                value: '%' + params.term + '%'
+                                value: '%' + params.term + '%',
+                                with: 'cuentaCosto'
                             };
                         },
                         processResults: function processResults(data) {
@@ -84915,7 +84915,6 @@ Vue.component('cuenta-costo-index', {
                     self.guardando = true;
                 },
                 success: function success(data, textStatus, xhr) {
-                    console.log(data);
                     self.form.costo_edit.cuenta_costo = data.data.cuenta_costo;
                     self.close_edit_cuenta();
                     swal({
@@ -85000,7 +84999,6 @@ Vue.component('cuenta-costo-index', {
                 },
                 success: function success(data, textStatus, xhr) {
                     self.data.costos.forEach(function (costo, i) {
-                        console.log(_typeof(costo.cuenta_costo));
 
                         if (costo.cuenta_costo == null) {
                             return;
@@ -85033,26 +85031,26 @@ Vue.component('cuenta-costo-index', {
         },
 
         buscar_nodos: function buscar_nodos() {
-            var id_costo = $('#id_costo').val();
-
             var self = this;
-            var url = self.url_costo_find_by;
+            var url = self.url_costo_find_by,
+                id_costo = $('#id_costo').val();
+
             $.ajax({
                 type: 'GET',
                 url: url,
                 data: {
                     attribute: 'id_costo',
-                    operator: '=',
                     value: id_costo,
                     with: 'cuentaCosto'
                 },
                 beforeSend: function beforeSend() {
                     self.cargando = true;
                 },
-                success: function success(data, textStatus, xhr) {
+                success: function success(result) {
+                    console.log(result);
                     self.data.costos = [];
-                    if (data.data.costo != null) {
-                        self.data.costos.push(data.data.costo);
+                    if (result.data.costo != null) {
+                        self.data.costos.push(result.data.costo);
                     }
                 },
                 complete: function complete() {
