@@ -95,9 +95,10 @@ class EloquentEstimacionRepository implements EstimacionRepository
                 'vencimiento' => ['required', 'date', 'after:cumplimiento'],
                 'cumplimiento' => ['required', 'date'],
                 'observaciones' => ['string', 'max:4096'],
+                'referencia' => ['string', 'max:64', 'unique:cadeco.transacciones,referencia,NULL,id_transaccion,tipo_transaccion,' . Tipo::ESTIMACION . ',id_antecedente,' . $request->id_antecedente],
                 'items' => ['required', 'array'],
                 'items.*.item_antecedente' => ['required', 'exists:cadeco.items,id_concepto,id_transaccion,' . $request->id_antecedente, 'distinct'],
-                'items.*.cantidad' => ['required', 'numeric']
+                'items.*.cantidad' => ['required', 'numeric', '']
             ];
 
             $validator = app('validator')->make($request->all(), $rules);
@@ -105,13 +106,16 @@ class EloquentEstimacionRepository implements EstimacionRepository
             foreach ($request->get('items', []) as $key => $item) {
                 $subcontrato = Subcontrato::find($request->id_antecedente);
                 if($subcontrato && array_key_exists('item_antecedente', $item)) {
-                    $total = $subcontrato->items()->where('id_concepto', '=', $item['item_antecedente'])->first()->cantidad;
+                    $item_subcontrato = $subcontrato->items()->where('id_concepto', '=', $item['item_antecedente'])->first();
+                    $total = $item_subcontrato ? $item_subcontrato->cantidad : 0;
                     $estimado = Item::where('id_antecedente', '=', $subcontrato->id_transaccion)->where('item_antecedente', '=', $item['item_antecedente'])->sum('cantidad');
                     $saldo = $total - $estimado;
                     if(array_key_exists('cantidad', $item)) {
-                        if($item['cantidad'] > $saldo) {
-                            $validator->errors()->add('items.' . $key . '.cantidad', 'La cantidad debe ser menor a lo pendiente por estimar: ' . $saldo);
-
+                        if($saldo == 0)
+                        {
+                            $validator->errors()->add('items.' . $key . '.cantidad', 'No se puede registrar la partida ya que la cantidad pendiente por estimar es 0');
+                        } else if($item['cantidad'] > $saldo) {
+                            $validator->errors()->add('items.' . $key . '.cantidad', 'La cantidad debe ser menor o igual a lo pendiente por estimar: ' . $saldo);
                         }
                     }
                 }
@@ -121,7 +125,9 @@ class EloquentEstimacionRepository implements EstimacionRepository
                 //Caer en excepción si alguna regla de validación falla
                 throw new StoreResourceFailedException('Error al crear la Estimación', $validator->errors());
             } else {
+
                 $estimacion = $this->model->create($request->all());
+
 
                 foreach ($request->items as $item) {
                     $item_subcontrato = Item::where('id_concepto', '=', $item['item_antecedente'])->where('id_transaccion', '=', $request->id_antecedente)->first();
@@ -134,11 +140,23 @@ class EloquentEstimacionRepository implements EstimacionRepository
                     $item['precio_unitario'] = $item_subcontrato->precio_unitario;
                     $item['importe'] = $item['cantidad'] * $item['precio_unitario'];
 
-                    dd($item);
-                    $new_item = Item::create($item);
+                    Item::create($item);
                 }
+
+                $suma_importes = $estimacion->items()->sum('importe');
+
+                $estimacion->anticipo = $estimacion->subcontrato->anticipo;
+                $estimacion->retencion = $estimacion->subcontrato->retencion;
+
+                $impuesto = ($suma_importes - ($suma_importes * ($estimacion->anticipo / 100))) * 0.16;
+
+                $estimacion->monto = $estimacion->saldo = $suma_importes - ($suma_importes * ($estimacion->anticipo / 100)) + $impuesto;
+                $estimacion->impuesto = $impuesto;
+                $estimacion->save();
             }
+
             DB::connection('cadeco')->commit();
+            return $estimacion;
         } catch(\Exception $e) {
             DB::connection('cadeco')->rollback();
             throw $e;

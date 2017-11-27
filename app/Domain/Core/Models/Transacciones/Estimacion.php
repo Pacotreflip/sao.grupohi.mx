@@ -19,6 +19,18 @@ use Ghi\Domain\Core\Models\SubcontratosEstimaciones\Retencion;
 
 class Estimacion extends Transaccion
 {
+    protected $fillable = [
+        'id_antecedente',
+        'fecha',
+        'id_empresa',
+        'id_moneda',
+        'vencimiento',
+        'cumplimiento',
+        'observaciones',
+        'referencia',
+        'anticipo',
+        'retencion'
+    ];
 
     protected $dates = ['fecha', 'cumplimiento', 'vencimiento'];
 

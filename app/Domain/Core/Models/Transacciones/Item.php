@@ -35,6 +35,7 @@ class Item extends Model
     ];
 
     protected $fillable = [
+        'item_antecedente',
         'id_transaccion',
         'id_antecedente',
         'id_material',
