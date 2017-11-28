@@ -36,7 +36,7 @@ class AuthController extends BaseController {
             return response()->json(['error' => 'no se pudo generar el token'], 500);
         }
 
-        return $token;
+        return compact('token');
     }
 }
 
