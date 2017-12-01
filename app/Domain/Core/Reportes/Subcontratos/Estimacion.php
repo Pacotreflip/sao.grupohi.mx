@@ -6,11 +6,13 @@ use Ghi\Domain\Core\Models\Obra;
 use Ghi\Domain\Core\Models\Transacciones\Subcontrato;
 use Ghi\Utils\NumberToLetterConverter;
 use Ghidev\Fpdf\Rotation;
+use Illuminate\Support\Facades\DB;
 
 class Estimacion extends Rotation {
 
     protected $obra;
     protected $estimacion;
+    protected $objeto_contrato;
 
     var $encola = '';
 
@@ -29,6 +31,8 @@ class Estimacion extends Rotation {
 
         $this->obra = Obra::find(Context::getId());
         $this->estimacion = $estimacion;
+        $this->objeto_contrato = DB::connection('cadeco')->table('Subcontratos.subcontrato')->select('observacion')->where('id_transaccion', '=', $this->estimacion->id_antecedente)->first();
+        $this->objeto_contrato = $this->objeto_contrato->observacion;
     }
 
     function Header() {
@@ -122,7 +126,7 @@ class Estimacion extends Rotation {
         $this->SetX(6);
         $this->SetFont('Arial', '', 8);
         $this->Cell(4, 1, 'Objeto del Contrato :', 0, 0, 'R');
-        $this->CellFitScale(10, 1, '', 1, 1, 'C');
+        $this->CellFitScale(10, 1, $this->objeto_contrato, 1, 1, 'C');
         $this->Ln(0.1);
 
         $this->SetX(6);
