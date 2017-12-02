@@ -36,7 +36,7 @@ class Estimacion extends Rotation {
     }
 
     function Header() {
-        $this->logo();
+        //$this->logo();
         $this->detalles();
         $this->Ln(1);
 
@@ -84,7 +84,7 @@ class Estimacion extends Rotation {
 
     function Footer() {
         $this->firmas();
-        $this->SetY($this->GetPageHeight() - 0.5);
+        $this->SetY($this->GetPageHeight() - 1);
         $this->SetFont('Arial', '', 6);
         $this->Cell(6.5, .4, utf8_decode('Formato generado desde SAO.'), 0, 0, 'L');
         $this->SetFont('Arial', 'B', 6);
@@ -126,7 +126,7 @@ class Estimacion extends Rotation {
         $this->SetX(6);
         $this->SetFont('Arial', '', 8);
         $this->Cell(4, 1, 'Objeto del Contrato :', 0, 0, 'R');
-        $this->CellFitScale(10, 1, $this->objeto_contrato, 1, 1, 'C');
+        $this->MultiCell(10, 0.5, $this->objeto_contrato, 1, 'C');
         $this->Ln(0.1);
 
         $this->SetX(6);
@@ -401,7 +401,7 @@ class Estimacion extends Rotation {
     }
 
     function firmas() {
-        $this->SetY(- 2.5);
+        $this->SetY(- 3.5);
         $this->SetTextColor('0', '0', '0');
         $this->SetFont('Arial', '', 6);
         $this->SetFillColor(180, 180, 180);
@@ -436,7 +436,7 @@ class Estimacion extends Rotation {
         $this->SetMargins(1, 0.5, 1);
         $this->AliasNbPages();
         $this->AddPage();
-        $this->SetAutoPageBreak(true,3.5);
+        $this->SetAutoPageBreak(true,3.75);
         $this->partidas();
         $this->Ln();
         $this->seguimiento();
