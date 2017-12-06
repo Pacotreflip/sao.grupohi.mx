@@ -88,7 +88,7 @@ class EloquentMovimientosBancariosRepository implements MovimientosBancariosRepo
                 'cumplimiento' => $data['cumplimiento'] ? $data['cumplimiento'] : date('Y-m-d'),
                 'vencimiento' => $data['vencimiento'] ? $data['vencimiento'] : date('Y-m-d'),
                 'opciones' => 1,
-                'monto' => $data['importe'],
+                'monto' => $data['importe'] +$data['impuesto'],
                 'impuesto' => $data['impuesto'],
                 'referencia' => $data['referencia'],
                 'comentario' => "I;". date("d/m/Y") ." ". date("h:s") .";". auth()->user()->usuario,
