@@ -25,4 +25,9 @@ interface ContratoRepository
      * @return Contrato
      */
     public function find($id);
+
+    /**
+     * @return mixed
+     */
+    public function nivelPadre($id);
 }

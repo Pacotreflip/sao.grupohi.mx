@@ -10,6 +10,7 @@ namespace Ghi\Domain\Core\Contracts;
 
 
 
+use Dingo\Api\Http\Request;
 use Ghi\Domain\Core\Models\Contrato;
 use Ghi\Domain\Core\Models\Transacciones\ContratoProyectado;
 use Illuminate\Database\Eloquent\Collection;
@@ -23,7 +24,7 @@ interface ContratoProyectadoRepository
      * @return ContratoProyectado
      * @throws \Exception
      */
-    public function create(array $data);
+    public function create(Request $request);
 
     /**
      * Actualiza un Contrato Proyectado
@@ -41,5 +42,5 @@ interface ContratoProyectadoRepository
      * @return Collection|Contrato
      * @throws \Exception
      */
-    public function addContratos(array $data, $id);
+    public function addContratos(Request $request, $id);
 }

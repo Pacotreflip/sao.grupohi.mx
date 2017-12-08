@@ -21,5 +21,5 @@ interface SubcontratoRepository
      * @param  array $data
      * @return Subcontrato
      */
-    public function create(array $data);
+    public function create(Request $request);
 }

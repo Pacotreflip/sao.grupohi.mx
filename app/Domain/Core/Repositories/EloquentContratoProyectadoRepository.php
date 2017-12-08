@@ -10,7 +10,9 @@ namespace Ghi\Domain\Core\Repositories;
 
 
 use Dingo\Api\Exception\StoreResourceFailedException;
+use Dingo\Api\Http\Request;
 use Ghi\Domain\Core\Contracts\ContratoProyectadoRepository;
+use Ghi\Domain\Core\Models\Acarreos\MaterialAcarreo;
 use Ghi\Domain\Core\Models\Contrato;
 use Ghi\Domain\Core\Models\Transacciones\ContratoProyectado;
 use Illuminate\Support\Facades\DB;
@@ -34,28 +36,84 @@ class EloquentContratoProyectadoRepository implements ContratoProyectadoReposito
 
     /**
      * Crea un nuevo registro de Contrato Proyectado
-     * @param array $data
+     * @param Request $request
      * @return ContratoProyectado
      * @throws \Exception
+     * @internal param array $data
      */
-    public function create(array $data)
+    public function create(Request $request)
     {
-        $contrato_proyectado = $this->model->create($data);
+        //Reglas de validación para crear un contrato proyectado
+        $rules = [
+            //Validaciones de Transaccion
+            'fecha' => ['required', 'date'],
+            'referencia' => ['required', 'string', 'max:64'],
+            'cumplimiento' => ['required', 'date'],
+            'vencimiento' => ['required', 'date', 'after:cumplimiento'],
+            'contratos' => ['required', 'array'],
+            'contratos.*.nivel' => ['required', 'string', 'max:255', 'regex:"^(\d{3}\.)+$"', 'distinct'],
+            'contratos.*.descripcion' => ['required', 'string', 'max:255', 'distinct'],
+            'contratos.*.unidad' => ['string', 'max:16', 'exists:cadeco.unidades,unidad'],
+            'contratos.*.cantidad_presupuestada' => ['numeric'],
+            'contratos.*.clave' => ['string', 'max:140', 'distinct'],
+            'contratos.*.id_marca' => ['integer'],
+            'contratos.*.id_modelo' => ['integer'],
+            'contratos.*.destinos.*.id_concepto' => ['required_with:contratos.*.destinos', 'integer', 'exists:cadeco.conceptos,id_concepto']
+        ];
 
-        foreach ($data['contratos'] as $key => $contrato) {
-            $contrato['id_transaccion'] = $contrato_proyectado->id_transaccion;
+        //Validar los datos recibidos con las reglas de validación
+        $validator = app('validator')->make($request->all(), $rules);
 
-            $contrato['cantidad_original'] = array_key_exists('cantidad_presupuestada', $contrato) ? $contrato['cantidad_presupuestada'] : 0;
-            $new_contrato = Contrato::create($contrato);
-
-            if (array_key_exists('destinos', $contrato)) {
-                foreach ($contrato['destinos'] as $destino) {
-                    $new_contrato->destinos()->attach($destino['id_concepto'], ['id_transaccion' => $contrato_proyectado->id_transaccion]);
+        foreach ($request->get('contratos', []) as $key => $contrato) {
+            if(array_key_exists('nivel', $contrato)) {
+                if ($this->validarNivel($request->get('contratos', []), $contrato['nivel'])) {
+                    foreach (array_only($contrato, ['unidad', 'cantidad_presupuestada', 'destinos']) as $key_campo => $campo) {
+                        $validator->errors()->add('contratos.' . $key . '.' . $key_campo, 'El contrato no debe incluir ' . $key_campo . ' ya que tiene niveles subsecuentes');
+                    }
+                } else {
+                    $validator->sometimes(['contratos.' . $key . '.unidad', 'contratos.' . $key . '.cantidad_presupuestada', 'contratos.' . $key . '.destinos'], 'required', function () {
+                        return true;
+                    });
                 }
             }
         }
 
-        return $contrato_proyectado;
+        try {
+            if (count($validator->errors()->all())) {
+                throw new StoreResourceFailedException('Error al crear el Contrato Proyectado', $validator->errors());
+            } else {
+                DB::connection('cadeco')->beginTransaction();
+                $contrato_proyectado = $this->model->create($request->all());
+
+                foreach ($request->get('contratos') as $key => $contrato) {
+                    $contrato['id_transaccion'] = $contrato_proyectado->id_transaccion;
+
+                    $contrato['cantidad_original'] = array_key_exists('cantidad_presupuestada', $contrato) ? $contrato['cantidad_presupuestada'] : 0;
+                    $new_contrato = Contrato::create($contrato);
+
+                    if (array_key_exists('destinos', $contrato)) {
+                        foreach ($contrato['destinos'] as $destino) {
+                            $new_contrato->destinos()->attach($destino['id_concepto'], ['id_transaccion' => $contrato_proyectado->id_transaccion]);
+
+                            $newMaterial = MaterialAcarreo::create([
+                                'id_material_acarreo' => $contrato['id_material']
+                                ,'id_concepto' => $destino['id_concepto']
+                                ,'id_concepto_contrato' => $new_contrato['id_concepto']
+                                ,'id_transaccion' => $contrato_proyectado->id_transaccion
+                                ,'tarifa' => $contrato['tarifa']
+                            ]);
+                        }
+                    }
+                }
+
+                DB::connection('cadeco')->commit();
+                return $contrato_proyectado;
+
+            }
+        } catch (\Exception $e) {
+            DB::connection('cadeco')->rollback();
+            throw $e;
+        }
     }
 
     /**
@@ -85,23 +143,83 @@ class EloquentContratoProyectadoRepository implements ContratoProyectadoReposito
      * @return Collection|Contrato
      * @throws \Exception
      */
-    public function addContratos(array $data, $id)
+    public function addContratos(Request $request, $id)
     {
 
-        $contratos = [];
-        foreach ($data['contratos'] as $contrato) {
-            !array_key_exists('cantidad_presupuestada', $contrato) ? : $contrato['cantidad_original'] = $contrato['cantidad_presupuestada'];
+        $rules = [
+            //Validaciones de Transaccion
+            'contratos' => ['required', 'array'],
+            'contratos.*.nivel' => ['regex:"^(\d{3}\.)+$"', 'required', 'distinct', 'string', 'max:255', 'unique:cadeco.contratos,nivel,NULL,id_concepto,id_transaccion,' . $id],
+            'contratos.*.descripcion' => ['required', 'string', 'max:255'],
+            'contratos.*.unidad' => ['string', 'max:16', 'exists:cadeco.unidades,unidad'],
+            'contratos.*.cantidad_presupuestada' => ['numeric'],
+            'contratos.*.clave' => ['string', 'max:140', 'distinct'],
+            'contratos.*.id_marca' => ['integer'],
+            'contratos.*.id_modelo' => ['integer'],
+            'contratos.*.destinos.*.id_concepto' => ['required_with:contratos.*.destinos', 'integer', 'exists:cadeco.conceptos,id_concepto']
+        ];
 
-            $contrato['id_transaccion'] = $id;
-            $new_contrato = Contrato::create($contrato);
-            array_push($contratos, $new_contrato);
-            if (array_key_exists('destinos', $contrato)) {
-                foreach ($contrato['destinos'] as $destino) {
-                    $new_contrato->destinos()->attach($destino['id_concepto'], ['id_transaccion' => $new_contrato->id_transaccion]);
+        //Validar los datos recibidos con las reglas de validación
+        $validator = app('validator')->make($request->all(), $rules);
+
+        $contratos_existentes = Contrato::where('id_transaccion', '=', $id)->get(['nivel'])->toArray();
+        foreach ($request->get('contratos', []) as $c) {
+
+            if(array_key_exists('nivel', $c)) {
+                $contratos_existentes [] = ['nivel' => $c['nivel']];
+            }
+        }
+
+        foreach ($request->get('contratos', []) as $key => $contrato) {
+            if(array_key_exists('nivel', $contrato)) {
+                if (EloquentContratoProyectadoRepository::validarNivel($contratos_existentes, $contrato['nivel'])) {
+                    foreach (array_only($contrato, ['unidad', 'cantidad_presupuestada', 'destinos']) as $key_campo => $campo) {
+                        $validator->errors()->add('contratos.' . $key . '.' . $key_campo, 'El contrato no debe incluir ' . $key_campo . ' ya que tiene niveles subsecuentes');
+                    }
+                } else {
+                    $validator->sometimes(['contratos.' . $key . '.unidad', 'contratos.' . $key . '.cantidad_presupuestada', 'contratos.' . $key . '.destinos'], 'required', function () {
+                        return true;
+                    });
                 }
             }
         }
-        return collect($contratos);
+
+        try {
+            if (count($validator->errors()->all())) {
+                //Caer en excepción si alguna regla de validación falla
+                throw new StoreResourceFailedException('Error al agregar los Contratos', $validator->errors());
+            } else {
+                DB::connection('cadeco')->beginTransaction();
+                $data = $request->all();
+                $contratos = [];
+                foreach ($data['contratos'] as $contrato) {
+                    !array_key_exists('cantidad_presupuestada', $contrato) ? : $contrato['cantidad_original'] = $contrato['cantidad_presupuestada'];
+
+                    $contrato['id_transaccion'] = $id;
+                    $new_contrato = Contrato::create($contrato);
+                    array_push($contratos, $new_contrato);
+                    if (array_key_exists('destinos', $contrato)) {
+                        foreach ($contrato['destinos'] as $destino) {
+                            $new_contrato->destinos()->attach($destino['id_concepto'], ['id_transaccion' => $new_contrato->id_transaccion]);
+                            $newMaterial = MaterialAcarreo::create([
+                                'id_material_acarreo' => $contrato['id_material']
+                                ,'id_concepto' => $destino['id_concepto']
+                                ,'id_concepto_contrato' => $new_contrato['id_concepto']
+                                ,'id_transaccion' => $id
+                                ,'tarifa' => $contrato['tarifa']
+                            ]);
+                        }
+                    }
+                }
+
+                DB::connection('cadeco')->commit();
+                return collect($contratos);
+            }
+        } catch (\Exception $e) {
+            DB::connection('cadeco')->rollback();
+            throw $e;
+        }
+
     }
 
     /**
@@ -110,7 +228,7 @@ class EloquentContratoProyectadoRepository implements ContratoProyectadoReposito
      * @param string $nivel
      * @return bool
      */
-    public static function validarNivel(array $contratos, $nivel)
+    public function validarNivel(array $contratos, $nivel)
     {
         foreach ($contratos as $contrato) {
             if (starts_with($contrato['nivel'], $nivel) && (strlen($nivel) < strlen($contrato['nivel']))) {

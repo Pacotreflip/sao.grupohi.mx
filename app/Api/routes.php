@@ -24,5 +24,7 @@ $api->version('v1', ['middleware' => 'cors'], function ($api) {
         $api->patch('item/{id_item}', 'Ghi\Api\Controllers\ItemController@update');
 
         $api->post('estimacion', 'Ghi\Api\Controllers\EstimacionController@store');
+
+        $api->post('conciliacion', 'Ghi\Api\Controllers\ConciliacionController@store');
     });
 });

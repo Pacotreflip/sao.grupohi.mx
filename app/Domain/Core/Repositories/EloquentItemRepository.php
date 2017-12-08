@@ -220,7 +220,7 @@ class EloquentItemRepository implements ItemRepository
                     $transaccion = $item->transaccion;
                     switch ($transaccion->tipo_transaccion) {
                         case Tipo::SUBCONTRATO:
-                            $item->update($request->all());
+                            $item->update(['cantidad' => $request->cantidad + $item->cantidad]);
                             $item->cantidad_original1 = $item->cantidad;
                             $item->save();
 
