@@ -3,9 +3,12 @@
 /*
 * API Routes
 */
+header("Access-Control-Allow-Origin: *");
+
 $api = app('Dingo\Api\Routing\Router');
 
 $api->version('v1', ['middleware' => 'cors'], function ($api) {
+
     $api->post('auth', 'Ghi\Api\Controllers\Auth\AuthController@postLogin');
 
     $api->group(['middleware' => ['jwt.auth', 'api.context']], function($api) {
@@ -26,5 +29,8 @@ $api->version('v1', ['middleware' => 'cors'], function ($api) {
         $api->post('estimacion', 'Ghi\Api\Controllers\EstimacionController@store');
 
         $api->post('conciliacion', 'Ghi\Api\Controllers\ConciliacionController@store');
+
+        $api->get('conciliacion/costos', 'Ghi\Api\Controllers\ConciliacionController@getCostos');
+
     });
 });

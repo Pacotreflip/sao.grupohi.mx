@@ -47,15 +47,15 @@ class VerifyContextApi
      */
     public function handle(Request $request, Closure $next)
     {
-        if($request->header('database_name') == null || $request->header('id_obra') == null) {
+        if (($request->get('id_obra') != null && $request->get('database_name') != null) || ($request->header('id_obra') != null && $request->header('database_name') != null)) {
+            $this->context->setId($request->header('id_obra'));
+            $this->context->setDatabaseName($request->header('database_name'));
+
+            $this->setContext();
+            return $next($request);
+        } else {
             return $this->response->json(['error' => 'database_name_or_id_obra_not_provided'], 400);
         }
-
-        $this->context->setId($request->header('id_obra'));
-        $this->context->setDatabaseName($request->header('database_name'));
-
-        $this->setContext();
-        return $next($request);
     }
 
     /**

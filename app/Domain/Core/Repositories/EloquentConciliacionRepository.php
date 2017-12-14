@@ -16,6 +16,7 @@ use Dingo\Api\Http\Request;
 use Ghi\Domain\Core\Contracts\ContratoProyectadoRepository;
 use Ghi\Domain\Core\Contracts\ContratoRepository;
 use Ghi\Domain\Core\Contracts\EmpresaRepository;
+use Ghi\Domain\Core\Contracts\EstimacionRepository;
 use Ghi\Domain\Core\Contracts\ItemRepository;
 use Ghi\Domain\Core\Contracts\SubcontratoRepository;
 use Ghi\Domain\Core\Models\Acarreos\MaterialAcarreo;
@@ -59,6 +60,11 @@ class EloquentConciliacionRepository implements ConciliacionRepository
     var $item;
 
     /**
+     * @var
+     */
+    var $estimacion;
+
+    /**
      * EloquentConciliacionRepository constructor.
      * @param EmpresaRepository $empresa
      * @param ContratoProyectadoRepository $contratoProyectado
@@ -66,18 +72,20 @@ class EloquentConciliacionRepository implements ConciliacionRepository
      * @param ContratoRepository $contrato
      * @param ItemRepository $item
      */
-    public function __construct(EmpresaRepository $empresa, ContratoProyectadoRepository $contratoProyectado, SubcontratoRepository $subcontrato, ContratoRepository $contrato, ItemRepository $item)
+    public function __construct(EstimacionRepository $estimacion,EmpresaRepository $empresa, ContratoProyectadoRepository $contratoProyectado, SubcontratoRepository $subcontrato, ContratoRepository $contrato, ItemRepository $item)
     {
         $this->empresa = $empresa;
         $this->contratoProyectado = $contratoProyectado;
         $this->subcontrato = $subcontrato;
         $this->contrato = $contrato;
         $this->item = $item;
+        $this->estimacion = $estimacion;
     }
 
 
     public function store(Request $request)
     {
+        dd($request->all());
 
         $partidas_conciliacion = $request->get('partidas_conciliacion');
         $empresa = Empresa::where('rfc', '=', $request->rfc)->first();
@@ -229,9 +237,35 @@ class EloquentConciliacionRepository implements ConciliacionRepository
         }//  FIN APARTADO SUBCONTRATO
 
         //  INICIA APARTADO DE GENERAR ESTIMACION
+        $reques_estimacion = new Request();
+        $items_estimacion=[];
+        $moneda = Moneda::where('tipo', 1)->first();
+        //dd($contrato_proyectado['id_transaccion']);
+        foreach ($partidas_conciliacion as $key => $partida) {
+            $item = Item::join('Acarreos.material', 'items.id_concepto', '=', 'Acarreos.material.id_concepto_contrato')
+                ->where('Acarreos.material.id_transaccion', '=', $contrato_proyectado['id_transaccion'])
+                ->where('Acarreos.material.id_material_acarreo', '=', (int)$partida['id_material'])
+                ->where('items.precio_unitario', '=', $partida['tarifa'])
+                ->select(['items.id_item', 'items.id_concepto'])->first();
 
+            $items_estimacion[$key] = array(
+                'item_antecedente' => $item->id_concepto,
+                'cantidad' => $partida['volumen']
+            );
+        }
 
-
+        $reques_estimacion->merge([
+            'id_antecedente' => $subcontrato->id_transaccion,
+            'fecha' => Carbon::now()->toDateString(),
+            'id_empresa' => $empresa->id_empresa,
+            'id_moneda' => array_key_exists('id_moneda', $partida)? (int)$partida['id_moneda']:(int)$moneda->id_moneda,
+            'cumplimiento' => Carbon::now()->toDateString(),
+            'vencimiento' => Carbon::now()->addYear(1)->toDateString(),
+            'referencia' => 'Estimación de Acarreos',
+            'items' => ($items_estimacion)
+        ]);
+        //dd($reques_estimacion->all());
+        $registro_estimacion = $this->estimacion->create($reques_estimacion);
 
         dd('pandita final');
     }

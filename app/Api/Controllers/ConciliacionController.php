@@ -10,6 +10,7 @@ namespace Ghi\Api\Controllers;
 
 use Dingo\Api\Routing\Helpers;
 use Ghi\Domain\Core\Contracts\ConciliacionRepository;
+use Ghi\Domain\Core\Models\Costo;
 use Ghi\Http\Controllers\Controller;
 use Dingo\Api\Http\Request;
 
@@ -31,5 +32,10 @@ class ConciliacionController extends Controller
 
     public function store(Request $request){
         $this->conciliacion->store($request);
+    }
+
+    public function getCostos(){
+        $costos = Costo::select(['id_costo', 'descripcion'])->get()->toArray();
+        dd($costos);
     }
 }
