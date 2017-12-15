@@ -83371,7 +83371,13 @@ require('./vue-components/Reportes/subcontratos-estimacion');
 require('./vue-components/Tesoreria/traspaso_cuentas/index');
 require('./vue-components/Tesoreria/movimientos_bancarios/index');
 
-},{"./vue-components/Compras/material/index":146,"./vue-components/Compras/requisicion/create":147,"./vue-components/Compras/requisicion/edit":148,"./vue-components/Contabilidad/cuenta_almacen/index":149,"./vue-components/Contabilidad/cuenta_bancos/cuenta-bancaria-edit":150,"./vue-components/Contabilidad/cuenta_concepto/index":151,"./vue-components/Contabilidad/cuenta_contable/index":152,"./vue-components/Contabilidad/cuenta_costo/index":153,"./vue-components/Contabilidad/cuenta_empresa/cuenta-empresa-edit":154,"./vue-components/Contabilidad/cuenta_fondo/index":155,"./vue-components/Contabilidad/cuenta_material/index":156,"./vue-components/Contabilidad/datos_contables/edit":157,"./vue-components/Contabilidad/emails":158,"./vue-components/Contabilidad/modulos/revaluacion/create":159,"./vue-components/Contabilidad/poliza_generada/edit":160,"./vue-components/Contabilidad/poliza_tipo/poliza-tipo-create":161,"./vue-components/Contabilidad/tipo_cuenta_contable/tipo-cuenta-contable-create":162,"./vue-components/Contabilidad/tipo_cuenta_contable/tipo-cuenta-contable-update":163,"./vue-components/Finanzas/comprobante_fondo_fijo/create":164,"./vue-components/Finanzas/comprobante_fondo_fijo/edit":165,"./vue-components/Reportes/subcontratos-estimacion":166,"./vue-components/Tesoreria/movimientos_bancarios/index":167,"./vue-components/Tesoreria/traspaso_cuentas/index":168,"./vue-components/errors":169,"./vue-components/global-errors":170,"./vue-components/kardex_material/kardex-material-index":171,"./vue-components/select2":172}],146:[function(require,module,exports){
+/**
+ * Control de costos Components
+ */
+require('./vue-components/Control_Costos/reclasificacion_costos/index');
+require('./vue-components/Control_Costos/solicitar_reclasificacion/index');
+
+},{"./vue-components/Compras/material/index":146,"./vue-components/Compras/requisicion/create":147,"./vue-components/Compras/requisicion/edit":148,"./vue-components/Contabilidad/cuenta_almacen/index":149,"./vue-components/Contabilidad/cuenta_bancos/cuenta-bancaria-edit":150,"./vue-components/Contabilidad/cuenta_concepto/index":151,"./vue-components/Contabilidad/cuenta_contable/index":152,"./vue-components/Contabilidad/cuenta_costo/index":153,"./vue-components/Contabilidad/cuenta_empresa/cuenta-empresa-edit":154,"./vue-components/Contabilidad/cuenta_fondo/index":155,"./vue-components/Contabilidad/cuenta_material/index":156,"./vue-components/Contabilidad/datos_contables/edit":157,"./vue-components/Contabilidad/emails":158,"./vue-components/Contabilidad/modulos/revaluacion/create":159,"./vue-components/Contabilidad/poliza_generada/edit":160,"./vue-components/Contabilidad/poliza_tipo/poliza-tipo-create":161,"./vue-components/Contabilidad/tipo_cuenta_contable/tipo-cuenta-contable-create":162,"./vue-components/Contabilidad/tipo_cuenta_contable/tipo-cuenta-contable-update":163,"./vue-components/Control_Costos/reclasificacion_costos/index":164,"./vue-components/Control_Costos/solicitar_reclasificacion/index":165,"./vue-components/Finanzas/comprobante_fondo_fijo/create":166,"./vue-components/Finanzas/comprobante_fondo_fijo/edit":167,"./vue-components/Reportes/subcontratos-estimacion":168,"./vue-components/Tesoreria/movimientos_bancarios/index":169,"./vue-components/Tesoreria/traspaso_cuentas/index":170,"./vue-components/errors":171,"./vue-components/global-errors":172,"./vue-components/kardex_material/kardex-material-index":173,"./vue-components/select2":174}],146:[function(require,module,exports){
 'use strict';
 
 Vue.component('material-index', {
@@ -85047,7 +85053,6 @@ Vue.component('cuenta-costo-index', {
                     self.cargando = true;
                 },
                 success: function success(result) {
-                    console.log(result);
                     self.data.costos = [];
                     if (result.data.costo != null) {
                         self.data.costos.push(result.data.costo);
@@ -86685,6 +86690,120 @@ Vue.component('tipo-cuenta-contable-update', {
 },{}],164:[function(require,module,exports){
 'use strict';
 
+Vue.component('reclasificacion_costos-index', {
+    props: ['url_reclasificacion_costos_index'],
+    data: function data() {
+        return {
+            'data': {
+                'filtros': []
+            },
+            'guardando': false
+        };
+    },
+    computed: {},
+    mounted: function mounted() {},
+    directives: {},
+    methods: {}
+});
+
+},{}],165:[function(require,module,exports){
+'use strict';
+
+Vue.component('solicitar_reclasificacion-index', {
+    props: ['url_solicitar_reclasificacion_index', 'max_niveles', 'filtros', 'operadores'],
+    data: function data() {
+        return {
+            'data': {
+                'filtros': this.filtros,
+                'operadores': this.operadores,
+                'agrega': {
+                    'nivel': '',
+                    'operador': '',
+                    'texto': ''
+                },
+                'resultados': []
+            }
+        };
+    },
+    computed: {},
+    methods: {
+        getMaxNiveles: function getMaxNiveles() {
+            var self = this,
+                niveles = [],
+                paso = 1;
+
+            for (paso; paso <= self.max_niveles; paso++) {
+                niveles.push({ numero: paso, nombre: "Nivel " + paso });
+            }
+
+            return niveles;
+        },
+        agregar_filtro: function agregar_filtro() {
+            var self = this;
+
+            self.filtros.push(self.data.agrega);
+
+            self.close_modal_agregar();
+        },
+        eliminar_filtro: function eliminar_filtro(item) {
+            var self = this;
+
+            self.data.filtros.splice(self.data.filtros.indexOf(item), 1);
+        },
+        reset_agregar: function reset_agregar() {
+            var self = this;
+
+            Vue.set(self.data, 'agrega', {
+                'nivel': '',
+                'operador': '',
+                'texto': ''
+            });
+        },
+        open_modal_agregar: function open_modal_agregar() {
+            $('#agregar_filtro_modal').modal('show');
+            $('#nivel').focus();
+        },
+        close_modal_agregar: function close_modal_agregar() {
+            var self = this;
+
+            $('#agregar_filtro_modal').modal('hide');
+            self.reset_agregar();
+        },
+        buscar: function buscar() {
+            var self = this;
+
+            if (self.data.filtros.length == 0) {
+                return swal({
+                    type: 'warning',
+                    title: 'Agrega un filtro',
+                    html: 'Por favor agrega un filtro antes de buscar'
+                });
+            }
+            console.log(self.data.filtros);
+            $.ajax({
+                type: 'GET',
+                url: self.url_solicitar_reclasificacion_index + '/find',
+                data: self.data.filtros,
+                beforeSend: function beforeSend() {},
+                success: function success(data, textStatus, xhr) {
+                    console.log(data.data.resultados);
+                    Vue.set(self.data, 'resultados', data.data.resultados);
+                    swal({
+                        type: 'success',
+                        title: '',
+                        html: 'Se encontraron resultados'
+                    });
+                },
+                complete: function complete() {}
+            });
+        }
+    },
+    directives: {}
+});
+
+},{}],166:[function(require,module,exports){
+'use strict';
+
 Vue.component('comprobante-fondo-fijo-create', {
     props: ['url_comprobante_fondo_fijo_create'],
 
@@ -87158,7 +87277,7 @@ Vue.component('comprobante-fondo-fijo-create', {
     }
 });
 
-},{}],165:[function(require,module,exports){
+},{}],167:[function(require,module,exports){
 'use strict';
 
 Vue.component('comprobante-fondo-fijo-edit', {
@@ -87612,7 +87731,7 @@ Vue.component('comprobante-fondo-fijo-edit', {
     }
 });
 
-},{}],166:[function(require,module,exports){
+},{}],168:[function(require,module,exports){
 'use strict';
 
 Vue.component('subcontratos-estimacion', {
@@ -87691,7 +87810,7 @@ Vue.component('subcontratos-estimacion', {
     }
 });
 
-},{}],167:[function(require,module,exports){
+},{}],169:[function(require,module,exports){
 'use strict';
 
 Vue.component('movimientos_bancarios-index', {
@@ -88036,7 +88155,7 @@ Vue.component('movimientos_bancarios-index', {
     }
 });
 
-},{}],168:[function(require,module,exports){
+},{}],170:[function(require,module,exports){
 'use strict';
 
 Vue.component('traspaso-cuentas-index', {
@@ -88343,7 +88462,7 @@ Vue.component('traspaso-cuentas-index', {
     }
 });
 
-},{}],169:[function(require,module,exports){
+},{}],171:[function(require,module,exports){
 'use strict';
 
 Vue.component('app-errors', {
@@ -88352,7 +88471,7 @@ Vue.component('app-errors', {
     template: require('./templates/errors.html')
 });
 
-},{"./templates/errors.html":173}],170:[function(require,module,exports){
+},{"./templates/errors.html":175}],172:[function(require,module,exports){
 'use strict';
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
@@ -88378,7 +88497,7 @@ Vue.component('global-errors', {
   }
 });
 
-},{"./templates/global-errors.html":174}],171:[function(require,module,exports){
+},{"./templates/global-errors.html":176}],173:[function(require,module,exports){
 'use strict';
 
 Vue.component('kardex-material-index', {
@@ -88528,7 +88647,7 @@ Vue.component('kardex-material-index', {
 
 });
 
-},{}],172:[function(require,module,exports){
+},{}],174:[function(require,module,exports){
 'use strict';
 
 Vue.component('select2', {
@@ -88577,9 +88696,9 @@ Vue.component('select2', {
     }
 });
 
-},{}],173:[function(require,module,exports){
+},{}],175:[function(require,module,exports){
 module.exports = '<div id="form-errors" v-cloak>\n  <div class="alert alert-danger" v-if="form.errors.length">\n    <ul>\n      <li v-for="error in form.errors">{{ error }}</li>\n    </ul>\n  </div>\n</div>';
-},{}],174:[function(require,module,exports){
+},{}],176:[function(require,module,exports){
 module.exports = '<div class="alert alert-danger" v-show="errors.length">\n  <ul>\n    <li v-for="error in errors">{{ error }}</li>\n  </ul>\n</div>';
 },{}]},{},[143]);
 

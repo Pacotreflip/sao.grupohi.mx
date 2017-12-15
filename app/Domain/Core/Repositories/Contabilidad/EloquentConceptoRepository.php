@@ -4,6 +4,7 @@ namespace Ghi\Domain\Core\Repositories\Contabilidad;
 
 use Ghi\Domain\Core\Contracts\Contabilidad\ConceptoRepository;
 use Ghi\Domain\Core\Models\Concepto;
+use Illuminate\Support\Facades\DB;
 
 class EloquentConceptoRepository implements ConceptoRepository
 {
@@ -84,5 +85,18 @@ class EloquentConceptoRepository implements ConceptoRepository
     {
         return Concepto::where('id_concepto', $id)
             ->firstOrFail();
+    }
+
+    public function obtenerMaxNumNiveles()
+    {
+        $item = $this->model->selectRaw('MAX(LEN(nivel)) / 4 as max_nivel')->first();
+
+        return $item->max_nivel;
+    }
+
+    public function buscarRaw($raw)
+    {
+        return $this->model->whereRaw($raw)
+            ->get();
     }
 }

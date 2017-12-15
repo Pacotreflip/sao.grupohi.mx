@@ -22,7 +22,7 @@ class PagesController extends Controller
     {
         parent::__construct();
         $this->middleware('auth');
-        $this->middleware('context', ['only' => ['sistema_contable', 'reportes', 'finanzas', 'tesoreria']]);
+        $this->middleware('context', ['only' => ['sistema_contable', 'reportes', 'finanzas', 'tesoreria', 'control_costos']]);
         $this->session = $session;
         $this->notificacion=$notificacion;
         $this->grafica = $grafica;
@@ -75,5 +75,9 @@ class PagesController extends Controller
 
     public function tesoreria() {
         return view('tesoreria.index');
+    }
+
+    public function control_costos() {
+        return view('control_costos.index');
     }
 }
