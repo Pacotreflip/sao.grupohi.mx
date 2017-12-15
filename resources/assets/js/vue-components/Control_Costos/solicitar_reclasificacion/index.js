@@ -59,7 +59,8 @@ Vue.component('solicitar_reclasificacion-index', {
             self.reset_agregar();
         },
         buscar: function () {
-            var self = this;
+            var self = this,
+                str = {'data':JSON.stringify(self.data.filtros)};
 
             if (self.data.filtros.length == 0)
             {
@@ -69,20 +70,33 @@ Vue.component('solicitar_reclasificacion-index', {
                     html: 'Por favor agrega un filtro antes de buscar'
                 });
             }
-console.log(self.data.filtros);
+
             $.ajax({
                 type: 'GET',
                 url : self.url_solicitar_reclasificacion_index +'/find',
-                data: self.data.filtros,
+                data: str,
                 beforeSend: function () {},
                 success: function (data, textStatus, xhr) {
 console.log(data.data.resultados);
-                    Vue.set(self.data, 'resultados', data.data.resultados);
-                    swal({
-                        type: 'success',
-                        title: '',
-                        html: 'Se encontraron resultados'
-                    });
+                    if (data.data.resultados.length > 0)
+                    {
+                        Vue.set(self.data, 'resultados', data.data.resultados);
+                        swal({
+                            type: 'success',
+                            title: '',
+                            html: 'Se encontraron resultados'
+                        });
+                    }
+
+                    else
+                    {
+                        swal({
+                            type: 'warning',
+                            title: '',
+                            html: 'No se encontraron resultados'
+                        });
+                    }
+
                 },
                 complete: function () { }
             });

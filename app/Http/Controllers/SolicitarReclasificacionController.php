@@ -48,17 +48,17 @@ class SolicitarReclasificacionController extends Controller
 
     public function find(Request $request)
     {
-        $filtros = $request->all();
+        $filtros = json_decode($request->data, true);
         $string = "";
         $counter = 0;
 
         foreach ($filtros as $k => $v)
         {
             // @todo agregar soporte para operador OR
-             $string .= ($counter = 0 ? "" : "AND") . " ";
+             $string .= ($counter == 0 ? "" : "AND") . " ";
 
              $nivel = filter_var($v['nivel'], FILTER_SANITIZE_NUMBER_INT);
-             $operador = $v['operador'];
+             $operador = $this->operadores[$v['operador']];
 
             // Like o condicionante?
             $texto = strpos($operador, '=') ? ($operador . " ". $texto) : ("LIKE '". str_replace('{texto}', $v['texto'], $operador). "'");
