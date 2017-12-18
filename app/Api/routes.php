@@ -3,11 +3,13 @@
 /*
 * API Routes
 */
-header("Access-Control-Allow-Origin: *");
+header('Access-Control-Allow-Origin: *');
+header('Access-Control-Allow-Methods: GET, POST, PATCH, PUT, DELETE, OPTIONS');
+header('Access-Control-Allow-Headers: Authorization, Origin, Content-Type, X-Auth-Token, database_name, id_obra');
 
 $api = app('Dingo\Api\Routing\Router');
 
-$api->version('v1', ['middleware' => 'cors'], function ($api) {
+$api->version('v1', function ($api) {
 
     $api->post('auth', 'Ghi\Api\Controllers\Auth\AuthController@postLogin');
 
