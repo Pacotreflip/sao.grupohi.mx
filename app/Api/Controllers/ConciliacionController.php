@@ -31,11 +31,12 @@ class ConciliacionController extends Controller
     }
 
     public function store(Request $request){
-        $this->conciliacion->store($request);
+        $conciliacion = $this->conciliacion->store($request);
+        return $conciliacion->toArray();
     }
 
     public function getCostos(){
         $costos = Costo::select(['id_costo', 'descripcion'])->get()->toArray();
-        dd($costos);
+        return $costos;
     }
 }

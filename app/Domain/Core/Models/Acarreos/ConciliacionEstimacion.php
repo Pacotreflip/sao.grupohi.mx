@@ -22,7 +22,7 @@ class ConciliacionEstimacion extends Model
     {
         parent::boot();
         static::creating(function($model) {
-            $model->registro = auth()->user()->usuario;
+            $model->registro = Auth::user()->idusuario;
             $model->FechaHoraRegistro = Carbon::now()->toDateTimeString();
         });
     }
