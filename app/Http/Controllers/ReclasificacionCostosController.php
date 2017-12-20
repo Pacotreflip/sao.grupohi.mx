@@ -6,7 +6,9 @@ use Dingo\Api\Routing\Helpers;
 
 
 use Ghi\Domain\Core\Contracts\Contabilidad\ConceptoRepository;
+use Ghi\Domain\Core\Contracts\ControlCostos\SolicitarReclasificacionesRepository;
 use Ghi\Domain\Core\Models\Concepto;
+use Ghi\Domain\Core\Models\Transacciones\Transaccion;
 use Ghi\Domain\Core\Transformers\ConceptoTreeTransformer;
 use Illuminate\Http\Request;
 use League\Fractal\Resource\Collection;
@@ -17,10 +19,16 @@ class ReclasificacionCostosController extends Controller
 
     protected $concepto;
     /**
+     * @var SolicitarReclasificacionesRepository
+     */
+    private $solicitar;
+
+    /**
      * ConceptoController constructor.
      * @param ConceptoRepository $concepto
+     * @param Transaccion $transaccion
      */
-    public function __construct(ConceptoRepository $concepto)
+    public function __construct(ConceptoRepository $concepto, Transaccion $transaccion, SolicitarReclasificacionesRepository $solicitar)
     {
         parent::__construct();
 
@@ -28,11 +36,22 @@ class ReclasificacionCostosController extends Controller
         $this->middleware('context');
 
         $this->concepto = $concepto;
+        $this->transaccion = $transaccion;
+        $this->solicitar = $solicitar;
     }
 
     public function index(Request $request)
     {
-        $dataView = [];
+        $solicitudes = $solicitar->all()->toArray();
+
+        foreach ($solicitudes as $k => $s)
+        {
+            $solicitudes[$k]['transacciones'] = $this->transaccion->reclasificacion($s[}])
+        }
+
+        $dataView = [
+            'solicitudes' => $solicitudes,
+        ];
 
         return view('control_costos.reclasificacion_costos.index')
             ->with('dataView', $dataView);

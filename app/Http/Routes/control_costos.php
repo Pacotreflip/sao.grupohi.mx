@@ -12,6 +12,7 @@ Route::group(['prefix' => 'control_costos'], function () {
      */
     Route::get('solicitar_reclasificacion', 'SolicitarReclasificacionController@index')->name('control_costos.solicitar_reclasificacion.index');
     Route::get('solicitar_reclasificacion/find', 'SolicitarReclasificacionController@find')->name('control_costos.solicitar_reclasificacion.find');
+    Route::post('solicitar_reclasificacion', 'SolicitarReclasificacionController@store')->name('control_costos.solicitar_reclasificacion.store');
 
     /**
      * Movimientos Bancarios

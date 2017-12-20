@@ -238,5 +238,9 @@ class AppServiceProvider extends ServiceProvider
             \Ghi\Domain\Core\Contracts\Contabilidad\CostoRepository::class,
             \Ghi\Domain\Core\Repositories\Contabilidad\EloquentCostoRepository::class
         );
+        $this->app->bind(
+            \Ghi\Domain\Core\Contracts\ControlCostos\SolicitarReclasificacionesRepository::class,
+            \Ghi\Domain\Core\Repositories\ControlCostos\EloquentSolicitarReclasificacionesRepository::class
+        );
     }
 }

@@ -26,7 +26,8 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <button type="button" class="close" v-on:click="close_modal_agregar()" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                        <h4 class="modal-title">Agregar Filtro</h4>
+                        <h5 v-if="data.condicionante">@{{data.temp_filtro.nivel}} @{{ data.temp_filtro.operador}} @{{ data.temp_filtro.texto}} <b>@{{data.condicionante}}</b> </h5>
+                        <h4 v-else class="modal-title">Agregar Filtro</h4>
                     </div>
                     <div class="modal-body">
                         <div class="row">
@@ -85,15 +86,20 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-                                    <tr v-for="(item, index) in filtros">
+                                    <tr v-for="(item, index) in data.filtros">
                                         <td >@{{ index + 1  }}</td>
                                         <td>@{{ item.nivel }}</td>
                                         <td>@{{  item.operador }}</td>
                                         <td>@{{  item.texto }}</td>
                                         <td>
                                             <div class="btn-group">
-                                                <button type="button" title="Eliminar" class="btn btn-xs btn-danger" v-on:click="eliminar_filtro(item)"><i class="fa fa-trash"></i></button>
+                                                <button type="button" class="btn btn-xs btn-success" v-on:click="open_modal_agregar('Y', item)" title="concatena un nuevo filtro"> Y </button>
+                                                <button type="button" class="btn btn-xs btn-info" v-on:click="open_modal_agregar('O', item)" title="agrega un filtro diferente"> O </button>
                                             </div>
+                                            <div class="btn-group">
+                                                <button type="button" title="Eliminar" class="btn btn-xs btn-danger" v-on:click="confirm_eliminar(index, 'filtro')"><i class="fa fa-trash"></i></button>
+                                            </div>
+                                            <h5 v-if="item.condicionante">@{{ item.condicionante  }}</h5>
                                         </td>
                                     </tr>
                                 </tbody>
@@ -102,41 +108,51 @@
                     </div>
                 </div>
             </div>
+        </div>
+        <div class="row">
             <div class="col-md-12">
                 <button class="btn btn-sm btn-primary pull-right" v-on:click="buscar()">Buscar</button>
+                <br><br>
             </div>
         </div>
-        <div class="row" v-if="data.resultados.length != 0">
+        <template v-if="data.resultados.length != 0">
+        <div class="row">
             <div class="col-md-12">
                 <div class="box box-success">
                     <div class="box-header with-border">
-                        <h3 class="box-title">Reclasificaciones</h3>
+                        <h3 class="box-title">Resultados</h3>
                     </div>
-                </div>
-                <div class="box-body">
-                    <div class="table-responsive">
-                        <table class="table table-bordered table-striped">
-                            <thead>
-                            <tr>
-                                <th>#</th>
-                                <th>Tipo Transaccion</th>
-                                <th>Cantidad</th>
-                                <th>Costo Total</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <tr v-for="(item, index) in transacciones">
-                                <td >@{{ index + 1  }}</td>
-                                <td>@{{ item.nivel }}</td>
-                                <td>@{{  item.operador }}</td>
-                                <td>@{{  item.texto }}</td>
-                            </tr>
-                            </tbody>
-                        </table>
+                    <div class="box-body">
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-striped">
+                                <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Nivel</th>
+                                    <th>Descripción</th>
+                                    <th>Total</th>
+                                    <th>Acciones</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr v-for="(item, index) in data.resultados">
+                                    <td >@{{ index + 1  }}</td>
+                                    <td>@{{ item.nivel }}</td>
+                                    <td>@{{  item.descripcion }}</td>
+                                    <td>@{{  item.total }}</td>
+                                    <td class="btn-group">
+                                        <button type="button" title="Solicitar Reclasificación" class="btn btn-xs btn-success" v-on:click="confirm_solicitar(item)" v-if="!item.solicitado"><i class="fa fa-file-text-o"></i></button>
+                                        <button type="button" title="Eliminar" class="btn btn-xs btn-danger" v-on:click="confirm_eliminar(index, 'resultado')"><i class="fa fa-trash"></i></button>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
+        </template>
     </section>
 </solicitar_reclasificacion-index>
 
