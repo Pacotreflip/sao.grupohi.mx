@@ -8,7 +8,7 @@ use Dingo\Api\Routing\Helpers;
 use Ghi\Domain\Core\Contracts\Contabilidad\ConceptoPathRepository;
 use Ghi\Domain\Core\Contracts\Contabilidad\ConceptoRepository;
 use Ghi\Domain\Core\Contracts\ControlCostos\SolicitarReclasificacionesRepository;
-
+use Ghi\Domain\Core\Contracts\TransaccionRepository;
 use Ghi\Domain\Core\Models\Concepto;
 use Illuminate\Http\Request;
 
@@ -32,8 +32,10 @@ class SolicitarReclasificacionController extends Controller
      * @param Concepto|ConceptoRepository $concepto
      * @param ConceptoPathRepository $conceptoPath
      * @param SolicitarReclasificacionesRepository $solicitar
+     * @param TransaccionRepository $transaccion
+     * @internal param TransaccionRepository $trasaccion
      */
-    public function __construct(ConceptoRepository $concepto, ConceptoPathRepository $conceptoPath, SolicitarReclasificacionesRepository $solicitar)
+    public function __construct(ConceptoRepository $concepto, ConceptoPathRepository $conceptoPath, SolicitarReclasificacionesRepository $solicitar, TransaccionRepository $transaccion)
     {
         parent::__construct();
 
@@ -43,8 +45,13 @@ class SolicitarReclasificacionController extends Controller
         $this->concepto = $concepto;
         $this->conceptoPath = $conceptoPath;
         $this->solicitar = $solicitar;
+        $this->transaccion = $transaccion;
     }
 
+    /**
+     * @param Request $request
+     * @return $this
+     */
     public function index(Request $request)
     {
         $data_view = [
@@ -56,6 +63,10 @@ class SolicitarReclasificacionController extends Controller
             ->with('data_view', $data_view);
     }
 
+    /**
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function store(Request $request)
     {
         $record = $this->solicitar->create($request->all());
@@ -67,6 +78,10 @@ class SolicitarReclasificacionController extends Controller
         ], 200);
     }
 
+    /**
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function find(Request $request)
     {
         $filtros = json_decode($request->data, true);
@@ -115,6 +130,15 @@ class SolicitarReclasificacionController extends Controller
 //        dd($string);die;
 
         return response()->json(['data' => ['resultados' => $resultados]], 200);
+    }
+
+    public function tipos(Request $request)
+    {
+        $id_concepto = $request->id_concepto;
+
+        $resultados = $this->transaccion->tiposTransaccion($id_concepto);
+
+        return response()->json(['resultados' => $resultados], 200);
     }
 
     /**

@@ -139,7 +139,7 @@
                                     <td v-for="i in niveles">
                                         @{{ item['filtro' + i.numero] }}
                                     </td>
-                                    <td><a>@{{  parseInt(item.total).formatMoney(2, '.', ',') }}</a></td>
+                                    <td><a v-on:click="open_modal_tipos_transaccion(item.id_concepto)">@{{  parseInt(item.total).formatMoney(2, '.', ',') }}</a></td>
                                 </tr>
                                 </tbody>
                             </table>
@@ -149,6 +149,52 @@
             </div>
         </div>
         </template>
+        <div id="tipos_transaccion" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="AgregarModal" data-backdrop="static" data-keyboard="false">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">Tipos Transacciones</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="table-responsive">
+                                <table class="table table-bordered table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th>Tipo Transaccion</th>
+                                            <th>
+                                                Cantidad
+                                            </th>
+                                            <th>Importe</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr v-for="(item, index) in data.tipos_transacciones">
+                                        <td >@{{ item.tipo_transaccion  }}</td>
+                                        <td >
+                                            @{{ item.cantidad_transacciones }}
+                                        </td>
+                                        <td>
+                                            @{{ item.monto }}
+                                        </td>
+                                    </tr>
+                                    <hr>
+                                    <tr>
+                                        <td>Subtotal:</td>
+                                        <td>@{{ data.subtotal }}</td>
+                                        <td>@{{ data.subimporte }}</td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" v-on:click="close_modal_tipos_transaccion()">Cerrar</button>
+                    </div>
+                </div><!-- /.modal-content -->
+            </div><!-- /.modal-dialog -->
+        </div><!-- /.modal -->
     </section>
 </solicitar_reclasificacion-index>
 

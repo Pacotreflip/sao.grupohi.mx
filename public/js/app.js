@@ -86723,7 +86723,10 @@ Vue.component('solicitar_reclasificacion-index', {
                     'operador': '',
                     'texto': ''
                 },
-                'resultados': []
+                'resultados': [],
+                'tipos_transacciones': [],
+                'subtotal': 0,
+                'subimporte': 0
             }
         };
     },
@@ -86840,11 +86843,6 @@ Vue.component('solicitar_reclasificacion-index', {
                 });
             }
 
-            // var resultados = JSON.parse('{"data":{"resultados":[{"total":"141805.0","id_concepto":5,"descripcion":"GASTOS INDIRECTOS","nivel":"000.001.002.001.","nivel_hijos":"000.001.002.001.___.","nivel_padre":"000.001.002.","id_padre":4,"tiene_hijos":8,"cargado":false,"path":"TERMINAL NAICM -> CONTROL TERMINAL NAICM -> COSTO INDIRECTO -> GASTOS INDIRECTOS"}]}}');
-            // Vue.set(self.data, 'resultados', resultados.data.resultados);
-            //
-            // return;
-
             $.ajax({
                 type: 'GET',
                 url: self.url_solicitar_reclasificacion_index + '/find',
@@ -86933,6 +86931,47 @@ Vue.component('solicitar_reclasificacion-index', {
                     self.guardando = false;
                 }
             });
+        },
+        open_modal_tipos_transaccion: function open_modal_tipos_transaccion(id_concepto) {
+            var self = this,
+                subtotal = 0,
+                subimporte = 0;
+
+            Vue.set(self.data, 'subtotal', 0);
+            Vue.set(self.data, 'subimporte', 0);
+            Vue.set(self.data, 'tipos_transacciones', []);
+
+            $.ajax({
+                type: 'GET',
+                url: self.url_solicitar_reclasificacion_index + '/tipos',
+                data: { id_concepto: id_concepto },
+                beforeSend: function beforeSend() {},
+                success: function success(data, textStatus, xhr) {
+
+                    if (data.resultados.length > 0) {
+                        $.each(data.resultados, function (key, value) {
+                            subtotal = subtotal + parseInt(value.cantidad_transacciones);
+                            subimporte = subimporte + parseInt(value.monto);
+                        });
+
+                        Vue.set(self.data, 'subtotal', subtotal);
+                        Vue.set(self.data, 'subimporte', subimporte);
+                        Vue.set(self.data, 'tipos_transacciones', data.resultados);
+                        $('#tipos_transaccion').modal('show');
+                    } else {
+                        swal({
+                            type: 'warning',
+                            title: '',
+                            html: 'No se encontraron resultados'
+                        });
+                    }
+                },
+                complete: function complete() {}
+            });
+        },
+        close_modal_tipos_transaccion: function close_modal_tipos_transaccion() {
+            var self = this;
+            $('#tipos_transaccion').modal('hide');
         }
     },
     directives: {}
