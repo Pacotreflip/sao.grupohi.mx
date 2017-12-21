@@ -12,17 +12,16 @@ Vue.component('solicitar_reclasificacion-index', {
                     'operador': '',
                     'texto': ''
                 },
-                'resultados': [],
-                'niveles': []
+                'resultados': []
             }
         }
     },
-    computed: {},
-    methods: {
-        getMaxNiveles: function () {
+    computed: {
+        niveles : function () {
             var self = this,
                 niveles = [],
                 paso = 1;
+
 
             for (paso; paso <= self.max_niveles; paso++) {
                 niveles.push({numero:paso, nombre:"Nivel "+ paso});
@@ -30,6 +29,20 @@ Vue.component('solicitar_reclasificacion-index', {
 
             return niveles;
         },
+        niveles_n : function () {
+            var result = 0;
+            this.data.resultados.forEach(function (t) {
+                var cont = (Object.keys(t)).filter(function (t2) {
+                    return t[t2] != null;
+                });
+                if (cont.length -4 > result) {
+                    result = cont.length -4;
+                }
+            })
+            return result;
+        }
+    },
+    methods: {
         agregar_filtro: function () {
             var self = this,
                 vacios = [],

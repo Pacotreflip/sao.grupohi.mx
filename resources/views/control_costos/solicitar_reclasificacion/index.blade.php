@@ -37,7 +37,7 @@
                                     <label><b>Nivel</b></label>
                                     <Select class="form-control" name="nivel" id="nivel" v-model="data.agrega.nivel">
                                         <option value>[--SELECCIONE--]</option>
-                                        <option v-for="(item, index) in getMaxNiveles()" :value="item.nombre">@{{item.nombre}}</option>
+                                        <option v-for="(item, index) in niveles" :value="item.nombre">@{{item.nombre}}</option>
                                     </Select>
                                 </div>
                             </div>
@@ -127,22 +127,19 @@
                                 <thead>
                                 <tr>
                                     <th>#</th>
-                                    <th>Nivel</th>
-                                    <th>Descripción</th>
+                                    <th v-for="item of niveles_n">
+                                        Nivel @{{  item }}
+                                    </th>
                                     <th>Total</th>
-                                    <th>Acciones</th>
                                 </tr>
                                 </thead>
                                 <tbody>
                                 <tr v-for="(item, index) in data.resultados">
                                     <td >@{{ index + 1  }}</td>
-                                    <td>@{{ item.nivel }}</td>
-                                    <td>@{{  item.descripcion }}</td>
-                                    <td>@{{  item.total }}</td>
-                                    <td class="btn-group">
-                                        <button type="button" title="Solicitar Reclasificación" class="btn btn-xs btn-success" v-on:click="confirm_solicitar(item)" v-if="!item.solicitado"><i class="fa fa-file-text-o"></i></button>
-                                        <button type="button" title="Eliminar" class="btn btn-xs btn-danger" v-on:click="confirm_eliminar(index, 'resultado')"><i class="fa fa-trash"></i></button>
+                                    <td v-for="i in niveles">
+                                        @{{ item['filtro' + i.numero] }}
                                     </td>
+                                    <td><a>@{{  parseInt(item.total).formatMoney(2, '.', ',') }}</a></td>
                                 </tr>
                                 </tbody>
                             </table>
