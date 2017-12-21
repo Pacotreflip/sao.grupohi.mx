@@ -4,5 +4,5 @@ namespace Ghi\Domain\Core\Contracts\Contabilidad;
 
 interface ConceptoPathRepository
 {
-    public function buscarCostoTotal();
+    public function buscarCostoTotal($raw);
 }

@@ -37,7 +37,7 @@
                                     <label><b>Nivel</b></label>
                                     <Select class="form-control" name="nivel" id="nivel" v-model="data.agrega.nivel">
                                         <option value>[--SELECCIONE--]</option>
-                                        <option v-for="(item, index) in niveles" :value="item.nombre">@{{item.nombre}}</option>
+                                        <option v-for="(item, index) in getMaxNiveles()" :value="item.nombre">@{{item.nombre}}</option>
                                     </Select>
                                 </div>
                             </div>
@@ -120,7 +120,6 @@
                 <div class="box box-success">
                     <div class="box-header with-border">
                         <h3 class="box-title">Resultados</h3>
-                        <h4 class="text-right">Total: @{{ data.total_resultados }}</h4>
                     </div>
                     <div class="box-body">
                         <div class="table-responsive">
@@ -128,19 +127,22 @@
                                 <thead>
                                 <tr>
                                     <th>#</th>
-                                    <th v-for="item of niveles_n">
-                                        Nivel @{{  item }}
-                                    </th>
+                                    <th>Nivel</th>
+                                    <th>Descripción</th>
                                     <th>Total</th>
+                                    <th>Acciones</th>
                                 </tr>
                                 </thead>
                                 <tbody>
                                 <tr v-for="(item, index) in data.resultados">
                                     <td >@{{ index + 1  }}</td>
-                                    <td v-for="i in niveles">
-                                        @{{ item['filtro' + i.numero] }}
+                                    <td>@{{ item.nivel }}</td>
+                                    <td>@{{  item.descripcion }}</td>
+                                    <td>@{{  item.total }}</td>
+                                    <td class="btn-group">
+                                        <button type="button" title="Solicitar Reclasificación" class="btn btn-xs btn-success" v-on:click="confirm_solicitar(item)" v-if="!item.solicitado"><i class="fa fa-file-text-o"></i></button>
+                                        <button type="button" title="Eliminar" class="btn btn-xs btn-danger" v-on:click="confirm_eliminar(index, 'resultado')"><i class="fa fa-trash"></i></button>
                                     </td>
-                                    <td><a v-on:click="open_modal_tipos_transaccion(item.id_concepto)">@{{  parseInt(item.total).formatMoney(2, '.', ',') }}</a></td>
                                 </tr>
                                 </tbody>
                             </table>
@@ -150,53 +152,6 @@
             </div>
         </div>
         </template>
-        <div id="tipos_transaccion" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="AgregarModal" data-backdrop="static" data-keyboard="false">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h4 class="modal-title">Tipos Transacciones</h4>
-                    </div>
-                    <div class="modal-body">
-                        <div class="row">
-                            <div class="table-responsive">
-                                <table class="table table-bordered table-striped">
-                                    <thead>
-                                        <tr>
-                                            <th>Tipo Transaccion</th>
-                                            <th>
-                                                Cantidad
-                                            </th>
-                                            <th>Importe</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                    <tr v-for="(item, index) in data.tipos_transacciones">
-                                        <td >@{{ item.tipo_transaccion  }}</td>
-                                        <td class="text-right">
-                                            @{{ parseInt(item.cantidad_transacciones).formatMoney(2, '.', ',') }}
-                                        </td>
-                                        <td class="text-right">
-                                            @{{ parseInt(item.monto).formatMoney(2, '.', ',') }}
-                                        </td>
-                                    </tr>
-                                    <tfoot style="border-top: 2px solid #00a65a;">
-                                        <tr>
-                                            <td><b>Subtotal:</b></td>
-                                            <td class="text-right"><b>@{{ parseInt(data.subtotal).formatMoney(2, '.', ',') }}</b></td>
-                                            <td class="text-right"><b>@{{ parseInt(data.subimporte).formatMoney(2, '.', ',') }}</b></td>
-                                        </tr>
-                                    </tfoot>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-default" v-on:click="close_modal_tipos_transaccion()">Cerrar</button>
-                    </div>
-                </div><!-- /.modal-content -->
-            </div><!-- /.modal-dialog -->
-        </div><!-- /.modal -->
     </section>
 </solicitar_reclasificacion-index>
 

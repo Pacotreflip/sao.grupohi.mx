@@ -32,7 +32,7 @@ class ReclasificacionCostosController extends Controller
     {
         parent::__construct();
 
-//        $this->middleware('auth');
+        $this->middleware('auth');
         $this->middleware('context');
 
         $this->concepto = $concepto;
@@ -42,11 +42,11 @@ class ReclasificacionCostosController extends Controller
 
     public function index(Request $request)
     {
-        $solicitudes = $this->solicitar->all()->toArray();
+        $solicitudes = $this->solicitar->all();
 
         foreach ($solicitudes as $k => $s)
         {
-            $solicitudes[$k]['transacciones'] = $this->transaccion->reclasificacion($s[]);
+            $solicitudes[$k]['transacciones'] = $this->transaccion->reclasificacion($s->id_concepto);
         }
 
         $dataView = [

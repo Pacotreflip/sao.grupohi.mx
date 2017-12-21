@@ -32,7 +32,6 @@ class EloquentSolicitarReclasificacionesRepository implements SolicitarReclasifi
         return $this->model->get();
     }
 
-
     /**
      * @param $data
      * @return mixed

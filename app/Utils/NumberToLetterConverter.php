@@ -2,7 +2,7 @@
 namespace Ghi\Utils;
 
 class NumberToLetterConverter {
-    function num2letras($num, $fem = false, $dec = true) {
+    function num2letras($num, $fem = false, $dec = true, $moneda = 1) {
         $matuni[2]  = "dos";
         $matuni[3]  = "tres";
         $matuni[4]  = "cuatro";
@@ -167,8 +167,14 @@ class NumberToLetterConverter {
             $tex = $t . $tex;
         }
         $tex = $neg . substr($tex, 1) . $fin;
-        //Zi hack --> return ucfirst($tex);
-        $end_num=ucfirst($tex).' pesos '.(isset($float[1]) ? $float[1] : '00').'/100 M.N.';
+
+        switch ($moneda) {
+            case 1 :
+                $end_num=ucfirst($tex).' pesos '.(isset($float[1]) ? $float[1] : '00').'/100 M.N.';
+                break;
+            case 2 :
+                $end_num=ucfirst($tex).' dolares '.(isset($float[1]) ? $float[1] : '00').'/100 USD.';
+        }
         return $end_num;
     }
 

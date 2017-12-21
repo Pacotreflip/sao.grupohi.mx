@@ -251,5 +251,9 @@ class AppServiceProvider extends ServiceProvider
             \Ghi\Domain\Core\Contracts\ControlPresupuesto\PresupuestoRepository::class,
             \Ghi\Domain\Core\Repositories\ControlPresupuesto\EloquentPresupuestoRepository::class
         );
+        $this->app->bind(
+            \Ghi\Domain\Core\Contracts\TransaccionRepository::class,
+            \Ghi\Domain\Core\Repositories\EloquentTransaccionRepository::class
+        );
     }
 }
