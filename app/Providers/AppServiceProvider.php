@@ -246,5 +246,10 @@ class AppServiceProvider extends ServiceProvider
             \Ghi\Domain\Core\Contracts\Contabilidad\ConceptoPathRepository::class,
             \Ghi\Domain\Core\Repositories\Contabilidad\EloquentConceptoPathRepository::class
         );
+
+        $this->app->bind(
+            \Ghi\Domain\Core\Contracts\ControlPresupuesto\PresupuestoRepository::class,
+            \Ghi\Domain\Core\Repositories\ControlPresupuesto\EloquentPresupuestoRepository::class
+        );
     }
 }

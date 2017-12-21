@@ -42,11 +42,11 @@ class ReclasificacionCostosController extends Controller
 
     public function index(Request $request)
     {
-        $solicitudes = $solicitar->all()->toArray();
+        $solicitudes = $this->solicitar->all()->toArray();
 
         foreach ($solicitudes as $k => $s)
         {
-            $solicitudes[$k]['transacciones'] = $this->transaccion->reclasificacion($s[}])
+            $solicitudes[$k]['transacciones'] = $this->transaccion->reclasificacion($s[]);
         }
 
         $dataView = [

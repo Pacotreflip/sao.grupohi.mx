@@ -93,6 +93,24 @@
                     </a>
                 </div>
             </div>
+
+            {{--Control Presupuesto--}}
+            <div class="col-lg-3 col-xs-6">
+                <div class="small-box bg-orange-active">
+                    <div class="inner">
+                        <h4>Control Presupuesto</h4>
+                        <p>
+                            <br/>
+                        </p>
+                    </div>
+                    <div class="icon">
+                        <i class="fa fa-lock fa-fw "></i>
+                    </div>
+                    <a href="{{route('control_presupuesto.index')}}" class="small-box-footer">
+                        Ingresar <i class="fa fa-arrow-circle-right"></i>
+                    </a>
+                </div>
+            </div>
            <!-- <div class="col-lg-3 col-xs-6">
 
                 <div class="small-box bg-green">

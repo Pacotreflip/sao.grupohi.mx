@@ -76849,6 +76849,10 @@ require('./vue-components/Tesoreria/movimientos_bancarios/index');
  */
 require('./vue-components/Control_Costos/reclasificacion_costos/index');
 require('./vue-components/Control_Costos/solicitar_reclasificacion/index');
+
+/**
+ * Control Presupuesto
+ */
 require('./vue-components/Control_Presupuesto/presupuesto/index');
 
 },{"./vue-components/Compras/material/index":139,"./vue-components/Compras/requisicion/create":140,"./vue-components/Compras/requisicion/edit":141,"./vue-components/Contabilidad/cuenta_almacen/index":142,"./vue-components/Contabilidad/cuenta_bancos/cuenta-bancaria-edit":143,"./vue-components/Contabilidad/cuenta_concepto/index":144,"./vue-components/Contabilidad/cuenta_contable/index":145,"./vue-components/Contabilidad/cuenta_costo/index":146,"./vue-components/Contabilidad/cuenta_empresa/cuenta-empresa-edit":147,"./vue-components/Contabilidad/cuenta_fondo/index":148,"./vue-components/Contabilidad/cuenta_material/index":149,"./vue-components/Contabilidad/datos_contables/edit":150,"./vue-components/Contabilidad/emails":151,"./vue-components/Contabilidad/modulos/revaluacion/create":152,"./vue-components/Contabilidad/poliza_generada/edit":153,"./vue-components/Contabilidad/poliza_tipo/poliza-tipo-create":154,"./vue-components/Contabilidad/tipo_cuenta_contable/tipo-cuenta-contable-create":155,"./vue-components/Contabilidad/tipo_cuenta_contable/tipo-cuenta-contable-update":156,"./vue-components/Control_Costos/reclasificacion_costos/index":157,"./vue-components/Control_Costos/solicitar_reclasificacion/index":158,"./vue-components/Control_Presupuesto/presupuesto/index":159,"./vue-components/Finanzas/comprobante_fondo_fijo/create":160,"./vue-components/Finanzas/comprobante_fondo_fijo/edit":161,"./vue-components/Reportes/subcontratos-estimacion":162,"./vue-components/Tesoreria/movimientos_bancarios/index":163,"./vue-components/Tesoreria/traspaso_cuentas/index":164,"./vue-components/errors":165,"./vue-components/global-errors":166,"./vue-components/kardex_material/kardex-material-index":167,"./vue-components/select2":168}],139:[function(require,module,exports){

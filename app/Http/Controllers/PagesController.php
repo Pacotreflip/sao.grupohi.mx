@@ -80,4 +80,8 @@ class PagesController extends Controller
     public function control_costos() {
         return view('control_costos.index');
     }
+
+    public function control_presupuesto() {
+    return view('control_presupuesto.index');
+}
 }
