@@ -120,6 +120,7 @@
                 <div class="box box-success">
                     <div class="box-header with-border">
                         <h3 class="box-title">Resultados</h3>
+                        <h4 class="text-right">Total: @{{ data.total_resultados }}</h4>
                     </div>
                     <div class="box-body">
                         <div class="table-responsive">
@@ -171,19 +172,20 @@
                                     <tbody>
                                     <tr v-for="(item, index) in data.tipos_transacciones">
                                         <td >@{{ item.tipo_transaccion  }}</td>
-                                        <td >
-                                            @{{ item.cantidad_transacciones }}
+                                        <td class="text-right">
+                                            @{{ parseInt(item.cantidad_transacciones).formatMoney(2, '.', ',') }}
                                         </td>
-                                        <td>
-                                            @{{ item.monto }}
+                                        <td class="text-right">
+                                            @{{ parseInt(item.monto).formatMoney(2, '.', ',') }}
                                         </td>
                                     </tr>
-                                    <hr>
-                                    <tr>
-                                        <td>Subtotal:</td>
-                                        <td>@{{ data.subtotal }}</td>
-                                        <td>@{{ data.subimporte }}</td>
-                                    </tr>
+                                    <tfoot style="border-top: 2px solid #00a65a;">
+                                        <tr>
+                                            <td><b>Subtotal:</b></td>
+                                            <td class="text-right"><b>@{{ parseInt(data.subtotal).formatMoney(2, '.', ',') }}</b></td>
+                                            <td class="text-right"><b>@{{ parseInt(data.subimporte).formatMoney(2, '.', ',') }}</b></td>
+                                        </tr>
+                                    </tfoot>
                                     </tbody>
                                 </table>
                             </div>

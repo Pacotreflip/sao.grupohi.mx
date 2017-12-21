@@ -86726,7 +86726,8 @@ Vue.component('solicitar_reclasificacion-index', {
                 'resultados': [],
                 'tipos_transacciones': [],
                 'subtotal': 0,
-                'subimporte': 0
+                'subimporte': 0,
+                'total_resultados': 0
             }
         };
     },
@@ -86833,7 +86834,10 @@ Vue.component('solicitar_reclasificacion-index', {
         },
         buscar: function buscar() {
             var self = this,
-                str = { 'data': JSON.stringify(self.data.filtros) };
+                str = { 'data': JSON.stringify(self.data.filtros) },
+                total_resultados = 0;
+
+            Vue.set(self.data, 'total_resultados', 0);
 
             if (self.data.filtros.length == 0) {
                 return swal({
@@ -86851,6 +86855,12 @@ Vue.component('solicitar_reclasificacion-index', {
                 success: function success(data, textStatus, xhr) {
 
                     if (data.data.resultados.length > 0) {
+                        $.each(data.data.resultados, function (key, value) {
+                            console.log(value);
+                            total_resultados = total_resultados + parseInt(value.total);
+                        });
+
+                        Vue.set(self.data, 'total_resultados', parseInt(total_resultados).formatMoney(2, '.', ','));
                         Vue.set(self.data, 'resultados', data.data.resultados);
                         swal({
                             type: 'success',
