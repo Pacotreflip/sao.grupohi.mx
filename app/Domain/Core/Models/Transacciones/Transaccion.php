@@ -4,6 +4,7 @@ namespace Ghi\Domain\Core\Models\Transacciones;
 
 use Ghi\Domain\Core\Models\TipoTransaccion;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 
 class Transaccion extends Model
 {
@@ -65,11 +66,10 @@ class Transaccion extends Model
     public function reclasificacion($id_concepto)
     {
         $items = Transaccion::join('items', 'transacciones.id_transaccion', '=', 'items.id_transaccion')
-            ->join('movimientos', 'items.id_item', '=', 'movimientos.id_item')
+            ->join('movimientos', 'items.id_item', '=', 'movimientos.id_item')->
             leftJoin('TipoTran', function($join)
             {
-                $join->on('TipoTran.opciones', '=', 'transacciones.opciones')
-                    ->where('transacciones.tipo_transaccion', '=', 'TipoTran.Tipo_Transaccion';
+                $join->on('TipoTran.opciones', '=', DB::raw("transacciones.opciones AND  transacciones.tipo_transaccion = TipoTran.Tipo_Transaccion"));
             })
             ->selectRaw('TipoTran.descripcion as tipo_transaccion,
   count(transacciones.id_transaccion) as cantidad_transacciones,
@@ -77,7 +77,6 @@ class Transaccion extends Model
             ->where('movimientos.id_concepto', '=', $id_concepto)
             ->groupBy('TipoTran.descripcion')
             ->get();
-
             return $items;
     }
 }

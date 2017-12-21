@@ -25,7 +25,6 @@ class SolicitarReclasificaciones extends BaseModel
     protected static function boot()
     {
         parent::boot();
-        static::addGlobalScope(new ObraScope());
 
         static::creating(function ($model) {
             $model->estatus = 1;

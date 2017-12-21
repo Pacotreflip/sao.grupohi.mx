@@ -2,12 +2,11 @@
 
 namespace Ghi\Domain\Core\Repositories\Contabilidad;
 
-use Ghi\Domain\Core\Contracts\Contabilidad\ConceptoRepository;
-use Ghi\Domain\Core\Models\Concepto;
+use Ghi\Domain\Core\Contracts\Contabilidad\ConceptoPathRepository;
 use Ghi\Domain\Core\Models\ConceptoPath;
 use Illuminate\Support\Facades\DB;
 
-class EloquentConceptoPathRepository implements ConceptoRepository
+class EloquentConceptoPathRepository implements ConceptoPathRepository
 {
     /**
      * @var \Ghi\Domain\Core\Models\Concepto
