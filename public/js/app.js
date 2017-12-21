@@ -86723,7 +86723,8 @@ Vue.component('solicitar_reclasificacion-index', {
                     'operador': '',
                     'texto': ''
                 },
-                'resultados': []
+                'resultados': [],
+                'niveles': []
             }
         };
     },
@@ -86745,12 +86746,14 @@ Vue.component('solicitar_reclasificacion-index', {
                 vacios = [],
                 temp = [];
 
+            // Los campos  no puedene star vacios
             $.each(self.data.agrega, function (index, value) {
                 if (value === "") {
                     vacios.push(index);
                 }
             });
 
+            // Manda error si están vacios
             if (vacios.length > 0) {
                 return swal({
                     type: 'warning',
@@ -86825,10 +86828,10 @@ Vue.component('solicitar_reclasificacion-index', {
                 });
             }
 
-            var resultados = JSON.parse('{"data":{"resultados":[{"total":"141805.0","id_concepto":5,"descripcion":"GASTOS INDIRECTOS","nivel":"000.001.002.001.","nivel_hijos":"000.001.002.001.___.","nivel_padre":"000.001.002.","id_padre":4,"tiene_hijos":8,"cargado":false,"path":"TERMINAL NAICM -> CONTROL TERMINAL NAICM -> COSTO INDIRECTO -> GASTOS INDIRECTOS"}]}}');
-            Vue.set(self.data, 'resultados', resultados.data.resultados);
-
-            return;
+            // var resultados = JSON.parse('{"data":{"resultados":[{"total":"141805.0","id_concepto":5,"descripcion":"GASTOS INDIRECTOS","nivel":"000.001.002.001.","nivel_hijos":"000.001.002.001.___.","nivel_padre":"000.001.002.","id_padre":4,"tiene_hijos":8,"cargado":false,"path":"TERMINAL NAICM -> CONTROL TERMINAL NAICM -> COSTO INDIRECTO -> GASTOS INDIRECTOS"}]}}');
+            // Vue.set(self.data, 'resultados', resultados.data.resultados);
+            //
+            // return;
 
             $.ajax({
                 type: 'GET',

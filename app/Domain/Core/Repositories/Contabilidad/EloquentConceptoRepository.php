@@ -93,16 +93,4 @@ class EloquentConceptoRepository implements ConceptoRepository
 
         return $item->max_nivel;
     }
-
-    public function buscarRaw($raw)
-    {
-        $items = Concepto::leftJoin('movimientos', 'movimientos.id_concepto', '=', 'conceptos.id_concepto')
-            ->selectRaw('sum(movimientos.monto_total) as total, conceptos.id_concepto, conceptos.descripcion, conceptos.nivel')
-            ->whereRaw($raw)
-            ->groupBy(DB::raw('conceptos.id_concepto, conceptos.descripcion, conceptos.nivel'))
-            ->havingRaw('sum(movimientos.monto_total) > 0')
-            ->get();
-
-        return $items;
-    }
 }

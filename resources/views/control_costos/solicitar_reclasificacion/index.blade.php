@@ -92,10 +92,9 @@
                                         <td>@{{  item.operador }}</td>
                                         <td>@{{  item.texto }}</td>
                                         <td>
-                                            <div class="btn-group">
-                                                <button type="button" class="btn btn-xs btn-success" v-on:click="open_modal_agregar('Y', item)" title="concatena un nuevo filtro"> Y </button>
-                                                <button type="button" class="btn btn-xs btn-info" v-on:click="open_modal_agregar('O', item)" title="agrega un filtro diferente"> O </button>
-                                            </div>
+                                            {{--<div class="btn-group">--}}
+                                                {{--<button type="button" class="btn btn-xs btn-success" v-on:click="open_modal_agregar('Y', item)" title="concatena un nuevo filtro">Agregar filtro </button>--}}
+                                            {{--</div>--}}
                                             <div class="btn-group">
                                                 <button type="button" title="Eliminar" class="btn btn-xs btn-danger" v-on:click="confirm_eliminar(index, 'filtro')"><i class="fa fa-trash"></i></button>
                                             </div>

@@ -5,9 +5,10 @@ namespace Ghi\Http\Controllers;
 use Dingo\Api\Routing\Helpers;
 
 
-use Ghi\Domain\Core\Contracts\Contabilidad\ConceptoRepository;
+use Ghi\Domain\Core\Contracts\Contabilidad\ConceptoPathRepository;
 use Ghi\Domain\Core\Contracts\ControlCostos\SolicitarReclasificacionesRepository;
-use Ghi\Domain\Core\Transformers\ConceptoTreeTransformer;
+
+use Ghi\Domain\Core\Models\Concepto;
 use Illuminate\Http\Request;
 
 class SolicitarReclasificacionController extends Controller
@@ -29,10 +30,11 @@ class SolicitarReclasificacionController extends Controller
 
     /**
      * SolicitarReclasificacionController constructor.
-     * @param ConceptoRepository $concepto
+     * @param Concepto|ConceptoRepository $concepto
+     * @param ConceptoPathRepository $conceptoPath
      * @param SolicitarReclasificacionesRepository $solicitar
      */
-    public function __construct(ConceptoRepository $concepto, SolicitarReclasificacionesRepository $solicitar)
+    public function __construct(Concepto $concepto, ConceptoPathRepository $conceptoPath, SolicitarReclasificacionesRepository $solicitar)
     {
         parent::__construct();
 
@@ -40,6 +42,7 @@ class SolicitarReclasificacionController extends Controller
         $this->middleware('context');
 
         $this->concepto = $concepto;
+        $this->conceptoPath = $conceptoPath;
         $this->solicitar = $solicitar;
     }
 
@@ -69,23 +72,72 @@ class SolicitarReclasificacionController extends Controller
     {
         $filtros = json_decode($request->data, true);
         $string = "";
-        $end = count($filtros) - 1;
+        $niveles = [];
+        $string = '';
+//
+//        $filtros = [
+//            [
+//                'nivel' => 5,
+//                'operador' => '=',
+//                'texto' => 'gastos',
+//            ],
+//            [
+//                'nivel' => 5,
+//                'operador' => '=',
+//                'texto' => 'obra',
+//            ],
+//            [
+//                'nivel' => 5,
+//                'operador' => '=',
+//                'texto' => 'gastos',
+//            ]
+//        ];
 
         foreach ($filtros as $k => $v)
+            foreach ($filtros as $k => $v)
+            {
+                $o = $this->operadores[$v['operador']];
+
+//            $operador = strpos($o, '=') ? ($o . " '". $v['texto'] ."'") : ("LIKE '". str_replace('{texto}', $v['texto'], $o). "'");
+
+                if (strpos($o, '=') !== false)
+                {
+                    $operador = $o . " '" . $v['texto'] . "'";
+                }
+
+                else
+                {
+                    $operador = "LIKE '". str_replace('{texto}', $v['texto'], $o). "'";
+                }
+
+                $nivel = filter_var($v['nivel'], FILTER_SANITIZE_NUMBER_INT);
+
+                //Si existe
+                if (in_array( $nivel, array_keys($niveles)))
+                {
+                    $niveles[ $nivel] .= ' OR filtro'. $nivel ." ". $operador;
+                }
+
+                else
+                {
+                    $niveles[ $nivel] = " filtro". $nivel ." ". $operador;
+                }
+
+            }
+
+        $endValue = end($niveles);
+        $end = key($niveles);
+        $count = 0;
+
+        foreach ($niveles as $nivel => $cadena)
         {
-             $condicionante = !empty($v['condicionante']) ? $this->condicionantes[$v['condicionante']] : ' AND ';
-             $nivel = filter_var($v['nivel'], FILTER_SANITIZE_NUMBER_INT);
-             $operador = $this->operadores[$v['operador']];
-             $texto = $v['texto'];
-
-            // Like o condicionante?
-            $texto = strpos($operador, '=') ? ($operador . " '". $texto ."'") : ("LIKE '". str_replace('{texto}', $v['texto'], $operador). "'");
-
-            $string .= "LEN(nivel)/4 = ". $nivel ." AND descripcion ". $texto ." ". ($end === $k ? '' : $condicionante) ." ";
+            $string .= ($count == 0 ? "" : " and") . $cadena;
+            $count++;
         }
 
-        $resultados = $this->concepto->buscarRaw($string);
+        $resultados = $this->conceptoPath->buscarCostoTotal($string);
 
+        dd($string);die;
         return response()->json(['data' => ['resultados' => $resultados]], 200);
     }
 
