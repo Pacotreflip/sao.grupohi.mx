@@ -16,4 +16,14 @@ class EloquentPresupuestoRepository implements PresupuestoRepository
         $resp = ConceptoPath::selectRaw('MAX(LEN(nivel)) / 4 as max_nivel')->first();
         return $resp->max_nivel;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getOperadores()
+    {
+        $operadores = [
+
+        ];
+    }
 }

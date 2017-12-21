@@ -129,4 +129,8 @@ class Concepto extends BaseModel
     public function padre() {
         return Concepto::where('nivel', '=', $this->nivel_padre)->first();
     }
+
+    public function conceptoPath() {
+        return $this->hasOne(ConceptoPath::class, 'id_concepto');
+    }
 }

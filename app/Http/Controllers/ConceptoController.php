@@ -74,4 +74,10 @@ class ConceptoController extends Controller
         return response()->json($resp, 200);
 
     }
+
+    public function getPaths(Request $request) {
+        $conceptos = $this->concepto->paths($request->filtros);
+
+        return response()->json(['conceptos' => $conceptos ]);
+    }
 }

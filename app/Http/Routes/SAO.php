@@ -41,6 +41,8 @@ Route::get('material/{id}/getHijos', 'MaterialController@getHijos')->name('mater
 
 Route::get('conceptos/jstree', 'ConceptoController@getRoot');
 Route::get('conceptos/{id}/jstree', 'ConceptoController@getNode');
+Route::get('conceptos/getPaths', 'ConceptoController@getPaths');
+
 
 /**
  * Subcontratos Routes...

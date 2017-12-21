@@ -18,6 +18,6 @@ class ObraScope implements Scope
      */
     public function apply(Builder $builder, Model $model)
     {
-        return $builder->where('id_obra', '=', Context::getId());
+        return $builder->where($model->getTable().'.id_obra', '=', Context::getId());
     }
 }

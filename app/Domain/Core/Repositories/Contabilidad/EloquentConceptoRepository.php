@@ -2,6 +2,7 @@
 
 namespace Ghi\Domain\Core\Repositories\Contabilidad;
 
+use Ghi\Core\Facades\Context;
 use Ghi\Domain\Core\Contracts\Contabilidad\ConceptoRepository;
 use Ghi\Domain\Core\Models\Concepto;
 use Illuminate\Support\Facades\DB;
@@ -92,5 +93,34 @@ class EloquentConceptoRepository implements ConceptoRepository
         $item = $this->model->selectRaw('MAX(LEN(nivel)) / 4 as max_nivel')->first();
 
         return $item->max_nivel;
+    }
+
+    public function paths($filtros) {
+
+        $query = DB::connection('cadeco')->table('conceptos')->where('conceptos.id_obra', '=', Context::getId())->join('PresupuestoObra.conceptosPath as path', 'conceptos.id_concepto', '=', 'path.id_concepto');
+
+        foreach ($filtros as $key => $filtro) {
+            $query->where(function ($q) use ($filtro) {
+                foreach ($filtro['operadores'] as $key => $operador) {
+                    if($key == 0) {
+                        $q->whereRaw('filtro' . $filtro['nivel'] . ' ' . str_replace('"', "'",$operador["sql"]));
+                    } else {
+                        $q->orWhereRaw('filtro' . $filtro['nivel'] . ' ' . str_replace('"', "'",$operador["sql"]));
+                    }
+                }
+            });
+
+        }
+
+        $query->select(
+            "conceptos.unidad",
+            "conceptos.cantidad_presupuestada",
+            "conceptos.precio_unitario",
+            "conceptos.monto_presupuestado",
+            DB::raw("(conceptos.cantidad_presupuestada * conceptos.precio_unitario) AS monto"),
+            "path.*"
+        );
+
+        return $query->get();
     }
 }
