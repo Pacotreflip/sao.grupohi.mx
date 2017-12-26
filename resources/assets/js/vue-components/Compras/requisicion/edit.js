@@ -17,7 +17,6 @@ Vue.component('requisicion-edit', {
                     'cantidad': '',
                     'unidad': this.unidad,
                     'id_item':''
-
                 }
             },
             data: {

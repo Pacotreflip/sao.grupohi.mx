@@ -9,6 +9,8 @@ namespace Ghi\Domain\Core\Models\Transacciones;
  * Time: 01:25 PM
  */
 
+use Carbon\Carbon;
+use Ghi\Core\Facades\Context;
 use Ghi\Domain\Core\Models\Scopes\EstimacionScope;
 use Ghi\Domain\Core\Models\Scopes\ObraScope;
 use Ghi\Domain\Core\Models\SubcontratosEstimaciones\Descuento;
@@ -17,11 +19,23 @@ use Ghi\Domain\Core\Models\SubcontratosEstimaciones\Retencion;
 
 class Estimacion extends Transaccion
 {
+    protected $fillable = [
+        'id_antecedente',
+        'fecha',
+        'id_empresa',
+        'id_moneda',
+        'vencimiento',
+        'cumplimiento',
+        'observaciones',
+        'referencia',
+        'anticipo',
+        'retencion'
+    ];
 
     protected $dates = ['fecha', 'cumplimiento', 'vencimiento'];
 
     /**
-     * Aplicar Scope Global para recuperar solo las transacciones de tipo Subcontrato
+     * Aplicar Scope Global para recuperar solo las transacciones de tipo Estimación
      */
     protected static function boot()
     {
@@ -29,6 +43,14 @@ class Estimacion extends Transaccion
 
         static::addGlobalScope(new EstimacionScope());
         static::addGlobalScope(new ObraScope());
+
+        static::creating(function($model) {
+            $model->opciones = 0;
+            $model->id_obra = Context::getId();
+            $model->FechaHoraRegistro = Carbon::now()->toDateTimeString();
+            $model->tipo_transaccion = Tipo::ESTIMACION;
+            $model->comentario = "I;" . date('d/m/Y') . " " . date('h:m:s') . ";SAO|" . auth()->user()->usuario . "|";
+        });
     }
 
     public function subcontrato()

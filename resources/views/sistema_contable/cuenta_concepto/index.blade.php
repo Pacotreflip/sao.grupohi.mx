@@ -1,10 +1,10 @@
 @extends('sistema_contable.layout')
 @section('title', 'Cuentas de Conceptos')
 @section('contentheader_title', 'CUENTAS DE CONCEPTOS')
-@section('contentheader_description', '(INDEX)')
-
-@section('main-content')
+@section('breadcrumb')
     {!! Breadcrumbs::render('sistema_contable.cuenta_concepto.index') !!}
+@endsection
+@section('main-content')
 
     <cuenta-concepto-index
                 :conceptos="{{$conceptos}}"

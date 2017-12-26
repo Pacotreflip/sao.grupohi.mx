@@ -1,10 +1,10 @@
 @extends('sistema_contable.layout')
 @section('title', 'Tipos de Cuentas Contables')
 @section('contentheader_title', 'TIPOS DE CUENTAS CONTABLES')
-@section('contentheader_description', '(LISTA)')
-
-@section('main-content')
+@section('breadcrumb')
     {!! Breadcrumbs::render('sistema_contable.tipo_cuenta_contable.index') !!}
+@endsection
+@section('main-content')
 
     @permission(['registrar_tipo_cuenta_contable'])
     <div class="row">

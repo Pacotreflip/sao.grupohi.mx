@@ -1,8 +1,10 @@
 @extends('reportes.layout')
 @section('title', 'Reportes')
 @section('contentheader_title', 'REPORTES')
-@section('main-content')
+@section('breadcrumb')
     {!! Breadcrumbs::render('reportes.index') !!}
+@endsection
+@section('main-content')
 
     <div class="row">
         <div class="col-md-12">

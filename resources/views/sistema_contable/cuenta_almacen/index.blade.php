@@ -1,10 +1,10 @@
 @extends('sistema_contable.layout')
 @section('title', 'Cuentas Almacenes')
 @section('contentheader_title', 'CUENTAS DE ALMACENES')
-@section('contentheader_description', '(INDEX)')
-
-@section('main-content')
+@section('breadcrumb')
     {!! Breadcrumbs::render('sistema_contable.cuenta_almacen.index') !!}
+@endsection
+@section('main-content')
 
     <global-errors></global-errors>
     <cuenta-almacen-index

@@ -2,6 +2,7 @@
 
 namespace Ghi\Domain\Core\Models;
 
+use Carbon\Carbon;
 use Ghi\Domain\Core\Models\Contabilidad\CuentaEmpresa;
 use Ghi\Domain\Core\Models\Transacciones\Tipo;
 use Illuminate\Support\Facades\DB;
@@ -12,6 +13,33 @@ class Empresa extends BaseModel
     protected $table = 'dbo.empresas';
     protected $primaryKey = 'id_empresa';
     protected $appends = ['total_cuentas'];
+    protected $fillable = [
+        'tipo_empresa',
+        'razon_social',
+        'rfc',
+        'dias_credito',
+        'formato',
+        'cuenta_contable',
+        'tipo_cliente',
+        'porcentaje',
+        'no_proveedor_virtual',
+        'FechaHoraRegistro',
+        'UsuarioRegistro',
+        'UsuarioValido',
+        'personalidad'
+    ];
+
+    public $timestamps = false;
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::creating(function($model) {
+            $model->UsuarioRegistro = auth()->user()->idusuario;
+            $model->FechaHoraRegistro = Carbon::now()->toDateTimeString();
+        });
+    }
 
     public function cuentasEmpresa()
     {
@@ -42,8 +70,14 @@ class Empresa extends BaseModel
             ->whereIn('dbo.transacciones.tipo_transaccion', [Tipo::ESTIMACION, Tipo::SUBCONTRATO])
             ->orderBy('dbo.empresas.razon_social');
     }
+
     public function __toString()
     {
         return $this->razon_social;
+    }
+
+    public function getAppends() {
+        $vars = get_class_vars(__CLASS__);
+        return $vars['appends'];
     }
 }

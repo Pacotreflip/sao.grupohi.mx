@@ -1,12 +1,14 @@
 @extends('sistema_contable.layout')
 @section('title', 'Sistema Contable')
 @section('contentheader_title', 'SISTEMA CONTABLE')
-@section('main-content')
+@section('breadcrumb')
     {!! Breadcrumbs::render('sistema_contable.index') !!}
+@endsection
+@section('main-content')
 
     <div class="row">
         <div class="col-md-12">
-            <div class="box box-info">
+            <div class="box box-solid">
                 <div class="box-header with-border">
                     <h3 class="box-title">Información Semanal de Prepólizas</h3>
                 </div>
@@ -19,7 +21,7 @@
         </div>
 
         <div class="col-md-8">
-            <div class="box box-info">
+            <div class="box box-solid">
                 <div class="box-header with-border">
                     <h3 class="box-title">Información de Cuentas Contables</h3>
                 </div>
@@ -32,7 +34,7 @@
         </div>
 
         <div class="col-md-4">
-            <div class="box box-info">
+            <div class="box box-solid">
                 <div class="box-header with-border">
                     <h3 class="box-title">Acumulados de Prepólizas</h3>
                 </div>

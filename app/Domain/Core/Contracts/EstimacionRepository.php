@@ -8,6 +8,7 @@
 
 namespace Ghi\Domain\Core\Contracts;
 
+use Dingo\Api\Http\Request;
 use Ghi\Domain\Core\Models\Transacciones\Estimacion;
 use Illuminate\Database\Eloquent\Collection;
 
@@ -40,4 +41,12 @@ interface EstimacionRepository
      * @return Collection
      */
     public function getBy($attribute, $operator, $value);
+
+    /**
+     * Registra una nueva Estimación
+     * @param Request $request
+     * @return Estimacion
+     * @throws \Exception
+     */
+    public function create(Request $request);
 }

@@ -2,7 +2,7 @@
 
 namespace Ghi\Domain\Core\Contracts;
 
-use Ghi\Domain\Core\Models\Fondo;
+use Dingo\Api\Http\Request;
 use Illuminate\Database\Eloquent\Collection;
 
 interface SubcontratoRepository
@@ -15,4 +15,11 @@ interface SubcontratoRepository
      * @return Collection
      */
     public function getBy($attribute, $operator, $value);
+
+    /**
+     * Almacena un nuevo SubContrato
+     * @param  array $data
+     * @return Subcontrato
+     */
+    public function create(Request $request);
 }

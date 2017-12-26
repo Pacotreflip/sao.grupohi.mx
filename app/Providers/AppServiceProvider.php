@@ -255,5 +255,21 @@ class AppServiceProvider extends ServiceProvider
             \Ghi\Domain\Core\Contracts\TransaccionRepository::class,
             \Ghi\Domain\Core\Repositories\EloquentTransaccionRepository::class
         );
+        $this->app->bind(
+            \Ghi\Domain\Core\Contracts\SucursalRepository::class,
+            \Ghi\Domain\Core\Repositories\EloquentSucursalRepository::class
+        );
+        $this->app->bind(
+            \Ghi\Domain\Core\Contracts\ContratoProyectadoRepository::class,
+            \Ghi\Domain\Core\Repositories\EloquentContratoProyectadoRepository::class
+        );
+        $this->app->bind(
+            \Ghi\Domain\Core\Contracts\ContratoRepository::class,
+            \Ghi\Domain\Core\Repositories\EloquentContratoRepository::class
+        );
+        $this->app->bind(
+            \Ghi\Domain\Core\Contracts\ConciliacionRepository::class,
+            \Ghi\Domain\Core\Repositories\EloquentConciliacionRepository::class
+        );
     }
 }
