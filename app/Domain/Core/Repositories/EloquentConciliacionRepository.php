@@ -86,7 +86,7 @@ class EloquentConciliacionRepository implements ConciliacionRepository
     public function store(Request $request)
     {
 
-        $est = ConciliacionEstimacion::where('id_conciliacion', '=', $request->id_conciliacion)->get();
+        $est = ConciliacionEstimacion::where('id_conciliacion', '=', $request->id_conciliacion)->first();
         if($est){
             throw new ResourceException('La Conciliacion ya Existe en SAO');
         }
@@ -112,7 +112,7 @@ class EloquentConciliacionRepository implements ConciliacionRepository
                 if($key>100)$llave = $key.'.';
                 $contratos[$key] =  array(
                     'nivel' => $llave,
-                    'descripcion' => 'Acarreo de Material '.$partida['material'],
+                    'descripcion' => $key.' Acarreo '.$partida['material'],
                     'unidad' => 'M3',
                     'cantidad_presupuestada' => $partida['volumen'],
                     'id_material' => (int)$partida['id_material'],
@@ -131,6 +131,8 @@ class EloquentConciliacionRepository implements ConciliacionRepository
                 'contratos' => ($contratos)
 
             ]);
+
+            //dd($req->all());
             $contrato_proy_creado = $this->contratoProyectado->create($req);
             $contrato_proyectado = ContratoProyectadoAcarreo::create(['id_transaccion' => $contrato_proy_creado->id_transaccion, 'descripcion' => $contrato_proy_creado->referencia]);
 
@@ -145,6 +147,7 @@ class EloquentConciliacionRepository implements ConciliacionRepository
 
 
                 if (count($contrato) == 0) {  // si no existe contrato adjunto al Contrato proyectado, crearlo
+
                     $req = new Request();
                     $contratos = [];
                     $contratos[] =  array(
@@ -162,6 +165,7 @@ class EloquentConciliacionRepository implements ConciliacionRepository
                     $req->merge([
                         'contratos' => ($contratos)
                     ]);
+
                     $new = $this->contratoProyectado->addContratos($req,$contrato_proyectado['id_transaccion']);
 
                     $newMaterial = MaterialAcarreo::create([
@@ -184,7 +188,8 @@ class EloquentConciliacionRepository implements ConciliacionRepository
             $req = new Request();
             $items = [];
             foreach ($partidas_conciliacion as $key => $partida){
-                $concepto_contrato = MaterialAcarreo::select('id_concepto_contrato')->where('id_material_acarreo', '=',(int)$partida['id_material'])->where('id_concepto', '=',(int)$partida['id_concepto'] )->first();
+                $concepto_contrato = MaterialAcarreo::select('id_concepto_contrato')->where('id_material_acarreo', '=',(int)$partida['id_material'])
+                    ->where('id_concepto', '=',(int)$partida['id_concepto'] )->first();
                 $moneda = Moneda::where('tipo', 1)->first();
                 $items[$key] =  array(
                     'id_concepto' => $concepto_contrato->id_concepto_contrato,
@@ -205,8 +210,8 @@ class EloquentConciliacionRepository implements ConciliacionRepository
             ]);
             $subcontrato = $this->subcontrato->create($req);
 
-            //dd('subpandita nuevo', $resp);    //      -> crear subcontrato con items
-        }else{   // si existe
+            //dd('subpandita nuevo', $subcontrato);    //      -> crear subcontrato con items
+        }else {   // si existe
             //      -> buscar Item
             foreach ($partidas_conciliacion as $key => $partida) {
                 $item = Item::join('Acarreos.material', 'items.id_concepto', '=', 'Acarreos.material.id_concepto_contrato')
@@ -216,28 +221,28 @@ class EloquentConciliacionRepository implements ConciliacionRepository
 
                 if ($item) {    //              si existe       -> aumentar volumen
                     $req = new Request();
-                    $req->merge(['cantidad' => $partida['volumen'] ]);
-                    $resp =$this->item->update($req, $item->id_item);
+                    $req->merge(['cantidad' => $partida['volumen']]);
+                    $resp = $this->item->update($req, $item->id_item);
 
                 } else {   //              no existe       -> crearlo
-                    $req = new Request();
+                    $req1 = new Request();
                     $contratos = [];
-                    $contratos[] =  array(
+                    $contratos[] = array(
                         'nivel' => $this->getNivel($contrato_proyectado['id_transaccion']),
-                        'descripcion' => 'Acarreo de Material '.$partida['material'],
+                        'descripcion' => 'Acarreo de Material ' . $partida['material'],
                         'unidad' => 'M3',
                         'cantidad_presupuestada' => $partida['volumen'],
                         'id_material' => (int)$partida['id_material'],
                         'tarifa' => $partida['tarifa'],
-                        'destinos' => array( [
+                        'destinos' => array([
                             'id_concepto' => (int)$partida['id_concepto']
                         ])
                     );
 
-                    $req->merge([
+                    $req1->merge([
                         'contratos' => ($contratos)
                     ]);
-                    $nuevo_contrato = $this->contratoProyectado->addContratos($req,$contrato_proyectado['id_transaccion']);
+                    $nuevo_contrato = $this->contratoProyectado->addContratos($req1, $contrato_proyectado['id_transaccion']);
 
                     $req = new Request();
                     $req->merge([
@@ -262,9 +267,8 @@ class EloquentConciliacionRepository implements ConciliacionRepository
                 ->where('Acarreos.material.id_material_acarreo', '=', (int)$partida['id_material'])
                 ->select(['items.id_item', 'items.id_concepto'])->first();
 
-
             $items_estimacion[$key] = array(
-                'item_antecedente' => $item->id_concepto,
+                'item_antecedente' => $item['id_concepto'],
                 'cantidad' => $partida['volumen']
             );
         }
@@ -280,6 +284,8 @@ class EloquentConciliacionRepository implements ConciliacionRepository
             'items' => ($items_estimacion)
         ]);
 
+
+
         $registro_estimacion = $this->estimacion->create($reques_estimacion);
 
         ConciliacionEstimacion::create(['id_conciliacion' => $request->id_conciliacion, 'id_estimacion' => $registro_estimacion->id_transaccion ]);
@@ -288,11 +294,14 @@ class EloquentConciliacionRepository implements ConciliacionRepository
     }
 
     public function getNivel($id){
+        $nivel = '';
         $contratos = $this->contrato->nivelPadre($id)->get();
-        $val = ($contratos[count($contratos)-1]['nivel'])+1;
+
+        $val = (int)($contratos[count($contratos)-1]['nivel'])+1;
+        //dd($val, $id, $contratos);
         if($val < 10) $nivel = '00'.$val.'.';
-        if($val > 10 && $val < 100) $nivel = '0'.$val.'.';
-        if($val > 100) $nivel = $val.'.';
+        if($val >= 10 && $val < 100) $nivel = '0'.$val.'.';
+        if($val > 99) $nivel = $val.'.';
         return $nivel;
     }
 }

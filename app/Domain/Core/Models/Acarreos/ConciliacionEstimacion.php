@@ -3,6 +3,7 @@
 namespace Ghi\Domain\Core\Models\Acarreos;
 
 use Carbon\Carbon;
+use Dingo\Api\Http\Middleware\Auth;
 use Illuminate\Database\Eloquent\Model;
 
 class ConciliacionEstimacion extends Model
@@ -22,7 +23,7 @@ class ConciliacionEstimacion extends Model
     {
         parent::boot();
         static::creating(function($model) {
-            $model->registro = Auth::user()->idusuario;
+            $model->registro = 3180;
             $model->FechaHoraRegistro = Carbon::now()->toDateTimeString();
         });
     }
