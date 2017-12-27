@@ -1,8 +1,10 @@
 @extends('tesoreria.layout')
 @section('title', 'Movimientos Bancarios')
 @section('contentheader_title', 'MOVIMIENTOS BANCARIOS')
-@section('main-content')
+@section('breadcrumb')
     {!! Breadcrumbs::render('tesoreria.movimientos_bancarios.index') !!}
+@endsection
+@section('main-content')
 
     <global-errors></global-errors>
     <movimientos_bancarios-index

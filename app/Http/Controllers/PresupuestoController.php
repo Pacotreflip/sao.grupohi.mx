@@ -21,11 +21,11 @@ class PresupuestoController extends Controller
     public function __construct(PresupuestoRepository $presupuesto)
     {
         parent::__construct();
+
         $this->middleware('auth');
         $this->middleware('context');
 
         $this->presupuesto = $presupuesto;
-
     }
 
     public function index(){

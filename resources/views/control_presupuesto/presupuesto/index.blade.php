@@ -1,8 +1,10 @@
 @extends('control_costos.layout')
 @section('title', 'Control Presupuesto')
 @section('contentheader_title', 'CONTROL PRESUPUESTO')
-@section('main-content')
+@section('breadcrumb')
     {!! Breadcrumbs::render('control_presupuesto.presupuesto.index') !!}
+@endsection
+@section('main-content')
 
 <global-errors></global-errors>
 <control_presupuesto-index
@@ -48,21 +50,28 @@
                         </div>
                     </div>
                     <div class="box-footer">
-                        <button type="button" class="btn btn-primary" @click="getConceptos()">Consultar</button>
+                        <button type="button" class="btn btn-primary btn-sm" @click="get_conceptos()" :disabled="cargando">
+                            <span v-if="cargando">
+                                <i class="fa fa-spinner fa-spin"></i> Consultando
+                            </span>
+                            <span v-else>
+                                <i class="fa fa-search"></i> Consultar
+                            </span>
+                        </button>
                     </div>
                 </div>
             </div>
         </div>
 
         <div class="row">
-            <div class="col-md-12" v-if="conceptos.length">
+            <div class="col-md-12">
                 <div class="box box-solid">
                     <div class="box-header with-border">
                         <h3 class="box-title">Resultados</h3>
                     </div>
                     <div class="box-body">
                         <div class="table-responsive">
-                            <table class="small table table-bordered table-striped">
+                            <table id="conceptos_table" class="small table table-bordered table-striped">
                                 <thead>
                                 <tr>
                                     <th v-for="nivel in niveles">
@@ -75,25 +84,24 @@
                                     <th>Monto Presupuestado</th>
                                 </tr>
                                 </thead>
-                                <tbody>
-                                <tr v-for="concepto in conceptos">
-                                    <td style="text-align: left" v-for="nivel in niveles">
-                                        @{{ concepto['filtro' + nivel.numero] }}
-                                    </td>
-                                    <td style="text-align: left">@{{ concepto.unidad }}</td>
-                                    <td style="text-align: right">@{{ Math.round(concepto.cantidad_presupuestada).toFixed(3) }}</td>
-                                    <td style="text-align: right">$@{{ parseInt(concepto.precio_unitario).formatMoney(2, ',', '.') }}</td>
-                                    <td style="text-align: right">$@{{ parseInt(concepto.monto).formatMoney(2, ',', '.') }}</td>
-                                    <td style="text-align: right">$@{{ parseInt(concepto.monto_presupuestado).formatMoney(2, ',', '.') }}</td>
+                                <tfoot>
+                                <tr>
+                                    <th v-for="nivel in niveles">
+                                        Nivel @{{ nivel.numero }}
+                                    </th>
+                                    <th>Unidad</th>
+                                    <th>Cantidad</th>
+                                    <th>Precio Unitario</th>
+                                    <th>Monto</th>
+                                    <th>Monto Presupuestado</th>
                                 </tr>
-                                </tbody>
+                                </tfoot>
                             </table>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-
 
         <div id="agregar_filtro_modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="AgregarModal" data-backdrop="static" data-keyboard="false">
             <div class="modal-dialog" role="document">

@@ -10,7 +10,8 @@ Vue.component('control_presupuesto-index', {
                     operador : '',
                     texto : ''
                 }
-            }
+            },
+            cargando : false
         }
     },
     computed : {
@@ -21,6 +22,78 @@ Vue.component('control_presupuesto-index', {
             }
             return niveles;
         }
+    },
+    mounted: function () {
+        var self = this;
+        $('#conceptos_table').DataTable({
+            "processing": true,
+            "serverSide": true,
+            "ordering" : false,
+            "ajax": {
+                "url": App.host + '/conceptos/getPaths',
+                "type" : "POST",
+                "beforeSend" : function () {
+                    self.cargando = true;
+                },
+                "data": function ( d ) {
+                    d.filtros = self.filtros;
+                },
+                "complete" : function () {
+                    self.cargando = false;
+                },
+                "dataSrc" : function (json) {
+                    for (var i = 0; i < json.data.length; i++) {
+                        console.log('panda');
+                        json.data[i].monto_presupuestado = '$' + parseInt(json.data[i].monto_presupuestado).formatMoney(2, ',', '.')
+                        json.data[i].monto = '$' + parseInt(json.data[i].monto).formatMoney(2, ',', '.')
+                        json.data[i].precio_unitario = '$' + parseInt(json.data[i].precio_unitario).formatMoney(2, ',', '.')
+                    }
+                    return json.data;
+                }
+            },
+            "columns" : [
+                {data : 'filtro1'},
+                {data : 'filtro2'},
+                {data : 'filtro3'},
+                {data : 'filtro4'},
+                {data : 'filtro5'},
+                {data : 'filtro6'},
+                {data : 'filtro7'},
+                {data : 'filtro8'},
+                {data : 'filtro9'},
+                {data : 'filtro10'},
+                {data : 'filtro11'},
+                {data : 'unidad'},
+                {data : 'cantidad_presupuestada', className : 'text-right'},
+                {data : 'precio_unitario', className : 'text-right'},
+                {data : 'monto', className : 'text-right'},
+                {data : 'monto_presupuestado', className : 'text-right'}
+            ],
+            language: {
+                "sProcessing": "Procesando...",
+                "sLengthMenu": "Mostrar _MENU_ registros",
+                "sZeroRecords": "No se encontraron resultados",
+                "sEmptyTable": "Ningún dato disponible en esta tabla",
+                "sInfo": "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
+                "sInfoEmpty": "Mostrando registros del 0 al 0 de un total de 0 registros",
+                "sInfoFiltered": "(filtrado de un total de _MAX_ registros)",
+                "sInfoPostFix": "",
+                "sSearch": "Buscar:",
+                "sUrl": "",
+                "sInfoThousands": ",",
+                "sLoadingRecords": "Cargando...",
+                "oPaginate": {
+                    "sFirst": "Primero",
+                    "sLast": "Último",
+                    "sNext": "Siguiente",
+                    "sPrevious": "Anterior"
+                },
+                "oAria": {
+                    "sSortAscending": ": Activar para ordenar la columna de manera ascendente",
+                    "sSortDescending": ": Activar para ordenar la columna de manera descendente"
+                }
+            }
+        });
     },
     methods: {
         set_filtro : function() {
@@ -62,95 +135,16 @@ Vue.component('control_presupuesto-index', {
             if(!filtro.operadores.length) {
                 Vue.delete(this.filtros, this.filtros.indexOf(filtro));
             }
+
+            if(! this.filtros.length) {
+                var table = $('#conceptos_table').DataTable();
+                table.ajax.reload();
+            }
         },
 
-        getConceptos : function () {
-            var slf = this;
-             $.ajax({
-                 url : App.host + '/conceptos/getPaths',
-                 dataType : 'json',
-                 data : {
-                     filtros : slf.filtros
-                 },
-                 beforeSend: function () {
-
-                 },
-                 success: function (response) {
-                     console.log(response);
-                     slf.conceptos = response.conceptos;
-                 },
-                 error: function (error) {
-                     alert(error.responseText);
-                 }
-             })
+        get_conceptos : function () {
+            var table = $('#conceptos_table').DataTable();
+            table.ajax.reload();
         }
     }
 });
-
-
-
-/*Vue.component('control_presupuesto-index', {
-    props: ['max_niveles', 'operadores'],
-    data : function () {
-        return {
-            'data' : {
-                'condicionante': '',
-                'temp_filtro': '',
-                'agrega': {
-                    'nivel': '',
-                    'operador': '',
-                    'texto': ''
-                },
-                'resultados': [],
-                'niveles': []
-            }
-        }
-    },
-    methods: {
-        getMaxNiveles: function () {
-            var self = this,
-                niveles = [],
-                paso = 1;
-
-            for (paso; paso <= self.max_niveles; paso++) {
-                niveles.push({numero: paso, nombre: "Nivel " + paso});
-            }
-
-            return niveles;
-        },
-        open_modal_agregar: function (condicionante, item) {
-            var self = this;
-
-            if (condicionante)
-            {
-                self.data.condicionante = condicionante;
-                self.data.temp_filtro = item;
-            }
-
-            $('#agregar_filtro_modal').modal('show');
-            $('#nivel').focus();
-        },
-
-        close_modal_agregar: function () {
-            var self = this;
-
-            $('#agregar_filtro_modal').modal('hide');
-            self.reset_agregar();
-        },
-
-        reset_agregar: function () {
-            var self = this;
-
-            Vue.set(self.data, 'agrega', {
-                'nivel': '',
-                'operador': '',
-                'texto': ''
-            });
-
-            Vue.set(self.data, 'temp_filtro', '');
-            Vue.set(self.data, 'condicionante', '');
-        }
-    }
-});*/
-
-

@@ -1,8 +1,10 @@
 @extends('control_costos.layout')
 @section('title', 'Solicitar Reclasificación')
 @section('contentheader_title', 'SOLICITAR RECLASIFICACIÓN')
-@section('main-content')
+@section('breadcrumb')
     {!! Breadcrumbs::render('control_costos.solicitar_reclasificacion.index') !!}
+@endsection
+@section('main-content')
 
 <global-errors></global-errors>
 <solicitar_reclasificacion-index

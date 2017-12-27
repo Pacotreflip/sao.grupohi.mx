@@ -2,9 +2,10 @@
 @section('title', 'Cuentas de Empresas')
 @section('contentheader_title', 'CUENTA BANCARIA')
 @section('contentheader_description', '(DETALLE)')
-
-@section('main-content')
+@section('breadcrumb')
     {!! Breadcrumbs::render('sistema_contable.cuentas_contables_bancarias.show', $cuenta->id_cuenta) !!}
+@endsection
+@section('main-content')
 
     <div class="row">
         <div class="col-md-3">

@@ -1,8 +1,10 @@
 @extends('control_costos.layout')
 @section('title', 'Control de Costos')
 @section('contentheader_title', 'CONTROL DE COSTOS')
-@section('main-content')
+@section('breadcrumb')
     {!! Breadcrumbs::render('control_costos.index') !!}
+@endsection
+@section('main-content')
 
     <div class="row">
         <div class="col-md-12">

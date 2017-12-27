@@ -95,21 +95,24 @@ class EloquentConceptoRepository implements ConceptoRepository
         return $item->max_nivel;
     }
 
-    public function paths($filtros) {
+    public function paths(array $data) {
+
 
         $query = DB::connection('cadeco')->table('conceptos')->where('conceptos.id_obra', '=', Context::getId())->join('PresupuestoObra.conceptosPath as path', 'conceptos.id_concepto', '=', 'path.id_concepto');
 
-        foreach ($filtros as $key => $filtro) {
-            $query->where(function ($q) use ($filtro) {
-                foreach ($filtro['operadores'] as $key => $operador) {
-                    if($key == 0) {
-                        $q->whereRaw('filtro' . $filtro['nivel'] . ' ' . str_replace('"', "'",$operador["sql"]));
-                    } else {
-                        $q->orWhereRaw('filtro' . $filtro['nivel'] . ' ' . str_replace('"', "'",$operador["sql"]));
+        if(array_key_exists('filtros', $data)) {
+            foreach ($data['filtros'] as $key => $filtro) {
+                $query->where(function ($q) use ($filtro) {
+                    foreach ($filtro['operadores'] as $key => $operador) {
+                        if($key == 0) {
+                            $q->whereRaw('filtro' . $filtro['nivel'] . ' ' . str_replace('"', "'",$operador["sql"]));
+                        } else {
+                            $q->orWhereRaw('filtro' . $filtro['nivel'] . ' ' . str_replace('"', "'",$operador["sql"]));
+                        }
                     }
-                }
-            });
+                });
 
+            }
         }
 
         $query->select(
@@ -121,6 +124,6 @@ class EloquentConceptoRepository implements ConceptoRepository
             "path.*"
         );
 
-        return $query->get();
+        return $query->paginate($perPage = $data['length'], $columns = ['*'], $pageName = 'page', $page = ($data['start'] / $data['length']) + 1);
     }
 }

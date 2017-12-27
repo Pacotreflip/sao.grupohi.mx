@@ -38,9 +38,8 @@ desired effect
     <!-- Content Wrapper. Contains page content -->
     <div class="content-wrapper">
         <!-- Main content -->
+        @include('layouts.partials.contentheader')
         <section class="content small" >
-            @include('layouts.partials.contentheader')
-                <br>
         <!-- Your Page Content Here -->
             @include('flash::message')
 
