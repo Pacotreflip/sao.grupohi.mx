@@ -168,6 +168,18 @@ class SolicitarReclasificacionController extends Controller
 
     public function items(Request $request)
     {
-        return response()->json($request->id_concepto);
+        $items = $this->transaccion->items($request->id);
+        $titulo = !empty($items[0]) ? $items[0]['observaciones'] : '';
+
+
+        return view('control_costos.solicitar_reclasificacion.items')
+            ->with('data_view', [
+                'items' => $items,
+                'id_transaccion' => $request->id,
+                'titulo' => $titulo,
+                'max_niveles' => $this->concepto->obtenerMaxNumNiveles(),
+                'operadores' => $this->operadores,
+                'id_concepto' => $request->id_concepto,
+            ]);
     }
 }

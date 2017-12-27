@@ -83374,10 +83374,10 @@ require('./vue-components/Tesoreria/movimientos_bancarios/index');
 /**
  * Control de costos Components
  */
-require('./vue-components/Control_Costos/reclasificacion_costos/index');
 require('./vue-components/Control_Costos/solicitar_reclasificacion/index');
+require('./vue-components/Control_Costos/solicitar_reclasificacion/items');
 
-},{"./vue-components/Compras/material/index":146,"./vue-components/Compras/requisicion/create":147,"./vue-components/Compras/requisicion/edit":148,"./vue-components/Contabilidad/cuenta_almacen/index":149,"./vue-components/Contabilidad/cuenta_bancos/cuenta-bancaria-edit":150,"./vue-components/Contabilidad/cuenta_concepto/index":151,"./vue-components/Contabilidad/cuenta_contable/index":152,"./vue-components/Contabilidad/cuenta_costo/index":153,"./vue-components/Contabilidad/cuenta_empresa/cuenta-empresa-edit":154,"./vue-components/Contabilidad/cuenta_fondo/index":155,"./vue-components/Contabilidad/cuenta_material/index":156,"./vue-components/Contabilidad/datos_contables/edit":157,"./vue-components/Contabilidad/emails":158,"./vue-components/Contabilidad/modulos/revaluacion/create":159,"./vue-components/Contabilidad/poliza_generada/edit":160,"./vue-components/Contabilidad/poliza_tipo/poliza-tipo-create":161,"./vue-components/Contabilidad/tipo_cuenta_contable/tipo-cuenta-contable-create":162,"./vue-components/Contabilidad/tipo_cuenta_contable/tipo-cuenta-contable-update":163,"./vue-components/Control_Costos/reclasificacion_costos/index":164,"./vue-components/Control_Costos/solicitar_reclasificacion/index":165,"./vue-components/Finanzas/comprobante_fondo_fijo/create":166,"./vue-components/Finanzas/comprobante_fondo_fijo/edit":167,"./vue-components/Reportes/subcontratos-estimacion":168,"./vue-components/Tesoreria/movimientos_bancarios/index":169,"./vue-components/Tesoreria/traspaso_cuentas/index":170,"./vue-components/errors":171,"./vue-components/global-errors":172,"./vue-components/kardex_material/kardex-material-index":173,"./vue-components/select2":174}],146:[function(require,module,exports){
+},{"./vue-components/Compras/material/index":146,"./vue-components/Compras/requisicion/create":147,"./vue-components/Compras/requisicion/edit":148,"./vue-components/Contabilidad/cuenta_almacen/index":149,"./vue-components/Contabilidad/cuenta_bancos/cuenta-bancaria-edit":150,"./vue-components/Contabilidad/cuenta_concepto/index":151,"./vue-components/Contabilidad/cuenta_contable/index":152,"./vue-components/Contabilidad/cuenta_costo/index":153,"./vue-components/Contabilidad/cuenta_empresa/cuenta-empresa-edit":154,"./vue-components/Contabilidad/cuenta_fondo/index":155,"./vue-components/Contabilidad/cuenta_material/index":156,"./vue-components/Contabilidad/datos_contables/edit":157,"./vue-components/Contabilidad/emails":158,"./vue-components/Contabilidad/modulos/revaluacion/create":159,"./vue-components/Contabilidad/poliza_generada/edit":160,"./vue-components/Contabilidad/poliza_tipo/poliza-tipo-create":161,"./vue-components/Contabilidad/tipo_cuenta_contable/tipo-cuenta-contable-create":162,"./vue-components/Contabilidad/tipo_cuenta_contable/tipo-cuenta-contable-update":163,"./vue-components/Control_Costos/solicitar_reclasificacion/index":164,"./vue-components/Control_Costos/solicitar_reclasificacion/items":165,"./vue-components/Finanzas/comprobante_fondo_fijo/create":166,"./vue-components/Finanzas/comprobante_fondo_fijo/edit":167,"./vue-components/Reportes/subcontratos-estimacion":168,"./vue-components/Tesoreria/movimientos_bancarios/index":169,"./vue-components/Tesoreria/traspaso_cuentas/index":170,"./vue-components/errors":171,"./vue-components/global-errors":172,"./vue-components/kardex_material/kardex-material-index":173,"./vue-components/select2":174}],146:[function(require,module,exports){
 'use strict';
 
 Vue.component('material-index', {
@@ -86690,25 +86690,6 @@ Vue.component('tipo-cuenta-contable-update', {
 },{}],164:[function(require,module,exports){
 'use strict';
 
-Vue.component('reclasificacion_costos-index', {
-    props: ['url_reclasificacion_costos_index'],
-    data: function data() {
-        return {
-            'data': {
-                'filtros': []
-            },
-            'guardando': false
-        };
-    },
-    computed: {},
-    mounted: function mounted() {},
-    directives: {},
-    methods: {}
-});
-
-},{}],165:[function(require,module,exports){
-'use strict';
-
 Vue.component('solicitar_reclasificacion-index', {
     props: ['url_solicitar_reclasificacion_index', 'max_niveles', 'filtros', 'operadores'],
     data: function data() {
@@ -86734,23 +86715,6 @@ Vue.component('solicitar_reclasificacion-index', {
                 'loading': false
             }
         };
-    },
-    mounted: function mounted() {
-        this.data.loading = $('<div/>', {
-            id: 'loading',
-            text: ''
-        }).appendTo('#app').css({
-            'text': 'cargando...',
-            'position': 'fixed',
-            'display': 'none',
-            'top': 0,
-            'right': 0,
-            'width': '100%',
-            'height': '100%',
-            'background-color': '#666',
-            'z-index': '10000000',
-            'opacity': 0.4
-        }).append('<i class="fa fa-spinner fa-pulse fa-3x fa-fw>').appendTo('#app');
     },
     computed: {
         niveles: function niveles() {
@@ -86860,10 +86824,8 @@ Vue.component('solicitar_reclasificacion-index', {
                 total_resultados = 0;
 
             Vue.set(self.data, 'total_resultados', 0);
-            self.cargando(true);
 
             if (self.data.filtros.length == 0) {
-                self.cargando(false);
                 return swal({
                     type: 'warning',
                     title: 'Agrega un filtro',
@@ -86898,10 +86860,7 @@ Vue.component('solicitar_reclasificacion-index', {
                         });
                     }
                 },
-                complete: function complete() {
-
-                    self.cargando(false);
-                }
+                complete: function complete() {}
             });
         },
         confirm_eliminar: function confirm_eliminar(index, tipo) {
@@ -87020,25 +86979,287 @@ Vue.component('solicitar_reclasificacion-index', {
             Vue.set(self.data, 'desglosar_descripcion', '');
         },
         desglosar_tipos: function desglosar_tipos(tipo) {
-            var self = this;
+            var self = this,
+                todos = [];
 
             self.clean_desglosar();
 
             $.each(self.data.detalles, function (index, value) {
-                if (index == tipo) {
+
+                if (tipo !== false && index == tipo) {
                     Vue.set(self.data, 'desglosar', value.transacciones);
                     Vue.set(self.data, 'desglosar_descripcion', tipo);
+                } else {
+                    todos.concat(value.transacciones);
+                }
+            });
+
+            if (todos.length > 0) {
+                Vue.set(self.data, 'desglosar', todos);
+            }
+        },
+        mostrar_items: function mostrar_items(id_transaccion, id_concepto) {
+            var self = this;
+
+            swal({
+                title: "Mostrar items",
+                text: "¿Estás seguro/a de querer mostrar los items para esta transacción? Se abrirá una nueva pantalla",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonText: "Si, Continuar",
+                cancelButtonText: "No, Cancelar"
+            }).then(function () {
+                window.location.href = self.url_solicitar_reclasificacion_index + '/items/' + id_concepto + '/' + id_transaccion;
+            }).catch(swal.noop);
+        }
+    },
+    directives: {}
+});
+
+},{}],165:[function(require,module,exports){
+'use strict';
+
+Vue.component('solicitar_reclasificacion-items', {
+    props: ['url_solicitar_reclasificacion_index', 'id_transaccion', 'id_concepto_antiguo', 'items', 'max_niveles', 'filtros', 'operadores'],
+    data: function data() {
+        return {
+            'data': {
+                'items': this.items,
+                'filtros': this.filtros,
+                'operadores': this.operadores,
+                'agrega': {
+                    'nivel': '',
+                    'operador': '',
+                    'texto': ''
+                },
+                'resultados': [],
+                'subtotal': 0,
+                'subimporte': 0,
+                'total_resultados': 0,
+                'temp_index': false
+            }
+        };
+    },
+    computed: {
+        niveles: function niveles() {
+            var self = this,
+                niveles = [],
+                paso = 1;
+
+            for (paso; paso <= self.max_niveles; paso++) {
+                niveles.push({ numero: paso, nombre: "Nivel " + paso });
+            }
+
+            return niveles;
+        },
+        niveles_n: function niveles_n() {
+            var result = 0;
+            this.data.resultados.forEach(function (t) {
+                var cont = Object.keys(t).filter(function (t2) {
+                    return t[t2] != null;
+                });
+                if (cont.length - 4 > result) {
+                    result = cont.length - 4;
+                }
+            });
+
+            return result;
+        }
+    },
+    methods: {
+        agregar_filtro: function agregar_filtro() {
+            var self = this,
+                vacios = [],
+                temp = [];
+
+            // Los campos  no puedene star vacios
+            $.each(self.data.agrega, function (index, value) {
+                if (value === "") {
+                    vacios.push(index);
+                }
+            });
+
+            // Manda error si están vacios
+            if (vacios.length > 0) {
+                return swal({
+                    type: 'warning',
+                    title: 'Los siguientes campos no pueden estar vacios:',
+                    html: '<ul class="list-group"><li class="list-group-item list-group-item-danger">' + vacios.join("<li class=\"list-group-item list-group-item-danger\">") + '</ul>'
+                });
+            }
+
+            self.filtros.push(self.data.agrega);
+
+            $('#agregar_filtro_modal').modal('hide');
+        },
+        buscar: function buscar() {
+            var self = this,
+                str = { 'data': JSON.stringify(self.data.filtros) },
+                total_resultados = 0;
+
+            Vue.set(self.data, 'total_resultados', 0);
+
+            if (self.data.filtros.length == 0) {
+                return swal({
+                    type: 'warning',
+                    title: 'Agrega un filtro',
+                    html: 'Por favor agrega un filtro antes de buscar'
+                });
+            }
+
+            $.ajax({
+                type: 'GET',
+                url: self.url_solicitar_reclasificacion_index + '/find',
+                data: str,
+                beforeSend: function beforeSend() {},
+                success: function success(data, textStatus, xhr) {
+
+                    if (data.data.resultados.length > 0) {
+                        $.each(data.data.resultados, function (key, value) {
+                            total_resultados = total_resultados + parseInt(value.total);
+                        });
+
+                        Vue.set(self.data, 'total_resultados', parseInt(total_resultados).formatMoney(2, '.', ','));
+                        Vue.set(self.data, 'resultados', data.data.resultados);
+                        swal({
+                            type: 'success',
+                            title: '',
+                            html: 'Se encontraron resultados'
+                        });
+                    } else {
+                        swal({
+                            type: 'warning',
+                            title: '',
+                            html: 'No se encontraron resultados'
+                        });
+                    }
+                },
+                complete: function complete() {}
+            });
+        },
+        confirm_eliminar: function confirm_eliminar(index, tipo) {
+            var self = this;
+            swal({
+                title: "Eliminar " + tipo,
+                text: "¿Estás seguro/a de que deseas eliminar este " + tipo + "?",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonText: "Si, Continuar",
+                cancelButtonText: "No, Cancelar"
+            }).then(function () {
+                if (tipo == "resultado") {
+                    self.eliminar_resultado(index);
+                } else if (tipo == "filtro") {
+                    self.eliminar_filtro(index);
+                }
+            }).catch(swal.noop);
+        },
+        eliminar_resultado: function eliminar_resultado(index) {
+            var self = this;
+
+            self.data.resultados.splice(index, 1);
+        },
+        eliminar_filtro: function eliminar_filtro(index) {
+            var self = this;
+
+            self.data.filtros.splice(index, 1);
+
+            if (self.data.filtros.length == 0) {
+                self.reset_agregar();
+            }
+        },
+        reset_agregar: function reset_agregar() {
+            var self = this;
+
+            Vue.set(self.data, 'agrega', {
+                'nivel': '',
+                'operador': '',
+                'texto': ''
+            });
+
+            self.active_item();
+            Vue.set(self.data, 'temp_index', false);
+        },
+        active_item: function active_item() {
+            var self = this;
+
+            $('.items').each(function () {
+                var _this = $(this);
+
+                _this.removeClass('bg-navy disabled');
+
+                if (self.data.temp_index !== false && _this.hasClass('item_' + self.data.temp_index)) {
+                    $('.item_' + self.data.temp_index).removeClass('items item_' + self.data.temp_index).addClass('bg-navy disabled items item_' + self.data.temp_index);
                 }
             });
         },
-        cargando: function cargando(estado) {
+        open_modal_agregar: function open_modal_agregar(item, index) {
             var self = this;
 
-            if (estado == true) {
-                self.data.loading.show();
-            } else {
-                self.data.loading.hide();
-            }
+            Vue.set(self.data, 'temp_index', index);
+
+            $('#agregar_filtro_modal').modal('show');
+            $('#nivel').focus();
+
+            self.active_item();
+        },
+        close_modal_agregar: function close_modal_agregar() {
+            var self = this;
+
+            $('#agregar_filtro_modal').modal('hide');
+
+            Vue.set(self.data, 'temp_index', false);
+            self.reset_agregar();
+        },
+        confirm_solicitar: function confirm_solicitar(item) {
+            var self = this,
+                tipo = item['filtro' + self.max_niveles];
+
+            swal({
+                title: "Aplicar " + tipo,
+                text: "¿Estás seguro/a de que deseas aplicar el concepto " + tipo + "?",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonText: "Si, Continuar",
+                cancelButtonText: "No, Cancelar"
+            }).then(function () {
+                self.solicitar(item.id_concepto);
+            }).catch(swal.noop);
+        },
+        solicitar: function solicitar(id_concepto) {
+            var self = this;
+            $.ajax({
+                type: 'GET',
+                url: self.url_solicitar_reclasificacion_index + '/store',
+                data: {
+                    'id_concepto_nuevo': id_concepto,
+                    'id_concepto_antiguo': self.id_concepto_antiguo
+                },
+                beforeSend: function beforeSend() {},
+                success: function success(data, textStatus, xhr) {
+
+                    if (data.data.resultados.length > 0) {
+                        $.each(data.data.resultados, function (key, value) {
+                            total_resultados = total_resultados + parseInt(value.total);
+                        });
+
+                        Vue.set(self.data, 'total_resultados', parseInt(total_resultados).formatMoney(2, '.', ','));
+                        Vue.set(self.data, 'resultados', data.data.resultados);
+                        swal({
+                            type: 'success',
+                            title: '',
+                            html: 'Se encontraron resultados'
+                        });
+                    } else {
+                        swal({
+                            type: 'warning',
+                            title: '',
+                            html: 'No se encontraron resultados'
+                        });
+                    }
+                },
+                complete: function complete() {}
+            });
         }
     },
     directives: {}

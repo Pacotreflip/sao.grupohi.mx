@@ -92,9 +92,6 @@
                                         <td>@{{  item.operador }}</td>
                                         <td>@{{  item.texto }}</td>
                                         <td>
-                                            {{--<div class="btn-group">--}}
-                                                {{--<button type="button" class="btn btn-xs btn-success" v-on:click="open_modal_agregar('Y', item)" title="concatena un nuevo filtro">Agregar filtro </button>--}}
-                                            {{--</div>--}}
                                             <div class="btn-group">
                                                 <button type="button" title="Eliminar" class="btn btn-xs btn-danger" v-on:click="confirm_eliminar(index, 'filtro')"><i class="fa fa-trash"></i></button>
                                             </div>
@@ -184,7 +181,7 @@
                                             <tr>
                                                 <td><b>Subtotal:</b></td>
                                                 <td class="text-right"><b>@{{ parseInt(data.subtotal) }}</b></td>
-                                                <td class="text-right"><a href="#" v-on:click="desglosar_tipos()"><b>@{{ parseInt(data.subimporte).formatMoney(2, '.', ',') }}</b></a></td>
+                                                <td class="text-right"><a href="#" v-on:click="desglosar_tipos(false)"><b>@{{ parseInt(data.subimporte).formatMoney(2, '.', ',') }}</b></a></td>
                                             </tr>
                                         </tfoot>
                                         </tbody>
@@ -196,7 +193,7 @@
                             <div class="col-md-12">
                                 <div class="box box-primary">
                                     <div class="box-header with-border">
-                                        <h3 class="box-title">@{{ !data.desglosar_descripcion ? '' : data.desglosar_descripcion }}</h3>
+                                        <h3 class="box-title">@{{ !data.desglosar_descripcion ? 'Subtotal' : data.desglosar_descripcion }}</h3>
                                         <button type="button" class="close" v-on:click="clean_desglosar()" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                                     </div>
                                     <div class="box-body">
@@ -215,7 +212,7 @@
                                                     <td >@{{ item.descripcion  }}</td>
                                                     <td > @{{ new Date(item.fecha).dateShortFormat() }}</td>
                                                     <td class="text-right"> @{{ item.numero_folio }}</td>
-                                                    <td class="text-right"> @{{ parseInt(item.monto).formatMoney(2, '.', ',') }}</td>
+                                                    <td class="text-right"><a href="#" v-on:click="mostrar_items(item.id_transaccion, item.id_concepto)">@{{ parseInt(item.monto).formatMoney(2, '.', ',') }}</a></td>
                                                 </tr>
                                                 </tbody>
                                             </table>

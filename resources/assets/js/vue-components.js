@@ -49,5 +49,5 @@ require('./vue-components/Tesoreria/movimientos_bancarios/index');
 /**
  * Control de costos Components
  */
-require('./vue-components/Control_Costos/reclasificacion_costos/index');
 require('./vue-components/Control_Costos/solicitar_reclasificacion/index');
+require('./vue-components/Control_Costos/solicitar_reclasificacion/items');

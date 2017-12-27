@@ -24,23 +24,6 @@ Vue.component('solicitar_reclasificacion-index', {
             }
         }
     },
-    mounted: function () {
-        this.data.loading = $('<div/>', {
-            id: 'loading',
-            text: ''
-        }).appendTo('#app').css({
-            'text': 'cargando...',
-            'position': 'fixed',
-            'display': 'none',
-            'top': 0,
-            'right': 0,
-            'width': '100%',
-            'height': '100%',
-            'background-color': '#666',
-            'z-index': '10000000',
-            'opacity': 0.4,
-        }).append('<i class="fa fa-spinner fa-pulse fa-3x fa-fw>').appendTo('#app');
-    },
     computed: {
         niveles : function () {
             var self = this,
@@ -155,11 +138,9 @@ Vue.component('solicitar_reclasificacion-index', {
                 total_resultados = 0;
 
             Vue.set(self.data, 'total_resultados', 0);
-            self.cargando(true);
 
             if (self.data.filtros.length == 0)
             {
-                self.cargando(false);
                 return swal({
                     type: 'warning',
                     title: 'Agrega un filtro',
@@ -201,7 +182,6 @@ Vue.component('solicitar_reclasificacion-index', {
                 },
                 complete: function () {
 
-                    self.cargando(false);
                 }
             });
 
@@ -330,28 +310,42 @@ Vue.component('solicitar_reclasificacion-index', {
             Vue.set(self.data, 'desglosar_descripcion', '');
         },
         desglosar_tipos: function (tipo) {
-            var self = this;
+            var self = this,
+                todos = [];
 
             self.clean_desglosar();
 
             $.each(self.data.detalles, function (index, value) {
-                if (index == tipo) {
+
+                if (tipo !== false && index == tipo) {
                     Vue.set(self.data, 'desglosar', value.transacciones);
                     Vue.set(self.data, 'desglosar_descripcion', tipo);
                 }
+
+                else{
+                    todos.concat(value.transacciones);
+                }
             });
 
+            if (todos.length > 0)
+            {
+                Vue.set(self.data, 'desglosar', todos);
+            }
+
         },
-        cargando: function (estado) {
+        mostrar_items: function (id_transaccion, id_concepto) {
             var self = this;
 
-            if (estado == true){
-                self.data.loading.show();
-            }
-
-            else{
-                self.data.loading.hide();
-            }
+            swal({
+                title: "Mostrar items",
+                text: "¿Estás seguro/a de querer mostrar los items para esta transacción? Se abrirá una nueva pantalla",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonText: "Si, Continuar",
+                cancelButtonText: "No, Cancelar",
+            }).then(function () {
+                window.location.href = self.url_solicitar_reclasificacion_index +'/items/'+ id_concepto +'/'+ id_transaccion;
+            }).catch(swal.noop);
         }
     },
     directives: {}
