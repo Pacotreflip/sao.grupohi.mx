@@ -6,11 +6,13 @@ use Ghi\Domain\Core\Models\Obra;
 use Ghi\Domain\Core\Models\Transacciones\Subcontrato;
 use Ghi\Utils\NumberToLetterConverter;
 use Ghidev\Fpdf\Rotation;
+use Illuminate\Support\Facades\DB;
 
 class Estimacion extends Rotation {
 
     protected $obra;
     protected $estimacion;
+    protected $objeto_contrato;
 
     var $encola = '';
 
@@ -29,6 +31,8 @@ class Estimacion extends Rotation {
 
         $this->obra = Obra::find(Context::getId());
         $this->estimacion = $estimacion;
+        $this->objeto_contrato = DB::connection('cadeco')->table('Subcontratos.subcontrato')->select('observacion')->where('id_transaccion', '=', $this->estimacion->id_antecedente)->first();
+        $this->objeto_contrato = $this->objeto_contrato->observacion;
     }
 
     function Header() {
@@ -80,7 +84,7 @@ class Estimacion extends Rotation {
 
     function Footer() {
         $this->firmas();
-        $this->SetY($this->GetPageHeight() - 0.5);
+        $this->SetY($this->GetPageHeight() - 1);
         $this->SetFont('Arial', '', 6);
         $this->Cell(6.5, .4, utf8_decode('Formato generado desde SAO.'), 0, 0, 'L');
         $this->SetFont('Arial', 'B', 6);
@@ -122,7 +126,7 @@ class Estimacion extends Rotation {
         $this->SetX(6);
         $this->SetFont('Arial', '', 8);
         $this->Cell(4, 1, 'Objeto del Contrato :', 0, 0, 'R');
-        $this->CellFitScale(10, 1, '', 1, 1, 'C');
+        $this->MultiCell(10, 0.5, $this->objeto_contrato, 1, 'C');
         $this->Ln(0.1);
 
         $this->SetX(6);
@@ -362,7 +366,7 @@ class Estimacion extends Rotation {
         $this->SetX(($this->w) * 0.45);
         $this->SetFont('Arial', '', 8);
         $this->Cell(($this->w - 2) * 0.30, 0.4, 'Importe con letra :', 0, 0, 'R');
-        $this->MultiCell(($this->w - 2) * 0.25, 0.35, utf8_decode(strtoupper((new NumberToLetterConverter())->num2letras(round($this->estimacion->monto_a_pagar, 2)))), 1, 1, 'L');
+        $this->MultiCell(($this->w - 2) * 0.25, 0.35, utf8_decode(strtoupper((new NumberToLetterConverter())->num2letras(round($this->estimacion->monto_a_pagar, 2), 0, 1, $this->estimacion->id_moneda))), 1, 1, 'L');
 
         $y_final = $this->GetY();
 
@@ -397,7 +401,7 @@ class Estimacion extends Rotation {
     }
 
     function firmas() {
-        $this->SetY(- 2.5);
+        $this->SetY(- 3.5);
         $this->SetTextColor('0', '0', '0');
         $this->SetFont('Arial', '', 6);
         $this->SetFillColor(180, 180, 180);
@@ -432,7 +436,7 @@ class Estimacion extends Rotation {
         $this->SetMargins(1, 0.5, 1);
         $this->AliasNbPages();
         $this->AddPage();
-        $this->SetAutoPageBreak(true,3.5);
+        $this->SetAutoPageBreak(true,3.75);
         $this->partidas();
         $this->Ln();
         $this->seguimiento();

@@ -48,7 +48,7 @@
             </span>
             </a>
             <ul class="treeview-menu">
-                @permission(['consultar_cuenta_almacen', 'consultar_cuenta_concepto', 'consultar_cuenta_empresa', 'consultar_cuenta_general', 'consultar_cuenta_material', 'consultar_tipo_cuenta_contable'])
+                @permission(['consultar_cuenta_almacen', 'consultar_cuenta_concepto', 'consultar_cuenta_empresa', 'consultar_cuenta_general', 'consultar_cuenta_material', 'consultar_tipo_cuenta_contable', 'consultar_cuenta_costo'])
                 <li class="treeview">
                     <a href="#">
                         <i class="fa fa-book"></i>
@@ -76,9 +76,16 @@
                     @permission('consultar_cuenta_material')
                     <li ><a href="{{route('sistema_contable.cuenta_material.index')}}"><i class='fa fa-circle-o'></i> <span>Cuentas - Materiales</span></a></li>
                     @endpermission
-                    @permission('consultar_tipo_cuenta_contable')
-                    <li ><a href="{{route('sistema_contable.tipo_cuenta_contable.index')}}"><i class='fa fa-circle-o'></i> <span>Cuenta - Contable</span></a></li>
+                    @permission('consultar_cuenta_contable_bancaria')
+                    <li ><a href="{{route('sistema_contable.cuentas_contables_bancarias.index')}}"><i class='fa fa-circle-o'></i> <span>Cuentas - Cuentas Bancos</span></a></li>
                     @endpermission
+                    @permission('consultar_tipo_cuenta_contable')
+                    <li ><a href="{{route('sistema_contable.tipo_cuenta_contable.index')}}"><i class='fa fa-circle-o'></i> <span>Cuentas Generales</span></a></li>
+                    @endpermission
+                    @permission('consultar_cuenta_costo')
+                    <li ><a href="{{route('sistema_contable.cuenta_costo.index')}}"><i class='fa fa-circle-o'></i> <span>Cuentas Costos</span></a></li>
+                    @endpermission
+
                     </ul>
                 </li>
                 @endpermission

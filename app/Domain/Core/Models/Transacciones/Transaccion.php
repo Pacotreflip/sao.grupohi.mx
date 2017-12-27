@@ -4,6 +4,7 @@ namespace Ghi\Domain\Core\Models\Transacciones;
 
 use Ghi\Domain\Core\Models\TipoTransaccion;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 
 class Transaccion extends Model
 {
@@ -40,6 +41,7 @@ class Transaccion extends Model
         'vencimiento',
         'opciones',
         'monto',
+        'impuesto',
         'referencia',
         'comentario',
         'observaciones',

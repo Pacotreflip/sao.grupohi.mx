@@ -132,4 +132,28 @@ Route::group(['prefix' => 'sistema_contable'], function () {
     Route::get('cuenta_fondo/{id}', 'CuentaFondoController@show')->name('sistema_contable.cuenta_fondo.show')->where(['id' => '[0-9]+']);
     Route::patch('cuenta_fondo/{id}', 'CuentaFondoController@update')->name('sistema_contable.cuenta_fondo.update')->where(['id' => '[0-9]+']);
 
+    /**
+     * Cuentas Contables Bancarias
+     */
+    Route::get('cuentas_contables_bancarias', 'CuentaBancosController@index')->name('sistema_contable.cuentas_contables_bancarias.index');
+    Route::post('cuentas_contables_bancarias', 'CuentaBancosController@store')->name('sistema_contable.cuentas_contables_bancarias.store');
+    Route::get('cuentas_contables_bancarias/{id}/edit', 'CuentaBancosController@edit')->name('sistema_contable.cuentas_contables_bancarias.edit')->where(['id' => '[0-9]+']);
+    Route::get('cuentas_contables_bancarias/{id}', 'CuentaBancosController@show')->name('sistema_contable.cuentas_contables_bancarias.show')->where(['id' => '[0-9]+']);
+    Route::delete('cuentas_contables_bancarias/{id}', 'CuentaBancosController@destroy')->name('sistema_contable.cuentas_contables_bancarias.delete')->where(['id' => '[0-9]+']);
+    Route::patch('cuentas_contables_bancarias/{id}', 'CuentaBancosController@update')->name('sistema_contable.cuentas_contables_bancarias.update')->where(['id' => '[0-9]+']);
+
+    /**
+     * Cuentas Costo
+     */
+    Route::get('cuenta_costo', 'CuentaCostoController@index')->name('sistema_contable.cuenta_costo.index');
+    Route::patch('cuenta_costo/{id}', 'CuentaCostoController@update')->name('sistema_contable.cuenta_costo.update');
+    Route::post('cuenta_costo', 'CuentaCostoController@store')->name('sistema_contable.cuenta_costo.store');
+    Route::delete('cuenta_costo/{id}', 'CuentaCostoController@destroy')->name('sistema_contable.cuenta_costo.delete')->where(['id' => '[0-9]+']);
+    Route::post('cuenta_costo/searchNodo', 'CuentaCostoController@searchNodo')->name('sistema_contable.cuenta_costo.searchNodo');
+
+    /**
+     * Costos
+     */
+    Route::get('costo/findBy', 'CostoController@findBy')->name('sistema_contable.costo.findBy');
+    Route::get('costo/getBy', 'CostoController@getBy')->name('sistema_contable.costo.getBy');
 });

@@ -9,25 +9,40 @@ use Illuminate\Session\Store;
 
 class PagesController extends Controller
 {
-
-    private $session;
     /**
-     * @var Notificacion
+     * @var Store
+     */
+    private $session;
+
+    /**
+     * @var NotificacionRepository
      */
     private $notificacion;
 
+    /**
+     * @var GraficasRepository
+     */
     private $grafica;
 
-    public function __construct(Store $session,NotificacionRepository $notificacion, GraficasRepository $grafica)
+    /**
+     * PagesController constructor.
+     * @param Store $session
+     * @param NotificacionRepository $notificacion
+     * @param GraficasRepository $grafica
+     */
+    public function __construct(Store $session, NotificacionRepository $notificacion, GraficasRepository $grafica)
     {
         parent::__construct();
         $this->middleware('auth');
-        $this->middleware('context', ['only' => ['sistema_contable', 'reportes', 'finanzas', 'tesoreria']]);
+        $this->middleware('context', ['only' => ['sistema_contable', 'reportes', 'finanzas', 'tesoreria', 'control_costos', 'control_presupuesto']]);
         $this->session = $session;
         $this->notificacion=$notificacion;
         $this->grafica = $grafica;
     }
 
+    /**
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     public function index() {
         return view('pages.index');
     }
@@ -46,10 +61,16 @@ class PagesController extends Controller
         return view('pages.obras')->withObras($obras);
     }
 
+    /**
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     public function welcome() {
         return view('pages.welcome');
     }
 
+    /**
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     public function sistema_contable() {
         $config = $this->grafica->getChartInfo();
         $acumulado = $this->grafica->getChartAcumuladoInfo();
@@ -61,19 +82,45 @@ class PagesController extends Controller
                         ->with('config', $config);
     }
 
+    /**
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     public function compras() {
         return view('compras.index');
     }
 
+    /**
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     public function finanzas() {
         return view('finanzas.index');
     }
 
+    /**
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     public function reportes() {
         return view('reportes.index');
     }
 
+    /**
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     public function tesoreria() {
         return view('tesoreria.index');
+    }
+
+    /**
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function control_costos() {
+        return view('control_costos.index');
+    }
+
+    /**
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function control_presupuesto() {
+        return view('control_presupuesto.index');
     }
 }

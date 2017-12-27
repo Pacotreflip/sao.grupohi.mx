@@ -6,10 +6,8 @@ use Dingo\Api\Routing\Helpers;
 
 
 use Ghi\Domain\Core\Contracts\Contabilidad\ConceptoRepository;
-use Ghi\Domain\Core\Models\Concepto;
 use Ghi\Domain\Core\Transformers\ConceptoTreeTransformer;
 use Illuminate\Http\Request;
-use League\Fractal\Resource\Collection;
 
 class ConceptoController extends Controller
 {
@@ -73,5 +71,16 @@ class ConceptoController extends Controller
        // $data = Fractal::createData($resource);
         return response()->json($resp, 200);
 
+    }
+
+    public function getPaths(Request $request) {
+
+        $conceptos = $this->concepto->paths($request->all());
+
+        return response()->json([
+            'recordsTotal' => $conceptos->total(),
+            'recordsFiltered' => $conceptos->total(),
+            'data' => $conceptos->items()
+            ], 200);
     }
 }

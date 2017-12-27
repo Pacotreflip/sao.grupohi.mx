@@ -26,21 +26,3 @@ window.Chart = require('chart.js');
 require('jquery-slimscroll');
 require('jstree/dist/jstree.js');
 window._ = require('underscore');
-
-// Vue Dev
-window.Vue = require('vue/dist/vue.js');
-//Vue Prod
-//window.Vue = require('vue/dist/vue.min');
-
-window.VeeValidate = require('vee-validate');
-VeeValidate.Validator.addLocale({
-    'es' : require('vee-validate/dist/locale/es')
-});
-Vue.use(VeeValidate, { locale: 'es', errorBagName: 'validation_errors'});
-
-if ($('#app').length) {
-    new Vue({
-        el: '#app',
-        components: require('./vue-components')
-    });
-}

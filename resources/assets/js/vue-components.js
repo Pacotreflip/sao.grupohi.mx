@@ -20,6 +20,8 @@ require('./vue-components/Contabilidad/datos_contables/edit');
 require('./vue-components/kardex_material/kardex-material-index');
 require('./vue-components/Contabilidad/modulos/revaluacion/create');
 require('./vue-components/Contabilidad/cuenta_fondo/index');
+require('./vue-components/Contabilidad/cuenta_bancos/cuenta-bancaria-edit');
+require('./vue-components/Contabilidad/cuenta_costo/index');
 
 /**
  * Compras Components
@@ -43,3 +45,10 @@ require('./vue-components/Reportes/subcontratos-estimacion');
  */
 require('./vue-components/Tesoreria/traspaso_cuentas/index');
 require('./vue-components/Tesoreria/movimientos_bancarios/index');
+
+/**
+ * Control de costos Components
+ */
+require('./vue-components/Control_Costos/reclasificacion_costos/index');
+require('./vue-components/Control_Costos/solicitar_reclasificacion/index');
+require('./vue-components/Control_Presupuesto/presupuesto/index');

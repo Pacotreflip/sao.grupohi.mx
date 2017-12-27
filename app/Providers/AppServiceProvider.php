@@ -227,6 +227,35 @@ class AppServiceProvider extends ServiceProvider
             \Ghi\Domain\Core\Repositories\Tesoreria\EloquentMovimientosBancariosRepository::class
         );
         $this->app->bind(
+            \Ghi\Domain\Core\Contracts\Contabilidad\CuentaBancosRepository::class,
+            \Ghi\Domain\Core\Repositories\Contabilidad\EloquentCuentaBancosRepository::class
+        );
+        $this->app->bind(
+            \Ghi\Domain\Core\Contracts\Contabilidad\CuentaCostoRepository::class,
+            \Ghi\Domain\Core\Repositories\Contabilidad\EloquentCuentaCostoRepository::class
+        );
+        $this->app->bind(
+            \Ghi\Domain\Core\Contracts\Contabilidad\CostoRepository::class,
+            \Ghi\Domain\Core\Repositories\Contabilidad\EloquentCostoRepository::class
+        );
+        $this->app->bind(
+            \Ghi\Domain\Core\Contracts\ControlCostos\SolicitarReclasificacionesRepository::class,
+            \Ghi\Domain\Core\Repositories\ControlCostos\EloquentSolicitarReclasificacionesRepository::class
+        );
+        $this->app->bind(
+            \Ghi\Domain\Core\Contracts\Contabilidad\ConceptoPathRepository::class,
+            \Ghi\Domain\Core\Repositories\Contabilidad\EloquentConceptoPathRepository::class
+        );
+
+        $this->app->bind(
+            \Ghi\Domain\Core\Contracts\ControlPresupuesto\PresupuestoRepository::class,
+            \Ghi\Domain\Core\Repositories\ControlPresupuesto\EloquentPresupuestoRepository::class
+        );
+        $this->app->bind(
+            \Ghi\Domain\Core\Contracts\TransaccionRepository::class,
+            \Ghi\Domain\Core\Repositories\EloquentTransaccionRepository::class
+        );
+        $this->app->bind(
             \Ghi\Domain\Core\Contracts\SucursalRepository::class,
             \Ghi\Domain\Core\Repositories\EloquentSucursalRepository::class
         );

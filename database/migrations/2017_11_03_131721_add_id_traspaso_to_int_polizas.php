@@ -29,7 +29,7 @@ class AddIdTraspasoToIntPolizas extends Migration
     {
         Schema::table('Contabilidad.int_polizas', function (Blueprint $table) {
             $table->dropForeign('contabilidad_int_polizas_id_traspaso_foreign');
-            $table->dropColumn('id_transaccion_cancelada');
+            $table->dropColumn('id_traspaso');
         });
     }
 }

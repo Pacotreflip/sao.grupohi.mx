@@ -80,6 +80,7 @@ class EloquentMovimientosBancariosRepository implements MovimientosBancariosRepo
 
             $transaccion = Transaccion::create([
                 'tipo_transaccion' => $tipo,
+                'estado' => 1,
                 'fecha' => $data['fecha'] ? $data['fecha'] : date('Y-m-d'),
                 'id_obra' => $id_obra,
                 'id_cuenta' => $data['id_cuenta'],
@@ -87,7 +88,8 @@ class EloquentMovimientosBancariosRepository implements MovimientosBancariosRepo
                 'cumplimiento' => $data['cumplimiento'] ? $data['cumplimiento'] : date('Y-m-d'),
                 'vencimiento' => $data['vencimiento'] ? $data['vencimiento'] : date('Y-m-d'),
                 'opciones' => 1,
-                'monto' => $data['importe'],
+                'monto' => $data['importe'] +$data['impuesto'],
+                'impuesto' => $data['impuesto'],
                 'referencia' => $data['referencia'],
                 'comentario' => "I;". date("d/m/Y") ." ". date("h:s") .";". auth()->user()->usuario,
                 'observaciones' => $data['observaciones'],
