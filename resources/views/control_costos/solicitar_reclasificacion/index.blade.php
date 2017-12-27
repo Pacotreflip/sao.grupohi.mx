@@ -140,7 +140,7 @@
                                     <td v-for="i in niveles">
                                         @{{ item['filtro' + i.numero] }}
                                     </td>
-                                    <td><a v-on:click="open_modal_tipos_transaccion(item.id_concepto)">@{{  parseInt(item.total).formatMoney(2, '.', ',') }}</a></td>
+                                    <td><a style="cursor:pointer;" v-on:click="open_modal_tipos_transaccion(item.id_concepto)">@{{  parseInt(item.total).formatMoney(2, '.', ',') }}</a></td>
                                 </tr>
                                 </tbody>
                             </table>
@@ -157,37 +157,71 @@
                         <h4 class="modal-title">Tipos Transacciones</h4>
                     </div>
                     <div class="modal-body">
-                        <div class="row">
-                            <div class="table-responsive">
-                                <table class="table table-bordered table-striped">
-                                    <thead>
-                                        <tr>
-                                            <th>Tipo Transaccion</th>
-                                            <th>
-                                                Cantidad
-                                            </th>
-                                            <th>Importe</th>
+                        <div class="row" v-if="data.desglosar.length == 0">
+                            <div class="col-md-12">
+                                <div class="table-responsive">
+                                    <table class="table table-bordered table-striped">
+                                        <thead>
+                                            <tr>
+                                                <th>Tipo Transacción</th>
+                                                <th>
+                                                    Cantidad
+                                                </th>
+                                                <th>Importe</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr v-for="(item, index) in data.resumen">
+                                            <td >@{{ item.descripcion  }}</td>
+                                            <td class="text-right">
+                                                @{{ parseInt(item.cantidad) }}
+                                            </td>
+                                            <td class="text-right">
+                                                <a style="cursor:pointer;" v-on:click="desglosar_tipos(item.descripcion)">@{{ parseInt(item.monto).formatMoney(2, '.', ',') }}</a>
+                                            </td>
                                         </tr>
-                                    </thead>
-                                    <tbody>
-                                    <tr v-for="(item, index) in data.tipos_transacciones">
-                                        <td >@{{ item.tipo_transaccion  }}</td>
-                                        <td class="text-right">
-                                            @{{ parseInt(item.cantidad_transacciones).formatMoney(2, '.', ',') }}
-                                        </td>
-                                        <td class="text-right">
-                                            @{{ parseInt(item.monto).formatMoney(2, '.', ',') }}
-                                        </td>
-                                    </tr>
-                                    <tfoot style="border-top: 2px solid #00a65a;">
-                                        <tr>
-                                            <td><b>Subtotal:</b></td>
-                                            <td class="text-right"><b>@{{ parseInt(data.subtotal).formatMoney(2, '.', ',') }}</b></td>
-                                            <td class="text-right"><b>@{{ parseInt(data.subimporte).formatMoney(2, '.', ',') }}</b></td>
-                                        </tr>
-                                    </tfoot>
-                                    </tbody>
-                                </table>
+                                        <tfoot style="border-top: 2px solid #00a65a;">
+                                            <tr>
+                                                <td><b>Subtotal:</b></td>
+                                                <td class="text-right"><b>@{{ parseInt(data.subtotal) }}</b></td>
+                                                <td class="text-right"><a href="#" v-on:click="desglosar_tipos()"><b>@{{ parseInt(data.subimporte).formatMoney(2, '.', ',') }}</b></a></td>
+                                            </tr>
+                                        </tfoot>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row" v-else>
+                            <div class="col-md-12">
+                                <div class="box box-primary">
+                                    <div class="box-header with-border">
+                                        <h3 class="box-title">@{{ !data.desglosar_descripcion ? '' : data.desglosar_descripcion }}</h3>
+                                        <button type="button" class="close" v-on:click="clean_desglosar()" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                    </div>
+                                    <div class="box-body">
+                                        <div class="table-responsive">
+                                            <table class="table table-bordered table-striped">
+                                                <thead>
+                                                <tr>
+                                                    <th>Tipo transacción</th>
+                                                    <th >Fecha</th>
+                                                    <th>Folio</th>
+                                                    <th>Importe</th>
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+                                                <tr v-for="(item, index) in data.desglosar">
+                                                    <td >@{{ item.descripcion  }}</td>
+                                                    <td > @{{ new Date(item.fecha).dateShortFormat() }}</td>
+                                                    <td class="text-right"> @{{ item.numero_folio }}</td>
+                                                    <td class="text-right"> @{{ parseInt(item.monto).formatMoney(2, '.', ',') }}</td>
+                                                </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>

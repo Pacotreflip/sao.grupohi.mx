@@ -127,8 +127,6 @@ class SolicitarReclasificacionController extends Controller
 
         $resultados = $this->conceptoPath->buscarCostoTotal($string);
 
-//        dd($string);die;
-
         return response()->json(['data' => ['resultados' => $resultados]], 200);
     }
 
@@ -136,52 +134,40 @@ class SolicitarReclasificacionController extends Controller
     {
         $id_concepto = $request->id_concepto;
 
-        $resultados = $this->transaccion->tiposTransaccion($id_concepto);
+        $resumen = $this->transaccion->tiposTransaccion($id_concepto);
+        $detallesRaw = $this->transaccion->detallesTransacciones($id_concepto);
+        $detalles = [];
 
-        return response()->json(['resultados' => $resultados], 200);
+        foreach ($resumen as $k => $v)
+        {
+            $tipo = $v['descripcion'] == null ? '-' : $v['descripcion'];
+            $resumen[$k]['descripcion'] = $tipo;
+        }
+
+        foreach ($detallesRaw as $r)
+        {
+            $tipo = $r['descripcion'] == null ? '-' : $r['descripcion'];
+
+            if (!isset($detalles[$tipo]))
+                $detalles[$tipo] = [
+                    'total_transacciones' => 0,
+                    'monto_total' => 0,
+                    'transacciones' => [],
+                ];
+
+            $detalles[$tipo]['total_transacciones']++;
+            $detalles[$tipo]['monto_total'] = $detalles[$tipo]['monto_total'] + $r['monto'];
+            $detalles[$tipo]['transacciones'][] = $r;
+        }
+
+        return response()->json([
+            'resumen' => $resumen,
+            'detalles' => $detalles,
+        ], 200);
     }
 
-    /**
-     * @param Request $request
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function findBy(Request $request)
+    public function items(Request $request)
     {
-        $item = $this->concepto->findBy($request->attribute, $request->value, $request->with);
-        return response()->json(['data' => ['concepto' => $item]], 200);
-    }
-
-    /**
-     * @param Request $request
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function getBy(Request $request) {
-        $items = $this->concepto->getBy($request->attribute, $request->operator, $request->value, $request->with);
-        return response()->json(['data' => ['conceptos' => $items]], 200);
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @return Response
-     */
-    public function getRoot()
-    {
-        $roots = $this->concepto->getRootLevels();
-        $resp=ConceptoTreeTransformer::transform($roots);
-        return response()->json($resp, 200);
-
-    }
-
-    public function getNode($id)
-    {
-        $node = $this->concepto->getDescendantsOf($id);
-
-
-        $resp=ConceptoTreeTransformer::transform($node);
-
-        // $data = Fractal::createData($resource);
-        return response()->json($resp, 200);
-
+        return response()->json($request->id_concepto);
     }
 }
