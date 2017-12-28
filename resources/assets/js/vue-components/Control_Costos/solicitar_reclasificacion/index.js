@@ -309,7 +309,7 @@ Vue.component('solicitar_reclasificacion-index', {
             Vue.set(self.data, 'desglosar', []);
             Vue.set(self.data, 'desglosar_descripcion', '');
         },
-        desglosar_tipos: function (tipo) {
+        desglosar_tipos: function (item) {
             var self = this,
                 todos = [];
 
@@ -317,9 +317,10 @@ Vue.component('solicitar_reclasificacion-index', {
 
             $.each(self.data.detalles, function (index, value) {
 
-                if (tipo !== false && index == tipo) {
-                    Vue.set(self.data, 'desglosar', value.transacciones);
-                    Vue.set(self.data, 'desglosar_descripcion', tipo);
+                if (item !== false && index == item.id_transaccion) {
+
+                    Vue.set(self.data, 'desglosar', value);
+                    Vue.set(self.data, 'desglosar_descripcion', value.descripcion);
                 }
 
                 else{

@@ -104,14 +104,10 @@ class SolicitarReclasificacionController extends Controller
 
                 //Si existe
                 if (in_array( $nivel, array_keys($niveles)))
-                {
                     $niveles[ $nivel] .= ' OR filtro'. $nivel ." ". $operador;
-                }
 
                 else
-                {
                     $niveles[ $nivel] = " filtro". $nivel ." ". $operador;
-                }
 
             }
 
@@ -148,16 +144,21 @@ class SolicitarReclasificacionController extends Controller
         {
             $tipo = $r['descripcion'] == null ? '-' : $r['descripcion'];
 
-            if (!isset($detalles[$tipo]))
-                $detalles[$tipo] = [
+            if (!isset($detalles[$r['id_transaccion']]))
+                $detalles[$r['id_transaccion']] = [
                     'total_transacciones' => 0,
-                    'monto_total' => 0,
+                    'importe' => 0,
                     'transacciones' => [],
+                    'descripcion' => $tipo,
+                    'fecha' => $r['fecha'],
+                    'folio' => $r['numero_folio'],
+                    'id_transaccion' => $r['id_transaccion'],
+                    'id_concepto' => $r['id_concepto'],
                 ];
 
-            $detalles[$tipo]['total_transacciones']++;
-            $detalles[$tipo]['monto_total'] = $detalles[$tipo]['monto_total'] + $r['monto'];
-            $detalles[$tipo]['transacciones'][] = $r;
+            $detalles[$r['id_transaccion']]['total_transacciones']++;
+            $detalles[$r['id_transaccion']]['importe'] = $detalles[$r['id_transaccion']]['importe'] + $r['monto'];
+            $detalles[$r['id_transaccion']]['transacciones'][] = $r;
         }
 
         return response()->json([
@@ -169,7 +170,7 @@ class SolicitarReclasificacionController extends Controller
     public function items(Request $request)
     {
         $items = $this->transaccion->items($request->id);
-        $titulo = !empty($items[0]) ? $items[0]['observaciones'] : '';
+        $titulo = '';
 
 
         return view('control_costos.solicitar_reclasificacion.items')

@@ -42,10 +42,10 @@ class EloquentTransaccionRepository implements TransaccionRepository
             {
                 $join->on('TipoTran.opciones', '=', DB::raw("transacciones.opciones AND  transacciones.tipo_transaccion = TipoTran.Tipo_Transaccion"));
             })
-            ->selectRaw('movimientos.id_concepto, transacciones.tipo_transaccion, transacciones.opciones, TipoTran.descripcion,
+            ->selectRaw('movimientos.id_concepto, transacciones.tipo_transaccion, transacciones.opciones, TipoTran.descripcion, transacciones.id_transaccion,
 sum(movimientos.monto_total) as monto, count(transacciones.id_transaccion) as cantidad')
             ->whereIn('movimientos.id_concepto', $id_concepto)
-            ->groupBy(DB::raw('transacciones.tipo_transaccion, transacciones.opciones, TipoTran.descripcion, movimientos.id_concepto'))
+            ->groupBy(DB::raw('transacciones.id_transaccion, transacciones.opciones, TipoTran.descripcion, movimientos.id_concepto, transacciones.tipo_transaccion'))
             ->get();
     }
 
@@ -70,9 +70,10 @@ movimientos.monto_total as monto, fecha, numero_folio, transacciones.id_transacc
 
     public function items($id_transaccion)
     {
-        return $this->items->where('id_transaccion', '=', $id_transaccion)
-            ->join('conceptos', 'conceptos.id_concepto', '=', 'items.id_concepto')
-            ->selectRaw('conceptos.descripcion, items.cantidad, items.precio_unitario, items.importe, items.id_concepto')
+        return $this->items->where('items.id_transaccion', '=', $id_transaccion)
+            ->leftJoin('transacciones', 'transacciones.id_transaccion', '=', DB::raw($id_transaccion))
+            ->leftJoin('conceptos', 'conceptos.id_concepto', '=', 'items.id_concepto')
+            ->selectRaw('transacciones.observaciones, items.cantidad, items.precio_unitario, items.importe, items.id_concepto, conceptos.descripcion')
             ->get();
     }
 }

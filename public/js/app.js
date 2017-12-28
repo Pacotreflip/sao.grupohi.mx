@@ -86978,7 +86978,7 @@ Vue.component('solicitar_reclasificacion-index', {
             Vue.set(self.data, 'desglosar', []);
             Vue.set(self.data, 'desglosar_descripcion', '');
         },
-        desglosar_tipos: function desglosar_tipos(tipo) {
+        desglosar_tipos: function desglosar_tipos(item) {
             var self = this,
                 todos = [];
 
@@ -86986,9 +86986,10 @@ Vue.component('solicitar_reclasificacion-index', {
 
             $.each(self.data.detalles, function (index, value) {
 
-                if (tipo !== false && index == tipo) {
-                    Vue.set(self.data, 'desglosar', value.transacciones);
-                    Vue.set(self.data, 'desglosar_descripcion', tipo);
+                if (item !== false && index == item.id_transaccion) {
+
+                    Vue.set(self.data, 'desglosar', value);
+                    Vue.set(self.data, 'desglosar_descripcion', value.descripcion);
                 } else {
                     todos.concat(value.transacciones);
                 }
@@ -87036,7 +87037,8 @@ Vue.component('solicitar_reclasificacion-items', {
                 'subtotal': 0,
                 'subimporte': 0,
                 'total_resultados': 0,
-                'temp_index': false
+                'temp_index': false,
+                'id_concepto_antiguo': false
             }
         };
     },
@@ -87088,9 +87090,7 @@ Vue.component('solicitar_reclasificacion-items', {
                 });
             }
 
-            self.filtros.push(self.data.agrega);
-
-            $('#agregar_filtro_modal').modal('hide');
+            self.data.filtros.push(self.data.agrega);
         },
         buscar: function buscar() {
             var self = this,
@@ -87178,7 +87178,10 @@ Vue.component('solicitar_reclasificacion-items', {
             });
 
             self.active_item();
-            Vue.set(self.data, 'temp_index', false);
+            Vue.set(self.data, 'resultados', []);
+            Vue.set(self.data, 'filtros', []);
+            Vue.set(self.data, 'total_resultados', 0);
+            Vue.set(self.data, 'id_concepto_antiguo', false);
         },
         active_item: function active_item() {
             var self = this;
@@ -87197,6 +87200,7 @@ Vue.component('solicitar_reclasificacion-items', {
             var self = this;
 
             Vue.set(self.data, 'temp_index', index);
+            Vue.set(self.data, 'id_concepto_antiguo', item.id_concepto);
 
             $('#agregar_filtro_modal').modal('show');
             $('#nivel').focus();
@@ -87208,55 +87212,57 @@ Vue.component('solicitar_reclasificacion-items', {
 
             $('#agregar_filtro_modal').modal('hide');
 
-            Vue.set(self.data, 'temp_index', false);
             self.reset_agregar();
         },
+        aplicar: function aplicar(item) {
+            var self = this;
+
+            Vue.set(self.data.items[self.data.temp_index], 'destino_final', item['filtro' + self.niveles_n]);
+            Vue.set(self.data.items[self.data.temp_index], 'id_concepto_nuevo', item['id_concepto']);
+
+            this.close_modal_agregar();
+        },
         confirm_solicitar: function confirm_solicitar(item) {
-            var self = this,
-                tipo = item['filtro' + self.max_niveles];
+            var self = this;
+
+            // Se debe de haber seleccionado un nuevo concepto
+            if (item.destino_final == undefined) {
+                return swal({
+                    type: 'warning',
+                    title: 'Agrega un nuevo concepto',
+                    html: 'Por favor agrega un nuevo concepto antes de solicitar'
+                });
+            }
 
             swal({
-                title: "Aplicar " + tipo,
-                text: "¿Estás seguro/a de que deseas aplicar el concepto " + tipo + "?",
+                title: "Aplicar concepto",
+                text: "¿Estás seguro/a de que deseas aplicar el concepto " + item.descripcion + " a " + item.destino_final + "?",
                 type: "warning",
                 showCancelButton: true,
                 confirmButtonText: "Si, Continuar",
                 cancelButtonText: "No, Cancelar"
             }).then(function () {
-                self.solicitar(item.id_concepto);
+                self.solicitar(item);
             }).catch(swal.noop);
         },
-        solicitar: function solicitar(id_concepto) {
+        solicitar: function solicitar(item) {
             var self = this;
+
             $.ajax({
-                type: 'GET',
-                url: self.url_solicitar_reclasificacion_index + '/store',
+                type: 'POST',
+                url: self.url_solicitar_reclasificacion_index,
                 data: {
-                    'id_concepto_nuevo': id_concepto,
-                    'id_concepto_antiguo': self.id_concepto_antiguo
+                    'id_concepto_nuevo': item.id_concepto_nuevo,
+                    'id_concepto': item.id_concepto
                 },
                 beforeSend: function beforeSend() {},
                 success: function success(data, textStatus, xhr) {
-
-                    if (data.data.resultados.length > 0) {
-                        $.each(data.data.resultados, function (key, value) {
-                            total_resultados = total_resultados + parseInt(value.total);
-                        });
-
-                        Vue.set(self.data, 'total_resultados', parseInt(total_resultados).formatMoney(2, '.', ','));
-                        Vue.set(self.data, 'resultados', data.data.resultados);
-                        swal({
-                            type: 'success',
-                            title: '',
-                            html: 'Se encontraron resultados'
-                        });
-                    } else {
-                        swal({
-                            type: 'warning',
-                            title: '',
-                            html: 'No se encontraron resultados'
-                        });
-                    }
+                    console.log(data);
+                    swal({
+                        type: 'success',
+                        title: '',
+                        html: 'Solicitud elaborada con éxito'
+                    });
                 },
                 complete: function complete() {}
             });
