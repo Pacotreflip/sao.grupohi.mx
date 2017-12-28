@@ -217,12 +217,14 @@ class EloquentConciliacionRepository implements ConciliacionRepository
                 $item = Item::join('Acarreos.material', 'items.id_concepto', '=', 'Acarreos.material.id_concepto_contrato')
                     ->where('Acarreos.material.id_concepto', '=', (int)$partida['id_concepto'])
                     ->where('Acarreos.material.id_material_acarreo', '=', (int)$partida['id_material'])
+                    ->where('items.id_transaccion', '=', $subcontrato->id_transaccion)
                     ->select('items.id_item')->first();
-
                 if ($item) {    //              si existe       -> aumentar volumen
+
                     $req = new Request();
                     $req->merge(['cantidad' => $partida['volumen']]);
                     $resp = $this->item->update($req, $item->id_item);
+
 
                 } else {   //              no existe       -> crearlo
                     $req1 = new Request();
@@ -242,6 +244,8 @@ class EloquentConciliacionRepository implements ConciliacionRepository
                     $req1->merge([
                         'contratos' => ($contratos)
                     ]);
+
+
                     $nuevo_contrato = $this->contratoProyectado->addContratos($req1, $contrato_proyectado['id_transaccion']);
 
                     $req = new Request();
@@ -265,8 +269,9 @@ class EloquentConciliacionRepository implements ConciliacionRepository
             $item = Item::join('Acarreos.material', 'items.id_concepto', '=', 'Acarreos.material.id_concepto_contrato')
                 ->where('Acarreos.material.id_concepto', '=', (int)$partida['id_concepto'])
                 ->where('Acarreos.material.id_material_acarreo', '=', (int)$partida['id_material'])
+                ->where('items.id_transaccion', '=', $subcontrato->id_transaccion)
                 ->select(['items.id_item', 'items.id_concepto'])->first();
-
+            //dd($item, (int)$partida['id_concepto'], (int)$partida['id_material'] ,$subcontrato->id_transaccion);
             $items_estimacion[$key] = array(
                 'item_antecedente' => $item['id_concepto'],
                 'cantidad' => $partida['volumen']
@@ -283,9 +288,7 @@ class EloquentConciliacionRepository implements ConciliacionRepository
             'referencia' => 'Estimación de Acarreos ' . Carbon::now()->toDateTimeString(),
             'items' => ($items_estimacion)
         ]);
-
-
-
+        //dd($reques_estimacion->all());
         $registro_estimacion = $this->estimacion->create($reques_estimacion);
 
         ConciliacionEstimacion::create(['id_conciliacion' => $request->id_conciliacion, 'id_estimacion' => $registro_estimacion->id_transaccion ]);
