@@ -4,7 +4,6 @@ namespace Ghi\Http\Controllers;
 
 use Dingo\Api\Routing\Helpers;
 use Ghi\Core\Models\Material;
-use Ghi\Domain\Core\Models\Finanzas\ComprobanteFondoFijo;
 use Ghi\Domain\Core\Repositories\EloquentFondoRepository;
 use Ghi\Domain\Core\Repositories\EloquentItemRepository;
 use Ghi\Domain\Core\Repositories\EloquentMaterialRepository;

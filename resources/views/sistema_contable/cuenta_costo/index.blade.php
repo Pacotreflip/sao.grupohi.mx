@@ -1,10 +1,10 @@
 @extends('sistema_contable.layout')
 @section('title', 'Cuentas de Costos')
 @section('contentheader_title', 'CUENTAS DE COSTOS')
-@section('contentheader_description', '(INDEX)')
-
-@section('main-content')
+@section('breadcrumb')
     {!! Breadcrumbs::render('sistema_contable.cuenta_costo.index') !!}
+@endsection
+@section('main-content')
 
     <cuenta-costo-index
             :costos="{{$costos->toJson()}}"

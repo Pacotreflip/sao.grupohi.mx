@@ -2,9 +2,10 @@
 @section('title', 'Cuentas Contables Bancarias')
 @section('contentheader_title', 'CUENTAS CONTABLES BANCARIAS')
 @section('contentheader_description', '(INDEX)')
-
-@section('main-content')
+@section('breadcrumb')
     {!! Breadcrumbs::render('sistema_contable.cuentas_contables_bancarias.index') !!}
+@endsection
+@section('main-content')
 
     <div class="row">
     </div>

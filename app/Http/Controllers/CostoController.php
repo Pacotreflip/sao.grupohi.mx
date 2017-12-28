@@ -6,19 +6,18 @@ use Dingo\Api\Routing\Helpers;
 
 
 use Ghi\Domain\Core\Contracts\Contabilidad\CostoRepository;
-use Ghi\Domain\Core\Models\Costo;
 use Ghi\Domain\Core\Transformers\CostoTreeTransformer;
 use Illuminate\Http\Request;
-use League\Fractal\Resource\Collection;
 
 class CostoController extends Controller
 {
     use Helpers;
 
     protected $Costo;
+
     /**
      * CostoController constructor.
-     * @param CostoRepository $Costo
+     * @param CostoRepository $costo
      */
     public function __construct(CostoRepository $costo)
     {

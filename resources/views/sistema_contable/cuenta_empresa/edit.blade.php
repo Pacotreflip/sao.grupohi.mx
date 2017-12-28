@@ -1,10 +1,10 @@
 @extends('sistema_contable.layout')
 @section('title', 'Cuentas de Empresas')
 @section('contentheader_title', 'CUENTAS DE EMPRESAS')
-@section('contentheader_description', '(EDITAR)')
-
-@section('main-content')
+@section('breadcrumb')
     {!! Breadcrumbs::render('sistema_contable.cuenta_empresa.edit', $empresa) !!}
+@endsection
+@section('main-content')
 
     <cuenta-empresa-edit
             :empresa="{{$empresa->toJson()}}"

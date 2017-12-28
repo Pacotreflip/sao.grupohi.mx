@@ -1,14 +1,14 @@
 @extends('sistema_contable.layout')
 @section('title', 'Plantillas de Prepólizas')
 @section('contentheader_title', 'PLANTILLAS DE PREPÓLIZAS')
-@section('contentheader_description', '(DETALLE)')
-
-@section('main-content')
+@section('breadcrumb')
     {!! Breadcrumbs::render('sistema_contable.poliza_tipo.show', $poliza_tipo) !!}
+@endsection
+@section('main-content')
 
     <div class="row">
         <div class="col-md-3">
-            <div class="box box-primary">
+            <div class="box box-solid">
                 <div class="box-header with-border">
                     <h3 class="box-title">Información de la Plantilla</h3>
                 </div>
@@ -40,7 +40,7 @@
 
         @if($poliza_tipo->movimientos)
             <div class="col-md-9">
-                <div class="box box-success">
+                <div class="box box-solid">
                     <div class="box-header with-border">
                         <h3 class="box-title">Movimientos</h3>
                     </div>

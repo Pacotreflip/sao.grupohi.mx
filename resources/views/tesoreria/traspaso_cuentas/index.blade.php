@@ -1,8 +1,10 @@
 @extends('tesoreria.layout')
 @section('title', 'Traspaso entre cuentas bancarias')
 @section('contentheader_title', 'TRASPASO ENTRE CUENTAS BANCARIAS')
-@section('main-content')
+@section('breadcrumb')
     {!! Breadcrumbs::render('tesoreria.traspaso_cuentas.index') !!}
+@endsection
+@section('main-content')
 
     <global-errors></global-errors>
     <traspaso-cuentas-index

@@ -1,8 +1,5 @@
 <!DOCTYPE html>
-<!--
-This is a starter template page. Use this page to start your new project from
-scratch. This page gets rid of all links and provides the needed markup only.
--->
+
 <html lang="es">
 @section('htmlheader')
     @include('layouts.partials.htmlheader')
@@ -29,7 +26,7 @@ desired effect
 |               | sidebar-mini                            |
 |---------------------------------------------------------|
 -->
-<body class="skin-green sidebar-mini fixed sidebar-collapse">
+<body class="skin-green sidebar-mini sidebar-collapse">
 <div id="app">
 
 <div class="wrapper">
@@ -41,15 +38,16 @@ desired effect
     <!-- Content Wrapper. Contains page content -->
     <div class="content-wrapper">
         <!-- Main content -->
-        <section class="content small" style="width: 98%;">
-            @include('layouts.partials.contentheader')
-                <br>
+        @include('layouts.partials.contentheader')
+        <section class="content small" >
         <!-- Your Page Content Here -->
             @include('flash::message')
 
             @yield('main-content')
         </section><!-- /.content -->
     </div><!-- /.content-wrapper -->
+
+    @include('layouts.partials.controlsidebar')
 
     @include('layouts.partials.footer')
 
@@ -60,6 +58,9 @@ desired effect
 </body>
 @section('scripts')
     @include('layouts.partials.scripts')
+    <script>
+        $.AdminLTE.options.sidebarExpandOnHover = true;
+    </script>
     @yield('scripts-content')
 @show
 </html>

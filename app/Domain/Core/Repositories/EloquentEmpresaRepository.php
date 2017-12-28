@@ -9,9 +9,14 @@
 namespace Ghi\Domain\Core\Repositories;
 
 
+use Couchbase\Exception;
+use Dingo\Api\Exception\StoreResourceFailedException;
+use Dingo\Api\Http\Response;
 use Ghi\Domain\Core\Contracts\EmpresaRepository;
 use Ghi\Domain\Core\Contracts\Ghi;
+use Ghi\Domain\Core\Models\Contabilidad\CuentaEmpresa;
 use Ghi\Domain\Core\Models\Empresa;
+use Illuminate\Support\Facades\DB;
 
 
 class EloquentEmpresaRepository implements EmpresaRepository
@@ -31,8 +36,8 @@ class EloquentEmpresaRepository implements EmpresaRepository
     }
 
     /**
-     * @param $with
-     * @return  Illuminate\Support\Collection\Empresa
+     * @return Empresa
+     * @internal param $with
      */
     public function all()
     {
@@ -41,7 +46,7 @@ class EloquentEmpresaRepository implements EmpresaRepository
 
     /**
      * @param $id
-     * @return Ghi\Domain\Core\Models\Contabilidad\CuentaEmpresa
+     * @return CuentaEmpresa
      */
     public function find($id)
     {
@@ -66,5 +71,15 @@ class EloquentEmpresaRepository implements EmpresaRepository
     {
         $this->model = $this->model->$scope();
         return $this;
+    }
+
+    /**
+     * Crea un registro de Empresa
+     * @param array $data
+     * @return Empresa
+     */
+    public function create(array $data)
+    {
+        return $this->model->create($data);
     }
 }

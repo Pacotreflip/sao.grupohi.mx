@@ -1,10 +1,10 @@
 @extends('sistema_contable.layout')
 @section('title', 'Plantillas de Prepólizas')
 @section('contentheader_title', 'PLANTILLAS DE PREPÓLIZAS')
-@section('contentheader_description', '(INDEX)')
-
-@section('main-content')
+@section('breadcrumb')
     {!! Breadcrumbs::render('sistema_contable.poliza_tipo.index') !!}
+@endsection
+@section('main-content')
 
     @permission(['registrar_plantilla_prepoliza'])
     <div class="row">
@@ -20,7 +20,7 @@
     @endpermission
     <div class="row" >
         <div class="col-md-12">
-            <div class="box box-info">
+            <div class="box box-solid">
                 <div class="box-header with-border">
                     <h3 class="box-title">Plantilla de Prepólizas</h3>
                 </div>

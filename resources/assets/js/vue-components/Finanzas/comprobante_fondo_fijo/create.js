@@ -119,7 +119,7 @@ Vue.component('comprobante-fondo-fijo-create', {
                             var materiales = "";
 
                             if (node.id === "#") {
-                                return App.host + '/conceptos/' + $('#id_concepto').val() + '/jstree';
+                                return App.host + '/conceptos/' + $('#id_concepto').val()    + '/jstree';
                             }
 
                             return App.host + '/conceptos/' + node.id + '/jstree';

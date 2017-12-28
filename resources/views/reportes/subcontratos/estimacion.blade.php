@@ -1,10 +1,10 @@
 @extends('reportes.layout')
 @section('title', 'Reportes')
 @section('contentheader_title', 'ORDEN DE PAGO ESTIMACIÓN')
-
-
-@section('main-content')
+@section('breadcrumb')
     {!! Breadcrumbs::render('reportes.subcontratos.estimacion') !!}
+@endsection
+@section('main-content')
     <subcontratos-estimacion
             inline-template
             v-cloak

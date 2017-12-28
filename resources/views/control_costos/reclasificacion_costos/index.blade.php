@@ -1,8 +1,10 @@
 @extends('control_costos.layout')
 @section('title', 'Reclasificación De Costos')
 @section('contentheader_title', 'RECLASIFICACIÓN DE COSTOS')
-@section('main-content')
+@section('breadcrumb')
     {!! Breadcrumbs::render('control_costos.reclasificacion_costos.index') !!}
+@endsection
+@section('main-content')
 
 <global-errors></global-errors>
 <reclasificacion_costos-index

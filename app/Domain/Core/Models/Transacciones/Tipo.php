@@ -11,4 +11,5 @@ class Tipo
     const COMPROBANTE_FONDO_FIJO = 101;
     const SUBCONTRATO = 51;
     const ESTIMACION = 52;
+    const CONTRATO_PROYECTADO = 49;
 }

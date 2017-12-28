@@ -1,9 +1,10 @@
 @extends('compras.layout')
 @section('title', 'Requisiciones')
 @section('contentheader_title', 'REQUISICIONES')
-
-@section('main-content')
+@section('breadcrumb')
     {!! Breadcrumbs::render('compras.requisicion.edit', $requisicion) !!}
+@endsection
+@section('main-content')
     <div id="app">
         <global-errors></global-errors>
         <requisicion-edit

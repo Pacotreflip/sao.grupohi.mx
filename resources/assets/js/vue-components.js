@@ -51,3 +51,4 @@ require('./vue-components/Tesoreria/movimientos_bancarios/index');
  */
 require('./vue-components/Control_Costos/solicitar_reclasificacion/index');
 require('./vue-components/Control_Costos/solicitar_reclasificacion/items');
+require('./vue-components/Control_Presupuesto/presupuesto/index');

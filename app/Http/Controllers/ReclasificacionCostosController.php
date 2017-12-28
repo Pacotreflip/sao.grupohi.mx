@@ -32,7 +32,7 @@ class ReclasificacionCostosController extends Controller
     {
         parent::__construct();
 
-//        $this->middleware('auth');
+        $this->middleware('auth');
         $this->middleware('context');
 
         $this->concepto = $concepto;
@@ -52,7 +52,6 @@ class ReclasificacionCostosController extends Controller
         $dataView = [
             'solicitudes' => $solicitudes,
         ];
-        dd($dataView);
 
         return view('control_costos.reclasificacion_costos.index')
             ->with('dataView', $dataView);

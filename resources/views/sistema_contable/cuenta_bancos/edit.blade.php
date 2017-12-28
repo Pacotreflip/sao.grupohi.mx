@@ -2,9 +2,10 @@
 @section('title', 'Cuentas de Empresas')
 @section('contentheader_title', 'CUENTA BANCARIA')
 @section('contentheader_description', '(EDITAR)')
-
-@section('main-content')
+@section('breadcrumb')
     {!! Breadcrumbs::render('sistema_contable.cuentas_contables_bancarias.edit', $cuenta->id_cuenta) !!}
+@endsection
+@section('main-content')
 
     <cuenta-bancaria-edit
             :cuenta="{{$cuenta->toJson()}}"

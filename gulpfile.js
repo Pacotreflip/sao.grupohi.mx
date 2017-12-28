@@ -24,6 +24,7 @@ elixir(function(mix) {
     mix.copy(paths.roboto + 'fonts', 'public/fonts');
     mix.copy(paths.bootstrap + 'fonts', 'public/build/fonts');
     mix.copy(paths.fontawesome + 'fonts', 'public/build/fonts');
-    mix.browserify('app.js');
-    mix.version(['public/css/app.css', 'public/js/app.js']);
+    mix.browserify('app.js', 'public/js/app.js');
+    mix.browserify('app-vue.js', 'public/js/app-vue.js');
+    mix.version(['public/css/app.css', 'public/js/app.js', 'public/js/app-vue.js']);
 });
