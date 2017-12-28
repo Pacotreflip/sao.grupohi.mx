@@ -154,7 +154,7 @@ class NumberToLetterConverter {
                     $t .= ' mil';
                 }
             }elseif ($num == 1) {
-                $t .= ' ' . $matsub[$sub] . '?n';
+                $t .= ' ' . $matsub[$sub] . 'Ón';
             }elseif ($num > 1){
                 $t .= ' ' . $matsub[$sub] . 'ones';
             }
