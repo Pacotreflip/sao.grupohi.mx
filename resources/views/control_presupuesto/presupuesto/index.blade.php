@@ -1,4 +1,4 @@
-@extends('control_costos.layout')
+@extends('control_presupuesto.layout')
 @section('title', 'Control Presupuesto')
 @section('contentheader_title', 'CONTROL PRESUPUESTO')
 @section('breadcrumb')
