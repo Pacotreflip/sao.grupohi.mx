@@ -13,10 +13,14 @@ Vue.component('solicitar_reclasificacion-index', {
                     'texto': ''
                 },
                 'resultados': [],
-                'tipos_transacciones': [],
+                'resumen': [],
+                'detalles': [],
+                'desglosar_descripcion' : '',
                 'subtotal': 0,
                 'subimporte': 0,
-                'total_resultados': 0
+                'total_resultados': 0,
+                'desglosar': [],
+                'loading': false
             }
         }
     },
@@ -42,7 +46,8 @@ Vue.component('solicitar_reclasificacion-index', {
                 if (cont.length -4 > result) {
                     result = cont.length -4;
                 }
-            })
+            });
+
             return result;
         }
     },
@@ -175,7 +180,9 @@ Vue.component('solicitar_reclasificacion-index', {
                     }
 
                 },
-                complete: function () { }
+                complete: function () {
+
+                }
             });
 
         },
@@ -252,7 +259,8 @@ Vue.component('solicitar_reclasificacion-index', {
 
             Vue.set(self.data, 'subtotal', 0);
             Vue.set(self.data, 'subimporte', 0);
-            Vue.set(self.data, 'tipos_transacciones', []);
+            Vue.set(self.data, 'resumen', []);
+            Vue.set(self.data, 'detalles', []);
 
             $.ajax({
                 type: 'GET',
@@ -260,17 +268,17 @@ Vue.component('solicitar_reclasificacion-index', {
                 data: {id_concepto:id_concepto},
                 beforeSend: function () {},
                 success: function (data, textStatus, xhr) {
-
-                    if (data.resultados.length > 0)
+                    if (data.resumen)
                     {
-                        $.each(data.resultados, function( key, value ) {
-                            subtotal = subtotal + parseInt(value.cantidad_transacciones);
+                        $.each(data.resumen, function( key, value ) {
+                            subtotal = subtotal + parseInt(value.cantidad);
                             subimporte = subimporte + parseInt(value.monto);
                         });
 
                         Vue.set(self.data, 'subtotal', subtotal);
                         Vue.set(self.data, 'subimporte', subimporte);
-                        Vue.set(self.data, 'tipos_transacciones', data.resultados);
+                        Vue.set(self.data, 'resumen', data.resumen);
+                        Vue.set(self.data, 'detalles', data.detalles);
                         $('#tipos_transaccion').modal('show');
                     }
 
@@ -286,12 +294,59 @@ Vue.component('solicitar_reclasificacion-index', {
                 },
                 complete: function () { }
             });
-
         },
         close_modal_tipos_transaccion: function () {
             var self = this;
+
+            Vue.set(self.data, 'desglosar', []);
+            Vue.set(self.data, 'resumen', []);
             $('#tipos_transaccion').modal('hide');
 
+        },
+        clean_desglosar: function () {
+            var self = this;
+
+            Vue.set(self.data, 'desglosar', []);
+            Vue.set(self.data, 'desglosar_descripcion', '');
+        },
+        desglosar_tipos: function (item) {
+            var self = this,
+                todos = [];
+
+            self.clean_desglosar();
+
+            $.each(self.data.detalles, function (index, value) {
+
+                if (item !== false && index == item.id_transaccion) {
+
+                    Vue.set(self.data, 'desglosar', value);
+                    Vue.set(self.data, 'desglosar_descripcion', value.descripcion);
+                }
+
+                else{
+                    todos.concat(value.transacciones);
+                }
+            });
+
+            if (todos.length > 0)
+            {
+                Vue.set(self.data, 'desglosar', todos);
+            }
+
+        },
+        mostrar_items: function (id_transaccion, id_concepto) {
+            var self = this;
+
+            swal({
+                title: "Mostrar items",
+                text: "¿Estás seguro/a de querer mostrar los items para esta transacción? Se abrirá una nueva pantalla",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonText: "Si, Continuar",
+                cancelButtonText: "No, Cancelar",
+            }).then(function () {
+                window.location.href = self.url_solicitar_reclasificacion_index +'/items/'+ id_concepto +'/'+ id_transaccion;
+            }).catch(swal.noop);
         }
     },
     directives: {}

@@ -17,6 +17,7 @@ class SolicitarReclasificaciones extends BaseModel
     protected $table = 'ControlCostos.solicitar_reclasificacion';
     protected $primaryKey = 'id_solicitar_reclasificacion';
     protected $fillable = [
+        'id_concepto_nuevo',
         'id_concepto',
         'estatus',
         'registro',
