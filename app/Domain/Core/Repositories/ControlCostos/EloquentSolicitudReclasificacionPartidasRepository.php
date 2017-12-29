@@ -10,13 +10,13 @@ use Ghi\Domain\Core\Models\ControlCostos\SolicitudReclasificacionPartidas;
 class EloquentSolicitudReclasificacionPartidasRepository implements SolicitudReclasificacionPartidasRepository
 {
     /**
-     * @var SolicitudReclasificacion $model
+     * @var SolicitudReclasificacionPartidas $model
      */
     private $model;
 
     /**
      * EloquentSolicitudReclasificacionRepository constructor.
-     * @param SolicitudReclasificacion $model
+     * @param SolicitudReclasificacionPartidas $model
      */
     public function __construct(SolicitudReclasificacionPartidas $model)
     {
@@ -25,7 +25,7 @@ class EloquentSolicitudReclasificacionPartidasRepository implements SolicitudRec
 
     /**
      * Obtiene todos los elementos
-     * @return \Illuminate\Database\Eloquent\Collection|\Ghi\Domain\Core\Contracts\Tesoreria\SolicitarReclasificaciones
+     * @return \Illuminate\Database\Eloquent\Collection
      */
     public function all()
     {
@@ -57,7 +57,8 @@ class EloquentSolicitudReclasificacionPartidasRepository implements SolicitudRec
      * @param $relations
      * @return $this
      */
-    public function with($relations) {
+    public function with($relations)
+    {
         $this->model = $this->model->with($relations);
         return $this;
     }
@@ -74,5 +75,11 @@ class EloquentSolicitudReclasificacionPartidasRepository implements SolicitudRec
     public function update($data, $id)
     {
 
+    }
+
+    public function paginate(array $data)
+    {
+        $query = $this->model->with(['item.material', 'conceptoNuevo', 'conceptoOriginal'])->select('ControlCostos.solicitud_reclasificacion_partidas.*')->orderBy('ControlCostos.solicitud_reclasificacion_partidas.created_at', 'DESC');
+        return $query->paginate($perPage = $data['length'], $columns = ['*'], $pageName = 'page', $page = ($data['start'] / $data['length']) + 1);
     }
 }
