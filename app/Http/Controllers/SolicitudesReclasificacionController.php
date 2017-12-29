@@ -43,4 +43,14 @@ class SolicitudesReclasificacionController extends Controller
 
         return view('control_costos.solicitudes_reclasificacion.index');
     }
+
+    public function paginate() {
+        $items = $this->solicitar->paginate();
+
+        return response()->json([
+            'recordsTotal' => $items->total(),
+            'recordsFiltered' => $items->total(),
+            'data' => $items->items()
+        ], 200);
+    }
 }

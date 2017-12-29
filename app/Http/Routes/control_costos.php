@@ -21,4 +21,5 @@ Route::group(['prefix' => 'control_costos'], function () {
      * Solicitudes de reclasificación
      */
     Route::get('solicitudes_reclasificacion', 'SolicitudesReclasificacionController@index')->name('control_costos.solicitudes_reclasificacion.index');
+    Route::get('solicitudes_reclasificacion/paginate', 'SolicitudesReclasificacionController@paginate');
 });

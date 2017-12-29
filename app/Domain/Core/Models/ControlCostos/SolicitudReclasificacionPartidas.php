@@ -6,6 +6,7 @@ use Ghi\Core\Facades\Context;
 use Ghi\Domain\Core\Models\BaseModel;
 use Ghi\Domain\Core\Models\Concepto;
 use Ghi\Domain\Core\Models\Scopes\ObraScope;
+use Ghi\Domain\Core\Models\Transacciones\Item;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class SolicitudReclasificacionPartidas extends BaseModel
@@ -26,5 +27,17 @@ class SolicitudReclasificacionPartidas extends BaseModel
     public function solicitud()
     {
         return $this->belongsTo(SolicitudReclasificacion::class, 'id_solicitud_reclasificacion', 'id_solicitud_reclasificacion');
+    }
+
+    public function item() {
+        return $this->belongsTo(Item::class, 'id_item');
+    }
+
+    public function conceptoOriginal() {
+        return $this->belongsTo(Concepto::class, 'id_concepto_original', 'id_concepto');
+    }
+
+    public function conceptoNuevo() {
+        return $this->belongsTo(Concepto::class, 'id_concepto_nuevo', 'id_concepto');
     }
 }
