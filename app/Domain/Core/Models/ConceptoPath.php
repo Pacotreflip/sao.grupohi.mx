@@ -11,9 +11,9 @@ class ConceptoPath extends BaseModel
     protected $connection = 'cadeco';
     protected $table = 'PresupuestoObra.conceptosPath';
     protected $primaryKey = 'id_concepto';
-    protected $appends = [
-        'descripcion'
-    ];
+//    protected $appends = [
+//        'descripcion'
+//    ];
 
     protected static function boot()
     {

@@ -15,6 +15,7 @@
                             {{--@permission(['consultar_movimiento_bancario'])--}}
                             <li><a href="{{ route('control_costos.solicitar_reclasificacion.index') }}">SOLICITAR RECLASIFICACIÓN</a></li>
                             {{--@endpermission--}}
+                            <li ><a href="{{route('control_costos.solicitudes_reclasificacion.index')}}">RECLASIFICACIÓN DE COSTOS</a></li>
                         </ul>
                     </div>
                 </div>

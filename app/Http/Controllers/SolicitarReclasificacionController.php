@@ -16,11 +16,11 @@ class SolicitarReclasificacionController extends Controller
 {
     use Helpers;
     protected $operadores = [
-        'igual a' => '=',
-        'diferente de' => '!=',
-        'empieza con' => '{texto}%',
-        'termina con' => '%{texto}',
-        'contiene' => '%{texto}%'
+        'igual a' => "= '{texto}'",
+        'diferente de' => "!= '{texto}'",
+        'empieza con' => "LIKE '{texto}%'",
+        'termina con' => "LIKE '%{texto}'",
+        'contiene' => "LIKE '%{texto}%'"
     ];
     protected $condicionantes = [
         'Y' => 'AND',
@@ -39,7 +39,7 @@ class SolicitarReclasificacionController extends Controller
     {
         parent::__construct();
 
-//        $this->middleware('auth');
+        $this->middleware('auth');
         $this->middleware('context');
 
         $this->concepto = $concepto;
@@ -82,7 +82,7 @@ class SolicitarReclasificacionController extends Controller
      * @param Request $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function find(Request $request)
+    public function findmovimiento(Request $request)
     {
         $filtros = json_decode($request->data, true);
         $string = "";
@@ -90,26 +90,19 @@ class SolicitarReclasificacionController extends Controller
         $string = '';
 
         foreach ($filtros as $k => $v)
-            foreach ($filtros as $k => $v)
-            {
-                $o = $this->operadores[$v['operador']];
+        {
+            $o = $this->operadores[$v['operador']];
+            $operador = str_replace('{texto}', $v['texto'], $o);
+            $nivel = filter_var($v['nivel'], FILTER_SANITIZE_NUMBER_INT);
 
-                if (strpos($o, '=') !== false)
-                    $operador = $o . " '" . $v['texto'] . "'";
+            //Si existe
+            if (in_array( $nivel, array_keys($niveles)))
+                $niveles[ $nivel] .= ' OR filtro'. $nivel ." ". $operador;
 
-                else
-                    $operador = "LIKE '". str_replace('{texto}', $v['texto'], $o). "'";
+            else
+                $niveles[ $nivel] = " filtro". $nivel ." ". $operador;
 
-                $nivel = filter_var($v['nivel'], FILTER_SANITIZE_NUMBER_INT);
-
-                //Si existe
-                if (in_array( $nivel, array_keys($niveles)))
-                    $niveles[ $nivel] .= ' OR filtro'. $nivel ." ". $operador;
-
-                else
-                    $niveles[ $nivel] = " filtro". $nivel ." ". $operador;
-
-            }
+        }
 
         $endValue = end($niveles);
         $end = key($niveles);
@@ -121,9 +114,53 @@ class SolicitarReclasificacionController extends Controller
             $count++;
         }
 
-        $resultados = $this->conceptoPath->buscarCostoTotal($string);
+        $resultados = $this->conceptoPath->filtrarConMovimiento($string);
+        $r = [];
 
-        return response()->json(['data' => ['resultados' => $resultados]], 200);
+        foreach ($resultados->toArray() as $k => $v)
+            $r[$k] = array_filter($v);
+
+        return response()->json(['data' => ['resultados' => $r]], 200);
+    }
+
+    public function find(Request $request)
+    {
+        $filtros = json_decode($request->data, true);
+        $string = "";
+        $niveles = [];
+        $string = '';
+
+        foreach ($filtros as $k => $v)
+        {
+            $o = $this->operadores[$v['operador']];
+            $operador = str_replace('{texto}', $v['texto'], $o);
+            $nivel = filter_var($v['nivel'], FILTER_SANITIZE_NUMBER_INT);
+
+            //Si existe
+            if (in_array( $nivel, array_keys($niveles)))
+                $niveles[ $nivel] .= ' OR filtro'. $nivel ." ". $operador;
+
+            else
+                $niveles[ $nivel] = " filtro". $nivel ." ". $operador;
+        }
+
+        $endValue = end($niveles);
+        $end = key($niveles);
+        $count = 0;
+
+        foreach ($niveles as $nivel => $cadena)
+        {
+            $string .= ($count == 0 ? "" : " and") . "(". $cadena ." and len(nivel) / 4 = ". $nivel .")";
+            $count++;
+        }
+
+        $resultados = $this->conceptoPath->filtrar($string);
+        $r = [];
+
+        foreach ($resultados->toArray() as $k => $v)
+            $r[$k] = array_filter($v);
+
+        return response()->json(['data' => ['resultados' => $r]], 200);
     }
 
     public function tipos(Request $request)

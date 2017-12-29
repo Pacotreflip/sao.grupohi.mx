@@ -8,9 +8,9 @@ Breadcrumbs::register('control_costos.index', function ($breadcrumb) {
 /**
  * Reclasificación de costos
  */
-Breadcrumbs::register('control_costos.reclasificacion_costos.index', function($breadcrumbs) {
+Breadcrumbs::register('control_costos.solicitudes_reclasificacion.index', function($breadcrumbs) {
     $breadcrumbs->parent('control_costos.index');
-    $breadcrumbs->push('RECLASIFICACIÓN DE COSTOS', route('control_costos.reclasificacion_costos.index'));
+    $breadcrumbs->push('SOLICITUDES DE RECLASIFICACIÓN', route('control_costos.solicitudes_reclasificacion.index'));
 });
 
 /**

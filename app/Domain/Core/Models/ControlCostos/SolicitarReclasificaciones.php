@@ -36,4 +36,8 @@ class SolicitarReclasificaciones extends BaseModel
     public function concepto() {
         return $this->belongsTo(Concepto::class, 'id_concepto', 'id_concepto');
     }
+
+    public function concepto_nuevo() {
+        return $this->belongsTo(Concepto::class, 'id_concepto_nuevo', 'id_concepto');
+    }
 }

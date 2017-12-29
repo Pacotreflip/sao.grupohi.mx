@@ -17982,8 +17982,8 @@ Vue.component('solicitar_reclasificacion-index', {
                 var cont = Object.keys(t).filter(function (t2) {
                     return t[t2] != null;
                 });
-                if (cont.length - 4 > result) {
-                    result = cont.length - 4;
+                if (cont.length - 3 > result) {
+                    result = cont.length - 3;
                 }
             });
 
@@ -18083,7 +18083,7 @@ Vue.component('solicitar_reclasificacion-index', {
 
             $.ajax({
                 type: 'GET',
-                url: self.url_solicitar_reclasificacion_index + '/find',
+                url: self.url_solicitar_reclasificacion_index + '/findmovimiento',
                 data: str,
                 beforeSend: function beforeSend() {},
                 success: function success(data, textStatus, xhr) {
@@ -18308,8 +18308,8 @@ Vue.component('solicitar_reclasificacion-items', {
                 var cont = Object.keys(t).filter(function (t2) {
                     return t[t2] != null;
                 });
-                if (cont.length - 4 > result) {
-                    result = cont.length - 4;
+                if (cont.length - 2 > result) {
+                    result = cont.length - 2;
                 }
             });
 
@@ -18330,13 +18330,11 @@ Vue.component('solicitar_reclasificacion-items', {
             });
 
             // Manda error si están vacios
-            if (vacios.length > 0) {
-                return swal({
-                    type: 'warning',
-                    title: 'Los siguientes campos no pueden estar vacios:',
-                    html: '<ul class="list-group"><li class="list-group-item list-group-item-danger">' + vacios.join("<li class=\"list-group-item list-group-item-danger\">") + '</ul>'
-                });
-            }
+            if (vacios.length > 0) return swal({
+                type: 'warning',
+                title: 'Los siguientes campos no pueden estar vacios:',
+                html: '<ul class="list-group"><li class="list-group-item list-group-item-danger">' + vacios.join("<li class=\"list-group-item list-group-item-danger\">") + '</ul>'
+            });
 
             self.data.filtros.push(self.data.agrega);
         },
