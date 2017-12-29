@@ -14,7 +14,7 @@ class CreateTableFinanzasComplementoContrarecibo extends Migration
     {
         Schema::create('Finanzas.complemento_contrarecibo', function (Blueprint $table) {
             $table->increments('id');
-            $table->string("documentos_completos");
+            $table->string("documentacion_completa");
             $table->unsignedInteger('id_transaccion')->index();
             $table->foreign('id_transaccion')
                 ->references('id_transaccion')
