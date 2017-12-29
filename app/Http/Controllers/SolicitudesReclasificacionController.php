@@ -5,33 +5,29 @@ namespace Ghi\Http\Controllers;
 use Dingo\Api\Routing\Helpers;
 
 
-use Ghi\Domain\Core\Contracts\Contabilidad\ConceptoPathRepository;
-use Ghi\Domain\Core\Contracts\Contabilidad\ConceptoRepository;
-use Ghi\Domain\Core\Contracts\ControlCostos\SolicitarReclasificacionesRepository;
-use Ghi\Domain\Core\Models\Concepto;
+use Ghi\Domain\Core\Contracts\ControlCostos\SolicitudReclasificacionPartidasRepository;
+use Ghi\Domain\Core\Contracts\ControlCostos\SolicitudReclasificacionRepository;
 use Illuminate\Http\Request;
 
 class SolicitudesReclasificacionController extends Controller
 {
     use Helpers;
 
+
     /**
-     * SolicitarReclasificacionController constructor.
-     * @param Concepto|ConceptoRepository $concepto
-     * @param ConceptoPathRepository $conceptoPath
-     * @param SolicitarReclasificacionesRepository $solicitar
-     * @internal param TransaccionRepository $trasaccion
+     * SolicitudesReclasificacionController constructor.
+     * @param SolicitudReclasificacionRepository $solicitud
+     * @param SolicitudReclasificacionPartidasRepository $partidas
      */
-    public function __construct(ConceptoRepository $concepto, ConceptoPathRepository $conceptoPath, SolicitarReclasificacionesRepository $solicitar)
+    public function __construct(SolicitudReclasificacionRepository $solicitud, SolicitudReclasificacionPartidasRepository $partidas)
     {
         parent::__construct();
 
         $this->middleware('auth');
         $this->middleware('context');
 
-        $this->concepto = $concepto;
-        $this->conceptoPath = $conceptoPath;
-        $this->solicitar = $solicitar;
+        $this->solicitar = $solicitud;
+        $this->part
     }
 
     /**
@@ -41,7 +37,7 @@ class SolicitudesReclasificacionController extends Controller
     public function index(Request $request)
     {
         $r = $this->solicitar->with(['concepto', 'concepto_nuevo'])->all();
-        dd($r);
+
 
         $data_view = [
             'nuevo' => $this->concepto->obtenerMaxNumNiveles(),
