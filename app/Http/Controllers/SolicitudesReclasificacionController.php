@@ -27,7 +27,7 @@ class SolicitudesReclasificacionController extends Controller
         $this->middleware('context');
 
         $this->solicitar = $solicitud;
-        $this->part
+        $this->partidas = $partidas;
     }
 
     /**
@@ -36,15 +36,11 @@ class SolicitudesReclasificacionController extends Controller
      */
     public function index(Request $request)
     {
-        $r = $this->solicitar->with(['concepto', 'concepto_nuevo'])->all();
+//        $solicitudes = $this->solicitar->with(['partidas'])->all();
+        $partidas = [];
 
 
-        $data_view = [
-            'nuevo' => $this->concepto->obtenerMaxNumNiveles(),
-            'antiguo' => $this->operadores,
-        ];
 
-        return view('control_costos.solicitar_reclasificacion.index')
-            ->with('data_view', $data_view);
+        return view('control_costos.solicitudes_reclasificacion.index');
     }
 }

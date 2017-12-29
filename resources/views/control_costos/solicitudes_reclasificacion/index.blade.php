@@ -2,13 +2,14 @@
 @section('title', 'Reclasificación De Costos')
 @section('contentheader_title', 'RECLASIFICACIÓN DE COSTOS')
 @section('breadcrumb')
-    {!! Breadcrumbs::render('solicitudes_reclasificacion') !!}
+    {!! Breadcrumbs::render('solicitud_reclasificacion') !!}
 @endsection
 @section('main-content')
 
 <global-errors></global-errors>
 <reclasificacion_costos-index
-        :url_reclasificacion_costos_index="'{{ route('solicitudes_reclasificacion') }}'"
+        :url_solicitudes_reclasificacion_index="'{{ route('solicitudes_reclasificacion') }}'"
+        :solicitudes="{{ $data_view['solicitudes']  }}"
         inline-template
         v-cloak>
     <section>
@@ -21,30 +22,7 @@
                 </div>
                 <div class="box-body">
                     <div class="table-responsive">
-                        <table class="table table-bordered table-striped">
-                            <thead>
-                            <tr>
-                                <th>#</th>
-                                <th>Nivel</th>
-                                <th>Descripción</th>
-                                <th>Costo Total</th>
-                                <th width="150">Acciones</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <tr v-for="(item, index) in filtros">
-                                <td >@{{ index + 1  }}</td>
-                                <td>@{{ item.nivel }}</td>
-                                <td>@{{  item.operador }}</td>
-                                <td>@{{  item.texto }}</td>
-                                <td>
-                                    <div class="btn-group">
-                                        <button type="button" title="Solicitar" class="btn btn-xs btn-sucess" >Solicitar</i></button>
-                                    </div>
-                                </td>
-                            </tr>
-                            </tbody>
-                        </table>
+
                     </div>
                 </div>
             </div>

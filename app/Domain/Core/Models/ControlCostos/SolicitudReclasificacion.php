@@ -31,4 +31,9 @@ class SolicitudReclasificacion extends BaseModel
             $model->registro = auth()->user()->idusuario;
         });
     }
+
+    public function partidas()
+    {
+        return $this->hasMany(SolicitudReclasificacionPartidas::class, 'id_solicitud_reclasificacion', 'id_solicitud_reclasificacion');
+    }
 }

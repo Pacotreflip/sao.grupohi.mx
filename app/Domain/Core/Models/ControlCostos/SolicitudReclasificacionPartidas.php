@@ -22,4 +22,9 @@ class SolicitudReclasificacionPartidas extends BaseModel
         'id_concepto_original',
         'id_concepto_nuevo',
     ];
+
+    public function solicitud()
+    {
+        return $this->belongsTo(SolicitudReclasificacion::class, 'id_solicitud_reclasificacion', 'id_solicitud_reclasificacion');
+    }
 }
