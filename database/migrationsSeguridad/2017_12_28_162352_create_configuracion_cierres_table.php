@@ -14,12 +14,18 @@ class CreateConfiguracionCierresTable extends Migration
     {
         Schema::create('Configuracion.cierres', function (Blueprint $table) {
             $table->increments('id');
-            $table->date('fecha');
+            $table->string('anio');
+            $table->string('mes');
             $table->integer('registro');
             $table->timestamps();
             $table->integer('id_proyecto')->unsigned();
             $table->integer('id_obra');
             $table->softDeletes();
+
+            $table->foreign('id_proyecto')
+                ->references('id')
+                ->on('dbo.proyectos')
+                ->onDelete('cascade');
         });
     }
 

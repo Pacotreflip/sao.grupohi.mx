@@ -13,4 +13,6 @@ interface CierreRepository
      */
     public function all();
     public function paginate(array $data);
+    public function create(array $data);
+    public function find($id);
 }

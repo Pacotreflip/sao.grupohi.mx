@@ -3,16 +3,55 @@ Vue.component('cierre-index', {
         return {
             cierre : {
                 anio : '',
-                mes : '',
-                transacciones : []
+                mes : ''
             },
-            cargando : false
+            cierre_edit : {
+                transacciones : [],
+                id : '',
+                anio : '',
+                created_at : '',
+                description : '',
+                mes : '',
+                registro : ''
+            },
+            tipos_tran : {},
+            guardando : false
         }
     },
 
     mounted: function () {
 
         var self = this;
+        self.getTiposTran();
+
+        $(document).on('click', '.btn_abrir', function () {
+            var id = $(this).attr('id');
+            $.ajax({
+                url : App.host + '/configuracion/cierre/' + id,
+                type : 'GET',
+                beforeSend : function () {
+                    self.guardando = true;
+                },
+                success : function (response) {
+                    response.transacciones = [];
+                    self.cierre_edit = response;
+                },
+                complete : function () {
+                    self.guardando = false;
+                    $('#abrir_cierre_modal').modal('show');
+                }
+            });
+        });
+
+        $('#fecha').datepicker({
+            autoclose: true,
+            minViewMode: 1,
+            format: 'mm/yyyy',
+            language: 'es',
+        }).on('changeDate', function(selected){
+            self.cierre.anio = new Date(selected.date.valueOf()).getFullYear();
+            self.cierre.mes = new Date(selected.date.valueOf()).getMonth() + 1;
+        });
 
         $('#cierres_table').DataTable({
             "processing": true,
@@ -23,15 +62,14 @@ Vue.component('cierre-index', {
                 "url": App.host + '/configuracion/cierre/paginate',
                 "type" : "POST",
                 "beforeSend" : function () {
-                    self.cargando = true;
+                    self.guardando = true;
                 },
                 "complete" : function () {
-                    self.cargando = false;
+                    self.guardando = false;
                 },
                 "dataSrc" : function (json) {
                     for (var i = 0; i < json.data.length; i++) {
-                        json.data[i].anio = json.data[i].fecha.split('-')[0];
-                        json.data[i].mes = parseInt(json.data[i].fecha.split('-')[1]).getMes();
+                        json.data[i].mes = parseInt(json.data[i].mes).getMes();
                         json.data[i].created_at = new Date(json.data[i].created_at).dateFormat();
                         json.data[i].registro = json.data[i].user_registro.nombre + ' ' + json.data[i].user_registro.apaterno + ' ' + json.data[i].user_registro.amaterno;
                     }
@@ -46,7 +84,7 @@ Vue.component('cierre-index', {
                 {
                     data : 'id',
                     render : function(data) {
-                        return '<a href="'+data+'">Abrir</a>';
+                        return '<button class="btn btn-xs btn_abrir" id="'+data+'"><i class="fa fa-unlock"></i></button> ';
                     }
                 }
             ],
@@ -80,6 +118,50 @@ Vue.component('cierre-index', {
     methods : {
         generar_cierre : function () {
             $('#create_cierre_modal').modal('show');
+        },
+
+        save_cierre : function () {
+            var self = this;
+
+            $.ajax({
+                url : App.host + '/configuracion/cierre',
+                type : 'POST',
+                data : self.cierre,
+                beforeSend : function () {
+                    self.guardando = true;
+                },
+                success :function () {
+                    $('#cierres_table').DataTable().ajax.reload();
+
+                    $('#create_cierre_modal').modal('hide');
+                    swal({
+                        type: 'success',
+                        title: 'Correcto',
+                        html: 'Cierre de Periodo guardado correctamente',
+                    });
+                },
+                complete : function () {
+                    self.guardando = false;
+                }
+            });
+        },
+
+        getTiposTran :function () {
+            var self = this;
+
+            $.ajax({
+                url : App.host + '/tipo_tran/lists',
+                type : 'GET',
+                beforeSend : function () {
+                    self.guardando = true;
+                },
+                success : function (response) {
+                    self.tipos_tran = response;
+                },
+                complete : function () {
+                    self.guardando = false;
+                }
+            });
         }
     }
 });

@@ -2,6 +2,7 @@
 
 namespace Ghi\Http\Controllers;
 
+use Dingo\Api\Routing\Helpers;
 use Ghi\Domain\Core\Contracts\Seguridad\CierreRepository;
 use Illuminate\Http\Request;
 
@@ -10,6 +11,7 @@ use Ghi\Http\Requests;
 class CierreController extends Controller
 {
 
+    use Helpers;
     /**
      * @var CierreRepository
      */
@@ -40,5 +42,20 @@ class CierreController extends Controller
             'recordsFiltered' => $cierres->total(),
             'data' => $cierres->items()
         ], 200);
+    }
+
+    public function store(Request $request) {
+        $cierre = $this->cierre->create($request->all());
+        return $this->response->item($cierre, function ($item) {
+            return $item;
+        });
+    }
+
+    public function show(Request $request, $cierre) {
+        $cierre = $this->cierre->find($cierre);
+
+        return $this->response()->item($cierre, function ($item) {
+            return $item;
+        });
     }
 }
