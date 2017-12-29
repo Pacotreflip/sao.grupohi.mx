@@ -39,8 +39,6 @@ class SolicitudesReclasificacionController extends Controller
 //        $solicitudes = $this->solicitar->with(['partidas'])->all();
         $partidas = [];
 
-
-
         return view('control_costos.solicitudes_reclasificacion.index');
     }
 }
