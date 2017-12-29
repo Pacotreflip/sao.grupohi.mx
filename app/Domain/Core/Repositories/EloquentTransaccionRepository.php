@@ -42,10 +42,11 @@ class EloquentTransaccionRepository implements TransaccionRepository
             {
                 $join->on('TipoTran.opciones', '=', DB::raw("transacciones.opciones AND  transacciones.tipo_transaccion = TipoTran.Tipo_Transaccion"));
             })
-            ->selectRaw('movimientos.id_concepto, transacciones.tipo_transaccion, transacciones.opciones, TipoTran.descripcion, transacciones.id_transaccion,
-sum(movimientos.monto_total) as monto, count(transacciones.id_transaccion) as cantidad')
+            ->selectRaw('TipoTran.descripcion as tipo_transaccion,
+   COUNT( DISTINCT transacciones.id_transaccion) as cantidad,
+    sum(movimientos.monto_total) as monto, transacciones.opciones')
             ->whereIn('movimientos.id_concepto', $id_concepto)
-            ->groupBy(DB::raw('transacciones.id_transaccion, transacciones.opciones, TipoTran.descripcion, movimientos.id_concepto, transacciones.tipo_transaccion'))
+            ->groupBy(DB::raw('TipoTran.descripcion, transacciones.opciones'))
             ->get();
     }
 
@@ -61,8 +62,10 @@ sum(movimientos.monto_total) as monto, count(transacciones.id_transaccion) as ca
                 $join->on('TipoTran.opciones', '=', DB::raw("transacciones.opciones AND  transacciones.tipo_transaccion = TipoTran.Tipo_Transaccion"));
             })
             ->selectRaw('movimientos.id_concepto, transacciones.tipo_transaccion, transacciones.opciones, TipoTran.descripcion,
-movimientos.monto_total as monto, fecha, numero_folio, transacciones.id_transaccion')
+ fecha, numero_folio, transacciones.id_transaccion,
+sum(movimientos.monto_total) as monto')
             ->whereIn('movimientos.id_concepto', $id_concepto)
+            ->groupBy(DB::raw('movimientos.id_concepto, transacciones.tipo_transaccion, transacciones.opciones, TipoTran.descripcion,fecha, numero_folio, transacciones.id_transaccion'))
             ->get();
 
         return $items;
@@ -73,7 +76,7 @@ movimientos.monto_total as monto, fecha, numero_folio, transacciones.id_transacc
         return $this->items->where('items.id_transaccion', '=', $id_transaccion)
             ->leftJoin('transacciones', 'transacciones.id_transaccion', '=', DB::raw($id_transaccion))
             ->leftJoin('conceptos', 'conceptos.id_concepto', '=', 'items.id_concepto')
-            ->selectRaw('transacciones.observaciones, items.cantidad, items.precio_unitario, items.importe, items.id_concepto, conceptos.descripcion')
+            ->selectRaw('transacciones.observaciones, items.cantidad, items.precio_unitario, items.importe, items.id_concepto, conceptos.descripcion, items.id_item')
             ->get();
     }
 }
