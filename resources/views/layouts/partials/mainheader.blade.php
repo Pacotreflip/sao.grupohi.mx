@@ -60,11 +60,12 @@
                         </ul>
                     </li>
                 @endif
-                <!-- Control Sidebar Toggle Button
-                    <li>
-                        <a href="#" data-toggle="control-sidebar"><i class="fa fa-gears"></i></a>
-                    </li>
-                    !-->
+                @if($currentObra)
+                <!-- Control Sidebar Toggle Button -->
+                <li>
+                    <a href="#" data-toggle="control-sidebar"><i class="fa fa-gears"></i></a>
+                </li>
+                @endif
             </ul>
         </div>
     </nav>

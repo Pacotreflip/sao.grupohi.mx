@@ -11,3 +11,4 @@ include ('breadcrumbs/reportes.php');
 include ('breadcrumbs/tesoreria.php');
 include ('breadcrumbs/control_costos.php');
 include ('breadcrumbs/control_presupuesto.php');
+include ('breadcrumbs/configuracion.php');

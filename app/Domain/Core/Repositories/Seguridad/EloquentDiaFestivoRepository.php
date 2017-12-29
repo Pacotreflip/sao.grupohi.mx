@@ -8,13 +8,14 @@ class EloquentDiaFestivoRepository implements DiaFestivoRepository
 {
 
     /**
-     * @var \Ghi\Domain\Core\Models\Contabilidad\CuentaConcepto
+     * @var \Ghi\Domain\Core\Models\Seguridad\DiaFestivo
      */
     protected $model;
 
+
     /**
-     * EloquentCuentaContableRepository constructor.
-     * @param \Ghi\Domain\Core\Models\Contabilidad\CuentaConcepto $model
+     * EloquentDiaFestivoRepository constructor.
+     * @param DiaFestivo $model
      */
     public function __construct(DiaFestivo $model)
     {
@@ -42,7 +43,7 @@ class EloquentDiaFestivoRepository implements DiaFestivoRepository
     }
 
     /**Crea relaciones con otros modelos
-     * @param array $array
+     * @param $relations
      * @return mixed
      */
     public function with($relations)
