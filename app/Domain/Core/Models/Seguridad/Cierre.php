@@ -13,10 +13,13 @@ use Ghi\Domain\Core\Models\BaseModel;
 use Ghi\Domain\Core\Models\Scopes\ObraScope;
 use Ghi\Domain\Core\Models\Scopes\ProyectoScope;
 use Ghi\Domain\Core\Models\User;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Auth;
 
 class Cierre extends BaseModel
 {
+    use SoftDeletes;
+
     protected $table = 'Configuracion.cierres';
     protected $connection = 'seguridad';
     protected $fillable = [

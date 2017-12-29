@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateControlcostosSolicitudReclasificacion extends Migration
+class CreateControlcostosSolicitudReclasificacionRechazadaTable extends Migration
 {
     /**
      * Run the migrations.
@@ -12,12 +12,10 @@ class CreateControlcostosSolicitudReclasificacion extends Migration
      */
     public function up()
     {
-        Schema::create('ControlCostos.solicitud_reclasificacion', function (Blueprint $table) {
-
+        Schema::create('ControlCostos.solicitud_reclasificacion_rechazada', function (Blueprint $table) {
             $table->increments('id_solicitud_reclasificacion');
-            $table->text("motivo");
-            $table->unsignedInteger("estatus")->nullable();
-            $table->unsignedInteger("registro")->nullable();
+            $table->integer('id_rechazo');
+            $table->text('motivo');
             $table->timestamps();
             $table->softDeletes();
         });
@@ -30,6 +28,6 @@ class CreateControlcostosSolicitudReclasificacion extends Migration
      */
     public function down()
     {
-        Schema::drop('ControlCostos.solicitud_reclasificacion');
+        Schema::drop('ControlCostos.solicitud_reclasificacion_rechazada');
     }
 }
