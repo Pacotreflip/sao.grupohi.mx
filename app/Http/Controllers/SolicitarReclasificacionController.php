@@ -7,7 +7,8 @@ use Dingo\Api\Routing\Helpers;
 
 use Ghi\Domain\Core\Contracts\Contabilidad\ConceptoPathRepository;
 use Ghi\Domain\Core\Contracts\Contabilidad\ConceptoRepository;
-use Ghi\Domain\Core\Contracts\ControlCostos\SolicitarReclasificacionesRepository;
+use Ghi\Domain\Core\Contracts\ControlCostos\SolicitudReclasificacionPartidasRepository;
+use Ghi\Domain\Core\Contracts\ControlCostos\SolicitudReclasificacionRepository;
 use Ghi\Domain\Core\Contracts\TransaccionRepository;
 use Ghi\Domain\Core\Models\Concepto;
 use Illuminate\Http\Request;
@@ -26,6 +27,10 @@ class SolicitarReclasificacionController extends Controller
         'Y' => 'AND',
         'O' => 'OR',
     ];
+    /**
+     * @var SolicitudReclasificacionRepository
+     */
+    private $solicitud;
 
     /**
      * SolicitarReclasificacionController constructor.
@@ -35,7 +40,7 @@ class SolicitarReclasificacionController extends Controller
      * @param TransaccionRepository $transaccion
      * @internal param TransaccionRepository $trasaccion
      */
-    public function __construct(ConceptoRepository $concepto, ConceptoPathRepository $conceptoPath, SolicitarReclasificacionesRepository $solicitar, TransaccionRepository $transaccion)
+    public function __construct(ConceptoRepository $concepto, ConceptoPathRepository $conceptoPath, TransaccionRepository $transaccion, SolicitudReclasificacionRepository $solicitud, SolicitudReclasificacionPartidasRepository $partidas)
     {
         parent::__construct();
 
@@ -44,8 +49,9 @@ class SolicitarReclasificacionController extends Controller
 
         $this->concepto = $concepto;
         $this->conceptoPath = $conceptoPath;
-        $this->solicitar = $solicitar;
         $this->transaccion = $transaccion;
+        $this->solicitud = $solicitud;
+        $this->partidas = $partidas;
     }
 
     /**
@@ -69,13 +75,24 @@ class SolicitarReclasificacionController extends Controller
      */
     public function store(Request $request)
     {
-        $record = $this->solicitar->create($request->all());
+        $motivo = $request->motivo;
+        $partidas = $request->solicitudes;
 
-        return response()->json(['data' =>
+        $solicitud  = $this->solicitud->create(['motivo' => $motivo]);
+
+        if (!empty($solicitud))
+            foreach ($partidas as $p)
+                $this->partidas->create([
+                    'id_solicitud_reclasificacion' => $solicitud->id_solicitud_reclasificacion,
+                    'id_item' => $p['id_item'],
+                    'id_concepto_original' => $p['id_concepto'],
+                    'id_concepto_nuevo' => $p['id_concepto_nuevo']
+                ]);
+
+        return response()->json(
             [
-                'solicitud' => $record
-            ]
-        ], 200);
+                'solicitud' => $solicitud
+            ], 200);
     }
 
     /**
@@ -168,8 +185,8 @@ class SolicitarReclasificacionController extends Controller
         $id_concepto = $request->id_concepto;
 
         $resumen = $this->transaccion->tiposTransaccion($id_concepto);
-        $detallesRaw = $this->transaccion->detallesTransacciones($id_concepto);
-        $detalles = [];
+        $detalles = $this->transaccion->detallesTransacciones($id_concepto);
+        $detallesRaw = [];
 
         foreach ($resumen as $k => $v)
         {

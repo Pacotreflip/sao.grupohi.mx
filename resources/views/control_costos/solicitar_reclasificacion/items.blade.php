@@ -41,7 +41,6 @@
                                     <th>Importe</th>
                                     <th>Destino Inicio</th>
                                     <th>Destino Final</th>
-                                    <th>Solicitar</th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -52,7 +51,6 @@
                                     <td class="text-right">@{{  parseInt(item.importe).formatMoney(2, '.', ',') }}</td>
                                     <td><a href="#" v-on:click="open_modal_agregar(item, index)">@{{  item.descripcion }}</a></td>
                                     <td class="destino_final">@{{  item.destino_final }}</a></td>
-                                    <td><a href="#" v-on:click="confirm_solicitar(item)">Solicitar</a></td>
                                 </tr>
                                 </tbody>
                             </table>
@@ -60,6 +58,15 @@
                     </div>
                 </div>
             </div>
+            <div class="col-md-12">
+              <div class="form-group">
+                  <label><b>Motivo</b></label>
+                  <textarea class="form-control" rows="3" placeholder="Especifica un motivo" id="Motivo" value="" name="Motivo" v-model="data.motivo"></textarea>
+
+              </div>
+            <button class="btn btn-sm btn-primary pull-right" v-on:click="confirm_solicitar()">Solicitar</button>
+            <br><br>
+             </div>
         </div>
         <div id="agregar_filtro_modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="AgregarModal" data-backdrop="static" data-keyboard="false">
             <div class="modal-dialog modal-lg" role="document" style="width: 70% !important;">
