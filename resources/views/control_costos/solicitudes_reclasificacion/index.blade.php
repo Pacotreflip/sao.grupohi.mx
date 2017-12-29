@@ -2,13 +2,13 @@
 @section('title', 'Reclasificación De Costos')
 @section('contentheader_title', 'RECLASIFICACIÓN DE COSTOS')
 @section('breadcrumb')
-    {!! Breadcrumbs::render('control_costos.reclasificacion_costos.index') !!}
+    {!! Breadcrumbs::render('solicitudes_reclasificacion') !!}
 @endsection
 @section('main-content')
 
 <global-errors></global-errors>
 <reclasificacion_costos-index
-        :url_reclasificacion_costos_index="'{{ route('control_costos.reclasificacion_costos.index') }}'"
+        :url_reclasificacion_costos_index="'{{ route('solicitudes_reclasificacion') }}'"
         inline-template
         v-cloak>
     <section>

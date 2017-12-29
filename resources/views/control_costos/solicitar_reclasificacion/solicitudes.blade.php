@@ -1,14 +1,14 @@
 @extends('control_costos.layout')
-@section('title', 'Solicitar Reclasificación')
-@section('contentheader_title', 'SOLICITAR RECLASIFICACIÓN')
+@section('title', 'Solicitudes de Reclasificación')
+@section('contentheader_title', 'SOLICITUDES DE RECLASIFICACIÓN')
 @section('breadcrumb')
-    {!! Breadcrumbs::render('control_costos.solicitar_reclasificacion.index') !!}
+    {!! Breadcrumbs::render('control_costos.solicitudes_reclasificacion.index') !!}
 @endsection
 @section('main-content')
 
 <global-errors></global-errors>
 <solicitar_reclasificacion-index
-        :url_solicitar_reclasificacion_index="'{{ route('control_costos.solicitar_reclasificacion.index') }}'"
+        :url_solicitar_reclasificacion_index="'{{ route('control_costos.solicitudes_reclasificacion.index') }}'"
         :max_niveles="{{ $data_view['max_niveles']  }}"
         :operadores="{{ json_encode($data_view['operadores'])  }}"
         :filtros="[]"

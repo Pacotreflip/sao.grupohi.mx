@@ -43,8 +43,8 @@ Vue.component('solicitar_reclasificacion-index', {
                 var cont = (Object.keys(t)).filter(function (t2) {
                     return t[t2] != null;
                 });
-                if (cont.length -4 > result) {
-                    result = cont.length -4;
+                if (cont.length -3 > result) {
+                    result = cont.length -3;
                 }
             });
 
@@ -150,7 +150,7 @@ Vue.component('solicitar_reclasificacion-index', {
 
             $.ajax({
                 type: 'GET',
-                url : self.url_solicitar_reclasificacion_index +'/find',
+                url : self.url_solicitar_reclasificacion_index +'/findmovimiento',
                 data: str,
                 beforeSend: function () {},
                 success: function (data, textStatus, xhr) {
@@ -178,7 +178,6 @@ Vue.component('solicitar_reclasificacion-index', {
                             html: 'No se encontraron resultados'
                         });
                     }
-
                 },
                 complete: function () {
 
