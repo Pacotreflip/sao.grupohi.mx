@@ -15,7 +15,7 @@
                 <li ><a href="{{route('control_costos.solicitar_reclasificacion.index')}}"><i class='fa fa-circle-o'></i> <span>Solicitar Reclasificación</span></a></li>
                 {{--@endpermission--}}
                 {{--@permission('consultar_traspaso_cuenta')--}}
-                <li ><a href="{{route('control_costos.reclasificacion_costos.index')}}"><i class='fa fa-circle-o'></i> <span>Reclasificación De Costos</span></a></li>
+                <li ><a href="{{route('control_costos.solicitudes_reclasificacion.index')}}"><i class='fa fa-circle-o'></i> <span>Reclasificación De Costos</span></a></li>
                 {{--@endpermission--}}
             </ul>
         </li>

@@ -16,7 +16,9 @@ Vue.component('solicitar_reclasificacion-items', {
                 'subimporte': 0,
                 'total_resultados': 0,
                 'temp_index' : false,
-                'id_concepto_antiguo' : false
+                'id_concepto_antiguo' : false,
+                'solicitudes' : [],
+                'motivo': ''
             }
         }
     },
@@ -38,8 +40,8 @@ Vue.component('solicitar_reclasificacion-items', {
                 var cont = (Object.keys(t)).filter(function (t2) {
                     return t[t2] != null;
                 });
-                if (cont.length -4 > result) {
-                    result = cont.length -4;
+                if (cont.length -2 > result) {
+                    result = cont.length -2;
                 }
             });
 
@@ -62,13 +64,11 @@ Vue.component('solicitar_reclasificacion-items', {
 
             // Manda error si están vacios
             if (vacios.length > 0)
-            {
-                return  swal({
+                return swal({
                     type: 'warning',
                     title: 'Los siguientes campos no pueden estar vacios:',
-                    html: '<ul class="list-group"><li class="list-group-item list-group-item-danger">' + vacios.join("<li class=\"list-group-item list-group-item-danger\">") +'</ul>'
+                    html: '<ul class="list-group"><li class="list-group-item list-group-item-danger">' + vacios.join("<li class=\"list-group-item list-group-item-danger\">") + '</ul>'
                 });
-            }
 
             self.data.filtros.push(self.data.agrega);
         },
@@ -211,41 +211,48 @@ Vue.component('solicitar_reclasificacion-items', {
             Vue.set(self.data.items[self.data.temp_index], 'destino_final', item['filtro'+ self.niveles_n]);
             Vue.set(self.data.items[self.data.temp_index], 'id_concepto_nuevo', item['id_concepto']);
 
+            self.data.solicitudes.push(self.data.items[self.data.temp_index]);
+
             this.close_modal_agregar();
         },
-        confirm_solicitar: function(item) {
+        confirm_solicitar: function() {
             var self = this;
 
             // Se debe de haber seleccionado un nuevo concepto
-            if (item.destino_final == undefined)
-            {
+            if (self.data.solicitudes.length == 0)
                 return swal({
                     type: 'warning',
                     title: 'Agrega un nuevo concepto',
                     html: 'Por favor agrega un nuevo concepto antes de solicitar'
                 });
-            }
+
+            if (self.data.motivo == '')
+                return swal({
+                    type: 'warning',
+                    title: 'Especifica un motivo',
+                    html: 'Por favor especifica un motivo antes de solicitar'
+                });
 
             swal({
-                title: "Aplicar concepto",
-                text: "¿Estás seguro/a de que deseas aplicar el concepto "+ item.descripcion +" a "+ item.destino_final +"?",
+                title: "Aplicar conceptos",
+                text: "¿Estás seguro/a de que deseas aplicar estos conceptos?",
                 type: "warning",
                 showCancelButton: true,
                 confirmButtonText: "Si, Continuar",
                 cancelButtonText: "No, Cancelar",
             }).then(function () {
-                self.solicitar(item);
+                self.solicitar();
             }).catch(swal.noop);
         },
-        solicitar: function (item) {
+        solicitar: function () {
             var self = this;
 
             $.ajax({
                 type: 'POST',
                 url : self.url_solicitar_reclasificacion_index,
                 data: {
-                    'id_concepto_nuevo' : item.id_concepto_nuevo,
-                    'id_concepto': item.id_concepto
+                    'motivo' : self.data.motivo,
+                    'solicitudes': self.data.solicitudes
                 },
                 beforeSend: function () {},
                 success: function (data, textStatus, xhr) {

@@ -13341,6 +13341,8 @@ require('./vue-components/Tesoreria/movimientos_bancarios/index');
  */
 require('./vue-components/Control_Costos/solicitar_reclasificacion/index');
 require('./vue-components/Control_Costos/solicitar_reclasificacion/items');
+require('./vue-components/Control_Costos/reclasificacion_costos/index');
+
 require('./vue-components/Control_Presupuesto/presupuesto/index');
 
 /**
@@ -13348,7 +13350,7 @@ require('./vue-components/Control_Presupuesto/presupuesto/index');
  */
 require('./vue-components/Configuracion/Cierre/index');
 
-},{"./vue-components/Compras/material/index":6,"./vue-components/Compras/requisicion/create":7,"./vue-components/Compras/requisicion/edit":8,"./vue-components/Configuracion/Cierre/index":9,"./vue-components/Contabilidad/cuenta_almacen/index":10,"./vue-components/Contabilidad/cuenta_bancos/cuenta-bancaria-edit":11,"./vue-components/Contabilidad/cuenta_concepto/index":12,"./vue-components/Contabilidad/cuenta_contable/index":13,"./vue-components/Contabilidad/cuenta_costo/index":14,"./vue-components/Contabilidad/cuenta_empresa/cuenta-empresa-edit":15,"./vue-components/Contabilidad/cuenta_fondo/index":16,"./vue-components/Contabilidad/cuenta_material/index":17,"./vue-components/Contabilidad/datos_contables/edit":18,"./vue-components/Contabilidad/emails":19,"./vue-components/Contabilidad/modulos/revaluacion/create":20,"./vue-components/Contabilidad/poliza_generada/edit":21,"./vue-components/Contabilidad/poliza_tipo/poliza-tipo-create":22,"./vue-components/Contabilidad/tipo_cuenta_contable/tipo-cuenta-contable-create":23,"./vue-components/Contabilidad/tipo_cuenta_contable/tipo-cuenta-contable-update":24,"./vue-components/Control_Costos/solicitar_reclasificacion/index":25,"./vue-components/Control_Costos/solicitar_reclasificacion/items":26,"./vue-components/Control_Presupuesto/presupuesto/index":27,"./vue-components/Finanzas/comprobante_fondo_fijo/create":28,"./vue-components/Finanzas/comprobante_fondo_fijo/edit":29,"./vue-components/Reportes/subcontratos-estimacion":30,"./vue-components/Tesoreria/movimientos_bancarios/index":31,"./vue-components/Tesoreria/traspaso_cuentas/index":32,"./vue-components/errors":33,"./vue-components/global-errors":34,"./vue-components/kardex_material/kardex-material-index":35,"./vue-components/select2":36}],6:[function(require,module,exports){
+},{"./vue-components/Compras/material/index":6,"./vue-components/Compras/requisicion/create":7,"./vue-components/Compras/requisicion/edit":8,"./vue-components/Configuracion/Cierre/index":9,"./vue-components/Contabilidad/cuenta_almacen/index":10,"./vue-components/Contabilidad/cuenta_bancos/cuenta-bancaria-edit":11,"./vue-components/Contabilidad/cuenta_concepto/index":12,"./vue-components/Contabilidad/cuenta_contable/index":13,"./vue-components/Contabilidad/cuenta_costo/index":14,"./vue-components/Contabilidad/cuenta_empresa/cuenta-empresa-edit":15,"./vue-components/Contabilidad/cuenta_fondo/index":16,"./vue-components/Contabilidad/cuenta_material/index":17,"./vue-components/Contabilidad/datos_contables/edit":18,"./vue-components/Contabilidad/emails":19,"./vue-components/Contabilidad/modulos/revaluacion/create":20,"./vue-components/Contabilidad/poliza_generada/edit":21,"./vue-components/Contabilidad/poliza_tipo/poliza-tipo-create":22,"./vue-components/Contabilidad/tipo_cuenta_contable/tipo-cuenta-contable-create":23,"./vue-components/Contabilidad/tipo_cuenta_contable/tipo-cuenta-contable-update":24,"./vue-components/Control_Costos/reclasificacion_costos/index":25,"./vue-components/Control_Costos/solicitar_reclasificacion/index":26,"./vue-components/Control_Costos/solicitar_reclasificacion/items":27,"./vue-components/Control_Presupuesto/presupuesto/index":28,"./vue-components/Finanzas/comprobante_fondo_fijo/create":29,"./vue-components/Finanzas/comprobante_fondo_fijo/edit":30,"./vue-components/Reportes/subcontratos-estimacion":31,"./vue-components/Tesoreria/movimientos_bancarios/index":32,"./vue-components/Tesoreria/traspaso_cuentas/index":33,"./vue-components/errors":34,"./vue-components/global-errors":35,"./vue-components/kardex_material/kardex-material-index":36,"./vue-components/select2":37}],6:[function(require,module,exports){
 'use strict';
 
 Vue.component('material-index', {
@@ -13835,16 +13837,55 @@ Vue.component('cierre-index', {
         return {
             cierre: {
                 anio: '',
-                mes: '',
-                transacciones: []
+                mes: ''
             },
-            cargando: false
+            cierre_edit: {
+                transacciones: [],
+                id: '',
+                anio: '',
+                created_at: '',
+                description: '',
+                mes: '',
+                registro: ''
+            },
+            tipos_tran: {},
+            guardando: false
         };
     },
 
     mounted: function mounted() {
 
         var self = this;
+        self.getTiposTran();
+
+        $(document).on('click', '.btn_abrir', function () {
+            var id = $(this).attr('id');
+            $.ajax({
+                url: App.host + '/configuracion/cierre/' + id,
+                type: 'GET',
+                beforeSend: function beforeSend() {
+                    self.guardando = true;
+                },
+                success: function success(response) {
+                    response.transacciones = [];
+                    self.cierre_edit = response;
+                },
+                complete: function complete() {
+                    self.guardando = false;
+                    $('#abrir_cierre_modal').modal('show');
+                }
+            });
+        });
+
+        $('#fecha').datepicker({
+            autoclose: true,
+            minViewMode: 1,
+            format: 'mm/yyyy',
+            language: 'es'
+        }).on('changeDate', function (selected) {
+            self.cierre.anio = new Date(selected.date.valueOf()).getFullYear();
+            self.cierre.mes = new Date(selected.date.valueOf()).getMonth() + 1;
+        });
 
         $('#cierres_table').DataTable({
             "processing": true,
@@ -13855,15 +13896,14 @@ Vue.component('cierre-index', {
                 "url": App.host + '/configuracion/cierre/paginate',
                 "type": "POST",
                 "beforeSend": function beforeSend() {
-                    self.cargando = true;
+                    self.guardando = true;
                 },
                 "complete": function complete() {
-                    self.cargando = false;
+                    self.guardando = false;
                 },
                 "dataSrc": function dataSrc(json) {
                     for (var i = 0; i < json.data.length; i++) {
-                        json.data[i].anio = json.data[i].fecha.split('-')[0];
-                        json.data[i].mes = parseInt(json.data[i].fecha.split('-')[1]).getMes();
+                        json.data[i].mes = parseInt(json.data[i].mes).getMes();
                         json.data[i].created_at = new Date(json.data[i].created_at).dateFormat();
                         json.data[i].registro = json.data[i].user_registro.nombre + ' ' + json.data[i].user_registro.apaterno + ' ' + json.data[i].user_registro.amaterno;
                     }
@@ -13873,7 +13913,7 @@ Vue.component('cierre-index', {
             "columns": [{ data: 'anio' }, { data: 'mes' }, { data: 'registro' }, { data: 'created_at' }, {
                 data: 'id',
                 render: function render(data) {
-                    return '<a href="' + data + '">Abrir</a>';
+                    return '<button class="btn btn-xs btn_abrir" id="' + data + '"><i class="fa fa-unlock"></i></button> ';
                 }
             }],
             language: {
@@ -13906,6 +13946,50 @@ Vue.component('cierre-index', {
     methods: {
         generar_cierre: function generar_cierre() {
             $('#create_cierre_modal').modal('show');
+        },
+
+        save_cierre: function save_cierre() {
+            var self = this;
+
+            $.ajax({
+                url: App.host + '/configuracion/cierre',
+                type: 'POST',
+                data: self.cierre,
+                beforeSend: function beforeSend() {
+                    self.guardando = true;
+                },
+                success: function success() {
+                    $('#cierres_table').DataTable().ajax.reload();
+
+                    $('#create_cierre_modal').modal('hide');
+                    swal({
+                        type: 'success',
+                        title: 'Correcto',
+                        html: 'Cierre de Periodo guardado correctamente'
+                    });
+                },
+                complete: function complete() {
+                    self.guardando = false;
+                }
+            });
+        },
+
+        getTiposTran: function getTiposTran() {
+            var self = this;
+
+            $.ajax({
+                url: App.host + '/tipo_tran/lists',
+                type: 'GET',
+                beforeSend: function beforeSend() {
+                    self.guardando = true;
+                },
+                success: function success(response) {
+                    self.tipos_tran = response;
+                },
+                complete: function complete() {
+                    self.guardando = false;
+                }
+            });
         }
     }
 });
@@ -16743,6 +16827,25 @@ Vue.component('tipo-cuenta-contable-update', {
 },{}],25:[function(require,module,exports){
 'use strict';
 
+Vue.component('reclasificacion_costos-index', {
+    props: ['url_solicitudes_reclasificacion_index', 'solicitudes'],
+    data: function data() {
+        return {
+            'data': {
+                'solicitudes': this.solicitudes
+            },
+            'guardando': false
+        };
+    },
+    computed: {},
+    mounted: function mounted() {},
+    directives: {},
+    methods: {}
+});
+
+},{}],26:[function(require,module,exports){
+'use strict';
+
 Vue.component('solicitar_reclasificacion-index', {
     props: ['url_solicitar_reclasificacion_index', 'max_niveles', 'filtros', 'operadores'],
     data: function data() {
@@ -16787,8 +16890,8 @@ Vue.component('solicitar_reclasificacion-index', {
                 var cont = Object.keys(t).filter(function (t2) {
                     return t[t2] != null;
                 });
-                if (cont.length - 4 > result) {
-                    result = cont.length - 4;
+                if (cont.length - 3 > result) {
+                    result = cont.length - 3;
                 }
             });
 
@@ -16888,7 +16991,7 @@ Vue.component('solicitar_reclasificacion-index', {
 
             $.ajax({
                 type: 'GET',
-                url: self.url_solicitar_reclasificacion_index + '/find',
+                url: self.url_solicitar_reclasificacion_index + '/findmovimiento',
                 data: str,
                 beforeSend: function beforeSend() {},
                 success: function success(data, textStatus, xhr) {
@@ -17031,26 +17134,21 @@ Vue.component('solicitar_reclasificacion-index', {
             Vue.set(self.data, 'desglosar', []);
             Vue.set(self.data, 'desglosar_descripcion', '');
         },
-        desglosar_tipos: function desglosar_tipos(item) {
+        desglosar_tipos: function desglosar_tipos(tipo_transaccion, opciones) {
             var self = this,
-                todos = [];
+                filtrado = [];
 
             self.clean_desglosar();
 
-            $.each(self.data.detalles, function (index, value) {
+            // Muestra detalles de acuerdo al tipo de transaccion
+            if (tipo_transaccion && opciones) {
+                filtrado = self.data.detalles.filter(function (e) {
+                    return e.descripcion == tipo_transaccion && e.opciones == opciones;
+                });
+            } else filtrado = self.data.detalles;
 
-                if (item !== false && index == item.id_transaccion) {
-
-                    Vue.set(self.data, 'desglosar', value);
-                    Vue.set(self.data, 'desglosar_descripcion', value.descripcion);
-                } else {
-                    todos.concat(value.transacciones);
-                }
-            });
-
-            if (todos.length > 0) {
-                Vue.set(self.data, 'desglosar', todos);
-            }
+            Vue.set(self.data, 'desglosar', filtrado);
+            Vue.set(self.data, 'desglosar_descripcion', tipo_transaccion);
         },
         mostrar_items: function mostrar_items(id_transaccion, id_concepto) {
             var self = this;
@@ -17070,7 +17168,7 @@ Vue.component('solicitar_reclasificacion-index', {
     directives: {}
 });
 
-},{}],26:[function(require,module,exports){
+},{}],27:[function(require,module,exports){
 'use strict';
 
 Vue.component('solicitar_reclasificacion-items', {
@@ -17091,7 +17189,9 @@ Vue.component('solicitar_reclasificacion-items', {
                 'subimporte': 0,
                 'total_resultados': 0,
                 'temp_index': false,
-                'id_concepto_antiguo': false
+                'id_concepto_antiguo': false,
+                'solicitudes': [],
+                'motivo': ''
             }
         };
     },
@@ -17113,8 +17213,8 @@ Vue.component('solicitar_reclasificacion-items', {
                 var cont = Object.keys(t).filter(function (t2) {
                     return t[t2] != null;
                 });
-                if (cont.length - 4 > result) {
-                    result = cont.length - 4;
+                if (cont.length - 2 > result) {
+                    result = cont.length - 2;
                 }
             });
 
@@ -17135,13 +17235,11 @@ Vue.component('solicitar_reclasificacion-items', {
             });
 
             // Manda error si están vacios
-            if (vacios.length > 0) {
-                return swal({
-                    type: 'warning',
-                    title: 'Los siguientes campos no pueden estar vacios:',
-                    html: '<ul class="list-group"><li class="list-group-item list-group-item-danger">' + vacios.join("<li class=\"list-group-item list-group-item-danger\">") + '</ul>'
-                });
-            }
+            if (vacios.length > 0) return swal({
+                type: 'warning',
+                title: 'Los siguientes campos no pueden estar vacios:',
+                html: '<ul class="list-group"><li class="list-group-item list-group-item-danger">' + vacios.join("<li class=\"list-group-item list-group-item-danger\">") + '</ul>'
+            });
 
             self.data.filtros.push(self.data.agrega);
         },
@@ -17273,40 +17371,46 @@ Vue.component('solicitar_reclasificacion-items', {
             Vue.set(self.data.items[self.data.temp_index], 'destino_final', item['filtro' + self.niveles_n]);
             Vue.set(self.data.items[self.data.temp_index], 'id_concepto_nuevo', item['id_concepto']);
 
+            self.data.solicitudes.push(self.data.items[self.data.temp_index]);
+
             this.close_modal_agregar();
         },
-        confirm_solicitar: function confirm_solicitar(item) {
+        confirm_solicitar: function confirm_solicitar() {
             var self = this;
 
             // Se debe de haber seleccionado un nuevo concepto
-            if (item.destino_final == undefined) {
-                return swal({
-                    type: 'warning',
-                    title: 'Agrega un nuevo concepto',
-                    html: 'Por favor agrega un nuevo concepto antes de solicitar'
-                });
-            }
+            if (self.data.solicitudes.length == 0) return swal({
+                type: 'warning',
+                title: 'Agrega un nuevo concepto',
+                html: 'Por favor agrega un nuevo concepto antes de solicitar'
+            });
+
+            if (self.data.motivo == '') return swal({
+                type: 'warning',
+                title: 'Especifica un motivo',
+                html: 'Por favor especifica un motivo antes de solicitar'
+            });
 
             swal({
-                title: "Aplicar concepto",
-                text: "¿Estás seguro/a de que deseas aplicar el concepto " + item.descripcion + " a " + item.destino_final + "?",
+                title: "Aplicar conceptos",
+                text: "¿Estás seguro/a de que deseas aplicar estos conceptos?",
                 type: "warning",
                 showCancelButton: true,
                 confirmButtonText: "Si, Continuar",
                 cancelButtonText: "No, Cancelar"
             }).then(function () {
-                self.solicitar(item);
+                self.solicitar();
             }).catch(swal.noop);
         },
-        solicitar: function solicitar(item) {
+        solicitar: function solicitar() {
             var self = this;
 
             $.ajax({
                 type: 'POST',
                 url: self.url_solicitar_reclasificacion_index,
                 data: {
-                    'id_concepto_nuevo': item.id_concepto_nuevo,
-                    'id_concepto': item.id_concepto
+                    'motivo': self.data.motivo,
+                    'solicitudes': self.data.solicitudes
                 },
                 beforeSend: function beforeSend() {},
                 success: function success(data, textStatus, xhr) {
@@ -17324,7 +17428,7 @@ Vue.component('solicitar_reclasificacion-items', {
     directives: {}
 });
 
-},{}],27:[function(require,module,exports){
+},{}],28:[function(require,module,exports){
 'use strict';
 
 Vue.component('control_presupuesto-index', {
@@ -17458,7 +17562,7 @@ Vue.component('control_presupuesto-index', {
     }
 });
 
-},{}],28:[function(require,module,exports){
+},{}],29:[function(require,module,exports){
 'use strict';
 
 Vue.component('comprobante-fondo-fijo-create', {
@@ -17934,7 +18038,7 @@ Vue.component('comprobante-fondo-fijo-create', {
     }
 });
 
-},{}],29:[function(require,module,exports){
+},{}],30:[function(require,module,exports){
 'use strict';
 
 Vue.component('comprobante-fondo-fijo-edit', {
@@ -18388,7 +18492,7 @@ Vue.component('comprobante-fondo-fijo-edit', {
     }
 });
 
-},{}],30:[function(require,module,exports){
+},{}],31:[function(require,module,exports){
 'use strict';
 
 Vue.component('subcontratos-estimacion', {
@@ -18467,7 +18571,7 @@ Vue.component('subcontratos-estimacion', {
     }
 });
 
-},{}],31:[function(require,module,exports){
+},{}],32:[function(require,module,exports){
 'use strict';
 
 Vue.component('movimientos_bancarios-index', {
@@ -18812,7 +18916,7 @@ Vue.component('movimientos_bancarios-index', {
     }
 });
 
-},{}],32:[function(require,module,exports){
+},{}],33:[function(require,module,exports){
 'use strict';
 
 Vue.component('traspaso-cuentas-index', {
@@ -19119,7 +19223,7 @@ Vue.component('traspaso-cuentas-index', {
     }
 });
 
-},{}],33:[function(require,module,exports){
+},{}],34:[function(require,module,exports){
 'use strict';
 
 Vue.component('app-errors', {
@@ -19128,7 +19232,7 @@ Vue.component('app-errors', {
     template: require('./templates/errors.html')
 });
 
-},{"./templates/errors.html":37}],34:[function(require,module,exports){
+},{"./templates/errors.html":38}],35:[function(require,module,exports){
 'use strict';
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
@@ -19154,7 +19258,7 @@ Vue.component('global-errors', {
   }
 });
 
-},{"./templates/global-errors.html":38}],35:[function(require,module,exports){
+},{"./templates/global-errors.html":39}],36:[function(require,module,exports){
 'use strict';
 
 Vue.component('kardex-material-index', {
@@ -19304,7 +19408,7 @@ Vue.component('kardex-material-index', {
 
 });
 
-},{}],36:[function(require,module,exports){
+},{}],37:[function(require,module,exports){
 'use strict';
 
 Vue.component('select2', {
@@ -19353,9 +19457,9 @@ Vue.component('select2', {
     }
 });
 
-},{}],37:[function(require,module,exports){
-module.exports = '<div id="form-errors" v-cloak>\n  <div class="alert alert-danger" v-if="form.errors.length">\n    <ul>\n      <li v-for="error in form.errors">{{ error }}</li>\n    </ul>\n  </div>\n</div>';
 },{}],38:[function(require,module,exports){
+module.exports = '<div id="form-errors" v-cloak>\n  <div class="alert alert-danger" v-if="form.errors.length">\n    <ul>\n      <li v-for="error in form.errors">{{ error }}</li>\n    </ul>\n  </div>\n</div>';
+},{}],39:[function(require,module,exports){
 module.exports = '<div class="alert alert-danger" v-show="errors.length">\n  <ul>\n    <li v-for="error in errors">{{ error }}</li>\n  </ul>\n</div>';
 },{}]},{},[4]);
 

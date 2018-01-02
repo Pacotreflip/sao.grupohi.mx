@@ -60,46 +60,73 @@
                         </div>
                         <div class="modal-body">
                             <div class="row">
-                                <div class="col-md-6">
+                                <div class="col-md-12">
                                     <div class="form-group">
-                                        <label><b>Año</b></label>
-                                        <select class="input-sm form-control" v-model="cierre.anio">
-                                            <option value>[-SELECCIONE-]</option>
-                                            <option value="2016">2016</option>
-                                            <option value="2017">2017</option>
-                                            <option value="2018">2018</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label><b>Mes</b></label>
-                                        <select class="input-sm form-control" v-model="cierre.mes">
-                                            <option value>[-SELECCIONE-]</option>
-                                            <option value="1">ENERO</option>
-                                            <option value="2">FEBRERO</option>
-                                            <option value="3">MARZO</option>
-                                            <option value="4">ABRIL</option>
-                                            <option value="5">MAYO</option>
-                                            <option value="6">JUNIO</option>
-                                            <option value="7">JULIO</option>
-                                            <option value="8">AGOSTO</option>
-                                            <option value="9">SEPTIEMBRE</option>
-                                            <option value="10">OCTUBRE</option>
-                                            <option value="11">NOVIEMBRE</option>
-                                            <option value="12">DICIEMBRE</option>
-                                        </select>
+                                        <label><b>Fecha</b></label>
+                                        <input type="text" id="fecha" class="form-control input-sm" placeholder="Seleccione año y mes del Cierre" >
                                     </div>
                                 </div>
                             </div>
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-sm btn-default" data-dismiss="modal">Cancelar</button>
-                            <button type="button" class="btn btn-sm btn-primary">Guardar</button>
+                            <button type="button" class="btn btn-sm btn-primary" @click="save_cierre" :disabled="guardando">
+                                <span v-if="guardando"><i class="fa fa-spinner fa-spin"></i> Guardando</span>
+                                <span v-else><i class="fa fa-save"></i> Guardar</span>
+                            </button>
                         </div>
                     </div>
                 </div>
             </div>
+
+            <div class="modal fade" id="abrir_cierre_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <h4 class="modal-title" id="myModalLabel">Abrir Cierre de Periodo</h4>
+                        </div>
+                        <div class="modal-body">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label><b>Inicio de Apertura</b></label>
+                                        <input type="text" id="from" class="form-control input-sm" placeholder="Seleccione fecha y Hora de Inicio" >
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label><b>Fin de Apertura</b></label>
+                                        <input type="text" id="to" class="form-control input-sm" placeholder="Seleccione fecha y Hora de Fin" >
+                                    </div>
+                                </div>
+                                <div class="col-md-4" v-if="Object.keys(tipos_tran).length !== 0">
+                                    <div class="form-group">
+                                        <label><b>Tipo de Transacciones</b></label>
+                                        <select class="input-sm form-control" v-model="cierre_edit.transacciones"  multiple>
+                                            <option v-for="(index, tipo) in tipos_tran" :value="tipo">@{{ tipo }}</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label><b>Motivo de Apertura</b></label>
+                                        <textarea v-model="cierre_edit.motivo" class="form-control"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-sm btn-default" data-dismiss="modal">Cancelar</button>
+                            <button type="button" class="btn btn-sm btn-primary" @click="save_cierre" :disabled="guardando">
+                                <span v-if="guardando"><i class="fa fa-spinner fa-spin"></i> Guardando</span>
+                                <span v-else><i class="fa fa-save"></i> Guardar</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
         </section>
     </cierre-index>
 @endsection

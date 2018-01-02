@@ -43,8 +43,8 @@ Vue.component('solicitar_reclasificacion-index', {
                 var cont = (Object.keys(t)).filter(function (t2) {
                     return t[t2] != null;
                 });
-                if (cont.length -4 > result) {
-                    result = cont.length -4;
+                if (cont.length -3 > result) {
+                    result = cont.length -3;
                 }
             });
 
@@ -150,7 +150,7 @@ Vue.component('solicitar_reclasificacion-index', {
 
             $.ajax({
                 type: 'GET',
-                url : self.url_solicitar_reclasificacion_index +'/find',
+                url : self.url_solicitar_reclasificacion_index +'/findmovimiento',
                 data: str,
                 beforeSend: function () {},
                 success: function (data, textStatus, xhr) {
@@ -178,7 +178,6 @@ Vue.component('solicitar_reclasificacion-index', {
                             html: 'No se encontraron resultados'
                         });
                     }
-
                 },
                 complete: function () {
 
@@ -309,30 +308,24 @@ Vue.component('solicitar_reclasificacion-index', {
             Vue.set(self.data, 'desglosar', []);
             Vue.set(self.data, 'desglosar_descripcion', '');
         },
-        desglosar_tipos: function (item) {
+        desglosar_tipos: function (tipo_transaccion, opciones) {
             var self = this,
-                todos = [];
+                filtrado = [];
 
             self.clean_desglosar();
 
-            $.each(self.data.detalles, function (index, value) {
-
-                if (item !== false && index == item.id_transaccion) {
-
-                    Vue.set(self.data, 'desglosar', value);
-                    Vue.set(self.data, 'desglosar_descripcion', value.descripcion);
-                }
-
-                else{
-                    todos.concat(value.transacciones);
-                }
-            });
-
-            if (todos.length > 0)
-            {
-                Vue.set(self.data, 'desglosar', todos);
+            // Muestra detalles de acuerdo al tipo de transaccion
+            if (tipo_transaccion && opciones){
+                filtrado = self.data.detalles.filter(function (e) {
+                    return e.descripcion == tipo_transaccion && e.opciones == opciones;
+                });
             }
 
+            else
+                filtrado = self.data.detalles;
+
+            Vue.set(self.data, 'desglosar', filtrado);
+            Vue.set(self.data, 'desglosar_descripcion', tipo_transaccion);
         },
         mostrar_items: function (id_transaccion, id_concepto) {
             var self = this;

@@ -27,13 +27,17 @@ class EloquentCierreRepository implements CierreRepository
     }
 
     public function paginate(array $data) {
-        $query = $this->model->with('userRegistro')->select('Configuracion.cierres.*')->orderBy('created_at', 'DESC');
-
+        $query = $this->model->with('userRegistro')->select('Configuracion.cierres.*')->orderBy('Configuracion.cierres.created_at', 'DESC');
         return $query->paginate($perPage = $data['length'], $columns = ['*'], $pageName = 'page', $page = ($data['start'] / $data['length']) + 1);
     }
 
     public function create(array $data) {
         $cierre = $this->model->create($data);
+        return $cierre;
+    }
+
+    public function find($id) {
+        $cierre = $this->model->find($id);
         return $cierre;
     }
 }

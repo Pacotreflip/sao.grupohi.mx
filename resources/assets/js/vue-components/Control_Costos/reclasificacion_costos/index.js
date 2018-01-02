@@ -1,9 +1,9 @@
 Vue.component('reclasificacion_costos-index', {
-    props: ['url_reclasificacion_costos_index'],
+    props: ['url_solicitudes_reclasificacion_index', 'solicitudes'],
     data : function () {
         return {
             'data' : {
-                'filtros': []
+                'solicitudes': this.solicitudes
             },
             'guardando' : false
         }
