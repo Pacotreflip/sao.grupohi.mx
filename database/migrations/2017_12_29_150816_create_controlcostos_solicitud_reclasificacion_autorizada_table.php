@@ -13,11 +13,16 @@ class CreateControlcostosSolicitudReclasificacionAutorizadaTable extends Migrati
     public function up()
     {
         Schema::create('ControlCostos.solicitud_reclasificacion_autorizada', function (Blueprint $table) {
-            $table->increments('id_solicitud_reclasificacion');
+            $table->unsignedInteger('id_solicitud_reclasificacion');
             $table->integer('id_autorizo');
             $table->text('motivo');
             $table->timestamps();
             $table->softDeletes();
+            
+            $table->foreign('id_solicitud_reclasificacion')
+                ->references('id')
+                ->on('ControlCostos.solicitud_reclasificacion');
+            
         });
     }
 
