@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateControlcostosSolicitudReclasificacionRechazadaTable extends Migration
+class AddIdSolicitudReclasificacionToIntPolizas extends Migration
 {
     /**
      * Run the migrations.
@@ -12,13 +12,8 @@ class CreateControlcostosSolicitudReclasificacionRechazadaTable extends Migratio
      */
     public function up()
     {
-        Schema::create('ControlCostos.solicitud_reclasificacion_rechazada', function (Blueprint $table) {
-            $table->unsignedInteger('id_solicitud_reclasificacion');
-            $table->integer('id_rechazo');
-            $table->text('motivo');
-            $table->timestamps();
-            $table->softDeletes();
-            
+        Schema::table('Contabilidad.int_polizas', function (Blueprint $table) {
+            $table->unsignedInteger('id_solicitud_reclasificacion')->nullable();
             $table->foreign('id_solicitud_reclasificacion')
                 ->references('id')
                 ->on('ControlCostos.solicitud_reclasificacion');
@@ -32,6 +27,9 @@ class CreateControlcostosSolicitudReclasificacionRechazadaTable extends Migratio
      */
     public function down()
     {
-        Schema::drop('ControlCostos.solicitud_reclasificacion_rechazada');
+        Schema::table('Contabilidad.int_polizas', function (Blueprint $table) {
+            $table->dropForeign('contabilidad_int_polizas_id_solicitud_reclasificacion_foreign');
+            $table->dropColumn('id_solicitud_reclasificacion');
+        });
     }
 }

@@ -14,7 +14,7 @@ class CreateControlcostosSolicitudReclasificacion extends Migration
     {
         Schema::create('ControlCostos.solicitud_reclasificacion', function (Blueprint $table) {
 
-            $table->increments('id_solicitud_reclasificacion');
+            $table->increments('id');
             $table->text("motivo");
             $table->unsignedInteger("estatus")->nullable();
             $table->unsignedInteger("registro")->nullable();
