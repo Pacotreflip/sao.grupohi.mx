@@ -14,6 +14,7 @@ class CreateControlcostosEstatusTable extends Migration
     {
         Schema::create('ControlCostos.estatus', function (Blueprint $table) {
             $table->increments('id');
+            $table->integer('estatus');
             $table->string('descripcion');
             $table->timestamps();
             $table->softDeletes();

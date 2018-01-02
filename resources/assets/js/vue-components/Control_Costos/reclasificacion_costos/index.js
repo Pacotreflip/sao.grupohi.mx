@@ -2,13 +2,22 @@ Vue.component('reclasificacion_costos-index', {
     data : function () {
         return {
             'solicitudes': [],
+            'partidas': [],
             'guardando' : false
         }
     },
     computed: {},
         mounted: function () {
-
             var self = this;
+
+            $(document).on('click', '.btn_abrir', function () {
+                var _this = $(this),
+                    partidas = _this.data('row').partidas;
+
+                self.partidas = partidas;
+
+                $('#solicitud_detalles_modal').modal('show');
+            });
 
             $('#solicitudes_table').DataTable({
                 "processing": true,
@@ -25,25 +34,28 @@ Vue.component('reclasificacion_costos-index', {
                         self.guardando = false;
                     },
                     "dataSrc" : function (json) {
-
-
-                        for (var i = 0; i < json.data.length; i++) {
-                            json.data[i].mes = parseInt(json.data[i].mes).getMes();
-                            json.data[i].created_at = new Date(json.data[i].created_at).dateFormat();
-                            json.data[i].registro = json.data[i].user_registro.nombre + ' ' + json.data[i].user_registro.apaterno + ' ' + json.data[i].user_registro.amaterno;
-                        }
+                        self.solicitudes = json.data;
                         return json.data;
                     }
                 },
                 "columns" : [
-                    {data : 'item.material.descripcion'},
-                    {data : 'conceptoOriginal.descripcion'},
-                    {data : 'conceptoNuevo.descripcion'},
-                    {data : 'created_at'},
+                    {data : 'motivo'},
                     {
-                        data : 'id',
-                        render : function(data) {
-                            return '<button class="btn btn-xs btn_abrir" id="'+data+'"><i class="fa fa-unlock"></i></button> ';
+                        data : 'fecha',
+                        render : function(data, type, row) {
+                            return new Date(row.created_at).dateShortFormat();
+                        }
+                    },
+                    {
+                        data : 'estatus',
+                        render : function(data, type, row) {
+                            return row.estatus.descripcion;
+                        }
+                    },
+                    {
+                        data : 'acciones',
+                        render : function(data, type, row) {
+                            return "<button type='button' title='Ver' class='btn btn-xs btn-success btn_abrir' data-row='"+ JSON.stringify(row) +"'><i class='fa fa-eye'></i></button>";
                         }
                     }
                 ],
@@ -75,6 +87,13 @@ Vue.component('reclasificacion_costos-index', {
         },
     directives: {},
     methods: {
-        getSol
+        close_modal_detalles: function () {
+            var self = this;
+
+            $('#solicitud_detalles_modal').modal('hide');
+
+            // reset partidas
+            Vue.set(self.data, 'partidas', []);
+        }
     }
 });

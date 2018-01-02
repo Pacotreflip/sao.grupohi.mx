@@ -36,4 +36,9 @@ class SolicitudReclasificacion extends BaseModel
     {
         return $this->hasMany(SolicitudReclasificacionPartidas::class, 'id_solicitud_reclasificacion', 'id_solicitud_reclasificacion');
     }
+
+    public function estatus()
+    {
+        return $this->belongsTo(Estatus::class, 'estatus', 'estatus');
+    }
 }
