@@ -17756,7 +17756,10 @@ Vue.component('reclasificacion_costos-index', {
         return {
             'solicitudes': [],
             'partidas': [],
-            'guardando': false
+            'guardando': false,
+            'editando': false,
+            'rechazando': false,
+            'rechazo_motivo': ''
         };
     },
     computed: {},
@@ -17765,9 +17768,14 @@ Vue.component('reclasificacion_costos-index', {
 
         $(document).on('click', '.btn_abrir', function () {
             var _this = $(this),
-                partidas = _this.data('row').partidas;
+                partidas = _this.data('row').partidas,
+                editando = !!parseInt(_this.data('editando'));
 
             self.partidas = partidas;
+
+            if (editando) {
+                self.editando = _this.data('row');
+            }
 
             $('#solicitud_detalles_modal').modal('show');
         });
@@ -17804,7 +17812,7 @@ Vue.component('reclasificacion_costos-index', {
             }, {
                 data: 'acciones',
                 render: function render(data, type, row) {
-                    return "<button type='button' title='Ver' class='btn btn-xs btn-success btn_abrir' data-row='" + JSON.stringify(row) + "'><i class='fa fa-eye'></i></button>";
+                    return "<button type='button' title='Ver' class='btn btn-xs btn-success btn_abrir' data-row='" + JSON.stringify(row) + "' data-editando='0'><i class='fa fa-eye'></i></button>" + " <button type='button' title='Editar' class='btn btn-xs btn-info btn_abrir' data-row='" + JSON.stringify(row) + "' data-editando='1'><i class='fa fa-pencil'></i></button>";
                 }
             }],
             language: {
@@ -17841,7 +17849,94 @@ Vue.component('reclasificacion_costos-index', {
             $('#solicitud_detalles_modal').modal('hide');
 
             // reset partidas
-            Vue.set(self.data, 'partidas', []);
+            self.partidas = [];
+            self.editando = false;
+            self.rechazando = false;
+            self.rechazo_motivo = '';
+        },
+        confirm: function confirm(tipo) {
+            var self = this;
+
+            // Manda error si no hay una solicitud para aprobar/rechazar
+            if (self.editando.length > 0) return swal({
+                type: 'warning',
+                title: 'Error',
+                text: 'La solicitud está vacía'
+            });
+
+            // Al rechazar debe de haber un motivo
+            if (tipo == 'rechazar' && self.rechazo_motivo == '') return swal({
+                type: 'warning',
+                title: 'Error',
+                text: 'Debes de especificar un motivo para rechazar'
+            });
+
+            swal({
+                title: tipo.mayusculaPrimerLetra(),
+                text: "¿Estás seguro/a de que deseas " + tipo + " esta solicitud?",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonText: "Si, Continuar",
+                cancelButtonText: "No, Cancelar"
+            }).then(function () {
+                if (tipo == "aprobar") {
+                    self.aprobar();
+                } else if (tipo == "rechazar") {
+                    self.rechazar();
+                }
+            }).catch(swal.noop);
+        },
+        aprobar: function aprobar() {
+            var self = this,
+                str = { 'data': JSON.stringify(self.editando), 'tipo': 'aprobar' };
+
+            $.ajax({
+                type: 'POST',
+                url: App.host + '/control_costos/solicitudes_reclasificacion/store',
+                data: str,
+                beforeSend: function beforeSend() {},
+                success: function success(data, textStatus, xhr) {
+
+                    swal({
+                        type: 'success',
+                        title: '',
+                        html: 'Se encontraron resultados'
+                    });
+                },
+                complete: function complete() {}
+            });
+        },
+        rechazar: function rechazar() {
+            var self = this,
+                str = { 'data': JSON.stringify(self.editando), 'tipo': 'rechazar', 'motivo': self.rechazo_motivo };
+
+            $.ajax({
+                type: 'POST',
+                url: App.host + '/control_costos/solicitudes_reclasificacion/store',
+                data: str,
+                beforeSend: function beforeSend() {},
+                success: function success(data, textStatus, xhr) {
+
+                    swal({
+                        type: 'success',
+                        title: '',
+                        html: 'Se encontraron resultados'
+                    });
+                },
+                complete: function complete() {}
+            });
+        },
+        rechazar_motivo: function rechazar_motivo() {
+
+            var self = this;
+
+            self.rechazando = true;
+        },
+        cancelar_rechazo: function cancelar_rechazo() {
+            var self = this;
+
+            self.rechazando = false;
+            self.rechazo_motivo = '';
         }
     }
 });

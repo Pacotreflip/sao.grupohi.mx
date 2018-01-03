@@ -143,5 +143,11 @@ Number.prototype.getMes = function() {
         case 12 :
             return "DICIEMBRE";
     }
-}
+};
+
+String.prototype.mayusculaPrimerLetra = function() {
+    var string = this;
+
+    return string.charAt(0).toUpperCase() + string.slice(1);
+};
 

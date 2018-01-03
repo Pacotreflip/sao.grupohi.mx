@@ -2,12 +2,13 @@
 
 namespace Ghi\Domain\Core\Repositories\ControlCostos;
 
-use Ghi\Domain\Core\Contracts\ControlCostos\SolicitudReclasificacionRepository;
+use Ghi\Domain\Core\Contracts\ControlCostos\SolicitudReclasificacionAutorizadaRepository;
+use Ghi\Domain\Core\Models\ControlCostos\SolicitudReclasificacionAutorizada;
 use Illuminate\Http\Exception\HttpResponseException;
 use Illuminate\Support\Facades\DB;
 use Ghi\Domain\Core\Models\ControlCostos\SolicitudReclasificacion;
 
-class EloquentSolicitudReclasificacionRepository implements SolicitudReclasificacionRepository
+class EloquentSolicitudReclasificacionAutorizadaRepository implements SolicitudReclasificacionAutorizadaRepository
 {
     /**
      * @var SolicitudReclasificacion $model
@@ -15,10 +16,10 @@ class EloquentSolicitudReclasificacionRepository implements SolicitudReclasifica
     private $model;
 
     /**
-     * EloquentSolicitudReclasificacionRepository constructor.
-     * @param SolicitudReclasificacion $model
+     * EloquentSolicitudReclasificacionAutorizadaRepository constructor.
+     * @param SolicitudReclasificacionAutorizada $model
      */
-    public function __construct(SolicitudReclasificacion $model)
+    public function __construct(SolicitudReclasificacionAutorizada $model)
     {
         $this->model = $model;
     }
@@ -42,7 +43,7 @@ class EloquentSolicitudReclasificacionRepository implements SolicitudReclasifica
         try {
             DB::connection('cadeco')->beginTransaction();
 
-            $record = SolicitudReclasificacion::create($data);
+            $record = SolicitudReclasificacionAutorizada::create($data);
             DB::connection('cadeco')->commit();
 
         } catch (\Exception $e) {
@@ -50,7 +51,7 @@ class EloquentSolicitudReclasificacionRepository implements SolicitudReclasifica
             throw $e;
         }
 
-        return SolicitudReclasificacion::where('id_solicitud_reclasificacion', '=', $record->id_solicitud_reclasificacion)->first();
+        return SolicitudReclasificacionAutorizada::where('id_solicitud_reclasificacion', '=', $data['id_solicitud_reclasificacion'])->first();
     }
 
     /**
@@ -64,7 +65,7 @@ class EloquentSolicitudReclasificacionRepository implements SolicitudReclasifica
 
     public function paginate(array $data)
     {
-        $query = $this->model->with(['autorizadas.usuario', 'rechazadas.usuario', 'usuario', 'estatus', 'partidas.item.material', 'partidas.item.transaccion.tipoTransaccion', 'partidas.conceptoNuevo', 'partidas.conceptoOriginal'])->select('ControlCostos.solicitud_reclasificacion.*')->orderBy('ControlCostos.solicitud_reclasificacion.created_at', 'DESC');
+        $query = $this->model->with(['usuario', 'estatus', 'partidas.item.material', 'partidas.item.transaccion.tipoTransaccion', 'partidas.conceptoNuevo', 'partidas.conceptoOriginal'])->select('ControlCostos.solicitud_reclasificacion.*')->orderBy('ControlCostos.solicitud_reclasificacion.created_at', 'DESC');
         return $query->paginate($perPage = $data['length'], $columns = ['*'], $pageName = 'page', $page = ($data['start'] / $data['length']) + 1);
     }
 

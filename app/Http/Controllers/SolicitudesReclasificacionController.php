@@ -5,21 +5,28 @@ namespace Ghi\Http\Controllers;
 use Dingo\Api\Routing\Helpers;
 
 
-use Ghi\Domain\Core\Contracts\ControlCostos\SolicitudReclasificacionPartidasRepository;
 use Ghi\Domain\Core\Contracts\ControlCostos\SolicitudReclasificacionRepository;
+use Ghi\Domain\Core\Contracts\ControlCostos\SolicitudReclasificacionPartidasRepository;
+use Ghi\Domain\Core\Contracts\ControlCostos\SolicitudReclasificacionAutorizadaRepository;
+use Ghi\Domain\Core\Contracts\ControlCostos\SolicitudReclasificacionRechazadaRepository;
 use Illuminate\Http\Request;
 
+/**
+ * Class SolicitudesReclasificacionController
+ * @package Ghi\Http\Controllers
+ */
 class SolicitudesReclasificacionController extends Controller
 {
     use Helpers;
-
 
     /**
      * SolicitudesReclasificacionController constructor.
      * @param SolicitudReclasificacionRepository $solicitud
      * @param SolicitudReclasificacionPartidasRepository $partidas
+     * @param SolicitudReclasificacionAutorizadaRepository $autorizadas
+     * @param SolicitudReclasificacionRechazadaRepository $rechazadas
      */
-    public function __construct(SolicitudReclasificacionRepository $solicitud, SolicitudReclasificacionPartidasRepository $partidas)
+    public function __construct(SolicitudReclasificacionRepository $solicitud, SolicitudReclasificacionPartidasRepository $partidas, SolicitudReclasificacionAutorizadaRepository $autorizadas, SolicitudReclasificacionRechazadaRepository $rechazadas)
     {
         parent::__construct();
 
@@ -28,6 +35,8 @@ class SolicitudesReclasificacionController extends Controller
 
         $this->solicitar = $solicitud;
         $this->partidas = $partidas;
+        $this->autorizadas = $autorizadas;
+        $this->rechazadas = $rechazadas;
     }
 
     /**
@@ -36,9 +45,6 @@ class SolicitudesReclasificacionController extends Controller
      */
     public function index(Request $request)
     {
-//        $solicitudes = $this->solicitar->with(['partidas'])->all();
-        $partidas = [];
-
         return view('control_costos.solicitudes_reclasificacion.index');
     }
 
@@ -49,5 +55,28 @@ class SolicitudesReclasificacionController extends Controller
             'recordsFiltered' => $items->total(),
             'data' => $items->items()
         ], 200);
+    }
+
+    public function store(Request $request)
+    {
+        $tipo = $request->tipo;
+        $data = json_decode($request->data, true);
+
+        if ($tipo == 'aprobar')
+            $resultado  = $this->autorizadas->create([
+                'id_solicitud_reclasificacion' => $data['id'],
+                'motivo' => $data['motivo'],
+            ]);
+
+        else
+            $resultado  = $this->rechazadas->create([
+                'id_solicitud_reclasificacion' => $data['id'],
+                'motivo' => $request->motivo,
+            ]);
+
+        return response()->json(
+            [
+                'resultado' => $resultado
+            ], 200);
     }
 }

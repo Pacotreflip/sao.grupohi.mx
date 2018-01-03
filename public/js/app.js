@@ -69144,6 +69144,12 @@ Number.prototype.getMes = function () {
     }
 };
 
+String.prototype.mayusculaPrimerLetra = function () {
+    var string = this;
+
+    return string.charAt(0).toUpperCase() + string.slice(1);
+};
+
 },{}]},{},[140]);
 
 //# sourceMappingURL=app.js.map
