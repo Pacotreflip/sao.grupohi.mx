@@ -214,7 +214,7 @@
                                                     <td >@{{ item.descripcion  }}</td>
                                                     <td > @{{ new Date(item.fecha).dateShortFormat() }}</td>
                                                     <td class="text-right"> @{{ item.numero_folio }}</td>
-                                                    <td class="text-right"><a href="#" v-on:click="mostrar_items(data.desglosar.id_transaccion, data.desglosar.id_concepto)">@{{ parseInt(item.monto).formatMoney(2, '.', ',') }}</a></td>
+                                                    <td class="text-right"><a href="#" v-on:click="mostrar_items(item.id_transaccion, item.id_concepto)">@{{ parseInt(item.monto).formatMoney(2, '.', ',') }}</a></td>
                                                 </tr>
                                                 </tbody>
                                             </table>

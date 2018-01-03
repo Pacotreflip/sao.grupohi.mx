@@ -18259,7 +18259,7 @@ Vue.component('solicitar_reclasificacion-index', {
         },
         mostrar_items: function mostrar_items(id_transaccion, id_concepto) {
             var self = this;
-
+            console.log(id_transaccion);console.log(id_concepto);
             swal({
                 title: "Mostrar items",
                 text: "¿Estás seguro/a de querer mostrar los items para esta transacción? Se abrirá una nueva pantalla",
