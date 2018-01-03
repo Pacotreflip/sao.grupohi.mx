@@ -17808,7 +17808,12 @@ Vue.component('reclasificacion_costos-index', {
                 render: function render(data, type, row, meta) {
                     return meta.row + 1;
                 }
-            }, { data: 'id' }, {
+            }, {
+                data: 'id',
+                render: function render(data, type, row) {
+                    return '#' + row.id;
+                }
+            }, {
                 data: 'fecha',
                 render: function render(data, type, row) {
                     return new Date(row.created_at).dateShortFormat();
@@ -17906,11 +17911,17 @@ Vue.component('reclasificacion_costos-index', {
                 beforeSend: function beforeSend() {},
                 success: function success(data, textStatus, xhr) {
 
-                    swal({
+                    if (data.resultado) swal({
                         type: 'success',
                         title: '',
                         html: 'La solicitud fué autorizada'
+                    });else swal({
+                        type: 'warning',
+                        title: '',
+                        html: 'La operación no pudo concretarse'
                     });
+
+                    self.close_modal_detalles();
                 },
                 complete: function complete() {}
             });

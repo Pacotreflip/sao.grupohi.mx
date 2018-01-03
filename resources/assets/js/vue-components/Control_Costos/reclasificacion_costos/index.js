@@ -57,7 +57,12 @@ Vue.component('reclasificacion_costos-index', {
                             return  meta.row + 1;
                         }
                     },
-                    {data : 'id'},
+                    {
+                        data : 'id',
+                        render : function(data, type, row) {
+                            return '#'+ row.id;
+                        }
+                    },
                     {
                         data : 'fecha',
                         render : function(data, type, row) {
@@ -164,11 +169,21 @@ Vue.component('reclasificacion_costos-index', {
                 beforeSend: function () {},
                 success: function (data, textStatus, xhr) {
 
-                   swal({
-                        type: 'success',
-                        title: '',
-                        html: 'La solicitud fué autorizada'
-                    });
+                  if (data.resultado)
+                       swal({
+                            type: 'success',
+                            title: '',
+                            html: 'La solicitud fué autorizada'
+                        });
+
+                  else
+                      swal({
+                          type: 'warning',
+                          title: '',
+                          html: 'La operación no pudo concretarse'
+                      });
+
+                  self.close_modal_detalles();
                 },
                 complete: function () {
 
