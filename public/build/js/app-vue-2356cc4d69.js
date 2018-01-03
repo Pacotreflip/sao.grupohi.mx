@@ -17786,6 +17786,13 @@ Vue.component('reclasificacion_costos-index', {
         });
 
         self.dataTable = $('#solicitudes_table').DataTable({
+            "createdRow": function createdRow(row, data, dataIndex) {
+                if (data.estatus.estatus == -1) {
+                    $(row).addClass('bg-red disabled');
+                } else if (data.estatus.estatus == 2) {
+                    $(row).addClass('bg-green disabled');
+                }
+            },
             "processing": true,
             "serverSide": true,
             "ordering": false,
@@ -17821,7 +17828,7 @@ Vue.component('reclasificacion_costos-index', {
                 }
             }, { data: 'motivo' }, {
                 data: 'estatus',
-                render: function render(data, type, row, meta) {
+                render: function render(data, type, row) {
                     return row.estatus.descripcion;
                 }
             }, {

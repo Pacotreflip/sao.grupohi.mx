@@ -18,10 +18,10 @@ Vue.component('reclasificacion_costos-index', {
             $(document).on('click', '.btn_abrir', function () {
                 var _this = $(this),
                     partidas = _this.data('row').partidas,
-                editando = !!parseInt(_this.data('editando')),
-                item = _this.data('row');
-                item.estatus_desc = item.estatus.descripcion;
+                    editando = !!parseInt(_this.data('editando')),
+                    item = _this.data('row');
 
+                item.estatus_desc = item.estatus.descripcion;
                 self.partidas = partidas;
                 self.item = item;
 
@@ -33,6 +33,17 @@ Vue.component('reclasificacion_costos-index', {
             });
 
             self.dataTable = $('#solicitudes_table').DataTable({
+                "createdRow": function(row, data, dataIndex) {
+                    if (data.estatus.estatus == -1)
+                    {
+                        $(row).addClass('bg-red disabled');
+                    }
+
+                    else if (data.estatus.estatus == 2)
+                    {
+                        $(row).addClass('bg-green disabled');
+                    }
+                },
                 "processing": true,
                 "serverSide": true,
                 "ordering" : false,
@@ -73,7 +84,7 @@ Vue.component('reclasificacion_costos-index', {
                     {data : 'motivo'},
                     {
                         data : 'estatus',
-                        render : function(data, type, row, meta ) {
+                        render : function(data, type, row) {
                             return row.estatus.descripcion;
                         }
                     },
@@ -87,6 +98,7 @@ Vue.component('reclasificacion_costos-index', {
                             {
                                 _return = _return + " <button type='button' title='Editar' class='btn btn-xs btn-info btn_abrir' data-row='"+ JSON.stringify(row) +"' data-editando='1'><i class='fa fa-pencil'></i></button>";
                             }
+
                             return _return;
                         }
                     }
@@ -192,9 +204,7 @@ Vue.component('reclasificacion_costos-index', {
 
                   self.close_modal_detalles();
                 },
-                complete: function () {
-
-                }
+                complete: function () {}
             });
 
             self.close_modal_detalles();
