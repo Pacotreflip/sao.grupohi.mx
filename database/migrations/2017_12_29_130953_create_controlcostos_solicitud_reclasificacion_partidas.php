@@ -13,13 +13,21 @@ class CreateControlcostosSolicitudReclasificacionPartidas extends Migration
     public function up()
     {
         Schema::create('ControlCostos.solicitud_reclasificacion_partidas', function (Blueprint $table) {
-            $table->increments('id_partida');
-            $table->unsignedInteger("id_solicitud_reclasificacion")->nullable();
-            $table->unsignedInteger("id_item")->nullable();
-            $table->unsignedInteger("id_concepto_original")->nullable();
-            $table->unsignedInteger("id_concepto_nuevo")->nullable();
+            $table->increments('id');
+            $table->unsignedInteger("id_solicitud_reclasificacion");
+            $table->unsignedInteger("id_item");
+            $table->unsignedInteger("id_concepto_original");
+            $table->unsignedInteger("id_concepto_nuevo");
             $table->timestamps();
             $table->softDeletes();
+            
+            $table->foreign('id_solicitud_reclasificacion')
+                ->references('id')
+                ->on('ControlCostos.solicitud_reclasificacion');
+            $table->foreign('id_item')
+                ->references('id_item')
+                ->on('items');
+            
         });
     }
 
