@@ -70,10 +70,10 @@ class SolicitudesReclasificacionController extends Controller
             $resultado  = $this->autorizadas->create($data);
 
         else
-            $resultado  = $this->rechazadas->create([
-                'id_solicitud_reclasificacion' => $data['id'],
-                'motivo' => $request->motivo,
-            ]);
+        {
+            $data['motivo_rechazo'] = $request->motivo;
+            $resultado = $this->rechazadas->create($data);
+        }
 
         return response()->json(
             [

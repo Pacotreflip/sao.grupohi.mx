@@ -17760,7 +17760,8 @@ Vue.component('reclasificacion_costos-index', {
             'editando': false,
             'item': [],
             'rechazando': false,
-            'rechazo_motivo': ''
+            'rechazo_motivo': '',
+            'dataTable': false
         };
     },
     computed: {},
@@ -17784,7 +17785,7 @@ Vue.component('reclasificacion_costos-index', {
             $('#solicitud_detalles_modal').modal('show');
         });
 
-        $('#solicitudes_table').DataTable({
+        self.dataTable = $('#solicitudes_table').DataTable({
             "processing": true,
             "serverSide": true,
             "ordering": false,
@@ -17826,7 +17827,13 @@ Vue.component('reclasificacion_costos-index', {
             }, {
                 data: 'acciones',
                 render: function render(data, type, row) {
-                    return "<button type='button' title='Ver' class='btn btn-xs btn-success btn_abrir' data-row='" + JSON.stringify(row) + "' data-editando='0'><i class='fa fa-eye'></i></button>" + " <button type='button' title='Editar' class='btn btn-xs btn-info btn_abrir' data-row='" + JSON.stringify(row) + "' data-editando='1'><i class='fa fa-pencil'></i></button>";
+                    var _return = "<button type='button' title='Ver' class='btn btn-xs btn-success btn_abrir' data-row='" + JSON.stringify(row) + "' data-editando='0'><i class='fa fa-eye'></i></button>";
+
+                    // Muestra el botón de editar si la solicitud aún no está autorizada/rechazada
+                    if (row.estatus.id == 1) {
+                        _return = _return + " <button type='button' title='Editar' class='btn btn-xs btn-info btn_abrir' data-row='" + JSON.stringify(row) + "' data-editando='1'><i class='fa fa-pencil'></i></button>";
+                    }
+                    return _return;
                 }
             }],
             language: {
@@ -17925,6 +17932,9 @@ Vue.component('reclasificacion_costos-index', {
                 },
                 complete: function complete() {}
             });
+
+            self.close_modal_detalles();
+            self.dataTable.ajax.reload();
         },
         rechazar: function rechazar() {
             var self = this,
@@ -17945,6 +17955,9 @@ Vue.component('reclasificacion_costos-index', {
                 },
                 complete: function complete() {}
             });
+
+            self.close_modal_detalles();
+            self.dataTable.ajax.reload();
         },
         rechazar_motivo: function rechazar_motivo() {
 
