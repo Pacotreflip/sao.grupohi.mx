@@ -71,7 +71,7 @@ class EloquentUserRepository extends \Ghi\Core\Repositories\EloquentUserReposito
     {
         $obrasUsuario = new Collection();
 
-        $basesDatos = Proyecto::orderBy('description')->where("id","=",2)->get();
+        $basesDatos = Proyecto::orderBy('description')->get();
 
         foreach ($basesDatos as $bd) {
             $this->config->set('database.connections.cadeco.database', $bd->base_datos);
