@@ -12,4 +12,10 @@ Route::group(['prefix' => 'control_presupuesto'], function () {
      */
     Route::get('presupuesto', 'PresupuestoController@index')->name('control_presupuesto.presupuesto.index');
 
+    /**
+     * Mostrar Solicitudes de cambio al presupuesto
+     */
+    Route::get('cambio_presupuesto', 'CtrlCambiosPresupuestoController@index')->name('control_presupuesto.cambio_presupuesto.index');
+    Route::get('cambio_presupuesto/create', 'CtrlCambiosPresupuestoController@create')->name('control_presupuesto.cambio_presupuesto.create');
+
 });

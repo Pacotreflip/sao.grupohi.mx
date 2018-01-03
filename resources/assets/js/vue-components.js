@@ -62,3 +62,9 @@ require('./vue-components/Control_Presupuesto/presupuesto/index');
  * Configuración Components
  */
 require('./vue-components/Configuracion/Cierre/index');
+
+/**
+ * Control de cambios al presupuesto Components
+ */
+require('./vue-components/Control_Presupuesto/cambios_presupuesto/create');
+
