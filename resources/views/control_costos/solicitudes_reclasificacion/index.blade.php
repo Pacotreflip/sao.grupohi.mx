@@ -12,7 +12,7 @@
                 <div class="col-md-12">
                     <div class="box box-solid">
                         <div class="box-header with-border">
-                            <h3 class="box-title">Solicitudes Pendientes</h3>
+                            <h3 class="box-title">Solicitudes de reclasificación</h3>
                         </div>
                     </div>
                     <div class="box-body">
@@ -20,16 +20,20 @@
                             <table class="table" id="solicitudes_table">
                                 <thead>
                                 <tr>
-                                    <th>Motivo</th>
+                                    <th>#</th>
+                                    <th>Folio</th>
                                     <th>Fecha</th>
+                                    <th>Motivo</th>
                                     <th>Estatus</th>
                                     <th>Acciones</th>
                                 </tr>
                                 </thead>
                                 <tfoot>
                                 <tr>
-                                    <th>Motivo</th>
+                                    <th>#</th>
+                                    <th>Folio</th>
                                     <th>Fecha</th>
+                                    <th>Motivo</th>
                                     <th>Estatus</th>
                                     <th>Acciones</th>
                                 </tr>
@@ -43,7 +47,10 @@
                 <div class="modal-dialog modal-lg" role="document" style="width: 70% !important;">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h4 class="modal-title">Detalles</h4>
+                            <h4 class="modal-title">
+                                Detalles
+                                <small class="text-muted"> #@{{ item.id }} @{{ new Date(item.created_at).dateShortFormat() }} Estatus: @{{ item.estatus_desc }}</small>
+                            </h4>
                         </div>
                         <div class="modal-body">
                             <div class="row" v-if="!rechazando">

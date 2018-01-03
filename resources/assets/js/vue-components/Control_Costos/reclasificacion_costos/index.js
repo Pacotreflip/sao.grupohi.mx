@@ -5,6 +5,7 @@ Vue.component('reclasificacion_costos-index', {
             'partidas': [],
             'guardando' : false,
             'editando': false,
+            'item': [],
             'rechazando': false,
             'rechazo_motivo': ''
         }
@@ -16,9 +17,12 @@ Vue.component('reclasificacion_costos-index', {
             $(document).on('click', '.btn_abrir', function () {
                 var _this = $(this),
                     partidas = _this.data('row').partidas,
-                editando = !!parseInt(_this.data('editando'));
+                editando = !!parseInt(_this.data('editando')),
+                item = _this.data('row');
+                item.estatus_desc = item.estatus.descripcion;
 
                 self.partidas = partidas;
+                self.item = item;
 
                 if (editando){
                     self.editando = _this.data('row');
@@ -47,16 +51,23 @@ Vue.component('reclasificacion_costos-index', {
                     }
                 },
                 "columns" : [
-                    {data : 'motivo'},
+                    {
+                        data : '#',
+                        render : function(data, type, row, meta) {
+                            return  meta.row + 1;
+                        }
+                    },
+                    {data : 'id'},
                     {
                         data : 'fecha',
                         render : function(data, type, row) {
                             return new Date(row.created_at).dateShortFormat();
                         }
                     },
+                    {data : 'motivo'},
                     {
                         data : 'estatus',
-                        render : function(data, type, row) {
+                        render : function(data, type, row, meta ) {
                             return row.estatus.descripcion;
                         }
                     },
