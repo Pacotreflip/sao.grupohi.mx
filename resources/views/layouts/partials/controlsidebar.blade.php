@@ -45,7 +45,7 @@
                     </a>
                 </li>
                 <li>
-                    <a href="javascript:void(0)">
+                    <a href="{{route('tesoreria.index')}}">
                         <i class="menu-icon fa fa-money fa-fw bg-blue"></i>
 
                         <div class="menu-info">
@@ -56,7 +56,7 @@
                     </a>
                 </li>
                 <li>
-                    <a href="javascript:void(0)">
+                    <a href="{{route('control_costos.index')}}">
                         <i class="menu-icon fa fa-lock fa-fw bg-red"></i>
 
                         <div class="menu-info">
@@ -67,7 +67,7 @@
                     </a>
                 </li>
                 <li>
-                    <a href="javascript:void(0)">
+                    <a href="{{route('control_presupuesto.index')}}">
                         <i class="menu-icon fa fa-lock fa-fw bg-orange"></i>
 
                         <div class="menu-info">

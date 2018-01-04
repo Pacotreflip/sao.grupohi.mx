@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateConfiguracionCierresTable extends Migration
+class CreateControlcostosSolicitudReclasificacion extends Migration
 {
     /**
      * Run the migrations.
@@ -12,13 +12,13 @@ class CreateConfiguracionCierresTable extends Migration
      */
     public function up()
     {
-        Schema::create('Configuracion.cierres', function (Blueprint $table) {
+        Schema::create('ControlCostos.solicitud_reclasificacion', function (Blueprint $table) {
+
             $table->increments('id');
-            $table->date('fecha');
-            $table->integer('registro');
+            $table->text("motivo");
+            $table->unsignedInteger("estatus")->nullable();
+            $table->unsignedInteger("registro")->nullable();
             $table->timestamps();
-            $table->integer('id_proyecto')->unsigned();
-            $table->integer('id_obra');
             $table->softDeletes();
         });
     }
@@ -30,6 +30,6 @@ class CreateConfiguracionCierresTable extends Migration
      */
     public function down()
     {
-        Schema::drop('Configuracion.cierres');
+        Schema::drop('ControlCostos.solicitud_reclasificacion');
     }
 }

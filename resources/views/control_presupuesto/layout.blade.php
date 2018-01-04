@@ -14,6 +14,8 @@
                 {{--@permission(['consultar_movimiento_bancario'])--}}
                 <li ><a href="{{route('control_presupuesto.presupuesto.index')}}"><i class='fa fa-circle-o'></i> <span>Control Presupuesto</span></a></li>
                 {{--@endpermission--}}
+                <!--
+                <li ><a href="{{route('control_presupuesto.cambio_presupuesto.index')}}"><i class='fa fa-circle-o'></i> <span>Ctrol cambios al Presupuesto</span></a></li>  -->
             </ul>
         </li>
         {{--@endpermission--}}
