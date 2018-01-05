@@ -14,31 +14,31 @@
                         <div class="box-header with-border">
                             <h3 class="box-title">Solicitudes de reclasificación</h3>
                         </div>
-                    </div>
-                    <div class="box-body">
-                        <div class="table-responsive">
-                            <table class="table" id="solicitudes_table">
-                                <thead>
-                                <tr>
-                                    <th>#</th>
-                                    <th>Folio</th>
-                                    <th>Fecha</th>
-                                    <th>Motivo</th>
-                                    <th>Estatus</th>
-                                    <th>Acciones</th>
-                                </tr>
-                                </thead>
-                                <tfoot>
-                                <tr>
-                                    <th>#</th>
-                                    <th>Folio</th>
-                                    <th>Fecha</th>
-                                    <th>Motivo</th>
-                                    <th>Estatus</th>
-                                    <th>Acciones</th>
-                                </tr>
-                                </tfoot>
-                            </table>
+                        <div class="box-body">
+                            <div class="table-responsive">
+                                <table class="table" id="solicitudes_table">
+                                    <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Folio</th>
+                                        <th>Fecha</th>
+                                        <th>Motivo</th>
+                                        <th>Estatus</th>
+                                        <th>Acciones</th>
+                                    </tr>
+                                    </thead>
+                                    <tfoot>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Folio</th>
+                                        <th>Fecha</th>
+                                        <th>Motivo</th>
+                                        <th>Estatus</th>
+                                        <th>Acciones</th>
+                                    </tr>
+                                    </tfoot>
+                                </table>
+                            </div>
                         </div>
                     </div>
                 </div>

@@ -144,6 +144,8 @@ class Concepto extends BaseModel
         if ($this->id_padre == '')
             return '';
 
+        $num_niveles = $this->getNivelesAttribute();
+
         // Revisa si el padre contiene clave_concepto
         $padre = $this->padre();
 
@@ -164,6 +166,11 @@ class Concepto extends BaseModel
 
         if ($padre3->clave_concepto)
             return $padre3->clave_concepto;
+
+        $padre4 = Concepto::where('nivel', '=', $padre3->nivel_padre)->first();
+
+        if ($padre3->clave_concepto)
+            return $padre4->clave_concepto;
 
         return '';
     }

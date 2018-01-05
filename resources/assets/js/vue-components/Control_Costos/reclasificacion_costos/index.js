@@ -5,7 +5,7 @@ Vue.component('reclasificacion_costos-index', {
             'partidas': [],
             'guardando' : false,
             'editando': false,
-            'item': [],
+            'item': {'id': 0, 'created_at': '', 'estatus_desc': ''},
             'rechazando': false,
             'rechazo_motivo': '',
             'dataTable': false
