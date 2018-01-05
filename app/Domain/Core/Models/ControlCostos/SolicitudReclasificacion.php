@@ -26,10 +26,12 @@ class SolicitudReclasificacion extends BaseModel
     protected static function boot()
     {
         parent::boot();
+        static::addGlobalScope(new ObraScope());
 
         static::creating(function ($model) {
             $model->estatus = 1;
             $model->registro = auth()->user()->idusuario;
+            $model->id_obra = Context::getId();
         });
     }
 
