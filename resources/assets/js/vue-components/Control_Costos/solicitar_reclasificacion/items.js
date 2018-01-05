@@ -256,7 +256,7 @@ Vue.component('solicitar_reclasificacion-items', {
                 },
                 beforeSend: function () {},
                 success: function (data, textStatus, xhr) {
-                    console.log(data);
+                    
                     swal({
                         type: 'success',
                         title: '',

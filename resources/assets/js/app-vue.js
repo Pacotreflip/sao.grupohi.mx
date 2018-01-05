@@ -15,5 +15,4 @@ if ($('#app').length) {
         el: '#app',
         components: require('./vue-components')
     });
-    Vue.config.devtools = true;
 }
