@@ -52,7 +52,10 @@
                                 <small class="text-muted"> #@{{ item.id }} @{{ new Date(item.created_at).dateShortFormat() }} Estatus: @{{ item.estatus_desc }}</small>
                             </h4>
                         </div>
-                        <div class="modal-body">
+                        <div class="modal-body show_pdf" v-if="show_pdf">
+                            <iframe :src="show_pdf"  frameborder="0" height="600px" width="99.6%">d</iframe>
+                        </div>
+                        <div class="modal-body" v-else>
                             <div class="row" v-if="!rechazando">
                                 <div class="col-md-12">
                                     <div class="table-responsive">
@@ -88,6 +91,11 @@
                                                 </tr>
                                             </tbody>
                                         </table>
+                                        <div class="col-md-12" v-if="!editando">
+                                            <div class="pull-right">
+                                                <button type='button' title='Reporte' class='btn btn-info btn_pdf' v-on:click="pdf(item.id)"><i class='fa fa-file-pdf-o'> Reporte </i></button>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                                 <template v-if="editando">
@@ -147,23 +155,6 @@
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-default" v-on:click="close_modal_detalles()">Cerrar</button>
-                        </div>
-                    </div><!-- /.modal-content -->
-                </div><!-- /.modal-dialog -->
-            </div><!-- /.modal -->
-            <div id="solicitud_pdf_modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="DetallesModal" data-backdrop="static" data-keyboard="false">
-                <div class="modal-dialog modal-lg" role="document" style="width: 70% !important;">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h4 class="modal-title">
-                                Detalles
-                                <small class="text-muted"> #@{{ item.id }} @{{ new Date(item.created_at).dateShortFormat() }} Estatus: @{{ item.estatus_desc }}</small>
-                            </h4>
-                        </div>
-                        <div class="modal-body">
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-default" v-on:click="close_modal_pdf()">Cerrar</button>
                         </div>
                     </div><!-- /.modal-content -->
                 </div><!-- /.modal-dialog -->

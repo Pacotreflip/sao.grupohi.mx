@@ -8,7 +8,8 @@ Vue.component('reclasificacion_costos-index', {
             'item': {'id': 0, 'created_at': '', 'estatus_desc': ''},
             'rechazando': false,
             'rechazo_motivo': '',
-            'dataTable': false
+            'dataTable': false,
+            'show_pdf': false
         }
     },
     computed: {},
@@ -141,6 +142,7 @@ Vue.component('reclasificacion_costos-index', {
             self.editando = false;
             self.rechazando = false;
             self.rechazo_motivo = '';
+            self.show_pdf = false;
         },
         confirm: function(tipo) {
             var self = this;
@@ -252,12 +254,7 @@ Vue.component('reclasificacion_costos-index', {
             var self = this,
                 url = App.host + '/control_costos/solicitudes_reclasificacion/generarpdf?item='+ id;
 
-            self.close_modal_detalles();
-            $("#solicitud_pdf_modal .modal-body").html('<iframe src="'+url+'"  frameborder="0" height="100%" width="99.6%">d</iframe>');
-            $("#solicitud_pdf_modal .modal-body").modal("show");
-        },
-        close_modal_pdf: function () {
-            $("#solicitud_pdf_modal").modal("hide");
+            self.show_pdf = url;
         }
     }
 });
