@@ -9,4 +9,9 @@ class Estatus extends BaseModel
     protected $table = 'ControlCostos.estatus';
     protected $connection = 'cadeco';
     protected $primaryKey = 'id';
+
+    public function __toString()
+    {
+        return $this->descripcion;
+    }
 }

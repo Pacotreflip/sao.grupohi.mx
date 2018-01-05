@@ -9,6 +9,7 @@
 namespace Ghi\Domain\Core\Reportes\ControlCostos;
 
 use Ghi\Core\Facades\Context;
+use Ghi\Domain\Core\Models\ControlCostos\SolicitudReclasificacion;
 use Ghidev\Fpdf\Rotation;
 use Ghi\Domain\Core\Models\Obra;
 
@@ -22,19 +23,18 @@ class Solicitudes extends Rotation {
     const A4_WIDTH = 210;
 
     const MAX_WIDTH = 225;
-    const MAX_HEIGHT = 180;
+    const MAX_HEIGHT = 100;
     /**
-     * @var SolicitudReclasificacionRepository
+     * @var SolicitudReclasificacion
      */
     private $solicitud;
     protected $obra;
 
-
     /**
      * Solicitudes constructor.
-     * @param SolicitudReclasificacionRepository $solicitud
+     * @param SolicitudReclasificacion $solicitud
      */
-    public function __construct($solicitud)
+    public function __construct(SolicitudReclasificacion $solicitud)
     {
         parent::__construct('P', 'cm', 'A4');
 
@@ -47,10 +47,34 @@ class Solicitudes extends Rotation {
         $this->SetFont('Arial', 'B', 20);
         $this->Cell(($this->w - 2) / 2, 0.4, '', 0, 0, 'C');
         $this->CellFitScale(($this->w - 2) / 2, 0.4, utf8_decode('SOLICITUD DE RECLASIFICACIÓN'), 0, 1, 'C');
-
         $this->logo();
-        $this->info();
-        $this->Ln(1);
+        $this->Ln();
+
+        $y_inicial = $this->getY();
+
+        $this->setY($y_inicial);
+        $this->setX($this->w / 2);
+
+        //Tabla Detalles de la Asignación
+        $this->detallesAsignacion();
+
+        //Posiciones despues de la primera tabla
+
+        $y_final = $this->getY();
+
+        $alto = abs($y_final - $y_inicial);
+
+        //Redondear Bordes Detalles Asignacion
+        $this->SetWidths(array(($this->w - 2) / 2));
+        $this->SetFills(array('255,255,255'));
+        $this->SetTextColors(array('0,0,0'));
+        $this->SetHeights(array($alto));
+        $this->SetStyles(array('DF'));
+        $this->SetAligns("L");
+        $this->SetFont('Arial', '', 7);
+        $this->setXY($this->w / 2, $y_inicial);
+        $this->Row(array(""));
+        $this->detallesAsignacion();
 
         if($this->encola == 'partidas') {
             $this->SetFont('Arial', '', 7);
@@ -104,7 +128,7 @@ class Solicitudes extends Rotation {
         $this->SetFont('Arial', 'B', 14);
 
         $this->Cell(($this->w - 2) / 4,.7, utf8_decode('FOLIO'),'LT',0,'L');
-        $this->Cell(($this->w - 2) / 4,.7, '# '. $this->solicitud['id'],'RT',0,'L');
+        $this->Cell(($this->w - 2) / 4,.7, '# '. $this->solicitud->id,'RT',0,'L');
         $this->Ln(.7);
         $y_f = $this->GetY();
 
@@ -122,6 +146,20 @@ class Solicitudes extends Rotation {
         $this->SetFont('Arial', 'B', 6);
         $this->Cell(6.5, .4, '', 0, 0, 'C');
         $this->Cell(6.5, .4, utf8_decode('Página ') . $this->PageNo() . '/{nb}', 0, 0, 'R');
+
+        if($this->solicitud->estatus == -1){
+            $this->SetFont('Arial','',80);
+            $this->SetTextColor(204,204,204);
+            $this->RotatedText(4,18,utf8_decode("SOLICITUD"),45);
+            $this->RotatedText(5.5,21,"RECHAZADA",45);
+            $this->SetTextColor('0,0,0');
+        } else if($this->solicitud->estatus == 1) {
+            $this->SetFont('Arial','',80);
+            $this->SetTextColor(204,204,204);
+            $this->RotatedText(3,20,utf8_decode("PENDIENTE DE"),45);
+            $this->RotatedText(5.5,22,utf8_decode("AUTORIZACIÓN"),45);
+            $this->SetTextColor('0,0,0');
+        }
     }
 
     function logo() {
@@ -136,13 +174,10 @@ class Solicitudes extends Rotation {
     }
 
     function detalles() {
-        $fecha = new \DateTime($this->solicitud['created_at']);
-
-
         $this->SetX(8);
         $this->SetFont('Arial', 'B', 10);
         $this->Cell(4, 0.4, '', 0, 0);
-        $this->CellFitScale(10, 0.4, $fecha->format('Y-m-d'), 0, 1, 'L');
+        $this->CellFitScale(10, 0.4, $this->solicitud->created_at->format('Y-m-d'), 0, 1, 'L');
         $this->Ln(0.25);
 
         $this->SetX(8);
@@ -180,7 +215,7 @@ class Solicitudes extends Rotation {
             'Costo Origen',
             'Costo Destino',
         ]);
-        foreach ($this->solicitud['partidas'] as $item) {
+        foreach ($this->solicitud->partidas as $partida) {
             $this->SetFont('Arial', '', 7);
             $this->SetWidths([
                 ($this->w - 2) * 0.15, // Tipo
@@ -200,13 +235,13 @@ class Solicitudes extends Rotation {
             $this->encola = 'partidas';
 
             $this->Row([
-                (!empty($item['item']['transaccion']['tipoTransaccion']) ? $item['item']['transaccion']['tipoTransaccion'] : '-' ),
-                '#'. $item['item']['transaccion']['numero_folio'],
-                $item['item']['material']['descripcion'],
-                $item['item']['cantidad'],
-                '$' . number_format($item['item']['importe'], 2, '.', ','),
-                $item['concepto_original']['clave'],
-                $item['concepto_nuevo']['clave'],
+                utf8_decode(isset($partida->item->transaccion->tipoTran) ?  $partida->item->transaccion->tipoTran : ''),
+                '#'. $partida['item']['transaccion']['numero_folio'],
+                $partida['item']['material']['descripcion'],
+                $partida['item']['cantidad'],
+                '$' . number_format($partida['item']['importe'], 2, '.', ','),
+                utf8_decode($partida->conceptoOriginal ? $partida->conceptoOriginal->clave : ''),
+                utf8_decode($partida->conceptoNuevo ? $partida->conceptoNuevo->clave : '')
             ]);
         }
 
@@ -241,7 +276,6 @@ class Solicitudes extends Rotation {
             round($this->pixelsToCM($scale * $height))
         ];
     }
-
 
     function firmas() {
         $this->SetY(- 3.5);
@@ -282,5 +316,52 @@ class Solicitudes extends Rotation {
             dd($ex);
         }
         exit;
+    }
+
+    function detallesAsignacion(){
+        $this->SetXY($this->w / 2, 2);
+        $this->SetFont('Arial', 'B', 6.5);
+        $this->Cell(($this->w - 2) / 6, 0.4, utf8_decode('Número de Folio:'), '', 0, 'L');
+        $this->SetFont('Arial', '', 6.5);
+        $this->CellFitScale(($this->w - 2) / 3, 0.4, utf8_decode('# ' .  $this->solicitud->id), '', 1, 'L');
+
+        $this->SetX($this->w / 2);
+        $this->SetFont('Arial', 'B', 6.5);
+        $this->Cell(($this->w - 2) / 6, 0.4, utf8_decode('Fecha de Solicitud:'), '', 0, 'L');
+        $this->SetFont('Arial', '', 6.5);
+        $this->CellFitScale(($this->w - 2) / 3, 0.4, utf8_decode($this->solicitud->created_at->format('Y-m-d h:i:s a')), '', 1, 'L');
+
+        $this->SetX($this->w / 2);
+        $this->SetFont('Arial', 'B', 7);
+        $this->Cell(($this->w - 2) / 6, 0.4, utf8_decode('Persona que Solicita:'), '', 0, 'LB');
+        $this->SetFont('Arial', '', 6.5);
+        $this->CellFitScale(($this->w - 2) / 3, 0.4, utf8_decode($this->solicitud->usuario), '', 1, 'L');
+
+        $this->SetX($this->w / 2);
+        $this->SetFont('Arial', 'B', 6.5);
+        $this->Cell(($this->w - 2) / 6, 0.4, utf8_decode('Motivo de la Solicitud:'), '', 0, 'LB');
+        $this->SetFont('Arial', '', 6.5);
+        $this->MultiCell(($this->w - 2) / 3, 0.4,utf8_decode($this->solicitud->motivo), '', 'L');
+
+        $this->SetX($this->w / 2);
+        $this->SetFont('Arial', 'B', 6.5);
+        $this->Cell(($this->w - 2) / 6, 0.4, utf8_decode('Estatus de la Solicitud:'), '', 0, 'LB');
+        $this->SetFont('Arial', '', 6.5);
+        $this->MultiCell(($this->w - 2) / 3, 0.4,utf8_decode($this->solicitud->estatusString->descripcion), '', 'L');
+
+        if($this->solicitud->estatus == -1) {
+            $this->SetX($this->w / 2);
+            $this->SetFont('Arial', 'B', 6.5);
+            $this->Cell(($this->w - 2) / 6, 0.4, utf8_decode('Motivo de Rechazo:'), '', 0, 'LB');
+            $this->SetFont('Arial', '', 6.5);
+            $this->MultiCell(($this->w - 2) / 3, 0.4, utf8_decode($this->solicitud->rechazo->motivo), '', 'L');
+        }
+    }
+
+    function RotatedText($x,$y,$txt,$angle)
+    {
+        $this->Rotate($angle,$x,$y);
+        $this->Text($x,$y,$txt);
+        $this->Rotate(0);
     }
 }

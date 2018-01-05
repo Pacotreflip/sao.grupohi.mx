@@ -78,10 +78,9 @@ class EloquentSolicitudReclasificacionRepository implements SolicitudReclasifica
         // TODO: Implement update() method.
     }
 
-    public function reporte($id)
+    public function find($id)
     {
-        return $this->model->with(['autorizacion.usuario', 'rechazo.usuario', 'usuario', 'estatus', 'partidas.item.material', 'partidas.item.transaccion', 'partidas.conceptoNuevo', 'partidas.conceptoOriginal'])->select('ControlCostos.solicitud_reclasificacion.*')->orderBy('ControlCostos.solicitud_reclasificacion.created_at', 'DESC')
-    ->where('id', '=', $id)->first();
+        return $this->model->find($id);
 
     }
 }
