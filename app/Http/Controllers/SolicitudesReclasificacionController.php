@@ -9,6 +9,7 @@ use Ghi\Domain\Core\Contracts\ControlCostos\SolicitudReclasificacionRepository;
 use Ghi\Domain\Core\Contracts\ControlCostos\SolicitudReclasificacionPartidasRepository;
 use Ghi\Domain\Core\Contracts\ControlCostos\SolicitudReclasificacionAutorizadaRepository;
 use Ghi\Domain\Core\Contracts\ControlCostos\SolicitudReclasificacionRechazadaRepository;
+use Ghi\Domain\Core\Reportes\ControlCostos\Solicitudes;
 use Illuminate\Http\Request;
 
 /**
@@ -79,5 +80,16 @@ class SolicitudesReclasificacionController extends Controller
             [
                 'resultado' => $resultado
             ], 200);
+    }
+
+    /**
+     *
+     */
+    public  function generar_pdf(Request $request)
+    {
+        $items = $this->solicitar->reporte($request->item);
+
+        $pdf = new Solicitudes($items);
+        $pdf->create();
     }
 }
