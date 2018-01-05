@@ -7440,6 +7440,8 @@ Vue.component('reclasificacion_costos-index', {
         pdf: function pdf(id) {
             var self = this,
                 url = App.host + '/control_costos/solicitudes_reclasificacion/generarpdf?item=' + id;
+
+            self.close_modal_detalles();
             $("#solicitud_pdf_modal .modal-body").html('<iframe src="' + url + '"  frameborder="0" height="100%" width="99.6%">d</iframe>');
             $("#solicitud_pdf_modal .modal-body").modal("show");
         },

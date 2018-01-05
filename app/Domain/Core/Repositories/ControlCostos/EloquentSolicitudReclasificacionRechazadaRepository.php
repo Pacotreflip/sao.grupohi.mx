@@ -72,8 +72,8 @@ class EloquentSolicitudReclasificacionRechazadaRepository implements SolicitudRe
         }
 
         return $this->solicitud->with([
-            'autorizadas.usuario',
-            'rechazadas.usuario',
+            'autorizacion.usuario',
+            'rechazo.usuario',
             'usuario',
             'estatus',
             'partidas.item.material',
