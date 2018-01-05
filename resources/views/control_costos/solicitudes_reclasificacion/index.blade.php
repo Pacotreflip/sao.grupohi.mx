@@ -74,7 +74,7 @@
                                             </thead>
                                             <tbody>
                                                 <tr v-for="(item, index) in partidas">
-                                                    <td>@{{ item.item.transaccion.tipoTransaccion != undefined ? item.item.transaccion.tipoTransaccion.Descripcion : '-' }}</td>
+                                                    <td>@{{ item.item.transaccion.tipo_transaccion_string != undefined ? item.item.transaccion.tipo_transaccion_string : '-' }}</td>
                                                     <td>#@{{ item.item.transaccion.numero_folio }}</td>
                                                     <td >@{{ item.item.material.descripcion }}</td>
                                                     <td class="text-right">@{{ item.item.cantidad }}</td>
@@ -116,6 +116,7 @@
                                     </div>
                                     <div class="col-md-6">
                                         <div class="pull-right">
+                                            <button type='button' title='Reporte' class='btn btn-info btn_pdf' v-on:click="pdf(item.id)"><i class='fa fa-file-pdf-o'> Reporte </i></button>
                                             <button type="button" class="btn btn-success" v-on:click="confirm('aprobar')"> <i class="fa fa-fw fa-thumbs-up"></i>Aprobar</button>
                                             <button type="button" class="btn btn-danger" v-on:click="rechazar_motivo()"> <i class="fa fa-fw fa-trash"></i> Rechazar</button>
                                         </div>
@@ -146,6 +147,23 @@
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-default" v-on:click="close_modal_detalles()">Cerrar</button>
+                        </div>
+                    </div><!-- /.modal-content -->
+                </div><!-- /.modal-dialog -->
+            </div><!-- /.modal -->
+            <div id="solicitud_pdf_modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="DetallesModal" data-backdrop="static" data-keyboard="false">
+                <div class="modal-dialog modal-lg" role="document" style="width: 70% !important;">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h4 class="modal-title">
+                                Detalles
+                                <small class="text-muted"> #@{{ item.id }} @{{ new Date(item.created_at).dateShortFormat() }} Estatus: @{{ item.estatus_desc }}</small>
+                            </h4>
+                        </div>
+                        <div class="modal-body">
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" v-on:click="close_modal_pdf()">Cerrar</button>
                         </div>
                     </div><!-- /.modal-content -->
                 </div><!-- /.modal-dialog -->

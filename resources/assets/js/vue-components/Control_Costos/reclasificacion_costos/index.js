@@ -247,6 +247,15 @@ Vue.component('reclasificacion_costos-index', {
 
             self.rechazando = false;
             self.rechazo_motivo = '';
+        },
+        pdf: function (id) {
+            var self = this,
+                url = App.host + '/control_costos/solicitudes_reclasificacion/generarpdf?item='+ id;
+            $("#solicitud_pdf_modal .modal-body").html('<iframe src="'+url+'"  frameborder="0" height="100%" width="99.6%">d</iframe>');
+            $("#solicitud_pdf_modal .modal-body").modal("show");
+        },
+        close_modal_pdf: function () {
+            $("#solicitud_pdf_modal").modal("hide");
         }
     }
 });

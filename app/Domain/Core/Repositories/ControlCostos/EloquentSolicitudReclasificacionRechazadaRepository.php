@@ -77,7 +77,7 @@ class EloquentSolicitudReclasificacionRechazadaRepository implements SolicitudRe
             'usuario',
             'estatus',
             'partidas.item.material',
-            'partidas.item.transaccion.tipoTransaccion',
+            'partidas.item.transaccion',
             'partidas.conceptoNuevo',
             'partidas.conceptoOriginal'])
             ->where('id', '=', $data['id'])
@@ -97,7 +97,7 @@ class EloquentSolicitudReclasificacionRechazadaRepository implements SolicitudRe
 
     public function paginate(array $data)
     {
-        $query = $this->model->with(['usuario', 'estatus', 'partidas.item.material', 'partidas.item.transaccion.tipoTransaccion', 'partidas.conceptoNuevo', 'partidas.conceptoOriginal'])->select('ControlCostos.solicitud_reclasificacion.*')->orderBy('ControlCostos.solicitud_reclasificacion.created_at', 'DESC');
+        $query = $this->model->with(['usuario', 'estatus', 'partidas.item.material', 'partidas.item.transaccion', 'partidas.conceptoNuevo', 'partidas.conceptoOriginal'])->select('ControlCostos.solicitud_reclasificacion.*')->orderBy('ControlCostos.solicitud_reclasificacion.created_at', 'DESC');
         return $query->paginate($perPage = $data['length'], $columns = ['*'], $pageName = 'page', $page = ($data['start'] / $data['length']) + 1);
     }
 
