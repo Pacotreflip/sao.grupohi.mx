@@ -50,7 +50,7 @@ class Obra extends \Ghi\Core\Models\Obra
 
         if ($this->nombre == 'PISTA 3 NAICM') {
             return Logotipo::where('Descripcion', '=', 'Logotipo NAICM')->first()->LogotipoReportes;
-        } else if ($this->nombre == 'TERMINAL NAICM') {
+        } else if (in_array($this->nombre, ['TERMINAL NAICM', 'TERMINAL DEV'])) {
             return Logotipo::where('Descripcion', '=', 'Logotipo Terminal Naicm')->first()->LogotipoReportes;
         } else {
             return Logotipo::where('EsDelGrupo', '=', 1)->where('EstaVigente', '=', 1)->first()->LogotipoReportes;
