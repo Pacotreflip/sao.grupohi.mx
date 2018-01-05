@@ -54,7 +54,7 @@ Vue.component('reclasificacion_costos-index', {
                 },
                 "columns" : [
                     {
-                        data : '#',
+                        data : {},
                         render : function(data, type, row, meta) {
                             return  meta.row + 1;
                         }
@@ -73,18 +73,18 @@ Vue.component('reclasificacion_costos-index', {
                     },
                     {data : 'motivo'},
                     {
-                        data : 'estatus',
+                        data : 'estatusString',
                         render : function(data, type, row) {
                             var _estatus = '';
 
-                            if (row.estatus.estatus == 2)
-                                _estatus = '<span class="label bg-green">'+ row.estatus.descripcion +'</span> ';
+                            if (row.estatus_string.estatus == 2)
+                                _estatus = '<span class="label bg-green">'+ row.estatus_string.descripcion +'</span> ';
 
-                            else if (row.estatus.estatus == -1)
-                                _estatus = '<span class="label bg-red">'+ row.estatus.descripcion +'</span> ';
+                            else if (row.estatus_string.estatus == -1)
+                                _estatus = '<span class="label bg-red">'+ row.estatus_string.descripcion +'</span> ';
 
                             else
-                                _estatus = '<span class="label bg-blue">'+ row.estatus.descripcion +'</span> ';
+                                _estatus = '<span class="label bg-blue">'+ row.estatus_string.descripcion +'</span> ';
 
                             return _estatus;
                         }
@@ -95,9 +95,9 @@ Vue.component('reclasificacion_costos-index', {
                             var _return = "<button type='button' title='Ver' class='btn btn-xs btn-success btn_abrir' data-row='"+ JSON.stringify(row) +"' data-editando='0'><i class='fa fa-eye'></i></button>";
 
                             // Muestra el botón de editar si la solicitud aún no está autorizada/rechazada
-                            if (row.estatus.id == 1)
+                            if (row.estatus_string.id == 1)
                             {
-                                _return = _return + " <button type='button' title='Editar' class='btn btn-xs btn-info btn_abrir' data-row='"+ JSON.stringify(row) +"' data-editando='1'><i class='fa fa-pencil'></i></button>";
+                                _return = _return +" <button type='button' title='Editar' class='btn btn-xs btn-info btn_abrir' data-row='"+ JSON.stringify(row) +"' data-editando='1'><i class='fa fa-pencil'></i></button>";
                             }
 
                             return _return;

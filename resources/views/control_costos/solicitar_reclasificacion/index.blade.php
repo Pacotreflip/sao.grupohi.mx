@@ -171,12 +171,12 @@
                                         </thead>
                                         <tbody>
                                         <tr v-for="(item, index) in data.resumen">
-                                            <td >@{{ item.tipo_transaccion  }}</td>
+                                            <td >@{{ item.descripcion  }}</td>
                                             <td class="text-right">
                                                 @{{ parseInt(item.cantidad) }}
                                             </td>
                                             <td class="text-right">
-                                                <a style="cursor:pointer;" v-on:click="desglosar_tipos(item.tipo_transaccion, item.opciones)">@{{ parseInt(item.monto).formatMoney(2, '.', ',') }}</a>
+                                                <a style="cursor:pointer;" v-on:click="desglosar_tipos(item.descripcion, item.opciones)">@{{ parseInt(item.monto).formatMoney(2, '.', ',') }}</a>
                                             </td>
                                         </tr>
                                         <tfoot style="border-top: 2px solid #00a65a;">

@@ -40,9 +40,9 @@ class EloquentTransaccionRepository implements TransaccionRepository
             ->join('movimientos', 'items.id_item', '=', 'movimientos.id_item')->
             leftJoin('TipoTran', function($join)
             {
-                $join->on('TipoTran.opciones', '=', DB::raw("transacciones.opciones AND  transacciones.tipo_transaccion LIKE '%TipoTran.Tipo_Transaccion%'"));
+                $join->on('TipoTran.opciones', '=', DB::raw("transacciones.opciones AND  TipoTran.Tipo_Transaccion = transacciones.tipo_transaccion"));
             })
-            ->selectRaw('TipoTran.descripcion as tipo_transaccion,
+            ->selectRaw('TipoTran.descripcion as descripcion,
    COUNT( DISTINCT transacciones.id_transaccion) as cantidad,
     sum(movimientos.monto_total) as monto, transacciones.opciones')
             ->whereIn('movimientos.id_concepto', $id_concepto)
@@ -59,7 +59,7 @@ class EloquentTransaccionRepository implements TransaccionRepository
             ->join('movimientos', 'items.id_item', '=', 'movimientos.id_item')->
             leftJoin('TipoTran', function($join)
             {
-                $join->on('TipoTran.opciones', '=', DB::raw("transacciones.opciones AND  transacciones.tipo_transaccion LIKE '%TipoTran.Tipo_Transaccion%'"));
+                $join->on('TipoTran.opciones', '=', DB::raw("transacciones.opciones AND  TipoTran.Tipo_Transaccion = transacciones.tipo_transaccion"));
             })
             ->selectRaw('movimientos.id_concepto, transacciones.tipo_transaccion, transacciones.opciones, TipoTran.descripcion,
  fecha, numero_folio, transacciones.id_transaccion,
