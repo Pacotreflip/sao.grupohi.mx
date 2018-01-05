@@ -14,14 +14,21 @@ class EloquentSolicitudReclasificacionRechazadaRepository implements SolicitudRe
      * @var SolicitudReclasificacion $model
      */
     private $model;
+    /**
+     * @var SolicitudReclasificacion
+     */
+    private $solicitud;
 
     /**
      * EloquentSolicitudReclasificacionAutorizadaRepository constructor.
-     * @param SolicitudReclasificacionAutorizada $model
+     * @param SolicitudReclasificacionRechazada|SolicitudReclasificacionAutorizada $model
+     * @param $
+     * @param SolicitudReclasificacion $solicitud
      */
-    public function __construct(SolicitudReclasificacionRechazada $model)
+    public function __construct(SolicitudReclasificacionRechazada $model, SolicitudReclasificacion $solicitud)
     {
         $this->model = $model;
+        $this->solicitud = $solicitud;
     }
 
     /**
@@ -40,10 +47,23 @@ class EloquentSolicitudReclasificacionRechazadaRepository implements SolicitudRe
      */
     public function create($data)
     {
+
         try {
             DB::connection('cadeco')->beginTransaction();
 
-            $record = SolicitudReclasificacionRechazada::create($data);
+            $record = SolicitudReclasificacionRechazada::create([
+                'id_solicitud_reclasificacion' => $data['id'],
+                'motivo' => $data['motivo_rechazo'],
+            ]);
+
+            // Cambia el estado a la solicitud
+            $solicitud = $this->solicitud->where('id', '=', $data['id']);
+
+            // Estatus -1 Rechazada
+            $solicitud->update([
+                'estatus' => -1,
+            ]);
+
             DB::connection('cadeco')->commit();
 
         } catch (\Exception $e) {
@@ -51,7 +71,19 @@ class EloquentSolicitudReclasificacionRechazadaRepository implements SolicitudRe
             throw $e;
         }
 
-        return SolicitudReclasificacionRechazada::where('id_solicitud_reclasificacion', '=', $data['id_solicitud_reclasificacion'])->first();
+        return $this->solicitud->with([
+            'autorizadas.usuario',
+            'rechazadas.usuario',
+            'usuario',
+            'estatus',
+            'partidas.item.material',
+            'partidas.item.transaccion.tipoTransaccion',
+            'partidas.conceptoNuevo',
+            'partidas.conceptoOriginal'])
+            ->where('id', '=', $data['id'])
+            ->select('ControlCostos.solicitud_reclasificacion.*')
+            ->orderBy('ControlCostos.solicitud_reclasificacion.created_at', 'DESC')
+            ->first();
     }
 
     /**

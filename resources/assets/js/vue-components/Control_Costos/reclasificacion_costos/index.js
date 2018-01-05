@@ -7,7 +7,8 @@ Vue.component('reclasificacion_costos-index', {
             'editando': false,
             'item': [],
             'rechazando': false,
-            'rechazo_motivo': ''
+            'rechazo_motivo': '',
+            'dataTable': false
         }
     },
     computed: {},
@@ -17,10 +18,10 @@ Vue.component('reclasificacion_costos-index', {
             $(document).on('click', '.btn_abrir', function () {
                 var _this = $(this),
                     partidas = _this.data('row').partidas,
-                editando = !!parseInt(_this.data('editando')),
-                item = _this.data('row');
-                item.estatus_desc = item.estatus.descripcion;
+                    editando = !!parseInt(_this.data('editando')),
+                    item = _this.data('row');
 
+                item.estatus_desc = item.estatus.descripcion;
                 self.partidas = partidas;
                 self.item = item;
 
@@ -31,7 +32,18 @@ Vue.component('reclasificacion_costos-index', {
                 $('#solicitud_detalles_modal').modal('show');
             });
 
-            $('#solicitudes_table').DataTable({
+            self.dataTable = $('#solicitudes_table').DataTable({
+                "createdRow": function(row, data, dataIndex) {
+                    if (data.estatus.estatus == -1)
+                    {
+                        $(row).addClass('bg-red disabled');
+                    }
+
+                    else if (data.estatus.estatus == 2)
+                    {
+                        $(row).addClass('bg-green disabled');
+                    }
+                },
                 "processing": true,
                 "serverSide": true,
                 "ordering" : false,
@@ -57,7 +69,12 @@ Vue.component('reclasificacion_costos-index', {
                             return  meta.row + 1;
                         }
                     },
-                    {data : 'id'},
+                    {
+                        data : 'id',
+                        render : function(data, type, row) {
+                            return '#'+ row.id;
+                        }
+                    },
                     {
                         data : 'fecha',
                         render : function(data, type, row) {
@@ -67,15 +84,22 @@ Vue.component('reclasificacion_costos-index', {
                     {data : 'motivo'},
                     {
                         data : 'estatus',
-                        render : function(data, type, row, meta ) {
+                        render : function(data, type, row) {
                             return row.estatus.descripcion;
                         }
                     },
                     {
                         data : 'acciones',
                         render : function(data, type, row) {
-                            return "<button type='button' title='Ver' class='btn btn-xs btn-success btn_abrir' data-row='"+ JSON.stringify(row) +"' data-editando='0'><i class='fa fa-eye'></i></button>" +
-                                " <button type='button' title='Editar' class='btn btn-xs btn-info btn_abrir' data-row='"+ JSON.stringify(row) +"' data-editando='1'><i class='fa fa-pencil'></i></button>";
+                            var _return = "<button type='button' title='Ver' class='btn btn-xs btn-success btn_abrir' data-row='"+ JSON.stringify(row) +"' data-editando='0'><i class='fa fa-eye'></i></button>";
+
+                            // Muestra el botón de editar si la solicitud aún no está autorizada/rechazada
+                            if (row.estatus.id == 1)
+                            {
+                                _return = _return + " <button type='button' title='Editar' class='btn btn-xs btn-info btn_abrir' data-row='"+ JSON.stringify(row) +"' data-editando='1'><i class='fa fa-pencil'></i></button>";
+                            }
+
+                            return _return;
                         }
                     }
                 ],
@@ -164,16 +188,27 @@ Vue.component('reclasificacion_costos-index', {
                 beforeSend: function () {},
                 success: function (data, textStatus, xhr) {
 
-                   swal({
-                        type: 'success',
-                        title: '',
-                        html: 'La solicitud fué autorizada'
-                    });
-                },
-                complete: function () {
+                  if (data.resultado)
+                       swal({
+                            type: 'success',
+                            title: '',
+                            html: 'La solicitud fué autorizada'
+                        });
 
-                }
+                  else
+                      swal({
+                          type: 'warning',
+                          title: '',
+                          html: 'La operación no pudo concretarse'
+                      });
+
+                  self.close_modal_detalles();
+                },
+                complete: function () {}
             });
+
+            self.close_modal_detalles();
+            self.dataTable.ajax.reload();
         },
         rechazar: function () {
             var self = this,
@@ -196,6 +231,10 @@ Vue.component('reclasificacion_costos-index', {
 
                 }
             });
+
+            self.close_modal_detalles();
+            self.dataTable.ajax.reload();
+
         },
         rechazar_motivo: function () {
 

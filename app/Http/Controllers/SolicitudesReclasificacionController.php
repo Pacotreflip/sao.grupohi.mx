@@ -33,6 +33,10 @@ class SolicitudesReclasificacionController extends Controller
         $this->middleware('auth');
         $this->middleware('context');
 
+        // Permisos
+        $this->middleware('permission:autorizar_reclasificacion', ['only' => ['index', 'store']]);
+        $this->middleware('permission:consultar_reclasificacion', ['only' => ['index']]);
+
         $this->solicitar = $solicitud;
         $this->partidas = $partidas;
         $this->autorizadas = $autorizadas;
@@ -63,16 +67,13 @@ class SolicitudesReclasificacionController extends Controller
         $data = json_decode($request->data, true);
 
         if ($tipo == 'aprobar')
-            $resultado  = $this->autorizadas->create([
-                'id_solicitud_reclasificacion' => $data['id'],
-                'motivo' => $data['motivo'],
-            ]);
+            $resultado  = $this->autorizadas->create($data);
 
         else
-            $resultado  = $this->rechazadas->create([
-                'id_solicitud_reclasificacion' => $data['id'],
-                'motivo' => $request->motivo,
-            ]);
+        {
+            $data['motivo_rechazo'] = $request->motivo;
+            $resultado = $this->rechazadas->create($data);
+        }
 
         return response()->json(
             [

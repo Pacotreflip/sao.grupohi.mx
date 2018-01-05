@@ -50,7 +50,7 @@ class EloquentSolicitudReclasificacionRepository implements SolicitudReclasifica
             throw $e;
         }
 
-        return SolicitudReclasificacion::where('id_solicitud_reclasificacion', '=', $record->id_solicitud_reclasificacion)->first();
+        return SolicitudReclasificacion::where('id', '=', $record->id)->first();
     }
 
     /**

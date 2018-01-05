@@ -47,6 +47,10 @@ class SolicitarReclasificacionController extends Controller
         $this->middleware('auth');
         $this->middleware('context');
 
+        // Permisos
+        $this->middleware('permission:solicitar_reclasificacion', ['only' => ['index', 'findmovimiento', 'find', 'tipos', 'items', 'store']]);
+        $this->middleware('permission:consultar_reclasificacion', ['only' => ['index', 'findmovimiento', 'find', 'tipos', 'items']]);
+
         $this->concepto = $concepto;
         $this->conceptoPath = $conceptoPath;
         $this->transaccion = $transaccion;
@@ -83,7 +87,7 @@ class SolicitarReclasificacionController extends Controller
         if (!empty($solicitud))
             foreach ($partidas as $p)
                 $this->partidas->create([
-                    'id_solicitud_reclasificacion' => $solicitud->id_solicitud_reclasificacion,
+                    'id_solicitud_reclasificacion' => $solicitud->id,
                     'id_item' => $p['id_item'],
                     'id_concepto_original' => $p['id_concepto'],
                     'id_concepto_nuevo' => $p['id_concepto_nuevo']

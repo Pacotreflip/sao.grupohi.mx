@@ -109,9 +109,7 @@
                                             </div>
                                             <div class="box-body">
                                                 <ul class="list-unstyled">
-                                                    <li>bla</li>
-                                                    <li>bla bla </li>
-                                                    <li>bla bla bla</li>
+                                                    <li></li>
                                                 </ul>
                                             </div>
                                         </div>

@@ -189,7 +189,7 @@ Vue.component('cierre-index', {
             }).then((result) => {
             }).catch(swal.noop)
         },
-        
+
         close: function (id_cierre) {
             var self = this;
             swal({

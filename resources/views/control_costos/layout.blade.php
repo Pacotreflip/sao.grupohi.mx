@@ -1,7 +1,7 @@
 @extends('layouts.app')
 @section('content-menu')
     <ul class="sidebar-menu">
-        {{--@permission(['consultar_traspaso_cuenta', 'consultar_movimiento_bancario'])--}}
+        @permission(['consultar_reclasificacion', 'solicitar_reclasificacion', 'autorizar_reclasificacion'])
         <li class="treeview">
             <a href="#">
                 <i class="fa fa-cubes"></i>
@@ -11,14 +11,14 @@
             </span>
             </a>
             <ul class="treeview-menu">
-                {{--@permission(['consultar_movimiento_bancario'])--}}
+                @permission(['consultar_reclasificacion', 'solicitar_reclasificacion'])
                 <li ><a href="{{route('control_costos.solicitar_reclasificacion.index')}}"><i class='fa fa-circle-o'></i> <span>Solicitar Reclasificación</span></a></li>
-                {{--@endpermission--}}
-                {{--@permission('consultar_traspaso_cuenta')--}}
+                @endpermission
+                @permission(['consultar_reclasificacion', 'autorizar_reclasificacion'])
                 <li ><a href="{{route('control_costos.solicitudes_reclasificacion.index')}}"><i class='fa fa-circle-o'></i> <span>Reclasificación De Costos</span></a></li>
-                {{--@endpermission--}}
+                @endpermission
             </ul>
         </li>
-        {{--@endpermission--}}
+        @endpermission
     </ul>
 @endsection

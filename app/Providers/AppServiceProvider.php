@@ -291,5 +291,10 @@ class AppServiceProvider extends ServiceProvider
             \Ghi\Domain\Core\Contracts\TipoTranRepository::class,
             \Ghi\Domain\Core\Repositories\EloquentTipoTranRepository::class
         );
+
+        $this->app->bind(
+            \Ghi\Domain\Core\Contracts\MovimientosRepository::class,
+            \Ghi\Domain\Core\Repositories\EloquentMovimientosRepository::class
+        );
     }
 }

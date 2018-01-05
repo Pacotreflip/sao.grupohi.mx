@@ -50,7 +50,7 @@ class EloquentSolicitudReclasificacionPartidasRepository implements SolicitudRec
             throw $e;
         }
 
-        return SolicitudReclasificacionPartidas::where('id_partida', '=', $record->id_partida)->first();
+        return SolicitudReclasificacionPartidas::where('id', '=', $record->id)->first();
     }
 
     /**
