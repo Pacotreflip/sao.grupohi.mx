@@ -3603,7 +3603,6 @@ if ($('#app').length) {
         el: '#app',
         components: require('./vue-components')
     });
-    Vue.config.devtools = true;
 }
 
 },{"./vue-components":5,"vee-validate":2,"vee-validate/dist/locale/es":1,"vue/dist/vue.min":3}],5:[function(require,module,exports){
@@ -7246,13 +7245,6 @@ Vue.component('reclasificacion_costos-index', {
         });
 
         self.dataTable = $('#solicitudes_table').DataTable({
-            "createdRow": function createdRow(row, data, dataIndex) {
-                if (data.estatus.estatus == -1) {
-                    $(row).addClass('bg-red disabled');
-                } else if (data.estatus.estatus == 2) {
-                    $(row).addClass('bg-green disabled');
-                }
-            },
             "processing": true,
             "serverSide": true,
             "ordering": false,
@@ -7289,6 +7281,7 @@ Vue.component('reclasificacion_costos-index', {
             }, { data: 'motivo' }, {
                 data: 'estatus',
                 render: function render(data, type, row) {
+
                     return row.estatus.descripcion;
                 }
             }, {
@@ -8020,11 +8013,14 @@ Vue.component('solicitar_reclasificacion-items', {
                 },
                 beforeSend: function beforeSend() {},
                 success: function success(data, textStatus, xhr) {
-                    console.log(data);
+
                     swal({
                         type: 'success',
                         title: '',
-                        html: 'Solicitud elaborada con éxito'
+                        html: 'Solicitud elaborada con éxito',
+                        onClose: function onClose() {
+                            window.location.href = App.host + '/control_costos/solicitudes_reclasificacion';
+                        }
                     });
                 },
                 complete: function complete() {}

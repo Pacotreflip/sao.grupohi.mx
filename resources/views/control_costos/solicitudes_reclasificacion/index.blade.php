@@ -93,7 +93,7 @@
                                         </table>
                                         <div class="col-md-12" v-if="!editando">
                                             <div class="pull-right">
-                                                <button type='button' title='Reporte' class='btn btn-info btn_pdf' v-on:click="pdf(item.id)"><i class='fa fa-file-pdf-o'> Reporte </i></button>
+                                                <button type='button' title='Formato' class='btn btn-info btn_pdf' v-on:click="pdf(item.id)"><i class='fa fa-file-pdf-o'>  Formato</i></button>
                                             </div>
                                         </div>
                                     </div>
@@ -124,7 +124,7 @@
                                     </div>
                                     <div class="col-md-6">
                                         <div class="pull-right">
-                                            <button type='button' title='Reporte' class='btn btn-info btn_pdf' v-on:click="pdf(item.id)"><i class='fa fa-file-pdf-o'> Reporte </i></button>
+                                            <button type='button' title='Formato' class='btn btn-info btn_pdf' v-on:click="pdf(item.id)"><i class='fa fa-file-pdf-o'> Formato</i></button>
                                             <button type="button" class="btn btn-success" v-on:click="confirm('aprobar')"> <i class="fa fa-fw fa-thumbs-up"></i>Aprobar</button>
                                             <button type="button" class="btn btn-danger" v-on:click="rechazar_motivo()"> <i class="fa fa-fw fa-trash"></i> Rechazar</button>
                                         </div>
