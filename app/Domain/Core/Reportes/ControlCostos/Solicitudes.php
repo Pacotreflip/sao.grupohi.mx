@@ -51,7 +51,7 @@ class Solicitudes extends Rotation {
         $this->SetXY(3, 1);
         $this->SetFont('Arial', 'B', 30);
 //        $this->Cell(0, 0, '', 0, 0);
-        $this->CellFitScale(15, 0.4, utf8_decode('Solicitud de reclasificación'), 0, 1, 'C');
+        $this->CellFitScale(15, 0.4, utf8_decode('SOLICITUD DE RECLASIFICACIÓN'), 0, 1, 'C');
         $this->ln(0.25);
 
 
@@ -66,13 +66,11 @@ class Solicitudes extends Rotation {
             $this->SetWidths([
                 ($this->w - 2) * 0.15, // Tipo
                 ($this->w - 2) * 0.05, // Folio
-                ($this->w - 2) * 0.35, // Item
-                ($this->w - 2) * 0.05, //Cantidad
-                ($this->w - 2) * 0.05, // Importe
+                ($this->w - 2) * 0.30, // Item
+                ($this->w - 2) * 0.10, //Cantidad
+                ($this->w - 2) * 0.10, // Importe
                 ($this->w - 2) * 0.15, // Costo Origen
                 ($this->w - 2) * 0.15, // Costo Destino
-                ($this->w - 2) * 0.15, // Fecha
-                ($this->w - 2) * 0.15, // Creado por
             ]);
 
             $this->SetFills(['180,180,180', '180,180,180', '180,180,180', '180,180,180', '180,180,180', '180,180,180', '180,180,180', '180,180,180', '180,180,180']);
@@ -80,34 +78,30 @@ class Solicitudes extends Rotation {
             $this->SetHeights([0.5]);
             $this->SetAligns(['C', 'C', 'C', 'C', 'C', 'C', 'C', 'C', 'C']);
             $this->Row([
-                'Tipo Transacción',
+                utf8_decode('Tipo Transacción'),
                 'Folio',
                 'Item',
                 'Cantidad',
                 'Importe',
                 'Costo Origen',
                 'Costo Destino',
-                'Fecha',
-                'Creado Por'
             ]);
 
             $this->SetFont('Arial', '', 7);
             $this->SetWidths([
                 ($this->w - 2) * 0.15, // Tipo
                 ($this->w - 2) * 0.05, // Folio
-                ($this->w - 2) * 0.35, // Item
-                ($this->w - 2) * 0.05, //Cantidad
-                ($this->w - 2) * 0.05, // Importe
+                ($this->w - 2) * 0.30, // Item
+                ($this->w - 2) * 0.10, //Cantidad
+                ($this->w - 2) * 0.10, // Importe
                 ($this->w - 2) * 0.15, // Costo Origen
                 ($this->w - 2) * 0.15, // Costo Destino
-                ($this->w - 2) * 0.15, // Fecha
-                ($this->w - 2) * 0.15, // Creado por
             ]);
 
-            $this->SetFills(['255,255,255', '255,255,255', '255,255,255', '255,255,255', '255,255,255', '255,255,255', '255,255,255', '255,255,255', '255,255,255']);
-            $this->SetTextColors(['0,0,0', '0,0,0', '0,0,0', '0,0,0', '0,0,0', '0,0,0', '0,0,0', '0,0,0', '0,0,0']);
+            $this->SetFills(['255,255,255', '255,255,255', '255,255,255', '255,255,255', '255,255,255', '255,255,255', '255,255,255']);
+            $this->SetTextColors(['0,0,0', '0,0,0', '0,0,0', '0,0,0', '0,0,0', '0,0,0', '0,0,0']);
             $this->SetHeights([0.35]);
-            $this->SetAligns(['L', 'L', 'R', 'L', 'L', 'L', 'L', 'L', 'L']);
+            $this->SetAligns(['L', 'L', 'R', 'L', 'L', 'L', 'L']);
         }
     }
 
@@ -155,7 +149,7 @@ class Solicitudes extends Rotation {
         $file = public_path('img/logo_temp.png');
         if (file_put_contents($file, $data) !== false) {
             list($width, $height) = $this->resizeToFit($file);
-            $this->Image($file, 1, 2, $width -2, $height -2);
+            $this->Image($file, 1, 2, $width -4, $height -4);
             unlink($file);
         }
     }
@@ -186,10 +180,10 @@ return;
         $this->SetStyles(['DF', 'DF', 'DF', 'DF', 'DF', 'DF', 'DF']);
         $this->SetWidths([
             ($this->w - 2) * 0.15, // Tipo
-            ($this->w - 2) * 0.04, // Folio
-            ($this->w - 2) * 0.15, // Item
-            ($this->w - 2) * 0.05, //Cantidad
-            ($this->w - 2) * 0.07, // Importe
+            ($this->w - 2) * 0.05, // Folio
+            ($this->w - 2) * 0.30, // Item
+            ($this->w - 2) * 0.10, //Cantidad
+            ($this->w - 2) * 0.10, // Importe
             ($this->w - 2) * 0.15, // Costo Origen
             ($this->w - 2) * 0.15, // Costo Destino
         ]);
@@ -199,7 +193,7 @@ return;
         $this->SetHeights([0.5]);
         $this->SetAligns(['C', 'C', 'C', 'C', 'C', 'C', 'C']);
         $this->Row([
-            'Tipo Transacción',
+            utf8_decode('Tipo Transacción'),
             'Folio',
             'Item',
             'Cantidad',
@@ -211,10 +205,10 @@ return;
             $this->SetFont('Arial', '', 7);
             $this->SetWidths([
                 ($this->w - 2) * 0.15, // Tipo
-                ($this->w - 2) * 0.04, // Folio
-                ($this->w - 2) * 0.15, // Item
-                ($this->w - 2) * 0.05, //Cantidad
-                ($this->w - 2) * 0.07, // Importe
+                ($this->w - 2) * 0.05, // Folio
+                ($this->w - 2) * 0.30, // Item
+                ($this->w - 2) * 0.10, //Cantidad
+                ($this->w - 2) * 0.10, // Importe
                 ($this->w - 2) * 0.15, // Costo Origen
                 ($this->w - 2) * 0.15, // Costo Destino
 
