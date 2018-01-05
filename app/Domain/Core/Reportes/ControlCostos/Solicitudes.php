@@ -9,10 +9,8 @@
 namespace Ghi\Domain\Core\Reportes\ControlCostos;
 
 use Ghi\Core\Facades\Context;
-use Ghi\Utils\NumberToLetterConverter;
 use Ghidev\Fpdf\Rotation;
 use Ghi\Domain\Core\Models\Obra;
-use Illuminate\Support\Facades\DB;
 
 class Solicitudes extends Rotation {
 
@@ -45,19 +43,13 @@ class Solicitudes extends Rotation {
     }
 
     function Header() {
-
-        $fecha = new \DateTime($this->solicitud['created_at']);
-
-        $this->SetXY(3, 1);
-        $this->SetFont('Arial', 'B', 30);
-//        $this->Cell(0, 0, '', 0, 0);
-        $this->CellFitScale(15, 0.4, utf8_decode('SOLICITUD DE RECLASIFICACIÓN'), 0, 1, 'C');
-        $this->ln(0.25);
-
+        $this->SetY(1);
+        $this->SetFont('Arial', 'B', 20);
+        $this->Cell(($this->w - 2) / 2, 0.4, '', 0, 0, 'C');
+        $this->CellFitScale(($this->w - 2) / 2, 0.4, utf8_decode('SOLICITUD DE RECLASIFICACIÓN'), 0, 1, 'C');
 
         $this->logo();
         $this->info();
-        $this->detalles();
         $this->Ln(1);
 
         if($this->encola == 'partidas') {
@@ -107,40 +99,29 @@ class Solicitudes extends Rotation {
 
     function info()
     {
-        $this->SetXY(0, 2);
+        $this->SetXY($this->w / 2, 2);
         $this->SetTextColor('0,0,0');
         $this->SetFont('Arial', 'B', 14);
 
-        $this->Cell(11.5);
-        $x_f = $this->GetX();
-
-        $this->Cell(4.5,.7,utf8_decode('FOLIO'),'LT',0,'L');
-        $this->Cell(3.5,.7, '# '. $this->solicitud['id'],'RT',0,'L');
+        $this->Cell(($this->w - 2) / 4,.7, utf8_decode('FOLIO'),'LT',0,'L');
+        $this->Cell(($this->w - 2) / 4,.7, '# '. $this->solicitud['id'],'RT',0,'L');
         $this->Ln(.7);
         $y_f = $this->GetY();
 
-        $this->SetY($y_f);
-        $this->SetX($x_f);
+        $this->SetXY($this->w / 2, $y_f);
         $this->SetFont('Arial', 'B', 10);
-        $this->Cell(4.5,.7, 'FECHA ','L',0,'L');
-        $this->Cell(3.5,.7, 'd ','R',0,'L');
-        $this->Ln(.7);
-
-        $this->Cell(10.5);
-        $this->Cell(4.5,.7,'SOLICITUD ','LB',0,'L');
-        $this->Cell(3.5,.7, 'g ','RB',1,'L');
-        $this->Ln(.5);
+        $this->Cell(($this->w - 2) / 4,.7, 'FECHA ','LB',0,'L');
+        $this->Cell(($this->w - 2) / 4,.7, $this->solicitud->created_at->format('Y-m-d h:i:s a'),'RB',0,'L');
     }
 
     function Footer() {
-//        $this->firmas();
-//        $this->SetY($this->GetPageHeight() - 1);
-//        $this->SetFont('Arial', '', 6);
-//        $this->Cell(6.5, .4, utf8_decode('Formato generado desde SAO.'), 0, 0, 'L');
-//        $this->SetFont('Arial', 'B', 6);
-//        $this->Cell(6.5, .4, '', 0, 0, 'C');
-//        $this->Cell(6.5, .4, utf8_decode('Página ') . $this->PageNo() . '/{nb}', 0, 0, 'R');
-
+        $this->firmas();
+        $this->SetY($this->GetPageHeight() - 1);
+        $this->SetFont('Arial', '', 6);
+        $this->Cell(6.5, .4, utf8_decode('Formato generado desde SAO.'), 0, 0, 'L');
+        $this->SetFont('Arial', 'B', 6);
+        $this->Cell(6.5, .4, '', 0, 0, 'C');
+        $this->Cell(6.5, .4, utf8_decode('Página ') . $this->PageNo() . '/{nb}', 0, 0, 'R');
     }
 
     function logo() {
@@ -149,15 +130,13 @@ class Solicitudes extends Rotation {
         $file = public_path('img/logo_temp.png');
         if (file_put_contents($file, $data) !== false) {
             list($width, $height) = $this->resizeToFit($file);
-            $this->Image($file, 1, 2, $width -4, $height -4);
+            $this->Image($file, ($this->w / 4) - ($width / 2), 1.5, $width, $height);
             unlink($file);
         }
     }
 
     function detalles() {
-return;
         $fecha = new \DateTime($this->solicitud['created_at']);
-
 
 
         $this->SetX(8);
@@ -263,35 +242,25 @@ return;
         ];
     }
 
+
     function firmas() {
         $this->SetY(- 3.5);
         $this->SetTextColor('0', '0', '0');
         $this->SetFont('Arial', '', 6);
         $this->SetFillColor(180, 180, 180);
 
-        $this->Cell(($this->GetPageWidth() - 4) / 4, 0.4, utf8_decode('Realizó'), 'TRLB', 0, 'C', 1);
-        $this->Cell(0.73);
-        $this->Cell(($this->GetPageWidth() - 4) / 4, 0.4, utf8_decode('Autorizó'), 'TRLB', 0, 'C', 1);
-        $this->Cell(0.73);
-        $this->Cell(($this->GetPageWidth() - 4) / 4, 0.4, utf8_decode('Autorizó'), 'TRLB', 0, 'C', 1);
-        $this->Cell(0.73);
-        $this->Cell(($this->GetPageWidth() - 4) / 4, 0.4, utf8_decode('Recibió'), 'TRLB', 1, 'C', 1);
+        $this->Cell(($this->GetPageWidth() - 4) / 2, 0.4, utf8_decode('Solicitó'), 'TRLB', 0, 'C', 1);
+        $this->Cell(2);
+        $this->Cell(($this->GetPageWidth() - 4) / 2, 0.4, utf8_decode('Autorizó'), 'TRLB', 1, 'C', 1);
 
-        $this->Cell(($this->GetPageWidth() - 4) / 4, 1.2, '', 'TRLB', 0, 'C');
-        $this->Cell(0.73);
-        $this->Cell(($this->GetPageWidth() - 4) / 4, 1.2, '', 'TRLB', 0, 'C');
-        $this->Cell(0.73);
-        $this->Cell(($this->GetPageWidth() - 4) / 4, 1.2, '', 'TRLB', 0, 'C');
-        $this->Cell(0.73);
-        $this->Cell(($this->GetPageWidth() - 4) / 4, 1.2, '', 'TRLB', 1, 'C');
+        $this->Cell(($this->GetPageWidth() - 4) / 2, 1.2, '', 'TRLB', 0, 'C');
+        $this->Cell(2);
+        $this->Cell(($this->GetPageWidth() - 4) / 2, 1.2, '', 'TRLB', 1, 'C');
 
-        $this->Cell(($this->GetPageWidth() - 4) / 4, 0.4, 'RESPONSABLE DE AREA', 'TRLB', 0, 'C', 1);
-        $this->Cell(0.73);
-        $this->Cell(($this->GetPageWidth() - 4) / 4, 0.4, 'GERENCIA DE AREA', 'TRLB', 0, 'C', 1);
-        $this->Cell(0.73);
-        $this->Cell(($this->GetPageWidth() - 4) / 4, 0.4, 'DIRECCION DE AREA', 'TRLB', 0, 'C', 1);
-        $this->Cell(0.73);
-        $this->Cell(($this->GetPageWidth() - 4) / 4, 0.4, 'ADMINISTRACION', 'TRLB', 0, 'C', 1);
+        $this->Cell(($this->GetPageWidth() - 4) / 2, 0.4, utf8_decode($this->solicitud->usuario), 'TRLB', 0, 'C', 1);
+        $this->Cell(2);
+        $this->Cell(($this->GetPageWidth() - 4) / 2, 0.4, utf8_decode($this->solicitud->autorizacion ? $this->solicitud->autorizacion->usuario : ''), 'TRLB', 0, 'C', 1);
+
 
     }
 
@@ -308,7 +277,7 @@ return;
         $this->Ln(1);
 
         try {
-            $this->Output('I', 'Formato - Orden de Pago Estimación.pdf', 1);
+            $this->Output('I', 'Formato - Solicitud de Reclasificación.pdf', 1);
         } catch (\Exception $ex) {
             dd($ex);
         }

@@ -48,13 +48,13 @@ class SolicitudReclasificacion extends BaseModel
         return $this->belongsTo(User::class, 'registro', 'idusuario');
     }
 
-    public function autorizadas()
+    public function autorizacion()
     {
-        return $this->hasMany(SolicitudReclasificacionAutorizada::class, 'id_solicitud_reclasificacion', 'id');
+        return $this->hasOne(SolicitudReclasificacionAutorizada::class, 'id_solicitud_reclasificacion', 'id');
     }
 
-    public function rechazadas()
+    public function rechazo()
     {
-        return $this->hasMany(SolicitudReclasificacionRechazada::class, 'id_solicitud_reclasificacion', 'id');
+        return $this->hasOne(SolicitudReclasificacionRechazada::class, 'id_solicitud_reclasificacion', 'id');
     }
 }

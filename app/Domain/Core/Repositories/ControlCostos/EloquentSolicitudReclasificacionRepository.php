@@ -64,15 +64,15 @@ class EloquentSolicitudReclasificacionRepository implements SolicitudReclasifica
 
     public function paginate(array $data)
     {
-        $query = $this->model->with(['autorizadas.usuario', 'rechazadas.usuario', 'usuario', 'estatus', 'partidas.item.material', 'partidas.item.transaccion.tipoTransaccion', 'partidas.conceptoNuevo', 'partidas.conceptoOriginal'])->select('ControlCostos.solicitud_reclasificacion.*')->orderBy('ControlCostos.solicitud_reclasificacion.created_at', 'DESC');
+        $query = $this->model->with(['autorizacion.usuario', 'rechazo.usuario', 'usuario', 'estatus', 'partidas.item.material', 'partidas.item.transaccion.tipoTransaccion', 'partidas.conceptoNuevo', 'partidas.conceptoOriginal'])->select('ControlCostos.solicitud_reclasificacion.*')->orderBy('ControlCostos.solicitud_reclasificacion.created_at', 'DESC');
         return $query->paginate($perPage = $data['length'], $columns = ['*'], $pageName = 'page', $page = ($data['start'] / $data['length']) + 1);
     }
 
     public function reporte($id)
     {
         return $this->model->with([
-            'autorizadas.usuario',
-            'rechazadas.usuario',
+            'autorizacion.usuario',
+            'rechazo.usuario',
             'usuario',
             'estatus',
             'partidas.item.material',
