@@ -75,10 +75,18 @@ Vue.component('reclasificacion_costos-index', {
                     {
                         data : 'estatus',
                         render : function(data, type, row) {
+                            var _estatus = '';
 
+                            if (row.estatus.estatus == 2)
+                                _estatus = '<span class="label bg-green">'+ row.estatus.descripcion +'</span> ';
 
+                            else if (row.estatus.estatus == -1)
+                                _estatus = '<span class="label bg-red">'+ row.estatus.descripcion +'</span> ';
 
-                            return row.estatus.descripcion;
+                            else
+                                _estatus = '<span class="label bg-blue">'+ row.estatus.descripcion +'</span> ';
+
+                            return _estatus;
                         }
                     },
                     {
