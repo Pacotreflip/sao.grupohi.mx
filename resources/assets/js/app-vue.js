@@ -1,7 +1,7 @@
 // Vue Dev
-window.Vue = require('vue/dist/vue.js');
+//window.Vue = require('vue/dist/vue.js');
 //Vue Prod
-//window.Vue = require('vue/dist/vue.min');
+window.Vue = require('vue/dist/vue.min');
 
 window.VeeValidate = require('vee-validate');
 VeeValidate.Validator.addLocale({
