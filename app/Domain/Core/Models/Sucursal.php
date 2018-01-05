@@ -44,7 +44,7 @@ class Sucursal extends BaseModel
         parent::boot();
 
         static::creating(function($model) {
-            $model->UsuarioRegistro = auth()->user()->idusuario;
+            $model->UsuarioRegistro = auth()->id();
             $model->FechaHoraRegistro = Carbon::now()->toDateTimeString();
         });
     }

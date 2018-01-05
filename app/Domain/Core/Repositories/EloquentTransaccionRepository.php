@@ -75,8 +75,9 @@ sum(movimientos.monto_total) as monto')
     {
         return $this->items->where('items.id_transaccion', '=', $id_transaccion)
             ->leftJoin('transacciones', 'transacciones.id_transaccion', '=', DB::raw($id_transaccion))
+            ->leftJoin('materiales', 'materiales.id_material', '=', 'items.id_material')
             ->leftJoin('conceptos', 'conceptos.id_concepto', '=', 'items.id_concepto')
-            ->selectRaw('transacciones.observaciones, items.cantidad, items.precio_unitario, items.importe, items.id_concepto, conceptos.descripcion, items.id_item')
+            ->selectRaw('transacciones.observaciones, items.cantidad, items.precio_unitario, items.importe, items.id_concepto, materiales.descripcion, items.id_item, conceptos.descripcion as concepto_descripcion')
             ->get();
     }
 }

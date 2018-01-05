@@ -229,7 +229,15 @@ class SolicitarReclasificacionController extends Controller
     {
         $items = $this->transaccion->items($request->id);
         $titulo = '';
+        $detalles = $this->transaccion->detallesTransacciones($request->id_concepto);
+        $transaccion = [];
 
+        foreach ($detalles as $d)
+            if ($d['id_transaccion'] == $request->id)
+            {
+                $transaccion = $d;
+                break;
+            }
 
         return view('control_costos.solicitar_reclasificacion.items')
             ->with('data_view', [
@@ -239,6 +247,7 @@ class SolicitarReclasificacionController extends Controller
                 'max_niveles' => $this->concepto->obtenerMaxNumNiveles(),
                 'operadores' => $this->operadores,
                 'id_concepto' => $request->id_concepto,
+                'transaccion' => $transaccion,
             ]);
     }
 }

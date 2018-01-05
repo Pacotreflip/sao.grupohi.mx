@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateControlcostosEstatusTable extends Migration
+class AddEstatusToControlCostos extends Migration
 {
     /**
      * Run the migrations.
@@ -12,11 +12,8 @@ class CreateControlcostosEstatusTable extends Migration
      */
     public function up()
     {
-        Schema::create('ControlCostos.estatus', function (Blueprint $table) {
-            $table->increments('id');
-            $table->string('descripcion');
-            $table->timestamps();
-            $table->softDeletes();
+        Schema::table('ControlCostos.estatus', function (Blueprint $table) {
+            $table->integer('estatus')->unsigned()->nullable();
         });
     }
 
@@ -27,6 +24,8 @@ class CreateControlcostosEstatusTable extends Migration
      */
     public function down()
     {
-        Schema::drop('ControlCostos.estatus');
+        Schema::table('ControlCostos.estatus', function (Blueprint $table) {
+            $table->dropColumn('estatus');
+        });
     }
 }

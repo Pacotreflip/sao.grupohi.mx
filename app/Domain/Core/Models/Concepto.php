@@ -150,22 +150,22 @@ class Concepto extends BaseModel
         if ($padre->clave_concepto)
             return $padre->clave_concepto;
 
-        $padre1 = Concepto::where('nivel', '=', $padre->nivel_padre)->first();
+        $num_niveles = $this->getNivelesAttribute();
+        $nivel_padre = $padre->nivel_padre;
+        $clave = '';
 
-        if ($padre1->clave_concepto)
-            return $padre1->clave_concepto;
+        for ($i = 1; $i <= $num_niveles; $i++) {
+            $padre = Concepto::where('nivel', '=', $nivel_padre)->first();
+            $nivel_padre = $padre->nivel_padre;
 
-        $padre2 = Concepto::where('nivel', '=', $padre1->nivel_padre)->first();
+            if ($padre->clave_concepto)
+            {
+                $clave = $padre->clave_concepto;
+                break;
+            }
+        }
 
-        if ($padre2->clave_concepto)
-            return $padre2->clave_concepto;
-
-        $padre3 = Concepto::where('nivel', '=', $padre2->nivel_padre)->first();
-
-        if ($padre3->clave_concepto)
-            return $padre3->clave_concepto;
-
-        return '';
+        return $clave;
     }
 
     public function getNivelesAttribute()

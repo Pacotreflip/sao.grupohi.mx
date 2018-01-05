@@ -31,7 +31,7 @@ class SolicitudReclasificacionAutorizada extends BaseModel
         parent::boot();
 
         static::creating(function ($model) {
-            $model->id_autorizo = auth()->user()->idusuario;
+            $model->id_autorizo = auth()->id();
         });
     }
 

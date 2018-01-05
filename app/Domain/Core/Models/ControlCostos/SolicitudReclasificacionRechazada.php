@@ -31,7 +31,7 @@ class SolicitudReclasificacionRechazada extends BaseModel
         parent::boot();
 
         static::creating(function ($model) {
-            $model->id_rechazo = auth()->user()->idusuario;
+            $model->id_rechazo = auth()->id();
         });
     }
 
