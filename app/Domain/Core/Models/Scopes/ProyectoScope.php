@@ -3,6 +3,7 @@
 namespace Ghi\Domain\Core\Models\Scopes;
 
 use Ghi\Core\Facades\Context;
+use Ghi\Domain\Core\Models\Seguridad\Proyecto;
 use Illuminate\Database\Eloquent\Scope;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
@@ -18,6 +19,7 @@ class ProyectoScope implements Scope
      */
     public function apply(Builder $builder, Model $model)
     {
-        return $builder->join('proyectos', 'Configuracion.cierres.id_proyecto', '=', 'proyectos.id')->where('proyectos.base_datos', '=', Context::getDatabaseName());
+        $proyecto = Proyecto::where('base_datos', '=', Context::getDatabaseName())->first();
+        return $builder->where($model->getTable().'.id_proyecto', '=', $proyecto->id);
     }
 }

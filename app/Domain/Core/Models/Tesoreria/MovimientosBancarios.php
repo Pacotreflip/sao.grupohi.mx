@@ -40,7 +40,7 @@ class MovimientosBancarios extends BaseModel
             $folio = $mov ? $mov->numero_folio + 1 : 1;
 
             $model->estatus = 1;
-            $model->registro = auth()->user()->idusuario;
+            $model->registro = auth()->id();
             $model->id_obra = Context::getId();
             $model->numero_folio = $folio;
         });

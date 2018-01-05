@@ -13,10 +13,11 @@ use Ghi\Domain\Core\Models\BaseModel;
 use Ghi\Domain\Core\Models\Scopes\ObraScope;
 use Ghi\Domain\Core\Models\Scopes\ProyectoScope;
 use Ghi\Domain\Core\Models\User;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Auth;
 
-class Cierre extends BaseModel
+class Cierre extends Model
 {
     use SoftDeletes;
 
@@ -25,6 +26,10 @@ class Cierre extends BaseModel
     protected $fillable = [
         'anio',
         'mes'
+    ];
+
+    protected $appends = [
+        'abierto'
     ];
 
     protected static function boot()
@@ -37,7 +42,7 @@ class Cierre extends BaseModel
             $proyecto = Proyecto::where('base_datos', '=', Context::getDatabaseName())->first();
             $model->id_proyecto = $proyecto->id;
             $model->id_obra = Context::getId();
-            $model->registro = Auth::ID();
+            $model->registro = auth()->id();
         });
     }
 
@@ -46,5 +51,13 @@ class Cierre extends BaseModel
      */
     public function userRegistro() {
         return $this->belongsTo(User::class, 'registro');
+    }
+
+    public function aperturas() {
+        return $this->hasMany(Apertura::class, 'id_cierre');
+    }
+
+    public function getAbiertoAttribute() {
+        return (boolean) $this->aperturas()->abiertas()->count();
     }
 }
