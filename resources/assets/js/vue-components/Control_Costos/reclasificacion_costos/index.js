@@ -5,7 +5,7 @@ Vue.component('reclasificacion_costos-index', {
             'partidas': [],
             'guardando' : false,
             'editando': false,
-            'item': [],
+            'item': {'id': 0, 'created_at': '', 'estatus_desc': ''},
             'rechazando': false,
             'rechazo_motivo': '',
             'dataTable': false
@@ -14,7 +14,6 @@ Vue.component('reclasificacion_costos-index', {
     computed: {},
         mounted: function () {
             var self = this;
-
             $(document).on('click', '.btn_abrir', function () {
                 var _this = $(this),
                     partidas = _this.data('row').partidas,
@@ -35,14 +34,11 @@ Vue.component('reclasificacion_costos-index', {
             self.dataTable = $('#solicitudes_table').DataTable({
                 "createdRow": function(row, data, dataIndex) {
                     if (data.estatus.estatus == -1)
-                    {
                         $(row).addClass('bg-red disabled');
-                    }
 
                     else if (data.estatus.estatus == 2)
-                    {
                         $(row).addClass('bg-green disabled');
-                    }
+
                 },
                 "processing": true,
                 "serverSide": true,
@@ -247,6 +243,17 @@ Vue.component('reclasificacion_costos-index', {
 
             self.rechazando = false;
             self.rechazo_motivo = '';
+        },
+        pdf: function (id) {
+            var self = this,
+                url = App.host + '/control_costos/solicitudes_reclasificacion/generarpdf?item='+ id;
+console.log(App.host + '/control_costos/solicitudes_reclasificacion/generarpdf?item='+ id);
+            $("#solicitud_pdf_modal .modal-body").html('<iframe src="'+ url +'"  frameborder="0" height="100%" width="99.6%">d</iframe>');
+            $("#solicitud_pdf_modal").modal("show");
+
+        },
+        close_modal_pdf: function () {
+            $("#solicitud_pdf_modal").modal("hide");
         }
     }
 });

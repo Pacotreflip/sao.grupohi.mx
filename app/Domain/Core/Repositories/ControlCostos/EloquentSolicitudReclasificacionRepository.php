@@ -68,6 +68,23 @@ class EloquentSolicitudReclasificacionRepository implements SolicitudReclasifica
         return $query->paginate($perPage = $data['length'], $columns = ['*'], $pageName = 'page', $page = ($data['start'] / $data['length']) + 1);
     }
 
+    public function reporte($id)
+    {
+        return $this->model->with([
+            'autorizadas.usuario',
+            'rechazadas.usuario',
+            'usuario',
+            'estatus',
+            'partidas.item.material',
+            'partidas.item.transaccion.tipoTransaccion',
+            'partidas.conceptoNuevo', 'partidas.conceptoOriginal'
+        ])
+            ->where('id', '=', $id)
+            ->select('ControlCostos.solicitud_reclasificacion.*')
+            ->orderBy('ControlCostos.solicitud_reclasificacion.created_at', 'DESC')->first();
+
+    }
+
     public function delete($id)
     {
         // TODO: Implement delete() method.
