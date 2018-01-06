@@ -71,7 +71,12 @@ Vue.component('reclasificacion_costos-index', {
                             return new Date(row.created_at).dateShortFormat();
                         }
                     },
-                    {data : 'motivo'},
+                    {
+                        data : 'motivo',
+                        render : function(data, type, row) {
+                            return row.motivo.replace(/'/g, "\\'");
+                        }
+                    },
                     {
                         data : 'estatusString',
                         render : function(data, type, row) {

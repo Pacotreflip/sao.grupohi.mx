@@ -80,7 +80,7 @@ class SolicitarReclasificacionController extends Controller
      */
     public function store(Request $request)
     {
-        $motivo = $request->motivo;
+        $motivo = htmlentities($request->motivo, ENT_QUOTES);
         $partidas = $request->solicitudes;
 
         $solicitud  = $this->solicitud->create(['motivo' => $motivo]);
@@ -282,6 +282,9 @@ class SolicitarReclasificacionController extends Controller
         $titulo = '';
         $detalles = $this->transaccion->detallesTransacciones($request->id_concepto);
         $transaccion = [];
+
+        foreach ($items as $k => $i)
+            $items[$k]['concepto'] = Concepto::where('id_concepto', '=', $i['id_concepto'])->first();
 
         foreach ($detalles as $d)
             if ($d['id_transaccion'] == $request->id)

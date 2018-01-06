@@ -3603,6 +3603,7 @@ if ($('#app').length) {
         el: '#app',
         components: require('./vue-components')
     });
+    Vue.config.devtools = true;
 }
 
 },{"./vue-components":5,"vee-validate":2,"vee-validate/dist/locale/es":1,"vue/dist/vue.min":3}],5:[function(require,module,exports){
@@ -7278,7 +7279,12 @@ Vue.component('reclasificacion_costos-index', {
                 render: function render(data, type, row) {
                     return new Date(row.created_at).dateShortFormat();
                 }
-            }, { data: 'motivo' }, {
+            }, {
+                data: 'motivo',
+                render: function render(data, type, row) {
+                    return row.motivo.replace(/'/g, "\\'");
+                }
+            }, {
                 data: 'estatusString',
                 render: function render(data, type, row) {
                     var _estatus = '';

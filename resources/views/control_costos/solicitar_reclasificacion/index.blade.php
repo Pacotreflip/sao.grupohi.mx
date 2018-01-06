@@ -20,7 +20,7 @@
             <div class="col-md-12">
                 <div class="pull-right">
                     <div class="btn-group ">
-                        <button class="btn btn-sm btn-primary pull-right" v-on:click="open_modal_agregar()">Agregar Filtro</button>
+                        <button class="btn btn-sm btn-primary pull-right" v-on:click="open_modal_agregar()">Filtrar por Niveles</button>
                     </div>
                     <div class="btn-group">
                         <button class="btn btn-sm btn-primary pull-right" v-on:click="open_modal_transaccion()">Filtrar por Transacción</button>

@@ -72,7 +72,7 @@ class SolicitudesReclasificacionController extends Controller
 
         else
         {
-            $data['motivo_rechazo'] = $request->motivo;
+            $data['motivo_rechazo'] = htmlentities($request->motivo, ENT_QUOTES);
             $resultado = $this->rechazadas->create($data);
         }
 
