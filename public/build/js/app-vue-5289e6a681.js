@@ -3603,6 +3603,7 @@ if ($('#app').length) {
         el: '#app',
         components: require('./vue-components')
     });
+    Vue.config.devtools = true;
 }
 
 },{"./vue-components":5,"vee-validate":2,"vee-validate/dist/locale/es":1,"vue/dist/vue.min":3}],5:[function(require,module,exports){
@@ -7449,7 +7450,7 @@ Vue.component('reclasificacion_costos-index', {
 'use strict';
 
 Vue.component('solicitar_reclasificacion-index', {
-    props: ['url_solicitar_reclasificacion_index', 'max_niveles', 'filtros', 'operadores'],
+    props: ['url_solicitar_reclasificacion_index', 'max_niveles', 'filtros', 'operadores', 'tipos_transacciones'],
     data: function data() {
         return {
             'data': {
@@ -7461,6 +7462,10 @@ Vue.component('solicitar_reclasificacion-index', {
                     'nivel': '',
                     'operador': '',
                     'texto': ''
+                },
+                filtro_tran: {
+                    'tipo': '',
+                    'folio': ''
                 },
                 'resultados': [],
                 'resumen': [],
@@ -7559,6 +7564,69 @@ Vue.component('solicitar_reclasificacion-index', {
             Vue.set(self.data, 'temp_filtro', '');
             Vue.set(self.data, 'condicionante', '');
         },
+        open_modal_transaccion: function open_modal_transaccion() {
+
+            $('#transaccion_filtro_modal').modal('show');
+            $('#transaccion').focus();
+        },
+        close_modal_transaccion: function close_modal_transaccion() {
+
+            var self = this;
+
+            Vue.set(self.data, 'filtro_tran', {
+                'tipo': '',
+                'folio': ''
+            });
+
+            $('#transaccion_filtro_modal').modal('hide');
+        },
+        agregar_filtro_tran: function agregar_filtro_tran() {
+            var self = this,
+                str = { 'data': JSON.stringify(self.data.filtro_tran) },
+                total_resultados = 0,
+                subtotal = 0,
+                subimporte = 0;
+
+            if (self.data.filtro_tran.tipo.length == 0) {
+                return swal({
+                    type: 'warning',
+                    title: 'Agrega un filtro',
+                    html: 'Por favor agrega un filtro antes de buscar'
+                });
+            }
+
+            $.ajax({
+                type: 'GET',
+                url: self.url_solicitar_reclasificacion_index + '/findtransaccion',
+                data: str,
+                beforeSend: function beforeSend() {},
+                success: function success(data, textStatus, xhr) {
+
+                    swal({
+                        type: 'success',
+                        title: '¡Se encontraron resultados!',
+                        html: '',
+                        onClose: function onClose() {
+
+                            $.each(data.resumen, function (key, value) {
+                                subtotal = subtotal + parseInt(value.cantidad);
+                                subimporte = subimporte + parseInt(value.monto);
+                            });
+
+                            Vue.set(self.data, 'subtotal', subtotal);
+                            Vue.set(self.data, 'subimporte', subimporte);
+                            Vue.set(self.data, 'desglosar_descripcion', data.detalles[0].descripcion);
+                            Vue.set(self.data, 'desglosar', data.detalles);
+                            Vue.set(self.data, 'resumen', data.resumen);
+                            Vue.set(self.data, 'detalles', data.detalles);
+                            $('#tipos_transaccion').modal('show');
+                            self.close_modal_transaccion();
+                        }
+                    });
+                },
+                complete: function complete() {}
+            });
+        },
         open_modal_agregar: function open_modal_agregar(condicionante, item) {
             var self = this;
 
@@ -7574,6 +7642,7 @@ Vue.component('solicitar_reclasificacion-index', {
             var self = this;
 
             $('#agregar_filtro_modal').modal('hide');
+            self.close_modal_transaccion();
             self.reset_agregar();
         },
         buscar: function buscar() {

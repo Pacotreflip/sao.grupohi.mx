@@ -31,6 +31,10 @@ class EloquentTransaccionRepository implements TransaccionRepository
         $this->items = $items;
     }
 
+    /**
+     * @param $id_concepto
+     * @return mixed
+     */
     public function tiposTransaccion($id_concepto)
     {
         // Trabaja con arrays
@@ -50,6 +54,10 @@ class EloquentTransaccionRepository implements TransaccionRepository
             ->get();
     }
 
+    /**
+     * @param $id_concepto
+     * @return mixed
+     */
     public function detallesTransacciones($id_concepto)
     {
         // Trabaja con arrays
@@ -71,6 +79,10 @@ sum(movimientos.monto_total) as monto')
         return $items;
     }
 
+    /**
+     * @param $id_transaccion
+     * @return mixed
+     */
     public function items($id_transaccion)
     {
         return $this->items->where('items.id_transaccion', '=', $id_transaccion)
@@ -78,6 +90,64 @@ sum(movimientos.monto_total) as monto')
             ->leftJoin('materiales', 'materiales.id_material', '=', 'items.id_material')
             ->leftJoin('conceptos', 'conceptos.id_concepto', '=', 'items.id_concepto')
             ->selectRaw('transacciones.observaciones, items.cantidad, items.precio_unitario, items.importe, items.id_concepto, materiales.descripcion, items.id_item, conceptos.descripcion as concepto_descripcion')
+            ->get();
+    }
+
+    public function selectTipos()
+    {
+        return $this->model->join('items', 'transacciones.id_transaccion', '=', 'items.id_transaccion')
+            ->join('movimientos', 'items.id_item', '=', 'movimientos.id_item')->
+            leftJoin('TipoTran', function($join)
+            {
+                $join->on('TipoTran.opciones', '=', DB::raw("transacciones.opciones AND  TipoTran.Tipo_Transaccion = transacciones.tipo_transaccion"));
+            })
+            ->selectRaw('transacciones.tipo_transaccion,TipoTran.descripcion as descripcion,
+ transacciones.opciones')
+            ->groupBy(DB::raw('transacciones.tipo_transaccion,TipoTran.descripcion, transacciones.opciones'))
+            ->get();
+    }
+
+    public function filtrarTipos($where)
+    {
+        $string = 'transacciones.tipo_transaccion = '. $where['tipo'] .' and transacciones.opciones = '. $where['opciones'];
+
+        if (isset($where['folio']))
+            $string .= ' and transacciones.numero_folio = '. $where['folio'];
+
+        $items = $this->model->join('items', 'transacciones.id_transaccion', '=', 'items.id_transaccion')
+            ->join('movimientos', 'items.id_item', '=', 'movimientos.id_item')->
+            leftJoin('TipoTran', function($join)
+            {
+                $join->on('TipoTran.opciones', '=', DB::raw("transacciones.opciones AND  TipoTran.Tipo_Transaccion = transacciones.tipo_transaccion"));
+            })
+            ->selectRaw('movimientos.id_concepto, transacciones.tipo_transaccion, transacciones.opciones, TipoTran.descripcion,
+ fecha, numero_folio, transacciones.id_transaccion,
+sum(movimientos.monto_total) as monto')
+            ->whereRaw($string)
+            ->groupBy(DB::raw('movimientos.id_concepto, transacciones.tipo_transaccion, transacciones.opciones, TipoTran.descripcion,fecha, numero_folio, transacciones.id_transaccion'))
+            ->get();
+
+        return $items;
+    }
+
+    public function filtrarTiposTransaccion($where)
+    {
+        $string = 'transacciones.tipo_transaccion = '. $where['tipo'] .' and transacciones.opciones = '. $where['opciones'];
+
+        if (isset($where['folio']))
+            $string .= ' and transacciones.numero_folio = '. $where['folio'];
+
+        return $this->model->join('items', 'transacciones.id_transaccion', '=', 'items.id_transaccion')
+            ->join('movimientos', 'items.id_item', '=', 'movimientos.id_item')->
+            leftJoin('TipoTran', function($join)
+            {
+                $join->on('TipoTran.opciones', '=', DB::raw("transacciones.opciones AND  TipoTran.Tipo_Transaccion = transacciones.tipo_transaccion"));
+            })
+            ->selectRaw('TipoTran.descripcion as descripcion,
+   COUNT( DISTINCT transacciones.id_transaccion) as cantidad,
+    sum(movimientos.monto_total) as monto, transacciones.opciones')
+            ->whereRaw($string)
+            ->groupBy(DB::raw('TipoTran.descripcion, transacciones.opciones'))
             ->get();
     }
 }

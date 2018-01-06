@@ -67,6 +67,7 @@ class SolicitarReclasificacionController extends Controller
         $data_view = [
             'max_niveles' => $this->concepto->obtenerMaxNumNiveles(),
             'operadores' => $this->operadores,
+            'tipos_transacciones' => $this->transaccion->selectTipos(),
         ];
 
         return view('control_costos.solicitar_reclasificacion.index')
@@ -142,6 +143,56 @@ class SolicitarReclasificacionController extends Controller
             $r[$k] = array_filter($v);
 
         return response()->json(['data' => ['resultados' => $r]], 200);
+    }
+
+    public function findtransaccion(Request $request)
+    {
+        $filtros = json_decode($request->data, true);
+        $where = [];
+        list($where['tipo'], $where['opciones']) = explode ('-', $filtros['tipo']);
+
+        if (!empty($filtros['folio']))
+            $where['folio'] = filter_var($filtros['folio'], FILTER_SANITIZE_NUMBER_INT);
+
+        $resultados = $this->transaccion->filtrarTipos($where);
+        $resumen = $this->transaccion->filtrarTiposTransaccion($where);
+        $detalles = [];
+
+        foreach ($resumen as $k => $v)
+        {
+            $tipo = $v['descripcion'] == null ? '-' : $v['descripcion'];
+            $resumen[$k]['descripcion'] = $tipo;
+        }
+
+        foreach ($resultados as $k => $r)
+        {
+            $tipo = $r['descripcion'] == null ? '-' : $r['descripcion'];
+
+            if (!isset($detalles[$r['id_transaccion']]))
+                $detalles[$k] = [
+                    'total_transacciones' => 0,
+                    'importe' => 0,
+                    'transacciones' => [],
+                    'descripcion' => $tipo,
+                    'fecha' => $r['fecha']->format('Y/M/d'),
+                    'numero_folio' => $r['numero_folio'],
+                    'id_transaccion' => $r['id_transaccion'],
+                    'id_concepto' => $r['id_concepto'],
+                    'monto' => $r['monto']
+                ];
+
+            if (!empty($detalles[$k]))
+            {
+                $detalles[$k]['total_transacciones']++;
+                $detalles[$k]['importe'] = $detalles[$k]['importe'] + $r['monto'];
+                $detalles[$k]['transacciones'][] = $r;
+            }
+        }
+
+        return response()->json([
+            'detalles' => $detalles,
+            'resumen' => $resumen
+        ], 200);
     }
 
     public function find(Request $request)
