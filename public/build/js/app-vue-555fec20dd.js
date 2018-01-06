@@ -3603,7 +3603,6 @@ if ($('#app').length) {
         el: '#app',
         components: require('./vue-components')
     });
-    Vue.config.devtools = true;
 }
 
 },{"./vue-components":5,"vee-validate":2,"vee-validate/dist/locale/es":1,"vue/dist/vue.min":3}],5:[function(require,module,exports){
@@ -7602,7 +7601,7 @@ Vue.component('solicitar_reclasificacion-index', {
                 beforeSend: function beforeSend() {},
                 success: function success(data, textStatus, xhr) {
 
-                    swal({
+                    if (data.detalles.length != 0) swal({
                         type: 'success',
                         title: '¡Se encontraron resultados!',
                         html: '',
@@ -7622,6 +7621,10 @@ Vue.component('solicitar_reclasificacion-index', {
                             $('#tipos_transaccion').modal('show');
                             self.close_modal_transaccion();
                         }
+                    });else swal({
+                        type: 'warning',
+                        title: 'No se encontraron resultados',
+                        html: ''
                     });
                 },
                 complete: function complete() {}

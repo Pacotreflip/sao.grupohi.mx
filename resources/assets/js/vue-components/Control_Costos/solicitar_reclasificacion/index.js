@@ -157,28 +157,35 @@ Vue.component('solicitar_reclasificacion-index', {
                 beforeSend: function () {},
                 success: function (data, textStatus, xhr) {
 
-                    swal({
-                        type: 'success',
-                        title: '¡Se encontraron resultados!',
-                        html: '',
-                        onClose: function () {
+                    if (data.detalles.length != 0)
+                        swal({
+                            type: 'success',
+                            title: '¡Se encontraron resultados!',
+                            html: '',
+                            onClose: function () {
 
-                            $.each(data.resumen, function( key, value ) {
-                                subtotal = subtotal + parseInt(value.cantidad);
-                                subimporte = subimporte + parseInt(value.monto);
-                            });
+                                $.each(data.resumen, function( key, value ) {
+                                    subtotal = subtotal + parseInt(value.cantidad);
+                                    subimporte = subimporte + parseInt(value.monto);
+                                });
 
-                            Vue.set(self.data, 'subtotal', subtotal);
-                            Vue.set(self.data, 'subimporte', subimporte);
-                            Vue.set(self.data, 'desglosar_descripcion', data.detalles[0].descripcion);
-                            Vue.set(self.data, 'desglosar', data.detalles);
-                            Vue.set(self.data, 'resumen', data.resumen);
-                            Vue.set(self.data, 'detalles', data.detalles);
-                            $('#tipos_transaccion').modal('show');
-                            self.close_modal_transaccion();
-                        }
-                    });
+                                Vue.set(self.data, 'subtotal', subtotal);
+                                Vue.set(self.data, 'subimporte', subimporte);
+                                Vue.set(self.data, 'desglosar_descripcion', data.detalles[0].descripcion);
+                                Vue.set(self.data, 'desglosar', data.detalles);
+                                Vue.set(self.data, 'resumen', data.resumen);
+                                Vue.set(self.data, 'detalles', data.detalles);
+                                $('#tipos_transaccion').modal('show');
+                                self.close_modal_transaccion();
+                            }
+                        });
 
+                    else
+                        swal({
+                            type: 'warning',
+                            title: 'No se encontraron resultados',
+                            html: ''
+                        });
                 },
                 complete: function () {
 
