@@ -44,4 +44,11 @@ interface RoleRepository
      * @throws \Exception
      */
     public function delete($id_role);
+
+    /**
+     * Regresa registros de Roles Paginados
+     * @param array $data
+     * @return mixed
+     */
+    public function paginate(array $data);
 }

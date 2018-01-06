@@ -76,4 +76,15 @@ class EloquentRoleRepository implements RoleRepository
     {
         // TODO: Implement delete() method.
     }
+
+    /**
+     * Regresa registros de Roles Paginados
+     * @param array $data
+     * @return mixed
+     */
+    public function paginate(array $data)
+    {
+        $query = $this->model->with('perms')->orderBy('display_name', 'DESC');
+        return $query->paginate($perPage = $data['length'], $columns = ['*'], $pageName = 'page', $page = ($data['start'] / $data['length']) + 1);
+    }
 }

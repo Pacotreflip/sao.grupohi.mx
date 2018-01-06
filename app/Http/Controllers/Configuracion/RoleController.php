@@ -38,4 +38,14 @@ class RoleController extends Controller
 
         return $this->response()->item($role, function ($item) { return $item; });
     }
+
+    public function paginate(Request $request) {
+        $roles = $this->role->paginate($request->all());
+
+        return response()->json([
+            'recordsTotal' => $roles->total(),
+            'recordsFiltered' => $roles->total(),
+            'data' => $roles->items()
+        ], 200);
+    }
 }
