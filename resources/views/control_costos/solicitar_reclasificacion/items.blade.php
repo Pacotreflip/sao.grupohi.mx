@@ -52,7 +52,7 @@
                                     <td class="text-right">@{{ parseInt(item.cantidad) }}</td>
                                     <td class="text-right">$@{{  parseInt(item.precio_unitario).formatMoney(2, '.', ',') }}</td>
                                     <td class="text-right">$@{{  parseInt(item.importe).formatMoney(2, '.', ',') }}</td>
-                                    <td><a href="#" v-on:click="open_modal_agregar(item, index)" :title="item.concepto.path">@{{  item.concepto.clave }}</a></td>
+                                    <td><a href="#" v-on:click="open_modal_agregar(item, index)" :title="item.concepto.path">[@{{  item.concepto.clave }}] @{{ item.concepto.descripcion }}</a></td>
                                     <td class="destino_final">@{{  item.destino_final }}</a></td>
                                 </tr>
                                 </tbody>
