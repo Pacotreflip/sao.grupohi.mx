@@ -34,7 +34,7 @@ class PagesController extends Controller
     {
         parent::__construct();
         $this->middleware('auth');
-        $this->middleware('context', ['only' => ['sistema_contable', 'reportes', 'finanzas', 'tesoreria', 'control_costos', 'control_presupuesto']]);
+        $this->middleware('context', ['only' => ['sistema_contable', 'reportes', 'finanzas', 'tesoreria', 'control_costos', 'control_presupuesto', 'seguridad']]);
         $this->session = $session;
         $this->notificacion=$notificacion;
         $this->grafica = $grafica;
@@ -122,5 +122,12 @@ class PagesController extends Controller
      */
     public function control_presupuesto() {
         return view('control_presupuesto.index');
+    }
+
+    /**
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function seguridad() {
+        return view('configuracion.seguridad.index');
     }
 }

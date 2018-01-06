@@ -138,14 +138,26 @@
         <!-- Settings tab content -->
         <div class="tab-pane" id="control-sidebar-settings-tab">
             <form method="post">
-                <h3 class="control-sidebar-heading">Configuración General</h3>
+                <h4 class="control-sidebar-heading">Configuración General</h4>
                 <div class="form-group">
                     <label class="control-sidebar-subheading">
-                        Cierre de Periodo
-                        <a href="{{ route('configuracion.cierre.index') }}" class="text-green pull-right"><i class="fa fa-arrow-right"></i></a>
+                        <a href="{{ route('configuracion.cierre.index') }}"></a>
                     </label>
                 </div>
-                <!-- /.form-group -->
+
+                <div class="form-group">
+                    <label class="control-sidebar-subheading">
+                        <a href="{{ route('configuracion.cierre.index') }}">Cierre de Periodo</a>
+                    </label>
+                    <p>Cierre y Apertura de Periodos para control de registro de transacciones</p>
+                </div>
+
+                <div class="form-group">
+                    <label class="control-sidebar-subheading">
+                        <a href="{{ route('configuracion.seguridad.index') }}">Roles y Permisos</a>
+                    </label>
+                    <p>Administración de Roles y Permisos de usuarios para el uso de los Sistemas dentro de SAO</p>
+                </div>
             </form>
         </div>
         <!-- /.tab-pane -->

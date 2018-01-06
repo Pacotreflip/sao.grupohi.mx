@@ -1,13 +1,13 @@
 <?php
 
-namespace Ghi\Http\Controllers\Administracion;
+namespace Ghi\Http\Controllers\Configuracion;
 
 use Illuminate\Http\Request;
 
 use Ghi\Http\Requests;
 use Ghi\Http\Controllers\Controller;
 
-class RolesController extends Controller
+class RoleController extends Controller
 {
     public function __construct()
     {
