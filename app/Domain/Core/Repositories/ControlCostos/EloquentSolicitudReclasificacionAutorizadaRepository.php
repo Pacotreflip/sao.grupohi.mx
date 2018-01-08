@@ -10,7 +10,7 @@ use Ghi\Domain\Core\Models\ControlCostos\SolicitudReclasificacion;
 use Ghi\Domain\Core\Models\ControlCostos\SolicitudReclasificacionAutorizada;
 use Ghi\Domain\Core\Models\Items;
 use Ghi\Domain\Core\Models\Movimientos;
-
+use Illuminate\Http\Response;
 use Illuminate\Http\Exception\HttpResponseException;
 use Illuminate\Support\Facades\DB;
 
@@ -64,10 +64,12 @@ class EloquentSolicitudReclasificacionAutorizadaRepository implements SolicitudR
         $mov_done = false;
 
         // Evita registrar multiples solicitudes
-        $already = SolicitudReclasificacionAutorizada::where('id_solicitud_reclasificacion', '=', $data['id']);
+        $already = SolicitudReclasificacionAutorizada::where('id_solicitud_reclasificacion', '=', $data['id'])->first();
 
-        if (!$already)
+        if ($already) {
             throw new HttpResponseException(new Response('Ya existe una solicitud registrada', 404));
+            return;
+        }
 
             // Una transacción para cada partida
             foreach ($data['partidas'] as $partida)

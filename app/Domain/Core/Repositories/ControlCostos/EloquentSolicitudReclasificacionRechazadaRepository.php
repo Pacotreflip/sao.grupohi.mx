@@ -7,6 +7,7 @@ use Ghi\Domain\Core\Models\ControlCostos\SolicitudReclasificacionRechazada;
 use Illuminate\Http\Exception\HttpResponseException;
 use Illuminate\Support\Facades\DB;
 use Ghi\Domain\Core\Models\ControlCostos\SolicitudReclasificacion;
+use Illuminate\Http\Response;
 
 class EloquentSolicitudReclasificacionRechazadaRepository implements SolicitudReclasificacionRechazadaRepository
 {
@@ -49,10 +50,12 @@ class EloquentSolicitudReclasificacionRechazadaRepository implements SolicitudRe
     {
 
         // Evita registrar multiples solicitudes
-        $already = SolicitudReclasificacionRechazada::where('id_solicitud_reclasificacion', '=', $data['id']);
+        $already = SolicitudReclasificacionRechazada::where('id_solicitud_reclasificacion', '=', $data['id'])->first();
 
-        if (!$already)
+        if ($already) {
             throw new HttpResponseException(new Response('Ya existe una solicitud registrada', 404));
+            return;
+        }
 
         try {
             DB::connection('cadeco')->beginTransaction();
