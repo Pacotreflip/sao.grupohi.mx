@@ -63,6 +63,12 @@ class EloquentSolicitudReclasificacionAutorizadaRepository implements SolicitudR
         $item_done = false;
         $mov_done = false;
 
+        // Evita registrar multiples solicitudes
+        $already = SolicitudReclasificacionAutorizada::where('id_solicitud_reclasificacion', '=', $data['id']);
+
+        if (!$already)
+            throw new HttpResponseException(new Response('Ya existe una solicitud registrada', 404));
+
             // Una transacción para cada partida
             foreach ($data['partidas'] as $partida)
             {

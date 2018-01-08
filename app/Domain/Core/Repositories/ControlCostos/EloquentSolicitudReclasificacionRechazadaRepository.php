@@ -48,6 +48,12 @@ class EloquentSolicitudReclasificacionRechazadaRepository implements SolicitudRe
     public function create($data)
     {
 
+        // Evita registrar multiples solicitudes
+        $already = SolicitudReclasificacionRechazada::where('id_solicitud_reclasificacion', '=', $data['id']);
+
+        if (!$already)
+            throw new HttpResponseException(new Response('Ya existe una solicitud registrada', 404));
+
         try {
             DB::connection('cadeco')->beginTransaction();
 
