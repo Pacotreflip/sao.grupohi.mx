@@ -47,6 +47,10 @@ class SolicitarReclasificacionController extends Controller
         $this->middleware('auth');
         $this->middleware('context');
 
+        // Permisos
+        $this->middleware('permission:solicitar_reclasificacion', ['only' => ['index', 'findmovimiento', 'find', 'tipos', 'items', 'store']]);
+        $this->middleware('permission:consultar_reclasificacion', ['only' => ['index', 'findmovimiento', 'find', 'tipos', 'items']]);
+
         $this->concepto = $concepto;
         $this->conceptoPath = $conceptoPath;
         $this->transaccion = $transaccion;
@@ -63,6 +67,7 @@ class SolicitarReclasificacionController extends Controller
         $data_view = [
             'max_niveles' => $this->concepto->obtenerMaxNumNiveles(),
             'operadores' => $this->operadores,
+            'tipos_transacciones' => $this->transaccion->selectTipos(),
         ];
 
         return view('control_costos.solicitar_reclasificacion.index')
@@ -75,7 +80,7 @@ class SolicitarReclasificacionController extends Controller
      */
     public function store(Request $request)
     {
-        $motivo = $request->motivo;
+        $motivo = htmlentities($request->motivo, ENT_QUOTES);
         $partidas = $request->solicitudes;
 
         $solicitud  = $this->solicitud->create(['motivo' => $motivo]);
@@ -83,7 +88,7 @@ class SolicitarReclasificacionController extends Controller
         if (!empty($solicitud))
             foreach ($partidas as $p)
                 $this->partidas->create([
-                    'id_solicitud_reclasificacion' => $solicitud->id_solicitud_reclasificacion,
+                    'id_solicitud_reclasificacion' => $solicitud->id,
                     'id_item' => $p['id_item'],
                     'id_concepto_original' => $p['id_concepto'],
                     'id_concepto_nuevo' => $p['id_concepto_nuevo']
@@ -138,6 +143,56 @@ class SolicitarReclasificacionController extends Controller
             $r[$k] = array_filter($v);
 
         return response()->json(['data' => ['resultados' => $r]], 200);
+    }
+
+    public function findtransaccion(Request $request)
+    {
+        $filtros = json_decode($request->data, true);
+        $where = [];
+        list($where['tipo'], $where['opciones']) = explode ('-', $filtros['tipo']);
+
+        if (!empty($filtros['folio']))
+            $where['folio'] = filter_var($filtros['folio'], FILTER_SANITIZE_NUMBER_INT);
+
+        $resultados = $this->transaccion->filtrarTipos($where);
+        $resumen = $this->transaccion->filtrarTiposTransaccion($where);
+        $detalles = [];
+
+        foreach ($resumen as $k => $v)
+        {
+            $tipo = $v['descripcion'] == null ? '-' : $v['descripcion'];
+            $resumen[$k]['descripcion'] = $tipo;
+        }
+
+        foreach ($resultados as $k => $r)
+        {
+            $tipo = $r['descripcion'] == null ? '-' : $r['descripcion'];
+
+            if (!isset($detalles[$r['id_transaccion']]))
+                $detalles[$k] = [
+                    'total_transacciones' => 0,
+                    'importe' => 0,
+                    'transacciones' => [],
+                    'descripcion' => $tipo,
+                    'fecha' => $r['fecha']->format('Y/M/d'),
+                    'numero_folio' => $r['numero_folio'],
+                    'id_transaccion' => $r['id_transaccion'],
+                    'id_concepto' => $r['id_concepto'],
+                    'monto' => $r['monto']
+                ];
+
+            if (!empty($detalles[$k]))
+            {
+                $detalles[$k]['total_transacciones']++;
+                $detalles[$k]['importe'] = $detalles[$k]['importe'] + $r['monto'];
+                $detalles[$k]['transacciones'][] = $r;
+            }
+        }
+
+        return response()->json([
+            'detalles' => $detalles,
+            'resumen' => $resumen
+        ], 200);
     }
 
     public function find(Request $request)
@@ -225,7 +280,18 @@ class SolicitarReclasificacionController extends Controller
     {
         $items = $this->transaccion->items($request->id);
         $titulo = '';
+        $detalles = $this->transaccion->detallesTransacciones($request->id_concepto);
+        $transaccion = [];
 
+        foreach ($items as $k => $i)
+            $items[$k]['concepto'] = Concepto::where('id_concepto', '=', $i['id_concepto'])->first();
+
+        foreach ($detalles as $d)
+            if ($d['id_transaccion'] == $request->id)
+            {
+                $transaccion = $d;
+                break;
+            }
 
         return view('control_costos.solicitar_reclasificacion.items')
             ->with('data_view', [
@@ -235,6 +301,7 @@ class SolicitarReclasificacionController extends Controller
                 'max_niveles' => $this->concepto->obtenerMaxNumNiveles(),
                 'operadores' => $this->operadores,
                 'id_concepto' => $request->id_concepto,
+                'transaccion' => $transaccion,
             ]);
     }
 }

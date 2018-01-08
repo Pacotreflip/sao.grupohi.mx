@@ -50,7 +50,7 @@ class EloquentSolicitudReclasificacionPartidasRepository implements SolicitudRec
             throw $e;
         }
 
-        return SolicitudReclasificacionPartidas::where('id_partida', '=', $record->id_partida)->first();
+        return SolicitudReclasificacionPartidas::where('id', '=', $record->id)->first();
     }
 
     /**
@@ -75,11 +75,5 @@ class EloquentSolicitudReclasificacionPartidasRepository implements SolicitudRec
     public function update($data, $id)
     {
 
-    }
-
-    public function paginate(array $data)
-    {
-        $query = $this->model->with(['item.material', 'conceptoNuevo', 'conceptoOriginal'])->select('ControlCostos.solicitud_reclasificacion_partidas.*')->orderBy('ControlCostos.solicitud_reclasificacion_partidas.created_at', 'DESC');
-        return $query->paginate($perPage = $data['length'], $columns = ['*'], $pageName = 'page', $page = ($data['start'] / $data['length']) + 1);
     }
 }

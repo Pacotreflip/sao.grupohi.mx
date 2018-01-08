@@ -17,7 +17,10 @@
         v-cloak>
     <section>
         <div class="row">
-            <div class="col-md-12">
+            <div class="col-md-9">
+                &nbsp;<h4>{{ $data_view['transaccion']['descripcion'] }}  {{ $data_view['transaccion']['fecha']->format('Y/m/d')  }} Folio #{{ $data_view['transaccion']['numero_folio']  }}</h4>
+            </div>
+            <div class="col-md-3">
                 <a href="{{ route('control_costos.solicitar_reclasificacion.index') }}" class="btn btn-sm btn-primary pull-right">Solicitar otra clasificación</a>
             </div>
             <div class="col-md-12">
@@ -26,7 +29,7 @@
         </div>
         <div class="row">
             <div class="col-md-12">
-                <div class="box box-success">
+                <div class="box box-solid">
                     <div class="box-header with-border">
                         <h3 class="box-title">Items</h3>
                     </div>
@@ -47,9 +50,9 @@
                                 <tr v-for="(item, index) in data.items" :class="'items item_' + index +' '+ (item.selected != undefined ? item.selected : '')">
                                     <td>@{{ item.observaciones }}</td>
                                     <td class="text-right">@{{ parseInt(item.cantidad) }}</td>
-                                    <td class="text-right">@{{  item.precio_unitario }}</td>
-                                    <td class="text-right">@{{  parseInt(item.importe).formatMoney(2, '.', ',') }}</td>
-                                    <td><a href="#" v-on:click="open_modal_agregar(item, index)">@{{  item.descripcion }}</a></td>
+                                    <td class="text-right">$@{{  parseInt(item.precio_unitario).formatMoney(2, '.', ',') }}</td>
+                                    <td class="text-right">$@{{  parseInt(item.importe).formatMoney(2, '.', ',') }}</td>
+                                    <td><a href="#" v-on:click="open_modal_agregar(item, index)" :title="item.concepto.path">[@{{  item.concepto.clave }}] @{{ item.concepto.descripcion }}</a></td>
                                     <td class="destino_final">@{{  item.destino_final }}</a></td>
                                 </tr>
                                 </tbody>

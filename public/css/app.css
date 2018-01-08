@@ -19179,8 +19179,12 @@ body.swal2-iosfix {
 .swal2-container {
   display: -ms-flexbox;
   display: flex;
+  -ms-flex-direction: row;
+  flex-direction: row;
   -ms-flex-align: center;
   align-items: center;
+  -ms-flex-pack: center;
+  justify-content: center;
   position: fixed;
   top: 0;
   left: 0;
@@ -19190,6 +19194,116 @@ body.swal2-iosfix {
   background-color: transparent;
   z-index: 1060;
 }
+.swal2-container.swal2-top {
+  -ms-flex-align: start;
+  align-items: flex-start;
+}
+.swal2-container.swal2-top-left {
+  -ms-flex-align: start;
+  align-items: flex-start;
+  -ms-flex-pack: start;
+  justify-content: flex-start;
+}
+.swal2-container.swal2-top-right {
+  -ms-flex-align: start;
+  align-items: flex-start;
+  -ms-flex-pack: end;
+  justify-content: flex-end;
+}
+.swal2-container.swal2-center {
+  -ms-flex-align: center;
+  align-items: center;
+}
+.swal2-container.swal2-center-left {
+  -ms-flex-align: center;
+  align-items: center;
+  -ms-flex-pack: start;
+  justify-content: flex-start;
+}
+.swal2-container.swal2-center-right {
+  -ms-flex-align: center;
+  align-items: center;
+  -ms-flex-pack: end;
+  justify-content: flex-end;
+}
+.swal2-container.swal2-bottom {
+  -ms-flex-align: end;
+  align-items: flex-end;
+}
+.swal2-container.swal2-bottom-left {
+  -ms-flex-align: end;
+  align-items: flex-end;
+  -ms-flex-pack: start;
+  justify-content: flex-start;
+}
+.swal2-container.swal2-bottom-right {
+  -ms-flex-align: end;
+  align-items: flex-end;
+  -ms-flex-pack: end;
+  justify-content: flex-end;
+}
+.swal2-container.swal2-grow-fullscreen > .swal2-modal {
+  display: -ms-flexbox !important;
+  display: flex !important;
+  -ms-flex: 1;
+  flex: 1;
+  -ms-flex-item-align: stretch;
+  align-self: stretch;
+  -ms-flex-pack: center;
+  justify-content: center;
+}
+.swal2-container.swal2-grow-row > .swal2-modal {
+  display: -ms-flexbox !important;
+  display: flex !important;
+  -ms-flex: 1;
+  flex: 1;
+  -ms-flex-line-pack: center;
+  align-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+}
+.swal2-container.swal2-grow-column {
+  -ms-flex: 1;
+  flex: 1;
+  -ms-flex-direction: column;
+  flex-direction: column;
+}
+.swal2-container.swal2-grow-column.swal2-top,
+.swal2-container.swal2-grow-column.swal2-center,
+.swal2-container.swal2-grow-column.swal2-bottom {
+  -ms-flex-align: center;
+  align-items: center;
+}
+.swal2-container.swal2-grow-column.swal2-top-left,
+.swal2-container.swal2-grow-column.swal2-center-left,
+.swal2-container.swal2-grow-column.swal2-bottom-left {
+  -ms-flex-align: start;
+  align-items: flex-start;
+}
+.swal2-container.swal2-grow-column.swal2-top-right,
+.swal2-container.swal2-grow-column.swal2-center-right,
+.swal2-container.swal2-grow-column.swal2-bottom-right {
+  -ms-flex-align: end;
+  align-items: flex-end;
+}
+.swal2-container.swal2-grow-column > .swal2-modal {
+  display: -ms-flexbox !important;
+  display: flex !important;
+  -ms-flex: 1;
+  flex: 1;
+  -ms-flex-line-pack: center;
+  align-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+}
+.swal2-container:not(.swal2-top):not(.swal2-top-left):not(.swal2-top-right):not(.swal2-center-left):not(.swal2-center-right):not(.swal2-bottom):not(.swal2-bottom-left):not(.swal2-bottom-right) > .swal2-modal {
+  margin: auto;
+}
+@media all and (-ms-high-contrast: none), (-ms-high-contrast: active) {
+  .swal2-container .swal2-modal {
+    margin: 0 !important;
+  }
+}
 .swal2-container.swal2-fade {
   transition: background-color 0.1s;
 }
@@ -19197,12 +19311,13 @@ body.swal2-iosfix {
   background-color: rgba(0, 0, 0, 0.4);
 }
 .swal2-modal {
+  -ms-flex-direction: column;
+  flex-direction: column;
   background-color: #fff;
   font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
   border-radius: 5px;
   box-sizing: border-box;
   text-align: center;
-  margin: auto;
   overflow-x: hidden;
   overflow-y: auto;
   display: none;
@@ -19260,7 +19375,7 @@ body.swal2-iosfix {
 .swal2-modal .swal2-buttonswrapper.swal2-loading :not(.swal2-styled).swal2-confirm::after {
   display: inline-block;
   content: '';
-  margin-left: 5px 0 15px;
+  margin-left: 5px;
   vertical-align: -1px;
   height: 15px;
   width: 15px;
@@ -19280,6 +19395,10 @@ body.swal2-iosfix {
   font-weight: 500;
   margin: 15px 5px 0;
   padding: 10px 32px;
+}
+.swal2-modal .swal2-styled:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px #fff, 0 0 0 4px rgba(50, 100, 150, 0.4);
 }
 .swal2-modal .swal2-image {
   margin: 20px auto;
@@ -19342,7 +19461,8 @@ body.swal2-iosfix {
   border-radius: 3px;
   border: 1px solid #d9d9d9;
   box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.06);
-  transition: border-color box-shadow 0.3s;
+  transition: border-color 0.3s, box-shadow 0.3s;
+  transition: border-color 0.3s, box-shadow 0.3s, -webkit-box-shadow 0.3s;
 }
 .swal2-modal .swal2-input.swal2-inputerror,
 .swal2-modal .swal2-file.swal2-inputerror,
@@ -19357,38 +19477,30 @@ body.swal2-iosfix {
   border: 1px solid #b4dbed;
   box-shadow: 0 0 3px #c4e6f5;
 }
-.swal2-modal .swal2-input:focus::-webkit-input-placeholder,
-.swal2-modal .swal2-file:focus::-webkit-input-placeholder,
-.swal2-modal .swal2-textarea:focus::-webkit-input-placeholder {
-  transition: opacity .3s .03s ease;
-  opacity: .8;
-}
-.swal2-modal .swal2-input:focus:-ms-input-placeholder,
-.swal2-modal .swal2-file:focus:-ms-input-placeholder,
-.swal2-modal .swal2-textarea:focus:-ms-input-placeholder {
-  transition: opacity .3s .03s ease;
-  opacity: .8;
-}
-.swal2-modal .swal2-input:focus::placeholder,
-.swal2-modal .swal2-file:focus::placeholder,
-.swal2-modal .swal2-textarea:focus::placeholder {
-  transition: opacity .3s .03s ease;
-  opacity: .8;
-}
 .swal2-modal .swal2-input::-webkit-input-placeholder,
 .swal2-modal .swal2-file::-webkit-input-placeholder,
 .swal2-modal .swal2-textarea::-webkit-input-placeholder {
-  color: #e6e6e6;
+  color: #cccccc;
 }
 .swal2-modal .swal2-input:-ms-input-placeholder,
 .swal2-modal .swal2-file:-ms-input-placeholder,
 .swal2-modal .swal2-textarea:-ms-input-placeholder {
-  color: #e6e6e6;
+  color: #cccccc;
+}
+.swal2-modal .swal2-input::-ms-input-placeholder,
+.swal2-modal .swal2-file::-ms-input-placeholder,
+.swal2-modal .swal2-textarea::-ms-input-placeholder {
+  color: #cccccc;
+}
+.swal2-modal .swal2-input:-ms-input-placeholder,
+.swal2-modal .swal2-file:-ms-input-placeholder,
+.swal2-modal .swal2-textarea:-ms-input-placeholder {
+  color: #cccccc;
 }
 .swal2-modal .swal2-input::placeholder,
 .swal2-modal .swal2-file::placeholder,
 .swal2-modal .swal2-textarea::placeholder {
-  color: #e6e6e6;
+  color: #cccccc;
 }
 .swal2-modal .swal2-range input {
   float: left;
@@ -19683,13 +19795,13 @@ body.swal2-iosfix {
   }
 }
 .swal2-show {
-  animation: showSweetAlert 0.3s;
+  animation: showSweetAlert .3s;
 }
 .swal2-show.swal2-noanimation {
   animation: none;
 }
 .swal2-hide {
-  animation: hideSweetAlert 0.15s forwards;
+  animation: hideSweetAlert .15s forwards;
 }
 .swal2-hide.swal2-noanimation {
   animation: none;

@@ -17,7 +17,9 @@ class Concepto extends BaseModel
         'id_padre',
         'tiene_hijos',
         'cargado',
-        'path'
+        'path',
+        'clave',
+        'niveles',
     ];
 
     protected static function boot()
@@ -132,5 +134,44 @@ class Concepto extends BaseModel
 
     public function conceptoPath() {
         return $this->hasOne(ConceptoPath::class, 'id_concepto');
+    }
+
+    public function getClaveAttribute()
+    {
+        if ($this->clave_concepto != null)
+            return $this->clave_concepto;
+
+        if ($this->id_padre == '')
+            return '';
+
+        // Revisa si el padre contiene clave_concepto
+        $padre = $this->padre();
+
+        if ($padre->clave_concepto)
+            return $padre->clave_concepto;
+
+
+        $nivel_padre = $padre->nivel_padre;
+        $clave = '';
+
+        for ($i = 1; $i <= $this->niveles; $i++) {
+            $padre = Concepto::where('nivel', '=', $nivel_padre)->first();
+            $nivel_padre = $padre->nivel_padre;
+
+            if ($padre->clave_concepto)
+            {
+                $clave = $padre->clave_concepto;
+                break;
+            }
+        }
+
+        return $clave;
+    }
+
+    public function getNivelesAttribute()
+    {
+        preg_match_all('/(\d{3}\.)/', $this->nivel, $matches);
+
+        return count($matches[0]);
     }
 }

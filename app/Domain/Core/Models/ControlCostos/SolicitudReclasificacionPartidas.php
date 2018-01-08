@@ -16,7 +16,7 @@ class SolicitudReclasificacionPartidas extends BaseModel
     protected $dates = ['deleted_at'];
     protected $connection = 'cadeco';
     protected $table = 'ControlCostos.solicitud_reclasificacion_partidas';
-    protected $primaryKey = 'id_partida';
+    protected $primaryKey = 'id';
     protected $fillable = [
         'id_solicitud_reclasificacion',
         'id_item',
@@ -26,7 +26,7 @@ class SolicitudReclasificacionPartidas extends BaseModel
 
     public function solicitud()
     {
-        return $this->belongsTo(SolicitudReclasificacion::class, 'id_solicitud_reclasificacion', 'id_solicitud_reclasificacion');
+        return $this->belongsTo(SolicitudReclasificacion::class, 'id', 'id_solicitud_reclasificacion');
     }
 
     public function item() {

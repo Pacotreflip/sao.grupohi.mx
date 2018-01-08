@@ -4,7 +4,6 @@ namespace Ghi\Domain\Core\Models\Transacciones;
 
 use Ghi\Domain\Core\Models\TipoTransaccion;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\DB;
 
 class Transaccion extends Model
 {
@@ -48,6 +47,7 @@ class Transaccion extends Model
         'FechaHoraRegistro',
     ];
 
+    protected $appends = ['tipo_transaccion_string'];
     /**
      * Items relacionados con esta transaccion
      *
@@ -58,9 +58,13 @@ class Transaccion extends Model
         return $this->hasMany(Item::class, 'id_transaccion', 'id_transaccion');
     }
 
-      public function tipoTransaccion(){
+      public function tipoTran(){
 
         return $this->belongsTo(TipoTransaccion::class, 'tipo_transaccion', 'tipo_transaccion')->where('opciones','=',$this->opciones);
+    }
+
+    public function getTipoTransaccionStringAttribute() {
+          return (String) $this->tipoTran;
     }
 
     public function getAppends() {

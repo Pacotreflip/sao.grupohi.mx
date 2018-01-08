@@ -10,7 +10,7 @@ Breadcrumbs::register('control_costos.index', function ($breadcrumb) {
  */
 Breadcrumbs::register('control_costos.solicitudes_reclasificacion.index', function($breadcrumbs) {
     $breadcrumbs->parent('control_costos.index');
-    $breadcrumbs->push('SOLICITUDES DE RECLASIFICACIÓN', route('control_costos.solicitudes_reclasificacion.index'));
+    $breadcrumbs->push('SOLICITUDES DE RECLASIFICACIÓN REGISTRADAS', route('control_costos.solicitudes_reclasificacion.index'));
 });
 
 /**

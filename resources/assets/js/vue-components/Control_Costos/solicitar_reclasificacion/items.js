@@ -256,11 +256,14 @@ Vue.component('solicitar_reclasificacion-items', {
                 },
                 beforeSend: function () {},
                 success: function (data, textStatus, xhr) {
-                    console.log(data);
+
                     swal({
                         type: 'success',
                         title: '',
-                        html: 'Solicitud elaborada con éxito'
+                        html: 'Solicitud elaborada con éxito',
+                        onClose: function () {
+                            window.location.href = App.host + '/control_costos/solicitudes_reclasificacion';
+                        }
                     });
                 },
                 complete: function () {

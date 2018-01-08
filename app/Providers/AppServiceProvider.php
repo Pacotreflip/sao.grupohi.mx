@@ -247,6 +247,14 @@ class AppServiceProvider extends ServiceProvider
             \Ghi\Domain\Core\Repositories\ControlCostos\EloquentSolicitudReclasificacionPartidasRepository::class
         );
         $this->app->bind(
+            \Ghi\Domain\Core\Contracts\ControlCostos\SolicitudReclasificacionAutorizadaRepository::class,
+            \Ghi\Domain\Core\Repositories\ControlCostos\EloquentSolicitudReclasificacionAutorizadaRepository::class
+        );
+        $this->app->bind(
+            \Ghi\Domain\Core\Contracts\ControlCostos\SolicitudReclasificacionRechazadaRepository::class,
+            \Ghi\Domain\Core\Repositories\ControlCostos\EloquentSolicitudReclasificacionRechazadaRepository::class
+        );
+        $this->app->bind(
             \Ghi\Domain\Core\Contracts\Contabilidad\ConceptoPathRepository::class,
             \Ghi\Domain\Core\Repositories\Contabilidad\EloquentConceptoPathRepository::class
         );
@@ -282,6 +290,11 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(
             \Ghi\Domain\Core\Contracts\TipoTranRepository::class,
             \Ghi\Domain\Core\Repositories\EloquentTipoTranRepository::class
+        );
+
+        $this->app->bind(
+            \Ghi\Domain\Core\Contracts\MovimientosRepository::class,
+            \Ghi\Domain\Core\Repositories\EloquentMovimientosRepository::class
         );
     }
 }

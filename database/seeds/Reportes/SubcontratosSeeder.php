@@ -25,8 +25,8 @@ class SubcontratosSeeder extends Seeder
 
         $consultar_reporte_estimacion = \Ghi\Domain\Core\Models\Seguridad\Permission::create([
             'name' => 'consultar_reporte_estimacion',
-            'description' => 'Consultar Reporte de Orden de Pago Estimación',
-            'display_name' => 'Consultar Reporte de Orden de Pago Estimación'
+            'description' => 'Consultar Solicitudes de Orden de Pago Estimación',
+            'display_name' => 'Consultar Solicitudes de Orden de Pago Estimación'
         ]);
 
         $jefe_procuracion->attachPermission($consultar_reporte_estimacion);

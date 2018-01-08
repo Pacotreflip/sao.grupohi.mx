@@ -50,7 +50,7 @@ class EloquentSolicitudReclasificacionRepository implements SolicitudReclasifica
             throw $e;
         }
 
-        return SolicitudReclasificacion::where('id_solicitud_reclasificacion', '=', $record->id_solicitud_reclasificacion)->first();
+        return SolicitudReclasificacion::where('id', '=', $record->id)->first();
     }
 
     /**
@@ -62,18 +62,25 @@ class EloquentSolicitudReclasificacionRepository implements SolicitudReclasifica
         return $this;
     }
 
-    /**
-     * @param $id
-     * @throws \Exception
-     */
+    public function paginate(array $data)
+    {
+        $query = $this->model->with(['autorizacion.usuario', 'rechazo.usuario', 'usuario', 'estatusString', 'partidas.item.material', 'partidas.item.transaccion', 'partidas.conceptoNuevo', 'partidas.conceptoOriginal'])->select('ControlCostos.solicitud_reclasificacion.*')->orderBy('ControlCostos.solicitud_reclasificacion.created_at', 'DESC');
+        return $query->paginate($perPage = $data['length'], $columns = ['*'], $pageName = 'page', $page = ($data['start'] / $data['length']) + 1);
+    }
+
     public function delete($id)
     {
-
+        // TODO: Implement delete() method.
     }
 
     public function update($data, $id)
     {
-
+        // TODO: Implement update() method.
     }
 
+    public function find($id)
+    {
+        return $this->model->find($id);
+
+    }
 }
