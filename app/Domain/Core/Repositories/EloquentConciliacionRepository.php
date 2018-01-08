@@ -299,9 +299,8 @@ class EloquentConciliacionRepository implements ConciliacionRepository
     public function getNivel($id){
         $nivel = '';
         $contratos = $this->contrato->nivelPadre($id)->get();
-
         $val = (int)($contratos[count($contratos)-1]['nivel'])+1;
-        //dd($val, $id, $contratos);
+
         if($val < 10) $nivel = '00'.$val.'.';
         if($val >= 10 && $val < 100) $nivel = '0'.$val.'.';
         if($val > 99) $nivel = $val.'.';
