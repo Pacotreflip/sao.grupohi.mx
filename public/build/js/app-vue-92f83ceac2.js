@@ -7400,11 +7400,12 @@ Vue.component('reclasificacion_costos-index', {
 
                     self.close_modal_detalles();
                 },
-                complete: function complete() {}
+                complete: function complete() {
+                    self.dataTable.ajax.reload();
+                }
             });
 
             self.close_modal_detalles();
-            self.dataTable.ajax.reload();
         },
         rechazar: function rechazar() {
             var self = this,
