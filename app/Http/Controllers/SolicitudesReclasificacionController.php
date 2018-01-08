@@ -66,6 +66,12 @@ class SolicitudesReclasificacionController extends Controller
             foreach ($i['partidas'] as &$p) {
                 $p['conceptoNuevo']['descripcion'] = htmlentities($p['conceptoNuevo']['descripcion'], ENT_QUOTES);
                 $p['conceptoOriginal']['descripcion'] = htmlentities($p['conceptoOriginal']['descripcion'], ENT_QUOTES);
+
+                if (!empty($p['item']['material']['descripcion']))
+                    $p['item']['material']['descripcion'] = htmlentities($p['item']['material']['descripcion'], ENT_QUOTES);
+
+                if (!empty($p['item']['transaccion']['observaciones']))
+                 $p['item']['transaccion']['observaciones'] = htmlentities($p['item']['transaccion']['observaciones'], ENT_QUOTES);
             }
         }
 
