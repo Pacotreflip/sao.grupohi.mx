@@ -1,6 +1,6 @@
 @extends('control_costos.layout')
-@section('title', 'Reclasificación De Costos')
-@section('contentheader_title', 'RECLASIFICACIÓN DE COSTOS')
+@section('title', 'Solicitudes de Reclasificación Registradas')
+@section('contentheader_title', 'SOLICITUDES DE RECLASIFICACIÓN REGISTRADAS')
 @section('breadcrumb')
     {!! Breadcrumbs::render('control_costos.solicitudes_reclasificacion.index') !!}
 @endsection
@@ -12,7 +12,7 @@
                 <div class="col-md-12">
                     <div class="box box-solid">
                         <div class="box-header with-border">
-                            <h3 class="box-title">Solicitudes de reclasificación</h3>
+
                         </div>
                         <div class="box-body">
                             <div class="table-responsive">

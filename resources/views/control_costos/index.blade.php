@@ -16,7 +16,7 @@
                             <li><a href="{{ route('control_costos.solicitar_reclasificacion.index') }}">SOLICITAR RECLASIFICACIÓN</a></li>
                             @endpermission
                             @permission(['consultar_reclasificacion', 'autorizar_reclasificacion'])
-                            <li ><a href="{{route('control_costos.solicitudes_reclasificacion.index')}}">RECLASIFICACIÓN DE COSTOS</a></li>
+                            <li ><a href="{{route('control_costos.solicitudes_reclasificacion.index')}}">SOLICITUDES DE RECLASIFICACIÓN REGISTRADAS</a></li>
                             @endpermission
                         </ul>
                     </div>
