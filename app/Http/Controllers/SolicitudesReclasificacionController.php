@@ -55,6 +55,20 @@ class SolicitudesReclasificacionController extends Controller
 
     public function paginate(Request $request) {
         $items = $this->solicitar->paginate($request->all());
+
+        foreach ($items as &$i)
+        {
+            $i['motivo'] = htmlentities($i['motivo'], ENT_QUOTES);
+
+            if (!empty($i['rechazo']))
+                $i['rechazo']['motivo'] = htmlentities($i['rechazo']['motivo'], ENT_QUOTES);
+
+            foreach ($i['partidas'] as &$p) {
+                $p['conceptoNuevo']['descripcion'] = htmlentities($p['conceptoNuevo']['descripcion'], ENT_QUOTES);
+                $p['conceptoOriginal']['descripcion'] = htmlentities($p['conceptoOriginal']['descripcion'], ENT_QUOTES);
+            }
+        }
+
         return response()->json([
             'recordsTotal' => $items->total(),
             'recordsFiltered' => $items->total(),

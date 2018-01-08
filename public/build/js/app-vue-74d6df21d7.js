@@ -3603,7 +3603,6 @@ if ($('#app').length) {
         el: '#app',
         components: require('./vue-components')
     });
-    Vue.config.devtools = true;
 }
 
 },{"./vue-components":5,"vee-validate":2,"vee-validate/dist/locale/es":1,"vue/dist/vue.min":3}],5:[function(require,module,exports){
@@ -7217,7 +7216,7 @@ Vue.component('reclasificacion_costos-index', {
             'partidas': [],
             'guardando': false,
             'editando': false,
-            'item': { 'id': 0, 'created_at': '', 'estatus_desc': '' },
+            'item': { 'id': 0, 'created_at': '', 'estatus_desc': '', 'estatus_string': {}, 'estatus': {} },
             'rechazando': false,
             'rechazo_motivo': '',
             'dataTable': false,
@@ -7230,16 +7229,16 @@ Vue.component('reclasificacion_costos-index', {
 
         $(document).on('click', '.btn_abrir', function () {
             var _this = $(this),
-                partidas = _this.data('row').partidas,
                 editando = !!parseInt(_this.data('editando')),
-                item = _this.data('row');
+                item = self.solicitudes[_this.data('row')],
+                partidas = item.partidas;
 
-            item.estatus_desc = item.estatus.descripcion;
+            item.estatus_desc = item.estatus_string.descripcion;
             self.partidas = partidas;
             self.item = item;
 
             if (editando) {
-                self.editando = _this.data('row');
+                self.editando = item;
             }
 
             $('#solicitud_detalles_modal').modal('show');
@@ -7295,12 +7294,12 @@ Vue.component('reclasificacion_costos-index', {
                 }
             }, {
                 data: 'acciones',
-                render: function render(data, type, row) {
-                    var _return = "<button type='button' title='Ver' class='btn btn-xs btn-success btn_abrir' data-row='" + JSON.stringify(row) + "' data-editando='0'><i class='fa fa-eye'></i></button>";
+                render: function render(data, type, row, meta) {
+                    var _return = "<button type='button' title='Ver' class='btn btn-xs btn-success btn_abrir' data-row='" + meta.row + "' data-editando='0'><i class='fa fa-eye'></i></button>";
 
                     // Muestra el botón de editar si la solicitud aún no está autorizada/rechazada
                     if (row.estatus_string.id == 1) {
-                        _return = _return + " <button type='button' title='Editar' class='btn btn-xs btn-info btn_abrir' data-row='" + JSON.stringify(row) + "' data-editando='1'><i class='fa fa-pencil'></i></button>";
+                        _return = _return + " <button type='button' title='Editar' class='btn btn-xs btn-info btn_abrir' data-row='" + meta.row + "' data-editando='1'><i class='fa fa-pencil'></i></button>";
                     }
 
                     return _return;
