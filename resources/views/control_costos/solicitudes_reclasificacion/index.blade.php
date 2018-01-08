@@ -82,8 +82,8 @@
                                                     <td >@{{ item.item.material.descripcion }}</td>
                                                     <td class="text-right">@{{ item.item.cantidad }}</td>
                                                     <td class="text-right">@{{  parseInt(item.item.importe).formatMoney(2, '.', ',') }}</td>
-                                                    <td >@{{ item.concepto_original.clave  }}</td>
-                                                    <td >@{{ item.concepto_nuevo.clave  }}</td>
+                                                    <td ><span :title="item.concepto_original.path">[@{{ item.concepto_original.clave  }}] @{{ item.concepto_original.descripcion }}</span></td>
+                                                    <td ><span :title="item.concepto_nuevo.path">[@{{ item.concepto_nuevo.clave  }}] @{{ item.concepto_nuevo.descripcion }}</span></td>
                                                     <template v-if="editando">
                                                         <td>@{{  new Date(editando.created_at).dateShortFormat() }}</td>
                                                         <td>@{{ editando.usuario.nombre +' '+ editando.usuario.apaterno }}</td>
