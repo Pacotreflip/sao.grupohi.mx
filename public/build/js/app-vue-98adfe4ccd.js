@@ -14999,8 +14999,9 @@ Vue.component('cierre-index', {
         $('#cierres_table').DataTable({
             "processing": true,
             "serverSide": true,
-            "ordering": false,
+            "ordering": true,
             "searching": false,
+            "order": [[3, "desc"]],
             "ajax": {
                 "url": App.host + '/configuracion/cierre/paginate',
                 "type": "POST",
@@ -15019,16 +15020,18 @@ Vue.component('cierre-index', {
                     return json.data;
                 }
             },
-            "columns": [{ data: 'anio' }, { data: 'mes' }, { data: 'registro' }, { data: 'created_at' }, {
+            "columns": [{ data: 'anio' }, { data: 'mes' }, { data: 'registro', orderable: false }, { data: 'created_at' }, {
                 data: {},
                 render: function render(data) {
                     return '<span class="label" style="background-color: ' + (data.abierto == true ? 'rgb(243, 156, 18)' : 'rgb(0, 166, 90)') + '">' + (data.abierto == true ? 'Abierto' : 'Cerrado') + '</span>';
-                }
+                },
+                orderable: false
             }, {
                 data: {},
                 render: function render(data) {
                     return '<div class="btn-group">' + '<button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown" aria-expanded="true">' + '<span class="caret"></span>' + '</button>' + '<ul class="dropdown-menu">' + '<li>' + '<a href="#" id="' + data.id + '" class="btn_' + (data.abierto == true ? 'close' : 'open') + '">' + (data.abierto == true ? 'Cerrar ' : 'Abrir ') + '<?php echo (Auth::id()) ?></a>' + '</li>' + '</ul>' + '</div>';
-                }
+                },
+                orderable: false
             }],
             language: {
                 "sProcessing": "Procesando...",

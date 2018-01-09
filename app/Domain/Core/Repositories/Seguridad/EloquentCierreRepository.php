@@ -38,7 +38,12 @@ class EloquentCierreRepository implements CierreRepository
      */
     public function paginate(array $data)
     {
-        $query = $this->model->with('userRegistro')->select('Configuracion.cierres.*')->orderBy('Configuracion.cierres.created_at', 'DESC');
+        $query = $this->model->with('userRegistro')->select('Configuracion.cierres.*');
+
+        foreach ($data['order'] as $order) {
+            $query->orderBy($data['columns'][$order['column']]['data'], $order['dir']);
+        }
+
         return $query->paginate($perPage = $data['length'], $columns = ['*'], $pageName = 'page', $page = ($data['start'] / $data['length']) + 1);
     }
 
@@ -51,7 +56,7 @@ class EloquentCierreRepository implements CierreRepository
     public function create(array $data)
     {
         try {
-            if($this->model->where('mes', '=', $data['mes'])->where('anio', '=', $data['anio'])->first()) {
+            if($cierre = $this->model->where('mes', '=', $data['mes'])->where('anio', '=', $data['anio'])->first()) {
                 throw new HttpResponseException(new Response('Ya existe un cierre para el Periodo Seleccionado', 404));
             }
 
@@ -63,6 +68,7 @@ class EloquentCierreRepository implements CierreRepository
             return $cierre;
         } catch (\Exception $e) {
             DB::connection('seguridad')->rollback();
+            throw $e;
         }
     }
 

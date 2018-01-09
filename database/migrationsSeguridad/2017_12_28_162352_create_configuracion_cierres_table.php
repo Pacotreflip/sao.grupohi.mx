@@ -14,8 +14,8 @@ class CreateConfiguracionCierresTable extends Migration
     {
         Schema::create('Configuracion.cierres', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('anio');
-            $table->string('mes');
+            $table->integer('anio');
+            $table->integer('mes');
             $table->integer('registro');
             $table->timestamps();
             $table->integer('id_proyecto')->unsigned();
