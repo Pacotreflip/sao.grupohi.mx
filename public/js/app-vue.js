@@ -7276,7 +7276,7 @@ Vue.component('reclasificacion_costos-index', {
             }, {
                 data: 'fecha',
                 render: function render(data, type, row) {
-                    return new Date(row.fecha).dateShortFormat();
+                    return new Date(row.fecha ? row.fecha : row.created_at).dateShortFormat();
                 }
             }, {
                 data: 'motivo',
