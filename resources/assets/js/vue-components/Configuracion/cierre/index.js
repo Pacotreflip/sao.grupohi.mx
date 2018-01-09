@@ -43,8 +43,11 @@ Vue.component('cierre-index', {
         $('#cierres_table').DataTable({
             "processing": true,
             "serverSide": true,
-            "ordering" : false,
+            "ordering" : true,
             "searching" : false,
+            "order": [
+                [3, "desc"]
+            ],
             "ajax": {
                 "url": App.host + '/configuracion/cierre/paginate',
                 "type" : "POST",
@@ -66,13 +69,14 @@ Vue.component('cierre-index', {
             "columns" : [
                 {data : 'anio'},
                 {data : 'mes'},
-                {data : 'registro'},
+                {data : 'registro', orderable : false},
                 {data : 'created_at'},
                 {
                     data : {},
                     render : function(data) {
                         return '<span class="label" style="background-color: ' + (data.abierto == true ? 'rgb(243, 156, 18)' : 'rgb(0, 166, 90)') + '">' + (data.abierto == true ? 'Abierto' : 'Cerrado') + '</span>'
-                    }
+                    },
+                    orderable : false
                 },
                 {
                     data : {},
@@ -87,7 +91,8 @@ Vue.component('cierre-index', {
                                     '</li>' +
                                   '</ul>' +
                                 '</div>';
-                    }
+                    },
+                    orderable : false
                 }
             ],
             language: {

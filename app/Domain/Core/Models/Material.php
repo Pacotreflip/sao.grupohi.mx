@@ -80,11 +80,21 @@ class Material extends BaseModel
     }
 
     public function getIdPadreAttribute() {
+
         if($this->nivel_padre != '') {
-            return Material::where('nivel', '=', $this->nivel_padre)
-                ->where('tipo_material', '=', $this->tipo_material)->first()->id_material;
+
+            $padre = false;
+
+            $padre = Material::where('nivel', '=', $this->nivel_padre)
+                ->where('tipo_material', '=', $this->tipo_material)->first();
+
+            // El material no tiene padre
+            if (is_null($padre))
+                return false;
+
+            else
+                return $padre->id_material;
         }
-        return null;
     }
 
     /**
