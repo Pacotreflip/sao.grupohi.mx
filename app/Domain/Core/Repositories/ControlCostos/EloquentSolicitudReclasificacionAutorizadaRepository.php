@@ -125,8 +125,10 @@ class EloquentSolicitudReclasificacionAutorizadaRepository implements SolicitudR
                     'motivo' => $data['motivo'],
                 ]);
 
-                if (!is_null($record))
-                    DB::connection('cadeco')->commit();
+                if (is_null($record))
+                    throw new HttpResponseException(new Response($error, 404));
+
+                DB::connection('cadeco')->commit();
 
             } catch (\Exception $e) {
                 DB::connection('cadeco')->rollBack();

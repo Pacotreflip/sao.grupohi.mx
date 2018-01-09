@@ -48,30 +48,36 @@ class EloquentSolicitudReclasificacionRechazadaRepository implements SolicitudRe
      */
     public function create($data)
     {
+        $error = 'No se encontró el item que se desea actualizar';
 
         // Evita registrar multiples solicitudes
         $already = SolicitudReclasificacionRechazada::where('id_solicitud_reclasificacion', '=', $data['id'])->first();
 
-        if ($already) {
+        if ($already)
             throw new HttpResponseException(new Response('Ya existe una solicitud registrada', 404));
-            return;
-        }
+
+        DB::connection('cadeco')->beginTransaction();
 
         try {
-            DB::connection('cadeco')->beginTransaction();
+
+            // Cambia el estado a la solicitud
+            $solicitud = $this->solicitud->where('id', '=', $data['id']);
+
+            if (!$solicitud)
+                throw new HttpResponseException(new Response($error, 404));
+
+            // Estatus -1 Rechazada
+            $solicitud->update([
+                'estatus' => -1,
+            ]);
 
             $record = SolicitudReclasificacionRechazada::create([
                 'id_solicitud_reclasificacion' => $data['id'],
                 'motivo' => $data['motivo_rechazo'],
             ]);
 
-            // Cambia el estado a la solicitud
-            $solicitud = $this->solicitud->where('id', '=', $data['id']);
-
-            // Estatus -1 Rechazada
-            $solicitud->update([
-                'estatus' => -1,
-            ]);
+            if (is_null($record))
+                throw new HttpResponseException(new Response($error, 404));
 
             DB::connection('cadeco')->commit();
 
