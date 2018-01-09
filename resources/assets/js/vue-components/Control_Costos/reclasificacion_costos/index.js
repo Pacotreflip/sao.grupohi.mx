@@ -68,7 +68,7 @@ Vue.component('reclasificacion_costos-index', {
                     {
                         data : 'fecha',
                         render : function(data, type, row) {
-                            return new Date(row.created_at).dateShortFormat();
+                            return new Date(row.fecha).dateShortFormat();
                         }
                     },
                     {
@@ -262,6 +262,12 @@ Vue.component('reclasificacion_costos-index', {
                 url = App.host + '/control_costos/solicitudes_reclasificacion/generarpdf?item='+ id;
 
             self.show_pdf = url;
+        },
+        html_decode: function(input){
+            var e = document.createElement('div');
+            e.innerHTML = input;
+
+            return e.childNodes.length === 0 ? "" : e.childNodes[0].nodeValue;
         }
     }
 });

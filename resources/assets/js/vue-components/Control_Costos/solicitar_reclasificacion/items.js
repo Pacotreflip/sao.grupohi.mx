@@ -50,9 +50,12 @@ Vue.component('solicitar_reclasificacion-items', {
         }
     },
     mounted: function () {
+        var self = this;
+
         $("#Fecha").datepicker().on("changeDate",function () {
             var thisElement = $(this);
-            var id = thisElement.attr('id').replace('edit_','');
+
+            Vue.set(self.data, 'fecha', thisElement.val());
 
         });
     },
@@ -282,6 +285,5 @@ Vue.component('solicitar_reclasificacion-items', {
                 }
             });
         }
-    },
-    directives: {}
+    }
 });

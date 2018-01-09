@@ -31,7 +31,15 @@
             <div class="col-md-12">
                 <div class="box box-solid">
                     <div class="box-header with-border">
-                        <h3 class="box-title">Items</h3>
+                        <h3 class="box-title pull-left">Items</h3>
+                        <form class="form-inline">
+                            <div class="input-group pull-right">
+                                <span class="input-group-addon">Fecha</span>
+                                <input type="text" name="Fecha" class="form-control" id="Fecha"
+                                       v-model="data.fecha"
+                                       v-datepicker>
+                            </div>
+                        </form>
                     </div>
                     <div class="box-body">
                         <div class="table-responsive">

@@ -105,7 +105,7 @@
                                                 <h3 class="box-title">Motivo</h3>
                                             </div>
                                             <div class="box-body">
-                                                @{{ editando.motivo }}
+                                                @{{ html_decode(editando.motivo) }}
                                             </div>
                                         </div>
                                     </div>
