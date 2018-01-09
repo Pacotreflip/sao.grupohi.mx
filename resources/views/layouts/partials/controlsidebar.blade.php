@@ -152,12 +152,12 @@
                     <p>Cierre y Apertura de Periodos para control de registro de transacciones</p>
                 </div>
 
-                <div class="form-group">
+                <!--<div class="form-group">
                     <label class="control-sidebar-subheading">
                         <a href="{{ route('configuracion.seguridad.index') }}">Roles y Permisos</a>
                     </label>
                     <p>Administración de Roles y Permisos de usuarios para el uso de los Sistemas dentro de SAO</p>
-                </div>
+                </div>-->
             </form>
         </div>
         <!-- /.tab-pane -->
