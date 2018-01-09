@@ -60,21 +60,25 @@ class EloquentSolicitudReclasificacionAutorizadaRepository implements SolicitudR
     public function create($data)
     {
         $error = 'No se encontró el item que se desea actualizar';
-        $item_done = false;
-        $mov_done = false;
+        $item_done = [];
+        $mov_done = [];
+
+        foreach ($data['partidas'] as $k => $partida)
+        {
+            $item_done[$k] = false;
+            $mov_done[$k] = false;
+        }
 
         // Evita registrar multiples solicitudes
         $already = SolicitudReclasificacionAutorizada::where('id_solicitud_reclasificacion', '=', $data['id'])->first();
 
-        if ($already) {
+        if ($already)
             throw new HttpResponseException(new Response('Ya existe una solicitud registrada', 404));
-            return;
-        }
 
         DB::connection('cadeco')->beginTransaction();
 
         // Una registro para cada partida
-        foreach ($data['partidas'] as $partida)
+        foreach ($data['partidas'] as $k => $partida)
         {
             try {
                 $item = Items::where('id_item', '=', $partida['item']['id_item'])
@@ -86,7 +90,7 @@ class EloquentSolicitudReclasificacionAutorizadaRepository implements SolicitudR
                 $item->update([
                     'id_concepto' => $partida['concepto_nuevo']['id_concepto'],
                 ]);
-                $item_done = true;
+                $item_done[$k] = true;
 
                 $movimiento = Movimientos::where('id_item', '=', $partida['item']['id_item'])
                     ->where('id_concepto', '=', $partida['concepto_original']['id_concepto']);
@@ -97,7 +101,7 @@ class EloquentSolicitudReclasificacionAutorizadaRepository implements SolicitudR
                 $movimiento->update([
                     'id_concepto' => $partida['concepto_nuevo']['id_concepto'],
                 ]);
-                $mov_done = true;
+                $mov_done[$k] = true;
 
                 // Cambia el estado a la solicitud
                 $solicitud = SolicitudReclasificacion::where('id', '=', $data['id']);
@@ -113,7 +117,8 @@ class EloquentSolicitudReclasificacionAutorizadaRepository implements SolicitudR
             }
         }
 
-        if ($item_done && $mov_done)
+        // Todas las actualizaciones debieron de realizarse
+        if (count(array_unique($item_done)) === 1 && count(array_unique($mov_done)) === 1)
             try {
                 $record = SolicitudReclasificacionAutorizada::create([
                     'id_solicitud_reclasificacion' => $data['id'],
@@ -127,6 +132,10 @@ class EloquentSolicitudReclasificacionAutorizadaRepository implements SolicitudR
                 DB::connection('cadeco')->rollBack();
                 throw $e;
             }
+
+        // Revierte
+        else
+            DB::connection('cadeco')->rollBack();
 
         return $this->model->where('id_solicitud_reclasificacion', '=', $data['id'])->first();
     }
