@@ -5,7 +5,7 @@ Vue.component('reclasificacion_costos-index', {
             'partidas': [],
             'guardando' : false,
             'editando': false,
-            'item': {'id': 0, 'created_at': '', 'estatus_desc': ''},
+            'item': {'id': 0, 'created_at': '', 'estatus_desc': '', 'estatus_string': {}, 'estatus': {}},
             'rechazando': false,
             'rechazo_motivo': '',
             'dataTable': false,
@@ -18,16 +18,16 @@ Vue.component('reclasificacion_costos-index', {
 
             $(document).on('click', '.btn_abrir', function () {
                 var _this = $(this),
-                    partidas = _this.data('row').partidas,
                     editando = !!parseInt(_this.data('editando')),
-                    item = _this.data('row');
+                    item = self.solicitudes[_this.data('row')],
+                    partidas = item.partidas;
 
-                item.estatus_desc = item.estatus.descripcion;
+                item.estatus_desc = item.estatus_string.descripcion;
                 self.partidas = partidas;
                 self.item = item;
 
                 if (editando){
-                    self.editando = _this.data('row');
+                    self.editando = item;
                 }
 
                 $('#solicitud_detalles_modal').modal('show');
@@ -54,7 +54,7 @@ Vue.component('reclasificacion_costos-index', {
                 },
                 "columns" : [
                     {
-                        data : '#',
+                        data : {},
                         render : function(data, type, row, meta) {
                             return  meta.row + 1;
                         }
@@ -71,33 +71,38 @@ Vue.component('reclasificacion_costos-index', {
                             return new Date(row.created_at).dateShortFormat();
                         }
                     },
-                    {data : 'motivo'},
                     {
-                        data : 'estatus',
+                        data : 'motivo',
+                        render : function(data, type, row) {
+                            return row.motivo.replace(/'/g, "\\'");
+                        }
+                    },
+                    {
+                        data : 'estatusString',
                         render : function(data, type, row) {
                             var _estatus = '';
 
-                            if (row.estatus.estatus == 2)
-                                _estatus = '<span class="label bg-green">'+ row.estatus.descripcion +'</span> ';
+                            if (row.estatus_string.estatus == 2)
+                                _estatus = '<span class="label bg-green">'+ row.estatus_string.descripcion +'</span> ';
 
-                            else if (row.estatus.estatus == -1)
-                                _estatus = '<span class="label bg-red">'+ row.estatus.descripcion +'</span> ';
+                            else if (row.estatus_string.estatus == -1)
+                                _estatus = '<span class="label bg-red">'+ row.estatus_string.descripcion +'</span> ';
 
                             else
-                                _estatus = '<span class="label bg-blue">'+ row.estatus.descripcion +'</span> ';
+                                _estatus = '<span class="label bg-blue">'+ row.estatus_string.descripcion +'</span> ';
 
                             return _estatus;
                         }
                     },
                     {
                         data : 'acciones',
-                        render : function(data, type, row) {
-                            var _return = "<button type='button' title='Ver' class='btn btn-xs btn-success btn_abrir' data-row='"+ JSON.stringify(row) +"' data-editando='0'><i class='fa fa-eye'></i></button>";
+                        render : function(data, type, row, meta) {
+                            var _return = "<button type='button' title='Ver' class='btn btn-xs btn-success btn_abrir' data-row='"+ meta.row +"' data-editando='0'><i class='fa fa-eye'></i></button>";
 
                             // Muestra el botón de editar si la solicitud aún no está autorizada/rechazada
-                            if (row.estatus.id == 1)
+                            if (row.estatus_string.id == 1)
                             {
-                                _return = _return + " <button type='button' title='Editar' class='btn btn-xs btn-info btn_abrir' data-row='"+ JSON.stringify(row) +"' data-editando='1'><i class='fa fa-pencil'></i></button>";
+                                _return = _return +" <button type='button' title='Editar' class='btn btn-xs btn-info btn_abrir' data-row='"+ meta.row +"' data-editando='1'><i class='fa fa-pencil'></i></button>";
                             }
 
                             return _return;
@@ -206,11 +211,13 @@ Vue.component('reclasificacion_costos-index', {
 
                   self.close_modal_detalles();
                 },
-                complete: function () {}
+                complete: function () {
+                    self.dataTable.ajax.reload();
+                }
             });
 
             self.close_modal_detalles();
-            self.dataTable.ajax.reload();
+
         },
         rechazar: function () {
             var self = this,

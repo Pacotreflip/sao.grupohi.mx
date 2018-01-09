@@ -150,11 +150,11 @@ class Concepto extends BaseModel
         if ($padre->clave_concepto)
             return $padre->clave_concepto;
 
-        $num_niveles = $this->getNivelesAttribute();
+
         $nivel_padre = $padre->nivel_padre;
         $clave = '';
 
-        for ($i = 1; $i <= $num_niveles; $i++) {
+        for ($i = 1; $i <= $this->niveles; $i++) {
             $padre = Concepto::where('nivel', '=', $nivel_padre)->first();
             $nivel_padre = $padre->nivel_padre;
 

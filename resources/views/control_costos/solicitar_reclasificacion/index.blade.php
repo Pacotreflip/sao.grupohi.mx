@@ -12,17 +12,60 @@
         :max_niveles="{{ $data_view['max_niveles']  }}"
         :operadores="{{ json_encode($data_view['operadores'])  }}"
         :filtros="[]"
+        :tipos_transacciones="{{ $data_view['tipos_transacciones']  }}"
         inline-template
         v-cloak>
     <section>
         <div class="row">
             <div class="col-md-12">
-                <button class="btn btn-sm btn-primary pull-right" v-on:click="open_modal_agregar()">Agregar Filtro</button>
+                <div class="pull-right">
+                    <div class="btn-group ">
+                        <button class="btn btn-sm btn-primary pull-right" v-on:click="open_modal_agregar()">Filtrar por Niveles</button>
+                    </div>
+                    <div class="btn-group">
+                        <button class="btn btn-sm btn-primary pull-right" v-on:click="open_modal_transaccion()">Filtrar por Transacción</button>
+                    </div>
+                </div>
             </div>
             <div class="col-md-12">
                 &nbsp;
             </div>
         </div>
+        <div id="transaccion_filtro_modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="TransaccionModal" data-backdrop="static" data-keyboard="false">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" v-on:click="close_modal_transaccion()" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title">Filtro Transacción</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            {{--Tipo Transaccion--}}
+                            <div class="col-md-5">
+                                    <div class="form-group">
+                                        <label><b>Tipo Transacción</b></label>
+                                        <Select class="form-control" name="tipo_transaccion" id="tipo_transaccion" v-model="data.filtro_tran.tipo">
+                                            <option value>[--SELECCIONE--]</option>
+                                            <option v-for="(item, index) in tipos_transacciones" :value="item.tipo_transaccion +'-'+ item.opciones">@{{item.descripcion}}</option>
+                                        </Select>
+                                    </div>
+                            </div>
+                            {{--Folio--}}
+                            <div class="col-md-5">
+                                <div class="form-group">
+                                    <label><b>Folio</b></label>
+                                    <input type="text" class="form-control pull-right" id="Folio" value="" name="Folio" v-model="data.filtro_tran.folio">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" v-on:click="close_modal_transaccion()">Cerrar</button>
+                        <button type="submit" class="btn btn-primary" v-on:click="agregar_filtro_tran()">Buscar</button>
+                    </div>
+                </div><!-- /.modal-content -->
+            </div><!-- /.modal-dialog -->
+        </div><!-- /.modal -->
         <div id="agregar_filtro_modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="AgregarModal" data-backdrop="static" data-keyboard="false">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
@@ -171,12 +214,12 @@
                                         </thead>
                                         <tbody>
                                         <tr v-for="(item, index) in data.resumen">
-                                            <td >@{{ item.tipo_transaccion  }}</td>
+                                            <td >@{{ item.descripcion  }}</td>
                                             <td class="text-right">
                                                 @{{ parseInt(item.cantidad) }}
                                             </td>
                                             <td class="text-right">
-                                                <a style="cursor:pointer;" v-on:click="desglosar_tipos(item.tipo_transaccion, item.opciones)">@{{ parseInt(item.monto).formatMoney(2, '.', ',') }}</a>
+                                                <a style="cursor:pointer;" v-on:click="desglosar_tipos(item.descripcion, item.opciones)">@{{ parseInt(item.monto).formatMoney(2, '.', ',') }}</a>
                                             </td>
                                         </tr>
                                         <tfoot style="border-top: 2px solid #00a65a;">

@@ -55,6 +55,9 @@ class SolicitudesReclasificacionController extends Controller
 
     public function paginate(Request $request) {
         $items = $this->solicitar->paginate($request->all());
+
+
+
         return response()->json([
             'recordsTotal' => $items->total(),
             'recordsFiltered' => $items->total(),
@@ -72,7 +75,7 @@ class SolicitudesReclasificacionController extends Controller
 
         else
         {
-            $data['motivo_rechazo'] = $request->motivo;
+            $data['motivo_rechazo'] = htmlentities($request->motivo, ENT_QUOTES);
             $resultado = $this->rechazadas->create($data);
         }
 
@@ -87,9 +90,9 @@ class SolicitudesReclasificacionController extends Controller
      */
     public  function generar_pdf(Request $request)
     {
-        $items = $this->solicitar->reporte($request->item);
+        $solicitud = $this->solicitar->find($request->item);
 
-        $pdf = new Solicitudes($items);
+        $pdf = new Solicitudes($solicitud);
         $pdf->create();
     }
 }

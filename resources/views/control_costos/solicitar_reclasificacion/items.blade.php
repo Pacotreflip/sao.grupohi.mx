@@ -50,9 +50,9 @@
                                 <tr v-for="(item, index) in data.items" :class="'items item_' + index +' '+ (item.selected != undefined ? item.selected : '')">
                                     <td>@{{ item.observaciones }}</td>
                                     <td class="text-right">@{{ parseInt(item.cantidad) }}</td>
-                                    <td class="text-right">@{{  item.precio_unitario }}</td>
-                                    <td class="text-right">@{{  parseInt(item.importe).formatMoney(2, '.', ',') }}</td>
-                                    <td><a href="#" v-on:click="open_modal_agregar(item, index)">@{{  item.concepto_descripcion }}</a></td>
+                                    <td class="text-right">$@{{  parseInt(item.precio_unitario).formatMoney(2, '.', ',') }}</td>
+                                    <td class="text-right">$@{{  parseInt(item.importe).formatMoney(2, '.', ',') }}</td>
+                                    <td><a href="#" v-on:click="open_modal_agregar(item, index)" :title="item.concepto.path">[@{{  item.concepto.clave }}] @{{ item.concepto.descripcion }}</a></td>
                                     <td class="destino_final">@{{  item.destino_final }}</a></td>
                                 </tr>
                                 </tbody>

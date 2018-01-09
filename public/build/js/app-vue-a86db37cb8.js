@@ -18072,7 +18072,7 @@ Vue.component('reclasificacion_costos-index', {
             'partidas': [],
             'guardando': false,
             'editando': false,
-            'item': { 'id': 0, 'created_at': '', 'estatus_desc': '' },
+            'item': { 'id': 0, 'created_at': '', 'estatus_desc': '', 'estatus_string': {}, 'estatus': {} },
             'rechazando': false,
             'rechazo_motivo': '',
             'dataTable': false,
@@ -18085,16 +18085,16 @@ Vue.component('reclasificacion_costos-index', {
 
         $(document).on('click', '.btn_abrir', function () {
             var _this = $(this),
-                partidas = _this.data('row').partidas,
                 editando = !!parseInt(_this.data('editando')),
-                item = _this.data('row');
+                item = self.solicitudes[_this.data('row')],
+                partidas = item.partidas;
 
-            item.estatus_desc = item.estatus.descripcion;
+            item.estatus_desc = item.estatus_string.descripcion;
             self.partidas = partidas;
             self.item = item;
 
             if (editando) {
-                self.editando = _this.data('row');
+                self.editando = item;
             }
 
             $('#solicitud_detalles_modal').modal('show');
@@ -18120,7 +18120,7 @@ Vue.component('reclasificacion_costos-index', {
                 }
             },
             "columns": [{
-                data: '#',
+                data: {},
                 render: function render(data, type, row, meta) {
                     return meta.row + 1;
                 }
@@ -18134,23 +18134,28 @@ Vue.component('reclasificacion_costos-index', {
                 render: function render(data, type, row) {
                     return new Date(row.created_at).dateShortFormat();
                 }
-            }, { data: 'motivo' }, {
-                data: 'estatus',
+            }, {
+                data: 'motivo',
+                render: function render(data, type, row) {
+                    return row.motivo.replace(/'/g, "\\'");
+                }
+            }, {
+                data: 'estatusString',
                 render: function render(data, type, row) {
                     var _estatus = '';
 
-                    if (row.estatus.estatus == 2) _estatus = '<span class="label bg-green">' + row.estatus.descripcion + '</span> ';else if (row.estatus.estatus == -1) _estatus = '<span class="label bg-red">' + row.estatus.descripcion + '</span> ';else _estatus = '<span class="label bg-blue">' + row.estatus.descripcion + '</span> ';
+                    if (row.estatus_string.estatus == 2) _estatus = '<span class="label bg-green">' + row.estatus_string.descripcion + '</span> ';else if (row.estatus_string.estatus == -1) _estatus = '<span class="label bg-red">' + row.estatus_string.descripcion + '</span> ';else _estatus = '<span class="label bg-blue">' + row.estatus_string.descripcion + '</span> ';
 
                     return _estatus;
                 }
             }, {
                 data: 'acciones',
-                render: function render(data, type, row) {
-                    var _return = "<button type='button' title='Ver' class='btn btn-xs btn-success btn_abrir' data-row='" + JSON.stringify(row) + "' data-editando='0'><i class='fa fa-eye'></i></button>";
+                render: function render(data, type, row, meta) {
+                    var _return = "<button type='button' title='Ver' class='btn btn-xs btn-success btn_abrir' data-row='" + meta.row + "' data-editando='0'><i class='fa fa-eye'></i></button>";
 
                     // Muestra el botón de editar si la solicitud aún no está autorizada/rechazada
-                    if (row.estatus.id == 1) {
-                        _return = _return + " <button type='button' title='Editar' class='btn btn-xs btn-info btn_abrir' data-row='" + JSON.stringify(row) + "' data-editando='1'><i class='fa fa-pencil'></i></button>";
+                    if (row.estatus_string.id == 1) {
+                        _return = _return + " <button type='button' title='Editar' class='btn btn-xs btn-info btn_abrir' data-row='" + meta.row + "' data-editando='1'><i class='fa fa-pencil'></i></button>";
                     }
 
                     return _return;
@@ -18251,11 +18256,12 @@ Vue.component('reclasificacion_costos-index', {
 
                     self.close_modal_detalles();
                 },
-                complete: function complete() {}
+                complete: function complete() {
+                    self.dataTable.ajax.reload();
+                }
             });
 
             self.close_modal_detalles();
-            self.dataTable.ajax.reload();
         },
         rechazar: function rechazar() {
             var self = this,
@@ -18305,7 +18311,7 @@ Vue.component('reclasificacion_costos-index', {
 'use strict';
 
 Vue.component('solicitar_reclasificacion-index', {
-    props: ['url_solicitar_reclasificacion_index', 'max_niveles', 'filtros', 'operadores'],
+    props: ['url_solicitar_reclasificacion_index', 'max_niveles', 'filtros', 'operadores', 'tipos_transacciones'],
     data: function data() {
         return {
             'data': {
@@ -18317,6 +18323,10 @@ Vue.component('solicitar_reclasificacion-index', {
                     'nivel': '',
                     'operador': '',
                     'texto': ''
+                },
+                filtro_tran: {
+                    'tipo': '',
+                    'folio': ''
                 },
                 'resultados': [],
                 'resumen': [],
@@ -18415,6 +18425,73 @@ Vue.component('solicitar_reclasificacion-index', {
             Vue.set(self.data, 'temp_filtro', '');
             Vue.set(self.data, 'condicionante', '');
         },
+        open_modal_transaccion: function open_modal_transaccion() {
+
+            $('#transaccion_filtro_modal').modal('show');
+            $('#transaccion').focus();
+        },
+        close_modal_transaccion: function close_modal_transaccion() {
+
+            var self = this;
+
+            Vue.set(self.data, 'filtro_tran', {
+                'tipo': '',
+                'folio': ''
+            });
+
+            $('#transaccion_filtro_modal').modal('hide');
+        },
+        agregar_filtro_tran: function agregar_filtro_tran() {
+            var self = this,
+                str = { 'data': JSON.stringify(self.data.filtro_tran) },
+                total_resultados = 0,
+                subtotal = 0,
+                subimporte = 0;
+
+            if (self.data.filtro_tran.tipo.length == 0) {
+                return swal({
+                    type: 'warning',
+                    title: 'Agrega un filtro',
+                    html: 'Por favor agrega un filtro antes de buscar'
+                });
+            }
+
+            $.ajax({
+                type: 'GET',
+                url: self.url_solicitar_reclasificacion_index + '/findtransaccion',
+                data: str,
+                beforeSend: function beforeSend() {},
+                success: function success(data, textStatus, xhr) {
+
+                    if (data.detalles.length != 0) swal({
+                        type: 'success',
+                        title: '¡Se encontraron resultados!',
+                        html: '',
+                        onClose: function onClose() {
+
+                            $.each(data.resumen, function (key, value) {
+                                subtotal = subtotal + parseInt(value.cantidad);
+                                subimporte = subimporte + parseInt(value.monto);
+                            });
+
+                            Vue.set(self.data, 'subtotal', subtotal);
+                            Vue.set(self.data, 'subimporte', subimporte);
+                            Vue.set(self.data, 'desglosar_descripcion', data.detalles[0].descripcion);
+                            Vue.set(self.data, 'desglosar', data.detalles);
+                            Vue.set(self.data, 'resumen', data.resumen);
+                            Vue.set(self.data, 'detalles', data.detalles);
+                            $('#tipos_transaccion').modal('show');
+                            self.close_modal_transaccion();
+                        }
+                    });else swal({
+                        type: 'warning',
+                        title: 'No se encontraron resultados',
+                        html: ''
+                    });
+                },
+                complete: function complete() {}
+            });
+        },
         open_modal_agregar: function open_modal_agregar(condicionante, item) {
             var self = this;
 
@@ -18430,6 +18507,7 @@ Vue.component('solicitar_reclasificacion-index', {
             var self = this;
 
             $('#agregar_filtro_modal').modal('hide');
+            self.close_modal_transaccion();
             self.reset_agregar();
         },
         buscar: function buscar() {
