@@ -13,7 +13,7 @@ class AddFechaSolicitudReclasificacion extends Migration
     public function up()
     {
         Schema::table('ControlCostos.solicitud_reclasificacion', function (Blueprint $table) {
-            $table->timestamp('fecha')->nullable();
+            $table->timestamp('fecha');
         });
     }
 

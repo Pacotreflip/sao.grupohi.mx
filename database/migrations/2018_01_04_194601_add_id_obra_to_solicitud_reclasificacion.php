@@ -13,7 +13,7 @@ class AddIdObraToSolicitudReclasificacion extends Migration
     public function up()
     {
         Schema::table('ControlCostos.solicitud_reclasificacion', function (Blueprint $table) {
-            $table->integer('id_obra')->unsigned()->nullable();
+            $table->integer('id_obra')->unsigned();
             $table->foreign('id_obra')->references('id_obra')->on('dbo.obras');
         });
     }

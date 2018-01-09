@@ -16,8 +16,8 @@ class CreateControlcostosSolicitudReclasificacion extends Migration
 
             $table->increments('id');
             $table->text("motivo");
-            $table->unsignedInteger("estatus")->nullable();
-            $table->unsignedInteger("registro")->nullable();
+            $table->unsignedInteger("estatus");
+            $table->unsignedInteger("registro");
             $table->timestamps();
             $table->softDeletes();
         });
