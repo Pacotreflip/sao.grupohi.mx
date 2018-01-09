@@ -18,7 +18,8 @@ Vue.component('solicitar_reclasificacion-items', {
                 'temp_index' : false,
                 'id_concepto_antiguo' : false,
                 'solicitudes' : [],
-                'motivo': ''
+                'motivo': '',
+                'fecha': moment().format('YYYY-MM-DD')
             }
         }
     },
@@ -46,6 +47,26 @@ Vue.component('solicitar_reclasificacion-items', {
             });
 
             return result;
+        }
+    },
+    mounted: function () {
+        $("#Fecha").datepicker().on("changeDate",function () {
+            var thisElement = $(this);
+            var id = thisElement.attr('id').replace('edit_','');
+
+        });
+    },
+    directives: {
+        datepicker: {
+            inserted: function (el) {
+                $(el).datepicker({
+                    autoclose: true,
+                    language: 'es',
+                    todayHighlight: true,
+                    clearBtn: true,
+                    format: 'yyyy-mm-dd'
+                });
+            }
         }
     },
     methods: {
@@ -175,17 +196,6 @@ Vue.component('solicitar_reclasificacion-items', {
         },
         active_item: function () {
             var self = this;
-
-            $('.items').each(function() {
-                var _this = $(this);
-
-                _this.removeClass('bg-navy disabled');
-
-                if (self.data.temp_index !== false && _this.hasClass('item_'+ self.data.temp_index)){
-                    $('.item_'+ self.data.temp_index).removeClass('items item_'+ self.data.temp_index).addClass('bg-navy disabled items item_'+ self.data.temp_index);
-                }
-
-            });
         },
         open_modal_agregar: function (item, index) {
             var self = this;
@@ -252,7 +262,8 @@ Vue.component('solicitar_reclasificacion-items', {
                 url : self.url_solicitar_reclasificacion_index,
                 data: {
                     'motivo' : self.data.motivo,
-                    'solicitudes': self.data.solicitudes
+                    'solicitudes': self.data.solicitudes,
+                    'fecha' : self.data.fecha
                 },
                 beforeSend: function () {},
                 success: function (data, textStatus, xhr) {

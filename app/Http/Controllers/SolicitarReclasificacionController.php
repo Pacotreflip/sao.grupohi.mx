@@ -83,7 +83,7 @@ class SolicitarReclasificacionController extends Controller
         $motivo = htmlentities($request->motivo, ENT_QUOTES);
         $partidas = $request->solicitudes;
 
-        $solicitud  = $this->solicitud->create(['motivo' => $motivo]);
+        $solicitud  = $this->solicitud->create(['motivo' => $motivo, 'fecha' => $request->fecha]);
 
         if (!empty($solicitud))
             foreach ($partidas as $p)

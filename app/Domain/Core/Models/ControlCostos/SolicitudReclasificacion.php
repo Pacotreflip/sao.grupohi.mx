@@ -21,6 +21,7 @@ class SolicitudReclasificacion extends BaseModel
         'motivo',
         'estatus',
         'registro',
+        'fecha',
     ];
 
     protected static function boot()

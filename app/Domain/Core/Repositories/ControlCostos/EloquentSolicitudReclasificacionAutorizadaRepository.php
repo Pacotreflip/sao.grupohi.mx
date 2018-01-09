@@ -71,62 +71,62 @@ class EloquentSolicitudReclasificacionAutorizadaRepository implements SolicitudR
             return;
         }
 
-            // Una transacción para cada partida
-            foreach ($data['partidas'] as $partida)
-            {
-                try {
-                    $item = Items::where('id_item', '=', $partida['item']['id_item'])
-                        ->where('id_concepto', '=', $partida['concepto_original']['id_concepto']);
+        DB::connection('cadeco')->beginTransaction();
 
-                    if (!$item)
-                        throw new HttpResponseException(new Response($error, 404));
+        // Una registro para cada partida
+        foreach ($data['partidas'] as $partida)
+        {
+            try {
+                $item = Items::where('id_item', '=', $partida['item']['id_item'])
+                    ->where('id_concepto', '=', $partida['concepto_original']['id_concepto']);
 
-                    DB::connection('cadeco')->beginTransaction();
-                    $item->update([
-                        'id_concepto' => $partida['concepto_nuevo']['id_concepto'],
-                    ]);
-                    $item_done = true;
+                if (!$item)
+                    throw new HttpResponseException(new Response($error, 404));
 
-                    $movimiento = Movimientos::where('id_item', '=', $partida['item']['id_item'])
-                        ->where('id_concepto', '=', $partida['concepto_original']['id_concepto']);
+                $item->update([
+                    'id_concepto' => $partida['concepto_nuevo']['id_concepto'],
+                ]);
+                $item_done = true;
 
-                    if (!$movimiento)
-                        throw new HttpResponseException(new Response($error, 404));
+                $movimiento = Movimientos::where('id_item', '=', $partida['item']['id_item'])
+                    ->where('id_concepto', '=', $partida['concepto_original']['id_concepto']);
 
-                    $movimiento->update([
-                        'id_concepto' => $partida['concepto_nuevo']['id_concepto'],
-                    ]);
-                    $mov_done = true;
+                if (!$movimiento)
+                    throw new HttpResponseException(new Response($error, 404));
 
-                    // Cambia el estado a la solicitud
-                    $solicitud = SolicitudReclasificacion::where('id', '=', $data['id']);
+                $movimiento->update([
+                    'id_concepto' => $partida['concepto_nuevo']['id_concepto'],
+                ]);
+                $mov_done = true;
 
-                    // Estatus 2 Autorizada
-                    $solicitud->update([
-                        'estatus' => 2,
-                    ]);
+                // Cambia el estado a la solicitud
+                $solicitud = SolicitudReclasificacion::where('id', '=', $data['id']);
 
-                    DB::connection('cadeco')->commit();
+                // Estatus 2 Autorizada
+                $solicitud->update([
+                    'estatus' => 2,
+                ]);
 
-                } catch (\Exception $e) {
-                    DB::connection('cadeco')->rollBack();
-                    throw $e;
-                }
+            } catch (\Exception $e) {
+                DB::connection('cadeco')->rollBack();
+                throw $e;
             }
+        }
 
-            if ($item_done && $mov_done)
-                try {
-                    DB::connection('cadeco')->beginTransaction();
-                    $record = SolicitudReclasificacionAutorizada::create([
-                        'id_solicitud_reclasificacion' => $data['id'],
-                        'motivo' => $data['motivo'],
-                    ]);
+        if ($item_done && $mov_done)
+            try {
+                $record = SolicitudReclasificacionAutorizada::create([
+                    'id_solicitud_reclasificacion' => $data['id'],
+                    'motivo' => $data['motivo'],
+                ]);
+
+                if (!is_null($record))
                     DB::connection('cadeco')->commit();
 
-                } catch (\Exception $e) {
-                    DB::connection('cadeco')->rollBack();
-                    throw $e;
-                }
+            } catch (\Exception $e) {
+                DB::connection('cadeco')->rollBack();
+                throw $e;
+            }
 
         return $this->model->where('id_solicitud_reclasificacion', '=', $data['id'])->first();
     }
