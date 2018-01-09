@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\DB;
 class EloquentTransaccionRepository implements TransaccionRepository
 {
     /**
-     * @var \Ghi\Domain\Core\Models\Material
+     * @var \Ghi\Domain\Core\Models\Transacciones\Transaccion
      */
     protected $model;
     /**
@@ -21,7 +21,7 @@ class EloquentTransaccionRepository implements TransaccionRepository
     private $items;
 
     /**
-     * EloquentMaterialRepository constructor.
+     * EloquentTransaccionRepository constructor.
      * @param \Ghi\Domain\Core\Models\Material|Transaccion $model
      * @param Items $items
      */

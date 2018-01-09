@@ -296,5 +296,15 @@ class AppServiceProvider extends ServiceProvider
             \Ghi\Domain\Core\Contracts\MovimientosRepository::class,
             \Ghi\Domain\Core\Repositories\EloquentMovimientosRepository::class
         );
+
+        $this->app->bind(
+            \Ghi\Domain\Core\Contracts\Seguridad\PermissionRepository::class,
+            \Ghi\Domain\Core\Repositories\Seguridad\EloquentPermissionRepository::class
+        );
+
+        $this->app->bind(
+            \Ghi\Domain\Core\Contracts\Seguridad\RoleRepository::class,
+            \Ghi\Domain\Core\Repositories\Seguridad\EloquentRoleRepository::class
+        );
     }
 }
