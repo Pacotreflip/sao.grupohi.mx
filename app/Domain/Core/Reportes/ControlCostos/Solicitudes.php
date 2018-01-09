@@ -341,7 +341,7 @@ class Solicitudes extends Rotation {
         $this->SetFont('Arial', 'B', 6.5);
         $this->Cell(($this->w - 2) / 6, 0.4, utf8_decode('Motivo de la Solicitud:'), '', 0, 'LB');
         $this->SetFont('Arial', '', 6.5);
-        $this->MultiCell(($this->w - 2) / 3, 0.4,utf8_decode($this->solicitud->motivo), '', 'L');
+        $this->MultiCell(($this->w - 2) / 3, 0.4,utf8_decode(html_entity_decode($this->solicitud->motivo, ENT_QUOTES)), '', 'L');
 
         $this->SetX($this->w / 2);
         $this->SetFont('Arial', 'B', 6.5);
@@ -354,7 +354,7 @@ class Solicitudes extends Rotation {
             $this->SetFont('Arial', 'B', 6.5);
             $this->Cell(($this->w - 2) / 6, 0.4, utf8_decode('Motivo de Rechazo:'), '', 0, 'LB');
             $this->SetFont('Arial', '', 6.5);
-            $this->MultiCell(($this->w - 2) / 3, 0.4, utf8_decode($this->solicitud->rechazo->motivo), '', 'L');
+            $this->MultiCell(($this->w - 2) / 3, 0.4, utf8_decode(html_entity_decode($this->solicitud->rechazo->motivo, ENT_QUOTES)), '', 'L');
         }
     }
 

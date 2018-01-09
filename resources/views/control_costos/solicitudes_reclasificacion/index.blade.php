@@ -91,16 +91,25 @@
                                                 </tr>
                                             </tbody>
                                         </table>
+                                        <div class="box box-default box-solid" v-if="!editando">
+                                            <div class="box-header with-border">
+                                                <h3 class="box-title">Motivo</h3>
+                                            </div>
+                                            <div class="box-body">
+                                                @{{ html_decode(item.motivo) }}
+                                            </div>
+                                        </div>
                                         <div class="col-md-12" v-if="!editando">
                                             <div class="pull-right">
                                                 <button type='button' title='Formato' class='btn btn-info btn_pdf' v-on:click="pdf(item.id)"><i class='fa fa-file-pdf-o'>  Formato</i></button>
                                             </div>
                                         </div>
+
                                     </div>
                                 </div>
                                 <template v-if="editando">
                                     <div class="col-md-12">
-                                        <div class="box box-default box-solid" data-vivaldi-spatnav-clickable="1">
+                                        <div class="box box-default box-solid">
                                             <div class="box-header with-border">
                                                 <h3 class="box-title">Motivo</h3>
                                             </div>
