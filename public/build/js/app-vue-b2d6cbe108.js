@@ -18052,10 +18052,12 @@ Vue.component('reclasificacion_costos-index', {
                 beforeSend: function beforeSend() {},
                 success: function success(data, textStatus, xhr) {
 
-                    if (data.resultado) swal({
-                        type: 'success',
-                        title: '',
-                        html: 'La solicitud fué autorizada'
+                    if (data.resultado) self.dataTable.ajax.reload(function () {
+                        swal({
+                            type: 'success',
+                            title: '',
+                            html: 'La solicitud fué autorizada'
+                        });
                     });else swal({
                         type: 'warning',
                         title: '',
@@ -18064,12 +18066,8 @@ Vue.component('reclasificacion_costos-index', {
 
                     self.close_modal_detalles();
                 },
-                complete: function complete() {
-                    self.dataTable.ajax.reload();
-                }
+                complete: function complete() {}
             });
-
-            self.close_modal_detalles();
         },
         rechazar: function rechazar() {
             var self = this,
@@ -18082,17 +18080,22 @@ Vue.component('reclasificacion_costos-index', {
                 beforeSend: function beforeSend() {},
                 success: function success(data, textStatus, xhr) {
 
-                    swal({
-                        type: 'success',
+                    if (data.resultado) self.dataTable.ajax.reload(function () {
+                        swal({
+                            type: 'success',
+                            title: '',
+                            html: 'La solicitud fué rechazada'
+                        });
+                    });else swal({
+                        type: 'warning',
                         title: '',
-                        html: 'La solicitud fué rechazada'
+                        html: 'La operación no pudo concretarse'
                     });
+
+                    self.close_modal_detalles();
                 },
                 complete: function complete() {}
             });
-
-            self.close_modal_detalles();
-            self.dataTable.ajax.reload();
         },
         rechazar_motivo: function rechazar_motivo() {
 

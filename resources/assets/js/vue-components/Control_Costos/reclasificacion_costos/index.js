@@ -196,11 +196,13 @@ Vue.component('reclasificacion_costos-index', {
                 success: function (data, textStatus, xhr) {
 
                   if (data.resultado)
-                       swal({
-                            type: 'success',
-                            title: '',
-                            html: 'La solicitud fué autorizada'
-                        });
+                      self.dataTable.ajax.reload(function (){
+                          swal({
+                              type: 'success',
+                              title: '',
+                              html: 'La solicitud fué autorizada'
+                          });
+                      });
 
                   else
                       swal({
@@ -212,12 +214,8 @@ Vue.component('reclasificacion_costos-index', {
                   self.close_modal_detalles();
                 },
                 complete: function () {
-                    self.dataTable.ajax.reload();
                 }
             });
-
-            self.close_modal_detalles();
-
         },
         rechazar: function () {
             var self = this,
@@ -230,20 +228,27 @@ Vue.component('reclasificacion_costos-index', {
                 beforeSend: function () {},
                 success: function (data, textStatus, xhr) {
 
-                    swal({
-                        type: 'success',
-                        title: '',
-                        html: 'La solicitud fué rechazada'
-                    });
+                    if (data.resultado)
+                        self.dataTable.ajax.reload(function (){
+                            swal({
+                                type: 'success',
+                                title: '',
+                                html: 'La solicitud fué rechazada'
+                            });
+                        });
+
+                    else
+                        swal({
+                            type: 'warning',
+                            title: '',
+                            html: 'La operación no pudo concretarse'
+                        });
+
+                    self.close_modal_detalles();
                 },
                 complete: function () {
-
                 }
             });
-
-            self.close_modal_detalles();
-            self.dataTable.ajax.reload();
-
         },
         rechazar_motivo: function () {
 

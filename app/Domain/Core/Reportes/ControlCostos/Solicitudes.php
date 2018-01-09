@@ -283,17 +283,23 @@ class Solicitudes extends Rotation {
         $this->SetFont('Arial', '', 6);
         $this->SetFillColor(180, 180, 180);
 
-        $this->Cell(($this->GetPageWidth() - 4) / 2, 0.4, utf8_decode('Solicitó'), 'TRLB', 0, 'C', 1);
-        $this->Cell(2);
-        $this->Cell(($this->GetPageWidth() - 4) / 2, 0.4, utf8_decode('Autorizó'), 'TRLB', 1, 'C', 1);
+        $this->Cell(($this->GetPageWidth() - 5) / 3, 0.4, utf8_decode('Solicitó'), 'TRLB', 0, 'C', 1);
+        $this->Cell(1.5);
+        $this->Cell(($this->GetPageWidth() - 5) / 3, 0.4, utf8_decode('Autorizó'), 'TRLB', 0, 'C', 1);
+        $this->Cell(1.5);
+        $this->Cell(($this->GetPageWidth() - 5) / 3, 0.4, utf8_decode('Rechazó'), 'TRLB', 1, 'C', 1);
 
-        $this->Cell(($this->GetPageWidth() - 4) / 2, 1.2, '', 'TRLB', 0, 'C');
-        $this->Cell(2);
-        $this->Cell(($this->GetPageWidth() - 4) / 2, 1.2, '', 'TRLB', 1, 'C');
+        $this->Cell(($this->GetPageWidth() - 5) / 3, 1.2, '', 'TRLB', 0, 'C');
+        $this->Cell(1.5);
+        $this->Cell(($this->GetPageWidth() - 5) / 3, 1.2, '', 'TRLB', 0, 'C');
+        $this->Cell(1.5);
+        $this->Cell(($this->GetPageWidth() - 5) / 3, 1.2, '', 'TRLB', 1, 'C');
 
-        $this->Cell(($this->GetPageWidth() - 4) / 2, 0.4, utf8_decode($this->solicitud->usuario), 'TRLB', 0, 'C', 1);
-        $this->Cell(2);
-        $this->Cell(($this->GetPageWidth() - 4) / 2, 0.4, utf8_decode($this->solicitud->autorizacion ? $this->solicitud->autorizacion->usuario : ''), 'TRLB', 0, 'C', 1);
+        $this->Cell(($this->GetPageWidth() - 5) / 3, 0.4, utf8_decode($this->solicitud->usuario), 'TRLB', 0, 'C', 1);
+        $this->Cell(1.5);
+        $this->Cell(($this->GetPageWidth() - 5) / 3, 0.4, utf8_decode($this->solicitud->autorizacion ? $this->solicitud->autorizacion->usuario : ''), 'TRLB', 0, 'C', 1);
+        $this->Cell(1.5);
+        $this->Cell(($this->GetPageWidth() - 5) / 3, 0.4, utf8_decode($this->solicitud->rechazo ? $this->solicitud->rechazo->usuario : ''), 'TRLB', 0, 'C', 1);
 
 
     }
