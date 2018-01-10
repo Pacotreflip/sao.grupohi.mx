@@ -14,6 +14,7 @@ class DatosContables extends BaseModel
     protected $table = 'Contabilidad.datos_contables_obra';
 
     protected $fillable = [
+        'id_obra',
         'BDContPaq',
         'NumobraContPaq',
         'FormatoCuenta',

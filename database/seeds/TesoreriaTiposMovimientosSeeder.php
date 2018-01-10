@@ -1,9 +1,9 @@
 <?php
 
 use Illuminate\Database\Seeder;
-use Carbon\Carbon;
+use Ghi\Domain\Core\Models\Tesoreria\TipoMovimiento;
 
-class TesoreriaTiposMovimientos extends Seeder
+class TesoreriaTiposMovimientosSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -13,39 +13,35 @@ class TesoreriaTiposMovimientos extends Seeder
     public function run()
     {
         // Naturaleza 2 tipo transaccion 84
-        DB::connection("cadeco")->table('Tesoreria.tipos_movimientos')->insert([
+        TipoMovimiento::create([
             'descripcion' => 'Intereses',
             'naturaleza' => 2,
             'estatus' => 1,
-            'registro' => 1,
-            'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
+            'registro' => 1
         ]);
 
         // Naturaleza 1 tipo transaccion 83
-        DB::connection("cadeco")->table('Tesoreria.tipos_movimientos')->insert([
+        TipoMovimiento::create([
             'descripcion' => 'Intereses Ganados',
             'naturaleza' => 1,
             'estatus' => 1,
-            'registro' => 1,
-            'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
+            'registro' => 1
         ]);
 
         // Naturaleza 2 tipo transaccion 84
-        DB::connection("cadeco")->table('Tesoreria.tipos_movimientos')->insert([
+        TipoMovimiento::create([
             'descripcion' => 'Pago de ISR',
             'naturaleza' => 2,
             'estatus' => 1,
-            'registro' => 1,
-            'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
+            'registro' => 1
         ]);
 
         // Naturaleza 2 tipo transaccion 84
-        DB::connection("cadeco")->table('Tesoreria.tipos_movimientos')->insert([
+        TipoMovimiento::create([
             'descripcion' => 'Comisiones Bancarias',
             'naturaleza' => 2,
             'estatus' => 1,
-            'registro' => 1,
-            'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
+            'registro' => 1
         ]);
     }
 }
