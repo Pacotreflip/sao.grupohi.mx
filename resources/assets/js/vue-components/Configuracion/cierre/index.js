@@ -87,7 +87,7 @@ Vue.component('cierre-index', {
                                   '</button>' +
                                   '<ul class="dropdown-menu">' +
                                     '<li>' +
-                                      '<a href="#" id="'+ data.id +'" class="btn_'+(data.abierto == true ? 'close' : 'open')+'">' + (data.abierto == true ? 'Cerrar ' : 'Abrir ') + '<?php echo (Auth::id()) ?></a>' +
+                                      '<a href="#" id="'+ data.id +'" class="btn_'+(data.abierto == true ? 'close' : 'open')+'">' + (data.abierto == true ? 'Cerrar ' : 'Abrir ') +
                                     '</li>' +
                                   '</ul>' +
                                 '</div>';
