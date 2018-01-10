@@ -20,53 +20,53 @@ class TransaccionesSeeder extends Seeder
 
         DB::connection('cadeco')->table('dbo.TipoTran')->insert ([
             ['Tipo_Transaccion' => '51'],
-            ['descripcion' => 'Subcontrato'],
+            ['Descripcion' => 'Subcontrato'],
             ['Opciones' => '2']
         ]);
 
         DB::connection("cadeco")->table('dbo.TipoTran')->where('Tipo_Transaccion', '=', '52')
-            ->update(['descripcion' => 'Estimacion Subcontrato']);
+            ->update(['Descripcion' => 'Estimacion Subcontrato']);
 
         DB::connection('cadeco')->table('dbo.TipoTran')->insert ([
             ['Tipo_Transaccion' => '65'],
-            ['descripcion' => 'Factura Varios Materiales\Servicios'],
+            ['Descripcion' => 'Factura Varios Materiales\Servicios'],
             ['Opciones' => '65537']
         ]);
 
         DB::connection('cadeco')->table('dbo.TipoTran')->insert ([
             ['Tipo_Transaccion' => '65'],
-            ['descripcion' => 'Factura Varios Gastos Varios'],
+            ['Descripcion' => 'Factura Varios Gastos Varios'],
             ['Opciones' => '1']
         ]);
 
         DB::connection("cadeco")->table('dbo.TipoTran')->where('Tipo_Transaccion', '=', '81')
             ->update(['Opciones' => '1']);
 
-        DB::connection("cadeco")->table('dbo.TipoTran')->where('descripcion', '=', 'Pagos')
+        DB::connection("cadeco")->table('dbo.TipoTran')->where('Descripcion', '=', 'Pagos')
             ->update(['Opciones' => '0']);
 
         DB::connection('cadeco')->table('dbo.TipoTran')->insert ([
             ['Tipo_Transaccion' => '82'],
-            ['descripcion' => ' Pagos Varios'],
+            ['Descripcion' => ' Pagos Varios'],
             ['Opciones' => '1']
         ]);
 
         DB::connection('cadeco')->table('dbo.TipoTran')->insert ([
             ['Tipo_Transaccion' => '82'],
-            ['descripcion' => 'Pagos a Cuenta'],
+            ['Descripcion' => 'Pagos a Cuenta'],
             ['Opciones' => '327681']
         ]);
 
-        DB::connection("cadeco")->table('dbo.TipoTran')->where('descripcion', '=', 'Credito')->where('Tipo_Transaccion','=','83')
+        DB::connection("cadeco")->table('dbo.TipoTran')->where('Descripcion', '=', 'Credito')->where('Tipo_Transaccion','=','83')
             ->update(['Opciones' => '0']);
 
-        DB::connection("cadeco")->table('dbo.TipoTran')->where('descripcion', '=', 'Debito')->where('Tipo_Transaccion','=','84')
+        DB::connection("cadeco")->table('dbo.TipoTran')->where('Descripcion', '=', 'Debito')->where('Tipo_Transaccion','=','84')
             ->update(['Opciones' => '0']);
 
-        DB::connection("cadeco")->table('dbo.TipoTran')->where('descripcion', '=', 'Fondo Fijo')->where('Tipo_Transaccion','=','101')
+        DB::connection("cadeco")->table('dbo.TipoTran')->where('Descripcion', '=', 'Fondo Fijo')->where('Tipo_Transaccion','=','101')
             ->update(['Opciones' => '0']);
 
-        DB::connection("cadeco")->table('dbo.TipoTran')->where('descripcion', '=', 'Estimacion Obras')->where('Tipo_Transaccion','=','103')
+        DB::connection("cadeco")->table('dbo.TipoTran')->where('Descripcion', '=', 'Estimacion Obras')->where('Tipo_Transaccion','=','103')
             ->update(['Opciones' => '0']);
     }
 }
