@@ -25,7 +25,6 @@ class DatabaseSeeder extends Seeder
         $this->call(PermisosMovimientosBancarios::class);
         $this->call(PermisosTraspasoCuentas::class);
         $this->call(TesoreriaTiposMovimientos::class);
-        $this->call(TiposCuentasGeneralesSeeder::class);
         $this->call(TiposCuentasSeeder::class);
         $this->call(TiposPolizasContpaqSeeder::class);
         $this->call(TiposMovimientosSeeder::class);
