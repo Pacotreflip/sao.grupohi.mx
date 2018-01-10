@@ -18781,7 +18781,6 @@ Vue.component('solicitar_reclasificacion-items', {
                 },
                 beforeSend: function beforeSend() {},
                 success: function success(data, textStatus, xhr) {
-
                     swal({
                         type: 'success',
                         title: '',
@@ -18791,7 +18790,9 @@ Vue.component('solicitar_reclasificacion-items', {
                         }
                     });
                 },
-                complete: function complete() {}
+                complete: function complete(data) {
+                    if (typeof data.getResponseHeader('next-date') != null) $('#Fecha').datepicker('update', data.getResponseHeader('next-date'));
+                }
             });
         }
     }

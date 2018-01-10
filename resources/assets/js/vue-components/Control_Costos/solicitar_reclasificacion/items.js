@@ -270,7 +270,6 @@ Vue.component('solicitar_reclasificacion-items', {
                 },
                 beforeSend: function () {},
                 success: function (data, textStatus, xhr) {
-
                     swal({
                         type: 'success',
                         title: '',
@@ -280,8 +279,9 @@ Vue.component('solicitar_reclasificacion-items', {
                         }
                     });
                 },
-                complete: function () {
-
+                complete: function (data) {
+                    if (typeof data.getResponseHeader('next-date') != null)
+                        $('#Fecha').datepicker('update', data.getResponseHeader('next-date'));
                 }
             });
         }
