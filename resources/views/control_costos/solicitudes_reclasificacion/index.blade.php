@@ -6,7 +6,9 @@
 @endsection
 @section('main-content')
 
-    <reclasificacion_costos-index inline-template v-cloak>
+    <reclasificacion_costos-index
+        :repetidas="{{ json_encode($repetidas)  }}"
+        inline-template v-cloak>
         <section>
             <div class="row">
                 <div class="col-md-12">
@@ -49,7 +51,7 @@
                         <div class="modal-header">
                             <h4 class="modal-title">
                                 Detalles
-                                <small class="text-muted"> #@{{ item.id }} @{{ new Date(item.created_at).dateShortFormat() }} Estatus: @{{ item.estatus_desc }}</small>
+                                <small class="text-muted"> #@{{ item.id }} @{{ new Date(item.fecha ? item.fecha : item.created_at).dateShortFormat() }} Estatus: @{{ item.estatus_desc }}</small>
                             </h4>
                         </div>
                         <div class="modal-body show_pdf" v-if="show_pdf">

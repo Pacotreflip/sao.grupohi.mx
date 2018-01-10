@@ -1,0 +1,115 @@
+<?php
+
+use Ghi\Domain\Core\Models\Obra;
+use Illuminate\Database\Seeder;
+use Ghi\Domain\Core\Models\Contabilidad\TipoCuentaContable;
+
+class ContabilidadIntTiposCuentasContablesSeeder extends Seeder
+{
+    /**
+     * Run the database seeds.
+     *
+     * @return void
+     */
+    public function run()
+    {
+        foreach(Obra::all() as $obra) {
+            TipoCuentaContable::create(
+                ['descripcion' => 'Cuenta de Costo', 'id_obra' => $obra->id_obra]
+            );
+            TipoCuentaContable::create(
+                ['descripcion' => 'Cuenta de Proveedor / Acreedor', 'id_obra' => $obra->id_obra]
+            );
+            TipoCuentaContable::create(
+                ['descripcion' => 'Cta de IVA Acreditable No Pagado 15%', 'id_obra' => $obra->id_obra]
+            );
+            TipoCuentaContable::create(
+                ['descripcion' => 'Cta de IVA Acreditable Pagado 15%', 'id_obra' => $obra->id_obra]
+            );
+            TipoCuentaContable::create(
+                ['descripcion' => 'Cta de IVA Acreditable Pagado 10%', 'id_obra' => $obra->id_obra]
+            );
+            TipoCuentaContable::create(
+                ['descripcion' => 'Cta de ISR Retenido', 'id_obra' => $obra->id_obra]
+            );
+            TipoCuentaContable::create(
+                ['descripcion' => 'Cta de IVA Retenido', 'id_obra' => $obra->id_obra]
+            );
+            TipoCuentaContable::create(
+                ['descripcion' => 'Cta de Retención del 4%', 'id_obra' => $obra->id_obra]
+            );
+            TipoCuentaContable::create(
+                ['descripcion' => 'Cta de Impuesto Cedular', 'id_obra' => $obra->id_obra]
+            );
+            TipoCuentaContable::create(
+                ['descripcion' => 'Cta de Fondo de Garantía', 'id_obra' => $obra->id_obra]
+            );
+            TipoCuentaContable::create(
+                ['descripcion' => 'Cta de Anticipo a Contratistas', 'id_obra' => $obra->id_obra]
+            );
+            TipoCuentaContable::create(
+                ['descripcion' => 'Cta de Anticipo a Proveedores', 'id_obra' => $obra->id_obra]
+            );
+            TipoCuentaContable::create(
+                ['descripcion' => 'Cta de Provisión de Pasivo de Materiales', 'id_obra' => $obra->id_obra]
+            );
+            TipoCuentaContable::create(
+                ['descripcion' => 'Cta de Provisión de Costo de Materiales', 'id_obra' => $obra->id_obra]
+            );
+            TipoCuentaContable::create(
+                ['descripcion' => 'Cta de Banco', 'id_obra' => $obra->id_obra]
+            );
+            TipoCuentaContable::create(
+                ['descripcion' => 'Cta de Provisión de Pasivo de Subcontratos', 'id_obra' => $obra->id_obra]
+            );
+            TipoCuentaContable::create(
+                ['descripcion' => 'Cta de Provisión de Pasivo de Obra', 'id_obra' => $obra->id_obra]
+            );
+            TipoCuentaContable::create(
+                ['descripcion' => 'Cta de Provisión de Pasivo de Renta de Maquinaria', 'id_obra' => $obra->id_obra]
+            );
+            TipoCuentaContable::create(
+                ['descripcion' => 'Cta de Provisión de Costo de Subcontratos', 'id_obra' => $obra->id_obra]
+            );
+            TipoCuentaContable::create(
+                ['descripcion' => 'Cta de Provisión de Costo de Renta de Maquinaria', 'id_obra' => $obra->id_obra]
+            );
+            TipoCuentaContable::create(
+                ['descripcion' => 'Cta de Provisión de Costo de Mano de Obra', 'id_obra' => $obra->id_obra]
+            );
+            TipoCuentaContable::create(
+                ['descripcion' => 'Cta de Obras y Oficinas', 'id_obra' => $obra->id_obra]
+            );
+            TipoCuentaContable::create(
+                ['descripcion' => 'Cta de IVA Acreditable No Pagado 16%', 'id_obra' => $obra->id_obra]
+            );
+            TipoCuentaContable::create(
+                ['descripcion' => 'Cta de IVA Acreditable Pagado 16%', 'id_obra' => $obra->id_obra]
+            );
+            TipoCuentaContable::create(
+                ['descripcion' => 'Cta de Inventario Materiales', 'id_obra' => $obra->id_obra]
+            );
+            TipoCuentaContable::create(
+                ['descripcion' => 'Cta Costo Materiales', 'id_obra' => $obra->id_obra]
+            );
+            TipoCuentaContable::create(
+                ['descripcion' => 'Cta Proveedor USD', 'id_obra' => $obra->id_obra]
+            );
+            TipoCuentaContable::create(
+                ['descripcion' => 'Cta Proveedor Comp.', 'id_obra' => $obra->id_obra]
+            );
+            TipoCuentaContable::create(
+                ['descripcion' => 'Cta Almacen', 'id_obra' => $obra->id_obra]
+            );
+            TipoCuentaContable::create(
+                ['descripcion' => 'Cta Contratista', 'id_obra' => $obra->id_obra]
+            );
+            TipoCuentaContable::create(
+                ['descripcion' => 'Cta Contrtatista USD', 'id_obra' => $obra->id_obra]
+            );
+            TipoCuentaContable::create(
+                ['descripcion' => 'Cta Contratista Comp.', 'id_obra' => $obra->id_obra]
+            );
+        }
+    }
+}

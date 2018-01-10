@@ -1,10 +1,10 @@
 <?php
 
 use Ghi\Domain\Core\Models\Obra;
+use Ghi\Domain\Core\Models\Contabilidad\DatosContables;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\DB;
 
-class DatosContablesObraSeeder extends Seeder
+class ContabilidadDatosContablesObraSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -14,14 +14,13 @@ class DatosContablesObraSeeder extends Seeder
     public function run()
     {
         foreach(Obra::all() as $obra) {
-           DB::connection('cadeco')->table('Contabilidad.datos_contables_obra')->insert([
+            DatosContables::create([
                'id_obra' => $obra->id_obra,
                'BDContPaq' => null,
                'NumobraContPaq' => null,
                'FormatoCuenta' => null,
-               'FormatoCuentaRegExp' => null,
-               'created_at' => DB::raw('CURRENT_TIMESTAMP')
-           ]);
+               'FormatoCuentaRegExp' => null
+            ]);
         }
     }
 }

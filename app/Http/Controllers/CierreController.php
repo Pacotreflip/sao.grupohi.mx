@@ -24,6 +24,9 @@ class CierreController extends Controller
     public function __construct(CierreRepository $cierre)
     {
         $this->middleware(['auth', 'context']);
+        $this->middleware('permission:consultar_cierre_periodo', ['only' => ['index', 'paginate', 'show']]);
+        $this->middleware('permission:generar_cierre_periodo', ['only' => ['store']]);
+        $this->middleware('permission:editar_cierre_periodo', ['only' => ['open', 'close']]);
 
         $this->cierre = $cierre;
     }

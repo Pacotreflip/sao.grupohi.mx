@@ -2,7 +2,7 @@
 
 use Illuminate\Database\Seeder;
 
-class FinanzasSeeder extends Seeder
+class SeguridadSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -11,7 +11,6 @@ class FinanzasSeeder extends Seeder
      */
     public function run()
     {
-        $this->call(RolesSeeder::class);
-
+        $this->call(RolesPermissionsSeeder::class);
     }
 }
