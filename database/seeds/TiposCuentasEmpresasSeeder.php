@@ -46,5 +46,25 @@ class TiposCuentasEmpresasSeeder extends Seeder
         DB::connection('cadeco')->table('Contabilidad.tipos_cuentas_empresas')
             ->where('id', '=', 9)
             ->update(['deleted_at' => \Carbon\Carbon::now()->toDateTimeString()]);
+
+        DB::connection('cadeco')->table('Contabilidad.tipos_cuentas_empresas')
+            ->where('id', '=', 10)
+            ->update(['descripcion' => 'Cta otras retenciones de subcontratos', 'id_tipo_cuenta_contable' => 37]);
+
+        DB::connection('cadeco')->table('Contabilidad.tipos_cuentas_empresas')
+            ->where('id', '=', 11)
+            ->update(['descripcion' => 'Cta Fondo Garantía USD', 'id_tipo_cuenta_contable' => 38]);
+
+        DB::connection('cadeco')->table('Contabilidad.tipos_cuentas_empresas')
+            ->where('id', '=', 12)
+            ->update(['descripcion' => 'Cta Fondo Garantía Comp', 'id_tipo_cuenta_contable' => 39]);
+
+        DB::connection('cadeco')->table('Contabilidad.tipos_cuentas_empresas')
+            ->where('id', '=', 13)
+            ->update(['descripcion' => 'Cta Otras Retenciones Subcontratos USD', 'id_tipo_cuenta_contable' => 40]);
+
+        DB::connection('cadeco')->table('Contabilidad.tipos_cuentas_empresas')
+            ->where('id', '=', 14)
+            ->update(['descripcion' => 'Cta Otras Retenciones Subcontratos Comp.', 'id_tipo_cuenta_contable' => 41]);
     }
 }
