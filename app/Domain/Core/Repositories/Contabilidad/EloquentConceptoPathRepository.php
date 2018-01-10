@@ -24,7 +24,7 @@ class EloquentConceptoPathRepository implements ConceptoPathRepository
         $this->concepto = $concepto;
     }
 
-    public function buscarCostoTotal($raw)
+    public function filtrarConMovimiento($raw)
     {
         $maxNivel = $this->concepto->obtenerMaxNumNiveles();
         $string = '';
@@ -38,6 +38,22 @@ class EloquentConceptoPathRepository implements ConceptoPathRepository
             ->whereRaw($raw)
             ->groupBy(DB::raw($string .'conceptosPath.id_concepto, conceptosPath.nivel'))
             ->havingRaw('sum(movimientos.monto_total) > 0')
+            ->get();
+
+        return $items;
+    }
+
+    public function filtrar($raw)
+    {
+        $maxNivel = $this->concepto->obtenerMaxNumNiveles();
+        $string = '';
+
+        for ($i = 1; $i <= $maxNivel; $i++)
+            $string .= 'filtro'. $i .',';
+
+        $items = $this->model->selectRaw($string .' conceptosPath.id_concepto, conceptosPath.nivel')
+            ->whereRaw($raw)
+            ->groupBy(DB::raw($string .'conceptosPath.id_concepto, conceptosPath.nivel'))
             ->get();
 
         return $items;

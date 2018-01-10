@@ -13711,11 +13711,27 @@ require('./vue-components/Tesoreria/movimientos_bancarios/index');
 /**
  * Control de costos Components
  */
-require('./vue-components/Control_Costos/reclasificacion_costos/index');
 require('./vue-components/Control_Costos/solicitar_reclasificacion/index');
+require('./vue-components/Control_Costos/solicitar_reclasificacion/items');
+require('./vue-components/Control_Costos/reclasificacion_costos/index');
+
+/**
+ * Control de Presupuesto Components
+ */
 require('./vue-components/Control_Presupuesto/presupuesto/index');
 
-},{"./vue-components/Compras/material/index":6,"./vue-components/Compras/requisicion/create":7,"./vue-components/Compras/requisicion/edit":8,"./vue-components/Contabilidad/cuenta_almacen/index":9,"./vue-components/Contabilidad/cuenta_bancos/cuenta-bancaria-edit":10,"./vue-components/Contabilidad/cuenta_concepto/index":11,"./vue-components/Contabilidad/cuenta_contable/index":12,"./vue-components/Contabilidad/cuenta_costo/index":13,"./vue-components/Contabilidad/cuenta_empresa/cuenta-empresa-edit":14,"./vue-components/Contabilidad/cuenta_fondo/index":15,"./vue-components/Contabilidad/cuenta_material/index":16,"./vue-components/Contabilidad/datos_contables/edit":17,"./vue-components/Contabilidad/emails":18,"./vue-components/Contabilidad/modulos/revaluacion/create":19,"./vue-components/Contabilidad/poliza_generada/edit":20,"./vue-components/Contabilidad/poliza_tipo/poliza-tipo-create":21,"./vue-components/Contabilidad/tipo_cuenta_contable/tipo-cuenta-contable-create":22,"./vue-components/Contabilidad/tipo_cuenta_contable/tipo-cuenta-contable-update":23,"./vue-components/Control_Costos/reclasificacion_costos/index":24,"./vue-components/Control_Costos/solicitar_reclasificacion/index":25,"./vue-components/Control_Presupuesto/presupuesto/index":26,"./vue-components/Finanzas/comprobante_fondo_fijo/create":27,"./vue-components/Finanzas/comprobante_fondo_fijo/edit":28,"./vue-components/Reportes/subcontratos-estimacion":29,"./vue-components/Tesoreria/movimientos_bancarios/index":30,"./vue-components/Tesoreria/traspaso_cuentas/index":31,"./vue-components/errors":32,"./vue-components/global-errors":33,"./vue-components/kardex_material/kardex-material-index":34,"./vue-components/select2":35}],6:[function(require,module,exports){
+/**
+ * Configuración Components
+ */
+require('./vue-components/Configuracion/cierre/index');
+require('./vue-components/Configuracion/seguridad/index');
+
+/**
+ * Control de cambios al presupuesto Components
+ */
+require('./vue-components/Control_Presupuesto/cambios_presupuesto/create');
+
+},{"./vue-components/Compras/material/index":6,"./vue-components/Compras/requisicion/create":7,"./vue-components/Compras/requisicion/edit":8,"./vue-components/Configuracion/cierre/index":9,"./vue-components/Configuracion/seguridad/index":10,"./vue-components/Contabilidad/cuenta_almacen/index":11,"./vue-components/Contabilidad/cuenta_bancos/cuenta-bancaria-edit":12,"./vue-components/Contabilidad/cuenta_concepto/index":13,"./vue-components/Contabilidad/cuenta_contable/index":14,"./vue-components/Contabilidad/cuenta_costo/index":15,"./vue-components/Contabilidad/cuenta_empresa/cuenta-empresa-edit":16,"./vue-components/Contabilidad/cuenta_fondo/index":17,"./vue-components/Contabilidad/cuenta_material/index":18,"./vue-components/Contabilidad/datos_contables/edit":19,"./vue-components/Contabilidad/emails":20,"./vue-components/Contabilidad/modulos/revaluacion/create":21,"./vue-components/Contabilidad/poliza_generada/edit":22,"./vue-components/Contabilidad/poliza_tipo/poliza-tipo-create":23,"./vue-components/Contabilidad/tipo_cuenta_contable/tipo-cuenta-contable-create":24,"./vue-components/Contabilidad/tipo_cuenta_contable/tipo-cuenta-contable-update":25,"./vue-components/Control_Costos/reclasificacion_costos/index":26,"./vue-components/Control_Costos/solicitar_reclasificacion/index":27,"./vue-components/Control_Costos/solicitar_reclasificacion/items":28,"./vue-components/Control_Presupuesto/cambios_presupuesto/create":29,"./vue-components/Control_Presupuesto/presupuesto/index":30,"./vue-components/Finanzas/comprobante_fondo_fijo/create":31,"./vue-components/Finanzas/comprobante_fondo_fijo/edit":32,"./vue-components/Reportes/subcontratos-estimacion":33,"./vue-components/Tesoreria/movimientos_bancarios/index":34,"./vue-components/Tesoreria/traspaso_cuentas/index":35,"./vue-components/errors":36,"./vue-components/global-errors":37,"./vue-components/kardex_material/kardex-material-index":38,"./vue-components/select2":39}],6:[function(require,module,exports){
 'use strict';
 
 Vue.component('material-index', {
@@ -14197,6 +14213,287 @@ Vue.component('requisicion-edit', {
 },{}],9:[function(require,module,exports){
 'use strict';
 
+Vue.component('cierre-index', {
+    data: function data() {
+        return {
+            cierre: {
+                anio: '',
+                mes: ''
+            },
+            cierre_edit: {
+                id: '',
+                anio: '',
+                created_at: '',
+                description: '',
+                mes: '',
+                registro: ''
+            },
+            tipos_tran: {},
+            guardando: false
+        };
+    },
+
+    mounted: function mounted() {
+        var self = this;
+
+        $(document).on('click', '.btn_open', function () {
+            var id = $(this).attr('id');
+            self.open(id);
+        });
+        $(document).on('click', '.btn_close', function () {
+            var id = $(this).attr('id');
+            self.close(id);
+        });
+
+        $('#fecha').datepicker({
+            autoclose: true,
+            minViewMode: 1,
+            format: 'mm/yyyy',
+            language: 'es'
+        }).on('changeDate', function (selected) {
+            self.cierre.anio = new Date(selected.date.valueOf()).getFullYear();
+            self.cierre.mes = new Date(selected.date.valueOf()).getMonth() + 1;
+        });
+
+        $('#cierres_table').DataTable({
+            "processing": true,
+            "serverSide": true,
+            "ordering": true,
+            "searching": false,
+            "order": [[3, "desc"]],
+            "ajax": {
+                "url": App.host + '/configuracion/cierre/paginate',
+                "type": "POST",
+                "beforeSend": function beforeSend() {
+                    self.guardando = true;
+                },
+                "complete": function complete() {
+                    self.guardando = false;
+                },
+                "dataSrc": function dataSrc(json) {
+                    for (var i = 0; i < json.data.length; i++) {
+                        json.data[i].mes = parseInt(json.data[i].mes).getMes();
+                        json.data[i].created_at = new Date(json.data[i].created_at).dateFormat();
+                        json.data[i].registro = json.data[i].user_registro.nombre + ' ' + json.data[i].user_registro.apaterno + ' ' + json.data[i].user_registro.amaterno;
+                    }
+                    return json.data;
+                }
+            },
+            "columns": [{ data: 'anio' }, { data: 'mes' }, { data: 'registro', orderable: false }, { data: 'created_at' }, {
+                data: {},
+                render: function render(data) {
+                    return '<span class="label" style="background-color: ' + (data.abierto == true ? 'rgb(243, 156, 18)' : 'rgb(0, 166, 90)') + '">' + (data.abierto == true ? 'Abierto' : 'Cerrado') + '</span>';
+                },
+                orderable: false
+            }, {
+                data: {},
+                render: function render(data) {
+                    return '<div class="btn-group">' + '<button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown" aria-expanded="true">' + '<span class="caret"></span>' + '</button>' + '<ul class="dropdown-menu">' + '<li>' + '<a href="#" id="' + data.id + '" class="btn_' + (data.abierto == true ? 'close' : 'open') + '">' + (data.abierto == true ? 'Cerrar ' : 'Abrir ') + '<?php echo (Auth::id()) ?></a>' + '</li>' + '</ul>' + '</div>';
+                },
+                orderable: false
+            }],
+            language: {
+                "sProcessing": "Procesando...",
+                "sLengthMenu": "Mostrar _MENU_ registros",
+                "sZeroRecords": "No se encontraron resultados",
+                "sEmptyTable": "Ningún dato disponible en esta tabla",
+                "sInfo": "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
+                "sInfoEmpty": "Mostrando registros del 0 al 0 de un total de 0 registros",
+                "sInfoFiltered": "(filtrado de un total de _MAX_ registros)",
+                "sInfoPostFix": "",
+                "sSearch": "Buscar:",
+                "sUrl": "",
+                "sInfoThousands": ",",
+                "sLoadingRecords": "Cargando...",
+                "oPaginate": {
+                    "sFirst": "Primero",
+                    "sLast": "Último",
+                    "sNext": "Siguiente",
+                    "sPrevious": "Anterior"
+                },
+                "oAria": {
+                    "sSortAscending": ": Activar para ordenar la columna de manera ascendente",
+                    "sSortDescending": ": Activar para ordenar la columna de manera descendente"
+                }
+            }
+        });
+    },
+
+    methods: {
+        generar_cierre: function generar_cierre() {
+            $('#create_cierre_modal').modal('show');
+        },
+
+        save_cierre: function save_cierre() {
+            var self = this;
+
+            $.ajax({
+                url: App.host + '/configuracion/cierre',
+                type: 'POST',
+                data: self.cierre,
+                beforeSend: function beforeSend() {
+                    self.guardando = true;
+                },
+                success: function success() {
+                    $('#cierres_table').DataTable().ajax.reload();
+
+                    $('#create_cierre_modal').modal('hide');
+                    swal({
+                        type: 'success',
+                        title: 'Correcto',
+                        html: 'Cierre de Periodo guardado correctamente'
+                    });
+                },
+                complete: function complete() {
+                    self.guardando = false;
+                }
+            });
+        },
+
+        open: function open(id_cierre) {
+            var self = this;
+
+            swal({
+                title: 'Abrir Periodo',
+                text: 'Escriba el motivo de la apertura del Periodo : ',
+                input: 'text',
+                showCancelButton: true,
+                confirmButtonText: 'Abrir',
+                cancelButtonText: 'Cancelar',
+                showLoaderOnConfirm: true,
+                preConfirm: function preConfirm(motivo) {
+                    return new Promise(function (resolve) {
+                        $.ajax({
+                            'url': App.host + '/configuracion/cierre/' + id_cierre + '/open',
+                            'type': 'POST',
+                            'data': {
+                                '_method': 'PATCH',
+                                'motivo': motivo
+                            },
+                            beforeSend: function beforeSend() {
+                                self.guardando = true;
+                            },
+                            success: function success(response) {
+                                $('#cierres_table').DataTable().ajax.reload(null, false);
+                                swal({
+                                    type: 'success',
+                                    title: 'Periodo abierto correctamente',
+                                    html: '<p>Año : <b>' + response.anio + '</b> ' + 'Mes : <b>' + parseInt(response.mes).getMes() + '</b></p>'
+                                });
+                            },
+                            complete: function complete() {
+                                self.guardando = false;
+                            }
+                        });
+                    });
+                },
+                allowOutsideClick: function allowOutsideClick() {
+                    return !swal.isLoading();
+                }
+            }).then(function (result) {}).catch(swal.noop);
+        },
+
+        close: function close(id_cierre) {
+            var self = this;
+            swal({
+                title: '¿Deseas volver a cerrar el periodo seleccionado?',
+                text: "No se podrán realizar transacciones para el periodo seleccionado",
+                type: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Si, Cerrar',
+                cancelButtonText: 'No, Cancelar'
+            }).then(function (result) {
+
+                $.ajax({
+                    url: App.host + '/configuracion/cierre/' + id_cierre + '/close',
+                    type: 'POST',
+                    data: {
+                        _method: 'PATCH'
+                    },
+                    beforeSend: function beforeSend() {
+                        self.guardando = true;
+                    },
+                    success: function success(response) {
+                        $('#cierres_table').DataTable().ajax.reload(null, false);
+                        swal({
+                            type: 'success',
+                            title: 'Periodo Cerrado Correctamente',
+                            html: '<p>Año : <b>' + response.anio + '</b> ' + 'Mes : <b>' + parseInt(response.mes).getMes() + '</b></p>'
+                        });
+                    },
+                    complete: function complete() {
+                        self.guardando = false;
+                    }
+                });
+            }).catch(swal.noop);
+        }
+    }
+});
+
+},{}],10:[function(require,module,exports){
+'use strict';
+
+Vue.component('configuracion-seguridad-index', {
+    data: function data() {
+        return {
+            roles: [],
+            guardando: false
+        };
+    },
+
+    mounted: function mounted() {
+        $('#roles_table').DataTable({
+            "processing": true,
+            "serverSide": true,
+            "ordering": false,
+            "searching": false,
+            "ajax": {
+                "url": App.host + '/configuracion/seguridad/role/paginate',
+                "type": "POST",
+                "beforeSend": function beforeSend() {
+                    self.guardando = true;
+                },
+                "complete": function complete() {
+                    self.guardando = false;
+                },
+                "dataSrc": 'data'
+            },
+            "columns": [{ data: 'name' }, { data: 'display_name' }, { data: 'description' }, { data: 'created_at' }],
+            language: {
+                "sProcessing": "Procesando...",
+                "sLengthMenu": "Mostrar _MENU_ registros",
+                "sZeroRecords": "No se encontraron resultados",
+                "sEmptyTable": "Ningún dato disponible en esta tabla",
+                "sInfo": "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
+                "sInfoEmpty": "Mostrando registros del 0 al 0 de un total de 0 registros",
+                "sInfoFiltered": "(filtrado de un total de _MAX_ registros)",
+                "sInfoPostFix": "",
+                "sSearch": "Buscar:",
+                "sUrl": "",
+                "sInfoThousands": ",",
+                "sLoadingRecords": "Cargando...",
+                "oPaginate": {
+                    "sFirst": "Primero",
+                    "sLast": "Último",
+                    "sNext": "Siguiente",
+                    "sPrevious": "Anterior"
+                },
+                "oAria": {
+                    "sSortAscending": ": Activar para ordenar la columna de manera ascendente",
+                    "sSortDescending": ": Activar para ordenar la columna de manera descendente"
+                }
+            }
+        });
+    },
+
+    methods: {}
+});
+
+},{}],11:[function(require,module,exports){
+'use strict';
+
 Vue.component('cuenta-almacen-index', {
     props: ['datos_contables', 'url_cuenta_almacen_store', 'almacenes'],
     data: function data() {
@@ -14343,7 +14640,7 @@ Vue.component('cuenta-almacen-index', {
     }
 });
 
-},{}],10:[function(require,module,exports){
+},{}],12:[function(require,module,exports){
 'use strict';
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
@@ -14617,7 +14914,7 @@ Vue.component('cuenta-bancaria-edit', {
     }
 });
 
-},{}],11:[function(require,module,exports){
+},{}],13:[function(require,module,exports){
 'use strict';
 
 Vue.component('cuenta-concepto-index', {
@@ -14901,7 +15198,7 @@ Vue.component('cuenta-concepto-index', {
     }
 });
 
-},{}],12:[function(require,module,exports){
+},{}],14:[function(require,module,exports){
 'use strict';
 
 Vue.component('cuenta-contable-index', {
@@ -15068,7 +15365,7 @@ Vue.component('cuenta-contable-index', {
     }
 });
 
-},{}],13:[function(require,module,exports){
+},{}],15:[function(require,module,exports){
 'use strict';
 
 Vue.component('cuenta-costo-index', {
@@ -15403,7 +15700,7 @@ Vue.component('cuenta-costo-index', {
     }
 });
 
-},{}],14:[function(require,module,exports){
+},{}],16:[function(require,module,exports){
 'use strict';
 
 Vue.component('cuenta-empresa-edit', {
@@ -15632,7 +15929,7 @@ Vue.component('cuenta-empresa-edit', {
     }
 });
 
-},{}],15:[function(require,module,exports){
+},{}],17:[function(require,module,exports){
 'use strict';
 
 Vue.component('cuenta-fondo-index', {
@@ -15781,7 +16078,7 @@ Vue.component('cuenta-fondo-index', {
     }
 });
 
-},{}],16:[function(require,module,exports){
+},{}],18:[function(require,module,exports){
 'use strict';
 
 Vue.component('cuenta-material-index', {
@@ -16027,7 +16324,7 @@ Vue.component('cuenta-material-index', {
     }
 });
 
-},{}],17:[function(require,module,exports){
+},{}],19:[function(require,module,exports){
 'use strict';
 
 Vue.component('datos-contables-edit', {
@@ -16191,7 +16488,7 @@ Vue.component('datos-contables-edit', {
     }
 });
 
-},{}],18:[function(require,module,exports){
+},{}],20:[function(require,module,exports){
 'use strict';
 
 Vue.component('emails', {
@@ -16231,7 +16528,7 @@ Vue.component('emails', {
     }
 });
 
-},{}],19:[function(require,module,exports){
+},{}],21:[function(require,module,exports){
 'use strict';
 
 Vue.component('revaluacion-create', {
@@ -16309,7 +16606,7 @@ Vue.component('revaluacion-create', {
     }
 });
 
-},{}],20:[function(require,module,exports){
+},{}],22:[function(require,module,exports){
 'use strict';
 
 Vue.component('poliza-generada-edit', {
@@ -16678,7 +16975,7 @@ Vue.component('poliza-generada-edit', {
     }
 });
 
-},{}],21:[function(require,module,exports){
+},{}],23:[function(require,module,exports){
 'use strict';
 
 Vue.component('poliza-tipo-create', {
@@ -16884,7 +17181,7 @@ Vue.component('poliza-tipo-create', {
     }
 });
 
-},{}],22:[function(require,module,exports){
+},{}],24:[function(require,module,exports){
 'use strict';
 
 /**
@@ -16952,7 +17249,7 @@ Vue.component('tipo-cuenta-contable-create', {
 
 });
 
-},{}],23:[function(require,module,exports){
+},{}],25:[function(require,module,exports){
 'use strict';
 
 /**
@@ -17024,30 +17321,265 @@ Vue.component('tipo-cuenta-contable-update', {
 
 });
 
-},{}],24:[function(require,module,exports){
+},{}],26:[function(require,module,exports){
 'use strict';
 
 Vue.component('reclasificacion_costos-index', {
-    props: ['url_reclasificacion_costos_index'],
     data: function data() {
         return {
-            'data': {
-                'filtros': []
-            },
-            'guardando': false
+            'solicitudes': [],
+            'partidas': [],
+            'guardando': false,
+            'editando': false,
+            'item': { 'id': 0, 'created_at': '', 'estatus_desc': '', 'estatus_string': {}, 'estatus': {} },
+            'rechazando': false,
+            'rechazo_motivo': '',
+            'dataTable': false,
+            'show_pdf': false
         };
     },
     computed: {},
-    mounted: function mounted() {},
+    mounted: function mounted() {
+        var self = this;
+
+        $(document).on('click', '.btn_abrir', function () {
+            var _this = $(this),
+                editando = !!parseInt(_this.data('editando')),
+                item = self.solicitudes[_this.data('row')],
+                partidas = item.partidas;
+
+            item.estatus_desc = item.estatus_string.descripcion;
+            self.partidas = partidas;
+            self.item = item;
+
+            if (editando) {
+                self.editando = item;
+            }
+
+            $('#solicitud_detalles_modal').modal('show');
+        });
+
+        self.dataTable = $('#solicitudes_table').DataTable({
+            "processing": true,
+            "serverSide": true,
+            "ordering": false,
+            "searching": false,
+            "ajax": {
+                "url": App.host + '/control_costos/solicitudes_reclasificacion/paginate',
+                "type": "GET",
+                "beforeSend": function beforeSend() {
+                    self.guardando = true;
+                },
+                "complete": function complete() {
+                    self.guardando = false;
+                },
+                "dataSrc": function dataSrc(json) {
+                    self.solicitudes = json.data;
+                    return json.data;
+                }
+            },
+            "columns": [{
+                data: {},
+                render: function render(data, type, row, meta) {
+                    return meta.row + 1;
+                }
+            }, {
+                data: 'id',
+                render: function render(data, type, row) {
+                    return '#' + row.id;
+                }
+            }, {
+                data: 'fecha',
+                render: function render(data, type, row) {
+                    return new Date(row.fecha ? row.fecha : row.created_at).dateShortFormat();
+                }
+            }, {
+                data: 'motivo',
+                render: function render(data, type, row) {
+                    return row.motivo.replace(/'/g, "\\'");
+                }
+            }, {
+                data: 'estatusString',
+                render: function render(data, type, row) {
+                    var _estatus = '';
+
+                    if (row.estatus_string.estatus == 2) _estatus = '<span class="label bg-green">' + row.estatus_string.descripcion + '</span> ';else if (row.estatus_string.estatus == -1) _estatus = '<span class="label bg-red">' + row.estatus_string.descripcion + '</span> ';else _estatus = '<span class="label bg-blue">' + row.estatus_string.descripcion + '</span> ';
+
+                    return _estatus;
+                }
+            }, {
+                data: 'acciones',
+                render: function render(data, type, row, meta) {
+                    var _return = "<button type='button' title='Ver' class='btn btn-xs btn-success btn_abrir' data-row='" + meta.row + "' data-editando='0'><i class='fa fa-eye'></i></button>";
+
+                    // Muestra el botón de editar si la solicitud aún no está autorizada/rechazada
+                    if (row.estatus_string.id == 1) {
+                        _return = _return + " <button type='button' title='Editar' class='btn btn-xs btn-info btn_abrir' data-row='" + meta.row + "' data-editando='1'><i class='fa fa-pencil'></i></button>";
+                    }
+
+                    return _return;
+                }
+            }],
+            language: {
+                "sProcessing": "Procesando...",
+                "sLengthMenu": "Mostrar _MENU_ registros",
+                "sZeroRecords": "No se encontraron resultados",
+                "sEmptyTable": "Ningún dato disponible en esta tabla",
+                "sInfo": "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
+                "sInfoEmpty": "Mostrando registros del 0 al 0 de un total de 0 registros",
+                "sInfoFiltered": "(filtrado de un total de _MAX_ registros)",
+                "sInfoPostFix": "",
+                "sSearch": "Buscar:",
+                "sUrl": "",
+                "sInfoThousands": ",",
+                "sLoadingRecords": "Cargando...",
+                "oPaginate": {
+                    "sFirst": "Primero",
+                    "sLast": "Último",
+                    "sNext": "Siguiente",
+                    "sPrevious": "Anterior"
+                },
+                "oAria": {
+                    "sSortAscending": ": Activar para ordenar la columna de manera ascendente",
+                    "sSortDescending": ": Activar para ordenar la columna de manera descendente"
+                }
+            }
+        });
+    },
     directives: {},
-    methods: {}
+    methods: {
+        close_modal_detalles: function close_modal_detalles() {
+            var self = this;
+
+            $('#solicitud_detalles_modal').modal('hide');
+
+            // reset partidas
+            self.partidas = [];
+            self.editando = false;
+            self.rechazando = false;
+            self.rechazo_motivo = '';
+            self.show_pdf = false;
+        },
+        confirm: function confirm(tipo) {
+            var self = this;
+
+            // Manda error si no hay una solicitud para aprobar/rechazar
+            if (self.editando.length > 0) return swal({
+                type: 'warning',
+                title: 'Error',
+                text: 'La solicitud está vacía'
+            });
+
+            // Al rechazar debe de haber un motivo
+            if (tipo == 'rechazar' && self.rechazo_motivo == '') return swal({
+                type: 'warning',
+                title: 'Error',
+                text: 'Debes de especificar un motivo para rechazar'
+            });
+
+            swal({
+                title: tipo.mayusculaPrimerLetra(),
+                text: "¿Estás seguro/a de que deseas " + tipo + " esta solicitud?",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonText: "Si, Continuar",
+                cancelButtonText: "No, Cancelar"
+            }).then(function () {
+                if (tipo == "aprobar") {
+                    self.aprobar();
+                } else if (tipo == "rechazar") {
+                    self.rechazar();
+                }
+            }).catch(swal.noop);
+        },
+        aprobar: function aprobar() {
+            var self = this,
+                str = { 'data': JSON.stringify(self.editando), 'tipo': 'aprobar' };
+
+            $.ajax({
+                type: 'POST',
+                url: App.host + '/control_costos/solicitudes_reclasificacion/store',
+                data: str,
+                beforeSend: function beforeSend() {},
+                success: function success(data, textStatus, xhr) {
+
+                    if (data.resultado) self.dataTable.ajax.reload(function () {
+                        swal({
+                            type: 'success',
+                            title: '',
+                            html: 'La solicitud fué autorizada'
+                        });
+                    });else swal({
+                        type: 'warning',
+                        title: '',
+                        html: 'La operación no pudo concretarse'
+                    });
+
+                    self.close_modal_detalles();
+                },
+                complete: function complete() {}
+            });
+        },
+        rechazar: function rechazar() {
+            var self = this,
+                str = { 'data': JSON.stringify(self.editando), 'tipo': 'rechazar', 'motivo': self.rechazo_motivo };
+
+            $.ajax({
+                type: 'POST',
+                url: App.host + '/control_costos/solicitudes_reclasificacion/store',
+                data: str,
+                beforeSend: function beforeSend() {},
+                success: function success(data, textStatus, xhr) {
+
+                    if (data.resultado) self.dataTable.ajax.reload(function () {
+                        swal({
+                            type: 'success',
+                            title: '',
+                            html: 'La solicitud fué rechazada'
+                        });
+                    });else swal({
+                        type: 'warning',
+                        title: '',
+                        html: 'La operación no pudo concretarse'
+                    });
+
+                    self.close_modal_detalles();
+                },
+                complete: function complete() {}
+            });
+        },
+        rechazar_motivo: function rechazar_motivo() {
+
+            var self = this;
+
+            self.rechazando = true;
+        },
+        cancelar_rechazo: function cancelar_rechazo() {
+            var self = this;
+
+            self.rechazando = false;
+            self.rechazo_motivo = '';
+        },
+        pdf: function pdf(id) {
+            var self = this,
+                url = App.host + '/control_costos/solicitudes_reclasificacion/generarpdf?item=' + id;
+
+            self.show_pdf = url;
+        },
+        html_decode: function html_decode(input) {
+            var e = document.createElement('div');
+            e.innerHTML = input;
+
+            return e.childNodes.length === 0 ? "" : e.childNodes[0].nodeValue;
+        }
+    }
 });
 
-},{}],25:[function(require,module,exports){
+},{}],27:[function(require,module,exports){
 'use strict';
 
 Vue.component('solicitar_reclasificacion-index', {
-    props: ['url_solicitar_reclasificacion_index', 'max_niveles', 'filtros', 'operadores'],
+    props: ['url_solicitar_reclasificacion_index', 'max_niveles', 'filtros', 'operadores', 'tipos_transacciones'],
     data: function data() {
         return {
             'data': {
@@ -17060,11 +17592,19 @@ Vue.component('solicitar_reclasificacion-index', {
                     'operador': '',
                     'texto': ''
                 },
+                filtro_tran: {
+                    'tipo': '',
+                    'folio': ''
+                },
                 'resultados': [],
-                'tipos_transacciones': [],
+                'resumen': [],
+                'detalles': [],
+                'desglosar_descripcion': '',
                 'subtotal': 0,
                 'subimporte': 0,
-                'total_resultados': 0
+                'total_resultados': 0,
+                'desglosar': [],
+                'loading': false
             }
         };
     },
@@ -17086,10 +17626,11 @@ Vue.component('solicitar_reclasificacion-index', {
                 var cont = Object.keys(t).filter(function (t2) {
                     return t[t2] != null;
                 });
-                if (cont.length - 4 > result) {
-                    result = cont.length - 4;
+                if (cont.length - 3 > result) {
+                    result = cont.length - 3;
                 }
             });
+
             return result;
         }
     },
@@ -17152,6 +17693,73 @@ Vue.component('solicitar_reclasificacion-index', {
             Vue.set(self.data, 'temp_filtro', '');
             Vue.set(self.data, 'condicionante', '');
         },
+        open_modal_transaccion: function open_modal_transaccion() {
+
+            $('#transaccion_filtro_modal').modal('show');
+            $('#transaccion').focus();
+        },
+        close_modal_transaccion: function close_modal_transaccion() {
+
+            var self = this;
+
+            Vue.set(self.data, 'filtro_tran', {
+                'tipo': '',
+                'folio': ''
+            });
+
+            $('#transaccion_filtro_modal').modal('hide');
+        },
+        agregar_filtro_tran: function agregar_filtro_tran() {
+            var self = this,
+                str = { 'data': JSON.stringify(self.data.filtro_tran) },
+                total_resultados = 0,
+                subtotal = 0,
+                subimporte = 0;
+
+            if (self.data.filtro_tran.tipo.length == 0) {
+                return swal({
+                    type: 'warning',
+                    title: 'Agrega un filtro',
+                    html: 'Por favor agrega un filtro antes de buscar'
+                });
+            }
+
+            $.ajax({
+                type: 'GET',
+                url: self.url_solicitar_reclasificacion_index + '/findtransaccion',
+                data: str,
+                beforeSend: function beforeSend() {},
+                success: function success(data, textStatus, xhr) {
+
+                    if (data.detalles.length != 0) swal({
+                        type: 'success',
+                        title: '¡Se encontraron resultados!',
+                        html: '',
+                        onClose: function onClose() {
+
+                            $.each(data.resumen, function (key, value) {
+                                subtotal = subtotal + parseInt(value.cantidad);
+                                subimporte = subimporte + parseInt(value.monto);
+                            });
+
+                            Vue.set(self.data, 'subtotal', subtotal);
+                            Vue.set(self.data, 'subimporte', subimporte);
+                            Vue.set(self.data, 'desglosar_descripcion', data.detalles[0].descripcion);
+                            Vue.set(self.data, 'desglosar', data.detalles);
+                            Vue.set(self.data, 'resumen', data.resumen);
+                            Vue.set(self.data, 'detalles', data.detalles);
+                            $('#tipos_transaccion').modal('show');
+                            self.close_modal_transaccion();
+                        }
+                    });else swal({
+                        type: 'warning',
+                        title: 'No se encontraron resultados',
+                        html: ''
+                    });
+                },
+                complete: function complete() {}
+            });
+        },
         open_modal_agregar: function open_modal_agregar(condicionante, item) {
             var self = this;
 
@@ -17167,6 +17775,7 @@ Vue.component('solicitar_reclasificacion-index', {
             var self = this;
 
             $('#agregar_filtro_modal').modal('hide');
+            self.close_modal_transaccion();
             self.reset_agregar();
         },
         buscar: function buscar() {
@@ -17186,7 +17795,7 @@ Vue.component('solicitar_reclasificacion-index', {
 
             $.ajax({
                 type: 'GET',
-                url: self.url_solicitar_reclasificacion_index + '/find',
+                url: self.url_solicitar_reclasificacion_index + '/findmovimiento',
                 data: str,
                 beforeSend: function beforeSend() {},
                 success: function success(data, textStatus, xhr) {
@@ -17285,7 +17894,8 @@ Vue.component('solicitar_reclasificacion-index', {
 
             Vue.set(self.data, 'subtotal', 0);
             Vue.set(self.data, 'subimporte', 0);
-            Vue.set(self.data, 'tipos_transacciones', []);
+            Vue.set(self.data, 'resumen', []);
+            Vue.set(self.data, 'detalles', []);
 
             $.ajax({
                 type: 'GET',
@@ -17293,16 +17903,16 @@ Vue.component('solicitar_reclasificacion-index', {
                 data: { id_concepto: id_concepto },
                 beforeSend: function beforeSend() {},
                 success: function success(data, textStatus, xhr) {
-
-                    if (data.resultados.length > 0) {
-                        $.each(data.resultados, function (key, value) {
-                            subtotal = subtotal + parseInt(value.cantidad_transacciones);
+                    if (data.resumen) {
+                        $.each(data.resumen, function (key, value) {
+                            subtotal = subtotal + parseInt(value.cantidad);
                             subimporte = subimporte + parseInt(value.monto);
                         });
 
                         Vue.set(self.data, 'subtotal', subtotal);
                         Vue.set(self.data, 'subimporte', subimporte);
-                        Vue.set(self.data, 'tipos_transacciones', data.resultados);
+                        Vue.set(self.data, 'resumen', data.resumen);
+                        Vue.set(self.data, 'detalles', data.detalles);
                         $('#tipos_transaccion').modal('show');
                     } else {
                         swal({
@@ -17317,16 +17927,336 @@ Vue.component('solicitar_reclasificacion-index', {
         },
         close_modal_tipos_transaccion: function close_modal_tipos_transaccion() {
             var self = this;
+
+            Vue.set(self.data, 'desglosar', []);
+            Vue.set(self.data, 'resumen', []);
             $('#tipos_transaccion').modal('hide');
+        },
+        clean_desglosar: function clean_desglosar() {
+            var self = this;
+
+            Vue.set(self.data, 'desglosar', []);
+            Vue.set(self.data, 'desglosar_descripcion', '');
+        },
+        desglosar_tipos: function desglosar_tipos(tipo_transaccion, opciones) {
+            var self = this,
+                filtrado = [];
+
+            self.clean_desglosar();
+
+            // Muestra detalles de acuerdo al tipo de transaccion
+            if (tipo_transaccion && opciones) {
+                filtrado = self.data.detalles.filter(function (e) {
+                    return e.descripcion == tipo_transaccion && e.opciones == opciones;
+                });
+            } else filtrado = self.data.detalles;
+
+            Vue.set(self.data, 'desglosar', filtrado);
+            Vue.set(self.data, 'desglosar_descripcion', tipo_transaccion);
+        },
+        mostrar_items: function mostrar_items(id_transaccion, id_concepto) {
+            var self = this;
+
+            swal({
+                title: "Mostrar items",
+                text: "¿Estás seguro/a de querer mostrar los items para esta transacción? Se abrirá una nueva pantalla",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonText: "Si, Continuar",
+                cancelButtonText: "No, Cancelar"
+            }).then(function () {
+                window.location.href = self.url_solicitar_reclasificacion_index + '/items/' + id_concepto + '/' + id_transaccion;
+            }).catch(swal.noop);
         }
     },
     directives: {}
 });
 
-},{}],26:[function(require,module,exports){
+},{}],28:[function(require,module,exports){
 'use strict';
 
-Vue.component('control_presupuesto-index', {
+Vue.component('solicitar_reclasificacion-items', {
+    props: ['url_solicitar_reclasificacion_index', 'id_transaccion', 'id_concepto_antiguo', 'items', 'max_niveles', 'filtros', 'operadores'],
+    data: function data() {
+        return {
+            'data': {
+                'items': this.items,
+                'filtros': this.filtros,
+                'operadores': this.operadores,
+                'agrega': {
+                    'nivel': '',
+                    'operador': '',
+                    'texto': ''
+                },
+                'resultados': [],
+                'subtotal': 0,
+                'subimporte': 0,
+                'total_resultados': 0,
+                'temp_index': false,
+                'id_concepto_antiguo': false,
+                'solicitudes': [],
+                'motivo': '',
+                'fecha': moment().format('YYYY-MM-DD')
+            }
+        };
+    },
+    computed: {
+        niveles: function niveles() {
+            var self = this,
+                niveles = [],
+                paso = 1;
+
+            for (paso; paso <= self.max_niveles; paso++) {
+                niveles.push({ numero: paso, nombre: "Nivel " + paso });
+            }
+
+            return niveles;
+        },
+        niveles_n: function niveles_n() {
+            var result = 0;
+            this.data.resultados.forEach(function (t) {
+                var cont = Object.keys(t).filter(function (t2) {
+                    return t[t2] != null;
+                });
+                if (cont.length - 2 > result) {
+                    result = cont.length - 2;
+                }
+            });
+
+            return result;
+        }
+    },
+    mounted: function mounted() {
+        var self = this;
+
+        $("#Fecha").datepicker().on("changeDate", function () {
+            var thisElement = $(this);
+
+            Vue.set(self.data, 'fecha', thisElement.val());
+        });
+    },
+    directives: {
+        datepicker: {
+            inserted: function inserted(el) {
+                $(el).datepicker({
+                    autoclose: true,
+                    language: 'es',
+                    todayHighlight: true,
+                    clearBtn: true,
+                    format: 'yyyy-mm-dd'
+                });
+            }
+        }
+    },
+    methods: {
+        agregar_filtro: function agregar_filtro() {
+            var self = this,
+                vacios = [],
+                temp = [];
+
+            // Los campos  no puedene star vacios
+            $.each(self.data.agrega, function (index, value) {
+                if (value === "") {
+                    vacios.push(index);
+                }
+            });
+
+            // Manda error si están vacios
+            if (vacios.length > 0) return swal({
+                type: 'warning',
+                title: 'Los siguientes campos no pueden estar vacios:',
+                html: '<ul class="list-group"><li class="list-group-item list-group-item-danger">' + vacios.join("<li class=\"list-group-item list-group-item-danger\">") + '</ul>'
+            });
+
+            self.data.filtros.push(self.data.agrega);
+        },
+        buscar: function buscar() {
+            var self = this,
+                str = { 'data': JSON.stringify(self.data.filtros) },
+                total_resultados = 0;
+
+            Vue.set(self.data, 'total_resultados', 0);
+
+            if (self.data.filtros.length == 0) {
+                return swal({
+                    type: 'warning',
+                    title: 'Agrega un filtro',
+                    html: 'Por favor agrega un filtro antes de buscar'
+                });
+            }
+
+            $.ajax({
+                type: 'GET',
+                url: self.url_solicitar_reclasificacion_index + '/find',
+                data: str,
+                beforeSend: function beforeSend() {},
+                success: function success(data, textStatus, xhr) {
+
+                    if (data.data.resultados.length > 0) {
+                        $.each(data.data.resultados, function (key, value) {
+                            total_resultados = total_resultados + parseInt(value.total);
+                        });
+
+                        Vue.set(self.data, 'total_resultados', parseInt(total_resultados).formatMoney(2, '.', ','));
+                        Vue.set(self.data, 'resultados', data.data.resultados);
+                        swal({
+                            type: 'success',
+                            title: '',
+                            html: 'Se encontraron resultados'
+                        });
+                    } else {
+                        swal({
+                            type: 'warning',
+                            title: '',
+                            html: 'No se encontraron resultados'
+                        });
+                    }
+                },
+                complete: function complete() {}
+            });
+        },
+        confirm_eliminar: function confirm_eliminar(index, tipo) {
+            var self = this;
+            swal({
+                title: "Eliminar " + tipo,
+                text: "¿Estás seguro/a de que deseas eliminar este " + tipo + "?",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonText: "Si, Continuar",
+                cancelButtonText: "No, Cancelar"
+            }).then(function () {
+                if (tipo == "resultado") {
+                    self.eliminar_resultado(index);
+                } else if (tipo == "filtro") {
+                    self.eliminar_filtro(index);
+                }
+            }).catch(swal.noop);
+        },
+        eliminar_resultado: function eliminar_resultado(index) {
+            var self = this;
+
+            self.data.resultados.splice(index, 1);
+        },
+        eliminar_filtro: function eliminar_filtro(index) {
+            var self = this;
+
+            self.data.filtros.splice(index, 1);
+
+            if (self.data.filtros.length == 0) {
+                self.reset_agregar();
+            }
+        },
+        reset_agregar: function reset_agregar() {
+            var self = this;
+
+            Vue.set(self.data, 'agrega', {
+                'nivel': '',
+                'operador': '',
+                'texto': ''
+            });
+
+            self.active_item();
+            Vue.set(self.data, 'resultados', []);
+            Vue.set(self.data, 'filtros', []);
+            Vue.set(self.data, 'total_resultados', 0);
+            Vue.set(self.data, 'id_concepto_antiguo', false);
+        },
+        active_item: function active_item() {
+            var self = this;
+        },
+        open_modal_agregar: function open_modal_agregar(item, index) {
+            var self = this;
+
+            Vue.set(self.data, 'temp_index', index);
+            Vue.set(self.data, 'id_concepto_antiguo', item.id_concepto);
+
+            $('#agregar_filtro_modal').modal('show');
+            $('#nivel').focus();
+
+            self.active_item();
+        },
+        close_modal_agregar: function close_modal_agregar() {
+            var self = this;
+
+            $('#agregar_filtro_modal').modal('hide');
+
+            self.reset_agregar();
+        },
+        aplicar: function aplicar(item) {
+            var self = this;
+
+            Vue.set(self.data.items[self.data.temp_index], 'destino_final', item['filtro' + self.niveles_n]);
+            Vue.set(self.data.items[self.data.temp_index], 'id_concepto_nuevo', item['id_concepto']);
+
+            self.data.solicitudes.push(self.data.items[self.data.temp_index]);
+
+            this.close_modal_agregar();
+        },
+        confirm_solicitar: function confirm_solicitar() {
+            var self = this;
+
+            // Se debe de haber seleccionado un nuevo concepto
+            if (self.data.solicitudes.length == 0) return swal({
+                type: 'warning',
+                title: 'Agrega un nuevo concepto',
+                html: 'Por favor agrega un nuevo concepto antes de solicitar'
+            });
+
+            if (self.data.motivo == '') return swal({
+                type: 'warning',
+                title: 'Especifica un motivo',
+                html: 'Por favor especifica un motivo antes de solicitar'
+            });
+
+            swal({
+                title: "Aplicar conceptos",
+                text: "¿Estás seguro/a de que deseas aplicar estos conceptos?",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonText: "Si, Continuar",
+                cancelButtonText: "No, Cancelar"
+            }).then(function () {
+                self.solicitar();
+            }).catch(swal.noop);
+        },
+        solicitar: function solicitar() {
+            var self = this;
+
+            $.ajax({
+                type: 'POST',
+                url: self.url_solicitar_reclasificacion_index,
+                data: {
+                    'motivo': self.data.motivo,
+                    'solicitudes': self.data.solicitudes,
+                    'fecha': self.data.fecha
+                },
+                beforeSend: function beforeSend() {},
+                success: function success(data, textStatus, xhr) {
+                    swal({
+                        type: 'success',
+                        title: '',
+                        html: 'Solicitud elaborada con éxito',
+                        onClose: function onClose() {
+                            window.location.href = App.host + '/control_costos/solicitudes_reclasificacion';
+                        }
+                    });
+                },
+                complete: function complete(data) {
+
+                    if (typeof data.getResponseHeader('next-date') != null) {
+                        $('#Fecha').datepicker('update', data.getResponseHeader('next-date'));
+                        Vue.set(self.data, 'fecha', data.getResponseHeader('next-date'));
+                    }
+                }
+            });
+        }
+    }
+});
+
+},{}],29:[function(require,module,exports){
+'use strict';
+
+Vue.component('control_cambio_presupuesto-create', {
     props: ['max_niveles', 'operadores'],
     data: function data() {
         return {
@@ -17372,7 +18302,6 @@ Vue.component('control_presupuesto-index', {
                 },
                 "dataSrc": function dataSrc(json) {
                     for (var i = 0; i < json.data.length; i++) {
-                        console.log('panda');
                         json.data[i].monto_presupuestado = '$' + parseInt(json.data[i].monto_presupuestado).formatMoney(2, ',', '.');
                         json.data[i].monto = '$' + parseInt(json.data[i].monto).formatMoney(2, ',', '.');
                         json.data[i].precio_unitario = '$' + parseInt(json.data[i].precio_unitario).formatMoney(2, ',', '.');
@@ -17458,7 +18387,141 @@ Vue.component('control_presupuesto-index', {
     }
 });
 
-},{}],27:[function(require,module,exports){
+},{}],30:[function(require,module,exports){
+'use strict';
+
+Vue.component('control_presupuesto-index', {
+    props: ['max_niveles', 'operadores'],
+    data: function data() {
+        return {
+            conceptos: [],
+            filtros: [],
+            form: {
+                filtro: {
+                    nivel: '',
+                    operador: '',
+                    texto: ''
+                }
+            },
+            cargando: false
+        };
+    },
+    computed: {
+        niveles: function niveles() {
+            var niveles = [],
+                paso = 1;
+            for (paso; paso <= this.max_niveles; paso++) {
+                niveles.push({ numero: paso, nombre: "Nivel " + paso });
+            }
+            return niveles;
+        }
+    },
+    mounted: function mounted() {
+        var self = this;
+        $('#conceptos_table').DataTable({
+            "processing": true,
+            "serverSide": true,
+            "ordering": false,
+            "ajax": {
+                "url": App.host + '/conceptos/getPaths',
+                "type": "POST",
+                "beforeSend": function beforeSend() {
+                    self.cargando = true;
+                },
+                "data": function data(d) {
+                    d.filtros = self.filtros;
+                },
+                "complete": function complete() {
+                    self.cargando = false;
+                },
+                "dataSrc": function dataSrc(json) {
+                    for (var i = 0; i < json.data.length; i++) {
+                        json.data[i].monto_presupuestado = '$' + parseInt(json.data[i].monto_presupuestado).formatMoney(2, ',', '.');
+                        json.data[i].monto = '$' + parseInt(json.data[i].monto).formatMoney(2, ',', '.');
+                        json.data[i].precio_unitario = '$' + parseInt(json.data[i].precio_unitario).formatMoney(2, ',', '.');
+                    }
+                    return json.data;
+                }
+            },
+            "columns": [{ data: 'filtro1' }, { data: 'filtro2' }, { data: 'filtro3' }, { data: 'filtro4' }, { data: 'filtro5' }, { data: 'filtro6' }, { data: 'filtro7' }, { data: 'filtro8' }, { data: 'filtro9' }, { data: 'filtro10' }, { data: 'filtro11' }, { data: 'unidad' }, { data: 'cantidad_presupuestada', className: 'text-right' }, { data: 'precio_unitario', className: 'text-right' }, { data: 'monto', className: 'text-right' }, { data: 'monto_presupuestado', className: 'text-right' }],
+            language: {
+                "sProcessing": "Procesando...",
+                "sLengthMenu": "Mostrar _MENU_ registros",
+                "sZeroRecords": "No se encontraron resultados",
+                "sEmptyTable": "Ningún dato disponible en esta tabla",
+                "sInfo": "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
+                "sInfoEmpty": "Mostrando registros del 0 al 0 de un total de 0 registros",
+                "sInfoFiltered": "(filtrado de un total de _MAX_ registros)",
+                "sInfoPostFix": "",
+                "sSearch": "Buscar:",
+                "sUrl": "",
+                "sInfoThousands": ",",
+                "sLoadingRecords": "Cargando...",
+                "oPaginate": {
+                    "sFirst": "Primero",
+                    "sLast": "Último",
+                    "sNext": "Siguiente",
+                    "sPrevious": "Anterior"
+                },
+                "oAria": {
+                    "sSortAscending": ": Activar para ordenar la columna de manera ascendente",
+                    "sSortDescending": ": Activar para ordenar la columna de manera descendente"
+                }
+            }
+        });
+    },
+    methods: {
+        set_filtro: function set_filtro() {
+            var nivel = this.form.filtro.nivel;
+            var result = this.filtros.filter(function (filtro) {
+                return filtro.nivel == nivel;
+            });
+
+            if (result.length) {
+                result[0].operadores.push({
+                    sql: this.form.filtro.operador.replace('{texto}', this.form.filtro.texto),
+                    operador: this.operadores[this.form.filtro.operador],
+                    texto: this.form.filtro.texto
+                });
+            } else {
+                this.filtros.push({
+                    nivel: this.form.filtro.nivel,
+                    operadores: [{
+                        sql: this.form.filtro.operador.replace('{texto}', this.form.filtro.texto),
+                        operador: this.operadores[this.form.filtro.operador],
+                        texto: this.form.filtro.texto
+                    }]
+                });
+            }
+
+            this.close_modal();
+        },
+
+        close_modal: function close_modal() {
+            $('#agregar_filtro_modal').modal('hide');
+            Vue.set(this.form, 'filtro', { nivel: '', operador: '', texto: '' });
+        },
+
+        eliminar: function eliminar(filtro, operador) {
+            Vue.delete(filtro.operadores, filtro.operadores.indexOf(operador));
+            if (!filtro.operadores.length) {
+                Vue.delete(this.filtros, this.filtros.indexOf(filtro));
+            }
+
+            if (!this.filtros.length) {
+                var table = $('#conceptos_table').DataTable();
+                table.ajax.reload();
+            }
+        },
+
+        get_conceptos: function get_conceptos() {
+            var table = $('#conceptos_table').DataTable();
+            table.ajax.reload();
+        }
+    }
+});
+
+},{}],31:[function(require,module,exports){
 'use strict';
 
 Vue.component('comprobante-fondo-fijo-create', {
@@ -17934,7 +18997,7 @@ Vue.component('comprobante-fondo-fijo-create', {
     }
 });
 
-},{}],28:[function(require,module,exports){
+},{}],32:[function(require,module,exports){
 'use strict';
 
 Vue.component('comprobante-fondo-fijo-edit', {
@@ -18388,7 +19451,7 @@ Vue.component('comprobante-fondo-fijo-edit', {
     }
 });
 
-},{}],29:[function(require,module,exports){
+},{}],33:[function(require,module,exports){
 'use strict';
 
 Vue.component('subcontratos-estimacion', {
@@ -18467,7 +19530,7 @@ Vue.component('subcontratos-estimacion', {
     }
 });
 
-},{}],30:[function(require,module,exports){
+},{}],34:[function(require,module,exports){
 'use strict';
 
 Vue.component('movimientos_bancarios-index', {
@@ -18812,7 +19875,7 @@ Vue.component('movimientos_bancarios-index', {
     }
 });
 
-},{}],31:[function(require,module,exports){
+},{}],35:[function(require,module,exports){
 'use strict';
 
 Vue.component('traspaso-cuentas-index', {
@@ -19119,7 +20182,7 @@ Vue.component('traspaso-cuentas-index', {
     }
 });
 
-},{}],32:[function(require,module,exports){
+},{}],36:[function(require,module,exports){
 'use strict';
 
 Vue.component('app-errors', {
@@ -19128,7 +20191,7 @@ Vue.component('app-errors', {
     template: require('./templates/errors.html')
 });
 
-},{"./templates/errors.html":36}],33:[function(require,module,exports){
+},{"./templates/errors.html":40}],37:[function(require,module,exports){
 'use strict';
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
@@ -19154,7 +20217,7 @@ Vue.component('global-errors', {
   }
 });
 
-},{"./templates/global-errors.html":37}],34:[function(require,module,exports){
+},{"./templates/global-errors.html":41}],38:[function(require,module,exports){
 'use strict';
 
 Vue.component('kardex-material-index', {
@@ -19304,7 +20367,7 @@ Vue.component('kardex-material-index', {
 
 });
 
-},{}],35:[function(require,module,exports){
+},{}],39:[function(require,module,exports){
 'use strict';
 
 Vue.component('select2', {
@@ -19353,9 +20416,9 @@ Vue.component('select2', {
     }
 });
 
-},{}],36:[function(require,module,exports){
+},{}],40:[function(require,module,exports){
 module.exports = '<div id="form-errors" v-cloak>\n  <div class="alert alert-danger" v-if="form.errors.length">\n    <ul>\n      <li v-for="error in form.errors">{{ error }}</li>\n    </ul>\n  </div>\n</div>';
-},{}],37:[function(require,module,exports){
+},{}],41:[function(require,module,exports){
 module.exports = '<div class="alert alert-danger" v-show="errors.length">\n  <ul>\n    <li v-for="error in errors">{{ error }}</li>\n  </ul>\n</div>';
 },{}]},{},[4]);
 

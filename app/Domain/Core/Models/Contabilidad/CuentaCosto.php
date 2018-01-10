@@ -28,7 +28,7 @@ class CuentaCosto extends BaseModel
 
         static::creating(function ($model) {
             $model->estatus = 1;
-            $model->registro = auth()->user()->idusuario;
+            $model->registro = auth()->id();
         });
     }
 

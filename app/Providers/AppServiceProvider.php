@@ -239,8 +239,20 @@ class AppServiceProvider extends ServiceProvider
             \Ghi\Domain\Core\Repositories\Contabilidad\EloquentCostoRepository::class
         );
         $this->app->bind(
-            \Ghi\Domain\Core\Contracts\ControlCostos\SolicitarReclasificacionesRepository::class,
-            \Ghi\Domain\Core\Repositories\ControlCostos\EloquentSolicitarReclasificacionesRepository::class
+            \Ghi\Domain\Core\Contracts\ControlCostos\SolicitudReclasificacionRepository::class,
+            \Ghi\Domain\Core\Repositories\ControlCostos\EloquentSolicitudReclasificacionRepository::class
+        );
+        $this->app->bind(
+            \Ghi\Domain\Core\Contracts\ControlCostos\SolicitudReclasificacionPartidasRepository::class,
+            \Ghi\Domain\Core\Repositories\ControlCostos\EloquentSolicitudReclasificacionPartidasRepository::class
+        );
+        $this->app->bind(
+            \Ghi\Domain\Core\Contracts\ControlCostos\SolicitudReclasificacionAutorizadaRepository::class,
+            \Ghi\Domain\Core\Repositories\ControlCostos\EloquentSolicitudReclasificacionAutorizadaRepository::class
+        );
+        $this->app->bind(
+            \Ghi\Domain\Core\Contracts\ControlCostos\SolicitudReclasificacionRechazadaRepository::class,
+            \Ghi\Domain\Core\Repositories\ControlCostos\EloquentSolicitudReclasificacionRechazadaRepository::class
         );
         $this->app->bind(
             \Ghi\Domain\Core\Contracts\Contabilidad\ConceptoPathRepository::class,
@@ -270,6 +282,29 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(
             \Ghi\Domain\Core\Contracts\ConciliacionRepository::class,
             \Ghi\Domain\Core\Repositories\EloquentConciliacionRepository::class
+        );
+        $this->app->bind(
+            \Ghi\Domain\Core\Contracts\Seguridad\CierreRepository::class,
+            \Ghi\Domain\Core\Repositories\Seguridad\EloquentCierreRepository::class
+        );
+        $this->app->bind(
+            \Ghi\Domain\Core\Contracts\TipoTranRepository::class,
+            \Ghi\Domain\Core\Repositories\EloquentTipoTranRepository::class
+        );
+
+        $this->app->bind(
+            \Ghi\Domain\Core\Contracts\MovimientosRepository::class,
+            \Ghi\Domain\Core\Repositories\EloquentMovimientosRepository::class
+        );
+
+        $this->app->bind(
+            \Ghi\Domain\Core\Contracts\Seguridad\PermissionRepository::class,
+            \Ghi\Domain\Core\Repositories\Seguridad\EloquentPermissionRepository::class
+        );
+
+        $this->app->bind(
+            \Ghi\Domain\Core\Contracts\Seguridad\RoleRepository::class,
+            \Ghi\Domain\Core\Repositories\Seguridad\EloquentRoleRepository::class
         );
     }
 }

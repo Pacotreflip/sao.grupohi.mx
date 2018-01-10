@@ -7,7 +7,8 @@ use Dingo\Api\Routing\Helpers;
 
 use Ghi\Domain\Core\Contracts\Contabilidad\ConceptoPathRepository;
 use Ghi\Domain\Core\Contracts\Contabilidad\ConceptoRepository;
-use Ghi\Domain\Core\Contracts\ControlCostos\SolicitarReclasificacionesRepository;
+use Ghi\Domain\Core\Contracts\ControlCostos\SolicitudReclasificacionPartidasRepository;
+use Ghi\Domain\Core\Contracts\ControlCostos\SolicitudReclasificacionRepository;
 use Ghi\Domain\Core\Contracts\TransaccionRepository;
 use Ghi\Domain\Core\Models\Concepto;
 use Illuminate\Http\Request;
@@ -16,16 +17,20 @@ class SolicitarReclasificacionController extends Controller
 {
     use Helpers;
     protected $operadores = [
-        'igual a' => '=',
-        'diferente de' => '!=',
-        'empieza con' => '{texto}%',
-        'termina con' => '%{texto}',
-        'contiene' => '%{texto}%'
+        'igual a' => "= '{texto}'",
+        'diferente de' => "!= '{texto}'",
+        'empieza con' => "LIKE '{texto}%'",
+        'termina con' => "LIKE '%{texto}'",
+        'contiene' => "LIKE '%{texto}%'"
     ];
     protected $condicionantes = [
         'Y' => 'AND',
         'O' => 'OR',
     ];
+    /**
+     * @var SolicitudReclasificacionRepository
+     */
+    private $solicitud;
 
     /**
      * SolicitarReclasificacionController constructor.
@@ -35,17 +40,22 @@ class SolicitarReclasificacionController extends Controller
      * @param TransaccionRepository $transaccion
      * @internal param TransaccionRepository $trasaccion
      */
-    public function __construct(ConceptoRepository $concepto, ConceptoPathRepository $conceptoPath, SolicitarReclasificacionesRepository $solicitar, TransaccionRepository $transaccion)
+    public function __construct(ConceptoRepository $concepto, ConceptoPathRepository $conceptoPath, TransaccionRepository $transaccion, SolicitudReclasificacionRepository $solicitud, SolicitudReclasificacionPartidasRepository $partidas)
     {
         parent::__construct();
 
-//        $this->middleware('auth');
+        $this->middleware('auth');
         $this->middleware('context');
+
+        // Permisos
+        $this->middleware('permission:solicitar_reclasificacion', ['only' => ['index', 'findmovimiento', 'find', 'tipos', 'items', 'store']]);
+        $this->middleware('permission:consultar_reclasificacion', ['only' => ['index', 'findmovimiento', 'find', 'tipos', 'items']]);
 
         $this->concepto = $concepto;
         $this->conceptoPath = $conceptoPath;
-        $this->solicitar = $solicitar;
         $this->transaccion = $transaccion;
+        $this->solicitud = $solicitud;
+        $this->partidas = $partidas;
     }
 
     /**
@@ -57,6 +67,7 @@ class SolicitarReclasificacionController extends Controller
         $data_view = [
             'max_niveles' => $this->concepto->obtenerMaxNumNiveles(),
             'operadores' => $this->operadores,
+            'tipos_transacciones' => $this->transaccion->selectTipos(),
         ];
 
         return view('control_costos.solicitar_reclasificacion.index')
@@ -69,20 +80,31 @@ class SolicitarReclasificacionController extends Controller
      */
     public function store(Request $request)
     {
-        $record = $this->solicitar->create($request->all());
+        $motivo = htmlentities($request->motivo, ENT_QUOTES);
+        $partidas = $request->solicitudes;
 
-        return response()->json(['data' =>
+        $solicitud  = $this->solicitud->create(['motivo' => $motivo, 'fecha' => $request->fecha]);
+
+        if (!empty($solicitud))
+            foreach ($partidas as $p)
+                $this->partidas->create([
+                    'id_solicitud_reclasificacion' => $solicitud->id,
+                    'id_item' => $p['id_item'],
+                    'id_concepto_original' => $p['id_concepto'],
+                    'id_concepto_nuevo' => $p['id_concepto_nuevo']
+                ]);
+
+        return response()->json(
             [
-                'solicitud' => $record
-            ]
-        ], 200);
+                'solicitud' => $solicitud
+            ], 200);
     }
 
     /**
      * @param Request $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function find(Request $request)
+    public function findmovimiento(Request $request)
     {
         $filtros = json_decode($request->data, true);
         $string = "";
@@ -90,30 +112,19 @@ class SolicitarReclasificacionController extends Controller
         $string = '';
 
         foreach ($filtros as $k => $v)
-            foreach ($filtros as $k => $v)
-            {
-                $o = $this->operadores[$v['operador']];
+        {
+            $o = $this->operadores[$v['operador']];
+            $operador = str_replace('{texto}', $v['texto'], $o);
+            $nivel = filter_var($v['nivel'], FILTER_SANITIZE_NUMBER_INT);
 
-                if (strpos($o, '=') !== false)
-                    $operador = $o . " '" . $v['texto'] . "'";
+            //Si existe
+            if (in_array( $nivel, array_keys($niveles)))
+                $niveles[ $nivel] .= ' OR filtro'. $nivel ." ". $operador;
 
-                else
-                    $operador = "LIKE '". str_replace('{texto}', $v['texto'], $o). "'";
+            else
+                $niveles[ $nivel] = " filtro". $nivel ." ". $operador;
 
-                $nivel = filter_var($v['nivel'], FILTER_SANITIZE_NUMBER_INT);
-
-                //Si existe
-                if (in_array( $nivel, array_keys($niveles)))
-                {
-                    $niveles[ $nivel] .= ' OR filtro'. $nivel ." ". $operador;
-                }
-
-                else
-                {
-                    $niveles[ $nivel] = " filtro". $nivel ." ". $operador;
-                }
-
-            }
+        }
 
         $endValue = end($niveles);
         $end = key($niveles);
@@ -125,63 +136,172 @@ class SolicitarReclasificacionController extends Controller
             $count++;
         }
 
-        $resultados = $this->conceptoPath->buscarCostoTotal($string);
+        $resultados = $this->conceptoPath->filtrarConMovimiento($string);
+        $r = [];
 
-//        dd($string);die;
+        foreach ($resultados->toArray() as $k => $v)
+            $r[$k] = array_filter($v);
 
-        return response()->json(['data' => ['resultados' => $resultados]], 200);
+        return response()->json(['data' => ['resultados' => $r]], 200);
+    }
+
+    public function findtransaccion(Request $request)
+    {
+        $filtros = json_decode($request->data, true);
+        $where = [];
+        list($where['tipo'], $where['opciones']) = explode ('-', $filtros['tipo']);
+
+        if (!empty($filtros['folio']))
+            $where['folio'] = filter_var($filtros['folio'], FILTER_SANITIZE_NUMBER_INT);
+
+        $resultados = $this->transaccion->filtrarTipos($where);
+        $resumen = $this->transaccion->filtrarTiposTransaccion($where);
+        $detalles = [];
+
+        foreach ($resumen as $k => $v)
+        {
+            $tipo = $v['descripcion'] == null ? '-' : $v['descripcion'];
+            $resumen[$k]['descripcion'] = $tipo;
+        }
+
+        foreach ($resultados as $k => $r)
+        {
+            $tipo = $r['descripcion'] == null ? '-' : $r['descripcion'];
+
+            if (!isset($detalles[$r['id_transaccion']]))
+                $detalles[$k] = [
+                    'total_transacciones' => 0,
+                    'importe' => 0,
+                    'transacciones' => [],
+                    'descripcion' => $tipo,
+                    'fecha' => $r['fecha']->format('Y/M/d'),
+                    'numero_folio' => $r['numero_folio'],
+                    'id_transaccion' => $r['id_transaccion'],
+                    'id_concepto' => $r['id_concepto'],
+                    'monto' => $r['monto']
+                ];
+
+            if (!empty($detalles[$k]))
+            {
+                $detalles[$k]['total_transacciones']++;
+                $detalles[$k]['importe'] = $detalles[$k]['importe'] + $r['monto'];
+                $detalles[$k]['transacciones'][] = $r;
+            }
+        }
+
+        return response()->json([
+            'detalles' => $detalles,
+            'resumen' => $resumen
+        ], 200);
+    }
+
+    public function find(Request $request)
+    {
+        $filtros = json_decode($request->data, true);
+        $string = "";
+        $niveles = [];
+        $string = '';
+
+        foreach ($filtros as $k => $v)
+        {
+            $o = $this->operadores[$v['operador']];
+            $operador = str_replace('{texto}', $v['texto'], $o);
+            $nivel = filter_var($v['nivel'], FILTER_SANITIZE_NUMBER_INT);
+
+            //Si existe
+            if (in_array( $nivel, array_keys($niveles)))
+                $niveles[ $nivel] .= ' OR filtro'. $nivel ." ". $operador;
+
+            else
+                $niveles[ $nivel] = " filtro". $nivel ." ". $operador;
+        }
+
+        $endValue = end($niveles);
+        $end = key($niveles);
+        $count = 0;
+
+        foreach ($niveles as $nivel => $cadena)
+        {
+            $string .= ($count == 0 ? "" : " and") . "(". $cadena ." and len(nivel) / 4 = ". $nivel .")";
+            $count++;
+        }
+
+        $resultados = $this->conceptoPath->filtrar($string);
+        $r = [];
+
+        foreach ($resultados->toArray() as $k => $v)
+            $r[$k] = array_filter($v);
+
+        return response()->json(['data' => ['resultados' => $r]], 200);
     }
 
     public function tipos(Request $request)
     {
         $id_concepto = $request->id_concepto;
 
-        $resultados = $this->transaccion->tiposTransaccion($id_concepto);
+        $resumen = $this->transaccion->tiposTransaccion($id_concepto);
+        $detalles = $this->transaccion->detallesTransacciones($id_concepto);
+        $detallesRaw = [];
 
-        return response()->json(['resultados' => $resultados], 200);
+        foreach ($resumen as $k => $v)
+        {
+            $tipo = $v['descripcion'] == null ? '-' : $v['descripcion'];
+            $resumen[$k]['descripcion'] = $tipo;
+        }
+
+        foreach ($detallesRaw as $r)
+        {
+            $tipo = $r['descripcion'] == null ? '-' : $r['descripcion'];
+
+            if (!isset($detalles[$r['id_transaccion']]))
+                $detalles[$r['id_transaccion']] = [
+                    'total_transacciones' => 0,
+                    'importe' => 0,
+                    'transacciones' => [],
+                    'descripcion' => $tipo,
+                    'fecha' => $r['fecha'],
+                    'folio' => $r['numero_folio'],
+                    'id_transaccion' => $r['id_transaccion'],
+                    'id_concepto' => $r['id_concepto'],
+                ];
+
+            $detalles[$r['id_transaccion']]['total_transacciones']++;
+            $detalles[$r['id_transaccion']]['importe'] = $detalles[$r['id_transaccion']]['importe'] + $r['monto'];
+            $detalles[$r['id_transaccion']]['transacciones'][] = $r;
+        }
+
+        return response()->json([
+            'resumen' => $resumen,
+            'detalles' => $detalles,
+        ], 200);
     }
 
-    /**
-     * @param Request $request
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function findBy(Request $request)
+    public function items(Request $request)
     {
-        $item = $this->concepto->findBy($request->attribute, $request->value, $request->with);
-        return response()->json(['data' => ['concepto' => $item]], 200);
-    }
+        $items = $this->transaccion->items($request->id);
+        $titulo = '';
+        $detalles = $this->transaccion->detallesTransacciones($request->id_concepto);
+        $transaccion = [];
 
-    /**
-     * @param Request $request
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function getBy(Request $request) {
-        $items = $this->concepto->getBy($request->attribute, $request->operator, $request->value, $request->with);
-        return response()->json(['data' => ['conceptos' => $items]], 200);
-    }
+        foreach ($items as $k => $i)
+            $items[$k]['concepto'] = Concepto::where('id_concepto', '=', $i['id_concepto'])->first();
 
-    /**
-     * Display the specified resource.
-     *
-     * @return Response
-     */
-    public function getRoot()
-    {
-        $roots = $this->concepto->getRootLevels();
-        $resp=ConceptoTreeTransformer::transform($roots);
-        return response()->json($resp, 200);
+        foreach ($detalles as $d)
+            if ($d['id_transaccion'] == $request->id)
+            {
+                $transaccion = $d;
+                break;
+            }
 
-    }
-
-    public function getNode($id)
-    {
-        $node = $this->concepto->getDescendantsOf($id);
-
-
-        $resp=ConceptoTreeTransformer::transform($node);
-
-        // $data = Fractal::createData($resource);
-        return response()->json($resp, 200);
-
+        return view('control_costos.solicitar_reclasificacion.items')
+            ->with('data_view', [
+                'items' => $items,
+                'id_transaccion' => $request->id,
+                'titulo' => $titulo,
+                'max_niveles' => $this->concepto->obtenerMaxNumNiveles(),
+                'operadores' => $this->operadores,
+                'id_concepto' => $request->id_concepto,
+                'transaccion' => $transaccion,
+            ]);
     }
 }

@@ -49,6 +49,23 @@ require('./vue-components/Tesoreria/movimientos_bancarios/index');
 /**
  * Control de costos Components
  */
-require('./vue-components/Control_Costos/reclasificacion_costos/index');
 require('./vue-components/Control_Costos/solicitar_reclasificacion/index');
+require('./vue-components/Control_Costos/solicitar_reclasificacion/items');
+require('./vue-components/Control_Costos/reclasificacion_costos/index');
+
+/**
+ * Control de Presupuesto Components
+ */
 require('./vue-components/Control_Presupuesto/presupuesto/index');
+
+/**
+ * Configuración Components
+ */
+require('./vue-components/Configuracion/cierre/index');
+require('./vue-components/Configuracion/seguridad/index');
+
+/**
+ * Control de cambios al presupuesto Components
+ */
+require('./vue-components/Control_Presupuesto/cambios_presupuesto/create');
+

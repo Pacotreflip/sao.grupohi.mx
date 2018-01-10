@@ -17,7 +17,7 @@ interface DiaFestivoRepository
     public function find($id);
 
     /**Crea relaciones con otros modelos
-     * @param array $array
+     * @param $relations
      * @return mixed
      */
     public function with($relations);

@@ -12,12 +12,12 @@
                 <div class="tab-content">
                     <div class="tab-pane active" id="subcontratos">
                         <ul class="nav nav-stacked">
-                            {{--@permission(['consultar_movimiento_bancario'])--}}
+                            @permission(['consultar_reclasificacion', 'solicitar_reclasificacion'])
                             <li><a href="{{ route('control_costos.solicitar_reclasificacion.index') }}">SOLICITAR RECLASIFICACIÓN</a></li>
-                            {{--@endpermission--}}
-                            {{--@permission(['consultar_traspaso_cuenta'])--}}
-                            <li><a href="{{ route('control_costos.reclasificacion_costos.index') }}">RECLASIFICACIÓN DE COSTOS</a></li>
-                            {{--@endpermission--}}
+                            @endpermission
+                            @permission(['consultar_reclasificacion', 'autorizar_reclasificacion'])
+                            <li ><a href="{{route('control_costos.solicitudes_reclasificacion.index')}}">SOLICITUDES DE RECLASIFICACIÓN REGISTRADAS</a></li>
+                            @endpermission
                         </ul>
                     </div>
                 </div>
