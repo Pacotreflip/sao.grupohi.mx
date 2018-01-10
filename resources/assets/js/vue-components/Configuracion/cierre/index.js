@@ -1,4 +1,5 @@
 Vue.component('cierre-index', {
+    props: ['editar_cierre_periodo'],
     data : function () {
         return {
             cierre : {
@@ -40,7 +41,7 @@ Vue.component('cierre-index', {
             self.cierre.mes = new Date(selected.date.valueOf()).getMonth() + 1;
         });
 
-        $('#cierres_table').DataTable({
+        var data = {
             "processing": true,
             "serverSide": true,
             "ordering" : true,
@@ -77,22 +78,6 @@ Vue.component('cierre-index', {
                         return '<span class="label" style="background-color: ' + (data.abierto == true ? 'rgb(243, 156, 18)' : 'rgb(0, 166, 90)') + '">' + (data.abierto == true ? 'Abierto' : 'Cerrado') + '</span>'
                     },
                     orderable : false
-                },
-                {
-                    data : {},
-                    render : function(data) {
-                        return  '<div class="btn-group">' +
-                                  '<button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown" aria-expanded="true">' +
-                                    '<span class="caret"></span>' +
-                                  '</button>' +
-                                  '<ul class="dropdown-menu">' +
-                                    '<li>' +
-                                      '<a href="#" id="'+ data.id +'" class="btn_'+(data.abierto == true ? 'close' : 'open')+'">' + (data.abierto == true ? 'Cerrar ' : 'Abrir ') + '<?php echo (Auth::id()) ?></a>' +
-                                    '</li>' +
-                                  '</ul>' +
-                                '</div>';
-                    },
-                    orderable : false
                 }
             ],
             language: {
@@ -119,7 +104,28 @@ Vue.component('cierre-index', {
                     "sSortDescending": ": Activar para ordenar la columna de manera descendente"
                 }
             }
-        });
+        };
+
+        if(self.editar_cierre_periodo) {
+            data.columns.push({
+                data: {},
+                render: function (data) {
+                    return '<div class="btn-group">' +
+                        '<button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown" aria-expanded="true">' +
+                        '<span class="caret"></span>' +
+                        '</button>' +
+                        '<ul class="dropdown-menu">' +
+                        '<li>' +
+                        '<a href="#" id="' + data.id + '" class="btn_' + (data.abierto == true ? 'close' : 'open') + '">' + (data.abierto == true ? 'Cerrar ' : 'Abrir ') + '</a>' +
+                        '</li>' +
+                        '</ul>' +
+                        '</div>';
+                },
+                orderable: false
+            });
+        }
+
+        $('#cierres_table').DataTable(data);
     },
 
     methods : {

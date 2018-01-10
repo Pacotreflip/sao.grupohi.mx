@@ -5,9 +5,10 @@
     {!! Breadcrumbs::render('configuracion.cierre.index') !!}
 @endsection
 @section('main-content')
-    <cierre-index inline-template>
+    <cierre-index inline-template v-cloak :editar_cierre_periodo="{{ \Entrust::can(['editar_cierre_periodo']) ? 'true' : 'false' }}">
         <section>
 
+            @permission('generar_cierre_periodo')
             <div class="row">
                 <div class="col-sm-12">
                     <button @click="generar_cierre" class="btn btn-success btn-app" style="float:right">
@@ -16,6 +17,7 @@
                 </div>
             </div>
             <br>
+            @endpermission
 
             <div class="row">
                 <div class="col-md-12">
@@ -33,7 +35,9 @@
                                         <th>Persona que cerró</th>
                                         <th>Fecha de Cierre</th>
                                         <th>Estatus</th>
+                                        @permission(['editar_cierre_periodo'])
                                         <th>Acciones</th>
+                                        @endpermission
                                     </tr>
                                     </thead>
                                     <tfoot>
@@ -43,7 +47,9 @@
                                         <th>Persona que cerró</th>
                                         <th>Fecha de Cierre</th>
                                         <th>Estatus</th>
+                                        @permission(['editar_cierre_periodo'])
                                         <th>Acciones</th>
+                                        @endpermission
                                     </tr>
                                     </tfoot>
                                 </table>

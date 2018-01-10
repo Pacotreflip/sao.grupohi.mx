@@ -139,19 +139,14 @@
         <div class="tab-pane" id="control-sidebar-settings-tab">
             <form method="post">
                 <h4 class="control-sidebar-heading">Configuración General</h4>
-                <div class="form-group">
-                    <label class="control-sidebar-subheading">
-                        <a href="{{ route('configuracion.cierre.index') }}"></a>
-                    </label>
-                </div>
-
+                @permission(['consultar_cierre_periodo'])
                 <div class="form-group">
                     <label class="control-sidebar-subheading">
                         <a href="{{ route('configuracion.cierre.index') }}">Cierre de Periodo</a>
                     </label>
                     <p>Cierre y Apertura de Periodos para control de registro de transacciones</p>
                 </div>
-
+                @endpermission
                 <!--<div class="form-group">
                     <label class="control-sidebar-subheading">
                         <a href="{{ route('configuracion.seguridad.index') }}">Roles y Permisos</a>
