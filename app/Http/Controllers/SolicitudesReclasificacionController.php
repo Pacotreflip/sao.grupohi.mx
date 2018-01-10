@@ -50,7 +50,10 @@ class SolicitudesReclasificacionController extends Controller
      */
     public function index(Request $request)
     {
-        return view('control_costos.solicitudes_reclasificacion.index');
+        $repetidas = !empty($request->repetidas) ? $request->repetidas : '';
+
+        return view('control_costos.solicitudes_reclasificacion.index')
+            ->with('repetidas', $repetidas);
     }
 
     public function paginate(Request $request) {

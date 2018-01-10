@@ -1,4 +1,5 @@
 Vue.component('reclasificacion_costos-index', {
+    props: ['repetidas'],
     data : function () {
         return {
             'solicitudes': [],
@@ -34,6 +35,19 @@ Vue.component('reclasificacion_costos-index', {
             });
 
             self.dataTable = $('#solicitudes_table').DataTable({
+                "createdRow": function( row, data, dataIndex ) {
+
+                    var $row = $(row),
+                        repetidas = self.repetidas.length > 0 ? JSON.parse(self.repetidas) : [];
+
+                    $row.attr('id', 'solicitud_'+ data.id);
+                    console.log(repetidas.indexOf(data.id));
+
+                    if (repetidas.indexOf(data.id) > 0)
+                    {
+                       $row.find('td:nth-child(5)').append(' <span class="label label-danger">Repetida</span>');
+                    }
+                },
                 "processing": true,
                 "serverSide": true,
                 "ordering" : false,
