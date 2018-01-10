@@ -109,6 +109,11 @@ class RolesPermissionsSeeder extends Seeder
         $consultar_cuenta_costo = Permission::create(['name' => 'consultar_cuenta_costo', 'display_name' => 'Consultar Cuenta de Costo', 'description' => 'Permiso para consultar la lista de cuentas de costos']);
         $editar_cuenta_costo    = Permission::create(['name' => 'editar_cuenta_costo', 'display_name' => 'Editar Cuenta de Costo', 'description' => 'Permiso para editar cuentas de Costos']);
 
+        //Cierres de Periodo
+        $consultar_cierre_periodo = Permission::create(['name' => 'consultar_cierre_periodo', 'display_name' => 'Cierre de Periodo', 'descriptio' => 'Cierre de Periodo']);
+        $generar_cierre_periodo = Permission::create(['name' => 'generar_cierre_periodo', 'display_name' => 'Cierre de Periodo', 'descriptio' => 'Cierre de Periodo']);
+        $editar_cierre_periodo = Permission::create(['name' => 'editar_cierre_periodo', 'display_name' => 'Cierre de Periodo', 'descriptio' => 'Cierre de Periodo']);
+
         /**
          * Roles
          */
@@ -131,5 +136,7 @@ class RolesPermissionsSeeder extends Seeder
         $contador->attachPermissions([$editar_cuenta_costo, $registrar_cuenta_costo, $consultar_cuenta_costo, $eliminar_cuenta_costo]);
         $tesorero->attachPermissions([$editar_comprobante_fondo_fijo, $registrar_comprobante_fondo_fijo, $consultar_comprobante_fondo_fijo,$eliminar_comprobante_fondo_fijo]);
         $consulta_finanzas->attachPermission($consultar_comprobante_fondo_fijo);
+        $contador->attachPermissions([$consultar_cierre_periodo, $generar_cierre_periodo, $editar_cierre_periodo]);
+        $control_proyecto->attachPermission($consultar_cierre_periodo);
     }
 }
