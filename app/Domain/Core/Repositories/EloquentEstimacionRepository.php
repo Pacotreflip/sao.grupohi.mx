@@ -92,7 +92,7 @@ class EloquentEstimacionRepository implements EstimacionRepository
                 'fecha' => ['required', 'date'],
                 'id_empresa' => ['required', 'exists:cadeco.empresas,id_empresa'],
                 'id_moneda' => ['required', 'exists:cadeco.monedas,id_moneda'],
-                'vencimiento' => ['required', 'date', 'after:cumplimiento'],
+                'vencimiento' => ['required', 'date'],
                 'cumplimiento' => ['required', 'date'],
                 'observaciones' => ['string', 'max:4096'],
                 'referencia' => ['string', 'max:64', 'unique:cadeco.transacciones,referencia,NULL,id_transaccion,tipo_transaccion,' . Tipo::ESTIMACION . ',id_antecedente,' . $request->id_antecedente],
