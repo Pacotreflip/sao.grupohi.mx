@@ -16,6 +16,7 @@ class NaturalezaPoliza  extends Model
     protected $connection = 'cadeco';
     protected $table = 'Contabilidad.naturaleza_poliza';
     protected $primaryKey = 'id_naturaleza_poliza';
+    public $timestamps = false;
 
     public function __toString()
     {

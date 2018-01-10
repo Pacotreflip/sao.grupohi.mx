@@ -5,7 +5,7 @@ use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
 
-class ContabilidadTransaccionesInterfazSeeder extends Seeder
+class ContabilidadIntTransaccionesInterfazSeeder extends Seeder
 {
     /**
      * Run the database seeds.

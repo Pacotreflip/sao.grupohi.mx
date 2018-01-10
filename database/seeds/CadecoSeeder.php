@@ -20,7 +20,7 @@ class CadecoSeeder extends Seeder
         $this->call(ContabilidadTiposCuentasEmpresasSeeder::class);
         $this->call(ContabilidadTiposCuentasMaterialesSeeder::class);
         $this->call(ContabilidadTiposMovimientosSeeder::class);
-        $this->call(ContabilidadTransaccionesInterfazSeeder::class);
+        $this->call(ContabilidadIntTransaccionesInterfazSeeder::class);
 
         //Control de Costos
         $this->call(ControlCostosEstatusSeeder::class);

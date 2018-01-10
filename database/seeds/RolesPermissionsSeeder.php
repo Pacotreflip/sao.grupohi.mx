@@ -110,9 +110,9 @@ class RolesPermissionsSeeder extends Seeder
         $editar_cuenta_costo    = Permission::create(['name' => 'editar_cuenta_costo', 'display_name' => 'Editar Cuenta de Costo', 'description' => 'Permiso para editar cuentas de Costos']);
 
         //Cierres de Periodo
-        $consultar_cierre_periodo = Permission::create(['name' => 'consultar_cierre_periodo', 'display_name' => 'Cierre de Periodo', 'descriptio' => 'Cierre de Periodo']);
-        $generar_cierre_periodo = Permission::create(['name' => 'generar_cierre_periodo', 'display_name' => 'Cierre de Periodo', 'descriptio' => 'Cierre de Periodo']);
-        $editar_cierre_periodo = Permission::create(['name' => 'editar_cierre_periodo', 'display_name' => 'Cierre de Periodo', 'descriptio' => 'Cierre de Periodo']);
+        $consultar_cierre_periodo = Permission::create(['name' => 'consultar_cierre_periodo', 'display_name' => 'Cierre de Periodo', 'description' => 'Cierre de Periodo']);
+        $generar_cierre_periodo = Permission::create(['name' => 'generar_cierre_periodo', 'display_name' => 'Cierre de Periodo', 'description' => 'Cierre de Periodo']);
+        $editar_cierre_periodo = Permission::create(['name' => 'editar_cierre_periodo', 'display_name' => 'Cierre de Periodo', 'description' => 'Cierre de Periodo']);
 
         /**
          * Roles
