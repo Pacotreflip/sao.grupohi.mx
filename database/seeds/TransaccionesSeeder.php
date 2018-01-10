@@ -19,24 +19,21 @@ class TransaccionesSeeder extends Seeder
             ->update(['Opciones' => '0']);
 
         DB::connection('cadeco')->table('dbo.TipoTran')->insert ([
-            ['Tipo_Transaccion' => '51'],
-            ['Descripcion' => 'Subcontrato'],
-            ['Opciones' => '2']
+            ['Tipo_Transaccion' => '51','Descripcion' => 'Subcontrato','Opciones' => '2'],
+            
         ]);
 
         DB::connection("cadeco")->table('dbo.TipoTran')->where('Tipo_Transaccion', '=', '52')
             ->update(['Descripcion' => 'Estimacion Subcontrato']);
 
         DB::connection('cadeco')->table('dbo.TipoTran')->insert ([
-            ['Tipo_Transaccion' => '65'],
-            ['Descripcion' => 'Factura Varios Materiales\Servicios'],
-            ['Opciones' => '65537']
+            ['Tipo_Transaccion' => '65', 'Descripcion' => 'Factura Varios Materiales\Servicios','Opciones' => '65537'],
+            
         ]);
 
         DB::connection('cadeco')->table('dbo.TipoTran')->insert ([
-            ['Tipo_Transaccion' => '65'],
-            ['Descripcion' => 'Factura Varios Gastos Varios'],
-            ['Opciones' => '1']
+            ['Tipo_Transaccion' => '65','Descripcion' => 'Factura Varios Gastos Varios','Opciones' => '1'],
+            
         ]);
 
         DB::connection("cadeco")->table('dbo.TipoTran')->where('Tipo_Transaccion', '=', '81')
@@ -46,15 +43,13 @@ class TransaccionesSeeder extends Seeder
             ->update(['Opciones' => '0']);
 
         DB::connection('cadeco')->table('dbo.TipoTran')->insert ([
-            ['Tipo_Transaccion' => '82'],
-            ['Descripcion' => ' Pagos Varios'],
-            ['Opciones' => '1']
+            ['Tipo_Transaccion' => '82', 'Descripcion' => ' Pagos Varios','Opciones' => '1'],
+           
         ]);
 
         DB::connection('cadeco')->table('dbo.TipoTran')->insert ([
-            ['Tipo_Transaccion' => '82'],
-            ['Descripcion' => 'Pagos a Cuenta'],
-            ['Opciones' => '327681']
+            ['Tipo_Transaccion' => '82','Descripcion' => 'Pagos a Cuenta','Opciones' => '327681'],
+           
         ]);
 
         DB::connection("cadeco")->table('dbo.TipoTran')->where('Descripcion', '=', 'Credito')->where('Tipo_Transaccion','=','83')
