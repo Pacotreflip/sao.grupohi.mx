@@ -1,6 +1,9 @@
 @extends('layouts.app')
 @section('title', 'Inicio')
 @section('contentheader_title', 'SISTEMAS')
+@section('breadcrumb')
+    {!! Breadcrumbs::render('index') !!}
+@endsection
 @section('main-content')
     <!-- Main content -->
     <section class="content">

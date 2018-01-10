@@ -15185,7 +15185,7 @@ Vue.component('configuracion-seguridad-index', {
     },
 
     mounted: function mounted() {
-        $('#roles_table').DataTable({
+        $('.table').DataTable({
             "processing": true,
             "serverSide": true,
             "ordering": true,
