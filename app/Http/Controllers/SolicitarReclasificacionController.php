@@ -93,7 +93,7 @@ class SolicitarReclasificacionController extends Controller
             $counter++;
         }
 
-        $repetidas = $this->partidas->validarPartidas($where);
+        $repetidas = $this->partidas->validarPartidas($where)->toArray();
 
         if (!empty($repetidas))
             return response()->json(
@@ -114,7 +114,8 @@ class SolicitarReclasificacionController extends Controller
 
         return response()->json(
             [
-                'solicitud' => $solicitud
+                'solicitud' => $solicitud,
+                'repetidas' => false,
             ], 200);
     }
 
