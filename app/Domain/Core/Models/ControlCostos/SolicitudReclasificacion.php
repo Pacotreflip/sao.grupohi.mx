@@ -76,7 +76,7 @@ class SolicitudReclasificacion extends BaseModel
                         }
                     }
 
-                    throw new HttpResponseException(new Response('En la fecha ingresada debido a que pertenece a un periodo cerrado. La siguiente fecha disponible es: '. $proxima_fecha->toDateString(), 400, ['next-date' => $proxima_fecha->toDateString()]));
+                    throw new HttpResponseException(new Response('No se puede registrar la solicitud en la fecha ingresada debido a que pertenece a un periodo cerrado. La siguiente fecha disponible es: '. $proxima_fecha->toDateString(), 400, ['next-date' => $proxima_fecha->toDateString()]));
                 }
             }
         });
