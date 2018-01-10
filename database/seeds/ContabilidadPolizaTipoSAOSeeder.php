@@ -3,7 +3,7 @@
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
-class PolizaTipoSAOSeeder extends Seeder
+class ContabilidadPolizaTipoSAOSeeder extends Seeder
 {
     /**
      * Run the database seeds.
