@@ -37,8 +37,9 @@
     </emails>
 @endsection
 @section('content-menu')
+
     <ul class="sidebar-menu">
-        @permission(['consultar_cuenta_almacen', 'consultar_cuenta_concepto', 'consultar_cuenta_empresa', 'consultar_cuenta_general', 'consultar_cuenta_material', 'consultar_tipo_cuenta_contable', 'consultar_plantilla_prepoliza'])
+        @permission(['consultar_cuenta_almacen', 'consultar_cuenta_concepto', 'consultar_cuenta_empresa', 'consultar_cuenta_fondo', 'consultar_cuenta_general', 'consultar_cuenta_material', 'consultar_cuenta_contable_bancaria', 'consultar_tipo_cuenta_contable', 'consultar_cuenta_costo', 'consultar_plantilla_prepoliza'])
         <li class="treeview">
             <a href="#">
                 <i class="fa fa-book"></i>
@@ -48,7 +49,7 @@
             </span>
             </a>
             <ul class="treeview-menu">
-                @permission(['consultar_cuenta_almacen', 'consultar_cuenta_concepto', 'consultar_cuenta_empresa', 'consultar_cuenta_general', 'consultar_cuenta_material', 'consultar_tipo_cuenta_contable', 'consultar_cuenta_costo'])
+                @permission(['consultar_cuenta_almacen', 'consultar_cuenta_concepto', 'consultar_cuenta_empresa', 'consultar_cuenta_fondo', 'consultar_cuenta_general', 'consultar_cuenta_material', 'consultar_cuenta_contable_bancaria', 'consultar_tipo_cuenta_contable', 'consultar_cuenta_costo'])
                 <li class="treeview">
                     <a href="#">
                         <i class="fa fa-book"></i>

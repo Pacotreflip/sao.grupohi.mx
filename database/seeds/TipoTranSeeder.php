@@ -13,11 +13,11 @@ class TipoTranSeeder extends Seeder
     public function run()
     {
         //Inserts
-        TipoTransaccion::create(['Tipo_Transaccion' => '65', 'Descripcion' => 'Factura Varios Materiales\Servicios','Opciones' => '65537']);
-        TipoTransaccion::create(['Tipo_Transaccion' => '65','Descripcion' => 'Factura Varios Gastos Varios','Opciones' => '1']);
-        TipoTransaccion::create(['Tipo_Transaccion' => '51','Descripcion' => 'Subcontrato','Opciones' => '2']);
-        TipoTransaccion::create(['Tipo_Transaccion' => '82', 'Descripcion' => ' Pagos Varios','Opciones' => '1']);
-        TipoTransaccion::create(['Tipo_Transaccion' => '82','Descripcion' => 'Pagos a Cuenta','Opciones' => '327681']);
+        TipoTransaccion::firstOrCreate(['Tipo_Transaccion' => '65', 'Descripcion' => 'Factura Varios Materiales\Servicios','Opciones' => '65537']);
+        TipoTransaccion::firstOrCreate(['Tipo_Transaccion' => '65','Descripcion' => 'Factura Varios Gastos Varios','Opciones' => '1']);
+        TipoTransaccion::firstOrCreate(['Tipo_Transaccion' => '51','Descripcion' => 'Subcontrato','Opciones' => '2']);
+        TipoTransaccion::firstOrCreate(['Tipo_Transaccion' => '82', 'Descripcion' => ' Pagos Varios','Opciones' => '1']);
+        TipoTransaccion::firstOrCreate(['Tipo_Transaccion' => '82','Descripcion' => 'Pagos a Cuenta','Opciones' => '327681']);
 
         //Updates
         TipoTransaccion::where('Descripcion', '=', 'Contrato Proyectado')->update(['Opciones' => '1026']);

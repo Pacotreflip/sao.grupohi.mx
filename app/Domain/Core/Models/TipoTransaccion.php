@@ -15,7 +15,7 @@ class TipoTransaccion extends Model
 {
     protected $connection = 'cadeco';
     protected $table = 'dbo.TipoTran';
-    protected $fillable = ['Descripcion', 'Opciones'];
+    protected $fillable = ['Descripcion', 'Opciones', 'Tipo_Transaccion'];
     public $timestamps = false;
 
     public function __toString()
