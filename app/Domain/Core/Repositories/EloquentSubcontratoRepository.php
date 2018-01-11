@@ -105,8 +105,10 @@ class EloquentSubcontratoRepository implements SubcontratoRepository
                     Item::create($item);
                 }
 
-                $subcontrato->monto = $subcontrato->saldo = $subcontrato->items()->sum(DB::raw('cantidad * precio_unitario'));
-                $subcontrato->impuesto = (0.16 * $subcontrato->monto) / 1.16;
+                $suma_importes = $subcontrato->items()->sum(DB::raw('cantidad * precio_unitario'));
+                $impuesto = 0.16 * $suma_importes;
+                $subcontrato->monto = $subcontrato->saldo = $suma_importes + $impuesto;
+                $subcontrato->impuesto = $impuesto;
                 $subcontrato->anticipo_monto = $subcontrato->anticipo_saldo = ($subcontrato->monto - $subcontrato->impuesto) * ($subcontrato->anticipo / 100);
 
                 $subcontrato->save();

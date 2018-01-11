@@ -1,5 +1,5 @@
 Vue.component('solicitar_reclasificacion-items', {
-    props: ['url_solicitar_reclasificacion_index', 'id_transaccion', 'id_concepto_antiguo', 'items', 'max_niveles', 'filtros', 'operadores'],
+    props: ['url_solicitar_reclasificacion_index', 'id_transaccion', 'id_concepto_antiguo', 'items', 'max_niveles', 'filtros', 'operadores', 'solicitar_reclasificacion', 'consultar_reclasificacion', 'autorizar_reclasificacion'],
     data : function () {
         return {
             'data' : {
@@ -284,13 +284,14 @@ Vue.component('solicitar_reclasificacion-items', {
                 type: "warning",
                 showCancelButton: true,
                 confirmButtonText: "Si, Continuar",
-                cancelButtonText: "No, Cancelar",
+                cancelButtonText: "No, Cancelar"
             }).then(function () {
                 self.solicitar();
             }).catch(swal.noop);
         },
         solicitar: function () {
-            var self = this;
+            var self = this,
+                temp_fecha = self.data.fecha;
 
             $.ajax({
                 type: 'POST',
@@ -307,7 +308,7 @@ Vue.component('solicitar_reclasificacion-items', {
                         lista = [];
 
                     // Ya existe al menos una partida registrada
-                    if (data.repetidas)
+                    if (typeof data.repetidas == 'object')
                     {
                         $.each(data.repetidas, function( key, value ) {
                             repetidas.push(value.id);
@@ -328,21 +329,28 @@ Vue.component('solicitar_reclasificacion-items', {
                         return;
                     }
 
-                    swal({
-                        type: 'success',
-                        title: '',
-                        html: 'Solicitud elaborada con éxito',
-                        onClose: function () {
-                            window.location.href = App.host + '/control_costos/solicitudes_reclasificacion';
-                        }
-                    });
+                    else
+                        swal({
+                            type: 'success',
+                            title: '',
+                            html: 'Solicitud elaborada con éxito',
+                            onClose: function () {
+                                window.location.href = App.host + '/control_costos/solicitudes_reclasificacion';
+                            }
+                        });
                 },
                 complete: function (data) {
 
-                    if (typeof data.getResponseHeader('next-date') != null)
+                    if (data.status == 400)
                     {
                         $('#Fecha').datepicker('update', data.getResponseHeader('next-date'));
                         Vue.set(self.data, 'fecha', data.getResponseHeader('next-date'));
+                    }
+
+                    else
+                    {
+                        $('#Fecha').datepicker('update', temp_fecha);
+                        Vue.set(self.data, 'fecha', temp_fecha);
                     }
                 }
             });

@@ -63,6 +63,6 @@ class EloquentContratoRepository implements ContratoRepository
     }
 
     public function nivelPadre($id){
-        return $this->model->where('id_transaccion',$id)->where('nivel', 'like', '___.')->orderBy('nivel');
+        return $this->model->select('nivel')->where('id_transaccion',$id)->where('nivel', 'like', '___.')->orderBy('nivel');
     }
 }

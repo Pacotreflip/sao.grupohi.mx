@@ -13,6 +13,9 @@
         :filtros="[]"
         :max_niveles="{{ $data_view['max_niveles']  }}"
         :operadores="{{ json_encode($data_view['operadores'])  }}"
+        :solicitar_reclasificacion="{{ \Entrust::can(['solicitar_reclasificacion']) ? 'true' : 'false' }}"
+        :consultar_reclasificacion="{{ \Entrust::can(['consultar_reclasificacion']) ? 'true' : 'false' }}"
+        :autorizar_reclasificacion="{{ \Entrust::can(['autorizar_reclasificacion']) ? 'true' : 'false' }}"
         inline-template
         v-cloak>
     <section>
@@ -75,7 +78,7 @@
                   <textarea class="form-control" rows="3" placeholder="Especifica un motivo" id="Motivo" value="" name="Motivo" v-model="data.motivo"></textarea>
 
               </div>
-            <button class="btn btn-sm btn-primary pull-right" v-on:click="confirm_solicitar()">Solicitar</button>
+            <button class="btn btn-sm btn-primary pull-right" v-on:click="confirm_solicitar()" v-if="solicitar_reclasificacion">Solicitar</button>
             <br><br>
              </div>
         </div>
@@ -263,7 +266,7 @@
                                     </div>
                                     <div class="col-md-12" v-if="!data.editando">
                                         <div class="pull-right">
-                                            <button type='button' title='Formato' class='btn btn-success' v-on:click="allow_editar()"><i class='fa fa-pencil'>  Editar</i></button>
+                                            <button type='button' title='Formato' class='btn btn-success' v-on:click="allow_editar()" v-if="autorizar_reclasificacion"><i class='fa fa-pencil'>  Editar</i></button>
                                             <button type='button' title='Formato' class='btn btn-info btn_pdf' v-on:click="pdf(data.solicitud.id)"><i class='fa fa-file-pdf-o'>  Formato</i></button>
                                         </div>
                                     </div>
@@ -297,8 +300,8 @@
                                 <div class="col-md-6">
                                     <div class="pull-right">
                                         <button type='button' title='Formato' class='btn btn-info btn_pdf' v-on:click="pdf(data.solicitud.id)"><i class='fa fa-file-pdf-o'> Formato</i></button>
-                                        <button type="button" class="btn btn-success" v-on:click="confirm('aprobar')"> <i class="fa fa-fw fa-thumbs-up"></i>Aprobar</button>
-                                        <button type="button" class="btn btn-danger" v-on:click="rechazar_motivo()"> <i class="fa fa-fw fa-trash"></i> Rechazar</button>
+                                        <button type="button" class="btn btn-success" v-on:click="confirm('aprobar')" v-if="autorizar_reclasificacion"> <i class="fa fa-fw fa-thumbs-up"></i>Aprobar</button>
+                                        <button type="button" class="btn btn-danger" v-on:click="rechazar_motivo()" v-if="autorizar_reclasificacion"> <i class="fa fa-fw fa-trash"></i> Rechazar</button>
                                     </div>
                                 </div>
                             </template>
@@ -314,7 +317,7 @@
                                             <textarea class="form-control" rows="3" placeholder="motivo..." v-model="data.rechazo_motivo"></textarea>
                                         </div>
                                         <div class="pull-right">
-                                            <button type="button" class="btn btn-danger" v-on:click="confirm('rechazar')">Rechazar</button>
+                                            <button type="button" class="btn btn-danger" v-on:click="confirm('rechazar')" v-if="autorizar_reclasificacion">Rechazar</button>
                                             <button type="button" class="btn btn-default" v-on:click="cancelar_rechazo()">Cancelar</button>
                                         </div>
                                         <div>

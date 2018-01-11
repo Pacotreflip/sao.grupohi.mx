@@ -201,7 +201,13 @@ class EloquentContratoProyectadoRepository implements ContratoProyectadoReposito
                     if (array_key_exists('destinos', $contrato)) {
                         foreach ($contrato['destinos'] as $destino) {
                             $new_contrato->destinos()->attach($destino['id_concepto'], ['id_transaccion' => $new_contrato->id_transaccion]);
-
+                            $newMaterial = MaterialAcarreo::firstOrCreate([
+                                'id_material_acarreo' => $contrato['id_material']
+                                ,'id_concepto' => $destino['id_concepto']
+                                ,'id_concepto_contrato' => $new_contrato['id_concepto']
+                                ,'id_transaccion' => $id
+                                ,'tarifa' => $contrato['tarifa']
+                            ]);
                         }
                     }
                 }
