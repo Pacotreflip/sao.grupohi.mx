@@ -6,6 +6,21 @@
     RewriteCond %{HTTP:Authorization} ^(.*)
     RewriteRule .* - [e=HTTP_AUTHORIZATION:%1]
 
+	RewriteCond %{HTTP:database_name} ^(.*)
+    RewriteRule .* - [e=HTTP_DATABASE_NAME:%1]
+
+	RewriteCond %{HTTP:id_obra} ^(.*)
+    RewriteRule .* - [e=HTTP_ID_OBRA:%1]
+
+    RewriteCond %{HTTP:clave} ^(.*)
+    RewriteRule .* - [e=HTTP_CLAVE:%1]
+
+    RewriteCond %{HTTP:usuario} ^(.*)
+    RewriteRule .* - [e=HTTP_USUARIO:%1]
+
+    RewriteCond %{HTTP:rfc} ^(.*)
+    RewriteRule .* - [e=HTTP_RFC:%1]
+
     RewriteEngine On
 
     # Redirect Trailing Slashes If Not A Folder...
@@ -20,4 +35,5 @@
     # Handle Authorization Header
     RewriteCond %{HTTP:Authorization} .
     RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
+
 </IfModule>

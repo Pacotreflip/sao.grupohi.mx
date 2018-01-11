@@ -12,7 +12,11 @@ class ContabilidadNaturalezaPolizaSeeder extends Seeder
      */
     public function run()
     {
-        NaturalezaPoliza::create(['descripcion' => 'Deudora']);
-        NaturalezaPoliza::create(['descripcion' => 'Acreedora']);
+        DB::connection("cadeco")->statement("
+        SET IDENTITY_INSERT Contabilidad.naturaleza_poliza ON;
+            insert into Contabilidad.naturaleza_poliza(id_naturaleza_poliza, descripcion) values(1,'Deudora');
+            insert into Contabilidad.naturaleza_poliza(id_naturaleza_poliza, descripcion) values(2,'Acreedora');
+        SET IDENTITY_INSERT Contabilidad.naturaleza_poliza OFF;
+        ");
     }
 }

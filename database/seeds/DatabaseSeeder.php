@@ -12,6 +12,6 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
         $this->call(CadecoSeeder::class);
-        $this->call(SeguridadSeeder::class);
+      //  $this->call(SeguridadSeeder::class);
     }
 }

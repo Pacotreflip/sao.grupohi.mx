@@ -12,12 +12,16 @@ class ContabilidadEstatusPrepolizasSeeder extends Seeder
      */
     public function run()
     {
-        EstatusPrePoliza::create(['estatus' => -2, 'descripcion' => 'No Lanzada',      'label'=>'#dd4b39']);
-        EstatusPrePoliza::create(['estatus' => -1, 'descripcion' => 'Con Errores',     'label'=>'#dd4b39']);
-        EstatusPrePoliza::create(['estatus' => 0,  'descripcion' => 'Por Validar',     'label'=>'#f39c12']);
-        EstatusPrePoliza::create(['estatus' => 1,  'descripcion' => 'Validada',        'label'=>'#0073b7']);
-        EstatusPrePoliza::create(['estatus' => 2,  'descripcion' => 'Lanzada',         'label'=>'#00a65a']);
-        EstatusPrePoliza::create(['estatus' => -3, 'descripcion' => 'Omitida',         'label'=>'#d2d6de']);
-        EstatusPrePoliza::create(['estatus' => 3,  'descripcion' => 'Registro Manual', 'label'=>'#00a65a']);
+        DB::connection("cadeco")->statement('
+        SET IDENTITY_INSERT Contabilidad.estatus_prepolizas ON;
+            insert into Contabilidad.estatus_prepolizas (id, estatus, descripcion, label) values (8,\'-2\', \'No Lanzada\',\'#dd4b39\');
+            insert into Contabilidad.estatus_prepolizas (id, estatus, descripcion, label) values (9,\'-1\', \'Con Errores\',\'#dd4b39\');
+            insert into Contabilidad.estatus_prepolizas (id, estatus, descripcion, label) values (10,\'0\', \'Por Validar\', \'#f39c12\');
+            insert into Contabilidad.estatus_prepolizas (id, estatus, descripcion, label) values (11,\'1\', \'Validada\', \'#0073b7\');
+            insert into Contabilidad.estatus_prepolizas (id, estatus, descripcion, label) values (12,\'2\', \'Lanzada\', \'#00a65a\');
+            insert into Contabilidad.estatus_prepolizas (id, estatus, descripcion, label) values (13,\'-3\', \'Omitida\', \'#d2d6de\');
+            insert into Contabilidad.estatus_prepolizas (id, estatus, descripcion, label) values (14,\'3\', \'Registro Manual\', \'#00a65a\');
+        SET IDENTITY_INSERT Contabilidad.estatus_prepolizas OFF;
+        ');
     }
 }

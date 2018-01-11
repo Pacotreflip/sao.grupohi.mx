@@ -12,6 +12,9 @@ class TesoreriaTiposMovimientosSeeder extends Seeder
      */
     public function run()
     {
+        DB::connection('cadeco')->table('Tesoreria.tipos_movimientos')->delete();
+        DB::connection("cadeco")->statement("DBCC CHECKIDENT ('Tesoreria.tipos_movimientos',RESEED, 0)");
+
         // Naturaleza 2 tipo transaccion 84
         TipoMovimiento::create([
             'descripcion' => 'Intereses',
