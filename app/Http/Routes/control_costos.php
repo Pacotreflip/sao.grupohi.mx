@@ -17,6 +17,7 @@ Route::group(['prefix' => 'control_costos'], function () {
     Route::post('solicitar_reclasificacion', 'SolicitarReclasificacionController@store')->name('control_costos.solicitar_reclasificacion.store');
     Route::get('solicitar_reclasificacion/tipos', 'SolicitarReclasificacionController@tipos')->name('control_costos.solicitar_reclasificacion.tipos');
     Route::get('solicitar_reclasificacion/items/{id_concepto}/{id}', 'SolicitarReclasificacionController@items')->name('control_costos.solicitar_reclasificacion.items')->where(['id' => '[0-9]+', 'id_concepto' => '[0-9]+']);
+    Route::get('solicitar_reclasificacion/single/{id}', 'SolicitarReclasificacionController@single')->name('control_costos.solicitar_reclasificacion.single')->where(['id' => '[0-9]+']);
 
     /**
      * Solicitudes de reclasificación

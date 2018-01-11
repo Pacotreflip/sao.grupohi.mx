@@ -6,9 +6,23 @@
 @endsection
 @section('main-content')
 
-    <reclasificacion_costos-index inline-template v-cloak>
+    <reclasificacion_costos-index
+        :repetidas="{{ json_encode($repetidas)  }}"
+        :solicitar_reclasificacion="{{ \Entrust::can(['solicitar_reclasificacion']) ? 'true' : 'false' }}"
+        :consultar_reclasificacion="{{ \Entrust::can(['consultar_reclasificacion']) ? 'true' : 'false' }}"
+        :autorizar_reclasificacion="{{ \Entrust::can(['autorizar_reclasificacion']) ? 'true' : 'false' }}"
+        inline-template v-cloak>
         <section>
             <div class="row">
+                <div class="col-md-9">
+                    &nbsp;
+                </div>
+                <div class="col-md-3">
+                    <a href="{{ route('control_costos.solicitar_reclasificacion.index') }}" class="btn btn-sm btn-primary pull-right">Solicitar otra clasificación</a>
+                </div>
+                <div class="col-md-12">
+                    &nbsp;
+                </div>
                 <div class="col-md-12">
                     <div class="box box-solid">
                         <div class="box-header with-border">
@@ -49,7 +63,7 @@
                         <div class="modal-header">
                             <h4 class="modal-title">
                                 Detalles
-                                <small class="text-muted"> #@{{ item.id }} @{{ new Date(item.created_at).dateShortFormat() }} Estatus: @{{ item.estatus_desc }}</small>
+                                <small class="text-muted"> #@{{ item.id }} @{{ new Date(item.fecha ? item.fecha : item.created_at).dateShortFormat() }} Estatus: @{{ item.estatus_desc }}</small>
                             </h4>
                         </div>
                         <div class="modal-body show_pdf" v-if="show_pdf">

@@ -1,4 +1,5 @@
 Vue.component('reclasificacion_costos-index', {
+    props: ['repetidas', 'solicitar_reclasificacion', 'consultar_reclasificacion', 'autorizar_reclasificacion'],
     data : function () {
         return {
             'solicitudes': [],
@@ -34,6 +35,19 @@ Vue.component('reclasificacion_costos-index', {
             });
 
             self.dataTable = $('#solicitudes_table').DataTable({
+                "createdRow": function( row, data, dataIndex ) {
+
+                    var $row = $(row),
+                        repetidas = self.repetidas.length > 0 ? JSON.parse(self.repetidas) : [];
+
+                    $row.attr('id', 'solicitud_'+ data.id);
+                    console.log(repetidas.indexOf(data.id));
+
+                    if (repetidas.indexOf(data.id) > 0)
+                    {
+                       $row.find('td:nth-child(5)').append(' <span class="label label-danger">Repetida</span>');
+                    }
+                },
                 "processing": true,
                 "serverSide": true,
                 "ordering" : false,
@@ -100,7 +114,7 @@ Vue.component('reclasificacion_costos-index', {
                             var _return = "<button type='button' title='Ver' class='btn btn-xs btn-success btn_abrir' data-row='"+ meta.row +"' data-editando='0'><i class='fa fa-eye'></i></button>";
 
                             // Muestra el botón de editar si la solicitud aún no está autorizada/rechazada
-                            if (row.estatus_string.id == 1)
+                            if (row.estatus_string.id == 1 && self.autorizar_reclasificacion)
                             {
                                 _return = _return +" <button type='button' title='Editar' class='btn btn-xs btn-info btn_abrir' data-row='"+ meta.row +"' data-editando='1'><i class='fa fa-pencil'></i></button>";
                             }

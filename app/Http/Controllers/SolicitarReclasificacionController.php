@@ -48,8 +48,8 @@ class SolicitarReclasificacionController extends Controller
         $this->middleware('context');
 
         // Permisos
-        $this->middleware('permission:solicitar_reclasificacion', ['only' => ['index', 'findmovimiento', 'find', 'tipos', 'items', 'store']]);
-        $this->middleware('permission:consultar_reclasificacion', ['only' => ['index', 'findmovimiento', 'find', 'tipos', 'items']]);
+        $this->middleware('permission:solicitar_reclasificacion', ['only' => ['index', 'findmovimiento', 'find', 'tipos', 'items', 'store', 'single']]);
+        $this->middleware('permission:consultar_reclasificacion', ['only' => ['index', 'findmovimiento', 'find', 'tipos', 'items', 'single']]);
 
         $this->concepto = $concepto;
         $this->conceptoPath = $conceptoPath;
@@ -82,6 +82,24 @@ class SolicitarReclasificacionController extends Controller
     {
         $motivo = htmlentities($request->motivo, ENT_QUOTES);
         $partidas = $request->solicitudes;
+        $where = '';
+        $counter = 0;
+        $total = count($partidas);
+
+        // Revisa si ya existe una solicitud pendiente con al menos un movimiento previamente usado
+        foreach ($partidas as $p)
+        {
+            $where .= ' ControlCostos.solicitud_reclasificacion_partidas.id_item = '. $p['id_item'] . (($counter > 0 || $counter > $total) ? ' or ': '');
+            $counter++;
+        }
+
+        $repetidas = $this->partidas->validarPartidas($where)->toArray();
+
+        if (!empty($repetidas))
+            return response()->json(
+                [
+                    'repetidas' => $repetidas
+                ], 200);
 
         $solicitud  = $this->solicitud->create(['motivo' => $motivo, 'fecha' => $request->fecha]);
 
@@ -96,7 +114,8 @@ class SolicitarReclasificacionController extends Controller
 
         return response()->json(
             [
-                'solicitud' => $solicitud
+                'solicitud' => $solicitud,
+                'repetidas' => false,
             ], 200);
     }
 
@@ -303,5 +322,18 @@ class SolicitarReclasificacionController extends Controller
                 'id_concepto' => $request->id_concepto,
                 'transaccion' => $transaccion,
             ]);
+    }
+
+    public function single(Request$request)
+    {
+        $solicitud = $this->solicitud->find($request->id)
+            ->with(['autorizacion.usuario', 'rechazo.usuario', 'usuario', 'estatusString', 'partidas.item.material', 'partidas.item.transaccion', 'partidas.conceptoNuevo', 'partidas.conceptoOriginal'])
+            ->select('ControlCostos.solicitud_reclasificacion.*')
+            ->where('id', $request->id)
+            ->first();
+
+        return response()->json([
+            'solicitud' => $solicitud,
+        ], 200);
     }
 }

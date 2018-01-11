@@ -76,4 +76,12 @@ class EloquentSolicitudReclasificacionPartidasRepository implements SolicitudRec
     {
 
     }
+
+    public function validarPartidas($where)
+    {
+        return $this->model->leftJoin('ControlCostos.solicitud_reclasificacion', 'ControlCostos.solicitud_reclasificacion.id', '=', 'ControlCostos.solicitud_reclasificacion_partidas.id_solicitud_reclasificacion')
+            ->selectRaw('ControlCostos.solicitud_reclasificacion.id, ControlCostos.solicitud_reclasificacion.motivo')
+            ->whereRaw('ControlCostos.solicitud_reclasificacion.estatus = 1 and '. $where)
+            ->get();
+    }
 }
