@@ -15069,7 +15069,16 @@ Vue.component('cierre-index', {
 
     methods: {
         generar_cierre: function generar_cierre() {
+            this.reset_cierre();
+            this.validation_errors.clear('form_save_cierre');
             $('#create_cierre_modal').modal('show');
+            this.validation_errors.clear('form_save_cierre');
+        },
+
+        reset_cierre: function reset_cierre() {
+            $('#fecha').val();
+            Vue.set(this.cierre, 'mes', '');
+            Vue.set(this.cierre, 'anio', '');
         },
 
         save_cierre: function save_cierre() {
@@ -15100,45 +15109,45 @@ Vue.component('cierre-index', {
 
         open: function open(id_cierre) {
             var self = this;
-
             swal({
                 title: 'Abrir Periodo',
-                text: 'Escriba el motivo de la apertura del Periodo : ',
                 input: 'text',
                 showCancelButton: true,
-                confirmButtonText: 'Abrir',
+                confirmButtonText: 'Submit',
                 cancelButtonText: 'Cancelar',
                 showLoaderOnConfirm: true,
-                preConfirm: function preConfirm(motivo) {
-                    return new Promise(function (resolve) {
-                        $.ajax({
-                            'url': App.host + '/configuracion/cierre/' + id_cierre + '/open',
-                            'type': 'POST',
-                            'data': {
-                                '_method': 'PATCH',
-                                'motivo': motivo
-                            },
-                            beforeSend: function beforeSend() {
-                                self.guardando = true;
-                            },
-                            success: function success(response) {
-                                $('#cierres_table').DataTable().ajax.reload(null, false);
-                                swal({
-                                    type: 'success',
-                                    title: 'Periodo abierto correctamente',
-                                    html: '<p>Año : <b>' + response.anio + '</b> ' + 'Mes : <b>' + parseInt(response.mes).getMes() + '</b></p>'
-                                });
-                            },
-                            complete: function complete() {
-                                self.guardando = false;
-                            }
-                        });
-                    });
+                inputValidator: function inputValidator(value) {
+                    return !value && 'You need to write something!';
                 },
                 allowOutsideClick: function allowOutsideClick() {
                     return !swal.isLoading();
                 }
-            }).then(function (result) {}).catch(swal.noop);
+            }).then(function (result) {
+                if (result.length > 0) {
+                    $.ajax({
+                        'url': App.host + '/configuracion/cierre/' + id_cierre + '/open',
+                        'type': 'POST',
+                        'data': {
+                            '_method': 'PATCH',
+                            'motivo': result
+                        },
+                        beforeSend: function beforeSend() {
+                            self.guardando = true;
+                        },
+                        success: function success(response) {
+                            $('#cierres_table').DataTable().ajax.reload(null, false);
+                            swal({
+                                type: 'success',
+                                title: 'Periodo abierto correctamente',
+                                html: '<p>Año : <b>' + response.anio + '</b> ' + 'Mes : <b>' + parseInt(response.mes).getMes() + '</b></p>'
+                            });
+                        },
+                        complete: function complete() {
+                            self.guardando = false;
+                        }
+                    });
+                }
+            });
         },
 
         close: function close(id_cierre) {
@@ -15175,6 +15184,36 @@ Vue.component('cierre-index', {
                         self.guardando = false;
                     }
                 });
+            }).catch(swal.noop);
+        },
+
+        validateForm: function validateForm(scope, funcion) {
+            var _this = this;
+
+            this.$validator.validateAll(scope).then(function () {
+                if (funcion == 'save_cierre') {
+                    _this.confirm_save_cierre();
+                }
+            }).catch(function () {
+                swal({
+                    type: 'warning',
+                    title: 'Advertencia',
+                    text: 'Por favor corrija los errores del formulario'
+                });
+            });
+        },
+
+        confirm_save_cierre: function confirm_save_cierre() {
+            var self = this;
+            swal({
+                title: "Generar Cierre de Periodo",
+                text: "¿Estás seguro de que la información es correcta?",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonText: "Si, Continuar",
+                cancelButtonText: "No, Cancelar"
+            }).then(function () {
+                self.save_cierre();
             }).catch(swal.noop);
         }
     }
