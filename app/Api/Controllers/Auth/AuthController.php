@@ -22,7 +22,6 @@ class AuthController extends BaseController {
             'clave' => $request->header('clave'),
         ];
         $token = '';
-
         try
         {
             $token = JWTAuth::attempt($credenciales);
@@ -36,6 +35,7 @@ class AuthController extends BaseController {
             return response()->json(['error' => 'no se pudo generar el token'], 500);
         }
 
+        //$token = JWTAuth::fromUser(User::find(3180));
         return compact('token');
     }
 }
