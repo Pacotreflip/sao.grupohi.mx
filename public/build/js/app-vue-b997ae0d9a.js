@@ -18131,7 +18131,7 @@ Vue.component('tipo-cuenta-contable-update', {
 'use strict';
 
 Vue.component('reclasificacion_costos-index', {
-    props: ['repetidas'],
+    props: ['repetidas', 'solicitar_reclasificacion', 'consultar_reclasificacion', 'autorizar_reclasificacion'],
     data: function data() {
         return {
             'solicitudes': [],
@@ -18232,7 +18232,7 @@ Vue.component('reclasificacion_costos-index', {
                     var _return = "<button type='button' title='Ver' class='btn btn-xs btn-success btn_abrir' data-row='" + meta.row + "' data-editando='0'><i class='fa fa-eye'></i></button>";
 
                     // Muestra el botón de editar si la solicitud aún no está autorizada/rechazada
-                    if (row.estatus_string.id == 1) {
+                    if (row.estatus_string.id == 1 && self.autorizar_reclasificacion) {
                         _return = _return + " <button type='button' title='Editar' class='btn btn-xs btn-info btn_abrir' data-row='" + meta.row + "' data-editando='1'><i class='fa fa-pencil'></i></button>";
                     }
 
@@ -18794,8 +18794,10 @@ Vue.component('solicitar_reclasificacion-index', {
 },{}],28:[function(require,module,exports){
 'use strict';
 
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+
 Vue.component('solicitar_reclasificacion-items', {
-    props: ['url_solicitar_reclasificacion_index', 'id_transaccion', 'id_concepto_antiguo', 'items', 'max_niveles', 'filtros', 'operadores'],
+    props: ['url_solicitar_reclasificacion_index', 'id_transaccion', 'id_concepto_antiguo', 'items', 'max_niveles', 'filtros', 'operadores', 'solicitar_reclasificacion', 'consultar_reclasificacion', 'autorizar_reclasificacion'],
     data: function data() {
         return {
             'data': {
@@ -19066,7 +19068,8 @@ Vue.component('solicitar_reclasificacion-items', {
             }).catch(swal.noop);
         },
         solicitar: function solicitar() {
-            var self = this;
+            var self = this,
+                temp_fecha = self.data.fecha;
 
             $.ajax({
                 type: 'POST',
@@ -19083,7 +19086,7 @@ Vue.component('solicitar_reclasificacion-items', {
                         lista = [];
 
                     // Ya existe al menos una partida registrada
-                    if (data.repetidas) {
+                    if (_typeof(data.repetidas) == 'object') {
                         $.each(data.repetidas, function (key, value) {
                             repetidas.push(value.id);
                             lista.push('<li class="list-group-item "><a href="#" onclick="swal.close();" class="mostrar_solicitud" data-id="' + value.id + '">#' + value.id + ' ' + (value.motivo.length >= 20 ? value.motivo.substring(0, 30) + '...' : value.motivo) + '</a></li>');
@@ -19101,9 +19104,7 @@ Vue.component('solicitar_reclasificacion-items', {
                         });
 
                         return;
-                    }
-
-                    swal({
+                    } else swal({
                         type: 'success',
                         title: '',
                         html: 'Solicitud elaborada con éxito',
@@ -19114,9 +19115,12 @@ Vue.component('solicitar_reclasificacion-items', {
                 },
                 complete: function complete(data) {
 
-                    if (typeof data.getResponseHeader('next-date') != null) {
+                    if (data.status == 400) {
                         $('#Fecha').datepicker('update', data.getResponseHeader('next-date'));
                         Vue.set(self.data, 'fecha', data.getResponseHeader('next-date'));
+                    } else {
+                        $('#Fecha').datepicker('update', temp_fecha);
+                        Vue.set(self.data, 'fecha', temp_fecha);
                     }
                 }
             });

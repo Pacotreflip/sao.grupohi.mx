@@ -1,5 +1,5 @@
 Vue.component('reclasificacion_costos-index', {
-    props: ['repetidas'],
+    props: ['repetidas', 'solicitar_reclasificacion', 'consultar_reclasificacion', 'autorizar_reclasificacion'],
     data : function () {
         return {
             'solicitudes': [],
@@ -114,7 +114,7 @@ Vue.component('reclasificacion_costos-index', {
                             var _return = "<button type='button' title='Ver' class='btn btn-xs btn-success btn_abrir' data-row='"+ meta.row +"' data-editando='0'><i class='fa fa-eye'></i></button>";
 
                             // Muestra el botón de editar si la solicitud aún no está autorizada/rechazada
-                            if (row.estatus_string.id == 1)
+                            if (row.estatus_string.id == 1 && self.autorizar_reclasificacion)
                             {
                                 _return = _return +" <button type='button' title='Editar' class='btn btn-xs btn-info btn_abrir' data-row='"+ meta.row +"' data-editando='1'><i class='fa fa-pencil'></i></button>";
                             }
