@@ -16,11 +16,12 @@ class CadecoSeeder extends Seeder
         $this->call(TipoTranSeeder::class);
 
         //Contabilidad
+        $this->call(ContabilidadNaturalezaPolizaSeeder::class);
         $this->call(ContabilidadDatosContablesObraSeeder::class);
         $this->call(ContabilidadEstatusPrepolizasSeeder::class);
+
         $this->call(ContabilidadIntTiposCuentasContablesSeeder::class);
         $this->call(ContabilidadIntTiposPolizasContpaqSeeder::class);
-        $this->call(ContabilidadNaturalezaPolizaSeeder::class);
         $this->call(ContabilidadPolizaTipoSAOSeeder::class);
         $this->call(ContabilidadTiposCuentasEmpresasSeeder::class);
         $this->call(ContabilidadTiposCuentasMaterialesSeeder::class);

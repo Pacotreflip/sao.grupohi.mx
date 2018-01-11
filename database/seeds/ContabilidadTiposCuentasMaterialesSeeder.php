@@ -12,6 +12,8 @@ class ContabilidadTiposCuentasMaterialesSeeder extends Seeder
      */
     public function run()
     {
+        DB::connection('cadeco')->table('Contabilidad.tipos_cuentas_materiales')->delete();
+        DB::connection("cadeco")->statement("DBCC CHECKIDENT ('Contabilidad.tipos_cuentas_materiales',RESEED, 0)");
         TipoCuentaMaterial::create(['descripcion' => 'Cuenta de Inventario']);
         TipoCuentaMaterial::create(['descripcion' => 'Cuenta de Costo']);
     }

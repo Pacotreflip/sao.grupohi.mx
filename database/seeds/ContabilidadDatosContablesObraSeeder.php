@@ -13,6 +13,8 @@ class ContabilidadDatosContablesObraSeeder extends Seeder
      */
     public function run()
     {
+        DB::connection('cadeco')->table('Contabilidad.datos_contables_obra')->delete();
+        DB::connection("cadeco")->statement("DBCC CHECKIDENT ('Contabilidad.datos_contables_obra',RESEED, 0)");
         foreach(Obra::all() as $obra) {
             DatosContables::create([
                'id_obra' => $obra->id_obra,

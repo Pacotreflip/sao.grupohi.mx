@@ -12,6 +12,8 @@ class ContabilidadTiposMovimientosSeeder extends Seeder
      */
     public function run()
     {
+        DB::connection('cadeco')->table('Contabilidad.tipos_movimientos')->delete();
+        DB::connection("cadeco")->statement("DBCC CHECKIDENT ('Contabilidad.tipos_movimientos',RESEED, 0)");
         TipoMovimiento::create(['descripcion' => 'Cargo',]);
         TipoMovimiento::create(['descripcion' => 'Abono',]);
     }
