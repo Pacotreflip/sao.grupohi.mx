@@ -172,6 +172,7 @@ Vue.component('cierre-index', {
             var self = this;
             swal({
                 title: 'Abrir Periodo',
+                text: 'Escriba el Motivo de la apertura',
                 input: 'text',
                 showCancelButton: true,
                 confirmButtonText: 'Submit',
