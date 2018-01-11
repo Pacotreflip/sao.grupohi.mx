@@ -37,7 +37,7 @@ class EloquentComprobanteFondoFijoRepository implements ComprobanteFondoFijoRepo
 
     /**
      * @param $id
-     * @return Ghi\Domain\Core\Models\Finanzas\ComprobanteFondoFijo
+     * @return ComprobanteFondoFijo
      */
     public function find($id)
     {
@@ -50,6 +50,7 @@ class EloquentComprobanteFondoFijoRepository implements ComprobanteFondoFijoRepo
      * @param array $data
      * @return mixed
      * @throws Exception
+     * @throws \Exception
      */
     public function create(array $data)
     {
@@ -73,6 +74,7 @@ class EloquentComprobanteFondoFijoRepository implements ComprobanteFondoFijoRepo
      * @param  $id
      * @return mixed
      * @throws Exception
+     * @throws \Exception
      */
     public function update(array $data, $id)
     {
@@ -92,10 +94,10 @@ class EloquentComprobanteFondoFijoRepository implements ComprobanteFondoFijoRepo
 
     /**
      * Elimina el Comprobante de Fondo Fijo
-     * @param array $data
      * @param $id
      * @return mixed
      *
+     * @throws \Exception
      */
     public function delete($id)
     {
@@ -118,5 +120,21 @@ class EloquentComprobanteFondoFijoRepository implements ComprobanteFondoFijoRepo
     {
         $this->model = $this->model->with($relations);
         return $this;
+    }
+
+    /**
+     * Regresa los Cierres Paginados de acuerdo a los parametros
+     * @param array $data
+     * @return mixed
+     */
+    public function paginate(array $data)
+    {
+        $query = $this->model->join('fondos', 'fondos.id_fondo', '=', 'dbo.transacciones.id_referente')->selectRaw('dbo.transacciones.*, fondos.descripcion as FondoFijo');
+
+        foreach ($data['order'] as $order) {
+            $query->orderBy($data['columns'][$order['column']]['data'], $order['dir']);
+        }
+
+        return $query->paginate($perPage = $data['length'], $columns = ['*'], $pageName = 'page', $page = ($data['start'] / $data['length']) + 1);
     }
 }

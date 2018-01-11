@@ -17,6 +17,7 @@ Route::group(['prefix' => 'finanzas'], function () {
     Route::get('comprobante_fondo_fijo/{id}', 'ComprobanteFondoFijoController@show')->name('finanzas.comprobante_fondo_fijo.show')->where(['id' => '[0-9]+']);
     Route::delete('comprobante_fondo_fijo/{id}', 'ComprobanteFondoFijoController@destroy')->name('finanzas.comprobante_fondo_fijo.destroy')->where(['id' => '[0-9]+']);
     Route::patch('comprobante_fondo_fijo/{id}', 'ComprobanteFondoFijoController@update')->name('finanzas.comprobante_fondo_fijo.update')->where(['id' => '[0-9]+']);
+    Route::post('comprobante_fondo_fijo/paginate', 'ComprobanteFondoFijoController@paginate')->name('finanzas.comprobante_fondo_fijo.paginate');
  /**
   * Materiales
   */

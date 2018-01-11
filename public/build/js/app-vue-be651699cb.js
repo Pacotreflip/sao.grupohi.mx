@@ -14436,6 +14436,7 @@ require('./vue-components/Compras/material/index');
 /**
  * Finanzas Components
  */
+require('./vue-components/Finanzas/comprobante_fondo_fijo/index');
 require('./vue-components/Finanzas/comprobante_fondo_fijo/create');
 require('./vue-components/Finanzas/comprobante_fondo_fijo/edit');
 /**
@@ -14472,7 +14473,7 @@ require('./vue-components/Configuracion/seguridad/index');
  */
 require('./vue-components/Control_Presupuesto/cambios_presupuesto/create');
 
-},{"./vue-components/Compras/material/index":6,"./vue-components/Compras/requisicion/create":7,"./vue-components/Compras/requisicion/edit":8,"./vue-components/Configuracion/cierre/index":9,"./vue-components/Configuracion/seguridad/index":10,"./vue-components/Contabilidad/cuenta_almacen/index":11,"./vue-components/Contabilidad/cuenta_bancos/cuenta-bancaria-edit":12,"./vue-components/Contabilidad/cuenta_concepto/index":13,"./vue-components/Contabilidad/cuenta_contable/index":14,"./vue-components/Contabilidad/cuenta_costo/index":15,"./vue-components/Contabilidad/cuenta_empresa/cuenta-empresa-edit":16,"./vue-components/Contabilidad/cuenta_fondo/index":17,"./vue-components/Contabilidad/cuenta_material/index":18,"./vue-components/Contabilidad/datos_contables/edit":19,"./vue-components/Contabilidad/emails":20,"./vue-components/Contabilidad/modulos/revaluacion/create":21,"./vue-components/Contabilidad/poliza_generada/edit":22,"./vue-components/Contabilidad/poliza_tipo/poliza-tipo-create":23,"./vue-components/Contabilidad/tipo_cuenta_contable/tipo-cuenta-contable-create":24,"./vue-components/Contabilidad/tipo_cuenta_contable/tipo-cuenta-contable-update":25,"./vue-components/Control_Costos/reclasificacion_costos/index":26,"./vue-components/Control_Costos/solicitar_reclasificacion/index":27,"./vue-components/Control_Costos/solicitar_reclasificacion/items":28,"./vue-components/Control_Presupuesto/cambios_presupuesto/create":29,"./vue-components/Control_Presupuesto/presupuesto/index":30,"./vue-components/Finanzas/comprobante_fondo_fijo/create":31,"./vue-components/Finanzas/comprobante_fondo_fijo/edit":32,"./vue-components/Reportes/subcontratos-estimacion":33,"./vue-components/Tesoreria/movimientos_bancarios/index":34,"./vue-components/Tesoreria/traspaso_cuentas/index":35,"./vue-components/errors":36,"./vue-components/global-errors":37,"./vue-components/kardex_material/kardex-material-index":38,"./vue-components/select2":39}],6:[function(require,module,exports){
+},{"./vue-components/Compras/material/index":6,"./vue-components/Compras/requisicion/create":7,"./vue-components/Compras/requisicion/edit":8,"./vue-components/Configuracion/cierre/index":9,"./vue-components/Configuracion/seguridad/index":10,"./vue-components/Contabilidad/cuenta_almacen/index":11,"./vue-components/Contabilidad/cuenta_bancos/cuenta-bancaria-edit":12,"./vue-components/Contabilidad/cuenta_concepto/index":13,"./vue-components/Contabilidad/cuenta_contable/index":14,"./vue-components/Contabilidad/cuenta_costo/index":15,"./vue-components/Contabilidad/cuenta_empresa/cuenta-empresa-edit":16,"./vue-components/Contabilidad/cuenta_fondo/index":17,"./vue-components/Contabilidad/cuenta_material/index":18,"./vue-components/Contabilidad/datos_contables/edit":19,"./vue-components/Contabilidad/emails":20,"./vue-components/Contabilidad/modulos/revaluacion/create":21,"./vue-components/Contabilidad/poliza_generada/edit":22,"./vue-components/Contabilidad/poliza_tipo/poliza-tipo-create":23,"./vue-components/Contabilidad/tipo_cuenta_contable/tipo-cuenta-contable-create":24,"./vue-components/Contabilidad/tipo_cuenta_contable/tipo-cuenta-contable-update":25,"./vue-components/Control_Costos/reclasificacion_costos/index":26,"./vue-components/Control_Costos/solicitar_reclasificacion/index":27,"./vue-components/Control_Costos/solicitar_reclasificacion/items":28,"./vue-components/Control_Presupuesto/cambios_presupuesto/create":29,"./vue-components/Control_Presupuesto/presupuesto/index":30,"./vue-components/Finanzas/comprobante_fondo_fijo/create":31,"./vue-components/Finanzas/comprobante_fondo_fijo/edit":32,"./vue-components/Finanzas/comprobante_fondo_fijo/index":33,"./vue-components/Reportes/subcontratos-estimacion":34,"./vue-components/Tesoreria/movimientos_bancarios/index":35,"./vue-components/Tesoreria/traspaso_cuentas/index":36,"./vue-components/errors":37,"./vue-components/global-errors":38,"./vue-components/kardex_material/kardex-material-index":39,"./vue-components/select2":40}],6:[function(require,module,exports){
 'use strict';
 
 Vue.component('material-index', {
@@ -20459,6 +20460,121 @@ Vue.component('comprobante-fondo-fijo-edit', {
 },{}],33:[function(require,module,exports){
 'use strict';
 
+Vue.component('comprobante-fondo-fijo-index', {
+    props: ['consultar_comprobante_fondo_fijo', 'editar_comprobante_fondo_fijo', 'eliminar_comprobante_fondo_fijo'],
+    data: function data() {
+        return {};
+    },
+
+    mounted: function mounted() {
+        var self = this;
+
+        $(document).on('click', '.btn_delete', function () {
+            var id = $(this).attr('id');
+            self.delete_comprobante(id);
+        });
+
+        var data = {
+            "processing": true,
+            "serverSide": true,
+            "ordering": true,
+            "searching": false,
+            "order": [[5, "desc"]],
+            "ajax": {
+                "url": App.host + '/finanzas/comprobante_fondo_fijo/paginate',
+                "type": "POST",
+                "beforeSend": function beforeSend() {
+                    self.guardando = true;
+                },
+                "complete": function complete() {
+                    self.guardando = false;
+                },
+                "dataSrc": function dataSrc(json) {
+                    for (var i = 0; i < json.data.length; i++) {
+                        json.data[i].monto = '$' + parseFloat(json.data[i].monto).formatMoney(2, ',', '.');
+                        json.data[i].fecha = new Date(json.data[i].fecha).dateFormat();
+                        json.data[i].FechaHoraRegistro = new Date(json.data[i].FechaHoraRegistro).dateFormat();
+                    }
+                    return json.data;
+                }
+            },
+            "columns": [{ data: 'numero_folio' }, { data: 'FondoFijo' }, { data: 'monto', className: 'text-right' }, { data: 'fecha' }, { data: 'referencia' }, { data: 'FechaHoraRegistro' }, {
+                data: {},
+                render: function render(data) {
+                    return (self.consultar_comprobante_fondo_fijo ? '<a href="' + App.host + '/finanzas/comprobante_fondo_fijo/' + data.id_transaccion + '" title="Ver" class="btn btn-xs btn-default"><i class="fa fa-eye"></i></a>' : '') + (self.editar_comprobante_fondo_fijo ? '<a href="' + App.host + '/finanzas/comprobante_fondo_fijo/' + data.id_transaccion + '/edit' + '" title="Editar" class="btn btn-xs btn-info"> <i class="fa fa-pencil"></i></a>' : '') + (self.eliminar_comprobante_fondo_fijo ? '<button title="Eliminar" type="button" class="btn btn-xs btn-danger btn_delete" id="' + data.id_transaccion + '"><i class="fa fa-trash"></i></button>' : '');
+                },
+                orderable: false
+            }],
+            language: {
+                "sProcessing": "Procesando...",
+                "sLengthMenu": "Mostrar _MENU_ registros",
+                "sZeroRecords": "No se encontraron resultados",
+                "sEmptyTable": "Ningún dato disponible en esta tabla",
+                "sInfo": "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
+                "sInfoEmpty": "Mostrando registros del 0 al 0 de un total de 0 registros",
+                "sInfoFiltered": "(filtrado de un total de _MAX_ registros)",
+                "sInfoPostFix": "",
+                "sSearch": "Buscar:",
+                "sUrl": "",
+                "sInfoThousands": ",",
+                "sLoadingRecords": "Cargando...",
+                "oPaginate": {
+                    "sFirst": "Primero",
+                    "sLast": "Último",
+                    "sNext": "Siguiente",
+                    "sPrevious": "Anterior"
+                },
+                "oAria": {
+                    "sSortAscending": ": Activar para ordenar la columna de manera ascendente",
+                    "sSortDescending": ": Activar para ordenar la columna de manera descendente"
+                }
+            }
+        };
+
+        $('#comprobantes_table').DataTable(data);
+    },
+
+    methods: {
+        delete_comprobante: function delete_comprobante(id) {
+            var url = App.host + "/finanzas/comprobante_fondo_fijo/" + id;
+
+            swal({
+                title: "Eliminar Comprobante de Fondo Fijo",
+                text: "¿Estás seguro que desea eliminar el comprobante de fondo fijo?",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: "Si, Continuar",
+                cancelButtonText: "No, Cancelar"
+            }).then(function (result) {
+                if (result.value) {
+                    $.ajax({
+                        url: url,
+                        method: 'POST',
+                        data: {
+                            _method: 'DELETE'
+                        },
+                        success: function success(data, textStatus, xhr) {
+                            swal({
+                                type: "success",
+                                title: '¡Correcto!',
+                                text: 'Comprobante de Fondo Fijo Eliminado con éxito'
+                            });
+                        },
+                        complete: function complete() {
+                            $('#comprobantes_table').DataTable().ajax.reload();
+                        }
+                    });
+                }
+            });
+        }
+    }
+});
+
+},{}],34:[function(require,module,exports){
+'use strict';
+
 Vue.component('subcontratos-estimacion', {
     props: ['subcontratos_url', 'estimaciones_url'],
     data: function data() {
@@ -20535,7 +20651,7 @@ Vue.component('subcontratos-estimacion', {
     }
 });
 
-},{}],34:[function(require,module,exports){
+},{}],35:[function(require,module,exports){
 'use strict';
 
 Vue.component('movimientos_bancarios-index', {
@@ -20880,7 +20996,7 @@ Vue.component('movimientos_bancarios-index', {
     }
 });
 
-},{}],35:[function(require,module,exports){
+},{}],36:[function(require,module,exports){
 'use strict';
 
 Vue.component('traspaso-cuentas-index', {
@@ -21187,7 +21303,7 @@ Vue.component('traspaso-cuentas-index', {
     }
 });
 
-},{}],36:[function(require,module,exports){
+},{}],37:[function(require,module,exports){
 'use strict';
 
 Vue.component('app-errors', {
@@ -21196,7 +21312,7 @@ Vue.component('app-errors', {
     template: require('./templates/errors.html')
 });
 
-},{"./templates/errors.html":40}],37:[function(require,module,exports){
+},{"./templates/errors.html":41}],38:[function(require,module,exports){
 'use strict';
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
@@ -21222,7 +21338,7 @@ Vue.component('global-errors', {
   }
 });
 
-},{"./templates/global-errors.html":41}],38:[function(require,module,exports){
+},{"./templates/global-errors.html":42}],39:[function(require,module,exports){
 'use strict';
 
 Vue.component('kardex-material-index', {
@@ -21372,7 +21488,7 @@ Vue.component('kardex-material-index', {
 
 });
 
-},{}],39:[function(require,module,exports){
+},{}],40:[function(require,module,exports){
 'use strict';
 
 Vue.component('select2', {
@@ -21421,9 +21537,9 @@ Vue.component('select2', {
     }
 });
 
-},{}],40:[function(require,module,exports){
-module.exports = '<div id="form-errors" v-cloak>\n  <div class="alert alert-danger" v-if="form.errors.length">\n    <ul>\n      <li v-for="error in form.errors">{{ error }}</li>\n    </ul>\n  </div>\n</div>';
 },{}],41:[function(require,module,exports){
+module.exports = '<div id="form-errors" v-cloak>\n  <div class="alert alert-danger" v-if="form.errors.length">\n    <ul>\n      <li v-for="error in form.errors">{{ error }}</li>\n    </ul>\n  </div>\n</div>';
+},{}],42:[function(require,module,exports){
 module.exports = '<div class="alert alert-danger" v-show="errors.length">\n  <ul>\n    <li v-for="error in errors">{{ error }}</li>\n  </ul>\n</div>';
 },{}]},{},[4]);
 
