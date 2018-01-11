@@ -15111,20 +15111,23 @@ Vue.component('cierre-index', {
             var self = this;
             swal({
                 title: 'Abrir Periodo',
-                text: 'Escriba el Motivo de la apertura',
+                text: 'Motivo de la Apertura',
                 input: 'text',
                 showCancelButton: true,
-                confirmButtonText: 'Submit',
+                confirmButtonText: 'Abrir ',
                 cancelButtonText: 'Cancelar',
-                showLoaderOnConfirm: true,
-                inputValidator: function inputValidator(value) {
-                    return !value && 'You need to write something!';
-                },
+                showLoaderOnConfirm: false,
                 allowOutsideClick: function allowOutsideClick() {
                     return !swal.isLoading();
                 }
             }).then(function (result) {
-                if (result.length > 0) {
+                if (result.length == 0) {
+                    swal({
+                        type: 'warning',
+                        title: 'Error',
+                        text: 'Por favor escriba un motivo para la apertura'
+                    });
+                } else {
                     $.ajax({
                         'url': App.host + '/configuracion/cierre/' + id_cierre + '/open',
                         'type': 'POST',
@@ -15148,7 +15151,7 @@ Vue.component('cierre-index', {
                         }
                     });
                 }
-            });
+            }).catch();
         },
 
         close: function close(id_cierre) {

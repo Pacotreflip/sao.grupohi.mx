@@ -172,41 +172,44 @@ Vue.component('cierre-index', {
             var self = this;
             swal({
                 title: 'Abrir Periodo',
-                text: 'Escriba el Motivo de la apertura',
+                text: 'Motivo de la Apertura',
                 input: 'text',
                 showCancelButton: true,
-                confirmButtonText: 'Submit',
+                confirmButtonText: 'Abrir ',
                 cancelButtonText: 'Cancelar',
-                showLoaderOnConfirm: true,
-                inputValidator: (value) => {
-                    return !value && 'You need to write something!'
-                },
+                showLoaderOnConfirm: false,
                 allowOutsideClick: () => !swal.isLoading()
-            }).then((result) => {
-                if (result.length > 0) {
-                    $.ajax({
-                        'url' : App.host + '/configuracion/cierre/' + id_cierre + '/open',
-                        'type' : 'POST',
-                        'data' : {
-                            '_method' : 'PATCH',
-                            'motivo' : result
-                        },
-                        beforeSend : function () {
-                            self.guardando = true;
-                        },
-                        success : function (response) {
-                            $('#cierres_table').DataTable().ajax.reload(null, false);
-                            swal({
-                                type : 'success',
-                                title : 'Periodo abierto correctamente',
-                                html: '<p>Año : <b>' + response.anio + '</b> ' + 'Mes : <b>'+ parseInt(response.mes).getMes() +'</b></p>'
-                            });                        },
-                        complete : function () {
-                            self.guardando = false;
-                        }
-                    })
-                }
-            });
+        }).then((result) => {
+                if (result.length == 0) {
+                swal({
+                    type : 'warning',
+                    title : 'Error',
+                    text : 'Por favor escriba un motivo para la apertura'
+                });
+            } else {
+                $.ajax({
+                    'url' : App.host + '/configuracion/cierre/' + id_cierre + '/open',
+                    'type' : 'POST',
+                    'data' : {
+                        '_method' : 'PATCH',
+                        'motivo' : result
+                    },
+                    beforeSend : function () {
+                        self.guardando = true;
+                    },
+                    success : function (response) {
+                        $('#cierres_table').DataTable().ajax.reload(null, false);
+                        swal({
+                            type : 'success',
+                            title : 'Periodo abierto correctamente',
+                            html: '<p>Año : <b>' + response.anio + '</b> ' + 'Mes : <b>'+ parseInt(response.mes).getMes() +'</b></p>'
+                        });                        },
+                    complete : function () {
+                        self.guardando = false;
+                    }
+                })
+            }
+        }).catch();
         },
 
         close: function (id_cierre) {
