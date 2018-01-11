@@ -104,7 +104,7 @@ class EloquentCierreRepository implements CierreRepository
 
             DB::connection('seguridad')->commit();
 
-            return $cierre->with('aperturas')->first();
+            return $this->model->with('aperturas')->find($id);
         } catch (\Exception $e) {
             DB::connection('seguridad')->rollback();
             throw $e;
@@ -130,7 +130,7 @@ class EloquentCierreRepository implements CierreRepository
 
             DB::connection('seguridad')->commit();
 
-            return $cierre->with('aperturas')->first();
+            return $this->model->with('aperturas')->find($id);
 
         } catch (\Exception $e) {
             DB::connection('seguridad')->rollback();
