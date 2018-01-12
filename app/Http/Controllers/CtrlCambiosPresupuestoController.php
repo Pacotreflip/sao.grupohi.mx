@@ -1,9 +1,11 @@
 <?php
 
 namespace Ghi\Http\Controllers;
+use Ghi\Domain\Core\Contracts\Contabilidad\ConceptoRepository;
+use Ghi\Domain\Core\Contracts\ControlPresupuesto\BasePresupuestoRepository;
 use Ghi\Domain\Core\Contracts\ControlPresupuesto\PresupuestoRepository;
 use Illuminate\Http\Request;
-use Ghi\Http\Requests;
+
 
 class CtrlCambiosPresupuestoController extends Controller
 {
@@ -16,8 +18,10 @@ class CtrlCambiosPresupuestoController extends Controller
     ];
 
     private $presupuesto;
+    private $concepto;
+    private $basePresupuesto;
 
-    public function __construct(PresupuestoRepository $presupuesto)
+    public function __construct(PresupuestoRepository $presupuesto,ConceptoRepository $concepto,BasePresupuestoRepository $basePresupuesto)
     {
         parent::__construct();
 
@@ -25,6 +29,8 @@ class CtrlCambiosPresupuestoController extends Controller
         $this->middleware('context');
 
         $this->presupuesto = $presupuesto;
+        $this->basePresupuesto=$basePresupuesto;
+        $this->concepto=$concepto;
     }
 
     public function index(){
@@ -36,6 +42,20 @@ class CtrlCambiosPresupuestoController extends Controller
     public function  create(){
         return view('control_presupuesto.control_cambios_presupuesto.create')
             ->with('max_niveles', $this->presupuesto->getMaxNiveles())
-            ->with('operadores', $this->operadores);
+            ->with('operadores', $this->operadores)
+            ->with('basesPresupuesto', $this->basePresupuesto->all());
+    }
+
+    public function getPaths(Request $request){
+
+        $baseDatos=$this->basePresupuesto->findBy($request->all()['baseDatos']);
+        $conceptos =  $this->concepto->paths($request->all(),$baseDatos[0]->base_datos);
+
+        return response()->json([
+            'recordsTotal' => $conceptos->total(),
+            'recordsFiltered' => $conceptos->total(),
+            'data' => $conceptos->items()
+        ], 200);
+
     }
 }
