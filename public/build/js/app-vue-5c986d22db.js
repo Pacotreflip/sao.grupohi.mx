@@ -15077,7 +15077,7 @@ Vue.component('cierre-index', {
         },
 
         reset_cierre: function reset_cierre() {
-            $('#fecha').val('');
+            $('#fecha').val();
             Vue.set(this.cierre, 'mes', '');
             Vue.set(this.cierre, 'anio', '');
         },
@@ -15110,7 +15110,6 @@ Vue.component('cierre-index', {
 
         open: function open(id_cierre) {
             var self = this;
-
             swal({
                 title: 'Abrir Periodo',
                 text: 'Motivo de la Apertura',
@@ -15119,25 +15118,23 @@ Vue.component('cierre-index', {
                 confirmButtonText: 'Abrir ',
                 cancelButtonText: 'Cancelar',
                 showLoaderOnConfirm: false,
-                preConfirm: function preConfirm(motivo) {
-                    return new Promise(function (resolve) {
-                        if (motivo.length === 0) {
-                            swal.showValidationError('Por favor escriba un motivo para la apertura del periodo.');
-                        }
-                        resolve();
-                    });
-                },
                 allowOutsideClick: function allowOutsideClick() {
-                    !swal.isLoading();
+                    return !swal.isLoading();
                 }
             }).then(function (result) {
-                if (result.value) {
+                if (result.length == 0) {
+                    swal({
+                        type: 'warning',
+                        title: 'Error',
+                        text: 'Por favor escriba un motivo para la apertura'
+                    });
+                } else {
                     $.ajax({
                         'url': App.host + '/configuracion/cierre/' + id_cierre + '/open',
                         'type': 'POST',
                         'data': {
                             '_method': 'PATCH',
-                            'motivo': result.value
+                            'motivo': result
                         },
                         beforeSend: function beforeSend() {
                             self.guardando = true;
@@ -15155,7 +15152,7 @@ Vue.component('cierre-index', {
                         }
                     });
                 }
-            });
+            }).catch();
         },
 
         close: function close(id_cierre) {
@@ -15170,30 +15167,29 @@ Vue.component('cierre-index', {
                 confirmButtonText: 'Si, Cerrar',
                 cancelButtonText: 'No, Cancelar'
             }).then(function (result) {
-                if (result.value) {
-                    $.ajax({
-                        url: App.host + '/configuracion/cierre/' + id_cierre + '/close',
-                        type: 'POST',
-                        data: {
-                            _method: 'PATCH'
-                        },
-                        beforeSend: function beforeSend() {
-                            self.guardando = true;
-                        },
-                        success: function success(response) {
-                            $('#cierres_table').DataTable().ajax.reload(null, false);
-                            swal({
-                                type: 'success',
-                                title: 'Periodo Cerrado Correctamente',
-                                html: '<p>Año : <b>' + response.anio + '</b> ' + 'Mes : <b>' + parseInt(response.mes).getMes() + '</b></p>'
-                            });
-                        },
-                        complete: function complete() {
-                            self.guardando = false;
-                        }
-                    });
-                }
-            });
+
+                $.ajax({
+                    url: App.host + '/configuracion/cierre/' + id_cierre + '/close',
+                    type: 'POST',
+                    data: {
+                        _method: 'PATCH'
+                    },
+                    beforeSend: function beforeSend() {
+                        self.guardando = true;
+                    },
+                    success: function success(response) {
+                        $('#cierres_table').DataTable().ajax.reload(null, false);
+                        swal({
+                            type: 'success',
+                            title: 'Periodo Cerrado Correctamente',
+                            html: '<p>Año : <b>' + response.anio + '</b> ' + 'Mes : <b>' + parseInt(response.mes).getMes() + '</b></p>'
+                        });
+                    },
+                    complete: function complete() {
+                        self.guardando = false;
+                    }
+                });
+            }).catch(swal.noop);
         },
 
         validateForm: function validateForm(scope, funcion) {
@@ -15221,11 +15217,9 @@ Vue.component('cierre-index', {
                 showCancelButton: true,
                 confirmButtonText: "Si, Continuar",
                 cancelButtonText: "No, Cancelar"
-            }).then(function (result) {
-                if (result.value) {
-                    self.save_cierre();
-                }
-            });
+            }).then(function () {
+                self.save_cierre();
+            }).catch(swal.noop);
         }
     }
 });
@@ -15456,10 +15450,8 @@ Vue.component('cuenta-almacen-index', {
                 showCancelButton: true,
                 confirmButtonText: "Si, Continuar",
                 cancelButtonText: "No, Cancelar"
-            }).then(function (result) {
-                if (result.value) {
-                    self.update_cuenta();
-                }
+            }).then(function () {
+                self.update_cuenta();
             }).catch(swal.noop);
         },
 
@@ -15502,10 +15494,8 @@ Vue.component('cuenta-almacen-index', {
                 confirmButtonText: "Si, Continuar",
                 cancelButtonText: "No, Cancelar"
             }).then(function (result) {
-                if (result.value) {
-                    self.save_cuenta();
-                }
-            }).catch(swal.noop);
+                if (result.value) self.save_cuenta();
+            });
         },
 
         save_cuenta: function save_cuenta() {
@@ -15987,10 +15977,8 @@ Vue.component('cuenta-concepto-index', {
                 showCancelButton: true,
                 confirmButtonText: "Si, Continuar",
                 cancelButtonText: "No, Cancelar"
-            }).then(function (result) {
-                if (result.value) {
-                    self.update_cuenta();
-                }
+            }).then(function () {
+                self.update_cuenta();
             }).catch(swal.noop);
         },
 
@@ -16032,10 +16020,8 @@ Vue.component('cuenta-concepto-index', {
                 showCancelButton: true,
                 confirmButtonText: "Si, Continuar",
                 cancelButtonText: "No, Cancelar"
-            }).then(function (result) {
-                if (result.value) {
-                    self.save_cuenta();
-                }
+            }).then(function () {
+                self.save_cuenta();
             }).catch(swal.noop);
         },
 
@@ -16138,10 +16124,8 @@ Vue.component('cuenta-contable-index', {
                 showCancelButton: true,
                 confirmButtonText: "Si, Continuar",
                 cancelButtonText: "No, Cancelar"
-            }).then(function (result) {
-                if (result.value) {
-                    self.save_cuenta_contable();
-                }
+            }).then(function () {
+                self.save_cuenta_contable();
             }).catch(swal.noop);
         },
 
@@ -16154,10 +16138,8 @@ Vue.component('cuenta-contable-index', {
                 showCancelButton: true,
                 confirmButtonText: "Si, Continuar",
                 cancelButtonText: "No, Cancelar"
-            }).then(function (result) {
-                if (result.value) {
-                    self.update_cuenta_contable();
-                }
+            }).then(function () {
+                self.update_cuenta_contable();
             }).catch(swal.noop);
         },
 
@@ -16448,10 +16430,8 @@ Vue.component('cuenta-costo-index', {
                 showCancelButton: true,
                 confirmButtonText: "Si, Continuar",
                 cancelButtonText: "No, Cancelar"
-            }).then(function (result) {
-                if (result.value) {
-                    self.update_cuenta();
-                }
+            }).then(function () {
+                self.update_cuenta();
             }).catch(swal.noop);
         },
 
@@ -16493,10 +16473,8 @@ Vue.component('cuenta-costo-index', {
                 showCancelButton: true,
                 confirmButtonText: "Si, Continuar",
                 cancelButtonText: "No, Cancelar"
-            }).then(function (result) {
-                if (result.value) {
-                    self.save_cuenta();
-                }
+            }).then(function () {
+                self.save_cuenta();
             }).catch(swal.noop);
         },
 
@@ -16537,10 +16515,8 @@ Vue.component('cuenta-costo-index', {
                 showCancelButton: true,
                 confirmButtonText: "Si, Continuar",
                 cancelButtonText: "No, Cancelar"
-            }).then(function (result) {
-                if (result.value) {
-                    self.delete_cuenta(id_cuenta_costo);
-                }
+            }).then(function () {
+                self.delete_cuenta(id_cuenta_costo);
             }).catch(swal.noop);
         },
         delete_cuenta: function delete_cuenta(id_cuenta_costo) {
@@ -16666,10 +16642,9 @@ Vue.component('cuenta-empresa-edit', {
                 showCancelButton: true,
                 confirmButtonText: "Si, Continuar",
                 cancelButtonText: "No, Cancelar"
-            }).then(function (result) {
-                if (result.value) {
-                    self.elimina_cuenta();
-                }
+            }).then(function () {
+
+                self.elimina_cuenta();
             }).catch(swal.noop);
         },
         confirm_cuenta_update: function confirm_cuenta_update() {
@@ -16681,10 +16656,9 @@ Vue.component('cuenta-empresa-edit', {
                 showCancelButton: true,
                 confirmButtonText: "Si, Continuar",
                 cancelButtonText: "No, Cancelar"
-            }).then(function (result) {
-                if (result.value) {
-                    self.update_cuenta_empresa();
-                }
+            }).then(function () {
+
+                self.update_cuenta_empresa();
             }).catch(swal.noop);
         },
         confirm_cuenta_create: function confirm_cuenta_create() {
@@ -16696,10 +16670,8 @@ Vue.component('cuenta-empresa-edit', {
                 showCancelButton: true,
                 confirmButtonText: "Si, Continuar",
                 cancelButtonText: "No, Cancelar"
-            }).then(function (result) {
-                if (result.value) {
-                    self.save_cuenta_empresa();
-                }
+            }).then(function () {
+                self.save_cuenta_empresa();
             }).catch(swal.noop);
         },
         elimina_cuenta: function elimina_cuenta() {
@@ -16915,10 +16887,8 @@ Vue.component('cuenta-fondo-index', {
                 showCancelButton: true,
                 confirmButtonText: "Si, Continuar",
                 cancelButtonText: "No, Cancelar"
-            }).then(function (result) {
-                if (result.value) {
-                    self.update_cuenta();
-                }
+            }).then(function () {
+                self.update_cuenta();
             }).catch(swal.noop);
         },
 
@@ -16960,10 +16930,8 @@ Vue.component('cuenta-fondo-index', {
                 showCancelButton: true,
                 confirmButtonText: "Si, Continuar",
                 cancelButtonText: "No, Cancelar"
-            }).then(function (result) {
-                if (result.value) {
-                    self.save_cuenta();
-                }
+            }).then(function () {
+                self.save_cuenta();
             }).catch(swal.noop);
         },
 
@@ -17161,10 +17129,8 @@ Vue.component('cuenta-material-index', {
                 showCancelButton: true,
                 confirmButtonText: "Si, Continuar",
                 cancelButtonText: "No, Cancelar"
-            }).then(function (result) {
-                if (result.value) {
-                    self.update_cuenta();
-                }
+            }).then(function () {
+                self.update_cuenta();
             }).catch(swal.noop);
         },
 
@@ -17207,10 +17173,8 @@ Vue.component('cuenta-material-index', {
                 showCancelButton: true,
                 confirmButtonText: "Si, Continuar",
                 cancelButtonText: "No, Cancelar"
-            }).then(function (result) {
-                if (result.value) {
-                    self.save_cuenta();
-                }
+            }).then(function () {
+                self.save_cuenta();
             }).catch(swal.noop);
         },
 
@@ -17343,10 +17307,8 @@ Vue.component('datos-contables-edit', {
                 showCancelButton: true,
                 confirmButtonText: "Si, Continuar",
                 cancelButtonText: "No, Cancelar"
-            }).then(function (result) {
-                if (result.value) {
-                    self.save_datos_obra();
-                }
+            }).then(function () {
+                self.save_datos_obra();
             }).catch(swal.noop);
         },
 
@@ -17493,10 +17455,8 @@ Vue.component('revaluacion-create', {
                 showCancelButton: true,
                 confirmButtonText: "Si, Continuar",
                 cancelButtonText: "No, Cancelar"
-            }).then(function (result) {
-                if (result.value) {
-                    self.save_facturas();
-                }
+            }).then(function () {
+                self.save_facturas();
             }).catch(swal.noop);
         },
         save_facturas: function save_facturas() {
@@ -17862,37 +17822,35 @@ Vue.component('poliza-generada-edit', {
                             showCancelButton: true,
                             cancelButtonText: 'No, Cancelar',
                             confirmButtonText: 'Si, Continuar'
-                        }).then(function (result) {
-                            if (result.value) {
+                        }).then(function () {
 
-                                $.ajax({
-                                    type: 'POST',
-                                    url: App.host + "/sistema_contable/poliza_movimientos/" + self.data.poliza.id_int_poliza,
-                                    data: {
-                                        _method: 'PATCH',
-                                        data: self.data.movimientos,
-                                        validar: false
-                                    },
-                                    beforeSend: function beforeSend() {
-                                        self.guardando = true;
-                                    },
-                                    success: function success(data, textStatus, xhr) {
-                                        self.data.poliza = data.data.poliza;
-                                        swal({
-                                            title: '¡Correcto!',
-                                            html: 'Las cuentas se configurarón exitosamente',
-                                            type: 'success',
-                                            confirmButtonText: "Ok",
-                                            closeOnConfirm: false
-                                        }).then(function () {}).catch(swal.noop);
-                                        window.location.reload(true);
-                                        $('#add_cuenta_modal').modal('hide');
-                                    },
-                                    complete: function complete() {
-                                        self.guardando = false;
-                                    }
-                                });
-                            }
+                            $.ajax({
+                                type: 'POST',
+                                url: App.host + "/sistema_contable/poliza_movimientos/" + self.data.poliza.id_int_poliza,
+                                data: {
+                                    _method: 'PATCH',
+                                    data: self.data.movimientos,
+                                    validar: false
+                                },
+                                beforeSend: function beforeSend() {
+                                    self.guardando = true;
+                                },
+                                success: function success(data, textStatus, xhr) {
+                                    self.data.poliza = data.data.poliza;
+                                    swal({
+                                        title: '¡Correcto!',
+                                        html: 'Las cuentas se configurarón exitosamente',
+                                        type: 'success',
+                                        confirmButtonText: "Ok",
+                                        closeOnConfirm: false
+                                    }).then(function () {}).catch(swal.noop);
+                                    window.location.reload(true);
+                                    $('#add_cuenta_modal').modal('hide');
+                                },
+                                complete: function complete() {
+                                    self.guardando = false;
+                                }
+                            });
                         }).catch(swal.noop);
                     } else {
 
@@ -18041,10 +17999,8 @@ Vue.component('poliza-tipo-create', {
                             cancelButtonText: 'No, Cancelar',
                             confirmButtonText: 'Si, Continuar'
 
-                        }).then(function (result) {
-                            if (result.value) {
-                                self.confirm_save();
-                            }
+                        }).then(function () {
+                            self.confirm_save();
                         }).catch(swal.noop);
                     } else {
                         self.confirm_save();
@@ -18062,10 +18018,8 @@ Vue.component('poliza-tipo-create', {
                 showCancelButton: true,
                 confirmButtonText: "Si, Continuar",
                 cancelButtonText: "No, Cancelar"
-            }).then(function (result) {
-                if (result.value) {
-                    self.save();
-                }
+            }).then(function () {
+                self.save();
             }).catch(swal.noop);
         },
 
@@ -18159,10 +18113,8 @@ Vue.component('tipo-cuenta-contable-create', {
                 showCancelButton: true,
                 confirmButtonText: "Si, Continuar",
                 cancelButtonText: "No, Cancelar"
-            }).then(function (result) {
-                if (result.value) {
-                    self.save();
-                }
+            }).then(function () {
+                self.save();
             }).catch(swal.noop);
         },
 
@@ -18231,10 +18183,8 @@ Vue.component('tipo-cuenta-contable-update', {
                 showCancelButton: true,
                 confirmButtonText: "Si, Continuar",
                 cancelButtonText: "No, Cancelar"
-            }).then(function (result) {
-                if (result.value) {
-                    self.save();
-                }
+            }).then(function () {
+                self.save();
             }).catch(swal.noop);
         },
 
@@ -18449,13 +18399,11 @@ Vue.component('reclasificacion_costos-index', {
                 showCancelButton: true,
                 confirmButtonText: "Si, Continuar",
                 cancelButtonText: "No, Cancelar"
-            }).then(function (result) {
-                if (result.value) {
-                    if (tipo == "aprobar") {
-                        self.aprobar();
-                    } else if (tipo == "rechazar") {
-                        self.rechazar();
-                    }
+            }).then(function () {
+                if (tipo == "aprobar") {
+                    self.aprobar();
+                } else if (tipo == "rechazar") {
+                    self.rechazar();
                 }
             }).catch(swal.noop);
         },
@@ -18799,13 +18747,11 @@ Vue.component('solicitar_reclasificacion-index', {
                 showCancelButton: true,
                 confirmButtonText: "Si, Continuar",
                 cancelButtonText: "No, Cancelar"
-            }).then(function (result) {
-                if (result.value) {
-                    if (tipo == "resultado") {
-                        self.eliminar_resultado(index);
-                    } else if (tipo == "filtro") {
-                        self.eliminar_filtro(index);
-                    }
+            }).then(function () {
+                if (tipo == "resultado") {
+                    self.eliminar_resultado(index);
+                } else if (tipo == "filtro") {
+                    self.eliminar_filtro(index);
                 }
             }).catch(swal.noop);
         },
@@ -18823,10 +18769,8 @@ Vue.component('solicitar_reclasificacion-index', {
                 showCancelButton: true,
                 confirmButtonText: "Si, Continuar",
                 cancelButtonText: "No, Cancelar"
-            }).then(function (result) {
-                if (result.value) {
-                    self.solicitar(item);
-                }
+            }).then(function () {
+                self.solicitar(item);
             }).catch(swal.noop);
         },
         solicitar: function solicitar(item) {
@@ -18935,10 +18879,8 @@ Vue.component('solicitar_reclasificacion-index', {
                 showCancelButton: true,
                 confirmButtonText: "Si, Continuar",
                 cancelButtonText: "No, Cancelar"
-            }).then(function (result) {
-                if (result.value) {
-                    window.location.href = self.url_solicitar_reclasificacion_index + '/items/' + id_concepto + '/' + id_transaccion;
-                }
+            }).then(function () {
+                window.location.href = self.url_solicitar_reclasificacion_index + '/items/' + id_concepto + '/' + id_transaccion;
             }).catch(swal.noop);
         }
     },
@@ -19126,13 +19068,11 @@ Vue.component('solicitar_reclasificacion-items', {
                 showCancelButton: true,
                 confirmButtonText: "Si, Continuar",
                 cancelButtonText: "No, Cancelar"
-            }).then(function (result) {
-                if (result.value) {
-                    if (tipo == "resultado") {
-                        self.eliminar_resultado(index);
-                    } else if (tipo == "filtro") {
-                        self.eliminar_filtro(index);
-                    }
+            }).then(function () {
+                if (tipo == "resultado") {
+                    self.eliminar_resultado(index);
+                } else if (tipo == "filtro") {
+                    self.eliminar_filtro(index);
                 }
             }).catch(swal.noop);
         },
@@ -19219,10 +19159,8 @@ Vue.component('solicitar_reclasificacion-items', {
                 showCancelButton: true,
                 confirmButtonText: "Si, Continuar",
                 cancelButtonText: "No, Cancelar"
-            }).then(function (result) {
-                if (result.value) {
-                    self.solicitar();
-                }
+            }).then(function () {
+                self.solicitar();
             }).catch(swal.noop);
         },
         solicitar: function solicitar() {
@@ -19338,13 +19276,11 @@ Vue.component('solicitar_reclasificacion-items', {
                 showCancelButton: true,
                 confirmButtonText: "Si, Continuar",
                 cancelButtonText: "No, Cancelar"
-            }).then(function (result) {
-                if (result.value) {
-                    if (tipo == "aprobar") {
-                        self.aprobar();
-                    } else if (tipo == "rechazar") {
-                        self.rechazar();
-                    }
+            }).then(function () {
+                if (tipo == "aprobar") {
+                    self.aprobar();
+                } else if (tipo == "rechazar") {
+                    self.rechazar();
                 }
             }).catch(swal.noop);
         },
@@ -20077,10 +20013,8 @@ Vue.component('comprobante-fondo-fijo-create', {
                 showCancelButton: true,
                 confirmButtonText: "Si, Continuar",
                 cancelButtonText: "No, Cancelar"
-            }).then(function (result) {
-                if (result.value) {
-                    self.save_comprobante_fondo_fijo();
-                }
+            }).then(function () {
+                self.save_comprobante_fondo_fijo();
             }).catch(swal.noop);
         },
 
@@ -20119,10 +20053,8 @@ Vue.component('comprobante-fondo-fijo-create', {
                 showCancelButton: true,
                 confirmButtonText: "Si, Continuar",
                 cancelButtonText: "No, Cancelar"
-            }).then(function (result) {
-                if (result.value) {
-                    self.remove_item(index);
-                }
+            }).then(function () {
+                self.remove_item(index);
             }).catch(swal.noop);
         },
         remove_item: function remove_item(index) {
@@ -20550,10 +20482,8 @@ Vue.component('comprobante-fondo-fijo-edit', {
                 showCancelButton: true,
                 confirmButtonText: "Si, Continuar",
                 cancelButtonText: "No, Cancelar"
-            }).then(function (result) {
-                if (result.value) {
-                    self.save_comprobante_fondo_fijo();
-                }
+            }).then(function () {
+                self.save_comprobante_fondo_fijo();
             }).catch(swal.noop);
         },
 
@@ -20937,10 +20867,8 @@ Vue.component('movimientos_bancarios-index', {
                 showCancelButton: true,
                 confirmButtonText: "Si, Continuar",
                 cancelButtonText: "No, Cancelar"
-            }).then(function (result) {
-                if (result.value) {
-                    self.guardar();
-                }
+            }).then(function () {
+                self.guardar();
             }).catch(swal.noop);
         },
         guardar: function guardar() {
@@ -20992,10 +20920,8 @@ Vue.component('movimientos_bancarios-index', {
                 showCancelButton: true,
                 confirmButtonText: "Si, Continuar",
                 cancelButtonText: "No, Cancelar"
-            }).then(function (result) {
-                if (result.value) {
-                    self.eliminar(id_movimiento_bancario);
-                }
+            }).then(function () {
+                self.eliminar(id_movimiento_bancario);
             }).catch(swal.noop);
         },
         eliminar: function eliminar(id_movimiento_bancario) {
@@ -21046,10 +20972,8 @@ Vue.component('movimientos_bancarios-index', {
                 showCancelButton: true,
                 confirmButtonText: "Si, Continuar",
                 cancelButtonText: "No, Cancelar"
-            }).then(function (result) {
-                if (result.value) {
-                    self.editar();
-                }
+            }).then(function () {
+                self.editar();
             }).catch(swal.noop);
         },
         editar: function editar() {
@@ -21257,10 +21181,8 @@ Vue.component('traspaso-cuentas-index', {
                 showCancelButton: true,
                 confirmButtonText: "Si, Continuar",
                 cancelButtonText: "No, Cancelar"
-            }).then(function (result) {
-                if (result.value) {
-                    self.guardar();
-                }
+            }).then(function () {
+                self.guardar();
             }).catch(swal.noop);
         },
         guardar: function guardar() {
@@ -21306,10 +21228,8 @@ Vue.component('traspaso-cuentas-index', {
                 showCancelButton: true,
                 confirmButtonText: "Si, Continuar",
                 cancelButtonText: "No, Cancelar"
-            }).then(function (result) {
-                if (result.value) {
-                    self.eliminar(id_traspaso);
-                }
+            }).then(function () {
+                self.eliminar(id_traspaso);
             }).catch(swal.noop);
         },
         eliminar: function eliminar(id_traspaso) {
@@ -21385,10 +21305,8 @@ Vue.component('traspaso-cuentas-index', {
                 showCancelButton: true,
                 confirmButtonText: "Si, Continuar",
                 cancelButtonText: "No, Cancelar"
-            }).then(function (result) {
-                if (result.value) {
-                    self.editar();
-                }
+            }).then(function () {
+                self.editar();
             }).catch(swal.noop);
         },
         editar: function editar() {
