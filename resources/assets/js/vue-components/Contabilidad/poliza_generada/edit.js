@@ -143,9 +143,11 @@ Vue.component('poliza-generada-edit', {
                 showCancelButton: true,
                 confirmButtonText: "Si, Continuar",
                 cancelButtonText: "No, Cancelar",
-            }).then(function () {
-                self.add_movimiento();
-            }).catch(swal.noop);
+            }).then(function (result) {
+                if(result.value) {
+                    self.add_movimiento();
+                }
+            });
         },
 
         add_movimiento: function () {
@@ -165,11 +167,9 @@ Vue.component('poliza-generada-edit', {
                         self.form.movimiento.id_tipo_cuenta_contable = data.data.cuenta_contable.id_int_tipo_cuenta_contable;
                         self.form.movimiento.id_cuenta_contable = data.data.cuenta_contable.id_int_cuenta_contable;
                         self.form.movimiento.descripcion_cuenta_contable = data.data.cuenta_contable.tipo_cuenta_contable.descripcion;
-
                     }
                 },
                 complete: function () {
-
                     self.data.poliza_edit.poliza_movimientos.push(self.form.movimiento);
                     self.close_add_movimiento();
                 }
@@ -188,9 +188,11 @@ Vue.component('poliza-generada-edit', {
                 showCancelButton: true,
                 confirmButtonText: "Si, Continuar",
                 cancelButtonText: "No, Cancelar",
-            }).then(function () {
-                self.remove_movimiento(index);
-            }).catch(swal.noop);
+            }).then(function (result) {
+                if(result.value) {
+                    self.remove_movimiento(index);
+                }
+            });
         },
 
         remove_movimiento: function (index) {
@@ -206,9 +208,11 @@ Vue.component('poliza-generada-edit', {
                 showCancelButton: true,
                 confirmButtonText: "Si, Continuar",
                 cancelButtonText: "No, Cancelar",
-            }).then(function () {
-                self.save();
-            }).catch(swal.noop);
+            }).then(function (result) {
+                if(result.value) {
+                    self.save();
+                }
+            });
         },
         confirm_save_cuenta: function () {
             var self = this;
@@ -219,9 +223,11 @@ Vue.component('poliza-generada-edit', {
                 showCancelButton: true,
                 confirmButtonText: "Si, Continuar",
                 cancelButtonText: "No, Cancelar",
-            }).then(function () {
-                self.save_cuenta();
-            }).catch(swal.noop);
+            }).then(function (result) {
+                if(result.value) {
+                    self.save_cuenta();
+                }
+            });
         },
 
         save: function () {
@@ -250,8 +256,6 @@ Vue.component('poliza-generada-edit', {
                         closeOnConfirm: false
                     }).catch(swal.noop);
                     window.location = xhr.getResponseHeader('Location');
-
-
                 },
                 complete: function () {
                     self.guardando = false;
