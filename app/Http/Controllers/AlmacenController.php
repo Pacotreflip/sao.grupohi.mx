@@ -2,6 +2,8 @@
 
 namespace Ghi\Http\Controllers;
 
+use Dingo\Api\Routing\Helpers;
+use function foo\func;
 use Ghi\Domain\Core\Contracts\AlmacenRepository;
 use Ghi\Domain\Core\Transformers\AlmacenTreeTransformer;
 use Illuminate\Http\Request;
@@ -10,6 +12,8 @@ use Ghi\Http\Requests;
 
 class AlmacenController extends Controller
 {
+
+    use Helpers;
 
     protected $almacen;
 
@@ -44,10 +48,26 @@ class AlmacenController extends Controller
 
     }
 
+    public function show($id) {
+        $almacen = $this->almacen->with('cuentaAlmacen')->find($id);
+
+        return $this->response()->item($almacen, function ($item) { return $item; });
+    }
+
     public function getNode($id)
     {
         $almacenes = $this->almacen->all();
         $resp = AlmacenTreeTransformer::transform($almacenes);
         return response()->json($resp, 200);
+    }
+
+    public function paginate(Request $request) {
+        $almacenes = $this->almacen->with('cuentaAlmacen')->paginate($request->all());
+
+        return response()->json([
+            'recordsTotal' => $almacenes->total(),
+            'recordsFiltered' => $almacenes->total(),
+            'data' => $almacenes->items()
+        ], 200);
     }
 }

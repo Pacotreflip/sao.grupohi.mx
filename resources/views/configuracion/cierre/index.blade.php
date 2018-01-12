@@ -5,7 +5,10 @@
     {!! Breadcrumbs::render('configuracion.cierre.index') !!}
 @endsection
 @section('main-content')
-    <cierre-index inline-template v-cloak :editar_cierre_periodo="{{ \Entrust::can(['editar_cierre_periodo']) ? 'true' : 'false' }}">
+    <cierre-index
+            inline-template
+            v-cloak
+            :editar_cierre_periodo="{{ \Entrust::can(['editar_cierre_periodo']) ? 'true' : 'false' }}">
         <section>
 
             @permission('generar_cierre_periodo')

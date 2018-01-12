@@ -15305,11 +15305,10 @@ Vue.component('configuracion-seguridad-index', {
 'use strict';
 
 Vue.component('cuenta-almacen-index', {
-    props: ['datos_contables', 'url_cuenta_almacen_store', 'almacenes'],
+    props: ['datos_contables', 'editar_cuenta_almacen', 'registrar_cuenta_almacen'],
     data: function data() {
         return {
             'data': {
-                'almacenes': this.almacenes,
                 'almacen_edit': {}
             },
             'form': {
@@ -15322,21 +15321,108 @@ Vue.component('cuenta-almacen-index', {
             'guardando': false
         };
     },
-    methods: {
-        editar: function editar(almacen) {
-            this.data.almacen_edit = almacen;
-            Vue.set(this.form.cuenta_almacen, 'id_almacen', almacen.id_almacen);
-            if (almacen.cuenta_almacen != null) {
-                Vue.set(this.form.cuenta_almacen, 'cuenta', almacen.cuenta_almacen.cuenta);
-                Vue.set(this.form.cuenta_almacen, 'id', almacen.cuenta_almacen.id);
-            } else {
-                Vue.set(this.form.cuenta_almacen, 'cuenta', '');
-                Vue.set(this.form.cuenta_almacen, 'id', '');
+
+    mounted: function mounted() {
+        var self = this;
+
+        $(document).on('click', '.btn_edit', function () {
+            var id = $(this).attr('id');
+            self.editar(id);
+        });
+
+        var data = {
+            "processing": true,
+            "serverSide": true,
+            "ordering": true,
+            "searching": false,
+            "order": [[1, "asc"]],
+            "ajax": {
+                "url": App.host + '/almacen/paginate',
+                "type": "POST",
+                "beforeSend": function beforeSend() {
+                    self.guardando = true;
+                },
+                "complete": function complete() {
+                    self.guardando = false;
+                },
+                "dataSrc": function dataSrc(json) {
+                    for (var i = 0; i < json.data.length; i++) {
+                        json.data[i].index = i + 1;
+                    }
+                    return json.data;
+                }
+            },
+            "columns": [{ data: 'index', orderable: false }, { data: 'descripcion' }, { data: 'tipo_almacen' }, {
+                data: {},
+                render: function render(data) {
+                    return data.cuenta_almacen != null && data.cuenta_almacen.cuenta != null ? data.cuenta_almacen.cuenta : '---';
+                },
+                orderable: false
+            }, {
+                data: {},
+                render: function render(data) {
+                    return '<div class="btn-group">' + '     <button id="' + data.id_almacen + '" title="' + (data.cuenta_almacen != null ? 'Editar' : 'Registrar') + '" class="btn btn-xs btn_edit btn-' + (data.cuenta_almacen != null ? 'info' : 'success') + '" type="button">' + '       <i class="fa fa-edit"></i>' + '     </button>' + '   </div>';
+                }
+            }],
+            language: {
+                "sProcessing": "Procesando...",
+                "sLengthMenu": "Mostrar _MENU_ registros",
+                "sZeroRecords": "No se encontraron resultados",
+                "sEmptyTable": "Ningún dato disponible en esta tabla",
+                "sInfo": "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
+                "sInfoEmpty": "Mostrando registros del 0 al 0 de un total de 0 registros",
+                "sInfoFiltered": "(filtrado de un total de _MAX_ registros)",
+                "sInfoPostFix": "",
+                "sSearch": "Buscar:",
+                "sUrl": "",
+                "sInfoThousands": ",",
+                "sLoadingRecords": "Cargando...",
+                "oPaginate": {
+                    "sFirst": "Primero",
+                    "sLast": "Último",
+                    "sNext": "Siguiente",
+                    "sPrevious": "Anterior"
+                },
+                "oAria": {
+                    "sSortAscending": ": Activar para ordenar la columna de manera ascendente",
+                    "sSortDescending": ": Activar para ordenar la columna de manera descendente"
+                }
             }
-            this.validation_errors.clear('form_edit_cuenta');
-            $('#edit_cuenta_modal').modal('show');
-            $('#cuenta_contable').focus();
-            this.validation_errors.clear('form_edit_cuenta');
+        };
+
+        $('#almacenes_table').DataTable(data);
+    },
+
+    methods: {
+        editar: function editar(id_almacen) {
+
+            var self = this;
+
+            $.ajax({
+                url: App.host + '/almacen/' + id_almacen,
+                type: 'GET',
+                beforeSend: function beforeSend() {
+                    self.guardando = true;
+                },
+                success: function success(response) {
+                    self.data.almacen_edit = response;
+                    Vue.set(self.form.cuenta_almacen, 'id_almacen', response.id_almacen);
+                    if (response.cuenta_almacen != null) {
+                        Vue.set(self.form.cuenta_almacen, 'cuenta', response.cuenta_almacen.cuenta);
+                        Vue.set(self.form.cuenta_almacen, 'id', response.cuenta_almacen.id);
+                    } else {
+                        Vue.set(self.form.cuenta_almacen, 'cuenta', '');
+                        Vue.set(self.form.cuenta_almacen, 'id', '');
+                    }
+                    self.validation_errors.clear('form_edit_cuenta');
+                    $('#edit_cuenta_modal').modal('show');
+                    $('#cuenta_contable').focus();
+                    self.validation_errors.clear('form_edit_cuenta');
+                },
+                complete: function complete() {
+                    self.guardando = false;
+                }
+            });
         },
         validateForm: function validateForm(scope, funcion) {
             var _this = this;
@@ -15371,7 +15457,7 @@ Vue.component('cuenta-almacen-index', {
 
         update_cuenta: function update_cuenta() {
             var self = this;
-            var url = this.url_cuenta_almacen_store + '/' + this.form.cuenta_almacen.id;
+            var url = App.host + '/sistema_contable/cuenta_almacen/' + self.form.cuenta_almacen.id;
 
             $.ajax({
                 type: 'POST',
@@ -15384,7 +15470,7 @@ Vue.component('cuenta-almacen-index', {
                     self.guardando = true;
                 },
                 success: function success(data, textStatus, xhr) {
-                    self.data.almacen_edit.cuenta_almacen = data.data.cuenta_almacen;
+                    $('#almacenes_table').DataTable().ajax.reload(null, false);
                     self.close_edit_cuenta();
                     swal({
                         type: 'success',
@@ -15407,18 +15493,17 @@ Vue.component('cuenta-almacen-index', {
                 showCancelButton: true,
                 confirmButtonText: "Si, Continuar",
                 cancelButtonText: "No, Cancelar"
-            }).then(function () {
-                self.save_cuenta();
-            }).catch(swal.noop);
+            }).then(function (result) {
+                if (result.value) self.save_cuenta();
+            });
         },
 
         save_cuenta: function save_cuenta() {
             var self = this;
-            var url = this.url_cuenta_almacen_store;
 
             $.ajax({
                 type: 'POST',
-                url: url,
+                url: App.host + '/sistema_contable/cuenta_almacen',
                 data: {
                     cuenta: self.form.cuenta_almacen.cuenta,
                     id_almacen: self.form.cuenta_almacen.id_almacen
@@ -15427,7 +15512,7 @@ Vue.component('cuenta-almacen-index', {
                     self.guardando = true;
                 },
                 success: function success(data, textStatus, xhr) {
-                    self.data.almacen_edit.cuenta_almacen = data.data.cuenta_almacen;
+                    $('#almacenes_table').DataTable().ajax.reload(null, false);
                     self.close_edit_cuenta();
                     swal({
                         type: 'success',

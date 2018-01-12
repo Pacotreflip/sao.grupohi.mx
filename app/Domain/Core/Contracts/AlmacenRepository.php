@@ -29,4 +29,12 @@ interface AlmacenRepository
      * @return mixed
      */
     public function with($relations);
+
+    /**
+     * Regresa los Almacenes Paginados de acuerdo a los parametros
+     * @param array $data
+     * @return mixed
+     */
+    public function paginate(array $data);
+
 }
