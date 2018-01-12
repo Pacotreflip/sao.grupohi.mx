@@ -337,37 +337,38 @@ Vue.component('poliza-generada-edit', {
                                cancelButtonText: 'No, Cancelar',
                                confirmButtonText: 'Si, Continuar',
                            }
-                       ).then(function (){
+                       ).then(function (result) {
+                           if(result.value) {
 
-                           $.ajax({
-                               type: 'POST',
-                               url: App.host + "/sistema_contable/poliza_movimientos/"+self.data.poliza.id_int_poliza,
-                               data: {
-                                   _method: 'PATCH',
-                                   data:self.data.movimientos,
-                                   validar:false
-                               },
-                               beforeSend: function () {
-                                   self.guardando = true;
-                               },
-                               success: function (data, textStatus, xhr) {
-                                self.data.poliza=data.data.poliza;
-                                   swal({
-                                       title: '¡Correcto!',
-                                       html: 'Las cuentas se configurarón exitosamente',
-                                       type: 'success',
-                                       confirmButtonText: "Ok",
-                                       closeOnConfirm: false
-                                   }).then(function () {
-                                   }).catch(swal.noop);
-                                   window.location.reload(true);
-                                   $('#add_cuenta_modal').modal('hide');
+                               $.ajax({
+                                   type: 'POST',
+                                   url: App.host + "/sistema_contable/poliza_movimientos/" + self.data.poliza.id_int_poliza,
+                                   data: {
+                                       _method: 'PATCH',
+                                       data: self.data.movimientos,
+                                       validar: false
                                    },
-                               complete: function () {
-                                   self.guardando = false;
-                               }
-                           });
-
+                                   beforeSend: function () {
+                                       self.guardando = true;
+                                   },
+                                   success: function (data, textStatus, xhr) {
+                                       self.data.poliza = data.data.poliza;
+                                       swal({
+                                           title: '¡Correcto!',
+                                           html: 'Las cuentas se configurarón exitosamente',
+                                           type: 'success',
+                                           confirmButtonText: "Ok",
+                                           closeOnConfirm: false
+                                       }).then(function () {
+                                       }).catch(swal.noop);
+                                       window.location.reload(true);
+                                       $('#add_cuenta_modal').modal('hide');
+                                   },
+                                   complete: function () {
+                                       self.guardando = false;
+                                   }
+                               });
+                           }
                        }).catch(swal.noop);
 
                    }else{

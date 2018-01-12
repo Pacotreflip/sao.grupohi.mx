@@ -27,8 +27,10 @@ Vue.component('tipo-cuenta-contable-update',{
                 showCancelButton: true,
                 confirmButtonText: "Si, Continuar",
                 cancelButtonText: "No, Cancelar",
-            }).then(function () {
-                self.save();
+            }).then(function (result) {
+                if(result.value) {
+                    self.save();
+                }
             }).catch(swal.noop);
         },
 

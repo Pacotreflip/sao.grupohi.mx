@@ -155,8 +155,10 @@ Vue.component('cuenta-almacen-index', {
                 showCancelButton: true,
                 confirmButtonText: "Si, Continuar",
                 cancelButtonText: "No, Cancelar",
-            }).then(function () {
-                self.update_cuenta();
+            }).then(function (result) {
+                if(result.value) {
+                    self.update_cuenta();
+                }
             }).catch(swal.noop);
         },
 
@@ -192,7 +194,7 @@ Vue.component('cuenta-almacen-index', {
 
         confirm_save_cuenta: function () {
             var self = this;
-            swal({
+           swal({
                 title: "Registrar Cuenta Contable",
                 text: "¿Estás seguro de que la información es correcta?",
                 type: "warning",
@@ -200,9 +202,10 @@ Vue.component('cuenta-almacen-index', {
                 confirmButtonText: "Si, Continuar",
                 cancelButtonText: "No, Cancelar",
             }).then(function (result) {
-                if(result.value)
+                if(result.value) {
                     self.save_cuenta();
-            });
+                }
+            }).catch(swal.noop);
         },
 
         save_cuenta: function () {

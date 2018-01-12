@@ -120,8 +120,10 @@ Vue.component('movimientos_bancarios-index', {
                 showCancelButton: true,
                 confirmButtonText: "Si, Continuar",
                 cancelButtonText: "No, Cancelar",
-            }).then(function () {
-                self.guardar();
+            }).then(function (result) {
+                if(result.value) {
+                    self.guardar();
+                }
             }).catch(swal.noop);
         },
         guardar: function () {
@@ -177,8 +179,10 @@ Vue.component('movimientos_bancarios-index', {
                 showCancelButton: true,
                 confirmButtonText: "Si, Continuar",
                 cancelButtonText: "No, Cancelar",
-            }).then(function () {
-                self.eliminar(id_movimiento_bancario);
+            }).then(function (result) {
+                if(result.value) {
+                    self.eliminar(id_movimiento_bancario);
+                }
             }).catch(swal.noop);
         },
         eliminar: function (id_movimiento_bancario) {
@@ -229,8 +233,10 @@ Vue.component('movimientos_bancarios-index', {
                 showCancelButton: true,
                 confirmButtonText: "Si, Continuar",
                 cancelButtonText: "No, Cancelar",
-            }).then(function () {
-                self.editar();
+            }).then(function  (result) {
+                if(result.value) {
+                    self.editar();
+                }
             }).catch(swal.noop);
         },
         editar: function () {

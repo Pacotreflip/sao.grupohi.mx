@@ -189,12 +189,14 @@ Vue.component('reclasificacion_costos-index', {
                 showCancelButton: true,
                 confirmButtonText: "Si, Continuar",
                 cancelButtonText: "No, Cancelar"
-            }).then(function () {
-                if (tipo == "aprobar") {
-                    self.aprobar();
-                }
-                else if (tipo == "rechazar") {
-                    self.rechazar();
+            }).then(function (result) {
+                if(result.value) {
+                    if (tipo == "aprobar") {
+                        self.aprobar();
+                    }
+                    else if (tipo == "rechazar") {
+                        self.rechazar();
+                    }
                 }
             }).catch(swal.noop);
         },

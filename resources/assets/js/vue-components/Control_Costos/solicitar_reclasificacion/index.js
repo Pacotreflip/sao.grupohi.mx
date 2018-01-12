@@ -273,12 +273,14 @@ Vue.component('solicitar_reclasificacion-index', {
                 showCancelButton: true,
                 confirmButtonText: "Si, Continuar",
                 cancelButtonText: "No, Cancelar",
-            }).then(function () {
-                if (tipo == "resultado") {
-                    self.eliminar_resultado(index);
-                }
-                else if (tipo == "filtro") {
-                    self.eliminar_filtro(index);
+            }).then(function (result) {
+                if(result.value) {
+                    if (tipo == "resultado") {
+                        self.eliminar_resultado(index);
+                    }
+                    else if (tipo == "filtro") {
+                        self.eliminar_filtro(index);
+                    }
                 }
             }).catch(swal.noop);
         },
@@ -296,8 +298,10 @@ Vue.component('solicitar_reclasificacion-index', {
                 showCancelButton: true,
                 confirmButtonText: "Si, Continuar",
                 cancelButtonText: "No, Cancelar",
-            }).then(function () {
-                self.solicitar(item);
+            }).then(function (result) {
+                if(result.value) {
+                    self.solicitar(item);
+                }
             }).catch(swal.noop);
         },
         solicitar: function(item)
@@ -416,8 +420,10 @@ Vue.component('solicitar_reclasificacion-index', {
                 showCancelButton: true,
                 confirmButtonText: "Si, Continuar",
                 cancelButtonText: "No, Cancelar",
-            }).then(function () {
-                window.location.href = self.url_solicitar_reclasificacion_index +'/items/'+ id_concepto +'/'+ id_transaccion;
+            }).then(function (result) {
+                if(result.value) {
+                    window.location.href = self.url_solicitar_reclasificacion_index + '/items/' + id_concepto + '/' + id_transaccion;
+                }
             }).catch(swal.noop);
         }
     },

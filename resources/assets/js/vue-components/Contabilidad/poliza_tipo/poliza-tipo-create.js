@@ -133,8 +133,10 @@ Vue.component('poliza-tipo-create', {
                             confirmButtonText: 'Si, Continuar',
 
                         }
-                        ).then(function (){
-                            self.confirm_save();
+                        ).then(function (result) {
+                            if(result.value) {
+                                self.confirm_save();
+                            }
                         }).catch(swal.noop);
                     } else {
                         self.confirm_save();
@@ -152,8 +154,10 @@ Vue.component('poliza-tipo-create', {
                 showCancelButton: true,
                 confirmButtonText: "Si, Continuar",
                 cancelButtonText: "No, Cancelar",
-            }).then(function () {
-                self.save();
+            }).then(function (result) {
+                if(result.value) {
+                    self.save();
+                }
             }).catch(swal.noop);
         },
 

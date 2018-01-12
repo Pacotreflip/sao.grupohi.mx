@@ -399,8 +399,10 @@ Vue.component('comprobante-fondo-fijo-edit', {
                 showCancelButton: true,
                 confirmButtonText: "Si, Continuar",
                 cancelButtonText: "No, Cancelar",
-            }).then(function () {
-                self.save_comprobante_fondo_fijo();
+            }).then(function (result) {
+                if(result.value) {
+                    self.save_comprobante_fondo_fijo();
+                }
             }).catch(swal.noop);
         },
 

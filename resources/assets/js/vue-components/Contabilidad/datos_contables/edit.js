@@ -93,8 +93,10 @@ Vue.component('datos-contables-edit', {
                 showCancelButton: true,
                 confirmButtonText: "Si, Continuar",
                 cancelButtonText: "No, Cancelar",
-            }).then(function () {
-                self.save_datos_obra();
+            }).then(function (result) {
+                if(result.value) {
+                    self.save_datos_obra();
+                }
             }).catch(swal.noop);
         },
 

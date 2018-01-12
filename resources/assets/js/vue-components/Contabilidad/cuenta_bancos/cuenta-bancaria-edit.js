@@ -33,9 +33,10 @@ Vue.component('cuenta-bancaria-edit', {
                 showCancelButton: true,
                 confirmButtonText: "Si, Continuar",
                 cancelButtonText: "No, Cancelar",
-            }).then(function () {
-
-                self.elimina_cuenta();
+            }).then(function (result) {
+                if(result.value) {
+                    self.elimina_cuenta();
+                }
             }).catch(swal.noop);
 
         },
@@ -48,9 +49,10 @@ Vue.component('cuenta-bancaria-edit', {
                 showCancelButton: true,
                 confirmButtonText: "Si, Continuar",
                 cancelButtonText: "No, Cancelar",
-            }).then(function () {
-
-                self.update_cuenta_bancaria();
+            }).then(function (result) {
+                if(result.value) {
+                    self.update_cuenta_bancaria();
+                }
             }).catch(swal.noop);
 
         },
@@ -63,8 +65,10 @@ Vue.component('cuenta-bancaria-edit', {
                 showCancelButton: true,
                 confirmButtonText: "Si, Continuar",
                 cancelButtonText: "No, Cancelar",
-            }).then(function () {
-              self.save_cuenta_bancaria();
+            }).then(function (result) {
+                if(result.value) {
+                    self.save_cuenta_bancaria();
+                }
             }).catch(swal.noop);
 
         },

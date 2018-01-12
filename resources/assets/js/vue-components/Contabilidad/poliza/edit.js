@@ -89,8 +89,10 @@ Vue.component('poliza-edit', {
                 showCancelButton: true,
                 confirmButtonText: "Si, Continuar",
                 cancelButtonText: "No, Cancelar",
-            }).then(function () {
-                self.add_movimiento();
+            }).then(function (result) {
+                if(result.value) {
+                    self.add_movimiento();
+                }
             }).catch(swal.noop);
         },
 
@@ -129,8 +131,10 @@ Vue.component('poliza-edit', {
                 showCancelButton: true,
                 confirmButtonText: "Si, Continuar",
                 cancelButtonText: "No, Cancelar",
-            }).then(function () {
-                self.remove_movimiento(index);
+            }).then(function (result) {
+                if(result.value) {
+                    self.remove_movimiento(index);
+                }
             }).catch(swal.noop);
         },
 
@@ -147,8 +151,10 @@ Vue.component('poliza-edit', {
                 showCancelButton: true,
                 confirmButtonText: "Si, Continuar",
                 cancelButtonText: "No, Cancelar",
-            }).then(function () {
-                self.save();
+            }).then(function  (result) {
+                if(result.value) {
+                    self.save();
+                }
             }).catch(swal.noop);
         },
 

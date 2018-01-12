@@ -171,34 +171,35 @@
                 confirmButtonText: "Si, Continuar",
                 cancelButtonText: "No, Cancelar",
 
-            }).then(function ()
-            {
-                $.ajax({
-                    url: url,
-                    type: 'POST',
-                    data: {
-                        _method: "PATCH",
-                        'poliza_generada':{
-                            'estatus':1,
-                            'lanzable':'True'
+            }).then(function (result) {
+                if(result.value) {
+                    $.ajax({
+                        url: url,
+                        type: 'POST',
+                        data: {
+                            _method: "PATCH",
+                            'poliza_generada': {
+                                'estatus': 1,
+                                'lanzable': 'True'
+                            }
+
+                        },
+                        success: function (data, textStatus, xhr) {
+                            swal({
+                                type: "success",
+                                title: '¡Correcto!',
+                                text: 'Prepóliza validada con éxito',
+                                confirmButtonText: "Ok",
+                                closeOnConfirm: false
+                            }).then(function () {
+                                location.reload();
+                            });
+                        },
+                        complete: function () {
+
                         }
-
-                    },
-                    success: function (data, textStatus, xhr) {
-                        swal({
-                            type: "success",
-                            title: '¡Correcto!',
-                            text: 'Prepóliza validada con éxito',
-                            confirmButtonText: "Ok",
-                            closeOnConfirm: false
-                        }).then(function () {
-                            location.reload();
-                        });
-                    },
-                    complete: function () {
-
-                    }
-                });
+                    });
+                }
             }) .catch(swal.noop);
         }
 

@@ -405,8 +405,10 @@ Vue.component('comprobante-fondo-fijo-create', {
                 showCancelButton: true,
                 confirmButtonText: "Si, Continuar",
                 cancelButtonText: "No, Cancelar",
-            }).then(function () {
-                self.save_comprobante_fondo_fijo();
+            }).then(function  (result) {
+                if(result.value) {
+                    self.save_comprobante_fondo_fijo();
+                }
             }).catch(swal.noop);
         },
 
@@ -446,8 +448,10 @@ Vue.component('comprobante-fondo-fijo-create', {
                 showCancelButton: true,
                 confirmButtonText: "Si, Continuar",
                 cancelButtonText: "No, Cancelar",
-            }).then(function () {
-                self.remove_item(index);
+            }).then(function (result) {
+                if(result.value) {
+                    self.remove_item(index);
+                }
             }).catch(swal.noop);
         },
         remove_item:function (index) {

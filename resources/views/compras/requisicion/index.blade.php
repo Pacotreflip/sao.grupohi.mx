@@ -81,8 +81,10 @@
                  showCancelButton: true,
                  confirmButtonText: "Si, Continuar",
                  cancelButtonText: "No, Cancelar",
-             }).then(function () {
-                 eliminar(id);
+             }).then(function (result) {
+                 if(result.value) {
+                     eliminar(id);
+                 }
              }).catch(swal.noop);
          }
 
