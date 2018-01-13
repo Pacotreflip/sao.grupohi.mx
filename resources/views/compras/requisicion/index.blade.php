@@ -85,7 +85,7 @@
                  if(result.value) {
                      eliminar(id);
                  }
-             }).catch(swal.noop);
+             });
          }
 
          function eliminar(item) {
@@ -102,9 +102,11 @@
                          title: '¡Correcto!',
                          text: "Requisición eliminada correctamente.",
                          type: "success",
-                         confirmButtonText: "Ok"
+                         confirmButtonText: "Ok",
+                         closeOnConfirm: false
+                     }).then(function () {
+                         location.reload();
                      });
-                     location.reload();
                  }
              });
          }

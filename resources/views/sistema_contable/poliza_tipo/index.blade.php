@@ -111,51 +111,6 @@
             var url=App.host +"/sistema_contable/poliza_tipo/" + id;
 
             swal({
-                title: 'Abrir Periodo',
-                text: 'Motivo de la Apertura',
-                input: 'text',
-                showCancelButton: true,
-                confirmButtonText: 'Abrir ',
-                cancelButtonText: 'Cancelar',
-                showLoaderOnConfirm: false,
-                preConfirm: function(motivo) {
-                    return new Promise(function(resolve) {
-                        if (motivo.length === 0) {
-                            swal.showValidationError('Por favor escriba un motivo para la apertura del periodo.');
-                        }
-                        resolve()
-                    });
-                },
-                allowOutsideClick: function() {
-                    !swal.isLoading()
-                }
-            }).then(function(result) {
-                if (result.value) {
-                    $.ajax({
-                        'url' : App.host + '/configuracion/cierre/' + id_cierre + '/open',
-                        'type' : 'POST',
-                        'data' : {
-                            '_method' : 'PATCH',
-                            'motivo' : result.value
-                        },
-                        beforeSend : function () {
-                            self.guardando = true;
-                        },
-                        success : function (response) {
-                            $('#cierres_table').DataTable().ajax.reload(null, false);
-                            swal({
-                                type : 'success',
-                                title : 'Periodo abierto correctamente',
-                                html: '<p>Año : <b>' + response.anio + '</b> ' + 'Mes : <b>'+ parseInt(response.mes).getMes() +'</b></p>'
-                            });                        },
-                        complete : function () {
-                            self.guardando = false;
-                        }
-                    });
-                }
-            });
-
-            swal({
                 title: "¡Eliminar Plantilla!",
                 text: "¿Esta seguro de que deseas eliminar la Plantilla?",
                 input: 'text',
@@ -186,9 +141,12 @@
                             swal({
                                 type: "success",
                                 title: '¡Correcto!',
-                                text: 'Plantilla Eliminada con éxito'
+                                text: 'Plantilla Eliminada con éxito',
+                                confirmButtonText: "Ok",
+                                closeOnConfirm: false
+                            }).then(function () {
+                                location.reload();
                             });
-                            location.reload();
                         }
                     });
                 }

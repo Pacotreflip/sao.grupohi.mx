@@ -15093,13 +15093,15 @@ Vue.component('cierre-index', {
                     self.guardando = true;
                 },
                 success: function success() {
-                    $('#cierres_table').DataTable().ajax.reload();
-
                     $('#create_cierre_modal').modal('hide');
                     swal({
                         type: 'success',
                         title: 'Correcto',
-                        html: 'Cierre de Periodo guardado correctamente'
+                        html: 'Cierre de Periodo guardado correctamente',
+                        confirmButtonText: "Ok",
+                        closeOnConfirm: false
+                    }).then(function () {
+                        $('#cierres_table').DataTable().ajax.reload();
                     });
                 },
                 complete: function complete() {
@@ -15143,11 +15145,14 @@ Vue.component('cierre-index', {
                             self.guardando = true;
                         },
                         success: function success(response) {
-                            $('#cierres_table').DataTable().ajax.reload(null, false);
                             swal({
                                 type: 'success',
                                 title: 'Periodo abierto correctamente',
-                                html: '<p>Año : <b>' + response.anio + '</b> ' + 'Mes : <b>' + parseInt(response.mes).getMes() + '</b></p>'
+                                html: '<p>Año : <b>' + response.anio + '</b> ' + 'Mes : <b>' + parseInt(response.mes).getMes() + '</b></p>',
+                                confirmButtonText: "Ok",
+                                closeOnConfirm: false
+                            }).then(function () {
+                                $('#cierres_table').DataTable().ajax.reload(null, false);
                             });
                         },
                         complete: function complete() {
@@ -15181,11 +15186,14 @@ Vue.component('cierre-index', {
                             self.guardando = true;
                         },
                         success: function success(response) {
-                            $('#cierres_table').DataTable().ajax.reload(null, false);
                             swal({
                                 type: 'success',
                                 title: 'Periodo Cerrado Correctamente',
-                                html: '<p>Año : <b>' + response.anio + '</b> ' + 'Mes : <b>' + parseInt(response.mes).getMes() + '</b></p>'
+                                html: '<p>Año : <b>' + response.anio + '</b> ' + 'Mes : <b>' + parseInt(response.mes).getMes() + '</b></p>',
+                                confirmButtonText: "Ok",
+                                closeOnConfirm: false
+                            }).then(function () {
+                                $('#cierres_table').DataTable().ajax.reload(null, false);
                             });
                         },
                         complete: function complete() {

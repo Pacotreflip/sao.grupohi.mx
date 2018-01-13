@@ -194,13 +194,10 @@
                             }).then(function () {
                                 location.reload();
                             });
-                        },
-                        complete: function () {
-
                         }
                     });
                 }
-            }) .catch(swal.noop);
+            });
         }
 
         function omitir_prepoliza(id) {
@@ -208,12 +205,11 @@
             swal({
                 title: "Omitir Prepóliza",
                 text: "¿Esta seguro de que deseas Omitir la Prepóliza?",
-                type: "warni
+                type: "warning",
                 showCancelButton: true,
                 confirmButtonText: "Si, Continuar",
                 cancelButtonText: "No, Cancelar",
-            }).then(function (result)
-            {
+            }).then(function (result) {
                 if(result.value) {
                     $.ajax({
                         url: url,
@@ -267,9 +263,12 @@
                             swal({
                                 type: "success",
                                 title: '¡Correcto!',
-                                text: 'Folio Contpaq ingresado correctamente'
+                                text: 'Folio Contpaq ingresado correctamente',
+                                confirmButtonText: "Ok",
+                                closeOnConfirm: false
+                            }).then(function () {
+                                location.reload();
                             });
-                            location.reload();
                         }
                     });
                 }
