@@ -170,7 +170,6 @@
                 showCancelButton: true,
                 confirmButtonText: "Si, Continuar",
                 cancelButtonText: "No, Cancelar",
-
             }).then(function (result) {
                 if(result.value) {
                     $.ajax({
