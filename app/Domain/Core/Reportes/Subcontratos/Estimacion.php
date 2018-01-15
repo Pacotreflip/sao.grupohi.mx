@@ -429,19 +429,19 @@ class Estimacion extends Rotation {
 
             $this->Cell(($this->GetPageWidth() - 4) / 4, 0.6, '', 'RL', 0, 'C');
             $this->Cell(0.73);
-            $this->Cell(($this->GetPageWidth() - 4) / 4, 0.6, 'Lic. Adlay Kepler Barrios Figueroa', 'RL', 0, 'C');
+            $this->Cell(($this->GetPageWidth() - 4) / 4, 0.6, utf8_decode('Lic. Adlay Kepler Barrios Figueroa'), 'RL', 0, 'C');
             $this->Cell(0.73);
-            $this->Cell(($this->GetPageWidth() - 4) / 4, 0.6, 'Ing. Victor Manuel Orozco Muñoz', 'RL', 0, 'C');
+            $this->Cell(($this->GetPageWidth() - 4) / 4, 0.6, utf8_decode('Ing. Victor Manuel Orozco Muñoz'), 'RL', 0, 'C');
             $this->Cell(0.73);
-            $this->Cell(($this->GetPageWidth() - 4) / 4, 0.6, 'C.P. Miguel Ángel. Figueroa Vidal', 'RL', 1, 'C');
+            $this->Cell(($this->GetPageWidth() - 4) / 4, 0.6, utf8_decode('C.P. Miguel Ángel. Figueroa Vidal'), 'RL', 1, 'C');
 
-            $this->Cell(($this->GetPageWidth() - 4) / 4, 0.4, 'RESPONSABLE DE AREA', 'TRLB', 0, 'C', 1);
+            $this->Cell(($this->GetPageWidth() - 4) / 4, 0.4, utf8_decode('RESPONSABLE DE AREA'), 'TRLB', 0, 'C', 1);
             $this->Cell(0.73);
-            $this->Cell(($this->GetPageWidth() - 4) / 4, 0.4, 'ADMINISTRADOR', 'TRLB', 0, 'C', 1);
+            $this->Cell(($this->GetPageWidth() - 4) / 4, 0.4, utf8_decode('ADMINISTRADOR'), 'TRLB', 0, 'C', 1);
             $this->Cell(0.73);
-            $this->Cell(($this->GetPageWidth() - 4) / 4, 0.4, 'GERENTE DE PROYECTO', 'TRLB', 0, 'C', 1);
+            $this->Cell(($this->GetPageWidth() - 4) / 4, 0.4, utf8_decode('GERENTE DE PROYECTO'), 'TRLB', 0, 'C', 1);
             $this->Cell(0.73);
-            $this->Cell(($this->GetPageWidth() - 4) / 4, 0.4, 'TESORERO', 'TRLB', 0, 'C', 1);
+            $this->Cell(($this->GetPageWidth() - 4) / 4, 0.4, utf8_decode('TESORERO'), 'TRLB', 0, 'C', 1);
         }
 
         else
