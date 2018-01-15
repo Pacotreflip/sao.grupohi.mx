@@ -408,7 +408,7 @@ class Estimacion extends Rotation {
         $this->SetFillColor(180, 180, 180);
 
         // Firmas específicas para la pista
-        if (true)
+        if (Context::getDatabaseName() == "SAO1814_PISTA_AEROPUERTO")
         {
             $this->Cell(($this->GetPageWidth() - 4) / 4, 0.4, utf8_decode('Realizó'), 'TRLB', 0, 'C', 1);
             $this->Cell(0.73);
