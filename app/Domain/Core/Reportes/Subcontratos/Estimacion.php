@@ -408,7 +408,7 @@ class Estimacion extends Rotation {
         $this->SetFillColor(180, 180, 180);
 
         // Firmas específicas para la pista
-        if (Context::getDatabaseName() == "SAO1814_PISTA_AEROPUERTO")
+        if (true)
         {
             $this->Cell(($this->GetPageWidth() - 4) / 4, 0.4, utf8_decode('Realizó'), 'TRLB', 0, 'C', 1);
             $this->Cell(0.73);
@@ -429,11 +429,11 @@ class Estimacion extends Rotation {
 
             $this->Cell(($this->GetPageWidth() - 4) / 4, 0.6, '', 'RL', 0, 'C');
             $this->Cell(0.73);
-            $this->Cell(($this->GetPageWidth() - 4) / 4, 0.6, 'Lic. Kepler A. Barrios F.', 'RL', 0, 'C');
+            $this->Cell(($this->GetPageWidth() - 4) / 4, 0.6, 'Lic. Adlay Kepler Barrios Figueroa', 'RL', 0, 'C');
             $this->Cell(0.73);
-            $this->Cell(($this->GetPageWidth() - 4) / 4, 0.6, 'Ing Victor M. Orozco', 'RL', 0, 'C');
+            $this->Cell(($this->GetPageWidth() - 4) / 4, 0.6, 'Ing. Victor Manuel Orozco Muñoz', 'RL', 0, 'C');
             $this->Cell(0.73);
-            $this->Cell(($this->GetPageWidth() - 4) / 4, 0.6, 'C.P. Miguel A. Figueroa Vidal', 'RL', 1, 'C');
+            $this->Cell(($this->GetPageWidth() - 4) / 4, 0.6, 'C.P. Miguel Ángel. Figueroa Vidal', 'RL', 1, 'C');
 
             $this->Cell(($this->GetPageWidth() - 4) / 4, 0.4, 'RESPONSABLE DE AREA', 'TRLB', 0, 'C', 1);
             $this->Cell(0.73);
