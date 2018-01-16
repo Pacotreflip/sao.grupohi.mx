@@ -63,7 +63,7 @@ class Transaccion extends Model
         static::creating(function ($model){
 
             //Obtenemos la fecha con la que se intenta registrar la transacción
-            $date = Carbon::createFromFormat('Y-m-d H:i:s', $model->fecha);
+            $date = new Carbon($model->fecha);
 
             //Comprobamos si es que xiste un cierre para el Mes y Año proporcionados
             if($cierre = Cierre::where('anio', '=', $date->year)->where('mes', '=', $date->month)->first()) {
