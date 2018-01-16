@@ -5,7 +5,7 @@ namespace Ghi\Domain\Core\Repositories\Tesoreria;
 use Ghi\Domain\Core\Contracts\Tesoreria\MovimientosBancariosRepository;
 use Ghi\Domain\Core\Models\Tesoreria\MovimientosBancarios;
 use Ghi\Domain\Core\Models\Tesoreria\MovimientoTransacciones;
-use Ghi\Domain\Core\Models\Tesoreria\TiposMovimientos;
+use Ghi\Domain\Core\Models\Tesoreria\TipoMovimiento;
 use Illuminate\Http\Exception\HttpResponseException;
 use Illuminate\Support\Facades\DB;
 use Ghi\Domain\Core\Models\Tesoreria\TraspasoCuentas;
@@ -58,7 +58,7 @@ class EloquentMovimientosBancariosRepository implements MovimientosBancariosRepo
         ];
         $tipo = 0;
 
-        $tipos_movimientos = TiposMovimientos::get();
+        $tipos_movimientos = TipoMovimiento::get();
 
         $obras = $this->obras();
         $id_obra = session()->get('id');

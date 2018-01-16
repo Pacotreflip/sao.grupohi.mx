@@ -10,7 +10,10 @@ Vue.component('configuracion-seguridad-index', {
         $('#roles_table').DataTable({
             "processing": true,
             "serverSide": true,
-            "ordering" : false,
+            "ordering" : true,
+            "order": [
+                [0, "desc"]
+            ],
             "searching" : false,
             "ajax": {
                 "url": App.host + '/configuracion/seguridad/role/paginate',
@@ -24,12 +27,29 @@ Vue.component('configuracion-seguridad-index', {
                 "dataSrc" : 'data'
             },
             "columns" : [
-                {data : 'name'},
-                {data : 'display_name'},
+                {data : 'display_name', 'name' : 'Nombre'},
                 {data : 'description'},
-                {data : 'created_at'}
-            ],
-            language: {
+                {data : 'created_at'},
+                {
+                    data : {},
+                    render : function (data) {
+                        var html = '';
+                        data.perms.forEach(function (perm) {
+                            html += '<a href="#">'+perm.display_name+'</a>' + '<br>';
+                        });
+                        return html;
+                    },
+                    orderable : false
+                },
+                {
+                    data : {},
+                    render : function(data) {
+                        return '<button class="btn btn-xs btn-default btn_edit" id="'+data.id+'"><i class="fa fa-pencil"></i></button>';
+                    },
+
+                    orderable : false
+                }            ],
+            "language" : {
                 "sProcessing": "Procesando...",
                 "sLengthMenu": "Mostrar _MENU_ registros",
                 "sZeroRecords": "No se encontraron resultados",

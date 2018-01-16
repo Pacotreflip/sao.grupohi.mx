@@ -5,9 +5,10 @@
     {!! Breadcrumbs::render('configuracion.cierre.index') !!}
 @endsection
 @section('main-content')
-    <cierre-index inline-template>
+    <cierre-index inline-template v-cloak :editar_cierre_periodo="{{ \Entrust::can(['editar_cierre_periodo']) ? 'true' : 'false' }}">
         <section>
 
+            @permission('generar_cierre_periodo')
             <div class="row">
                 <div class="col-sm-12">
                     <button @click="generar_cierre" class="btn btn-success btn-app" style="float:right">
@@ -16,6 +17,7 @@
                 </div>
             </div>
             <br>
+            @endpermission
 
             <div class="row">
                 <div class="col-md-12">
@@ -33,7 +35,9 @@
                                         <th>Persona que cerró</th>
                                         <th>Fecha de Cierre</th>
                                         <th>Estatus</th>
+                                        @permission(['editar_cierre_periodo'])
                                         <th>Acciones</th>
+                                        @endpermission
                                     </tr>
                                     </thead>
                                     <tfoot>
@@ -43,7 +47,9 @@
                                         <th>Persona que cerró</th>
                                         <th>Fecha de Cierre</th>
                                         <th>Estatus</th>
+                                        @permission(['editar_cierre_periodo'])
                                         <th>Acciones</th>
+                                        @endpermission
                                     </tr>
                                     </tfoot>
                                 </table>
@@ -60,23 +66,26 @@
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                             <h4 class="modal-title" id="myModalLabel">Generar Cierre de Periodo</h4>
                         </div>
+                        <form id="form_save_cierre" @submit.prevent="validateForm('form_save_cierre', 'save_cierre')"  data-vv-scope="form_save_cierre">
                         <div class="modal-body">
                             <div class="row">
                                 <div class="col-md-12">
-                                    <div class="form-group">
+                                    <div class="form-group" :class="{'has-error': validation_errors.has('form_save_cierre.Fecha')}">
                                         <label><b>Fecha</b></label>
-                                        <input type="text" id="fecha" class="form-control input-sm" placeholder="Seleccione año y mes del Cierre" >
+                                        <input :name="'Fecha'" v-validate="'required'" type="text" id="fecha" class="form-control input-sm" placeholder="Seleccione año y mes del Cierre" >
+                                        <label class="help" v-show="validation_errors.has('form_save_cierre.Fecha')">@{{ validation_errors.first('form_save_cierre.Fecha') }}</label>
                                     </div>
                                 </div>
                             </div>
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-sm btn-default" data-dismiss="modal">Cancelar</button>
-                            <button type="button" class="btn btn-sm btn-primary" @click="save_cierre" :disabled="guardando">
+                            <button type="submit" class="btn btn-sm btn-primary"  :disabled="guardando">
                                 <span v-if="guardando"><i class="fa fa-spinner fa-spin"></i> Guardando</span>
                                 <span v-else><i class="fa fa-save"></i> Guardar</span>
                             </button>
                         </div>
+                        </form>
                     </div>
                 </div>
             </div>

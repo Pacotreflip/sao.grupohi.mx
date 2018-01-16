@@ -5,7 +5,7 @@ namespace Ghi\Domain\Core\Models\Tesoreria;
 use Ghi\Domain\Core\Models\BaseModel;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class TiposMovimientos extends BaseModel
+class TipoMovimiento extends BaseModel
 {
     use SoftDeletes;
 

@@ -5,7 +5,7 @@ use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
 
-class TransaccionesInterfazSeeder extends Seeder
+class ContabilidadIntTransaccionesInterfazSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -15,7 +15,6 @@ class TransaccionesInterfazSeeder extends Seeder
     public function run()
     {
         DB::connection("cadeco")->statement("SET IDENTITY_INSERT Contabilidad.int_transacciones_interfaz ON;
-            SET IDENTITY_INSERT Contabilidad.int_transacciones_interfaz ON;
 insert into Contabilidad.int_transacciones_interfaz(id_transaccion_interfaz, descripcion) values(	1	,'Póliza de Factura de Prestaciones');	
 insert into Contabilidad.int_transacciones_interfaz(id_transaccion_interfaz, descripcion) values(	2	,'Póliza de Provisión de Pasivo de Insumos');	
 insert into Contabilidad.int_transacciones_interfaz(id_transaccion_interfaz, descripcion) values(	3	,'Póliza de Factura Solo Materiales');	
@@ -226,7 +225,7 @@ insert into Contabilidad.int_transacciones_interfaz(id_transaccion_interfaz, des
 insert into Contabilidad.int_transacciones_interfaz(id_transaccion_interfaz, descripcion) values(	402	,'Póliza de Movimientos Bancarios');
 insert into Contabilidad.int_transacciones_interfaz(id_transaccion_interfaz, descripcion) values(	403	,'Póliza de Pago de ISR');
 insert into Contabilidad.int_transacciones_interfaz(id_transaccion_interfaz, descripcion) values(	404	,'Póliza de Reclasificación');	
-
+ SET IDENTITY_INSERT Contabilidad.int_transacciones_interfaz OFF;
             ");
     }
 }

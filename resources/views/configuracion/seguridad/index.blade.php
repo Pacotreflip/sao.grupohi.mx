@@ -20,18 +20,20 @@
                                 <table class="table" id="roles_table">
                                     <thead>
                                     <tr>
-                                        <th>Name</th>
-                                        <th>Display Name</th>
-                                        <th>Description</th>
-                                        <th>Created At</th>
+                                        <th>Nombre</th>
+                                        <th>Descripción</th>
+                                        <th>Fecha de Registro</th>
+                                        <th>Permisos</th>
+                                        <th>Acciones</th>
                                     </tr>
                                     </thead>
                                     <tfoot>
                                     <tr>
-                                        <th>Name</th>
-                                        <th>Display Name</th>
-                                        <th>Description</th>
-                                        <th>Created At</th>
+                                        <th>Nombre</th>
+                                        <th>Descripción</th>
+                                        <th>Fecha de Registro</th>
+                                        <th>Permisos</th>
+                                        <th>Acciones</th>
                                     </tr>
                                     </tfoot>
                                 </table>

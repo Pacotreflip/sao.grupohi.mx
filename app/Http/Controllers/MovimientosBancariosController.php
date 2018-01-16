@@ -5,7 +5,7 @@ namespace Ghi\Http\Controllers;
 use Ghi\Domain\Core\Contracts\Tesoreria\MovimientosBancariosRepository;
 use Ghi\Domain\Core\Models\Cuenta;
 use Ghi\Domain\Core\Models\Tesoreria\MovimientosBancarios;
-use Ghi\Domain\Core\Models\Tesoreria\TiposMovimientos;
+use Ghi\Domain\Core\Models\Tesoreria\TipoMovimiento;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 
@@ -43,7 +43,7 @@ class MovimientosBancariosController extends Controller
         return view('tesoreria.movimientos_bancarios.index')
             ->with('dataView', [
             'cuentas' => Cuenta::paraTraspaso()->with('empresa')->get(),
-            'tipos' => TiposMovimientos::get(),
+            'tipos' => TipoMovimiento::get(),
             'movimientos' => MovimientosBancarios::with(['tipo', 'cuenta.empresa', 'movimiento_transaccion.transaccion'])->get(),
         ]);
     }
