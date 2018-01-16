@@ -90,7 +90,7 @@ class Transaccion extends Model
 
                     //Buscamos el primer día hábil del periodo abierto
                     for($es_habil = false; $es_habil != true; $date->addDay()) {
-                        $query = DB::connection('cadeco')
+                        $query = DB::connection('seguridad')
                             ->select(DB::raw("SELECT IIF('{$date}' not in (SELECT fecha FROM [SEGURIDAD_ERP].[dbo].[dias_festivos]) and DATEPART(dw, '{$date}')  not in (1,7) , 1, 0) as es_habil"));
                         $es_habil = (bool) $query[0]->es_habil;
                         if($es_habil) {
