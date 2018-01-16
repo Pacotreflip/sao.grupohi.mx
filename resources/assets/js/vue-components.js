@@ -22,6 +22,8 @@ require('./vue-components/Contabilidad/modulos/revaluacion/create');
 require('./vue-components/Contabilidad/cuenta_fondo/index');
 require('./vue-components/Contabilidad/cuenta_bancos/cuenta-bancaria-edit');
 require('./vue-components/Contabilidad/cuenta_costo/index');
+require('./vue-components/Contabilidad/cierre/index');
+
 
 /**
  * Compras Components
@@ -62,7 +64,6 @@ require('./vue-components/Control_Presupuesto/presupuesto/index');
 /**
  * Configuración Components
  */
-require('./vue-components/Configuracion/cierre/index');
 require('./vue-components/Configuracion/seguridad/index');
 
 /**

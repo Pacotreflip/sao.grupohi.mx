@@ -3,7 +3,7 @@
 namespace Ghi\Http\Controllers;
 
 use Dingo\Api\Routing\Helpers;
-use Ghi\Domain\Core\Contracts\Seguridad\CierreRepository;
+use Ghi\Domain\Core\Contracts\Contabilidad\CierreRepository;
 use Illuminate\Http\Request;
 
 use Ghi\Http\Requests;
@@ -35,7 +35,7 @@ class CierreController extends Controller
      * @return View
      */
     public function index() {
-        return view('configuracion.cierre.index');
+        return view('sistema_contable.cierre.index');
     }
 
     public function paginate(Request $request) {

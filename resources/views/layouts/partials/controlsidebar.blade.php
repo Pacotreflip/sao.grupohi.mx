@@ -3,7 +3,7 @@
     <!-- Create the tabs -->
     <ul class="nav nav-tabs nav-justified control-sidebar-tabs">
         <li class="active"><a href="#control-sidebar-home-tab" data-toggle="tab" aria-expanded="false"><i class="fa fa-home"></i></a></li>
-        @permission(['consultar_cierre_periodo'])
+        @permission(['administrar_roles_permisos'])
         <li class=""><a href="#control-sidebar-settings-tab" data-toggle="tab" aria-expanded="false"><i class="fa fa-gears"></i></a></li>
         @endpermission
     </ul>
@@ -138,24 +138,18 @@
         <!-- /.tab-pane -->
 
         <!-- Settings tab content -->
-        @permission(['consultar_cierre_periodo'])
+        @permission(['administrar_roles_permisos'])
         <div class="tab-pane" id="control-sidebar-settings-tab">
             <form method="post">
                 <h4 class="control-sidebar-heading">Configuración General</h4>
-                @permission(['consultar_cierre_periodo'])
+                @permission('administrar_roles_permisos')
                 <div class="form-group">
-                    <label class="control-sidebar-subheading">
-                        <a href="{{ route('configuracion.cierre.index') }}">Cierre de Periodo</a>
-                    </label>
-                    <p>Cierre y Apertura de Periodos para control de registro de transacciones</p>
-                </div>
-                @endpermission
-                <!--<div class="form-group">
                     <label class="control-sidebar-subheading">
                         <a href="{{ route('configuracion.seguridad.index') }}">Roles y Permisos</a>
                     </label>
                     <p>Administración de Roles y Permisos de usuarios para el uso de los Sistemas dentro de SAO</p>
-                </div>-->
+                </div>
+                @endpermission
             </form>
         </div>
         @endpermission

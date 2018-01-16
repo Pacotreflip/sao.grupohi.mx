@@ -2,7 +2,7 @@
 @section('title', 'Cierre de Periodo')
 @section('contentheader_title', 'CIERRES DE PERIODO')
 @section('breadcrumb')
-    {!! Breadcrumbs::render('configuracion.cierre.index') !!}
+    {!! Breadcrumbs::render('sistema_contable.cierre.index') !!}
 @endsection
 @section('main-content')
     <cierre-index

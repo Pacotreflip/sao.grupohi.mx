@@ -50,7 +50,7 @@ Vue.component('cierre-index', {
                 [3, "desc"]
             ],
             "ajax": {
-                "url": App.host + '/configuracion/cierre/paginate',
+                "url": App.host + '/sistema_contable/cierre/paginate',
                 "type" : "POST",
                 "beforeSend" : function () {
                     self.guardando = true;
@@ -146,7 +146,7 @@ Vue.component('cierre-index', {
             var self = this;
 
             $.ajax({
-                url : App.host + '/configuracion/cierre',
+                url : App.host + '/sistema_contable/cierre',
                 type : 'POST',
                 data : self.cierre,
                 beforeSend : function () {
@@ -195,7 +195,7 @@ Vue.component('cierre-index', {
             }).then(function(result) {
                 if (result.value) {
                     $.ajax({
-                        'url' : App.host + '/configuracion/cierre/' + id_cierre + '/open',
+                        'url' : App.host + '/sistema_contable/cierre/' + id_cierre + '/open',
                         'type' : 'POST',
                         'data' : {
                             '_method' : 'PATCH',
@@ -237,7 +237,7 @@ Vue.component('cierre-index', {
             }).then(function(result) {
                 if(result.value) {
                     $.ajax({
-                        url : App.host + '/configuracion/cierre/' + id_cierre + '/close',
+                        url : App.host + '/sistema_contable/cierre/' + id_cierre + '/close',
                         type : 'POST',
                         data : {
                             _method : 'PATCH'

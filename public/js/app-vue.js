@@ -14425,6 +14425,7 @@ require('./vue-components/Contabilidad/modulos/revaluacion/create');
 require('./vue-components/Contabilidad/cuenta_fondo/index');
 require('./vue-components/Contabilidad/cuenta_bancos/cuenta-bancaria-edit');
 require('./vue-components/Contabilidad/cuenta_costo/index');
+require('./vue-components/Contabilidad/cierre/index');
 
 /**
  * Compras Components
@@ -14465,7 +14466,6 @@ require('./vue-components/Control_Presupuesto/presupuesto/index');
 /**
  * Configuración Components
  */
-require('./vue-components/Configuracion/cierre/index');
 require('./vue-components/Configuracion/seguridad/index');
 
 /**
@@ -14473,7 +14473,7 @@ require('./vue-components/Configuracion/seguridad/index');
  */
 require('./vue-components/Control_Presupuesto/cambios_presupuesto/create');
 
-},{"./vue-components/Compras/material/index":6,"./vue-components/Compras/requisicion/create":7,"./vue-components/Compras/requisicion/edit":8,"./vue-components/Configuracion/cierre/index":9,"./vue-components/Configuracion/seguridad/index":10,"./vue-components/Contabilidad/cuenta_almacen/index":11,"./vue-components/Contabilidad/cuenta_bancos/cuenta-bancaria-edit":12,"./vue-components/Contabilidad/cuenta_concepto/index":13,"./vue-components/Contabilidad/cuenta_contable/index":14,"./vue-components/Contabilidad/cuenta_costo/index":15,"./vue-components/Contabilidad/cuenta_empresa/cuenta-empresa-edit":16,"./vue-components/Contabilidad/cuenta_fondo/index":17,"./vue-components/Contabilidad/cuenta_material/index":18,"./vue-components/Contabilidad/datos_contables/edit":19,"./vue-components/Contabilidad/emails":20,"./vue-components/Contabilidad/modulos/revaluacion/create":21,"./vue-components/Contabilidad/poliza_generada/edit":22,"./vue-components/Contabilidad/poliza_tipo/poliza-tipo-create":23,"./vue-components/Contabilidad/tipo_cuenta_contable/tipo-cuenta-contable-create":24,"./vue-components/Contabilidad/tipo_cuenta_contable/tipo-cuenta-contable-update":25,"./vue-components/Control_Costos/reclasificacion_costos/index":26,"./vue-components/Control_Costos/solicitar_reclasificacion/index":27,"./vue-components/Control_Costos/solicitar_reclasificacion/items":28,"./vue-components/Control_Presupuesto/cambios_presupuesto/create":29,"./vue-components/Control_Presupuesto/presupuesto/index":30,"./vue-components/Finanzas/comprobante_fondo_fijo/create":31,"./vue-components/Finanzas/comprobante_fondo_fijo/edit":32,"./vue-components/Finanzas/comprobante_fondo_fijo/index":33,"./vue-components/Reportes/subcontratos-estimacion":34,"./vue-components/Tesoreria/movimientos_bancarios/index":35,"./vue-components/Tesoreria/traspaso_cuentas/index":36,"./vue-components/errors":37,"./vue-components/global-errors":38,"./vue-components/kardex_material/kardex-material-index":39,"./vue-components/select2":40}],6:[function(require,module,exports){
+},{"./vue-components/Compras/material/index":6,"./vue-components/Compras/requisicion/create":7,"./vue-components/Compras/requisicion/edit":8,"./vue-components/Configuracion/seguridad/index":9,"./vue-components/Contabilidad/cierre/index":10,"./vue-components/Contabilidad/cuenta_almacen/index":11,"./vue-components/Contabilidad/cuenta_bancos/cuenta-bancaria-edit":12,"./vue-components/Contabilidad/cuenta_concepto/index":13,"./vue-components/Contabilidad/cuenta_contable/index":14,"./vue-components/Contabilidad/cuenta_costo/index":15,"./vue-components/Contabilidad/cuenta_empresa/cuenta-empresa-edit":16,"./vue-components/Contabilidad/cuenta_fondo/index":17,"./vue-components/Contabilidad/cuenta_material/index":18,"./vue-components/Contabilidad/datos_contables/edit":19,"./vue-components/Contabilidad/emails":20,"./vue-components/Contabilidad/modulos/revaluacion/create":21,"./vue-components/Contabilidad/poliza_generada/edit":22,"./vue-components/Contabilidad/poliza_tipo/poliza-tipo-create":23,"./vue-components/Contabilidad/tipo_cuenta_contable/tipo-cuenta-contable-create":24,"./vue-components/Contabilidad/tipo_cuenta_contable/tipo-cuenta-contable-update":25,"./vue-components/Control_Costos/reclasificacion_costos/index":26,"./vue-components/Control_Costos/solicitar_reclasificacion/index":27,"./vue-components/Control_Costos/solicitar_reclasificacion/items":28,"./vue-components/Control_Presupuesto/cambios_presupuesto/create":29,"./vue-components/Control_Presupuesto/presupuesto/index":30,"./vue-components/Finanzas/comprobante_fondo_fijo/create":31,"./vue-components/Finanzas/comprobante_fondo_fijo/edit":32,"./vue-components/Finanzas/comprobante_fondo_fijo/index":33,"./vue-components/Reportes/subcontratos-estimacion":34,"./vue-components/Tesoreria/movimientos_bancarios/index":35,"./vue-components/Tesoreria/traspaso_cuentas/index":36,"./vue-components/errors":37,"./vue-components/global-errors":38,"./vue-components/kardex_material/kardex-material-index":39,"./vue-components/select2":40}],6:[function(require,module,exports){
 'use strict';
 
 Vue.component('material-index', {
@@ -14955,6 +14955,83 @@ Vue.component('requisicion-edit', {
 },{}],9:[function(require,module,exports){
 'use strict';
 
+Vue.component('configuracion-seguridad-index', {
+    data: function data() {
+        return {
+            roles: [],
+            guardando: false
+        };
+    },
+
+    mounted: function mounted() {
+        $('#roles_table').DataTable({
+            "processing": true,
+            "serverSide": true,
+            "ordering": true,
+            "order": [[0, "desc"]],
+            "searching": false,
+            "ajax": {
+                "url": App.host + '/configuracion/seguridad/role/paginate',
+                "type": "POST",
+                "beforeSend": function beforeSend() {
+                    self.guardando = true;
+                },
+                "complete": function complete() {
+                    self.guardando = false;
+                },
+                "dataSrc": 'data'
+            },
+            "columns": [{ data: 'display_name', 'name': 'Nombre' }, { data: 'description' }, { data: 'created_at' }, {
+                data: {},
+                render: function render(data) {
+                    var html = '';
+                    data.perms.forEach(function (perm) {
+                        html += '<a href="#">' + perm.display_name + '</a>' + '<br>';
+                    });
+                    return html;
+                },
+                orderable: false
+            }, {
+                data: {},
+                render: function render(data) {
+                    return '<button class="btn btn-xs btn-default btn_edit" id="' + data.id + '"><i class="fa fa-pencil"></i></button>';
+                },
+
+                orderable: false
+            }],
+            "language": {
+                "sProcessing": "Procesando...",
+                "sLengthMenu": "Mostrar _MENU_ registros",
+                "sZeroRecords": "No se encontraron resultados",
+                "sEmptyTable": "Ningún dato disponible en esta tabla",
+                "sInfo": "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
+                "sInfoEmpty": "Mostrando registros del 0 al 0 de un total de 0 registros",
+                "sInfoFiltered": "(filtrado de un total de _MAX_ registros)",
+                "sInfoPostFix": "",
+                "sSearch": "Buscar:",
+                "sUrl": "",
+                "sInfoThousands": ",",
+                "sLoadingRecords": "Cargando...",
+                "oPaginate": {
+                    "sFirst": "Primero",
+                    "sLast": "Último",
+                    "sNext": "Siguiente",
+                    "sPrevious": "Anterior"
+                },
+                "oAria": {
+                    "sSortAscending": ": Activar para ordenar la columna de manera ascendente",
+                    "sSortDescending": ": Activar para ordenar la columna de manera descendente"
+                }
+            }
+        });
+    },
+
+    methods: {}
+});
+
+},{}],10:[function(require,module,exports){
+'use strict';
+
 Vue.component('cierre-index', {
     props: ['editar_cierre_periodo'],
     data: function data() {
@@ -15005,7 +15082,7 @@ Vue.component('cierre-index', {
             "searching": false,
             "order": [[3, "desc"]],
             "ajax": {
-                "url": App.host + '/configuracion/cierre/paginate',
+                "url": App.host + '/sistema_contable/cierre/paginate',
                 "type": "POST",
                 "beforeSend": function beforeSend() {
                     self.guardando = true;
@@ -15086,7 +15163,7 @@ Vue.component('cierre-index', {
             var self = this;
 
             $.ajax({
-                url: App.host + '/configuracion/cierre',
+                url: App.host + '/sistema_contable/cierre',
                 type: 'POST',
                 data: self.cierre,
                 beforeSend: function beforeSend() {
@@ -15135,7 +15212,7 @@ Vue.component('cierre-index', {
             }).then(function (result) {
                 if (result.value) {
                     $.ajax({
-                        'url': App.host + '/configuracion/cierre/' + id_cierre + '/open',
+                        'url': App.host + '/sistema_contable/cierre/' + id_cierre + '/open',
                         'type': 'POST',
                         'data': {
                             '_method': 'PATCH',
@@ -15177,7 +15254,7 @@ Vue.component('cierre-index', {
             }).then(function (result) {
                 if (result.value) {
                     $.ajax({
-                        url: App.host + '/configuracion/cierre/' + id_cierre + '/close',
+                        url: App.host + '/sistema_contable/cierre/' + id_cierre + '/close',
                         type: 'POST',
                         data: {
                             _method: 'PATCH'
@@ -15236,83 +15313,6 @@ Vue.component('cierre-index', {
             });
         }
     }
-});
-
-},{}],10:[function(require,module,exports){
-'use strict';
-
-Vue.component('configuracion-seguridad-index', {
-    data: function data() {
-        return {
-            roles: [],
-            guardando: false
-        };
-    },
-
-    mounted: function mounted() {
-        $('#roles_table').DataTable({
-            "processing": true,
-            "serverSide": true,
-            "ordering": true,
-            "order": [[0, "desc"]],
-            "searching": false,
-            "ajax": {
-                "url": App.host + '/configuracion/seguridad/role/paginate',
-                "type": "POST",
-                "beforeSend": function beforeSend() {
-                    self.guardando = true;
-                },
-                "complete": function complete() {
-                    self.guardando = false;
-                },
-                "dataSrc": 'data'
-            },
-            "columns": [{ data: 'display_name', 'name': 'Nombre' }, { data: 'description' }, { data: 'created_at' }, {
-                data: {},
-                render: function render(data) {
-                    var html = '';
-                    data.perms.forEach(function (perm) {
-                        html += '<a href="#">' + perm.display_name + '</a>' + '<br>';
-                    });
-                    return html;
-                },
-                orderable: false
-            }, {
-                data: {},
-                render: function render(data) {
-                    return '<button class="btn btn-xs btn-default btn_edit" id="' + data.id + '"><i class="fa fa-pencil"></i></button>';
-                },
-
-                orderable: false
-            }],
-            "language": {
-                "sProcessing": "Procesando...",
-                "sLengthMenu": "Mostrar _MENU_ registros",
-                "sZeroRecords": "No se encontraron resultados",
-                "sEmptyTable": "Ningún dato disponible en esta tabla",
-                "sInfo": "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
-                "sInfoEmpty": "Mostrando registros del 0 al 0 de un total de 0 registros",
-                "sInfoFiltered": "(filtrado de un total de _MAX_ registros)",
-                "sInfoPostFix": "",
-                "sSearch": "Buscar:",
-                "sUrl": "",
-                "sInfoThousands": ",",
-                "sLoadingRecords": "Cargando...",
-                "oPaginate": {
-                    "sFirst": "Primero",
-                    "sLast": "Último",
-                    "sNext": "Siguiente",
-                    "sPrevious": "Anterior"
-                },
-                "oAria": {
-                    "sSortAscending": ": Activar para ordenar la columna de manera ascendente",
-                    "sSortDescending": ": Activar para ordenar la columna de manera descendente"
-                }
-            }
-        });
-    },
-
-    methods: {}
 });
 
 },{}],11:[function(require,module,exports){
@@ -15593,9 +15593,10 @@ Vue.component('cuenta-bancaria-edit', {
                 showCancelButton: true,
                 confirmButtonText: "Si, Continuar",
                 cancelButtonText: "No, Cancelar"
-            }).then(function () {
-
-                self.elimina_cuenta();
+            }).then(function (result) {
+                if (result.value) {
+                    self.elimina_cuenta();
+                }
             }).catch(swal.noop);
         },
         confirm_cuenta_update: function confirm_cuenta_update() {
@@ -15607,9 +15608,10 @@ Vue.component('cuenta-bancaria-edit', {
                 showCancelButton: true,
                 confirmButtonText: "Si, Continuar",
                 cancelButtonText: "No, Cancelar"
-            }).then(function () {
-
-                self.update_cuenta_bancaria();
+            }).then(function (result) {
+                if (result.value) {
+                    self.update_cuenta_bancaria();
+                }
             }).catch(swal.noop);
         },
         confirm_cuenta_create: function confirm_cuenta_create() {
@@ -15621,8 +15623,10 @@ Vue.component('cuenta-bancaria-edit', {
                 showCancelButton: true,
                 confirmButtonText: "Si, Continuar",
                 cancelButtonText: "No, Cancelar"
-            }).then(function () {
-                self.save_cuenta_bancaria();
+            }).then(function (result) {
+                if (result.value) {
+                    self.save_cuenta_bancaria();
+                }
             }).catch(swal.noop);
         },
         elimina_cuenta: function elimina_cuenta() {

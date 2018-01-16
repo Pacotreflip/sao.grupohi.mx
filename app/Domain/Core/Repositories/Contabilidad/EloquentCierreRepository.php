@@ -1,10 +1,9 @@
 <?php
-namespace Ghi\Domain\Core\Repositories\Seguridad;
+namespace Ghi\Domain\Core\Repositories\Contabilidad;
 
 use Carbon\Carbon;
-use Dingo\Api\Exception\UpdateResourceFailedException;
-use Ghi\Domain\Core\Contracts\Seguridad\CierreRepository;
-use Ghi\Domain\Core\Models\Seguridad\Cierre;
+use Ghi\Domain\Core\Contracts\Contabilidad\CierreRepository;
+use Ghi\Domain\Core\Models\Contabilidad\Cierre;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Exception\HttpResponseException;
 use Illuminate\Http\Response;
@@ -38,7 +37,7 @@ class EloquentCierreRepository implements CierreRepository
      */
     public function paginate(array $data)
     {
-        $query = $this->model->with('userRegistro')->select('Configuracion.cierres.*');
+        $query = $this->model->with('userRegistro')->select('Contabilidad.cierres.*');
 
         foreach ($data['order'] as $order) {
             $query->orderBy($data['columns'][$order['column']]['data'], $order['dir']);
@@ -60,14 +59,14 @@ class EloquentCierreRepository implements CierreRepository
                 throw new HttpResponseException(new Response('Ya existe un cierre para el Periodo Seleccionado', 404));
             }
 
-            DB::connection('seguridad')->beginTransaction();
+            DB::connection('cadeco')->beginTransaction();
 
             $cierre = $this->model->create($data);
 
-            DB::connection('seguridad')->commit();
+            DB::connection('cadeco')->commit();
             return $cierre;
         } catch (\Exception $e) {
-            DB::connection('seguridad')->rollback();
+            DB::connection('cadeco')->rollback();
             throw $e;
         }
     }
@@ -98,15 +97,15 @@ class EloquentCierreRepository implements CierreRepository
             if ($cierre->aperturas()->abiertas()->count()) {
                 throw new HttpResponseException(new Response('El periodo de Cierre presenta ya una apertura activa', 404));
             }
-            DB::connection('seguridad')->beginTransaction();
+            DB::connection('cadeco')->beginTransaction();
 
             $cierre->aperturas()->create($data);
 
-            DB::connection('seguridad')->commit();
+            DB::connection('cadeco')->commit();
 
             return $this->model->with('aperturas')->find($id);
         } catch (\Exception $e) {
-            DB::connection('seguridad')->rollback();
+            DB::connection('cadeco')->rollback();
             throw $e;
         }
     }
@@ -121,19 +120,19 @@ class EloquentCierreRepository implements CierreRepository
         try {
             $cierre = $this->model->find($id);
 
-            DB::connection('seguridad')->beginTransaction();
+            DB::connection('cadeco')->beginTransaction();
 
             $cierre->aperturas()->abiertas()->update([
                 'fin_apertura' => Carbon::now()->toDateTimeString(),
                 'estatus' => false
             ]);
 
-            DB::connection('seguridad')->commit();
+            DB::connection('cadeco')->commit();
 
             return $this->model->with('aperturas')->find($id);
 
         } catch (\Exception $e) {
-            DB::connection('seguridad')->rollback();
+            DB::connection('cadeco')->rollback();
             throw $e;
         }
     }
