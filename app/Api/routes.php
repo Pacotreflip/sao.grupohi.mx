@@ -31,5 +31,7 @@ $api->version('v1', function ($api) {
 
         $api->get('conciliacion/costos', 'Ghi\Api\Controllers\ConciliacionController@getCostos');
 
+        $api->delete('conciliacion/{id}', 'Ghi\Api\Controllers\ConciliacionController@delete');
+
     });
 });

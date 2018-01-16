@@ -14,6 +14,7 @@ use Ghi\Domain\Core\Contracts\ConciliacionRepository;
 use Dingo\Api\Http\Request;
 use Ghi\Domain\Core\Contracts\ContratoProyectadoRepository;
 use Ghi\Domain\Core\Contracts\ContratoRepository;
+use Ghi\Domain\Core\Contracts\de;
 use Ghi\Domain\Core\Contracts\EmpresaRepository;
 use Ghi\Domain\Core\Contracts\EstimacionRepository;
 use Ghi\Domain\Core\Contracts\ItemRepository;
@@ -29,6 +30,7 @@ use Ghi\Domain\Core\Models\Transacciones\Subcontrato;
 use Ghi\Domain\Core\Models\Costo;
 use GuzzleHttp\Client;
 use Illuminate\Foundation\Auth\User;
+use Illuminate\Support\Facades\DB;
 use function MongoDB\BSON\toJSON;
 
 class EloquentConciliacionRepository implements ConciliacionRepository
@@ -157,7 +159,7 @@ class EloquentConciliacionRepository implements ConciliacionRepository
                         'cantidad_presupuestada' => $partida['volumen'],
                         'id_material' => (int)$partida['id_material'],
                         'tarifa' => $partida['tarifa'],
-                        'destinos' => array( [
+                        'destinos' => array( [  
                             'id_concepto' => (int)$partida['id_concepto']
                         ])
                     );
@@ -224,32 +226,15 @@ class EloquentConciliacionRepository implements ConciliacionRepository
                     $resp = $this->item->update($req, $item->id_item);
 
                 } else {   //              no existe       -> crearlo
-                    $req1 = new Request();
-                    $contratos = [];
-                    $contratos[] = array(
-                        'nivel' => $this->getNivel($contrato_proyectado['id_transaccion']),
-                        'descripcion' => 'Acarreo de Material ' . $partida['material'],
-                        'unidad' => 'M3',
-                        'cantidad_presupuestada' => $partida['volumen'],
-                        'id_material' => (int)$partida['id_material'],
-                        'tarifa' => $partida['tarifa'],
-                        'destinos' => array([
-                            'id_concepto' => (int)$partida['id_concepto']
-                        ])
-                    );
-
-                    $req1->merge([
-                        'contratos' => ($contratos)
-                    ]);
-
-                    $nuevo_contrato = $this->contratoProyectado->addContratos($req1, $contrato_proyectado['id_transaccion']);
-
+                    $concepto_contrato = MaterialAcarreo::select('id_concepto_contrato')->where('id_material_acarreo', '=',(int)$partida['id_material'])
+                        ->where('id_concepto', '=',(int)$partida['id_concepto'] )
+                        ->where('Acarreos.material.tarifa', '=', $partida['tarifa'])->first();
                     $req = new Request();
                     $req->merge([
                         'id_transaccion' => $subcontrato->id_transaccion,
                         'cantidad' => $partida['volumen'],
                         'precio_unitario' => $partida['tarifa'],
-                        'id_concepto' => $nuevo_contrato[0]['id_concepto']
+                        'id_concepto' => $concepto_contrato->id_concepto_contrato
                     ]);
                     $resp = $this->item->create($req);
                 }
@@ -310,7 +295,7 @@ class EloquentConciliacionRepository implements ConciliacionRepository
     public function getCostos(Request $request)
     {
         $contrato_proyectado = ContratoProyectadoAcarreo::where('estatus',1)->first();
-        $empresa = Empresa::where('rfc', '=', $request->header('rfc'))->first();
+        $empresa = Empresa::where('rfc', '=', $request->rfc)->first();
         if($contrato_proyectado && $empresa) {
             $subcontrato = Subcontrato::where('id_antecedente', '=', $contrato_proyectado->id_transaccion)->where('id_empresa', '=', $empresa->id_empresa)->first();
             if($subcontrato['id_costo']){
@@ -319,5 +304,41 @@ class EloquentConciliacionRepository implements ConciliacionRepository
         }
         $costos = Costo::select(['id_costo', 'descripcion'])->get()->toArray();
         return $costos;
+    }
+
+    /**
+     * Elimina una Estimación
+     * @param $id de la Estimación
+     * @return mixed
+     * @throws \Exception
+     */
+    public function delete($id)
+    {
+        try {
+            DB::connection('cadeco')->beginTransaction();
+            $conciliacion = ConciliacionEstimacion::where('id_conciliacion', '=', $id)->first();
+            $estimacion = $this->estimacion->find($conciliacion->id_estimacion);
+            $conceptos = Item::where('id_transaccion', '=', $estimacion->id_transaccion)->get();
+            foreach ($conceptos as $concepto) {
+                $item = Item::where('id_concepto', '=', $concepto->item_antecedente)->first();
+                $item->cantidad -= $concepto->cantidad;
+                $item->save();
+
+                $contrato = Contrato::find($concepto->item_antecedente);
+                $contrato->cantidad_presupuestada -= $concepto->cantidad;
+                $contrato->cantidad_original -= $concepto->cantidad;
+                $contrato->save();
+            }
+
+            $estimacion->delete();
+            $conciliacion->delete();
+
+            DB::connection('cadeco')->commit();
+        }catch (\Exception $e){
+            DB::connection('cadeco')->rollback();
+            throw new ResourceException('No se Eliminó la Estimación de la Conciliacion Seleccionada.');
+        }
+
+        return $conceptos;
     }
 }
