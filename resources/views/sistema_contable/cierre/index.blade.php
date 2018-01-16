@@ -1,4 +1,4 @@
-@extends('configuracion.layout')
+@extends('sistema_contable.layout')
 @section('title', 'Cierre de Periodo')
 @section('contentheader_title', 'CIERRES DE PERIODO')
 @section('breadcrumb')
