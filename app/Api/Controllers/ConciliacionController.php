@@ -34,6 +34,11 @@ class ConciliacionController extends Controller
         return $conciliacion->toArray();
     }
 
+    public function delete($id){
+        $respuesta = $this->conciliacion->delete($id);
+        return $respuesta;
+    }
+
     public function getCostos(Request $request){
         return $this->conciliacion->getCostos($request);
     }

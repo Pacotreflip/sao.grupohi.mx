@@ -20,6 +20,13 @@ interface ConciliacionRepository
     public function store(Request $request);
 
     /**
+     * Elimina una Estimación
+     * @param $id de la Estimación
+     * @return mixed
+     */
+    public function delete($id);
+
+    /**
      * Recupera los Costos de la pista en caso de que no exista un Costo
      * asociado a la empresa en el subcontrato.
      * @param Request $request
