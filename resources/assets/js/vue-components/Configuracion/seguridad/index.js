@@ -1,12 +1,22 @@
 Vue.component('configuracion-seguridad-index', {
     data : function () {
         return {
-            roles : [],
-            guardando : false
+            permisos : [],
+            role : {},
+            guardando : false,
+            cargando : false
         }
     },
 
     mounted: function () {
+        var self = this;
+        this.getPermisos();
+
+        $(document).on('click', '.btn_edit', function () {
+            var id = $(this).attr('id');
+            self.getRole(id);
+        });
+
         $('#roles_table').DataTable({
             "processing": true,
             "serverSide": true,
@@ -77,6 +87,46 @@ Vue.component('configuracion-seguridad-index', {
     },
 
     methods : {
+        getRole: function (id) {
+            var self = this;
+            $.ajax({
+                url: App.host + '/configuracion/seguridad/role/' + id,
+                type: 'GET',
+                beforeSend:function () {
+                  self.cargando = true;
+                },
+                success: function (response) {
+                    self.role = response;
+                    $('#edit_role_modal').modal('show');
+                },
+                complete:function () {
+                    self.cargando = false;
+                }
+            })
+        },
 
+        getPermisos: function () {
+            var self = this;
+            $.ajax({
+                url: App.host + '/configuracion/seguridad/permission',
+                type: 'GET',
+                beforeSend:function () {
+                    self.cargando = true;
+                },
+                success: function (response) {
+                    self.permisos = response;
+                },
+                complete:function () {
+                    self.cargando = false;
+                }
+            })
+        },
+
+        asignado : function (permiso) {
+            var found = this.role.perms.find(function(element) {
+                return element.id == permiso.id;
+            });
+            return found != undefined;
+        }
     }
 });

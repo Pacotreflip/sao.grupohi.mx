@@ -51,4 +51,11 @@ interface RoleRepository
      * @return mixed
      */
     public function paginate(array $data);
+
+    /**
+     * Regresa el Registro del Rol Buscado
+     * @param $id
+     * @return Role
+     */
+    public function find($id);
 }

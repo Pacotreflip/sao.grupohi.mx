@@ -93,4 +93,17 @@ class EloquentRoleRepository implements RoleRepository
         }
         return $query->paginate($perPage = $data['length'], $columns = ['*'], $pageName = 'page', $page = ($data['start'] / $data['length']) + 1);
     }
+
+
+    /**
+     * Regresa el Registro del Rol Buscado
+     * @param $id
+     * @return Role
+     */
+    public function find($id)
+    {
+        return $this->model->with(['perms' => function ($q){
+            return $q->orderBy('name', 'asc');
+        }])->find($id);
+    }
 }

@@ -346,7 +346,7 @@ class EloquentConciliacionRepository implements ConciliacionRepository
             DB::connection('cadeco')->commit();
         }catch (\Exception $e){
             DB::connection('cadeco')->rollback();
-            throw new ResourceException('No se Eliminó la Estimación de la Conciliacion Seleccionada.' );
+            throw new ResourceException('No se Eliminó la Estimación de la Conciliación Seleccionada.' );
         }
 
         return $conceptos;

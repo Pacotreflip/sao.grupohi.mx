@@ -47,4 +47,9 @@ class RoleController extends Controller
             'data' => $roles->items()
         ], 200);
     }
+
+    public function find($id){
+        $role = $this->role->find($id);
+        return $this->response()->item($role, function ($item) { return $item; });
+    }
 }
