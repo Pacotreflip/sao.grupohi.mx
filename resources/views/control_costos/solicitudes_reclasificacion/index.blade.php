@@ -148,8 +148,8 @@
                                     <div class="col-md-6">
                                         <div class="pull-right">
                                             <button type='button' title='Formato' class='btn btn-info btn_pdf' v-on:click="pdf(item.id)"><i class='fa fa-file-pdf-o'> Formato</i></button>
-                                            <button type="button" class="btn btn-success" v-on:click="confirm('aprobar')"> <i class="fa fa-fw fa-thumbs-up"></i>Aprobar</button>
-                                            <button type="button" class="btn btn-danger" v-on:click="rechazar_motivo()"> <i class="fa fa-fw fa-trash"></i> Rechazar</button>
+                                            <button type="button" class="btn btn-success" v-on:click="confirm('aprobar')"> <i class="fa fa-fw fa-thumbs-up" v-if="autorizar_reclasificacion"></i>Aprobar</button>
+                                            <button type="button" class="btn btn-danger" v-on:click="rechazar_motivo()" v-if="autorizar_reclasificacion"> <i class="fa fa-fw fa-trash"></i> Rechazar</button>
                                         </div>
                                     </div>
                                 </template>
@@ -165,7 +165,7 @@
                                                 <textarea class="form-control" rows="3" placeholder="motivo..." v-model="rechazo_motivo"></textarea>
                                             </div>
                                             <div class="pull-right">
-                                                <button type="button" class="btn btn-danger" v-on:click="confirm('rechazar')">Rechazar</button>
+                                                <button type="button" class="btn btn-danger" v-on:click="confirm('rechazar')" v-if="autorizar_reclasificacion">Rechazar</button>
                                                 <button type="button" class="btn btn-default" v-on:click="cancelar_rechazo()">Cancelar</button>
                                             </div>
                                             <div>

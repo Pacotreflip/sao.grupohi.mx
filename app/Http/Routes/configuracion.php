@@ -25,10 +25,10 @@ Route::group(['prefix' => 'configuracion'], function () {
         /**
          * Permission Routes
          */
-        Route::get('permission', 'Configuracion\PermissioController@index');
-        Route::post('permission', 'Configuracion\PermissioController@store');
-        Route::delete('permission/{permission}', 'Configuracion\PermissioController@destroy');
-        Route::patch('permission/{permission}', 'Configuracion\PermissioController@update');
+        Route::get('permission', 'Configuracion\PermissionController@index');
+        Route::post('permission', 'Configuracion\PermissionController@store');
+        Route::delete('permission/{permission}', 'Configuracion\PermissionController@destroy');
+        Route::patch('permission/{permission}', 'Configuracion\PermissionController@update');
     });
 
 });

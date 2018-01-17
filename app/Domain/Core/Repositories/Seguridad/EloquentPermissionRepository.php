@@ -27,7 +27,7 @@ class EloquentPermissionRepository implements PermissionRepository
      */
     public function all()
     {
-        // TODO: Implement all() method.
+        return $this->model->orderBy('name')->get();
     }
 
     /**

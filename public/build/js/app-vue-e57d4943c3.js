@@ -3578,7 +3578,7 @@ return index;
 },{}],3:[function(require,module,exports){
 (function (global){
 /*!
- * Vue.js v2.5.13
+ * Vue.js v2.5.3
  * (c) 2014-2017 Evan You
  * Released under the MIT License.
  */
@@ -3589,8 +3589,6 @@ return index;
 }(this, (function () { 'use strict';
 
 /*  */
-
-var emptyObject = Object.freeze({});
 
 // these helpers produces better vm code in JS engines due to their
 // explicitness and function inlining
@@ -3617,8 +3615,6 @@ function isPrimitive (value) {
   return (
     typeof value === 'string' ||
     typeof value === 'number' ||
-    // $flow-disable-line
-    typeof value === 'symbol' ||
     typeof value === 'boolean'
   )
 }
@@ -3927,7 +3923,6 @@ var config = ({
   /**
    * Option merge strategies (used in core/util/options)
    */
-  // $flow-disable-line
   optionMergeStrategies: Object.create(null),
 
   /**
@@ -3968,7 +3963,6 @@ var config = ({
   /**
    * Custom user key aliases for v-on
    */
-  // $flow-disable-line
   keyCodes: Object.create(null),
 
   /**
@@ -4013,6 +4007,8 @@ var config = ({
 
 /*  */
 
+var emptyObject = Object.freeze({});
+
 /**
  * Check if a string starts with $ or _
  */
@@ -4053,20 +4049,17 @@ function parsePath (path) {
 
 /*  */
 
-
 // can we use __proto__?
 var hasProto = '__proto__' in {};
 
 // Browser environment sniffing
 var inBrowser = typeof window !== 'undefined';
-var inWeex = typeof WXEnvironment !== 'undefined' && !!WXEnvironment.platform;
-var weexPlatform = inWeex && WXEnvironment.platform.toLowerCase();
 var UA = inBrowser && window.navigator.userAgent.toLowerCase();
 var isIE = UA && /msie|trident/.test(UA);
 var isIE9 = UA && UA.indexOf('msie 9.0') > 0;
 var isEdge = UA && UA.indexOf('edge/') > 0;
-var isAndroid = (UA && UA.indexOf('android') > 0) || (weexPlatform === 'android');
-var isIOS = (UA && /iphone|ipad|ipod|ios/.test(UA)) || (weexPlatform === 'ios');
+var isAndroid = UA && UA.indexOf('android') > 0;
+var isIOS = UA && /iphone|ipad|ipod|ios/.test(UA);
 var isChrome = UA && /chrome\/\d+/.test(UA) && !isEdge;
 
 // Firefox has a "watch" function on Object.prototype...
@@ -4304,9 +4297,9 @@ var VNode = function VNode (
   this.elm = elm;
   this.ns = undefined;
   this.context = context;
-  this.fnContext = undefined;
-  this.fnOptions = undefined;
-  this.fnScopeId = undefined;
+  this.functionalContext = undefined;
+  this.functionalOptions = undefined;
+  this.functionalScopeId = undefined;
   this.key = data && data.key;
   this.componentOptions = componentOptions;
   this.componentInstance = undefined;
@@ -4365,9 +4358,6 @@ function cloneVNode (vnode, deep) {
   cloned.isStatic = vnode.isStatic;
   cloned.key = vnode.key;
   cloned.isComment = vnode.isComment;
-  cloned.fnContext = vnode.fnContext;
-  cloned.fnOptions = vnode.fnOptions;
-  cloned.fnScopeId = vnode.fnScopeId;
   cloned.isCloned = true;
   if (deep) {
     if (vnode.children) {
@@ -4403,7 +4393,8 @@ var arrayMethods = Object.create(arrayProto);[
   'splice',
   'sort',
   'reverse'
-].forEach(function (method) {
+]
+.forEach(function (method) {
   // cache original method
   var original = arrayProto[method];
   def(arrayMethods, method, function mutator () {
@@ -4735,18 +4726,18 @@ function mergeDataOrFn (
     // it has to be a function to pass previous merges.
     return function mergedDataFn () {
       return mergeData(
-        typeof childVal === 'function' ? childVal.call(this, this) : childVal,
-        typeof parentVal === 'function' ? parentVal.call(this, this) : parentVal
+        typeof childVal === 'function' ? childVal.call(this) : childVal,
+        typeof parentVal === 'function' ? parentVal.call(this) : parentVal
       )
     }
   } else {
     return function mergedInstanceDataFn () {
       // instance merge
       var instanceData = typeof childVal === 'function'
-        ? childVal.call(vm, vm)
+        ? childVal.call(vm)
         : childVal;
       var defaultData = typeof parentVal === 'function'
-        ? parentVal.call(vm, vm)
+        ? parentVal.call(vm)
         : parentVal;
       if (instanceData) {
         return mergeData(instanceData, defaultData)
@@ -4898,23 +4889,13 @@ var defaultStrat = function (parentVal, childVal) {
  */
 function checkComponents (options) {
   for (var key in options.components) {
-    validateComponentName(key);
-  }
-}
-
-function validateComponentName (name) {
-  if (!/^[a-zA-Z][\w-]*$/.test(name)) {
-    warn(
-      'Invalid component name: "' + name + '". Component names ' +
-      'can only contain alphanumeric characters and the hyphen, ' +
-      'and must start with a letter.'
-    );
-  }
-  if (isBuiltInTag(name) || config.isReservedTag(name)) {
-    warn(
-      'Do not use built-in or reserved HTML elements as component ' +
-      'id: ' + name
-    );
+    var lower = key.toLowerCase();
+    if (isBuiltInTag(lower) || config.isReservedTag(lower)) {
+      warn(
+        'Do not use built-in or reserved HTML elements as component ' +
+        'id: ' + key
+      );
+    }
   }
 }
 
@@ -4961,7 +4942,6 @@ function normalizeProps (options, vm) {
  */
 function normalizeInject (options, vm) {
   var inject = options.inject;
-  if (!inject) { return }
   var normalized = options.inject = {};
   if (Array.isArray(inject)) {
     for (var i = 0; i < inject.length; i++) {
@@ -4974,7 +4954,7 @@ function normalizeInject (options, vm) {
         ? extend({ from: key }, val)
         : { from: val };
     }
-  } else {
+  } else if ("development" !== 'production' && inject) {
     warn(
       "Invalid value for option \"inject\": expected an Array or an Object, " +
       "but got " + (toRawType(inject)) + ".",
@@ -5294,7 +5274,7 @@ function logError (err, vm, info) {
     warn(("Error in " + info + ": \"" + (err.toString()) + "\""), vm);
   }
   /* istanbul ignore else */
-  if ((inBrowser || inWeex) && typeof console !== 'undefined') {
+  if (inBrowser && typeof console !== 'undefined') {
     console.error(err);
   } else {
     throw err
@@ -5518,43 +5498,6 @@ var initProxy;
 
 /*  */
 
-var seenObjects = new _Set();
-
-/**
- * Recursively traverse an object to evoke all converted
- * getters, so that every nested property inside the object
- * is collected as a "deep" dependency.
- */
-function traverse (val) {
-  _traverse(val, seenObjects);
-  seenObjects.clear();
-}
-
-function _traverse (val, seen) {
-  var i, keys;
-  var isA = Array.isArray(val);
-  if ((!isA && !isObject(val)) || Object.isFrozen(val)) {
-    return
-  }
-  if (val.__ob__) {
-    var depId = val.__ob__.dep.id;
-    if (seen.has(depId)) {
-      return
-    }
-    seen.add(depId);
-  }
-  if (isA) {
-    i = val.length;
-    while (i--) { _traverse(val[i], seen); }
-  } else {
-    keys = Object.keys(val);
-    i = keys.length;
-    while (i--) { _traverse(val[keys[i]], seen); }
-  }
-}
-
-/*  */
-
 var normalizeEvent = cached(function (name) {
   var passive = name.charAt(0) === '&';
   name = passive ? name.slice(1) : name;
@@ -5596,12 +5539,11 @@ function updateListeners (
   remove$$1,
   vm
 ) {
-  var name, def, cur, old, event;
+  var name, cur, old, event;
   for (name in on) {
-    def = cur = on[name];
+    cur = on[name];
     old = oldOn[name];
     event = normalizeEvent(name);
-    /* istanbul ignore if */
     if (isUndef(cur)) {
       "development" !== 'production' && warn(
         "Invalid handler for event \"" + (event.name) + "\": got " + String(cur),
@@ -5611,7 +5553,7 @@ function updateListeners (
       if (isUndef(cur.fns)) {
         cur = on[name] = createFnInvoker(cur);
       }
-      add(event.name, cur, event.once, event.capture, event.passive, event.params);
+      add(event.name, cur, event.once, event.capture, event.passive);
     } else if (cur !== old) {
       old.fns = cur;
       on[name] = old;
@@ -6103,8 +6045,6 @@ function eventsMixin (Vue) {
 
 /*  */
 
-
-
 /**
  * Runtime helper for resolving raw children VNodes into a slot object.
  */
@@ -6125,13 +6065,13 @@ function resolveSlots (
     }
     // named slots should only be respected if the vnode was rendered in the
     // same context.
-    if ((child.context === context || child.fnContext === context) &&
+    if ((child.context === context || child.functionalContext === context) &&
       data && data.slot != null
     ) {
-      var name = data.slot;
+      var name = child.data.slot;
       var slot = (slots[name] || (slots[name] = []));
       if (child.tag === 'template') {
-        slot.push.apply(slot, child.children || []);
+        slot.push.apply(slot, child.children);
       } else {
         slot.push(child);
       }
@@ -6149,7 +6089,7 @@ function resolveSlots (
 }
 
 function isWhitespace (node) {
-  return (node.isComment && !node.asyncFactory) || node.text === ' '
+  return node.isComment || node.text === ' '
 }
 
 function resolveScopedSlots (
@@ -6345,10 +6285,7 @@ function mountComponent (
     };
   }
 
-  // we set this to vm._watcher inside the watcher's constructor
-  // since the watcher's initial patch may call $forceUpdate (e.g. inside child
-  // component's mounted hook), which relies on vm._watcher being already defined
-  new Watcher(vm, updateComponent, noop, null, true /* isRenderWatcher */);
+  vm._watcher = new Watcher(vm, updateComponent, noop);
   hydrating = false;
 
   // manually mounted instance, call mounted on self
@@ -6635,13 +6572,9 @@ var Watcher = function Watcher (
   vm,
   expOrFn,
   cb,
-  options,
-  isRenderWatcher
+  options
 ) {
   this.vm = vm;
-  if (isRenderWatcher) {
-    vm._watcher = this;
-  }
   vm._watchers.push(this);
   // options
   if (options) {
@@ -6833,6 +6766,40 @@ Watcher.prototype.teardown = function teardown () {
   }
 };
 
+/**
+ * Recursively traverse an object to evoke all converted
+ * getters, so that every nested property inside the object
+ * is collected as a "deep" dependency.
+ */
+var seenObjects = new _Set();
+function traverse (val) {
+  seenObjects.clear();
+  _traverse(val, seenObjects);
+}
+
+function _traverse (val, seen) {
+  var i, keys;
+  var isA = Array.isArray(val);
+  if ((!isA && !isObject(val)) || !Object.isExtensible(val)) {
+    return
+  }
+  if (val.__ob__) {
+    var depId = val.__ob__.dep.id;
+    if (seen.has(depId)) {
+      return
+    }
+    seen.add(depId);
+  }
+  if (isA) {
+    i = val.length;
+    while (i--) { _traverse(val[i], seen); }
+  } else {
+    keys = Object.keys(val);
+    i = keys.length;
+    while (i--) { _traverse(val[keys[i]], seen); }
+  }
+}
+
 /*  */
 
 var sharedPropertyDefinition = {
@@ -6968,7 +6935,6 @@ function getData (data, vm) {
 var computedWatcherOptions = { lazy: true };
 
 function initComputed (vm, computed) {
-  // $flow-disable-line
   var watchers = vm._computedWatchers = Object.create(null);
   // computed properties are just getters during SSR
   var isSSR = isServerRendering();
@@ -7197,11 +7163,11 @@ function resolveInject (inject, vm) {
     // inject is :any because flow is not smart enough to figure out cached
     var result = Object.create(null);
     var keys = hasSymbol
-      ? Reflect.ownKeys(inject).filter(function (key) {
-        /* istanbul ignore next */
-        return Object.getOwnPropertyDescriptor(inject, key).enumerable
-      })
-      : Object.keys(inject);
+        ? Reflect.ownKeys(inject).filter(function (key) {
+          /* istanbul ignore next */
+          return Object.getOwnPropertyDescriptor(inject, key).enumerable
+        })
+        : Object.keys(inject);
 
     for (var i = 0; i < keys.length; i++) {
       var key = keys[i];
@@ -7409,7 +7375,10 @@ function renderStatic (
   index,
   isInFor
 ) {
-  var cached = this._staticTrees || (this._staticTrees = []);
+  // static trees can be rendered once and cached on the contructor options
+  // so every instance shares the same cached trees
+  var options = this.$options;
+  var cached = options.cached || (options.cached = []);
   var tree = cached[index];
   // if has already-rendered static tree and not inside v-for,
   // we can reuse the same tree by doing a shallow clone.
@@ -7419,11 +7388,7 @@ function renderStatic (
       : cloneVNode(tree)
   }
   // otherwise, render a fresh tree.
-  tree = cached[index] = this.$options.staticRenderFns[index].call(
-    this._renderProxy,
-    null,
-    this // for render fns generated for functional component templates
-  );
+  tree = cached[index] = options.staticRenderFns[index].call(this._renderProxy, null, this);
   markStatic(tree, ("__static__" + index), false);
   return tree
 }
@@ -7541,8 +7506,8 @@ function FunctionalRenderContext (
     this._c = function (a, b, c, d) {
       var vnode = createElement(contextVm, a, b, c, d, needNormalization);
       if (vnode) {
-        vnode.fnScopeId = options._scopeId;
-        vnode.fnContext = parent;
+        vnode.functionalScopeId = options._scopeId;
+        vnode.functionalContext = parent;
       }
       return vnode
     };
@@ -7583,8 +7548,8 @@ function createFunctionalComponent (
   var vnode = options.render.call(null, renderContext._c, renderContext);
 
   if (vnode instanceof VNode) {
-    vnode.fnContext = contextVm;
-    vnode.fnOptions = options;
+    vnode.functionalContext = contextVm;
+    vnode.functionalOptions = options;
     if (data.slot) {
       (vnode.data || (vnode.data = {})).slot = data.slot;
     }
@@ -7598,25 +7563,6 @@ function mergeProps (to, from) {
     to[camelize(key)] = from[key];
   }
 }
-
-/*  */
-
-
-
-
-// Register the component hook to weex native render engine.
-// The hook will be triggered by native, not javascript.
-
-
-// Updates the state of the component to weex native render engine.
-
-/*  */
-
-// https://github.com/Hanks10100/weex-native-directive/tree/master/component
-
-// listening on native callback
-
-/*  */
 
 /*  */
 
@@ -7785,11 +7731,6 @@ function createComponent (
     { Ctor: Ctor, propsData: propsData, listeners: listeners, tag: tag, children: children },
     asyncFactory
   );
-
-  // Weex specific: invoke recycle-list optimized @render function for
-  // extracting cell-slot template.
-  // https://github.com/Hanks10100/weex-native-directive/tree/master/component
-  /* istanbul ignore if */
   return vnode
 }
 
@@ -7799,10 +7740,15 @@ function createComponentInstanceForVnode (
   parentElm,
   refElm
 ) {
+  var vnodeComponentOptions = vnode.componentOptions;
   var options = {
     _isComponent: true,
     parent: parent,
+    propsData: vnodeComponentOptions.propsData,
+    _componentTag: vnodeComponentOptions.tag,
     _parentVnode: vnode,
+    _parentListeners: vnodeComponentOptions.listeners,
+    _renderChildren: vnodeComponentOptions.children,
     _parentElm: parentElm || null,
     _refElm: refElm || null
   };
@@ -7812,7 +7758,7 @@ function createComponentInstanceForVnode (
     options.render = inlineTemplate.render;
     options.staticRenderFns = inlineTemplate.staticRenderFns;
   }
-  return new vnode.componentOptions.Ctor(options)
+  return new vnodeComponentOptions.Ctor(options)
 }
 
 function mergeHooks (data) {
@@ -7900,13 +7846,11 @@ function _createElement (
   if ("development" !== 'production' &&
     isDef(data) && isDef(data.key) && !isPrimitive(data.key)
   ) {
-    {
-      warn(
-        'Avoid using non-primitive value as key, ' +
-        'use string/number value instead.',
-        context
-      );
-    }
+    warn(
+      'Avoid using non-primitive value as key, ' +
+      'use string/number value instead.',
+      context
+    );
   }
   // support single function children as default scoped slot
   if (Array.isArray(children) &&
@@ -7976,7 +7920,6 @@ function applyNS (vnode, ns, force) {
 
 function initRender (vm) {
   vm._vnode = null; // the root of the child tree
-  vm._staticTrees = null; // v-once cached trees
   var options = vm.$options;
   var parentVnode = vm.$vnode = options._parentVnode; // the placeholder node in parent tree
   var renderContext = parentVnode && parentVnode.context;
@@ -8025,9 +7968,7 @@ function renderMixin (Vue) {
       // last render. They need to be cloned to ensure "freshness" for this render.
       for (var key in vm.$slots) {
         var slot = vm.$slots[key];
-        // _rendered is a flag added by renderSlot, but may not be present
-        // if the slot is passed from manually written render functions
-        if (slot._rendered || (slot[0] && slot[0].elm)) {
+        if (slot._rendered) {
           vm.$slots[key] = cloneVNodes(slot, true /* deep */);
         }
       }
@@ -8141,18 +8082,14 @@ function initMixin (Vue) {
 function initInternalComponent (vm, options) {
   var opts = vm.$options = Object.create(vm.constructor.options);
   // doing this because it's faster than dynamic enumeration.
-  var parentVnode = options._parentVnode;
   opts.parent = options.parent;
-  opts._parentVnode = parentVnode;
+  opts.propsData = options.propsData;
+  opts._parentVnode = options._parentVnode;
+  opts._parentListeners = options._parentListeners;
+  opts._renderChildren = options._renderChildren;
+  opts._componentTag = options._componentTag;
   opts._parentElm = options._parentElm;
   opts._refElm = options._refElm;
-
-  var vnodeComponentOptions = parentVnode.componentOptions;
-  opts.propsData = vnodeComponentOptions.propsData;
-  opts._parentListeners = vnodeComponentOptions.listeners;
-  opts._renderChildren = vnodeComponentOptions.children;
-  opts._componentTag = vnodeComponentOptions.tag;
-
   if (options.render) {
     opts.render = options.render;
     opts.staticRenderFns = options.staticRenderFns;
@@ -8286,8 +8223,14 @@ function initExtend (Vue) {
     }
 
     var name = extendOptions.name || Super.options.name;
-    if ("development" !== 'production' && name) {
-      validateComponentName(name);
+    {
+      if (!/^[a-zA-Z][\w-]*$/.test(name)) {
+        warn(
+          'Invalid component name: "' + name + '". Component names ' +
+          'can only contain alphanumeric characters and the hyphen, ' +
+          'and must start with a letter.'
+        );
+      }
     }
 
     var Sub = function VueComponent (options) {
@@ -8369,8 +8312,13 @@ function initAssetRegisters (Vue) {
         return this.options[type + 's'][id]
       } else {
         /* istanbul ignore if */
-        if ("development" !== 'production' && type === 'component') {
-          validateComponentName(id);
+        {
+          if (type === 'component' && config.isReservedTag(id)) {
+            warn(
+              'Do not use built-in or reserved HTML elements as component ' +
+              'id: ' + id
+            );
+          }
         }
         if (type === 'component' && isPlainObject(definition)) {
           definition.name = definition.name || id;
@@ -8426,7 +8374,7 @@ function pruneCacheEntry (
   current
 ) {
   var cached$$1 = cache[key];
-  if (cached$$1 && (!current || cached$$1.tag !== current.tag)) {
+  if (cached$$1 && cached$$1 !== current) {
     cached$$1.componentInstance.$destroy();
   }
   cache[key] = null;
@@ -8468,27 +8416,21 @@ var KeepAlive = {
   },
 
   render: function render () {
-    var slot = this.$slots.default;
-    var vnode = getFirstComponentChild(slot);
+    var vnode = getFirstComponentChild(this.$slots.default);
     var componentOptions = vnode && vnode.componentOptions;
     if (componentOptions) {
       // check pattern
       var name = getComponentName(componentOptions);
-      var ref = this;
-      var include = ref.include;
-      var exclude = ref.exclude;
-      if (
-        // not included
-        (include && (!name || !matches(include, name))) ||
-        // excluded
-        (exclude && name && matches(exclude, name))
-      ) {
+      if (name && (
+        (this.exclude && matches(this.exclude, name)) ||
+        (this.include && !matches(this.include, name))
+      )) {
         return vnode
       }
 
-      var ref$1 = this;
-      var cache = ref$1.cache;
-      var keys = ref$1.keys;
+      var ref = this;
+      var cache = ref.cache;
+      var keys = ref.keys;
       var key = vnode.key == null
         // same constructor may get registered as different local components
         // so cid alone is not enough (#3269)
@@ -8510,7 +8452,7 @@ var KeepAlive = {
 
       vnode.data.keepAlive = true;
     }
-    return vnode || (slot && slot[0])
+    return vnode
   }
 };
 
@@ -8577,7 +8519,7 @@ Object.defineProperty(Vue$3.prototype, '$ssrContext', {
   }
 });
 
-Vue$3.version = '2.5.13';
+Vue$3.version = '2.5.3';
 
 /*  */
 
@@ -8629,12 +8571,12 @@ function genClassForVnode (vnode) {
   var childNode = vnode;
   while (isDef(childNode.componentInstance)) {
     childNode = childNode.componentInstance._vnode;
-    if (childNode && childNode.data) {
+    if (childNode.data) {
       data = mergeClassData(childNode.data, data);
     }
   }
   while (isDef(parentNode = parentNode.parent)) {
-    if (parentNode && parentNode.data) {
+    if (parentNode.data) {
       data = mergeClassData(data, parentNode.data);
     }
   }
@@ -9004,23 +8946,7 @@ function createPatchFunction (backend) {
     }
   }
 
-  function isUnknownElement$$1 (vnode, inVPre) {
-    return (
-      !inVPre &&
-      !vnode.ns &&
-      !(
-        config.ignoredElements.length &&
-        config.ignoredElements.some(function (ignore) {
-          return isRegExp(ignore)
-            ? ignore.test(vnode.tag)
-            : ignore === vnode.tag
-        })
-      ) &&
-      config.isUnknownElement(vnode.tag)
-    )
-  }
-
-  var creatingElmInVPre = 0;
+  var inPre = 0;
   function createElm (vnode, insertedVnodeQueue, parentElm, refElm, nested) {
     vnode.isRootInsert = !nested; // for transition enter check
     if (createComponent(vnode, insertedVnodeQueue, parentElm, refElm)) {
@@ -9033,9 +8959,21 @@ function createPatchFunction (backend) {
     if (isDef(tag)) {
       {
         if (data && data.pre) {
-          creatingElmInVPre++;
+          inPre++;
         }
-        if (isUnknownElement$$1(vnode, creatingElmInVPre)) {
+        if (
+          !inPre &&
+          !vnode.ns &&
+          !(
+            config.ignoredElements.length &&
+            config.ignoredElements.some(function (ignore) {
+              return isRegExp(ignore)
+                ? ignore.test(tag)
+                : ignore === tag
+            })
+          ) &&
+          config.isUnknownElement(tag)
+        ) {
           warn(
             'Unknown custom element: <' + tag + '> - did you ' +
             'register the component correctly? For recursive components, ' +
@@ -9059,7 +8997,7 @@ function createPatchFunction (backend) {
       }
 
       if ("development" !== 'production' && data && data.pre) {
-        creatingElmInVPre--;
+        inPre--;
       }
     } else if (isTrue(vnode.isComment)) {
       vnode.elm = nodeOps.createComment(vnode.text);
@@ -9145,14 +9083,11 @@ function createPatchFunction (backend) {
 
   function createChildren (vnode, children, insertedVnodeQueue) {
     if (Array.isArray(children)) {
-      {
-        checkDuplicateKeys(children);
-      }
       for (var i = 0; i < children.length; ++i) {
         createElm(children[i], insertedVnodeQueue, vnode.elm, null, true);
       }
     } else if (isPrimitive(vnode.text)) {
-      nodeOps.appendChild(vnode.elm, nodeOps.createTextNode(String(vnode.text)));
+      nodeOps.appendChild(vnode.elm, nodeOps.createTextNode(vnode.text));
     }
   }
 
@@ -9179,7 +9114,7 @@ function createPatchFunction (backend) {
   // of going through the normal attribute patching process.
   function setScope (vnode) {
     var i;
-    if (isDef(i = vnode.fnScopeId)) {
+    if (isDef(i = vnode.functionalScopeId)) {
       nodeOps.setAttribute(vnode.elm, i, '');
     } else {
       var ancestor = vnode;
@@ -9193,7 +9128,7 @@ function createPatchFunction (backend) {
     // for slot content they should also get the scopeId from the host instance.
     if (isDef(i = activeInstance) &&
       i !== vnode.context &&
-      i !== vnode.fnContext &&
+      i !== vnode.functionalContext &&
       isDef(i = i.$options._scopeId)
     ) {
       nodeOps.setAttribute(vnode.elm, i, '');
@@ -9279,10 +9214,6 @@ function createPatchFunction (backend) {
     // during leaving transitions
     var canMove = !removeOnly;
 
-    {
-      checkDuplicateKeys(newCh);
-    }
-
     while (oldStartIdx <= oldEndIdx && newStartIdx <= newEndIdx) {
       if (isUndef(oldStartVnode)) {
         oldStartVnode = oldCh[++oldStartIdx]; // Vnode has been moved left
@@ -9315,6 +9246,13 @@ function createPatchFunction (backend) {
           createElm(newStartVnode, insertedVnodeQueue, parentElm, oldStartVnode.elm);
         } else {
           vnodeToMove = oldCh[idxInOld];
+          /* istanbul ignore if */
+          if ("development" !== 'production' && !vnodeToMove) {
+            warn(
+              'It seems there are duplicate keys that is causing an update error. ' +
+              'Make sure each v-for item has a unique key.'
+            );
+          }
           if (sameVnode(vnodeToMove, newStartVnode)) {
             patchVnode(vnodeToMove, newStartVnode, insertedVnodeQueue);
             oldCh[idxInOld] = undefined;
@@ -9332,24 +9270,6 @@ function createPatchFunction (backend) {
       addVnodes(parentElm, refElm, newCh, newStartIdx, newEndIdx, insertedVnodeQueue);
     } else if (newStartIdx > newEndIdx) {
       removeVnodes(parentElm, oldCh, oldStartIdx, oldEndIdx);
-    }
-  }
-
-  function checkDuplicateKeys (children) {
-    var seenKeys = {};
-    for (var i = 0; i < children.length; i++) {
-      var vnode = children[i];
-      var key = vnode.key;
-      if (isDef(key)) {
-        if (seenKeys[key]) {
-          warn(
-            ("Duplicate keys detected: '" + key + "'. This may cause an update error."),
-            vnode.context
-          );
-        } else {
-          seenKeys[key] = true;
-        }
-      }
     }
   }
 
@@ -9432,32 +9352,27 @@ function createPatchFunction (backend) {
     }
   }
 
-  var hydrationBailed = false;
+  var bailed = false;
   // list of modules that can skip create hook during hydration because they
   // are already rendered on the client or has no need for initialization
-  // Note: style is excluded because it relies on initial clone for future
-  // deep updates (#7063).
-  var isRenderedModule = makeMap('attrs,class,staticClass,staticStyle,key');
+  var isRenderedModule = makeMap('attrs,style,class,staticClass,staticStyle,key');
 
   // Note: this is a browser-only function so we can assume elms are DOM nodes.
-  function hydrate (elm, vnode, insertedVnodeQueue, inVPre) {
-    var i;
-    var tag = vnode.tag;
-    var data = vnode.data;
-    var children = vnode.children;
-    inVPre = inVPre || (data && data.pre);
-    vnode.elm = elm;
-
+  function hydrate (elm, vnode, insertedVnodeQueue) {
     if (isTrue(vnode.isComment) && isDef(vnode.asyncFactory)) {
+      vnode.elm = elm;
       vnode.isAsyncPlaceholder = true;
       return true
     }
-    // assert node match
     {
-      if (!assertNodeMatch(elm, vnode, inVPre)) {
+      if (!assertNodeMatch(elm, vnode)) {
         return false
       }
     }
+    vnode.elm = elm;
+    var tag = vnode.tag;
+    var data = vnode.data;
+    var children = vnode.children;
     if (isDef(data)) {
       if (isDef(i = data.hook) && isDef(i = i.init)) { i(vnode, true /* hydrating */); }
       if (isDef(i = vnode.componentInstance)) {
@@ -9478,9 +9393,9 @@ function createPatchFunction (backend) {
               /* istanbul ignore if */
               if ("development" !== 'production' &&
                 typeof console !== 'undefined' &&
-                !hydrationBailed
+                !bailed
               ) {
-                hydrationBailed = true;
+                bailed = true;
                 console.warn('Parent: ', elm);
                 console.warn('server innerHTML: ', i);
                 console.warn('client innerHTML: ', elm.innerHTML);
@@ -9492,7 +9407,7 @@ function createPatchFunction (backend) {
             var childrenMatch = true;
             var childNode = elm.firstChild;
             for (var i$1 = 0; i$1 < children.length; i$1++) {
-              if (!childNode || !hydrate(childNode, children[i$1], insertedVnodeQueue, inVPre)) {
+              if (!childNode || !hydrate(childNode, children[i$1], insertedVnodeQueue)) {
                 childrenMatch = false;
                 break
               }
@@ -9504,9 +9419,9 @@ function createPatchFunction (backend) {
               /* istanbul ignore if */
               if ("development" !== 'production' &&
                 typeof console !== 'undefined' &&
-                !hydrationBailed
+                !bailed
               ) {
-                hydrationBailed = true;
+                bailed = true;
                 console.warn('Parent: ', elm);
                 console.warn('Mismatching childNodes vs. VNodes: ', elm.childNodes, children);
               }
@@ -9516,17 +9431,11 @@ function createPatchFunction (backend) {
         }
       }
       if (isDef(data)) {
-        var fullInvoke = false;
         for (var key in data) {
           if (!isRenderedModule(key)) {
-            fullInvoke = true;
             invokeCreateHooks(vnode, insertedVnodeQueue);
             break
           }
-        }
-        if (!fullInvoke && data['class']) {
-          // ensure collecting deps for deep class bindings for future updates
-          traverse(data['class']);
         }
       }
     } else if (elm.data !== vnode.text) {
@@ -9535,10 +9444,10 @@ function createPatchFunction (backend) {
     return true
   }
 
-  function assertNodeMatch (node, vnode, inVPre) {
+  function assertNodeMatch (node, vnode) {
     if (isDef(vnode.tag)) {
-      return vnode.tag.indexOf('vue-component') === 0 || (
-        !isUnknownElement$$1(vnode, inVPre) &&
+      return (
+        vnode.tag.indexOf('vue-component') === 0 ||
         vnode.tag.toLowerCase() === (node.tagName && node.tagName.toLowerCase())
       )
     } else {
@@ -9735,20 +9644,17 @@ function normalizeDirectives$1 (
 ) {
   var res = Object.create(null);
   if (!dirs) {
-    // $flow-disable-line
     return res
   }
   var i, dir;
   for (i = 0; i < dirs.length; i++) {
     dir = dirs[i];
     if (!dir.modifiers) {
-      // $flow-disable-line
       dir.modifiers = emptyModifiers;
     }
     res[getRawDirName(dir)] = dir;
     dir.def = resolveAsset(vm.$options, 'directives', dir.name, true);
   }
-  // $flow-disable-line
   return res
 }
 
@@ -9801,7 +9707,7 @@ function updateAttrs (oldVnode, vnode) {
   // #4391: in IE9, setting type can reset value for input[type=radio]
   // #6666: IE/Edge forces progress value down to 1 before setting a max
   /* istanbul ignore if */
-  if ((isIE || isEdge) && attrs.value !== oldAttrs.value) {
+  if ((isIE9 || isEdge) && attrs.value !== oldAttrs.value) {
     setAttr(elm, 'value', attrs.value);
   }
   for (key in oldAttrs) {
@@ -9841,23 +9747,6 @@ function setAttr (el, key, value) {
     if (isFalsyAttrValue(value)) {
       el.removeAttribute(key);
     } else {
-      // #7138: IE10 & 11 fires input event when setting placeholder on
-      // <textarea>... block the first input event and remove the blocker
-      // immediately.
-      /* istanbul ignore if */
-      if (
-        isIE && !isIE9 &&
-        el.tagName === 'TEXTAREA' &&
-        key === 'placeholder' && !el.__ieph
-      ) {
-        var blocker = function (e) {
-          e.stopImmediatePropagation();
-          el.removeEventListener('input', blocker);
-        };
-        el.addEventListener('input', blocker);
-        // $flow-disable-line
-        el.__ieph = true; /* IE placeholder patched */
-      }
       el.setAttribute(key, value);
     }
   }
@@ -10021,18 +9910,10 @@ function pluckModuleFunction (
 
 function addProp (el, name, value) {
   (el.props || (el.props = [])).push({ name: name, value: value });
-  el.plain = false;
 }
 
 function addAttr (el, name, value) {
   (el.attrs || (el.attrs = [])).push({ name: name, value: value });
-  el.plain = false;
-}
-
-// add a raw attr (use this in preTransforms)
-function addRawAttr (el, name, value) {
-  el.attrsMap[name] = value;
-  el.attrsList.push({ name: name, value: value });
 }
 
 function addDirective (
@@ -10044,7 +9925,6 @@ function addDirective (
   modifiers
 ) {
   (el.directives || (el.directives = [])).push({ name: name, rawName: rawName, value: value, arg: arg, modifiers: modifiers });
-  el.plain = false;
 }
 
 function addHandler (
@@ -10055,59 +9935,39 @@ function addHandler (
   important,
   warn
 ) {
-  modifiers = modifiers || emptyObject;
   // warn prevent and passive modifier
   /* istanbul ignore if */
   if (
     "development" !== 'production' && warn &&
-    modifiers.prevent && modifiers.passive
+    modifiers && modifiers.prevent && modifiers.passive
   ) {
     warn(
       'passive and prevent can\'t be used together. ' +
       'Passive handler can\'t prevent default event.'
     );
   }
-
   // check capture modifier
-  if (modifiers.capture) {
+  if (modifiers && modifiers.capture) {
     delete modifiers.capture;
     name = '!' + name; // mark the event as captured
   }
-  if (modifiers.once) {
+  if (modifiers && modifiers.once) {
     delete modifiers.once;
     name = '~' + name; // mark the event as once
   }
   /* istanbul ignore if */
-  if (modifiers.passive) {
+  if (modifiers && modifiers.passive) {
     delete modifiers.passive;
     name = '&' + name; // mark the event as passive
   }
-
-  // normalize click.right and click.middle since they don't actually fire
-  // this is technically browser-specific, but at least for now browsers are
-  // the only target envs that have right/middle clicks.
-  if (name === 'click') {
-    if (modifiers.right) {
-      name = 'contextmenu';
-      delete modifiers.right;
-    } else if (modifiers.middle) {
-      name = 'mouseup';
-    }
-  }
-
   var events;
-  if (modifiers.native) {
+  if (modifiers && modifiers.native) {
     delete modifiers.native;
     events = el.nativeEvents || (el.nativeEvents = {});
   } else {
     events = el.events || (el.events = {});
   }
-
-  var newHandler = { value: value };
-  if (modifiers !== emptyObject) {
-    newHandler.modifiers = modifiers;
-  }
-
+  var newHandler = { value: value, modifiers: modifiers };
   var handlers = events[name];
   /* istanbul ignore if */
   if (Array.isArray(handlers)) {
@@ -10117,8 +9977,6 @@ function addHandler (
   } else {
     events[name] = newHandler;
   }
-
-  el.plain = false;
 }
 
 function getBindingAttr (
@@ -10385,11 +10243,11 @@ function genCheckboxModel (
   var falseValueBinding = getBindingAttr(el, 'false-value') || 'false';
   addProp(el, 'checked',
     "Array.isArray(" + value + ")" +
-    "?_i(" + value + "," + valueBinding + ")>-1" + (
-      trueValueBinding === 'true'
-        ? (":(" + value + ")")
-        : (":_q(" + value + "," + trueValueBinding + ")")
-    )
+      "?_i(" + value + "," + valueBinding + ")>-1" + (
+        trueValueBinding === 'true'
+          ? (":(" + value + ")")
+          : (":_q(" + value + "," + trueValueBinding + ")")
+      )
   );
   addHandler(el, 'change',
     "var $$a=" + value + "," +
@@ -10406,9 +10264,9 @@ function genCheckboxModel (
 }
 
 function genRadioModel (
-  el,
-  value,
-  modifiers
+    el,
+    value,
+    modifiers
 ) {
   var number = modifiers && modifiers.number;
   var valueBinding = getBindingAttr(el, 'value') || 'null';
@@ -10418,9 +10276,9 @@ function genRadioModel (
 }
 
 function genSelect (
-  el,
-  value,
-  modifiers
+    el,
+    value,
+    modifiers
 ) {
   var number = modifiers && modifiers.number;
   var selectedVal = "Array.prototype.filter" +
@@ -10440,19 +10298,6 @@ function genDefaultModel (
   modifiers
 ) {
   var type = el.attrsMap.type;
-
-  // warn if v-bind:value conflicts with v-model
-  {
-    var value$1 = el.attrsMap['v-bind:value'] || el.attrsMap[':value'];
-    if (value$1) {
-      var binding = el.attrsMap['v-bind:value'] ? 'v-bind:value' : ':value';
-      warn$1(
-        binding + "=\"" + value$1 + "\" conflicts with v-model on the same element " +
-        'because the latter already expands to a value binding internally'
-      );
-    }
-  }
-
   var ref = modifiers || {};
   var lazy = ref.lazy;
   var number = ref.number;
@@ -10623,12 +10468,12 @@ function updateDOMProps (oldVnode, vnode) {
 function shouldUpdateValue (elm, checkVal) {
   return (!elm.composing && (
     elm.tagName === 'OPTION' ||
-    isNotInFocusAndDirty(elm, checkVal) ||
-    isDirtyWithModifiers(elm, checkVal)
+    isDirty(elm, checkVal) ||
+    isInputChanged(elm, checkVal)
   ))
 }
 
-function isNotInFocusAndDirty (elm, checkVal) {
+function isDirty (elm, checkVal) {
   // return true when textbox (.number and .trim) loses focus and its value is
   // not equal to the updated value
   var notInFocus = true;
@@ -10638,20 +10483,14 @@ function isNotInFocusAndDirty (elm, checkVal) {
   return notInFocus && elm.value !== checkVal
 }
 
-function isDirtyWithModifiers (elm, newVal) {
+function isInputChanged (elm, newVal) {
   var value = elm.value;
   var modifiers = elm._vModifiers; // injected by v-model runtime
-  if (isDef(modifiers)) {
-    if (modifiers.lazy) {
-      // inputs with lazy should only be updated when not in focus
-      return false
-    }
-    if (modifiers.number) {
-      return toNumber(value) !== toNumber(newVal)
-    }
-    if (modifiers.trim) {
-      return value.trim() !== newVal.trim()
-    }
+  if (isDef(modifiers) && modifiers.number) {
+    return toNumber(value) !== toNumber(newVal)
+  }
+  if (isDef(modifiers) && modifiers.trim) {
+    return value.trim() !== newVal.trim()
   }
   return value !== newVal
 }
@@ -10709,10 +10548,7 @@ function getStyle (vnode, checkChild) {
     var childNode = vnode;
     while (childNode.componentInstance) {
       childNode = childNode.componentInstance._vnode;
-      if (
-        childNode && childNode.data &&
-        (styleData = normalizeStyleData(childNode.data))
-      ) {
+      if (childNode.data && (styleData = normalizeStyleData(childNode.data))) {
         extend(res, styleData);
       }
     }
@@ -11225,12 +11061,12 @@ function leave (vnode, rm) {
   }
 
   var data = resolveTransition(vnode.data.transition);
-  if (isUndef(data) || el.nodeType !== 1) {
+  if (isUndef(data)) {
     return rm()
   }
 
   /* istanbul ignore if */
-  if (isDef(el._leaveCb)) {
+  if (isDef(el._leaveCb) || el.nodeType !== 1) {
     return
   }
 
@@ -11685,7 +11521,7 @@ var Transition = {
   render: function render (h) {
     var this$1 = this;
 
-    var children = this.$slots.default;
+    var children = this.$options._renderChildren;
     if (!children) {
       return
     }
@@ -11764,9 +11600,7 @@ var Transition = {
       oldChild &&
       oldChild.data &&
       !isSameChild(child, oldChild) &&
-      !isAsyncPlaceholder(oldChild) &&
-      // #6687 component root is a comment node
-      !(oldChild.componentInstance && oldChild.componentInstance._vnode.isComment)
+      !isAsyncPlaceholder(oldChild)
     ) {
       // replace old child transition data with fresh one
       // important for dynamic transitions!
@@ -11868,7 +11702,7 @@ var TransitionGroup = {
       this._vnode,
       this.kept,
       false, // hydrating
-      true // removeOnly (!important avoids unnecessary moves)
+      true // removeOnly (!important, avoids unnecessary moves)
     );
     this._vnode = this.kept;
   },
@@ -12031,8 +11865,6 @@ var buildRegex = cached(function (delimiters) {
   return new RegExp(open + '((?:.|\\n)+?)' + close, 'g')
 });
 
-
-
 function parseText (
   text,
   delimiters
@@ -12042,30 +11874,23 @@ function parseText (
     return
   }
   var tokens = [];
-  var rawTokens = [];
   var lastIndex = tagRE.lastIndex = 0;
-  var match, index, tokenValue;
+  var match, index;
   while ((match = tagRE.exec(text))) {
     index = match.index;
     // push text token
     if (index > lastIndex) {
-      rawTokens.push(tokenValue = text.slice(lastIndex, index));
-      tokens.push(JSON.stringify(tokenValue));
+      tokens.push(JSON.stringify(text.slice(lastIndex, index)));
     }
     // tag token
     var exp = parseFilters(match[1].trim());
     tokens.push(("_s(" + exp + ")"));
-    rawTokens.push({ '@binding': exp });
     lastIndex = index + match[0].length;
   }
   if (lastIndex < text.length) {
-    rawTokens.push(tokenValue = text.slice(lastIndex));
-    tokens.push(JSON.stringify(tokenValue));
+    tokens.push(JSON.stringify(text.slice(lastIndex)));
   }
-  return {
-    expression: tokens.join('+'),
-    tokens: rawTokens
-  }
+  return tokens.join('+')
 }
 
 /*  */
@@ -12074,8 +11899,8 @@ function transformNode (el, options) {
   var warn = options.warn || baseWarn;
   var staticClass = getAndRemoveAttr(el, 'class');
   if ("development" !== 'production' && staticClass) {
-    var res = parseText(staticClass, options.delimiters);
-    if (res) {
+    var expression = parseText(staticClass, options.delimiters);
+    if (expression) {
       warn(
         "class=\"" + staticClass + "\": " +
         'Interpolation inside attributes has been removed. ' +
@@ -12118,8 +11943,8 @@ function transformNode$1 (el, options) {
   if (staticStyle) {
     /* istanbul ignore if */
     {
-      var res = parseText(staticStyle, options.delimiters);
-      if (res) {
+      var expression = parseText(staticStyle, options.delimiters);
+      if (expression) {
         warn(
           "style=\"" + staticStyle + "\": " +
           'Interpolation inside attributes has been removed. ' +
@@ -12501,8 +12326,7 @@ function parseHTML (html, options) {
 var onRE = /^@|^v-on:/;
 var dirRE = /^v-|^@|^:/;
 var forAliasRE = /(.*?)\s+(?:in|of)\s+(.*)/;
-var forIteratorRE = /,([^,\}\]]*)(?:,([^,\}\]]*))?$/;
-var stripParensRE = /^\(|\)$/g;
+var forIteratorRE = /\((\{[^}]*\}|[^,]*),([^,]*)(?:,([^,]*))?\)/;
 
 var argRE = /:(.*)$/;
 var bindRE = /^:|^v-bind:/;
@@ -12571,17 +12395,13 @@ function parse (
     }
   }
 
-  function closeElement (element) {
+  function endPre (element) {
     // check pre state
     if (element.pre) {
       inVPre = false;
     }
     if (platformIsPreTag(element.tag)) {
       inPre = false;
-    }
-    // apply post-transforms
-    for (var i = 0; i < postTransforms.length; i++) {
-      postTransforms[i](element, options);
     }
   }
 
@@ -12695,7 +12515,11 @@ function parse (
         currentParent = element;
         stack.push(element);
       } else {
-        closeElement(element);
+        endPre(element);
+      }
+      // apply post-transforms
+      for (var i$1 = 0; i$1 < postTransforms.length; i$1++) {
+        postTransforms[i$1](element, options);
       }
     },
 
@@ -12709,7 +12533,7 @@ function parse (
       // pop stack
       stack.length -= 1;
       currentParent = stack[stack.length - 1];
-      closeElement(element);
+      endPre(element);
     },
 
     chars: function chars (text) {
@@ -12741,12 +12565,11 @@ function parse (
         // only preserve whitespace if its not right after a starting tag
         : preserveWhitespace && children.length ? ' ' : '';
       if (text) {
-        var res;
-        if (!inVPre && text !== ' ' && (res = parseText(text, delimiters))) {
+        var expression;
+        if (!inVPre && text !== ' ' && (expression = parseText(text, delimiters))) {
           children.push({
             type: 2,
-            expression: res.expression,
-            tokens: res.tokens,
+            expression: expression,
             text: text
           });
         } else if (text !== ' ' || !children.length || children[children.length - 1].text !== ' ') {
@@ -12827,34 +12650,26 @@ function processRef (el) {
 function processFor (el) {
   var exp;
   if ((exp = getAndRemoveAttr(el, 'v-for'))) {
-    var res = parseFor(exp);
-    if (res) {
-      extend(el, res);
-    } else {
-      warn$2(
+    var inMatch = exp.match(forAliasRE);
+    if (!inMatch) {
+      "development" !== 'production' && warn$2(
         ("Invalid v-for expression: " + exp)
       );
+      return
+    }
+    el.for = inMatch[2].trim();
+    var alias = inMatch[1].trim();
+    var iteratorMatch = alias.match(forIteratorRE);
+    if (iteratorMatch) {
+      el.alias = iteratorMatch[1].trim();
+      el.iterator1 = iteratorMatch[2].trim();
+      if (iteratorMatch[3]) {
+        el.iterator2 = iteratorMatch[3].trim();
+      }
+    } else {
+      el.alias = alias;
     }
   }
-}
-
-function parseFor (exp) {
-  var inMatch = exp.match(forAliasRE);
-  if (!inMatch) { return }
-  var res = {};
-  res.for = inMatch[2].trim();
-  var alias = inMatch[1].trim().replace(stripParensRE, '');
-  var iteratorMatch = alias.match(forIteratorRE);
-  if (iteratorMatch) {
-    res.alias = alias.replace(forIteratorRE, '');
-    res.iterator1 = iteratorMatch[1].trim();
-    if (iteratorMatch[2]) {
-      res.iterator2 = iteratorMatch[2].trim();
-    }
-  } else {
-    res.alias = alias;
-  }
-  return res
 }
 
 function processIf (el) {
@@ -12948,15 +12763,6 @@ function processSlot (el) {
       }
       el.slotScope = slotScope || getAndRemoveAttr(el, 'slot-scope');
     } else if ((slotScope = getAndRemoveAttr(el, 'slot-scope'))) {
-      /* istanbul ignore if */
-      if ("development" !== 'production' && el.attrsMap['v-for']) {
-        warn$2(
-          "Ambiguous combined usage of slot-scope and v-for on <" + (el.tag) + "> " +
-          "(v-for takes higher priority). Use a wrapper <template> for the " +
-          "scoped slot to make it clearer.",
-          true
-        );
-      }
       el.slotScope = slotScope;
     }
     var slotTarget = getBindingAttr(el, 'slot');
@@ -13042,8 +12848,8 @@ function processAttrs (el) {
     } else {
       // literal attribute
       {
-        var res = parseText(value, delimiters);
-        if (res) {
+        var expression = parseText(value, delimiters);
+        if (expression) {
           warn$2(
             name + "=\"" + value + "\": " +
             'Interpolation inside attributes has been removed. ' +
@@ -13210,6 +13016,11 @@ function preTransformNode (el, options) {
 
 function cloneASTElement (el) {
   return createASTElement(el.tag, el.attrsList.slice(), el.parent)
+}
+
+function addRawAttr (el, name, value) {
+  el.attrsMap[name] = value;
+  el.attrsList.push({ name: name, value: value });
 }
 
 var model$2 = {
@@ -13429,7 +13240,18 @@ function genHandlers (
 ) {
   var res = isNative ? 'nativeOn:{' : 'on:{';
   for (var name in events) {
-    res += "\"" + name + "\":" + (genHandler(name, events[name])) + ",";
+    var handler = events[name];
+    // #5330: warn click.right, since right clicks do not actually fire click events.
+    if ("development" !== 'production' &&
+      name === 'click' &&
+      handler && handler.modifiers && handler.modifiers.right
+    ) {
+      warn(
+        "Use \"contextmenu\" instead of \"click.right\" since right clicks " +
+        "do not actually fire \"click\" events."
+      );
+    }
+    res += "\"" + name + "\":" + (genHandler(name, handler)) + ",";
   }
   return res.slice(0, -1) + '}'
 }
@@ -13450,11 +13272,9 @@ function genHandler (
   var isFunctionExpression = fnExpRE.test(handler.value);
 
   if (!handler.modifiers) {
-    if (isMethodPath || isFunctionExpression) {
-      return handler.value
-    }
-    /* istanbul ignore if */
-    return ("function($event){" + (handler.value) + "}") // inline statement
+    return isMethodPath || isFunctionExpression
+      ? handler.value
+      : ("function($event){" + (handler.value) + "}") // inline statement
   } else {
     var code = '';
     var genModifierCode = '';
@@ -13490,7 +13310,6 @@ function genHandler (
       : isFunctionExpression
         ? ("(" + (handler.value) + ")($event)")
         : handler.value;
-    /* istanbul ignore if */
     return ("function($event){" + code + handlerCode + "}")
   }
 }
@@ -13968,10 +13787,7 @@ function genProps (props) {
   var res = '';
   for (var i = 0; i < props.length; i++) {
     var prop = props[i];
-    /* istanbul ignore if */
-    {
-      res += "\"" + (prop.name) + "\":" + (transformSpecialNewlines(prop.value)) + ",";
-    }
+    res += "\"" + (prop.name) + "\":" + (transformSpecialNewlines(prop.value)) + ",";
   }
   return res.slice(0, -1)
 }
@@ -13997,6 +13813,9 @@ var prohibitedKeywordRE = new RegExp('\\b' + (
 var unaryOperatorsRE = new RegExp('\\b' + (
   'delete,typeof,void'
 ).split(',').join('\\s*\\([^\\)]*\\)|\\b') + '\\s*\\([^\\)]*\\)');
+
+// check valid identifier for v-for
+var identRE = /[A-Za-z_$][\w$]*/;
 
 // strip strings in expressions
 var stripStringRE = /'(?:[^'\\]|\\.)*'|"(?:[^"\\]|\\.)*"|`(?:[^`\\]|\\.)*\$\{|\}(?:[^`\\]|\\.)*`|`(?:[^`\\]|\\.)*`/g;
@@ -14055,18 +13874,9 @@ function checkFor (node, text, errors) {
   checkIdentifier(node.iterator2, 'v-for iterator', text, errors);
 }
 
-function checkIdentifier (
-  ident,
-  type,
-  text,
-  errors
-) {
-  if (typeof ident === 'string') {
-    try {
-      new Function(("var " + ident + "=_"));
-    } catch (e) {
-      errors.push(("invalid " + type + " \"" + ident + "\" in expression: " + (text.trim())));
-    }
+function checkIdentifier (ident, type, text, errors) {
+  if (typeof ident === 'string' && !identRE.test(ident)) {
+    errors.push(("invalid " + type + " \"" + ident + "\" in expression: " + (text.trim())));
   }
 }
 
@@ -14211,7 +14021,7 @@ function createCompilerCreator (baseCompile) {
         // merge custom directives
         if (options.directives) {
           finalOptions.directives = extend(
-            Object.create(baseOptions.directives || null),
+            Object.create(baseOptions.directives),
             options.directives
           );
         }
@@ -14249,9 +14059,7 @@ var createCompiler = createCompilerCreator(function baseCompile (
   options
 ) {
   var ast = parse(template.trim(), options);
-  if (options.optimize !== false) {
-    optimize(ast, options);
-  }
+  optimize(ast, options);
   var code = generate(ast, options);
   return {
     ast: ast,
@@ -14425,6 +14233,7 @@ require('./vue-components/Contabilidad/modulos/revaluacion/create');
 require('./vue-components/Contabilidad/cuenta_fondo/index');
 require('./vue-components/Contabilidad/cuenta_bancos/cuenta-bancaria-edit');
 require('./vue-components/Contabilidad/cuenta_costo/index');
+require('./vue-components/Contabilidad/cierre/index');
 
 /**
  * Compras Components
@@ -14465,7 +14274,6 @@ require('./vue-components/Control_Presupuesto/presupuesto/index');
 /**
  * Configuración Components
  */
-require('./vue-components/Configuracion/cierre/index');
 require('./vue-components/Configuracion/seguridad/index');
 
 /**
@@ -14473,7 +14281,7 @@ require('./vue-components/Configuracion/seguridad/index');
  */
 require('./vue-components/Control_Presupuesto/cambios_presupuesto/create');
 
-},{"./vue-components/Compras/material/index":6,"./vue-components/Compras/requisicion/create":7,"./vue-components/Compras/requisicion/edit":8,"./vue-components/Configuracion/cierre/index":9,"./vue-components/Configuracion/seguridad/index":10,"./vue-components/Contabilidad/cuenta_almacen/index":11,"./vue-components/Contabilidad/cuenta_bancos/cuenta-bancaria-edit":12,"./vue-components/Contabilidad/cuenta_concepto/index":13,"./vue-components/Contabilidad/cuenta_contable/index":14,"./vue-components/Contabilidad/cuenta_costo/index":15,"./vue-components/Contabilidad/cuenta_empresa/cuenta-empresa-edit":16,"./vue-components/Contabilidad/cuenta_fondo/index":17,"./vue-components/Contabilidad/cuenta_material/index":18,"./vue-components/Contabilidad/datos_contables/edit":19,"./vue-components/Contabilidad/emails":20,"./vue-components/Contabilidad/modulos/revaluacion/create":21,"./vue-components/Contabilidad/poliza_generada/edit":22,"./vue-components/Contabilidad/poliza_tipo/poliza-tipo-create":23,"./vue-components/Contabilidad/tipo_cuenta_contable/tipo-cuenta-contable-create":24,"./vue-components/Contabilidad/tipo_cuenta_contable/tipo-cuenta-contable-update":25,"./vue-components/Control_Costos/reclasificacion_costos/index":26,"./vue-components/Control_Costos/solicitar_reclasificacion/index":27,"./vue-components/Control_Costos/solicitar_reclasificacion/items":28,"./vue-components/Control_Presupuesto/cambios_presupuesto/create":29,"./vue-components/Control_Presupuesto/presupuesto/index":30,"./vue-components/Finanzas/comprobante_fondo_fijo/create":31,"./vue-components/Finanzas/comprobante_fondo_fijo/edit":32,"./vue-components/Finanzas/comprobante_fondo_fijo/index":33,"./vue-components/Reportes/subcontratos-estimacion":34,"./vue-components/Tesoreria/movimientos_bancarios/index":35,"./vue-components/Tesoreria/traspaso_cuentas/index":36,"./vue-components/errors":37,"./vue-components/global-errors":38,"./vue-components/kardex_material/kardex-material-index":39,"./vue-components/select2":40}],6:[function(require,module,exports){
+},{"./vue-components/Compras/material/index":6,"./vue-components/Compras/requisicion/create":7,"./vue-components/Compras/requisicion/edit":8,"./vue-components/Configuracion/seguridad/index":9,"./vue-components/Contabilidad/cierre/index":10,"./vue-components/Contabilidad/cuenta_almacen/index":11,"./vue-components/Contabilidad/cuenta_bancos/cuenta-bancaria-edit":12,"./vue-components/Contabilidad/cuenta_concepto/index":13,"./vue-components/Contabilidad/cuenta_contable/index":14,"./vue-components/Contabilidad/cuenta_costo/index":15,"./vue-components/Contabilidad/cuenta_empresa/cuenta-empresa-edit":16,"./vue-components/Contabilidad/cuenta_fondo/index":17,"./vue-components/Contabilidad/cuenta_material/index":18,"./vue-components/Contabilidad/datos_contables/edit":19,"./vue-components/Contabilidad/emails":20,"./vue-components/Contabilidad/modulos/revaluacion/create":21,"./vue-components/Contabilidad/poliza_generada/edit":22,"./vue-components/Contabilidad/poliza_tipo/poliza-tipo-create":23,"./vue-components/Contabilidad/tipo_cuenta_contable/tipo-cuenta-contable-create":24,"./vue-components/Contabilidad/tipo_cuenta_contable/tipo-cuenta-contable-update":25,"./vue-components/Control_Costos/reclasificacion_costos/index":26,"./vue-components/Control_Costos/solicitar_reclasificacion/index":27,"./vue-components/Control_Costos/solicitar_reclasificacion/items":28,"./vue-components/Control_Presupuesto/cambios_presupuesto/create":29,"./vue-components/Control_Presupuesto/presupuesto/index":30,"./vue-components/Finanzas/comprobante_fondo_fijo/create":31,"./vue-components/Finanzas/comprobante_fondo_fijo/edit":32,"./vue-components/Finanzas/comprobante_fondo_fijo/index":33,"./vue-components/Reportes/subcontratos-estimacion":34,"./vue-components/Tesoreria/movimientos_bancarios/index":35,"./vue-components/Tesoreria/traspaso_cuentas/index":36,"./vue-components/errors":37,"./vue-components/global-errors":38,"./vue-components/kardex_material/kardex-material-index":39,"./vue-components/select2":40}],6:[function(require,module,exports){
 'use strict';
 
 Vue.component('material-index', {
@@ -14955,278 +14763,6 @@ Vue.component('requisicion-edit', {
 },{}],9:[function(require,module,exports){
 'use strict';
 
-Vue.component('cierre-index', {
-    props: ['editar_cierre_periodo'],
-    data: function data() {
-        return {
-            cierre: {
-                anio: '',
-                mes: ''
-            },
-            cierre_edit: {
-                id: '',
-                anio: '',
-                created_at: '',
-                description: '',
-                mes: '',
-                registro: ''
-            },
-            tipos_tran: {},
-            guardando: false
-        };
-    },
-
-    mounted: function mounted() {
-        var self = this;
-
-        $(document).on('click', '.btn_open', function () {
-            var id = $(this).attr('id');
-            self.open(id);
-        });
-        $(document).on('click', '.btn_close', function () {
-            var id = $(this).attr('id');
-            self.close(id);
-        });
-
-        $('#fecha').datepicker({
-            autoclose: true,
-            minViewMode: 1,
-            format: 'mm/yyyy',
-            language: 'es'
-        }).on('changeDate', function (selected) {
-            self.cierre.anio = new Date(selected.date.valueOf()).getFullYear();
-            self.cierre.mes = new Date(selected.date.valueOf()).getMonth() + 1;
-        });
-
-        var data = {
-            "processing": true,
-            "serverSide": true,
-            "ordering": true,
-            "searching": false,
-            "order": [[3, "desc"]],
-            "ajax": {
-                "url": App.host + '/configuracion/cierre/paginate',
-                "type": "POST",
-                "beforeSend": function beforeSend() {
-                    self.guardando = true;
-                },
-                "complete": function complete() {
-                    self.guardando = false;
-                },
-                "dataSrc": function dataSrc(json) {
-                    for (var i = 0; i < json.data.length; i++) {
-                        json.data[i].mes = parseInt(json.data[i].mes).getMes();
-                        json.data[i].created_at = new Date(json.data[i].created_at).dateFormat();
-                        json.data[i].registro = json.data[i].user_registro.nombre + ' ' + json.data[i].user_registro.apaterno + ' ' + json.data[i].user_registro.amaterno;
-                    }
-                    return json.data;
-                }
-            },
-            "columns": [{ data: 'anio' }, { data: 'mes' }, { data: 'registro', orderable: false }, { data: 'created_at' }, {
-                data: {},
-                render: function render(data) {
-                    return '<span class="label" style="background-color: ' + (data.abierto == true ? 'rgb(243, 156, 18)' : 'rgb(0, 166, 90)') + '">' + (data.abierto == true ? 'Abierto' : 'Cerrado') + '</span>';
-                },
-                orderable: false
-            }],
-            language: {
-                "sProcessing": "Procesando...",
-                "sLengthMenu": "Mostrar _MENU_ registros",
-                "sZeroRecords": "No se encontraron resultados",
-                "sEmptyTable": "Ningún dato disponible en esta tabla",
-                "sInfo": "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
-                "sInfoEmpty": "Mostrando registros del 0 al 0 de un total de 0 registros",
-                "sInfoFiltered": "(filtrado de un total de _MAX_ registros)",
-                "sInfoPostFix": "",
-                "sSearch": "Buscar:",
-                "sUrl": "",
-                "sInfoThousands": ",",
-                "sLoadingRecords": "Cargando...",
-                "oPaginate": {
-                    "sFirst": "Primero",
-                    "sLast": "Último",
-                    "sNext": "Siguiente",
-                    "sPrevious": "Anterior"
-                },
-                "oAria": {
-                    "sSortAscending": ": Activar para ordenar la columna de manera ascendente",
-                    "sSortDescending": ": Activar para ordenar la columna de manera descendente"
-                }
-            }
-        };
-
-        if (self.editar_cierre_periodo) {
-            data.columns.push({
-                data: {},
-                render: function render(data) {
-                    return '<div class="btn-group">' + '<button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown" aria-expanded="true">' + '<span class="caret"></span>' + '</button>' + '<ul class="dropdown-menu">' + '<li>' + '<a href="#" id="' + data.id + '" class="btn_' + (data.abierto == true ? 'close' : 'open') + '">' + (data.abierto == true ? 'Cerrar ' : 'Abrir ') + '</a>' + '</li>' + '</ul>' + '</div>';
-                },
-                orderable: false
-            });
-        }
-
-        $('#cierres_table').DataTable(data);
-    },
-
-    methods: {
-        generar_cierre: function generar_cierre() {
-            this.reset_cierre();
-            this.validation_errors.clear('form_save_cierre');
-            $('#create_cierre_modal').modal('show');
-            this.validation_errors.clear('form_save_cierre');
-        },
-
-        reset_cierre: function reset_cierre() {
-            $('#fecha').val();
-            Vue.set(this.cierre, 'mes', '');
-            Vue.set(this.cierre, 'anio', '');
-        },
-
-        save_cierre: function save_cierre() {
-            var self = this;
-
-            $.ajax({
-                url: App.host + '/configuracion/cierre',
-                type: 'POST',
-                data: self.cierre,
-                beforeSend: function beforeSend() {
-                    self.guardando = true;
-                },
-                success: function success() {
-                    $('#cierres_table').DataTable().ajax.reload();
-
-                    $('#create_cierre_modal').modal('hide');
-                    swal({
-                        type: 'success',
-                        title: 'Correcto',
-                        html: 'Cierre de Periodo guardado correctamente'
-                    });
-                },
-                complete: function complete() {
-                    self.guardando = false;
-                }
-            });
-        },
-
-        open: function open(id_cierre) {
-            var self = this;
-            swal({
-                title: 'Abrir Periodo',
-                text: 'Motivo de la Apertura',
-                input: 'text',
-                showCancelButton: true,
-                confirmButtonText: 'Abrir ',
-                cancelButtonText: 'Cancelar',
-                showLoaderOnConfirm: false,
-                allowOutsideClick: function allowOutsideClick() {
-                    return !swal.isLoading();
-                }
-            }).then(function (result) {
-                if (result.length == 0) {
-                    swal({
-                        type: 'warning',
-                        title: 'Error',
-                        text: 'Por favor escriba un motivo para la apertura'
-                    });
-                } else {
-                    $.ajax({
-                        'url': App.host + '/configuracion/cierre/' + id_cierre + '/open',
-                        'type': 'POST',
-                        'data': {
-                            '_method': 'PATCH',
-                            'motivo': result
-                        },
-                        beforeSend: function beforeSend() {
-                            self.guardando = true;
-                        },
-                        success: function success(response) {
-                            $('#cierres_table').DataTable().ajax.reload(null, false);
-                            swal({
-                                type: 'success',
-                                title: 'Periodo abierto correctamente',
-                                html: '<p>Año : <b>' + response.anio + '</b> ' + 'Mes : <b>' + parseInt(response.mes).getMes() + '</b></p>'
-                            });
-                        },
-                        complete: function complete() {
-                            self.guardando = false;
-                        }
-                    });
-                }
-            }).catch();
-        },
-
-        close: function close(id_cierre) {
-            var self = this;
-            swal({
-                title: '¿Deseas volver a cerrar el periodo seleccionado?',
-                text: "No se podrán realizar transacciones para el periodo seleccionado",
-                type: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                confirmButtonText: 'Si, Cerrar',
-                cancelButtonText: 'No, Cancelar'
-            }).then(function (result) {
-
-                $.ajax({
-                    url: App.host + '/configuracion/cierre/' + id_cierre + '/close',
-                    type: 'POST',
-                    data: {
-                        _method: 'PATCH'
-                    },
-                    beforeSend: function beforeSend() {
-                        self.guardando = true;
-                    },
-                    success: function success(response) {
-                        $('#cierres_table').DataTable().ajax.reload(null, false);
-                        swal({
-                            type: 'success',
-                            title: 'Periodo Cerrado Correctamente',
-                            html: '<p>Año : <b>' + response.anio + '</b> ' + 'Mes : <b>' + parseInt(response.mes).getMes() + '</b></p>'
-                        });
-                    },
-                    complete: function complete() {
-                        self.guardando = false;
-                    }
-                });
-            }).catch(swal.noop);
-        },
-
-        validateForm: function validateForm(scope, funcion) {
-            var _this = this;
-
-            this.$validator.validateAll(scope).then(function () {
-                if (funcion == 'save_cierre') {
-                    _this.confirm_save_cierre();
-                }
-            }).catch(function () {
-                swal({
-                    type: 'warning',
-                    title: 'Advertencia',
-                    text: 'Por favor corrija los errores del formulario'
-                });
-            });
-        },
-
-        confirm_save_cierre: function confirm_save_cierre() {
-            var self = this;
-            swal({
-                title: "Generar Cierre de Periodo",
-                text: "¿Estás seguro de que la información es correcta?",
-                type: "warning",
-                showCancelButton: true,
-                confirmButtonText: "Si, Continuar",
-                cancelButtonText: "No, Cancelar"
-            }).then(function () {
-                self.save_cierre();
-            }).catch(swal.noop);
-        }
-    }
-});
-
-},{}],10:[function(require,module,exports){
-'use strict';
-
 Vue.component('configuracion-seguridad-index', {
     data: function data() {
         return {
@@ -15299,6 +14835,292 @@ Vue.component('configuracion-seguridad-index', {
     },
 
     methods: {}
+});
+
+},{}],10:[function(require,module,exports){
+'use strict';
+
+Vue.component('cierre-index', {
+    props: ['editar_cierre_periodo'],
+    data: function data() {
+        return {
+            cierre: {
+                anio: '',
+                mes: ''
+            },
+            cierre_edit: {
+                id: '',
+                anio: '',
+                created_at: '',
+                description: '',
+                mes: '',
+                registro: ''
+            },
+            tipos_tran: {},
+            guardando: false
+        };
+    },
+
+    mounted: function mounted() {
+        var self = this;
+
+        $(document).on('click', '.btn_open', function () {
+            var id = $(this).attr('id');
+            self.open(id);
+        });
+        $(document).on('click', '.btn_close', function () {
+            var id = $(this).attr('id');
+            self.close(id);
+        });
+
+        $('#fecha').datepicker({
+            autoclose: true,
+            minViewMode: 1,
+            format: 'mm/yyyy',
+            language: 'es'
+        }).on('changeDate', function (selected) {
+            self.cierre.anio = new Date(selected.date.valueOf()).getFullYear();
+            self.cierre.mes = new Date(selected.date.valueOf()).getMonth() + 1;
+        });
+
+        var data = {
+            "processing": true,
+            "serverSide": true,
+            "ordering": true,
+            "searching": false,
+            "order": [[3, "desc"]],
+            "ajax": {
+                "url": App.host + '/sistema_contable/cierre/paginate',
+                "type": "POST",
+                "beforeSend": function beforeSend() {
+                    self.guardando = true;
+                },
+                "complete": function complete() {
+                    self.guardando = false;
+                },
+                "dataSrc": function dataSrc(json) {
+                    for (var i = 0; i < json.data.length; i++) {
+                        json.data[i].mes = parseInt(json.data[i].mes).getMes();
+                        json.data[i].created_at = new Date(json.data[i].created_at).dateFormat();
+                        json.data[i].registro = json.data[i].user_registro.nombre + ' ' + json.data[i].user_registro.apaterno + ' ' + json.data[i].user_registro.amaterno;
+                    }
+                    return json.data;
+                }
+            },
+            "columns": [{ data: 'anio' }, { data: 'mes' }, { data: 'registro', orderable: false }, { data: 'created_at' }, {
+                data: {},
+                render: function render(data) {
+                    return '<span class="label" style="background-color: ' + (data.abierto == true ? 'rgb(243, 156, 18)' : 'rgb(0, 166, 90)') + '">' + (data.abierto == true ? 'Abierto' : 'Cerrado') + '</span>';
+                },
+                orderable: false
+            }],
+            language: {
+                "sProcessing": "Procesando...",
+                "sLengthMenu": "Mostrar _MENU_ registros",
+                "sZeroRecords": "No se encontraron resultados",
+                "sEmptyTable": "Ningún dato disponible en esta tabla",
+                "sInfo": "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
+                "sInfoEmpty": "Mostrando registros del 0 al 0 de un total de 0 registros",
+                "sInfoFiltered": "(filtrado de un total de _MAX_ registros)",
+                "sInfoPostFix": "",
+                "sSearch": "Buscar:",
+                "sUrl": "",
+                "sInfoThousands": ",",
+                "sLoadingRecords": "Cargando...",
+                "oPaginate": {
+                    "sFirst": "Primero",
+                    "sLast": "Último",
+                    "sNext": "Siguiente",
+                    "sPrevious": "Anterior"
+                },
+                "oAria": {
+                    "sSortAscending": ": Activar para ordenar la columna de manera ascendente",
+                    "sSortDescending": ": Activar para ordenar la columna de manera descendente"
+                }
+            }
+        };
+
+        if (self.editar_cierre_periodo) {
+            data.columns.push({
+                data: {},
+                render: function render(data) {
+                    return '<div class="btn-group">' + '<button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown" aria-expanded="true">' + '<span class="caret"></span>' + '</button>' + '<ul class="dropdown-menu">' + '<li>' + '<a href="#" id="' + data.id + '" class="btn_' + (data.abierto == true ? 'close' : 'open') + '">' + (data.abierto == true ? 'Cerrar ' : 'Abrir ') + '</a>' + '</li>' + '</ul>' + '</div>';
+                },
+                orderable: false
+            });
+        }
+
+        $('#cierres_table').DataTable(data);
+    },
+
+    methods: {
+        generar_cierre: function generar_cierre() {
+            this.reset_cierre();
+            this.validation_errors.clear('form_save_cierre');
+            $('#create_cierre_modal').modal('show');
+            this.validation_errors.clear('form_save_cierre');
+        },
+
+        reset_cierre: function reset_cierre() {
+            $('#fecha').val('');
+            Vue.set(this.cierre, 'mes', '');
+            Vue.set(this.cierre, 'anio', '');
+        },
+
+        save_cierre: function save_cierre() {
+            var self = this;
+
+            $.ajax({
+                url: App.host + '/sistema_contable/cierre',
+                type: 'POST',
+                data: self.cierre,
+                beforeSend: function beforeSend() {
+                    self.guardando = true;
+                },
+                success: function success() {
+                    $('#create_cierre_modal').modal('hide');
+                    swal({
+                        type: 'success',
+                        title: 'Correcto',
+                        html: 'Cierre de Periodo guardado correctamente',
+                        confirmButtonText: "Ok",
+                        closeOnConfirm: false
+                    }).then(function () {
+                        $('#cierres_table').DataTable().ajax.reload();
+                    });
+                },
+                complete: function complete() {
+                    self.guardando = false;
+                }
+            });
+        },
+
+        open: function open(id_cierre) {
+            var self = this;
+
+            swal({
+                title: 'Abrir Periodo',
+                text: 'Motivo de la Apertura',
+                input: 'text',
+                showCancelButton: true,
+                confirmButtonText: 'Abrir ',
+                cancelButtonText: 'Cancelar',
+                showLoaderOnConfirm: false,
+                preConfirm: function preConfirm(motivo) {
+                    return new Promise(function (resolve) {
+                        if (motivo.length === 0) {
+                            swal.showValidationError('Por favor escriba un motivo para la apertura del periodo.');
+                        }
+                        resolve();
+                    });
+                },
+                allowOutsideClick: function allowOutsideClick() {
+                    !swal.isLoading();
+                }
+            }).then(function (result) {
+                if (result.value) {
+                    $.ajax({
+                        'url': App.host + '/sistema_contable/cierre/' + id_cierre + '/open',
+                        'type': 'POST',
+                        'data': {
+                            '_method': 'PATCH',
+                            'motivo': result.value
+                        },
+                        beforeSend: function beforeSend() {
+                            self.guardando = true;
+                        },
+                        success: function success(response) {
+                            swal({
+                                type: 'success',
+                                title: 'Periodo abierto correctamente',
+                                html: '<p>Año : <b>' + response.anio + '</b> ' + 'Mes : <b>' + parseInt(response.mes).getMes() + '</b></p>',
+                                confirmButtonText: "Ok",
+                                closeOnConfirm: false
+                            }).then(function () {
+                                $('#cierres_table').DataTable().ajax.reload(null, false);
+                            });
+                        },
+                        complete: function complete() {
+                            self.guardando = false;
+                        }
+                    });
+                }
+            });
+        },
+
+        close: function close(id_cierre) {
+            var self = this;
+            swal({
+                title: '¿Deseas volver a cerrar el periodo seleccionado?',
+                text: "No se podrán realizar transacciones para el periodo seleccionado",
+                type: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Si, Cerrar',
+                cancelButtonText: 'No, Cancelar'
+            }).then(function (result) {
+                if (result.value) {
+                    $.ajax({
+                        url: App.host + '/sistema_contable/cierre/' + id_cierre + '/close',
+                        type: 'POST',
+                        data: {
+                            _method: 'PATCH'
+                        },
+                        beforeSend: function beforeSend() {
+                            self.guardando = true;
+                        },
+                        success: function success(response) {
+                            swal({
+                                type: 'success',
+                                title: 'Periodo Cerrado Correctamente',
+                                html: '<p>Año : <b>' + response.anio + '</b> ' + 'Mes : <b>' + parseInt(response.mes).getMes() + '</b></p>',
+                                confirmButtonText: "Ok",
+                                closeOnConfirm: false
+                            }).then(function () {
+                                $('#cierres_table').DataTable().ajax.reload(null, false);
+                            });
+                        },
+                        complete: function complete() {
+                            self.guardando = false;
+                        }
+                    });
+                }
+            });
+        },
+
+        validateForm: function validateForm(scope, funcion) {
+            var _this = this;
+
+            this.$validator.validateAll(scope).then(function () {
+                if (funcion == 'save_cierre') {
+                    _this.confirm_save_cierre();
+                }
+            }).catch(function () {
+                swal({
+                    type: 'warning',
+                    title: 'Advertencia',
+                    text: 'Por favor corrija los errores del formulario'
+                });
+            });
+        },
+
+        confirm_save_cierre: function confirm_save_cierre() {
+            var self = this;
+            swal({
+                title: "Generar Cierre de Periodo",
+                text: "¿Estás seguro de que la información es correcta?",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonText: "Si, Continuar",
+                cancelButtonText: "No, Cancelar"
+            }).then(function (result) {
+                if (result.value) {
+                    self.save_cierre();
+                }
+            });
+        }
+    }
 });
 
 },{}],11:[function(require,module,exports){
@@ -15450,8 +15272,10 @@ Vue.component('cuenta-almacen-index', {
                 showCancelButton: true,
                 confirmButtonText: "Si, Continuar",
                 cancelButtonText: "No, Cancelar"
-            }).then(function () {
-                self.update_cuenta();
+            }).then(function (result) {
+                if (result.value) {
+                    self.update_cuenta();
+                }
             }).catch(swal.noop);
         },
 
@@ -15494,8 +15318,10 @@ Vue.component('cuenta-almacen-index', {
                 confirmButtonText: "Si, Continuar",
                 cancelButtonText: "No, Cancelar"
             }).then(function (result) {
-                if (result.value) self.save_cuenta();
-            });
+                if (result.value) {
+                    self.save_cuenta();
+                }
+            }).catch(swal.noop);
         },
 
         save_cuenta: function save_cuenta() {
@@ -15575,9 +15401,10 @@ Vue.component('cuenta-bancaria-edit', {
                 showCancelButton: true,
                 confirmButtonText: "Si, Continuar",
                 cancelButtonText: "No, Cancelar"
-            }).then(function () {
-
-                self.elimina_cuenta();
+            }).then(function (result) {
+                if (result.value) {
+                    self.elimina_cuenta();
+                }
             }).catch(swal.noop);
         },
         confirm_cuenta_update: function confirm_cuenta_update() {
@@ -15589,9 +15416,10 @@ Vue.component('cuenta-bancaria-edit', {
                 showCancelButton: true,
                 confirmButtonText: "Si, Continuar",
                 cancelButtonText: "No, Cancelar"
-            }).then(function () {
-
-                self.update_cuenta_bancaria();
+            }).then(function (result) {
+                if (result.value) {
+                    self.update_cuenta_bancaria();
+                }
             }).catch(swal.noop);
         },
         confirm_cuenta_create: function confirm_cuenta_create() {
@@ -15603,8 +15431,10 @@ Vue.component('cuenta-bancaria-edit', {
                 showCancelButton: true,
                 confirmButtonText: "Si, Continuar",
                 cancelButtonText: "No, Cancelar"
-            }).then(function () {
-                self.save_cuenta_bancaria();
+            }).then(function (result) {
+                if (result.value) {
+                    self.save_cuenta_bancaria();
+                }
             }).catch(swal.noop);
         },
         elimina_cuenta: function elimina_cuenta() {
@@ -15977,8 +15807,10 @@ Vue.component('cuenta-concepto-index', {
                 showCancelButton: true,
                 confirmButtonText: "Si, Continuar",
                 cancelButtonText: "No, Cancelar"
-            }).then(function () {
-                self.update_cuenta();
+            }).then(function (result) {
+                if (result.value) {
+                    self.update_cuenta();
+                }
             }).catch(swal.noop);
         },
 
@@ -16020,8 +15852,10 @@ Vue.component('cuenta-concepto-index', {
                 showCancelButton: true,
                 confirmButtonText: "Si, Continuar",
                 cancelButtonText: "No, Cancelar"
-            }).then(function () {
-                self.save_cuenta();
+            }).then(function (result) {
+                if (result.value) {
+                    self.save_cuenta();
+                }
             }).catch(swal.noop);
         },
 
@@ -16124,8 +15958,10 @@ Vue.component('cuenta-contable-index', {
                 showCancelButton: true,
                 confirmButtonText: "Si, Continuar",
                 cancelButtonText: "No, Cancelar"
-            }).then(function () {
-                self.save_cuenta_contable();
+            }).then(function (result) {
+                if (result.value) {
+                    self.save_cuenta_contable();
+                }
             }).catch(swal.noop);
         },
 
@@ -16138,8 +15974,10 @@ Vue.component('cuenta-contable-index', {
                 showCancelButton: true,
                 confirmButtonText: "Si, Continuar",
                 cancelButtonText: "No, Cancelar"
-            }).then(function () {
-                self.update_cuenta_contable();
+            }).then(function (result) {
+                if (result.value) {
+                    self.update_cuenta_contable();
+                }
             }).catch(swal.noop);
         },
 
@@ -16430,8 +16268,10 @@ Vue.component('cuenta-costo-index', {
                 showCancelButton: true,
                 confirmButtonText: "Si, Continuar",
                 cancelButtonText: "No, Cancelar"
-            }).then(function () {
-                self.update_cuenta();
+            }).then(function (result) {
+                if (result.value) {
+                    self.update_cuenta();
+                }
             }).catch(swal.noop);
         },
 
@@ -16473,8 +16313,10 @@ Vue.component('cuenta-costo-index', {
                 showCancelButton: true,
                 confirmButtonText: "Si, Continuar",
                 cancelButtonText: "No, Cancelar"
-            }).then(function () {
-                self.save_cuenta();
+            }).then(function (result) {
+                if (result.value) {
+                    self.save_cuenta();
+                }
             }).catch(swal.noop);
         },
 
@@ -16515,8 +16357,10 @@ Vue.component('cuenta-costo-index', {
                 showCancelButton: true,
                 confirmButtonText: "Si, Continuar",
                 cancelButtonText: "No, Cancelar"
-            }).then(function () {
-                self.delete_cuenta(id_cuenta_costo);
+            }).then(function (result) {
+                if (result.value) {
+                    self.delete_cuenta(id_cuenta_costo);
+                }
             }).catch(swal.noop);
         },
         delete_cuenta: function delete_cuenta(id_cuenta_costo) {
@@ -16642,9 +16486,10 @@ Vue.component('cuenta-empresa-edit', {
                 showCancelButton: true,
                 confirmButtonText: "Si, Continuar",
                 cancelButtonText: "No, Cancelar"
-            }).then(function () {
-
-                self.elimina_cuenta();
+            }).then(function (result) {
+                if (result.value) {
+                    self.elimina_cuenta();
+                }
             }).catch(swal.noop);
         },
         confirm_cuenta_update: function confirm_cuenta_update() {
@@ -16656,9 +16501,10 @@ Vue.component('cuenta-empresa-edit', {
                 showCancelButton: true,
                 confirmButtonText: "Si, Continuar",
                 cancelButtonText: "No, Cancelar"
-            }).then(function () {
-
-                self.update_cuenta_empresa();
+            }).then(function (result) {
+                if (result.value) {
+                    self.update_cuenta_empresa();
+                }
             }).catch(swal.noop);
         },
         confirm_cuenta_create: function confirm_cuenta_create() {
@@ -16670,8 +16516,10 @@ Vue.component('cuenta-empresa-edit', {
                 showCancelButton: true,
                 confirmButtonText: "Si, Continuar",
                 cancelButtonText: "No, Cancelar"
-            }).then(function () {
-                self.save_cuenta_empresa();
+            }).then(function (result) {
+                if (result.value) {
+                    self.save_cuenta_empresa();
+                }
             }).catch(swal.noop);
         },
         elimina_cuenta: function elimina_cuenta() {
@@ -16887,8 +16735,10 @@ Vue.component('cuenta-fondo-index', {
                 showCancelButton: true,
                 confirmButtonText: "Si, Continuar",
                 cancelButtonText: "No, Cancelar"
-            }).then(function () {
-                self.update_cuenta();
+            }).then(function (result) {
+                if (result.value) {
+                    self.update_cuenta();
+                }
             }).catch(swal.noop);
         },
 
@@ -16930,8 +16780,10 @@ Vue.component('cuenta-fondo-index', {
                 showCancelButton: true,
                 confirmButtonText: "Si, Continuar",
                 cancelButtonText: "No, Cancelar"
-            }).then(function () {
-                self.save_cuenta();
+            }).then(function (result) {
+                if (result.value) {
+                    self.save_cuenta();
+                }
             }).catch(swal.noop);
         },
 
@@ -17129,8 +16981,10 @@ Vue.component('cuenta-material-index', {
                 showCancelButton: true,
                 confirmButtonText: "Si, Continuar",
                 cancelButtonText: "No, Cancelar"
-            }).then(function () {
-                self.update_cuenta();
+            }).then(function (result) {
+                if (result.value) {
+                    self.update_cuenta();
+                }
             }).catch(swal.noop);
         },
 
@@ -17173,8 +17027,10 @@ Vue.component('cuenta-material-index', {
                 showCancelButton: true,
                 confirmButtonText: "Si, Continuar",
                 cancelButtonText: "No, Cancelar"
-            }).then(function () {
-                self.save_cuenta();
+            }).then(function (result) {
+                if (result.value) {
+                    self.save_cuenta();
+                }
             }).catch(swal.noop);
         },
 
@@ -17240,16 +17096,36 @@ Vue.component('datos-contables-edit', {
             var elem = $(this),
                 value = self.toBoolean(elem.data('value')),
                 name = elem.data('name'),
-                substring = "si";
+                substring = "si",
+                id = elem.attr('id'),
+                reference = '';
 
-            var id = elem.attr('id');
-            var reference = name === 'manejo' ? 'manejo_almacenes' : 'costo_en_tipo_gasto';
+            switch (name) {
+                case 'manejo':
+                    reference = 'manejo_almacenes';
+                    break;
+                case 'gasto':
+                    reference = 'costo_en_tipo_gasto';
+                    break;
+                case 'retencion_antes_iva':
+                    reference = 'retencion_antes_iva';
+                    break;
+                case 'amortizacion_antes_iva':
+                    reference = 'amortizacion_antes_iva';
+                    break;
+                case 'deductiva_antes_iva':
+                    reference = 'deductiva_antes_iva';
+                    break;
+                default:
+                    reference = '';
+            }
+
             var contraparte = "#" + (id.indexOf(substring) !== -1 ? name + "_no" : name + "_si");
             var parent_elem = elem.parent();
             var parent_contraparte = $(contraparte).parent();
 
-            parent_elem.addClass('iradio_line-green').removeClass('iradio_line-grey');
-            parent_contraparte.addClass('iradio_line-grey').removeClass('iradio_line-green');
+            parent_elem.addClass('iradio_square-blue').removeClass('iradio_square-grey');
+            parent_contraparte.addClass('iradio_square-grey').removeClass('iradio_square-blue');
             elem.iCheck('check');
             $(contraparte).iCheck('uncheck');
             Vue.set(self.data.datos_contables, reference, value);
@@ -17261,24 +17137,27 @@ Vue.component('datos-contables-edit', {
             var parent = elem.parent();
 
             if (elem.is(':checked')) {
-                parent.addClass('iradio_line-green').removeClass('iradio_line-grey');console.log(parent);
+                parent.addClass('iradio_square-blue').removeClass('iradio_square-grey');
             }
         });
 
-        $("label.control-label").css({
-            'font-size': '1.5em'
+        $("ul.list-unstyled li").css({
+            'font-size': '1.3em'
         });
         $("div.box-body > .alert-danger").css({
             'font-size': '1.3em'
         });
-        $("div.iradio_line-grey").css({
-            'margin': '4px'
+        $("div.iradio_square-blue, div.iradio_square-grey").css({
+            'padding-left': '20px'
         });
     },
     created: function created() {
         // Convierte "0" y "1" en false y true respectivamente
         Vue.set(this.data.datos_contables, 'manejo_almacenes', this.toBoolean(this.data.datos_contables.manejo_almacenes));
         Vue.set(this.data.datos_contables, 'costo_en_tipo_gasto', this.toBoolean(this.data.datos_contables.costo_en_tipo_gasto));
+        Vue.set(this.data.datos_contables, 'retencion_antes_iva', this.toBoolean(this.data.datos_contables.retencion_antes_iva));
+        Vue.set(this.data.datos_contables, 'amortizacion_antes_iva', this.toBoolean(this.data.datos_contables.amortizacion_antes_iva));
+        Vue.set(this.data.datos_contables, 'deductiva_antes_iva', this.toBoolean(this.data.datos_contables.deductiva_antes_iva));
     },
     directives: {
         icheck: {
@@ -17290,9 +17169,8 @@ Vue.component('datos-contables-edit', {
 
                 label.remove();
                 elem.iCheck({
-                    checkboxClass: 'icheckbox_line-grey',
-                    radioClass: 'iradio_line-grey',
-                    insert: '<div class="icheck_line-icon"></div>' + label_text
+                    checkboxClass: 'icheckbox_square',
+                    radioClass: 'iradio_square-blue'
                 });
             }
         }
@@ -17307,8 +17185,10 @@ Vue.component('datos-contables-edit', {
                 showCancelButton: true,
                 confirmButtonText: "Si, Continuar",
                 cancelButtonText: "No, Cancelar"
-            }).then(function () {
-                self.save_datos_obra();
+            }).then(function (result) {
+                if (result.value) {
+                    self.save_datos_obra();
+                }
             }).catch(swal.noop);
         },
 
@@ -17322,6 +17202,9 @@ Vue.component('datos-contables-edit', {
                     FormatoCuenta: self.data.datos_contables.FormatoCuenta,
                     NumobraContPaq: self.data.datos_contables.NumobraContPaq,
                     costo_en_tipo_gasto: self.data.datos_contables.costo_en_tipo_gasto,
+                    retencion_antes_iva: self.data.datos_contables.retencion_antes_iva,
+                    deductiva_antes_iva: self.data.datos_contables.deductiva_antes_iva,
+                    amortizacion_antes_iva: self.data.datos_contables.amortizacion_antes_iva,
                     manejo_almacenes: self.data.datos_contables.manejo_almacenes,
                     _method: 'PATCH'
                 },
@@ -17330,8 +17213,12 @@ Vue.component('datos-contables-edit', {
                 },
                 success: function success(data, textStatus, xhr) {
                     self.data.datos_contables = data.data.datos_contables;
-                    var costo_en_tipo_gasto = Vue.set(self.data.datos_contables, 'costo_en_tipo_gasto', data.data.datos_contables.costo_en_tipo_gasto == 'true' ? true : false);
-                    var manejo_almacenes = Vue.set(self.data.datos_contables, 'manejo_almacenes', data.data.datos_contables.manejo_almacenes == 'true' ? true : false);
+                    Vue.set(self.data.datos_contables, 'costo_en_tipo_gasto', data.data.datos_contables.costo_en_tipo_gasto == 'true' ? true : false);
+                    Vue.set(self.data.datos_contables, 'manejo_almacenes', data.data.datos_contables.manejo_almacenes == 'true' ? true : false);
+                    Vue.set(self.data.datos_contables, 'retencion_antes_iva', data.data.datos_contables.retencion_antes_iva == 'true' ? true : false);
+                    Vue.set(self.data.datos_contables, 'amortizacion_antes_iva', data.data.datos_contables.amortizacion_antes_iva == 'true' ? true : false);
+                    Vue.set(self.data.datos_contables, 'deductiva_antes_iva', data.data.datos_contables.deductiva_antes_iva == 'true' ? true : false);
+
                     swal({
                         type: 'success',
                         title: 'Correcto',
@@ -17455,8 +17342,10 @@ Vue.component('revaluacion-create', {
                 showCancelButton: true,
                 confirmButtonText: "Si, Continuar",
                 cancelButtonText: "No, Cancelar"
-            }).then(function () {
-                self.save_facturas();
+            }).then(function (result) {
+                if (result.value) {
+                    self.save_facturas();
+                }
             }).catch(swal.noop);
         },
         save_facturas: function save_facturas() {
@@ -17751,7 +17640,7 @@ Vue.component('poliza-generada-edit', {
                 success: function success(data, textStatus, xhr) {
                     swal({
                         title: '¡Correcto!',
-                        html: 'Prepóliza  < b>' + self.data.poliza_edit.transaccion_interfaz.descripcion + '</b> actualizada correctamente',
+                        html: 'Prepóliza  <b>' + self.data.poliza_edit.transaccion_interfaz.descripcion + '</b> actualizada correctamente',
                         type: 'success',
                         confirmButtonText: "Ok",
                         closeOnConfirm: false
@@ -17822,35 +17711,37 @@ Vue.component('poliza-generada-edit', {
                             showCancelButton: true,
                             cancelButtonText: 'No, Cancelar',
                             confirmButtonText: 'Si, Continuar'
-                        }).then(function () {
+                        }).then(function (result) {
+                            if (result.value) {
 
-                            $.ajax({
-                                type: 'POST',
-                                url: App.host + "/sistema_contable/poliza_movimientos/" + self.data.poliza.id_int_poliza,
-                                data: {
-                                    _method: 'PATCH',
-                                    data: self.data.movimientos,
-                                    validar: false
-                                },
-                                beforeSend: function beforeSend() {
-                                    self.guardando = true;
-                                },
-                                success: function success(data, textStatus, xhr) {
-                                    self.data.poliza = data.data.poliza;
-                                    swal({
-                                        title: '¡Correcto!',
-                                        html: 'Las cuentas se configurarón exitosamente',
-                                        type: 'success',
-                                        confirmButtonText: "Ok",
-                                        closeOnConfirm: false
-                                    }).then(function () {}).catch(swal.noop);
-                                    window.location.reload(true);
-                                    $('#add_cuenta_modal').modal('hide');
-                                },
-                                complete: function complete() {
-                                    self.guardando = false;
-                                }
-                            });
+                                $.ajax({
+                                    type: 'POST',
+                                    url: App.host + "/sistema_contable/poliza_movimientos/" + self.data.poliza.id_int_poliza,
+                                    data: {
+                                        _method: 'PATCH',
+                                        data: self.data.movimientos,
+                                        validar: false
+                                    },
+                                    beforeSend: function beforeSend() {
+                                        self.guardando = true;
+                                    },
+                                    success: function success(data, textStatus, xhr) {
+                                        self.data.poliza = data.data.poliza;
+                                        swal({
+                                            title: '¡Correcto!',
+                                            html: 'Las cuentas se configurarón exitosamente',
+                                            type: 'success',
+                                            confirmButtonText: "Ok",
+                                            closeOnConfirm: false
+                                        }).then(function () {}).catch(swal.noop);
+                                        window.location.reload(true);
+                                        $('#add_cuenta_modal').modal('hide');
+                                    },
+                                    complete: function complete() {
+                                        self.guardando = false;
+                                    }
+                                });
+                            }
                         }).catch(swal.noop);
                     } else {
 
@@ -17999,8 +17890,10 @@ Vue.component('poliza-tipo-create', {
                             cancelButtonText: 'No, Cancelar',
                             confirmButtonText: 'Si, Continuar'
 
-                        }).then(function () {
-                            self.confirm_save();
+                        }).then(function (result) {
+                            if (result.value) {
+                                self.confirm_save();
+                            }
                         }).catch(swal.noop);
                     } else {
                         self.confirm_save();
@@ -18018,8 +17911,10 @@ Vue.component('poliza-tipo-create', {
                 showCancelButton: true,
                 confirmButtonText: "Si, Continuar",
                 cancelButtonText: "No, Cancelar"
-            }).then(function () {
-                self.save();
+            }).then(function (result) {
+                if (result.value) {
+                    self.save();
+                }
             }).catch(swal.noop);
         },
 
@@ -18113,8 +18008,10 @@ Vue.component('tipo-cuenta-contable-create', {
                 showCancelButton: true,
                 confirmButtonText: "Si, Continuar",
                 cancelButtonText: "No, Cancelar"
-            }).then(function () {
-                self.save();
+            }).then(function (result) {
+                if (result.value) {
+                    self.save();
+                }
             }).catch(swal.noop);
         },
 
@@ -18183,8 +18080,10 @@ Vue.component('tipo-cuenta-contable-update', {
                 showCancelButton: true,
                 confirmButtonText: "Si, Continuar",
                 cancelButtonText: "No, Cancelar"
-            }).then(function () {
-                self.save();
+            }).then(function (result) {
+                if (result.value) {
+                    self.save();
+                }
             }).catch(swal.noop);
         },
 
@@ -18399,11 +18298,13 @@ Vue.component('reclasificacion_costos-index', {
                 showCancelButton: true,
                 confirmButtonText: "Si, Continuar",
                 cancelButtonText: "No, Cancelar"
-            }).then(function () {
-                if (tipo == "aprobar") {
-                    self.aprobar();
-                } else if (tipo == "rechazar") {
-                    self.rechazar();
+            }).then(function (result) {
+                if (result.value) {
+                    if (tipo == "aprobar") {
+                        self.aprobar();
+                    } else if (tipo == "rechazar") {
+                        self.rechazar();
+                    }
                 }
             }).catch(swal.noop);
         },
@@ -18494,7 +18395,7 @@ Vue.component('reclasificacion_costos-index', {
 'use strict';
 
 Vue.component('solicitar_reclasificacion-index', {
-    props: ['url_solicitar_reclasificacion_index', 'max_niveles', 'filtros', 'operadores', 'tipos_transacciones'],
+    props: ['url_solicitar_reclasificacion_index', 'max_niveles', 'filtros', 'operadores', 'tipos_transacciones', 'solicitar_reclasificacion', 'consultar_reclasificacion', 'autorizar_reclasificacion'],
     data: function data() {
         return {
             'data': {
@@ -18747,11 +18648,13 @@ Vue.component('solicitar_reclasificacion-index', {
                 showCancelButton: true,
                 confirmButtonText: "Si, Continuar",
                 cancelButtonText: "No, Cancelar"
-            }).then(function () {
-                if (tipo == "resultado") {
-                    self.eliminar_resultado(index);
-                } else if (tipo == "filtro") {
-                    self.eliminar_filtro(index);
+            }).then(function (result) {
+                if (result.value) {
+                    if (tipo == "resultado") {
+                        self.eliminar_resultado(index);
+                    } else if (tipo == "filtro") {
+                        self.eliminar_filtro(index);
+                    }
                 }
             }).catch(swal.noop);
         },
@@ -18769,8 +18672,10 @@ Vue.component('solicitar_reclasificacion-index', {
                 showCancelButton: true,
                 confirmButtonText: "Si, Continuar",
                 cancelButtonText: "No, Cancelar"
-            }).then(function () {
-                self.solicitar(item);
+            }).then(function (result) {
+                if (result.value) {
+                    self.solicitar(item);
+                }
             }).catch(swal.noop);
         },
         solicitar: function solicitar(item) {
@@ -18879,8 +18784,10 @@ Vue.component('solicitar_reclasificacion-index', {
                 showCancelButton: true,
                 confirmButtonText: "Si, Continuar",
                 cancelButtonText: "No, Cancelar"
-            }).then(function () {
-                window.location.href = self.url_solicitar_reclasificacion_index + '/items/' + id_concepto + '/' + id_transaccion;
+            }).then(function (result) {
+                if (result.value) {
+                    window.location.href = self.url_solicitar_reclasificacion_index + '/items/' + id_concepto + '/' + id_transaccion;
+                }
             }).catch(swal.noop);
         }
     },
@@ -19068,11 +18975,13 @@ Vue.component('solicitar_reclasificacion-items', {
                 showCancelButton: true,
                 confirmButtonText: "Si, Continuar",
                 cancelButtonText: "No, Cancelar"
-            }).then(function () {
-                if (tipo == "resultado") {
-                    self.eliminar_resultado(index);
-                } else if (tipo == "filtro") {
-                    self.eliminar_filtro(index);
+            }).then(function (result) {
+                if (result.value) {
+                    if (tipo == "resultado") {
+                        self.eliminar_resultado(index);
+                    } else if (tipo == "filtro") {
+                        self.eliminar_filtro(index);
+                    }
                 }
             }).catch(swal.noop);
         },
@@ -19159,8 +19068,10 @@ Vue.component('solicitar_reclasificacion-items', {
                 showCancelButton: true,
                 confirmButtonText: "Si, Continuar",
                 cancelButtonText: "No, Cancelar"
-            }).then(function () {
-                self.solicitar();
+            }).then(function (result) {
+                if (result.value) {
+                    self.solicitar();
+                }
             }).catch(swal.noop);
         },
         solicitar: function solicitar() {
@@ -19276,11 +19187,13 @@ Vue.component('solicitar_reclasificacion-items', {
                 showCancelButton: true,
                 confirmButtonText: "Si, Continuar",
                 cancelButtonText: "No, Cancelar"
-            }).then(function () {
-                if (tipo == "aprobar") {
-                    self.aprobar();
-                } else if (tipo == "rechazar") {
-                    self.rechazar();
+            }).then(function (result) {
+                if (result.value) {
+                    if (tipo == "aprobar") {
+                        self.aprobar();
+                    } else if (tipo == "rechazar") {
+                        self.rechazar();
+                    }
                 }
             }).catch(swal.noop);
         },
@@ -19534,6 +19447,7 @@ Vue.component('control_presupuesto-index', {
                 },
                 "dataSrc": function dataSrc(json) {
                     for (var i = 0; i < json.data.length; i++) {
+                        json.data[i].cantidad_presupuestada = Number(json.data[i].cantidad_presupuestada);
                         json.data[i].monto_presupuestado = '$' + parseInt(json.data[i].monto_presupuestado).formatMoney(2, ',', '.');
                         json.data[i].monto = '$' + parseInt(json.data[i].monto).formatMoney(2, ',', '.');
                         json.data[i].precio_unitario = '$' + parseInt(json.data[i].precio_unitario).formatMoney(2, ',', '.');
@@ -20013,8 +19927,10 @@ Vue.component('comprobante-fondo-fijo-create', {
                 showCancelButton: true,
                 confirmButtonText: "Si, Continuar",
                 cancelButtonText: "No, Cancelar"
-            }).then(function () {
-                self.save_comprobante_fondo_fijo();
+            }).then(function (result) {
+                if (result.value) {
+                    self.save_comprobante_fondo_fijo();
+                }
             }).catch(swal.noop);
         },
 
@@ -20053,8 +19969,10 @@ Vue.component('comprobante-fondo-fijo-create', {
                 showCancelButton: true,
                 confirmButtonText: "Si, Continuar",
                 cancelButtonText: "No, Cancelar"
-            }).then(function () {
-                self.remove_item(index);
+            }).then(function (result) {
+                if (result.value) {
+                    self.remove_item(index);
+                }
             }).catch(swal.noop);
         },
         remove_item: function remove_item(index) {
@@ -20482,8 +20400,10 @@ Vue.component('comprobante-fondo-fijo-edit', {
                 showCancelButton: true,
                 confirmButtonText: "Si, Continuar",
                 cancelButtonText: "No, Cancelar"
-            }).then(function () {
-                self.save_comprobante_fondo_fijo();
+            }).then(function (result) {
+                if (result.value) {
+                    self.save_comprobante_fondo_fijo();
+                }
             }).catch(swal.noop);
         },
 
@@ -20867,8 +20787,10 @@ Vue.component('movimientos_bancarios-index', {
                 showCancelButton: true,
                 confirmButtonText: "Si, Continuar",
                 cancelButtonText: "No, Cancelar"
-            }).then(function () {
-                self.guardar();
+            }).then(function (result) {
+                if (result.value) {
+                    self.guardar();
+                }
             }).catch(swal.noop);
         },
         guardar: function guardar() {
@@ -20920,8 +20842,10 @@ Vue.component('movimientos_bancarios-index', {
                 showCancelButton: true,
                 confirmButtonText: "Si, Continuar",
                 cancelButtonText: "No, Cancelar"
-            }).then(function () {
-                self.eliminar(id_movimiento_bancario);
+            }).then(function (result) {
+                if (result.value) {
+                    self.eliminar(id_movimiento_bancario);
+                }
             }).catch(swal.noop);
         },
         eliminar: function eliminar(id_movimiento_bancario) {
@@ -20972,8 +20896,10 @@ Vue.component('movimientos_bancarios-index', {
                 showCancelButton: true,
                 confirmButtonText: "Si, Continuar",
                 cancelButtonText: "No, Cancelar"
-            }).then(function () {
-                self.editar();
+            }).then(function (result) {
+                if (result.value) {
+                    self.editar();
+                }
             }).catch(swal.noop);
         },
         editar: function editar() {
@@ -21181,8 +21107,10 @@ Vue.component('traspaso-cuentas-index', {
                 showCancelButton: true,
                 confirmButtonText: "Si, Continuar",
                 cancelButtonText: "No, Cancelar"
-            }).then(function () {
-                self.guardar();
+            }).then(function (result) {
+                if (result.value) {
+                    self.guardar();
+                }
             }).catch(swal.noop);
         },
         guardar: function guardar() {
@@ -21228,8 +21156,10 @@ Vue.component('traspaso-cuentas-index', {
                 showCancelButton: true,
                 confirmButtonText: "Si, Continuar",
                 cancelButtonText: "No, Cancelar"
-            }).then(function () {
-                self.eliminar(id_traspaso);
+            }).then(function (result) {
+                if (result.value) {
+                    self.eliminar(id_traspaso);
+                }
             }).catch(swal.noop);
         },
         eliminar: function eliminar(id_traspaso) {
@@ -21305,8 +21235,10 @@ Vue.component('traspaso-cuentas-index', {
                 showCancelButton: true,
                 confirmButtonText: "Si, Continuar",
                 cancelButtonText: "No, Cancelar"
-            }).then(function () {
-                self.editar();
+            }).then(function (result) {
+                if (result.value) {
+                    self.editar();
+                }
             }).catch(swal.noop);
         },
         editar: function editar() {

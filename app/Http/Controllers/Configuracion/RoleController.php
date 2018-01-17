@@ -29,7 +29,6 @@ class RoleController extends Controller
 
     public function index() {
         $roles = $this->role->all();
-
         return $this->response()->collection($roles, function ($items) { return $items; });
     }
 

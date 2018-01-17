@@ -17,7 +17,7 @@
                         </div>
                         <div class="box-body">
                             <div class="table-responsive">
-                                <table class="table" id="roles_table">
+                                <table class="table table-bordered table-striped" id="roles_table">
                                     <thead>
                                     <tr>
                                         <th>Nombre</th>

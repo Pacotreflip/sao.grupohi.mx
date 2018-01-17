@@ -18395,7 +18395,7 @@ Vue.component('reclasificacion_costos-index', {
 'use strict';
 
 Vue.component('solicitar_reclasificacion-index', {
-    props: ['url_solicitar_reclasificacion_index', 'max_niveles', 'filtros', 'operadores', 'tipos_transacciones'],
+    props: ['url_solicitar_reclasificacion_index', 'max_niveles', 'filtros', 'operadores', 'tipos_transacciones', 'solicitar_reclasificacion', 'consultar_reclasificacion', 'autorizar_reclasificacion'],
     data: function data() {
         return {
             'data': {
@@ -19447,6 +19447,7 @@ Vue.component('control_presupuesto-index', {
                 },
                 "dataSrc": function dataSrc(json) {
                     for (var i = 0; i < json.data.length; i++) {
+                        json.data[i].cantidad_presupuestada = Number(json.data[i].cantidad_presupuestada);
                         json.data[i].monto_presupuestado = '$' + parseInt(json.data[i].monto_presupuestado).formatMoney(2, ',', '.');
                         json.data[i].monto = '$' + parseInt(json.data[i].monto).formatMoney(2, ',', '.');
                         json.data[i].precio_unitario = '$' + parseInt(json.data[i].precio_unitario).formatMoney(2, ',', '.');

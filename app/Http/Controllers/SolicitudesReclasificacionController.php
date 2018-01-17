@@ -35,7 +35,7 @@ class SolicitudesReclasificacionController extends Controller
         $this->middleware('context');
 
         // Permisos
-        $this->middleware('permission:autorizar_reclasificacion', ['only' => ['index', 'store']]);
+        $this->middleware('permission:autorizar_reclasificacion', ['only' => ['store']]);
         $this->middleware('permission:consultar_reclasificacion', ['only' => ['index']]);
 
         $this->solicitar = $solicitud;
