@@ -109,6 +109,7 @@
         function delete_plantilla(id) {
 
             var url=App.host +"/sistema_contable/poliza_tipo/" + id;
+
             swal({
                 title: "¡Eliminar Plantilla!",
                 text: "¿Esta seguro de que deseas eliminar la Plantilla?",
@@ -119,40 +120,37 @@
                 showCancelButton: true,
                 showLoaderOnConfirm: true,
                 preConfirm: function (inputValue) {
-                    return new Promise(function (resolve, reject) {
-                        setTimeout(function() {
-                            if (inputValue === false) return false;
-                            if (inputValue === "") {
-                                reject("¡Escriba el motivo de la eliminación!");
-                                return false
-                            }
-                            resolve()
-                        },500)
+                    return new Promise(function (resolve) {
+                        if (inputValue === "") {
+                            swal.showValidationError("¡Escriba el motivo de la eliminación!");
+                        }
+                        resolve()
                     })
                 },
                 allowOutsideClick: false
-            }).then(function (inputValue)
-            { $.ajax({
-                    url: url,
-                    method: 'POST',
-                    data: {
-                        _method: 'DELETE',
-                        motivo: inputValue
-                    },
-                    success: function (data, textStatus, xhr) {
-                        swal({
+            }).then(function (result) {
+                if(result.value) {
+                    $.ajax({
+                        url: url,
+                        method: 'POST',
+                        data: {
+                            _method: 'DELETE',
+                            motivo: result.value
+                        },
+                        success: function (data, textStatus, xhr) {
+                            swal({
                                 type: "success",
                                 title: '¡Correcto!',
-                                text: 'Plantilla Eliminada con éxito'
-                        });
-                        location.reload();
-                    },
-                    complete: function () {
-
-                    }
-                });
-            }) .catch(swal.noop);
-
- }
+                                text: 'Plantilla Eliminada con éxito',
+                                confirmButtonText: "Ok",
+                                closeOnConfirm: false
+                            }).then(function () {
+                                location.reload();
+                            });
+                        }
+                    });
+                }
+            });
+        }
     </script>
 @endsection

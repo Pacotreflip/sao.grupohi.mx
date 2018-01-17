@@ -62,6 +62,8 @@ Route::get('estimacion/getBy', 'EstimacionController@getBy');
 
 Route::get('almacen/jstree', 'AlmacenController@getRoot');
 Route::get('almacen/{id}/jstree', 'AlmacenController@getNode');
+Route::get('almacen/{id}', 'AlmacenController@show');
+Route::post('almacen/paginate', 'AlmacenController@paginate');
 
 /**
  * Tipo Tran Routes...

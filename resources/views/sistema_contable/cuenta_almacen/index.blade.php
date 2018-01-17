@@ -5,13 +5,14 @@
     {!! Breadcrumbs::render('sistema_contable.cuenta_almacen.index') !!}
 @endsection
 @section('main-content')
-
     <global-errors></global-errors>
     <cuenta-almacen-index
             :almacenes="{{$almacenes}}"
             :datos_contables="{{$currentObra->datosContables}}"
             :url_cuenta_almacen_store="'{{route('sistema_contable.cuenta_almacen.store')}}'"
             :url_cuenta_almacen="'{{route('sistema_contable.cuenta_almacen.index')}}'"
+            :editar_cuenta_almacen="{{ \Entrust::can(['editar_cuenta_almacen']) ? 'true' : 'false' }}"
+            :registrar_cuenta_almacen="{{ \Entrust::can(['registrar_cuenta_almacen']) ? 'true' : 'false' }}"
             v-cloak
             inline-template>
         <section>
@@ -24,55 +25,28 @@
                         <div class="box-body">
                             <div class="col-sm-12">
                                 <div class="row table-responsive">
-                                    <table class="table table-bordered table-striped index_table" role="grid" aria-describedby="tipo_cuenta_info">
+                                    <table id="almacenes_table" class="table table-bordered table-stripped">
                                         <thead>
-                                        <tr role="row">
-                                            <th class="sorting_asc" tabindex="0" aria-controls="tipo_cuenta" aria-sort="ascending">#</th>
-                                            <th class="sorting" tabindex="0" aria-controls="tipo_cuenta">Almacén</th>
-                                            <th class="sorting" tabindex="0" aria-controls="tipo_cuenta">Tipo de Almacén</th>
-                                            <th class="sorting" tabindex="0" aria-controls="tipo_cuenta">Cuenta Contable</th>
+                                        <tr>
+                                            <th>#</th>
+                                            <th>Almacén</th>
+                                            <th>Tipo de Almacén</th>
+                                            <th>Cuenta Contable</th>
                                             @permission(['editar_cuenta_almacen', 'registrar_cuenta_almacen'])
-                                            <th class="sorting" tabindex="0" aria-controls="tipo_cuenta">Acciones</th>
+                                            <th>Acciones</th>
                                             @endpermission
                                         </tr>
                                         </thead>
-                                        <tbody>
-                                        <tr v-for="(item, index) in data.almacenes">
-                                            <td>@{{ index + 1 }}</td>
-                                            <td>@{{ item.descripcion  }}</td>
-                                            <td>@{{ item.tipo_almacen  }}</td>
-                                            <td v-if="item.cuenta_almacen != null">
-                                                @{{ item.cuenta_almacen.cuenta }}
-                                            </td>
-                                            <td v-else>
-                                                ---
-                                            </td>
+                                        <tfoot>
+                                        <tr>
+                                            <th>#</th>
+                                            <th>Almacén</th>
+                                            <th>Tipo de Almacén</th>
+                                            <th>Cuenta Contable</th>
                                             @permission(['editar_cuenta_almacen', 'registrar_cuenta_almacen'])
-                                            <td style="min-width: 90px;max-width: 90px" >
-                                                @permission('editar_cuenta_almacen')
-                                                <div class="btn-group" v-if="item.cuenta_almacen != null">
-                                                    <button title="Editar" class="btn btn-xs btn-info" type="button" @click="editar(item)"><i class="fa fa-edit"></i> </button>
-                                                </div>
-                                                @endpermission
-                                                @permission('registrar_cuenta_almacen')
-                                                <div class="btn-group" v-else>
-                                                    <button title="Registrar" class="btn btn-xs btn-success" type="button" @click="editar(item)"> <i class="fa fa-edit"></i></button>
-                                                </div>
-                                                @endpermission
-                                            </td>
+                                            <th>Acciones</th>
                                             @endpermission
                                         </tr>
-                                        </tbody>
-                                        <tfoot>
-                                            <tr>
-                                                <th>#</th>
-                                                <th>Almacén</th>
-                                                <th>Tipo de Almacén</th>
-                                                <th>Cuenta Contable</th>
-                                                @permission(['editar_cuenta_almacen', 'registrar_cuenta_almacen'])
-                                                <th>Acciones</th>
-                                                @endpermission
-                                            </tr>
                                         </tfoot>
                                     </table>
                                 </div>

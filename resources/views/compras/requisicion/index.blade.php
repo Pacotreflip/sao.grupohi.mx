@@ -81,9 +81,11 @@
                  showCancelButton: true,
                  confirmButtonText: "Si, Continuar",
                  cancelButtonText: "No, Cancelar",
-             }).then(function () {
-                 eliminar(id);
-             }).catch(swal.noop);
+             }).then(function (result) {
+                 if(result.value) {
+                     eliminar(id);
+                 }
+             });
          }
 
          function eliminar(item) {
@@ -100,9 +102,11 @@
                          title: '¡Correcto!',
                          text: "Requisición eliminada correctamente.",
                          type: "success",
-                         confirmButtonText: "Ok"
+                         confirmButtonText: "Ok",
+                         closeOnConfirm: false
+                     }).then(function () {
+                         location.reload();
                      });
-                     location.reload();
                  }
              });
          }

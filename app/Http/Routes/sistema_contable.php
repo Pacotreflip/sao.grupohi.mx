@@ -156,4 +156,15 @@ Route::group(['prefix' => 'sistema_contable'], function () {
      */
     Route::get('costo/findBy', 'CostoController@findBy')->name('sistema_contable.costo.findBy');
     Route::get('costo/getBy', 'CostoController@getBy')->name('sistema_contable.costo.getBy');
+
+    /**
+     * Cierre de Periodo routes
+     */
+    Route::get('cierre', 'CierreController@index')->name('sistema_contable.cierre.index');
+    Route::post('cierre/paginate', 'CierreController@paginate');
+    Route::get('cierre/create', 'CierreController@create')->name('sistema_contable.cierre.create');
+    Route::post('cierre', 'CierreController@store')->name('sistema_contable.cierre.store');
+    Route::get('cierre/{cierre}', 'CierreController@show')->name('sistema_contable.cierre.show');
+    Route::patch('cierre/{cierre}/open', 'CierreController@open');
+    Route::patch('cierre/{cierre}/close', 'CierreController@close');
 });

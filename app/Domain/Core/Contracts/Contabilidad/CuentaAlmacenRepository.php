@@ -9,6 +9,8 @@
 namespace Ghi\Domain\Core\Contracts\Contabilidad;
 
 
+use Ghi\Domain\Core\Models\Almacen;
+
 interface CuentaAlmacenRepository
 {
     /**

@@ -201,3 +201,11 @@ Breadcrumbs::register('sistema_contable.cuenta_costo.index', function ($breadcru
     $breadcrumb->parent('sistema_contable.index');
     $breadcrumb->push('CUENTAS DE COSTOS', route('sistema_contable.cuenta_costo.index'));
 });
+
+/*
+ * Cierre de Periodo Breadcrumbs...
+ */
+Breadcrumbs::register('sistema_contable.cierre.index', function ($breadcrumb) {
+    $breadcrumb->parent('sistema_contable.index');
+    $breadcrumb->push('CIERRE DE PERIODO', route('sistema_contable.cierre.index'));
+});

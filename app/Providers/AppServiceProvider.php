@@ -284,8 +284,8 @@ class AppServiceProvider extends ServiceProvider
             \Ghi\Domain\Core\Repositories\EloquentConciliacionRepository::class
         );
         $this->app->bind(
-            \Ghi\Domain\Core\Contracts\Seguridad\CierreRepository::class,
-            \Ghi\Domain\Core\Repositories\Seguridad\EloquentCierreRepository::class
+            \Ghi\Domain\Core\Contracts\Contabilidad\CierreRepository::class,
+            \Ghi\Domain\Core\Repositories\Contabilidad\EloquentCierreRepository::class
         );
         $this->app->bind(
             \Ghi\Domain\Core\Contracts\TipoTranRepository::class,

@@ -31,10 +31,12 @@
                         <!-- Menu Toggle Button -->
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                             <!-- The user image in the navbar-->
-                            <i class="fa fa-fw fa-user"></i> {{ auth() ->user()}}
+                            <i class="fa fa-fw fa-user"></i>
                             <!-- hidden-xs hides the username on small devices so only the image appears. -->
-                            <span class="hidden-xs"></span>
-                            <i class="fa fa-fw fa-caret-down"></i>
+                            <span class="hidden-xs">
+                                {{ auth() ->user() }}
+                                <i class="fa fa-fw fa-caret-down"></i>
+                            </span>
                         </a>
 
                         <ul class="dropdown-menu">

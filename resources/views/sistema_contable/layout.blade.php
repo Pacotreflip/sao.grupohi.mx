@@ -96,7 +96,7 @@
             </ul>
         </li>
         @endpermission
-        @permission(['editar_configuracion_contable', 'consultar_prepolizas_generadas'])
+        @permission(['editar_configuracion_contable', 'consultar_prepolizas_generadas', 'consultar_cierre_periodo'])
         <li class="treeview">
             <a href="#">
                 <i class="fa fa-cubes"></i>
@@ -107,12 +107,15 @@
             </a>
             <ul class="treeview-menu">
                 @permission('editar_configuracion_contable')
-                <li ><a href="{{route('sistema_contable.datos_contables.edit', $currentObra->datosContables)}}"><i class='fa fa-circle-o'></i> <span>Configuración Contable</span></a></li>
+                <li><a href="{{route('sistema_contable.datos_contables.edit', $currentObra->datosContables)}}"><i class='fa fa-circle-o'></i> <span>Configuración Contable</span></a></li>
                 @endpermission
                 @permission('consultar_prepolizas_generadas')
-                <li ><a href="{{route('sistema_contable.poliza_generada.index')}}"><i class='fa fa-circle-o'></i> <span>Prepólizas Generadas</span></a></li>
+                <li><a href="{{route('sistema_contable.poliza_generada.index')}}"><i class='fa fa-circle-o'></i> <span>Prepólizas Generadas</span></a></li>
                 @endpermission
-                <li ><a href="{{route('sistema_contable.revaluacion.index')}}"><i class='fa fa-circle-o'></i> <span>Revaluaciones</span></a></li>
+                <li><a href="{{route('sistema_contable.revaluacion.index')}}"><i class='fa fa-circle-o'></i> <span>Revaluaciones</span></a></li>
+                @permission('consultar_cierre_periodo')
+                <li><a href="{{ route('sistema_contable.cierre.index') }}"><i class="fa fa-circle-o"></i><span>Cierre de Periodo</span></a></li>
+                @endpermission
             </ul>
         </li>
         @endpermission

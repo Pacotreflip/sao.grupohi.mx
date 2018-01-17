@@ -78,6 +78,8 @@ class ComprobanteFondoFijoController extends Controller
      *
      * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
+     * @throws \Exception
+     * @throws \Ghi\Domain\Core\Contracts\Finanzas\Exception
      */
     public function store(Request $request)
     {
@@ -210,6 +212,8 @@ class ComprobanteFondoFijoController extends Controller
      * @param  \Illuminate\Http\Request $request
      * @param  int $id
      * @return \Illuminate\Http\Response
+     * @throws \Exception
+     * @throws \Ghi\Domain\Core\Contracts\Finanzas\Exception
      */
     public function update(Request $request, $id)
     {
@@ -317,7 +321,8 @@ class ComprobanteFondoFijoController extends Controller
      * Remove the specified resource from storage.
      *
      * @param  int $id
-     * @return \Illuminate\Http\Response
+     * @return void
+     * @throws \Exception
      */
     public function destroy($id)
     {
@@ -326,5 +331,15 @@ class ComprobanteFondoFijoController extends Controller
         } catch (\Exception $e) {
             throw $e;
         }
+    }
+
+    public function paginate(Request $request) {
+        $comprobantes = $this->comprobante_fondo_fijo->paginate($request->all());
+
+        return response()->json([
+            'recordsTotal' => $comprobantes->total(),
+            'recordsFiltered' => $comprobantes->total(),
+            'data' => $comprobantes->items()
+        ], 200);
     }
 }

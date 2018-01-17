@@ -1,7 +1,7 @@
 <?php
-namespace Ghi\Domain\Core\Contracts\Seguridad;
+namespace Ghi\Domain\Core\Contracts\Contabilidad;
 
-use Ghi\Domain\Core\Models\Seguridad\Cierre;
+use Ghi\Domain\Core\Models\Contabilidad\Cierre;
 use Illuminate\Database\Eloquent\Collection;
 
 interface CierreRepository

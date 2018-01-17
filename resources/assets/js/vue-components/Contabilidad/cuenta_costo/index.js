@@ -163,8 +163,10 @@ Vue.component('cuenta-costo-index', {
                 showCancelButton: true,
                 confirmButtonText: "Si, Continuar",
                 cancelButtonText: "No, Cancelar",
-            }).then(function () {
-                self.update_cuenta();
+            }).then(function (result) {
+                if(result.value) {
+                    self.update_cuenta();
+                }
             }).catch(swal.noop);
         },
 
@@ -206,8 +208,10 @@ Vue.component('cuenta-costo-index', {
                 showCancelButton: true,
                 confirmButtonText: "Si, Continuar",
                 cancelButtonText: "No, Cancelar",
-            }).then(function () {
-                self.save_cuenta();
+            }).then(function (result) {
+                if(result.value) {
+                    self.save_cuenta();
+                }
             }).catch(swal.noop);
         },
 
@@ -248,8 +252,10 @@ Vue.component('cuenta-costo-index', {
                 showCancelButton: true,
                 confirmButtonText: "Si, Continuar",
                 cancelButtonText: "No, Cancelar",
-            }).then(function () {
-                self.delete_cuenta(id_cuenta_costo);
+            }).then(function (result) {
+                if(result.value) {
+                    self.delete_cuenta(id_cuenta_costo);
+                }
             }).catch(swal.noop);
         },
         delete_cuenta: function (id_cuenta_costo) {

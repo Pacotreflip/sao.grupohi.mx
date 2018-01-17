@@ -191,12 +191,14 @@ Vue.component('solicitar_reclasificacion-items', {
                 showCancelButton: true,
                 confirmButtonText: "Si, Continuar",
                 cancelButtonText: "No, Cancelar",
-            }).then(function () {
-                if (tipo == "resultado") {
-                    self.eliminar_resultado(index);
-                }
-                else if (tipo == "filtro") {
-                    self.eliminar_filtro(index);
+            }).then(function (result) {
+                if(result.value) {
+                    if (tipo == "resultado") {
+                        self.eliminar_resultado(index);
+                    }
+                    else if (tipo == "filtro") {
+                        self.eliminar_filtro(index);
+                    }
                 }
             }).catch(swal.noop);
         },
@@ -285,8 +287,10 @@ Vue.component('solicitar_reclasificacion-items', {
                 showCancelButton: true,
                 confirmButtonText: "Si, Continuar",
                 cancelButtonText: "No, Cancelar"
-            }).then(function () {
-                self.solicitar();
+            }).then(function (result) {
+                if(result.value) {
+                    self.solicitar();
+                }
             }).catch(swal.noop);
         },
         solicitar: function () {
@@ -412,12 +416,14 @@ Vue.component('solicitar_reclasificacion-items', {
                 showCancelButton: true,
                 confirmButtonText: "Si, Continuar",
                 cancelButtonText: "No, Cancelar"
-            }).then(function () {
-                if (tipo == "aprobar") {
-                    self.aprobar();
-                }
-                else if (tipo == "rechazar") {
-                    self.rechazar();
+            }).then(function (result) {
+                if(result.value) {
+                    if (tipo == "aprobar") {
+                        self.aprobar();
+                    }
+                    else if (tipo == "rechazar") {
+                        self.rechazar();
+                    }
                 }
             }).catch(swal.noop);
         },

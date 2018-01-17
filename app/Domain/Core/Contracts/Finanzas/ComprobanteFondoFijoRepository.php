@@ -2,6 +2,9 @@
 
 namespace Ghi\Domain\Core\Contracts\Finanzas;
 
+use Ghi\Domain\Core\Models\Finanzas\ComprobanteFondoFijo;
+use Illuminate\Support\Collection;
+
 interface ComprobanteFondoFijoRepository
 {
     /**
@@ -12,21 +15,23 @@ interface ComprobanteFondoFijoRepository
 
     /**
      * @param $id
-     * @return Ghi\Domain\Core\Models\Finanzas\ComprobanteFondoFijo
+     * @return ComprobanteFondoFijo
      */
     public function find($id);
 
     /**
      * @param $data
-     * @return Ghi\Domain\Core\Models\Finanzas\ComprobanteFondoFijo
+     * @return ComprobanteFondoFijo
      */
     public function columns($data);
+
     /**
      * @param array $data
      * @return mixed
      * @throws Exception
      */
     public function create(array $data);
+
     /**
      * Actualiza un nuevo registro de Comprobante de Fondo Fijo
      * @param array $data
@@ -42,7 +47,6 @@ interface ComprobanteFondoFijoRepository
      *
      */
 
-
     public function delete($id);
 
     /**
@@ -51,5 +55,12 @@ interface ComprobanteFondoFijoRepository
      * @return mixed
      */
     public function with($relations);
+
+    /**
+     * Regresa los Cierres Paginados de acuerdo a los parametros
+     * @param array $data
+     * @return Collection | ComprobanteFondoFijo
+     */
+    public function paginate(array $data);
 
 }

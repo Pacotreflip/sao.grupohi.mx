@@ -114,43 +114,37 @@
                 showCancelButton: true,
                 showLoaderOnConfirm: true,
                 preConfirm: function (inputValue) {
-                    return new Promise(function (resolve, reject) {
-                        setTimeout(function() {
-                            if (inputValue === false) return false;
-                            if (inputValue === "") {
-                                reject("¡Escriba el motivo de la eliminación!");
-                                return false
-                            }
-                            resolve()
-                        }, 500)
+                    return new Promise(function (resolve) {
+                        if (inputValue === "") {
+                            swal.showValidationError("¡Escriba el motivo de la eliminación!");
+                        }
+                        resolve()
                     })
                 },
                 allowOutsideClick: false
-            }).then(function (inputValue)
-            { $.ajax({
-                    url: url,
-                    method: 'POST',
-                    data: {
-                        _method: 'DELETE',
-                        motivo: inputValue
-                    },
-                    success: function (data, textStatus, xhr) {
-                        swal({
-                            type: "success",
-                            title: '¡Correcto!',
-                            text: 'Tipo Cuenta Contable Eliminada con éxito',
-                            confirmButtonText: "Ok",
-                            closeOnConfirm: false
-                        }).then(function () {
-                            location.reload();
-                        });
-                    },
-                    complete: function () {
-
-                    }
-                });
-            }) .catch(swal.noop);
-
- }
+            }).then(function (inputValue) {
+                if(inputValue.value) {
+                    $.ajax({
+                        url: url,
+                        method: 'POST',
+                        data: {
+                            _method: 'DELETE',
+                            motivo: inputValue.value
+                        },
+                        success: function (data, textStatus, xhr) {
+                            swal({
+                                type: "success",
+                                title: '¡Correcto!',
+                                text: 'Tipo Cuenta Contable Eliminada con éxito',
+                                confirmButtonText: "Ok",
+                                closeOnConfirm: false
+                            }).then(function () {
+                                location.reload();
+                            });
+                        }
+                    });
+                }
+            });
+        }
     </script>
 @endsection

@@ -9,6 +9,7 @@ class Almacen extends BaseModel
     protected $connection = 'cadeco';
     protected $table = 'dbo.almacenes';
     protected $primaryKey = 'id_almacen';
+//    protected $appends = ['tipo_almacen'];
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany|CuentaAlmacen

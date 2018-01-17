@@ -170,40 +170,36 @@
                 showCancelButton: true,
                 confirmButtonText: "Si, Continuar",
                 cancelButtonText: "No, Cancelar",
+            }).then(function (result) {
+                if(result.value) {
+                    $.ajax({
+                        url: url,
+                        type: 'POST',
+                        data: {
+                            _method: "PATCH",
+                            'poliza_generada': {
+                                'estatus': 1,
+                                'lanzable': 'True'
+                            }
 
-            }).then(function ()
-            {
-                $.ajax({
-                    url: url,
-                    type: 'POST',
-                    data: {
-                        _method: "PATCH",
-                        'poliza_generada':{
-                            'estatus':1,
-                            'lanzable':'True'
+                        },
+                        success: function (data, textStatus, xhr) {
+                            swal({
+                                type: "success",
+                                title: '¡Correcto!',
+                                text: 'Prepóliza validada con éxito',
+                                confirmButtonText: "Ok",
+                                closeOnConfirm: false
+                            }).then(function () {
+                                location.reload();
+                            });
                         }
-
-                    },
-                    success: function (data, textStatus, xhr) {
-                        swal({
-                            type: "success",
-                            title: '¡Correcto!',
-                            text: 'Prepóliza validada con éxito',
-                            confirmButtonText: "Ok",
-                            closeOnConfirm: false
-                        }).then(function () {
-                            location.reload();
-                        });
-                    },
-                    complete: function () {
-
-                    }
-                });
-            }) .catch(swal.noop);
+                    });
+                }
+            });
         }
 
         function omitir_prepoliza(id) {
-
             var url=App.host +"/sistema_contable/poliza_generada/" + id;
             swal({
                 title: "Omitir Prepóliza",
@@ -212,33 +208,32 @@
                 showCancelButton: true,
                 confirmButtonText: "Si, Continuar",
                 cancelButtonText: "No, Cancelar",
-            }).then(function ()
-            { $.ajax({
-                url: url,
-                type: 'POST',
-                data: {
-                    _method: "PATCH",
-                    'poliza_generada':{
-                        'estatus':-3,
-                        'lanzable':'True'
-                    }
-                },
-                success: function (data, textStatus, xhr) {
-                    swal({
-                        type: "success",
-                        title: '¡Correcto!',
-                        text: 'Prepóliza Omitida con éxito',
-                        confirmButtonText: "Ok",
-                        closeOnConfirm: false
-                    }).then(function () {
-                        location.reload();
+            }).then(function (result) {
+                if(result.value) {
+                    $.ajax({
+                        url: url,
+                        type: 'POST',
+                        data: {
+                            _method: "PATCH",
+                            'poliza_generada':{
+                                'estatus':-3,
+                                'lanzable':'True'
+                            }
+                        },
+                        success: function (data, textStatus, xhr) {
+                            swal({
+                                type: "success",
+                                title: '¡Correcto!',
+                                text: 'Prepóliza Omitida con éxito',
+                                confirmButtonText: "Ok",
+                                closeOnConfirm: false
+                            }).then(function () {
+                                location.reload();
+                            });
+                        }
                     });
-                },
-                complete: function () {
-
                 }
             });
-            }) .catch(swal.noop);
         }
 
         $('#folio_contpaq_form').on('submit', function(e) {
@@ -253,28 +248,30 @@
                 showCancelButton: true,
                 confirmButtonText: "Si, Continuar",
                 cancelButtonText: "No, Cancelar",
-            }).then(function () {
-                $.ajax({
-                    url: url,
-                    type: 'POST',
-                    data: {
-                        _method: 'PATCH',
-                        fecha: $('#fecha').val(),
-                        poliza_contpaq: $('#folio_contpaq').val()
-                    },
-                    success: function (data, textStatus, xhr) {
-                        swal({
-                            type: "success",
-                            title: '¡Correcto!',
-                            text: 'Folio Contpaq ingresado correctamente'
-                        });
-                        location.reload();
-                    },
-                    complete: function () {
-
-                    }
-                });
-            }).catch(swal.noop);
+            }).then(function (result) {
+                if(result.value) {
+                    $.ajax({
+                        url: url,
+                        type: 'POST',
+                        data: {
+                            _method: 'PATCH',
+                            fecha: $('#fecha').val(),
+                            poliza_contpaq: $('#folio_contpaq').val()
+                        },
+                        success: function (data, textStatus, xhr) {
+                            swal({
+                                type: "success",
+                                title: '¡Correcto!',
+                                text: 'Folio Contpaq ingresado correctamente',
+                                confirmButtonText: "Ok",
+                                closeOnConfirm: false
+                            }).then(function () {
+                                location.reload();
+                            });
+                        }
+                    });
+                }
+            });
         });
     </script>
 @endsection

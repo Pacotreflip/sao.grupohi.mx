@@ -9,6 +9,7 @@
 namespace Ghi\Domain\Core\Repositories\Contabilidad;
 
 use Ghi\Domain\Core\Contracts\Contabilidad\CuentaAlmacenRepository;
+use Ghi\Domain\Core\Models\Almacen;
 use Ghi\Domain\Core\Models\Contabilidad\CuentaAlmacen;
 use Illuminate\Http\Exception\HttpResponseException;
 use Illuminate\Support\Facades\DB;

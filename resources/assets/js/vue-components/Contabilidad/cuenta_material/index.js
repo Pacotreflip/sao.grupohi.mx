@@ -149,8 +149,10 @@ Vue.component('cuenta-material-index', {
                 showCancelButton: true,
                 confirmButtonText: "Si, Continuar",
                 cancelButtonText: "No, Cancelar",
-            }).then(function () {
-                self.update_cuenta();
+            }).then(function (result) {
+                if(result.value) {
+                    self.update_cuenta();
+                }
             }).catch(swal.noop);
         },
 
@@ -193,8 +195,10 @@ Vue.component('cuenta-material-index', {
                 showCancelButton: true,
                 confirmButtonText: "Si, Continuar",
                 cancelButtonText: "No, Cancelar",
-            }).then(function () {
-                self.save_cuenta();
+            }).then(function (result) {
+                if(result.value) {
+                    self.save_cuenta();
+                }
             }).catch(swal.noop);
         },
 

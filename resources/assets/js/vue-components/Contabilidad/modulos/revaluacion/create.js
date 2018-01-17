@@ -27,8 +27,10 @@ Vue.component('revaluacion-create', {
                 showCancelButton: true,
                 confirmButtonText: "Si, Continuar",
                 cancelButtonText: "No, Cancelar",
-            }).then(function () {
-                self.save_facturas();
+            }).then(function (result) {
+                if(result.value) {
+                    self.save_facturas();
+                }
             }).catch(swal.noop);
         },
         save_facturas: function () {

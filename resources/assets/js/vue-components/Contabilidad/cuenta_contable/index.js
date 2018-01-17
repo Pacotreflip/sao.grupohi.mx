@@ -30,8 +30,10 @@ Vue.component('cuenta-contable-index', {
                 showCancelButton: true,
                 confirmButtonText: "Si, Continuar",
                 cancelButtonText: "No, Cancelar",
-            }).then(function () {
-                self.save_cuenta_contable();
+            }).then(function  (result) {
+                if(result.value) {
+                    self.save_cuenta_contable();
+                }
             }).catch(swal.noop);
         },
 
@@ -44,8 +46,10 @@ Vue.component('cuenta-contable-index', {
                 showCancelButton: true,
                 confirmButtonText: "Si, Continuar",
                 cancelButtonText: "No, Cancelar",
-            }).then(function () {
-                self.update_cuenta_contable();
+            }).then(function (result) {
+                if(result.value) {
+                    self.update_cuenta_contable();
+                }
             }).catch(swal.noop);
         },
 
