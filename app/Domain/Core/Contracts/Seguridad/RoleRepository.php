@@ -58,13 +58,5 @@ interface RoleRepository
      * @param $id_role
      * @return Role
      */
-    public function attachPermissions(array $data, $id_role);
-
-    /**
-     * Revoca Permisos a un Rol
-     * @param array $data
-     * @param $id_role
-     * @return Role
-     */
-    public function revokePermissions(array $data, $id_role);
+    public function savePermissions(array $data, $id_role);
 }

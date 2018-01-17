@@ -27,18 +27,25 @@ class RoleController extends Controller
         $this->role = $role;
     }
 
-    public function index() {
+    public function index()
+    {
         $roles = $this->role->all();
-        return $this->response()->collection($roles, function ($items) { return $items; });
+        return $this->response()->collection($roles, function ($items) {
+            return $items;
+        });
     }
 
-    public function store(Request $request) {
+    public function store(Request $request)
+    {
         $role = $this->role->create($request->all());
 
-        return $this->response()->item($role, function ($item) { return $item; });
+        return $this->response()->item($role, function ($item) {
+            return $item;
+        });
     }
 
-    public function paginate(Request $request) {
+    public function paginate(Request $request)
+    {
         $roles = $this->role->paginate($request->all());
 
         return response()->json([
@@ -48,13 +55,11 @@ class RoleController extends Controller
         ], 200);
     }
 
-    public function attachPermissions(Request $request, $id) {
-        $role = $this->role->attachPermissions($id, $request->all());
-        return $this->response()->item($role, function ($item) { return $item; });
-    }
-
-    public function revokePermissions(Request $request, $id) {
-        $role = $this->role->revokePermissions($id, $request->all());
-        return $this->response()->item($role, function ($item) { return $item; });
+    public function savePermissions(Request $request, $id)
+    {
+        $role = $this->role->savePermissions($id, $request->all());
+        return $this->response()->item($role, function ($item) {
+            return $item;
+        });
     }
 }

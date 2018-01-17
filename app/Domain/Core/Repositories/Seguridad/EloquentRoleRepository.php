@@ -100,19 +100,12 @@ class EloquentRoleRepository implements RoleRepository
      * @param $id_role
      * @return Role
      */
-    public function attachPermissions(array $data, $id_role)
+    public function savePermissions(array $data, $id_role)
     {
-        // TODO: Implement attachPermissions() method.
-    }
+        $role = $this->model->find($id_role);
 
-    /**
-     * Revoca Permisos a un Rol
-     * @param array $data
-     * @param $id_role
-     * @return Role
-     */
-    public function revokePermissions(array $data, $id_role)
-    {
-        // TODO: Implement revokePermissions() method.
+        $role->savePermissions($data['permissions']);
+
+        return $this->model->with('perms')->find($id_role);
     }
 }
