@@ -13,6 +13,9 @@
         :operadores="{{ json_encode($data_view['operadores'])  }}"
         :filtros="[]"
         :tipos_transacciones="{{ $data_view['tipos_transacciones']  }}"
+        :solicitar_reclasificacion="{{ \Entrust::can(['solicitar_reclasificacion']) ? 'true' : 'false' }}"
+        :consultar_reclasificacion="{{ \Entrust::can(['consultar_reclasificacion']) ? 'true' : 'false' }}"
+        :autorizar_reclasificacion="{{ \Entrust::can(['autorizar_reclasificacion']) ? 'true' : 'false' }}"
         inline-template
         v-cloak>
     <section>
