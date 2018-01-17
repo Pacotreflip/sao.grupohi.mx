@@ -29,7 +29,6 @@ class PermissionController extends Controller
 
     public function index() {
         $permissions = $this->permission->all();
-
         return $this->response()->collection($permissions, function ($items) { return $items; });
     }
 
