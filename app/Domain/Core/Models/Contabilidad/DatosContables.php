@@ -20,7 +20,8 @@ class DatosContables extends BaseModel
         'FormatoCuenta',
         'FormatoCuentaRegExp',
         'manejo_almacenes',
-        'costo_en_tipo_gasto'
+        'costo_en_tipo_gasto',
+        'retencion_antes_iva',
     ];
 
     protected $appends = ['mask'];

@@ -23,7 +23,7 @@ Vue.component('datos-contables-edit', {
                 substring = "si";
 
             var id = elem.attr('id');
-            var reference = (name === 'manejo' ? 'manejo_almacenes' : 'costo_en_tipo_gasto');
+            var reference = (name === 'manejo' ? 'manejo_almacenes' : (name === 'gasto' ? 'costo_en_tipo_gasto' : 'retencion_antes_iva'));
             var contraparte = "#"+ (id.indexOf(substring) !== -1 ? name + "_no" : name + "_si");
             var parent_elem = elem.parent();
             var parent_contraparte = $(contraparte).parent();
@@ -41,7 +41,7 @@ Vue.component('datos-contables-edit', {
             var parent = elem.parent();
 
             if(elem.is(':checked')) {
-                parent.addClass('iradio_line-green').removeClass('iradio_line-grey');console.log(parent);
+                parent.addClass('iradio_line-green').removeClass('iradio_line-grey');
             }
         });
 
@@ -60,6 +60,7 @@ Vue.component('datos-contables-edit', {
          // Convierte "0" y "1" en false y true respectivamente
          Vue.set(this.data.datos_contables, 'manejo_almacenes', this.toBoolean(this.data.datos_contables.manejo_almacenes));
          Vue.set(this.data.datos_contables, 'costo_en_tipo_gasto', this.toBoolean(this.data.datos_contables.costo_en_tipo_gasto));
+         Vue.set(this.data.datos_contables, 'retencion_antes_iva', this.toBoolean(this.data.datos_contables.retencion_antes_iva));
      },
     directives: {
         icheck: {
@@ -110,6 +111,7 @@ Vue.component('datos-contables-edit', {
                     FormatoCuenta : self.data.datos_contables.FormatoCuenta,
                     NumobraContPaq : self.data.datos_contables.NumobraContPaq,
                     costo_en_tipo_gasto : self.data.datos_contables.costo_en_tipo_gasto,
+                    retencion_antes_iva: self.data.datos_contables.retencion_antes_iva,
                     manejo_almacenes : self.data.datos_contables.manejo_almacenes,
                     _method : 'PATCH'
                 },
@@ -120,6 +122,7 @@ Vue.component('datos-contables-edit', {
                     self.data.datos_contables = data.data.datos_contables;
                     var  costo_en_tipo_gasto = Vue.set(self.data.datos_contables, 'costo_en_tipo_gasto', data.data.datos_contables.costo_en_tipo_gasto == 'true' ? true : false);
                     var  manejo_almacenes = Vue.set(self.data.datos_contables, 'manejo_almacenes', data.data.datos_contables.manejo_almacenes == 'true' ? true : false);
+                    var  retencion_antes_iva = Vue.set(self.data.datos_contables, 'retencion_antes_iva', data.data.datos_contables.retencion_antes_iva == 'true' ? true : false);
                     swal({
                         type: 'success',
                         title: 'Correcto',
