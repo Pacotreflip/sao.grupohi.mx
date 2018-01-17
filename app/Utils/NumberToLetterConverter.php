@@ -174,9 +174,11 @@ class NumberToLetterConverter {
                 break;
             case 2 :
                 $end_num=ucfirst($tex).' dolares '.(isset($float[1]) ? $float[1] : '00').'/100 USD.';
+                break;
+            case 3 :
+                $end_num=ucfirst($tex).' euros '.(isset($float[1]) ? $float[1] : '00').'/100 EUR.';
         }
         return $end_num;
     }
-
 }
 ?>

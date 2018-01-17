@@ -84,7 +84,9 @@ class EloquentRoleRepository implements RoleRepository
      */
     public function paginate(array $data)
     {
-        $query = $this->model->with('perms');
+        $query = $this->model->with(['perms' => function ($q){
+            return $q->orderBy('name', 'asc');
+        }]);
 
         foreach ($data['order'] as $order) {
             $query->orderBy($data['columns'][$order['column']]['data'], $order['dir']);
