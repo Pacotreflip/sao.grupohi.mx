@@ -18,7 +18,7 @@ Route::group(['prefix' => 'configuracion'], function () {
          * Roles Routes
          */
         Route::get('role', 'Configuracion\RoleController@index');
-        Route::post('role/{role}/attachPermision', 'RoleController@attachPermission');
+        Route::post('role/{role}/savePermisions', 'RoleController@savePermissions');
         Route::delete('role/{role}', 'Configuracion\RoleController@destroy');
         Route::patch('role/{role}', 'Configuracion\RoleController@update');
         Route::post('role/paginate', 'Configuracion\RoleController@paginate');
@@ -31,5 +31,4 @@ Route::group(['prefix' => 'configuracion'], function () {
         Route::delete('permission/{permission}', 'Configuracion\PermissionController@destroy');
         Route::patch('permission/{permission}', 'Configuracion\PermissionController@update');
     });
-
 });

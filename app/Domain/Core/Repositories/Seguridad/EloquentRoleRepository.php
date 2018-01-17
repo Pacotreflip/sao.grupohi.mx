@@ -106,4 +106,19 @@ class EloquentRoleRepository implements RoleRepository
             return $q->orderBy('name', 'asc');
         }])->find($id);
     }
+
+    /**
+     * Adjunta Permisos a un Rol
+     * @param array $data
+     * @param $id_role
+     * @return Role
+     */
+    public function savePermissions(array $data, $id_role)
+    {
+        $role = $this->model->find($id_role);
+
+        $role->savePermissions($data['permissions']);
+
+        return $this->model->with('perms')->find($id_role);
+    }
 }
