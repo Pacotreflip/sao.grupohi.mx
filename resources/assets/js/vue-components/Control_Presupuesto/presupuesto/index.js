@@ -43,6 +43,7 @@ Vue.component('control_presupuesto-index', {
                 },
                 "dataSrc" : function (json) {
                     for (var i = 0; i < json.data.length; i++) {
+                        json.data[i].cantidad_presupuestada=Number(json.data[i].cantidad_presupuestada);
                         json.data[i].monto_presupuestado = '$' + parseInt(json.data[i].monto_presupuestado).formatMoney(2, ',', '.')
                         json.data[i].monto = '$' + parseInt(json.data[i].monto).formatMoney(2, ',', '.')
                         json.data[i].precio_unitario = '$' + parseInt(json.data[i].precio_unitario).formatMoney(2, ',', '.')

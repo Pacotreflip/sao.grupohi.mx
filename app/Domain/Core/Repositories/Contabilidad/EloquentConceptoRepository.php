@@ -114,7 +114,7 @@ class EloquentConceptoRepository implements ConceptoRepository
 
             }
         }
-
+        $query->orderBy('conceptos.nivel');
         $query->select(
             "conceptos.unidad",
             "conceptos.cantidad_presupuestada",
