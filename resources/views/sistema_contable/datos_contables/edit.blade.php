@@ -46,73 +46,144 @@
                                         <label class="help" v-show="validation_errors.has('form_datos_obra.Formato de Cuentas')">@{{ validation_errors.first('form_datos_obra.Formato de Cuentas') }}</label>
                                     </div>
                                 </div>
-                                <div class="col-md-3">
+                                <div class="col-md-1"></div>
+                                <div class="col-md-2">
                                     <div class="form-group">
-                                        <label class="control-label"><b>¿Tendrá Afectación Contable de Almacenes?</b></label><br>
-                                        <input type="radio" class="radio-inline checkboxes"  data-name="manejo" data-value="1" name="manejo_si" :value="toBoolean('1')" id="manejo_si"
-                                               v-model="data.datos_contables.manejo_almacenes"
-                                               :disabled="editando()"
-                                               :checked="checkBox(data.datos_contables.manejo_almacenes, true)"
-                                               v-icheck
-                                        />
-                                        <label for="manejo_si">Si</label>
-                                        <input type="radio" class="radio-inline checkboxes" data-name="manejo" data-value="0" name="manejo_no" :value="toBoolean('0')" id="manejo_no"
-                                               v-model="data.datos_contables.manejo_almacenes"
-                                               :disabled="editando()"
-                                               :checked="checkBox(data.datos_contables.manejo_almacenes, false)"
-                                               v-icheck />
-                                        <label for="manejo_no">No</label>
+                                        <label class="control-label"><b>¿Tendrá Afectación Contable de Almacenes?</b></label>
+                                        <ul class="list-unstyled">
+                                            <li>
+                                                <input type="radio" class="checkboxes" data-name="manejo" data-value="1" name="manejo_si" :value="toBoolean('1')" id="manejo_si"
+                                                       v-model="data.datos_contables.manejo_almacenes"
+                                                       :disabled="editando()"
+                                                       :checked="checkBox(data.datos_contables.manejo_almacenes, true)"
+                                                       v-icheck
+                                                />
+                                                Si
+                                            </li>
+                                            <li>
+                                                <input type="radio" class="checkboxes" data-name="manejo" data-value="0" name="manejo_no" :value="toBoolean('0')" id="manejo_no"
+                                                       v-model="data.datos_contables.manejo_almacenes"
+                                                       :disabled="editando()"
+                                                       :checked="checkBox(data.datos_contables.manejo_almacenes, false)"
+                                                       v-icheck />
+                                                No
+                                            </li>
+                                        </ul>
                                     </div>
                                 </div>
-                                <div class="col-md-3">
+
+                                <div class="col-md-2">
                                     <div class="form-group">
-                                        <label class="control-label"><b>¿Tendrá Aplicación de Costo por Tipo de Gasto?</b></label><br>
-                                        <input type="radio" class="radio-inline checkboxes" data-name="gasto" data-value="1" name="gasto_si" :value="toBoolean('1')" id="gasto_si"
-                                               v-model="data.datos_contables.costo_en_tipo_gasto"
-                                               :disabled="editando()"
-                                               :checked="checkBox(data.datos_contables.costo_en_tipo_gasto, true)"
-                                               v-icheck
-                                        />
-                                        <label for="gasto_si">Si</label>
-                                        <input type="radio" class="radio-inline checkboxes" data-name="gasto" data-value="0" name="gasto_no" :value="toBoolean('0')" id="gasto_no"
-                                               v-model="data.datos_contables.costo_en_tipo_gasto"
-                                               :disabled="editando()"
-                                               :checked="checkBox(data.datos_contables.costo_en_tipo_gasto, false)"
-                                               v-icheck
-                                        />
-                                        <label for="gasto_no">No</label>
+                                        <label class="control-label"><b>Aplicación de Costo</b></label>
+                                        <ul class="list-unstyled">
+                                            <li>
+                                                <input type="radio" class="checkboxes" data-name="gasto" data-value="1" name="gasto_si" :value="toBoolean('1')" id="gasto_si"
+                                                       v-model="data.datos_contables.costo_en_tipo_gasto"
+                                                       :disabled="editando()"
+                                                       :checked="checkBox(data.datos_contables.costo_en_tipo_gasto, true)"
+                                                       v-icheck
+                                                />
+                                                Por Tipo de Gasto
+                                            </li>
+                                            <li>
+                                                <input type="radio" class="checkboxes" data-name="gasto" data-value="0" name="gasto_no" :value="toBoolean('0')" id="gasto_no"
+                                                       v-model="data.datos_contables.costo_en_tipo_gasto"
+                                                       :disabled="editando()"
+                                                       :checked="checkBox(data.datos_contables.costo_en_tipo_gasto, false)"
+                                                       v-icheck
+                                                />
+                                                Por Conceptos Presupuesto
+                                            </li>
+                                        </ul>
                                     </div>
                                 </div>
-                                <div class="col-md-3">
+                                <div class="col-md-2">
                                     <div class="form-group">
-                                        <label class="control-label"><b>¿Tendrá Aplicación de Retención Antes de IVA?</b></label><br>
-                                        <input type="radio" class="radio-inline checkboxes" data-name="retencion_antes_iva" data-value="1" name="retencion_antes_iva_si" :value="toBoolean('1')" id="retencion_antes_iva_si"
-                                               v-model="data.datos_contables.retencion_antes_iva"
-                                               :disabled="editando()"
-                                               :checked="checkBox(data.datos_contables.retencion_antes_iva, true)"
-                                               v-icheck
-                                        />
-                                        <label for="retencion_antes_iva_si">Si</label>
-                                        <input type="radio" class="radio-inline checkboxes" data-name="retencion_antes_iva" data-value="0" name="retencion_antes_iva_no" :value="toBoolean('0')" id="retencion_antes_iva_no"
-                                               v-model="data.datos_contables.retencion_antes_iva"
-                                               :disabled="editando()"
-                                               :checked="checkBox(data.datos_contables.retencion_antes_iva, false)"
-                                               v-icheck
-                                        />
-                                        <label for="retencion_antes_iva_no">No</label>
+                                        <label class="control-label"><b>Retención de Fondo de Garantía</b></label><br>
+                                        <ul class="list-unstyled">
+                                            <li>
+                                                <input type="radio" class="checkboxes" data-name="retencion_antes_iva" data-value="1" name="retencion_antes_iva_si" :value="toBoolean('1')" id="retencion_antes_iva_si"
+                                                       v-model="data.datos_contables.retencion_antes_iva"
+                                                       :disabled="editando()"
+                                                       :checked="checkBox(data.datos_contables.retencion_antes_iva, true)"
+                                                       v-icheck
+                                                />
+                                                Antes de IVA
+                                            </li>
+                                            <li>
+                                                <input type="radio" class="checkboxes" data-name="retencion_antes_iva" data-value="0" name="retencion_antes_iva_no" :value="toBoolean('0')" id="retencion_antes_iva_no"
+                                                       v-model="data.datos_contables.retencion_antes_iva"
+                                                       :disabled="editando()"
+                                                       :checked="checkBox(data.datos_contables.retencion_antes_iva, false)"
+                                                       v-icheck
+                                                />
+                                                Después de IVA
+                                            </li>
+                                        </ul>
                                     </div>
                                 </div>
+                                <div class="col-md-2">
+                                    <div class="form-group">
+                                        <label class="control-label"><b>Aplicación de Deductivas</b></label><br>
+                                        <ul class="list-unstyled">
+                                            <li>
+                                                <input type="radio" class="checkboxes" data-name="deductiva_antes_iva" data-value="1" name="deductiva_antes_iva_si" :value="toBoolean('1')" id="deductiva_antes_iva_si"
+                                                       v-model="data.datos_contables.deductiva_antes_iva"
+                                                       :disabled="editando()"
+                                                       :checked="checkBox(data.datos_contables.deductiva_antes_iva, true)"
+                                                       v-icheck
+                                                />
+                                                Antes de IVA
+                                            </li>
+                                            <li>
+                                                <input type="radio" class="checkboxes" data-name="deductiva_antes_iva" data-value="0" name="deductiva_antes_iva_no" :value="toBoolean('0')" id="deductiva_antes_iva_no"
+                                                       v-model="data.datos_contables.deductiva_antes_iva"
+                                                       :disabled="editando()"
+                                                       :checked="checkBox(data.datos_contables.deductiva_antes_iva, false)"
+                                                       v-icheck
+                                                />
+                                                Después de IVA
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="col-md-2">
+                                    <div class="form-group">
+                                        <label class="control-label"><b>Amortización de Anticipo</b></label><br>
+                                        <ul class="list-unstyled">
+                                            <li>
+                                                <input type="radio" class="checkboxes" data-name="amortizacion_antes_iva" data-value="1" name="amortizacion_antes_iva_si" :value="toBoolean('1')" id="amortizacion_antes_iva_si"
+                                                       v-model="data.datos_contables.amortizacion_antes_iva"
+                                                       :disabled="editando()"
+                                                       :checked="checkBox(data.datos_contables.amortizacion_antes_iva, true)"
+                                                       v-icheck
+                                                />
+                                                Antes de IVA
+                                            </li>
+                                            <li>
+                                                <input type="radio"  class="checkboxes" data-name="amortizacion_antes_iva" data-value="0" name="amortizacion_antes_iva_no" :value="toBoolean('0')" id="amortizacion_antes_iva_no"
+                                                       v-model="data.datos_contables.amortizacion_antes_iva"
+                                                       :disabled="editando()"
+                                                       :checked="checkBox(data.datos_contables.amortizacion_antes_iva, false)"
+                                                       v-icheck
+                                                />
+                                                Después de IVA
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="col-md-1"></div>
                             </div>
                             <!-- /.box-body -->
                             <div class="box-footer">
                                 <div class="col-md-12" v-show="!editando()">
                                     <button type="submit" class="btn btn-info pull-right" :disabled="guardando">
-                                <span v-if="guardando">
-                                    <i class="fa fa-spinner fa-spin"></i> Guardando
-                                </span>
+                                        <span v-if="guardando">
+                                            <i class="fa fa-spinner fa-spin"></i> Guardando
+                                        </span>
                                         <span v-else>
-                                    <i class="fa fa-save"></i> Guardar
-                                </span>
+                                            <i class="fa fa-save"></i> Guardar
+                                        </span>
                                     </button>
                                 </div>
                             </div>
