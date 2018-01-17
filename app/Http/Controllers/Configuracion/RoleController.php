@@ -47,4 +47,14 @@ class RoleController extends Controller
             'data' => $roles->items()
         ], 200);
     }
+
+    public function attachPermissions(Request $request, $id) {
+        $role = $this->role->attachPermissions($id, $request->all());
+        return $this->response()->item($role, function ($item) { return $item; });
+    }
+
+    public function revokePermissions(Request $request, $id) {
+        $role = $this->role->revokePermissions($id, $request->all());
+        return $this->response()->item($role, function ($item) { return $item; });
+    }
 }

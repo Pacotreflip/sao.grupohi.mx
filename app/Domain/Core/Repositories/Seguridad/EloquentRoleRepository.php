@@ -93,4 +93,26 @@ class EloquentRoleRepository implements RoleRepository
         }
         return $query->paginate($perPage = $data['length'], $columns = ['*'], $pageName = 'page', $page = ($data['start'] / $data['length']) + 1);
     }
+
+    /**
+     * Adjunta Permisos a un Rol
+     * @param array $data
+     * @param $id_role
+     * @return Role
+     */
+    public function attachPermissions(array $data, $id_role)
+    {
+        // TODO: Implement attachPermissions() method.
+    }
+
+    /**
+     * Revoca Permisos a un Rol
+     * @param array $data
+     * @param $id_role
+     * @return Role
+     */
+    public function revokePermissions(array $data, $id_role)
+    {
+        // TODO: Implement revokePermissions() method.
+    }
 }

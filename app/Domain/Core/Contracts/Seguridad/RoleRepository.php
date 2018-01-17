@@ -51,4 +51,20 @@ interface RoleRepository
      * @return mixed
      */
     public function paginate(array $data);
+
+    /**
+     * Adjunta Permisos a un Rol
+     * @param array $data
+     * @param $id_role
+     * @return Role
+     */
+    public function attachPermissions(array $data, $id_role);
+
+    /**
+     * Revoca Permisos a un Rol
+     * @param array $data
+     * @param $id_role
+     * @return Role
+     */
+    public function revokePermissions(array $data, $id_role);
 }
