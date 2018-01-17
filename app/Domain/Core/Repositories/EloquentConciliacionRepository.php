@@ -314,11 +314,21 @@ class EloquentConciliacionRepository implements ConciliacionRepository
      */
     public function delete($id)
     {
+        $conciliacion = ConciliacionEstimacion::where('id_conciliacion', '=', $id)->first();
+        if(!$conciliacion){
+            throw new ResourceException('La Conciliacion No tiene Estimación Registrada en SAO.');
+        }
+
+        $factura = Item::where('id_antecedente', '=', $conciliacion->id_estimacion)->first();
+        if($factura){
+            throw new ResourceException('La Conciliacion Cuenta con Una Factura Registrada');
+        }
+        $estimacion = $this->estimacion->find($conciliacion->id_estimacion);
+        $conceptos = Item::where('id_transaccion', '=', $estimacion->id_transaccion)->get();
+
+
         try {
             DB::connection('cadeco')->beginTransaction();
-            $conciliacion = ConciliacionEstimacion::where('id_conciliacion', '=', $id)->first();
-            $estimacion = $this->estimacion->find($conciliacion->id_estimacion);
-            $conceptos = Item::where('id_transaccion', '=', $estimacion->id_transaccion)->get();
             foreach ($conceptos as $concepto) {
                 $item = Item::where('id_concepto', '=', $concepto->item_antecedente)->first();
                 $item->cantidad -= $concepto->cantidad;
@@ -336,7 +346,7 @@ class EloquentConciliacionRepository implements ConciliacionRepository
             DB::connection('cadeco')->commit();
         }catch (\Exception $e){
             DB::connection('cadeco')->rollback();
-            throw new ResourceException('No se Eliminó la Estimación de la Conciliacion Seleccionada.');
+            throw new ResourceException('No se Eliminó la Estimación de la Conciliacion Seleccionada.' );
         }
 
         return $conceptos;
