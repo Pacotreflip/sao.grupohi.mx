@@ -60,7 +60,7 @@ class EloquentDatosContablesRepository implements DatosContablesRepository
 
             $item->update($data);
             DB::connection('cadeco')->commit();
-        } catch (\Exception $e) {+
+        } catch (\Exception $e) {
             DB::connection('cadeco')->rollBack();
             throw $e;
         }

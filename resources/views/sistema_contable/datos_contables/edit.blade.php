@@ -83,6 +83,25 @@
                                         <label for="gasto_no">No</label>
                                     </div>
                                 </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label class="control-label"><b>¿Tendrá Aplicación de Retención Antes de IVA?</b></label><br>
+                                        <input type="radio" class="radio-inline checkboxes" data-name="retencion_antes_iva" data-value="1" name="retencion_antes_iva_si" :value="toBoolean('1')" id="retencion_antes_iva_si"
+                                               v-model="data.datos_contables.retencion_antes_iva"
+                                               :disabled="editando()"
+                                               :checked="checkBox(data.datos_contables.retencion_antes_iva, true)"
+                                               v-icheck
+                                        />
+                                        <label for="retencion_antes_iva_si">Si</label>
+                                        <input type="radio" class="radio-inline checkboxes" data-name="retencion_antes_iva" data-value="0" name="retencion_antes_iva_no" :value="toBoolean('0')" id="retencion_antes_iva_no"
+                                               v-model="data.datos_contables.retencion_antes_iva"
+                                               :disabled="editando()"
+                                               :checked="checkBox(data.datos_contables.retencion_antes_iva, false)"
+                                               v-icheck
+                                        />
+                                        <label for="retencion_antes_iva_no">No</label>
+                                    </div>
+                                </div>
                             </div>
                             <!-- /.box-body -->
                             <div class="box-footer">
