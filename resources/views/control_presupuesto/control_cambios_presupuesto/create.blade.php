@@ -10,9 +10,37 @@
     <control_cambio_presupuesto-create
             :max_niveles="{{ $max_niveles  }}"
             :operadores="{{ json_encode($operadores) }}"
+            :basesPresupuesto="{{$basesPresupuesto}}"
             inline-template
             v-cloak>
         <section>
+            <div class="row" >
+                <div class="col-md-12">
+                    <div class="box box-solid">
+                        <div class="box-header with-border">
+                            <h3 class="box-title">Solicitud de cambios al presupuesto</h3>
+                        </div>
+                        <div class="box-body">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="Presupuesto afectado"
+                                           class="control-label"><strong>Presupuesto afectado:</strong></label>
+                                    <select name="Presupuesto afectado" class="form-control input-sm" v-model="baseDatos"  v-on:change="crearFiltro">
+                                        <option value>[--SELECCIONE--]</option>
+                                        @foreach($basesPresupuesto as $key=>$value)
+                                            <option value="{{$value->id}}">{{$value->descripcion}}</option>
+                                        @endforeach
+                                    </select>
+
+                                </div>
+                            </div>
+
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <div class="row">
                 <div class="col-md-12">
                     <button type="button" class="btn btn-sm btn-primary pull-right" data-toggle="modal" data-target="#agregar_filtro_modal">Agregar Filtro</button>

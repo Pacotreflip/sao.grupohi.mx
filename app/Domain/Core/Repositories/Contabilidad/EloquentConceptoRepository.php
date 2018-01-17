@@ -95,7 +95,7 @@ class EloquentConceptoRepository implements ConceptoRepository
         return $item->max_nivel;
     }
 
-    public function paths(array $data) {
+    public function paths(array $data,$baseDatos=null) {
 
 
         $query = DB::connection('cadeco')->table('conceptos')->where('conceptos.id_obra', '=', Context::getId())->join('PresupuestoObra.conceptosPath as path', 'conceptos.id_concepto', '=', 'path.id_concepto');
