@@ -16,7 +16,6 @@ Vue.component('configuracion-seguridad-index', {
     computed : {
         nombre_corto : function () {
             return this.role.display_name.replace(new RegExp(" ", 'g'), '_').toLowerCase();
-
         }
     },
 
@@ -202,7 +201,7 @@ Vue.component('configuracion-seguridad-index', {
                 url : App.host + '/configuracion/seguridad/role',
                 type: 'POST',
                 data : {
-                    name : self.nombre_corto(),
+                    name : self.nombre_corto,
                     display_name : self.role.display_name,
                     description : self.role.description,
                     permissions : self.permisos_alta
@@ -217,6 +216,71 @@ Vue.component('configuracion-seguridad-index', {
 
                 }
             })
+        },
+
+        validateForm: function(scope, funcion) {
+            this.$validator.validateAll(scope).then(() => {
+                if(funcion == 'save_role') {
+                    this.confirm_save_role();
+                } else if (funcion == 'update_role') {
+                    this.confirm_update_role();
+                }
+            }).catch(() => {
+                swal({
+                     type: 'warning',
+                     title: 'Advertencia',
+                     text: 'Por favor corrija los errores del formulario'
+                 });
+            });
+        },
+
+
+        confirm_save_role: function () {
+            var self = this;
+            swal({
+                title: "Guardar Nuevo Rol",
+                text: "¿Estás seguro de que la información es correcta?",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonText: "Si, Continuar",
+                cancelButtonText: "No, Cancelar",
+            }).then(function (result) {
+                if(result.value) {
+                    self.saveRol();
+                }
+            });
+        },
+
+        confirm_update_role: function () {
+            var self = this;
+            swal({
+                title: "Actualizar Rol",
+                text: "¿Estás seguro de que la información es correcta?",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonText: "Si, Continuar",
+                cancelButtonText: "No, Cancelar",
+            }).then(function (result) {
+                if(result.value) {
+                    self.updateRol();
+                }
+            });
+        },
+
+        confirm_save_role: function () {
+            var self = this;
+            swal({
+                title: "Guardar Nuevo Rol",
+                text: "¿Estás seguro de que la información es correcta?",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonText: "Si, Continuar",
+                cancelButtonText: "No, Cancelar",
+            }).then(function (result) {
+                if(result.value) {
+                    self.saveRol();
+                }
+            });
         }
     }
 });
