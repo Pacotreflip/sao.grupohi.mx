@@ -14214,6 +14214,8 @@ Vue.component('requisicion-edit', {
 },{}],9:[function(require,module,exports){
 'use strict';
 
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 Vue.component('configuracion-seguridad-index', {
     data: function data() {
         return {
@@ -14319,7 +14321,7 @@ Vue.component('configuracion-seguridad-index', {
         });
     },
 
-    methods: {
+    methods: _defineProperty({
         getRole: function getRole(id) {
             var self = this;
             $.ajax({
@@ -14432,8 +14434,73 @@ Vue.component('configuracion-seguridad-index', {
                     self.guardando = false;
                 }
             });
+        },
+
+        validateForm: function validateForm(scope, funcion) {
+            var _this = this;
+
+            this.$validator.validateAll(scope).then(function () {
+                if (funcion == 'save_role') {
+                    _this.confirm_save_role();
+                } else if (funcion == 'update_role') {
+                    _this.confirm_update_role();
+                }
+            }).catch(function () {
+                swal({
+                    type: 'warning',
+                    title: 'Advertencia',
+                    text: 'Por favor corrija los errores del formulario'
+                });
+            });
+        },
+
+        confirm_save_role: function confirm_save_role() {
+            var self = this;
+            swal({
+                title: "Guardar Nuevo Rol",
+                text: "¿Estás seguro de que la información es correcta?",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonText: "Si, Continuar",
+                cancelButtonText: "No, Cancelar"
+            }).then(function (result) {
+                if (result.value) {
+                    self.saveRol();
+                }
+            });
+        },
+
+        confirm_update_role: function confirm_update_role() {
+            var self = this;
+            swal({
+                title: "Actualizar Rol",
+                text: "¿Estás seguro de que la información es correcta?",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonText: "Si, Continuar",
+                cancelButtonText: "No, Cancelar"
+            }).then(function (result) {
+                if (result.value) {
+                    self.updateRol();
+                }
+            });
         }
-    }
+
+    }, 'confirm_save_role', function confirm_save_role() {
+        var self = this;
+        swal({
+            title: "Guardar Nuevo Rol",
+            text: "¿Estás seguro de que la información es correcta?",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonText: "Si, Continuar",
+            cancelButtonText: "No, Cancelar"
+        }).then(function (result) {
+            if (result.value) {
+                self.saveRol();
+            }
+        });
+    })
 });
 
 },{}],10:[function(require,module,exports){
