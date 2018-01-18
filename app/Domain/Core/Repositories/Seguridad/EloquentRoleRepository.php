@@ -41,13 +41,15 @@ class EloquentRoleRepository implements RoleRepository
     public function create(array $data)
     {
         try {
-            DB::connection('seguridad')->beginTransacton();
+            DB::connection('seguridad')->beginTransaction();
 
-            //TODO : Registrar un nuevo Rol con $data
+            $permisos = isset($data['permissions']) ? $data['permissions'] : [];
+            $role = $this->model->create($data);
+            $role->savePermissions($permisos);
 
             DB::connection('seguridad')->commit();
 
-            return ;
+            return $role;
         } catch (\Exception $e) {
             DB::connection('seguridad')->rollback();
             throw $e;

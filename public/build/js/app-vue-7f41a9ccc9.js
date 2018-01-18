@@ -14256,7 +14256,7 @@ Vue.component('configuracion-seguridad-index', {
             "processing": true,
             "serverSide": true,
             "ordering": true,
-            "order": [[0, "desc"]],
+            "order": [[2, "desc"]],
             "searching": false,
             "ajax": {
                 "url": App.host + '/configuracion/seguridad/role/paginate',
@@ -14410,14 +14410,27 @@ Vue.component('configuracion-seguridad-index', {
                 url: App.host + '/configuracion/seguridad/role',
                 type: 'POST',
                 data: {
-                    name: self.nombre_corto(),
+                    name: self.nombre_corto,
                     display_name: self.role.display_name,
                     description: self.role.description,
                     permissions: self.permisos_alta
                 },
-                beforeSend: function beforeSend() {},
-                success: function success() {},
-                complete: function complete() {}
+                beforeSend: function beforeSend() {
+                    self.guardando = true;
+                },
+                success: function success(response) {
+                    $('.modal').modal('hide');
+                    self.closeModal();
+                    $('#roles_table').DataTable().ajax.reload(null, false);
+
+                    swal({
+                        type: 'success',
+                        title: 'Rol ' + response.display_name + ' registrado correctamente'
+                    });
+                },
+                complete: function complete() {
+                    self.guardando = false;
+                }
             });
         }
     }
