@@ -38,4 +38,8 @@ class UsuarioController extends Controller
             'data' => $usuarios->items()
         ], 200);
     }
+
+    public function saveRoles(Request $request, $id_user) {
+        //TODO :
+    }
 }
