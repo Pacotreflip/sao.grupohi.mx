@@ -14,6 +14,8 @@ class AddRetencionDatosContablesObra extends Migration
     {
         Schema::table('Contabilidad.datos_contables_obra', function (Blueprint $table) {
             $table->boolean('retencion_antes_iva')->default(true);
+            $table->boolean('amortizacion_antes_iva')->default(true);
+            $table->boolean('deductiva_antes_iva')->default(true);
         });
     }
 
@@ -24,8 +26,10 @@ class AddRetencionDatosContablesObra extends Migration
      */
     public function down()
     {
-        Schema::table('Contabilidad.poliza_tipo', function (Blueprint $table) {
+        Schema::table('Contabilidad.datos_contables_obra', function (Blueprint $table) {
             $table->dropColumn('retencion_antes_iva');
+            $table->dropColumn('amortizacion_antes_iva');
+            $table->dropColumn('deductiva_antes_iva');
         });
     }
 }
