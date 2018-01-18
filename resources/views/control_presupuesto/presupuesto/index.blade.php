@@ -13,10 +13,56 @@
         inline-template
         v-cloak>
     <section>
-        <div class="row">
+        <div class="row" >
             <div class="col-md-12">
-                <button type="button" class="btn btn-sm btn-primary pull-right" data-toggle="modal" data-target="#agregar_filtro_modal">Agregar Filtro</button>
+                <div class="box box-solid">
+                    <div class="box-header with-border">
+                        <h3 class="box-title">Criterios de Busqueda</h3>
+                    </div>
+                    <div class="box-body">
+                        <div class="col-md-5">
+                            <div class="form-group">
+                                <label for="Presupuesto afectado"
+                                       class="control-label"><strong>Presupuesto afectado:</strong></label>
+                                <select name="Presupuesto afectado" class="form-control input-sm" v-model="baseDatos"  >
+                                    <option value="" selected>[--SELECCIONE--]</option>
+                                    @foreach($basesPresupuesto as $key=>$value)
+                                        <option value="{{$value->id}}" >{{$value->descripcion}}</option>
+                                    @endforeach
+                                </select>
+
+                            </div>
+                        </div>
+                        <div class="col-md-5" v-show="baseDatos==1">
+                            <div class="form-group">
+                                <label for="Porcentaje"
+                                       class="control-label"><strong>Porcentaje:</strong></label>
+                                <input type="text" name="Porcentaje" class="form-control input-sm" v-model="porcentaje"/>
+                            </div>
+                        </div>
+                        <div class="col-md-1">
+                            <div class="form-group">
+                                <label for="search"
+                                       class="control-label"><strong>&nbsp; </strong></label>
+                                <input name="search" type="button" class="form-control input-sm   btn btn-sm btn-primary pull-right" data-toggle="modal" data-target="#agregar_filtro_modal" value="Agregar Filtro" ></input>
+                            </div>
+                        </div>
+                        <div class="col-md-1">
+                            <div class="form-group">
+                                <label for="search"
+                                       class="control-label"><strong>&nbsp; </strong></label>
+                                <input name="search" type="button" class="form-control input-sm btn btn-sm btn-primary pull-right" value="Filtrar"  v-on:click="crearFiltro"></input>
+
+                            </div>
+                        </div>
+
+
+                    </div>
+                </div>
             </div>
+        </div>
+
+        <div class="row">
             <hr>
             <div class="col-md-12" v-if="filtros.length">
                 <div class="box box-solid">
@@ -74,26 +120,45 @@
                             <table id="conceptos_table" class="small table table-bordered table-striped">
                                 <thead>
                                 <tr>
-                                    <th v-for="nivel in niveles">
-                                        Nivel @{{ nivel.numero }}
-                                    </th>
+                                   <th>Nivel 1</th>
+                                    <th>Nivel 2</th>
+                                    <th>Nivel 3</th>
+                                    <th>Sector</th>
+                                    <th>Cuadrante</th>
+                                    <th>Especialidad</th>
+                                    <th>Partida</th>
+                                    <th>Sub Partida o Centa de costo</th>
+                                    <th>Concepto</th>
+                                    <th>Nivel 10</th>
+                                    <th>Nivel 11</th>
                                     <th>Unidad</th>
                                     <th>Cantidad</th>
                                     <th>Precio Unitario</th>
+                                    <th>Precio Unitario Venta</th>
                                     <th>Monto</th>
-                                    <th>Monto Presupuestado</th>
+                                    <th>Monto Venta</th>
+
                                 </tr>
                                 </thead>
                                 <tfoot>
                                 <tr>
-                                    <th v-for="nivel in niveles">
-                                        Nivel @{{ nivel.numero }}
-                                    </th>
+                                    <th>Nivel 1</th>
+                                    <th>Nivel 2</th>
+                                    <th>Nivel 3</th>
+                                    <th>Sector</th>
+                                    <th>Cuadrante</th>
+                                    <th>Especialidad</th>
+                                    <th>Partida</th>
+                                    <th>Sub Partida o Centa de costo</th>
+                                    <th>Concepto</th>
+                                    <th>Nivel 10</th>
+                                    <th>Nivel 11</th>
                                     <th>Unidad</th>
                                     <th>Cantidad</th>
                                     <th>Precio Unitario</th>
+                                    <th>Precio Unitario Venta</th>
                                     <th>Monto</th>
-                                    <th>Monto Presupuestado</th>
+                                    <th>Monto Venta</th>
                                 </tr>
                                 </tfoot>
                             </table>

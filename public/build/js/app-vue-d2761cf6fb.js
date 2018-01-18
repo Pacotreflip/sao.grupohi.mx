@@ -17448,7 +17448,7 @@ Vue.component('reclasificacion_costos-index', {
 'use strict';
 
 Vue.component('solicitar_reclasificacion-index', {
-    props: ['url_solicitar_reclasificacion_index', 'max_niveles', 'filtros', 'operadores', 'tipos_transacciones'],
+    props: ['url_solicitar_reclasificacion_index', 'max_niveles', 'filtros', 'operadores', 'tipos_transacciones', 'solicitar_reclasificacion', 'consultar_reclasificacion', 'autorizar_reclasificacion'],
     data: function data() {
         return {
             'data': {
@@ -18321,11 +18321,12 @@ Vue.component('solicitar_reclasificacion-items', {
 'use strict';
 
 Vue.component('control_cambio_presupuesto-create', {
-    props: ['max_niveles', 'operadores'],
+    props: ['max_niveles', 'operadores', 'basesPresupuesto'],
     data: function data() {
         return {
             conceptos: [],
             filtros: [],
+            baseDatos: '',
             form: {
                 filtro: {
                     nivel: '',
@@ -18346,61 +18347,73 @@ Vue.component('control_cambio_presupuesto-create', {
             return niveles;
         }
     },
-    mounted: function mounted() {
-        var self = this;
-        $('#conceptos_table').DataTable({
-            "processing": true,
-            "serverSide": true,
-            "ordering": false,
-            "ajax": {
-                "url": App.host + '/conceptos/getPaths',
-                "type": "POST",
-                "beforeSend": function beforeSend() {
-                    self.cargando = true;
-                },
-                "data": function data(d) {
-                    d.filtros = self.filtros;
-                },
-                "complete": function complete() {
-                    self.cargando = false;
-                },
-                "dataSrc": function dataSrc(json) {
-                    for (var i = 0; i < json.data.length; i++) {
-                        json.data[i].monto_presupuestado = '$' + parseInt(json.data[i].monto_presupuestado).formatMoney(2, ',', '.');
-                        json.data[i].monto = '$' + parseInt(json.data[i].monto).formatMoney(2, ',', '.');
-                        json.data[i].precio_unitario = '$' + parseInt(json.data[i].precio_unitario).formatMoney(2, ',', '.');
-                    }
-                    return json.data;
-                }
-            },
-            "columns": [{ data: 'filtro1' }, { data: 'filtro2' }, { data: 'filtro3' }, { data: 'filtro4' }, { data: 'filtro5' }, { data: 'filtro6' }, { data: 'filtro7' }, { data: 'filtro8' }, { data: 'filtro9' }, { data: 'filtro10' }, { data: 'filtro11' }, { data: 'unidad' }, { data: 'cantidad_presupuestada', className: 'text-right' }, { data: 'precio_unitario', className: 'text-right' }, { data: 'monto', className: 'text-right' }, { data: 'monto_presupuestado', className: 'text-right' }],
-            language: {
-                "sProcessing": "Procesando...",
-                "sLengthMenu": "Mostrar _MENU_ registros",
-                "sZeroRecords": "No se encontraron resultados",
-                "sEmptyTable": "Ningún dato disponible en esta tabla",
-                "sInfo": "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
-                "sInfoEmpty": "Mostrando registros del 0 al 0 de un total de 0 registros",
-                "sInfoFiltered": "(filtrado de un total de _MAX_ registros)",
-                "sInfoPostFix": "",
-                "sSearch": "Buscar:",
-                "sUrl": "",
-                "sInfoThousands": ",",
-                "sLoadingRecords": "Cargando...",
-                "oPaginate": {
-                    "sFirst": "Primero",
-                    "sLast": "Último",
-                    "sNext": "Siguiente",
-                    "sPrevious": "Anterior"
-                },
-                "oAria": {
-                    "sSortAscending": ": Activar para ordenar la columna de manera ascendente",
-                    "sSortDescending": ": Activar para ordenar la columna de manera descendente"
-                }
-            }
-        });
-    },
+    mounted: function mounted() {},
     methods: {
+
+        crearFiltro: function crearFiltro() {
+            var self = this;
+
+            $('#conceptos_table').DataTable({
+                "processing": true,
+                destroy: true,
+                "serverSide": true,
+                "ordering": false,
+                "ajax": {
+                    "url": App.host + '/control_presupuesto/conceptos/getPaths',
+                    "type": "POST",
+                    "beforeSend": function beforeSend() {
+                        self.cargando = true;
+                    },
+                    "data": function data(d) {
+                        d.filtros = self.filtros;
+
+                        d.baseDatos = self.baseDatos;
+                    },
+                    "complete": function complete() {
+                        self.cargando = false;
+                    },
+                    "dataSrc": function dataSrc(json) {
+                        for (var i = 0; i < json.data.length; i++) {
+                            json.data[i].monto_presupuestado = '$' + parseInt(json.data[i].monto_presupuestado).formatMoney(2, ',', '.');
+                            json.data[i].monto = '$' + parseInt(json.data[i].monto).formatMoney(2, ',', '.');
+                            json.data[i].precio_unitario = '$' + parseInt(json.data[i].precio_unitario).formatMoney(2, ',', '.');
+                        }
+                        return json.data;
+                    }
+                },
+                "columns": [{ data: 'filtro1' }, { data: 'filtro2' }, { data: 'filtro3' }, { data: 'filtro4' }, { data: 'filtro5' }, { data: 'filtro6' }, { data: 'filtro7' }, { data: 'filtro8' }, { data: 'filtro9' }, { data: 'filtro10' }, { data: 'filtro11' }, { data: 'unidad' }, { data: 'cantidad_presupuestada', className: 'text-right' }, { data: 'precio_unitario', className: 'text-right' }, { data: 'monto', className: 'text-right' }, { data: 'monto_presupuestado', className: 'text-right' }],
+                language: {
+                    "sProcessing": "Procesando...",
+                    "sLengthMenu": "Mostrar _MENU_ registros",
+                    "sZeroRecords": "No se encontraron resultados",
+                    "sEmptyTable": "Ningún dato disponible en esta tabla",
+                    "sInfo": "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
+                    "sInfoEmpty": "Mostrando registros del 0 al 0 de un total de 0 registros",
+                    "sInfoFiltered": "(filtrado de un total de _MAX_ registros)",
+                    "sInfoPostFix": "",
+                    "sSearch": "Buscar:",
+                    "sUrl": "",
+                    "sInfoThousands": ",",
+                    "sLoadingRecords": "Cargando...",
+                    "oPaginate": {
+                        "sFirst": "Primero",
+                        "sLast": "Último",
+                        "sNext": "Siguiente",
+                        "sPrevious": "Anterior"
+                    },
+                    "oAria": {
+                        "sSortAscending": ": Activar para ordenar la columna de manera ascendente",
+                        "sSortDescending": ": Activar para ordenar la columna de manera descendente"
+                    }
+                },
+                "columnDefs": [{
+                    "targets": -1,
+                    "data": null,
+                    "defaultContent": "<button>Click!</button>"
+                }]
+            });
+        },
+
         set_filtro: function set_filtro() {
             var nivel = this.form.filtro.nivel;
             var result = this.filtros.filter(function (filtro) {
@@ -18460,6 +18473,8 @@ Vue.component('control_presupuesto-index', {
         return {
             conceptos: [],
             filtros: [],
+            baseDatos: '',
+            porcentaje: 0,
             form: {
                 filtro: {
                     nivel: '',
@@ -18482,9 +18497,10 @@ Vue.component('control_presupuesto-index', {
     },
     mounted: function mounted() {
         var self = this;
-        $('#conceptos_table').DataTable({
+        var table = $('#conceptos_table').DataTable({
             "processing": true,
             "serverSide": true,
+            destroy: true,
             "ordering": false,
             "ajax": {
                 "url": App.host + '/conceptos/getPaths',
@@ -18494,6 +18510,7 @@ Vue.component('control_presupuesto-index', {
                 },
                 "data": function data(d) {
                     d.filtros = self.filtros;
+                    d.baseDatos = self.baseDatos;
                 },
                 "complete": function complete() {
                     self.cargando = false;
@@ -18502,13 +18519,15 @@ Vue.component('control_presupuesto-index', {
                     for (var i = 0; i < json.data.length; i++) {
                         json.data[i].cantidad_presupuestada = Number(json.data[i].cantidad_presupuestada);
                         json.data[i].monto_presupuestado = '$' + parseInt(json.data[i].monto_presupuestado).formatMoney(2, ',', '.');
+                        json.data[i].monto_venta = '$' + parseInt(Number(json.data[i].monto * Number("1." + self.porcentaje))).formatMoney(2, ',', '.');
                         json.data[i].monto = '$' + parseInt(json.data[i].monto).formatMoney(2, ',', '.');
+                        json.data[i].precio_unitario_venta = '$' + parseInt(Number(json.data[i].precio_unitario) * Number("1." + self.porcentaje)).formatMoney(2, ',', '.');
                         json.data[i].precio_unitario = '$' + parseInt(json.data[i].precio_unitario).formatMoney(2, ',', '.');
                     }
                     return json.data;
                 }
             },
-            "columns": [{ data: 'filtro1' }, { data: 'filtro2' }, { data: 'filtro3' }, { data: 'filtro4' }, { data: 'filtro5' }, { data: 'filtro6' }, { data: 'filtro7' }, { data: 'filtro8' }, { data: 'filtro9' }, { data: 'filtro10' }, { data: 'filtro11' }, { data: 'unidad' }, { data: 'cantidad_presupuestada', className: 'text-right' }, { data: 'precio_unitario', className: 'text-right' }, { data: 'monto', className: 'text-right' }, { data: 'monto_presupuestado', className: 'text-right' }],
+            "columns": [{ data: 'filtro1' }, { data: 'filtro2' }, { data: 'filtro3' }, { data: 'filtro4' }, { data: 'filtro5' }, { data: 'filtro6' }, { data: 'filtro7' }, { data: 'filtro8' }, { data: 'filtro9' }, { data: 'filtro10' }, { data: 'filtro11' }, { data: 'unidad' }, { data: 'cantidad_presupuestada', className: 'text-right' }, { data: 'precio_unitario', className: 'text-right' }, { data: 'precio_unitario_venta', className: 'text-right' }, { data: 'monto', className: 'text-right' }, { data: 'monto_venta', className: 'text-right' }],
             language: {
                 "sProcessing": "Procesando...",
                 "sLengthMenu": "Mostrar _MENU_ registros",
@@ -18534,8 +18553,76 @@ Vue.component('control_presupuesto-index', {
                 }
             }
         });
+
+        table.column(14).visible(false);
+        table.column(16).visible(false);
     },
     methods: {
+        crearFiltro: function crearFiltro() {
+            var self = this;
+            var table = $('#conceptos_table').DataTable({
+                "processing": true,
+                "serverSide": true,
+                destroy: true,
+                "ordering": false,
+                "ajax": {
+                    "url": App.host + '/control_presupuesto/conceptos/getPaths',
+                    "type": "POST",
+                    "beforeSend": function beforeSend() {
+                        self.cargando = true;
+                    },
+                    "data": function data(d) {
+                        d.filtros = self.filtros;
+                        d.baseDatos = self.baseDatos;
+                    },
+                    "complete": function complete() {
+                        self.cargando = false;
+                    },
+                    "dataSrc": function dataSrc(json) {
+                        for (var i = 0; i < json.data.length; i++) {
+                            json.data[i].cantidad_presupuestada = Number(json.data[i].cantidad_presupuestada);
+                            json.data[i].monto_presupuestado = '$' + parseInt(json.data[i].monto_presupuestado).formatMoney(2, ',', '.');
+                            json.data[i].monto_venta = '$' + parseInt(Number(json.data[i].monto * Number("1." + self.porcentaje))).formatMoney(2, ',', '.');
+                            json.data[i].monto = '$' + parseInt(json.data[i].monto).formatMoney(2, ',', '.');
+                            json.data[i].precio_unitario_venta = '$' + parseInt(Number(json.data[i].precio_unitario) * Number("1." + self.porcentaje)).formatMoney(2, ',', '.');
+                            json.data[i].precio_unitario = '$' + parseInt(json.data[i].precio_unitario).formatMoney(2, ',', '.');
+                        }
+                        return json.data;
+                    }
+                },
+                "columns": [{ data: 'filtro1' }, { data: 'filtro2' }, { data: 'filtro3' }, { data: 'filtro4' }, { data: 'filtro5' }, { data: 'filtro6' }, { data: 'filtro7' }, { data: 'filtro8' }, { data: 'filtro9' }, { data: 'filtro10' }, { data: 'filtro11' }, { data: 'unidad' }, { data: 'cantidad_presupuestada', className: 'text-right' }, { data: 'precio_unitario', className: 'text-right' }, { data: 'precio_unitario_venta', className: 'text-right' }, { data: 'monto', className: 'text-right' }, { data: 'monto_venta', className: 'text-right' }],
+                language: {
+                    "sProcessing": "Procesando...",
+                    "sLengthMenu": "Mostrar _MENU_ registros",
+                    "sZeroRecords": "No se encontraron resultados",
+                    "sEmptyTable": "Ningún dato disponible en esta tabla",
+                    "sInfo": "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
+                    "sInfoEmpty": "Mostrando registros del 0 al 0 de un total de 0 registros",
+                    "sInfoFiltered": "(filtrado de un total de _MAX_ registros)",
+                    "sInfoPostFix": "",
+                    "sSearch": "Buscar:",
+                    "sUrl": "",
+                    "sInfoThousands": ",",
+                    "sLoadingRecords": "Cargando...",
+                    "oPaginate": {
+                        "sFirst": "Primero",
+                        "sLast": "Último",
+                        "sNext": "Siguiente",
+                        "sPrevious": "Anterior"
+                    },
+                    "oAria": {
+                        "sSortAscending": ": Activar para ordenar la columna de manera ascendente",
+                        "sSortDescending": ": Activar para ordenar la columna de manera descendente"
+                    }
+                }
+            });
+            if (self.baseDatos != 1) {
+                self.porcentaje = 0;
+                table.column(14).visible(false);
+                table.column(16).visible(false);
+            }
+        },
+
         set_filtro: function set_filtro() {
             var nivel = this.form.filtro.nivel;
             var result = this.filtros.filter(function (filtro) {
