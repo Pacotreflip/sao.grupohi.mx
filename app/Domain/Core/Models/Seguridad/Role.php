@@ -8,4 +8,9 @@ class Role extends EntrustRole
 {
     protected $connection = "seguridad";
 
+    protected $fillable = [
+        'name',
+        'display_name',
+        'description'
+    ];
 }

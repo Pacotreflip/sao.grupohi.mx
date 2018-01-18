@@ -55,11 +55,11 @@
             </div>
 
             <!-- Modal de Asignacion de Roles en Módulo de Seguridad -->
-            <div class="modal fade" id="edit_role_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+            <div class="modal fade" id="edit_role_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" data-backdrop="static" data-keyboard="false">
                 <div class="modal-dialog" role="document">
                     <div class="modal-content modal-lg">
                         <div class="modal-header">
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar" @click="closeModal()"><span aria-hidden="true">&times;</span></button>
                             <h4 class="modal-title" id="myModalLabel">Editar Rol</h4>
                         </div>
                         <div class="modal-body">
@@ -67,13 +67,13 @@
                                 <div class="col-md-5">
                                     <div class="form-group">
                                         <label><b>Nombre</b></label>
-                                        <input type="text" id="nombre" class="form-control input-sm" v-model="role.display_name">
+                                        <input type="text" id="nombre_edit" class="form-control input-sm" v-model="role.display_name">
                                     </div>
                                 </div>
                                 <div class="col-md-7">
                                     <div class="form-group">
                                         <label><b>Descripción</b></label>
-                                        <input type="text" id="nombre" class="form-control input-sm" v-model="role.description">
+                                        <input type="text" id="descripcion_edit" class="form-control input-sm" v-model="role.description">
                                     </div>
                                 </div>
                             </div>
@@ -94,7 +94,7 @@
                                                 <tr v-for="permiso in permisos">
                                                     <td>@{{ permiso.display_name }}</td>
                                                     <td>@{{ permiso.description }}</td>
-                                                    <td><input type="checkbox" :checked="asignado(permiso)" v-if="!_.isEmpty(role)"></td>
+                                                    <td><input type="checkbox" :value="permiso.id"  v-if="!_.isEmpty(role)" v-model="permisos_alta"></td>
                                                 </tr>
                                                 </tbody>
                                             </table>
@@ -104,19 +104,26 @@
                             </div>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-                            <button type="button" class="btn btn-primary">Guardar</button>
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal" @click="closeModal()">Cerrar</button>
+                            <button type="button" :disabled="guardando" class="btn btn-primary" @click="updateRol()">
+                                <span v-if="guardando">
+                                    <i class="fa fa-spin fa-spinner"></i> Guardando
+                                </span>
+                                <span v-else>
+                                    <i class="fa fa-save"></i> Guardar
+                                </span>
+                            </button>
                         </div>
                     </div>
                 </div>
             </div>
 
             <!-- Modal de Creación de Nuevos Roles en Módulo de Seguridad -->
-            <div class="modal fade" id="create_role_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+            <div class="modal fade" id="create_role_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" data-backdrop="static" data-keyboard="false">
                 <div class="modal-dialog" role="document">
                     <div class="modal-content modal-lg">
                         <div class="modal-header">
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close" @click="closeModal()"><span aria-hidden="true">&times;</span></button>
                             <h4 class="modal-title" id="myModalLabel">Crear Rol</h4>
                         </div>
                         <div class="modal-body">
@@ -124,26 +131,26 @@
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label><b>Nombre</b></label>
-                                        <input type="text" id="display_name" class="form-control input-sm">
+                                        <input type="text" id="display_name" class="form-control input-sm" v-model="role.display_name">
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label><b>Nombre Corto</b></label>
-                                        <input type="text" id="display_name" class="form-control input-sm" placeholder="nombre_corto_role">
+                                        <input type="text" id="name" class="form-control input-sm" disabled="disabled" v-model="nombre_corto">
                                     </div>
                                 </div>
                                 <div class="col-md-12">
                                     <div class="form-group">
                                         <label><b>Descripción</b></label>
-                                        <input type="text" id="description" class="form-control input-sm">
+                                        <input type="text" id="description" class="form-control input-sm" v-model="role.description">
                                     </div>
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col-md-12">
                                     <div class="form-group">
-                                        <label><b>Permisos Nuevo Rol</b></label>
+                                        <label><b>Permisos</b></label>
                                         <div class="table-responsive" style="max-height: 350px; overflow-y:scroll;">
                                             <table class="table table-bordered table-striped">
                                                 <thead>
@@ -157,7 +164,7 @@
                                                 <tr v-for="permiso in permisos">
                                                     <td>@{{ permiso.display_name }}</td>
                                                     <td>@{{ permiso.description }}</td>
-                                                    <td><input type="checkbox"></td>
+                                                    <td><input type="checkbox" :value="permiso.id" v-model="permisos_alta"></td>
                                                 </tr>
                                                 </tbody>
                                             </table>
@@ -167,7 +174,7 @@
                             </div>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal" @click="closeModal()">Cerrar</button>
                             <button type="button" class="btn btn-primary">Guardar</button>
                         </div>
                     </div>

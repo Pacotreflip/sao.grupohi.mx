@@ -63,7 +63,13 @@ class EloquentRoleRepository implements RoleRepository
      */
     public function update(array $data, $id_role)
     {
-        // TODO: Implement update() method.
+        $permisos = isset($data['permissions']) ? $data['permissions'] : [];
+
+        $role = $this->model->find($id_role);
+        $role->update($data);
+        $role->savePermissions($permisos);
+
+        return $this->model->with('perms')->find($id_role);
     }
 
     /**
@@ -105,20 +111,5 @@ class EloquentRoleRepository implements RoleRepository
         return $this->model->with(['perms' => function ($q){
             return $q->orderBy('name', 'asc');
         }])->find($id);
-    }
-
-    /**
-     * Adjunta Permisos a un Rol
-     * @param array $data
-     * @param $id_role
-     * @return Role
-     */
-    public function savePermissions(array $data, $id_role)
-    {
-        $role = $this->model->find($id_role);
-
-        $role->savePermissions($data['permissions']);
-
-        return $this->model->with('perms')->find($id_role);
     }
 }

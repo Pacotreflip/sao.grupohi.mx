@@ -58,12 +58,4 @@ interface RoleRepository
      * @return Role
      */
     public function find($id);
-
-    /**
-     * Adjunta Permisos a un Rol
-     * @param array $data
-     * @param $id_role
-     * @return Role
-     */
-    public function savePermissions(array $data, $id_role);
 }
