@@ -51,4 +51,12 @@ interface RoleRepository
      * @return mixed
      */
     public function paginate(array $data);
+
+    /**
+     * Adjunta Permisos a un Rol
+     * @param array $data
+     * @param $id_role
+     * @return Role
+     */
+    public function savePermissions(array $data, $id_role);
 }
