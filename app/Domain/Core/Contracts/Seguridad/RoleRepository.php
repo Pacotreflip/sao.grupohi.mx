@@ -53,10 +53,9 @@ interface RoleRepository
     public function paginate(array $data);
 
     /**
-     * Adjunta Permisos a un Rol
-     * @param array $data
-     * @param $id_role
+     * Regresa el Registro del Rol Buscado
+     * @param $id
      * @return Role
      */
-    public function savePermissions(array $data, $id_role);
+    public function find($id);
 }

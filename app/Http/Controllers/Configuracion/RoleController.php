@@ -55,11 +55,14 @@ class RoleController extends Controller
         ], 200);
     }
 
-    public function savePermissions(Request $request, $id)
-    {
-        $role = $this->role->savePermissions($id, $request->all());
-        return $this->response()->item($role, function ($item) {
-            return $item;
-        });
+    public function find($id){
+        $role = $this->role->find($id);
+        return $this->response()->item($role, function ($item) { return $item; });
+    }
+
+    public function update(Request $request, $id) {
+        $role = $this->role->update($request->all(), $id);
+
+        return $this->response()->item($role, function ($item) { return $item; });
     }
 }

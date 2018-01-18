@@ -1,12 +1,41 @@
 Vue.component('configuracion-seguridad-index', {
     data : function () {
         return {
-            roles : [],
-            guardando : false
+            permisos : [],
+            permisos_alta : [],
+            role : {
+                name : '',
+                description : '',
+                display_name : ''
+            },
+            guardando : false,
+            cargando : false
+        }
+    },
+
+    computed : {
+        nombre_corto : function () {
+            return this.role.display_name.replace(new RegExp(" ", 'g'), '_').toLowerCase();
         }
     },
 
     mounted: function () {
+        var self = this;
+        this.getPermisos();
+
+        $('#edit_role_modal').on('shown.bs.modal', function () {
+            $('#nombre_edit').focus();
+        })
+
+        $('#create_role_modal').on('shown.bs.modal', function () {
+            $('#nombre').focus();
+        })
+
+        $(document).on('click', '.btn_edit', function () {
+            var id = $(this).attr('id');
+            self.getRole(id);
+        });
+
         $('#roles_table').DataTable({
             "processing": true,
             "serverSide": true,
@@ -24,7 +53,12 @@ Vue.component('configuracion-seguridad-index', {
                 "complete" : function () {
                     self.guardando = false;
                 },
-                "dataSrc" : 'data'
+                "dataSrc" : function (json) {
+                    for (var i = 0; i < json.data.length; i++) {
+                        json.data[i].created_at = new Date(json.data[i].created_at).dateFormat();
+                    }
+                    return json.data;
+                }
             },
             "columns" : [
                 {data : 'display_name', 'name' : 'Nombre'},
@@ -35,7 +69,7 @@ Vue.component('configuracion-seguridad-index', {
                     render : function (data) {
                         var html = '';
                         data.perms.forEach(function (perm) {
-                            html += '<a href="#">'+perm.display_name+'</a>' + '<br>';
+                            html += perm.display_name+ '<br>';
                         });
                         return html;
                     },
@@ -44,7 +78,7 @@ Vue.component('configuracion-seguridad-index', {
                 {
                     data : {},
                     render : function(data) {
-                        return '<button class="btn btn-xs btn-default btn_edit" id="'+data.id+'"><i class="fa fa-pencil"></i></button>';
+                        return '<button class="btn btn-xs btn-default btn_edit" title="Editar" id="'+data.id+'"><i class="fa fa-pencil"></i></button>';
                     },
 
                     orderable : false
@@ -77,6 +111,176 @@ Vue.component('configuracion-seguridad-index', {
     },
 
     methods : {
+        getRole: function (id) {
+            var self = this;
+            $.ajax({
+                url: App.host + '/configuracion/seguridad/role/' + id,
+                type: 'GET',
+                beforeSend:function () {
+                  self.cargando = true;
+                },
+                success: function (response) {
+                    self.role = response;
+                    self.permisos_alta = [];
+                    self.role.perms.forEach(function(perm) {
+                        self.permisos_alta.push(perm.id)
+                    })
+                    $('#edit_role_modal').modal('show');
+                },
+                complete:function () {
+                    self.cargando = false;
+                }
+            })
+        },
 
+        getPermisos: function () {
+            var self = this;
+            $.ajax({
+                url: App.host + '/configuracion/seguridad/permission',
+                type: 'GET',
+                beforeSend:function () {
+                    self.cargando = true;
+                },
+                success: function (response) {
+                    self.permisos = response;
+                },
+                complete:function () {
+                    self.cargando = false;
+                }
+            })
+        },
+
+        updateRol : function () {
+            var self = this;
+            $.ajax({
+                url : App.host + '/configuracion/seguridad/role/' + self.role.id,
+                type : 'POST',
+                data : {
+                    _method: 'PATCH',
+                    display_name : self.role.display_name,
+                    description : self.role.description,
+                    permissions : self.permisos_alta
+                },
+                beforeSend : function () {
+                    self.guardando = true
+                },
+                success : function (response) {
+                    $('.modal').modal('hide');
+                    self.closeModal();
+                    $('#roles_table').DataTable().ajax.reload(null, false);
+                    swal({
+                        type: 'success',
+                        title: 'Rol ' + response.display_name + ' actualizado correctamente'
+                    });
+                },
+                complete : function (response) {
+                    self.guardando = false;
+                }
+            })
+        },
+
+        asignado : function (permiso) {
+            var found = this.role.perms.find(function(element) {
+                return element.id == permiso.id;
+            });
+            return found != undefined;
+        },
+
+        closeModal: function () {
+            this.permisos_alta = []
+            this.role = {
+                name : '',
+                description : '',
+                display_name : ''
+            }
+        },
+
+        saveRol: function() {
+            var self = this;
+            $.ajax({
+                url : App.host + '/configuracion/seguridad/role',
+                type: 'POST',
+                data : {
+                    name : self.nombre_corto,
+                    display_name : self.role.display_name,
+                    description : self.role.description,
+                    permissions : self.permisos_alta
+                },
+                beforeSend : function () {
+
+                },
+                success : function () {
+
+                },
+                complete : function () {
+
+                }
+            })
+        },
+
+        validateForm: function(scope, funcion) {
+            this.$validator.validateAll(scope).then(() => {
+                if(funcion == 'save_role') {
+                    this.confirm_save_role();
+                } else if (funcion == 'update_role') {
+                    this.confirm_update_role();
+                }
+            }).catch(() => {
+                swal({
+                     type: 'warning',
+                     title: 'Advertencia',
+                     text: 'Por favor corrija los errores del formulario'
+                 });
+            });
+        },
+
+
+        confirm_save_role: function () {
+            var self = this;
+            swal({
+                title: "Guardar Nuevo Rol",
+                text: "¿Estás seguro de que la información es correcta?",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonText: "Si, Continuar",
+                cancelButtonText: "No, Cancelar",
+            }).then(function (result) {
+                if(result.value) {
+                    self.saveRol();
+                }
+            });
+        },
+
+        confirm_update_role: function () {
+            var self = this;
+            swal({
+                title: "Actualizar Rol",
+                text: "¿Estás seguro de que la información es correcta?",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonText: "Si, Continuar",
+                cancelButtonText: "No, Cancelar",
+            }).then(function (result) {
+                if(result.value) {
+                    self.updateRol();
+                }
+            });
+        },
+
+        confirm_save_role: function () {
+            var self = this;
+            swal({
+                title: "Guardar Nuevo Rol",
+                text: "¿Estás seguro de que la información es correcta?",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonText: "Si, Continuar",
+                cancelButtonText: "No, Cancelar",
+            }).then(function (result) {
+                if(result.value) {
+                    self.saveRol();
+                }
+            });
+        }
     }
 });
