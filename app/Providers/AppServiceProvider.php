@@ -306,5 +306,10 @@ class AppServiceProvider extends ServiceProvider
             \Ghi\Domain\Core\Contracts\Seguridad\RoleRepository::class,
             \Ghi\Domain\Core\Repositories\Seguridad\EloquentRoleRepository::class
         );
+
+        $this->app->bind(
+            \Ghi\Domain\Core\Contracts\ControlPresupuesto\BasePresupuestoRepository::class,
+            \Ghi\Domain\Core\Repositories\ControlPresupuesto\EloquentBasePresupuestoRepository::class
+        );
     }
 }

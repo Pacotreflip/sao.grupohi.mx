@@ -22,6 +22,8 @@ class DatosContables extends BaseModel
         'manejo_almacenes',
         'costo_en_tipo_gasto',
         'retencion_antes_iva',
+        'deductiva_antes_iva',
+        'amortizacion_antes_iva',
     ];
 
     protected $appends = ['mask'];

@@ -18,6 +18,7 @@
                 <li ><a href="{{route('control_presupuesto.cambio_presupuesto.index')}}"><i class='fa fa-circle-o'></i> <span>Ctrol cambios al Presupuesto</span></a></li>  -->
             </ul>
         </li>
-        {{--@endpermission--}}
+
+
     </ul>
 @endsection

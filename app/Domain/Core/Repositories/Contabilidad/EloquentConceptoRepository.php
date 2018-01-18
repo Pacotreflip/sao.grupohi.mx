@@ -95,10 +95,13 @@ class EloquentConceptoRepository implements ConceptoRepository
         return $item->max_nivel;
     }
 
-    public function paths(array $data) {
+    public function paths(array $data,$baseDatos=null) {
 
 
-        $query = DB::connection('cadeco')->table('conceptos')->where('conceptos.id_obra', '=', Context::getId())->join('PresupuestoObra.conceptosPath as path', 'conceptos.id_concepto', '=', 'path.id_concepto');
+
+        $db = $baseDatos == null ? Context::getDatabaseName() : $baseDatos;
+
+        $query = DB::connection('cadeco')->table($db.'.dbo.conceptos')->where('conceptos.id_obra', '=', Context::getId())->join($db.'.PresupuestoObra.conceptosPath as path', 'conceptos.id_concepto', '=', 'path.id_concepto');
 
         if(array_key_exists('filtros', $data)) {
             foreach ($data['filtros'] as $key => $filtro) {
@@ -114,13 +117,12 @@ class EloquentConceptoRepository implements ConceptoRepository
 
             }
         }
-
+        $query->orderBy('conceptos.nivel');
         $query->select(
             "conceptos.unidad",
             "conceptos.cantidad_presupuestada",
             "conceptos.precio_unitario",
-            "conceptos.monto_presupuestado",
-            DB::raw("(conceptos.cantidad_presupuestada * conceptos.precio_unitario) AS monto"),
+            "conceptos.monto_presupuestado as monto",
             "path.*"
         );
 

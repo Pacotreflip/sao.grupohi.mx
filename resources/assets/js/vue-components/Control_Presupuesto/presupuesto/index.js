@@ -4,6 +4,8 @@ Vue.component('control_presupuesto-index', {
         return {
             conceptos : [],
             filtros : [],
+            baseDatos:'',
+            porcentaje:0,
             form : {
                 filtro : {
                     nivel : '',
@@ -25,9 +27,10 @@ Vue.component('control_presupuesto-index', {
     },
     mounted: function () {
         var self = this;
-        $('#conceptos_table').DataTable({
+       var table= $('#conceptos_table').DataTable({
             "processing": true,
             "serverSide": true,
+            destroy: true,
             "ordering" : false,
             "ajax": {
                 "url": App.host + '/conceptos/getPaths',
@@ -37,15 +40,20 @@ Vue.component('control_presupuesto-index', {
                 },
                 "data": function ( d ) {
                     d.filtros = self.filtros;
+                    d.baseDatos = self.baseDatos;
                 },
                 "complete" : function () {
                     self.cargando = false;
                 },
                 "dataSrc" : function (json) {
                     for (var i = 0; i < json.data.length; i++) {
+                        json.data[i].cantidad_presupuestada=Number(json.data[i].cantidad_presupuestada);
                         json.data[i].monto_presupuestado = '$' + parseInt(json.data[i].monto_presupuestado).formatMoney(2, ',', '.')
+                        json.data[i].monto_venta ='$' +parseInt(Number( json.data[i].monto*(Number(self.porcentaje)))).formatMoney(2, ',', '.')
                         json.data[i].monto = '$' + parseInt(json.data[i].monto).formatMoney(2, ',', '.')
+                        json.data[i].precio_unitario_venta ='$' +parseInt(Number( json.data[i].precio_unitario)*(Number(self.porcentaje))).formatMoney(2, ',', '.')
                         json.data[i].precio_unitario = '$' + parseInt(json.data[i].precio_unitario).formatMoney(2, ',', '.')
+
                     }
                     return json.data;
                 }
@@ -65,8 +73,10 @@ Vue.component('control_presupuesto-index', {
                 {data : 'unidad'},
                 {data : 'cantidad_presupuestada', className : 'text-right'},
                 {data : 'precio_unitario', className : 'text-right'},
+                {data : 'precio_unitario_venta', className : 'text-right'},
                 {data : 'monto', className : 'text-right'},
-                {data : 'monto_presupuestado', className : 'text-right'}
+                {data : 'monto_venta', className : 'text-right'}
+
             ],
             language: {
                 "sProcessing": "Procesando...",
@@ -93,8 +103,96 @@ Vue.component('control_presupuesto-index', {
                 }
             }
         });
+
+        table.column( 14 ).visible( false );
+        table.column( 16 ).visible( false );
+
     },
     methods: {
+        crearFiltro:function () {
+            var self = this;
+            var table=$('#conceptos_table').DataTable({
+                "processing": true,
+                "serverSide": true,
+                destroy: true,
+                "ordering" : false,
+                "ajax": {
+                    "url": App.host + '/control_presupuesto/conceptos/getPaths',
+                    "type" : "POST",
+                    "beforeSend" : function () {
+                        self.cargando = true;
+                    },
+                    "data": function ( d ) {
+                        d.filtros = self.filtros;
+                        d.baseDatos = self.baseDatos;
+                    },
+                    "complete" : function () {
+                        self.cargando = false;
+                    },
+                    "dataSrc" : function (json) {
+                        for (var i = 0; i < json.data.length; i++) {
+                            json.data[i].cantidad_presupuestada=Number(json.data[i].cantidad_presupuestada);
+                            json.data[i].monto_presupuestado = '$' + parseInt(json.data[i].monto_presupuestado).formatMoney(2, ',', '.')
+                            json.data[i].monto_venta ='$' +parseInt(Number( json.data[i].monto*(Number(self.porcentaje)))).formatMoney(2, ',', '.')
+                            json.data[i].monto = '$' + parseInt(json.data[i].monto).formatMoney(2, ',', '.')
+                            json.data[i].precio_unitario_venta ='$' +parseInt(Number( json.data[i].precio_unitario)*(Number(self.porcentaje))).formatMoney(2, ',', '.')
+                            json.data[i].precio_unitario = '$' + parseInt(json.data[i].precio_unitario).formatMoney(2, ',', '.')
+
+                        }
+                        return json.data;
+                    }
+                },
+                "columns" : [
+                    {data : 'filtro1'},
+                    {data : 'filtro2'},
+                    {data : 'filtro3'},
+                    {data : 'filtro4'},
+                    {data : 'filtro5'},
+                    {data : 'filtro6'},
+                    {data : 'filtro7'},
+                    {data : 'filtro8'},
+                    {data : 'filtro9'},
+                    {data : 'filtro10'},
+                    {data : 'filtro11'},
+                    {data : 'unidad'},
+                    {data : 'cantidad_presupuestada', className : 'text-right'},
+                    {data : 'precio_unitario', className : 'text-right'},
+                    {data : 'precio_unitario_venta', className : 'text-right'},
+                    {data : 'monto', className : 'text-right'},
+                    {data : 'monto_venta', className : 'text-right'}
+                ],
+                language: {
+                    "sProcessing": "Procesando...",
+                    "sLengthMenu": "Mostrar _MENU_ registros",
+                    "sZeroRecords": "No se encontraron resultados",
+                    "sEmptyTable": "Ningún dato disponible en esta tabla",
+                    "sInfo": "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
+                    "sInfoEmpty": "Mostrando registros del 0 al 0 de un total de 0 registros",
+                    "sInfoFiltered": "(filtrado de un total de _MAX_ registros)",
+                    "sInfoPostFix": "",
+                    "sSearch": "Buscar:",
+                    "sUrl": "",
+                    "sInfoThousands": ",",
+                    "sLoadingRecords": "Cargando...",
+                    "oPaginate": {
+                        "sFirst": "Primero",
+                        "sLast": "Último",
+                        "sNext": "Siguiente",
+                        "sPrevious": "Anterior"
+                    },
+                    "oAria": {
+                        "sSortAscending": ": Activar para ordenar la columna de manera ascendente",
+                        "sSortDescending": ": Activar para ordenar la columna de manera descendente"
+                    }
+                }
+            });
+            if(self.baseDatos!=1){
+                      self.porcentaje=0;
+                table.column( 14 ).visible( false );
+                table.column( 16 ).visible( false );
+            }
+        }
+        ,
         set_filtro : function() {
             var nivel = this.form.filtro.nivel;
             var result = this.filtros.filter(function( filtro ) {

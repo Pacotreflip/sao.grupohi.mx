@@ -10,7 +10,7 @@
             <div class="row">
                 <div class="col-sm-12">
                     {{-- @permission('registrar_comprobante_fondo_fijo') --}}
-                    <a href="#" class="btn btn-success btn-app" style="float:right" data-toggle="modal" data-target="#create_role_modal" >
+                    <a href="#" class="btn btn-success btn-app" style="float:right" data-toggle="modal" data-target="#create_role_modal" @click="validation_errors.clear('form_save_role')">
                         <i class="glyphicon glyphicon-plus-sign"></i>Nuevo Rol
                     </a>
                     {{-- @endpermission --}}
@@ -183,7 +183,7 @@
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal" @click="closeModal()">Cerrar</button>
-                            <button type="submit" :disabled="guardando" class="btn btn-primary" @click="saveRol()">
+                            <button type="submit" :disabled="guardando" class="btn btn-primary">
                                 <span v-if="guardando">
                                     <i class="fa fa-spin fa-spinner"></i> Guardando
                                 </span>
