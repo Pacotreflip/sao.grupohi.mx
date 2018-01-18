@@ -3,7 +3,6 @@
 namespace Ghi\Http\Controllers;
 
 use Dingo\Api\Routing\Helpers;
-use function foo\func;
 use Ghi\Domain\Core\Contracts\AlmacenRepository;
 use Ghi\Domain\Core\Transformers\AlmacenTreeTransformer;
 use Illuminate\Http\Request;

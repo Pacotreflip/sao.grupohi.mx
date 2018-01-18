@@ -14259,7 +14259,8 @@ Vue.component('configuracion-seguridad-index', {
             "serverSide": true,
             "ordering": true,
             "order": [[2, "desc"]],
-            "searching": false,
+            "searching": true,
+            "searchDelay": 750,
             "ajax": {
                 "url": App.host + '/configuracion/seguridad/role/paginate',
                 "type": "POST",
@@ -14276,7 +14277,7 @@ Vue.component('configuracion-seguridad-index', {
                     return json.data;
                 }
             },
-            "columns": [{ data: 'display_name', 'name': 'Nombre' }, { data: 'description' }, { data: 'created_at' }, {
+            "columns": [{ data: 'display_name', 'name': 'Nombre', 'searchable': true }, { data: 'description', 'searchable': true }, { data: 'created_at', 'searchable': false }, {
                 data: {},
                 render: function render(data) {
                     var html = '';

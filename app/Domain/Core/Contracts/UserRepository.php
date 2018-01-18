@@ -39,4 +39,5 @@ interface UserRepository
      */
     public function getObras($id_usuario);
 
+    public function paginate(array $data);
 }

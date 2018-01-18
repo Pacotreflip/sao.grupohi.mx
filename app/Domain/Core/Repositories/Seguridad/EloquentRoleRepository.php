@@ -96,6 +96,13 @@ class EloquentRoleRepository implements RoleRepository
             return $q->orderBy('name', 'asc');
         }]);
 
+        $query->where(function ($q) use ($data){
+            return $q
+                ->where('description', 'like', '%'.$data['search']['value'].'%')
+                ->orWhere('name', 'like', '%'.$data['search']['value'].'%')
+                ->orWhere('display_name', 'like', '%'.$data['search']['value'].'%');
+        });
+
         foreach ($data['order'] as $order) {
             $query->orderBy($data['columns'][$order['column']]['data'], $order['dir']);
         }

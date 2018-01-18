@@ -1,5 +1,7 @@
 <?php
 
+//Usuarios Routes...
+Route::post('usuario/paginate', 'UsuarioController@paginate');
 
 //Pages
 Route::get('obras', 'PagesController@obras')->name('obras');

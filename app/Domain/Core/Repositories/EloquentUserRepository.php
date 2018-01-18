@@ -121,4 +121,18 @@ class EloquentUserRepository extends \Ghi\Core\Repositories\EloquentUserReposito
 
         return $usuarioCadeco->obras()->orderBy('nombre')->get();
     }
+
+    public function paginate(array $data)
+    {
+        $query = UsuarioCadeco::with('user.roles')->where(function ($q) use ($data) {
+            return $q
+                ->where('nombre', 'like', '%' . $data['search']['value'] . '%')
+                ->orWhere('usuario', 'like', '%' . $data['search']['value'] . '%');
+        });
+
+        foreach ($data['order'] as $order) {
+            $query->orderBy($data['columns'][$order['column']]['data'], $order['dir']);
+        }
+        return $query->paginate($perPage = $data['length'], $columns = ['*'], $pageName = 'page', $page = ($data['start'] / $data['length']) + 1);
+    }
 }
