@@ -124,8 +124,11 @@ Vue.component('configuracion-seguridad-index', {
                     self.permisos_alta = [];
                     self.role.perms.forEach(function(perm) {
                         self.permisos_alta.push(perm.id)
-                    })
+                    });
+
+                    self.validation_errors.clear('form_update_role');
                     $('#edit_role_modal').modal('show');
+                    self.validation_errors.clear('form_update_role');
                 },
                 complete:function () {
                     self.cargando = false;
