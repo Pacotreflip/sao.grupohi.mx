@@ -2,6 +2,7 @@
 
 namespace Ghi\Domain\Core\Repositories;
 
+use Ghi\Core\Facades\Context;
 use Ghi\Domain\Core\Models\Obra;
 use Ghi\Domain\Core\Models\Seguridad\Proyecto;
 use Ghidev\Core\Models\User;
@@ -124,7 +125,11 @@ class EloquentUserRepository extends \Ghi\Core\Repositories\EloquentUserReposito
 
     public function paginate(array $data)
     {
-        $query = UsuarioCadeco::with('user.roles')->where(function ($q) use ($data) {
+        $query = UsuarioCadeco::where(function($q) {
+            return $q
+                ->where('id_obra', '=', Context::getId())
+                ->orWhereNull('id_obra');
+        })->with('user.roles')->where(function ($q) use ($data) {
             return $q
                 ->where('nombre', 'like', '%' . $data['search']['value'] . '%')
                 ->orWhere('usuario', 'like', '%' . $data['search']['value'] . '%');
