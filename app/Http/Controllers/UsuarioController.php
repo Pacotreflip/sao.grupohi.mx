@@ -3,6 +3,7 @@
 namespace Ghi\Http\Controllers;
 
 use Dingo\Api\Routing\Helpers;
+use Ghi\Domain\Core\Contracts\Seguridad\RoleRepository;
 use Ghi\Domain\Core\Contracts\UserRepository;
 use Illuminate\Http\Request;
 
@@ -14,12 +15,13 @@ class UsuarioController extends Controller
     use Helpers;
 
     protected $usuario;
+    protected $role;
 
     /**
      * UsuarioController constructor.
      * @param UserRepository $usuario
      */
-    public function __construct(UserRepository $usuario)
+    public function __construct(UserRepository $usuario, RoleRepository $role)
     {
         parent::__construct();
 
@@ -27,9 +29,12 @@ class UsuarioController extends Controller
         $this->middleware('context');
 
         $this->usuario = $usuario;
+        $this->role = $role;
     }
 
-    public function paginate(Request $request) {
+    public function paginate(Request $request)
+    {
+
         $usuarios = $this->usuario->paginate($request->all());
 
         return response()->json([
@@ -39,7 +44,21 @@ class UsuarioController extends Controller
         ], 200);
     }
 
-    public function saveRoles(Request $request, $id_user) {
-        //TODO :
+    public function find($usuario)
+    {
+        $usuarioCadeco = $this->usuario->usuarioRoles($usuario);
+        return response()->json([
+            'usuario' => $usuarioCadeco,
+            'roles' => $this->role->all()
+        ], 200);
+    }
+
+
+    public function saveRoles(Request $request)
+    {
+        $usuario = $this->usuario->saveRoles($request->all());
+        return response()->json([
+            'usuario' => $usuario,
+        ], 200);
     }
 }
