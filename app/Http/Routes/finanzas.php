@@ -23,4 +23,5 @@ Route::group(['prefix' => 'finanzas'], function () {
   */
 
     Route::get('material/getBy', 'MaterialController@getBy')->name('finanzas.material.getBy');
+    Route::get('material/getBySinFamilias', 'MaterialController@getBySinFamilias')->name('finanzas.material.getBySinFamilias');
 });

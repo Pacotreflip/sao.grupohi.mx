@@ -84,10 +84,17 @@ class MaterialController extends Controller
 
     /**
      * @param Request $request
-     * @return \Illuminate\Http\JsonResponse
-     */
+* @return \Illuminate\Http\JsonResponse
+*/
     public function getBy(Request $request) {
         $items = $this->material->scope("materiales")->getBy($request->attribute, $request->operator, $request->value, $request->with);
         return response()->json(['data' => ['materiales' => $items]], 200);
     }
+
+    public function getBySinFamilias(Request $request) {
+        $items = $this->material->scope("materiales")->scope("sinfamilia")->getBy($request->attribute, $request->operator, $request->value, $request->with);
+        return response()->json(['data' => ['materiales' => $items]], 200);
+    }
+
+
 }

@@ -334,7 +334,7 @@ Vue.component('comprobante-fondo-fijo-create', {
                 $(el).select2({
                     width: '100%',
                     ajax: {
-                        url: App.host + '/finanzas/material/getBy',
+                        url: App.host + '/finanzas/material/getBySinFamilias',
                         dataType: 'json',
                         delay: 500,
                         data: function (params) {
