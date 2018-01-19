@@ -37,11 +37,11 @@ class Estimacion extends Rotation {
 
         $this->obra = Obra::find(Context::getId());
         $this->estimacion = $estimacion;
-        $this->objeto_contrato = DB::connection('cadeco')->table('Subcontratos.subcontrato')->select(['observacion', 'id_transaccion'])->where('id_transaccion', '=', $this->estimacion->id_antecedente)->first();
+        $this->objeto_contrato = DB::connection('cadeco')->table('Subcontratos.subcontrato')->select('observacion')->where('id_transaccion', '=', $this->estimacion->id_antecedente)->first();
 
         if (empty($this->objeto_contrato->observacion))
         {
-            $subcontrato_transaccion = DB::connection('cadeco')->table('dbo.transacciones')->select('id_antecedente')->where('id_transaccion', '=', $this->objeto_contrato->id_transaccion)->first();
+            $subcontrato_transaccion = DB::connection('cadeco')->table('dbo.transacciones')->select('id_antecedente')->where('id_transaccion', '=', $this->estimacion->id_antecedente)->first();
 
             $contrato_proyectado = DB::connection('cadeco')->table('dbo.transacciones')->select('referencia')->where('id_transaccion', '=', $subcontrato_transaccion->id_antecedente)->first();
 
