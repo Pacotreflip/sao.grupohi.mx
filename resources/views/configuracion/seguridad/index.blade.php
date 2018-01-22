@@ -14,16 +14,45 @@
                         <i class="glyphicon glyphicon-plus-sign"></i>Nuevo Rol
                     </a>
                     {{-- @endpermission --}}
-
                 </div>
             </div>
-
             <div class="row">
-                <div class="col-md-12">
+                <div class="col-md-6">
                     <div class="box box-solid">
                         <div class="box-header with-border">
                             <h3 class="box-title">
-                                Roles
+                                Configuración de Usuarios
+                            </h3>
+                        </div>
+                        <div class="box-body">
+                            <div class="table-responsive">
+                                <table class="table table-bordered table-striped" id="usuarios_roles_table">
+                                    <thead>
+                                    <tr>
+                                        <th>Usuario</th>
+                                        <th>Nombre</th>
+                                        <th style="width:150px">Roles</th>
+                                        <th>Acciones</th>
+                                    </tr>
+                                    </thead>
+                                    <tfoot>
+                                    <tr>
+                                        <th>Usuario</th>
+                                        <th>Nombre</th>
+                                        <th>Roles</th>
+                                        <th>Acciones</th>
+                                    </tr>
+                                    </tfoot>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="box box-solid">
+                        <div class="box-header with-border">
+                            <h3 class="box-title">
+                                Administración de Roles y Permisos
                             </h3>
                         </div>
                         <div class="box-body">
@@ -52,8 +81,8 @@
                         </div>
                     </div>
                 </div>
-            </div>
 
+            </div>
             <!-- Modal de Asignacion de Roles en Módulo de Seguridad -->
             <div class="modal fade" id="edit_role_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" data-backdrop="static" data-keyboard="false">
                 <div class="modal-dialog" role="document">
@@ -264,49 +293,7 @@
                     </div>
                 </div>
             </div>
-
-
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="box box-solid">
-                        <div class="box-header with-border">
-                            <h3 class="box-title">
-                                Usuarios
-                            </h3>
-                        </div>
-                        <div class="box-body">
-                            <div class="table-responsive">
-                                <table class="table table-bordered table-striped" id="usuarios_roles_table">
-                                    <thead>
-                                    <tr>
-                                        <th>Usuario</th>
-                                        <th>Nombre</th>
-                                        <th style="width:150px">Roles</th>
-                                        <th>Acciones</th>
-                                    </tr>
-                                    </thead>
-                                    <tfoot>
-                                    <tr>
-                                        <th>Usuario</th>
-                                        <th>Nombre</th>
-                                        <th>Roles</th>
-                                        <th>Acciones</th>
-                                    </tr>
-                                    </tfoot>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
         </section>
-
-
-
-
-
     </configuracion-seguridad-index>
-
 @endsection
 
