@@ -2,7 +2,8 @@
 
 //Usuarios Routes...
 Route::post('usuario/paginate', 'UsuarioController@paginate');
-
+Route::get('usuario/{usuario}', 'UsuarioController@find');
+Route::post('usuario', 'UsuarioController@saveRoles');
 //Pages
 Route::get('obras', 'PagesController@obras')->name('obras');
 

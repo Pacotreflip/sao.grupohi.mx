@@ -25,6 +25,7 @@ Route::group(['prefix' => 'configuracion'], function () {
         Route::get('role/{role}', 'Configuracion\RoleController@find');
         /**
          * Permission Routes
+         *
          */
         Route::get('permission', 'Configuracion\PermissionController@index');
         Route::post('permission', 'Configuracion\PermissionController@store');

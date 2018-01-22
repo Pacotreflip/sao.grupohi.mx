@@ -59,6 +59,9 @@ class Material extends BaseModel
     public function scopeMateriales($query){
         return $query->where('tipo_material','=',$this::TIPO_MATERIALES);
     }
+    public function scopeSinFamilia($query){
+        return $query->whereRaw('LEN(NIVEL)>4');
+    }
 
     public function items() {
         return $this->hasMany(Item::class, 'id_material');
