@@ -13,11 +13,6 @@ class ControlPresupuestoTarjetasSeeder extends Seeder
     {
         try {
             DB::connection('cadeco')->beginTransaction();
-            DB::connection("cadeco")->statement("DBCC CHECKIDENT ('ControlPresupuesto.tarjeta',RESEED, 0)");
-            DB::connection('cadeco')->table('ControlPresupuesto.tarjeta')->delete();
-            DB::connection("cadeco")->statement("DBCC CHECKIDENT ('ControlPresupuesto.concepto_tarjeta',RESEED, 0)");
-            DB::connection('cadeco')->table('ControlPresupuesto.concepto_tarjeta')->delete();
-
             $obras = \Illuminate\Support\Facades\DB::connection('cadeco')->select("select id_obra from dbo.obras");
             foreach ($obras as $obra) {
                 $conceptos = \Illuminate\Support\Facades\DB::connection('cadeco')->select("SELECT REPLACE(SUBSTRING(filtro9,1,CHARINDEX(' -',filtro9)),' ','') as tarjeta,id_concepto from [PresupuestoObra].[conceptosPath] where filtro9 like '% -%' and id_obra=" . $obra->id_obra . " order by nivel;");
