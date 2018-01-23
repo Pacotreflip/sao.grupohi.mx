@@ -83,13 +83,13 @@ class SolicitarReclasificacionController extends Controller
         $motivo = htmlentities($request->motivo, ENT_QUOTES);
         $partidas = $request->solicitudes;
         $where = '';
-        $counter = 0;
+        $counter = 1;
         $total = count($partidas);
 
         // Revisa si ya existe una solicitud pendiente con al menos un movimiento previamente usado
         foreach ($partidas as $p)
         {
-            $where .= ' ControlCostos.solicitud_reclasificacion_partidas.id_item = '. $p['id_item'] . (($counter > 0 || $counter > $total) ? ' or ': '');
+            $where .= ' ControlCostos.solicitud_reclasificacion_partidas.id_item = '. $p['id_item'] . (($counter != $total) ? ' or ': ' ');
             $counter++;
         }
 

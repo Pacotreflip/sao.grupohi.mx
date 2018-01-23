@@ -127,6 +127,12 @@ Vue.component('solicitar_reclasificacion-items', {
                 });
 
             self.data.filtros.push(self.data.agrega);
+
+            self.data.agrega = {
+                'nivel': '',
+                'operador': '',
+                'texto': ''
+            };
         },
         buscar: function () {
             var self = this,
