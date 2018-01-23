@@ -13341,26 +13341,23 @@ require('./vue-components/Tesoreria/movimientos_bancarios/index');
 /**
  * Control de costos Components
  */
-require('./vue-components/Control_Costos/solicitar_reclasificacion/index');
-require('./vue-components/Control_Costos/solicitar_reclasificacion/items');
-require('./vue-components/Control_Costos/reclasificacion_costos/index');
+require('./vue-components/ControlCostos/solicitar_reclasificacion/index');
+require('./vue-components/ControlCostos/solicitar_reclasificacion/items');
+require('./vue-components/ControlCostos/reclasificacion_costos/index');
 
 /**
  * Control de Presupuesto Components
  */
-require('./vue-components/Control_Presupuesto/presupuesto/index');
+require('./vue-components/ControlPresupuesto/presupuesto/index');
+require('./vue-components/ControlPresupuesto/cambio_presupuesto/create');
+require('./vue-components/ControlPresupuesto/cambio_presupuesto/index');
 
 /**
  * Configuración Components
  */
 require('./vue-components/Configuracion/seguridad/index');
 
-/**
- * Control de cambios al presupuesto Components
- */
-require('./vue-components/Control_Presupuesto/cambios_presupuesto/create');
-
-},{"./vue-components/Compras/material/index":6,"./vue-components/Compras/requisicion/create":7,"./vue-components/Compras/requisicion/edit":8,"./vue-components/Configuracion/seguridad/index":9,"./vue-components/Contabilidad/cierre/index":10,"./vue-components/Contabilidad/cuenta_almacen/index":11,"./vue-components/Contabilidad/cuenta_bancos/cuenta-bancaria-edit":12,"./vue-components/Contabilidad/cuenta_concepto/index":13,"./vue-components/Contabilidad/cuenta_contable/index":14,"./vue-components/Contabilidad/cuenta_costo/index":15,"./vue-components/Contabilidad/cuenta_empresa/cuenta-empresa-edit":16,"./vue-components/Contabilidad/cuenta_fondo/index":17,"./vue-components/Contabilidad/cuenta_material/index":18,"./vue-components/Contabilidad/datos_contables/edit":19,"./vue-components/Contabilidad/emails":20,"./vue-components/Contabilidad/modulos/revaluacion/create":21,"./vue-components/Contabilidad/poliza_generada/edit":22,"./vue-components/Contabilidad/poliza_tipo/poliza-tipo-create":23,"./vue-components/Contabilidad/tipo_cuenta_contable/tipo-cuenta-contable-create":24,"./vue-components/Contabilidad/tipo_cuenta_contable/tipo-cuenta-contable-update":25,"./vue-components/Control_Costos/reclasificacion_costos/index":26,"./vue-components/Control_Costos/solicitar_reclasificacion/index":27,"./vue-components/Control_Costos/solicitar_reclasificacion/items":28,"./vue-components/Control_Presupuesto/cambios_presupuesto/create":29,"./vue-components/Control_Presupuesto/presupuesto/index":30,"./vue-components/Finanzas/comprobante_fondo_fijo/create":31,"./vue-components/Finanzas/comprobante_fondo_fijo/edit":32,"./vue-components/Finanzas/comprobante_fondo_fijo/index":33,"./vue-components/Reportes/subcontratos-estimacion":34,"./vue-components/Tesoreria/movimientos_bancarios/index":35,"./vue-components/Tesoreria/traspaso_cuentas/index":36,"./vue-components/errors":37,"./vue-components/global-errors":38,"./vue-components/kardex_material/kardex-material-index":39,"./vue-components/select2":40}],6:[function(require,module,exports){
+},{"./vue-components/Compras/material/index":6,"./vue-components/Compras/requisicion/create":7,"./vue-components/Compras/requisicion/edit":8,"./vue-components/Configuracion/seguridad/index":9,"./vue-components/Contabilidad/cierre/index":10,"./vue-components/Contabilidad/cuenta_almacen/index":11,"./vue-components/Contabilidad/cuenta_bancos/cuenta-bancaria-edit":12,"./vue-components/Contabilidad/cuenta_concepto/index":13,"./vue-components/Contabilidad/cuenta_contable/index":14,"./vue-components/Contabilidad/cuenta_costo/index":15,"./vue-components/Contabilidad/cuenta_empresa/cuenta-empresa-edit":16,"./vue-components/Contabilidad/cuenta_fondo/index":17,"./vue-components/Contabilidad/cuenta_material/index":18,"./vue-components/Contabilidad/datos_contables/edit":19,"./vue-components/Contabilidad/emails":20,"./vue-components/Contabilidad/modulos/revaluacion/create":21,"./vue-components/Contabilidad/poliza_generada/edit":22,"./vue-components/Contabilidad/poliza_tipo/poliza-tipo-create":23,"./vue-components/Contabilidad/tipo_cuenta_contable/tipo-cuenta-contable-create":24,"./vue-components/Contabilidad/tipo_cuenta_contable/tipo-cuenta-contable-update":25,"./vue-components/ControlCostos/reclasificacion_costos/index":26,"./vue-components/ControlCostos/solicitar_reclasificacion/index":27,"./vue-components/ControlCostos/solicitar_reclasificacion/items":28,"./vue-components/ControlPresupuesto/cambio_presupuesto/create":29,"./vue-components/ControlPresupuesto/cambio_presupuesto/index":30,"./vue-components/ControlPresupuesto/presupuesto/index":31,"./vue-components/Finanzas/comprobante_fondo_fijo/create":32,"./vue-components/Finanzas/comprobante_fondo_fijo/edit":33,"./vue-components/Finanzas/comprobante_fondo_fijo/index":34,"./vue-components/Reportes/subcontratos-estimacion":35,"./vue-components/Tesoreria/movimientos_bancarios/index":36,"./vue-components/Tesoreria/traspaso_cuentas/index":37,"./vue-components/errors":38,"./vue-components/global-errors":39,"./vue-components/kardex_material/kardex-material-index":40,"./vue-components/select2":41}],6:[function(require,module,exports){
 'use strict';
 
 Vue.component('material-index', {
@@ -13842,6 +13839,8 @@ Vue.component('requisicion-edit', {
 },{}],9:[function(require,module,exports){
 'use strict';
 
+var _methods;
+
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 Vue.component('configuracion-seguridad-index', {
@@ -13849,11 +13848,14 @@ Vue.component('configuracion-seguridad-index', {
         return {
             permisos: [],
             permisos_alta: [],
+            roles: [],
+            rol_usuario_alta: [],
             role: {
                 name: '',
                 description: '',
                 display_name: ''
             },
+            usuario: [],
             guardando: false,
             cargando: false
         };
@@ -13882,12 +13884,18 @@ Vue.component('configuracion-seguridad-index', {
             self.getRole(id);
         });
 
+        $(document).on('click', '.btn_edit_rol_user', function () {
+            var usuario = $(this).attr('id');
+            self.getRoleUser(usuario);
+        });
+
         $('#roles_table').DataTable({
             "processing": true,
             "serverSide": true,
             "ordering": true,
-            "order": [[0, "desc"]],
-            "searching": false,
+            "order": [[2, "desc"]],
+            "searching": true,
+            "searchDelay": 750,
             "ajax": {
                 "url": App.host + '/configuracion/seguridad/role/paginate',
                 "type": "POST",
@@ -13904,7 +13912,7 @@ Vue.component('configuracion-seguridad-index', {
                     return json.data;
                 }
             },
-            "columns": [{ data: 'display_name', 'name': 'Nombre' }, { data: 'description' }, { data: 'created_at' }, {
+            "columns": [{ data: 'display_name', 'name': 'Nombre', 'searchable': true }, { data: 'description', 'searchable': true }, { data: 'created_at', 'searchable': false }, {
                 data: {},
                 render: function render(data) {
                     var html = '';
@@ -13947,9 +13955,102 @@ Vue.component('configuracion-seguridad-index', {
                 }
             }
         });
+
+        $('#usuarios_roles_table').DataTable({
+            "processing": true,
+            "serverSide": true,
+            "ordering": true,
+            "order": [[1, "ASC"]],
+            "searching": true,
+            "searchDelay": 750,
+            "ajax": {
+                "url": App.host + '/usuario/paginate',
+                "type": "POST",
+                "beforeSend": function beforeSend() {
+                    self.guardando = true;
+                },
+                "complete": function complete() {
+                    self.guardando = false;
+                },
+                "dataSrc": function dataSrc(json) {
+                    return json.data;
+                }
+            },
+            "columns": [{ data: 'usuario', 'name': 'Nombre', 'searchable': true }, { data: 'nombre', 'searchable': true }, {
+                data: {},
+                render: function render(data) {
+                    var html = '';
+                    if (data.user) {
+                        data.user.roles.forEach(function (rol) {
+                            html += rol.display_name + '<br>';
+                        });
+                    }
+                    return html;
+                },
+                orderable: false, 'searchable': false, "width": "200px"
+            }, {
+                data: {},
+                render: function render(data) {
+                    return '<button class="btn btn-xs btn-default btn_edit_rol_user" title="Editar" id="' + data.usuario + '"><i class="fa fa-pencil"></i></button>';
+                },
+
+                orderable: false
+            }],
+            "language": {
+                "sProcessing": "Procesando...",
+                "sLengthMenu": "Mostrar _MENU_ registros",
+                "sZeroRecords": "No se encontraron resultados",
+                "sEmptyTable": "Ningún dato disponible en esta tabla",
+                "sInfo": "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
+                "sInfoEmpty": "Mostrando registros del 0 al 0 de un total de 0 registros",
+                "sInfoFiltered": "(filtrado de un total de _MAX_ registros)",
+                "sInfoPostFix": "",
+                "sSearch": "Buscar:",
+                "sUrl": "",
+                "sInfoThousands": ",",
+                "sLoadingRecords": "Cargando...",
+                "oPaginate": {
+                    "sFirst": "Primero",
+                    "sLast": "Último",
+                    "sNext": "Siguiente",
+                    "sPrevious": "Anterior"
+                },
+                "oAria": {
+                    "sSortAscending": ": Activar para ordenar la columna de manera ascendente",
+                    "sSortDescending": ": Activar para ordenar la columna de manera descendente"
+                }
+            }
+        });
     },
 
-    methods: _defineProperty({
+    methods: (_methods = {
+        getRoleUser: function getRoleUser(usuario) {
+            var self = this;
+            $.ajax({
+                url: App.host + '/usuario/' + usuario,
+                type: 'GET',
+                beforeSend: function beforeSend() {
+                    self.cargando = true;
+                },
+                success: function success(response) {
+                    self.usuario = response.usuario;
+                    self.roles = response.roles;
+                    self.rol_usuario_alta = [];
+                    if (self.usuario.user) {
+                        self.usuario.user.roles.forEach(function (rol) {
+                            self.rol_usuario_alta.push(rol.id);
+                        });
+                    }
+                    self.validation_errors.clear('form_update_role_user');
+                    $('#edit_role_user_modal').modal('show');
+                    self.validation_errors.clear('form_update_role_user');
+                },
+                complete: function complete() {
+                    self.cargando = false;
+                }
+            });
+        },
+
         getRole: function getRole(id) {
             var self = this;
             $.ajax({
@@ -13964,7 +14065,10 @@ Vue.component('configuracion-seguridad-index', {
                     self.role.perms.forEach(function (perm) {
                         self.permisos_alta.push(perm.id);
                     });
+
+                    self.validation_errors.clear('form_update_role');
                     $('#edit_role_modal').modal('show');
+                    self.validation_errors.clear('form_update_role');
                 },
                 complete: function complete() {
                     self.cargando = false;
@@ -14045,9 +14149,49 @@ Vue.component('configuracion-seguridad-index', {
                     description: self.role.description,
                     permissions: self.permisos_alta
                 },
-                beforeSend: function beforeSend() {},
-                success: function success() {},
-                complete: function complete() {}
+                beforeSend: function beforeSend() {
+                    self.guardando = true;
+                },
+                success: function success(response) {
+                    $('.modal').modal('hide');
+                    self.closeModal();
+                    $('#roles_table').DataTable().ajax.reload(null, false);
+
+                    swal({
+                        type: 'success',
+                        title: 'Rol ' + response.display_name + ' registrado correctamente'
+                    });
+                },
+                complete: function complete() {
+                    self.guardando = false;
+                }
+            });
+        },
+        saveRolUsuario: function saveRolUsuario() {
+            var self = this;
+            $.ajax({
+                url: App.host + '/usuario',
+                type: 'POST',
+                data: {
+                    roles_alta: self.rol_usuario_alta,
+                    usuario: self.usuario
+                },
+                beforeSend: function beforeSend() {
+                    self.guardando = true;
+                },
+                success: function success(response) {
+                    $('.modal').modal('hide');
+                    self.closeModal();
+                    $('#usuarios_roles_table').DataTable().ajax.reload(null, false);
+
+                    swal({
+                        type: 'success',
+                        title: 'Roles asignados correctamente'
+                    });
+                },
+                complete: function complete() {
+                    self.guardando = false;
+                }
             });
         },
 
@@ -14059,6 +14203,8 @@ Vue.component('configuracion-seguridad-index', {
                     _this.confirm_save_role();
                 } else if (funcion == 'update_role') {
                     _this.confirm_update_role();
+                } else if (funcion == 'update_role_user') {
+                    _this.confirm_save_role_usuario();
                 }
             }).catch(function () {
                 swal({
@@ -14101,7 +14247,7 @@ Vue.component('configuracion-seguridad-index', {
             });
         }
 
-    }, 'confirm_save_role', function confirm_save_role() {
+    }, _defineProperty(_methods, 'confirm_save_role', function confirm_save_role() {
         var self = this;
         swal({
             title: "Guardar Nuevo Rol",
@@ -14115,7 +14261,21 @@ Vue.component('configuracion-seguridad-index', {
                 self.saveRol();
             }
         });
-    })
+    }), _defineProperty(_methods, 'confirm_save_role_usuario', function confirm_save_role_usuario() {
+        var self = this;
+        swal({
+            title: "Asignar Rol a Usuario",
+            text: "¿Estás seguro de que la información es correcta?",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonText: "Si, Continuar",
+            cancelButtonText: "No, Cancelar"
+        }).then(function (result) {
+            if (result.value) {
+                self.saveRolUsuario();
+            }
+        });
+    }), _methods)
 });
 
 },{}],10:[function(require,module,exports){
@@ -18201,6 +18361,12 @@ Vue.component('solicitar_reclasificacion-items', {
             });
 
             self.data.filtros.push(self.data.agrega);
+
+            self.data.agrega = {
+                'nivel': '',
+                'operador': '',
+                'texto': ''
+            };
         },
         buscar: function buscar() {
             var self = this,
@@ -18548,151 +18714,76 @@ Vue.component('solicitar_reclasificacion-items', {
 },{}],29:[function(require,module,exports){
 'use strict';
 
-Vue.component('control_cambio_presupuesto-create', {
-    props: ['max_niveles', 'operadores', 'basesPresupuesto'],
+Vue.component('cambio-presupuesto-create', {
     data: function data() {
         return {
-            conceptos: [],
-            filtros: [],
-            baseDatos: '',
             form: {
-                filtro: {
-                    nivel: '',
-                    operador: '',
-                    texto: ''
-                }
+                id_tipo_cobrabilidad: '',
+                id_tipo_orden: ''
             },
+            tipos_cobrabilidad: [],
+            tipos_orden: [],
             cargando: false
         };
     },
+
     computed: {
-        niveles: function niveles() {
-            var niveles = [],
-                paso = 1;
-            for (paso; paso <= this.max_niveles; paso++) {
-                niveles.push({ numero: paso, nombre: "Nivel " + paso });
-            }
-            return niveles;
+        tipos_orden_filtered: function tipos_orden_filtered() {
+            var self = this;
+            return this.tipos_orden.filter(function (tipo_orden) {
+                return tipo_orden.id_tipo_cobrabilidad == self.form.id_tipo_cobrabilidad;
+            });
         }
     },
-    mounted: function mounted() {},
+
+    mounted: function mounted() {
+        this.fetchTiposCobrabilidad();
+        this.fetchTiposOrden();
+    },
+
     methods: {
-
-        crearFiltro: function crearFiltro() {
+        fetchTiposCobrabilidad: function fetchTiposCobrabilidad() {
             var self = this;
-
-            $('#conceptos_table').DataTable({
-                "processing": true,
-                destroy: true,
-                "serverSide": true,
-                "ordering": false,
-                "ajax": {
-                    "url": App.host + '/control_presupuesto/conceptos/getPaths',
-                    "type": "POST",
-                    "beforeSend": function beforeSend() {
-                        self.cargando = true;
-                    },
-                    "data": function data(d) {
-                        d.filtros = self.filtros;
-
-                        d.baseDatos = self.baseDatos;
-                    },
-                    "complete": function complete() {
-                        self.cargando = false;
-                    },
-                    "dataSrc": function dataSrc(json) {
-                        for (var i = 0; i < json.data.length; i++) {
-                            json.data[i].monto_presupuestado = '$' + parseInt(json.data[i].monto_presupuestado).formatMoney(2, ',', '.');
-                            json.data[i].monto = '$' + parseInt(json.data[i].monto).formatMoney(2, ',', '.');
-                            json.data[i].precio_unitario = '$' + parseInt(json.data[i].precio_unitario).formatMoney(2, ',', '.');
-                        }
-                        return json.data;
-                    }
+            $.ajax({
+                url: App.host + '/control_presupuesto/tipo_cobrabilidad',
+                type: 'GET',
+                beforeSend: function beforeSend() {
+                    self.cargando = true;
                 },
-                "columns": [{ data: 'filtro1' }, { data: 'filtro2' }, { data: 'filtro3' }, { data: 'filtro4' }, { data: 'filtro5' }, { data: 'filtro6' }, { data: 'filtro7' }, { data: 'filtro8' }, { data: 'filtro9' }, { data: 'filtro10' }, { data: 'filtro11' }, { data: 'unidad' }, { data: 'cantidad_presupuestada', className: 'text-right' }, { data: 'precio_unitario', className: 'text-right' }, { data: 'monto', className: 'text-right' }, { data: 'monto_presupuestado', className: 'text-right' }],
-                language: {
-                    "sProcessing": "Procesando...",
-                    "sLengthMenu": "Mostrar _MENU_ registros",
-                    "sZeroRecords": "No se encontraron resultados",
-                    "sEmptyTable": "Ningún dato disponible en esta tabla",
-                    "sInfo": "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
-                    "sInfoEmpty": "Mostrando registros del 0 al 0 de un total de 0 registros",
-                    "sInfoFiltered": "(filtrado de un total de _MAX_ registros)",
-                    "sInfoPostFix": "",
-                    "sSearch": "Buscar:",
-                    "sUrl": "",
-                    "sInfoThousands": ",",
-                    "sLoadingRecords": "Cargando...",
-                    "oPaginate": {
-                        "sFirst": "Primero",
-                        "sLast": "Último",
-                        "sNext": "Siguiente",
-                        "sPrevious": "Anterior"
-                    },
-                    "oAria": {
-                        "sSortAscending": ": Activar para ordenar la columna de manera ascendente",
-                        "sSortDescending": ": Activar para ordenar la columna de manera descendente"
-                    }
+                success: function success(response) {
+                    self.tipos_cobrabilidad = response;
                 },
-                "columnDefs": [{
-                    "targets": -1,
-                    "data": null,
-                    "defaultContent": "<button>Click!</button>"
-                }]
+                complete: function complete() {
+                    self.cargando = false;
+                }
             });
         },
 
-        set_filtro: function set_filtro() {
-            var nivel = this.form.filtro.nivel;
-            var result = this.filtros.filter(function (filtro) {
-                return filtro.nivel == nivel;
+        fetchTiposOrden: function fetchTiposOrden() {
+            var self = this;
+            $.ajax({
+                url: App.host + '/control_presupuesto/tipo_orden',
+                type: 'GET',
+                beforeSend: function beforeSend() {
+                    self.cargando = true;
+                },
+                success: function success(response) {
+                    self.tipos_orden = response;
+                },
+                complete: function complete() {
+                    self.cargando = false;
+                }
             });
-
-            if (result.length) {
-                result[0].operadores.push({
-                    sql: this.form.filtro.operador.replace('{texto}', this.form.filtro.texto),
-                    operador: this.operadores[this.form.filtro.operador],
-                    texto: this.form.filtro.texto
-                });
-            } else {
-                this.filtros.push({
-                    nivel: this.form.filtro.nivel,
-                    operadores: [{
-                        sql: this.form.filtro.operador.replace('{texto}', this.form.filtro.texto),
-                        operador: this.operadores[this.form.filtro.operador],
-                        texto: this.form.filtro.texto
-                    }]
-                });
-            }
-
-            this.close_modal();
-        },
-
-        close_modal: function close_modal() {
-            $('#agregar_filtro_modal').modal('hide');
-            Vue.set(this.form, 'filtro', { nivel: '', operador: '', texto: '' });
-        },
-
-        eliminar: function eliminar(filtro, operador) {
-            Vue.delete(filtro.operadores, filtro.operadores.indexOf(operador));
-            if (!filtro.operadores.length) {
-                Vue.delete(this.filtros, this.filtros.indexOf(filtro));
-            }
-
-            if (!this.filtros.length) {
-                var table = $('#conceptos_table').DataTable();
-                table.ajax.reload();
-            }
-        },
-
-        get_conceptos: function get_conceptos() {
-            var table = $('#conceptos_table').DataTable();
-            table.ajax.reload();
         }
     }
 });
 
 },{}],30:[function(require,module,exports){
+'use strict';
+
+Vue.component('cambio-presupuesto-index', {});
+
+},{}],31:[function(require,module,exports){
 'use strict';
 
 Vue.component('control_presupuesto-index', {
@@ -18901,7 +18992,7 @@ Vue.component('control_presupuesto-index', {
     }
 });
 
-},{}],31:[function(require,module,exports){
+},{}],32:[function(require,module,exports){
 'use strict';
 
 Vue.component('comprobante-fondo-fijo-create', {
@@ -19228,7 +19319,7 @@ Vue.component('comprobante-fondo-fijo-create', {
                 $(el).select2({
                     width: '100%',
                     ajax: {
-                        url: App.host + '/finanzas/material/getBy',
+                        url: App.host + '/finanzas/material/getBySinFamilias',
                         dataType: 'json',
                         delay: 500,
                         data: function data(params) {
@@ -19381,7 +19472,7 @@ Vue.component('comprobante-fondo-fijo-create', {
     }
 });
 
-},{}],32:[function(require,module,exports){
+},{}],33:[function(require,module,exports){
 'use strict';
 
 Vue.component('comprobante-fondo-fijo-edit', {
@@ -19837,7 +19928,7 @@ Vue.component('comprobante-fondo-fijo-edit', {
     }
 });
 
-},{}],33:[function(require,module,exports){
+},{}],34:[function(require,module,exports){
 'use strict';
 
 Vue.component('comprobante-fondo-fijo-index', {
@@ -19952,7 +20043,7 @@ Vue.component('comprobante-fondo-fijo-index', {
     }
 });
 
-},{}],34:[function(require,module,exports){
+},{}],35:[function(require,module,exports){
 'use strict';
 
 Vue.component('subcontratos-estimacion', {
@@ -20031,7 +20122,7 @@ Vue.component('subcontratos-estimacion', {
     }
 });
 
-},{}],35:[function(require,module,exports){
+},{}],36:[function(require,module,exports){
 'use strict';
 
 Vue.component('movimientos_bancarios-index', {
@@ -20382,7 +20473,7 @@ Vue.component('movimientos_bancarios-index', {
     }
 });
 
-},{}],36:[function(require,module,exports){
+},{}],37:[function(require,module,exports){
 'use strict';
 
 Vue.component('traspaso-cuentas-index', {
@@ -20695,7 +20786,7 @@ Vue.component('traspaso-cuentas-index', {
     }
 });
 
-},{}],37:[function(require,module,exports){
+},{}],38:[function(require,module,exports){
 'use strict';
 
 Vue.component('app-errors', {
@@ -20704,7 +20795,7 @@ Vue.component('app-errors', {
     template: require('./templates/errors.html')
 });
 
-},{"./templates/errors.html":41}],38:[function(require,module,exports){
+},{"./templates/errors.html":42}],39:[function(require,module,exports){
 'use strict';
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
@@ -20730,7 +20821,7 @@ Vue.component('global-errors', {
   }
 });
 
-},{"./templates/global-errors.html":42}],39:[function(require,module,exports){
+},{"./templates/global-errors.html":43}],40:[function(require,module,exports){
 'use strict';
 
 Vue.component('kardex-material-index', {
@@ -20880,7 +20971,7 @@ Vue.component('kardex-material-index', {
 
 });
 
-},{}],40:[function(require,module,exports){
+},{}],41:[function(require,module,exports){
 'use strict';
 
 Vue.component('select2', {
@@ -20929,9 +21020,9 @@ Vue.component('select2', {
     }
 });
 
-},{}],41:[function(require,module,exports){
-module.exports = '<div id="form-errors" v-cloak>\n  <div class="alert alert-danger" v-if="form.errors.length">\n    <ul>\n      <li v-for="error in form.errors">{{ error }}</li>\n    </ul>\n  </div>\n</div>';
 },{}],42:[function(require,module,exports){
+module.exports = '<div id="form-errors" v-cloak>\n  <div class="alert alert-danger" v-if="form.errors.length">\n    <ul>\n      <li v-for="error in form.errors">{{ error }}</li>\n    </ul>\n  </div>\n</div>';
+},{}],43:[function(require,module,exports){
 module.exports = '<div class="alert alert-danger" v-show="errors.length">\n  <ul>\n    <li v-for="error in errors">{{ error }}</li>\n  </ul>\n</div>';
 },{}]},{},[4]);
 

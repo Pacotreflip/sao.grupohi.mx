@@ -26,6 +26,11 @@ class Estimacion extends Rotation {
     const MAX_HEIGHT = 180;
 
 
+    /**
+     * Estimacion constructor.
+     * @param \Ghi\Domain\Core\Models\Transacciones\Estimacion $estimacion
+     * @param Transaccion $transaccion
+     */
     public function __construct(\Ghi\Domain\Core\Models\Transacciones\Estimacion $estimacion)
     {
         parent::__construct('P', 'cm', 'A4');
@@ -33,7 +38,25 @@ class Estimacion extends Rotation {
         $this->obra = Obra::find(Context::getId());
         $this->estimacion = $estimacion;
         $this->objeto_contrato = DB::connection('cadeco')->table('Subcontratos.subcontrato')->select('observacion')->where('id_transaccion', '=', $this->estimacion->id_antecedente)->first();
-        $this->objeto_contrato = $this->objeto_contrato->observacion;
+
+        if (empty($this->objeto_contrato->observacion))
+        {
+            $subcontrato_transaccion = DB::connection('cadeco')->table('dbo.transacciones')->select(['id_antecedente', 'referencia'])->where('id_transaccion', '=', $this->estimacion->id_antecedente)->first();
+
+            // Si existe el campo referencia, úsalo.
+            if ($subcontrato_transaccion->referencia)
+                $this->objeto_contrato = $subcontrato_transaccion->referencia;
+
+            // ¿No? obten la referencia del contrato proyectado
+            else{
+                $contrato_proyectado = DB::connection('cadeco')->table('dbo.transacciones')->select('referencia')->where('id_transaccion', '=', $subcontrato_transaccion->id_antecedente)->first();
+
+                $this->objeto_contrato = $contrato_proyectado->referencia;
+            }
+        }
+
+        else
+            $this->objeto_contrato = $this->objeto_contrato->observacion;
     }
 
     function Header() {

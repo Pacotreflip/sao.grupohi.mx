@@ -39,4 +39,19 @@ interface UserRepository
      */
     public function getObras($id_usuario);
 
+    public function paginate(array $data);
+
+    /**
+     * Retorna el usuario con obras cadeco con roles por usuario
+     * @param $usuario
+     * @return mixed
+     */
+    public function usuarioRoles($usuario);
+
+    /**
+     * Guardar roles a usuario
+     * @param $usuario
+     * @return mixed
+     */
+    public function saveRoles($data);
 }

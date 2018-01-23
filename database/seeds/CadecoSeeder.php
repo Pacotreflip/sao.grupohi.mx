@@ -33,5 +33,11 @@ class CadecoSeeder extends Seeder
 
         //Tesorería
         $this->call(TesoreriaTiposMovimientosSeeder::class);
+
+        // Control de Presupuesto
+        $this->call(ControlPresupuestoBasesPresupuestoSeeder::class);
+
+        // PresupuestoObra
+        $this->call(PresupuestoObraResponsablesTipoResponsableSeeder::class);
     }
 }

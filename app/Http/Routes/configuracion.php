@@ -18,12 +18,14 @@ Route::group(['prefix' => 'configuracion'], function () {
          * Roles Routes
          */
         Route::get('role', 'Configuracion\RoleController@index');
+        Route::post('role', 'Configuracion\RoleController@store');
         Route::delete('role/{role}', 'Configuracion\RoleController@destroy');
         Route::patch('role/{role}', 'Configuracion\RoleController@update');
         Route::post('role/paginate', 'Configuracion\RoleController@paginate');
         Route::get('role/{role}', 'Configuracion\RoleController@find');
         /**
          * Permission Routes
+         *
          */
         Route::get('permission', 'Configuracion\PermissionController@index');
         Route::post('permission', 'Configuracion\PermissionController@store');

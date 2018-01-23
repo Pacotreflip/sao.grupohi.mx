@@ -41,13 +41,15 @@ class EloquentRoleRepository implements RoleRepository
     public function create(array $data)
     {
         try {
-            DB::connection('seguridad')->beginTransacton();
+            DB::connection('seguridad')->beginTransaction();
 
-            //TODO : Registrar un nuevo Rol con $data
+            $permisos = isset($data['permissions']) ? $data['permissions'] : [];
+            $role = $this->model->create($data);
+            $role->savePermissions($permisos);
 
             DB::connection('seguridad')->commit();
 
-            return ;
+            return $role;
         } catch (\Exception $e) {
             DB::connection('seguridad')->rollback();
             throw $e;
@@ -93,6 +95,13 @@ class EloquentRoleRepository implements RoleRepository
         $query = $this->model->with(['perms' => function ($q){
             return $q->orderBy('name', 'asc');
         }]);
+
+        $query->where(function ($q) use ($data){
+            return $q
+                ->where('description', 'like', '%'.$data['search']['value'].'%')
+                ->orWhere('name', 'like', '%'.$data['search']['value'].'%')
+                ->orWhere('display_name', 'like', '%'.$data['search']['value'].'%');
+        });
 
         foreach ($data['order'] as $order) {
             $query->orderBy($data['columns'][$order['column']]['data'], $order['dir']);
