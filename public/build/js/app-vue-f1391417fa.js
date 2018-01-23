@@ -19822,145 +19822,65 @@ Vue.component('solicitar_reclasificacion-items', {
 'use strict';
 
 Vue.component('cambio-presupuesto-create', {
-    props: ['max_niveles', 'operadores', 'basesPresupuesto'],
     data: function data() {
         return {
-            conceptos: [],
-            filtros: [],
-            baseDatos: '',
             form: {
-                filtro: {
-                    nivel: '',
-                    operador: '',
-                    texto: ''
-                }
+                id_tipo_cobrabilidad: '',
+                id_tipo_orden: ''
             },
+            tipos_cobrabilidad: [],
+            tipos_orden: [],
             cargando: false
         };
     },
+
     computed: {
-        niveles: function niveles() {
-            var niveles = [],
-                paso = 1;
-            for (paso; paso <= this.max_niveles; paso++) {
-                niveles.push({ numero: paso, nombre: "Nivel " + paso });
-            }
-            return niveles;
+        tipos_orden_filtered: function tipos_orden_filtered() {
+            var self = this;
+            return this.tipos_orden.filter(function (tipo_orden) {
+                return tipo_orden.id_tipo_cobrabilidad == self.form.id_tipo_cobrabilidad;
+            });
         }
     },
-    mounted: function mounted() {},
+
+    mounted: function mounted() {
+        this.fetchTiposCobrabilidad();
+        this.fetchTiposOrden();
+    },
+
     methods: {
-
-        crearFiltro: function crearFiltro() {
+        fetchTiposCobrabilidad: function fetchTiposCobrabilidad() {
             var self = this;
-
-            $('#conceptos_table').DataTable({
-                "processing": true,
-                destroy: true,
-                "serverSide": true,
-                "ordering": false,
-                "ajax": {
-                    "url": App.host + '/control_presupuesto/conceptos/getPaths',
-                    "type": "POST",
-                    "beforeSend": function beforeSend() {
-                        self.cargando = true;
-                    },
-                    "data": function data(d) {
-                        d.filtros = self.filtros;
-
-                        d.baseDatos = self.baseDatos;
-                    },
-                    "complete": function complete() {
-                        self.cargando = false;
-                    },
-                    "dataSrc": function dataSrc(json) {
-                        for (var i = 0; i < json.data.length; i++) {
-                            json.data[i].monto_presupuestado = '$' + parseInt(json.data[i].monto_presupuestado).formatMoney(2, ',', '.');
-                            json.data[i].monto = '$' + parseInt(json.data[i].monto).formatMoney(2, ',', '.');
-                            json.data[i].precio_unitario = '$' + parseInt(json.data[i].precio_unitario).formatMoney(2, ',', '.');
-                        }
-                        return json.data;
-                    }
+            $.ajax({
+                url: App.host + '/control_presupuesto/tipo_cobrabilidad',
+                type: 'GET',
+                beforeSend: function beforeSend() {
+                    self.cargando = true;
                 },
-                "columns": [{ data: 'filtro1' }, { data: 'filtro2' }, { data: 'filtro3' }, { data: 'filtro4' }, { data: 'filtro5' }, { data: 'filtro6' }, { data: 'filtro7' }, { data: 'filtro8' }, { data: 'filtro9' }, { data: 'filtro10' }, { data: 'filtro11' }, { data: 'unidad' }, { data: 'cantidad_presupuestada', className: 'text-right' }, { data: 'precio_unitario', className: 'text-right' }, { data: 'monto', className: 'text-right' }, { data: 'monto_presupuestado', className: 'text-right' }],
-                language: {
-                    "sProcessing": "Procesando...",
-                    "sLengthMenu": "Mostrar _MENU_ registros",
-                    "sZeroRecords": "No se encontraron resultados",
-                    "sEmptyTable": "Ningún dato disponible en esta tabla",
-                    "sInfo": "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
-                    "sInfoEmpty": "Mostrando registros del 0 al 0 de un total de 0 registros",
-                    "sInfoFiltered": "(filtrado de un total de _MAX_ registros)",
-                    "sInfoPostFix": "",
-                    "sSearch": "Buscar:",
-                    "sUrl": "",
-                    "sInfoThousands": ",",
-                    "sLoadingRecords": "Cargando...",
-                    "oPaginate": {
-                        "sFirst": "Primero",
-                        "sLast": "Último",
-                        "sNext": "Siguiente",
-                        "sPrevious": "Anterior"
-                    },
-                    "oAria": {
-                        "sSortAscending": ": Activar para ordenar la columna de manera ascendente",
-                        "sSortDescending": ": Activar para ordenar la columna de manera descendente"
-                    }
+                success: function success(response) {
+                    self.tipos_cobrabilidad = response;
                 },
-                "columnDefs": [{
-                    "targets": -1,
-                    "data": null,
-                    "defaultContent": "<button>Click!</button>"
-                }]
+                complete: function complete() {
+                    self.cargando = false;
+                }
             });
         },
 
-        set_filtro: function set_filtro() {
-            var nivel = this.form.filtro.nivel;
-            var result = this.filtros.filter(function (filtro) {
-                return filtro.nivel == nivel;
+        fetchTiposOrden: function fetchTiposOrden() {
+            var self = this;
+            $.ajax({
+                url: App.host + '/control_presupuesto/tipo_orden',
+                type: 'GET',
+                beforeSend: function beforeSend() {
+                    self.cargando = true;
+                },
+                success: function success(response) {
+                    self.tipos_orden = response;
+                },
+                complete: function complete() {
+                    self.cargando = false;
+                }
             });
-
-            if (result.length) {
-                result[0].operadores.push({
-                    sql: this.form.filtro.operador.replace('{texto}', this.form.filtro.texto),
-                    operador: this.operadores[this.form.filtro.operador],
-                    texto: this.form.filtro.texto
-                });
-            } else {
-                this.filtros.push({
-                    nivel: this.form.filtro.nivel,
-                    operadores: [{
-                        sql: this.form.filtro.operador.replace('{texto}', this.form.filtro.texto),
-                        operador: this.operadores[this.form.filtro.operador],
-                        texto: this.form.filtro.texto
-                    }]
-                });
-            }
-
-            this.close_modal();
-        },
-
-        close_modal: function close_modal() {
-            $('#agregar_filtro_modal').modal('hide');
-            Vue.set(this.form, 'filtro', { nivel: '', operador: '', texto: '' });
-        },
-
-        eliminar: function eliminar(filtro, operador) {
-            Vue.delete(filtro.operadores, filtro.operadores.indexOf(operador));
-            if (!filtro.operadores.length) {
-                Vue.delete(this.filtros, this.filtros.indexOf(filtro));
-            }
-
-            if (!this.filtros.length) {
-                var table = $('#conceptos_table').DataTable();
-                table.ajax.reload();
-            }
-        },
-
-        get_conceptos: function get_conceptos() {
-            var table = $('#conceptos_table').DataTable();
-            table.ajax.reload();
         }
     }
 });
