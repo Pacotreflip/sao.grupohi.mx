@@ -57,6 +57,6 @@ class MovimientosBancarios extends BaseModel
     }
 
     public function tipo() {
-        return $this->belongsTo(TiposMovimientos::class, 'id_tipo_movimiento', 'id_tipo_movimiento');
+        return $this->belongsTo(TipoMovimiento::class, 'id_tipo_movimiento', 'id_tipo_movimiento');
     }
 }
