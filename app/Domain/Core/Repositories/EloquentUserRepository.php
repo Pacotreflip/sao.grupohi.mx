@@ -137,7 +137,7 @@ class EloquentUserRepository extends \Ghi\Core\Repositories\EloquentUserReposito
         });
 
         foreach ($data['order'] as $order) {
-           // $query->orderBy($data['columns'][$order['column']]['data'], $order['dir']);
+           $query->orderBy($data['columns'][$order['column']]['data'], $order['dir']);
         }
         return $query->paginate($perPage = $data['length'], $columns = ['*'], $pageName = 'page', $page = ($data['start'] / $data['length']) + 1);
     }

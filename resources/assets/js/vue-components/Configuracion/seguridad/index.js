@@ -125,7 +125,7 @@ Vue.component('configuracion-seguridad-index', {
             "serverSide": true,
             "ordering" : true,
             "order": [
-                [2, "desc"]
+                [1, "ASC"]
             ],
             "searching" : true,
             "searchDelay": 750,
@@ -151,7 +151,7 @@ Vue.component('configuracion-seguridad-index', {
                         var html = '';
                         if(data.user) {
                             data.user.roles.forEach(function (rol) {
-                                html += rol.description + '<br>';
+                                html += rol.display_name + '<br>';
                             });
                         }
                         return html;
