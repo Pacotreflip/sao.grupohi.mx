@@ -311,5 +311,16 @@ class AppServiceProvider extends ServiceProvider
             \Ghi\Domain\Core\Contracts\ControlPresupuesto\BasePresupuestoRepository::class,
             \Ghi\Domain\Core\Repositories\ControlPresupuesto\EloquentBasePresupuestoRepository::class
         );
+
+        $this->app->bind(
+            \Ghi\Domain\Core\Contracts\ControlPresupuesto\TipoCobrabilidadRepository::class,
+            \Ghi\Domain\Core\Repositories\ControlPresupuesto\EloquentTipoCobrabilidadRepository::class
+        );
+
+        $this->app->bind(
+            \Ghi\Domain\Core\Contracts\ControlPresupuesto\TipoOrdenRepository::class,
+            \Ghi\Domain\Core\Repositories\ControlPresupuesto\EloquentTipoOrdenRepository::class
+        );
+
     }
 }
