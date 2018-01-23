@@ -59,3 +59,4 @@ class ControlPresupuestoFlujoOperativoSeeder extends Seeder
         ]);
     }
 }
+
