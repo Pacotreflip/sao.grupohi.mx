@@ -83,4 +83,15 @@ class ConceptoController extends Controller
             'data' => $conceptos->items()
             ], 200);
     }
+
+    public function getPathsConceptos(Request $request) {
+
+        $conceptos = $this->concepto->pathsConceptos($request->all());
+
+        return response()->json([
+            'recordsTotal' => $conceptos->total(),
+            'recordsFiltered' => $conceptos->total(),
+            'data' => $conceptos->items()
+        ], 200);
+    }
 }

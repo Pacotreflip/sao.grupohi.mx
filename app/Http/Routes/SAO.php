@@ -45,6 +45,7 @@ Route::get('material/{id}/getHijos', 'MaterialController@getHijos')->name('mater
 Route::get('conceptos/jstree', 'ConceptoController@getRoot');
 Route::get('conceptos/{id}/jstree', 'ConceptoController@getNode');
 Route::post('conceptos/getPaths', 'ConceptoController@getPaths');
+Route::post('conceptos/getPathsConceptos', 'ConceptoController@getPathsConceptos');
 
 
 /**
