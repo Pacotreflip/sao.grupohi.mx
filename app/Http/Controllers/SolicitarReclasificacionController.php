@@ -327,7 +327,7 @@ class SolicitarReclasificacionController extends Controller
     public function single(Request$request)
     {
         $solicitud = $this->solicitud->find($request->id)
-            ->with(['autorizacion.usuario', 'rechazo.usuario', 'usuario', 'estatusString', 'partidas.item.material', 'partidas.item.transaccion', 'partidas.conceptoNuevo', 'partidas.conceptoOriginal'])
+            ->with(['autorizacion.usuario', 'rechazo.usuario', 'usuario', 'estatusString', 'partidas.item.material', 'partidas.item.transaccion', 'partidas.item.contrato', 'partidas.conceptoNuevo', 'partidas.conceptoOriginal'])
             ->select('ControlCostos.solicitud_reclasificacion.*')
             ->where('id', $request->id)
             ->first();
