@@ -322,7 +322,7 @@ Vue.component('solicitar_reclasificacion-items', {
                     {
                         $.each(data.repetidas, function( key, value ) {
                             repetidas.push(value.id);
-                            lista.push('<li class="list-group-item "><a href="#" onclick="swal.close();" class="mostrar_solicitud" data-id="'+ value.id +'">#'+ value.id +' ' + (value.motivo.length >= 20 ? (value.motivo.substring(0, 30) + '...') : value.motivo) + '</a></li>');
+                            lista.push('<li class="list-group-item "><a href="#" onclick="swal.close();" class="mostrar_solicitud" data-id="'+ value.id +'">#'+ value.id +' ' + (value.motivo.length >= 20 ? (self.html_decode(value.motivo.substring(0, 30) + '...')) : self.html_decode(value.motivo)) + '</a></li>');
                         });
 
                         var texto = data.repetidas.length > 1 ? 'Ya existen solicitudes pendientes de autorización' : 'Ya existe una solicitud pendiente de autorización';
@@ -506,6 +506,12 @@ Vue.component('solicitar_reclasificacion-items', {
 
             self.data.rechazando = false;
             self.data.rechazo_motivo = '';
+        },
+        html_decode: function(input){
+            var e = document.createElement('div');
+            e.innerHTML = input;
+
+            return e.childNodes.length === 0 ? "" : e.childNodes[0].nodeValue;
         }
     }
 });

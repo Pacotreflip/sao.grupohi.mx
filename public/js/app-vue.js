@@ -19163,6 +19163,8 @@ Vue.component('solicitar_reclasificacion-index', {
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 Vue.component('solicitar_reclasificacion-items', {
     props: ['url_solicitar_reclasificacion_index', 'id_transaccion', 'id_concepto_antiguo', 'items', 'max_niveles', 'filtros', 'operadores', 'solicitar_reclasificacion', 'consultar_reclasificacion', 'autorizar_reclasificacion'],
     data: function data() {
@@ -19263,7 +19265,7 @@ Vue.component('solicitar_reclasificacion-items', {
             }
         }
     },
-    methods: {
+    methods: _defineProperty({
         agregar_filtro: function agregar_filtro() {
             var self = this,
                 vacios = [],
@@ -19466,7 +19468,7 @@ Vue.component('solicitar_reclasificacion-items', {
                     if (_typeof(data.repetidas) == 'object') {
                         $.each(data.repetidas, function (key, value) {
                             repetidas.push(value.id);
-                            lista.push('<li class="list-group-item "><a href="#" onclick="swal.close();" class="mostrar_solicitud" data-id="' + value.id + '">#' + value.id + ' ' + (value.motivo.length >= 20 ? value.motivo.substring(0, 30) + '...' : value.motivo) + '</a></li>');
+                            lista.push('<li class="list-group-item "><a href="#" onclick="swal.close();" class="mostrar_solicitud" data-id="' + value.id + '">#' + value.id + ' ' + (value.motivo.length >= 20 ? self.html_decode(value.motivo.substring(0, 30) + '...') : self.html_decode(value.motivo)) + '</a></li>');
                         });
 
                         var texto = data.repetidas.length > 1 ? 'Ya existen solicitudes pendientes de autorización' : 'Ya existe una solicitud pendiente de autorización';
@@ -19631,7 +19633,12 @@ Vue.component('solicitar_reclasificacion-items', {
             self.data.rechazando = false;
             self.data.rechazo_motivo = '';
         }
-    }
+    }, 'html_decode', function html_decode(input) {
+        var e = document.createElement('div');
+        e.innerHTML = input;
+
+        return e.childNodes.length === 0 ? "" : e.childNodes[0].nodeValue;
+    })
 });
 
 },{}],29:[function(require,module,exports){
