@@ -167,7 +167,7 @@ Vue.component('cuenta-costo-index', {
                 if(result.value) {
                     self.update_cuenta();
                 }
-            }).catch(swal.noop);
+            });
         },
 
         update_cuenta: function () {
@@ -185,12 +185,13 @@ Vue.component('cuenta-costo-index', {
                     self.guardando = true;
                 },
                 success: function (data, textStatus, xhr) {
-                    self.form.costo_edit.cuenta_costo = data.data.cuenta_costo;
-                    self.close_edit_cuenta();
                     swal({
                         type: 'success',
                         title: 'Correcto',
                         html: 'Cuenta Contable actualizada correctamente',
+                    }).then(function () {
+                        self.form.costo_edit.cuenta_costo = data.data.cuenta_costo;
+                        self.close_edit_cuenta();
                     });
                 },
                 complete: function () {
@@ -212,7 +213,7 @@ Vue.component('cuenta-costo-index', {
                 if(result.value) {
                     self.save_cuenta();
                 }
-            }).catch(swal.noop);
+            });
         },
 
         save_cuenta: function () {
@@ -230,12 +231,13 @@ Vue.component('cuenta-costo-index', {
                     self.guardando = true;
                 },
                 success: function (data, textStatus, xhr) {
-                    self.form.costo_edit.cuenta_costo = data.data.cuenta_costo;
-                    self.close_edit_cuenta();
                     swal({
                         type: 'success',
                         title: 'Correcto',
                         html: 'Cuenta Contable registrada correctamente',
+                    }).then(function () {
+                        self.form.costo_edit.cuenta_costo = data.data.cuenta_costo;
+                        self.close_edit_cuenta();
                     });
                 },
                 complete: function () {
@@ -256,7 +258,7 @@ Vue.component('cuenta-costo-index', {
                 if(result.value) {
                     self.delete_cuenta(id_cuenta_costo);
                 }
-            }).catch(swal.noop);
+            });
         },
         delete_cuenta: function (id_cuenta_costo) {
             var self = this,
@@ -272,23 +274,23 @@ Vue.component('cuenta-costo-index', {
                     self.guardando = true;
                 },
                 success: function (data, textStatus, xhr) {
-                    self.data.costos.forEach(function (costo, i) {
-
-                        if (costo.cuenta_costo == null){
-                            return;
-                        }
-
-                        if (id_cuenta_costo == costo.cuenta_costo.id_cuenta_costo) {
-                            Vue.set(costo, 'cuenta_costo', null);
-                            Vue.set(self.data.costos, i, costo);
-                            return;
-                        }
-                    });
-
                     swal({
                         type: 'success',
                         title: 'Correcto',
                         text: 'Cuenta Contable eliminada correctamente'
+                    }).then(function () {
+                        self.data.costos.forEach(function (costo, i) {
+
+                            if (costo.cuenta_costo == null){
+                                return;
+                            }
+
+                            if (id_cuenta_costo == costo.cuenta_costo.id_cuenta_costo) {
+                                Vue.set(costo, 'cuenta_costo', null);
+                                Vue.set(self.data.costos, i, costo);
+                                return;
+                            }
+                        });
                     });
                 },
                 complete: function () {

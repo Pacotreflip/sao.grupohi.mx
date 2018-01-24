@@ -153,7 +153,6 @@ Vue.component('cierre-index', {
                     self.guardando = true;
                 },
                 success :function () {
-                    $('#create_cierre_modal').modal('hide');
                     swal({
                         type: 'success',
                         title: 'Correcto',
@@ -161,6 +160,7 @@ Vue.component('cierre-index', {
                         confirmButtonText: "Ok",
                         closeOnConfirm: false
                     }).then(function () {
+                        $('#create_cierre_modal').modal('hide');
                         $('#cierres_table').DataTable().ajax.reload();
                     });
                 },

@@ -31,7 +31,7 @@ Vue.component('revaluacion-create', {
                 if(result.value) {
                     self.save_facturas();
                 }
-            }).catch(swal.noop);
+            });
         },
         save_facturas: function () {
             var self = this;
@@ -49,8 +49,9 @@ Vue.component('revaluacion-create', {
                         type: "success",
                         title: '¡Correcto!',
                         text: 'Revaluación guardada correctamente'
+                    }).then(function () {
+                        window.location = xhr.getResponseHeader('Location');
                     });
-                    window.location = xhr.getResponseHeader('Location');
                 },
                 complete: function () {
                     self.guardando = false;

@@ -60,7 +60,7 @@ Vue.component('cuenta-fondo-index', {
                 if(result.value) {
                     self.update_cuenta();
                 }
-            }).catch(swal.noop);
+            });
         },
 
         update_cuenta: function () {
@@ -78,12 +78,13 @@ Vue.component('cuenta-fondo-index', {
                     self.guardando = true;
                 },
                 success: function (data, textStatus, xhr) {
-                    self.data.fondo_edit.cuenta_fondo = data.data.cuenta_fondo;
-                    self.close_edit_cuenta();
                     swal({
                         type: 'success',
                         title: 'Correcto',
                         html: 'Cuenta Contable actualizada correctamente',
+                    }).then(function () {
+                        self.data.fondo_edit.cuenta_fondo = data.data.cuenta_fondo;
+                        self.close_edit_cuenta();
                     });
                 },
                 complete: function () {
@@ -123,12 +124,13 @@ Vue.component('cuenta-fondo-index', {
                     self.guardando = true;
                 },
                 success: function (data, textStatus, xhr) {
-                    self.data.fondo_edit.cuenta_fondo = data.data.cuenta_fondo;
-                    self.close_edit_cuenta();
                     swal({
                         type: 'success',
                         title: 'Correcto',
                         html: 'Cuenta Contable registrada correctamente',
+                    }).then(function () {
+                        self.data.fondo_edit.cuenta_fondo = data.data.cuenta_fondo;
+                        self.close_edit_cuenta();
                     });
                 },
                 complete: function () {
@@ -142,6 +144,5 @@ Vue.component('cuenta-fondo-index', {
             Vue.set(this.form.cuenta_fondo, 'id', '');
             Vue.set(this.form.cuenta_fondo, 'id_fondo', '');
         }
-
     }
 });

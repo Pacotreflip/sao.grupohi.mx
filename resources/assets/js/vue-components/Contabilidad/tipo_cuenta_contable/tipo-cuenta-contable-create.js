@@ -29,7 +29,7 @@ Vue.component('tipo-cuenta-contable-create',{
                 if(result.value) {
                     self.save();
                 }
-            }).catch(swal.noop);
+            });
         },
 
         save: function () {
@@ -54,7 +54,7 @@ Vue.component('tipo-cuenta-contable-create',{
                         closeOnConfirm: false
                     }).then(function () {
                         window.location = xhr.getResponseHeader('Location');
-                    })  .catch(swal.noop);
+                    });
                 },
                 complete: function () {
                     self.guardando = false;

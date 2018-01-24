@@ -165,7 +165,7 @@ Vue.component('cuenta-concepto-index', {
                 if(result.value) {
                     self.update_cuenta();
                 }
-            }).catch(swal.noop);
+            });
         },
 
         update_cuenta: function () {
@@ -183,12 +183,13 @@ Vue.component('cuenta-concepto-index', {
                     self.guardando = true;
                 },
                 success: function (data, textStatus, xhr) {
-                    self.form.concepto_edit.cuenta_concepto = data.data.cuenta_concepto;
-                    self.close_edit_cuenta();
                     swal({
                         type: 'success',
                         title: 'Correcto',
                         html: 'Cuenta Contable actualizada correctamente',
+                    }).then(function () {
+                        self.form.concepto_edit.cuenta_concepto = data.data.cuenta_concepto;
+                        self.close_edit_cuenta();
                     });
                 },
                 complete: function () {
@@ -210,7 +211,7 @@ Vue.component('cuenta-concepto-index', {
                 if(result.value) {
                     self.save_cuenta();
                 }
-            }).catch(swal.noop);
+            });
         },
 
         save_cuenta: function () {
@@ -228,12 +229,13 @@ Vue.component('cuenta-concepto-index', {
                     self.guardando = true;
                 },
                 success: function (data, textStatus, xhr) {
-                    self.form.concepto_edit.cuenta_concepto = data.data.cuenta_concepto;
-                    self.close_edit_cuenta();
                     swal({
                         type: 'success',
                         title: 'Correcto',
                         html: 'Cuenta Contable registrada correctamente',
+                    }).then(function () {
+                        self.form.concepto_edit.cuenta_concepto = data.data.cuenta_concepto;
+                        self.close_edit_cuenta();
                     });
                 },
                 complete: function () {
