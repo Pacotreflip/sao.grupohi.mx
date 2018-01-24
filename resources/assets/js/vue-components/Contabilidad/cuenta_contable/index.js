@@ -34,7 +34,7 @@ Vue.component('cuenta-contable-index', {
                 if(result.value) {
                     self.save_cuenta_contable();
                 }
-            }).catch(swal.noop);
+            });
         },
 
         confirm_cuenta_contable_update: function () {
@@ -50,7 +50,7 @@ Vue.component('cuenta-contable-index', {
                 if(result.value) {
                     self.update_cuenta_contable();
                 }
-            }).catch(swal.noop);
+            });
         },
 
         save_cuenta_contable: function () {
@@ -72,11 +72,12 @@ Vue.component('cuenta-contable-index', {
                     self.guardando = true;
                 },
                 success: function (data, textStatus, xhr) {
-                    Vue.set(self.data, 'tipos_cuentas_contables', data.data.tipos_cuentas_contables);
                     swal({
                         type: 'success',
                         title: 'Correcto',
                         html: 'Cuenta Contable <b>' + data.data.cuenta_contable.tipo_cuenta_contable.descripcion + '</b> configurada correctamente'
+                    }).then(function () {
+                        Vue.set(self.data, 'tipos_cuentas_contables', data.data.tipos_cuentas_contables);
                     });
                 },
                 complete: function () {
@@ -105,11 +106,13 @@ Vue.component('cuenta-contable-index', {
                     self.guardando = true;
                 },
                 success: function (data, textStatus, xhr) {
-                    Vue.set(self.data, 'tipos_cuentas_contables', data.data.tipos_cuentas_contables);
                     swal({
                         type: 'success',
                         title: 'Correcto',
                         html: 'Cuenta Contable <b>' + data.data.cuenta_contable.tipo_cuenta_contable.descripcion + '</b> actualizada correctamente'
+                    }).then(function () {
+                        Vue.set(self.data, 'tipos_cuentas_contables', data.data.tipos_cuentas_contables);
+
                     });
                 },
                 complete: function () {

@@ -93,7 +93,7 @@
                                                 <tr v-for="(item, index) in partidas">
                                                     <td>@{{ item.item.transaccion.tipo_transaccion_string != undefined ? item.item.transaccion.tipo_transaccion_string : '-' }}</td>
                                                     <td>#@{{ item.item.transaccion.numero_folio }}</td>
-                                                    <td >@{{ item.item.material.descripcion }}</td>
+                                                    <td >@{{ (item.item.transaccion.tipo_tran.Tipo_Transaccion == 52 ? item.item.contrato.descripcion :  item.item.material.descripcion) }}</td>
                                                     <td class="text-right">@{{ item.item.cantidad }}</td>
                                                     <td class="text-right">@{{  parseInt(item.item.importe).formatMoney(2, '.', ',') }}</td>
                                                     <td ><span :title="item.concepto_original.path">[@{{ item.concepto_original.clave  }}] @{{ item.concepto_original.descripcion }}</span></td>

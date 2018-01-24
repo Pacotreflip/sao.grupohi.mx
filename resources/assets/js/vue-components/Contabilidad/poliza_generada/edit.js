@@ -254,8 +254,9 @@ Vue.component('poliza-generada-edit', {
                         type: 'success',
                         confirmButtonText: "Ok",
                         closeOnConfirm: false
-                    }).catch(swal.noop);
-                    window.location = xhr.getResponseHeader('Location');
+                    }).then(function () {
+                        window.location = xhr.getResponseHeader('Location');
+                    });
                 },
                 complete: function () {
                     self.guardando = false;
@@ -369,7 +370,7 @@ Vue.component('poliza-generada-edit', {
                                    }
                                });
                            }
-                       }).catch(swal.noop);
+                       });
 
                    }else{
 
@@ -380,20 +381,16 @@ Vue.component('poliza-generada-edit', {
                            confirmButtonText: "Ok",
                            closeOnConfirm: false
                        }).then(function () {
-                       }).catch(swal.noop);
-                       $('#add_cuenta_modal').modal('hide');
-                       window.location.reload(true);
+                           $('#add_cuenta_modal').modal('hide');
+                           window.location.reload(true);
+                       });
                    }
-
                 },
                 complete: function () {
                     self.guardando = false;
                 }
             });
-
-
         },
-
         close_cuenta_modal: function () {
             $('#add_cuenta_modal').modal('hide');
         }

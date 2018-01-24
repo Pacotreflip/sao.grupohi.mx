@@ -62,6 +62,7 @@ require('./vue-components/ControlCostos/reclasificacion_costos/index');
 require('./vue-components/ControlPresupuesto/presupuesto/index');
 require('./vue-components/ControlPresupuesto/cambio_presupuesto/create');
 require('./vue-components/ControlPresupuesto/cambio_presupuesto/index');
+require('./vue-components/ControlPresupuesto/cambio_presupuesto/variacion_volumen');
 
 /**
  * Configuración Components

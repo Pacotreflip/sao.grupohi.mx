@@ -409,7 +409,7 @@ Vue.component('comprobante-fondo-fijo-create', {
                 if(result.value) {
                     self.save_comprobante_fondo_fijo();
                 }
-            }).catch(swal.noop);
+            });
         },
 
         add_item: function () {
@@ -452,7 +452,7 @@ Vue.component('comprobante-fondo-fijo-create', {
                 if(result.value) {
                     self.remove_item(index);
                 }
-            }).catch(swal.noop);
+            });
         },
         remove_item:function (index) {
             Vue.delete(this.form.items, index);
@@ -481,16 +481,14 @@ Vue.component('comprobante-fondo-fijo-create', {
                         type: 'success',
                         confirmButtonText: "Ok",
                         closeOnConfirm: false
-                    }).catch(swal.noop);
-                    window.location = App.host+"/finanzas/comprobante_fondo_fijo/"+data.data.comprobante.id_transaccion;
-
+                    }).then(function () {
+                        window.location = App.host+"/finanzas/comprobante_fondo_fijo/"+data.data.comprobante.id_transaccion;
+                    });
                 },
                 complete: function () {
                     self.guardando = false;
                 }
             });
         }
-
-
     }
 });

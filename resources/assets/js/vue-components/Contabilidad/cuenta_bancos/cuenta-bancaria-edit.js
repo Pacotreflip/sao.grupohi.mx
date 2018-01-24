@@ -37,7 +37,7 @@ Vue.component('cuenta-bancaria-edit', {
                 if(result.value) {
                     self.elimina_cuenta();
                 }
-            }).catch(swal.noop);
+            });
 
         },
         confirm_cuenta_update: function () {
@@ -53,7 +53,7 @@ Vue.component('cuenta-bancaria-edit', {
                 if(result.value) {
                     self.update_cuenta_bancaria();
                 }
-            }).catch(swal.noop);
+            });
 
         },
         confirm_cuenta_create: function () {
@@ -69,7 +69,7 @@ Vue.component('cuenta-bancaria-edit', {
                 if(result.value) {
                     self.save_cuenta_bancaria();
                 }
-            }).catch(swal.noop);
+            });
 
         },
         elimina_cuenta: function () {
@@ -88,19 +88,18 @@ Vue.component('cuenta-bancaria-edit', {
                     self.guardando = true;
                 },
                 success: function (data, textStatus, xhr) {
-                    $.each(self.asociadas, function (index, tipo_cuenta) {
-                        if (toRemove == tipo_cuenta.id_cuenta_contable_bancaria) {
-                            self.asociadas.splice(index, 1);
-                        }
-                    });
-
                     $('#add_movimiento_modal').modal('hide');
                     swal({
                         type: 'success',
                         title: 'Correcto',
                         html: 'La cuenta: fué eliminada correctamente',
+                    }).then(function () {
+                        $.each(self.asociadas, function (index, tipo_cuenta) {
+                            if (toRemove == tipo_cuenta.id_cuenta_contable_bancaria) {
+                                self.asociadas.splice(index, 1);
+                            }
+                        });
                     });
-
                 },
                 complete: function () {
                     self.guardando = false;
@@ -151,17 +150,17 @@ Vue.component('cuenta-bancaria-edit', {
                     self.guardando = true;
                 },
                 success: function (data, textStatus, xhr) {
-                    $.each(self.asociadas, function (index, tipo_cuenta) {
-                        if (toRemove == tipo_cuenta.id_cuenta_contable_bancaria) {
-                            self.asociadas.splice(index, 1, data.data);
-                        }
-                    });
-
-                    $('#edit_movimiento_modal').modal('hide');
                     swal({
                         type: 'success',
                         title: 'Correcto',
                         html: 'La cuenta:' + data.data.cuenta + '</b> fué actualizada correctamente',
+                    }).then(function () {
+                        $.each(self.asociadas, function (index, tipo_cuenta) {
+                            if (toRemove == tipo_cuenta.id_cuenta_contable_bancaria) {
+                                self.asociadas.splice(index, 1, data.data);
+                            }
+                        });
+                        $('#edit_movimiento_modal').modal('hide');
                     });
                 },
                 complete: function () {
@@ -188,12 +187,13 @@ Vue.component('cuenta-bancaria-edit', {
                     self.guardando = true;
                 },
                 success: function (data, textStatus, xhr) {
-                    self.asociadas.push(data.data);
-                    self.close_modal('add_movimiento_modal');
                     swal({
                         type: 'success',
                         title: 'Correcto',
                         html: 'La cuenta: <b>'+ data.data.cuenta +'</b> fue registrada correctamente',
+                    }).then(function () {
+                        self.asociadas.push(data.data);
+                        self.close_modal('add_movimiento_modal');
                     });
                 },
                 complete: function () {
