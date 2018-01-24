@@ -352,13 +352,13 @@ Vue.component('configuracion-seguridad-index', {
                     self.guardando = true;
                 },
                 success : function (response) {
-                    $('.modal').modal('hide');
-                    self.closeModal();
-                    $('#usuarios_roles_table').DataTable().ajax.reload(null, false);
-
                     swal({
                         type: 'success',
                         title: 'Roles asignados correctamente'
+                    }).then(function () {
+                        $('.modal').modal('hide');
+                        self.closeModal();
+                        $('#usuarios_roles_table').DataTable().ajax.reload(null, false);
                     });
                 },
                 complete : function () {
