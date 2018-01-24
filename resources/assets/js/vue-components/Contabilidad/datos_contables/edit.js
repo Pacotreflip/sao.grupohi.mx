@@ -75,14 +75,14 @@ Vue.component('datos-contables-edit', {
             'padding-left': '20px'
         });
     },
-     created: function () {
-         // Convierte "0" y "1" en false y true respectivamente
-         Vue.set(this.data.datos_contables, 'manejo_almacenes', this.toBoolean(this.data.datos_contables.manejo_almacenes));
-         Vue.set(this.data.datos_contables, 'costo_en_tipo_gasto', this.toBoolean(this.data.datos_contables.costo_en_tipo_gasto));
-         Vue.set(this.data.datos_contables, 'retencion_antes_iva', this.toBoolean(this.data.datos_contables.retencion_antes_iva));
-         Vue.set(this.data.datos_contables, 'amortizacion_antes_iva', this.toBoolean(this.data.datos_contables.amortizacion_antes_iva));
-         Vue.set(this.data.datos_contables, 'deductiva_antes_iva', this.toBoolean(this.data.datos_contables.deductiva_antes_iva));
-     },
+    created: function () {
+        // Convierte "0" y "1" en false y true respectivamente
+        Vue.set(this.data.datos_contables, 'manejo_almacenes', this.toBoolean(this.data.datos_contables.manejo_almacenes));
+        Vue.set(this.data.datos_contables, 'costo_en_tipo_gasto', this.toBoolean(this.data.datos_contables.costo_en_tipo_gasto));
+        Vue.set(this.data.datos_contables, 'retencion_antes_iva', this.toBoolean(this.data.datos_contables.retencion_antes_iva));
+        Vue.set(this.data.datos_contables, 'amortizacion_antes_iva', this.toBoolean(this.data.datos_contables.amortizacion_antes_iva));
+        Vue.set(this.data.datos_contables, 'deductiva_antes_iva', this.toBoolean(this.data.datos_contables.deductiva_antes_iva));
+    },
     directives: {
         icheck: {
             inserted: function (el, binding, vnode) {
@@ -170,15 +170,15 @@ Vue.component('datos-contables-edit', {
         validateForm: function(scope, funcion) {
             this.$validator.validateAll(scope).then(() => {
                 if(funcion == 'save_datos_obra') {
-                    this.confirm_datos_obra();
-                }
-            }).catch(() => {
+                this.confirm_datos_obra();
+            }
+        }).catch(() => {
                 swal({
-                     type: 'warning',
-                     title: 'Advertencia',
-                     text: 'Por favor corrija los errores del formulario'
-                 });
-            });
+                         type: 'warning',
+                         title: 'Advertencia',
+                         text: 'Por favor corrija los errores del formulario'
+                     });
+        });
         },
         toBoolean: function(sVar)
         {

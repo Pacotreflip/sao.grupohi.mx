@@ -7,7 +7,7 @@ use Ghi\Domain\Core\Contracts\ControlPresupuesto\PresupuestoRepository;
 use Illuminate\Http\Request;
 
 
-class CtrlCambiosPresupuestoController extends Controller
+class CambioPresupuestoController extends Controller
 {
     protected $operadores = [
         '= "{texto}"' => 'Igual A',
@@ -34,13 +34,13 @@ class CtrlCambiosPresupuestoController extends Controller
     }
 
     public function index(){
-        return view('control_presupuesto.control_cambios_presupuesto.index')
+        return view('control_presupuesto.cambio_presupuesto.index')
             ->with('max_niveles', $this->presupuesto->getMaxNiveles())
             ->with('operadores', $this->operadores);
     }
 
     public function  create(){
-        return view('control_presupuesto.control_cambios_presupuesto.create')
+        return view('control_presupuesto.cambio_presupuesto.create')
             ->with('max_niveles', $this->presupuesto->getMaxNiveles())
             ->with('operadores', $this->operadores)
             ->with('basesPresupuesto', $this->basePresupuesto->all());
