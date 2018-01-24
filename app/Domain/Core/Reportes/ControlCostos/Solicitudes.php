@@ -240,8 +240,8 @@ class Solicitudes extends Rotation {
                 ($partida->item->transaccion->tipoTran->Tipo_Transaccion == 52 ? $partida['item']['contrato']['descripcion'] : $partida['item']['material']['descripcion']),
                 $partida['item']['cantidad'],
                 '$' . number_format($partida['item']['importe'], 2, '.', ','),
-                utf8_decode($partida->conceptoOriginal ? $partida->conceptoOriginal->clave : ''),
-                utf8_decode($partida->conceptoNuevo ? $partida->conceptoNuevo->clave : '')
+                utf8_decode($partida->conceptoOriginal ? '['. $partida->conceptoOriginal->clave .'] '. $partida->conceptoOriginal->descripcion : ''),
+                utf8_decode($partida->conceptoNuevo ? '['. $partida->conceptoNuevo->clave .'] '. $partida->conceptoNuevo->descripcion : '')
             ]);
         }
 
