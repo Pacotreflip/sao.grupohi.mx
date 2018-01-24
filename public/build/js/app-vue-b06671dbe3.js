@@ -18514,6 +18514,8 @@ Vue.component('reclasificacion_costos-index', {
                 editando = !!parseInt(_this.data('editando')),
                 item = self.solicitudes[_this.data('row')],
                 partidas = item.partidas;
+            console.log(item);
+            self.item = { 'id': 0, 'created_at': '', 'estatus_desc': '', 'estatus_string': {}, 'estatus': {} };
 
             item.estatus_desc = item.estatus_string.descripcion;
             self.partidas = partidas;

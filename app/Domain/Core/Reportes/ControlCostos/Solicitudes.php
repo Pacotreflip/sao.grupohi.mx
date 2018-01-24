@@ -237,7 +237,7 @@ class Solicitudes extends Rotation {
             $this->Row([
                 utf8_decode(isset($partida->item->transaccion->tipoTran) ?  $partida->item->transaccion->tipoTran : ''),
                 '#'. $partida['item']['transaccion']['numero_folio'],
-                $partida['item']['material']['descripcion'],
+                ($partida->item->transaccion->tipoTran->Tipo_Transaccion == 52 ? $partida['item']['contrato']['descripcion'] : $partida['item']['material']['descripcion']),
                 $partida['item']['cantidad'],
                 '$' . number_format($partida['item']['importe'], 2, '.', ','),
                 utf8_decode($partida->conceptoOriginal ? $partida->conceptoOriginal->clave : ''),
