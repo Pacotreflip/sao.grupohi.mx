@@ -41,9 +41,7 @@ class CambioPresupuestoController extends Controller
 
     public function  create(){
         return view('control_presupuesto.cambio_presupuesto.create')
-            ->with('max_niveles', $this->presupuesto->getMaxNiveles())
-            ->with('operadores', $this->operadores)
-            ->with('basesPresupuesto', $this->basePresupuesto->all());
+            ->with('operadores', $this->operadores);
     }
 
     public function getPaths(Request $request){

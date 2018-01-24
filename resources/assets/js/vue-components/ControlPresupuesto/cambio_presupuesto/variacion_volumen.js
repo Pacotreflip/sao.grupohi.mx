@@ -1,8 +1,10 @@
 Vue.component('variacion-volumen', {
+    props : ['filtros', 'niveles'],
     data : function () {
         return {
             form : {
-                partidas : []
+                partidas : [],
+
             },
             cargando : false
         }
@@ -77,4 +79,11 @@ Vue.component('variacion-volumen', {
             }
         });
     },
+
+    methods : {
+        get_conceptos : function () {
+            var table = $('#conceptos_table').DataTable();
+            table.ajax.reload();
+        }
+    }
 });
