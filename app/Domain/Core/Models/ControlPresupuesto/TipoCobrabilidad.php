@@ -8,6 +8,7 @@ class TipoCobrabilidad extends Model
 {
     protected $table = 'ControlPresupuesto.tipo_cobrabilidad';
     protected $connection = 'cadeco';
+    public $incrementing = false;
     protected $fillable = [
         'descripcion',
         'estatus'

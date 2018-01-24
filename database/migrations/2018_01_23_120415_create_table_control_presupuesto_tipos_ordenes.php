@@ -1,3 +1,4 @@
+
 <?php
 
 use Illuminate\Database\Schema\Blueprint;
@@ -13,7 +14,8 @@ class CreateTableControlPresupuestoTiposOrdenes extends Migration
     public function up()
     {
         Schema::create('ControlPresupuesto.tipos_ordenes', function (Blueprint $table) {
-            $table->increments('id');
+            $table->integer('id');
+            $table->primary('id');
             $table->string("descripcion")->unique();
             $table->integer('estatus');
             $table->timestamps();
