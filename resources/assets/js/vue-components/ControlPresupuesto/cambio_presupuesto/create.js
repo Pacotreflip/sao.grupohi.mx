@@ -124,6 +124,20 @@ Vue.component('cambio-presupuesto-create', {
                 var table = $('#conceptos_table').DataTable();
                 table.ajax.reload();
             }
+        },
+
+        validateForm: function(scope, funcion) {
+            this.$validator.validateAll(scope).then(() => {
+                if(funcion == 'add_filtro') {
+                    this.set_filtro();
+                }
+            }).catch(() => {
+                swal({
+                    type: 'warning',
+                    title: 'Advertencia',
+                    text: 'Por favor corrija los errores del formulario'
+                });
+            });
         }
     }
 });

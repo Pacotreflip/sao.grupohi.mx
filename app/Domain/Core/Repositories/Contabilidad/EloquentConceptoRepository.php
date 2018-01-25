@@ -131,7 +131,13 @@ class EloquentConceptoRepository implements ConceptoRepository
         $query = DB::connection('cadeco')->table('dbo.conceptos')->where('conceptos.id_obra', '=', Context::getId())
             ->join('PresupuestoObra.conceptosPath as path', 'conceptos.id_concepto', '=', 'path.id_concepto');
 
-        $query->whereIn('dbo.conceptos.concepto_medible', [1,2,3]);
+        $query->where('dbo.conceptos.concepto_medible', '=', 3);
+
+        if(isset($data['order'])) {
+            foreach ($data['order'] as $order) {
+                $query->orderBy($data['columns'][$order['column']]['data'], $order['dir']);
+            }
+        }
 
         if(array_key_exists('filtros', $data)) {
             foreach ($data['filtros'] as $key => $filtro) {
