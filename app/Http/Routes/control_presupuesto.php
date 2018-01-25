@@ -22,7 +22,7 @@ Route::group(['prefix' => 'control_presupuesto'], function () {
     Route::post('cambio_presupuesto', 'CambioPresupuestoController@store')->name('control_presupuesto.cambio_presupuesto.store');
     Route::post('cambio_presupuesto/paginate', 'CambioPresupuestoController@paginate');
     Route::get('cambio_presupuesto/{id}/pdf', 'CambioPresupuestoController@pdf')->name('control_presupuesto.cambio_presupuesto.pdf');
-
+    Route::get('cambio_presupuesto/{id}', 'CambioPresupuestoController@show')->name('control_presupuesto.cambio_presupuesto.show')->where(['id' => '[0-9]+']);
     /**
      * Tipos de Cobrabilidad Routes
      */

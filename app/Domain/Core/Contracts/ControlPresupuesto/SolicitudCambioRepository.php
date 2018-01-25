@@ -47,4 +47,9 @@ interface SolicitudCambioRepository
      * @return SolicitudCambio
      */
     public function  saveVariacionVolumen(array $data);
+    /**Crea relaciones con otros modelos
+     * @param array $array
+     * @return mixed
+     */
+    public function with($relations);
 }

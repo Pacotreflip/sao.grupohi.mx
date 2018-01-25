@@ -6,9 +6,6 @@ Vue.component('cambio-presupuesto-index', {
     },
 
     mounted: function () {
-
-
-        alert("here");
         var self=this;
         var data = {
             "processing": true,
@@ -43,7 +40,12 @@ Vue.component('cambio-presupuesto-index', {
                 {
                     data: {},
                     render: function (data) {
-                        return '<span class="label" ></span>'
+                        var button='<a title="Ver" href="'+App.host+'/control_presupuesto/cambio_presupuesto/'+data.id+'">';
+                        button+='<button title="Ver" type="button" class="btn btn-xs btn-default" >';
+                        button+='<i class="fa fa-eye"></i>';
+                        button+='   </button>';
+                        button+='  </a>';
+                       return button;
                     },
                     orderable: false
                 }

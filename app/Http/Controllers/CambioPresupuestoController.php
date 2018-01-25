@@ -99,11 +99,19 @@ class CambioPresupuestoController extends Controller
 
     }
 
-    public  function pdf(Request $request, $id)
+    public function pdf(Request $request, $id)
     {
         $solicitud = $this->solicitud->find($id);
 
         $pdf = new PDFSolicitudCambio($solicitud);
         $pdf->create();
+    }
+
+    public function show($id)
+    {
+        $solicitud = $this->solicitud->with(['tipoOrden', 'userRegistro', 'estatus', 'partidas','partidas.concepto'])->find($id);
+        return view('control_presupuesto.cambio_presupuesto.show.variacion_volumen')
+            ->with('solicitud', $solicitud)
+            ->with('cobrabilidad',$solicitud->tipoOrden->cobrabilidad);
     }
 }

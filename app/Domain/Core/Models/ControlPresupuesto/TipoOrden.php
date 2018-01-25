@@ -22,4 +22,8 @@ class TipoOrden extends Model
         'estatus'
     ];
 
+    public function cobrabilidad()
+    {
+        return $this->belongsTo(TipoCobrabilidad::class, 'id_tipo_cobrabilidad', 'id');
+    }
 }
