@@ -36,6 +36,7 @@ class SolicitudCambio extends BaseModel
             $model->id_solicita = auth()->id();
             $model->fecha_solicitud = Carbon::now()->toDateTimeString();
             $model->id_estatus = Estatus::GENERADA;
+
             $model->id_obra = Context::getId();
             $model->asignaFolio();
 
