@@ -11,6 +11,10 @@ use Illuminate\Database\Eloquent\Model;
 
 class Estatus extends Model
 {
+    const GENERADA = 1;
+    const AUTORIZADA = 2;
+    const RECHAZADA = 3;
+
     protected $table = 'ControlPresupuesto.estatus';
     protected $connection = 'cadeco';
     protected $fillable = [

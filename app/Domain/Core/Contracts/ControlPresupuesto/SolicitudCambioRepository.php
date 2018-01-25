@@ -39,4 +39,12 @@ interface SolicitudCambioRepository
      * @return SolicitudCambio
      */
     public function find($id);
+
+    /**
+     * Guarda un registro de SolicitudCambio
+     * @param array $data
+     * @throws \Exception
+     * @return SolicitudCambio
+     */
+    public function  saveVariacionVolumen(array $data);
 }

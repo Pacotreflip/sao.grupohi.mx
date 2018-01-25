@@ -8,8 +8,12 @@
 
 namespace Ghi\Domain\Core\Repositories\ControlPresupuesto;
 
+use Ghi\Core\Models\Concepto;
 use Ghi\Domain\Core\Contracts\ControlPresupuesto\SolicitudCambioRepository;
 use Ghi\Domain\Core\Models\ControlPresupuesto\SolicitudCambio;
+use Ghi\Domain\Core\Models\ControlPresupuesto\SolicitudCambioPartida;
+use Ghi\Domain\Core\Models\ControlPresupuesto\TipoOrden;
+use Illuminate\Support\Facades\DB;
 
 
 class EloquentSolicitudCambioRepository implements SolicitudCambioRepository
@@ -75,6 +79,39 @@ class EloquentSolicitudCambioRepository implements SolicitudCambioRepository
     {
         $solicitudCambio = $this->model->find($id);
         return $solicitudCambio;
+    }
+
+    public function saveVariacionVolumen(array $data)
+    {
+        try {
+            DB::connection('cadeco')->beginTransaction();
+            $solicitud = $this->create($data);
+            foreach ($data['partidas'] as $partida) {
+                // $conceptoTarjeta=ConceptoTarjeta::where('id_concepto','=',$partida['id_concepto']);
+
+                $partida['id_solicitud_cambio'] = $solicitud->id;
+                $partida['id_tipo_orden'] = TipoOrden::VARIACION_VOLUMEN;
+                $partida = SolicitudCambioPartida::create($partida);
+            }
+
+            $solicitud = $this->with('partidas')->find($solicitud->id);
+            DB::connection('cadeco')->commit();
+            return $solicitud;
+        } catch (\Exception $e) {
+            DB::connection('cadeco')->rollback();
+            throw $e;
+        }
+
+    }
+
+    /**Crea relaciones con otros modelos
+     * @param array $array
+     * @return mixed
+     */
+    public function with($relations)
+    {
+        $this->model = $this->model->with($relations);
+        return $this;
     }
 
 

@@ -19,7 +19,8 @@ class SolicitudCambio extends BaseModel
         'fecha_solicitud',
         'id_solicita',
         'id_estatus',
-        'id_tipo_orden'
+        'id_tipo_orden',
+        'motivo'
     ];
 
     protected static function boot()
@@ -28,7 +29,14 @@ class SolicitudCambio extends BaseModel
         static::creating(function ($model) {
             $model->id_solicita = auth()->id();
             $model->fecha_solicitud = Carbon::now()->toDateTimeString();
+            $model->id_estatus = Estatus::GENERADA;
+
         });
+    }
+
+    public function partidas()
+    {
+        return $this->hasMany(SolicitudCambioPartida::class, "id_solicitud_cambio", "id");
     }
 
 }
