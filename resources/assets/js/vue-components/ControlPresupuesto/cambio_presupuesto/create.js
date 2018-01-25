@@ -44,6 +44,7 @@ Vue.component('cambio-presupuesto-create', {
     mounted : function () {
         this.fetchTiposCobrabilidad();
         this.fetchTiposOrden();
+        this.fetchNumerosTarjeta();
     },
 
     methods : {
@@ -57,6 +58,23 @@ Vue.component('cambio-presupuesto-create', {
                 },
                 success : function (response) {
                     self.tipos_cobrabilidad = response;
+                },
+                complete : function () {
+                    self.cargando = false;
+                }
+            });
+        },
+
+        fetchNumerosTarjeta : function () {
+            var self = this;
+            $.ajax({
+                url : App.host + '/control_presupuesto/tarjeta',
+                type : 'GET',
+                beforeSend : function () {
+                    self.cargando = true;
+                },
+                success : function (response) {
+                    self.tarjetas = response;
                 },
                 complete : function () {
                     self.cargando = false;
