@@ -54,6 +54,9 @@ class CambioPresupuestoController extends Controller
             'recordsFiltered' => $conceptos->total(),
             'data' => $conceptos->items()
         ], 200);
+    }
 
+    public function store(Request $request) {
+        dd($request->all());
     }
 }

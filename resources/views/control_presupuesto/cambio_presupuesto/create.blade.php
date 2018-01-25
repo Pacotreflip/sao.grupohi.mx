@@ -118,51 +118,7 @@
                     </div>
                 </div>
             </div>
-            <variacion-volumen inline-template v-cloak v-if="form.id_tipo_orden == 4" :filtros="filtros" :niveles="niveles">
-            <section>
-                <button type="button" class="btn btn-primary btn-sm" @click="get_conceptos()" :disabled="cargando">
-                            <span v-if="cargando">
-                                <i class="fa fa-spinner fa-spin"></i> Consultando
-                            </span>
-                    <span v-else>
-                                <i class="fa fa-search"></i> Consultar
-                            </span>
-                </button>
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class="box box-solid">
-                            <div class="box-header with-border">
-                                <h3 class="box-title">Conceptos</h3>
-                            </div>
-                            <div class="box-body">
-                                <div class="table-responsive">
-                                    <table id="conceptos_table" class="table table-bordered table-striped">
-                                        <thead>
-                                        <tr>
-                                            <th v-for="nivel in niveles">@{{ nivel.nombre }}</th>
-                                            <th>Unidad</th>
-                                            <th>Cantidad</th>
-                                            <th>Precio Unitario</th>
-                                            <th>Monto</th>
-                                        </tr>
-                                        </thead>
-                                        <tfoot>
-                                        <tr>
-                                            <th v-for="nivel in niveles">@{{ nivel.nombre }}</th>
-                                            <th>Unidad</th>
-                                            <th>Cantidad</th>
-                                            <th>Precio Unitario</th>
-                                            <th>Monto</th>
-                                        </tr>
-                                        </tfoot>
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </
-            </section>
-            </variacion-volumen>
+            @include('control_presupuesto.cambio_presupuesto.variacion_volumen')
         </section>
     </cambio-presupuesto-create>
 @endsection

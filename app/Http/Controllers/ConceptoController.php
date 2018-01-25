@@ -28,6 +28,12 @@ class ConceptoController extends Controller
         $this->concepto = $concepto;
     }
 
+    public function show(Request $request, $id) {
+        $concepto = $this->concepto->getById($id);
+        return $this->response()->item($concepto, function ($item) {
+            return $item;
+        });
+    }
 
     /**
      * @param Request $request
