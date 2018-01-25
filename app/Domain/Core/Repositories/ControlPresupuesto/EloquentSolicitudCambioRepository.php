@@ -11,6 +11,7 @@ namespace Ghi\Domain\Core\Repositories\ControlPresupuesto;
 use Ghi\Core\Models\Concepto;
 use Ghi\Domain\Core\Contracts\ControlPresupuesto\SolicitudCambioRepository;
 use Ghi\Domain\Core\Models\ControlPresupuesto\SolicitudCambio;
+use Ghi\Domain\Core\Models\ControlPresupuesto\SolicitudCambioAutorizada;
 use Ghi\Domain\Core\Models\ControlPresupuesto\SolicitudCambioPartida;
 use Ghi\Domain\Core\Models\ControlPresupuesto\TipoOrden;
 use Illuminate\Support\Facades\DB;
@@ -46,7 +47,7 @@ class EloquentSolicitudCambioRepository implements SolicitudCambioRepository
 
     public function paginate(array $data)
     {
-        $query = $this->model->with(['tipoOrden','userRegistro','estatus']);
+        $query = $this->model->with(['tipoOrden', 'userRegistro', 'estatus']);
         return $query->paginate($perPage = $data['length'], $columns = ['*'], $pageName = 'page', $page = ($data['start'] / $data['length']) + 1);
     }
 
@@ -111,6 +112,69 @@ class EloquentSolicitudCambioRepository implements SolicitudCambioRepository
     {
         $this->model = $this->model->with($relations);
         return $this;
+    }
+
+    /**
+     * Autoriza una solicitud de cambio
+     * @param array $data
+     * @throws \Exception
+     * @return SolicitudCambio
+     */
+    public function autorizarVariacionVolumen($id)
+    {
+        try {
+            DB::connection('cadeco')->beginTransaction();
+            $solicitud = $this->model->with('partidas')->find($id);
+            ///
+
+            foreach ($solicitud->partidas as $partida) {
+                $concepto = Concepto::find($partida->id_concepto);
+                $tamanioFaltante = strlen($concepto->nivel);
+                $propagacionMonto = 0;
+                $propagacionCantidadPresupuestada = 0;
+                $afectacionConcepto = 0;
+
+                while ($tamanioFaltante > 0) { ///////////////recorrido todos los niveles hacia arriba
+
+                   // echo substr($concepto->nivel, 0, $tamanioFaltante) . "<br>";
+                    $afectaConcepto = Concepto::where('nivel', '=', substr($concepto->nivel, 0, $tamanioFaltante))->first();
+
+                    if ($afectacionConcepto == 0) {///afectamos el concepto de la solicitud
+                        $cantidadNueva = $partida->cantidad_presupuestada_nueva;
+                        $cantidadAnterior = $afectaConcepto->cantidad_presupuestada;
+                        $factor = $cantidadNueva / $cantidadAnterior;
+                        $montoNuevo = $factor * $afectaConcepto->monto_presupuestado;
+
+                        /////////Actualizamos concepto
+                        $afectaConcepto->cantidad_presupuestada = $partida->cantidad_presupuestada_nueva;
+                        $afectaConcepto->monto_presupuestado = $montoNuevo;
+
+                        $propagacionMonto += $afectaConcepto->monto_presupuestado;
+                        $propagacionCantidadPresupuestada += $afectaConcepto->cantidad_presupuestada;
+                        $afectacionConcepto=1;
+                    } else {//Creamos propagacion hacia niveles altos
+                        $afectaConcepto->cantidad_presupuestada = ($afectaConcepto->cantidad_presupuestada + $propagacionCantidadPresupuestada);
+                        $afectaConcepto->monto_presupuestado = ($afectaConcepto->monto_presupuestado + $propagacionMonto);
+                    }
+                    $afectaConcepto->save();
+                    $tamanioFaltante -= 4;
+                }
+            }
+
+
+            /////guardamos la solicitud autorizada
+            $data = ["id_solicitud_cambio" => $id];
+            $solicitudCambio = SolicitudCambioAutorizada::create($data);
+
+
+            dd("termino", $solicitudCambio);
+            DB::connection('cadeco')->commit();
+            return $solicitud;
+        } catch (\Exception $e) {
+            DB::connection('cadeco')->rollback();
+            throw $e;
+        }
+
     }
 
 
