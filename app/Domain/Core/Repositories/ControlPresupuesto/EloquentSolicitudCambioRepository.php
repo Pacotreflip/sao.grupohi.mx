@@ -10,6 +10,7 @@ namespace Ghi\Domain\Core\Repositories\ControlPresupuesto;
 
 use Ghi\Core\Models\Concepto;
 use Ghi\Domain\Core\Contracts\ControlPresupuesto\SolicitudCambioRepository;
+use Ghi\Domain\Core\Models\ControlPresupuesto\ConceptoTarjeta;
 use Ghi\Domain\Core\Models\ControlPresupuesto\SolicitudCambio;
 use Ghi\Domain\Core\Models\ControlPresupuesto\SolicitudCambioAutorizada;
 use Ghi\Domain\Core\Models\ControlPresupuesto\SolicitudCambioPartida;
@@ -87,8 +88,10 @@ class EloquentSolicitudCambioRepository implements SolicitudCambioRepository
             DB::connection('cadeco')->beginTransaction();
             $solicitud = $this->create($data);
             foreach ($data['partidas'] as $partida) {
-                // $conceptoTarjeta=ConceptoTarjeta::where('id_concepto','=',$partida['id_concepto']);
-
+                $conceptoTarjeta=ConceptoTarjeta::where('id_concepto','=',$partida['id_concepto'])->first();
+                if($conceptoTarjeta){
+                    $partida['id_tarjeta']=$conceptoTarjeta->id;
+                }
                 $partida['id_solicitud_cambio'] = $solicitud->id;
                 $partida['id_tipo_orden'] = TipoOrden::VARIACION_VOLUMEN;
                 $partida = SolicitudCambioPartida::create($partida);
