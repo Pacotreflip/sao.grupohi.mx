@@ -25,5 +25,5 @@ Route::group(['prefix' => 'control_costos'], function () {
     Route::get('solicitudes_reclasificacion', 'SolicitudesReclasificacionController@index')->name('control_costos.solicitudes_reclasificacion.index');
     Route::get('solicitudes_reclasificacion/paginate', 'SolicitudesReclasificacionController@paginate');
     Route::post('solicitudes_reclasificacion/store', 'SolicitudesReclasificacionController@store');
-    Route::get('solicitudes_reclasificacion/generarpdf/', 'SolicitudesReclasificacionController@generar_pdf');
+    Route::get('solicitudes_reclasificacion/generarpdf/{id}', 'SolicitudesReclasificacionController@generar_pdf')->where(['id' => '[0-9]+']);
 });

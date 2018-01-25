@@ -59,20 +59,16 @@ class SolicitudCambio extends BaseModel
         return $this->hasOne(TipoOrden::class, "id", "id_tipo_orden");
     }
 
-    /**
-     * @return User
-     */
-    public function user_registro()
-    {
-        return $this->belongsTo(User::class, 'id_solicita', 'idusuario');
-    }
-
-    /**
-     * @return User
-     */
     public function estatus()
     {
         return $this->belongsTo(Estatus::class, 'id_estatus', 'id');
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function userRegistro() {
+        return $this->belongsTo(User::class, 'id_solicita');
     }
 
 }

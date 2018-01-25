@@ -8,6 +8,7 @@ use Ghi\Domain\Core\Contracts\ControlPresupuesto\BasePresupuestoRepository;
 use Ghi\Domain\Core\Contracts\ControlPresupuesto\PresupuestoRepository;
 use Ghi\Domain\Core\Contracts\ControlPresupuesto\SolicitudCambioRepository;
 use Ghi\Domain\Core\Models\ControlPresupuesto\TipoOrden;
+use Ghi\Domain\Core\Reportes\ControlPresupuesto\PDFSolicitudCambio;
 use Illuminate\Http\Request;
 
 
@@ -96,5 +97,13 @@ class CambioPresupuestoController extends Controller
             return $item;
         });
 
+    }
+
+    public  function pdf(Request $request, $id)
+    {
+        $solicitud = $this->solicitud->find($id);
+
+        $pdf = new PDFSolicitudCambio($solicitud);
+        $pdf->create();
     }
 }
