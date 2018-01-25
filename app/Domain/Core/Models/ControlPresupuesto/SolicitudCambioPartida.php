@@ -7,6 +7,7 @@
  */
 
 namespace Ghi\Domain\Core\Models\ControlPresupuesto;
+use Ghi\Domain\Core\Models\Concepto;
 use Illuminate\Database\Eloquent\Model;
 
 class SolicitudCambioPartida extends Model
@@ -21,4 +22,8 @@ class SolicitudCambioPartida extends Model
         'cantidad_presupuestada_original',
         'cantidad_presupuestada_nueva'
     ];
+
+    public function concepto() {
+        return $this->belongsTo(Concepto::class, 'id_concepto');
+    }
 }
