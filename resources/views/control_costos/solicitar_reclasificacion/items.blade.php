@@ -186,12 +186,12 @@
                                                         <th v-for="item of niveles_n">
                                                             Nivel @{{  item }}
                                                         </th>
-                                                        <th class="text-right">Aplicar a item</th>
+                                                        <th>Aplicar a item</th>
                                                     </tr>
                                                     </thead>
                                                     <tbody>
                                                     <tr v-for="(item, index) in data.resultados">
-                                                        <td v-for="i in niveles">
+                                                        <td v-for="i in niveles" v-if="i.numero <= niveles_n">
                                                             @{{ item['filtro' + i.numero] }}
                                                         </td>
                                                         <td><a href="#" v-on:click="aplicar(item)">Aplicar</a></td>
