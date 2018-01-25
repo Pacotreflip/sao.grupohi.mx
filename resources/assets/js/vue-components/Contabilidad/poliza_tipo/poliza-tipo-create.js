@@ -137,7 +137,7 @@ Vue.component('poliza-tipo-create', {
                             if(result.value) {
                                 self.confirm_save();
                             }
-                        }).catch(swal.noop);
+                        });
                     } else {
                         self.confirm_save();
                     }
@@ -158,7 +158,7 @@ Vue.component('poliza-tipo-create', {
                 if(result.value) {
                     self.save();
                 }
-            }).catch(swal.noop);
+            });
         },
 
         save: function () {
@@ -179,8 +179,9 @@ Vue.component('poliza-tipo-create', {
                         html: "Se ha creado la plantilla para el Tipo de Póliza<br>" +
                         "<b>" + self.polizas_tipo_sao[self.form.poliza_tipo.id_poliza_tipo_sao] + "</b>",
                         type: "success"
+                    }).then(function () {
+                        window.location = xhr.getResponseHeader('Location');
                     });
-                    window.location = xhr.getResponseHeader('Location');
                 },
                 complete: function () {
                     self.guardando = false;

@@ -153,7 +153,7 @@ Vue.component('cuenta-material-index', {
                 if(result.value) {
                     self.update_cuenta();
                 }
-            }).catch(swal.noop);
+            });
         },
 
         update_cuenta: function () {
@@ -172,12 +172,13 @@ Vue.component('cuenta-material-index', {
                     self.guardando = true;
                 },
                 success: function (data, textStatus, xhr) {
-                    self.form.material_edit.cuenta_material = data.data.cuenta_material;
-                    self.close_edit_cuenta();
                     swal({
                         type: 'success',
                         title: 'Correcto',
                         html: 'Cuenta Contable actualizada correctamente',
+                    }).then(function () {
+                        self.form.material_edit.cuenta_material = data.data.cuenta_material;
+                        self.close_edit_cuenta();
                     });
                 },
                 complete: function () {
@@ -218,12 +219,13 @@ Vue.component('cuenta-material-index', {
                     self.guardando = true;
                 },
                 success: function (data, textStatus, xhr) {
-                    self.form.material_edit.cuenta_material = data.data.cuenta_material;
-                    self.close_edit_cuenta();
                     swal({
                         type: 'success',
                         title: 'Correcto',
                         html: 'Cuenta Contable registrada correctamente'
+                    }).then(function () {
+                        self.form.material_edit.cuenta_material = data.data.cuenta_material;
+                        self.close_edit_cuenta();
                     });
                 },
                 complete: function () {

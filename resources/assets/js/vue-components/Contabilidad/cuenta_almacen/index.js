@@ -159,7 +159,7 @@ Vue.component('cuenta-almacen-index', {
                 if(result.value) {
                     self.update_cuenta();
                 }
-            }).catch(swal.noop);
+            });
         },
 
         update_cuenta: function () {
@@ -177,12 +177,13 @@ Vue.component('cuenta-almacen-index', {
                     self.guardando = true;
                 },
                 success: function (data, textStatus, xhr) {
-                    $('#almacenes_table').DataTable().ajax.reload(null, false);
-                    self.close_edit_cuenta();
                     swal({
                         type: 'success',
                         title: 'Correcto',
                         html: 'Cuenta Contable actualizada correctamente',
+                    }).then(function() {
+                        $('#almacenes_table').DataTable().ajax.reload(null, false);
+                        self.close_edit_cuenta();
                     });
                 },
                 complete: function () {
@@ -222,12 +223,13 @@ Vue.component('cuenta-almacen-index', {
                     self.guardando = true;
                 },
                 success: function (data, textStatus, xhr) {
-                    $('#almacenes_table').DataTable().ajax.reload(null, false);
-                    self.close_edit_cuenta();
                     swal({
                         type: 'success',
                         title: 'Correcto',
                         html: 'Cuenta Contable registrada correctamente',
+                    }).then(function () {
+                        $('#almacenes_table').DataTable().ajax.reload(null, false);
+                        self.close_edit_cuenta();
                     });
                 },
                 complete: function () {
@@ -241,6 +243,5 @@ Vue.component('cuenta-almacen-index', {
             Vue.set(this.form.cuenta_almacen, 'id', '');
             Vue.set(this.form.cuenta_almacen, 'id_almacen', '');
         }
-
     }
 });

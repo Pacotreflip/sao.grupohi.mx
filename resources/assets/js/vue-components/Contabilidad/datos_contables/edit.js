@@ -118,7 +118,7 @@ Vue.component('datos-contables-edit', {
                 if(result.value) {
                     self.save_datos_obra();
                 }
-            }).catch(swal.noop);
+            });
         },
 
         save_datos_obra: function () {
@@ -141,17 +141,17 @@ Vue.component('datos-contables-edit', {
                     self.guardando = true;
                 },
                 success: function (data, textStatus, xhr) {
-                    self.data.datos_contables = data.data.datos_contables;
-                    Vue.set(self.data.datos_contables, 'costo_en_tipo_gasto', data.data.datos_contables.costo_en_tipo_gasto == 'true' ? true : false);
-                    Vue.set(self.data.datos_contables, 'manejo_almacenes', data.data.datos_contables.manejo_almacenes == 'true' ? true : false);
-                    Vue.set(self.data.datos_contables, 'retencion_antes_iva', data.data.datos_contables.retencion_antes_iva == 'true' ? true : false);
-                    Vue.set(self.data.datos_contables, 'amortizacion_antes_iva', data.data.datos_contables.amortizacion_antes_iva == 'true' ? true : false);
-                    Vue.set(self.data.datos_contables, 'deductiva_antes_iva', data.data.datos_contables.deductiva_antes_iva == 'true' ? true : false);
-
                     swal({
                         type: 'success',
                         title: 'Correcto',
                         html: 'Datos Contables de la Obra actualizados correctamente'
+                    }).then(function () {
+                        self.data.datos_contables = data.data.datos_contables;
+                        Vue.set(self.data.datos_contables, 'costo_en_tipo_gasto', data.data.datos_contables.costo_en_tipo_gasto == 'true' ? true : false);
+                        Vue.set(self.data.datos_contables, 'manejo_almacenes', data.data.datos_contables.manejo_almacenes == 'true' ? true : false);
+                        Vue.set(self.data.datos_contables, 'retencion_antes_iva', data.data.datos_contables.retencion_antes_iva == 'true' ? true : false);
+                        Vue.set(self.data.datos_contables, 'amortizacion_antes_iva', data.data.datos_contables.amortizacion_antes_iva == 'true' ? true : false);
+                        Vue.set(self.data.datos_contables, 'deductiva_antes_iva', data.data.datos_contables.deductiva_antes_iva == 'true' ? true : false);
                     });
 
                     self.referencia = "1";

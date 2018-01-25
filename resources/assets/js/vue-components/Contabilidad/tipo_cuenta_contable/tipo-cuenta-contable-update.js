@@ -31,7 +31,7 @@ Vue.component('tipo-cuenta-contable-update',{
                 if(result.value) {
                     self.save();
                 }
-            }).catch(swal.noop);
+            });
         },
 
         save: function () {
@@ -58,7 +58,7 @@ Vue.component('tipo-cuenta-contable-update',{
                         closeOnConfirm: false
                     }).then(function () {
                         window.location = App.host + '/sistema_contable/tipo_cuenta_contable/' + data.data.tipo_cuenta_contable.id_tipo_cuenta_contable;
-                    })  .catch(swal.noop);
+                    });
                 },
                 complete: function () {
                     self.guardando = false;

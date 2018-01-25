@@ -93,7 +93,7 @@ Vue.component('poliza-edit', {
                 if(result.value) {
                     self.add_movimiento();
                 }
-            }).catch(swal.noop);
+            });
         },
 
         add_movimiento: function () {
@@ -135,7 +135,7 @@ Vue.component('poliza-edit', {
                 if(result.value) {
                     self.remove_movimiento(index);
                 }
-            }).catch(swal.noop);
+            });
         },
 
         remove_movimiento: function (index) {
@@ -155,7 +155,7 @@ Vue.component('poliza-edit', {
                 if(result.value) {
                     self.save();
                 }
-            }).catch(swal.noop);
+            });
         },
 
         save: function () {
@@ -184,7 +184,7 @@ Vue.component('poliza-edit', {
                         closeOnConfirm: false
                     }).then(function () {
                         window.location = xhr.getResponseHeader('Location');
-                    })  .catch(swal.noop);
+                    });
                 },
                 complete: function () {
                     self.guardando = false;

@@ -403,7 +403,7 @@ Vue.component('comprobante-fondo-fijo-edit', {
                 if(result.value) {
                     self.save_comprobante_fondo_fijo();
                 }
-            }).catch(swal.noop);
+            });
         },
 
         add_item: function () {
@@ -460,16 +460,14 @@ Vue.component('comprobante-fondo-fijo-edit', {
                         type: 'success',
                         confirmButtonText: "Ok",
                         closeOnConfirm: false
-                    }).catch(swal.noop);
-                    window.location = self.url_comprobante_fondo_fijo_show;
-
+                    }).then(function () {
+                        window.location = self.url_comprobante_fondo_fijo_show;
+                    });
                 },
                 complete: function () {
                     self.guardando = false;
                 }
             });
         }
-
-
     }
 });
