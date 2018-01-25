@@ -1,4 +1,4 @@
-<variacion-volumen inline-template v-cloak v-if="form.id_tipo_orden == 4" :filtros="filtros" :niveles="niveles" :id_tipo_orden="form.id_tipo_orden">
+<variacion-volumen @reset-filtros="filtros = []" inline-template v-cloak v-if="form.id_tipo_orden == 4" :filtros="filtros" :niveles="niveles" :id_tipo_orden="form.id_tipo_orden">
     <section>
         <div class="row">
             <div class="col-md-12">
@@ -63,7 +63,7 @@
                         <h4 class="modal-title">Partidas</h4>
                     </div>
                     <form id="form_save_solicitud" @submit.prevent="validateForm('form_save_solicitud', 'save_solicitud')"  data-vv-scope="form_save_solicitud">
-                    <div class="modal-body">
+                    <div class="modal-body small">
                         <div class="table-responsive">
                             <table class="table table-striped">
                                 <thead>
@@ -73,7 +73,8 @@
                                     <th>Número de Tarjeta</th>
                                     <th>Unidad</th>
                                     <th>Cantidad Presupuestada Original</th>
-                                    <th width="200px">Cantidad Presupuestada Nueva</th>
+                                    <th width="150px">Cantidad Presupuestada Nueva</th>
+                                    <th>-</th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -89,6 +90,7 @@
                                             <label class="help" v-show="validation_errors.has('form_save_solicitud.Cantidad Presupuestada Nueva ' + (i+1))">@{{ validation_errors.first('form_save_solicitud.Cantidad Presupuestada Nueva ' + (i+1)) }}</label>
                                         </div>
                                     </td>
+                                    <td><button type="button" class="btn btn-xs btn-default btn_remove_concepto" :id="concepto.id_concepto"><i class="fa fa-minus text-red"></i></button> </td>
                                 </tr>
                                 </tbody>
                             </table>
@@ -96,7 +98,7 @@
 
                         <div class="form-group" :class="{'has-error': validation_errors.has('form_save_solicitud.Motivo')}">
                             <label><b>Motivo</b></label>
-                            <textarea class="form-control" v-validate="'required|alpha_spaces'" :name="'Motivo'" v-model="form.motivo"></textarea>
+                            <textarea class="form-control" v-validate="'required'" :name="'Motivo'" v-model="form.motivo"></textarea>
                             <label class="help" v-show="validation_errors.has('form_save_solicitud.Motivo')">@{{ validation_errors.first('form_save_solicitud.Motivo') }}</label>
                         </div>
                     </div>
@@ -115,6 +117,5 @@
                 </div>
             </div>
         </div>
-
     </section>
 </variacion-volumen>

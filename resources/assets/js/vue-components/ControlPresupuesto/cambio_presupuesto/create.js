@@ -119,11 +119,6 @@ Vue.component('cambio-presupuesto-create', {
             if(!filtro.operadores.length) {
                 Vue.delete(this.filtros, this.filtros.indexOf(filtro));
             }
-
-            if(! this.filtros.length) {
-                var table = $('#conceptos_table').DataTable();
-                table.ajax.reload();
-            }
         },
 
         validateForm: function(scope, funcion) {
