@@ -16,7 +16,7 @@ class CreateTableControlPresupuestoSolicitudCambioPartidas extends Migration
             $table->increments('id');
             $table->unsignedInteger("id_solicitud_cambio");
             $table->unsignedInteger("id_tipo_orden");
-            $table->unsignedInteger("id_tarjeta");
+            $table->unsignedInteger("id_tarjeta")->nullable();
             $table->unsignedInteger("id_concepto");
             $table->float("cantidad_presupuestada_original");
             $table->float("cantidad_presupuestada_nueva");
