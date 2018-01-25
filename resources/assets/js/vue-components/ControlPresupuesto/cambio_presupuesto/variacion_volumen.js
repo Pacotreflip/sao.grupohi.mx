@@ -160,8 +160,8 @@ Vue.component('variacion-volumen', {
         },
 
         confirmSave: function () {
+            alert('save');
             this.save();
-            //SWAL
         },
 
         save : function () {
@@ -174,7 +174,15 @@ Vue.component('variacion-volumen', {
                     self.cargando = true;
                 },
                 success : function (response) {
-                    alert('panda')
+                    swal({
+                        type : 'success',
+                        title : '¡Correcto!',
+                        text : 'Solicitud Guardada con ID ' + response.id
+                    }).then(function () {
+                        $('#conceptos_modal').modal('hide');
+                        self.form.partidas = [];
+                        Vue.set(self.form, 'motivo', '');
+                    });
                 },
                 complete : function () {
                     self.cargando = false;
@@ -183,11 +191,11 @@ Vue.component('variacion-volumen', {
         },
 
         validateForm: function(scope, funcion) {
-            this.$validator.validateAll(scope).then(function() {
-                if(funcion == 'save') {
+            this.$validator.validateAll(scope).then(() => {
+                if(funcion == 'save_solicitud') {
                     this.confirmSave();
                 }
-            }).catch(function() {
+            }).catch(() => {
                 swal({
                     type: 'warning',
                     title: 'Advertencia',

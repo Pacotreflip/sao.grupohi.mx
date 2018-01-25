@@ -20118,8 +20118,8 @@ Vue.component('variacion-volumen', {
         },
 
         confirmSave: function confirmSave() {
+            alert('save');
             this.save();
-            //SWAL
         },
 
         save: function save() {
@@ -20132,7 +20132,15 @@ Vue.component('variacion-volumen', {
                     self.cargando = true;
                 },
                 success: function success(response) {
-                    alert('panda');
+                    swal({
+                        type: 'success',
+                        title: '¡Correcto!',
+                        text: 'Solicitud Guardada con ID ' + response.id
+                    }).then(function () {
+                        $('#conceptos_modal').modal('hide');
+                        self.form.partidas = [];
+                        Vue.set(self.form, 'motivo', '');
+                    });
                 },
                 complete: function complete() {
                     self.cargando = false;
@@ -20141,9 +20149,11 @@ Vue.component('variacion-volumen', {
         },
 
         validateForm: function validateForm(scope, funcion) {
+            var _this = this;
+
             this.$validator.validateAll(scope).then(function () {
-                if (funcion == 'save') {
-                    this.confirmSave;
+                if (funcion == 'save_solicitud') {
+                    _this.confirmSave();
                 }
             }).catch(function () {
                 swal({
