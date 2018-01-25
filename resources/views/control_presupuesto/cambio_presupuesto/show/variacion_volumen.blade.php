@@ -77,7 +77,7 @@
                                     <tbody>
                                     <tr v-for="partida in solicitud.partidas">
                                         <td>@{{ partida.concepto.descripcion }}</td>
-                                        <td>@{{ partida.numero_tarjeta }}</td>
+                                        <td>@{{ partida.numero_tarjeta.descripcion }}</td>
                                         <td>@{{ partida.concepto.unidad }}</td>
                                         <td class="text-right">@{{ parseInt(partida.cantidad_presupuestada_original).formatMoney(2, ',','.') }}</td>
                                         <td class="text-right">@{{ parseInt(partida.cantidad_presupuestada_nueva).formatMoney(2, ',','.') }}</td>

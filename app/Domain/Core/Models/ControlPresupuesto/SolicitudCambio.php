@@ -11,6 +11,7 @@ namespace Ghi\Domain\Core\Models\ControlPresupuesto;
 use Ghi\Core\Facades\Context;
 use Ghi\Domain\Core\Models\BaseModel;
 use Carbon\Carbon;
+use Ghi\Domain\Core\Models\Concepto;
 use Ghi\Domain\Core\Models\Scopes\ObraScope;
 use Ghi\Domain\Core\Models\User;
 
@@ -64,14 +65,16 @@ class SolicitudCambio extends BaseModel
         return $this->belongsTo(Estatus::class, 'id_estatus', 'id');
     }
 
-    public function getFechaSolicitudAttribute($fecha_solicitud) {
-        return $fecha_solicitud?Carbon::parse($fecha_solicitud)->format('Y-m-d'):'';
+    public function getFechaSolicitudAttribute($fecha_solicitud)
+    {
+        return $fecha_solicitud ? Carbon::parse($fecha_solicitud)->format('Y-m-d') : '';
     }
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function userRegistro() {
+    public function userRegistro()
+    {
         return $this->belongsTo(User::class, 'id_solicita');
     }
 

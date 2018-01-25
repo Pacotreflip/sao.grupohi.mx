@@ -26,4 +26,8 @@ class SolicitudCambioPartida extends Model
     public function concepto() {
         return $this->belongsTo(Concepto::class, 'id_concepto');
     }
+    public function numeroTarjeta()
+    {
+        return $this->hasOne(Tarjeta::class, 'id', 'id_tarjeta');
+    }
 }
