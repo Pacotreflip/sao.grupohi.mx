@@ -53,7 +53,25 @@ Vue.component('show-variacion-volumen', {
 
         },
         autorizar_solicitud: function (id) {
-            alert("Atorizar ->" + id);
+            var self = this;
+            var url = App.host + '/control_presupuesto/cambio_presupuesto/autorizarSolicitud';
+            $.ajax({
+                type: 'POST',
+                url: url,
+                data:{
+                    id:id,
+                    id_tipo_orden:self.form.solicitud.id_tipo_orden
+                },
+                beforeSend: function () {
+                   self.guardando = true;
+                },
+                success: function (data, textStatus, xhr) {
+                  alert("exitoso");
+                },
+                complete: function () {
+                    self.guardando = false;
+                }
+            });
         },
 
         rechazar_solicitud: function (id) {

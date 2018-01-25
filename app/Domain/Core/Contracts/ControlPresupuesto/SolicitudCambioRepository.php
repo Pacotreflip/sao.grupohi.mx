@@ -52,4 +52,12 @@ interface SolicitudCambioRepository
      * @return mixed
      */
     public function with($relations);
+
+    /**
+     * Autoriza una solicitud de cambio
+     * @param array $data
+     * @throws \Exception
+     * @return SolicitudCambio
+     */
+    public function  autorizarVariacionVolumen($id);
 }

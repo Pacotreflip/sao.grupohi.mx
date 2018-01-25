@@ -109,9 +109,34 @@ class CambioPresupuestoController extends Controller
 
     public function show($id)
     {
-        $solicitud = $this->solicitud->with(['tipoOrden', 'userRegistro', 'estatus', 'partidas','partidas.concepto'])->find($id);
+        $solicitud = $this->solicitud->with(['tipoOrden', 'userRegistro', 'estatus', 'partidas', 'partidas.concepto'])->find($id);
         return view('control_presupuesto.cambio_presupuesto.show.variacion_volumen')
             ->with('solicitud', $solicitud)
-            ->with('cobrabilidad',$solicitud->tipoOrden->cobrabilidad);
+            ->with('cobrabilidad', $solicitud->tipoOrden->cobrabilidad);
+    }
+
+    public function autorizarSolicitud(Request $request)
+    {
+        $solicitud = '';
+        switch ($request->id_tipo_orden) {
+            case TipoOrden::ESCALATORIA:
+                break;
+            case TipoOrden::RECLAMOS_INDIRECTO:
+                break;
+            case TipoOrden::CONCEPTOS_EXTRAORDINARIOS:
+                break;
+            case TipoOrden::VARIACION_VOLUMEN:
+                $solicitud = $this->solicitud->autorizarVariacionVolumen($request->id);
+                break;
+            case TipoOrden::ORDEN_DE_CAMBIO_NO_COBRABLE:
+                break;
+            case TipoOrden::ORDEN_DE_CAMBIO_DE_INSUMOS:
+                break;
+        }
+
+
+        return $this->response->item($solicitud, function ($item) {
+            return $item;
+        });
     }
 }

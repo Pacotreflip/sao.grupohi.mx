@@ -13,12 +13,15 @@
         <section>
             <div class="row">
                 <div class="col-md-3">
-                    <div class="box box-primary">
+                    <div class="box box-solid">
                         <div class="box-header with-border">
                             <h3 class="box-title">Detalle de la solicitud</h3>
                         </div>
                         <!-- /.box-header -->
                         <div class="box-body">
+                            <strong>Folio de la solicitud:</strong>
+                            <p class="text-muted">@{{ solicitud.numero_folio}}</p>
+                            <hr>
                             <strong>Cobrabilidad:</strong>
                             <p class="text-muted">@{{ cobrabilidad.descripcion}}</p>
                             <hr>
@@ -39,19 +42,25 @@
                             <hr>
 
                         </div>
-                        <div class="box-footer clearfix">
-                            <a href="javascript:void(0)" class="btn btn-sm btn-info btn-flat pull-left">
-                                <i class="fa fa-check"></i> Autorizar</a>
-                            <a href="javascript:void(0)" class="btn btn-sm btn-danger btn-flat pull-right">
-                                <i class="fa fa-close"></i> Rechazar</a>
-                        </div>
+
                         <!-- /.box-body -->
                     </div>
                 </div>
                 <div class="col-md-9">
-                    <div class="box box-success">
-                        <div class="box-header with-border">
+                    <div class="box box-solid">
+                        <div class="box-header with-border" style="height:75px">
+                           <div class="col-sm-3">
                             <h3 class="box-title">Partidas</h3>
+                           </div>
+                            <div class="col-sm-9">
+                                <a class="btn btn-app btn-danger pull-right" v-on:click="confirm_rechazar_solicitud">
+                                    <i class="fa fa-close"></i> Rechazar
+                                </a>
+                                <a class="btn btn-sm btn-app btn-info pull-right"  v-on:click="confirm_autorizar_solicitud">
+                                    <i class="fa fa-check"></i> Autorizar
+                                </a>
+                            </div>
+
                         </div>
                         <div class="box-body">
                             <div class="table-responsive">

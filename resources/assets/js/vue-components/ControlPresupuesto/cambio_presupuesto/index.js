@@ -51,7 +51,7 @@ Vue.component('cambio-presupuesto-index', {
                     data: {},
                     render: function(data, type, row, meta) {
                         var  button='<span class="label" ></span><button class="btn btn-xs btn-info mostrar_pdf" data-pdf_id="'+ row.id +'" title="Formato"><i class="fa fa-file-pdf-o"></i></button>';
-                            button='<a title="Ver" href="'+App.host+'/control_presupuesto/cambio_presupuesto/'+data.id+'">';
+                            button+='<a title="Ver" href="'+App.host+'/control_presupuesto/cambio_presupuesto/'+data.id+'">';
                         button+='<button title="Ver" type="button" class="btn btn-xs btn-default" >';
                         button+='<i class="fa fa-eye"></i>';
                         button+='   </button>';
