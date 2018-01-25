@@ -180,6 +180,20 @@ Vue.component('variacion-volumen', {
                     self.cargando = false;
                 }
             })
+        },
+
+        validateForm: function(scope, funcion) {
+            this.$validator.validateAll(scope).then(function() {
+                if(funcion == 'save') {
+                    this.confirmSave();
+                }
+            }).catch(function() {
+                swal({
+                    type: 'warning',
+                    title: 'Advertencia',
+                    text: 'Por favor corrija los errores del formulario'
+                });
+            });
         }
     }
 });
