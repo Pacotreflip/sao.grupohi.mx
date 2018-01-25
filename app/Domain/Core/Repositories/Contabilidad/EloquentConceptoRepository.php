@@ -132,6 +132,7 @@ class EloquentConceptoRepository implements ConceptoRepository
             ->join('PresupuestoObra.conceptosPath as path', 'conceptos.id_concepto', '=', 'path.id_concepto');
 
         $query->where('dbo.conceptos.concepto_medible', '=', 3);
+        $query->orderBy('conceptos.nivel');
 
         if(isset($data['order'])) {
             foreach ($data['order'] as $order) {
@@ -152,8 +153,6 @@ class EloquentConceptoRepository implements ConceptoRepository
                 });
             }
         }
-
-        $query->orderBy('conceptos.nivel');
 
         $query->select(
             "conceptos.unidad",
