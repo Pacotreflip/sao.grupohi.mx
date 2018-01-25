@@ -185,7 +185,7 @@ Vue.component('variacion-volumen', {
         validateForm: function(scope, funcion) {
             this.$validator.validateAll(scope).then(function() {
                 if(funcion == 'save') {
-                    this.confirmSave();
+                    this.confirmSave
                 }
             }).catch(function() {
                 swal({

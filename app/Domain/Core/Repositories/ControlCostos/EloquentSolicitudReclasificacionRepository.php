@@ -3,6 +3,7 @@
 namespace Ghi\Domain\Core\Repositories\ControlCostos;
 
 use Ghi\Domain\Core\Contracts\ControlCostos\SolicitudReclasificacionRepository;
+use Ghi\Domain\Core\Models\ControlCostos\SolicitudReclasificacionPartidas;
 use Illuminate\Http\Exception\HttpResponseException;
 use Illuminate\Support\Facades\DB;
 use Ghi\Domain\Core\Models\ControlCostos\SolicitudReclasificacion;
@@ -13,14 +14,20 @@ class EloquentSolicitudReclasificacionRepository implements SolicitudReclasifica
      * @var SolicitudReclasificacion $model
      */
     private $model;
+    /**
+     * @var SolicitudReclasificacionPartidas
+     */
+    private $partidas;
 
     /**
      * EloquentSolicitudReclasificacionRepository constructor.
      * @param SolicitudReclasificacion $model
+     * @param SolicitudReclasificacionPartidas $partidas
      */
-    public function __construct(SolicitudReclasificacion $model)
+    public function __construct(SolicitudReclasificacion $model, SolicitudReclasificacionPartidas $partidas)
     {
         $this->model = $model;
+        $this->partidas = $partidas;
     }
 
     /**
@@ -39,11 +46,44 @@ class EloquentSolicitudReclasificacionRepository implements SolicitudReclasifica
      */
     public function create($data)
     {
-        try {
-            DB::connection('cadeco')->beginTransaction();
+        $num_partidas = count($data['partidas']);
 
-            $record = SolicitudReclasificacion::create($data);
+        DB::connection('cadeco')->beginTransaction();
+
+        try {
+
+            $record = SolicitudReclasificacion::create(['motivo' => $data['motivo'], 'fecha' => $data['fecha']]);
+
             DB::connection('cadeco')->commit();
+
+        } catch (\Exception $e) {
+            DB::connection('cadeco')->rollBack();
+            throw $e;
+        }
+
+        DB::connection('cadeco')->beginTransaction();
+
+        try {
+            foreach ($data['partidas'] as $p)
+                $this->partidas->create([
+                    'id_solicitud_reclasificacion' => $record->id,
+                    'id_item' => $p['id_item'],
+                    'id_concepto_original' => $p['id_concepto'],
+                    'id_concepto_nuevo' => $p['id_concepto_nuevo']
+                ]);
+
+            DB::connection('cadeco')->commit();
+
+            // Revisa que el número de inserciones corresponda al número de partidas a guardar
+            $insertadas = $this->partidas->where('id_solicitud_reclasificacion','=', $record->id)->count();
+
+            if ($num_partidas != $insertadas)
+            {
+                // Elimina la reclasificación
+                $record->delete();
+
+                throw new HttpResponseException(new Response('La operación no pudo concretarse', 404));
+            }
 
         } catch (\Exception $e) {
             DB::connection('cadeco')->rollBack();

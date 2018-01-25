@@ -115,7 +115,7 @@ sum(movimientos.monto_total) as monto')
             $string .= ' and transacciones.numero_folio = '. $where['folio'];
 
         $items = $this->model->join('items', 'transacciones.id_transaccion', '=', 'items.id_transaccion')
-            ->join('movimientos', 'items.id_item', '=', 'movimientos.id_item')->
+            ->leftJoin('movimientos', 'items.id_item', '=', 'movimientos.id_item')->
             leftJoin('TipoTran', function($join)
             {
                 $join->on('TipoTran.opciones', '=', DB::raw("transacciones.opciones AND  TipoTran.Tipo_Transaccion = transacciones.tipo_transaccion"));
@@ -138,7 +138,7 @@ sum(movimientos.monto_total) as monto')
             $string .= ' and transacciones.numero_folio = '. $where['folio'];
 
         return $this->model->join('items', 'transacciones.id_transaccion', '=', 'items.id_transaccion')
-            ->join('movimientos', 'items.id_item', '=', 'movimientos.id_item')->
+            ->leftJoin('movimientos', 'items.id_item', '=', 'movimientos.id_item')->
             leftJoin('TipoTran', function($join)
             {
                 $join->on('TipoTran.opciones', '=', DB::raw("transacciones.opciones AND  TipoTran.Tipo_Transaccion = transacciones.tipo_transaccion"));
