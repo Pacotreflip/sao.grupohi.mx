@@ -95,13 +95,13 @@ class EloquentSolicitudReclasificacionAutorizadaRepository implements SolicitudR
                 $movimiento = Movimientos::where('id_item', '=', $partida['item']['id_item'])
                     ->where('id_concepto', '=', $partida['concepto_original']['id_concepto']);
 
-                if (!$movimiento)
-                    throw new HttpResponseException(new Response($error, 404));
-
-                $movimiento->update([
-                    'id_concepto' => $partida['concepto_nuevo']['id_concepto'],
-                ]);
-                $mov_done[$k] = true;
+                if ($movimiento)
+                {
+                    $movimiento->update([
+                        'id_concepto' => $partida['concepto_nuevo']['id_concepto'],
+                    ]);
+                    $mov_done[$k] = true;
+                }
 
                 // Cambia el estado a la solicitud
                 $solicitud = SolicitudReclasificacion::where('id', '=', $data['id']);

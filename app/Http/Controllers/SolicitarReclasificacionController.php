@@ -95,22 +95,19 @@ class SolicitarReclasificacionController extends Controller
 
         $repetidas = $this->partidas->validarPartidas($where)->toArray();
 
-        if (!empty($repetidas))
+        if (!empty($repetidas)) {
+
+            foreach ($repetidas as &$r)
+                $r['motivo'] = html_entity_decode($r['motivo']);
+
             return response()->json(
                 [
                     'repetidas' => $repetidas
                 ], 200);
+        }
 
-        $solicitud  = $this->solicitud->create(['motivo' => $motivo, 'fecha' => $request->fecha]);
+        $solicitud  = $this->solicitud->create(['motivo' => $motivo, 'fecha' => $request->fecha, 'partidas' => $partidas]);
 
-        if (!empty($solicitud))
-            foreach ($partidas as $p)
-                $this->partidas->create([
-                    'id_solicitud_reclasificacion' => $solicitud->id,
-                    'id_item' => $p['id_item'],
-                    'id_concepto_original' => $p['id_concepto'],
-                    'id_concepto_nuevo' => $p['id_concepto_nuevo']
-                ]);
 
         return response()->json(
             [
