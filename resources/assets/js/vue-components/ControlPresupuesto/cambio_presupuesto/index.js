@@ -1,12 +1,22 @@
 Vue.component('cambio-presupuesto-index', {
     data: function () {
         return {
-            data :''
+            data :'',
+            show_pdf: ''
         }
     },
 
     mounted: function () {
         var self=this;
+
+        $(document).on('click', '.mostrar_pdf', function () {
+            var _this = $(this),
+                id = _this.data('pdf_id');
+
+            self.show_pdf = App.host + '/control_presupuesto/cambio_presupuesto/'+ id +'/pdf';
+            $('#pdf_modal').modal('show');
+        });
+
         var data = {
             "processing": true,
             "serverSide": true,
@@ -39,8 +49,9 @@ Vue.component('cambio-presupuesto-index', {
                 {data: 'estatus.descripcion'},
                 {
                     data: {},
-                    render: function (data) {
-                        var button='<a title="Ver" href="'+App.host+'/control_presupuesto/cambio_presupuesto/'+data.id+'">';
+                    render: function(data, type, row, meta) {
+                        var  button='<span class="label" ></span><button class="btn btn-xs btn-info mostrar_pdf" data-pdf_id="'+ row.id +'" title="Formato"><i class="fa fa-file-pdf-o"></i></button>';
+                            button='<a title="Ver" href="'+App.host+'/control_presupuesto/cambio_presupuesto/'+data.id+'">';
                         button+='<button title="Ver" type="button" class="btn btn-xs btn-default" >';
                         button+='<i class="fa fa-eye"></i>';
                         button+='   </button>';

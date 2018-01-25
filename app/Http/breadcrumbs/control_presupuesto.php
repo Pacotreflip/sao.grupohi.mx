@@ -26,5 +26,5 @@ Breadcrumbs::register('control_presupuesto.cambio_presupuesto.index', function (
  */
 Breadcrumbs::register('control_presupuesto.cambio_presupuesto.create', function ($breadcrumb) {
     $breadcrumb->parent('control_presupuesto.cambio_presupuesto.index');
-    $breadcrumb->push('NUEVO', route('control_presupuesto.cambio_presupuesto.create'));
+    $breadcrumb->push('NUEVA SOLICITUD', route('control_presupuesto.cambio_presupuesto.create'));
 });

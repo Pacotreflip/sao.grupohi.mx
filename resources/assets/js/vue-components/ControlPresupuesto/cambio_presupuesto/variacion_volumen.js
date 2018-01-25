@@ -6,7 +6,8 @@ Vue.component('variacion-volumen', {
                 partidas : [],
                 motivo : ''
             },
-            cargando : false
+            cargando : false,
+            guardando : false
         }
     },
 
@@ -16,7 +17,7 @@ Vue.component('variacion-volumen', {
                 id_tipo_orden: this.id_tipo_orden,
                 motivo: this.form.motivo,
                 partidas: []
-            }
+            };
 
             this.form.partidas.forEach(function (value) {
                 res.partidas.push({
@@ -35,16 +36,16 @@ Vue.component('variacion-volumen', {
         $(document).on('click', '.btn_add_concepto', function () {
             var id = $(this).attr('id');
             self.addConcepto(id);
-        })
-            .on('click', '.btn_remove_concepto', function() {
-                alert('quitar');
-            })
+        }).on('click', '.btn_remove_concepto', function() {
+            var id = $(this).attr('id');
+            self.removeConcepto(id);
+        });
 
-        ;
         $('#conceptos_table').DataTable({
             "processing": true,
             "serverSide": true,
-            "ordering" : false,
+            "ordering" : true,
+            "searching" : false,
             "ajax": {
                 "url": App.host + '/conceptos/getPathsConceptos',
                 "type" : "POST",
@@ -59,8 +60,9 @@ Vue.component('variacion-volumen', {
                 },
                 "dataSrc" : function (json) {
                     for (var i = 0; i < json.data.length; i++) {
-                        json.data[i].monto_presupuestado = '$' + parseInt(json.data[i].monto_presupuestado).formatMoney(2, ',', '.')
-                        json.data[i].precio_unitario = '$' + parseInt(json.data[i].precio_unitario).formatMoney(2, ',', '.')
+                        json.data[i].monto_presupuestado = '$' + parseInt(json.data[i].monto_presupuestado).formatMoney(2, ',', '.');
+                        json.data[i].cantidad_presupuestada = parseInt(json.data[i].cantidad_presupuestada).formatMoney(2, ',', '.');
+                        json.data[i].precio_unitario = '$' + parseInt(json.data[i].precio_unitario).formatMoney(2, ',', '.');
                     }
                     return json.data;
                 }
@@ -116,7 +118,6 @@ Vue.component('variacion-volumen', {
                 }
             }
         });
-
     },
 
     methods : {
@@ -131,7 +132,7 @@ Vue.component('variacion-volumen', {
                 url : App.host + '/conceptos/' + id,
                 type : 'GET',
                 beforeSend : function () {
-                    self.cargando = true;
+                    self.guardando = true;
                     $('#'+id).html('<i class="fa fa-spin fa-spinner"></i>');
                     $('#'+id).attr('disabled', true);
 
@@ -143,7 +144,7 @@ Vue.component('variacion-volumen', {
                     $('#'+id).addClass('btn_remove_concepto');
                 },
                 complete : function () {
-                    self.cargando = false;
+                    self.guardando = false;
                     $('#'+id).attr('disabled', false);
                 },
                 error: function () {
@@ -160,8 +161,21 @@ Vue.component('variacion-volumen', {
         },
 
         confirmSave: function () {
-            alert('save');
-            this.save();
+            var self = this;
+            swal({
+                title: 'Guardar Solicitud de Cambio',
+                text: "¿Está seguro de que la información es correcta?",
+                type: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Si, Guardar',
+                cancelButtonText: 'No, Cancelar'
+            }).then(function(result) {
+                if(result.value) {
+                    self.save();
+                }
+            });
         },
 
         save : function () {
@@ -177,17 +191,26 @@ Vue.component('variacion-volumen', {
                     swal({
                         type : 'success',
                         title : '¡Correcto!',
-                        text : 'Solicitud Guardada con ID ' + response.id
+                        html : 'Solicitud Guardada con Número de Folio <b>' + response.numero_folio + '</b>'
                     }).then(function () {
                         $('#conceptos_modal').modal('hide');
                         self.form.partidas = [];
                         Vue.set(self.form, 'motivo', '');
+                        $('#conceptos_table').DataTable().ajax.reload(null, false);
                     });
                 },
                 complete : function () {
                     self.cargando = false;
                 }
             })
+        },
+
+        removeConcepto : function (id) {
+            var index = this.form.partidas.map(function (partida) { return partida.id_concepto; }).indexOf(parseInt(id));
+            this.form.partidas.splice(index, 1);
+            $('#'+id).html('<i class="fa fa-plus text-green"></i>');
+            $('#'+id).addClass('btn_add_concepto');
+            $('#'+id).removeClass('btn_remove_concepto');
         },
 
         validateForm: function(scope, funcion) {
