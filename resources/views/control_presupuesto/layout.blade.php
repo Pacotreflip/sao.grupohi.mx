@@ -19,7 +19,7 @@
             </ul>
         </li>
 
-        <li class="treeview">
+        <!--<li class="treeview">
             <a href="#">
                 <i class="fa fa-dollar"></i>
                 <span>Presupuesto</span>
@@ -28,9 +28,9 @@
             </span>
             </a>
             <ul class="treeview-menu">
-                <li ><a href="{{route('control_presupuesto.cambio_presupuesto.index')}}"><i class='fa fa-circle-o'></i> <span>Cambios al Presupuesto</span></a></li>
+                <li ><a href="{{--route('control_presupuesto.cambio_presupuesto.index')--}}"><i class='fa fa-circle-o'></i> <span>Cambios al Presupuesto</span></a></li>
             </ul>
-        </li>
+        </li>-->
 
     </ul>
 @endsection
