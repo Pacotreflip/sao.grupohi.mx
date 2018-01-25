@@ -10,6 +10,7 @@ namespace Ghi\Domain\Core\Models\ControlPresupuesto;
 
 use Ghi\Domain\Core\Models\BaseModel;
 use Carbon\Carbon;
+use Ghi\Domain\Core\Models\User;
 
 class SolicitudCambio extends BaseModel
 {
@@ -37,6 +38,26 @@ class SolicitudCambio extends BaseModel
     public function partidas()
     {
         return $this->hasMany(SolicitudCambioPartida::class, "id_solicitud_cambio", "id");
+    }
+
+    public function tipoOrden()
+    {
+        return $this->hasOne(TipoOrden::class, "id", "id_tipo_orden");
+    }
+
+    /**
+     * @return User
+     */
+    public function user_registro()
+    {
+        return $this->belongsTo(User::class, 'id_solicita', 'idusuario');
+    }
+    /**
+     * @return User
+     */
+    public function estatus()
+    {
+        return $this->belongsTo(Estatus::class, 'id_estatus', 'id');
     }
 
 }

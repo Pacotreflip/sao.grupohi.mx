@@ -15,19 +15,26 @@
                         </div>
                         <div class="box-body">
                             <div class="table-responsive">
-                                <div class="table table-bordered table-striped">
-                                    <table>
-                                        <thead>
-                                        <tr></tr>
-                                        </thead>
-                                        <tbody>
-                                        <tr></tr>
-                                        </tbody>
-                                        <tfoot>
-                                        <tr></tr>
-                                        </tfoot>
-                                    </table>
-                                </div>
+                                <table id="cierres_table" class="table table-bordered table-stripped">
+                                    <thead>
+                                    <tr>
+                                        <th>Tipo Orden</th>
+                                        <th>Fecha Solicitud</th>
+                                        <th>Usuario Solicita</th>
+                                        <th>Estatus</th>
+                                        <th>Acciones</th>
+                                    </tr>
+                                    </thead>
+                                    <tfoot>
+                                    <tr>
+                                        <th>Tipo Orden</th>
+                                        <th>Fecha Solicitud</th>
+                                        <th>Usuario Solicita</th>
+                                        <th>Estatus</th>
+                                        <th>Acciones</th>
+                                    </tr>
+                                    </tfoot>
+                                </table>
                             </div>
                         </div>
                     </div>

@@ -42,9 +42,17 @@ class CambioPresupuestoController extends Controller
 
     public function index()
     {
-        return view('control_presupuesto.cambio_presupuesto.index')
-            ->with('max_niveles', $this->presupuesto->getMaxNiveles())
-            ->with('operadores', $this->operadores);
+        return view('control_presupuesto.cambio_presupuesto.index');
+    }
+
+    public function paginate(Request $request)
+    {
+        $solicitudes = $this->solicitud->paginate($request->all());
+        return response()->json([
+            'recordsTotal' => $solicitudes->total(),
+            'recordsFiltered' => $solicitudes->total(),
+            'data' => $solicitudes->items()
+        ], 200);
     }
 
     public function create()
