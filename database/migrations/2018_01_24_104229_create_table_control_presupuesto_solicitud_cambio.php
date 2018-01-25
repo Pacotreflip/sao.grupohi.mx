@@ -16,6 +16,7 @@ class CreateTableControlPresupuestoSolicitudCambio extends Migration
             $table->increments('id');
             $table->dateTime("fecha_solicitud");
             $table->integer("id_solicita");
+            $table->string("motivo");
             $table->unsignedInteger("id_estatus");
             $table->unsignedInteger("id_tipo_orden");
 
