@@ -8,8 +8,10 @@
 
 namespace Ghi\Domain\Core\Models\ControlPresupuesto;
 
+use Ghi\Core\Facades\Context;
 use Ghi\Domain\Core\Models\BaseModel;
 use Carbon\Carbon;
+use Ghi\Domain\Core\Models\Scopes\ObraScope;
 use Ghi\Domain\Core\Models\User;
 
 class SolicitudCambio extends BaseModel
@@ -21,18 +23,28 @@ class SolicitudCambio extends BaseModel
         'id_solicita',
         'id_estatus',
         'id_tipo_orden',
-        'motivo'
+        'motivo',
+        'numero_folio'
     ];
 
     protected static function boot()
     {
         parent::boot();
+        static::addGlobalScope(new ObraScope());
         static::creating(function ($model) {
             $model->id_solicita = auth()->id();
             $model->fecha_solicitud = Carbon::now()->toDateTimeString();
             $model->id_estatus = Estatus::GENERADA;
+            $model->asignaFolio();
 
         });
+    }
+
+
+    protected function asignaFolio()
+    {
+        return $this->numero_folio = static::where('id_tipo_orden', $this->id_tipo_orden)
+                ->max('numero_folio') + 1;
     }
 
     public function partidas()
