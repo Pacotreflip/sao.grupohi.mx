@@ -195,8 +195,9 @@ Vue.component('variacion-volumen', {
                     }).then(function () {
                         $('#conceptos_modal').modal('hide');
                         self.form.partidas = [];
+                        self.$emit('reset-filtros');
                         Vue.set(self.form, 'motivo', '');
-                        $('#conceptos_table').DataTable().ajax.reload(null, false);
+                        $('#conceptos_table').DataTable().ajax.reload();
                     });
                 },
                 complete : function () {
@@ -211,6 +212,9 @@ Vue.component('variacion-volumen', {
             $('#'+id).html('<i class="fa fa-plus text-green"></i>');
             $('#'+id).addClass('btn_add_concepto');
             $('#'+id).removeClass('btn_remove_concepto');
+            if(!this.form.partidas.length) {
+                $('#conceptos_modal').modal('hide');
+            }
         },
 
         validateForm: function(scope, funcion) {
