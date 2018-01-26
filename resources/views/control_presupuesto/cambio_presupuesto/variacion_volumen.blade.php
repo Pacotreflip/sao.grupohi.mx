@@ -27,7 +27,7 @@
                     </div>
                     <div class="box-body">
                         <div class="table-responsive">
-                            <table id="conceptos_table" class="table table-bordered table-striped">
+                            <table id="conceptos_table" class="small table table-bordered table-striped">
                                 <thead>
                                 <tr>
                                     <th v-for="nivel in niveles">@{{ nivel.nombre }}</th>
