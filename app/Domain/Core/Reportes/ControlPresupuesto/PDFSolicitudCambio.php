@@ -109,10 +109,10 @@ class PDFSolicitudCambio extends Rotation {
 
         // Título
         $this->SetFont('Arial', 'B', $this->txtTitleTam - 3);
-        $this->CellFitScale(0.6 * $this->WidthTotal, 1.5, utf8_decode($this->solicitud->tipoOrden->descripcion), 0, 1, 'L', 0);
+        $this->CellFitScale(0.6 * $this->WidthTotal, 1.5, utf8_decode('SOLICITUD DE CAMBIO'), 0, 1, 'L', 0);
 
         $this->SetFont('Arial', '', $this->txtSubtitleTam -1);
-        $this->CellFitScale(0.6 * $this->WidthTotal, 0.35, utf8_decode('Folio - #'. $this->solicitud->numero_folio), 0, 1, 'L', 0);
+//        $this->CellFitScale(0.6 * $this->WidthTotal, 0.35, utf8_decode(''), 0, 1, 'L', 0);
         $this->Line(1, $this->GetY() + 0.2, $this->WidthTotal + 1, $this->GetY() + 0.2);
         $this->Ln(0.5);
 
@@ -128,17 +128,20 @@ class PDFSolicitudCambio extends Rotation {
     function detallesAsignacion(){
 
         $this->SetFont('Arial', 'B', $this->txtContenidoTam);
-        $this->Cell(0.15 * $this->WidthTotal, 0.5, utf8_decode('Fecha Asignación:'), '', 0, 'L');
+        $this->Cell(0.15 * $this->WidthTotal, 0.5, utf8_decode('Número de Folio'), '', 0, 'LB');
+        $this->SetFont('Arial', '', $this->txtContenidoTam);
+        $this->CellFitScale(0.4 * $this->WidthTotal, 0.5, utf8_decode($this->solicitud->numero_folio), '', 1, 'L');
+        $this->Cell(0.15 * $this->WidthTotal, 0.5, utf8_decode('Fecha Solicitud:'), '', 0, 'L');
         $this->SetFont('Arial', '', $this->txtContenidoTam);
         $this->CellFitScale(0.4 * $this->WidthTotal, 0.5, utf8_decode(Carbon::parse($this->solicitud->fecha_solicitud)->format('Y-m-d h:m A')), '', 1, 'L');
         $this->SetFont('Arial', 'B', $this->txtContenidoTam);
-        $this->Cell(0.15 * $this->WidthTotal, 0.5, utf8_decode('Elaborado por: '), '', 0, 'L');
+        $this->Cell(0.15 * $this->WidthTotal, 0.5, utf8_decode('Solicita: '), '', 0, 'L');
         $this->SetFont('Arial', '', $this->txtContenidoTam);
         $this->CellFitScale(0.4 * $this->WidthTotal, 0.5, utf8_decode($this->solicitud->userRegistro), '', 1, 'L');
         $this->SetFont('Arial', 'B', $this->txtContenidoTam);
-        $this->Cell(0.15 * $this->WidthTotal, 0.5, utf8_decode(''), '', 0, 'LB');
+        $this->Cell(0.15 * $this->WidthTotal, 0.5, utf8_decode('Tipo de solicitud'), '', 0, 'LB');
         $this->SetFont('Arial', '', $this->txtContenidoTam);
-        $this->CellFitScale(0.4 * $this->WidthTotal, 0.5, '', '', 1, 'L');
+        $this->CellFitScale(0.4 * $this->WidthTotal, 0.5, utf8_decode($this->solicitud->tipoOrden->descripcion), '', 1, 'L');
     }
 
     function referencias($x_inicial){
@@ -174,7 +177,7 @@ class PDFSolicitudCambio extends Rotation {
             $this->SetTextColors(array('0,0,0', '0,0,0', '0,0,0', '0,0,0', '0,0,0', '0,0,0'));
             $this->SetHeights(array(0.3));
             $this->SetAligns(array('C', 'C', 'C', 'C', 'C', 'C'));
-            $this->Row(array('#', 'No.Tarjeta', utf8_decode("Descripción"), "Cantidad Presupuestada", "Cantidad Original", "Unidad"));
+            $this->Row(array('#', 'No.Tarjeta', utf8_decode("Descripción"), "Cantidad Original", "Cantidad Nueva", "Unidad"));
 
 
             $contador = 1;
@@ -194,8 +197,8 @@ class PDFSolicitudCambio extends Rotation {
                     $contador, // #
                     ($partida->id_tarjeta ?: ''),  // Número de tarjeta
                     utf8_decode(isset($partida->concepto->descripcion) ? $partida->concepto->descripcion : ''), // Descripción concepto
-                    '$' . number_format($partida->cantidad_presupuestada_nueva, 2, '.', ','), // Cantidad presupuestada
-                    '$' . number_format($partida->cantidad_presupuestada_original, 2, '.', ','), // Cantidad original
+                    number_format($partida->cantidad_presupuestada_original, 2, '.', ','), // Cantidad original
+                    number_format($partida->cantidad_presupuestada_nueva, 2, '.', ','), // Cantidad presupuestada
                     (isset($partida->concepto->unidad) ? $partida->concepto->unidad : '') // Unidad
                 ]);
 
@@ -288,7 +291,7 @@ class PDFSolicitudCambio extends Rotation {
         $this->Ln();
         $this->motivo();
         try {
-            $this->Output('I', 'pdf.pdf', 1);
+            $this->Output('I', 'Solicitud de cambio #'. $this->solicitud->numero_folio .'.pdf', 1);
         } catch (\Exception $ex) {
             dd($ex);
         }
