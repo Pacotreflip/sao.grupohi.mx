@@ -1,8 +1,7 @@
 Vue.component('cambio-presupuesto-index', {
     data: function () {
         return {
-            data :'',
-            show_pdf: ''
+            data :''
         }
     },
 
@@ -11,10 +10,18 @@ Vue.component('cambio-presupuesto-index', {
 
         $(document).on('click', '.mostrar_pdf', function () {
             var _this = $(this),
-                id = _this.data('pdf_id');
+                id = _this.data('pdf_id'),
+                url = App.host + '/control_presupuesto/cambio_presupuesto/'+ id +'/pdf';
 
-            self.show_pdf = App.host + '/control_presupuesto/cambio_presupuesto/'+ id +'/pdf';
             $('#pdf_modal').modal('show');
+            $('#pdf_modal .modal-content').css({height: '700px'});
+            $('#pdf_modal .modal-body').html($('<iframe/>', {
+                id:'formatoPDF',
+                src: url,
+                style:'width:99.6%;height:100%',
+                frameborder:"0"
+            })).css({height: '550px'});
+
         });
 
         var data = {
