@@ -19026,7 +19026,14 @@ Vue.component('show-variacion-volumen', {
                     self.guardando = true;
                 },
                 success: function success(data, textStatus, xhr) {
-                    alert("exitoso");
+                    swal({
+                        type: "success",
+                        title: '¡Correcto!',
+                        text: 'Solicitud autorizada correctamente.',
+                        confirmButtonText: "Ok",
+                        closeOnConfirm: false
+                    }).then(function () {});
+                    window.location.reload(true);
                 },
                 complete: function complete() {
                     self.guardando = false;
@@ -19035,7 +19042,33 @@ Vue.component('show-variacion-volumen', {
         },
 
         rechazar_solicitud: function rechazar_solicitud(id) {
-            alert("Rechazar ->" + id);
+            var self = this;
+            var url = App.host + '/control_presupuesto/cambio_presupuesto/rechazarSolicitud';
+            $.ajax({
+                type: 'POST',
+                url: url,
+                data: {
+                    id: id,
+                    id_tipo_orden: self.form.solicitud.id_tipo_orden
+                },
+                beforeSend: function beforeSend() {
+                    self.guardando = true;
+                },
+                success: function success(data, textStatus, xhr) {
+
+                    swal({
+                        type: "success",
+                        title: '¡Correcto!',
+                        text: 'Solicitud rechazada correctamente.',
+                        confirmButtonText: "Ok",
+                        closeOnConfirm: false
+                    }).then(function () {});
+                    window.location.reload(true);
+                },
+                complete: function complete() {
+                    self.guardando = false;
+                }
+            });
         }
 
     }

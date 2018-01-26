@@ -2,8 +2,10 @@
 @section('title', 'Control presupuesto')
 @section('contentheader_title', 'CONTROL DE CAMBIOS AL PRESUPUESTO')
 @section('breadcrumb')
-
+    {!! Breadcrumbs::render('control_presupuesto.cambio_presupuesto.show',$solicitud) !!}
 @endsection
+
+
 @section('main-content')
     <show-variacion-volumen
             inline-template
@@ -53,10 +55,10 @@
                             <h3 class="box-title">Partidas</h3>
                            </div>
                             <div class="col-sm-9">
-                                <a class="btn btn-app btn-danger pull-right" v-on:click="confirm_rechazar_solicitud">
+                                <a class="btn btn-app btn-danger pull-right" v-on:click="confirm_rechazar_solicitud" v-if="solicitud.id_estatus==1">
                                     <i class="fa fa-close"></i> Rechazar
                                 </a>
-                                <a class="btn btn-sm btn-app btn-info pull-right"  v-on:click="confirm_autorizar_solicitud">
+                                <a class="btn btn-sm btn-app btn-info pull-right"  v-on:click="confirm_autorizar_solicitud" v-if="solicitud.id_estatus==1">
                                     <i class="fa fa-check"></i> Autorizar
                                 </a>
                             </div>
