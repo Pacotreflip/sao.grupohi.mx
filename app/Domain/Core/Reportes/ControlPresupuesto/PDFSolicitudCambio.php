@@ -199,7 +199,7 @@ class PDFSolicitudCambio extends Rotation {
             $this->Row([
                 $index + 1, // #
                 $item->numero_tarjeta,
-                str_repeat("--", $profundidad).' '.utf8_decode($item->descripcion), // Descripción concepto
+                str_repeat("    ", $profundidad).' '.utf8_decode($item->descripcion), // Descripción concepto
                 utf8_decode($item->unidad),
                 number_format($item->cantidad_presupuestada, 2, '.', ','), // Cantidad original
                 number_format($cantidad_nueva, 2, '.', ','), // Cantidad original
@@ -242,7 +242,7 @@ class PDFSolicitudCambio extends Rotation {
         $data = pack('H*', $data);
         $file = public_path('img/logo_temp.png');
         if (file_put_contents($file, $data) !== false) {
-            $this->image(public_path('img/logo_hc.png'), $this->WidthTotal - 1.3, 0.5, 2.33, 1.5);
+            $this->image($file, $this->WidthTotal - 1.3, 0.5, 2.33, 1.5);
             unlink($file);
         }
     }

@@ -90,7 +90,7 @@ class EloquentSolicitudCambioRepository implements SolicitudCambioRepository
             foreach ($data['partidas'] as $partida) {
                 $conceptoTarjeta=ConceptoTarjeta::where('id_concepto','=',$partida['id_concepto'])->first();
                 if($conceptoTarjeta){
-                    $partida['id_tarjeta']=$conceptoTarjeta->id;
+                    $partida['id_tarjeta']=$conceptoTarjeta->id_tarjeta;
                 }
                 $partida['id_solicitud_cambio'] = $solicitud->id;
                 $partida['id_tipo_orden'] = TipoOrden::VARIACION_VOLUMEN;
