@@ -133,6 +133,14 @@ class EloquentConceptoRepository implements ConceptoRepository
 
         $query->where('dbo.conceptos.concepto_medible', '=', 3);
 
+
+
+        if($data['id_tarjeta'] != '') {
+            $query->join('ControlPresupuesto.concepto_tarjeta', 'dbo.conceptos.id_concepto', '=', 'ControlPresupuesto.concepto_tarjeta.id_concepto')
+                ->join('ControlPresupuesto.tarjeta', 'ControlPresupuesto.concepto_tarjeta.id_tarjeta', '=', 'ControlPresupuesto.tarjeta.id')
+                ->where('ControlPresupuesto.tarjeta.id', '=', $data['id_tarjeta']);
+        }
+
         if(isset($data['order'])) {
             foreach ($data['order'] as $order) {
                 $query->orderBy($data['columns'][$order['column']]['data'], $order['dir']);

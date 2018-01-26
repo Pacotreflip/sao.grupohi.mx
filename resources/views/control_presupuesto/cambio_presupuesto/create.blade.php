@@ -41,7 +41,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-md-12" v-if="form.id_tipo_orden != ''">
+                <div class="col-md-6 col-md-offset-3" v-if="form.id_tipo_orden != ''">
                     <div class="box box-solid">
                         <div class="box-header with-border">
                             <h3 class="box-title">Filtros para consulta de Conceptos</h3>
@@ -50,6 +50,13 @@
                             </div>
                         </div>
                         <div class="box-body no-padding">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label><b>Número de Tarjeta</b></label>
+                                    <select2 :disabled="cargando" v-model="form.id_tarjeta" :options="tarjetas">
+                                    </select2>
+                                </div>
+                            </div>
                             <table class="table table-bordered table-striped" v-if="filtros.length">
                                 <thead>
                                 <tr>

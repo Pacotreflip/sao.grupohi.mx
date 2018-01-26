@@ -347,5 +347,10 @@ class AppServiceProvider extends ServiceProvider
             \Ghi\Domain\Core\Contracts\ControlPresupuesto\SolicitudCambioRechazadaRepository::class,
             \Ghi\Domain\Core\Repositories\ControlPresupuesto\EloquentSolicitudCambioRechazadaRepository::class
         );
+
+        $this->app->bind(
+            \Ghi\Domain\Core\Contracts\ControlPresupuesto\TarjetaRepository::class,
+            \Ghi\Domain\Core\Repositories\ControlPresupuesto\EloquentTarjetaRepository::class
+        );
     }
 }

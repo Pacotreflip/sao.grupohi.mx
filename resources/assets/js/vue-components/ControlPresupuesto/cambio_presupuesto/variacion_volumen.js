@@ -1,5 +1,5 @@
 Vue.component('variacion-volumen', {
-    props : ['filtros', 'niveles', 'id_tipo_orden', 'numero_tarjeta'],
+    props : ['filtros', 'niveles', 'id_tipo_orden', 'id_tarjeta'],
     data : function () {
         return {
             form : {
@@ -54,7 +54,7 @@ Vue.component('variacion-volumen', {
                 },
                 "data": function ( d ) {
                     d.filtros = self.filtros;
-                    d.numero_tarjeta = self.numero_tarjeta
+                    d.id_tarjeta = self.id_tarjeta
                 },
                 "complete" : function () {
                     self.cargando = false;

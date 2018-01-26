@@ -38,4 +38,5 @@ Route::group(['prefix' => 'control_presupuesto'], function () {
      * Tarjetas Route
      */
     Route::get('tarjeta', 'TarjetaController@index');
+    Route::get('tarjeta/lists', 'TarjetaController@lists');
 });

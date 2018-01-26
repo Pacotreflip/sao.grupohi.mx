@@ -1,11 +1,11 @@
 Vue.component('cambio-presupuesto-create', {
     props : ['operadores'],
-
     data : function () {
         return {
             form : {
                 id_tipo_cobrabilidad : '',
                 id_tipo_orden : '',
+                id_tarjeta : '',
                 filtro : {
                     nivel : '',
                     operador : '',
@@ -15,6 +15,7 @@ Vue.component('cambio-presupuesto-create', {
             filtros : [],
             tipos_cobrabilidad : [],
             tipos_orden : [],
+            tarjetas : [],
             cargando : false,
             niveles: [
                 {nombre : 'Nivel 1', numero : 1},
@@ -44,7 +45,7 @@ Vue.component('cambio-presupuesto-create', {
     mounted : function () {
         this.fetchTiposCobrabilidad();
         this.fetchTiposOrden();
-        this.fetchNumerosTarjeta();
+        this.fetchTarjetas();
     },
 
     methods : {
@@ -65,10 +66,10 @@ Vue.component('cambio-presupuesto-create', {
             });
         },
 
-        fetchNumerosTarjeta : function () {
+        fetchTarjetas : function () {
             var self = this;
             $.ajax({
-                url : App.host + '/control_presupuesto/tarjeta',
+                url : App.host + '/control_presupuesto/tarjeta/lists',
                 type : 'GET',
                 beforeSend : function () {
                     self.cargando = true;
