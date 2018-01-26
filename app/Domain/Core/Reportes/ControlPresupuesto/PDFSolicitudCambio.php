@@ -145,7 +145,7 @@ class PDFSolicitudCambio extends Rotation {
 
         $this->SetFont('Arial', 'B', $this->txtContenidoTam);
         $this->Cell(0.125 * $this->WidthTotal, 0.5, utf8_decode('Número de Folio'), '', 0, 'LB');
-        $this->SetFont('Arial', 'B', '#'.$this->txtContenidoTam);
+        $this->SetFont('Arial', '', '#'.$this->txtContenidoTam);
         $this->CellFitScale(0.375 * $this->WidthTotal, 0.5, utf8_decode($this->solicitud->numero_folio), '', 1, 'L');
         $this->Cell(0.125 * $this->WidthTotal, 0.5, utf8_decode('Fecha Solicitud:'), '', 0, 'L');
         $this->SetFont('Arial', '', $this->txtContenidoTam);
@@ -252,17 +252,23 @@ class PDFSolicitudCambio extends Rotation {
         $this->SetFont('Arial', '', 6);
         $this->SetFillColor(180, 180, 180);
 
-        $this->Cell(($this->GetPageWidth() - 4) / 2, 0.4, utf8_decode('firma 1'), 'TRLB', 0, 'C', 1);
-        $this->Cell(2);
-        $this->Cell(($this->GetPageWidth() - 4) / 2, 0.4, utf8_decode('firma 2'), 'TRLB', 1, 'C', 1);
 
-        $this->Cell(($this->GetPageWidth() - 4) / 2, 1.2, '', 'TRLB', 0, 'C');
-        $this->Cell(2);
-        $this->Cell(($this->GetPageWidth() - 4) / 2, 1.2, '', 'TRLB', 1, 'C');
+        $espacio = ($this->GetPageWidth() - 18) / 2.5;
 
-        $this->Cell(($this->GetPageWidth() - 4) / 2, 0.4, utf8_decode('nombre 1'), 'TRLB', 0, 'C', 1);
+        $this->Cell($espacio);
+        $this->Cell(8, 0.4, utf8_decode('firma 1'), 'TRLB', 0, 'C', 1);
         $this->Cell(2);
-        $this->Cell(($this->GetPageWidth() - 4) / 2, 0.4, utf8_decode('nombre 2'), 'TRLB', 0, 'C', 1);
+        $this->Cell(8, 0.4, utf8_decode('firma 2'), 'TRLB', 1, 'C', 1);
+
+        $this->Cell($espacio);
+        $this->Cell(8, 1.2, '', 'TRLB', 0, 'C');
+        $this->Cell(2);
+        $this->Cell(8, 1.2, '', 'TRLB', 1, 'C');
+
+        $this->Cell($espacio);
+        $this->Cell(8, 0.4, utf8_decode('nombre 1'), 'TRLB', 0, 'C', 1);
+        $this->Cell(2);
+        $this->Cell(8, 0.4, utf8_decode('nombre 2'), 'TRLB', 0, 'C', 1);
     }
 
     function Footer() {
@@ -273,7 +279,7 @@ class PDFSolicitudCambio extends Rotation {
         $this->Cell(6.5, .4, utf8_decode('Fecha de Consulta: ' . date('Y-m-d g:i a')), 0, 0, 'L');
         $this->SetFont('Arial', 'B', $this->txtFooterTam);
         $this->Cell(6.5, .4, '', 0, 0, 'C');
-        $this->Cell(14.5, .4, utf8_decode('Página ') . $this->PageNo() . '/{nb}', 0, 0, 'R');
+        $this->Cell(15, .4, utf8_decode('Página ') . $this->PageNo() . '/{nb}', 0, 0, 'R');
         $this->SetY($this->GetPageHeight() - 1.3);
         $this->SetFont('Arial', 'B', $this->txtFooterTam);
         $this->Cell(6.5, .4, utf8_decode('Formato generado desde '), 0, 0, 'L');
