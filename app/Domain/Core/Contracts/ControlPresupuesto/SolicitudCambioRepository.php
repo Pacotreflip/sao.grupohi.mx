@@ -60,4 +60,14 @@ interface SolicitudCambioRepository
      * @return SolicitudCambio
      */
     public function  autorizarVariacionVolumen($id);
+
+    /**
+     * Rechaza una solicitud de cambio
+     * @param array $data
+     * @throws \Exception
+     * @return SolicitudCambio
+     */
+    public function  rechazarVariacionVolumen($id);
+
+
 }

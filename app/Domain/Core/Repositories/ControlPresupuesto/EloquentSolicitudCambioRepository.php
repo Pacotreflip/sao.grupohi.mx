@@ -8,12 +8,15 @@
 
 namespace Ghi\Domain\Core\Repositories\ControlPresupuesto;
 
+use Ghi\Core\Facades\Context;
 use Ghi\Core\Models\Concepto;
 use Ghi\Domain\Core\Contracts\ControlPresupuesto\SolicitudCambioRepository;
 use Ghi\Domain\Core\Models\ControlPresupuesto\ConceptoTarjeta;
+use Ghi\Domain\Core\Models\ControlPresupuesto\Estatus;
 use Ghi\Domain\Core\Models\ControlPresupuesto\SolicitudCambio;
 use Ghi\Domain\Core\Models\ControlPresupuesto\SolicitudCambioAutorizada;
 use Ghi\Domain\Core\Models\ControlPresupuesto\SolicitudCambioPartida;
+use Ghi\Domain\Core\Models\ControlPresupuesto\SolicitudCambioRechazada;
 use Ghi\Domain\Core\Models\ControlPresupuesto\TipoOrden;
 use Illuminate\Support\Facades\DB;
 
@@ -128,49 +131,84 @@ class EloquentSolicitudCambioRepository implements SolicitudCambioRepository
         try {
             DB::connection('cadeco')->beginTransaction();
             $solicitud = $this->model->with('partidas')->find($id);
-            ///
-
             foreach ($solicitud->partidas as $partida) {
                 $concepto = Concepto::find($partida->id_concepto);
+                $montoAnterior = $concepto->monto_presupuestado;
+                $factor = ($partida->cantidad_presupuestada_nueva / $concepto->cantidad_presupuestada);
+                $concepto->cantidad_presupuestada = $partida->cantidad_presupuestada_nueva;
+                $concepto->monto_presupuestado = $concepto->monto_presupuestado * $factor;
+
+
+                //propagacion hacia abajo
+                $conceptosPropagacion = Concepto::where('nivel', 'like', $concepto->nivel . '%')->get();
+                $afectacion = 0;
+                foreach ($conceptosPropagacion as $conceptoPropagacion) {
+
+                    $conceptoPropagacion->cantidad_presupuestada = $conceptoPropagacion->cantidad_presupuestada * $factor;
+                    $conceptoPropagacion->monto_presupuestado = $conceptoPropagacion->monto_presupuestado * $factor;
+                    if ($afectacion > 0) {
+                        $conceptoPropagacion->save();
+                    }
+                    $afectacion++;
+                }
+
+                $concepto->save();
+
+                //propagacion hacia arriba monto
+
+                $concepto = Concepto::find($partida->id_concepto);
                 $tamanioFaltante = strlen($concepto->nivel);
-                $propagacionMonto = 0;
-                $propagacionCantidadPresupuestada = 0;
                 $afectacionConcepto = 0;
 
                 while ($tamanioFaltante > 0) { ///////////////recorrido todos los niveles hacia arriba
 
-                   // echo substr($concepto->nivel, 0, $tamanioFaltante) . "<br>";
+                    // echo substr($concepto->nivel, 0, $tamanioFaltante) . "<br>";
                     $afectaConcepto = Concepto::where('nivel', '=', substr($concepto->nivel, 0, $tamanioFaltante))->first();
 
-                    if ($afectacionConcepto == 0) {///afectamos el concepto de la solicitud
-                        $cantidadNueva = $partida->cantidad_presupuestada_nueva;
-                        $cantidadAnterior = $afectaConcepto->cantidad_presupuestada;
-                        $factor = $cantidadNueva / $cantidadAnterior;
-                        $montoNuevo = $factor * $afectaConcepto->monto_presupuestado;
-
-                        /////////Actualizamos concepto
-                        $afectaConcepto->cantidad_presupuestada = $partida->cantidad_presupuestada_nueva;
-                        $afectaConcepto->monto_presupuestado = $montoNuevo;
-
-                        $propagacionMonto += $afectaConcepto->monto_presupuestado;
-                        $propagacionCantidadPresupuestada += $afectaConcepto->cantidad_presupuestada;
-                        $afectacionConcepto=1;
-                    } else {//Creamos propagacion hacia niveles altos
-                        $afectaConcepto->cantidad_presupuestada = ($afectaConcepto->cantidad_presupuestada + $propagacionCantidadPresupuestada);
-                        $afectaConcepto->monto_presupuestado = ($afectaConcepto->monto_presupuestado + $propagacionMonto);
+                    if ($afectacionConcepto > 0) {///afectamos el concepto de la solicitud
+                        $afectaConcepto->monto_presupuestado = ($afectaConcepto->monto_presupuestado - $montoAnterior) + $concepto->monto_presupuestado;
+                        $afectaConcepto->save();
                     }
-                    $afectaConcepto->save();
+                    $afectacionConcepto++;
                     $tamanioFaltante -= 4;
+
                 }
             }
-
-
-            /////guardamos la solicitud autorizada
+            $solicitud->id_estatus = Estatus::AUTORIZADA;
+            $solicitud->save();
             $data = ["id_solicitud_cambio" => $id];
             $solicitudCambio = SolicitudCambioAutorizada::create($data);
+            $solicitud = $this->model->with(['tipoOrden', 'userRegistro', 'estatus', 'partidas', 'partidas.concepto','partidas.numeroTarjeta'])->find($id);
+            $solicitud['cobrabilidad']=$solicitud->tipoOrden->cobrabilidad;
+            DB::connection('cadeco')->commit();
+            return $solicitud;
+        } catch (\Exception $e) {
+            DB::connection('cadeco')->rollback();
+            throw $e;
+        }
+
+    }
 
 
-            dd("termino", $solicitudCambio);
+    /**
+     * Rechaza una solicitud de cambio
+     * @param array $data
+     * @throws \Exception
+     * @return SolicitudCambio
+     */
+    public function rechazarVariacionVolumen($id)
+    {
+        try {
+
+            DB::connection('cadeco')->beginTransaction();
+            $solicitud = $this->model->with('partidas')->find($id);
+            $solicitud->id_estatus = Estatus::RECHAZADA;
+            $data = ["id_solicitud_cambio" => $id];
+            $solicitudCambio = SolicitudCambioRechazada::create($data);
+            $solicitud->save();
+            $solicitud = $this->model->with(['tipoOrden', 'userRegistro', 'estatus', 'partidas', 'partidas.concepto','partidas.numeroTarjeta'])->find($id);
+            $solicitud['cobrabilidad']=$solicitud->tipoOrden->cobrabilidad;
+
             DB::connection('cadeco')->commit();
             return $solicitud;
         } catch (\Exception $e) {

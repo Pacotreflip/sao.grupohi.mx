@@ -6,7 +6,9 @@ Vue.component('show-variacion-volumen', {
                 solicitud: this.solicitud,
                 cobrabilidad: this.cobrabilidad
             },
-            cargando: false
+            cargando: false,
+            rechazando:false,
+            autorizando:false
         }
     },
 
@@ -58,24 +60,67 @@ Vue.component('show-variacion-volumen', {
             $.ajax({
                 type: 'POST',
                 url: url,
-                data:{
-                    id:id,
-                    id_tipo_orden:self.form.solicitud.id_tipo_orden
+                data: {
+                    id: id,
+                    id_tipo_orden: self.form.solicitud.id_tipo_orden
                 },
                 beforeSend: function () {
-                   self.guardando = true;
+                    self.autorizando = true;
+                    $('#btn_rechazar').prop('enabled',false);
+                    $('#btn_autorizar').prop('enabled',false);
                 },
                 success: function (data, textStatus, xhr) {
-                  alert("exitoso");
+                    swal({
+                        type: "success",
+                        title: '¡Correcto!',
+                        text: 'Solicitud autorizada correctamente.',
+                        confirmButtonText: "Ok",
+                        closeOnConfirm: false
+                    }).then(function () {
+                    });
+                    window.location.reload(true);
                 },
                 complete: function () {
-                    self.guardando = false;
+                    self.autorizando = false;
+                    $('#btn_rechazar').prop('enabled',true);
+                    $('#btn_autorizar').prop('enabled',true);
                 }
             });
         },
 
         rechazar_solicitud: function (id) {
-            alert("Rechazar ->" + id);
+            var self = this;
+            var url = App.host + '/control_presupuesto/cambio_presupuesto/rechazarSolicitud';
+            $.ajax({
+                type: 'POST',
+                url: url,
+                data: {
+                    id: id,
+                    id_tipo_orden: self.form.solicitud.id_tipo_orden
+                },
+                beforeSend: function () {
+                    self.rechazando = true;
+                    $('#btn_rechazar').prop('enabled',false);
+                    $('#btn_autorizar').prop('enabled',false);
+                    },
+                success: function (data, textStatus, xhr) {
+
+                    swal({
+                        type: "success",
+                        title: '¡Correcto!',
+                        text: 'Solicitud rechazada correctamente.',
+                        confirmButtonText: "Ok",
+                        closeOnConfirm: false
+                    }).then(function () {
+                    });
+                    window.location.reload(true);
+                },
+                complete: function () {
+                    self.rechazando = false;
+                    $('#btn_rechazar').prop('enabled',true);
+                    $('#btn_autorizar').prop('enabled',true);
+                }
+            });
         }
 
     }
