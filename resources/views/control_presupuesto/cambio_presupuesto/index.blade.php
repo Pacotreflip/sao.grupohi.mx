@@ -25,6 +25,7 @@
                                 <table id="cierres_table" class="table table-bordered table-stripped">
                                     <thead>
                                     <tr>
+                                        <th>Núnero de Folio</th>
                                         <th>Tipo Orden</th>
                                         <th>Fecha Solicitud</th>
                                         <th>Usuario Solicita</th>
@@ -34,6 +35,7 @@
                                     </thead>
                                     <tfoot>
                                     <tr>
+                                        <th>Núnero de Folio</th>
                                         <th>Tipo Orden</th>
                                         <th>Fecha Solicitud</th>
                                         <th>Usuario Solicita</th>

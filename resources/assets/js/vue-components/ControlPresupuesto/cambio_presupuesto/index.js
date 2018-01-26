@@ -43,6 +43,7 @@ Vue.component('cambio-presupuesto-index', {
                 }
             },
             "columns": [
+                {data: 'numero_folio'},
                 {data: 'tipo_orden.descripcion'},
                 {data: 'created_at'},
                 {data: 'registro', orderable: false},
