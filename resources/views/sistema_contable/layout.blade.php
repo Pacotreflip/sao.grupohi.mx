@@ -133,6 +133,11 @@
                 <li ><a href="{{route('sistema_contable.kardex_material.index')}}"><i class='fa fa-book'></i> <span>Kardex - Material</span></a></li>
                 @endpermission
             </ul>
+            <ul class="treeview-menu">
+                <!--@permission('consultar_kardex_material') -->
+                <li ><a href="{{route('sistema_contable.costos_dolares.index')}}"><i class='fa fa-book'></i> <span>Costos Dolares</span></a></li>
+                <!--@endpermission -->
+            </ul>
         </li>
         @endpermission
     </ul>

@@ -209,3 +209,11 @@ Breadcrumbs::register('sistema_contable.cierre.index', function ($breadcrumb) {
     $breadcrumb->parent('sistema_contable.index');
     $breadcrumb->push('CIERRE DE PERIODO', route('sistema_contable.cierre.index'));
 });
+
+/**
+ * Costos Dólares
+ */
+Breadcrumbs::register('sistema_contable.costos_dolares.index', function ($breadcrumb) {
+    $breadcrumb->parent('sistema_contable.index');
+    $breadcrumb->push('COSTOS DE DÓLARES', route('sistema_contable.costos_dolares.index'));
+});
