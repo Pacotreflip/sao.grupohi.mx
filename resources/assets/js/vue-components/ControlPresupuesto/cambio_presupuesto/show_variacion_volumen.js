@@ -6,7 +6,9 @@ Vue.component('show-variacion-volumen', {
                 solicitud: this.solicitud,
                 cobrabilidad: this.cobrabilidad
             },
-            cargando: false
+            cargando: false,
+            rechazando:false,
+            autorizando:false
         }
     },
 
@@ -63,7 +65,9 @@ Vue.component('show-variacion-volumen', {
                     id_tipo_orden: self.form.solicitud.id_tipo_orden
                 },
                 beforeSend: function () {
-                    self.guardando = true;
+                    self.autorizando = true;
+                    $('#btn_rechazar').prop('enabled',false);
+                    $('#btn_autorizar').prop('enabled',false);
                 },
                 success: function (data, textStatus, xhr) {
                     swal({
@@ -77,7 +81,9 @@ Vue.component('show-variacion-volumen', {
                     window.location.reload(true);
                 },
                 complete: function () {
-                    self.guardando = false;
+                    self.autorizando = false;
+                    $('#btn_rechazar').prop('enabled',true);
+                    $('#btn_autorizar').prop('enabled',true);
                 }
             });
         },
@@ -93,8 +99,10 @@ Vue.component('show-variacion-volumen', {
                     id_tipo_orden: self.form.solicitud.id_tipo_orden
                 },
                 beforeSend: function () {
-                    self.guardando = true;
-                },
+                    self.rechazando = true;
+                    $('#btn_rechazar').prop('enabled',false);
+                    $('#btn_autorizar').prop('enabled',false);
+                    },
                 success: function (data, textStatus, xhr) {
 
                     swal({
@@ -108,7 +116,9 @@ Vue.component('show-variacion-volumen', {
                     window.location.reload(true);
                 },
                 complete: function () {
-                    self.guardando = false;
+                    self.rechazando = false;
+                    $('#btn_rechazar').prop('enabled',true);
+                    $('#btn_autorizar').prop('enabled',true);
                 }
             });
         }

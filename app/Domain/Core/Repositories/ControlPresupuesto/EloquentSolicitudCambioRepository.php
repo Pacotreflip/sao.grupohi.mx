@@ -175,6 +175,7 @@ class EloquentSolicitudCambioRepository implements SolicitudCambioRepository
                 }
             }
             $solicitud->id_estatus = Estatus::AUTORIZADA;
+            $solicitud->save();
             $data = ["id_solicitud_cambio" => $id];
             $solicitudCambio = SolicitudCambioAutorizada::create($data);
             $solicitud = $this->model->with(['tipoOrden', 'userRegistro', 'estatus', 'partidas', 'partidas.concepto','partidas.numeroTarjeta'])->find($id);

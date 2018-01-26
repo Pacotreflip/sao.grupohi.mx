@@ -8,6 +8,13 @@
     <cambio-presupuesto-index inline-template v-cloak>
         <section>
             <div class="row">
+                <div class="col-sm-12">
+                    <a  href="{{ route('control_presupuesto.cambio_presupuesto.create') }}" class="btn btn-success btn-app" style="float:right">
+                        <i class="glyphicon glyphicon-plus-sign"></i>Nuevo
+                    </a>
+                </div>
+            </div>
+            <div class="row">
                 <div class="col-md-12">
                     <div class="box box-solid">
                         <div class="box-header with-border">

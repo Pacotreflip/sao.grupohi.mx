@@ -110,10 +110,12 @@ class CambioPresupuestoController extends Controller
     public function show($id)
     {
         $solicitud = $this->solicitud->with(['tipoOrden', 'userRegistro', 'estatus', 'partidas', 'partidas.concepto','partidas.numeroTarjeta'])->find($id);
+
         return view('control_presupuesto.cambio_presupuesto.show.variacion_volumen')
             ->with('solicitud', $solicitud)
             ->with('cobrabilidad', $solicitud->tipoOrden->cobrabilidad);
     }
+
 
     public function autorizarSolicitud(Request $request)
     {
