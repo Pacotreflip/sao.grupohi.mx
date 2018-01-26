@@ -2,6 +2,7 @@
 
 namespace Ghi\Domain\Core\Models;
 
+use Ghi\Core\Facades\Context;
 use Ghi\Domain\Core\Models\Contabilidad\CuentaConcepto;
 use Ghi\Domain\Core\Models\Scopes\ObraScope;
 use Illuminate\Support\Facades\DB;
@@ -20,6 +21,7 @@ class Concepto extends BaseModel
         'path',
         'clave',
         'niveles',
+        'numero_tarjeta'
     ];
 
     protected static function boot()
@@ -179,4 +181,17 @@ class Concepto extends BaseModel
 
         return count($matches[0]);
     }
+
+    public function getNumeroTarjetaAttribute() {
+        $tarjeta = DB::connection('cadeco')->table('ControlPresupuesto.concepto_tarjeta')
+            ->join('conceptos', 'conceptos.id_concepto', '=', 'ControlPresupuesto.concepto_tarjeta.id_concepto')
+            ->join('ControlPresupuesto.tarjeta', 'ControlPresupuesto.concepto_tarjeta.id_tarjeta', '=', 'ControlPresupuesto.tarjeta.id')
+            ->where('ControlPresupuesto.concepto_tarjeta.id_obra', '=', Context::getId())
+            ->where('conceptos.id_concepto', '=', $this->id_concepto)
+            ->select('ControlPresupuesto.tarjeta.descripcion')
+            ->first();
+
+        return $tarjeta ? $tarjeta->descripcion : '';
+    }
+
 }

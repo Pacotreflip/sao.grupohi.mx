@@ -14,7 +14,8 @@ class CreateTableControlPresupuestoTipoCobrabilidad extends Migration
     public function up()
     {
         Schema::create('ControlPresupuesto.tipo_cobrabilidad', function (Blueprint $table) {
-            $table->increments('id');
+            $table->integer('id');
+            $table->primary('id');
             $table->string("descripcion")->unique();
             $table->integer('estatus');
             $table->timestamps();
