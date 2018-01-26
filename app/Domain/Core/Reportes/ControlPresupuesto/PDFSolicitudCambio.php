@@ -145,7 +145,7 @@ class PDFSolicitudCambio extends Rotation {
 
         $this->SetFont('Arial', 'B', $this->txtContenidoTam);
         $this->Cell(0.125 * $this->WidthTotal, 0.5, utf8_decode('Número de Folio'), '', 0, 'LB');
-        $this->SetFont('Arial', '', '#'.$this->txtContenidoTam);
+        $this->SetFont('Arial', 'B', '#'.$this->txtContenidoTam);
         $this->CellFitScale(0.375 * $this->WidthTotal, 0.5, utf8_decode($this->solicitud->numero_folio), '', 1, 'L');
         $this->Cell(0.125 * $this->WidthTotal, 0.5, utf8_decode('Fecha Solicitud:'), '', 0, 'L');
         $this->SetFont('Arial', '', $this->txtContenidoTam);
@@ -184,7 +184,7 @@ class PDFSolicitudCambio extends Rotation {
             $this->SetFills(array('255,255,255', '255,255,255', '255,255,255', '255,255,255', '255,255,255', '255,255,255', '255,255,255', '255,255,255'));
             $this->SetTextColors(array('0,0,0', '0,0,0', '0,0,0', '0,0,0', '0,0,0', '0,0,0', '0,0,0', '0,0,0'));
             $this->SetHeights(array(0.35));
-            $this->SetAligns(array('R', 'R', 'L', 'L', 'R', 'R', 'L', 'L'));
+            $this->SetAligns(array('R', 'R', 'L', 'L', 'R', 'R', 'R', 'R'));
             $this->SetWidths(array(0.025 * $this->WidthTotal, 0.065 * $this->WidthTotal, 0.475 * $this->WidthTotal, 0.035 * $this->WidthTotal, 0.1 * $this->WidthTotal, 0.1 * $this->WidthTotal, 0.1 * $this->WidthTotal, 0.1 * $this->WidthTotal));
 
             $nivel_padre = $partida->concepto->nivel;
@@ -273,7 +273,7 @@ class PDFSolicitudCambio extends Rotation {
         $this->Cell(6.5, .4, utf8_decode('Fecha de Consulta: ' . date('Y-m-d g:i a')), 0, 0, 'L');
         $this->SetFont('Arial', 'B', $this->txtFooterTam);
         $this->Cell(6.5, .4, '', 0, 0, 'C');
-        $this->Cell(6.5, .4, utf8_decode('Página ') . $this->PageNo() . '/{nb}', 0, 0, 'R');
+        $this->Cell(14.5, .4, utf8_decode('Página ') . $this->PageNo() . '/{nb}', 0, 0, 'R');
         $this->SetY($this->GetPageHeight() - 1.3);
         $this->SetFont('Arial', 'B', $this->txtFooterTam);
         $this->Cell(6.5, .4, utf8_decode('Formato generado desde '), 0, 0, 'L');
