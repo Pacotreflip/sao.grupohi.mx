@@ -34,4 +34,10 @@ Route::group(['prefix' => 'control_presupuesto'], function () {
      * Tipos de Orden de Cambio Routes
      */
     Route::get('tipo_orden', 'TipoOrdenController@index');
+
+    /**
+     * Tarjetas Route
+     */
+    Route::get('tarjeta', 'TarjetaController@index');
+    Route::get('tarjeta/lists', 'TarjetaController@lists');
 });
