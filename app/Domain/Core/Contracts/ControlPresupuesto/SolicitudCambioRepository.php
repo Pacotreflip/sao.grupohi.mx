@@ -67,7 +67,7 @@ interface SolicitudCambioRepository
      * @throws \Exception
      * @return SolicitudCambio
      */
-    public function  rechazarVariacionVolumen($id);
+    public function  rechazarVariacionVolumen(array $data);
 
 
 }

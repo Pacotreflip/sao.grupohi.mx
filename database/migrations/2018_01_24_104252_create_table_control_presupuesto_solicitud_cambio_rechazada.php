@@ -16,6 +16,7 @@ class CreateTableControlPresupuestoSolicitudCambioRechazada extends Migration
             $table->integer("id_solicitud_cambio");
             $table->primary("id_solicitud_cambio");
             $table->integer("id_rechazo");
+            $table->text('motivo');
             $table->timestamps();
         });
     }

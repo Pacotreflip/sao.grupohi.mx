@@ -16,7 +16,8 @@ class SolicitudCambioRechazada extends BaseModel
     protected $connection = 'cadeco';
     protected $fillable = [
         'id_solicitud_cambio',
-        'id_rechazo'
+        'id_rechazo',
+        'motivo'
     ];
 
     protected static function boot()

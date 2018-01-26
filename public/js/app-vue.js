@@ -19020,20 +19020,34 @@ Vue.component('show-variacion-volumen', {
         confirm_rechazar_solicitud: function confirm_rechazar_solicitud() {
             var self = this;
             var id = self.form.solicitud.id;
+
             swal({
-                title: "Rechazar la Solicitud de Cambio",
-                html: "¿Estás seguro que desea rechazar la solicitud?",
-                type: "warning",
+                title: 'Rechazar Solicitud',
+                text: 'Motivo del rechazo',
+                input: 'text',
                 showCancelButton: true,
-                confirmButtonText: "Si, Continuar",
-                cancelButtonText: "No, Cancelar"
+                confirmButtonText: 'Rechazar ',
+                cancelButtonText: 'Cancelar',
+                showLoaderOnConfirm: false,
+                preConfirm: function preConfirm(motivo) {
+                    return new Promise(function (resolve) {
+                        if (motivo.length === 0) {
+                            swal.showValidationError('Por favor escriba un motivo para rechazar la solicitud.');
+                        }
+                        resolve();
+                    });
+                },
+                allowOutsideClick: function allowOutsideClick() {
+                    !swal.isLoading();
+                }
             }).then(function (result) {
                 if (result.value) {
-                    self.rechazar_solicitud(id);
+                    self.rechazar_solicitud(id, result.value);
                 }
             });
         },
         autorizar_solicitud: function autorizar_solicitud(id) {
+
             var self = this;
             var url = App.host + '/control_presupuesto/cambio_presupuesto/autorizarSolicitud';
             $.ajax({
@@ -19066,15 +19080,17 @@ Vue.component('show-variacion-volumen', {
             });
         },
 
-        rechazar_solicitud: function rechazar_solicitud(id) {
+        rechazar_solicitud: function rechazar_solicitud(id, motivo) {
+
             var self = this;
             var url = App.host + '/control_presupuesto/cambio_presupuesto/rechazarSolicitud';
             $.ajax({
                 type: 'POST',
                 url: url,
                 data: {
-                    id: id,
-                    id_tipo_orden: self.form.solicitud.id_tipo_orden
+                    id_solicitud_cambio: id,
+                    id_tipo_orden: self.form.solicitud.id_tipo_orden,
+                    motivo: motivo
                 },
                 beforeSend: function beforeSend() {
                     self.rechazando = true;
@@ -19090,7 +19106,7 @@ Vue.component('show-variacion-volumen', {
                         confirmButtonText: "Ok",
                         closeOnConfirm: false
                     }).then(function () {});
-                    window.location.reload(true);
+                    // window.location.reload(true);
                 },
                 complete: function complete() {
                     self.rechazando = false;

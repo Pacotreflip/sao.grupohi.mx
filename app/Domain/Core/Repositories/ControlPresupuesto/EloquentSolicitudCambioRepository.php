@@ -93,7 +93,7 @@ class EloquentSolicitudCambioRepository implements SolicitudCambioRepository
             foreach ($data['partidas'] as $partida) {
                 $conceptoTarjeta = ConceptoTarjeta::where('id_concepto', '=', $partida['id_concepto'])->first();
                 if ($conceptoTarjeta) {
-                    $partida['id_tarjeta'] = $conceptoTarjeta->id;
+                    $partida['id_tarjeta'] = $conceptoTarjeta->id_tarjeta;
                 }
                 $partida['id_solicitud_cambio'] = $solicitud->id;
                 $partida['id_tipo_orden'] = TipoOrden::VARIACION_VOLUMEN;
@@ -196,17 +196,17 @@ class EloquentSolicitudCambioRepository implements SolicitudCambioRepository
      * @throws \Exception
      * @return SolicitudCambio
      */
-    public function rechazarVariacionVolumen($id)
+    public function rechazarVariacionVolumen(array $data)
     {
         try {
 
             DB::connection('cadeco')->beginTransaction();
-            $solicitud = $this->model->with('partidas')->find($id);
+            $solicitud = $this->model->with('partidas')->find($data['id_solicitud_cambio']);
             $solicitud->id_estatus = Estatus::RECHAZADA;
-            $data = ["id_solicitud_cambio" => $id];
+           // $data = ["id_solicitud_cambio" => $data['id'],"motivo"=>$data['motivo']];
             $solicitudCambio = SolicitudCambioRechazada::create($data);
             $solicitud->save();
-            $solicitud = $this->model->with(['tipoOrden', 'userRegistro', 'estatus', 'partidas', 'partidas.concepto','partidas.numeroTarjeta'])->find($id);
+            $solicitud = $this->model->with(['tipoOrden', 'userRegistro', 'estatus', 'partidas', 'partidas.concepto','partidas.numeroTarjeta'])->find($data['id_solicitud_cambio']);
             $solicitud['cobrabilidad']=$solicitud->tipoOrden->cobrabilidad;
 
             DB::connection('cadeco')->commit();
