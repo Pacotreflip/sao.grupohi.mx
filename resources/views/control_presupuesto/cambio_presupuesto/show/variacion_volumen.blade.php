@@ -49,17 +49,19 @@
                     </div>
                 </div>
                 <div class="col-md-9">
+
+
                     <div class="box box-solid">
                         <div class="box-header with-border" style="height:75px">
-                           <div class="col-sm-3">
-                            <h3 class="box-title">Partidas</h3>
-                           </div>
+                            <div class="col-sm-3">
+                                <h3 class="box-title">Partidas</h3>
+                            </div>
                             <div class="col-sm-9">
-                                <a class="btn btn-app btn-danger pull-right" v-on:click="confirm_rechazar_solicitud" v-if="solicitud.id_estatus==1" id="btn_rechazar" >
+                                <a class="btn btn-app btn-danger pull-right" v-on:click="confirm_rechazar_solicitud" v-if="solicitud.id_estatus==1">
                                     <span v-if="rechazando"><i class="fa fa-spinner fa-spin"></i> Rechazando</span>
                                     <span v-else><i class="fa fa-close"></i> Rechazar</span>
                                 </a>
-                                <a class="btn btn-sm btn-app btn-info pull-right"  v-on:click="confirm_autorizar_solicitud" v-if="solicitud.id_estatus==1" id="btn_autorizar">
+                                <a class="btn btn-sm btn-app btn-info pull-right"  v-on:click="confirm_autorizar_solicitud" v-if="solicitud.id_estatus==1">
                                     <span v-if="autorizando"><i class="fa fa-spinner fa-spin"></i> Autorizando</span>
                                     <span v-else><i class="fa fa-check"></i> Autorizar</span>
                                 </a>
@@ -91,7 +93,56 @@
 
                             </div>
                         </div>
+
                     </div>
+                    <div class="box box-solid">
+                        <div class="box-header with-border" style="height:75px">
+                                <h3 class="box-title">Detalles de la Solicitud</h3>
+                        </div>
+                        <div class="box-body">
+                            <div class="table-responsive">
+                                @foreach($afectaciones as $afectacion)
+
+
+                                    <table class="table table-bordered table-striped">
+                                        <thead>
+                                        <tr><th colspan="8">{{$afectacion['partida']->concepto->descripcion}}</th></tr>
+                                        <tr>
+                                            <th>#</th>
+                                            <th>No.Tarjeta</th>
+                                            <th>Descripción</th>
+                                            <th>Unidad</th>
+                                            <th>Cantidad Original</th>
+                                            <th>Cantidad Nueva</th>
+                                            <th>Monto Original</th>
+                                            <th>Monto Nuevo</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+
+
+                                        @foreach($afectacion['detalle'] as $index=>$row)
+                                            <tr>
+                                                <td>{{$index+1}}</td>
+                                                <td>{{$row['numTarjeta']}}</td>
+                                                <td>{{$row['descripcion']}}</td>
+                                                <td>{{$row['unidad']}}</td>
+                                                <td>{{$row['cantidadPresupuestada']}}</td>
+                                                <td>{{$row['cantidadNueva']}}</td>
+                                                <td class="text-right">{{$row['monto_presupuestado']}}</td>
+                                                <td class="text-right">{{$row['monto_nuevo']}}</td>
+                                            </tr>
+                                        @endforeach
+                                        </tbody>
+                                    </table>
+                                @endforeach
+
+                            </div>
+                        </div>
+
+                    </div>
+
+
                 </div>
             </div>
         </section>
