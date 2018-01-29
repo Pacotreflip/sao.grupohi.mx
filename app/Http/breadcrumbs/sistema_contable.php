@@ -215,5 +215,5 @@ Breadcrumbs::register('sistema_contable.cierre.index', function ($breadcrumb) {
  */
 Breadcrumbs::register('sistema_contable.costos_dolares.index', function ($breadcrumb) {
     $breadcrumb->parent('sistema_contable.index');
-    $breadcrumb->push('COSTOS DE DÓLARES', route('sistema_contable.costos_dolares.index'));
+    $breadcrumb->push('COSTOS MONEDA EXTRANJERA', route('sistema_contable.costos_dolares.index'));
 });

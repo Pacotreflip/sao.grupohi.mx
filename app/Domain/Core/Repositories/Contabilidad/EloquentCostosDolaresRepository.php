@@ -54,7 +54,7 @@ class EloquentCostosDolaresRepository implements CostosDolaresRepository
             WHERE (int_polizas.estatus IN (2, 3))
               AND ((transacciones.id_moneda <> 1 AND abs (cuadre) <= 0.99)
                 AND int_polizas_movimientos.id_tipo_cuenta_contable = 1) 
-              AND int_polizas.fecha BETWEEN ".$fechas);
+              AND int_polizas.fecha BETWEEN ".$fechas." ORDER BY folio_contpaq asc");
 
         return $reporte;
     }

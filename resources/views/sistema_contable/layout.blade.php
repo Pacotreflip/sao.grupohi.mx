@@ -135,7 +135,7 @@
             </ul>
             <ul class="treeview-menu">
                 <!--@permission('consultar_kardex_material') -->
-                <li ><a href="{{route('sistema_contable.costos_dolares.index')}}"><i class='fa fa-book'></i> <span>Costos Dolares</span></a></li>
+                <li ><a href="{{route('sistema_contable.costos_dolares.index')}}"><i class='fa fa-book'></i> <span>Costos Moneda Extranjera</span></a></li>
                 <!--@endpermission -->
             </ul>
         </li>

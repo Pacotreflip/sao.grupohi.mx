@@ -1,6 +1,6 @@
 @extends('sistema_contable.layout')
-@section('title', 'Costos de Dólares')
-@section('contentheader_title', 'COSTOS DE DÓLARES')
+@section('title', 'Costos Moneda Extranjera')
+@section('contentheader_title', 'COSTOS MONEDA EXTRANJERA')
 @section('contentheader_description', '(INDEX)')
 @section('main-content')
     {!! Breadcrumbs::render('sistema_contable.costos_dolares.index') !!}
@@ -47,7 +47,7 @@
             <div class="col-md-12">
                 <div class="box box-success">
                     <div class="box-header with-border">
-                        <h3 class="box-title">Costos en Dólares</h3>
+                        <h3 class="box-title">Costos en Moneda Extranjera</h3>
                     </div>
                     <div class="box-body">
                         <div class="table-responsive">
@@ -60,9 +60,9 @@
                                     <th>Tipo de Cambio</th>
                                     <th>Cuenta Contable</th>
                                     <th>Descripción</th>
-                                    <th>Importe</th>
-                                    <th>Costo Dólares</th>
-                                    <th>Costo Dólares Complementaria</th>
+                                    <th>Importe Moneda Nacional</th>
+                                    <th>Costo Moneda Extranjera</th>
+                                    <th>Costo Moneda Extranjera Complementaria</th>
                                     <th>Póliza ContPaq</th>
                                     <th>Póliza SAO</th>
                                 </tr>
@@ -72,7 +72,7 @@
                                     <tr>
                                         <td>{{ $item->id_poliza}}</td>
                                         <td>{{ $item->folio_contpaq }}</td>
-                                        <td>{{ $item->fecha_poliza}}</td>
+                                        <td>{{ \Carbon\Carbon::parse($item->fecha_poliza)->format('d/m/Y')}}</td>
                                         <td>{{ $item->tipo_cambio}}</td>
                                         <td>{{ $item->cuenta_contable}}</td>
                                         <td>{{ $item->descripcion_concepto}}</td>
@@ -96,7 +96,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Cerrar</span></button>
-                    <h4 class="modal-title">Orden de Pago Estimación</h4>
+                    <h4 class="modal-title">Costos Moneda Extranjera</h4>
                 </div>
                 <div class="modal-body modal-lg" style="height: 800px">
 
@@ -118,7 +118,9 @@
 
         $("#fechas").daterangepicker({
             locale: {
-                format: 'YYYY-MM-DD'
+                format: 'YYYY-MM-DD',
+                applyLabel: "Aceptar",
+                cancelLabel: "Cancelar"
             }
         });
 

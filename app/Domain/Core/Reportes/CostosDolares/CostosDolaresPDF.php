@@ -151,7 +151,7 @@ class CostosDolaresPDF extends Rotation
             $this->row([
                 $item->id_poliza,
                 $item->folio_contpaq,
-                $item->fecha_poliza,
+                \Carbon\Carbon::parse($item->fecha_poliza)->format('d/m/Y'),
                 '$'.number_format($item->tipo_cambio,'2','.',','),
                 $item->cuenta_contable,
                 utf8_decode($item->descripcion_concepto),
