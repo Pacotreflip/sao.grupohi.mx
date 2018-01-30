@@ -19123,7 +19123,7 @@ Vue.component('show-variacion-volumen', {
 'use strict';
 
 Vue.component('variacion-volumen', {
-    props: ['filtros', 'niveles', 'id_tipo_orden', 'id_tarjeta'],
+    props: ['filtros', 'niveles', 'id_tipo_orden', 'id_tarjeta', 'tarjetas'],
     data: function data() {
         return {
             form: {
@@ -19156,6 +19156,10 @@ Vue.component('variacion-volumen', {
 
     mounted: function mounted() {
         var self = this;
+
+        $('#tarjetas_select').on('select2:select', function () {
+            self.get_conceptos();
+        });
 
         $(document).on('click', '.btn_add_concepto', function () {
             var id = $(this).attr('id');

@@ -1,5 +1,5 @@
 Vue.component('variacion-volumen', {
-    props : ['filtros', 'niveles', 'id_tipo_orden', 'id_tarjeta'],
+    props : ['filtros', 'niveles', 'id_tipo_orden', 'id_tarjeta','tarjetas'],
     data : function () {
         return {
             form : {
@@ -32,6 +32,10 @@ Vue.component('variacion-volumen', {
 
     mounted: function () {
         var self = this;
+
+        $('#tarjetas_select').on('select2:select', function () {
+            self.get_conceptos();
+        });
 
         $(document).on('click', '.btn_add_concepto', function () {
             var id = $(this).attr('id');

@@ -21,7 +21,9 @@ class Concepto extends BaseModel
         'path',
         'clave',
         'niveles',
-        'numero_tarjeta'
+        'numero_tarjeta',
+        'sector',
+        'cuadrante'
     ];
 
     protected static function boot()
@@ -192,6 +194,21 @@ class Concepto extends BaseModel
             ->first();
 
         return $tarjeta ? $tarjeta->descripcion : '';
+    }
+    /**
+     * @return string
+     */
+    public function getSectorAttribute() {
+
+        $conceptoPath= ConceptoPath::where('id_concepto','=',$this->id_concepto)->first();
+        return $conceptoPath->filtro4;
+    }
+    /**
+     * @return string
+     */
+    public function getCuadranteAttribute() {
+        $conceptoPath= ConceptoPath::where('id_concepto','=',$this->id_concepto)->first();
+        return $conceptoPath->filtro5;
     }
 
 }
