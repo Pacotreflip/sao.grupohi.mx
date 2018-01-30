@@ -8,6 +8,7 @@ use Ghi\Domain\Core\Contracts\ControlPresupuesto\BasePresupuestoRepository;
 use Ghi\Domain\Core\Contracts\ControlPresupuesto\PresupuestoRepository;
 use Ghi\Domain\Core\Contracts\ControlPresupuesto\SolicitudCambioRepository;
 use Ghi\Domain\Core\Models\Concepto;
+use Ghi\Domain\Core\Contracts\ControlPresupuesto\SolicitudCambioPartidaRepository;
 use Ghi\Domain\Core\Models\ControlPresupuesto\TipoOrden;
 use Ghi\Domain\Core\Reportes\ControlPresupuesto\PDFSolicitudCambio;
 use Illuminate\Http\Request;
@@ -28,8 +29,9 @@ class CambioPresupuestoController extends Controller
     private $concepto;
     private $basePresupuesto;
     private $solicitud;
+    private $partidas;
 
-    public function __construct(PresupuestoRepository $presupuesto, ConceptoRepository $concepto, BasePresupuestoRepository $basePresupuesto, SolicitudCambioRepository $solicitud)
+    public function __construct(PresupuestoRepository $presupuesto, ConceptoRepository $concepto, BasePresupuestoRepository $basePresupuesto, SolicitudCambioRepository $solicitud, SolicitudCambioPartidaRepository $partidas)
     {
         parent::__construct();
 
@@ -40,6 +42,7 @@ class CambioPresupuestoController extends Controller
         $this->basePresupuesto = $basePresupuesto;
         $this->concepto = $concepto;
         $this->solicitud = $solicitud;
+        $this->partidas = $partidas;
     }
 
     public function index()
@@ -78,6 +81,21 @@ class CambioPresupuestoController extends Controller
 
     public function store(Request $request)
     {
+        // Revisa si ya existe una solicitud con al menos una partida ya seleccionada
+        $conceptos_ids = [];
+        $repetidas = false;
+
+        foreach ($request->partidas as $p)
+            $conceptos_ids[] = $p['id_concepto'];
+
+        $repetidas = $this->partidas->findIn($conceptos_ids);
+
+        if (!is_null($repetidas))
+            return response()->json(
+                [
+                    'repetidas' => $repetidas
+                ], 200);
+
         $solicitud = '';
         switch ($request->id_tipo_orden) {
             case TipoOrden::ESCALATORIA:
