@@ -90,7 +90,7 @@
                                     <td class="text-right">@{{ parseInt(concepto.cantidad_presupuestada).formatMoney(2, ',','.') }}</td>
                                     <td>
                                         <div class="form-group" :class="{'has-error': validation_errors.has('form_save_solicitud.Cantidad Presupuestada Nueva ' + (i+1))}">
-                                            <input type="text" :name="'Cantidad Presupuestada Nueva ' + (i+1)" v-validate="'decimal|regex:[^0]+'" class="form-control input-sm" v-model="concepto.cantidad_presupuestada_nueva">
+                                            <input type="text" :name="'Cantidad Presupuestada Nueva ' + (i+1)" v-validate="'required|decimal|regex:[^0]+'" class="form-control input-sm" v-model="concepto.cantidad_presupuestada_nueva">
                                             <label class="help" v-show="validation_errors.has('form_save_solicitud.Cantidad Presupuestada Nueva ' + (i+1))">@{{ validation_errors.first('form_save_solicitud.Cantidad Presupuestada Nueva ' + (i+1)) }}</label>
                                         </div>
                                     </td>
