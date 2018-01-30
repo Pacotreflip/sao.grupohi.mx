@@ -20,6 +20,7 @@ class CreateTableControlPresupuestoSolicitudCambioPartidas extends Migration
             $table->unsignedInteger("id_concepto");
             $table->float("cantidad_presupuestada_original");
             $table->float("cantidad_presupuestada_nueva");
+            $table->float('variacion_volumen');
 
             $table->foreign('id_solicitud_cambio')
                 ->references('id')
