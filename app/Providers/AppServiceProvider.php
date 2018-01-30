@@ -352,5 +352,10 @@ class AppServiceProvider extends ServiceProvider
             \Ghi\Domain\Core\Contracts\ControlPresupuesto\TarjetaRepository::class,
             \Ghi\Domain\Core\Repositories\ControlPresupuesto\EloquentTarjetaRepository::class
         );
+        $this->app->bind(
+            \Ghi\Domain\Core\Contracts\Contabilidad\CostosDolaresRepository::class,
+            \Ghi\Domain\Core\Repositories\Contabilidad\EloquentCostosDolaresRepository::class
+        );
+
     }
 }
