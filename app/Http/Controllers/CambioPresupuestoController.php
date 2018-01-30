@@ -90,7 +90,7 @@ class CambioPresupuestoController extends Controller
 
         $repetidas = $this->partidas->findIn($conceptos_ids);
 
-        if (!is_null($repetidas))
+        if (!$repetidas->isEmpty())
             return response()->json(
                 [
                     'repetidas' => $repetidas

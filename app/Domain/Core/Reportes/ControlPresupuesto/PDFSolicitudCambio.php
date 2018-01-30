@@ -109,7 +109,7 @@ class PDFSolicitudCambio extends Rotation {
             $this->SetTextColors(array('0,0,0', '0,0,0', '0,0,0', '0,0,0', '0,0,0', '0,0,0', '0,0,0', '0,0,0'));
             $this->SetHeights(array(0.3));
             $this->SetAligns(array('C', 'C', 'C', 'C', 'C', 'C', 'C', 'C'));
-            $this->Row(array('#', 'No.Tarjeta', utf8_decode("Descripción"), "Unidad", "Cantidad Original", "Cantidad Nueva", "Monto Original", "Monto Nuevo" ));
+            $this->Row(array('#', 'No.Tarjeta', utf8_decode("Descripción"), "Unidad", "Vol.", "Var. Vol.", "Vol. Actual", "P.U.", "Importe", "Diferencia por Extras" ));
 
             $this->SetFont('Arial', '', 6);
             $this->SetFills(array('255,255,255', '255,255,255', '255,255,255', '255,255,255', '255,255,255', '255,255,255', '255,255,255', '255,255,255'));
@@ -160,7 +160,7 @@ class PDFSolicitudCambio extends Rotation {
         $this->CellFitScale(0.375 * $this->WidthTotal, 0.5, utf8_decode($this->solicitud->tipoOrden->descripcion), '', 1, 'L');
     }
 
-    function items($items, $partida){
+    function items(){
         $this->SetWidths(array(0));
         $this->SetFills(array('255,255,255'));
         $this->SetTextColors(array('1,1,1'));
@@ -168,43 +168,43 @@ class PDFSolicitudCambio extends Rotation {
         $this->Row(Array(''));
         $this->SetFont('Arial', 'B', $this->txtSeccionTam);
         $this->SetTextColors(array('255,255,255'));
-        $this->MultiCell($this->WidthTotal, .35, utf8_decode($partida->concepto), 0, 'L');
+        $this->MultiCell($this->WidthTotal, .35, utf8_decode($this->solicitud->concepto), 0, 'L');
 
         $this->SetFont('Arial', '', 6);
-        $this->SetStyles(array('DF', 'DF', 'DF', 'FD', 'DF', 'DF', 'DF', 'DF'));
-        $this->SetFills(array('180,180,180', '180,180,180', '180,180,180', '180,180,180', '180,180,180', '180,180,180', '180,180,180', '180,180,180'));
-        $this->SetTextColors(array('0,0,0', '0,0,0', '0,0,0', '0,0,0', '0,0,0', '0,0,0', '0,0,0', '0,0,0'));
+        $this->SetStyles(array('DF', 'DF', 'DF', 'FD', 'DF', 'DF', 'DF', 'DF', 'DF', 'DF'));
+        $this->SetFills(array('180,180,180', '180,180,180', '180,180,180', '180,180,180', '180,180,180', '180,180,180', '180,180,180', '180,180,180', '180,180,180', '180,180,180'));
+        $this->SetTextColors(array('0,0,0', '0,0,0', '0,0,0', '0,0,0', '0,0,0', '0,0,0', '0,0,0', '0,0,0', '0,0,0', '0,0,0'));
         $this->SetHeights(array(0.3));
-        $this->SetAligns(array('C', 'C', 'C', 'C', 'C', 'C', 'C', 'C'));
-        $this->SetWidths(array(0.025 * $this->WidthTotal, 0.065 * $this->WidthTotal, 0.475 * $this->WidthTotal, 0.035 * $this->WidthTotal, 0.1 * $this->WidthTotal, 0.1 * $this->WidthTotal, 0.1 * $this->WidthTotal, 0.1 * $this->WidthTotal));
-        $this->Row(array('#', 'No.Tarjeta', utf8_decode("Descripción"), "Unidad", "Cantidad Original", "Cantidad Nueva", "Monto Original", "Monto Nuevo" ));
+        $this->SetAligns(array('C', 'C', 'C', 'C', 'C', 'C', 'C', 'C', 'C', 'C'));
+        $this->SetWidths(array(0.1 * $this->WidthTotal, 0.1 * $this->WidthTotal, 0.1 * $this->WidthTotal, 0.1 * $this->WidthTotal, 0.1 * $this->WidthTotal, 0.1 * $this->WidthTotal, 0.1 * $this->WidthTotal, 0.1 * $this->WidthTotal, 0.1 * $this->WidthTotal, 0.1 * $this->WidthTotal));
+        $this->Row(array('#', 'No.Tarjeta', utf8_decode("Descripción"), "Unidad", "Vol.", "Var. Vol.", "Vol. Actual", "P.U.", "Importe", "Diferencia por Extras" ));
 
-        foreach ($items as $index => $item) {
+        foreach ($this->solicitud->partidas as $index => $item) {
             $this->SetFont('Arial', '', 6);
-            $this->SetFills(array('255,255,255', '255,255,255', '255,255,255', '255,255,255', '255,255,255', '255,255,255', '255,255,255', '255,255,255'));
-            $this->SetTextColors(array('0,0,0', '0,0,0', '0,0,0', '0,0,0', '0,0,0', '0,0,0', '0,0,0', '0,0,0'));
+            $this->SetFills(array('255,255,255', '255,255,255', '255,255,255', '255,255,255', '255,255,255', '255,255,255', '255,255,255', '255,255,255', '255,255,255', '255,255,255'));
+            $this->SetTextColors(array('0,0,0', '0,0,0', '0,0,0', '0,0,0', '0,0,0', '0,0,0', '0,0,0', '0,0,0', '0,0,0', '0,0,0'));
             $this->SetHeights(array(0.35));
-            $this->SetAligns(array('R', 'R', 'L', 'L', 'R', 'R', 'R', 'R'));
-            $this->SetWidths(array(0.025 * $this->WidthTotal, 0.065 * $this->WidthTotal, 0.475 * $this->WidthTotal, 0.035 * $this->WidthTotal, 0.1 * $this->WidthTotal, 0.1 * $this->WidthTotal, 0.1 * $this->WidthTotal, 0.1 * $this->WidthTotal));
+            $this->SetAligns(array('R', 'R', 'L', 'L', 'R', 'R', 'R', 'R', 'R', 'R'));
+            $this->SetWidths(array(0.1 * $this->WidthTotal, 0.1 * $this->WidthTotal, 0.1 * $this->WidthTotal, 0.1 * $this->WidthTotal, 0.1 * $this->WidthTotal, 0.1 * $this->WidthTotal, 0.1 * $this->WidthTotal, 0.1 * $this->WidthTotal, 0.1 * $this->WidthTotal, 0.1 * $this->WidthTotal));
 
-            $nivel_padre = $partida->concepto->nivel;
-            $nivel_hijo = $item->nivel;
-            $profundidad =( strlen($nivel_hijo) - strlen($nivel_padre) )/ 4;
-            $factor = $partida->cantidad_presupuestada_nueva / $partida->concepto->cantidad_presupuestada;
-            $cantidad_nueva = $item->cantidad_presupuestada * $factor;
-            $monto_nuevo = $item->monto_presupuestado * $factor;
-
+            $nivel_padre = $item->concepto->nivel_padre;
+            $nivel_hijo = $item->concepto->nivel;
+            $profundidad =( strlen($nivel_hijo) - strlen($nivel_padre) ) / 4;
+            $importe_anterior = $item->concepto->precio_unitario * $item->cantidad_presupuestada_original;
+            $importe_nuevo = $item->concepto->precio_unitario * ($item->cantidad_presupuestada_original + $item->variacion_volumen);
             $this->encola = 'partidas';
 
             $this->Row([
                 $index + 1, // #
-                $item->numero_tarjeta,
-                str_repeat("    ", $profundidad).' '.utf8_decode($item->descripcion), // Descripción concepto
-                utf8_decode($item->unidad),
-                number_format($item->cantidad_presupuestada, 2, '.', ','), // Cantidad original
-                number_format($cantidad_nueva, 2, '.', ','), // Cantidad original
-                '$'.number_format($item->monto_presupuestado, 2, '.', ','),
-                '$'.number_format($monto_nuevo, 2, '.', ','),
+                $item->concepto->numero_tarjeta,
+                'descripcion', // str_repeat("    ", $profundidad).' '.utf8_decode($item->concepto->descripcion),
+                $item->concepto->unidad,
+                number_format($item->cantidad_presupuestada_original, 2, '.', ','), // Cantidad original
+                number_format($item->variacion_volumen, 2, '.', ','),
+                number_format($item->cantidad_presupuestada_nueva, 2, '.', ','),
+                number_format($item->concepto->precio_unitario, 2, '.', ','),
+                number_format($importe_anterior, 2, '.', ','),
+                number_format($importe_nuevo, 2, '.', ','),
             ]);
         }
         $this->encola = '';
@@ -290,14 +290,7 @@ class PDFSolicitudCambio extends Rotation {
         $this->AliasNbPages();
         $this->AddPage();
         $this->SetAutoPageBreak(true,4);
-        foreach ($this->solicitud->partidas as $partida) {
-            if($this->y > 13.5) {
-                $this->AddPage();
-
-            }
-            $this->items(Concepto::orderBy('nivel', 'ASC')->where('nivel', 'like', $partida->concepto->nivel.'%')->get(), $partida);
-            $this->Ln(1);
-        }
+        $this->items();
         $this->Ln();
         $this->motivo();
         try {
