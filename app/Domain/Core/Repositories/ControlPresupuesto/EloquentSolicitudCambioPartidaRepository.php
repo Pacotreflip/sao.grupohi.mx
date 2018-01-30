@@ -65,4 +65,15 @@ class EloquentSolicitudCambioPartidaRepository implements SolicitudCambioPartida
         $solicitudCambio = $this->model->find($id);
         return $solicitudCambio;
     }
+
+    public function findIn($ids = [])
+    {
+        return $this->model->whereIn('id_concepto', $ids)->with('solicitud')->get();
+    }
+
+    public function with($relations)
+    {
+        $this->model = $this->model->with($relations);
+        return $this;
+    }
 }

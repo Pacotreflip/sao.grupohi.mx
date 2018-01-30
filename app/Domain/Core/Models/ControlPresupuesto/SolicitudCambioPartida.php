@@ -30,4 +30,9 @@ class SolicitudCambioPartida extends Model
     {
         return $this->hasOne(Tarjeta::class, 'id', 'id_tarjeta');
     }
+
+    public function solicitud()
+    {
+        return $this->belongsTo(SolicitudCambio::class, 'id_solicitud_cambio', 'id');
+    }
 }
