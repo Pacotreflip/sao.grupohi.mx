@@ -20,7 +20,8 @@ class SolicitudCambioPartida extends Model
         'id_tarjeta',
         'id_concepto',
         'cantidad_presupuestada_original',
-        'cantidad_presupuestada_nueva'
+        'cantidad_presupuestada_nueva',
+        'variacion_volumen'
     ];
 
     public function concepto() {
