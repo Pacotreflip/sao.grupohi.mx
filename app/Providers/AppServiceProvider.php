@@ -144,7 +144,6 @@ class AppServiceProvider extends ServiceProvider
         );
 
 
-
         $this->app->bind(
             \Ghi\Domain\Core\Contracts\MaterialRepository::class,
             \Ghi\Domain\Core\Repositories\EloquentMaterialRepository::class
@@ -320,6 +319,42 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(
             \Ghi\Domain\Core\Contracts\ControlPresupuesto\TipoOrdenRepository::class,
             \Ghi\Domain\Core\Repositories\ControlPresupuesto\EloquentTipoOrdenRepository::class
+        );
+
+        $this->app->bind(
+            \Ghi\Domain\Core\Contracts\ControlPresupuesto\EstatusRepository::class,
+            \Ghi\Domain\Core\Repositories\ControlPresupuesto\EloquentEstatusRepository::class
+        );
+
+
+        $this->app->bind(
+            \Ghi\Domain\Core\Contracts\ControlPresupuesto\SolicitudCambioRepository::class,
+            \Ghi\Domain\Core\Repositories\ControlPresupuesto\EloquentSolicitudCambioRepository::class
+        );
+
+
+        $this->app->bind(
+            \Ghi\Domain\Core\Contracts\ControlPresupuesto\SolicitudCambioPartidaRepository::class,
+            \Ghi\Domain\Core\Repositories\ControlPresupuesto\EloquentSolicitudCambioPartidaRepository::class
+        );
+
+        $this->app->bind(
+            \Ghi\Domain\Core\Contracts\ControlPresupuesto\SolicitudCambioAutorizadaRepository::class,
+            \Ghi\Domain\Core\Repositories\ControlPresupuesto\EloquentSolicitudCambioAutorizadaRepository::class
+        );
+
+        $this->app->bind(
+            \Ghi\Domain\Core\Contracts\ControlPresupuesto\SolicitudCambioRechazadaRepository::class,
+            \Ghi\Domain\Core\Repositories\ControlPresupuesto\EloquentSolicitudCambioRechazadaRepository::class
+        );
+
+        $this->app->bind(
+            \Ghi\Domain\Core\Contracts\ControlPresupuesto\TarjetaRepository::class,
+            \Ghi\Domain\Core\Repositories\ControlPresupuesto\EloquentTarjetaRepository::class
+        );
+        $this->app->bind(
+            \Ghi\Domain\Core\Contracts\Contabilidad\CostosDolaresRepository::class,
+            \Ghi\Domain\Core\Repositories\Contabilidad\EloquentCostosDolaresRepository::class
         );
 
     }

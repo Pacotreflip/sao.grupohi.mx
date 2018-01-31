@@ -11,12 +11,12 @@
 |
 */
 
-include('routes/SAO.php');
-include('routes/sistema_contable.php');
+include('Routes/SAO.php');
+include('Routes/sistema_contable.php');
 //include('routes/compras.php');
-include('routes/finanzas.php');
-include('routes/reportes.php');
-include('routes/tesoreria.php');
-include('routes/control_costos.php');
-include('routes/control_presupuesto.php');
-include('routes/configuracion.php');
+include('Routes/finanzas.php');
+include('Routes/reportes.php');
+include('Routes/tesoreria.php');
+include('Routes/control_costos.php');
+include('Routes/control_presupuesto.php');
+include('Routes/configuracion.php');

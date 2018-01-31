@@ -19,7 +19,12 @@ Route::group(['prefix' => 'control_presupuesto'], function () {
      */
     Route::get('cambio_presupuesto', 'CambioPresupuestoController@index')->name('control_presupuesto.cambio_presupuesto.index');
     Route::get('cambio_presupuesto/create', 'CambioPresupuestoController@create')->name('control_presupuesto.cambio_presupuesto.create');
-
+    Route::post('cambio_presupuesto', 'CambioPresupuestoController@store')->name('control_presupuesto.cambio_presupuesto.store');
+    Route::post('cambio_presupuesto/paginate', 'CambioPresupuestoController@paginate');
+    Route::get('cambio_presupuesto/{id}/pdf', 'CambioPresupuestoController@pdf')->name('control_presupuesto.cambio_presupuesto.pdf');
+    Route::get('cambio_presupuesto/{id}', 'CambioPresupuestoController@show')->name('control_presupuesto.cambio_presupuesto.show')->where(['id' => '[0-9]+']);
+    Route::post('cambio_presupuesto/autorizarSolicitud', 'CambioPresupuestoController@autorizarSolicitud')->name('control_presupuesto.cambio_presupuesto.autorizarSolicitud');
+    Route::post('cambio_presupuesto/rechazarSolicitud', 'CambioPresupuestoController@rechazarSolicitud')->name('control_presupuesto.cambio_presupuesto.rechazarSolicitud');
     /**
      * Tipos de Cobrabilidad Routes
      */
@@ -29,4 +34,10 @@ Route::group(['prefix' => 'control_presupuesto'], function () {
      * Tipos de Orden de Cambio Routes
      */
     Route::get('tipo_orden', 'TipoOrdenController@index');
+
+    /**
+     * Tarjetas Route
+     */
+    Route::get('tarjeta', 'TarjetaController@index');
+    Route::get('tarjeta/lists', 'TarjetaController@lists');
 });
