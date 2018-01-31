@@ -18997,7 +18997,10 @@ Vue.component('show-variacion-volumen', {
             },
             cargando: false,
             rechazando: false,
-            autorizando: false
+            autorizando: false,
+            consultando: false,
+            partidas: [],
+            partida_id: 0
         };
     },
 
@@ -19076,7 +19079,7 @@ Vue.component('show-variacion-volumen', {
                         confirmButtonText: "Ok",
                         closeOnConfirm: false
                     }).then(function () {});
-                    window.location.reload(true);
+                    // window.location.reload(true);
                 },
                 complete: function complete() {
                     self.autorizando = false;
@@ -19120,6 +19123,54 @@ Vue.component('show-variacion-volumen', {
                     $('#btn_autorizar').prop('enabled', true);
                 }
             });
+        },
+
+        mostrar_detalle_partida: function mostrar_detalle_partida(id) {
+            $('#divDetalle').fadeOut();
+            var self = this;
+            self.partida_id = id;
+            var url = App.host + '/control_presupuesto/cambio_presupuesto_partida/' + id;
+            $.ajax({
+                type: 'GET',
+                url: url,
+                beforeSend: function beforeSend() {
+                    self.consultando = true;
+                },
+                success: function success(data, textStatus, xhr) {
+                    self.partidas = data.data;
+                    $('#divDetalle').fadeIn();
+                },
+                complete: function complete() {
+                    self.consultando = false;
+                }
+            });
+        },
+
+        mostrar_detalle_presupuesto: function mostrar_detalle_presupuesto(idPresupuesto) {
+            var self = this;
+            var partida = self.partida_id;
+            var presupuesto = idPresupuesto;
+            $('#divDetalle').fadeOut();
+
+            var url = App.host + '/control_presupuesto/cambio_presupuesto_partida/detallePresupuesto';
+            $.ajax({
+                type: 'POST',
+                data: {
+                    id_partida: partida,
+                    presupuesto: presupuesto
+                },
+                url: url,
+                beforeSend: function beforeSend() {
+                    self.consultando = true;
+                },
+                success: function success(data, textStatus, xhr) {
+                    self.partidas = data.data;
+                    $('#divDetalle').fadeIn();
+                },
+                complete: function complete() {
+                    self.consultando = false;
+                }
+            });
         }
 
     }
@@ -19153,7 +19204,7 @@ Vue.component('variacion-volumen', {
                 res.partidas.push({
                     id_concepto: value.id_concepto,
                     cantidad_presupuestada_original: value.cantidad_presupuestada,
-                    cantidad_presupuestada_nueva: value.cantidad_presupuestada_nueva
+                    variacion_volumen: value.variacion_volumen
                 });
             });
             return res;

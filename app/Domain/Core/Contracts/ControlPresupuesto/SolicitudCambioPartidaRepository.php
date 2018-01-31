@@ -34,4 +34,9 @@ interface SolicitudCambioPartidaRepository
      * @return SolicitudCambioPartida
      */
     public function find($id);
+
+    public function mostrarAfectacion($id);
+    public function mostrarAfectacionPresupuesto(array $data);
+
+
 }

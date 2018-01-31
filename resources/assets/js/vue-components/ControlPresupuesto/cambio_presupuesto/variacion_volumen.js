@@ -23,7 +23,7 @@ Vue.component('variacion-volumen', {
                 res.partidas.push({
                     id_concepto : value.id_concepto,
                     cantidad_presupuestada_original : value.cantidad_presupuestada,
-                    cantidad_presupuestada_nueva : value.cantidad_presupuestada_nueva
+                    variacion_volumen : value.variacion_volumen
                 });
             });
             return res;
