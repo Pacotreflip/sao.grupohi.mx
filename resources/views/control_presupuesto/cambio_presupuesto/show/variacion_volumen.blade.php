@@ -103,19 +103,15 @@
                         </div>
 
                     </div>
-                    <div class="col-sm-12" class="text-center">
-                        <span v-if="consultando"><i class="fa fa-spinner fa-spin"></i> </span>
-                        <span v-else></span>
-                    </div>
 
-                    <div class="box box-solid" id="divDetalle" >
+                    <div class="box box-solid"  >
                         <div class="box-header with-border">
                             <h3 class="box-title">Subtotal de tarjeta</h3>
                         </div>
                         <div class="box-body">
                             <ul class="nav nav-tabs">
                                 @foreach($presupuestos as $index=>$presupuesto)
-                                    <li v-on:click="detalle_subtotal_tarjeta({{$presupuesto->baseDatos->id}})"
+                                    <li v-on:click="mostrar_importes({{$presupuesto->baseDatos->id}})"
                                         class="{{$index==0?'active':''}}"><a data-toggle="tab"
                                                                              href="#menu{{$presupuesto->baseDatos->id}}">{{$presupuesto->baseDatos->descripcion}}</a>
                                     </li>
@@ -123,28 +119,35 @@
                                 @endforeach
 
                             </ul>
-                            <div class="table-responsive">
-                                <table class="table table-bordered table-striped">
+
+                            <div class="table-responsive" >
+                                <div class="col-sm-12" class="text-center">
+                                    <span v-if="consultandoImportes"><i class="fa fa-spinner fa-spin"></i> </span>
+                                    <span v-else></span>
+                                </div>
+                                <table class="table table-bordered table-striped" id="divDetalleImporte">
                                     <thead>
                                     <tr>
-                                        <th class="text-center">#</th>
-                                        <th class="text-center">Volumen conceptos seleccionados</th>
                                         <th class="text-center">Importe conceptos seleccionados</th>
-                                        <th class="text-center">Volumen conceptos no seleccionados</th>
                                         <th class="text-center">Importe conceptos no seleccionados</th>
-                                        <th class="text-center">Volumen conceptos de tarjeta</th>
                                         <th class="text-center">Importe conceptos de tarjeta</th>
                                     </tr>
                                     </thead>
                                     <tbody>
-
-
+                                    <tr>
+                                        <td class="text-right" >$ @{{(parseFloat(importes.total_seleccionados)).formatMoney(2,'.',',')}}</td>
+                                        <td class="text-right" >$ @{{(Number(importes.total_sin_seleccion)).formatMoney(2,'.',',')}}</td>
+                                        <td class="text-right" >$ @{{(parseFloat(importes.total_tarjeta)).formatMoney(2,'.',',')}}</td>
+                                    </tr>
                                     </tbody>
                                 </table>
                             </div>
                         </div>
                     </div>
-
+                    <div class="col-sm-12" class="text-center">
+                        <span v-if="consultando"><i class="fa fa-spinner fa-spin"></i> </span>
+                        <span v-else></span>
+                    </div>
                     <div class="box box-solid" id="divDetalle" style="display: none;">
                         <div class="box-header with-border">
                             <h3 class="box-title">Detalles de la Partida</h3>

@@ -2,7 +2,7 @@
     <section>
         <div class="row">
             <div class="col-md-12">
-                <button class="btn btn-app pull-right" :disabled="!form.partidas.length || cargando || guardando" data-toggle="modal" data-target="#conceptos_modal" @click="validation_errors.clear('form_save_solicitud')">
+                <button class="btn btn-app pull-right" :disabled="!form.partidas.length || cargando || guardando" data-toggle="modal" data-target="#conceptos_modal" @click="validation_errors.clear('form_save_solicitud'),mostrar_importes_inicial()">
                     <span class="badge bg-green" >@{{ form.partidas.length }}</span>
                     <i class="fa fa-list-ol"></i> Partidas
                 </button>
@@ -87,13 +87,19 @@
                                 </tbody>
                             </table>
                         </div>
-                        <ul class="nav nav-tabs">
-                                    <li v-for="(base,i) in bases_afectadas" :class="i==0?'active':''" v-on:click="mostrar_importes(base.id_base_presupuesto)"><a data-toggle="tab" >@{{base.base_datos.descripcion}}</a>
-                                    </li>
-                            </ul>
 
-                        <div class="table-responsive">
-                            <table class="table table-bordered table-striped">
+                        <div class="table-responsive" >
+
+                            <ul class="nav nav-tabs">
+                                <li v-for="(base,i) in bases_afectadas" :class="i==0?'active':''" v-on:click="mostrar_importes(base.id_base_presupuesto)"><a data-toggle="tab" >@{{base.base_datos.descripcion}}</a>
+                                </li>
+                            </ul>
+                            <div class="col-sm-12" class="text-center">
+                                <span v-if="consultando"><i class="fa fa-spinner fa-spin"></i> </span>
+                                <span v-else></span>
+                            </div>
+
+                            <table class="table table-bordered table-striped" id="divDetalle">
                                 <thead>
                                 <tr>
                                     <th class="text-center">Importe conceptos seleccionados</th>
@@ -104,7 +110,7 @@
                                 <tbody>
                                  <tr>
                                      <td class="text-right" >$ @{{(parseFloat(importes.total_seleccionados)).formatMoney(2,'.',',')}}</td>
-                                     <td class="text-right" >$ @{{(parseFloat(importes.total_seleccionados)).formatMoney(2,'.',',')}}</td>
+                                     <td class="text-right" >$ @{{(parseFloat(importes.total_sin_seleccion)).formatMoney(2,'.',',')}}</td>
                                      <td class="text-right" >$ @{{(parseFloat(importes.total_tarjeta)).formatMoney(2,'.',',')}}</td>
                                  </tr>
 

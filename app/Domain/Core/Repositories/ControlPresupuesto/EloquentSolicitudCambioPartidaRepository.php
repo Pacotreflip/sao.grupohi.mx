@@ -217,4 +217,57 @@ class EloquentSolicitudCambioPartidaRepository implements SolicitudCambioPartida
         $response['total_sin_seleccion'] =$importeConceptoNoSeleccionado;
         return $response;
     }
+
+    public function subtotalTarjetaShow(array $data)
+    {
+        $solicitud=SolicitudCambio::with('partidas')->find($data['id_solicitud']);
+        $baseDatos = BasePresupuesto::find($data['presupuesto']);
+        $claves = [];
+        $claves_seleccionados = [];
+        $numero_tarjeta = 0;
+        $importeConceptosSeleccionado = 0;
+        $importeConceptosTarjeta = 0;
+        $importeConceptoNoSeleccionado = 0;
+        $response = [];
+
+        $numero_tarjeta = 0;
+        foreach ($solicitud->partidas as $partida){
+            $numero_tarjeta=$partida->id_tarjeta;
+            $concepto=Concepto::find($partida->id_concepto);
+            array_push($claves_seleccionados, $concepto->clave_concepto);
+        }
+
+        ////////////////////////////////////////////////////////////////////////// importe conceptos seleccionados
+
+        $conceptosAgregados = DB::connection('cadeco')->table($baseDatos->base_datos . ".dbo.conceptos")->whereIn('clave_concepto', $claves_seleccionados)->get();
+        if ($conceptosAgregados) {
+            foreach ($conceptosAgregados as $conceptoAgregado) {
+                $importeConceptosSeleccionado += $conceptoAgregado->monto_presupuestado; ////sumatoria monto_presupuestado
+            }
+        }
+
+
+        ////////////////////////////////////////////////////////////////////////// importe conceptos de tarjeta
+
+        $conceptosTarjeta = ConceptoTarjeta::with('concepto')->where('id_tarjeta', '=', $numero_tarjeta)->get(); ///conceptos de tarjeta
+        $claves = [];
+        foreach ($conceptosTarjeta as $agregado) { /////obtenemos claves para buscar en otra base
+            if ($agregado->concepto->clave_concepto != null) {
+                array_push($claves, $agregado->concepto->clave_concepto);
+            }
+        }
+        $conceptosAgregados = DB::connection('cadeco')->table($baseDatos->base_datos . ".dbo.conceptos")->whereIn('clave_concepto', $claves)->get(); ///buscamos en otra base
+        if ($conceptosAgregados) {
+            foreach ($conceptosAgregados as $conceptoAgregado) {
+                $importeConceptosTarjeta += $conceptoAgregado->monto_presupuestado; ////sumatoria monto_presupuestado todos los conceptos
+            }
+        }
+
+        ////////////////////////////////////////////////////////////////////////// importe conceptos de tarjeta no seleccionados
+        $importeConceptoNoSeleccionado = ($importeConceptosTarjeta - $importeConceptosSeleccionado);
+        $response['total_seleccionados'] =$importeConceptosSeleccionado;
+        $response['total_tarjeta'] =$importeConceptosTarjeta;
+        $response['total_sin_seleccion'] =$importeConceptoNoSeleccionado;
+        return $response;
+    }
 }

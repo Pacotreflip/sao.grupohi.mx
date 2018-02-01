@@ -35,6 +35,13 @@ class SolicitudCambioPartidasController extends Controller
             'data' => $afectaciones
         ], 200);
     }
+    public function subtotalTarjetaShow(Request $request)
+    {
+        $afectaciones = $this->partida->subtotalTarjetaShow($request->all());
+        return response()->json([
+            'data' => $afectaciones
+        ], 200);
+    }
      public function subtotalTarjeta(Request $request)
     {
         $afectaciones = $this->partida->mostrarSubtotalTarjeta($request->all());

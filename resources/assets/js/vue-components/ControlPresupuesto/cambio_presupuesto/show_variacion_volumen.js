@@ -10,7 +10,9 @@ Vue.component('show-variacion-volumen', {
             rechazando:false,
             autorizando:false,
             consultando:false,
+            consultandoImportes:false,
             partidas:[],
+            importes:[],
             partida_id:0
         }
     },
@@ -18,7 +20,7 @@ Vue.component('show-variacion-volumen', {
     computed: {},
 
     mounted: function () {
-
+       this.mostrar_importes_inicial();
     },
 
     methods: {
@@ -109,7 +111,6 @@ Vue.component('show-variacion-volumen', {
 
         rechazar_solicitud: function (id,motivo) {
 
-
             var self = this;
             var url = App.host + '/control_presupuesto/cambio_presupuesto/rechazarSolicitud';
             $.ajax({
@@ -174,32 +175,39 @@ Vue.component('show-variacion-volumen', {
             });
         }
         ,
-        detalle_subtotal_tarjeta:function (idPresupuesto) {
+        mostrar_importes_inicial:function () {
             var self = this;
-            var idSolicitud=self.solicitud.id;
-            var presupuesto=idPresupuesto;
-            $('#divDetalle').fadeOut();
+            var presupuesto=self.presupuestos[0].id_base_presupuesto;
+            this.mostrar_importes(presupuesto);
+        },
+        mostrar_importes: function(presupesto){
+            var self = this;
+            var presupuesto=presupesto;
 
-            var url = App.host + '/control_presupuesto/cambio_presupuesto_partida/subtotalTarjeta';
+            $('#divDetalleImporte').fadeOut();
+
+            var url = App.host + '/control_presupuesto/cambio_presupuesto_partida/subtotalTarjetaShow';
             $.ajax({
                 type: 'POST',
                 data:{
-                    id_solicitud:idSolicitud,
-                    presupuesto:presupuesto
+                    presupuesto:presupuesto,
+                    id_solicitud:self.solicitud.id
+
                 },
                 url: url,
                 beforeSend: function () {
-                    self.consultando = true;
+                    self.consultandoImportes = true;
                 },
                 success: function (data, textStatus, xhr) {
-                    self.partidas=data.data;
-                    $('#divDetalle').fadeIn();
+                    self.importes=data.data;
+                    $('#divDetalleImporte').fadeIn();
                 },
                 complete: function () {
-                    self.consultando = false;
+                    self.consultandoImportes = false;
 
                 }
             });
+
 
         }
         ,

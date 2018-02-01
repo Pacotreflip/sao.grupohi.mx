@@ -10,6 +10,7 @@ Vue.component('variacion-volumen', {
             },
             cargando : false,
             guardando : false,
+            consultando : false,
             importes:[]
         }
     },
@@ -264,6 +265,12 @@ Vue.component('variacion-volumen', {
                     text: 'Por favor corrija los errores del formulario'
                 });
             });
+        },
+
+        mostrar_importes_inicial:function () {
+            var self = this;
+            var presupuesto=self.bases_afectadas[0].id_base_presupuesto;
+            this.mostrar_importes(presupuesto);
         },
         mostrar_importes: function(presupesto){
             var self = this;
