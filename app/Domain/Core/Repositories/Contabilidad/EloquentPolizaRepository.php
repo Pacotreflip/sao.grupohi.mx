@@ -10,6 +10,7 @@ use Ghi\Domain\Core\Models\Contabilidad\HistPoliza;
 use Ghi\Domain\Core\Models\Contabilidad\HistPolizaMovimiento;
 use Ghi\Domain\Core\Models\Contabilidad\Poliza;
 use Ghi\Domain\Core\Models\Contabilidad\PolizaMovimiento;
+use Ghi\Domain\Core\Models\Contabilidad\PolizaValido;
 use Illuminate\Http\Exception\HttpResponseException;
 use Illuminate\Support\Facades\DB;
 use Symfony\Component\HttpFoundation\Response;
@@ -174,6 +175,14 @@ class EloquentPolizaRepository implements PolizaRepository
                     $hist_movimiento = HistPolizaMovimiento::create($movimiento->toArray());
                 }
             } else {
+
+                // Registra quién validó
+                if (isset($data['poliza_generada']['estatus']) && $data['poliza_generada']['estatus'] == 1 )
+                    PolizaValido::create([
+                        'id_int_poliza' => $poliza->id_int_poliza,
+                        'valido' => auth()->user()->idusuario,
+                    ]);
+
                 $poliza->update($data['poliza_generada']);
             }
 
