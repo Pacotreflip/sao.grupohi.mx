@@ -8,7 +8,10 @@ Vue.component('show-variacion-volumen', {
             },
             cargando: false,
             rechazando:false,
-            autorizando:false
+            autorizando:false,
+            consultando:false,
+            partidas:[],
+            partida_id:0
         }
     },
 
@@ -69,9 +72,7 @@ Vue.component('show-variacion-volumen', {
 
 
         },
-        autorizar_solicitud: function (id) {
-
-
+         autorizar_solicitud: function (id) {
 
             var self = this;
             var url = App.host + '/control_presupuesto/cambio_presupuesto/autorizarSolicitud';
@@ -96,7 +97,7 @@ Vue.component('show-variacion-volumen', {
                         closeOnConfirm: false
                     }).then(function () {
                     });
-                    window.location.reload(true);
+                   // window.location.reload(true);
                 },
                 complete: function () {
                     self.autorizando = false;
@@ -142,6 +143,58 @@ Vue.component('show-variacion-volumen', {
                     $('#btn_autorizar').prop('enabled',true);
                 }
             });
+        }
+        ,
+        mostrar_detalle_partida:function (id) {
+            $('#divDetalle').fadeOut();
+            var self = this;
+            self.partida_id=id;
+            var url = App.host + '/control_presupuesto/cambio_presupuesto_partida/'+id;
+            $.ajax({
+                type: 'GET',
+                url: url,
+                beforeSend: function () {
+                    self.consultando = true;
+                    },
+                success: function (data, textStatus, xhr) {
+                  self.partidas=data.data;
+                  $('#divDetalle').fadeIn();
+                },
+                complete: function () {
+                    self.consultando = false;
+
+                }
+            });
+
+        }
+        ,
+        mostrar_detalle_presupuesto:function (idPresupuesto) {
+            var self = this;
+            var partida=self.partida_id;
+            var presupuesto=idPresupuesto;
+            $('#divDetalle').fadeOut();
+
+            var url = App.host + '/control_presupuesto/cambio_presupuesto_partida/detallePresupuesto';
+            $.ajax({
+                type: 'POST',
+                data:{
+                    id_partida:partida,
+                    presupuesto:presupuesto
+                },
+                url: url,
+                beforeSend: function () {
+                    self.consultando = true;
+                },
+                success: function (data, textStatus, xhr) {
+                    self.partidas=data.data;
+                    $('#divDetalle').fadeIn();
+                },
+                complete: function () {
+                    self.consultando = false;
+
+                }
+            });
+
         }
 
     }

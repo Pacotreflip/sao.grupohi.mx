@@ -71,7 +71,7 @@
                                 <thead>
                                 <tr>
                                     <th>#</th>
-                                    <th>Número de Tarjeta</th>
+                                    <th>No. Tarjeta</th>
                                     <th>Sector</th>
                                     <th>Cuadrante</th>
                                     <th>Unidad</th>
@@ -89,9 +89,9 @@
                                     <td>@{{ concepto.unidad }}</td>
                                     <td class="text-right">@{{ parseInt(concepto.cantidad_presupuestada).formatMoney(2, ',','.') }}</td>
                                     <td>
-                                        <div class="form-group" :class="{'has-error': validation_errors.has('form_save_solicitud.Cantidad Presupuestada Nueva ' + (i+1))}">
-                                            <input type="text" :name="'Cantidad Presupuestada Nueva ' + (i+1)" v-validate="'decimal|regex:[^0]+'" class="form-control input-sm" v-model="concepto.cantidad_presupuestada_nueva">
-                                            <label class="help" v-show="validation_errors.has('form_save_solicitud.Cantidad Presupuestada Nueva ' + (i+1))">@{{ validation_errors.first('form_save_solicitud.Cantidad Presupuestada Nueva ' + (i+1)) }}</label>
+                                        <div class="form-group" :class="{'has-error': validation_errors.has('form_save_solicitud.Variacion de volumen ' + (i+1))}">
+                                            <input type="text" :name="'Variacion de volumen ' + (i+1)" v-validate="'required|decimal|regex:[^0]+'" class="form-control input-sm" v-model="concepto.variacion_volumen">
+                                            <label class="help" v-show="validation_errors.has('form_save_solicitud.Variacion de volumen ' + (i+1))">@{{ validation_errors.first('form_save_solicitud.Variacion de volumen ' + (i+1)) }}</label>
                                         </div>
                                     </td>
                                     <td><button type="button" class="btn btn-xs btn-default btn_remove_concepto" :id="concepto.id_concepto"><i class="fa fa-minus text-red"></i></button> </td>

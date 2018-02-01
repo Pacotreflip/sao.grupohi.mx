@@ -9,8 +9,12 @@
 namespace Ghi\Domain\Core\Repositories\ControlPresupuesto;
 
 
+use Ghi\Core\Facades\Context;
 use Ghi\Domain\Core\Contracts\ControlPresupuesto\SolicitudCambioPartidaRepository;
+use Ghi\Domain\Core\Models\Concepto;
+use Ghi\Domain\Core\Models\ControlPresupuesto\BasePresupuesto;
 use Ghi\Domain\Core\Models\ControlPresupuesto\SolicitudCambioPartida;
+use Illuminate\Support\Facades\DB;
 
 class EloquentSolicitudCambioPartidaRepository implements SolicitudCambioPartidaRepository
 {
@@ -75,5 +79,88 @@ class EloquentSolicitudCambioPartidaRepository implements SolicitudCambioPartida
     {
         $this->model = $this->model->with($relations);
         return $this;
+    }
+
+    public function mostrarAfectacion($id)
+    {
+
+        $partida = $this->find($id);
+
+        $afectaciones = array();
+        $items = Concepto::orderBy('nivel', 'ASC')->where('nivel', 'like', $partida->concepto->nivel . '%')->get();
+        $detalle = array();
+        foreach ($items as $index => $item) {
+            $nivel_padre = $partida->concepto->nivel;
+            $nivel_hijo = $item->nivel;
+            $profundidad = (strlen($nivel_hijo) - strlen($nivel_padre)) / 4;
+            $factor = $partida->cantidad_presupuestada_nueva / $partida->concepto->cantidad_presupuestada;
+            $cantidad_nueva = $item->cantidad_presupuestada * $factor;
+            $monto_nuevo = $item->monto_presupuestado * $factor;
+
+            $row = array('index' => $index + 1,
+                'numTarjeta' => $item->numero_tarjeta,
+                'descripcion' => str_repeat("______", $profundidad) . ' ' . $item->descripcion,
+                'unidad' => utf8_decode($item->unidad),
+                'cantidadPresupuestada' => $item->cantidad_presupuestada,
+                'cantidadNueva' => $cantidad_nueva,
+                'monto_presupuestado' => $item->monto_presupuestado,
+                'monto_nuevo' => $monto_nuevo,
+                'variacion_volumen' => $cantidad_nueva - $item->cantidad_presupuestada,
+                'pu' => $item->precio_unitario
+            );
+            array_push($afectaciones, $row);
+
+        }
+        return $afectaciones;
+
+    }
+
+    public function mostrarAfectacionPresupuesto(array $data)
+    {
+
+        $partida = $this->find($data['id_partida']);
+
+
+        $baseDatos = BasePresupuesto::find($data['presupuesto']);
+        $afectaciones = array();
+        // $items = Concepto::orderBy('nivel', 'ASC')->where('nivel', 'like', $partida->concepto->nivel . '%')->get();
+        $conceptoBase = DB::connection('cadeco')->table($baseDatos->base_datos . ".dbo.conceptos")->where('clave_concepto', '=', $partida->concepto->clave_concepto)->first();
+
+//dd($partida->concepto->clave_concepto);
+        $items = DB::connection('cadeco')->table($baseDatos->base_datos . ".dbo.conceptos")->orderBy('nivel', 'ASC')->where('id_obra', '=', Context::getId())->where('nivel', 'like', $conceptoBase->nivel . '%')->get();
+
+        $detalle = array();
+        foreach ($items as $index => $item) {
+            $hijos = DB::connection('cadeco')->table($baseDatos->base_datos . ".dbo.conceptos")->where('id_obra', '=', Context::getId())->where('nivel', 'like', $item->nivel . '%')->count();
+
+
+            $nivel_padre = $partida->concepto->nivel;
+            $nivel_hijo = $item->nivel;
+            $profundidad = (strlen($nivel_hijo) - strlen($nivel_padre)) / 4;
+            $factor = $partida->cantidad_presupuestada_nueva / $partida->concepto->cantidad_presupuestada;
+            $cantidad_nueva = $item->cantidad_presupuestada * $factor;
+            $monto_nuevo = $item->monto_presupuestado * $factor;
+
+            $row = array('index' => $index + 1,
+                //'numTarjeta'=>$item->numero_tarjeta,
+                'descripcion' => str_repeat("______", $profundidad) . ' ' . $item->descripcion,
+                'unidad' => utf8_decode($item->unidad),
+                'cantidadPresupuestada' => $item->cantidad_presupuestada,
+                'cantidadNueva' => $cantidad_nueva,
+                'monto_presupuestado' => $item->monto_presupuestado,
+                'monto_nuevo' => $monto_nuevo,
+                'variacion_volumen' => $cantidad_nueva - $item->cantidad_presupuestada,
+                'pu' => $item->precio_unitario,
+                'variacion_importe' => ($monto_nuevo - $item->monto_presupuestado),
+                'hijos' => $hijos,
+                'nivel' => $item->nivel
+            );
+            if ($hijos == 1 && strlen($item->nivel) == 40) {
+            } else {
+                array_push($afectaciones, $row);
+            }
+        }
+        return $afectaciones;
+
     }
 }

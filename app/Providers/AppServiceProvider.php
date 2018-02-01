@@ -356,6 +356,10 @@ class AppServiceProvider extends ServiceProvider
             \Ghi\Domain\Core\Contracts\Contabilidad\CostosDolaresRepository::class,
             \Ghi\Domain\Core\Repositories\Contabilidad\EloquentCostosDolaresRepository::class
         );
+        $this->app->bind(
+            \Ghi\Domain\Core\Contracts\ControlPresupuesto\AfectacionOrdenPresupuestoRepository::class,
+            \Ghi\Domain\Core\Repositories\ControlPresupuesto\EloquentAfectacionOrdenPresupuestoRepository::class
+        );
 
     }
 }

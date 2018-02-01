@@ -132,7 +132,7 @@ class EloquentConceptoRepository implements ConceptoRepository
             ->join('PresupuestoObra.conceptosPath as path', 'conceptos.id_concepto', '=', 'path.id_concepto');
 
         $query->where('dbo.conceptos.concepto_medible', '=', 3);
-
+        $query->where('path.filtro3','Like','%COSTO DIRECTO%');
 
 
         if($data['id_tarjeta'] != '') {
