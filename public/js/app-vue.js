@@ -18988,7 +18988,7 @@ Vue.component('cambio-presupuesto-index', {
 'use strict';
 
 Vue.component('show-variacion-volumen', {
-    props: ['solicitud', 'cobrabilidad'],
+    props: ['solicitud', 'cobrabilidad', 'presupuestos'],
     data: function data() {
         return {
             form: {
@@ -19126,12 +19126,46 @@ Vue.component('show-variacion-volumen', {
         },
 
         mostrar_detalle_partida: function mostrar_detalle_partida(id) {
-            $('#divDetalle').fadeOut();
             var self = this;
+            var partida = id;
             self.partida_id = id;
-            var url = App.host + '/control_presupuesto/cambio_presupuesto_partida/' + id;
+            var presupuesto = self.presupuestos[0].base_datos.id;
+            $('#divDetalle').fadeOut();
+
+            var url = App.host + '/control_presupuesto/cambio_presupuesto_partida/detallePresupuesto';
             $.ajax({
-                type: 'GET',
+                type: 'POST',
+                data: {
+                    id_partida: partida,
+                    presupuesto: presupuesto
+                },
+                url: url,
+                beforeSend: function beforeSend() {
+                    self.consultando = true;
+                },
+                success: function success(data, textStatus, xhr) {
+                    self.partidas = data.data;
+                    $('#divDetalle').fadeIn();
+                },
+                complete: function complete() {
+                    self.consultando = false;
+                }
+            });
+        },
+
+        detalle_subtotal_tarjeta: function detalle_subtotal_tarjeta(idPresupuesto) {
+            var self = this;
+            var partida = self.partida_id;
+            var presupuesto = idPresupuesto;
+            $('#divDetalle').fadeOut();
+
+            var url = App.host + '/control_presupuesto/cambio_presupuesto_partida/subtotalTarjeta';
+            $.ajax({
+                type: 'POST',
+                data: {
+                    id_partida: partida,
+                    presupuesto: presupuesto
+                },
                 url: url,
                 beforeSend: function beforeSend() {
                     self.consultando = true;

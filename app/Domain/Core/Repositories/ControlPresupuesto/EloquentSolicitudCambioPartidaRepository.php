@@ -14,6 +14,8 @@ use Ghi\Domain\Core\Contracts\ControlPresupuesto\SolicitudCambioPartidaRepositor
 use Ghi\Domain\Core\Models\Concepto;
 use Ghi\Domain\Core\Models\ControlPresupuesto\BasePresupuesto;
 use Ghi\Domain\Core\Models\ControlPresupuesto\SolicitudCambioPartida;
+use Illuminate\Http\Exception\HttpResponseException;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
 
 class EloquentSolicitudCambioPartidaRepository implements SolicitudCambioPartidaRepository
@@ -117,23 +119,20 @@ class EloquentSolicitudCambioPartidaRepository implements SolicitudCambioPartida
 
     public function mostrarAfectacionPresupuesto(array $data)
     {
-
         $partida = $this->find($data['id_partida']);
-
-
         $baseDatos = BasePresupuesto::find($data['presupuesto']);
         $afectaciones = array();
         // $items = Concepto::orderBy('nivel', 'ASC')->where('nivel', 'like', $partida->concepto->nivel . '%')->get();
         $conceptoBase = DB::connection('cadeco')->table($baseDatos->base_datos . ".dbo.conceptos")->where('clave_concepto', '=', $partida->concepto->clave_concepto)->first();
+        if (!$conceptoBase) {
+            throw new HttpResponseException(new Response('El concepto ' . $partida->concepto->descripcion . ' no cuenta con clave de concepto registrada en ' . $baseDatos->base_datos, 404));
+        }
 
-//dd($partida->concepto->clave_concepto);
         $items = DB::connection('cadeco')->table($baseDatos->base_datos . ".dbo.conceptos")->orderBy('nivel', 'ASC')->where('id_obra', '=', Context::getId())->where('nivel', 'like', $conceptoBase->nivel . '%')->get();
-
         $detalle = array();
+
         foreach ($items as $index => $item) {
             $hijos = DB::connection('cadeco')->table($baseDatos->base_datos . ".dbo.conceptos")->where('id_obra', '=', Context::getId())->where('nivel', 'like', $item->nivel . '%')->count();
-
-
             $nivel_padre = $partida->concepto->nivel;
             $nivel_hijo = $item->nivel;
             $profundidad = (strlen($nivel_hijo) - strlen($nivel_padre)) / 4;
@@ -162,5 +161,9 @@ class EloquentSolicitudCambioPartidaRepository implements SolicitudCambioPartida
         }
         return $afectaciones;
 
+    }
+ public function mostrarSubtotalTarjeta(array $data)
+    {
+       dd($data);
     }
 }

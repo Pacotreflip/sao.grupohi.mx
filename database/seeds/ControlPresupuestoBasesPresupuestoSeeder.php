@@ -11,8 +11,6 @@ class ControlPresupuestoBasesPresupuestoSeeder extends Seeder
      */
     public function run()
     {
-        DB::connection('cadeco')->table('ControlPresupuesto.bases_presupuesto')->delete();
-        DB::connection("cadeco")->statement("DBCC CHECKIDENT ('ControlPresupuesto.bases_presupuesto',RESEED, 0)");
 
         // Naturaleza 2 tipo transaccion 84
        \Ghi\Domain\Core\Models\ControlPresupuesto\BasePresupuesto::create([

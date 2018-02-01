@@ -1,5 +1,5 @@
 Vue.component('show-variacion-volumen', {
-    props: ['solicitud', 'cobrabilidad'],
+    props: ['solicitud', 'cobrabilidad','presupuestos'],
     data: function () {
         return {
             form: {
@@ -146,19 +146,54 @@ Vue.component('show-variacion-volumen', {
         }
         ,
         mostrar_detalle_partida:function (id) {
-            $('#divDetalle').fadeOut();
             var self = this;
+            var partida=id;
             self.partida_id=id;
-            var url = App.host + '/control_presupuesto/cambio_presupuesto_partida/'+id;
+            var presupuesto=self.presupuestos[0].base_datos.id;
+            $('#divDetalle').fadeOut();
+
+            var url = App.host + '/control_presupuesto/cambio_presupuesto_partida/detallePresupuesto';
             $.ajax({
-                type: 'GET',
+                type: 'POST',
+                data:{
+                    id_partida:partida,
+                    presupuesto:presupuesto
+                },
                 url: url,
                 beforeSend: function () {
                     self.consultando = true;
-                    },
+                },
                 success: function (data, textStatus, xhr) {
-                  self.partidas=data.data;
-                  $('#divDetalle').fadeIn();
+                    self.partidas=data.data;
+                    $('#divDetalle').fadeIn();
+                },
+                complete: function () {
+                    self.consultando = false;
+
+                }
+            });
+        }
+        ,
+        detalle_subtotal_tarjeta:function (idPresupuesto) {
+            var self = this;
+            var partida=self.partida_id;
+            var presupuesto=idPresupuesto;
+            $('#divDetalle').fadeOut();
+
+            var url = App.host + '/control_presupuesto/cambio_presupuesto_partida/subtotalTarjeta';
+            $.ajax({
+                type: 'POST',
+                data:{
+                    id_partida:partida,
+                    presupuesto:presupuesto
+                },
+                url: url,
+                beforeSend: function () {
+                    self.consultando = true;
+                },
+                success: function (data, textStatus, xhr) {
+                    self.partidas=data.data;
+                    $('#divDetalle').fadeIn();
                 },
                 complete: function () {
                     self.consultando = false;
