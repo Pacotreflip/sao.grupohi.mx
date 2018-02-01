@@ -1,5 +1,5 @@
 Vue.component('select2', {
-    props: ['options', 'value','name'],
+    props: ['options', 'value','name', 'placeholder'],
     template: '<select><slot></slot></select>',
     mounted: function () {
         var vm = this
@@ -21,8 +21,9 @@ Vue.component('select2', {
                 data: data,
                 width: '100%',
                 allowClear: true,
-                placeholder : {
-                    id : ''
+            placeholder : {
+                    id : '',
+                    text : vm.placeholder
                 }
         })
             .val(this.value)
@@ -43,7 +44,8 @@ Vue.component('select2', {
                 data: options,
                 width: '100%',
                 placeholder: {
-                    id: ""
+                    id: "",
+                    text : vm.placeholder
                 }
             });
         }
