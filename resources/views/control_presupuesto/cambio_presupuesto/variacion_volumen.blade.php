@@ -1,4 +1,4 @@
-<variacion-volumen @reset-filtros="filtros = []" inline-template v-cloak v-if="form.id_tipo_orden == 4" :tarjetas="tarjetas" :filtros="filtros" :niveles="niveles" :id_tipo_orden="form.id_tipo_orden" :id_tarjeta="form.id_tarjeta">
+<variacion-volumen inline-template v-cloak v-if="form.id_tipo_orden == 4" :tarjetas="tarjetas" :niveles="niveles" :id_tipo_orden="form.id_tipo_orden" :id_tarjeta="form.id_tarjeta">
     <section>
         <div class="row">
             <div class="col-md-12">
@@ -14,18 +14,6 @@
                 <div class="box box-solid">
                     <div class="box-header with-border">
                         <h3 class="box-title">Conceptos</h3>
-                        <div class="box-tools col-sm-2">
-                            <div class="form-group">
-                                <div class="col-sm-12">
-                                <label for="tarjetas_select" class="col-sm-5 control-label">Numero de tarjeta: </label>
-                                <div class="col-sm-7">
-                                    <select2 :disabled="cargando" v-model="id_tarjeta" :options="tarjetas" class="form-control" id="tarjetas_select">
-                                    </select2>
-                                </div>
-
-                                </div>
-                            </div>
-                        </div>
                     </div>
                     <div class="box-body">
                         <div class="table-responsive">

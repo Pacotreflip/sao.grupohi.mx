@@ -1,10 +1,12 @@
 Vue.component('variacion-volumen', {
-    props : ['filtros', 'niveles', 'id_tipo_orden', 'id_tarjeta','tarjetas'],
+    props : ['filtros', 'niveles', 'id_tipo_orden', 'id_tarjeta'],
     data : function () {
         return {
+            datatable_data : {},
             form : {
                 partidas : [],
-                motivo : ''
+                motivo : '',
+                id_tarjeta : '',
             },
             cargando : false,
             guardando : false
@@ -18,7 +20,6 @@ Vue.component('variacion-volumen', {
                 motivo: this.form.motivo,
                 partidas: []
             };
-
             this.form.partidas.forEach(function (value) {
                 res.partidas.push({
                     id_concepto : value.id_concepto,
@@ -30,12 +31,15 @@ Vue.component('variacion-volumen', {
         }
     },
 
+    watch : {
+        id_tarjeta : function () {
+            this.get_conceptos();
+            this.form.partidas = []
+        }
+    },
+
     mounted: function () {
         var self = this;
-
-        $('#tarjetas_select').on('select2:select', function () {
-            self.get_conceptos();
-        });
 
         $(document).on('click', '.btn_add_concepto', function () {
             var id = $(this).attr('id');
@@ -48,6 +52,7 @@ Vue.component('variacion-volumen', {
         $('#conceptos_table').DataTable({
             "processing": true,
             "serverSide": true,
+            "paging" : false,
             "ordering" : true,
             "searching" : false,
             "ajax": {
@@ -222,11 +227,7 @@ Vue.component('variacion-volumen', {
                         title : '¡Correcto!',
                         html : 'Solicitud Guardada con Número de Folio <b>' + response.numero_folio + '</b>'
                     }).then(function () {
-                        $('#conceptos_modal').modal('hide');
-                        self.form.partidas = [];
-                        self.$emit('reset-filtros');
-                        Vue.set(self.form, 'motivo', '');
-                        $('#conceptos_table').DataTable().ajax.reload();
+                        window.location.href = App.host + '/control_presupuesto/cambio_presupuesto/' +response.id
                     });
                 },
                 complete : function () {

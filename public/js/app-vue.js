@@ -20293,12 +20293,14 @@ Vue.component('show-variacion-volumen', {
 'use strict';
 
 Vue.component('variacion-volumen', {
-    props: ['filtros', 'niveles', 'id_tipo_orden', 'id_tarjeta', 'tarjetas'],
+    props: ['filtros', 'niveles', 'id_tipo_orden', 'id_tarjeta'],
     data: function data() {
         return {
+            datatable_data: {},
             form: {
                 partidas: [],
-                motivo: ''
+                motivo: '',
+                id_tarjeta: ''
             },
             cargando: false,
             guardando: false
@@ -20312,7 +20314,6 @@ Vue.component('variacion-volumen', {
                 motivo: this.form.motivo,
                 partidas: []
             };
-
             this.form.partidas.forEach(function (value) {
                 res.partidas.push({
                     id_concepto: value.id_concepto,
@@ -20324,12 +20325,15 @@ Vue.component('variacion-volumen', {
         }
     },
 
+    watch: {
+        id_tarjeta: function id_tarjeta() {
+            this.get_conceptos();
+            this.form.partidas = [];
+        }
+    },
+
     mounted: function mounted() {
         var self = this;
-
-        $('#tarjetas_select').on('select2:select', function () {
-            self.get_conceptos();
-        });
 
         $(document).on('click', '.btn_add_concepto', function () {
             var id = $(this).attr('id');
@@ -20342,6 +20346,7 @@ Vue.component('variacion-volumen', {
         $('#conceptos_table').DataTable({
             "processing": true,
             "serverSide": true,
+            "paging": false,
             "ordering": true,
             "searching": false,
             "ajax": {
@@ -20498,11 +20503,7 @@ Vue.component('variacion-volumen', {
                         title: '¡Correcto!',
                         html: 'Solicitud Guardada con Número de Folio <b>' + response.numero_folio + '</b>'
                     }).then(function () {
-                        $('#conceptos_modal').modal('hide');
-                        self.form.partidas = [];
-                        self.$emit('reset-filtros');
-                        Vue.set(self.form, 'motivo', '');
-                        $('#conceptos_table').DataTable().ajax.reload();
+                        window.location.href = App.host + '/control_presupuesto/cambio_presupuesto/' + response.id;
                     });
                 },
                 complete: function complete() {
@@ -22755,7 +22756,7 @@ Vue.component('kardex-material-index', {
 'use strict';
 
 Vue.component('select2', {
-    props: ['options', 'value', 'name'],
+    props: ['options', 'value', 'name', 'placeholder'],
     template: '<select><slot></slot></select>',
     mounted: function mounted() {
         var vm = this;
@@ -22778,7 +22779,8 @@ Vue.component('select2', {
             width: '100%',
             allowClear: true,
             placeholder: {
-                id: ''
+                id: '',
+                text: vm.placeholder
             }
         }).val(this.value).trigger('change')
         // emit event on change.
@@ -22797,7 +22799,8 @@ Vue.component('select2', {
                 data: _options,
                 width: '100%',
                 placeholder: {
-                    id: ""
+                    id: "",
+                    text: vm.placeholder
                 }
             });
         }
