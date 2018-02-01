@@ -13,6 +13,7 @@ use Ghi\Domain\Core\Models\Contabilidad\PolizaMovimiento;
 use Illuminate\Http\Exception\HttpResponseException;
 use Illuminate\Support\Facades\DB;
 use Symfony\Component\HttpFoundation\Response;
+use Ghi\Domain\Core\Models\User;
 
 
 class EloquentPolizaRepository implements PolizaRepository
