@@ -13,7 +13,10 @@ use Ghi\Core\Facades\Context;
 use Ghi\Domain\Core\Contracts\ControlPresupuesto\SolicitudCambioPartidaRepository;
 use Ghi\Domain\Core\Models\Concepto;
 use Ghi\Domain\Core\Models\ControlPresupuesto\BasePresupuesto;
+use Ghi\Domain\Core\Models\ControlPresupuesto\ConceptoTarjeta;
+use Ghi\Domain\Core\Models\ControlPresupuesto\SolicitudCambio;
 use Ghi\Domain\Core\Models\ControlPresupuesto\SolicitudCambioPartida;
+use Ghi\Domain\Core\Models\ControlPresupuesto\Tarjeta;
 use Illuminate\Http\Exception\HttpResponseException;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
@@ -164,6 +167,7 @@ class EloquentSolicitudCambioPartidaRepository implements SolicitudCambioPartida
     }
  public function mostrarSubtotalTarjeta(array $data)
     {
-       dd($data);
+
+
     }
 }

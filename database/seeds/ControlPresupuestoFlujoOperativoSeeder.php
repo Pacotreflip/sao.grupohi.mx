@@ -12,10 +12,6 @@ class ControlPresupuestoFlujoOperativoSeeder extends Seeder
      */
     public function run()
     {
-
-        DB::connection('cadeco')->table('ControlPresupuesto.tipo_cobrabilidad')->delete();
-        DB::connection('cadeco')->table('ControlPresupuesto.tipos_ordenes')->delete();
-
         $cobrables=TipoCobrabilidad::create([
             'descripcion' => 'Cobrables',
             'estatus' => 1,

@@ -19155,7 +19155,7 @@ Vue.component('show-variacion-volumen', {
 
         detalle_subtotal_tarjeta: function detalle_subtotal_tarjeta(idPresupuesto) {
             var self = this;
-            var partida = self.partida_id;
+            var idSolicitud = self.solicitud.id;
             var presupuesto = idPresupuesto;
             $('#divDetalle').fadeOut();
 
@@ -19163,7 +19163,7 @@ Vue.component('show-variacion-volumen', {
             $.ajax({
                 type: 'POST',
                 data: {
-                    id_partida: partida,
+                    id_solicitud: idSolicitud,
                     presupuesto: presupuesto
                 },
                 url: url,
