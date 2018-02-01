@@ -17,6 +17,7 @@ Vue.component('cambio-presupuesto-create', {
             tipos_orden : [],
             tarjetas : [],
             cargando : false,
+            bases_afectadas:[],
             niveles: [
                 {nombre : 'Nivel 1', numero : 1},
                 {nombre : 'Nivel 2', numero : 2},
@@ -152,6 +153,34 @@ Vue.component('cambio-presupuesto-create', {
                     text: 'Por favor corrija los errores del formulario'
                 });
             });
+        },
+        obtenerPresupuestos: function () {
+            var self = this;
+
+            var tipoOrden = self.form.id_tipo_orden;
+
+            $('#divDetalle').fadeOut();
+
+            var url = App.host + '/control_presupuesto/afectacion_presupuesto/getBasesAfectadas';
+            $.ajax({
+                type: 'POST',
+                data:{
+                    tipo_orden:tipoOrden
+                },
+                url: url,
+                beforeSend: function () {
+                    self.consultando = true;
+                },
+                success: function (data, textStatus, xhr) {
+                    self.bases_afectadas=data.data;
+
+                },
+                complete: function () {
+                    self.consultando = false;
+
+                }
+            });
+
         }
     }
 });

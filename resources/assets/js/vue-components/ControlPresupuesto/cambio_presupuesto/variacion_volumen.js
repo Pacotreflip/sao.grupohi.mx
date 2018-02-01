@@ -1,5 +1,5 @@
 Vue.component('variacion-volumen', {
-    props : ['filtros', 'niveles', 'id_tipo_orden', 'id_tarjeta','tarjetas'],
+    props : ['filtros', 'niveles', 'id_tipo_orden', 'id_tarjeta','tarjetas','bases_afectadas'],
     data : function () {
         return {
             form : {
@@ -7,7 +7,8 @@ Vue.component('variacion-volumen', {
                 motivo : ''
             },
             cargando : false,
-            guardando : false
+            guardando : false,
+            importes:[]
         }
     },
 
@@ -258,6 +259,37 @@ Vue.component('variacion-volumen', {
                     text: 'Por favor corrija los errores del formulario'
                 });
             });
+        },
+        mostrar_importes: function(presupesto){
+            var self = this;
+            var presupuesto=presupesto;
+
+            $('#divDetalle').fadeOut();
+
+            var url = App.host + '/control_presupuesto/cambio_presupuesto_partida/subtotalTarjeta';
+            $.ajax({
+                type: 'POST',
+                data:{
+                    presupuesto:presupuesto,
+                    agregados:self.form.partidas
+
+                },
+                url: url,
+                beforeSend: function () {
+                    self.consultando = true;
+                },
+                success: function (data, textStatus, xhr) {
+                    self.importes=data.data;
+                    $('#divDetalle').fadeIn();
+                },
+                complete: function () {
+                    self.consultando = false;
+
+                }
+            });
+
+
         }
+
     }
 });

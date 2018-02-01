@@ -32,7 +32,7 @@
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label for="cobrabilidad"><b>Tipo de Solicitud:</b></label>
-                                    <select class="form-control input-sm" v-model="form.id_tipo_orden" :disabled="!tipos_orden_filtered.length">
+                                    <select class="form-control input-sm" v-model="form.id_tipo_orden" :disabled="!tipos_orden_filtered.length" v-on:change="obtenerPresupuestos">
                                         <option value>[--SELECCIONE--]</option>
                                         <option v-for="tipo_orden in tipos_orden_filtered" :value="tipo_orden.id">@{{ tipo_orden.descripcion }}</option>
                                     </select>

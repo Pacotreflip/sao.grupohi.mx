@@ -1,4 +1,4 @@
-<variacion-volumen @reset-filtros="filtros = []" inline-template v-cloak v-if="form.id_tipo_orden == 4" :tarjetas="tarjetas" :filtros="filtros" :niveles="niveles" :id_tipo_orden="form.id_tipo_orden" :id_tarjeta="form.id_tarjeta">
+<variacion-volumen @reset-filtros="filtros = []" inline-template v-cloak v-if="form.id_tipo_orden == 4" :tarjetas="tarjetas" :filtros="filtros" :niveles="niveles" :id_tipo_orden="form.id_tipo_orden" :id_tarjeta="form.id_tarjeta" :bases_afectadas="bases_afectadas">
     <section>
         <div class="row">
             <div class="col-md-12">
@@ -96,6 +96,30 @@
                                     </td>
                                     <td><button type="button" class="btn btn-xs btn-default btn_remove_concepto" :id="concepto.id_concepto"><i class="fa fa-minus text-red"></i></button> </td>
                                 </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <ul class="nav nav-tabs">
+                                    <li v-for="(base,i) in bases_afectadas" :class="i==0?'active':''" v-on:click="mostrar_importes(base.id_base_presupuesto)"><a data-toggle="tab" >@{{base.base_datos.descripcion}}</a>
+                                    </li>
+                            </ul>
+
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-striped">
+                                <thead>
+                                <tr>
+                                    <th class="text-center">Importe conceptos seleccionados</th>
+                                    <th class="text-center">Importe conceptos no seleccionados</th>
+                                    <th class="text-center">Importe conceptos de tarjeta</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                 <tr>
+                                     <td class="text-right" >$ @{{(parseFloat(importes.total_seleccionados)).formatMoney(2,'.',',')}}</td>
+                                     <td class="text-right" >$ @{{(parseFloat(importes.total_seleccionados)).formatMoney(2,'.',',')}}</td>
+                                     <td class="text-right" >$ @{{(parseFloat(importes.total_tarjeta)).formatMoney(2,'.',',')}}</td>
+                                 </tr>
+
                                 </tbody>
                             </table>
                         </div>
