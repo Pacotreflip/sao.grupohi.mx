@@ -1,8 +1,7 @@
 <?php
 
 use Illuminate\Database\Seeder;
-use \Ghi\Domain\Core\Models\ControlPresupuesto\TipoCobrabilidad;
-use \Ghi\Domain\Core\Models\ControlPresupuesto\TipoOrden;
+
 class ControlPresupuestoFlujoOperativoSeeder extends Seeder
 {
     /**
@@ -13,61 +12,45 @@ class ControlPresupuestoFlujoOperativoSeeder extends Seeder
     public function run()
     {
 
-        DB::connection('cadeco')->table('ControlPresupuesto.tipo_cobrabilidad')->delete();
-        DB::connection('cadeco')->table('ControlPresupuesto.tipos_ordenes')->delete();
-
-        $cobrables=TipoCobrabilidad::create([
+        $cobrables = \Ghi\Domain\Core\Models\ControlPresupuesto\TipoCobrabilidad::create([
             'descripcion' => 'Cobrables',
-            'estatus' => 1,
-            'id'=>1
+            'estatus' => 1
         ]);
-        $NoCobrables=TipoCobrabilidad::create([
+        $NoCobrables = \Ghi\Domain\Core\Models\ControlPresupuesto\TipoCobrabilidad::create([
             'descripcion' => 'No Cobrables',
-            'estatus' => 1,
-             'id'=>2
-        ]);
-        $otras=TipoCobrabilidad::create([
-            'descripcion' => 'Otras',
-            'estatus' => 1,
-            'id'=>3
+            'estatus' => 1
         ]);
 
-        TipoOrden::create([
+        \Ghi\Domain\Core\Models\ControlPresupuesto\TipoOrden::create([
             'descripcion' => 'Escalatorias (Ajuste de Costos)',
-            'id_tipo_cobrabilidad'=>$cobrables->id,
-            'estatus' => 1,
-            'id'=>1
+            'id_tipo_cobrabilidad' => $cobrables->id,
+            'estatus' => 1
         ]);
-       TipoOrden::create([
+        \Ghi\Domain\Core\Models\ControlPresupuesto\TipoOrden::create([
             'descripcion' => 'Reclamos de Indirecto',
-            'id_tipo_cobrabilidad'=>$cobrables->id,
-            'estatus' => 1,
-            'id'=>2
+            'id_tipo_cobrabilidad' => $cobrables->id,
+            'estatus' => 1
         ]);
-       TipoOrden::create([
+        \Ghi\Domain\Core\Models\ControlPresupuesto\TipoOrden::create([
             'descripcion' => 'Conceptos Extraordinarios',
-            'id_tipo_cobrabilidad'=>$cobrables->id,
-            'estatus' => 1,
-            'id'=>3
+            'id_tipo_cobrabilidad' => $cobrables->id,
+            'estatus' => 1
         ]);
-       TipoOrden::create([
+        \Ghi\Domain\Core\Models\ControlPresupuesto\TipoOrden::create([
             'descripcion' => 'Variación de Volumen (Aditivas o Deductivas)',
-            'id_tipo_cobrabilidad'=>$cobrables->id,
-            'estatus' => 1,
-            'id'=>4
+            'id_tipo_cobrabilidad' => $cobrables->id,
+            'estatus' => 1
         ]);
 
-      TipoOrden::create([
+        \Ghi\Domain\Core\Models\ControlPresupuesto\TipoOrden::create([
             'descripcion' => 'Ordenes de Cambio no Cobrables',
-            'id_tipo_cobrabilidad'=>$NoCobrables->id,
-            'estatus' => 1,
-            'id'=>5
+            'id_tipo_cobrabilidad' => $NoCobrables->id,
+            'estatus' => 1
         ]);
-       TipoOrden::create([
+        \Ghi\Domain\Core\Models\ControlPresupuesto\TipoOrden::create([
             'descripcion' => 'Ordenes de Cambio de Insumos',
-            'id_tipo_cobrabilidad'=>$NoCobrables->id,
-            'estatus' => 1,
-            'id'=>6
+            'id_tipo_cobrabilidad' => $NoCobrables->id,
+            'estatus' => 1
         ]);
     }
 }
