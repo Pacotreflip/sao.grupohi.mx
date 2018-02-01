@@ -14,4 +14,8 @@ class TipoCobrabilidad extends Model
         'estatus'
     ];
 
+    public function __toString()
+    {
+        return $this->descripcion;
+    }
 }
