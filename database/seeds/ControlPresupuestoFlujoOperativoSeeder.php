@@ -12,7 +12,8 @@ class ControlPresupuestoFlujoOperativoSeeder extends Seeder
      */
     public function run()
     {
-        $cobrables=TipoCobrabilidad::create([
+
+        $cobrables = \Ghi\Domain\Core\Models\ControlPresupuesto\TipoCobrabilidad::create([
             'descripcion' => 'Cobrables',
             'estatus' => 1,
             'id'=>1
