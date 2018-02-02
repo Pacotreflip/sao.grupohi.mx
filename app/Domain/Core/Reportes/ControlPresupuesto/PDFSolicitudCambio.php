@@ -190,7 +190,7 @@ class PDFSolicitudCambio extends Rotation {
 
             $this->SetFont('Arial', 'B', $this->txtSeccionTam);
             $this->SetXY($this->GetX(), $this->GetY());
-            $this->Cell($this->WidthTotal, 0.7, utf8_decode('panda'), 'TRLB', 0, 'C');
+            $this->Cell($this->WidthTotal, 0.7, utf8_decode('PRESUPUESTO DE '. $base->baseDatos->descripcion), 'TRLB', 0, 'C');
 
             $this->SetXY($this->GetX(), $this->GetY() + 0.5);
             $this->SetWidths(array(0));
@@ -211,13 +211,14 @@ class PDFSolicitudCambio extends Rotation {
             $this->SetWidths(array(0.02 * $this->WidthTotal, 0.04 * $this->WidthTotal, 0.54 * $this->WidthTotal, 0.05 * $this->WidthTotal, 0.05 * $this->WidthTotal, 0.05 * $this->WidthTotal, 0.05 * $this->WidthTotal, 0.05 * $this->WidthTotal, 0.05 * $this->WidthTotal, 0.05 * $this->WidthTotal, 0.05 * $this->WidthTotal));
             $this->Row(array('#', 'No. Tarjeta', utf8_decode("Descripción"), utf8_decode("Unidad"), utf8_decode("Precio Unitario"), utf8_decode("Volúmen Anterior"), utf8_decode("Variación Volúmen"), utf8_decode("Volúmen nuevo"), utf8_decode("Importe Anterior"), utf8_decode("Variación Importe"), utf8_decode("Importe Nuevo") ));
 
-            foreach ($this->solicitud->partidas as $index => $p)
+            $contador = 1;
+            foreach ($this->solicitud->partidas as $i => $p)
             {
                 $partida = $p->find($p->id);
                 $conceptoBase = DB::connection('cadeco')->table($base->baseDatos->base_datos . ".dbo.conceptos")->where('clave_concepto', '=', $partida->concepto->clave_concepto)->first();
                 $items = DB::connection('cadeco')->table($base->baseDatos->base_datos . ".dbo.conceptos")->orderBy('nivel', 'ASC')->where('id_obra', '=', Context::getId())->where('nivel', 'like', $conceptoBase->nivel . '%')->get();
 
-                $this->SetFont('Arial', '', 6);
+            $this->SetFont('Arial', '', 6);
             $this->SetFills(array('255,255,255', '255,255,255', '255,255,255', '255,255,255', '255,255,255', '255,255,255', '255,255,255', '255,255,255', '255,255,255', '255,255,255', '255,255,255'));
             $this->SetTextColors(array('0,0,0', '0,0,0', '0,0,0', '0,0,0', '0,0,0', '0,0,0', '0,0,0', '0,0,0', '0,0,0', '0,0,0', '0,0,0'));
             $this->SetHeights(array(0.35));
@@ -226,8 +227,6 @@ class PDFSolicitudCambio extends Rotation {
 
             $this->encola = 'partidas';
 
-
-                $index = 1;
                 foreach ($items as $index => $item) {
 
                     $nivel_padre = $partida->concepto->nivel;
@@ -238,9 +237,9 @@ class PDFSolicitudCambio extends Rotation {
                     $monto_nuevo = $item->monto_presupuestado * $factor;
 
                     $this->Row([
-                        '1',
+                        $contador++,
                         '999', // $item['numTarjeta'],
-                        '', // str_repeat("______", $profundidad) . ' ' . $item->descripcion,
+                        str_repeat("______", $profundidad) . ' ' . utf8_decode($item->descripcion),
                         utf8_decode($item->unidad),
                         number_format($item->precio_unitario, 2, '.', ','),
                         number_format($item->cantidad_presupuestada, 2, '.', ','),
@@ -315,7 +314,7 @@ class PDFSolicitudCambio extends Rotation {
         $this->SetFillColor(180, 180, 180);
 
 
-        $this->SetY($this->GetPageHeight() - 4);
+        $this->SetY($this->GetPageHeight() - 3.5);
         $firmasWidth = 6.5;
         $firmaX1 = ($this->GetPageWidth() / 3) - ($firmasWidth / 2);
         $firmaX2 = ($this->GetPageWidth() / 1.50) - ($firmasWidth / 2);
