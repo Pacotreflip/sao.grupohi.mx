@@ -149,14 +149,18 @@ Vue.component('variacion-insumos', {
                         $.each(self.form.partidas, function(index, partida) {
                             if(partida.conceptos.MATERIALES.insumos.length === response.conceptos.MATERIALES.insumos.length){
                                 $.each(partida.conceptos.MATERIALES.insumos, function (index, insumo) {
-                                    var temp1 = insumo.cantidad_presupuestada / partida.cobrable.cantidad_presupuestada
-                                    var temp2 = response.conceptos.MATERIALES.insumos[index].cantidad_presupuestada / response.cobrable.cantidad_presupuestada
-                                    alert(temp1 + '  -  ' + temp2);
+                                    var temp1 = Math.round(insumo.cantidad_presupuestada / partida.cobrable.cantidad_presupuestada)
+                                    var temp2 = Math.round(response.conceptos.MATERIALES.insumos[index].cantidad_presupuestada / response.cobrable.cantidad_presupuestada)
+                                    if(temp1 != temp2){
+                                        alert('Pandita diferente');
+                                    }
                                 });
                                 alert(partida.conceptos.MATERIALES.insumos.length);
                             }else{
                                 alert('pandita length 0');
                             }
+
+
 
                         });
                     }
