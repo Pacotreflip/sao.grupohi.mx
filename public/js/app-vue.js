@@ -22424,8 +22424,7 @@ Vue.component('select2', {
             width: '100%',
             allowClear: true,
             placeholder: {
-                id: '',
-                text: vm.placeholder
+                id: ''
             }
         }).val(this.value).trigger('change')
         // emit event on change.
@@ -22444,8 +22443,7 @@ Vue.component('select2', {
                 data: _options,
                 width: '100%',
                 placeholder: {
-                    id: "",
-                    text: vm.placeholder
+                    id: ""
                 }
             });
         }
