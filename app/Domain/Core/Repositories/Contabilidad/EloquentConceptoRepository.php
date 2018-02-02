@@ -135,9 +135,10 @@ class EloquentConceptoRepository implements ConceptoRepository
         $query->where('path.filtro3','Like','%COSTO DIRECTO%');
 
 
+
         $query->join('ControlPresupuesto.concepto_tarjeta', 'dbo.conceptos.id_concepto', '=', 'ControlPresupuesto.concepto_tarjeta.id_concepto')
             ->join('ControlPresupuesto.tarjeta', 'ControlPresupuesto.concepto_tarjeta.id_tarjeta', '=', 'ControlPresupuesto.tarjeta.id')
-            ->where('ControlPresupuesto.tarjeta.id', '=', $data['id_tarjeta']);
+            ->where('ControlPresupuesto.tarjeta.id', '=', $data['id_tarjeta'] == '' ? null : $data['id_tarjeta']);
 
 
         if(isset($data['order'])) {
