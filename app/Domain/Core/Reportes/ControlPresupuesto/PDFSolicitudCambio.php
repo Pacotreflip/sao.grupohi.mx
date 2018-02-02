@@ -196,32 +196,56 @@ class PDFSolicitudCambio extends Rotation {
         $this->Row(array('#', 'No. Tarjeta', utf8_decode("Descripción"), utf8_decode("Unidad"), utf8_decode("Precio Unitario"), utf8_decode("Volúmen Anterior"), utf8_decode("Variación Volúmen"), utf8_decode("Volúmen nuevo"), utf8_decode("Importe Anterior"), utf8_decode("Variación Importe"), utf8_decode("Importe Nuevo") ));
 
 
-        foreach ($this->solicitud->partidas as $index => $item) {
-            $this->SetFont('Arial', '', 6);
-            $this->SetFills(array('255,255,255', '255,255,255', '255,255,255', '255,255,255', '255,255,255', '255,255,255', '255,255,255', '255,255,255', '255,255,255', '255,255,255', '255,255,255'));
-            $this->SetTextColors(array('0,0,0', '0,0,0', '0,0,0', '0,0,0', '0,0,0', '0,0,0', '0,0,0', '0,0,0', '0,0,0', '0,0,0', '0,0,0'));
-            $this->SetHeights(array(0.35));
-            $this->SetAligns(array('L', 'L', 'L', 'L', 'R', 'R', 'R', 'R', 'R', 'R', 'R'));
-            $this->SetWidths(array(0.02 * $this->WidthTotal, 0.04 * $this->WidthTotal, 0.54 * $this->WidthTotal, 0.05 * $this->WidthTotal, 0.05 * $this->WidthTotal, 0.05 * $this->WidthTotal, 0.05 * $this->WidthTotal, 0.05 * $this->WidthTotal, 0.05 * $this->WidthTotal, 0.05 * $this->WidthTotal, 0.05 * $this->WidthTotal));
 
-            $importe_anterior = $item->concepto->precio_unitario * $item->cantidad_presupuestada_original;
-            $importe_nuevo = $item->concepto->precio_unitario * ($item->cantidad_presupuestada_original + $item->variacion_volumen);
-            $this->encola = 'partidas';
 
-            $this->Row([
-                999,//$index + 1,
-                $item->concepto->numero_tarjeta,
-                utf8_decode("bla bla"),
-                "Pieza",//$item->concepto->unidad,
-                number_format($item->cantidad_presupuestada_original, 2, '.', ','),
-                number_format($item->variacion_volumen, 2, '.', ','),
-                number_format($item->cantidad_presupuestada_nueva, 2, '.', ','),
-                number_format($item->concepto->precio_unitario, 2, '.', ','),
-                number_format($importe_anterior, 2, '.', ','),
-                number_format($importe_nuevo, 2, '.', ','),
-                number_format($importe_nuevo, 2, '.', ','),
-            ]);
+for($a=0;$a<50;$a++) {
+    foreach ($this->solicitud->partidas as $index => $p) {
+
+        $index = 1;
+        $this->SetFont('Arial', '', 6);
+        $this->SetFills(array('255,255,255', '255,255,255', '255,255,255', '255,255,255', '255,255,255', '255,255,255', '255,255,255', '255,255,255', '255,255,255', '255,255,255', '255,255,255'));
+        $this->SetTextColors(array('0,0,0', '0,0,0', '0,0,0', '0,0,0', '0,0,0', '0,0,0', '0,0,0', '0,0,0', '0,0,0', '0,0,0', '0,0,0'));
+        $this->SetHeights(array(0.35));
+        $this->SetAligns(array('L', 'L', 'L', 'L', 'R', 'R', 'R', 'R', 'R', 'R', 'R'));
+        $this->SetWidths(array(0.02 * $this->WidthTotal, 0.04 * $this->WidthTotal, 0.54 * $this->WidthTotal, 0.05 * $this->WidthTotal, 0.05 * $this->WidthTotal, 0.05 * $this->WidthTotal, 0.05 * $this->WidthTotal, 0.05 * $this->WidthTotal, 0.05 * $this->WidthTotal, 0.05 * $this->WidthTotal, 0.05 * $this->WidthTotal));
+
+        $this->encola = 'partidas';
+
+        $baseDatos = [];
+        $data = [];
+        $tipoOrden = 0;
+
+        if ($tipoOrden == 0) {
+            $baseDatos = AfectacionOrdenesPresupuesto::where('id_tipo_orden', '=', $p['id_tipo_orden'])->with('baseDatos')->get();
+            $tipoOrden = 1;
         }
+        foreach ($baseDatos as $base) {
+
+            // dd($base);
+            $items = $this->partidas->mostrarAfectacionPresupuesto(['id_partida' => $p['id'], 'presupuesto' => $base->id_base_presupuesto]);
+
+            foreach ($items as $item) {
+                $this->Row([
+                    $index + 1,
+                    999, // $item['numTarjeta'],
+                    utf8_decode($item['descripcion']),
+                    $item['unidad'],
+                    number_format($item['pu'], 2, '.', ','),
+                    number_format($item['cantidadPresupuestada'], 2, '.', ','),
+                    number_format($item['variacion_volumen'], 2, '.', ','),
+                    number_format($item['cantidadNueva'], 2, '.', ','),
+                    number_format($item['monto_presupuestado'], 2, '.', ','),
+                    number_format($item['variacion_importe'], 2, '.', ','),
+                    number_format($item['monto_nuevo'], 2, '.', ','),
+                ]);
+            }
+
+
+        }
+
+
+    }
+}
         $this->encola = '';
     }
     function motivo(){
@@ -327,16 +351,6 @@ class PDFSolicitudCambio extends Rotation {
         $this->AliasNbPages();
         $this->AddPage();
         $this->SetAutoPageBreak(true,4);
-
-        foreach ($this->solicitud->partidas()->get()->toArray() as $p)
-        {
-            $baseDatos = AfectacionOrdenesPresupuesto::where('id_tipo_orden', '=', $p['id_tipo_orden'])->with('baseDatos')->get();
-
-            foreach ($baseDatos as $base) {
-                $items = $this->partidas->mostrarAfectacionPresupuesto(['id_partida' => $p['id'], 'presupuesto' => $base['descripcion']]);
-                dd($items);
-            }
-        }
 
         $this->items();
         $this->Ln();
