@@ -11,7 +11,10 @@ namespace Ghi\Domain\Core\Reportes\ControlPresupuesto;
 use Carbon\Carbon;
 use Ghi\Core\Facades\Context;
 
+use Ghi\Domain\Core\Contracts\ControlPresupuesto\SolicitudCambioPartidaRepository;
 use Ghi\Domain\Core\Models\Concepto;
+use Ghi\Domain\Core\Models\ControlPresupuesto\AfectacionOrdenesPresupuesto;
+use Ghi\Domain\Core\Models\ControlPresupuesto\BasePresupuesto;
 use Ghi\Domain\Core\Models\ControlPresupuesto\SolicitudCambio;
 use Ghidev\Fpdf\Rotation;
 use Ghi\Domain\Core\Models\Obra;
@@ -33,12 +36,17 @@ class PDFSolicitudCambio extends Rotation {
      */
     private $solicitud;
     protected $obra;
+    /**
+     * @var SolicitudCambioPartidaRepository
+     */
+    private $partidas;
 
     /**
      * Solicitudes constructor.
-     * @param SolicitudCambioRepository $solicitud
+     * @param SolicitudCambio|SolicitudCambioRepository $solicitud
+     * @param SolicitudCambioPartidaRepository $partidas
      */
-    public function __construct(SolicitudCambio $solicitud)
+    public function __construct(SolicitudCambio $solicitud, SolicitudCambioPartidaRepository $partidas)
     {
         parent::__construct('L', 'cm', 'A4');
 
@@ -52,6 +60,7 @@ class PDFSolicitudCambio extends Rotation {
         $this->solicitud = $solicitud;
 
         $this->obra = Obra::find(Context::getId());
+        $this->partidas = $partidas;
     }
 
     function Header() {
@@ -319,12 +328,15 @@ class PDFSolicitudCambio extends Rotation {
         $this->AddPage();
         $this->SetAutoPageBreak(true,4);
 
-        $partidas = $this->solicitud->partidas()->get()->toArray();
-        $ids = [];
-        foreach ($partidas as $p)
-            $ids[] = $p['id_concepto'];
+        foreach ($this->solicitud->partidas()->get()->toArray() as $p)
+        {
+            $baseDatos = AfectacionOrdenesPresupuesto::where('id_tipo_orden', '=', $p['id_tipo_orden'])->with('baseDatos')->get();
 
-        $claves = Concepto::select('clave_concepto')->whereIn('id_concepto', $ids)->get();
+            foreach ($baseDatos as $base) {
+                $items = $this->partidas->mostrarAfectacionPresupuesto(['id_partida' => $p['id'], 'presupuesto' => $base['descripcion']]);
+                dd($items);
+            }
+        }
 
         $this->items();
         $this->Ln();

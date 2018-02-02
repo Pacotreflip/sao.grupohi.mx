@@ -125,7 +125,7 @@ class CambioPresupuestoController extends Controller
     {
         $solicitud = $this->solicitud->find($id);
 
-        $pdf = new PDFSolicitudCambio($solicitud);
+        $pdf = new PDFSolicitudCambio($solicitud, $this->partidas);
         $pdf->create();
     }
 
