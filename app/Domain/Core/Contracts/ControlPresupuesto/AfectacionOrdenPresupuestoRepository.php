@@ -24,4 +24,5 @@ interface AfectacionOrdenPresupuestoRepository
      * @return $this
      */
     public function with($relations);
+
 }

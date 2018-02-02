@@ -137,8 +137,7 @@ class CambioPresupuestoController extends Controller
         return view('control_presupuesto.cambio_presupuesto.show.variacion_volumen')
             ->with('solicitud', $solicitud)
             ->with('cobrabilidad', $solicitud->tipoOrden->cobrabilidad)
-            ->with('presupuestos',$presupuestos)
-            ->with('presupuestoInicial',$presupuestos);
+            ->with('presupuestos',$presupuestos);
     }
 
 
@@ -188,6 +187,4 @@ class CambioPresupuestoController extends Controller
             return $item;
         });
     }
-
-
 }

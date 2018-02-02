@@ -1,17 +1,13 @@
-Vue.component('variacion-volumen', {
-    props : ['filtros', 'niveles', 'id_tipo_orden', 'id_tarjeta','tarjetas','bases_afectadas'],
+Vue.component('variacion-insumos', {
+    props : ['filtros', 'niveles', 'id_tipo_orden', 'id_tarjeta','tarjetas'],
     data : function () {
         return {
-            datatable_data : {},
             form : {
                 partidas : [],
-                motivo : '',
-                id_tarjeta : '',
+                motivo : ''
             },
             cargando : false,
-            guardando : false,
-            consultando : false,
-            importes:[]
+            guardando : false
         }
     },
 
@@ -22,21 +18,15 @@ Vue.component('variacion-volumen', {
                 motivo: this.form.motivo,
                 partidas: []
             };
+
             this.form.partidas.forEach(function (value) {
                 res.partidas.push({
                     id_concepto : value.id_concepto,
                     cantidad_presupuestada_original : value.cantidad_presupuestada,
-                    variacion_volumen : value.variacion_volumen
+                    cantidad_presupuestada_nueva : value.cantidad_presupuestada_nueva
                 });
             });
             return res;
-        }
-    },
-
-    watch : {
-        id_tarjeta : function () {
-            this.get_conceptos();
-            this.form.partidas = []
         }
     },
 
@@ -52,17 +42,12 @@ Vue.component('variacion-volumen', {
             self.addConcepto(id);
         }).on('click', '.btn_remove_concepto', function() {
             var id = $(this).attr('id');
-           self.removeConcepto(id);
-            if(self.form.partidas.length>0){
-                self.mostrar_importes_inicial();
-            }
-
+            self.removeConcepto(id);
         });
 
         $('#conceptos_table').DataTable({
             "processing": true,
             "serverSide": true,
-            "paging" : false,
             "ordering" : true,
             "searching" : false,
             "ajax": {
@@ -149,7 +134,7 @@ Vue.component('variacion-volumen', {
         addConcepto : function (id) {
             var self = this;
             $.ajax({
-                url : App.host + '/conceptos/' + id,
+                url : App.host + '/conceptos/' + id + '/getInsumos',
                 type : 'GET',
                 beforeSend : function () {
                     self.guardando = true;
@@ -158,7 +143,24 @@ Vue.component('variacion-volumen', {
 
                 },
                 success : function (response) {
-                    self.form.partidas.push(response);
+                    if(jQuery.isEmptyObject( self.form.partidas)){
+                        self.form.partidas.push(response);
+                    }else{
+                        $.each(self.form.partidas, function(index, partida) {
+                            if(partida.conceptos.MATERIALES.insumos.length === response.conceptos.MATERIALES.insumos.length){
+                                $.each(partida.conceptos.MATERIALES.insumos, function (index, insumo) {
+                                    var temp1 = insumo.cantidad_presupuestada / partida.cobrable.cantidad_presupuestada
+                                    var temp2 = response.conceptos.MATERIALES.insumos[index].cantidad_presupuestada / response.cobrable.cantidad_presupuestada
+                                    alert(temp1 + '  -  ' + temp2);
+                                });
+                                alert(partida.conceptos.MATERIALES.insumos.length);
+                            }else{
+                                alert('pandita length 0');
+                            }
+
+                        });
+                    }
+
                     $('#'+id).html('<i class="fa fa-minus text-red"></i>');
                     $('#'+id).removeClass('btn_add_concepto');
                     $('#'+id).addClass('btn_remove_concepto');
@@ -237,7 +239,11 @@ Vue.component('variacion-volumen', {
                         title : '¡Correcto!',
                         html : 'Solicitud Guardada con Número de Folio <b>' + response.numero_folio + '</b>'
                     }).then(function () {
-                        window.location.href = App.host + '/control_presupuesto/cambio_presupuesto/' +response.id
+                        $('#conceptos_modal').modal('hide');
+                        self.form.partidas = [];
+                        self.$emit('reset-filtros');
+                        Vue.set(self.form, 'motivo', '');
+                        $('#conceptos_table').DataTable().ajax.reload();
                     });
                 },
                 complete : function () {
@@ -260,55 +266,15 @@ Vue.component('variacion-volumen', {
         validateForm: function(scope, funcion) {
             this.$validator.validateAll(scope).then(() => {
                 if(funcion == 'save_solicitud') {
-                    this.confirmSave();
-                }
-            }).catch(() => {
+                this.confirmSave();
+            }
+        }).catch(() => {
                 swal({
-                    type: 'warning',
-                    title: 'Advertencia',
-                    text: 'Por favor corrija los errores del formulario'
-                });
-            });
-        },
-
-        mostrar_importes_inicial:function () {
-
-            $('.nav-tabs li').removeClass('active');
-            $('.nav-tabs li:first').addClass("active");
-
-            var self = this;
-            var presupuesto=self.bases_afectadas[0].id_base_presupuesto;
-            this.mostrar_importes(presupuesto);
-        },
-        mostrar_importes: function(presupesto){
-            var self = this;
-            var presupuesto=presupesto;
-
-            $('#divDetalle').fadeOut();
-            var url = App.host + '/control_presupuesto/cambio_presupuesto_partida/subtotalTarjeta';
-            $.ajax({
-                type: 'POST',
-                data:{
-                    presupuesto:presupuesto,
-                    agregados:self.form.partidas
-
-                },
-                url: url,
-                beforeSend: function () {
-                    self.consultando = true;
-                },
-                success: function (data, textStatus, xhr) {
-                    self.importes=data.data;
-                    $('#divDetalle').fadeIn();
-                },
-                complete: function () {
-                    self.consultando = false;
-
-                }
-            });
-
-
+                         type: 'warning',
+                         title: 'Advertencia',
+                         text: 'Por favor corrija los errores del formulario'
+                     });
+        });
         }
-
     }
 });

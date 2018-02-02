@@ -60,4 +60,6 @@ class EloquentAfectacionOrdenPresupuestoRepository implements AfectacionOrdenPre
         $this->model = $this->model->with($relations);
         return $this;
     }
+
+
 }
