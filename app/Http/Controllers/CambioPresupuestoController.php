@@ -4,6 +4,7 @@ namespace Ghi\Http\Controllers;
 
 use Dingo\Api\Routing\Helpers;
 use Ghi\Domain\Core\Contracts\Contabilidad\ConceptoRepository;
+use Ghi\Domain\Core\Contracts\ControlPresupuesto\AfectacionOrdenPresupuestoRepository;
 use Ghi\Domain\Core\Contracts\ControlPresupuesto\BasePresupuestoRepository;
 use Ghi\Domain\Core\Contracts\ControlPresupuesto\PresupuestoRepository;
 use Ghi\Domain\Core\Contracts\ControlPresupuesto\SolicitudCambioRepository;
@@ -30,8 +31,9 @@ class CambioPresupuestoController extends Controller
     private $basePresupuesto;
     private $solicitud;
     private $partidas;
+    private $afectacion;
 
-    public function __construct(PresupuestoRepository $presupuesto, ConceptoRepository $concepto, BasePresupuestoRepository $basePresupuesto, SolicitudCambioRepository $solicitud, SolicitudCambioPartidaRepository $partidas)
+    public function __construct(PresupuestoRepository $presupuesto, ConceptoRepository $concepto, BasePresupuestoRepository $basePresupuesto, SolicitudCambioRepository $solicitud, SolicitudCambioPartidaRepository $partidas,AfectacionOrdenPresupuestoRepository $afectacion)
     {
         parent::__construct();
 
@@ -43,6 +45,7 @@ class CambioPresupuestoController extends Controller
         $this->concepto = $concepto;
         $this->solicitud = $solicitud;
         $this->partidas = $partidas;
+        $this->afectacion=$afectacion;
     }
 
     public function index()
@@ -90,7 +93,7 @@ class CambioPresupuestoController extends Controller
 
         $repetidas = $this->partidas->findIn($conceptos_ids);
 
-        if (is_null($repetidas))
+        if (!$repetidas->isEmpty())
             return response()->json(
                 [
                     'repetidas' => $repetidas
@@ -129,41 +132,12 @@ class CambioPresupuestoController extends Controller
     public function show($id)
     {
         $solicitud = $this->solicitud->with(['tipoOrden', 'userRegistro', 'estatus', 'partidas', 'partidas.concepto','partidas.numeroTarjeta'])->find($id);
-$afectaciones=array();
-        foreach ($solicitud->partidas as $partida) {
-            $items = Concepto::orderBy('nivel', 'ASC')->where('nivel', 'like', $partida->concepto->nivel . '%')->get();
-            $detalle = array();
-            foreach ($items as $index => $item) {
-
-                $nivel_padre = $partida->concepto->nivel;
-                $nivel_hijo = $item->nivel;
-                $profundidad = (strlen($nivel_hijo) - strlen($nivel_padre)) / 4;
-                $factor = $partida->cantidad_presupuestada_nueva / $partida->concepto->cantidad_presupuestada;
-                $cantidad_nueva = $item->cantidad_presupuestada * $factor;
-                $monto_nuevo = $item->monto_presupuestado * $factor;
-
-                $row=  array( 'index'=>$index + 1,
-                    'numTarjeta'=>$item->numero_tarjeta,
-                    'descripcion'=> str_repeat("______", $profundidad).' '.$item->descripcion,
-                    'unidad'=>utf8_decode($item->unidad),
-                    'cantidadPresupuestada'=>number_format($item->cantidad_presupuestada, 2, '.', ','),
-                    'cantidadNueva'=>number_format($cantidad_nueva, 2, '.', ','),
-                    'monto_presupuestado'=>'$' . number_format($item->monto_presupuestado, 2, '.', ','),
-                    'monto_nuevo'=>'$' . number_format($monto_nuevo, 2, '.', ','));
-
-              array_push($detalle,$row);
-            }
-
-            $detalle=array('partida'=>$partida,'detalle'=>$detalle);
-          array_push($afectaciones,$detalle);
-        }
-
-//dd($afectaciones);
+        $presupuestos=$this->afectacion->with('baseDatos')->getBy('id_tipo_orden','=',$solicitud->id_tipo_orden);
 
         return view('control_presupuesto.cambio_presupuesto.show.variacion_volumen')
             ->with('solicitud', $solicitud)
             ->with('cobrabilidad', $solicitud->tipoOrden->cobrabilidad)
-            ->with('afectaciones',(object) $afectaciones);
+            ->with('presupuestos',$presupuestos);
     }
 
 

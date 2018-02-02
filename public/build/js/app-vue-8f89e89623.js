@@ -19135,6 +19135,7 @@ Vue.component('cambio-presupuesto-create', {
             tipos_orden: [],
             tarjetas: [],
             cargando: false,
+            bases_afectadas: [],
             niveles: [{ nombre: 'Nivel 1', numero: 1 }, { nombre: 'Nivel 2', numero: 2 }, { nombre: 'Nivel 3', numero: 3 }, { nombre: 'Sector', numero: 4 }, { nombre: 'Cuadrante', numero: 5 }, { nombre: 'Especialidad', numero: 6 }, { nombre: 'Partida', numero: 7 }, { nombre: 'Sub Partida o Centa de costo', numero: 8 }, { nombre: 'Concepto', numero: 9 }, { nombre: 'Nivel 10', numero: 10 }, { nombre: 'Nivel 11', numero: 11 }]
         };
     },
@@ -19257,6 +19258,31 @@ Vue.component('cambio-presupuesto-create', {
                     text: 'Por favor corrija los errores del formulario'
                 });
             });
+        },
+        obtenerPresupuestos: function obtenerPresupuestos() {
+            var self = this;
+
+            var tipoOrden = self.form.id_tipo_orden;
+
+            $('#divDetalle').fadeOut();
+
+            var url = App.host + '/control_presupuesto/afectacion_presupuesto/getBasesAfectadas';
+            $.ajax({
+                type: 'POST',
+                data: {
+                    tipo_orden: tipoOrden
+                },
+                url: url,
+                beforeSend: function beforeSend() {
+                    self.consultando = true;
+                },
+                success: function success(data, textStatus, xhr) {
+                    self.bases_afectadas = data.data;
+                },
+                complete: function complete() {
+                    self.consultando = false;
+                }
+            });
         }
     }
 });
@@ -19361,7 +19387,7 @@ Vue.component('cambio-presupuesto-index', {
 'use strict';
 
 Vue.component('show-variacion-volumen', {
-    props: ['solicitud', 'cobrabilidad'],
+    props: ['solicitud', 'cobrabilidad', 'presupuestos'],
     data: function data() {
         return {
             form: {
@@ -19370,13 +19396,20 @@ Vue.component('show-variacion-volumen', {
             },
             cargando: false,
             rechazando: false,
-            autorizando: false
+            autorizando: false,
+            consultando: false,
+            consultandoImportes: false,
+            partidas: [],
+            importes: [],
+            partida_id: 0
         };
     },
 
     computed: {},
 
-    mounted: function mounted() {},
+    mounted: function mounted() {
+        this.mostrar_importes_inicial();
+    },
 
     methods: {
 
@@ -19449,7 +19482,7 @@ Vue.component('show-variacion-volumen', {
                         confirmButtonText: "Ok",
                         closeOnConfirm: false
                     }).then(function () {});
-                    window.location.reload(true);
+                    // window.location.reload(true);
                 },
                 complete: function complete() {
                     self.autorizando = false;
@@ -19491,6 +19524,94 @@ Vue.component('show-variacion-volumen', {
                     self.rechazando = false;
                     $('#btn_rechazar').prop('enabled', true);
                     $('#btn_autorizar').prop('enabled', true);
+                }
+            });
+        },
+
+        mostrar_detalle_partida: function mostrar_detalle_partida(id) {
+            var self = this;
+            var partida = id;
+            self.partida_id = id;
+            var presupuesto = self.presupuestos[0].base_datos.id;
+            $('#divDetalle').fadeOut();
+
+            var url = App.host + '/control_presupuesto/cambio_presupuesto_partida/detallePresupuesto';
+            $.ajax({
+                type: 'POST',
+                data: {
+                    id_partida: partida,
+                    presupuesto: presupuesto
+                },
+                url: url,
+                beforeSend: function beforeSend() {
+                    self.consultando = true;
+                },
+                success: function success(data, textStatus, xhr) {
+                    self.partidas = data.data;
+                    $('#divDetalle').fadeIn();
+                },
+                complete: function complete() {
+                    self.consultando = false;
+                }
+            });
+        },
+
+        mostrar_importes_inicial: function mostrar_importes_inicial() {
+            var self = this;
+            var presupuesto = self.presupuestos[0].id_base_presupuesto;
+            this.mostrar_importes(presupuesto);
+        },
+        mostrar_importes: function mostrar_importes(presupesto) {
+            var self = this;
+            var presupuesto = presupesto;
+
+            $('#divDetalleImporte').fadeOut();
+
+            var url = App.host + '/control_presupuesto/cambio_presupuesto_partida/subtotalTarjetaShow';
+            $.ajax({
+                type: 'POST',
+                data: {
+                    presupuesto: presupuesto,
+                    id_solicitud: self.solicitud.id
+
+                },
+                url: url,
+                beforeSend: function beforeSend() {
+                    self.consultandoImportes = true;
+                },
+                success: function success(data, textStatus, xhr) {
+                    self.importes = data.data;
+                    $('#divDetalleImporte').fadeIn();
+                },
+                complete: function complete() {
+                    self.consultandoImportes = false;
+                }
+            });
+        },
+
+        mostrar_detalle_presupuesto: function mostrar_detalle_presupuesto(idPresupuesto) {
+            var self = this;
+            var partida = self.partida_id;
+            var presupuesto = idPresupuesto;
+            $('#divDetalle').fadeOut();
+
+            var url = App.host + '/control_presupuesto/cambio_presupuesto_partida/detallePresupuesto';
+            $.ajax({
+                type: 'POST',
+                data: {
+                    id_partida: partida,
+                    presupuesto: presupuesto
+                },
+                url: url,
+                beforeSend: function beforeSend() {
+                    self.consultando = true;
+                },
+                success: function success(data, textStatus, xhr) {
+                    self.partidas = data.data;
+                    $('#divDetalle').fadeIn();
+                },
+                complete: function complete() {
+                    self.consultando = false;
                 }
             });
         }
@@ -19771,15 +19892,19 @@ Vue.component('variacion-insumos', {
 'use strict';
 
 Vue.component('variacion-volumen', {
-    props: ['filtros', 'niveles', 'id_tipo_orden', 'id_tarjeta', 'tarjetas'],
+    props: ['filtros', 'niveles', 'id_tipo_orden', 'id_tarjeta', 'tarjetas', 'bases_afectadas'],
     data: function data() {
         return {
+            datatable_data: {},
             form: {
                 partidas: [],
-                motivo: ''
+                motivo: '',
+                id_tarjeta: ''
             },
             cargando: false,
-            guardando: false
+            guardando: false,
+            consultando: false,
+            importes: []
         };
     },
 
@@ -19790,15 +19915,21 @@ Vue.component('variacion-volumen', {
                 motivo: this.form.motivo,
                 partidas: []
             };
-
             this.form.partidas.forEach(function (value) {
                 res.partidas.push({
                     id_concepto: value.id_concepto,
                     cantidad_presupuestada_original: value.cantidad_presupuestada,
-                    cantidad_presupuestada_nueva: value.cantidad_presupuestada_nueva
+                    variacion_volumen: value.variacion_volumen
                 });
             });
             return res;
+        }
+    },
+
+    watch: {
+        id_tarjeta: function id_tarjeta() {
+            this.get_conceptos();
+            this.form.partidas = [];
         }
     },
 
@@ -19815,11 +19946,15 @@ Vue.component('variacion-volumen', {
         }).on('click', '.btn_remove_concepto', function () {
             var id = $(this).attr('id');
             self.removeConcepto(id);
+            if (self.form.partidas.length > 0) {
+                self.mostrar_importes_inicial();
+            }
         });
 
         $('#conceptos_table').DataTable({
             "processing": true,
             "serverSide": true,
+            "paging": false,
             "ordering": true,
             "searching": false,
             "ajax": {
@@ -19976,11 +20111,7 @@ Vue.component('variacion-volumen', {
                         title: '¡Correcto!',
                         html: 'Solicitud Guardada con Número de Folio <b>' + response.numero_folio + '</b>'
                     }).then(function () {
-                        $('#conceptos_modal').modal('hide');
-                        self.form.partidas = [];
-                        self.$emit('reset-filtros');
-                        Vue.set(self.form, 'motivo', '');
-                        $('#conceptos_table').DataTable().ajax.reload();
+                        window.location.href = App.host + '/control_presupuesto/cambio_presupuesto/' + response.id;
                     });
                 },
                 complete: function complete() {
@@ -20016,7 +20147,44 @@ Vue.component('variacion-volumen', {
                     text: 'Por favor corrija los errores del formulario'
                 });
             });
+        },
+
+        mostrar_importes_inicial: function mostrar_importes_inicial() {
+
+            $('.nav-tabs li').removeClass('active');
+            $('.nav-tabs li:first').addClass("active");
+
+            var self = this;
+            var presupuesto = self.bases_afectadas[0].id_base_presupuesto;
+            this.mostrar_importes(presupuesto);
+        },
+        mostrar_importes: function mostrar_importes(presupesto) {
+            var self = this;
+            var presupuesto = presupesto;
+
+            $('#divDetalle').fadeOut();
+            var url = App.host + '/control_presupuesto/cambio_presupuesto_partida/subtotalTarjeta';
+            $.ajax({
+                type: 'POST',
+                data: {
+                    presupuesto: presupuesto,
+                    agregados: self.form.partidas
+
+                },
+                url: url,
+                beforeSend: function beforeSend() {
+                    self.consultando = true;
+                },
+                success: function success(data, textStatus, xhr) {
+                    self.importes = data.data;
+                    $('#divDetalle').fadeIn();
+                },
+                complete: function complete() {
+                    self.consultando = false;
+                }
+            });
         }
+
     }
 });
 
@@ -20383,6 +20551,24 @@ Vue.component('comprobante-fondo-fijo-create', {
             };
 
             $('#jstree').on("after_open.jstree", function (e, data) {
+
+                var $item = $('#' + data.node.a_attr.id),
+                    $ul = $item.next('ul'),
+                    $anchor = $ul.find('a'),
+                    $i = $anchor.find('i');
+
+                // Revisa si el padre puede ser seleccionable
+                if ($i.attr('class').indexOf('fa-briefcase') >= 0) {
+                    $item.data('material_padre', true);
+
+                    $item.css({
+                        'color': 'black',
+                        'cursor': 'pointer'
+                    });
+                } else {
+                    $item.data('material_padre', false);
+                }
+
                 if (data.instance.get_type(data.node) == 'default') {
                     data.instance.set_type(data.node, 'opened');
                 }
@@ -20439,11 +20625,14 @@ Vue.component('comprobante-fondo-fijo-create', {
 
             $('#jstree').on("select_node.jstree", function (e, data) {
 
+                // Material padre?
+                var $item = $('#' + data.node.a_attr.id);
+
                 var jstreeM = $('#jstreeM').jstree(true);
                 var node = jstreeM.get_selected(true)[0];
                 $('#jstreeM').jstree(true).deselect_node(node);
 
-                if (data.node.original.type == 'concepto' || data.node.original.type == 'inactivo') {
+                if ($item.data('material_padre') === false && (data.node.original.type == 'concepto' || data.node.original.type == 'inactivo')) {
                     $('#jstree').jstree(true).deselect_node(data.node);
                 }
             });
@@ -22212,7 +22401,7 @@ Vue.component('kardex-material-index', {
 'use strict';
 
 Vue.component('select2', {
-    props: ['options', 'value', 'name'],
+    props: ['options', 'value', 'name', 'placeholder'],
     template: '<select><slot></slot></select>',
     mounted: function mounted() {
         var vm = this;
@@ -22235,7 +22424,8 @@ Vue.component('select2', {
             width: '100%',
             allowClear: true,
             placeholder: {
-                id: ''
+                id: '',
+                text: vm.placeholder
             }
         }).val(this.value).trigger('change')
         // emit event on change.
@@ -22254,7 +22444,8 @@ Vue.component('select2', {
                 data: _options,
                 width: '100%',
                 placeholder: {
-                    id: ""
+                    id: "",
+                    text: vm.placeholder
                 }
             });
         }

@@ -203,8 +203,8 @@ class PDFSolicitudCambio extends Rotation {
                 number_format($item->variacion_volumen, 2, '.', ','),
                 number_format($item->cantidad_presupuestada_nueva, 2, '.', ','),
                 number_format($item->concepto->precio_unitario, 2, '.', ','),
-                $importe_anterior,
-                $importe_nuevo,
+                number_format($importe_anterior, 2, '.', ','),
+                number_format($importe_nuevo, 2, '.', ','),
             ]);
         }
         $this->encola = '';

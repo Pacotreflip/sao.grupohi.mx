@@ -152,6 +152,26 @@ Vue.component('comprobante-fondo-fijo-create', {
             };
 
             $('#jstree').on("after_open.jstree", function (e, data) {
+
+                var $item = $('#'+ data.node.a_attr.id),
+                      $ul = $item.next('ul'),
+                       $anchor = $ul.find('a'),
+                       $i = $anchor.find('i');
+
+                // Revisa si el padre puede ser seleccionable
+                            if ($i.attr('class').indexOf('fa-briefcase') >= 0) {
+                                    $item.data('material_padre', true);
+
+                                    $item.css({
+                                                'color': 'black',
+                                            'cursor': 'pointer'
+                                    });
+                                }
+
+                                else {
+                                    $item.data('material_padre', false);
+                                }
+
                 if (data.instance.get_type(data.node) == 'default') {
                     data.instance.set_type(data.node, 'opened');
                 }
@@ -210,11 +230,15 @@ Vue.component('comprobante-fondo-fijo-create', {
 
             $('#jstree').on("select_node.jstree", function (e, data) {
 
+                // Material padre?
+                var $item = $('#'+ data.node.a_attr.id);
+
+
                 var jstreeM = $('#jstreeM').jstree(true);
                 var node = jstreeM.get_selected(true)[0];
                 $('#jstreeM').jstree(true).deselect_node(node);
 
-                if (data.node.original.type == 'concepto' || data.node.original.type == 'inactivo') {
+                if ($item.data('material_padre') === false && (data.node.original.type=='concepto' || data.node.original.type=='inactivo')) {
                     $('#jstree').jstree(true).deselect_node(data.node);
                 }
             });

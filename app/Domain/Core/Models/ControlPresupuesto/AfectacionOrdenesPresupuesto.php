@@ -9,15 +9,15 @@
 namespace Ghi\Domain\Core\Models\ControlPresupuesto;
 
 
-use Ghi\Domain\Core\Models\Concepto;
 use Illuminate\Database\Eloquent\Model;
 
-class ConceptoTarjeta extends Model
+class AfectacionOrdenesPresupuesto extends Model
 {
-    protected $table = 'ControlPresupuesto.concepto_tarjeta';
+    protected $table = 'ControlPresupuesto.afectacion_ordenes_presupuesto';
     protected $connection = 'cadeco';
-    public function concepto()
+
+    public function baseDatos()
     {
-        return $this->hasOne(Concepto::class, 'id_concepto', 'id_concepto');
+        return $this->hasOne(BasePresupuesto::class, 'id', 'id_base_presupuesto');
     }
 }

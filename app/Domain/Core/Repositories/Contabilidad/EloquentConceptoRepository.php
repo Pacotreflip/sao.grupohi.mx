@@ -133,14 +133,13 @@ class EloquentConceptoRepository implements ConceptoRepository
             ->join('PresupuestoObra.conceptosPath as path', 'conceptos.id_concepto', '=', 'path.id_concepto');
 
         $query->where('dbo.conceptos.concepto_medible', '=', 3);
+        $query->where('path.filtro3','Like','%COSTO DIRECTO%');
 
 
+        $query->join('ControlPresupuesto.concepto_tarjeta', 'dbo.conceptos.id_concepto', '=', 'ControlPresupuesto.concepto_tarjeta.id_concepto')
+            ->join('ControlPresupuesto.tarjeta', 'ControlPresupuesto.concepto_tarjeta.id_tarjeta', '=', 'ControlPresupuesto.tarjeta.id')
+            ->where('ControlPresupuesto.tarjeta.id', '=', $data['id_tarjeta']);
 
-        if($data['id_tarjeta'] != '') {
-            $query->join('ControlPresupuesto.concepto_tarjeta', 'dbo.conceptos.id_concepto', '=', 'ControlPresupuesto.concepto_tarjeta.id_concepto')
-                ->join('ControlPresupuesto.tarjeta', 'ControlPresupuesto.concepto_tarjeta.id_tarjeta', '=', 'ControlPresupuesto.tarjeta.id')
-                ->where('ControlPresupuesto.tarjeta.id', '=', $data['id_tarjeta']);
-        }
 
         if(isset($data['order'])) {
             foreach ($data['order'] as $order) {
