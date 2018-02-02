@@ -99,7 +99,7 @@ Vue.component('show-variacion-volumen', {
                         closeOnConfirm: false
                     }).then(function () {
                     });
-                   // window.location.reload(true);
+                   window.location.reload(true);
                 },
                 complete: function () {
                     self.autorizando = false;
@@ -136,7 +136,7 @@ Vue.component('show-variacion-volumen', {
                         closeOnConfirm: false
                     }).then(function () {
                     });
-                   // window.location.reload(true);
+                   window.location.reload(true);
                 },
                 complete: function () {
                     self.rechazando = false;
