@@ -15,11 +15,29 @@ Vue.component('escalatoria', {
         }
     },
 
-    mounted: function () {
+    computed : {
+
+        datos : function () {
+            var res = {
+                id_tipo_orden: this.id_tipo_orden,
+                motivo: this.form.motivo,
+                partidas: []
+            };
+            this.form.partidas.forEach(function (value) {
+                res.partidas.push({
+                    monto_presupuestado : value.importe,
+                    descripcion : value.descripcion
+                });
+            });
+            return res;
+        }
 
     },
 
     methods : {
+        removePartida: function (index) {
+            Vue.delete(this.form.partidas, index);
+        },
 
         addPartida : function () {
             var partida = _.clone(this.escalatoria);
@@ -54,33 +72,9 @@ Vue.component('escalatoria', {
                 type : 'POST',
                 data : self.datos,
                 beforeSend : function () {
-                    self.cargando = true;
+                    self.guardando = true;
                 },
                 success : function (response) {
-
-                    var lista = [];
-
-                    // Ya existen solicitudes con las partidas seleccionadas
-                    if (typeof response.repetidas != 'undefined') {
-
-                        $.each(response.repetidas, function( key, value ) {
-                            lista.push('<li class="list-group-item "><a href="'+ App.host + '/control_presupuesto/cambio_presupuesto" onclick="swal.close();">#'+ value.solicitud.numero_folio +' ' + (value.solicitud.motivo.length >= 20 ? (value.solicitud.motivo.substring(0, 30) + '...') : value.solicitud.motivo) + '</a></li>');
-                        });
-
-                        var texto = response.repetidas.length > 1 ? 'Ya existen solicitudes' : 'Ya existe una solicitud';
-
-                        swal({
-                            title: texto + " con los items seleccionados",
-                            html: '<ul class="list-group">' + lista.join(' ') +'</ul>',
-                            type: "warning",
-                            showCancelButton: true,
-                            showConfirmButton: true,
-                            cancelButtonText: "Cancelar"
-                        });
-
-                        return;
-                    }
-
                     swal({
                         type : 'success',
                         title : '¡Correcto!',
@@ -90,16 +84,16 @@ Vue.component('escalatoria', {
                     });
                 },
                 complete : function () {
-                    self.cargando = false;
+                    self.guardando = false;
                 }
             })
         },
 
         validateForm: function(scope, funcion) {
             this.$validator.validateAll(scope).then(() => {
-                if(funcion == 'add_partida') {
+                if(funcion == 'save_solicitud') {
 
-                this.addPartida();
+                this.confirmSave();
             }
         }).catch(() => {
                 swal({

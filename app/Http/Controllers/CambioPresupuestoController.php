@@ -84,30 +84,31 @@ class CambioPresupuestoController extends Controller
 
     public function store(Request $request)
     {
-        // Revisa si ya existe una solicitud con al menos una partida ya seleccionada
-        $conceptos_ids = [];
-        $repetidas = false;
-
-        foreach ($request->partidas as $p)
-            $conceptos_ids[] = $p['id_concepto'];
-
-        $repetidas = $this->partidas->findIn($conceptos_ids);
-
-        if (!$repetidas->isEmpty())
-            return response()->json(
-                [
-                    'repetidas' => $repetidas
-                ], 200);
-
         $solicitud = '';
         switch ($request->id_tipo_orden) {
             case TipoOrden::ESCALATORIA:
+                $solicitud = $this->solicitud->saveEscalatoria($request->all());
                 break;
             case TipoOrden::RECLAMOS_INDIRECTO:
                 break;
             case TipoOrden::CONCEPTOS_EXTRAORDINARIOS:
                 break;
             case TipoOrden::VARIACION_VOLUMEN:
+                // Revisa si ya existe una solicitud con al menos una partida ya seleccionada
+                $conceptos_ids = [];
+                $repetidas = false;
+
+                foreach ($request->partidas as $p)
+                    $conceptos_ids[] = $p['id_concepto'];
+
+                $repetidas = $this->partidas->findIn($conceptos_ids);
+
+                if (!$repetidas->isEmpty())
+                    return response()->json(
+                        [
+                            'repetidas' => $repetidas
+                        ], 200);
+
                 $solicitud = $this->solicitud->saveVariacionVolumen($request->all());
                 break;
             case TipoOrden::ORDEN_DE_CAMBIO_NO_COBRABLE:
