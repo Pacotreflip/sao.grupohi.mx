@@ -22,7 +22,7 @@ class ConceptoController extends Controller
     {
         parent::__construct();
 
-        $this->middleware('auth');
+        //$this->middleware('auth');
         $this->middleware('context');
 
         $this->concepto = $concepto;
@@ -99,5 +99,10 @@ class ConceptoController extends Controller
             'recordsFiltered' => $conceptos->total(),
             'data' => $conceptos->items()
         ], 200);
+    }
+
+    public function getInsumos($id){
+        $insumos = $this->concepto->getInsumos($id);
+        return $insumos;
     }
 }
