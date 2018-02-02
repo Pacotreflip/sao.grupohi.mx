@@ -13354,13 +13354,14 @@ require('./vue-components/ControlPresupuesto/cambio_presupuesto/index');
 require('./vue-components/ControlPresupuesto/cambio_presupuesto/variacion_volumen');
 require('./vue-components/ControlPresupuesto/cambio_presupuesto/show_variacion_volumen');
 require('./vue-components/ControlPresupuesto/cambio_presupuesto/escalatoria');
+require('./vue-components/ControlPresupuesto/cambio_presupuesto/variacion_insumos');
 
 /**
  * Configuración Components
  */
 require('./vue-components/Configuracion/seguridad/index');
 
-},{"./vue-components/Compras/material/index":6,"./vue-components/Compras/requisicion/create":7,"./vue-components/Compras/requisicion/edit":8,"./vue-components/Configuracion/seguridad/index":9,"./vue-components/Contabilidad/cierre/index":10,"./vue-components/Contabilidad/cuenta_almacen/index":11,"./vue-components/Contabilidad/cuenta_bancos/cuenta-bancaria-edit":12,"./vue-components/Contabilidad/cuenta_concepto/index":13,"./vue-components/Contabilidad/cuenta_contable/index":14,"./vue-components/Contabilidad/cuenta_costo/index":15,"./vue-components/Contabilidad/cuenta_empresa/cuenta-empresa-edit":16,"./vue-components/Contabilidad/cuenta_fondo/index":17,"./vue-components/Contabilidad/cuenta_material/index":18,"./vue-components/Contabilidad/datos_contables/edit":19,"./vue-components/Contabilidad/emails":20,"./vue-components/Contabilidad/modulos/revaluacion/create":21,"./vue-components/Contabilidad/poliza_generada/edit":22,"./vue-components/Contabilidad/poliza_tipo/poliza-tipo-create":23,"./vue-components/Contabilidad/tipo_cuenta_contable/tipo-cuenta-contable-create":24,"./vue-components/Contabilidad/tipo_cuenta_contable/tipo-cuenta-contable-update":25,"./vue-components/ControlCostos/reclasificacion_costos/index":26,"./vue-components/ControlCostos/solicitar_reclasificacion/index":27,"./vue-components/ControlCostos/solicitar_reclasificacion/items":28,"./vue-components/ControlPresupuesto/cambio_presupuesto/create":29,"./vue-components/ControlPresupuesto/cambio_presupuesto/escalatoria":30,"./vue-components/ControlPresupuesto/cambio_presupuesto/index":31,"./vue-components/ControlPresupuesto/cambio_presupuesto/show_variacion_volumen":32,"./vue-components/ControlPresupuesto/cambio_presupuesto/variacion_volumen":33,"./vue-components/ControlPresupuesto/presupuesto/index":34,"./vue-components/Finanzas/comprobante_fondo_fijo/create":35,"./vue-components/Finanzas/comprobante_fondo_fijo/edit":36,"./vue-components/Finanzas/comprobante_fondo_fijo/index":37,"./vue-components/Reportes/subcontratos-estimacion":38,"./vue-components/Tesoreria/movimientos_bancarios/index":39,"./vue-components/Tesoreria/traspaso_cuentas/index":40,"./vue-components/errors":41,"./vue-components/global-errors":42,"./vue-components/kardex_material/kardex-material-index":43,"./vue-components/select2":44}],6:[function(require,module,exports){
+},{"./vue-components/Compras/material/index":6,"./vue-components/Compras/requisicion/create":7,"./vue-components/Compras/requisicion/edit":8,"./vue-components/Configuracion/seguridad/index":9,"./vue-components/Contabilidad/cierre/index":10,"./vue-components/Contabilidad/cuenta_almacen/index":11,"./vue-components/Contabilidad/cuenta_bancos/cuenta-bancaria-edit":12,"./vue-components/Contabilidad/cuenta_concepto/index":13,"./vue-components/Contabilidad/cuenta_contable/index":14,"./vue-components/Contabilidad/cuenta_costo/index":15,"./vue-components/Contabilidad/cuenta_empresa/cuenta-empresa-edit":16,"./vue-components/Contabilidad/cuenta_fondo/index":17,"./vue-components/Contabilidad/cuenta_material/index":18,"./vue-components/Contabilidad/datos_contables/edit":19,"./vue-components/Contabilidad/emails":20,"./vue-components/Contabilidad/modulos/revaluacion/create":21,"./vue-components/Contabilidad/poliza_generada/edit":22,"./vue-components/Contabilidad/poliza_tipo/poliza-tipo-create":23,"./vue-components/Contabilidad/tipo_cuenta_contable/tipo-cuenta-contable-create":24,"./vue-components/Contabilidad/tipo_cuenta_contable/tipo-cuenta-contable-update":25,"./vue-components/ControlCostos/reclasificacion_costos/index":26,"./vue-components/ControlCostos/solicitar_reclasificacion/index":27,"./vue-components/ControlCostos/solicitar_reclasificacion/items":28,"./vue-components/ControlPresupuesto/cambio_presupuesto/create":29,"./vue-components/ControlPresupuesto/cambio_presupuesto/escalatoria":30,"./vue-components/ControlPresupuesto/cambio_presupuesto/index":31,"./vue-components/ControlPresupuesto/cambio_presupuesto/show_variacion_volumen":32,"./vue-components/ControlPresupuesto/cambio_presupuesto/variacion_insumos":33,"./vue-components/ControlPresupuesto/cambio_presupuesto/variacion_volumen":34,"./vue-components/ControlPresupuesto/presupuesto/index":35,"./vue-components/Finanzas/comprobante_fondo_fijo/create":36,"./vue-components/Finanzas/comprobante_fondo_fijo/edit":37,"./vue-components/Finanzas/comprobante_fondo_fijo/index":38,"./vue-components/Reportes/subcontratos-estimacion":39,"./vue-components/Tesoreria/movimientos_bancarios/index":40,"./vue-components/Tesoreria/traspaso_cuentas/index":41,"./vue-components/errors":42,"./vue-components/global-errors":43,"./vue-components/kardex_material/kardex-material-index":44,"./vue-components/select2":45}],6:[function(require,module,exports){
 'use strict';
 
 Vue.component('material-index', {
@@ -19367,6 +19368,275 @@ Vue.component('show-variacion-volumen', {
 },{}],33:[function(require,module,exports){
 'use strict';
 
+Vue.component('variacion-insumos', {
+    props: ['filtros', 'niveles', 'id_tipo_orden', 'id_tarjeta', 'tarjetas'],
+    data: function data() {
+        return {
+            form: {
+                partidas: [],
+                motivo: ''
+            },
+            cargando: false,
+            guardando: false
+        };
+    },
+
+    computed: {
+        datos: function datos() {
+            var res = {
+                id_tipo_orden: this.id_tipo_orden,
+                motivo: this.form.motivo,
+                partidas: []
+            };
+
+            this.form.partidas.forEach(function (value) {
+                res.partidas.push({
+                    id_concepto: value.id_concepto,
+                    cantidad_presupuestada_original: value.cantidad_presupuestada,
+                    cantidad_presupuestada_nueva: value.cantidad_presupuestada_nueva
+                });
+            });
+            return res;
+        }
+    },
+
+    mounted: function mounted() {
+        var self = this;
+
+        $('#tarjetas_select').on('select2:select', function () {
+            self.get_conceptos();
+        });
+
+        $(document).on('click', '.btn_add_concepto', function () {
+            var id = $(this).attr('id');
+            self.addConcepto(id);
+        }).on('click', '.btn_remove_concepto', function () {
+            var id = $(this).attr('id');
+            self.removeConcepto(id);
+        });
+
+        $('#conceptos_table').DataTable({
+            "processing": true,
+            "serverSide": true,
+            "ordering": true,
+            "searching": false,
+            "ajax": {
+                "url": App.host + '/conceptos/getPathsConceptos',
+                "type": "POST",
+                "beforeSend": function beforeSend() {
+                    self.cargando = true;
+                },
+                "data": function data(d) {
+                    d.filtros = self.filtros;
+                    d.id_tarjeta = self.id_tarjeta;
+                },
+                "complete": function complete() {
+                    self.cargando = false;
+                },
+                "dataSrc": function dataSrc(json) {
+                    for (var i = 0; i < json.data.length; i++) {
+                        json.data[i].monto_presupuestado = '$' + parseInt(json.data[i].monto_presupuestado).formatMoney(2, ',', '.');
+                        json.data[i].cantidad_presupuestada = parseInt(json.data[i].cantidad_presupuestada).formatMoney(2, ',', '.');
+                        json.data[i].precio_unitario = '$' + parseInt(json.data[i].precio_unitario).formatMoney(2, ',', '.');
+                    }
+                    return json.data;
+                }
+            },
+            "columns": [{ data: 'filtro1' }, { data: 'filtro2' }, { data: 'filtro3' }, { data: 'filtro4' }, { data: 'filtro5' }, { data: 'filtro6' }, { data: 'filtro7' }, { data: 'filtro8' }, { data: 'filtro9' }, { data: 'filtro10' }, { data: 'filtro11' }, { data: 'unidad' }, { data: 'cantidad_presupuestada', className: 'text-right' }, { data: 'precio_unitario', className: 'text-right' }, { data: 'monto_presupuestado', className: 'text-right' }, {
+                data: {},
+                render: function render(data) {
+                    if (self.existe(data.id_concepto)) {
+                        return '<button class="btn btn-xs btn-default btn_remove_concepto" id="' + data.id_concepto + '"><i class="fa fa-minus text-red"></i></button>';
+                    }
+                    return '<button class="btn btn-xs btn-default btn_add_concepto" id="' + data.id_concepto + '"><i class="fa fa-plus text-green"></i></button>';
+                }
+            }],
+            language: {
+                "sProcessing": "Procesando...",
+                "sLengthMenu": "Mostrar _MENU_ registros",
+                "sZeroRecords": "No se encontraron resultados",
+                "sEmptyTable": "Ningún dato disponible en esta tabla",
+                "sInfo": "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
+                "sInfoEmpty": "Mostrando registros del 0 al 0 de un total de 0 registros",
+                "sInfoFiltered": "(filtrado de un total de _MAX_ registros)",
+                "sInfoPostFix": "",
+                "sSearch": "Buscar:",
+                "sUrl": "",
+                "sInfoThousands": ",",
+                "sLoadingRecords": "Cargando...",
+                "oPaginate": {
+                    "sFirst": "Primero",
+                    "sLast": "Último",
+                    "sNext": "Siguiente",
+                    "sPrevious": "Anterior"
+                },
+                "oAria": {
+                    "sSortAscending": ": Activar para ordenar la columna de manera ascendente",
+                    "sSortDescending": ": Activar para ordenar la columna de manera descendente"
+                }
+            }
+        });
+    },
+
+    methods: {
+        get_conceptos: function get_conceptos() {
+            var table = $('#conceptos_table').DataTable();
+            table.ajax.reload();
+        },
+
+        addConcepto: function addConcepto(id) {
+            var self = this;
+            $.ajax({
+                url: App.host + '/conceptos/' + id + '/getInsumos',
+                type: 'GET',
+                beforeSend: function beforeSend() {
+                    self.guardando = true;
+                    $('#' + id).html('<i class="fa fa-spin fa-spinner"></i>');
+                    $('#' + id).attr('disabled', true);
+                },
+                success: function success(response) {
+                    if (jQuery.isEmptyObject(self.form.partidas)) {
+                        self.form.partidas.push(response);
+                    } else {
+                        $.each(self.form.partidas, function (index, partida) {
+                            if (partida.conceptos.MATERIALES.insumos.length === response.conceptos.MATERIALES.insumos.length) {
+                                $.each(partida.conceptos.MATERIALES.insumos, function (index, insumo) {
+                                    var temp1 = insumo.cantidad_presupuestada / partida.cobrable.cantidad_presupuestada;
+                                    var temp2 = response.conceptos.MATERIALES.insumos[index].cantidad_presupuestada / response.cobrable.cantidad_presupuestada;
+                                    alert(temp1 + '  -  ' + temp2);
+                                });
+                                alert(partida.conceptos.MATERIALES.insumos.length);
+                            } else {
+                                alert('pandita length 0');
+                            }
+                        });
+                    }
+
+                    $('#' + id).html('<i class="fa fa-minus text-red"></i>');
+                    $('#' + id).removeClass('btn_add_concepto');
+                    $('#' + id).addClass('btn_remove_concepto');
+                },
+                complete: function complete() {
+                    self.guardando = false;
+                    $('#' + id).attr('disabled', false);
+                },
+                error: function error() {
+                    $('#' + id).html('<i class="fa fa-plus text-green"></i>');
+                }
+            });
+        },
+
+        existe: function existe(id) {
+            var found = this.form.partidas.find(function (partida) {
+                return partida.id_concepto == id;
+            });
+            return found != undefined;
+        },
+
+        confirmSave: function confirmSave() {
+            var self = this;
+            swal({
+                title: 'Guardar Solicitud de Cambio',
+                text: "¿Está seguro de que la información es correcta?",
+                type: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Si, Guardar',
+                cancelButtonText: 'No, Cancelar'
+            }).then(function (result) {
+                if (result.value) {
+                    self.save();
+                }
+            });
+        },
+
+        save: function save() {
+            var self = this;
+            $.ajax({
+                url: App.host + '/control_presupuesto/cambio_presupuesto',
+                type: 'POST',
+                data: self.datos,
+                beforeSend: function beforeSend() {
+                    self.cargando = true;
+                },
+                success: function success(response) {
+
+                    var lista = [];
+
+                    // Ya existen solicitudes con las partidas seleccionadas
+                    if (typeof response.repetidas != 'undefined') {
+
+                        $.each(response.repetidas, function (key, value) {
+                            lista.push('<li class="list-group-item "><a href="' + App.host + '/control_presupuesto/cambio_presupuesto" onclick="swal.close();">#' + value.solicitud.numero_folio + ' ' + (value.solicitud.motivo.length >= 20 ? value.solicitud.motivo.substring(0, 30) + '...' : value.solicitud.motivo) + '</a></li>');
+                        });
+
+                        var texto = response.repetidas.length > 1 ? 'Ya existen solicitudes' : 'Ya existe una solicitud';
+
+                        swal({
+                            title: texto + " con los items seleccionados",
+                            html: '<ul class="list-group">' + lista.join(' ') + '</ul>',
+                            type: "warning",
+                            showCancelButton: true,
+                            showConfirmButton: true,
+                            cancelButtonText: "Cancelar"
+                        });
+
+                        return;
+                    }
+
+                    swal({
+                        type: 'success',
+                        title: '¡Correcto!',
+                        html: 'Solicitud Guardada con Número de Folio <b>' + response.numero_folio + '</b>'
+                    }).then(function () {
+                        $('#conceptos_modal').modal('hide');
+                        self.form.partidas = [];
+                        self.$emit('reset-filtros');
+                        Vue.set(self.form, 'motivo', '');
+                        $('#conceptos_table').DataTable().ajax.reload();
+                    });
+                },
+                complete: function complete() {
+                    self.cargando = false;
+                }
+            });
+        },
+
+        removeConcepto: function removeConcepto(id) {
+            var index = this.form.partidas.map(function (partida) {
+                return partida.id_concepto;
+            }).indexOf(parseInt(id));
+            this.form.partidas.splice(index, 1);
+            $('#' + id).html('<i class="fa fa-plus text-green"></i>');
+            $('#' + id).addClass('btn_add_concepto');
+            $('#' + id).removeClass('btn_remove_concepto');
+            if (!this.form.partidas.length) {
+                $('#conceptos_modal').modal('hide');
+            }
+        },
+
+        validateForm: function validateForm(scope, funcion) {
+            var _this = this;
+
+            this.$validator.validateAll(scope).then(function () {
+                if (funcion == 'save_solicitud') {
+                    _this.confirmSave();
+                }
+            }).catch(function () {
+                swal({
+                    type: 'warning',
+                    title: 'Advertencia',
+                    text: 'Por favor corrija los errores del formulario'
+                });
+            });
+        }
+    }
+});
+
+},{}],34:[function(require,module,exports){
+'use strict';
+
 Vue.component('variacion-volumen', {
     props: ['filtros', 'niveles', 'id_tipo_orden', 'id_tarjeta', 'tarjetas', 'bases_afectadas'],
     data: function data() {
@@ -19664,7 +19934,7 @@ Vue.component('variacion-volumen', {
     }
 });
 
-},{}],34:[function(require,module,exports){
+},{}],35:[function(require,module,exports){
 'use strict';
 
 Vue.component('control_presupuesto-index', {
@@ -19873,7 +20143,7 @@ Vue.component('control_presupuesto-index', {
     }
 });
 
-},{}],35:[function(require,module,exports){
+},{}],36:[function(require,module,exports){
 'use strict';
 
 Vue.component('comprobante-fondo-fijo-create', {
@@ -20374,7 +20644,7 @@ Vue.component('comprobante-fondo-fijo-create', {
     }
 });
 
-},{}],36:[function(require,module,exports){
+},{}],37:[function(require,module,exports){
 'use strict';
 
 Vue.component('comprobante-fondo-fijo-edit', {
@@ -20830,7 +21100,7 @@ Vue.component('comprobante-fondo-fijo-edit', {
     }
 });
 
-},{}],37:[function(require,module,exports){
+},{}],38:[function(require,module,exports){
 'use strict';
 
 Vue.component('comprobante-fondo-fijo-index', {
@@ -20945,7 +21215,7 @@ Vue.component('comprobante-fondo-fijo-index', {
     }
 });
 
-},{}],38:[function(require,module,exports){
+},{}],39:[function(require,module,exports){
 'use strict';
 
 Vue.component('subcontratos-estimacion', {
@@ -21024,7 +21294,7 @@ Vue.component('subcontratos-estimacion', {
     }
 });
 
-},{}],39:[function(require,module,exports){
+},{}],40:[function(require,module,exports){
 'use strict';
 
 Vue.component('movimientos_bancarios-index', {
@@ -21375,7 +21645,7 @@ Vue.component('movimientos_bancarios-index', {
     }
 });
 
-},{}],40:[function(require,module,exports){
+},{}],41:[function(require,module,exports){
 'use strict';
 
 Vue.component('traspaso-cuentas-index', {
@@ -21688,7 +21958,7 @@ Vue.component('traspaso-cuentas-index', {
     }
 });
 
-},{}],41:[function(require,module,exports){
+},{}],42:[function(require,module,exports){
 'use strict';
 
 Vue.component('app-errors', {
@@ -21697,7 +21967,7 @@ Vue.component('app-errors', {
     template: require('./templates/errors.html')
 });
 
-},{"./templates/errors.html":45}],42:[function(require,module,exports){
+},{"./templates/errors.html":46}],43:[function(require,module,exports){
 'use strict';
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
@@ -21723,7 +21993,7 @@ Vue.component('global-errors', {
   }
 });
 
-},{"./templates/global-errors.html":46}],43:[function(require,module,exports){
+},{"./templates/global-errors.html":47}],44:[function(require,module,exports){
 'use strict';
 
 Vue.component('kardex-material-index', {
@@ -21873,7 +22143,7 @@ Vue.component('kardex-material-index', {
 
 });
 
-},{}],44:[function(require,module,exports){
+},{}],45:[function(require,module,exports){
 'use strict';
 
 Vue.component('select2', {
@@ -21929,9 +22199,9 @@ Vue.component('select2', {
     }
 });
 
-},{}],45:[function(require,module,exports){
-module.exports = '<div id="form-errors" v-cloak>\n  <div class="alert alert-danger" v-if="form.errors.length">\n    <ul>\n      <li v-for="error in form.errors">{{ error }}</li>\n    </ul>\n  </div>\n</div>';
 },{}],46:[function(require,module,exports){
+module.exports = '<div id="form-errors" v-cloak>\n  <div class="alert alert-danger" v-if="form.errors.length">\n    <ul>\n      <li v-for="error in form.errors">{{ error }}</li>\n    </ul>\n  </div>\n</div>';
+},{}],47:[function(require,module,exports){
 module.exports = '<div class="alert alert-danger" v-show="errors.length">\n  <ul>\n    <li v-for="error in errors">{{ error }}</li>\n  </ul>\n</div>';
 },{}]},{},[4]);
 

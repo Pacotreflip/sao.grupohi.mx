@@ -62,6 +62,7 @@
             </div>
             @include('control_presupuesto.cambio_presupuesto.variacion_volumen')
             @include('control_presupuesto.cambio_presupuesto.escalatoria')
+            @include('control_presupuesto.cambio_presupuesto.variacion _insumos')
         </section>
     </cambio-presupuesto-create>
 @endsection

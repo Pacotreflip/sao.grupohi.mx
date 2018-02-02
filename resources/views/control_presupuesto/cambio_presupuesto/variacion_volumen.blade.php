@@ -75,7 +75,7 @@
                                     <td>@{{ concepto.sector }}</td>
                                     <td>@{{ concepto.cuadrante }}</td>
                                     <td>@{{ concepto.unidad }}</td>
-                                    <td class="text-right">@{{ parseInt(concepto.cantidad_presupuestada).formatMoney(2, ',','.') }}</td>
+                                    <td class="text-right">@{{ parseFloat(concepto.cantidad_presupuestada).formatMoney(2, ',','.') }}</td>
                                     <td>
                                         <div class="form-group" :class="{'has-error': validation_errors.has('form_save_solicitud.Variacion de volumen ' + (i+1))}">
                                             <input type="text" :name="'Variacion de volumen ' + (i+1)" v-validate="'required|decimal|regex:[^0]+'" class="form-control input-sm" v-model="concepto.variacion_volumen">
