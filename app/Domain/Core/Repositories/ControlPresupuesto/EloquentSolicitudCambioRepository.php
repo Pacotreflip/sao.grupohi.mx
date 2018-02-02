@@ -122,7 +122,7 @@ class EloquentSolicitudCambioRepository implements SolicitudCambioRepository
             foreach ($data['partidas'] as $partida) {
                 $partida['id_solicitud_cambio'] = $solicitud->id;
                 $partida['id_tipo_orden'] = TipoOrden::ESCALATORIA;
-                $partida = SolicitudCambioPartida::create($partida);
+                SolicitudCambioPartida::create($partida);
             }
             $solicitud = $this->with('partidas')->find($solicitud->id);
             DB::connection('cadeco')->commit();
