@@ -52,7 +52,11 @@ Vue.component('variacion-volumen', {
             self.addConcepto(id);
         }).on('click', '.btn_remove_concepto', function() {
             var id = $(this).attr('id');
-            self.removeConcepto(id);
+           self.removeConcepto(id);
+            if(self.form.partidas.length>0){
+                self.mostrar_importes_inicial();
+            }
+
         });
 
         $('#conceptos_table').DataTable({
@@ -268,6 +272,10 @@ Vue.component('variacion-volumen', {
         },
 
         mostrar_importes_inicial:function () {
+
+            $('.nav-tabs li').removeClass('active');
+            $('.nav-tabs li:first').addClass("active");
+
             var self = this;
             var presupuesto=self.bases_afectadas[0].id_base_presupuesto;
             this.mostrar_importes(presupuesto);
@@ -277,7 +285,6 @@ Vue.component('variacion-volumen', {
             var presupuesto=presupesto;
 
             $('#divDetalle').fadeOut();
-
             var url = App.host + '/control_presupuesto/cambio_presupuesto_partida/subtotalTarjeta';
             $.ajax({
                 type: 'POST',

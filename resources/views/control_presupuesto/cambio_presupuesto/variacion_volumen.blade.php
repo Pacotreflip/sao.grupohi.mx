@@ -88,10 +88,17 @@
                             </table>
                         </div>
 
+
+                        <div class="box box-solid"  >
+                            <div class="box-header with-border">
+                                <h3 class="box-title">Subtotal de tarjeta</h3>
+                            </div>
+                            <div class="box-body">
+
                         <div class="table-responsive" >
 
                             <ul class="nav nav-tabs">
-                                <li v-for="(base,i) in bases_afectadas" :class="i==0?'active':''" v-on:click="mostrar_importes(base.id_base_presupuesto)"><a data-toggle="tab" >@{{base.base_datos.descripcion}}</a>
+                                <li v-for="(base,i) in bases_afectadas" :class="i==0?'active':''" v-on:click="mostrar_importes(base.id_base_presupuesto)" ><a data-toggle="tab" >@{{base.base_datos.descripcion}}</a>
                                 </li>
                             </ul>
                             <div class="col-sm-12" class="text-center">
@@ -117,7 +124,8 @@
                                 </tbody>
                             </table>
                         </div>
-
+                            </div>
+                        </div>
                         <div class="form-group" :class="{'has-error': validation_errors.has('form_save_solicitud.Motivo')}">
                             <label><b>Motivo</b></label>
                             <textarea class="form-control" v-validate="'required'" :name="'Motivo'" v-model="form.motivo"></textarea>
