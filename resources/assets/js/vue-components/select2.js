@@ -18,13 +18,12 @@ Vue.component('select2', {
         data = data.sort(SortByName);
         $(this.$el).attr('name',this.name)
         $(this.$el).select2({
-                data: data,
-                width: '100%',
-                allowClear: true,
+            data: data,
+            width: '100%',
+            allowClear: true,
             placeholder : {
-                    id : '',
-                    text : vm.placeholder
-                }
+                id : ''
+            }
         })
             .val(this.value)
             .trigger('change')
@@ -44,8 +43,7 @@ Vue.component('select2', {
                 data: options,
                 width: '100%',
                 placeholder: {
-                    id: "",
-                    text : vm.placeholder
+                    id: ""
                 }
             });
         }

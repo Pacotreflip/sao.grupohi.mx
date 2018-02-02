@@ -12,6 +12,7 @@ use Ghi\Core\Facades\Context;
 use Ghi\Core\Models\Concepto;
 use Ghi\Domain\Core\Contracts\ControlPresupuesto\SolicitudCambioRepository;
 use Ghi\Domain\Core\Models\ControlPresupuesto\AfectacionOrdenesPresupuesto;
+use Ghi\Domain\Core\Models\ControlPresupuesto\ConceptoEscalatoria;
 use Ghi\Domain\Core\Models\ControlPresupuesto\ConceptoTarjeta;
 use Ghi\Domain\Core\Models\ControlPresupuesto\Estatus;
 use Ghi\Domain\Core\Models\ControlPresupuesto\SolicitudCambio;
@@ -111,7 +112,25 @@ class EloquentSolicitudCambioRepository implements SolicitudCambioRepository
             DB::connection('cadeco')->rollback();
             throw $e;
         }
+    }
 
+    public function saveEscalatoria(array $data) {
+        try {
+            DB::connection('cadeco')->beginTransaction();
+
+            $solicitud = $this->create($data);
+            foreach ($data['partidas'] as $partida) {
+                $partida['id_solicitud_cambio'] = $solicitud->id;
+                $partida['id_tipo_orden'] = TipoOrden::ESCALATORIA;
+                $partida = SolicitudCambioPartida::create($partida);
+            }
+            $solicitud = $this->with('partidas')->find($solicitud->id);
+            DB::connection('cadeco')->commit();
+            return $solicitud;
+        } catch (\Exception $e) {
+            DB::connection('cadeco')->rollback();
+            throw $e;
+        }
     }
 
     /**Crea relaciones con otros modelos
@@ -251,6 +270,4 @@ class EloquentSolicitudCambioRepository implements SolicitudCambioRepository
         }
 
     }
-
-
 }
