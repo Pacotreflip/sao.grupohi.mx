@@ -222,8 +222,6 @@ class EloquentSolicitudCambioRepository implements SolicitudCambioRepository
 
             }
 
-            dd("termino");
-
             $solicitud->id_estatus = Estatus::AUTORIZADA;
             $solicitud->save();
             $data = ["id_solicitud_cambio" => $id];
