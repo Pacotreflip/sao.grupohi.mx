@@ -1,6 +1,6 @@
 @extends('control_presupuesto.layout')
 @section('title', 'Control Presupuesto')
-@section('contentheader_title', 'SOICITUD DE CAMBIO AL PRESUPUESTO')
+@section('contentheader_title', 'SOLICITUD DE CAMBIO AL PRESUPUESTO')
 @section('breadcrumb')
     {!! Breadcrumbs::render('control_presupuesto.cambio_presupuesto.create') !!}
 @endsection
