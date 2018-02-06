@@ -270,25 +270,55 @@
                                     </table>
                                 </div>
 
-                                <div class="form-group" :class="{'has-error': validation_errors.has('form_save_solicitud.Motivo')}">
-                                    <label><b>Motivo</b></label>
-                                    <textarea class="form-control" v-validate="'required'" :name="'Motivo'" v-model="form.motivo"></textarea>
-                                    <label class="help" v-show="validation_errors.has('form_save_solicitud.Motivo')">@{{ validation_errors.first('form_save_solicitud.Motivo') }}</label>
-                                </div>
+                            <div class="form-group" :class="{'has-error': validation_errors.has('form_save_solicitud.Motivo')}">
+                                <label><b>Motivo</b></label>
+                                <textarea class="form-control" v-validate="'required'" :name="'Motivo'" v-model="form.motivo"></textarea>
+                                <label class="help" v-show="validation_errors.has('form_save_solicitud.Motivo')">@{{ validation_errors.first('form_save_solicitud.Motivo') }}</label>
                             </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
-                                <button type="submit" class="btn btn-primary" :disabled="cargando">
-                                <span v-if="cargando">
-                                    <i class="fa fa-spinner fa-spin"></i> Guardando
-                                </span>
-                                    <span v-else>
-                                    <i class="fa fa-save"></i> Guardar
-                                </span>
-                                </button>
-                            </div>
-                        </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                            <button type="submit" class="btn btn-primary" :disabled="cargando">
+                            <span v-if="cargando">
+                                <i class="fa fa-spinner fa-spin"></i> Guardando
+                            </span>
+                                <span v-else>
+                                <i class="fa fa-save"></i> Guardar
+                            </span>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+
+
+
+        <div id="add_insumo_modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="addInsumosModal">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title">Agregar Insumos</h4>
                     </div>
+                    <form id="form_save_solicitud" @submit.prevent="validateForm('form_save_solicitud', 'save_solicitud')"  data-vv-scope="form_save_solicitud">
+                        <div class="modal-body small">
+
+
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                            <button type="submit" class="btn btn-primary" :disabled="cargando">
+                            <span v-if="cargando">
+                                <i class="fa fa-spinner fa-spin"></i> Guardando
+                            </span>
+                                <span v-else>
+                                <i class="fa fa-save"></i> Guardar
+                            </span>
+                            </button>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>

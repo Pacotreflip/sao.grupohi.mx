@@ -10,6 +10,9 @@ use Ghi\Domain\Core\Contracts\ControlPresupuesto\PresupuestoRepository;
 use Ghi\Domain\Core\Contracts\ControlPresupuesto\SolicitudCambioRepository;
 use Ghi\Domain\Core\Models\Concepto;
 use Ghi\Domain\Core\Contracts\ControlPresupuesto\SolicitudCambioPartidaRepository;
+use Ghi\Domain\Core\Models\ControlPresupuesto\Estatus;
+use Ghi\Domain\Core\Models\ControlPresupuesto\SolicitudCambio;
+use Ghi\Domain\Core\Models\ControlPresupuesto\SolicitudCambioPartida;
 use Ghi\Domain\Core\Models\ControlPresupuesto\TipoOrden;
 use Ghi\Domain\Core\Reportes\ControlPresupuesto\PDFSolicitudCambio;
 use Illuminate\Http\Request;
@@ -101,7 +104,9 @@ class CambioPresupuestoController extends Controller
                 foreach ($request->partidas as $p)
                     $conceptos_ids[] = $p['id_concepto'];
 
-                $repetidas = $this->partidas->findIn($conceptos_ids);
+                $repetidas = SolicitudCambio::whereHas('partidas',function($query) use ($conceptos_ids) {
+                    $query->whereIn('id_concepto', $conceptos_ids);
+                })->where('id_estatus', '=', Estatus::GENERADA)->get();
 
                 if (!$repetidas->isEmpty())
                     return response()->json(
