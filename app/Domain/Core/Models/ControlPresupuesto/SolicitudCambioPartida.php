@@ -38,4 +38,8 @@ class SolicitudCambioPartida extends Model
     {
         return $this->belongsTo(SolicitudCambio::class, 'id_solicitud_cambio', 'id');
     }
+
+    public function getClaveConceptoAttribute() {
+        return $this->concepto->clave_concepto;
+    }
 }
