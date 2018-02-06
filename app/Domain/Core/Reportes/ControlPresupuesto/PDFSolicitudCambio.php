@@ -187,12 +187,6 @@ class PDFSolicitudCambio extends Rotation {
 
         foreach ($baseDatos as $bi => $base)
         {
-
-            if ($bi > 0)
-            {
-
-            }
-
             $this->SetFont('Arial', 'B', $this->txtSeccionTam);
             $this->SetXY($this->GetX(), $this->GetY());
             $this->Cell($this->WidthTotal, 0.7, utf8_decode('PRESUPUESTO DE '. $base->baseDatos->descripcion), 'TRLB', 0, 'C');
@@ -222,14 +216,14 @@ class PDFSolicitudCambio extends Rotation {
                 $conceptoBase = DB::connection('cadeco')->table($base->baseDatos->base_datos . ".dbo.conceptos")->where('clave_concepto', '=', $partida->concepto->clave_concepto)->first();
                 $items = DB::connection('cadeco')->table($base->baseDatos->base_datos . ".dbo.conceptos")->orderBy('nivel', 'ASC')->where('id_obra', '=', Context::getId())->where('nivel', 'like', $conceptoBase->nivel . '%')->get();
 
-            $this->SetFont('Arial', '', 6);
-            $this->SetFills(array('255,255,255', '255,255,255', '255,255,255', '255,255,255', '255,255,255', '255,255,255', '255,255,255', '255,255,255', '255,255,255', '255,255,255', '255,255,255'));
-            $this->SetTextColors(array('0,0,0', '0,0,0', '0,0,0', '0,0,0', '0,0,0', '0,0,0', '0,0,0', '0,0,0', '0,0,0', '0,0,0', '0,0,0'));
-            $this->SetHeights(array(0.35));
-            $this->SetAligns(array('L', 'L', 'L', 'L', 'R', 'R', 'R', 'R', 'R', 'R', 'R'));
-            $this->SetWidths(array(0.02 * $this->WidthTotal, 0.04 * $this->WidthTotal, 0.54 * $this->WidthTotal, 0.05 * $this->WidthTotal, 0.05 * $this->WidthTotal, 0.05 * $this->WidthTotal, 0.05 * $this->WidthTotal, 0.05 * $this->WidthTotal, 0.05 * $this->WidthTotal, 0.05 * $this->WidthTotal, 0.05 * $this->WidthTotal));
+                $this->SetFont('Arial', '', 6);
+                $this->SetFills(array('255,255,255', '255,255,255', '255,255,255', '255,255,255', '255,255,255', '255,255,255', '255,255,255', '255,255,255', '255,255,255', '255,255,255', '255,255,255'));
+                $this->SetTextColors(array('0,0,0', '0,0,0', '0,0,0', '0,0,0', '0,0,0', '0,0,0', '0,0,0', '0,0,0', '0,0,0', '0,0,0', '0,0,0'));
+                $this->SetHeights(array(0.35));
+                $this->SetAligns(array('L', 'L', 'L', 'L', 'R', 'R', 'R', 'R', 'R', 'R', 'R'));
+                $this->SetWidths(array(0.02 * $this->WidthTotal, 0.04 * $this->WidthTotal, 0.54 * $this->WidthTotal, 0.05 * $this->WidthTotal, 0.05 * $this->WidthTotal, 0.05 * $this->WidthTotal, 0.05 * $this->WidthTotal, 0.05 * $this->WidthTotal, 0.05 * $this->WidthTotal, 0.05 * $this->WidthTotal, 0.05 * $this->WidthTotal));
 
-            $this->encola = 'partidas';
+                $this->encola = 'partidas';
 
                 foreach ($items as $index => $item) {
 
@@ -255,6 +249,8 @@ class PDFSolicitudCambio extends Rotation {
                     ]);
                 }
             }
+
+            $this->Ln(1);
         }
 
         $this->encola = '';
