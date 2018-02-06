@@ -185,13 +185,17 @@ class PDFSolicitudCambio extends Rotation {
 
         $baseDatos = AfectacionOrdenesPresupuesto::where('id_tipo_orden', '=', $tipo_orden)->with('baseDatos')->get();
 
-        foreach ($baseDatos as $base)
+        foreach ($baseDatos as $bi => $base)
         {
+
+            if ($bi > 0)
+            {
+
+            }
 
             $this->SetFont('Arial', 'B', $this->txtSeccionTam);
             $this->SetXY($this->GetX(), $this->GetY());
             $this->Cell($this->WidthTotal, 0.7, utf8_decode('PRESUPUESTO DE '. $base->baseDatos->descripcion), 'TRLB', 0, 'C');
-
             $this->SetXY($this->GetX(), $this->GetY() + 0.5);
             $this->SetWidths(array(0));
             $this->SetFills(array('255,255,255'));
