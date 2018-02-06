@@ -12,7 +12,7 @@
             :solicitud="{{$solicitud}}"
             :cobrabilidad="{{$cobrabilidad}}"
             :presupuestos="{{$presupuestos}}"
-            v-cloak>
+            v-cloak xmlns:v-on="http://www.w3.org/1999/xhtml">
         <section>
             <div class="row">
                 <div class="col-md-12">
@@ -193,7 +193,6 @@
                                         <td class="text-right">$&nbsp;@{{(parseFloat(partida.variacion_importe)).formatMoney(2,'.',',')}}</td>
                                         <td class="text-right">$&nbsp;@{{(parseFloat(partida.monto_nuevo)).formatMoney(2,'.',',')}}</td>
                                     </tr>
-
                                     </tbody>
                                 </table>
                             </div>

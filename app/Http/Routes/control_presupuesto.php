@@ -41,15 +41,11 @@ Route::group(['prefix' => 'control_presupuesto'], function () {
     Route::get('tarjeta', 'TarjetaController@index');
     Route::get('tarjeta/lists', 'TarjetaController@lists');
 
-    /*
+    /**
      * SolicitudCambioPartida
      */
-
     Route::get('cambio_presupuesto_partida/{id}', 'SolicitudCambioPartidasController@mostrarAfectacion')->where(['id' => '[0-9]+']);
     Route::post('cambio_presupuesto_partida/detallePresupuesto', 'SolicitudCambioPartidasController@detallePresupuesto')->name('control_presupuesto.cambio_presupuesto_partida.detallePresupuesto');
-    Route::post('cambio_presupuesto_partida/subtotalTarjeta', 'SolicitudCambioPartidasController@subtotalTarjeta')->name('control_presupuesto.cambio_presupuesto_partida.subtotalTarjeta');
-    Route::post('cambio_presupuesto_partida/subtotalTarjetaShow', 'SolicitudCambioPartidasController@subtotalTarjetaShow')->name('control_presupuesto.cambio_presupuesto_partida.subtotalTarjetaShow');
-
     Route::post('afectacion_presupuesto/getBasesAfectadas', 'AfectacionOrdenPresupuestoController@getBasesAfectadas')->name('control_presupuesto.afectacion_presupuesto.getBasesAfectadas');
 
 });
