@@ -43,7 +43,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-md-12" v-if="form.id_tipo_orden != '' && form.id_tipo_orden != 1">
+                <div class="col-md-12" v-if="form.id_tipo_orden != '' && form.id_tipo_orden != 1" v-show="false">
                     <div class="box box-solid">
                         <div class="box-header with-border">
                             <h3 class="box-title">Filtros para consulta de Conceptos</h3>
