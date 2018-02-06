@@ -236,7 +236,7 @@ class PDFSolicitudCambio extends Rotation {
 
                     $this->Row([
                         $contador++,
-                        '999', // $item['numTarjeta'],
+                        $item['numTarjeta'],
                         str_repeat("______", $profundidad) . ' ' . utf8_decode($item->descripcion),
                         utf8_decode($item->unidad),
                         number_format($item->precio_unitario, 2, '.', ','),
