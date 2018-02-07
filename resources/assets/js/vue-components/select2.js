@@ -1,5 +1,5 @@
 Vue.component('select2', {
-    props: ['options', 'value','name'],
+    props: ['options', 'value','name', 'placeholder'],
     template: '<select><slot></slot></select>',
     mounted: function () {
         var vm = this
@@ -18,12 +18,12 @@ Vue.component('select2', {
         data = data.sort(SortByName);
         $(this.$el).attr('name',this.name)
         $(this.$el).select2({
-                data: data,
-                width: '100%',
-                allowClear: true,
-                placeholder : {
-                    id : ''
-                }
+            data: data,
+            width: '100%',
+            allowClear: true,
+            placeholder : {
+                id : ''
+            }
         })
             .val(this.value)
             .trigger('change')

@@ -10,6 +10,9 @@ use Ghi\Domain\Core\Contracts\ControlPresupuesto\PresupuestoRepository;
 use Ghi\Domain\Core\Contracts\ControlPresupuesto\SolicitudCambioRepository;
 use Ghi\Domain\Core\Models\Concepto;
 use Ghi\Domain\Core\Contracts\ControlPresupuesto\SolicitudCambioPartidaRepository;
+use Ghi\Domain\Core\Models\ControlPresupuesto\Estatus;
+use Ghi\Domain\Core\Models\ControlPresupuesto\SolicitudCambio;
+use Ghi\Domain\Core\Models\ControlPresupuesto\SolicitudCambioPartida;
 use Ghi\Domain\Core\Models\ControlPresupuesto\TipoOrden;
 use Ghi\Domain\Core\Reportes\ControlPresupuesto\PDFSolicitudCambio;
 use Illuminate\Http\Request;
@@ -84,30 +87,33 @@ class CambioPresupuestoController extends Controller
 
     public function store(Request $request)
     {
-        // Revisa si ya existe una solicitud con al menos una partida ya seleccionada
-        $conceptos_ids = [];
-        $repetidas = false;
-
-        foreach ($request->partidas as $p)
-            $conceptos_ids[] = $p['id_concepto'];
-
-        $repetidas = $this->partidas->findIn($conceptos_ids);
-
-        if (!$repetidas->isEmpty())
-            return response()->json(
-                [
-                    'repetidas' => $repetidas
-                ], 200);
-
         $solicitud = '';
         switch ($request->id_tipo_orden) {
             case TipoOrden::ESCALATORIA:
+                $solicitud = $this->solicitud->saveEscalatoria($request->all());
                 break;
             case TipoOrden::RECLAMOS_INDIRECTO:
                 break;
             case TipoOrden::CONCEPTOS_EXTRAORDINARIOS:
                 break;
             case TipoOrden::VARIACION_VOLUMEN:
+                // Revisa si ya existe una solicitud con al menos una partida ya seleccionada
+                $conceptos_ids = [];
+                $repetidas = false;
+
+                foreach ($request->partidas as $p)
+                    $conceptos_ids[] = $p['id_concepto'];
+
+                $repetidas = SolicitudCambio::whereHas('partidas',function($query) use ($conceptos_ids) {
+                    $query->whereIn('id_concepto', $conceptos_ids);
+                })->where('id_estatus', '=', Estatus::GENERADA)->get();
+
+                if (!$repetidas->isEmpty())
+                    return response()->json(
+                        [
+                            'repetidas' => $repetidas
+                        ], 200);
+
                 $solicitud = $this->solicitud->saveVariacionVolumen($request->all());
                 break;
             case TipoOrden::ORDEN_DE_CAMBIO_NO_COBRABLE:
@@ -137,8 +143,7 @@ class CambioPresupuestoController extends Controller
         return view('control_presupuesto.cambio_presupuesto.show.variacion_volumen')
             ->with('solicitud', $solicitud)
             ->with('cobrabilidad', $solicitud->tipoOrden->cobrabilidad)
-            ->with('presupuestos',$presupuestos)
-            ->with('presupuestoInicial',$presupuestos);
+            ->with('presupuestos',$presupuestos);
     }
 
 
@@ -188,6 +193,4 @@ class CambioPresupuestoController extends Controller
             return $item;
         });
     }
-
-
 }

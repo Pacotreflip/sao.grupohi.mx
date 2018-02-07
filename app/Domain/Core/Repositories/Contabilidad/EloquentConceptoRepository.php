@@ -6,6 +6,7 @@ use Ghi\Core\Facades\Context;
 use Ghi\Domain\Core\Contracts\Contabilidad\ConceptoRepository;
 use Ghi\Domain\Core\Models\Concepto;
 use Illuminate\Support\Facades\DB;
+use PhpParser\Node\Expr\Array_;
 
 class EloquentConceptoRepository implements ConceptoRepository
 {
@@ -135,11 +136,11 @@ class EloquentConceptoRepository implements ConceptoRepository
         $query->where('path.filtro3','Like','%COSTO DIRECTO%');
 
 
-        if($data['id_tarjeta'] != '') {
-            $query->join('ControlPresupuesto.concepto_tarjeta', 'dbo.conceptos.id_concepto', '=', 'ControlPresupuesto.concepto_tarjeta.id_concepto')
-                ->join('ControlPresupuesto.tarjeta', 'ControlPresupuesto.concepto_tarjeta.id_tarjeta', '=', 'ControlPresupuesto.tarjeta.id')
-                ->where('ControlPresupuesto.tarjeta.id', '=', $data['id_tarjeta']);
-        }
+
+        $query->join('ControlPresupuesto.concepto_tarjeta', 'dbo.conceptos.id_concepto', '=', 'ControlPresupuesto.concepto_tarjeta.id_concepto')
+            ->join('ControlPresupuesto.tarjeta', 'ControlPresupuesto.concepto_tarjeta.id_tarjeta', '=', 'ControlPresupuesto.tarjeta.id')
+            ->where('ControlPresupuesto.tarjeta.id', '=', $data['id_tarjeta'] == '' ? null : $data['id_tarjeta']);
+
 
         if(isset($data['order'])) {
             foreach ($data['order'] as $order) {
@@ -172,5 +173,32 @@ class EloquentConceptoRepository implements ConceptoRepository
 
         return $query->paginate($perPage = $data['length'], $columns = ['*'], $pageName = 'page', $page = ($data['start'] / $data['length']) + 1);
 
+    }
+
+    /**
+     * Obtiene los insumos de un concepto medible
+     * @param $id
+     * @return mixed
+     */
+    public function getInsumos($id)
+    {
+        $cobrable = $this->model->where('id_concepto', $id)->first();
+        $conceptos = $this->model->where('nivel', 'like', $cobrable->nivel.'___.')->get();
+        $data = [];
+        foreach ($conceptos as $concepto){
+            $data[$concepto->descripcion] =
+                [
+                    'id_concepto' => $concepto->id_concepto,
+                    'nivel'       => $concepto->nivel,
+                    'descripcion' => $concepto->descripcion,
+                    'monto_presupuestado' => $concepto->monto_presupuestado,
+                    'insumos'  => Concepto::where('nivel', 'like', $concepto->nivel.'___.')->get()->toArray()
+                ];
+        }
+        $cob_conceptos = [
+            'cobrable'  => $cobrable->toArray(),
+            'conceptos' => $data
+        ];
+        return $cob_conceptos;
     }
 }

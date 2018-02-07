@@ -28,7 +28,7 @@ use Ghi\Domain\Core\Models\Moneda;
 use Ghi\Domain\Core\Models\Transacciones\Item;
 use Ghi\Domain\Core\Models\Transacciones\Subcontrato;
 use Ghi\Domain\Core\Models\Costo;
-use GuzzleHttp\Client;
+//use GuzzleHttp\Client;
 use Illuminate\Foundation\Auth\User;
 use Illuminate\Support\Facades\DB;
 use function MongoDB\BSON\toJSON;

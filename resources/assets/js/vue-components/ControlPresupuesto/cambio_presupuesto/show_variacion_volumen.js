@@ -1,5 +1,5 @@
 Vue.component('show-variacion-volumen', {
-    props: ['solicitud', 'cobrabilidad'],
+    props: ['solicitud', 'cobrabilidad','presupuestos'],
     data: function () {
         return {
             form: {
@@ -10,7 +10,9 @@ Vue.component('show-variacion-volumen', {
             rechazando:false,
             autorizando:false,
             consultando:false,
+            consultandoImportes:false,
             partidas:[],
+            importes:[],
             partida_id:0
         }
     },
@@ -18,7 +20,7 @@ Vue.component('show-variacion-volumen', {
     computed: {},
 
     mounted: function () {
-
+       this.mostrar_importes_inicial();
     },
 
     methods: {
@@ -97,7 +99,7 @@ Vue.component('show-variacion-volumen', {
                         closeOnConfirm: false
                     }).then(function () {
                     });
-                   // window.location.reload(true);
+                   window.location.reload(true);
                 },
                 complete: function () {
                     self.autorizando = false;
@@ -108,7 +110,6 @@ Vue.component('show-variacion-volumen', {
         },
 
         rechazar_solicitud: function (id,motivo) {
-
 
             var self = this;
             var url = App.host + '/control_presupuesto/cambio_presupuesto/rechazarSolicitud';
@@ -135,7 +136,7 @@ Vue.component('show-variacion-volumen', {
                         closeOnConfirm: false
                     }).then(function () {
                     });
-                   // window.location.reload(true);
+                   window.location.reload(true);
                 },
                 complete: function () {
                     self.rechazando = false;
@@ -146,25 +147,67 @@ Vue.component('show-variacion-volumen', {
         }
         ,
         mostrar_detalle_partida:function (id) {
-            $('#divDetalle').fadeOut();
             var self = this;
+            var partida=id;
             self.partida_id=id;
-            var url = App.host + '/control_presupuesto/cambio_presupuesto_partida/'+id;
+            var presupuesto=self.presupuestos[0].base_datos.id;
+            $('#divDetalle').fadeOut();
+
+            var url = App.host + '/control_presupuesto/cambio_presupuesto_partida/detallePresupuesto';
             $.ajax({
-                type: 'GET',
+                type: 'POST',
+                data:{
+                    id_partida:partida,
+                    presupuesto:presupuesto
+                },
                 url: url,
                 beforeSend: function () {
                     self.consultando = true;
-                    },
+                },
                 success: function (data, textStatus, xhr) {
-                  self.partidas=data.data;
-                  $('#divDetalle').fadeIn();
+                    self.partidas=data.data;
+                    $('#divDetalle').fadeIn();
                 },
                 complete: function () {
                     self.consultando = false;
 
                 }
             });
+        }
+        ,
+        mostrar_importes_inicial:function () {
+            var self = this;
+            var presupuesto=self.presupuestos[0].id_base_presupuesto;
+            this.mostrar_importes(presupuesto);
+        },
+        mostrar_importes: function(presupesto){
+            var self = this;
+            var presupuesto=presupesto;
+
+            $('#divDetalleImporte').fadeOut();
+
+            var url = App.host + '/control_presupuesto/cambio_presupuesto_partida/subtotalTarjetaShow';
+            $.ajax({
+                type: 'POST',
+                data:{
+                    presupuesto:presupuesto,
+                    id_solicitud:self.solicitud.id
+
+                },
+                url: url,
+                beforeSend: function () {
+                    self.consultandoImportes = true;
+                },
+                success: function (data, textStatus, xhr) {
+                    self.importes=data.data;
+                    $('#divDetalleImporte').fadeIn();
+                },
+                complete: function () {
+                    self.consultandoImportes = false;
+
+                }
+            });
+
 
         }
         ,
