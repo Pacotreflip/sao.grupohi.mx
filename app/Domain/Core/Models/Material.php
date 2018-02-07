@@ -50,6 +50,7 @@ class Material extends BaseModel
         'nivel_padre',
         'id_padre',
         'tiene_hijos',
+        'DescripcionPadre'
     ];
 
     public function getNivelHijosAttribute() {
@@ -126,6 +127,23 @@ class Material extends BaseModel
     public function __toString()
     {
         return $this->descripcion;
+    }
+    public function getDescripcionPadreAttribute() {
+
+        if($this->nivel_padre != '') {
+
+            $padre = false;
+
+            $padre = Material::where('nivel', '=', $this->nivel_padre)
+                ->where('tipo_material', '=', $this->tipo_material)->first();
+
+            // El material no tiene padre
+            if (is_null($padre))
+                return false;
+
+            else
+                return $padre->descripcion;
+        }
     }
 
 }

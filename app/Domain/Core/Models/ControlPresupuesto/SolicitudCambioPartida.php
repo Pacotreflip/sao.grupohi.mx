@@ -23,7 +23,11 @@ class SolicitudCambioPartida extends Model
         'cantidad_presupuestada_nueva',
         'variacion_volumen',
         'monto_presupuestado',
-        'descripcion'
+        'descripcion',
+        'id_material',
+        'nivel',
+        'precio_unitario_original',
+        'precio_unitario_nuevo'
     ];
 
     public function concepto() {

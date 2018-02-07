@@ -15,6 +15,7 @@ use Ghi\Domain\Core\Models\ControlPresupuesto\AfectacionOrdenesPresupuesto;
 use Ghi\Domain\Core\Models\ControlPresupuesto\ConceptoEscalatoria;
 use Ghi\Domain\Core\Models\ControlPresupuesto\ConceptoTarjeta;
 use Ghi\Domain\Core\Models\ControlPresupuesto\Estatus;
+use Ghi\Domain\Core\Models\ControlPresupuesto\PartidasInsumosAgrupados;
 use Ghi\Domain\Core\Models\ControlPresupuesto\SolicitudCambio;
 use Ghi\Domain\Core\Models\ControlPresupuesto\SolicitudCambioAutorizada;
 use Ghi\Domain\Core\Models\ControlPresupuesto\SolicitudCambioPartida;
@@ -114,7 +115,8 @@ class EloquentSolicitudCambioRepository implements SolicitudCambioRepository
         }
     }
 
-    public function saveEscalatoria(array $data) {
+    public function saveEscalatoria(array $data)
+    {
         try {
             DB::connection('cadeco')->beginTransaction();
 
@@ -180,7 +182,7 @@ class EloquentSolicitudCambioRepository implements SolicitudCambioRepository
                     $concepto->monto_presupuestado = $concepto->monto_presupuestado * $factor;
 
                     //propagacion hacia abajo
-                    $conceptosPropagacion = DB::connection('cadeco')->table($basePresupuesto->baseDatos->base_datos . ".dbo.conceptos")->where('nivel', 'like', $concepto->nivel . '%')->where('id_obra', '=',Context::getId())->get();
+                    $conceptosPropagacion = DB::connection('cadeco')->table($basePresupuesto->baseDatos->base_datos . ".dbo.conceptos")->where('nivel', 'like', $concepto->nivel . '%')->where('id_obra', '=', Context::getId())->get();
                     $afectacion = 0;
                     foreach ($conceptosPropagacion as $conceptoPropagacion) {
 
@@ -200,7 +202,7 @@ class EloquentSolicitudCambioRepository implements SolicitudCambioRepository
                     DB::connection('cadeco')->table($basePresupuesto->baseDatos->base_datos . ".dbo.conceptos")
                         ->where('id_concepto', $concepto->id_concepto)
                         ->update(['cantidad_presupuestada' => $concepto->cantidad_presupuestada, 'monto_presupuestado' => $concepto->monto_presupuestado]);
-                    $conc = DB::connection('cadeco')->table($basePresupuesto->baseDatos->base_datos . ".dbo.conceptos")->where('id_concepto', '=', $concepto->id_concepto)->where('id_obra', '=',Context::getId())->first();
+                    $conc = DB::connection('cadeco')->table($basePresupuesto->baseDatos->base_datos . ".dbo.conceptos")->where('id_concepto', '=', $concepto->id_concepto)->where('id_obra', '=', Context::getId())->first();
 
                     //propagacion hacia arriba monto
 
@@ -208,7 +210,7 @@ class EloquentSolicitudCambioRepository implements SolicitudCambioRepository
                     $afectacionConcepto = 0;
 
                     while ($tamanioFaltante > 0) { ///////////////recorrido todos los niveles hacia arriba
-                        $afectaConcepto = DB::connection('cadeco')->table($basePresupuesto->baseDatos->base_datos . ".dbo.conceptos")->where('id_obra', '=',Context::getId())->where('nivel', '=', substr($conc->nivel, 0, $tamanioFaltante))->first();
+                        $afectaConcepto = DB::connection('cadeco')->table($basePresupuesto->baseDatos->base_datos . ".dbo.conceptos")->where('id_obra', '=', Context::getId())->where('nivel', '=', substr($conc->nivel, 0, $tamanioFaltante))->first();
                         if ($afectacionConcepto > 0) {///afectamos el concepto de la solicitud
                             $cantidadMonto = ($afectaConcepto->monto_presupuestado - $montoAnterior) + $conc->monto_presupuestado;
                             DB::connection('cadeco')->table($basePresupuesto->baseDatos->base_datos . ".dbo.conceptos")
@@ -268,4 +270,143 @@ class EloquentSolicitudCambioRepository implements SolicitudCambioRepository
         }
 
     }
+
+    public function saveCambioInsumos(array $data)
+    {
+        try {
+            DB::connection('cadeco')->beginTransaction();
+
+            $solicitud = $this->create($data);
+
+            foreach ($data['agrupadas'] as $conceptoAgrupado) { /////////partidas agrupadas
+                $partidaInsumo['id_solicitud_cambio'] = $solicitud->id;
+                $partidaInsumo['id_concepto'] = $conceptoAgrupado;
+                PartidasInsumosAgrupados::create($partidaInsumo);
+            }
+
+            foreach ($data['partidas'] as $partida) {
+
+
+                $cantidad_presupuestada_concepto=$partida['cobrable']['cantidad_presupuestada'];
+
+
+
+
+
+
+                ////////impacto materiales
+                if (array_key_exists('insumos', $partida['conceptos']['MATERIALES'])) {
+                    foreach ($partida['conceptos']['MATERIALES']['insumos'] as $material) {
+
+                        if (isset($material['id_concepto'])) {
+                            $conceptoTarjeta = ConceptoTarjeta::where('id_concepto', '=', $material['id_concepto'])->first();
+                            if ($conceptoTarjeta) {
+                                $material['id_tarjeta'] = $conceptoTarjeta->id_tarjeta;
+                            }
+                        }
+
+                        $material['id_tipo_orden'] = TipoOrden::ORDEN_DE_CAMBIO_DE_INSUMOS;
+                        $material['id_solicitud_cambio'] = $solicitud->id;
+                        $material['precio_unitario_original'] = $material['precio_unitario'];
+                        $existe = true;
+                        array_key_exists('precio_unitario_nuevo', $material) ? $material['precio_unitario_nuevo'] = $material['precio_unitario_nuevo'] : '';
+                        array_key_exists('cantidad_presupuestada_nueva', $material) ? $material['cantidad_presupuestada_nueva'] = $material['cantidad_presupuestada_nueva'] : '';
+
+                        $material['cantidad_presupuestada_original'] = $material['cantidad_presupuestada']*$cantidad_presupuestada_concepto;
+                       // $material['cantidad_presupuestada_nueva'] = $material['cantidad_presupuestada_nueva'];
+
+                        if (array_key_exists('precio_unitario_nuevo', $material) || array_key_exists('cantidad_presupuestada_nueva', $material)) {
+                            SolicitudCambioPartida::create($material);
+                        }
+                    }
+                }
+                ////////impacto Mano obra
+                if (array_key_exists('insumos', $partida['conceptos']['MANOOBRA'])) {
+                    foreach ($partida['conceptos']['MANOOBRA']['insumos'] as $mano) {
+                        if (isset($mano['id_concepto'])) {
+                            $conceptoTarjeta = ConceptoTarjeta::where('id_concepto', '=', $mano['id_concepto'])->first();
+                            if ($conceptoTarjeta) {
+                                $mano['id_tarjeta'] = $conceptoTarjeta->id_tarjeta;
+                            }
+                        }
+                        $mano['id_tipo_orden'] = TipoOrden::ORDEN_DE_CAMBIO_DE_INSUMOS;
+                        $mano['id_solicitud_cambio'] = $solicitud->id;
+                        $mano['precio_unitario_original'] = $material['precio_unitario'];
+                        $existe = true;
+                        array_key_exists('precio_unitario_nuevo', $material) ? $mano['precio_unitario_nuevo'] = $mano['precio_unitario_nuevo'] : '';
+                        array_key_exists('cantidad_presupuestada_nueva', $material) ? $mano['cantidad_presupuestada_nueva'] = $mano['cantidad_presupuestada_nueva'] : '';
+
+                        $mano['cantidad_presupuestada_original'] = $mano['cantidad_presupuestada']*$cantidad_presupuestada_concepto;
+                      //  $mano['cantidad_presupuestada_nueva'] = $mano['cantidad_presupuestada_nueva'];
+
+                        if (array_key_exists('precio_unitario_nuevo', $mano) || array_key_exists('cantidad_presupuestada_nueva', $mano)) {
+                            SolicitudCambioPartida::create($mano);
+                        }
+                    }
+                }
+                ////////impacto Herramienta y equipo
+                if (array_key_exists('insumos', $partida['conceptos']['HERRAMIENTAYEQUIPO'])) {
+                    foreach ($partida['conceptos']['HERRAMIENTAYEQUIPO']['insumos'] as $herramienta) {
+                        if (isset($herramienta['id_concepto'])) {
+                            $conceptoTarjeta = ConceptoTarjeta::where('id_concepto', '=', $herramienta['id_concepto'])->first();
+                            if ($conceptoTarjeta) {
+                                $herramienta['id_tarjeta'] = $conceptoTarjeta->id_tarjeta;
+                            }
+                        }
+                        $herramienta['id_tipo_orden'] = TipoOrden::ORDEN_DE_CAMBIO_DE_INSUMOS;
+                        $herramienta['id_solicitud_cambio'] = $solicitud->id;
+                        $herramienta['precio_unitario_original'] = $material['precio_unitario'];
+                        $existe = true;
+                        array_key_exists('precio_unitario_nuevo', $material) ? $herramienta['precio_unitario_nuevo'] = $herramienta['precio_unitario_nuevo'] : '';
+                        array_key_exists('cantidad_presupuestada_nueva', $material) ? $herramienta['cantidad_presupuestada_nueva'] = $herramienta['cantidad_presupuestada_nueva'] : '';
+
+                        $herramienta['cantidad_presupuestada_original'] = $herramienta['cantidad_presupuestada']*$cantidad_presupuestada_concepto;
+                      //  $herramienta['cantidad_presupuestada_nueva'] = $herramienta['cantidad_presupuestada_nueva'];
+
+                        if (array_key_exists('precio_unitario_nuevo', $herramienta) || array_key_exists('cantidad_presupuestada_nueva', $herramienta)) {
+                            SolicitudCambioPartida::create($herramienta);
+                        }
+                    }
+                }
+
+                ////////impacto Maquinaria
+
+                if (array_key_exists('insumos', $partida['conceptos']['MAQUINARIA'])) {
+                    foreach ($partida['conceptos']['MAQUINARIA']['insumos'] as $maquinaria) {
+                        if (isset($maquinaria['id_concepto'])) {
+                            $conceptoTarjeta = ConceptoTarjeta::where('id_concepto', '=', $maquinaria['id_concepto'])->first();
+                            if ($conceptoTarjeta) {
+                                $maquinaria['id_tarjeta'] = $conceptoTarjeta->id_tarjeta;
+                            }
+                        }
+                        $maquinaria['id_tipo_orden'] = TipoOrden::ORDEN_DE_CAMBIO_DE_INSUMOS;
+                        $maquinaria['id_solicitud_cambio'] = $solicitud->id;
+                        $maquinaria['precio_unitario_original'] = $material['precio_unitario'];
+                        $existe = true;
+                        array_key_exists('precio_unitario_nuevo', $material) ? $maquinaria['precio_unitario_nuevo'] = $maquinaria['precio_unitario_nuevo'] : '';
+                        array_key_exists('cantidad_presupuestada_nueva', $material) ? $maquinaria['cantidad_presupuestada_nueva'] = $maquinaria['cantidad_presupuestada_nueva'] : '';
+
+                        $maquinaria['cantidad_presupuestada_original'] = $maquinaria['cantidad_presupuestada']*$cantidad_presupuestada_concepto;
+                       // $maquinaria['cantidad_presupuestada_nueva'] = $maquinaria['cantidad_presupuestada_nueva'];
+
+                        if (array_key_exists('precio_unitario_nuevo', $maquinaria) || array_key_exists('cantidad_presupuestada_nueva', $maquinaria)) {
+                            SolicitudCambioPartida::create($maquinaria);
+                        }
+
+
+                    }
+                }
+            }
+
+            //   dd($solicitud);
+            $solicitud = $this->with('partidas')->find($solicitud->id);
+            DB::connection('cadeco')->commit();
+            return $solicitud;
+        } catch
+        (\Exception $e) {
+            DB::connection('cadeco')->rollback();
+            throw $e;
+        }
+    }
+
 }

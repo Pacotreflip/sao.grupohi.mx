@@ -7,6 +7,9 @@ Vue.component('variacion-insumos', {
                 agrupadas: [],
                 motivo : ''
             },
+            tipo_insumo:0,
+            id_material_seleccionado:0,
+            material_seleccionado:[],
             cargando : false,
             guardando : false
         }
@@ -17,16 +20,9 @@ Vue.component('variacion-insumos', {
             var res = {
                 id_tipo_orden: this.id_tipo_orden,
                 motivo: this.form.motivo,
-                partidas: []
+                agrupadas: this.form.agrupadas,
+                partidas: this.form.partidas
             };
-
-            this.form.partidas.forEach(function (value) {
-                res.partidas.push({
-                    id_concepto : value.id_concepto,
-                    cantidad_presupuestada_original : value.cantidad_presupuestada,
-                    cantidad_presupuestada_nueva : value.cantidad_presupuestada_nueva
-                });
-            });
             return res;
         }
     },
@@ -147,15 +143,19 @@ Vue.component('variacion-insumos', {
                     if(jQuery.isEmptyObject( self.form.partidas)){
                         $.each(response.conceptos.MATERIALES.insumos, function (index, partida) {
                             response.conceptos.MATERIALES.insumos[index].cantidad_presupuestada =   partida.cantidad_presupuestada / response.cobrable.cantidad_presupuestada
+                            response.conceptos.MATERIALES.insumos[index].id_elemento =response.conceptos.MATERIALES.insumos[index].id_concepto;
                         });
                         $.each(response.conceptos.HERRAMIENTAYEQUIPO.insumos, function (index, partida) {
                             response.conceptos.HERRAMIENTAYEQUIPO.insumos[index].cantidad_presupuestada =  partida.cantidad_presupuestada / response.cobrable.cantidad_presupuestada
+                            response.conceptos.HERRAMIENTAYEQUIPO.insumos[index].id_elemento =response.conceptos.HERRAMIENTAYEQUIPO.insumos[index].id_concepto;
                         });
                         $.each(response.conceptos.MANOOBRA.insumos, function (index, partida) {
                             response.conceptos.MANOOBRA.insumos[index].cantidad_presupuestada = partida.cantidad_presupuestada / response.cobrable.cantidad_presupuestada
+                            response.conceptos.MANOOBRA.insumos[index].id_elemento =response.conceptos.MANOOBRA.insumos[index].id_concepto;
                         });
                         $.each(response.conceptos.MAQUINARIA.insumos, function (index, partida) {
                             response.conceptos.MAQUINARIA.insumos[index].cantidad_presupuestada = partida.cantidad_presupuestada / response.cobrable.cantidad_presupuestada
+                            response.conceptos.MAQUINARIA.insumos[index].id_elemento =response.conceptos.MAQUINARIA.insumos[index].id_concepto;
                         });
                         self.form.partidas.push(response);
                         self.form.agrupadas.push(response.cobrable.id_concepto)
@@ -316,6 +316,83 @@ Vue.component('variacion-insumos', {
                 $('#conceptos_modal').modal('hide');
             }
         },
+        addInsumoTipo: function (tipo) {
+            var self = this;
+            self.tipo_insumo=tipo;
+            $('#sel_material').select2({
+                width: '100%',
+                ajax: {
+                    url: App.host + '/control_presupuesto/cambio_presupuesto/getDescripcionByTipo',
+                    dataType: 'json',
+                    delay: 500,
+                    data: function (params) {
+                        return {
+                            descripcion:  params.term,
+                            tipo:tipo
+                        };
+                    },
+                    processResults: function (data) {
+                        return {
+                            results: $.map(data.data.materiales, function (item) {
+                                return {
+                                    text: item.DescripcionPadre+" -> "+item.descripcion,
+                                    descripcion: item.descripcion,
+                                    id_material: item.id_material,
+                                    unidad:item.unidad,
+                                    cantidad_presupuestada:0,
+                                    variacion_cantidad_presupuestada:0,
+                                    cantidad_presupuestada_nueva:0,
+                                    variacion_precio_unitario:0,
+                                    precio_unitario:0,
+                                    id:item.id_material
+                                }
+                            })
+                        };
+                    },
+                    error: function (error) {
+
+                    },
+                    cache: true
+                },
+                escapeMarkup: function (markup) {
+                    return markup;
+                }, // let our custom formatter work
+                minimumInputLength: 1
+            }).on('select2:select', function (e) {
+                var data = e.params.data;
+                data.id_elemento=data.id_material;
+               // console.log(data);
+                self.material_seleccionado=data;
+            });
+            $('#add_insumo_modal').modal('show');
+        }
+        ,
+        cancelar_add_insumo: function () {
+            $('#add_insumo_modal').modal('hide');
+        },
+        agregar_insumo_nuevo: function () {
+            var self = this;
+            $.each(self.form.partidas, function( index, partida ) {
+                switch (self.tipo_insumo){
+                    case 1: ///agregar a materiales
+                        partida.conceptos.MATERIALES.insumos.push(self.material_seleccionado);
+                        break;
+                    case 2://// agergar a mano obra
+                        partida.conceptos.MANOOBRA.insumos.push(self.material_seleccionado);
+                        break;
+                    case 4: ////agregar a herram y equipo
+                        partida.conceptos.HERRAMIENTAYEQUIPO.insumos.push(self.material_seleccionado);
+                        break;
+                    case 8: ///agregar a maquinaria
+                        partida.conceptos.MAQUINARIA.insumos.push(self.material_seleccionado);
+                        break;
+
+                }
+            });
+
+            $('#add_insumo_modal').modal('hide');
+        }
+        ,
 
         removeRendimiento : function (id_concepto, id) {
             var valor = 0.0;
@@ -338,7 +415,7 @@ Vue.component('variacion-insumos', {
         },
 
 
-        recalcular : function (id_concepto,i) {
+        recalcular : function (id_concepto,i,tipo) {
             var self = this;
             var factor = self.form.partidas[0].cobrable.cantidad_presupuestada;
             var cant_pres = $("#c_p_" +id_concepto+'_' + i).val();
@@ -346,14 +423,46 @@ Vue.component('variacion-insumos', {
             var pre_unit = $("#p_u_"+ id_concepto+ '_' + i).html().replace('$', '');
             $("#" +id_concepto+'_' + i).html(nuevo.formatMoney(3,'.',','));
             $("#mp_" +id_concepto+'_'  + i).html((nuevo * pre_unit).formatMoney(3,'.',','));
+            switch (tipo){
+                case 1: ///agregar a materiales
+                    self.form.partidas[0].conceptos.MATERIALES.insumos[i].cantidad_presupuestada_nueva = cant_pres;
+                    break;
+                case 2://// agergar a mano obra
+                    self.form.partidas[0].conceptos.MANOOBRA.insumos[i].cantidad_presupuestada_nueva = cant_pres;
+                    break;
+                case 4: ////agregar a herram y equipo
+                    self.form.partidas[0].conceptos.HERRAMIENTAYEQUIPO.insumos[i].cantidad_presupuestada_nueva = cant_pres;
+                    break;
+                case 8: ///agregar a maquinaria
+                    self.form.partidas[0].conceptos.MAQUINARIA.insumos[i].cantidad_presupuestada_nueva = cant_pres;
+                    break;
+
+            }
         },
 
-        recalcular_monto : function (id_concepto, i) {
+        recalcular_monto : function (id_concepto, i,tipo) {
             var self = this;
             var factor = $("#" +id_concepto+'_'  + i).html();
             var cant = $("#m_p_" +id_concepto+'_'  + i).val();
             var nuevo = factor * cant;
             $("#mp_" +id_concepto+'_'  + i).html(nuevo.formatMoney(3,'.',','));
+
+            switch (tipo){
+                case 1: ///agregar a materiales
+                    self.form.partidas[0].conceptos.MATERIALES.insumos[i].precio_unitario_nuevo = cant;
+                    break;
+                case 2://// agergar a mano obra
+                    self.form.partidas[0].conceptos.MANOOBRA.insumos[i].precio_unitario_nuevo = cant;
+
+                    break;
+                case 4: ////agregar a herram y equipo
+                     self.form.partidas[0].conceptos.HERRAMIENTAYEQUIPO.insumos[i].precio_unitario_nuevo =cant;
+                    break;
+                case 8: ///agregar a maquinaria
+                     self.form.partidas[0].conceptos.MAQUINARIA.insumos[i].precio_unitario_nuevo = cant;
+                    break;
+
+            }
         }
     }
 });

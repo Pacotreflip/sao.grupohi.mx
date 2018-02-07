@@ -87,6 +87,7 @@ class CambioPresupuestoController extends Controller
 
     public function store(Request $request)
     {
+
         $solicitud = '';
         switch ($request->id_tipo_orden) {
             case TipoOrden::ESCALATORIA:
@@ -119,6 +120,8 @@ class CambioPresupuestoController extends Controller
             case TipoOrden::ORDEN_DE_CAMBIO_NO_COBRABLE:
                 break;
             case TipoOrden::ORDEN_DE_CAMBIO_DE_INSUMOS:
+                  $solicitud=$this->solicitud->saveCambioInsumos($request->all());
+                  dd($solicitud);
                 break;
         }
         return $this->response->item($solicitud, function ($item) {

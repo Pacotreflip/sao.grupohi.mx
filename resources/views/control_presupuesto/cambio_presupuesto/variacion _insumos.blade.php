@@ -81,7 +81,7 @@
                                             <div class="row">
                                                 <div class="col-md-12">
                                                     <label for="materiales" class="col-sm-9 control-label"><h4>MATERIALES</h4></label>
-                                                    <button type="button" class="btn btn-default col-sm-3 pull-right" id="materiales"> + Materiales</button>
+                                                    <button type="button" class="btn btn-default col-sm-3 pull-right" id="materiales" v-on:click="addInsumoTipo(1)"> + Materiales</button>
                                                 </div>
                                             </div>
 
@@ -101,28 +101,28 @@
                                         </tr>
                                         </thead>
                                         <tbody>
-                                            <tr v-for="(insumo, i) in concepto.conceptos.MATERIALES.insumos">
-                                                <td>@{{ i+1 }}</td>
-                                                <td>@{{ insumo.descripcion }}</td>
-                                                <td>@{{ insumo.unidad }}</td>
-                                                <td>@{{ parseFloat(insumo.cantidad_presupuestada).formatMoney(3,'.',',') }}</td>
-                                                <td>
-                                                    <div class="form-group">
-                                                        <input type="number" placeholder="0.0" style="width: 90%" :id="'c_p_'+insumo.id_concepto+'_' + i" @change="recalcular(insumo.id_concepto, i)">
-                                                    </div>
-                                                </td>
-                                                <td :id="insumo.id_concepto+'_'+i">@{{ parseFloat(insumo.cantidad_presupuestada * form.partidas[0].cobrable.cantidad_presupuestada ).formatMoney(3,'.',',') }}</td>
-                                                <td :id="'p_u_'+ insumo.id_concepto+ '_' + i">$@{{ parseFloat(insumo.precio_unitario).formatMoney(2,'.',',') }}</td>
-                                                <td>
-                                                    <div class="form-group" >
-                                                        $<input type="number" placeholder="0.0" style="width: 90%" :id="'m_p_'+insumo.id_concepto+'_' + i" @change="recalcular_monto(insumo.id_concepto, i)">
-                                                    </div>
-                                                </td>
-                                                <td :id="'mp_'+insumo.id_concepto+'_'+i">$@{{ parseFloat(insumo.monto_presupuestado).formatMoney(2,'.',',') }} </td>
-                                                <td>
-                                                    <button type="button" @click="removeRendimiento(insumo.id_concepto, i)"><i class="fa fa-minus text-red"></i></button>
-                                                </td>
-                                            </tr>
+                                        <tr v-for="(insumo, i) in concepto.conceptos.MATERIALES.insumos">
+                                            <td>@{{ i+1 }}</td>
+                                            <td>@{{ insumo.descripcion }}</td>
+                                            <td>@{{ insumo.unidad }}</td>
+                                            <td>@{{ parseFloat(insumo.cantidad_presupuestada).formatMoney(3,'.',',') }}</td>
+                                            <td>
+                                                <div class="form-group">
+                                                    <input type="number" placeholder="0.0" style="width: 90%" :id="'c_p_'+insumo.id_elemento+'_' + i" @change="recalcular(insumo.id_elemento, i,1)">
+                                                </div>
+                                            </td>
+                                            <td :id="insumo.id_elemento+'_'+i">@{{ parseFloat(insumo.cantidad_presupuestada * form.partidas[0].cobrable.cantidad_presupuestada ).formatMoney(3,'.',',') }}</td>
+                                            <td :id="'p_u_'+ insumo.id_elemento+ '_' + i">$@{{ parseFloat(insumo.precio_unitario).formatMoney(2,'.',',') }}</td>
+                                            <td>
+                                                <div class="form-group" >
+                                                    $<input type="number" placeholder="0.0" style="width: 90%" :id="'m_p_'+insumo.id_elemento+'_' + i" @change="recalcular_monto(insumo.id_elemento, i,1)">
+                                                </div>
+                                            </td>
+                                            <td :id="'mp_'+insumo.id_elemento+'_'+i">$@{{ parseFloat(insumo.monto_presupuestado).formatMoney(2,'.',',') }} </td>
+                                            <td>
+                                                <button type="button" @click="removeRendimiento(insumo.id_elemento, i)"><i class="fa fa-minus text-red"></i></button>
+                                            </td>
+                                        </tr>
                                         </tbody>
                                     </table>
                                 </div>
@@ -133,7 +133,7 @@
                                             <div class="row">
                                                 <div class="col-md-12">
                                                     <label for="mano_obra" class="col-sm-7 control-label"><h4>MANO DE OBRA</h4></label>
-                                                    <button type="button" class="btn btn-default col-sm-3 pull-right" id="mano_obra"> + Mano Obra</button>
+                                                    <button type="button" class="btn btn-default col-sm-3 pull-right" id="mano_obra"  v-on:click="addInsumoTipo(2)"> + Mano Obra</button>
                                                 </div>
                                             </div>
 
@@ -153,28 +153,29 @@
                                         </tr>
                                         </thead>
                                         <tbody>
-                                            <tr v-for="(insumo, i) in concepto.conceptos.MANOOBRA.insumos">
-                                                <td>@{{ i+1 }}</td>
-                                                <td>@{{ insumo.descripcion }}</td>
-                                                <td>@{{ insumo.unidad }}</td>
-                                                <td>@{{ parseFloat(insumo.cantidad_presupuestada).formatMoney(3,'.',',') }}</td>
-                                                <td>
-                                                    <div class="form-group">
-                                                        <input type="number" placeholder="0.0" style="width: 90%" :id="'c_p_'+insumo.id_concepto+'_' + i" @change="recalcular(insumo.id_concepto, i)">
-                                                    </div>
-                                                </td>
-                                                <td :id="insumo.id_concepto+'_'+i">@{{ parseFloat(insumo.cantidad_presupuestada * form.partidas[0].cobrable.cantidad_presupuestada ).formatMoney(3,'.',',') }}</td>
-                                                <td :id="'p_u_'+ insumo.id_concepto+ '_' + i">$@{{ parseFloat(insumo.precio_unitario).formatMoney(2,'.',',') }}</td>
-                                                <td>
-                                                    <div class="form-group" >
-                                                        $<input type="number" placeholder="0.0" style="width: 90%" :id="'m_p_'+insumo.id_concepto+'_' + i" @change="recalcular_monto(insumo.id_concepto, i)">
-                                                    </div>
-                                                </td>
-                                                <td :id="'mp_'+insumo.id_concepto+'_'+i">$@{{ parseFloat(insumo.monto_presupuestado).formatMoney(2,'.',',') }} </td>
-                                                <td>
-                                                    <button type="button" @click="removeRendimiento(insumo.id_concepto, i)"><i class="fa fa-minus text-red"></i></button>
-                                                </td>
-                                            </tr>
+                                        <tr v-for="(insumo, i) in concepto.conceptos.MANOOBRA.insumos">
+                                            <td>@{{ i+1 }}</td>
+                                            <td>@{{ insumo.descripcion }}</td>
+                                            <td>@{{ insumo.unidad }}</td>
+                                            <td>@{{ parseFloat(insumo.cantidad_presupuestada).formatMoney(3,'.',',') }}</td>
+                                            <td>
+                                                <div class="form-group">
+                                                    <input type="number" placeholder="0.0" style="width: 90%" :id="'c_p_'+insumo.id_elemento+'_' + i" @change="recalcular(insumo.id_elemento, i,2)">
+                                                </div>
+
+                                            </td>
+                                            <td :id="insumo.id_elemento+'_'+i">@{{ parseFloat(insumo.cantidad_presupuestada * form.partidas[0].cobrable.cantidad_presupuestada ).formatMoney(3,'.',',') }}</td>
+                                            <td :id="'p_u_'+ insumo.id_elemento+ '_' + i">$@{{ parseFloat(insumo.precio_unitario).formatMoney(2,'.',',') }}</td>
+                                            <td>
+                                                <div class="form-group" >
+                                                    $<input type="number" placeholder="0.0" style="width: 90%" :id="'m_p_'+insumo.id_elemento+'_' + i" @change="recalcular_monto(insumo.id_elemento, i,2)">
+                                                </div>
+                                            </td>
+                                            <td :id="'mp_'+insumo.id_elemento+'_'+i">$@{{ parseFloat(insumo.monto_presupuestado).formatMoney(2,'.',',') }} </td>
+                                            <td>
+                                                <button type="button" @click="removeRendimiento(insumo.id_elemento, i)"><i class="fa fa-minus text-red"></i></button>
+                                            </td>
+                                        </tr>
 
                                         </tbody>
                                     </table>
@@ -186,7 +187,7 @@
                                             <div class="row">
                                                 <div class="col-md-12">
                                                     <label for="herram_equipo" class="col-sm-7 control-label"><h4>HERRAMIENTA Y EQUIPO</h4></label>
-                                                    <button type="button" class="btn btn-default col-sm-3 pull-right" id="herram_equipo"> + H / E</button>
+                                                    <button type="button" class="btn btn-default col-sm-3 pull-right" id="herram_equipo"  v-on:click="addInsumoTipo(4)"> + H / E</button>
                                                 </div>
                                             </div>
 
@@ -206,28 +207,28 @@
                                         </tr>
                                         </thead>
                                         <tbody>
-                                            <tr v-for="(insumo, i) in concepto.conceptos.HERRAMIENTAYEQUIPO.insumos">
-                                                <td>@{{ i+1 }}</td>
-                                                <td>@{{ insumo.descripcion }}</td>
-                                                <td>@{{ insumo.unidad }}</td>
-                                                <td>@{{ parseFloat(insumo.cantidad_presupuestada).formatMoney(3,'.',',') }}</td>
-                                                <td>
-                                                    <div class="form-group">
-                                                        <input type="number" placeholder="0.0" style="width: 90%" :id="'c_p_'+insumo.id_concepto+'_' + i" @change="recalcular(insumo.id_concepto, i)">
-                                                    </div>
-                                                </td>
-                                                <td :id="insumo.id_concepto+'_'+i">@{{ parseFloat(insumo.cantidad_presupuestada * form.partidas[0].cobrable.cantidad_presupuestada ).formatMoney(3,'.',',') }}</td>
-                                                <td :id="'p_u_'+ insumo.id_concepto+ '_' + i">$@{{ parseFloat(insumo.precio_unitario).formatMoney(2,'.',',') }}</td>
-                                                <td>
-                                                    <div class="form-group" >
-                                                        $<input type="number" placeholder="0.0" style="width: 90%" :id="'m_p_'+insumo.id_concepto+'_' + i" @change="recalcular_monto(insumo.id_concepto, i)">
-                                                    </div>
-                                                </td>
-                                                <td :id="'mp_'+insumo.id_concepto+'_'+i">$@{{ parseFloat(insumo.monto_presupuestado).formatMoney(2,'.',',') }} </td>
-                                                <td>
-                                                    <button type="button" @click="removeRendimiento(insumo.id_concepto, i)"><i class="fa fa-minus text-red"></i></button>
-                                                </td>
-                                            </tr>
+                                        <tr v-for="(insumo, i) in concepto.conceptos.HERRAMIENTAYEQUIPO.insumos">
+                                            <td>@{{ i+1 }}</td>
+                                            <td>@{{ insumo.descripcion }}</td>
+                                            <td>@{{ insumo.unidad }}</td>
+                                            <td>@{{ parseFloat(insumo.cantidad_presupuestada).formatMoney(3,'.',',') }}</td>
+                                            <td>
+                                                <div class="form-group">
+                                                    <input type="number" placeholder="0.0" style="width: 90%" :id="'c_p_'+insumo.id_elemento+'_' + i" @change="recalcular(insumo.id_elemento, i,4)">
+                                                </div>
+                                            </td>
+                                            <td :id="insumo.id_elemento+'_'+i">@{{ parseFloat(insumo.cantidad_presupuestada * form.partidas[0].cobrable.cantidad_presupuestada ).formatMoney(3,'.',',') }}</td>
+                                            <td :id="'p_u_'+ insumo.id_elemento+ '_' + i">$@{{ parseFloat(insumo.precio_unitario).formatMoney(2,'.',',') }}</td>
+                                            <td>
+                                                <div class="form-group" >
+                                                    $<input type="number" placeholder="0.0" style="width: 90%" :id="'m_p_'+insumo.id_elemento+'_' + i" @change="recalcular_monto(insumo.id_elemento, i,4)">
+                                                </div>
+                                            </td>
+                                            <td :id="'mp_'+insumo.id_elemento+'_'+i">$@{{ parseFloat(insumo.monto_presupuestado).formatMoney(2,'.',',') }} </td>
+                                            <td>
+                                                <button type="button" @click="removeRendimiento(insumo.id_elemento, i)"><i class="fa fa-minus text-red"></i></button>
+                                            </td>
+                                        </tr>
 
                                         </tbody>
                                     </table>
@@ -239,7 +240,7 @@
                                             <div class="row">
                                                 <div class="col-md-12">
                                                     <label for="maquinaria" class="col-sm-7 control-label"><h4>MAQUINARIA</h4></label>
-                                                    <button type="button" class="btn btn-default col-sm-3 pull-right" id="maquinaria"> + Maquinaria</button>
+                                                    <button type="button" class="btn btn-default col-sm-3 pull-right" id="maquinaria"  v-on:click="addInsumoTipo(8)"> + Maquinaria</button>
                                                 </div>
                                             </div>
 
@@ -259,82 +260,80 @@
                                         </tr>
                                         </thead>
                                         <tbody>
-                                            <tr v-for="(insumo, i) in concepto.conceptos.MAQUINARIA.insumos">
-                                                <td>@{{ i+1 }}</td>
-                                                <td>@{{ insumo.descripcion }}</td>
-                                                <td>@{{ insumo.unidad }}</td>
-                                                <td>@{{ parseFloat(insumo.cantidad_presupuestada).formatMoney(3,'.',',') }}</td>
-                                                <td>
-                                                    <div class="form-group">
-                                                        <input type="number" placeholder="0.0" style="width: 90%" :id="'c_p_'+insumo.id_concepto+'_' + i" @change="recalcular(insumo.id_concepto, i)">
-                                                    </div>
-                                                </td>
-                                                <td :id="insumo.id_concepto+'_'+i">@{{ parseFloat(insumo.cantidad_presupuestada * form.partidas[0].cobrable.cantidad_presupuestada ).formatMoney(3,'.',',') }}</td>
-                                                <td :id="'p_u_'+ insumo.id_concepto+ '_' + i">$@{{ parseFloat(insumo.precio_unitario).formatMoney(2,'.',',') }}</td>
-                                                <td>
-                                                    <div class="form-group" >
-                                                        $<input type="number" placeholder="0.0" style="width: 90%" :id="'m_p_'+insumo.id_concepto+'_' + i" @change="recalcular_monto(insumo.id_concepto, i)">
-                                                    </div>
-                                                </td>
-                                                <td :id="'mp_'+insumo.id_concepto+'_'+i">$@{{ parseFloat(insumo.monto_presupuestado).formatMoney(2,'.',',') }} </td>
-                                                <td>
-                                                    <button type="button" @click="removeRendimiento(insumo.id_concepto, i)"><i class="fa fa-minus text-red"></i></button>
-                                                </td>
-                                            </tr>
+                                        <tr v-for="(insumo, i) in concepto.conceptos.MAQUINARIA.insumos">
+                                            <td>@{{ i+1 }}</td>
+                                            <td>@{{ insumo.descripcion }}</td>
+                                            <td>@{{ insumo.unidad }}</td>
+                                            <td>@{{ parseFloat(insumo.cantidad_presupuestada).formatMoney(3,'.',',') }}</td>
+                                            <td>
+                                                <div class="form-group">
+                                                    <input type="number" placeholder="0.0" style="width: 90%" :id="'c_p_'+insumo.id_elemento+'_' + i" @change="recalcular(insumo.id_elemento, i,8)">
+                                                </div>
+                                            </td>
+                                            <td :id="insumo.id_elemento+'_'+i">@{{ parseFloat(insumo.cantidad_presupuestada * form.partidas[0].cobrable.cantidad_presupuestada ).formatMoney(3,'.',',') }}</td>
+                                            <td :id="'p_u_'+ insumo.id_elemento+ '_' + i">$@{{ parseFloat(insumo.precio_unitario).formatMoney(2,'.',',') }}</td>
+                                            <td>
+                                                <div class="form-group" >
+                                                    $<input type="number" placeholder="0.0" style="width: 90%" :id="'m_p_'+insumo.id_elemento+'_' + i" @change="recalcular_monto(insumo.id_elemento, i,8)">
+                                                </div>
+                                            </td>
+                                            <td :id="'mp_'+insumo.id_elemento+'_'+i">$@{{ parseFloat(insumo.monto_presupuestado).formatMoney(2,'.',',') }} </td>
+                                            <td>
+                                                <button type="button" @click="removeRendimiento(insumo.id_elemento, i)"><i class="fa fa-minus text-red"></i></button>
+                                            </td>
+                                        </tr>
 
                                         </tbody>
                                     </table>
                                 </div>
 
-                            <div class="form-group" :class="{'has-error': validation_errors.has('form_save_solicitud.Motivo')}">
-                                <label><b>Motivo</b></label>
-                                <textarea class="form-control" v-validate="'required'" :name="'Motivo'" v-model="form.motivo"></textarea>
-                                <label class="help" v-show="validation_errors.has('form_save_solicitud.Motivo')">@{{ validation_errors.first('form_save_solicitud.Motivo') }}</label>
+                                <div class="form-group" :class="{'has-error': validation_errors.has('form_save_solicitud.Motivo')}">
+                                    <label><b>Motivo</b></label>
+                                    <textarea class="form-control" v-validate="'required'" :name="'Motivo'" v-model="form.motivo"></textarea>
+                                    <label class="help" v-show="validation_errors.has('form_save_solicitud.Motivo')">@{{ validation_errors.first('form_save_solicitud.Motivo') }}</label>
+                                </div>
                             </div>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
-                            <button type="submit" class="btn btn-primary" :disabled="cargando">
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                                <button type="submit" class="btn btn-primary" :disabled="cargando">
                             <span v-if="cargando">
                                 <i class="fa fa-spinner fa-spin"></i> Guardando
                             </span>
-                                <span v-else>
+                                    <span v-else>
                                 <i class="fa fa-save"></i> Guardar
                             </span>
-                            </button>
-                        </div>
-                    </form>
+                                </button>
+                            </div>
+                        </form>
+                    </div>
                 </div>
             </div>
-        </div>
 
 
 
 
-        <div id="add_insumo_modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="addInsumosModal">
-            <div class="modal-dialog modal-lg">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                        <h4 class="modal-title">Agregar Insumos</h4>
+            <div id="add_insumo_modal" class="modal fade" role="dialog" aria-labelledby="addInsumosModal">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <h4 class="modal-title">Agregar Insumos</h4>
+                        </div>
+                        <form id="form_save_solicitud" @submit.prevent="validateForm('form_save_solicitud', 'save_solicitud')"  data-vv-scope="form_save_solicitud">
+                            <div class="modal-body small">
+                                <select class="form-control" :name="'Item'"  data-placeholder="BUSCAR MATERIAL" id="sel_material"
+                                        v-model="id_material_seleccionado"></select>
+
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-default" v-on:click="cancelar_add_insumo()" >Cancelar</button>
+                                <button type="button" class="btn btn-primary" v-on:click="agregar_insumo_nuevo()">
+                                    <i class="fa  fa-plus"></i> Agregar
+
+                                </button>
+                            </div>
+                        </form>
                     </div>
-                    <form id="form_save_solicitud" @submit.prevent="validateForm('form_save_solicitud', 'save_solicitud')"  data-vv-scope="form_save_solicitud">
-                        <div class="modal-body small">
-
-
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
-                            <button type="submit" class="btn btn-primary" :disabled="cargando">
-                            <span v-if="cargando">
-                                <i class="fa fa-spinner fa-spin"></i> Guardando
-                            </span>
-                                <span v-else>
-                                <i class="fa fa-save"></i> Guardar
-                            </span>
-                            </button>
-                        </div>
-                    </form>
                 </div>
             </div>
         </div>

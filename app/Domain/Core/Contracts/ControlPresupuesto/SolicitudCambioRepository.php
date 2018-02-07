@@ -69,6 +69,12 @@ interface SolicitudCambioRepository
      * @return SolicitudCambio
      */
     public function  rechazarVariacionVolumen(array $data);
-
+    /**
+     * Guarda un registro de SolicitudCambio
+     * @param array $data
+     * @throws \Exception
+     * @return SolicitudCambio
+     */
+    public function  saveCambioInsumos(array $data);
 
 }
