@@ -30,6 +30,14 @@ Vue.component('variacion-volumen', {
                 });
             });
             return res;
+        },
+        subtotal : function () {
+            var res = 0;
+
+            this.form.partidas.forEach(function (partida) {
+                res += parseFloat(partida.monto_presupuestado);
+            });
+            return res;
         }
     },
 
@@ -53,10 +61,6 @@ Vue.component('variacion-volumen', {
         }).on('click', '.btn_remove_concepto', function() {
             var id = $(this).attr('id');
            self.removeConcepto(id);
-            if(self.form.partidas.length>0){
-                self.mostrar_importes_inicial();
-            }
-
         });
 
         $('#conceptos_table').DataTable({
@@ -83,6 +87,7 @@ Vue.component('variacion-volumen', {
                         json.data[i].monto_presupuestado = '$' + parseInt(json.data[i].monto_presupuestado).formatMoney(2, ',', '.');
                         json.data[i].cantidad_presupuestada = parseInt(json.data[i].cantidad_presupuestada).formatMoney(2, ',', '.');
                         json.data[i].precio_unitario = '$' + parseInt(json.data[i].precio_unitario).formatMoney(2, ',', '.');
+                        json.data[i].filtro9_sub = json.data[i].filtro9.length > 50 ? json.data[i].filtro9.substr(0, 50) + '...' : json.data[i].filtro9;
                     }
                     return json.data;
                 }
@@ -96,7 +101,12 @@ Vue.component('variacion-volumen', {
                 {data : 'filtro6'},
                 {data : 'filtro7'},
                 {data : 'filtro8'},
-                {data : 'filtro9'},
+                {
+                    data : {},
+                    render : function (data) {
+                        return '<span title="'+data.filtro9+'">'+data.filtro9_sub+'</span>'
+                    }
+                },
                 {data : 'filtro10'},
                 {data : 'filtro11'},
                 {data : 'unidad'},
@@ -267,46 +277,6 @@ Vue.component('variacion-volumen', {
                     text: 'Por favor corrija los errores del formulario'
                 });
             });
-        },
-
-        mostrar_importes_inicial:function () {
-
-            $('.nav-tabs li').removeClass('active');
-            $('.nav-tabs li:first').addClass("active");
-
-            var self = this;
-            var presupuesto=self.bases_afectadas[0].id_base_presupuesto;
-            this.mostrar_importes(presupuesto);
-        },
-        mostrar_importes: function(presupesto){
-            var self = this;
-            var presupuesto=presupesto;
-
-            $('#divDetalle').fadeOut();
-            var url = App.host + '/control_presupuesto/cambio_presupuesto_partida/subtotalTarjeta';
-            $.ajax({
-                type: 'POST',
-                data:{
-                    presupuesto:presupuesto,
-                    agregados:self.form.partidas
-
-                },
-                url: url,
-                beforeSend: function () {
-                    self.consultando = true;
-                },
-                success: function (data, textStatus, xhr) {
-                    self.importes=data.data;
-                    $('#divDetalle').fadeIn();
-                },
-                complete: function () {
-                    self.consultando = false;
-
-                }
-            });
-
-
         }
-
     }
 });
