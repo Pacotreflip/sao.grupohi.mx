@@ -305,14 +305,22 @@ Vue.component('variacion-insumos', {
         },
 
         removeConcepto : function (id) {
-            var index = this.form.partidas.map(function (partida) { return partida.id_concepto; }).indexOf(parseInt(id));
-            this.form.partidas.splice(index, 1);
+            //var index = this.form.agrupadas.map(function (partida) { return partida.id_concepto; }).indexOf(parseInt(id));
+            var index = this.form.agrupadas.indexOf(id);
+            this.form.agrupadas.splice(index, 1);
             $('#'+id).html('<i class="fa fa-plus text-green"></i>');
             $('#'+id).addClass('btn_add_concepto');
             $('#'+id).removeClass('btn_remove_concepto');
-            if(!this.form.partidas.length) {
+            if(!this.form.agrupadas.length) {
+                this.form.partidas = [];
                 $('#conceptos_modal').modal('hide');
             }
+        },
+
+        removeRendimiento : function (id_concepto, id) {
+            var valor = 0.0;
+            $("#c_p_"+ id_concepto+ '_' + id).val(valor);
+            this.recalcular(id_concepto, id);
         },
 
         validateForm: function(scope, funcion) {
@@ -327,6 +335,25 @@ Vue.component('variacion-insumos', {
                          text: 'Por favor corrija los errores del formulario'
                      });
         });
+        },
+
+
+        recalcular : function (id_concepto,i) {
+            var self = this;
+            var factor = self.form.partidas[0].cobrable.cantidad_presupuestada;
+            var cant_pres = $("#c_p_" +id_concepto+'_' + i).val();
+            var nuevo = factor * cant_pres;
+            var pre_unit = $("#p_u_"+ id_concepto+ '_' + i).html().replace('$', '');
+            $("#" +id_concepto+'_' + i).html(nuevo.formatMoney(3,'.',','));
+            $("#mp_" +id_concepto+'_'  + i).html((nuevo * pre_unit).formatMoney(3,'.',','));
+        },
+
+        recalcular_monto : function (id_concepto, i) {
+            var self = this;
+            var factor = $("#" +id_concepto+'_'  + i).html();
+            var cant = $("#m_p_" +id_concepto+'_'  + i).val();
+            var nuevo = factor * cant;
+            $("#mp_" +id_concepto+'_'  + i).html(nuevo.formatMoney(3,'.',','));
         }
     }
 });
