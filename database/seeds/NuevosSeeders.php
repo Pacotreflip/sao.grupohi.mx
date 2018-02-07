@@ -17,5 +17,6 @@ class NuevosSeeders extends Seeder
         $this->call(ControlPresupuestoEstatusSeeder::class);
 
         $this->call(ControlPresupuestoTarjetasSeeder::class);
+        $this->call(ControlPresupuestoAfectacionOrdenesPresupuestoSeeder::class);
     }
 }

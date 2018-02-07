@@ -26,4 +26,8 @@ class TipoOrden extends Model
     {
         return $this->belongsTo(TipoCobrabilidad::class, 'id_tipo_cobrabilidad', 'id');
     }
+
+    public function basesPresupuesto() {
+        return $this->belongsToMany(BasePresupuesto::class, 'ControlPresupuesto.afectacion_ordenes_presupuesto', 'id_tipo_orden', 'id_base_presupuesto');
+    }
 }

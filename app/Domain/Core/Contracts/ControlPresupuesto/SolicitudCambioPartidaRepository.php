@@ -35,9 +35,8 @@ interface SolicitudCambioPartidaRepository
      */
     public function find($id);
 
-    public function mostrarAfectacion($id);
+    //public function mostrarAfectacion($id);
     public function mostrarAfectacionPresupuesto(array $data);
-    public function mostrarSubtotalTarjeta(array $data);
 
 
 }

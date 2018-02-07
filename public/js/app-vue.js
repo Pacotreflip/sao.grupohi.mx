@@ -20260,12 +20260,6 @@ Vue.component('show-variacion-volumen', {
         };
     },
 
-    computed: {},
-
-    mounted: function mounted() {
-        this.mostrar_importes_inicial();
-    },
-
     methods: {
 
         confirm_autorizar_solicitud: function confirm_autorizar_solicitud() {
@@ -20410,40 +20404,6 @@ Vue.component('show-variacion-volumen', {
                 }
             });
         },
-
-        mostrar_importes_inicial: function mostrar_importes_inicial() {
-            var self = this;
-            var presupuesto = self.presupuestos[0].id_base_presupuesto;
-            this.mostrar_importes(presupuesto);
-        },
-        mostrar_importes: function mostrar_importes(presupesto) {
-            var self = this;
-            var presupuesto = presupesto;
-
-            $('#divDetalleImporte').fadeOut();
-
-            var url = App.host + '/control_presupuesto/cambio_presupuesto_partida/subtotalTarjetaShow';
-            $.ajax({
-                type: 'POST',
-                data: {
-                    presupuesto: presupuesto,
-                    id_solicitud: self.solicitud.id
-
-                },
-                url: url,
-                beforeSend: function beforeSend() {
-                    self.consultandoImportes = true;
-                },
-                success: function success(data, textStatus, xhr) {
-                    self.importes = data.data;
-                    $('#divDetalleImporte').fadeIn();
-                },
-                complete: function complete() {
-                    self.consultandoImportes = false;
-                }
-            });
-        },
-
         mostrar_detalle_presupuesto: function mostrar_detalle_presupuesto(idPresupuesto) {
             var self = this;
             var partida = self.partida_id;
@@ -20832,9 +20792,9 @@ Vue.component('variacion-volumen', {
                 },
                 "dataSrc": function dataSrc(json) {
                     for (var i = 0; i < json.data.length; i++) {
-                        json.data[i].monto_presupuestado = '$' + parseInt(json.data[i].monto_presupuestado).formatMoney(2, ',', '.');
-                        json.data[i].cantidad_presupuestada = parseInt(json.data[i].cantidad_presupuestada).formatMoney(2, ',', '.');
-                        json.data[i].precio_unitario = '$' + parseInt(json.data[i].precio_unitario).formatMoney(2, ',', '.');
+                        json.data[i].monto_presupuestado = '$' + parseFloat(json.data[i].monto_presupuestado).formatMoney(2, ',', '.');
+                        json.data[i].cantidad_presupuestada = parseFloat(json.data[i].cantidad_presupuestada).formatMoney(2, ',', '.');
+                        json.data[i].precio_unitario = '$' + parseFloat(json.data[i].precio_unitario).formatMoney(2, ',', '.');
                         json.data[i].filtro9_sub = json.data[i].filtro9.length > 50 ? json.data[i].filtro9.substr(0, 50) + '...' : json.data[i].filtro9;
                     }
                     return json.data;

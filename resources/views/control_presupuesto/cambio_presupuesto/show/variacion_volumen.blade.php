@@ -5,14 +5,13 @@
     {!! Breadcrumbs::render('control_presupuesto.cambio_presupuesto.show',$solicitud) !!}
 @endsection
 
-
 @section('main-content')
     <show-variacion-volumen
             inline-template
             :solicitud="{{$solicitud}}"
-            :cobrabilidad="{{$cobrabilidad}}"
-            :presupuestos="{{$presupuestos}}"
-            v-cloak xmlns:v-on="http://www.w3.org/1999/xhtml">
+            :cobrabilidad="{{$cobrabilidad->toJson()}}"
+            :presupuestos="{{$presupuestos->toJson()}}"
+            v-cloak>
         <section>
             <div class="row">
                 <div class="col-md-12">
@@ -77,10 +76,11 @@
                                         </th>
                                         <th>Sector</th>
                                         <th>Cuadrante</th>
+                                        <th>Descripción</th>
                                         <th>Unidad</th>
                                         <th>P.U</th>
-                                        <th>Volumen</th>
-                                        <th width="200px">Variacion de volumen</th>
+                                        <th>Volumen Original</th>
+                                        <th width="200px">Volúmen del Cambio</th>
                                     </tr>
                                     </thead>
                                     <tbody>
@@ -90,11 +90,12 @@
                                         <td>@{{ partida.numero_tarjeta.descripcion }}</td>
                                         <td>@{{ partida.concepto.sector }}</td>
                                         <td>@{{ partida.concepto.cuadrante }}</td>
+                                        <td>@{{ (partida.concepto.descripcion).substr(0, 50) + '...' }}</td>
                                         <td>@{{ partida.concepto.unidad }}</td>
                                         <td class="text-right">
-                                            $@{{(parseInt( partida.concepto.precio_unitario )).formatMoney(2,'.',',')}}</td>
-                                        <td class="text-right">@{{ parseInt(partida.cantidad_presupuestada_original).formatMoney(2, ',','.') }}</td>
-                                        <td class="text-right">@{{ parseInt(partida.variacion_volumen).formatMoney(2, ',','.') }}</td>
+                                            $@{{(parseFloat( partida.concepto.precio_unitario )).formatMoney(2,'.',',')}}</td>
+                                        <td class="text-right">@{{ parseFloat(partida.cantidad_presupuestada_original).formatMoney(2, ',','.') }}</td>
+                                        <td class="text-right">@{{ parseFloat(partida.variacion_volumen).formatMoney(2, ',','.') }}</td>
                                     </tr>
                                     </tbody>
                                 </table>
@@ -104,46 +105,6 @@
 
                     </div>
 
-                    <div class="box box-solid"  >
-                        <div class="box-header with-border">
-                            <h3 class="box-title">Subtotal de tarjeta</h3>
-                        </div>
-                        <div class="box-body">
-                            <ul class="nav nav-tabs">
-                                @foreach($presupuestos as $index=>$presupuesto)
-                                    <li v-on:click="mostrar_importes({{$presupuesto->baseDatos->id}})"
-                                        class="{{$index==0?'active':''}}"><a data-toggle="tab"
-                                                                             href="#menu{{$presupuesto->baseDatos->id}}">{{$presupuesto->baseDatos->descripcion}}</a>
-                                    </li>
-
-                                @endforeach
-
-                            </ul>
-
-                            <div class="table-responsive" >
-                                <div class="col-sm-12" class="text-center">
-                                    <span v-if="consultandoImportes"><i class="fa fa-spinner fa-spin"></i> </span>
-                                    <span v-else></span>
-                                </div>
-                                <table class="table table-bordered table-striped" id="divDetalleImporte">
-                                    <thead>
-                                    <tr>
-                                        <th class="text-center">Importe conceptos seleccionados</th>
-                                        <th class="text-center">Importe conceptos no seleccionados</th>
-                                        <th class="text-center">Importe conceptos de tarjeta</th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    <tr>
-                                        <td class="text-right" >$ @{{(parseFloat(importes.total_seleccionados)).formatMoney(2,'.',',')}}</td>
-                                        <td class="text-right" >$ @{{(Number(importes.total_sin_seleccion)).formatMoney(2,'.',',')}}</td>
-                                        <td class="text-right" >$ @{{(parseFloat(importes.total_tarjeta)).formatMoney(2,'.',',')}}</td>
-                                    </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
                     <div class="col-sm-12" class="text-center">
                         <span v-if="consultando"><i class="fa fa-spinner fa-spin"></i> </span>
                         <span v-else></span>
@@ -172,11 +133,11 @@
                                         <th class="text-center">Unidad</th>
                                         <th class="text-center">P.U</th>
                                         <th class="text-center">Volumen Original</th>
-                                        <th class="text-center">Variación de volumen</th>
-                                        <th class="text-center">Volumen Nuevo</th>
+                                        <th class="text-center">Volúmen del Cambio</th>
+                                        <th class="text-center">Volumen Actualizado</th>
                                         <th class="text-center">Importe Original</th>
-                                        <th class="text-center">Variación de importe</th>
-                                        <th class="text-center">Importe Nuevo</th>
+                                        <th class="text-center">Importe del Cambio</th>
+                                        <th class="text-center">Importe Actualizado</th>
                                     </tr>
                                     </thead>
                                     <tbody>

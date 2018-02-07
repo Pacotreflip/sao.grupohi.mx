@@ -17,12 +17,6 @@ Vue.component('show-variacion-volumen', {
         }
     },
 
-    computed: {},
-
-    mounted: function () {
-       this.mostrar_importes_inicial();
-    },
-
     methods: {
 
         confirm_autorizar_solicitud: function () {
@@ -148,9 +142,9 @@ Vue.component('show-variacion-volumen', {
         ,
         mostrar_detalle_partida:function (id) {
             var self = this;
-            var partida=id;
-            self.partida_id=id;
-            var presupuesto=self.presupuestos[0].base_datos.id;
+            var partida = id;
+            self.partida_id = id;
+            var presupuesto = self.presupuestos[0].base_datos.id;
             $('#divDetalle').fadeOut();
 
             var url = App.host + '/control_presupuesto/cambio_presupuesto_partida/detallePresupuesto';
@@ -173,44 +167,7 @@ Vue.component('show-variacion-volumen', {
 
                 }
             });
-        }
-        ,
-        mostrar_importes_inicial:function () {
-            var self = this;
-            var presupuesto=self.presupuestos[0].id_base_presupuesto;
-            this.mostrar_importes(presupuesto);
         },
-        mostrar_importes: function(presupesto){
-            var self = this;
-            var presupuesto=presupesto;
-
-            $('#divDetalleImporte').fadeOut();
-
-            var url = App.host + '/control_presupuesto/cambio_presupuesto_partida/subtotalTarjetaShow';
-            $.ajax({
-                type: 'POST',
-                data:{
-                    presupuesto:presupuesto,
-                    id_solicitud:self.solicitud.id
-
-                },
-                url: url,
-                beforeSend: function () {
-                    self.consultandoImportes = true;
-                },
-                success: function (data, textStatus, xhr) {
-                    self.importes=data.data;
-                    $('#divDetalleImporte').fadeIn();
-                },
-                complete: function () {
-                    self.consultandoImportes = false;
-
-                }
-            });
-
-
-        }
-        ,
         mostrar_detalle_presupuesto:function (idPresupuesto) {
             var self = this;
             var partida=self.partida_id;
