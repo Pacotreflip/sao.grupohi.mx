@@ -144,9 +144,9 @@ class EloquentSolicitudCambioPartidaRepository implements SolicitudCambioPartida
             $nivel_padre = $partida->concepto->nivel;
             $nivel_hijo = $item->nivel;
             $profundidad = (strlen($nivel_hijo) - strlen($nivel_padre)) / 4;
-            $factor = $partida->cantidad_presupuestada_nueva / ($partida->concepto->cantidad_presupuestada == 0 ? 1 : $partida->concepto->cantidad_presupuestada);
-            $cantidad_nueva = ($item->cantidad_presupuestada == 0 ? 1 : $item->cantidad_presupuestada) * $factor;
-            $monto_nuevo = $item->precio_unitario * $cantidad_nueva;
+            $factor = $partida->cantidad_presupuestada_nueva / $partida->concepto->cantidad_presupuestada;
+            $cantidad_nueva = $item->cantidad_presupuestada * $factor;
+            $monto_nuevo = $item->monto_presupuestado * $factor;
 
             $historico = SolicitudCambioPartidaHistorico::where('id_solicitud_cambio_partida', '=', $partida->id)
                 ->where('id_base_presupuesto', '=', $data['presupuesto'])
