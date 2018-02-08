@@ -207,7 +207,7 @@ class EloquentSolicitudCambioRepository implements SolicitudCambioRepository
                     $concepto_escalatoria_max_nivel =  DB::connection('cadeco')->table($basePresupuesto->baseDatos->base_datos . ".dbo.conceptos")->selectRaw('max(nivel) as max_nivel')->whereraw("nivel like '". $concepto_escalatoria->nivel ."___.'")->first();
 
                     // El concepto escalatoria no tiene hijos
-                    if (is_null($max_nivel))
+                    if (is_null($concepto_escalatoria_max_nivel))
                         $concepto_partida_nivel = $concepto_escalatoria->nivel .'001.';
 
                     else
