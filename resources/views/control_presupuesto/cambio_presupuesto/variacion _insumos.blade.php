@@ -93,10 +93,8 @@
                                             <th>Unidad</th>
                                             <th>Rendimiento Actual</th>
                                             <th>Rendimiento Nuevo</th>
-                                            <th>Cantidad Presupuestada</th>
                                             <th>Precio Unitario Actual</th>
                                             <th>Precio Unitario Nuevo</th>
-                                            <th>Monto Presupuestado</th>
                                             <th>-</th>
                                         </tr>
                                         </thead>
@@ -143,10 +141,8 @@
                                             <th>Unidad</th>
                                             <th>Rendimiento Actual</th>
                                             <th>Rendimiento Nuevo</th>
-                                            <th>Cantidad Presupuestada</th>
                                             <th>Precio Unitario Actual</th>
                                             <th>Precio Unitario Nuevo</th>
-                                            <th>Monto Presupuestado</th>
                                             <th>-</th>
                                         </tr>
                                         </thead>
@@ -158,20 +154,17 @@
                                             <td>@{{ parseFloat(insumo.rendimiento_actual).formatMoney(3,'.',',') }}</td>
                                             <td>
                                                 <div class="form-group">
-                                                    <input type="number" placeholder="0.0" style="width: 90%" :id="'c_p_'+insumo.id_elemento+'_' + i" @change="recalcular(insumo.id_elemento, i,2)">
+                                                    <input type="number" placeholder="0.0" style="width: 90%" :id="'c_p_'+insumo.id_elemento+'_' + i" @change="recalcular(insumo.id_elemento, i,1)">
                                                 </div>
-
                                             </td>
-                                            <td :id="insumo.id_elemento+'_'+i">@{{ parseFloat(insumo.cantidad_presupuestada).formatMoney(3,'.',',') }}</td>
                                             <td :id="'p_u_'+ insumo.id_elemento+ '_' + i">$@{{ parseFloat(insumo.precio_unitario).formatMoney(2,'.',',') }}</td>
                                             <td>
                                                 <div class="form-group" >
-                                                    $<input type="number" placeholder="0.0" style="width: 90%" :id="'m_p_'+insumo.id_elemento+'_' + i" @change="recalcular_monto(insumo.id_elemento, i,2)">
+                                                    $<input type="number" placeholder="0.0" style="width: 90%" :id="'m_p_'+insumo.id_elemento+'_' + i" @change="recalcular_monto(insumo.id_elemento, i,1)">
                                                 </div>
                                             </td>
-                                            <td :id="'mp_'+insumo.id_elemento+'_'+i">$@{{ parseFloat(insumo.monto_presupuestado).formatMoney(2,'.',',') }} </td>
                                             <td>
-                                                <button type="button" @click="removeRendimiento(insumo.id_elemento, i, 2)"><i class="fa fa-minus text-red"></i></button>
+                                                <button type="button" @click="removeRendimiento(insumo.id_elemento, i, 1)"><i class="fa fa-minus text-red"></i></button>
                                             </td>
                                         </tr>
 
@@ -197,10 +190,8 @@
                                             <th>Unidad</th>
                                             <th>Rendimiento Actual</th>
                                             <th>Rendimiento Nuevo</th>
-                                            <th>Cantidad Presupuestada</th>
                                             <th>Precio Unitario Actual</th>
                                             <th>Precio Unitario Nuevo</th>
-                                            <th>Monto Presupuestado</th>
                                             <th>-</th>
                                         </tr>
                                         </thead>
@@ -212,19 +203,17 @@
                                             <td>@{{ parseFloat(insumo.rendimiento_actual).formatMoney(3,'.',',') }}</td>
                                             <td>
                                                 <div class="form-group">
-                                                    <input type="number" placeholder="0.0" style="width: 90%" :id="'c_p_'+insumo.id_elemento+'_' + i" @change="recalcular(insumo.id_elemento, i,4)">
+                                                    <input type="number" placeholder="0.0" style="width: 90%" :id="'c_p_'+insumo.id_elemento+'_' + i" @change="recalcular(insumo.id_elemento, i,1)">
                                                 </div>
                                             </td>
-                                            <td :id="insumo.id_elemento+'_'+i">@{{ parseFloat(insumo.cantidad_presupuestada).formatMoney(3,'.',',') }}</td>
                                             <td :id="'p_u_'+ insumo.id_elemento+ '_' + i">$@{{ parseFloat(insumo.precio_unitario).formatMoney(2,'.',',') }}</td>
                                             <td>
                                                 <div class="form-group" >
-                                                    $<input type="number" placeholder="0.0" style="width: 90%" :id="'m_p_'+insumo.id_elemento+'_' + i" @change="recalcular_monto(insumo.id_elemento, i,4)">
+                                                    $<input type="number" placeholder="0.0" style="width: 90%" :id="'m_p_'+insumo.id_elemento+'_' + i" @change="recalcular_monto(insumo.id_elemento, i,1)">
                                                 </div>
                                             </td>
-                                            <td :id="'mp_'+insumo.id_elemento+'_'+i">$@{{ parseFloat(insumo.monto_presupuestado).formatMoney(2,'.',',') }} </td>
                                             <td>
-                                                <button type="button" @click="removeRendimiento(insumo.id_elemento, i, 4)"><i class="fa fa-minus text-red"></i></button>
+                                                <button type="button" @click="removeRendimiento(insumo.id_elemento, i, 1)"><i class="fa fa-minus text-red"></i></button>
                                             </td>
                                         </tr>
 
@@ -250,10 +239,8 @@
                                             <th>Unidad</th>
                                             <th>Rendimiento Actual</th>
                                             <th>Rendimiento Nuevo</th>
-                                            <th>Cantidad Presupuestada</th>
                                             <th>Precio Unitario Actual</th>
                                             <th>Precio Unitario Nuevo</th>
-                                            <th>Monto Presupuestado</th>
                                             <th>-</th>
                                         </tr>
                                         </thead>
@@ -265,19 +252,17 @@
                                             <td>@{{ parseFloat(insumo.rendimiento_actual).formatMoney(3,'.',',') }}</td>
                                             <td>
                                                 <div class="form-group">
-                                                    <input type="number" placeholder="0.0" style="width: 90%" :id="'c_p_'+insumo.id_elemento+'_' + i" @change="recalcular(insumo.id_elemento, i,8)">
+                                                    <input type="number" placeholder="0.0" style="width: 90%" :id="'c_p_'+insumo.id_elemento+'_' + i" @change="recalcular(insumo.id_elemento, i,1)">
                                                 </div>
                                             </td>
-                                            <td :id="insumo.id_elemento+'_'+i">@{{ parseFloat(insumo.cantidad_presupuestada).formatMoney(3,'.',',') }}</td>
                                             <td :id="'p_u_'+ insumo.id_elemento+ '_' + i">$@{{ parseFloat(insumo.precio_unitario).formatMoney(2,'.',',') }}</td>
                                             <td>
                                                 <div class="form-group" >
-                                                    $<input type="number" placeholder="0.0" style="width: 90%" :id="'m_p_'+insumo.id_elemento+'_' + i" @change="recalcular_monto(insumo.id_elemento, i,8)">
+                                                    $<input type="number" placeholder="0.0" style="width: 90%" :id="'m_p_'+insumo.id_elemento+'_' + i" @change="recalcular_monto(insumo.id_elemento, i,1)">
                                                 </div>
                                             </td>
-                                            <td :id="'mp_'+insumo.id_elemento+'_'+i">$@{{ parseFloat(insumo.monto_presupuestado).formatMoney(2,'.',',') }} </td>
                                             <td>
-                                                <button type="button" @click="removeRendimiento(insumo.id_elemento, i, 8)"><i class="fa fa-minus text-red"></i></button>
+                                                <button type="button" @click="removeRendimiento(insumo.id_elemento, i, 1)"><i class="fa fa-minus text-red"></i></button>
                                             </td>
                                         </tr>
 
