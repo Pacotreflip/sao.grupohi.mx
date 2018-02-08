@@ -142,19 +142,19 @@ Vue.component('variacion-insumos', {
                 success : function (response) {
                     if(jQuery.isEmptyObject( self.form.partidas)){
                         $.each(response.conceptos.MATERIALES.insumos, function (index, partida) {
-                            response.conceptos.MATERIALES.insumos[index].cantidad_presupuestada =   partida.cantidad_presupuestada / response.cobrable.cantidad_presupuestada
+                            response.conceptos.MATERIALES.insumos[index].rendimiento_actual =   partida.cantidad_presupuestada / response.cobrable.cantidad_presupuestada
                             response.conceptos.MATERIALES.insumos[index].id_elemento =response.conceptos.MATERIALES.insumos[index].id_concepto;
                         });
                         $.each(response.conceptos.HERRAMIENTAYEQUIPO.insumos, function (index, partida) {
-                            response.conceptos.HERRAMIENTAYEQUIPO.insumos[index].cantidad_presupuestada =  partida.cantidad_presupuestada / response.cobrable.cantidad_presupuestada
+                            response.conceptos.HERRAMIENTAYEQUIPO.insumos[index].rendimiento_actual =  partida.cantidad_presupuestada / response.cobrable.cantidad_presupuestada
                             response.conceptos.HERRAMIENTAYEQUIPO.insumos[index].id_elemento =response.conceptos.HERRAMIENTAYEQUIPO.insumos[index].id_concepto;
                         });
                         $.each(response.conceptos.MANOOBRA.insumos, function (index, partida) {
-                            response.conceptos.MANOOBRA.insumos[index].cantidad_presupuestada = partida.cantidad_presupuestada / response.cobrable.cantidad_presupuestada
+                            response.conceptos.MANOOBRA.insumos[index].rendimiento_actual = partida.cantidad_presupuestada / response.cobrable.cantidad_presupuestada
                             response.conceptos.MANOOBRA.insumos[index].id_elemento =response.conceptos.MANOOBRA.insumos[index].id_concepto;
                         });
                         $.each(response.conceptos.MAQUINARIA.insumos, function (index, partida) {
-                            response.conceptos.MAQUINARIA.insumos[index].cantidad_presupuestada = partida.cantidad_presupuestada / response.cobrable.cantidad_presupuestada
+                            response.conceptos.MAQUINARIA.insumos[index].rendimiento_actual = partida.cantidad_presupuestada / response.cobrable.cantidad_presupuestada
                             response.conceptos.MAQUINARIA.insumos[index].id_elemento =response.conceptos.MAQUINARIA.insumos[index].id_concepto;
                         });
                         self.form.partidas.push(response);
@@ -163,7 +163,7 @@ Vue.component('variacion-insumos', {
                         $.each(self.form.partidas, function(index, partida) {
                             if(partida.conceptos.MATERIALES.insumos.length === response.conceptos.MATERIALES.insumos.length){
                                 $.each(partida.conceptos.MATERIALES.insumos, function (index, insumo) {
-                                    var temp1 = Math.round(insumo.cantidad_presupuestada)
+                                    var temp1 = Math.round(insumo.rendimiento_actual)
                                     var temp2 = Math.round(response.conceptos.MATERIALES.insumos[index].cantidad_presupuestada / response.cobrable.cantidad_presupuestada)
                                     if(temp1 != temp2){
                                         alert('MATERIALES diferente' + temp1 + ' - ' + temp2);
@@ -174,7 +174,7 @@ Vue.component('variacion-insumos', {
                             }
                             if(partida.conceptos.HERRAMIENTAYEQUIPO.insumos.length === response.conceptos.HERRAMIENTAYEQUIPO.insumos.length){
                                 $.each(partida.conceptos.HERRAMIENTAYEQUIPO.insumos, function (index, insumo) {
-                                    var temp1 = Math.round(insumo.cantidad_presupuestada )
+                                    var temp1 = Math.round(insumo.rendimiento_actual )
                                     var temp2 = Math.round(response.conceptos.HERRAMIENTAYEQUIPO.insumos[index].cantidad_presupuestada / response.cobrable.cantidad_presupuestada)
                                     if(temp1 != temp2){
                                         alert('HERRAMIENTAYEQUIPO diferente' + temp1 + ' - ' + temp2);
@@ -186,7 +186,7 @@ Vue.component('variacion-insumos', {
                             }
                             if(partida.conceptos.MANOOBRA.insumos.length === response.conceptos.MANOOBRA.insumos.length){
                                 $.each(partida.conceptos.MANOOBRA.insumos, function (index, insumo) {
-                                    var temp1 = Math.round(insumo.cantidad_presupuestada)
+                                    var temp1 = Math.round(insumo.rendimiento_actual)
                                     var temp2 = Math.round(response.conceptos.MANOOBRA.insumos[index].cantidad_presupuestada / response.cobrable.cantidad_presupuestada)
                                     if(temp1 != temp2){
                                         alert('MANOOBRA diferente' + temp1 + ' - ' + temp2);
@@ -198,7 +198,7 @@ Vue.component('variacion-insumos', {
                             }
                             if(partida.conceptos.MAQUINARIA.insumos.length === response.conceptos.MAQUINARIA.insumos.length){
                                 $.each(partida.conceptos.MAQUINARIA.insumos, function (index, insumo) {
-                                    var temp1 = Math.round(insumo.cantidad_presupuestada)
+                                    var temp1 = Math.round(insumo.rendimiento_actual)
                                     var temp2 = Math.round(response.conceptos.MAQUINARIA.insumos[index].cantidad_presupuestada / response.cobrable.cantidad_presupuestada)
                                     if(temp1 != temp2){
                                         alert('MAQUINARIA diferente' + temp1 + ' - ' + temp2);
@@ -394,9 +394,25 @@ Vue.component('variacion-insumos', {
         }
         ,
 
-        removeRendimiento : function (id_concepto, id) {
+        removeRendimiento : function (id_concepto, id, tipo) {
+            var self = this;
             var valor = 0.0;
-            $("#c_p_"+ id_concepto+ '_' + id).val(valor);
+            $("#c_p_"+ id_concepto+ '_' + id).val(valor).prop('disabled', true);
+            $("#m_p_"+ id_concepto+ '_' + id).prop('disabled', true);
+            switch (tipo){
+                case 1: ///agregar a materiales
+                    self.form.partidas[0].conceptos.MATERIALES.insumos[id].rendimiento_nuevo = valor;
+                    break;
+                case 2://// agergar a mano obra
+                    self.form.partidas[0].conceptos.MANOOBRA.insumos[id].rendimiento_nuevo = valor;
+                    break;
+                case 4: ////agregar a herram y equipo
+                    self.form.partidas[0].conceptos.HERRAMIENTAYEQUIPO.insumos[id].rendimiento_nuevo = valor;
+                    break;
+                case 8: ///agregar a maquinaria
+                    self.form.partidas[0].conceptos.MAQUINARIA.insumos[id].rendimiento_nuevo = valor;
+                    break;
+            }
             this.recalcular(id_concepto, id);
         },
 
@@ -414,39 +430,26 @@ Vue.component('variacion-insumos', {
         });
         },
 
-
         recalcular : function (id_concepto,i,tipo) {
             var self = this;
-            var factor = self.form.partidas[0].cobrable.cantidad_presupuestada;
-            var cant_pres = $("#c_p_" +id_concepto+'_' + i).val();
-            var nuevo = factor * cant_pres;
-            var pre_unit = $("#p_u_"+ id_concepto+ '_' + i).html().replace('$', '');
-            $("#" +id_concepto+'_' + i).html(nuevo.formatMoney(3,'.',','));
-            $("#mp_" +id_concepto+'_'  + i).html((nuevo * pre_unit).formatMoney(3,'.',','));
             switch (tipo){
                 case 1: ///agregar a materiales
-                    self.form.partidas[0].conceptos.MATERIALES.insumos[i].cantidad_presupuestada_nueva = cant_pres;
+                    self.form.partidas[0].conceptos.MATERIALES.insumos[i].rendimiento_nuevo = cant_pres;
                     break;
                 case 2://// agergar a mano obra
-                    self.form.partidas[0].conceptos.MANOOBRA.insumos[i].cantidad_presupuestada_nueva = cant_pres;
+                    self.form.partidas[0].conceptos.MANOOBRA.insumos[i].rendimiento_nuevo = cant_pres;
                     break;
                 case 4: ////agregar a herram y equipo
-                    self.form.partidas[0].conceptos.HERRAMIENTAYEQUIPO.insumos[i].cantidad_presupuestada_nueva = cant_pres;
+                    self.form.partidas[0].conceptos.HERRAMIENTAYEQUIPO.insumos[i].rendimiento_nuevo = cant_pres;
                     break;
                 case 8: ///agregar a maquinaria
-                    self.form.partidas[0].conceptos.MAQUINARIA.insumos[i].cantidad_presupuestada_nueva = cant_pres;
+                    self.form.partidas[0].conceptos.MAQUINARIA.insumos[i].rendimiento_nuevo = cant_pres;
                     break;
-
             }
         },
 
         recalcular_monto : function (id_concepto, i,tipo) {
             var self = this;
-            var factor = $("#" +id_concepto+'_'  + i).html();
-            var cant = $("#m_p_" +id_concepto+'_'  + i).val();
-            var nuevo = factor * cant;
-            $("#mp_" +id_concepto+'_'  + i).html(nuevo.formatMoney(3,'.',','));
-
             switch (tipo){
                 case 1: ///agregar a materiales
                     self.form.partidas[0].conceptos.MATERIALES.insumos[i].precio_unitario_nuevo = cant;
@@ -461,7 +464,6 @@ Vue.component('variacion-insumos', {
                 case 8: ///agregar a maquinaria
                      self.form.partidas[0].conceptos.MAQUINARIA.insumos[i].precio_unitario_nuevo = cant;
                     break;
-
             }
         }
     }
