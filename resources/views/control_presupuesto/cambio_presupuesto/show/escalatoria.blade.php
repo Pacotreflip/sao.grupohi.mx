@@ -80,7 +80,7 @@
                                     <tr v-for="(partida,i) in solicitud.partidas" :title="partida.concepto.descripcion"
                                         style="cursor: pointer" v-on:click="mostrar_detalle_partida(partida.id)">
                                         <td>@{{ i+1 }}</td>
-                                        <td>@{{ (partida.concepto.descripcion).substr(0, 50) + '...' }}</td>
+                                        <td>@{{ (partida.descripcion).substr(0, 50) + '...' }}</td>
                                         <td class="text-right">$@{{ parseFloat(partida.monto_presupuestado).formatMoney(2, ',','.') }}</td>
                                     </tr>
                                     </tbody>
