@@ -43,95 +43,92 @@ class PolizaController extends Controller
 
     public function index(Request $request)
     {
+        $tipo_polizas = $this->transaccion_interfaz->scope('ocupadas')->all();
+        $est_prepolizas = EstatusPrePoliza::orderBy('descripcion')->lists('descripcion', 'estatus');
+
+        return view('sistema_contable.poliza_generada.index')
+            ->with('fechas', $request->fechas)
+            ->with('estatus', $request->estatus)
+            ->with('tipo', $request->tipo)
+            ->with('tipo_polizas', $tipo_polizas)
+            ->with('est_prepolizas', $est_prepolizas);
+    }
+
+    public function paginate(Request $request)
+    {
         $polizas = '';
         if ($request->has('fechas') && $request->has('estatus') && $request->has('tipo')) {
 
             $fecha_inicial = explode(" - ", $request->fechas)[0] . ' 00:00:00.000';
             $fecha_final = explode(" - ", $request->fechas)[1] . ' 00:00:00.000';
             $where = [
-                ['fecha', 'between', DB::raw("'{$fecha_inicial}' and '{$fecha_final}'")],
-                ['estatus', '=', $request->estatus],
-                ['id_tipo_poliza_interfaz', '=', $request->tipo]
+                ['Contabilidad.int_polizas.fecha', 'between', DB::raw("'{$fecha_inicial}' and '{$fecha_final}'")],
+                ['Contabilidad.int_polizas.estatus', '=', $request->estatus],
+                ['Contabilidad.int_polizas.id_tipo_poliza_interfaz', '=', $request->tipo]
             ];
 
-            $polizas = $this->poliza->where($where)->all();
+            $polizas = $this->poliza->with(['transaccionInterfaz', 'tipoPolizaContpaq', 'estatusPrepoliza', 'historicos'])->where($where)->paginate($request->all());
         } elseif ($request->has('fechas') && $request->has('tipo')) {
 
             $fecha_inicial = explode(" - ", $request->fechas)[0] . ' 00:00:00.000';
             $fecha_final = explode(" - ", $request->fechas)[1] . ' 00:00:00.000';
             $where = [
-                ['fecha', 'between', DB::raw("'{$fecha_inicial}' and '{$fecha_final}'")],
-                ['id_tipo_poliza_interfaz', '=', $request->tipo]
+                ['Contabilidad.int_polizas.fecha', 'between', DB::raw("'{$fecha_inicial}' and '{$fecha_final}'")],
+                ['Contabilidad.int_polizas.id_tipo_poliza_interfaz', '=', $request->tipo]
             ];
 
-            $polizas = $this->poliza->where($where)->all();
+            $polizas = $this->poliza->with(['transaccionInterfaz', 'tipoPolizaContpaq', 'estatusPrepoliza', 'historicos'])->where($where)->paginate($request->all());
         }
         elseif ($request->has('fechas') && $request->has('estatus')) {
 
             $fecha_inicial = explode(" - ", $request->fechas)[0] . ' 00:00:00.000';
             $fecha_final = explode(" - ", $request->fechas)[1] . ' 00:00:00.000';
             $where = [
-                ['fecha', 'between', DB::raw("'{$fecha_inicial}' and '{$fecha_final}'")],
-                ['estatus', '=', $request->estatus]
+                ['Contabilidad.int_polizas.fecha', 'between', DB::raw("'{$fecha_inicial}' and '{$fecha_final}'")],
+                ['Contabilidad.int_polizas.estatus', '=', $request->estatus]
             ];
 
-            $polizas = $this->poliza->where($where)->all();
+            $polizas = $this->poliza->with(['transaccionInterfaz', 'tipoPolizaContpaq', 'estatusPrepoliza', 'historicos'])->where($where)->paginate($request->all());
         }
         elseif ($request->estatus != "" && $request->tipo != "") {
             $where = [
-                ['estatus', '=', $request->estatus],
-                ['id_tipo_poliza_interfaz', '=', $request->tipo]
+                ['Contabilidad.int_polizas.estatus', '=', $request->estatus],
+                ['Contabilidad.int_polizas.id_tipo_poliza_interfaz', '=', $request->tipo]
             ];
 
 
-            $polizas = $this->poliza->where($where)->all();
+            $polizas = $this->poliza->with(['transaccionInterfaz', 'tipoPolizaContpaq', 'estatusPrepoliza', 'historicos'])->where($where)->paginate($request->all());
         } elseif ($request->estatus != "") {
             $where = [
-                ['estatus', '=', $request->estatus]
+                ['Contabilidad.int_polizas.estatus', '=', $request->estatus]
             ];
 
 
-            $polizas = $this->poliza->where($where)->all();
+            $polizas = $this->poliza->with(['transaccionInterfaz', 'tipoPolizaContpaq', 'estatusPrepoliza', 'historicos'])->where($where)->paginate($request->all());
         } elseif ($request->tipo > 0) {
             $where = [
-                ['id_tipo_poliza_interfaz', '=', $request->tipo]
+                ['Contabilidad.int_polizas.id_tipo_poliza_interfaz', '=', $request->tipo]
             ];
 
 
-            $polizas = $this->poliza->where($where)->all();
+            $polizas = $this->poliza->with(['transaccionInterfaz', 'tipoPolizaContpaq', 'estatusPrepoliza', 'historicos'])->where($where)->paginate($request->all());
         } elseif ($request->fechas) {
             $fecha_inicial = explode(" - ", $request->fechas)[0] . ' 00:00:00.000';
             $fecha_final = explode(" - ", $request->fechas)[1] . ' 00:00:00.000';
             $where = [
-                ['fecha', 'between', DB::raw("'{$fecha_inicial}' and '{$fecha_final}'")]
+                ['Contabilidad.int_polizas.fecha', 'between', DB::raw("'{$fecha_inicial}' and '{$fecha_final}'")]
             ];
 
-
-            $polizas = $this->poliza->where($where)->all();
+            $polizas = $this->poliza->with(['transaccionInterfaz', 'tipoPolizaContpaq', 'estatusPrepoliza', 'historicos'])->where($where)->paginate($request->all());
         } else {
-            $polizas = $this->poliza->all();
+            $polizas = $this->poliza->with(['transaccionInterfaz', 'tipoPolizaContpaq', 'estatusPrepoliza', 'historicos'])->paginate($request->all());
         }
 
-
-        $acumulado=$this->graficas->getChartAcumuladoModal( $polizas);
-        $tipo_polizas = $this->transaccion_interfaz->scope('ocupadas')->all();
-        $acumulado_chart=$acumulado;
-        $est_prepolizas = EstatusPrePoliza::orderBy('descripcion')->lists('descripcion', 'estatus');
-
-        $est_prepolizas = EstatusPrePoliza::orderBy('descripcion')->lists('descripcion', 'estatus');
-
-        return view('sistema_contable.poliza_generada.index')
-            ->with('polizas', $polizas)
-            ->with('fechas', $request->fechas)
-            ->with('estatus', $request->estatus)
-            ->with('tipo', $request->tipo)
-            ->with('tipo_polizas', $tipo_polizas)
-            ->with('acumulado',$acumulado['acumulado'])
-            ->with('acumulado_chart',$acumulado_chart)
-            ->with('est_prepolizas', $est_prepolizas)
-            ->with('total_polizas',count($polizas));
-
-
+        return response()->json([
+            'recordsTotal' => $polizas->total(),
+            'recordsFiltered' => $polizas->total(),
+            'data' => $polizas->items()
+        ], 200);
     }
 
     public function show($id)

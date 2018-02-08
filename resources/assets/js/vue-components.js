@@ -12,6 +12,7 @@ require('./vue-components/Contabilidad/tipo_cuenta_contable/tipo-cuenta-contable
 require('./vue-components/Contabilidad/tipo_cuenta_contable/tipo-cuenta-contable-update');
 require('./vue-components/Contabilidad/cuenta_contable/index');
 require('./vue-components/Contabilidad/poliza_generada/edit');
+require('./vue-components/Contabilidad/poliza_generada/index');
 require('./vue-components/Contabilidad/cuenta_concepto/index');
 require('./vue-components/Contabilidad/cuenta_material/index');
 require('./vue-components/Contabilidad/cuenta_empresa/cuenta-empresa-edit');

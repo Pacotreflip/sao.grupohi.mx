@@ -207,12 +207,34 @@ class EloquentPolizaRepository implements PolizaRepository
 
     /**
      * Paginador
-     * @param $perPage
+     * @param array $data
      * @return mixed
      */
-    public function paginate($perPage)
+    public function paginate(array $data)
     {
-        return $this->model->orderBy('id_int_poliza', 'DESC')->paginate($perPage);
+        $query = $this->model
+            ->join(DB::raw('Contabilidad.estatus_prepolizas as estatus_prepoliza'), 'Contabilidad.int_polizas.estatus', '=', 'estatus_prepoliza.estatus')
+            ->join(DB::raw('Contabilidad.int_tipos_polizas_contpaq as tipo_poliza_contpaq'), 'Contabilidad.int_polizas.id_tipo_poliza_contpaq', '=', 'tipo_poliza_contpaq.id_int_tipo_poliza_contpaq')
+            ->join(DB::raw('Contabilidad.int_transacciones_interfaz as transaccion_interfaz'), 'Contabilidad.int_polizas.id_tipo_poliza_interfaz', '=', 'transaccion_interfaz.id_transaccion_interfaz');
+
+        $query->where(function ($query) use ($data) {
+            $query->where('estatus_prepoliza.descripcion', 'like', '%'.$data['search']['value'].'%')
+                ->orWhere('tipo_poliza_contpaq.descripcion', 'like', '%'.$data['search']['value'].'%')
+                ->orWhere('transaccion_interfaz.descripcion', 'like', '%'.$data['search']['value'].'%')
+                ->orWhere('concepto', 'like', '%'.$data['search']['value'].'%')
+                ->orWhere('fecha', 'like', '%'.$data['search']['value'].'%')
+                ->orWhere('total', 'like', '%'.$data['search']['value'].'%')
+                ->orWhere('cuadre', 'like', '%'.$data['search']['value'].'%')
+                ->orWhere('poliza_contpaq', 'like', '%'.$data['search']['value'].'%');
+        });
+
+        foreach ($data['order'] as $order) {
+            $query->orderBy($data['columns'][$order['column']]['data'], $order['dir']);
+        }
+
+        $query->select('Contabilidad.int_polizas.*');
+
+        return $query->paginate($perPage = $data['length'], $columns = ['*'], $pageName = 'page', $page = ($data['start'] / $data['length']) + 1);
     }
 
     public function where(array $where)
@@ -350,5 +372,6 @@ class EloquentPolizaRepository implements PolizaRepository
             DB::connection('cadeco')->rollback();
             throw $e;
         }
-        return $this->find($id);    }
+        return $this->find($id);
+    }
 }

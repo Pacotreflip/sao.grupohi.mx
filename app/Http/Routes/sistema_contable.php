@@ -48,6 +48,7 @@ Route::group(['prefix' => 'sistema_contable'], function () {
     Route::get('poliza_generada/{poliza}/historico', 'PolizaHistoricoController@index')->name('sistema_contable.poliza_generada.historico')->where(['id' => '[0-9]+']);
     Route::patch('poliza_generada/{id}', 'PolizaController@update')->name('sistema_contable.poliza_generada.update')->where(['id' => '[0-9]+']);
     Route::patch('poliza_generada/{id}/ingresar_folio', 'PolizaController@ingresarFolio')->name('sistema_contable.poliza_generada.ingresar_folio')->where(['id' => '[0-9]+']);
+    Route::post('poliza_generada/paginate', 'PolizaController@paginate');
 
     /**
      * Relación Cuentas Concepto

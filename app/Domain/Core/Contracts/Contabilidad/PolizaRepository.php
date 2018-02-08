@@ -35,10 +35,10 @@ interface PolizaRepository
 
     /**
      * Paginador
-     * @param $perPage
+     * @param array $data
      * @return mixed
      */
-    public function paginate($perPage);
+    public function paginate(array $data);
 
     /**
      *  Contiene los parametros de búsqueda
