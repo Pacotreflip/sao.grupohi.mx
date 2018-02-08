@@ -75,7 +75,7 @@ Vue.component('cambio_insumos', {
 
         },
          autorizar_solicitud: function (id) {
-/*
+
             var self = this;
             var url = App.host + '/control_presupuesto/cambio_presupuesto/autorizarSolicitud';
             $.ajax({
@@ -99,7 +99,7 @@ Vue.component('cambio_insumos', {
                         closeOnConfirm: false
                     }).then(function () {
                     });
-                   window.location.reload(true);
+                  // window.location.reload(true);
                 },
                 complete: function () {
                     self.autorizando = false;
@@ -107,7 +107,7 @@ Vue.component('cambio_insumos', {
                     $('#btn_autorizar').prop('enabled',true);
                 }
             });
-            */
+
         },
 
         rechazar_solicitud: function (id,motivo) {

@@ -144,18 +144,22 @@ Vue.component('variacion-insumos', {
                         $.each(response.conceptos.MATERIALES.insumos, function (index, partida) {
                             response.conceptos.MATERIALES.insumos[index].rendimiento_actual =   partida.cantidad_presupuestada / response.cobrable.cantidad_presupuestada
                             response.conceptos.MATERIALES.insumos[index].id_elemento =response.conceptos.MATERIALES.insumos[index].id_concepto;
+                            response.conceptos.MATERIALES.insumos[index].nuevo=false;
                         });
                         $.each(response.conceptos.HERRAMIENTAYEQUIPO.insumos, function (index, partida) {
                             response.conceptos.HERRAMIENTAYEQUIPO.insumos[index].rendimiento_actual =  partida.cantidad_presupuestada / response.cobrable.cantidad_presupuestada
                             response.conceptos.HERRAMIENTAYEQUIPO.insumos[index].id_elemento =response.conceptos.HERRAMIENTAYEQUIPO.insumos[index].id_concepto;
+                            response.conceptos.HERRAMIENTAYEQUIPO.insumos[index].nuevo=false;
                         });
                         $.each(response.conceptos.MANOOBRA.insumos, function (index, partida) {
                             response.conceptos.MANOOBRA.insumos[index].rendimiento_actual = partida.cantidad_presupuestada / response.cobrable.cantidad_presupuestada
                             response.conceptos.MANOOBRA.insumos[index].id_elemento =response.conceptos.MANOOBRA.insumos[index].id_concepto;
+                            response.conceptos.MANOOBRA.insumos[index].nuevo=false;
                         });
                         $.each(response.conceptos.MAQUINARIA.insumos, function (index, partida) {
                             response.conceptos.MAQUINARIA.insumos[index].rendimiento_actual = partida.cantidad_presupuestada / response.cobrable.cantidad_presupuestada
                             response.conceptos.MAQUINARIA.insumos[index].id_elemento =response.conceptos.MAQUINARIA.insumos[index].id_concepto;
+                            response.conceptos.MAQUINARIA.insumos[index].nuevo=false;
                         });
                         self.form.partidas.push(response);
                         self.form.agrupadas.push(response.cobrable.id_concepto)
@@ -344,7 +348,9 @@ Vue.component('variacion-insumos', {
                                     cantidad_presupuestada_nueva:0,
                                     variacion_precio_unitario:0,
                                     precio_unitario:0,
-                                    id:item.id_material
+                                    id:item.id_material,
+                                    nuevo:true,
+                                    rendimiento_actual:0
                                 }
                             })
                         };
@@ -432,6 +438,7 @@ Vue.component('variacion-insumos', {
 
         recalcular : function (id_concepto,i,tipo) {
             var self = this;
+            var cant_pres = $("#c_p_" +id_concepto+'_' + i).val();
             switch (tipo){
                 case 1: ///agregar a materiales
                     self.form.partidas[0].conceptos.MATERIALES.insumos[i].rendimiento_nuevo = cant_pres;
@@ -450,6 +457,7 @@ Vue.component('variacion-insumos', {
 
         recalcular_monto : function (id_concepto, i,tipo) {
             var self = this;
+            var cant = $("#m_p_" +id_concepto+'_'  + i).val();
             switch (tipo){
                 case 1: ///agregar a materiales
                     self.form.partidas[0].conceptos.MATERIALES.insumos[i].precio_unitario_nuevo = cant;

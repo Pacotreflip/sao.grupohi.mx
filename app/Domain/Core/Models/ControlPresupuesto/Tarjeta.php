@@ -9,12 +9,25 @@
 namespace Ghi\Domain\Core\Models\ControlPresupuesto;
 
 
-use Illuminate\Database\Eloquent\Model;
+use Ghi\Core\Facades\Context;
+use Ghi\Domain\Core\Models\BaseModel;
 
-class Tarjeta extends Model
+class Tarjeta extends BaseModel
 {
     protected $table = 'ControlPresupuesto.tarjeta';
     protected $connection = 'cadeco';
+    protected $fillable = [
+        'descripcion',
+        'id_obra',
+        'estatus'
+    ];
 
-
+    protected static function boot()
+    {
+        parent::boot();
+        static::creating(function ($model) {
+            $model->estatus =1;
+            $model->id_obra = Context::getId();
+        });
+    }
 }

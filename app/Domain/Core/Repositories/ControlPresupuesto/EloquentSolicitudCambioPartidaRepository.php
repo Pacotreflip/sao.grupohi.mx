@@ -285,31 +285,20 @@ class EloquentSolicitudCambioPartidaRepository implements SolicitudCambioPartida
 
         foreach ($partidas as $partida) {
 
-            if ($partida['cantidad_presupuestada_nueva'] != null) {
-                $partida['rendimiento_original'] = $partida['cantidad_presupuestada_original'] / $concepto->cantidad_presupuestada;
-                $partida['rendimiento_nuevo'] = $partida['cantidad_presupuestada_nueva'];
-                $partida['cantidad_presupuestada'] = $partida['cantidad_presupuestada_nueva'] * $concepto->cantidad_presupuestada;
+            if ($partida['rendimiento_nuevo'] != null) {
+                $partida['cantidad_presupuestada'] = $partida['rendimiento_nuevo'] * $concepto->cantidad_presupuestada;
             } else {
-                $partida['rendimiento_original'] = $partida['cantidad_presupuestada_original'] / $concepto->cantidad_presupuestada;
-                $partida['rendimiento_nuevo'] = 0;
-                $partida['cantidad_presupuestada'] = $partida['cantidad_presupuestada_original'];
+                $item = Concepto::where('nivel', 'like', $concepto->nivel . '%')->where('id_material', '=', $partida['id_material'])->first();
+                $partida['cantidad_presupuestada'] = $item->cantidad_presupuestada;
             }
-
-
             if ($partida['precio_unitario_nuevo'] != null) {
                 $partida['precio_unitario_original'] = $partida['precio_unitario_original'];
                 $partida['precio_unitario_nuevo'] = $partida['precio_unitario_nuevo'];
                 $partida['monto_presupuestado'] = $partida['cantidad_presupuestada'] * $partida['precio_unitario_nuevo'];
             } else {
-                $partida['precio_unitario_nuevo']=0;
-                $partida['monto_presupuestado']=$partida['cantidad_presupuestada'] * $partida['precio_unitario_original'];
+                $partida['precio_unitario_nuevo'] = 0;
+                $partida['monto_presupuestado'] = $partida['cantidad_presupuestada'] * $partida['precio_unitario_original'];
             }
-
-
-
-
-            $partida['rendimiento_original'] = $partida['cantidad_presupuestada_original'] / $concepto->cantidad_presupuestada;
-
             switch ($partida->material->tipo_material) {
                 case 1:///materiales
                     array_push($materiales, $partida);
@@ -329,14 +318,12 @@ class EloquentSolicitudCambioPartidaRepository implements SolicitudCambioPartida
         $mano_obra = ['tipo' => 'MANO DE OBRA', 'items' => $mano_obra];
         $herramienta = ['tipo' => 'HERRAMIENTA', 'items' => $herramienta];
         $maquinaria = ['tipo' => 'MAQUINARIA Y EQUIPO', 'items' => $maquinaria];
-
         array_push($data, $materiales);
         array_push($data, $mano_obra);
         array_push($data, $herramienta);
         array_push($data, $maquinaria);
-
-        // $data=['MATERIALES'=>$materiales,'MANO_OBRA'=>$mano_obra,'HERRAMIENTA'=>$herramienta,'MAQUINARIA'=>$maquinaria];
-
         return $data;
     }
+
+
 }

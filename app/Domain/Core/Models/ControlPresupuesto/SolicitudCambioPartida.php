@@ -28,7 +28,9 @@ class SolicitudCambioPartida extends Model
         'id_material',
         'nivel',
         'precio_unitario_original',
-        'precio_unitario_nuevo'
+        'precio_unitario_nuevo',
+        'rendimiento_original',
+        'rendimiento_nuevo'
     ];
 
     public function concepto() {

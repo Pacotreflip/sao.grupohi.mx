@@ -76,5 +76,11 @@ interface SolicitudCambioRepository
      * @return SolicitudCambio
      */
     public function  saveCambioInsumos(array $data);
-
+    /**
+     * Autoriza una solicitud de cambio
+     * @param array $data
+     * @throws \Exception
+     * @return SolicitudCambio
+     */
+    public function  autorizarCambioInsumos($id);
 }

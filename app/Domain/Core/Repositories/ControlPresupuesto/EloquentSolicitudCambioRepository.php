@@ -20,6 +20,7 @@ use Ghi\Domain\Core\Models\ControlPresupuesto\SolicitudCambio;
 use Ghi\Domain\Core\Models\ControlPresupuesto\SolicitudCambioAutorizada;
 use Ghi\Domain\Core\Models\ControlPresupuesto\SolicitudCambioPartida;
 use Ghi\Domain\Core\Models\ControlPresupuesto\SolicitudCambioRechazada;
+use Ghi\Domain\Core\Models\ControlPresupuesto\Tarjeta;
 use Ghi\Domain\Core\Models\ControlPresupuesto\TipoOrden;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Exception\HttpResponseException;
@@ -287,7 +288,7 @@ class EloquentSolicitudCambioRepository implements SolicitudCambioRepository
 
             foreach ($data['partidas'] as $partida) {
 
-                $cantidad_presupuestada_concepto=$partida['cobrable']['cantidad_presupuestada'];
+                $cantidad_presupuestada_concepto = $partida['cobrable']['cantidad_presupuestada'];
 
                 ////////impacto materiales
                 if (array_key_exists('insumos', $partida['conceptos']['MATERIALES'])) {
@@ -299,18 +300,15 @@ class EloquentSolicitudCambioRepository implements SolicitudCambioRepository
                                 $material['id_tarjeta'] = $conceptoTarjeta->id_tarjeta;
                             }
                         }
-
                         $material['id_tipo_orden'] = TipoOrden::ORDEN_DE_CAMBIO_DE_INSUMOS;
                         $material['id_solicitud_cambio'] = $solicitud->id;
                         $material['precio_unitario_original'] = $material['precio_unitario'];
-                        $existe = true;
                         array_key_exists('precio_unitario_nuevo', $material) ? $material['precio_unitario_nuevo'] = $material['precio_unitario_nuevo'] : '';
-                        array_key_exists('cantidad_presupuestada_nueva', $material) ? $material['cantidad_presupuestada_nueva'] = $material['cantidad_presupuestada_nueva'] : '';
-                         dd( $material['cantidad_presupuestada']);
-                        $material['cantidad_presupuestada_original'] = $material['cantidad_presupuestada']*$cantidad_presupuestada_concepto;
-                       // $material['cantidad_presupuestada_nueva'] = $material['cantidad_presupuestada_nueva'];
+                        array_key_exists('rendimiento_nuevo', $material) ? $material['rendimiento_nuevo'] = $material['rendimiento_nuevo'] : '';
+                        $material['rendimiento_original'] = $material['rendimiento_actual'];
 
-                        if (array_key_exists('precio_unitario_nuevo', $material) || array_key_exists('cantidad_presupuestada_nueva', $material)) {
+                        //  dd($material['rendimiento_nuevo']);
+                        if (array_key_exists('precio_unitario_nuevo', $material) || array_key_exists('rendimiento_nuevo', $material)) {
                             SolicitudCambioPartida::create($material);
                         }
                     }
@@ -324,19 +322,15 @@ class EloquentSolicitudCambioRepository implements SolicitudCambioRepository
                                 $mano['id_tarjeta'] = $conceptoTarjeta->id_tarjeta;
                             }
                         }
+
                         $mano['id_tipo_orden'] = TipoOrden::ORDEN_DE_CAMBIO_DE_INSUMOS;
                         $mano['id_solicitud_cambio'] = $solicitud->id;
                         $mano['precio_unitario_original'] = $mano['precio_unitario'];
-                        $existe = true;
-
-
                         array_key_exists('precio_unitario_nuevo', $mano) ? $mano['precio_unitario_nuevo'] = $mano['precio_unitario_nuevo'] : '';
-                        array_key_exists('cantidad_presupuestada_nueva', $mano) ? $mano['cantidad_presupuestada_nueva'] = $mano['cantidad_presupuestada_nueva'] : '';
+                        array_key_exists('rendimiento_nuevo', $mano) ? $mano['rendimiento_nuevo'] = $mano['rendimiento_nuevo'] : '';
+                        $mano['rendimiento_original'] = $mano['rendimiento_actual'];
 
-                        $mano['cantidad_presupuestada_original'] = $mano['cantidad_presupuestada']*$cantidad_presupuestada_concepto;
-                      //  $mano['cantidad_presupuestada_nueva'] = $mano['cantidad_presupuestada_nueva'];
-
-                        if (array_key_exists('precio_unitario_nuevo', $mano) || array_key_exists('cantidad_presupuestada_nueva', $mano)) {
+                        if (array_key_exists('precio_unitario_nuevo', $mano) || array_key_exists('rendimiento_nuevo', $mano)) {
                             SolicitudCambioPartida::create($mano);
                         }
                     }
@@ -353,14 +347,11 @@ class EloquentSolicitudCambioRepository implements SolicitudCambioRepository
                         $herramienta['id_tipo_orden'] = TipoOrden::ORDEN_DE_CAMBIO_DE_INSUMOS;
                         $herramienta['id_solicitud_cambio'] = $solicitud->id;
                         $herramienta['precio_unitario_original'] = $herramienta['precio_unitario'];
-                        $existe = true;
                         array_key_exists('precio_unitario_nuevo', $herramienta) ? $herramienta['precio_unitario_nuevo'] = $herramienta['precio_unitario_nuevo'] : '';
-                        array_key_exists('cantidad_presupuestada_nueva', $herramienta) ? $herramienta['cantidad_presupuestada_nueva'] = $herramienta['cantidad_presupuestada_nueva'] : '';
+                        array_key_exists('rendimiento_nuevo', $herramienta) ? $herramienta['rendimiento_nuevo'] = $herramienta['rendimiento_nuevo'] : '';
+                        $herramienta['rendimiento_original'] = $herramienta['rendimiento_actual'];
 
-                        $herramienta['cantidad_presupuestada_original'] = $herramienta['cantidad_presupuestada']*$cantidad_presupuestada_concepto;
-                      //  $herramienta['cantidad_presupuestada_nueva'] = $herramienta['cantidad_presupuestada_nueva'];
-
-                        if (array_key_exists('precio_unitario_nuevo', $herramienta) || array_key_exists('cantidad_presupuestada_nueva', $herramienta)) {
+                        if (array_key_exists('precio_unitario_nuevo', $herramienta) || array_key_exists('rendimiento_nuevo', $herramienta)) {
                             SolicitudCambioPartida::create($herramienta);
                         }
                     }
@@ -379,14 +370,11 @@ class EloquentSolicitudCambioRepository implements SolicitudCambioRepository
                         $maquinaria['id_tipo_orden'] = TipoOrden::ORDEN_DE_CAMBIO_DE_INSUMOS;
                         $maquinaria['id_solicitud_cambio'] = $solicitud->id;
                         $maquinaria['precio_unitario_original'] = $maquinaria['precio_unitario'];
-                        $existe = true;
                         array_key_exists('precio_unitario_nuevo', $maquinaria) ? $maquinaria['precio_unitario_nuevo'] = $maquinaria['precio_unitario_nuevo'] : '';
-                        array_key_exists('cantidad_presupuestada_nueva', $maquinaria) ? $maquinaria['cantidad_presupuestada_nueva'] = $maquinaria['cantidad_presupuestada_nueva'] : '';
+                        array_key_exists('rendimiento_nuevo', $maquinaria) ? $maquinaria['rendimiento_nuevo'] = $maquinaria['rendimiento_nuevo'] : '';
+                        $maquinaria['rendimiento_original'] = $maquinaria['rendimiento_actual'];
 
-                        $maquinaria['cantidad_presupuestada_original'] = $maquinaria['cantidad_presupuestada']*$cantidad_presupuestada_concepto;
-                       // $maquinaria['cantidad_presupuestada_nueva'] = $maquinaria['cantidad_presupuestada_nueva'];
-
-                        if (array_key_exists('precio_unitario_nuevo', $maquinaria) || array_key_exists('cantidad_presupuestada_nueva', $maquinaria)) {
+                        if (array_key_exists('precio_unitario_nuevo', $maquinaria) || array_key_exists('rendimiento_nuevo', $maquinaria)) {
                             SolicitudCambioPartida::create($maquinaria);
                         }
 
@@ -401,6 +389,127 @@ class EloquentSolicitudCambioRepository implements SolicitudCambioRepository
             return $solicitud;
         } catch
         (\Exception $e) {
+            DB::connection('cadeco')->rollback();
+            throw $e;
+        }
+    }
+
+    public function autorizarCambioInsumos($id)
+    {
+        try {
+            DB::connection('cadeco')->beginTransaction();
+            // dd("autorizar-->" . $id);
+
+            $insumosAgrupados = PartidasInsumosAgrupados::where('id_solicitud_cambio', '=', $id)->get();
+            $conceptoTarjeta = ConceptoTarjeta::where('id_concepto', '=', $insumosAgrupados[0]->id_concepto)->first();
+            //////////////generamos nueva tarjeta
+            $tarjeta = Tarjeta::find($conceptoTarjeta->id_tarjeta);
+            $numAux = 0;
+            for ($num = 1; ; $num++) {
+                $tarjetaNueva = Tarjeta::where('descripcion', '=', $tarjeta->descripcion . '-' . $num)->get();
+                $numAux = $num;
+                if (count($tarjetaNueva) == 0) {
+                    break;
+                }
+            }
+            $tarjetaNueva = $tarjeta->descripcion . '-' . ($numAux);
+            $nuevaTarjeta = Tarjeta::create(['descripcion' => $tarjetaNueva]);
+
+
+            foreach ($insumosAgrupados as $insumo) {
+
+                $partidas = SolicitudCambioPartida::with('material')->where('id_solicitud_cambio', '=', $id)->get();
+                $concepto = Concepto::find($insumo['id_concepto']);
+
+                $materiales = [];
+                $mano_obra = [];
+                $herramienta = [];
+                $maquinaria = [];
+                $data = [];
+                $tarjeta_id = 0;
+                foreach ($partidas as $partida) {
+                    $tarjeta_id = $partida->id_tarjeta;
+                    if ($partida['rendimiento_nuevo'] != null) {
+                        $partida['cantidad_presupuestada'] = $partida['rendimiento_nuevo'] * $concepto->cantidad_presupuestada;
+                    } else {
+                        $item = Concepto::where('nivel', 'like', $concepto->nivel . '%')->where('id_material', '=', $partida['id_material'])->first();
+                        $partida['cantidad_presupuestada'] = $item->cantidad_presupuestada;
+                    }
+                    if ($partida['precio_unitario_nuevo'] != null) {
+                        $partida['precio_unitario_original'] = $partida['precio_unitario_original'];
+                        $partida['precio_unitario_nuevo'] = $partida['precio_unitario_nuevo'];
+                        $partida['monto_presupuestado'] = $partida['cantidad_presupuestada'] * $partida['precio_unitario_nuevo'];
+                    } else {
+                        $partida['precio_unitario_nuevo'] = 0;
+                        $partida['monto_presupuestado'] = $partida['cantidad_presupuestada'] * $partida['precio_unitario_original'];
+                    }
+                    switch ($partida->material->tipo_material) {
+                        case 1:///materiales
+                            array_push($materiales, $partida);
+                            break;
+                        case 2:///Mano obra
+                            array_push($mano_obra, $partida);
+                            break;
+                        case 4:///Herramienta y equipo
+                            array_push($herramienta, $partida);
+                            break;
+                        case 8:/// Maquinaria
+                            array_push($maquinaria, $partida);
+                            break;
+                    }
+
+
+
+
+                }
+
+                foreach ($materiales as $material) ////integracion materiales tarjeta nueva
+                {
+                    if ($material->id_concepto) { ////actualizacion de concepto
+                        $conceptoUpdate = Concepto::find($material->id_concepto);
+                        $conceptoUpdate->cantidad_presupuestada = $material['cantidad_presupuestada']; //cambio cantidad presupuestada
+                        if ($material['precio_unitario_nuevo'] > 0) {
+                            $conceptoUpdate->precio_unitario = $material['precio_unitario_nuevo'];
+                        }
+                        $conceptoUpdate->monto_presupuestado = $conceptoUpdate->monto_presupuestado * $conceptoUpdate->precio_unitario;
+                        $conceptoUpdate->save();
+
+                    } else { ////nuevo concepto generar nuevo nivel
+
+                        $conceptoMaterial=Concepto::where('descripcion','=','MATERIALES')->where('nivel','like',$concepto->nivel.'%')->first();
+                        $totalInsumos=Concepto::where('nivel','like',$conceptoMaterial->nivel.'%')->get();
+
+                        $total=count($totalInsumos);
+
+                        dd("es uno nuevo",$conceptoMaterial,$total);
+
+                    }
+
+
+                }
+                ///cambio nueva tarjeta
+
+
+                $conceptosNuevaTarjeta=Concepto::where('nivel','like',$concepto->nivel.'%')->get();
+
+               // dd($conceptosNuevaTarjeta);
+                foreach ($conceptosNuevaTarjeta as $conceptoNuevaTarjeta){
+                    //  $conceptoNuevaTarjeta->id_concepto;
+                    $conceptoTarjetaUpdate=ConceptoTarjeta::where('id_concepto','=',  $conceptoNuevaTarjeta->id_concepto)->first();
+                    if($conceptoTarjetaUpdate){ //caso anteriores update
+                        $conceptoTarjetaUpdate->id_tarjeta=$nuevaTarjeta->id;
+                        $conceptoTarjetaUpdate->save();
+                    }else{ ///caso nuevos insert
+                        ConceptoTarjeta::create(['id_concepto'=> $conceptoNuevaTarjeta->id_concepto,'id_tarjeta'=>$nuevaTarjeta->id]);
+                    }
+                }
+            }
+
+           dd("termino");
+
+            DB::connection('cadeco')->commit();
+
+        } catch (\Exception $e) {
             DB::connection('cadeco')->rollback();
             throw $e;
         }
