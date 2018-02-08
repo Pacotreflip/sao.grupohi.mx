@@ -51,8 +51,10 @@ Route::group(['prefix' => 'control_presupuesto'], function () {
     Route::post('afectacion_presupuesto/getBasesAfectadas', 'AfectacionOrdenPresupuestoController@getBasesAfectadas')->name('control_presupuesto.afectacion_presupuesto.getBasesAfectadas');
 
     /**
-     * Materiales insumos
+     * Solicitud insumos
      */
 
     Route::get('cambio_presupuesto/getDescripcionByTipo', 'MaterialController@getDescripcionByTipo')->name('control_presupuesto.cambio_presupuesto.getDescripcionByTipo');
+    Route::post('cambio_presupuesto_partida/getClasificacionInsumos', 'SolicitudCambioPartidasController@getClasificacionInsumos')->name('control_presupuesto.cambio_presupuesto_partida.getClasificacionInsumos');
+
 });

@@ -273,6 +273,7 @@ class EloquentSolicitudCambioRepository implements SolicitudCambioRepository
 
     public function saveCambioInsumos(array $data)
     {
+
         try {
             DB::connection('cadeco')->beginTransaction();
 
@@ -286,13 +287,7 @@ class EloquentSolicitudCambioRepository implements SolicitudCambioRepository
 
             foreach ($data['partidas'] as $partida) {
 
-
                 $cantidad_presupuestada_concepto=$partida['cobrable']['cantidad_presupuestada'];
-
-
-
-
-
 
                 ////////impacto materiales
                 if (array_key_exists('insumos', $partida['conceptos']['MATERIALES'])) {
@@ -311,7 +306,7 @@ class EloquentSolicitudCambioRepository implements SolicitudCambioRepository
                         $existe = true;
                         array_key_exists('precio_unitario_nuevo', $material) ? $material['precio_unitario_nuevo'] = $material['precio_unitario_nuevo'] : '';
                         array_key_exists('cantidad_presupuestada_nueva', $material) ? $material['cantidad_presupuestada_nueva'] = $material['cantidad_presupuestada_nueva'] : '';
-
+                         dd( $material['cantidad_presupuestada']);
                         $material['cantidad_presupuestada_original'] = $material['cantidad_presupuestada']*$cantidad_presupuestada_concepto;
                        // $material['cantidad_presupuestada_nueva'] = $material['cantidad_presupuestada_nueva'];
 
@@ -331,10 +326,12 @@ class EloquentSolicitudCambioRepository implements SolicitudCambioRepository
                         }
                         $mano['id_tipo_orden'] = TipoOrden::ORDEN_DE_CAMBIO_DE_INSUMOS;
                         $mano['id_solicitud_cambio'] = $solicitud->id;
-                        $mano['precio_unitario_original'] = $material['precio_unitario'];
+                        $mano['precio_unitario_original'] = $mano['precio_unitario'];
                         $existe = true;
-                        array_key_exists('precio_unitario_nuevo', $material) ? $mano['precio_unitario_nuevo'] = $mano['precio_unitario_nuevo'] : '';
-                        array_key_exists('cantidad_presupuestada_nueva', $material) ? $mano['cantidad_presupuestada_nueva'] = $mano['cantidad_presupuestada_nueva'] : '';
+
+
+                        array_key_exists('precio_unitario_nuevo', $mano) ? $mano['precio_unitario_nuevo'] = $mano['precio_unitario_nuevo'] : '';
+                        array_key_exists('cantidad_presupuestada_nueva', $mano) ? $mano['cantidad_presupuestada_nueva'] = $mano['cantidad_presupuestada_nueva'] : '';
 
                         $mano['cantidad_presupuestada_original'] = $mano['cantidad_presupuestada']*$cantidad_presupuestada_concepto;
                       //  $mano['cantidad_presupuestada_nueva'] = $mano['cantidad_presupuestada_nueva'];
@@ -355,10 +352,10 @@ class EloquentSolicitudCambioRepository implements SolicitudCambioRepository
                         }
                         $herramienta['id_tipo_orden'] = TipoOrden::ORDEN_DE_CAMBIO_DE_INSUMOS;
                         $herramienta['id_solicitud_cambio'] = $solicitud->id;
-                        $herramienta['precio_unitario_original'] = $material['precio_unitario'];
+                        $herramienta['precio_unitario_original'] = $herramienta['precio_unitario'];
                         $existe = true;
-                        array_key_exists('precio_unitario_nuevo', $material) ? $herramienta['precio_unitario_nuevo'] = $herramienta['precio_unitario_nuevo'] : '';
-                        array_key_exists('cantidad_presupuestada_nueva', $material) ? $herramienta['cantidad_presupuestada_nueva'] = $herramienta['cantidad_presupuestada_nueva'] : '';
+                        array_key_exists('precio_unitario_nuevo', $herramienta) ? $herramienta['precio_unitario_nuevo'] = $herramienta['precio_unitario_nuevo'] : '';
+                        array_key_exists('cantidad_presupuestada_nueva', $herramienta) ? $herramienta['cantidad_presupuestada_nueva'] = $herramienta['cantidad_presupuestada_nueva'] : '';
 
                         $herramienta['cantidad_presupuestada_original'] = $herramienta['cantidad_presupuestada']*$cantidad_presupuestada_concepto;
                       //  $herramienta['cantidad_presupuestada_nueva'] = $herramienta['cantidad_presupuestada_nueva'];
@@ -381,10 +378,10 @@ class EloquentSolicitudCambioRepository implements SolicitudCambioRepository
                         }
                         $maquinaria['id_tipo_orden'] = TipoOrden::ORDEN_DE_CAMBIO_DE_INSUMOS;
                         $maquinaria['id_solicitud_cambio'] = $solicitud->id;
-                        $maquinaria['precio_unitario_original'] = $material['precio_unitario'];
+                        $maquinaria['precio_unitario_original'] = $maquinaria['precio_unitario'];
                         $existe = true;
-                        array_key_exists('precio_unitario_nuevo', $material) ? $maquinaria['precio_unitario_nuevo'] = $maquinaria['precio_unitario_nuevo'] : '';
-                        array_key_exists('cantidad_presupuestada_nueva', $material) ? $maquinaria['cantidad_presupuestada_nueva'] = $maquinaria['cantidad_presupuestada_nueva'] : '';
+                        array_key_exists('precio_unitario_nuevo', $maquinaria) ? $maquinaria['precio_unitario_nuevo'] = $maquinaria['precio_unitario_nuevo'] : '';
+                        array_key_exists('cantidad_presupuestada_nueva', $maquinaria) ? $maquinaria['cantidad_presupuestada_nueva'] = $maquinaria['cantidad_presupuestada_nueva'] : '';
 
                         $maquinaria['cantidad_presupuestada_original'] = $maquinaria['cantidad_presupuestada']*$cantidad_presupuestada_concepto;
                        // $maquinaria['cantidad_presupuestada_nueva'] = $maquinaria['cantidad_presupuestada_nueva'];

@@ -8,6 +8,7 @@
 
 namespace Ghi\Domain\Core\Models\ControlPresupuesto;
 use Ghi\Domain\Core\Models\Concepto;
+use Ghi\Domain\Core\Models\Material;
 use Illuminate\Database\Eloquent\Model;
 
 class SolicitudCambioPartida extends Model
@@ -46,4 +47,9 @@ class SolicitudCambioPartida extends Model
     public function getClaveConceptoAttribute() {
         return $this->concepto->clave_concepto;
     }
+    public function material()
+    {
+        return $this->hasOne(Material::class, 'id_material', 'id_material');
+    }
+
 }

@@ -14,6 +14,7 @@ use Ghi\Domain\Core\Contracts\ControlPresupuesto\SolicitudCambioPartidaRepositor
 use Ghi\Domain\Core\Models\Concepto;
 use Ghi\Domain\Core\Models\ControlPresupuesto\BasePresupuesto;
 use Ghi\Domain\Core\Models\ControlPresupuesto\ConceptoTarjeta;
+use Ghi\Domain\Core\Models\ControlPresupuesto\PartidasInsumosAgrupados;
 use Ghi\Domain\Core\Models\ControlPresupuesto\SolicitudCambio;
 use Ghi\Domain\Core\Models\ControlPresupuesto\SolicitudCambioPartida;
 use Ghi\Domain\Core\Models\ControlPresupuesto\Tarjeta;
@@ -212,15 +213,15 @@ class EloquentSolicitudCambioPartidaRepository implements SolicitudCambioPartida
 
         ////////////////////////////////////////////////////////////////////////// importe conceptos de tarjeta no seleccionados
         $importeConceptoNoSeleccionado = ($importeConceptosTarjeta - $importeConceptosSeleccionado);
-        $response['total_seleccionados'] =$importeConceptosSeleccionado;
-        $response['total_tarjeta'] =$importeConceptosTarjeta;
-        $response['total_sin_seleccion'] =$importeConceptoNoSeleccionado;
+        $response['total_seleccionados'] = $importeConceptosSeleccionado;
+        $response['total_tarjeta'] = $importeConceptosTarjeta;
+        $response['total_sin_seleccion'] = $importeConceptoNoSeleccionado;
         return $response;
     }
 
     public function subtotalTarjetaShow(array $data)
     {
-        $solicitud=SolicitudCambio::with('partidas')->find($data['id_solicitud']);
+        $solicitud = SolicitudCambio::with('partidas')->find($data['id_solicitud']);
         $baseDatos = BasePresupuesto::find($data['presupuesto']);
         $claves = [];
         $claves_seleccionados = [];
@@ -231,9 +232,9 @@ class EloquentSolicitudCambioPartidaRepository implements SolicitudCambioPartida
         $response = [];
 
         $numero_tarjeta = 0;
-        foreach ($solicitud->partidas as $partida){
-            $numero_tarjeta=$partida->id_tarjeta;
-            $concepto=Concepto::find($partida->id_concepto);
+        foreach ($solicitud->partidas as $partida) {
+            $numero_tarjeta = $partida->id_tarjeta;
+            $concepto = Concepto::find($partida->id_concepto);
             array_push($claves_seleccionados, $concepto->clave_concepto);
         }
 
@@ -265,9 +266,77 @@ class EloquentSolicitudCambioPartidaRepository implements SolicitudCambioPartida
 
         ////////////////////////////////////////////////////////////////////////// importe conceptos de tarjeta no seleccionados
         $importeConceptoNoSeleccionado = ($importeConceptosTarjeta - $importeConceptosSeleccionado);
-        $response['total_seleccionados'] =$importeConceptosSeleccionado;
-        $response['total_tarjeta'] =$importeConceptosTarjeta;
-        $response['total_sin_seleccion'] =$importeConceptoNoSeleccionado;
+        $response['total_seleccionados'] = $importeConceptosSeleccionado;
+        $response['total_tarjeta'] = $importeConceptosTarjeta;
+        $response['total_sin_seleccion'] = $importeConceptoNoSeleccionado;
         return $response;
+    }
+
+    public function getClasificacionInsumos(array $data)
+    {
+        $partidas = SolicitudCambioPartida::with('material')->where('id_solicitud_cambio', '=', $data['id_solicitud_cambio'])->get();
+        $concepto = Concepto::find($data['id_concepto']);
+        // dd($concepto);
+        $materiales = [];
+        $mano_obra = [];
+        $herramienta = [];
+        $maquinaria = [];
+        $data = [];
+
+        foreach ($partidas as $partida) {
+
+            if ($partida['cantidad_presupuestada_nueva'] != null) {
+                $partida['rendimiento_original'] = $partida['cantidad_presupuestada_original'] / $concepto->cantidad_presupuestada;
+                $partida['rendimiento_nuevo'] = $partida['cantidad_presupuestada_nueva'];
+                $partida['cantidad_presupuestada'] = $partida['cantidad_presupuestada_nueva'] * $concepto->cantidad_presupuestada;
+            } else {
+                $partida['rendimiento_original'] = $partida['cantidad_presupuestada_original'] / $concepto->cantidad_presupuestada;
+                $partida['rendimiento_nuevo'] = 0;
+                $partida['cantidad_presupuestada'] = $partida['cantidad_presupuestada_original'];
+            }
+
+
+            if ($partida['precio_unitario_nuevo'] != null) {
+                $partida['precio_unitario_original'] = $partida['precio_unitario_original'];
+                $partida['precio_unitario_nuevo'] = $partida['precio_unitario_nuevo'];
+                $partida['monto_presupuestado'] = $partida['cantidad_presupuestada'] * $partida['precio_unitario_nuevo'];
+            } else {
+                $partida['precio_unitario_nuevo']=0;
+                $partida['monto_presupuestado']=$partida['cantidad_presupuestada'] * $partida['precio_unitario_original'];
+            }
+
+
+
+
+            $partida['rendimiento_original'] = $partida['cantidad_presupuestada_original'] / $concepto->cantidad_presupuestada;
+
+            switch ($partida->material->tipo_material) {
+                case 1:///materiales
+                    array_push($materiales, $partida);
+                    break;
+                case 2:///Mano obra
+                    array_push($mano_obra, $partida);
+                    break;
+                case 4:///Herramienta y equipo
+                    array_push($herramienta, $partida);
+                    break;
+                case 8:/// Maquinaria
+                    array_push($maquinaria, $partida);
+                    break;
+            }
+        }
+        $materiales = ['tipo' => 'MATERIALES', 'items' => $materiales];
+        $mano_obra = ['tipo' => 'MANO DE OBRA', 'items' => $mano_obra];
+        $herramienta = ['tipo' => 'HERRAMIENTA', 'items' => $herramienta];
+        $maquinaria = ['tipo' => 'MAQUINARIA Y EQUIPO', 'items' => $maquinaria];
+
+        array_push($data, $materiales);
+        array_push($data, $mano_obra);
+        array_push($data, $herramienta);
+        array_push($data, $maquinaria);
+
+        // $data=['MATERIALES'=>$materiales,'MANO_OBRA'=>$mano_obra,'HERRAMIENTA'=>$herramienta,'MAQUINARIA'=>$maquinaria];
+
+        return $data;
     }
 }
