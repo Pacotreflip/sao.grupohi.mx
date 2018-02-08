@@ -144,6 +144,100 @@ class EloquentSolicitudCambioRepository implements SolicitudCambioRepository
         return $this;
     }
 
+    public function autorizarEscalatoria($id)
+    {
+        $solicitud = $this->model->with('partidas')->find($id);
+
+        try{
+            DB::connection('cadeco')->beginTransaction();
+
+            $basesAfectadas = AfectacionOrdenesPresupuesto::with('baseDatos')->where('id_tipo_orden', '=', $solicitud->id_tipo_orden)->get();
+
+            foreach ($solicitud->partidas as $partida)
+                foreach ($basesAfectadas as $basePresupuesto)
+                {
+                    // Revisa si ya existe una escalatoria
+                    $escalatoria = ConceptoEscalatoria::select('*')->first();
+                    $concepto = DB::connection('cadeco')->table($basePresupuesto->baseDatos->base_datos . ".dbo.conceptos")->select('*')->where('descripcion', 'like', 'COSTO DIRECTO')->first();
+
+                    // No existe registro
+                    if (is_null($escalatoria))
+                    {
+                        $max_nivel =  DB::connection('cadeco')->table($basePresupuesto->baseDatos->base_datos . ".dbo.conceptos")->selectRaw('max(nivel) as max_nivel')->whereraw("nivel like '". $concepto->nivel ."___.'")->first();
+
+                        // El concepto no tiene hijos
+                        if (is_null($max_nivel))
+                            $nuevo_nivel = $concepto->nivel .'001.';
+
+                        // Incrementa
+                        else
+                        {
+                            $ultimos_numeros = str_replace('.', '', substr($max_nivel->max_nivel, -4));
+                            $nuevo_nivel = $concepto->nivel . str_pad($ultimos_numeros + 1, 3, 0, STR_PAD_LEFT) .'.';
+                        }
+
+                        // Registra el concepto escalatoria
+                        $concepto_escalatoria = DB::connection('cadeco')->table($basePresupuesto->baseDatos->base_datos . ".dbo.conceptos")->insert([
+                            'id_obra' => Context::getId(),
+                            'nivel' => $nuevo_nivel,
+                            'descripcion' => 'ESCALATORIAS',
+                        ]);
+
+                        if (!$concepto_escalatoria)
+                            throw new HttpResponseException(new Response('No se creo el concepto ESCALATORIAS', 404));
+
+                        $concepto_escalatoria = DB::connection('cadeco')->table($basePresupuesto->baseDatos->base_datos . ".dbo.conceptos")->select('*')->where('nivel', 'like', $nuevo_nivel)->first();
+
+                        if (is_null($concepto_escalatoria))
+                            throw new HttpResponseException(new Response('No se creo el registro concepto escalatoria', 404));
+                        $escalatoria = ConceptoEscalatoria::create([
+                            'id_concepto' => $concepto_escalatoria->id_concepto,
+                        ]);
+
+                        if (is_null($escalatoria))
+                            throw new HttpResponseException(new Response('No se creo el registro concepto escalatoria', 404));
+                    }
+
+                    // Obtiene el concepto escalatoria
+                    else
+                        $concepto_escalatoria = DB::connection('cadeco')->table($basePresupuesto->baseDatos->base_datos . ".dbo.conceptos")->select('*')->where('id_concepto', '=', $escalatoria->id_concepto)->first();
+
+
+                    // Registra el concepto de la partida
+                    $concepto_escalatoria_max_nivel =  DB::connection('cadeco')->table($basePresupuesto->baseDatos->base_datos . ".dbo.conceptos")->selectRaw('max(nivel) as max_nivel')->whereraw("nivel like '". $concepto_escalatoria->nivel ."___.'")->first();
+
+                    // El concepto escalatoria no tiene hijos
+                    if (is_null($max_nivel))
+                        $concepto_partida_nivel = $concepto_escalatoria->nivel .'001.';
+
+                    else
+                    {
+                        $concepto_escalatoria_ultimos_numeros = str_replace('.', '', substr($concepto_escalatoria_max_nivel->max_nivel, -4));
+                        $concepto_partida_nivel = $concepto_escalatoria->nivel . str_pad($concepto_escalatoria_ultimos_numeros + 1, 3, 0, STR_PAD_LEFT) .'.';
+                    }
+
+                    // Inserta el nuevo concepto
+                    $concepto_partida = DB::connection('cadeco')->table($basePresupuesto->baseDatos->base_datos . ".dbo.conceptos")->insert([
+                        'id_obra' => Context::getId(),
+                        'nivel' => $concepto_partida_nivel,
+                        'descripcion' => $partida->descripcion,
+                    ]);
+
+                }
+
+            // Actualiza el estatus de la solicitud
+            $solicitud->id_estatus = Estatus::AUTORIZADA;
+            $solicitud->save();
+
+            DB::connection('cadeco')->commit();
+        } catch (\Exception $e) {
+            DB::connection('cadeco')->rollback();
+            throw $e;
+        }
+
+        return $solicitud;
+    }
+
     /**
      * Autoriza una solicitud de cambio
      * @param array $data

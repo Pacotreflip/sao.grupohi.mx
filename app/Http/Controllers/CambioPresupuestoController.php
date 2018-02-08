@@ -140,7 +140,27 @@ class CambioPresupuestoController extends Controller
         $solicitud = $this->solicitud->with(['tipoOrden', 'userRegistro', 'estatus', 'partidas', 'partidas.concepto','partidas.numeroTarjeta'])->find($id);
         $presupuestos=$this->afectacion->with('baseDatos')->getBy('id_tipo_orden','=',$solicitud->id_tipo_orden);
 
-        return view('control_presupuesto.cambio_presupuesto.show.variacion_volumen')
+        switch ($solicitud->id_tipo_orden)
+        {
+            case TipoOrden::ESCALATORIA:
+                $view = 'escalatoria';
+                break;
+            case TipoOrden::RECLAMOS_INDIRECTO:
+                break;
+            case TipoOrden::CONCEPTOS_EXTRAORDINARIOS:
+                break;
+            case TipoOrden::VARIACION_VOLUMEN:
+                $view = 'variacion_volumen';
+                break;
+            case TipoOrden::ORDEN_DE_CAMBIO_NO_COBRABLE:
+                break;
+            case TipoOrden::ORDEN_DE_CAMBIO_DE_INSUMOS:
+                break;
+            default:
+                $view = 'variacion_volumen';
+        }
+
+        return view('control_presupuesto.cambio_presupuesto.show.'. $view)
             ->with('solicitud', $solicitud)
             ->with('cobrabilidad', $solicitud->tipoOrden->cobrabilidad)
             ->with('presupuestos',$presupuestos);
@@ -152,6 +172,7 @@ class CambioPresupuestoController extends Controller
         $solicitud = '';
         switch ($request->id_tipo_orden) {
             case TipoOrden::ESCALATORIA:
+                $solicitud = $this->solicitud->autorizarEscalatoria($request->id);
                 break;
             case TipoOrden::RECLAMOS_INDIRECTO:
                 break;
