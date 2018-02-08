@@ -39,5 +39,7 @@ interface SolicitudCambioPartidaRepository
     public function mostrarAfectacionPresupuesto(array $data);
     public function mostrarSubtotalTarjeta(array $data);
 
+    public function getClasificacionInsumos(array $data);
+
 
 }

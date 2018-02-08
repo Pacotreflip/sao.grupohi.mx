@@ -35,6 +35,15 @@ class SolicitudCambioPartidasController extends Controller
             'data' => $afectaciones
         ], 200);
     }
+
+    public function getClasificacionInsumos(Request $request)
+    {
+        $clasificacion = $this->partida->getClasificacionInsumos($request->all());
+        return response()->json([
+            'data' => $clasificacion
+        ], 200);
+    }
+
     public function subtotalTarjetaShow(Request $request)
     {
         $afectaciones = $this->partida->subtotalTarjetaShow($request->all());
