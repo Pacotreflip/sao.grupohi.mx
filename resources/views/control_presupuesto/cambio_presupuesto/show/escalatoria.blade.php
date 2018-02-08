@@ -77,7 +77,7 @@
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    <tr v-for="(partida,i) in solicitud.partidas" :title="partida.concepto.descripcion"
+                                    <tr v-for="(partida,i) in solicitud.partidas" :title="partida.descripcion"
                                         style="cursor: pointer" v-on:click="mostrar_detalle_partida(partida.id)">
                                         <td>@{{ i+1 }}</td>
                                         <td>@{{ (partida.descripcion).substr(0, 50) + '...' }}</td>
