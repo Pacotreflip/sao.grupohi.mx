@@ -216,7 +216,7 @@ class CambioPresupuestoController extends Controller
         $solicitud = '';
         switch ($request->id_tipo_orden) {
             case TipoOrden::ESCALATORIA:
-                $this->solicitud->rechazarEscalatoria($request->all());
+                $solicitud = $this->solicitud->rechazarEscalatoria($request->all());
                 break;
             case TipoOrden::RECLAMOS_INDIRECTO:
                 break;
