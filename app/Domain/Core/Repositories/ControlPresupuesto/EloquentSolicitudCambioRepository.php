@@ -381,4 +381,28 @@ class EloquentSolicitudCambioRepository implements SolicitudCambioRepository
         }
 
     }
+
+    public function rechazarEscalatoria(array $data)
+    {
+        try {
+
+            DB::connection('cadeco')->beginTransaction();
+            $solicitud = $this->model->with('partidas')->find($data['id_solicitud_cambio']);
+
+            if (is_null($solicitud))
+                throw new HttpResponseException(new Response('No existe la solicitud a rechazar', 404));
+
+            $solicitud->id_estatus = Estatus::RECHAZADA;
+            $solicitudCambio = SolicitudCambioRechazada::create($data);
+            $solicitud->save();
+            $solicitud = $this->model->with(['tipoOrden', 'userRegistro', 'estatus', 'partidas', 'partidas.concepto', 'partidas.numeroTarjeta'])->find($data['id_solicitud_cambio']);
+            $solicitud['cobrabilidad'] = $solicitud->tipoOrden->cobrabilidad;
+
+            DB::connection('cadeco')->commit();
+            return $solicitud;
+        } catch (\Exception $e) {
+            DB::connection('cadeco')->rollback();
+            throw $e;
+        }
+    }
 }
