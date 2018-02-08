@@ -49,7 +49,7 @@ class PDFSolicitudCambioEscalatoria extends Rotation {
      */
     public function __construct(SolicitudCambio $solicitud, SolicitudCambioPartidaRepository $partidas)
     {
-        parent::__construct('L', 'cm', 'A4');
+        parent::__construct('P', 'cm', 'A4');
 
         $this->SetAutoPageBreak(true,4.5);
         $this->WidthTotal = $this->GetPageWidth() - 2;
@@ -110,7 +110,6 @@ class PDFSolicitudCambioEscalatoria extends Rotation {
 
         if($this->encola == 'partidas') {
 
-            $this->SetWidths(array(0.33 * $this->WidthTotal, 0.33 * $this->WidthTotal, 0.33 * $this->WidthTotal));
             $this->SetFont('Arial', '', 6);
             $this->SetStyles(array('DF', 'DF', 'DF'));
             $this->SetFills(array('180,180,180', '180,180,180', '180,180,180'));
@@ -124,7 +123,7 @@ class PDFSolicitudCambioEscalatoria extends Rotation {
             $this->SetTextColors(array('0,0,0', '0,0,0', '0,0,0'));
             $this->SetHeights(array(0.35));
             $this->SetAligns(array('L', 'L', 'R'));
-            $this->SetWidths(array(0.33 * $this->WidthTotal, 0.33 * $this->WidthTotal, 0.33 * $this->WidthTotal));
+            $this->SetWidths(array(0.05 * $this->WidthTotal, 0.85 * $this->WidthTotal, 0.1 * $this->WidthTotal));
         }
     }
 
@@ -143,37 +142,36 @@ class PDFSolicitudCambioEscalatoria extends Rotation {
     }
 
     function detallesAsignacion($x){
-        $this->SetFont('Arial', 'B', $this->txtContenidoTam);
-        $this->SetX($x);
-        $this->Cell(0.125 * $this->WidthTotal, 0.5, utf8_decode('Número de Folio:'), '', 0, 'LB');
-        $this->SetFont('Arial', '', '#'.$this->txtContenidoTam);
-        $this->CellFitScale(0.375 * $this->WidthTotal, 0.5, utf8_decode($this->solicitud->numero_folio), '', 1, 'L');
-
 
         $this->SetFont('Arial', 'B', $this->txtContenidoTam);
         $this->SetX($x);
-        $this->Cell(0.125 * $this->WidthTotal, 0.5, utf8_decode('Tipo de Cobrabilidad:'), '', 0, 'LB');
-        $this->SetFont('Arial', '', '#'.$this->txtContenidoTam);
-        $this->CellFitScale(0.375 * $this->WidthTotal, 0.5, utf8_decode($this->solicitud->tipoOrden->cobrabilidad), '', 1, 'L');
-        $this->SetFont('Arial', 'B', $this->txtContenidoTam);
-        $this->SetX($x);
-        $this->Cell(0.125 * $this->WidthTotal, 0.5, utf8_decode('Tipo de solicitud:'), '', 0, 'LB');
+        $this->Cell(0.140 * $this->WidthTotal, 0.5, utf8_decode('Tipo de solicitud:'), '', 0, 'LB');
         $this->SetFont('Arial', '', $this->txtContenidoTam);
-        $this->CellFitScale(0.375 * $this->WidthTotal, 0.5, utf8_decode($this->solicitud->tipoOrden->descripcion), '', 1, 'L');
+        $this->CellFitScale(0.360 * $this->WidthTotal, 0.5, utf8_decode($this->solicitud->tipoOrden->descripcion), '', 1, 'L');
 
+        $this->SetFont('Arial', 'B', $this->txtContenidoTam);
+        $this->SetX($x);
+        $this->Cell(0.140 * $this->WidthTotal, 0.5, utf8_decode('Tipo de Cobrabilidad:'), '', 0, 'LB');
+        $this->SetFont('Arial', '', '#'.$this->txtContenidoTam);
+        $this->CellFitScale(0.360 * $this->WidthTotal, 0.5, utf8_decode($this->solicitud->tipoOrden->cobrabilidad), '', 1, 'L');
+
+        $this->SetFont('Arial', 'B', $this->txtContenidoTam);
+        $this->SetX($x);
+        $this->Cell(0.140 * $this->WidthTotal, 0.5, utf8_decode('Número de Folio:'), '', 0, 'LB');
+        $this->SetFont('Arial', '', '#'.$this->txtContenidoTam);
+        $this->CellFitScale(0.360 * $this->WidthTotal, 0.5, utf8_decode($this->solicitud->numero_folio), '', 1, 'L');
 
         $this->SetFont('Arial', 'B', '#'.$this->txtContenidoTam);
         $this->SetX($x);
-        $this->Cell(0.125 * $this->WidthTotal, 0.5, utf8_decode('Fecha Solicitud:'), '', 0, 'L');
+        $this->Cell(0.140 * $this->WidthTotal, 0.5, utf8_decode('Fecha Solicitud:'), '', 0, 'L');
         $this->SetFont('Arial', '', $this->txtContenidoTam);
-        $this->CellFitScale(0.375 * $this->WidthTotal, 0.5, utf8_decode(Carbon::parse($this->solicitud->fecha_solicitud)->format('Y-m-d h:m A')), '', 1, 'L');
-
+        $this->CellFitScale(0.360 * $this->WidthTotal, 0.5, utf8_decode(Carbon::parse($this->solicitud->fecha_solicitud)->format('Y-m-d h:m A')), '', 1, 'L');
 
         $this->SetFont('Arial', 'B', $this->txtContenidoTam);
         $this->SetX($x);
-        $this->Cell(0.125 * $this->WidthTotal, 0.5, utf8_decode('Persona que Solicita:'), '', 0, 'L');
+        $this->Cell(0.140 * $this->WidthTotal, 0.5, utf8_decode('Persona que Solicita:'), '', 0, 'L');
         $this->SetFont('Arial', '', $this->txtContenidoTam);
-        $this->CellFitScale(0.375 * $this->WidthTotal, 0.5, utf8_decode($this->solicitud->userRegistro), '', 1, 'L');
+        $this->CellFitScale(0.360 * $this->WidthTotal, 0.5, utf8_decode($this->solicitud->userRegistro), '', 1, 'L');
 
     }
 
@@ -200,7 +198,7 @@ class PDFSolicitudCambioEscalatoria extends Rotation {
             $this->SetTextColors(array('255,255,255'));
             $this->MultiCell($this->WidthTotal, .35, utf8_decode($this->solicitud->concepto), 0, 'L');
 
-            $this->SetWidths(array(0.33 * $this->WidthTotal, 0.33 * $this->WidthTotal, 0.33 * $this->WidthTotal));
+            $this->SetWidths(array(0.05 * $this->WidthTotal, 0.85 * $this->WidthTotal, 0.1 * $this->WidthTotal));
             $this->SetFont('Arial', '', 6);
             $this->SetStyles(array('DF', 'DF', 'DF'));
             $this->SetFills(array('180,180,180', '180,180,180', '180,180,180'));
@@ -214,7 +212,7 @@ class PDFSolicitudCambioEscalatoria extends Rotation {
             {
                 $partida = $p->find($p->id);
 
-                $this->SetWidths(array(0.33 * $this->WidthTotal, 0.33 * $this->WidthTotal, 0.33 * $this->WidthTotal));
+                $this->SetWidths(array(0.05 * $this->WidthTotal, 0.85 * $this->WidthTotal, 0.1 * $this->WidthTotal));
                 $this->SetFont('Arial', '', 6);
                 $this->SetStyles(array('DF', 'DF', 'DF'));
                 $this->SetFills(array('255,255,255', '255,255,255', '255,255,255'));

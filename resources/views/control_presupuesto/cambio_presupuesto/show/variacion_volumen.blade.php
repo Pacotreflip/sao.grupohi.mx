@@ -34,14 +34,14 @@
                         </div>
                         <!-- /.box-header -->
                         <div class="box-body">
-                            <strong>Folio de la solicitud:</strong>
-                            <p class="text-muted">@{{ solicitud.numero_folio}}</p>
+                            <strong>Tipo de Orden de Cambio:</strong>
+                            <p class="text-muted">@{{solicitud.tipo_orden.descripcion}}</p>
                             <hr>
                             <strong>Cobrabilidad:</strong>
                             <p class="text-muted">@{{ cobrabilidad.descripcion}}</p>
                             <hr>
-                            <strong>Tipo de Orden de Cambio:</strong>
-                            <p class="text-muted">@{{solicitud.tipo_orden.descripcion}}</p>
+                            <strong>Folio de la solicitud:</strong>
+                            <p class="text-muted">@{{ solicitud.numero_folio}}</p>
                             <hr>
                             <strong>Motivo:</strong>
                             <p class="text-muted">@{{solicitud.motivo}}</p>

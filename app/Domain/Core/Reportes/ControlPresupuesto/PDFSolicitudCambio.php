@@ -143,24 +143,24 @@ class PDFSolicitudCambio extends Rotation {
     }
 
     function detallesAsignacion($x){
-        $this->SetFont('Arial', 'B', $this->txtContenidoTam);
-        $this->SetX($x);
-        $this->Cell(0.125 * $this->WidthTotal, 0.5, utf8_decode('Número de Folio:'), '', 0, 'LB');
-        $this->SetFont('Arial', '', '#'.$this->txtContenidoTam);
-        $this->CellFitScale(0.375 * $this->WidthTotal, 0.5, utf8_decode($this->solicitud->numero_folio), '', 1, 'L');
 
-
-        $this->SetFont('Arial', 'B', $this->txtContenidoTam);
-        $this->SetX($x);
-        $this->Cell(0.125 * $this->WidthTotal, 0.5, utf8_decode('Tipo de Cobrabilidad:'), '', 0, 'LB');
-        $this->SetFont('Arial', '', '#'.$this->txtContenidoTam);
-        $this->CellFitScale(0.375 * $this->WidthTotal, 0.5, utf8_decode($this->solicitud->tipoOrden->cobrabilidad), '', 1, 'L');
         $this->SetFont('Arial', 'B', $this->txtContenidoTam);
         $this->SetX($x);
         $this->Cell(0.125 * $this->WidthTotal, 0.5, utf8_decode('Tipo de solicitud:'), '', 0, 'LB');
         $this->SetFont('Arial', '', $this->txtContenidoTam);
         $this->CellFitScale(0.375 * $this->WidthTotal, 0.5, utf8_decode($this->solicitud->tipoOrden->descripcion), '', 1, 'L');
 
+        $this->SetFont('Arial', 'B', $this->txtContenidoTam);
+        $this->SetX($x);
+        $this->Cell(0.125 * $this->WidthTotal, 0.5, utf8_decode('Tipo de Cobrabilidad:'), '', 0, 'LB');
+        $this->SetFont('Arial', '', '#'.$this->txtContenidoTam);
+        $this->CellFitScale(0.375 * $this->WidthTotal, 0.5, utf8_decode($this->solicitud->tipoOrden->cobrabilidad), '', 1, 'L');
+
+        $this->SetFont('Arial', 'B', $this->txtContenidoTam);
+        $this->SetX($x);
+        $this->Cell(0.125 * $this->WidthTotal, 0.5, utf8_decode('Número de Folio:'), '', 0, 'LB');
+        $this->SetFont('Arial', '', '#'.$this->txtContenidoTam);
+        $this->CellFitScale(0.375 * $this->WidthTotal, 0.5, utf8_decode($this->solicitud->numero_folio), '', 1, 'L');
 
         $this->SetFont('Arial', 'B', '#'.$this->txtContenidoTam);
         $this->SetX($x);
@@ -174,7 +174,6 @@ class PDFSolicitudCambio extends Rotation {
         $this->Cell(0.125 * $this->WidthTotal, 0.5, utf8_decode('Persona que Solicita:'), '', 0, 'L');
         $this->SetFont('Arial', '', $this->txtContenidoTam);
         $this->CellFitScale(0.375 * $this->WidthTotal, 0.5, utf8_decode($this->solicitud->userRegistro), '', 1, 'L');
-
     }
 
     function items(){
