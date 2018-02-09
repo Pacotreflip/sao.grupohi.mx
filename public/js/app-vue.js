@@ -20074,6 +20074,9 @@ Vue.component('show-escalatoria', {
         confirm_autorizar_solicitud: function confirm_autorizar_solicitud() {
             var self = this;
             var id = self.form.solicitud.id;
+
+            $('.autorizar_solicitud').addClass('disabled');
+
             swal({
                 title: "Autorizar la Solicitud de Cambio",
                 html: "¿Estás seguro que desea actualizar la solicitud?",
@@ -20084,12 +20087,16 @@ Vue.component('show-escalatoria', {
             }).then(function (result) {
                 if (result.value) {
                     self.autorizar_solicitud(id);
+                } else {
+                    $('.autorizar_solicitud').removeClass('disabled');
                 }
             });
         },
         confirm_rechazar_solicitud: function confirm_rechazar_solicitud() {
             var self = this;
             var id = self.form.solicitud.id;
+
+            $('.rechazar_solicitud').addClass('disabled');
 
             swal({
                 title: 'Rechazar Solicitud',
@@ -20113,6 +20120,8 @@ Vue.component('show-escalatoria', {
             }).then(function (result) {
                 if (result.value) {
                     self.rechazar_solicitud(id, result.value);
+                } else {
+                    $('.rechazar_solicitud').removeClass('disabled');
                 }
             });
         },
@@ -20129,8 +20138,6 @@ Vue.component('show-escalatoria', {
                 },
                 beforeSend: function beforeSend() {
                     self.autorizando = true;
-                    $('#btn_rechazar').prop('enabled', false);
-                    $('#btn_autorizar').prop('enabled', false);
                 },
                 success: function success(data, textStatus, xhr) {
                     swal({
@@ -20139,13 +20146,13 @@ Vue.component('show-escalatoria', {
                         text: 'Solicitud autorizada correctamente.',
                         confirmButtonText: "Ok",
                         closeOnConfirm: false
-                    }).then(function () {});
-                    window.location.reload(true);
+                    }).then(function () {
+                        window.location.reload(true);
+                    });
                 },
                 complete: function complete() {
                     self.autorizando = false;
-                    $('#btn_rechazar').prop('enabled', true);
-                    $('#btn_autorizar').prop('enabled', true);
+                    $('.autorizar_solicitud').removeClass('disabled');
                 }
             });
         },
@@ -20164,8 +20171,6 @@ Vue.component('show-escalatoria', {
                 },
                 beforeSend: function beforeSend() {
                     self.rechazando = true;
-                    $('#btn_rechazar').prop('enabled', false);
-                    $('#btn_autorizar').prop('enabled', false);
                 },
                 success: function success(data, textStatus, xhr) {
 
@@ -20175,13 +20180,13 @@ Vue.component('show-escalatoria', {
                         text: 'Solicitud rechazada correctamente.',
                         confirmButtonText: "Ok",
                         closeOnConfirm: false
-                    }).then(function () {});
-                    window.location.reload(true);
+                    }).then(function () {
+                        window.location.reload(true);
+                    });
                 },
                 complete: function complete() {
                     self.rechazando = false;
-                    $('#btn_rechazar').prop('enabled', true);
-                    $('#btn_autorizar').prop('enabled', true);
+                    $('.rechazar_solicitud').removeClass('disabled');
                 }
             });
         },
@@ -20270,6 +20275,9 @@ Vue.component('show-variacion-volumen', {
         confirm_autorizar_solicitud: function confirm_autorizar_solicitud() {
             var self = this;
             var id = self.form.solicitud.id;
+
+            $('.autorizar_solicitud').addClass('disabled');
+
             swal({
                 title: "Autorizar la Solicitud de Cambio",
                 html: "¿Estás seguro que desea actualizar la solicitud?",
@@ -20280,12 +20288,16 @@ Vue.component('show-variacion-volumen', {
             }).then(function (result) {
                 if (result.value) {
                     self.autorizar_solicitud(id);
+                } else {
+                    $('.autorizar_solicitud').removeClass('disabled');
                 }
             });
         },
         confirm_rechazar_solicitud: function confirm_rechazar_solicitud() {
             var self = this;
             var id = self.form.solicitud.id;
+
+            $('.rechazar_solicitud').addClass('disabled');
 
             swal({
                 title: 'Rechazar Solicitud',
@@ -20309,6 +20321,8 @@ Vue.component('show-variacion-volumen', {
             }).then(function (result) {
                 if (result.value) {
                     self.rechazar_solicitud(id, result.value);
+                } else {
+                    $('.rechazar_solicitud').removeClass('disabled');
                 }
             });
         },
@@ -20325,8 +20339,6 @@ Vue.component('show-variacion-volumen', {
                 },
                 beforeSend: function beforeSend() {
                     self.autorizando = true;
-                    $('#btn_rechazar').prop('enabled', false);
-                    $('#btn_autorizar').prop('enabled', false);
                 },
                 success: function success(data, textStatus, xhr) {
                     swal({
@@ -20335,13 +20347,13 @@ Vue.component('show-variacion-volumen', {
                         text: 'Solicitud autorizada correctamente.',
                         confirmButtonText: "Ok",
                         closeOnConfirm: false
-                    }).then(function () {});
-                    window.location.reload(true);
+                    }).then(function () {
+                        window.location.reload(true);
+                    });
                 },
                 complete: function complete() {
                     self.autorizando = false;
-                    $('#btn_rechazar').prop('enabled', true);
-                    $('#btn_autorizar').prop('enabled', true);
+                    $('.autorizar_solicitud').removeClass('disabled');
                 }
             });
         },
@@ -20360,8 +20372,6 @@ Vue.component('show-variacion-volumen', {
                 },
                 beforeSend: function beforeSend() {
                     self.rechazando = true;
-                    $('#btn_rechazar').prop('enabled', false);
-                    $('#btn_autorizar').prop('enabled', false);
                 },
                 success: function success(data, textStatus, xhr) {
 
@@ -20371,13 +20381,13 @@ Vue.component('show-variacion-volumen', {
                         text: 'Solicitud rechazada correctamente.',
                         confirmButtonText: "Ok",
                         closeOnConfirm: false
-                    }).then(function () {});
-                    window.location.reload(true);
+                    }).then(function () {
+                        window.location.reload(true);
+                    });
                 },
                 complete: function complete() {
                     self.rechazando = false;
-                    $('#btn_rechazar').prop('enabled', true);
-                    $('#btn_autorizar').prop('enabled', true);
+                    $('.rechazar_solicitud').removeClass('disabled');
                 }
             });
         },

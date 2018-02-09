@@ -22,16 +22,23 @@ Vue.component('show-variacion-volumen', {
         confirm_autorizar_solicitud: function () {
             var self = this;
             var id = self.form.solicitud.id;
+
+            $('.autorizar_solicitud').addClass('disabled');
+
             swal({
                 title: "Autorizar la Solicitud de Cambio",
                 html: "¿Estás seguro que desea actualizar la solicitud?",
                 type: "warning",
                 showCancelButton: true,
                 confirmButtonText: "Si, Continuar",
-                cancelButtonText: "No, Cancelar",
+                cancelButtonText: "No, Cancelar"
             }).then(function (result) {
                 if (result.value) {
                     self.autorizar_solicitud(id);
+                }
+
+                else {
+                    $('.autorizar_solicitud').removeClass('disabled');
                 }
             });
 
@@ -39,6 +46,8 @@ Vue.component('show-variacion-volumen', {
         confirm_rechazar_solicitud: function () {
             var self = this;
             var id = self.form.solicitud.id;
+
+            $('.rechazar_solicitud').addClass('disabled');
 
             swal({
                 title: 'Rechazar Solicitud',
@@ -63,6 +72,10 @@ Vue.component('show-variacion-volumen', {
                 if (result.value) {
                     self.rechazar_solicitud(id,result.value);
                 }
+
+                else {
+                    $('.rechazar_solicitud').removeClass('disabled');
+                }
             });
 
 
@@ -81,8 +94,6 @@ Vue.component('show-variacion-volumen', {
                 },
                 beforeSend: function () {
                     self.autorizando = true;
-                    $('#btn_rechazar').prop('enabled',false);
-                    $('#btn_autorizar').prop('enabled',false);
                 },
                 success: function (data, textStatus, xhr) {
                     swal({
@@ -92,13 +103,12 @@ Vue.component('show-variacion-volumen', {
                         confirmButtonText: "Ok",
                         closeOnConfirm: false
                     }).then(function () {
+                        window.location.reload(true);
                     });
-                   window.location.reload(true);
                 },
                 complete: function () {
                     self.autorizando = false;
-                    $('#btn_rechazar').prop('enabled',true);
-                    $('#btn_autorizar').prop('enabled',true);
+                    $('.autorizar_solicitud').removeClass('disabled');
                 }
             });
         },
@@ -117,9 +127,7 @@ Vue.component('show-variacion-volumen', {
                 },
                 beforeSend: function () {
                     self.rechazando = true;
-                    $('#btn_rechazar').prop('enabled',false);
-                    $('#btn_autorizar').prop('enabled',false);
-                    },
+                },
                 success: function (data, textStatus, xhr) {
 
                     swal({
@@ -129,17 +137,15 @@ Vue.component('show-variacion-volumen', {
                         confirmButtonText: "Ok",
                         closeOnConfirm: false
                     }).then(function () {
+                        window.location.reload(true);
                     });
-                   window.location.reload(true);
                 },
                 complete: function () {
                     self.rechazando = false;
-                    $('#btn_rechazar').prop('enabled',true);
-                    $('#btn_autorizar').prop('enabled',true);
+                    $('.rechazar_solicitud').removeClass('disabled');
                 }
             });
-        }
-        ,
+        },
         mostrar_detalle_partida:function (id) {
             var self = this;
             var partida = id;

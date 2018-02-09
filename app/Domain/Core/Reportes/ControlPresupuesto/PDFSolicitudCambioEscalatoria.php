@@ -143,6 +143,14 @@ class PDFSolicitudCambioEscalatoria extends Rotation {
 
     function detallesAsignacion($x){
 
+        $obra = Obra::where('id_obra', '=', Context::getId())->first();
+
+        $this->SetFont('Arial', 'B', $this->txtContenidoTam);
+        $this->SetX($x);
+        $this->Cell(0.140 * $this->WidthTotal, 0.5, utf8_decode('Obra:'), '', 0, 'LB');
+        $this->SetFont('Arial', '', $this->txtContenidoTam);
+        $this->CellFitScale(0.360 * $this->WidthTotal, 0.5, utf8_decode($obra->nombre), '', 1, 'L');
+
         $this->SetFont('Arial', 'B', $this->txtContenidoTam);
         $this->SetX($x);
         $this->Cell(0.140 * $this->WidthTotal, 0.5, utf8_decode('Tipo de solicitud:'), '', 0, 'LB');
@@ -331,6 +339,21 @@ class PDFSolicitudCambioEscalatoria extends Rotation {
         $this->SetY($this->GetPageHeight() - 1.3);
         $this->SetFont('Arial', 'B', $this->txtFooterTam);
         $this->Cell(6.5, .4, utf8_decode('Formato generado desde '), 0, 0, 'L');
+
+        if($this->solicitud->id_estatus == 1) {
+            $this->SetFont('Arial','',80);
+            $this->SetTextColor(204,204,204);
+            $this->RotatedText(3,20,utf8_decode("PENDIENTE DE"),45);
+            $this->RotatedText(5.5,22,utf8_decode("AUTORIZACIÓN"),45);
+            $this->SetTextColor('0,0,0');
+        }
+    }
+
+    function RotatedText($x,$y,$txt,$angle)
+    {
+        $this->Rotate($angle,$x,$y);
+        $this->Text($x,$y,$txt);
+        $this->Rotate(0);
     }
 
     function create() {

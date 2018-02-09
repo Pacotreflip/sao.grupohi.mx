@@ -25,7 +25,7 @@
                                 <table id="cierres_table" class="table table-bordered table-stripped">
                                     <thead>
                                     <tr>
-                                        <th>Núnero de Folio</th>
+                                        <th>Número de Folio</th>
                                         <th>Tipo Orden</th>
                                         <th>Fecha Solicitud</th>
                                         <th>Usuario Solicita</th>
@@ -35,7 +35,7 @@
                                     </thead>
                                     <tfoot>
                                     <tr>
-                                        <th>Núnero de Folio</th>
+                                        <th>Número de Folio</th>
                                         <th>Tipo Orden</th>
                                         <th>Fecha Solicitud</th>
                                         <th>Usuario Solicita</th>
@@ -50,7 +50,7 @@
                 </div>
             </div>
             <div class="row">
-                <div id="pdf_modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="PDFModal" data-backdrop="static" data-keyboard="false">
+                <div id="pdf_modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="PDFModal">
                     <div class="modal-dialog modal-lg" role="document">
                         <div class="modal-content">
                             <div class="modal-header">

@@ -350,8 +350,22 @@ class PDFSolicitudCambio extends Rotation {
         $this->SetY($this->GetPageHeight() - 1.3);
         $this->SetFont('Arial', 'B', $this->txtFooterTam);
         $this->Cell(6.5, .4, utf8_decode('Formato generado desde '), 0, 0, 'L');
+
+        if($this->solicitud->id_estatus == 1) {
+            $this->SetFont('Arial','',80);
+            $this->SetTextColor(204,204,204);
+            $this->RotatedText(3,20,utf8_decode("PENDIENTE DE"),45);
+            $this->RotatedText(5.5,22,utf8_decode("AUTORIZACIÓN"),45);
+            $this->SetTextColor('0,0,0');
+        }
     }
 
+    function RotatedText($x,$y,$txt,$angle)
+    {
+        $this->Rotate($angle,$x,$y);
+        $this->Text($x,$y,$txt);
+        $this->Rotate(0);
+    }
     function create() {
         $this->SetMargins(1, 0.5, 1);
         $this->AliasNbPages();
