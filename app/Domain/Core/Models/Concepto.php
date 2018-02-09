@@ -23,9 +23,22 @@ class Concepto extends BaseModel
         'niveles',
         'numero_tarjeta',
         'sector',
-        'cuadrante'
+        'cuadrante',
+
     ];
 
+    protected $fillable = [
+        'id_material'
+        ,'id_obra'
+        ,'nivel'
+        ,'descripcion'
+        ,'unidad'
+        ,'cantidad_presupuestada'
+        ,'monto_presupuestado'
+        ,'precio_unitario'
+
+    ];
+    public $timestamps = false;
     protected static function boot()
     {
         parent::boot();

@@ -22,6 +22,7 @@ use Ghi\Domain\Core\Models\ControlPresupuesto\SolicitudCambioPartida;
 use Ghi\Domain\Core\Models\ControlPresupuesto\SolicitudCambioRechazada;
 use Ghi\Domain\Core\Models\ControlPresupuesto\Tarjeta;
 use Ghi\Domain\Core\Models\ControlPresupuesto\TipoOrden;
+use Ghi\Domain\Core\Models\Material;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Exception\HttpResponseException;
 use Symfony\Component\HttpFoundation\Response;
@@ -398,7 +399,7 @@ class EloquentSolicitudCambioRepository implements SolicitudCambioRepository
     {
         try {
             DB::connection('cadeco')->beginTransaction();
-            // dd("autorizar-->" . $id);
+            $sumas_insumos = 0;
 
             $insumosAgrupados = PartidasInsumosAgrupados::where('id_solicitud_cambio', '=', $id)->get();
             $conceptoTarjeta = ConceptoTarjeta::where('id_concepto', '=', $insumosAgrupados[0]->id_concepto)->first();
@@ -443,6 +444,12 @@ class EloquentSolicitudCambioRepository implements SolicitudCambioRepository
                         $partida['precio_unitario_nuevo'] = 0;
                         $partida['monto_presupuestado'] = $partida['cantidad_presupuestada'] * $partida['precio_unitario_original'];
                     }
+
+
+                    $conceptoReset=Concepto::where('nivel','like',$concepto->nivel.'%')->where('id_material','=',$partida->id_material)->first();
+                    if($conceptoReset) {
+                        $partida->id_concepto = $conceptoReset->id_concepto;
+                    }
                     switch ($partida->material->tipo_material) {
                         case 1:///materiales
                             array_push($materiales, $partida);
@@ -459,9 +466,8 @@ class EloquentSolicitudCambioRepository implements SolicitudCambioRepository
                     }
 
 
-
-
                 }
+
 
                 foreach ($materiales as $material) ////integracion materiales tarjeta nueva
                 {
@@ -471,41 +477,211 @@ class EloquentSolicitudCambioRepository implements SolicitudCambioRepository
                         if ($material['precio_unitario_nuevo'] > 0) {
                             $conceptoUpdate->precio_unitario = $material['precio_unitario_nuevo'];
                         }
-                        $conceptoUpdate->monto_presupuestado = $conceptoUpdate->monto_presupuestado * $conceptoUpdate->precio_unitario;
+                        $conceptoUpdate->monto_presupuestado = $conceptoUpdate->cantidad_presupuestada * $conceptoUpdate->precio_unitario;
                         $conceptoUpdate->save();
 
                     } else { ////nuevo concepto generar nuevo nivel
 
-                        $conceptoMaterial=Concepto::where('descripcion','=','MATERIALES')->where('nivel','like',$concepto->nivel.'%')->first();
-                        $totalInsumos=Concepto::where('nivel','like',$conceptoMaterial->nivel.'%')->get();
+                        $conceptoMaterial = Concepto::where('descripcion', '=', 'MATERIALES')->where('nivel', 'like', $concepto->nivel . '%')->first();
+                        $totalInsumos = Concepto::where('nivel', 'like', $conceptoMaterial->nivel . '%')->get();
 
-                        $total=count($totalInsumos);
+                        $total = count($totalInsumos);
+                        $ceros = 3 - strlen($total);
+                        $nuevo_nivel = $conceptoMaterial->nivel . str_repeat("0", $ceros) . $total . '.';
+                        $unidadMaterial = Material::select('unidad')->where('id_material', '=', $material->id_material)->first();
+                        $dataNuevoInsumo = [
+                            "id_material" => $material->id_material,
+                            "id_obra" => Context::getId(),
+                            "nivel" => $nuevo_nivel,
+                            "descripcion" => $material->descripcion,
+                            "unidad" => $unidadMaterial->unidad,
+                            "cantidad_presupuestada" => $material->rendimiento_nuevo * $concepto->cantidad_presupuestada,
+                            "monto_presupuestado" => ($material->rendimiento_nuevo * $concepto->cantidad_presupuestada) * $material->precio_unitario_nuevo,
+                            "precio_unitario" => $material->precio_unitario_nuevo,
 
-                        dd("es uno nuevo",$conceptoMaterial,$total);
+                        ];
+
+                        $nuevoInsumo = \Ghi\Domain\Core\Models\Concepto::create($dataNuevoInsumo);
+                        //  dd($nuevoInsumo);
 
                     }
+                }
 
+                foreach ($mano_obra as $manoObra) ////integracion materiales tarjeta nueva
+                {
+                    if ($manoObra->id_concepto) { ////actualizacion de concepto
+                        $conceptoUpdate = Concepto::find($manoObra->id_concepto);
+                        $conceptoUpdate->cantidad_presupuestada = $manoObra['cantidad_presupuestada']; //cambio cantidad presupuestada
+                        if ($manoObra['precio_unitario_nuevo'] > 0) {
+                            $conceptoUpdate->precio_unitario = $manoObra['precio_unitario_nuevo'];
+                        }
+                        $conceptoUpdate->monto_presupuestado = $conceptoUpdate->cantidad_presupuestada * $conceptoUpdate->precio_unitario;
+                        $conceptoUpdate->save();
 
+                    } else { ////nuevo concepto generar nuevo nivel
+
+                        $conceptoMaterial = Concepto::where('descripcion', '=', 'MATERIALES')->where('nivel', 'like', $concepto->nivel . '%')->first();
+                        $totalInsumos = Concepto::where('nivel', 'like', $conceptoMaterial->nivel . '%')->get();
+
+                        $total = count($totalInsumos);
+                        $ceros = 3 - strlen($total);
+                        $nuevo_nivel = $conceptoMaterial->nivel . str_repeat("0", $ceros) . $total . '.';
+                        $unidadMaterial = Material::select('unidad')->where('id_material', '=', $manoObra->id_material)->first();
+                        $dataNuevoInsumo = [
+                            "id_material" => $manoObra->id_material,
+                            "id_obra" => Context::getId(),
+                            "nivel" => $nuevo_nivel,
+                            "descripcion" => $manoObra->descripcion,
+                            "unidad" => $unidadMaterial->unidad,
+                            "cantidad_presupuestada" => $manoObra->rendimiento_nuevo * $concepto->cantidad_presupuestada,
+                            "monto_presupuestado" => ($manoObra->rendimiento_nuevo * $concepto->cantidad_presupuestada) * $manoObra->precio_unitario_nuevo,
+                            "precio_unitario" => $manoObra->precio_unitario_nuevo,
+
+                        ];
+
+                        $nuevoInsumo = \Ghi\Domain\Core\Models\Concepto::create($dataNuevoInsumo);
+                        //  dd($nuevoInsumo);
+
+                    }
                 }
                 ///cambio nueva tarjeta
 
+                foreach ($herramienta as $herram) ////integracion materiales tarjeta nueva
+                {
+                    if ($herram->id_concepto) { ////actualizacion de concepto
+                        $conceptoUpdate = Concepto::find($herram->id_concepto);
+                        $conceptoUpdate->cantidad_presupuestada = $herram['cantidad_presupuestada']; //cambio cantidad presupuestada
+                        if ($herram['precio_unitario_nuevo'] > 0) {
+                            $conceptoUpdate->precio_unitario = $herram['precio_unitario_nuevo'];
+                        }
+                        $conceptoUpdate->monto_presupuestado = $conceptoUpdate->cantidad_presupuestada * $conceptoUpdate->precio_unitario;
+                        $conceptoUpdate->save();
 
-                $conceptosNuevaTarjeta=Concepto::where('nivel','like',$concepto->nivel.'%')->get();
+                    } else { ////nuevo concepto generar nuevo nivel
 
-               // dd($conceptosNuevaTarjeta);
-                foreach ($conceptosNuevaTarjeta as $conceptoNuevaTarjeta){
-                    //  $conceptoNuevaTarjeta->id_concepto;
-                    $conceptoTarjetaUpdate=ConceptoTarjeta::where('id_concepto','=',  $conceptoNuevaTarjeta->id_concepto)->first();
-                    if($conceptoTarjetaUpdate){ //caso anteriores update
-                        $conceptoTarjetaUpdate->id_tarjeta=$nuevaTarjeta->id;
-                        $conceptoTarjetaUpdate->save();
-                    }else{ ///caso nuevos insert
-                        ConceptoTarjeta::create(['id_concepto'=> $conceptoNuevaTarjeta->id_concepto,'id_tarjeta'=>$nuevaTarjeta->id]);
+                        $conceptoMaterial = Concepto::where('descripcion', '=', 'MATERIALES')->where('nivel', 'like', $concepto->nivel . '%')->first();
+                        $totalInsumos = Concepto::where('nivel', 'like', $conceptoMaterial->nivel . '%')->get();
+
+                        $total = count($totalInsumos);
+                        $ceros = 3 - strlen($total);
+                        $nuevo_nivel = $conceptoMaterial->nivel . str_repeat("0", $ceros) . $total . '.';
+                        $unidadMaterial = Material::select('unidad')->where('id_material', '=', $herram->id_material)->first();
+                        $dataNuevoInsumo = [
+                            "id_material" => $herram->id_material,
+                            "id_obra" => Context::getId(),
+                            "nivel" => $nuevo_nivel,
+                            "descripcion" => $herram->descripcion,
+                            "unidad" => $unidadMaterial->unidad,
+                            "cantidad_presupuestada" => $herram->rendimiento_nuevo * $concepto->cantidad_presupuestada,
+                            "monto_presupuestado" => ($herram->rendimiento_nuevo * $concepto->cantidad_presupuestada) * $herram->precio_unitario_nuevo,
+                            "precio_unitario" => $herram->precio_unitario_nuevo,
+
+                        ];
+
+                        $nuevoInsumo = \Ghi\Domain\Core\Models\Concepto::create($dataNuevoInsumo);
+                        //  dd($nuevoInsumo);
+
                     }
                 }
+
+                foreach ($maquinaria as $maquina) ////integracion materiales tarjeta nueva
+                {
+                    if ($maquina->id_concepto) { ////actualizacion de concepto
+                        $conceptoUpdate = Concepto::find($maquina->id_concepto);
+                        $conceptoUpdate->cantidad_presupuestada = $maquina['cantidad_presupuestada']; //cambio cantidad presupuestada
+                        if ($maquina['precio_unitario_nuevo'] > 0) {
+                            $conceptoUpdate->precio_unitario = $maquina['precio_unitario_nuevo'];
+                        }
+                        $conceptoUpdate->monto_presupuestado = $conceptoUpdate->cantidad_presupuestada * $conceptoUpdate->precio_unitario;
+                        $conceptoUpdate->save();
+
+                    } else { ////nuevo concepto generar nuevo nivel
+
+                        $conceptoMaterial = Concepto::where('descripcion', '=', 'MATERIALES')->where('nivel', 'like', $concepto->nivel . '%')->first();
+                        $totalInsumos = Concepto::where('nivel', 'like', $conceptoMaterial->nivel . '%')->get();
+
+                        $total = count($totalInsumos);
+                        $ceros = 3 - strlen($total);
+                        $nuevo_nivel = $conceptoMaterial->nivel . str_repeat("0", $ceros) . $total . '.';
+                        $unidadMaterial = Material::select('unidad')->where('id_material', '=', $maquina->id_material)->first();
+                        $dataNuevoInsumo = [
+                            "id_material" => $maquina->id_material,
+                            "id_obra" => Context::getId(),
+                            "nivel" => $nuevo_nivel,
+                            "descripcion" => $maquina->descripcion,
+                            "unidad" => $unidadMaterial->unidad,
+                            "cantidad_presupuestada" => $maquina->rendimiento_nuevo * $concepto->cantidad_presupuestada,
+                            "monto_presupuestado" => ($maquina->rendimiento_nuevo * $concepto->cantidad_presupuestada) * $maquina->precio_unitario_nuevo,
+                            "precio_unitario" => $maquina->precio_unitario_nuevo,
+
+                        ];
+
+                        $nuevoInsumo = \Ghi\Domain\Core\Models\Concepto::create($dataNuevoInsumo);
+                        //  dd($nuevoInsumo);
+
+                    }
+                }
+
+                $conceptosNuevaTarjeta = Concepto::where('nivel', 'like', $concepto->nivel . '%')->get();
+                foreach ($conceptosNuevaTarjeta as $conceptoNuevaTarjeta) {
+                    //  $conceptoNuevaTarjeta->id_concepto;
+                    $conceptoTarjetaUpdate = ConceptoTarjeta::where('id_concepto', '=', $conceptoNuevaTarjeta->id_concepto)->first();
+                    if ($conceptoTarjetaUpdate) { //caso anteriores update
+                        $conceptoTarjetaUpdate->id_tarjeta = $nuevaTarjeta->id;
+                        $conceptoTarjetaUpdate->save();
+                    } else { ///caso nuevos insert
+                        ConceptoTarjeta::create(['id_concepto' => $conceptoNuevaTarjeta->id_concepto, 'id_tarjeta' => $nuevaTarjeta->id]);
+                    }
+                }
+
+                ///////////Suma de montos a propagar
+                $afectacion_mmonto_propagacion = 0;
+                $conceptoMaterial = Concepto::where('descripcion', '=', 'MATERIALES')->where('nivel', 'like', $concepto->nivel . '%')->first();
+                $totalInsumos = Concepto::where('nivel', 'like', $conceptoMaterial->nivel . '___.')->get();
+                $afectacion_mmonto_propagacion += $totalInsumos->sum('monto_presupuestado');
+                $conceptoMaterial->monto_presupuestado=$totalInsumos->sum('monto_presupuestado');
+                $conceptoMaterial->save();
+
+
+                $conceptoMaterial = Concepto::where('descripcion', '=', 'MANO OBRA')->where('nivel', 'like', $concepto->nivel . '%')->first();
+                $totalInsumos = Concepto::where('nivel', 'like', $conceptoMaterial->nivel . '___.')->get();
+                $afectacion_mmonto_propagacion += $totalInsumos->sum('monto_presupuestado');
+                $conceptoMaterial->monto_presupuestado=$totalInsumos->sum('monto_presupuestado');
+                $conceptoMaterial->save();
+
+                $conceptoMaterial = Concepto::where('descripcion', '=', 'HERRAMIENTA Y EQUIPO')->where('nivel', 'like', $concepto->nivel . '%')->first();
+                $totalInsumos = Concepto::where('nivel', 'like', $conceptoMaterial->nivel . '___.')->get();
+                $afectacion_mmonto_propagacion += $totalInsumos->sum('monto_presupuestado');
+                $conceptoMaterial->monto_presupuestado=$totalInsumos->sum('monto_presupuestado');
+                $conceptoMaterial->save();
+
+                $conceptoMaterial = Concepto::where('descripcion', '=', 'MAQUINARIA')->where('nivel', 'like', $concepto->nivel . '%')->first();
+                $totalInsumos = Concepto::where('nivel', 'like', $conceptoMaterial->nivel . '___.')->get();
+                $afectacion_mmonto_propagacion += $totalInsumos->sum('monto_presupuestado');
+                $conceptoMaterial->monto_presupuestado=$totalInsumos->sum('monto_presupuestado');
+                $conceptoMaterial->save();
+                //dd($afectacion_mmonto_propagacion);
+
+                //propagacion hacia arriba monto_presupuestado
+
+                $tamanioFaltante = strlen($concepto->nivel);
+
+                $monto_anterior= $concepto->monto_presupuestado;
+                while ($tamanioFaltante > 0) { ///////////////recorrido todos los niveles hacia arriba
+                    $afectaConcepto =Concepto::where('nivel', '=', substr($concepto->nivel, 0, $tamanioFaltante))->where('id_obra','=',Context::getId())->first();
+                    $afectaConcepto->monto_presupuestado=($afectaConcepto->monto_presupuestado-$monto_anterior)+$afectacion_mmonto_propagacion ;
+                    $afectaConcepto->save();
+                    $tamanioFaltante -= 4;
+                }
+
             }
 
-           dd("termino");
+            $solicitud = SolicitudCambio::find($id);
+            $solicitud->id_estatus = Estatus::AUTORIZADA;
+            $solicitud->save();
+            $data = ["id_solicitud_cambio" => $id];
+            $solicitudCambio = SolicitudCambioAutorizada::create($data);
+            $solicitud = $this->model->find($id);
 
             DB::connection('cadeco')->commit();
 
@@ -515,4 +691,12 @@ class EloquentSolicitudCambioRepository implements SolicitudCambioRepository
         }
     }
 
+
 }
+
+
+
+
+
+
+
