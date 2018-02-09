@@ -15,7 +15,6 @@ class ConceptoEscalatoria extends Model
 {
     protected $table = 'ControlPresupuesto.concepto_escalatoria';
     protected $connection = 'cadeco';
-    //protected $primaryKey = false;
     protected  $fillable = ['id_concepto', 'registro'];
 
     protected static function boot()

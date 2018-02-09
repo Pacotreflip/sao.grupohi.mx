@@ -151,10 +151,18 @@ class EloquentSolicitudCambioRepository implements SolicitudCambioRepository
         try{
             DB::connection('cadeco')->beginTransaction();
 
+            // No existe la solicitud
+            if (is_null($solicitud))
+                throw new HttpResponseException(new Response('No existe la solicitud', 404));
+
+            // La solicitud ya está autorizada
+            if ($solicitud->id_estatus == Estatus::AUTORIZADA)
+                throw new HttpResponseException(new Response('La solicitud ya está autorizada', 404));
+
             $basesAfectadas = AfectacionOrdenesPresupuesto::with('baseDatos')->where('id_tipo_orden', '=', $solicitud->id_tipo_orden)->get();
 
             foreach ($solicitud->partidas as $partida)
-                foreach ($basesAfectadas as $basePresupuesto)
+                foreach ($basesAfectadas as $k => $basePresupuesto)
                 {
                     // Revisa si ya existe una escalatoria
                     $escalatoria = ConceptoEscalatoria::select('*')->first();
@@ -190,6 +198,21 @@ class EloquentSolicitudCambioRepository implements SolicitudCambioRepository
 
                         if (is_null($concepto_escalatoria))
                             throw new HttpResponseException(new Response('No se creo el registro concepto escalatoria', 404));
+
+                        // Registra el "hijo" ESCALATORIA
+                        $nuevo_nivel_hijo = $nuevo_nivel .'001.';
+                        $concepto_escalatoria_hijo = DB::connection('cadeco')->table($basePresupuesto->baseDatos->base_datos . ".dbo.conceptos")->insert([
+                            'id_obra' => Context::getId(),
+                            'nivel' => $nuevo_nivel_hijo,
+                            'descripcion' => 'ESCALATORIAS',
+                        ]);
+
+                        if (!$concepto_escalatoria_hijo)
+                            throw new HttpResponseException(new Response('No se creo el registro concepto escalatoria', 404));
+
+                        // Obtiene el concepto escalatoria hijo
+                        $concepto_escalatoria_hijo = DB::connection('cadeco')->table($basePresupuesto->baseDatos->base_datos . ".dbo.conceptos")->select('*')->where('nivel', 'like', $nuevo_nivel_hijo)->first();
+
                         $escalatoria = ConceptoEscalatoria::create([
                             'id_concepto' => $concepto_escalatoria->id_concepto,
                         ]);
@@ -200,20 +223,22 @@ class EloquentSolicitudCambioRepository implements SolicitudCambioRepository
 
                     // Obtiene el concepto escalatoria
                     else
+                    {
                         $concepto_escalatoria = DB::connection('cadeco')->table($basePresupuesto->baseDatos->base_datos . ".dbo.conceptos")->select('*')->where('id_concepto', '=', $escalatoria->id_concepto)->first();
-
+                        $concepto_escalatoria_hijo = DB::connection('cadeco')->table($basePresupuesto->baseDatos->base_datos . ".dbo.conceptos")->select('*')->where('nivel', 'like', $concepto_escalatoria->nivel .'___.')->first();
+                    }
 
                     // Registra el concepto de la partida
-                    $concepto_escalatoria_max_nivel =  DB::connection('cadeco')->table($basePresupuesto->baseDatos->base_datos . ".dbo.conceptos")->selectRaw('max(nivel) as max_nivel')->whereraw("nivel like '". $concepto_escalatoria->nivel ."___.'")->first();
+                    $concepto_escalatoria_hijo_max_nivel =  DB::connection('cadeco')->table($basePresupuesto->baseDatos->base_datos . ".dbo.conceptos")->selectRaw('max(nivel) as max_nivel')->whereraw("nivel like '". $concepto_escalatoria_hijo->nivel ."___.'")->first();
 
-                    // El concepto escalatoria no tiene hijos
-                    if (is_null($concepto_escalatoria_max_nivel))
-                        $concepto_partida_nivel = $concepto_escalatoria->nivel .'001.';
+                    // El concepto escalatoria hijo no tiene hijos
+                    if (is_null($concepto_escalatoria_hijo_max_nivel))
+                        $concepto_partida_nivel = $concepto_escalatoria_hijo->nivel .'001.';
 
                     else
                     {
-                        $concepto_escalatoria_ultimos_numeros = str_replace('.', '', substr($concepto_escalatoria_max_nivel->max_nivel, -4));
-                        $concepto_partida_nivel = $concepto_escalatoria->nivel . str_pad($concepto_escalatoria_ultimos_numeros + 1, 3, 0, STR_PAD_LEFT) .'.';
+                        $concepto_escalatoria_hijo_ultimos_numeros = str_replace('.', '', substr($concepto_escalatoria_hijo_max_nivel->max_nivel, -4));
+                        $concepto_partida_nivel = $concepto_escalatoria_hijo->nivel . str_pad($concepto_escalatoria_hijo_ultimos_numeros + 1, 3, 0, STR_PAD_LEFT) .'.';
                     }
 
                     // Inserta el nuevo concepto
@@ -222,7 +247,6 @@ class EloquentSolicitudCambioRepository implements SolicitudCambioRepository
                         'nivel' => $concepto_partida_nivel,
                         'descripcion' => $partida->descripcion,
                     ]);
-
                 }
 
             // Actualiza el estatus de la solicitud
@@ -380,5 +404,29 @@ class EloquentSolicitudCambioRepository implements SolicitudCambioRepository
             throw $e;
         }
 
+    }
+
+    public function rechazarEscalatoria(array $data)
+    {
+        try {
+
+            DB::connection('cadeco')->beginTransaction();
+            $solicitud = $this->model->with('partidas')->find($data['id_solicitud_cambio']);
+
+            if (is_null($solicitud))
+                throw new HttpResponseException(new Response('No existe la solicitud a rechazar', 404));
+
+            $solicitud->id_estatus = Estatus::RECHAZADA;
+            $solicitudCambio = SolicitudCambioRechazada::create($data);
+            $solicitud->save();
+            $solicitud = $this->model->with(['tipoOrden', 'userRegistro', 'estatus', 'partidas', 'partidas.concepto', 'partidas.numeroTarjeta'])->find($data['id_solicitud_cambio']);
+            $solicitud['cobrabilidad'] = $solicitud->tipoOrden->cobrabilidad;
+
+            DB::connection('cadeco')->commit();
+            return $solicitud;
+        } catch (\Exception $e) {
+            DB::connection('cadeco')->rollback();
+            throw $e;
+        }
     }
 }

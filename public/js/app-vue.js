@@ -20133,7 +20133,6 @@ Vue.component('show-escalatoria', {
                     $('#btn_autorizar').prop('enabled', false);
                 },
                 success: function success(data, textStatus, xhr) {
-                    console.log(data);
                     swal({
                         type: "success",
                         title: '¡Correcto!',

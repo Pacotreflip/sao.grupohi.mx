@@ -15,6 +15,7 @@ use Ghi\Domain\Core\Models\ControlPresupuesto\SolicitudCambio;
 use Ghi\Domain\Core\Models\ControlPresupuesto\SolicitudCambioPartida;
 use Ghi\Domain\Core\Models\ControlPresupuesto\TipoOrden;
 use Ghi\Domain\Core\Reportes\ControlPresupuesto\PDFSolicitudCambio;
+use Ghi\Domain\Core\Reportes\ControlPresupuesto\PDFSolicitudCambioEscalatoria;
 use Illuminate\Http\Request;
 
 
@@ -131,7 +132,25 @@ class CambioPresupuestoController extends Controller
     {
         $solicitud = $this->solicitud->find($id);
 
-        $pdf = new PDFSolicitudCambio($solicitud, $this->partidas);
+        switch ($solicitud->id_tipo_orden)
+        {
+            case TipoOrden::ESCALATORIA:
+                $pdf = new PDFSolicitudCambioEscalatoria($solicitud, $this->partidas);
+                break;
+            case TipoOrden::RECLAMOS_INDIRECTO:
+                break;
+            case TipoOrden::CONCEPTOS_EXTRAORDINARIOS:
+                break;
+            case TipoOrden::VARIACION_VOLUMEN:
+                break;
+            case TipoOrden::ORDEN_DE_CAMBIO_NO_COBRABLE:
+                break;
+            case TipoOrden::ORDEN_DE_CAMBIO_DE_INSUMOS:
+                break;
+            default:
+                $pdf = new PDFSolicitudCambio($solicitud, $this->partidas);
+        }
+
         $pdf->create();
     }
 
@@ -197,6 +216,7 @@ class CambioPresupuestoController extends Controller
         $solicitud = '';
         switch ($request->id_tipo_orden) {
             case TipoOrden::ESCALATORIA:
+                $solicitud = $this->solicitud->rechazarEscalatoria($request->all());
                 break;
             case TipoOrden::RECLAMOS_INDIRECTO:
                 break;

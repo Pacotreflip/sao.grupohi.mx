@@ -84,7 +84,7 @@ Vue.component('show-escalatoria', {
                     $('#btn_rechazar').prop('enabled',false);
                     $('#btn_autorizar').prop('enabled',false);
                 },
-                success: function (data, textStatus, xhr) {console.log(data);
+                success: function (data, textStatus, xhr) {
                     swal({
                         type: "success",
                         title: '¡Correcto!',
