@@ -140,18 +140,20 @@ class EloquentSolicitudCambioPartidaRepository implements SolicitudCambioPartida
         $detalle = array();
 
         foreach ($items as $index => $item) {
-            $hijos = DB::connection('cadeco')->table($baseDatos->base_datos . ".dbo.conceptos")->where('id_obra', '=', Context::getId())->where('nivel', 'like', $item->nivel . '%')->count();
-            $nivel_padre = $partida->concepto->nivel;
-            $nivel_hijo = $item->nivel;
-            $profundidad = (strlen($nivel_hijo) - strlen($nivel_padre)) / 4;
-            $factor = $partida->cantidad_presupuestada_nueva / ($partida->concepto->cantidad_presupuestada == 0 ? 1 : $partida->concepto->cantidad_presupuestada);
-            $cantidad_nueva = ($item->cantidad_presupuestada == 0 ? 1 : $item->cantidad_presupuestada) * $factor;
-            $monto_nuevo = $item->precio_unitario * $cantidad_nueva;
 
             $historico = SolicitudCambioPartidaHistorico::where('id_solicitud_cambio_partida', '=', $partida->id)
                 ->where('id_base_presupuesto', '=', $data['presupuesto'])
                 ->where('nivel', '=', $item->nivel)
                 ->first();
+
+            $hijos = DB::connection('cadeco')->table($baseDatos->base_datos . ".dbo.conceptos")->where('id_obra', '=', Context::getId())->where('nivel', 'like', $item->nivel . '%')->count();
+            $nivel_padre = $partida->concepto->nivel;
+            $nivel_hijo = $item->nivel;
+            $profundidad = (strlen($nivel_hijo) - strlen($nivel_padre)) / 4;
+            $factor = $partida->cantidad_presupuestada_nueva / $partida->cantidad_presupuestada_original;
+            $cantidad_nueva = $historico ? $historico->cantidad_presupuestada_actualizada : $item->cantidad_presupuestada * $factor;
+            $monto_nuevo = $historico ? $historico->monto_presupuestado_actualizado : $item->monto_presupuestado * $factor;
+
 
             $row = array('index' => $index + 1,
                 //'numTarjeta'=>$item->numero_tarjeta,

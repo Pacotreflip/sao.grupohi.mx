@@ -16,6 +16,7 @@ use Ghi\Domain\Core\Models\Concepto;
 use Ghi\Domain\Core\Models\ControlPresupuesto\AfectacionOrdenesPresupuesto;
 use Ghi\Domain\Core\Models\ControlPresupuesto\BasePresupuesto;
 use Ghi\Domain\Core\Models\ControlPresupuesto\SolicitudCambio;
+use Ghi\Domain\Core\Models\ControlPresupuesto\SolicitudCambioPartidaHistorico;
 use Ghidev\Fpdf\Rotation;
 use Ghi\Domain\Core\Models\Obra;
 use Illuminate\Support\Facades\DB;
@@ -117,7 +118,7 @@ class PDFSolicitudCambio extends Rotation {
             $this->SetTextColors(array('0,0,0', '0,0,0', '0,0,0', '0,0,0', '0,0,0', '0,0,0', '0,0,0', '0,0,0', '0,0,0', '0,0,0', '0,0,0'));
             $this->SetHeights(array(0.3));
             $this->SetAligns(array('R', 'R', 'R', 'C', 'C', 'C', 'C', 'C', 'C', 'C', 'C'));
-            $this->Row(array('#', 'No. Tarjeta', utf8_decode("Descripción"), utf8_decode("Unidad"), utf8_decode("Precio Unitario"), utf8_decode("Volúmen Anterior"), utf8_decode("Variación Volúmen"), utf8_decode("Volúmen nuevo"), utf8_decode("Importe Anterior"), utf8_decode("Variación Importe"), utf8_decode("Importe Nuevo") ));
+            $this->Row(array('#', 'No. Tarjeta', utf8_decode("Descripción"), utf8_decode("Unidad"), utf8_decode("Precio Unitario"), utf8_decode("Volúmen Original"), utf8_decode("Volúmen del Cambio"), utf8_decode("Volúmen Actualizado"), utf8_decode("Importe Original"), utf8_decode("Importe del Cambio"), utf8_decode("Importe Actualizado") ));
 
             $this->SetFont('Arial', '', 6);
             $this->SetFills(array('255,255,255', '255,255,255', '255,255,255', '255,255,255', '255,255,255', '255,255,255', '255,255,255', '255,255,255', '255,255,255', '255,255,255', '255,255,255'));
@@ -205,8 +206,8 @@ class PDFSolicitudCambio extends Rotation {
             $this->SetTextColors(array('0,0,0', '0,0,0', '0,0,0', '0,0,0', '0,0,0', '0,0,0', '0,0,0', '0,0,0', '0,0,0', '0,0,0', '0,0,0'));
             $this->SetHeights(array(0.28));
             $this->SetAligns(array('L', 'L', 'L', 'C', 'C', 'C', 'C', 'C', 'C', 'C', 'C'));
-            $this->SetWidths(array(0.02 * $this->WidthTotal, 0.04 * $this->WidthTotal, 0.54 * $this->WidthTotal, 0.05 * $this->WidthTotal, 0.05 * $this->WidthTotal, 0.05 * $this->WidthTotal, 0.05 * $this->WidthTotal, 0.05 * $this->WidthTotal, 0.05 * $this->WidthTotal, 0.05 * $this->WidthTotal, 0.05 * $this->WidthTotal));
-            $this->Row(array('#', 'No. Tarjeta', utf8_decode("Descripción"), utf8_decode("Unidad"), utf8_decode("Precio Unitario"), utf8_decode("Volúmen Anterior"), utf8_decode("Variación Volúmen"), utf8_decode("Volúmen nuevo"), utf8_decode("Importe Anterior"), utf8_decode("Variación Importe"), utf8_decode("Importe Nuevo") ));
+            $this->SetWidths(array(0.02 * $this->WidthTotal, 0.04 * $this->WidthTotal, 0.46 * $this->WidthTotal, 0.06 * $this->WidthTotal, 0.06 * $this->WidthTotal, 0.06 * $this->WidthTotal, 0.06 * $this->WidthTotal, 0.06 * $this->WidthTotal, 0.06 * $this->WidthTotal, 0.06 * $this->WidthTotal, 0.06 * $this->WidthTotal));
+            $this->Row(array('#', 'No. Tarjeta', utf8_decode("Descripción"), utf8_decode("Unidad"), utf8_decode("Precio Unitario"), utf8_decode("Volúmen Original"), utf8_decode("Volúmen del Cambio"), utf8_decode("Volúmen Actualizado"), utf8_decode("Importe Original"), utf8_decode("Importe del Cambio"), utf8_decode("Importe Actualizado") ));
 
             $contador = 1;
             foreach ($this->solicitud->partidas as $i => $p)
@@ -220,31 +221,36 @@ class PDFSolicitudCambio extends Rotation {
                 $this->SetTextColors(array('0,0,0', '0,0,0', '0,0,0', '0,0,0', '0,0,0', '0,0,0', '0,0,0', '0,0,0', '0,0,0', '0,0,0', '0,0,0'));
                 $this->SetHeights(array(0.35));
                 $this->SetAligns(array('L', 'L', 'L', 'L', 'R', 'R', 'R', 'R', 'R', 'R', 'R'));
-                $this->SetWidths(array(0.02 * $this->WidthTotal, 0.04 * $this->WidthTotal, 0.54 * $this->WidthTotal, 0.05 * $this->WidthTotal, 0.05 * $this->WidthTotal, 0.05 * $this->WidthTotal, 0.05 * $this->WidthTotal, 0.05 * $this->WidthTotal, 0.05 * $this->WidthTotal, 0.05 * $this->WidthTotal, 0.05 * $this->WidthTotal));
+                $this->SetWidths(array(0.02 * $this->WidthTotal, 0.04 * $this->WidthTotal, 0.46 * $this->WidthTotal, 0.06 * $this->WidthTotal, 0.06 * $this->WidthTotal, 0.06 * $this->WidthTotal, 0.06 * $this->WidthTotal, 0.06 * $this->WidthTotal, 0.06 * $this->WidthTotal, 0.06 * $this->WidthTotal, 0.06 * $this->WidthTotal));
 
                 $this->encola = 'partidas';
 
                 foreach ($items as $index => $item) {
 
+                    $historico = SolicitudCambioPartidaHistorico::where('id_solicitud_cambio_partida', '=', $partida->id)
+                        ->where('id_base_presupuesto', '=', $base->id_base_presupuesto)
+                        ->where('nivel', '=', $item->nivel)
+                        ->first();
+
                     $nivel_padre = $partida->concepto->nivel;
                     $nivel_hijo = $item->nivel;
                     $profundidad = (strlen($nivel_hijo) - strlen($nivel_padre)) / 4;
-                    $factor = $partida->cantidad_presupuestada_nueva / $partida->concepto->cantidad_presupuestada;
-                    $cantidad_nueva = $item->cantidad_presupuestada * $factor;
-                    $monto_nuevo = $item->monto_presupuestado * $factor;
+                    $factor = $partida->cantidad_presupuestada_nueva / $partida->cantidad_presupuestada_original;
+                    $cantidad_nueva = $historico ? $historico->cantidad_presupuestada_actualizada : $item->cantidad_presupuestada * $factor;
+                    $monto_nuevo = $historico ? $historico->monto_presupuestado_actualizado : $item->monto_presupuestado * $factor;
 
                     $this->Row([
                         $contador++,
-                        $item['numTarjeta'],
+                        '', //TODO: Buscar de donde demonios sale el número de tarjeta
                         str_repeat("______", $profundidad) . ' ' . utf8_decode($item->descripcion),
                         utf8_decode($item->unidad),
-                        number_format($item->precio_unitario, 2, '.', ','),
-                        number_format($item->cantidad_presupuestada, 2, '.', ','),
-                        number_format($cantidad_nueva - $item->cantidad_presupuestada, 2, '.', ','),
-                        number_format($cantidad_nueva, 2, '.', ','),
-                        number_format($item->monto_presupuestado, 2, '.', ','),
-                        number_format(($monto_nuevo - $item->monto_presupuestado), 2, '.', ','),
-                        number_format($monto_nuevo, 2, '.', ','),
+                        '$ ' . number_format($item->precio_unitario, 2, '.', ','),
+                        number_format($historico ? $historico->cantidad_presupuestada_original : $item->cantidad_presupuestada, 2, '.', ','), // cant_anterior
+                        number_format($historico ? $historico->cantidad_presupuestada_actualizada - $historico->cantidad_presupuestada_original :$cantidad_nueva - $item->cantidad_presupuestada, 2, '.', ','), //variacion
+                        number_format($cantidad_nueva, 2, '.', ','),  // cantidad nueva
+                        '$ '. number_format($historico ? $historico->monto_presupuestado_original : $item->monto_presupuestado, 2, '.', ','),
+                        '$ '. number_format($historico ? $historico->monto_presupuestado_actualizado - $historico->monto_presupuestado_original : ($monto_nuevo - $item->monto_presupuestado), 2, '.', ','),
+                        '$ '. number_format($monto_nuevo, 2, '.', ','),
                     ]);
                 }
             }
