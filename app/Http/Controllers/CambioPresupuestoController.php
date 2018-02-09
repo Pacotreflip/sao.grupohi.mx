@@ -142,13 +142,14 @@ class CambioPresupuestoController extends Controller
             case TipoOrden::CONCEPTOS_EXTRAORDINARIOS:
                 break;
             case TipoOrden::VARIACION_VOLUMEN:
+                $pdf = new PDFSolicitudCambio($solicitud, $this->partidas);
                 break;
             case TipoOrden::ORDEN_DE_CAMBIO_NO_COBRABLE:
                 break;
             case TipoOrden::ORDEN_DE_CAMBIO_DE_INSUMOS:
                 break;
             default:
-                $pdf = new PDFSolicitudCambio($solicitud, $this->partidas);
+
         }
 
         $pdf->create();

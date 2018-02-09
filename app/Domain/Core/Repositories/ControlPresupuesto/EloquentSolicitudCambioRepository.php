@@ -284,7 +284,6 @@ class EloquentSolicitudCambioRepository implements SolicitudCambioRepository
             $solicitud = $this->model->with('partidas')->find($id);
             $basesAfectadas = AfectacionOrdenesPresupuesto::with('baseDatos')->where('id_tipo_orden', '=', $solicitud->id_tipo_orden)->get();
 
-
             foreach ($solicitud->partidas as $partida) {
 
                 $conceptoSolicitud = Concepto::find($partida->id_concepto); ///concepto raiz para obtener la clave
@@ -300,10 +299,17 @@ class EloquentSolicitudCambioRepository implements SolicitudCambioRepository
                     }
                     $montoAnterior = $concepto->monto_presupuestado;
 
-                    $factor = ($partida->cantidad_presupuestada_nueva / ($concepto->cantidad_presupuestada == 0 ? 1 : $concepto->cantidad_presupuestada));
+                    $factor = ($partida->cantidad_presupuestada_nueva / $concepto->cantidad_presupuestada);
 
                     //propagacion hacia abajo
-                    $conceptosPropagacion = DB::connection('cadeco')->table($basePresupuesto->baseDatos->base_datos . ".dbo.conceptos")->where('nivel', 'like', $concepto->nivel . '%')->where('id_obra', '=', Context::getId())->get();
+                    $conceptosPropagacion =
+                        DB::connection('cadeco')
+                            ->table($basePresupuesto->baseDatos->base_datos . ".dbo.conceptos")
+                            ->where('nivel', 'like', $concepto->nivel . '%')
+                            ->where('id_obra', '=', Context::getId())
+                            ->orderBy('nivel')
+                            ->get();
+
                     $afectacion = 0;
                     foreach ($conceptosPropagacion as $conceptoPropagacion) {
                         if ($afectacion > 0) {
@@ -319,6 +325,8 @@ class EloquentSolicitudCambioRepository implements SolicitudCambioRepository
                             ]);
 
                             //Actualizar las cantidades en la base de datos del presupuesto
+
+
                             DB::connection('cadeco')->table($basePresupuesto->baseDatos->base_datos . ".dbo.conceptos")
                                 ->where('id_concepto', $conceptoPropagacion->id_concepto)
                                 ->update(['cantidad_presupuestada' => $conceptoPropagacion->cantidad_presupuestada * $factor, 'monto_presupuestado' => $conceptoPropagacion->monto_presupuestado * $factor]);
@@ -357,11 +365,11 @@ class EloquentSolicitudCambioRepository implements SolicitudCambioRepository
                                 'id_base_presupuesto' => $basePresupuesto->id_base_presupuesto,
                                 'nivel' => $afectaConcepto->nivel,
                                 'monto_presupuestado_original' => $afectaConcepto->monto_presupuestado,
-                                'monto_presupuestado_actualizado' =>$cantidadMonto
+                                'monto_presupuestado_actualizado' => $cantidadMonto
                             ]);
 
                             DB::connection('cadeco')->table($basePresupuesto->baseDatos->base_datos . ".dbo.conceptos")
-                                ->where('id_concepto', $conc->id_concepto)
+                                ->where('id_concepto', $afectaConcepto->id_concepto)
                                 ->update(['monto_presupuestado' => $cantidadMonto]);
                         }
                         $afectacionConcepto++;
@@ -376,7 +384,6 @@ class EloquentSolicitudCambioRepository implements SolicitudCambioRepository
             $solicitudCambio = SolicitudCambioAutorizada::create($data);
             $solicitud = $this->model->with(['tipoOrden', 'userRegistro', 'estatus', 'partidas', 'partidas.concepto', 'partidas.numeroTarjeta'])->find($id);
             $solicitud['cobrabilidad'] = $solicitud->tipoOrden->cobrabilidad;
-
 
             DB::connection('cadeco')->commit();
             return $solicitud;
