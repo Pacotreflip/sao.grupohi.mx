@@ -284,6 +284,9 @@ class EloquentSolicitudCambioRepository implements SolicitudCambioRepository
             $solicitud = $this->model->with('partidas')->find($id);
             $basesAfectadas = AfectacionOrdenesPresupuesto::with('baseDatos')->where('id_tipo_orden', '=', $solicitud->id_tipo_orden)->get();
 
+            // La solicitud ya está autorizada
+            if ($solicitud->id_estatus == Estatus::AUTORIZADA)
+                throw new HttpResponseException(new Response('La solicitud ya está autorizada', 404));
 
             foreach ($solicitud->partidas as $partida) {
 
@@ -399,6 +402,14 @@ class EloquentSolicitudCambioRepository implements SolicitudCambioRepository
 
             DB::connection('cadeco')->beginTransaction();
             $solicitud = $this->model->with('partidas')->find($data['id_solicitud_cambio']);
+
+            if (is_null($solicitud))
+                throw new HttpResponseException(new Response('No existe la solicitud a rechazar', 404));
+
+            // La solicitud ya está rechazada
+            if ($solicitud->id_estatus == Estatus::RECHAZADA)
+                throw new HttpResponseException(new Response('La solicitud ya está rechazada', 404));
+
             $solicitud->id_estatus = Estatus::RECHAZADA;
             $solicitudCambio = SolicitudCambioRechazada::create($data);
             $solicitud->save();
@@ -423,6 +434,11 @@ class EloquentSolicitudCambioRepository implements SolicitudCambioRepository
 
             if (is_null($solicitud))
                 throw new HttpResponseException(new Response('No existe la solicitud a rechazar', 404));
+
+            // La solicitud ya está rechazada
+            if ($solicitud->id_estatus == Estatus::RECHAZADA)
+                throw new HttpResponseException(new Response('La solicitud ya está rechazada', 404));
+
 
             $solicitud->id_estatus = Estatus::RECHAZADA;
             $solicitudCambio = SolicitudCambioRechazada::create($data);
