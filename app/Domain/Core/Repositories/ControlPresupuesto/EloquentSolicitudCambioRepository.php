@@ -166,7 +166,10 @@ class EloquentSolicitudCambioRepository implements SolicitudCambioRepository
                 {
                     // Revisa si ya existe una escalatoria
                     $escalatoria = ConceptoEscalatoria::select('*')->first();
-                    $concepto = DB::connection('cadeco')->table($basePresupuesto->baseDatos->base_datos . ".dbo.conceptos")->select('*')->where('descripcion', 'like', 'COSTO DIRECTO')->first();
+                    $concepto = DB::connection('cadeco')->table($basePresupuesto->baseDatos->base_datos . ".dbo.conceptos")->select('*')->where('descripcion', 'like', '%costo directo%')->first();
+
+                    if (is_null($concepto))
+                        throw new HttpResponseException(new Response('No se encontró el concepto costo directo', 404));
 
                     // No existe registro
                     if (is_null($escalatoria))
@@ -252,6 +255,11 @@ class EloquentSolicitudCambioRepository implements SolicitudCambioRepository
             // Actualiza el estatus de la solicitud
             $solicitud->id_estatus = Estatus::AUTORIZADA;
             $solicitud->save();
+
+            // Inserta registro autorizó
+            $autorizo = SolicitudCambioAutorizada::create([
+                'id_solicitud_cambio' => $solicitud->id
+            ]);
 
             DB::connection('cadeco')->commit();
         } catch (\Exception $e) {

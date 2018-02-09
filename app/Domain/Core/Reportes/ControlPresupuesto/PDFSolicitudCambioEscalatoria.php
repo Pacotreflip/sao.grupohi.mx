@@ -218,14 +218,14 @@ class PDFSolicitudCambioEscalatoria extends Rotation {
                 $this->SetFills(array('255,255,255', '255,255,255', '255,255,255'));
                 $this->SetTextColors(array('0,0,0', '0,0,0', '0,0,0'));
                 $this->SetHeights(array(0.3));
-                $this->SetAligns(array('C', 'C', 'R'));
+                $this->SetAligns(array('L', 'L', 'R'));
 
                 $this->encola = 'partidas';
 
                 $this->Row([
                     $contador++,
                     utf8_decode($partida->descripcion),
-                    number_format($partida->monto_presupuestado, 2, '.', ','),
+                    '$'. number_format($partida->monto_presupuestado, 2, '.', ','),
                 ]);
 
             }
@@ -343,7 +343,8 @@ class PDFSolicitudCambioEscalatoria extends Rotation {
         $this->Ln();
         $this->motivo();
         try {
-            $this->Output('I', 'Solicitud de cambio #'. $this->solicitud->numero_folio .'.pdf', 1);
+            $this->Output('I', 'Solicitud de cambio ('. $this->solicitud->tipoOrden->descripcion .') #'.
+                $this->solicitud->numero_folio .'.pdf', 1);
         } catch (\Exception $ex) {
             dd($ex);
         }

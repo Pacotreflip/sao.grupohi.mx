@@ -362,7 +362,7 @@ class PDFSolicitudCambio extends Rotation {
         $this->Ln();
         $this->motivo();
         try {
-            $this->Output('I', 'Solicitud de cambio #'. $this->solicitud->numero_folio .'.pdf', 1);
+            $this->Output('I', 'Solicitud de cambio ('. $this->solicitud->tipoOrden->descripcion .')#'. $this->solicitud->numero_folio .'.pdf', 1);
         } catch (\Exception $ex) {
             dd($ex);
         }
