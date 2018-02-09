@@ -20190,7 +20190,6 @@ Vue.component('show-escalatoria', {
                 }
             });
         },
-
         mostrar_detalle_partida: function mostrar_detalle_partida(id) {
             var self = this;
             var partida = id;
@@ -20391,7 +20390,6 @@ Vue.component('show-variacion-volumen', {
                 }
             });
         },
-
         mostrar_detalle_partida: function mostrar_detalle_partida(id) {
             var self = this;
             var partida = id;

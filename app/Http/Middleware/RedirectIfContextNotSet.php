@@ -48,8 +48,19 @@ class RedirectIfContextNotSet
     public function handle(Request $request, Closure $next)
     {
         if ($this->context->notEstablished()) {
-            Flash::error('¡Lo sentimos, debe seleccionar una obra para ver esta información!');
-            return redirect()->guest(route('obras'));
+
+            // Setea el id y nombre de la base si están presentes en la url
+            if (in_array('DATABASE_NAME', array_keys($request->all())) && in_array('ID_OBRA', array_keys($request->all())))
+            {
+                $this->context->setId($request->ID_OBRA);
+                $this->context->setDatabaseName($request->DATABASE_NAME);
+            }
+
+            else
+            {
+                Flash::error('¡Lo sentimos, debe seleccionar una obra para ver esta información!');
+                return redirect()->guest(route('obras'));
+            }
         }
 
         $this->setContext();
