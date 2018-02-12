@@ -19500,14 +19500,15 @@ Vue.component('cambio-presupuesto-index', {
 },{}],32:[function(require,module,exports){
 'use strict';
 
-Vue.component('cambio_insumos', {
-    props: ['solicitud', 'cobrabilidad', 'presupuestos', 'clasificacion', 'conceptos_agrupados'],
+Vue.component('show-variacion-insumos', {
+    props: ['solicitud', 'presupuestos', 'conceptos_agrupados'],
     data: function data() {
         return {
             form: {
                 solicitud: this.solicitud,
-                cobrabilidad: this.cobrabilidad
+                cobrabilidad: ''
             },
+            clasificacion: [],
             cargando: false,
             rechazando: false,
             autorizando: false,
@@ -19520,10 +19521,6 @@ Vue.component('cambio_insumos', {
     },
 
     computed: {},
-
-    mounted: function mounted() {
-        this.mostrar_importes_inicial();
-    },
 
     methods: {
 

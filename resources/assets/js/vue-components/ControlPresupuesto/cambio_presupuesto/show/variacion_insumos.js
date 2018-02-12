@@ -1,11 +1,12 @@
-Vue.component('cambio_insumos', {
-    props: ['solicitud', 'cobrabilidad','presupuestos','clasificacion','conceptos_agrupados'],
+Vue.component('show-variacion-insumos', {
+    props: ['solicitud','presupuestos',  'conceptos_agrupados'],
     data: function () {
         return {
             form: {
                 solicitud: this.solicitud,
-                cobrabilidad: this.cobrabilidad
+                cobrabilidad: ''
             },
+            clasificacion : [],
             cargando: false,
             rechazando:false,
             autorizando:false,
@@ -18,10 +19,6 @@ Vue.component('cambio_insumos', {
     },
 
     computed: {},
-
-    mounted: function () {
-       this.mostrar_importes_inicial();
-    },
 
     methods: {
 

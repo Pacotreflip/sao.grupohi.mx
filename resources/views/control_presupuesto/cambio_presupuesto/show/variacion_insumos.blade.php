@@ -7,7 +7,7 @@
 
 
 @section('main-content')
-    <cambio_insumos
+    <show-variacion-insumos
             inline-template
             :solicitud="{{$solicitud}}"
 
@@ -147,5 +147,5 @@
                 </div>
             </div>
         </section>
-    </cambio_insumos>
+    </show-variacion-insumos>
 @endsection

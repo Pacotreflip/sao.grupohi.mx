@@ -165,7 +165,7 @@ class CambioPresupuestoController extends Controller
 
               //  $clasificacion = $this->partidas->getClasificacionInsumos($solicitud->id);
                 $conceptos_agrupados = $this->agrupacion->with('concepto')->where([['id_solicitud_cambio', '=', $solicitud->id]])->all();
-                return view('control_presupuesto.cambio_presupuesto.show.cambio_insumos')
+                return view('control_presupuesto.cambio_presupuesto.show.variacion_insumos')
                     ->with('solicitud', $solicitud)
                     ->with('cobrabilidad', $solicitud->tipoOrden->cobrabilidad)
                     ->with('presupuestos', $presupuestos)
