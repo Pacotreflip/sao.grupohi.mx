@@ -6,6 +6,7 @@ use Ghi\Core\Facades\Context;
 use Ghi\Domain\Core\Contracts\Contabilidad\ConceptoRepository;
 use Ghi\Domain\Core\Models\Concepto;
 use Illuminate\Support\Facades\DB;
+use PhpParser\Node\Expr\Array_;
 
 class EloquentConceptoRepository implements ConceptoRepository
 {
@@ -96,9 +97,6 @@ class EloquentConceptoRepository implements ConceptoRepository
     }
 
     public function paths(array $data,$baseDatos=null) {
-
-
-
         $db = $baseDatos == null ? Context::getDatabaseName() : $baseDatos;
 
         $query = DB::connection('cadeco')->table($db.'.dbo.conceptos')->where('conceptos.id_obra', '=', Context::getId())->join($db.'.PresupuestoObra.conceptosPath as path', 'conceptos.id_concepto', '=', 'path.id_concepto');
@@ -127,5 +125,81 @@ class EloquentConceptoRepository implements ConceptoRepository
         );
 
         return $query->paginate($perPage = $data['length'], $columns = ['*'], $pageName = 'page', $page = ($data['start'] / $data['length']) + 1);
+    }
+
+    public function pathsConceptos(array $data) {
+
+        $query = DB::connection('cadeco')->table('dbo.conceptos')->where('conceptos.id_obra', '=', Context::getId())
+            ->join('PresupuestoObra.conceptosPath as path', 'conceptos.id_concepto', '=', 'path.id_concepto');
+
+        $query->where('dbo.conceptos.concepto_medible', '=', 3);
+        $query->where('dbo.conceptos.activo', '=', 1);
+        $query->where('path.filtro3','Like','%COSTO DIRECTO%');
+
+
+
+        $query->join('ControlPresupuesto.concepto_tarjeta', 'dbo.conceptos.id_concepto', '=', 'ControlPresupuesto.concepto_tarjeta.id_concepto')
+            ->join('ControlPresupuesto.tarjeta', 'ControlPresupuesto.concepto_tarjeta.id_tarjeta', '=', 'ControlPresupuesto.tarjeta.id')
+            ->where('ControlPresupuesto.tarjeta.id', '=', $data['id_tarjeta'] == '' ? null : $data['id_tarjeta']);
+
+
+        if(isset($data['order'])) {
+            foreach ($data['order'] as $order) {
+                $query->orderBy($data['columns'][$order['column']]['data'], $order['dir']);
+            }
+        }
+        $query->orderBy('conceptos.nivel');
+
+        if(array_key_exists('filtros', $data)) {
+            foreach ($data['filtros'] as $key => $filtro) {
+                $query->where(function ($q) use ($filtro) {
+                    foreach ($filtro['operadores'] as $key => $operador) {
+                        if($key == 0) {
+                            $q->whereRaw('filtro' . $filtro['nivel'] . ' ' . str_replace('"', "'",$operador["sql"]));
+                        } else {
+                            $q->orWhereRaw('filtro' . $filtro['nivel'] . ' ' . str_replace('"', "'",$operador["sql"]));
+                        }
+                    }
+                });
+            }
+        }
+
+        $query->select(
+            "conceptos.unidad",
+            "conceptos.cantidad_presupuestada",
+            "conceptos.precio_unitario",
+            "conceptos.monto_presupuestado",
+            "path.*"
+        );
+
+        return $query->paginate($perPage = $data['length'], $columns = ['*'], $pageName = 'page', $page = ($data['start'] / $data['length']) + 1);
+
+    }
+
+    /**
+     * Obtiene los insumos de un concepto medible
+     * @param $id
+     * @return mixed
+     */
+    public function getInsumos($id)
+    {
+        $cobrable = $this->model->where('id_concepto', $id)->first();
+        $conceptos = $this->model->where('nivel', 'like', $cobrable->nivel.'___.')->get();
+        $data = [];
+        foreach ($conceptos as $concepto){
+            $data[$concepto->descripcion] =
+                [
+                    'id_concepto' => $concepto->id_concepto,
+                    'nivel'       => $concepto->nivel,
+                    'descripcion' => $concepto->descripcion,
+                    'monto_presupuestado' => $concepto->monto_presupuestado,
+                    'insumos'  => Concepto::where('nivel', 'like', $concepto->nivel.'___.')->get()->toArray()
+                ];
+        }
+        $cob_conceptos = [
+            'cobrable'  => $cobrable->toArray(),
+            'conceptos' => $data
+        ];
+        return $cob_conceptos;
     }
 }

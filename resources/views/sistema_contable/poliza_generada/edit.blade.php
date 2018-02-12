@@ -209,8 +209,8 @@
                 <!-- Modal Agregar Movimiento -->
                 <div id="add_movimiento_modal" class="modal fade" tabindex="-1" role="dialog"
                      aria-labelledby="addMovimientoModal" data-backdrop="static" data-keyboard="false">
-                    <div class="modal-dialog" role="document">
-                        <div class="modal-content modal-lg">
+                    <div class="modal-dialog modal-lg" role="document">
+                        <div class="modal-content">
                             <div class="modal-header">
                                 <button type="button" class="close" aria-label="Close" @click="close_add_movimiento">
                                     <span aria-hidden="true">&times;</span></button>

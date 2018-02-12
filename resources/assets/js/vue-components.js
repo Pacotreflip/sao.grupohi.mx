@@ -64,6 +64,10 @@ require('./vue-components/ControlPresupuesto/presupuesto/index');
 require('./vue-components/ControlPresupuesto/cambio_presupuesto/create');
 require('./vue-components/ControlPresupuesto/cambio_presupuesto/index');
 require('./vue-components/ControlPresupuesto/cambio_presupuesto/variacion_volumen');
+require('./vue-components/ControlPresupuesto/cambio_presupuesto/show_variacion_volumen');
+require('./vue-components/ControlPresupuesto/cambio_presupuesto/show_escalatoria');
+require('./vue-components/ControlPresupuesto/cambio_presupuesto/escalatoria');
+require('./vue-components/ControlPresupuesto/cambio_presupuesto/variacion_insumos');
 
 /**
  * Configuración Components

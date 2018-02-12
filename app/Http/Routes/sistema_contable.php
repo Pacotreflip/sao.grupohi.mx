@@ -168,4 +168,11 @@ Route::group(['prefix' => 'sistema_contable'], function () {
     Route::get('cierre/{cierre}', 'CierreController@show')->name('sistema_contable.cierre.show');
     Route::patch('cierre/{cierre}/open', 'CierreController@open');
     Route::patch('cierre/{cierre}/close', 'CierreController@close');
+
+    /**
+     * Costos Dólares
+     */
+    Route::get('costos_dolares', 'CostosDolaresController@index')->name('sistema_contable.costos_dolares.index');
+    Route::get('costos_dolares/{fechas}/reporte', 'CostosDolaresController@reporte')->name('sistema_contable.costos_dolares.reporte');
+    Route::get('costos_dolares/{fechas}/reportexls', 'CostosDolaresController@reportexls')->name('sistema_contable.costos_dolares.reportexls');
 });

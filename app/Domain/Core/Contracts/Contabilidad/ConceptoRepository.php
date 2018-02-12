@@ -46,4 +46,14 @@ interface ConceptoRepository
      * {@inheritdoc}
      */
     public function getById($id);
+
+    public function paths(array $data,$baseDatos=null);
+    public function pathsConceptos(array $data);
+
+    /**
+     * Obtiene los insumos de un concepto medible
+     * @param $id
+     * @return mixed
+     */
+    public function getInsumos($id);
 }

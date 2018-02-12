@@ -22,12 +22,18 @@ class ConceptoController extends Controller
     {
         parent::__construct();
 
-        $this->middleware('auth');
+        //$this->middleware('auth');
         $this->middleware('context');
 
         $this->concepto = $concepto;
     }
 
+    public function show(Request $request, $id) {
+        $concepto = $this->concepto->getById($id);
+        return $this->response()->item($concepto, function ($item) {
+            return $item;
+        });
+    }
 
     /**
      * @param Request $request
@@ -82,5 +88,21 @@ class ConceptoController extends Controller
             'recordsFiltered' => $conceptos->total(),
             'data' => $conceptos->items()
             ], 200);
+    }
+
+    public function getPathsConceptos(Request $request) {
+
+        $conceptos = $this->concepto->pathsConceptos($request->all());
+
+        return response()->json([
+            'recordsTotal' => $conceptos->total(),
+            'recordsFiltered' => $conceptos->total(),
+            'data' => $conceptos->items()
+        ], 200);
+    }
+
+    public function getInsumos($id){
+        $insumos = $this->concepto->getInsumos($id);
+        return $insumos;
     }
 }
