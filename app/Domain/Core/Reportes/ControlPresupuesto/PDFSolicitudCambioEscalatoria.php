@@ -10,7 +10,6 @@ namespace Ghi\Domain\Core\Reportes\ControlPresupuesto;
 
 use Carbon\Carbon;
 use Ghi\Core\Facades\Context;
-
 use Ghi\Domain\Core\Contracts\ControlPresupuesto\SolicitudCambioPartidaRepository;
 use Ghi\Domain\Core\Models\Concepto;
 use Ghi\Domain\Core\Models\ControlPresupuesto\AfectacionOrdenesPresupuesto;
@@ -19,6 +18,8 @@ use Ghi\Domain\Core\Models\ControlPresupuesto\SolicitudCambio;
 use Ghidev\Fpdf\Rotation;
 use Ghi\Domain\Core\Models\Obra;
 use Illuminate\Support\Facades\DB;
+use BaconQrCode\Renderer\Image\Png;
+use BaconQrCode\Writer;
 
 class PDFSolicitudCambioEscalatoria extends Rotation {
 
@@ -299,11 +300,25 @@ class PDFSolicitudCambioEscalatoria extends Rotation {
         $this->SetFont('Arial', '', 6);
         $this->SetFillColor(180, 180, 180);
 
+        $renderer = new Png();
+        $renderer->setHeight(151);
+        $renderer->setWidth(151);
+        $writer = new Writer($renderer);
+        $writer->writeFile(route('control_presupuesto.cambio_presupuesto.show',[
+            'id' => $this->solicitud->id,
+            'DATABASE_NAME' => $this->obra->nombre,
+            'ID_OBRA' => Context::getId()]), 'qrcode.png');
 
-        $this->SetY($this->GetPageHeight() - 3.5);
+        $this->SetY($this->GetPageHeight() - 5);
+
+        $qrX = $this->GetPageWidth() + 4;
+        $this->Image('qrcode.png');
+        unlink('qrcode.png');
+
+        $this->SetY($this->GetPageHeight() - 4);
         $firmasWidth = 6.5;
-        $firmaX1 = ($this->GetPageWidth() / 3) - ($firmasWidth / 2);
-        $firmaX2 = ($this->GetPageWidth() / 1.50) - ($firmasWidth / 2);
+        $firmaX1 = ($qrX / 3) - ($firmasWidth / 2);
+        $firmaX2 = ($qrX / 1.50) - ($firmasWidth / 2);
 
         $this->SetX($firmaX1);
         $this->Cell($firmasWidth, 0.4, utf8_decode('firma 1'), 'TRLB', 0, 'C', 1);
@@ -333,10 +348,10 @@ class PDFSolicitudCambioEscalatoria extends Rotation {
         $this->Cell(6.5, .4, utf8_decode('Fecha de Consulta: ' . date('Y-m-d g:i a')), 0, 0, 'L');
         $this->SetFont('Arial', 'B', $this->txtFooterTam);
         $this->Cell(6.5, .4, '', 0, 0, 'C');
-        $this->Cell(15, .4, utf8_decode('Página ') . $this->PageNo() . '/{nb}', 0, 0, 'R');
+        $this->Cell(5, .4, utf8_decode('Página ') . $this->PageNo() . '/{nb}', 0, 0, 'R');
         $this->SetY($this->GetPageHeight() - 1.3);
         $this->SetFont('Arial', 'B', $this->txtFooterTam);
-        $this->Cell(6.5, .4, utf8_decode('Formato generado desde '), 0, 0, 'L');
+        $this->Cell(6.5, .4, utf8_decode('Formato generado desde SAO.'), 0, 0, 'L');
 
         if($this->solicitud->id_estatus == 1) {
             $this->SetFont('Arial','',80);
