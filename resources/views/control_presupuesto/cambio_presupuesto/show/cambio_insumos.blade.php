@@ -98,8 +98,8 @@
                         </div>
                         <div class="box-body">
                             <div v-for="(tipos, i) in clasificacion">
-                                <table class="table table-striped table-bordered">
-                                    <div class="form-group">
+                                <table class="table table-striped table-bordered" >
+                                    <div class="form-group" >
                                         <div class="row">
                                             <div class="col-md-12">
                                                 <label for="materiales" class="col-sm-9 control-label">

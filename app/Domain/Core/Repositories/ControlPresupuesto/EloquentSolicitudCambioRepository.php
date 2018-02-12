@@ -520,7 +520,7 @@ class EloquentSolicitudCambioRepository implements SolicitudCambioRepository
 
                     } else { ////nuevo concepto generar nuevo nivel
 
-                        $conceptoMaterial = Concepto::where('descripcion', '=', 'MATERIALES')->where('nivel', 'like', $concepto->nivel . '%')->first();
+                        $conceptoMaterial = Concepto::where('descripcion', '=', 'MANO OBRA')->where('nivel', 'like', $concepto->nivel . '%')->first();
                         $totalInsumos = Concepto::where('nivel', 'like', $conceptoMaterial->nivel . '%')->get();
 
                         $total = count($totalInsumos);
@@ -559,7 +559,7 @@ class EloquentSolicitudCambioRepository implements SolicitudCambioRepository
 
                     } else { ////nuevo concepto generar nuevo nivel
 
-                        $conceptoMaterial = Concepto::where('descripcion', '=', 'MATERIALES')->where('nivel', 'like', $concepto->nivel . '%')->first();
+                        $conceptoMaterial = Concepto::where('descripcion', '=', 'HERRAMIENTA Y EQUIPO')->where('nivel', 'like', $concepto->nivel . '%')->first();
                         $totalInsumos = Concepto::where('nivel', 'like', $conceptoMaterial->nivel . '%')->get();
 
                         $total = count($totalInsumos);
@@ -597,7 +597,7 @@ class EloquentSolicitudCambioRepository implements SolicitudCambioRepository
 
                     } else { ////nuevo concepto generar nuevo nivel
 
-                        $conceptoMaterial = Concepto::where('descripcion', '=', 'MATERIALES')->where('nivel', 'like', $concepto->nivel . '%')->first();
+                        $conceptoMaterial = Concepto::where('descripcion', '=', 'MAQUINARIA')->where('nivel', 'like', $concepto->nivel . '%')->first();
                         $totalInsumos = Concepto::where('nivel', 'like', $conceptoMaterial->nivel . '%')->get();
 
                         $total = count($totalInsumos);

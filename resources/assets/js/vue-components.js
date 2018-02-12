@@ -66,7 +66,7 @@ require('./vue-components/ControlPresupuesto/cambio_presupuesto/variacion_volume
 require('./vue-components/ControlPresupuesto/cambio_presupuesto/show/variacion_volumen');
 require('./vue-components/ControlPresupuesto/cambio_presupuesto/variacion_insumos');
 require('./vue-components/ControlPresupuesto/cambio_presupuesto/escalatoria');
-require('./vue-components/ControlPresupuesto/cambio_presupuesto/show/cambio_insumos');
+require('./vue-components/ControlPresupuesto/cambio_presupuesto/show/variacion_insumos');
 /**
  * Configuración Components
  */

@@ -78,7 +78,13 @@ Vue.component('variacion-insumos', {
                 {data : 'filtro6'},
                 {data : 'filtro7'},
                 {data : 'filtro8'},
-                {data : 'filtro9'},
+                {
+                    data : {},
+                    render : function (data) {
+                        return '<span title="'+data.filtro9+'">'+data.filtro9.substr(0, 55)+'</span>'
+                    }
+
+                },
                 {data : 'filtro10'},
                 {data : 'filtro11'},
                 {data : 'unidad'},
@@ -293,13 +299,16 @@ Vue.component('variacion-insumos', {
                     swal({
                         type : 'success',
                         title : '¡Correcto!',
-                        html : 'Solicitud Guardada con Número de Folio <b>' + response.numero_folio + '</b>'
+                        //html : 'Solicitud Guardada con Número de Folio <b>' + response.numero_folio + '</b>'
+                        html : 'Solicitud Guardada Exitosamente.'
                     }).then(function () {
                         $('#conceptos_modal').modal('hide');
+                        $('#insumos_modal').modal('hide');
                         self.form.partidas = [];
                         self.$emit('reset-filtros');
                         Vue.set(self.form, 'motivo', '');
                         $('#conceptos_table').DataTable().ajax.reload();
+
                     });
                 },
                 complete : function () {

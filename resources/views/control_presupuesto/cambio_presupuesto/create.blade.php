@@ -30,20 +30,20 @@
                                         </select>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label for="cobrabilidad"><b>Tipo de Solicitud:</b></label>
-                                    <select class="form-control input-sm" v-model="form.id_tipo_orden" :disabled="!tipos_orden_filtered.length" v-on:change="obtenerPresupuestos(); form.id_tarjeta = ''">
-                                        <option value>[--SELECCIONE--]</option>
-                                        <option v-for="tipo_orden in tipos_orden_filtered" :value="tipo_orden.id">@{{ tipo_orden.descripcion }}</option>
-                                    </select>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="cobrabilidad"><b>Tipo de Solicitud:</b></label>
+                                        <select class="form-control input-sm" v-model="form.id_tipo_orden" :disabled="!tipos_orden_filtered.length" v-on:change="obtenerPresupuestos(); form.id_tarjeta = ''">
+                                            <option value>[--SELECCIONE--]</option>
+                                            <option v-for="tipo_orden in tipos_orden_filtered" :value="tipo_orden.id">@{{ tipo_orden.descripcion }}</option>
+                                        </select>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="col-md-12" v-if="form.id_tipo_orden != '' && form.id_tipo_orden != 1" v-show="false">
+                <div class="col-md-12" v-if="form.id_tipo_orden != '' && form.id_tipo_orden != 1">
                     <div class="box box-solid">
                         <div class="box-header with-border">
                             <h3 class="box-title">Filtros para consulta de Conceptos</h3>
@@ -53,7 +53,7 @@
                                 <div class="col-md-12" v-if="tarjetas != {}">
                                     <div class="form-group">
                                         <label><b>Número de Tarjeta</b></label>
-                                        <select2 :disabled="cargando" v-model="form.id_tarjeta" :options="tarjetas">
+                                        <select2 :disabled="cargando" v-model="form.id_tarjeta" :options="tarjetas" id="tarjetas_select">
                                         </select2>
                                     </div>
                                 </div>
