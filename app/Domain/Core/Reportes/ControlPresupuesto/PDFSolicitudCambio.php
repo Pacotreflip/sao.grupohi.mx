@@ -20,6 +20,8 @@ use Ghi\Domain\Core\Models\ControlPresupuesto\SolicitudCambioPartidaHistorico;
 use Ghidev\Fpdf\Rotation;
 use Ghi\Domain\Core\Models\Obra;
 use Illuminate\Support\Facades\DB;
+use BaconQrCode\Renderer\Image\Png;
+use BaconQrCode\Writer;
 
 class PDFSolicitudCambio extends Rotation {
 
@@ -219,7 +221,7 @@ class PDFSolicitudCambio extends Rotation {
             foreach ($this->solicitud->partidas as $i => $p)
             {
                 $partida = $p->find($p->id);
-                $conceptoBase = DB::connection('cadeco')->table($base->baseDatos->base_datos . ".dbo.conceptos")->where('clave_concepto', '=', $partida->concepto->clave_concepto)->first();
+                 $conceptoBase = DB::connection('cadeco')->table($base->baseDatos->base_datos . ".dbo.conceptos")->where('clave_concepto', '=', $partida->concepto->clave_concepto)->first();
                 $items = DB::connection('cadeco')->table($base->baseDatos->base_datos . ".dbo.conceptos")->orderBy('nivel', 'ASC')->where('id_obra', '=', Context::getId())->where('nivel', 'like', $conceptoBase->nivel . '%')->get();
 
                 $this->SetFont('Arial', '', 6);
@@ -246,7 +248,6 @@ class PDFSolicitudCambio extends Rotation {
                     $monto_nuevo = $historico ? $historico->monto_presupuestado_actualizado : $item->monto_presupuestado * $factor;
 
                     // Si ya existe el histórico, muestra esa info
-                    dd($historico);
 
                     $this->Row([
                         $contador++,

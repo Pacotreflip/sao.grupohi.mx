@@ -291,10 +291,10 @@ class EloquentSolicitudCambioRepository implements SolicitudCambioRepository
             foreach ($solicitud->partidas as $partida) {
 
                 $conceptoSolicitud = Concepto::find($partida->id_concepto); ///concepto raiz para obtener la clave
-                //if ($conceptoSolicitud->clave_concepto == null) {
-                //    throw new HttpResponseException(new Response('El concepto ' . $conceptoSolicitud->descripcion . ' no cuenta con clave de concepto registrada', 404));
-                //    //////////////////////////////////// sin clave de concepto
-                //}
+                if ($conceptoSolicitud->clave_concepto == null) {
+                    throw new HttpResponseException(new Response('El concepto ' . $conceptoSolicitud->descripcion . ' no cuenta con clave de concepto registrada', 404));
+                    //////////////////////////////////// sin clave de concepto
+                }
                 foreach ($basesAfectadas as $basePresupuesto) { /////////seleccionamos el tipo de presupuesto a afectar
                     $concepto = DB::connection('cadeco')->table($basePresupuesto->baseDatos->base_datos . ".dbo.conceptos")->select('*')->where('clave_concepto', '=', $conceptoSolicitud->clave_concepto)->first();
                     if (!$concepto) {
