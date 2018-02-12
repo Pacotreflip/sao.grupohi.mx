@@ -52,7 +52,7 @@ class PDFSolicitudCambioEscalatoria extends Rotation {
     {
         parent::__construct('P', 'cm', 'A4');
 
-        $this->SetAutoPageBreak(true,4.5);
+        $this->SetAutoPageBreak(true,5);
         $this->WidthTotal = $this->GetPageWidth() - 2;
         $this->txtTitleTam = 18;
         $this->txtSubtitleTam = 13;
@@ -300,20 +300,23 @@ class PDFSolicitudCambioEscalatoria extends Rotation {
         $this->SetFont('Arial', '', 6);
         $this->SetFillColor(180, 180, 180);
 
+        $qr_name = 'qrcode_'. mt_rand() .'.png';
         $renderer = new Png();
-        $renderer->setHeight(151);
-        $renderer->setWidth(151);
+        $renderer->setHeight(132);
+        $renderer->setWidth(132);
+        $renderer->setMargin(0);
         $writer = new Writer($renderer);
         $writer->writeFile(route('control_presupuesto.cambio_presupuesto.show',[
             'id' => $this->solicitud->id,
             'DATABASE_NAME' => $this->obra->nombre,
-            'ID_OBRA' => Context::getId()]), 'qrcode.png');
+            'ID_OBRA' => Context::getId()]), $qr_name);
 
         $this->SetY($this->GetPageHeight() - 5);
 
         $qrX = $this->GetPageWidth() + 4;
-        $this->Image('qrcode.png');
-        unlink('qrcode.png');
+
+        $this->Image($qr_name, 1);
+        unlink($qr_name);
 
         $this->SetY($this->GetPageHeight() - 4);
         $firmasWidth = 6.5;

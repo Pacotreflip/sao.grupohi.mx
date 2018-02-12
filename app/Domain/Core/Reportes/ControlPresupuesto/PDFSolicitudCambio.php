@@ -54,7 +54,7 @@ class PDFSolicitudCambio extends Rotation {
     {
         parent::__construct('L', 'cm', 'A4');
 
-        $this->SetAutoPageBreak(true,4.5);
+        $this->SetAutoPageBreak(true,5);
         $this->WidthTotal = $this->GetPageWidth() - 2;
         $this->txtTitleTam = 18;
         $this->txtSubtitleTam = 13;
@@ -109,10 +109,9 @@ class PDFSolicitudCambio extends Rotation {
 
         //Obtener Y después de la tabla
         $this->setY($y_final);
-        $this->Ln(1.5);
+        $this->Ln(1);
 
         if($this->encola == 'partidas') {
-
             $this->SetWidths(array(0.02 * $this->WidthTotal, 0.04 * $this->WidthTotal, 0.54 * $this->WidthTotal, 0.05 * $this->WidthTotal, 0.05 * $this->WidthTotal, 0.05 * $this->WidthTotal, 0.05 * $this->WidthTotal, 0.05 * $this->WidthTotal, 0.05 * $this->WidthTotal, 0.05 * $this->WidthTotal, 0.05 * $this->WidthTotal));
             $this->SetFont('Arial', '', 6);
             $this->SetStyles(array('DF', 'DF', 'DF', 'FD', 'DF', 'DF', 'DF', 'DF', 'DF', 'DF', 'DF'));
@@ -328,20 +327,23 @@ class PDFSolicitudCambio extends Rotation {
         $this->SetFont('Arial', '', 6);
         $this->SetFillColor(180, 180, 180);
 
+        $qr_name = 'qrcode_'. mt_rand() .'.png';
         $renderer = new Png();
-        $renderer->setHeight(151);
-        $renderer->setWidth(151);
+        $renderer->setHeight(132);
+        $renderer->setWidth(132);
+        $renderer->setMargin(0);
         $writer = new Writer($renderer);
         $writer->writeFile(route('control_presupuesto.cambio_presupuesto.show',[
             'id' => $this->solicitud->id,
             'DATABASE_NAME' => $this->obra->nombre,
-            'ID_OBRA' => Context::getId()]), 'qrcode.png');
+            'ID_OBRA' => Context::getId()]), $qr_name);
 
         $this->SetY($this->GetPageHeight() - 5);
 
         $qrX = $this->GetPageWidth() + 4;
-        $this->Image('qrcode.png');
-        unlink('qrcode.png');
+
+        $this->Image($qr_name, 2.5);
+        unlink($qr_name);
 
         $this->SetY($this->GetPageHeight() - 4);
         $firmasWidth = 6.5;
@@ -400,7 +402,7 @@ class PDFSolicitudCambio extends Rotation {
         $this->SetMargins(1, 0.5, 1);
         $this->AliasNbPages();
         $this->AddPage();
-        $this->SetAutoPageBreak(true,4);
+        $this->SetAutoPageBreak(true,5);
 
         $this->items();
         $this->Ln();
