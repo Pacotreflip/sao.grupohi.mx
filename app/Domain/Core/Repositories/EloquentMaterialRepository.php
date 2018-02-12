@@ -219,4 +219,14 @@ class EloquentMaterialRepository implements MaterialRepository
             ->where('tipo_material', '=', $padre->tipo_material)
             ->get();
     }
+
+    public function  getDescripcionByTipo($descripcion,$tipo){
+        return $this->model->where('descripcion', 'like', '%'.$descripcion.'%')
+            ->where('tipo_material', '=', $tipo)
+
+            ->whereRaw('LEN(nivel) > 4')
+            ->get();
+
+
+    }
 }

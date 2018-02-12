@@ -38,5 +38,7 @@ interface SolicitudCambioPartidaRepository
     //public function mostrarAfectacion($id);
     public function mostrarAfectacionPresupuesto(array $data);
 
+    public function getClasificacionInsumos(array $data);
+
 
 }

@@ -95,6 +95,9 @@ class MaterialController extends Controller
         $items = $this->material->scope("materiales")->scope("sinfamilia")->getBy($request->attribute, $request->operator, $request->value, $request->with);
         return response()->json(['data' => ['materiales' => $items]], 200);
     }
-
+    public function getDescripcionByTipo(Request $request) {
+        $items = $this->material->getDescripcionByTipo($request->descripcion,$request->tipo);
+        return response()->json(['data' => ['materiales' => $items]], 200);
+    }
 
 }

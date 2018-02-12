@@ -187,7 +187,8 @@ class EloquentConceptoRepository implements ConceptoRepository
         $conceptos = $this->model->where('nivel', 'like', $cobrable->nivel.'___.')->get();
         $data = [];
         foreach ($conceptos as $concepto){
-            $data[$concepto->descripcion] =
+
+            $data[str_replace(' ', '',$concepto->descripcion)] =
                 [
                     'id_concepto' => $concepto->id_concepto,
                     'nivel'       => $concepto->nivel,

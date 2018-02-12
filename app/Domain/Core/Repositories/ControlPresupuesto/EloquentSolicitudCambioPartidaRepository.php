@@ -14,6 +14,7 @@ use Ghi\Domain\Core\Contracts\ControlPresupuesto\SolicitudCambioPartidaRepositor
 use Ghi\Domain\Core\Models\Concepto;
 use Ghi\Domain\Core\Models\ControlPresupuesto\BasePresupuesto;
 use Ghi\Domain\Core\Models\ControlPresupuesto\ConceptoTarjeta;
+use Ghi\Domain\Core\Models\ControlPresupuesto\PartidasInsumosAgrupados;
 use Ghi\Domain\Core\Models\ControlPresupuesto\SolicitudCambio;
 use Ghi\Domain\Core\Models\ControlPresupuesto\SolicitudCambioPartida;
 use Ghi\Domain\Core\Models\ControlPresupuesto\SolicitudCambioPartidaHistorico;
@@ -176,4 +177,59 @@ class EloquentSolicitudCambioPartidaRepository implements SolicitudCambioPartida
         }
         return $afectaciones;
     }
+
+    public function getClasificacionInsumos(array $data)
+    {
+        $partidas = SolicitudCambioPartida::with('material')->where('id_solicitud_cambio', '=', $data['id_solicitud_cambio'])->get();
+        $concepto = Concepto::find($data['id_concepto']);
+        // dd($concepto);
+        $materiales = [];
+        $mano_obra = [];
+        $herramienta = [];
+        $maquinaria = [];
+        $data = [];
+
+        foreach ($partidas as $partida) {
+
+            if ($partida['rendimiento_nuevo'] != null) {
+                $partida['cantidad_presupuestada'] = $partida['rendimiento_nuevo'] * $concepto->cantidad_presupuestada;
+            } else {
+                $item = Concepto::where('nivel', 'like', $concepto->nivel . '%')->where('id_material', '=', $partida['id_material'])->first();
+                $partida['cantidad_presupuestada'] = $item->cantidad_presupuestada;
+            }
+            if ($partida['precio_unitario_nuevo'] != null) {
+                $partida['precio_unitario_original'] = $partida['precio_unitario_original'];
+                $partida['precio_unitario_nuevo'] = $partida['precio_unitario_nuevo'];
+                $partida['monto_presupuestado'] = $partida['cantidad_presupuestada'] * $partida['precio_unitario_nuevo'];
+            } else {
+                $partida['precio_unitario_nuevo'] = 0;
+                $partida['monto_presupuestado'] = $partida['cantidad_presupuestada'] * $partida['precio_unitario_original'];
+            }
+            switch ($partida->material->tipo_material) {
+                case 1:///materiales
+                    array_push($materiales, $partida);
+                    break;
+                case 2:///Mano obra
+                    array_push($mano_obra, $partida);
+                    break;
+                case 4:///Herramienta y equipo
+                    array_push($herramienta, $partida);
+                    break;
+                case 8:/// Maquinaria
+                    array_push($maquinaria, $partida);
+                    break;
+            }
+        }
+        $materiales = ['tipo' => 'MATERIALES', 'items' => $materiales];
+        $mano_obra = ['tipo' => 'MANO DE OBRA', 'items' => $mano_obra];
+        $herramienta = ['tipo' => 'HERRAMIENTA', 'items' => $herramienta];
+        $maquinaria = ['tipo' => 'MAQUINARIA Y EQUIPO', 'items' => $maquinaria];
+        array_push($data, $materiales);
+        array_push($data, $mano_obra);
+        array_push($data, $herramienta);
+        array_push($data, $maquinaria);
+        return $data;
+    }
+
+
 }

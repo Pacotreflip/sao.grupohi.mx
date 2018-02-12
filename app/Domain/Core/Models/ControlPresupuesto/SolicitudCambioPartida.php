@@ -8,6 +8,7 @@
 
 namespace Ghi\Domain\Core\Models\ControlPresupuesto;
 use Ghi\Domain\Core\Models\Concepto;
+use Ghi\Domain\Core\Models\Material;
 use Illuminate\Database\Eloquent\Model;
 
 class SolicitudCambioPartida extends Model
@@ -23,7 +24,13 @@ class SolicitudCambioPartida extends Model
         'cantidad_presupuestada_nueva',
         'variacion_volumen',
         'monto_presupuestado',
-        'descripcion'
+        'descripcion',
+        'id_material',
+        'nivel',
+        'precio_unitario_original',
+        'precio_unitario_nuevo',
+        'rendimiento_original',
+        'rendimiento_nuevo'
     ];
 
     public function concepto() {
@@ -42,4 +49,9 @@ class SolicitudCambioPartida extends Model
     public function getClaveConceptoAttribute() {
         return $this->concepto->clave_concepto;
     }
+    public function material()
+    {
+        return $this->hasOne(Material::class, 'id_material', 'id_material');
+    }
+
 }

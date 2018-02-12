@@ -21,18 +21,30 @@ class EloquentCostosDolaresRepository implements CostosDolaresRepository
      */
     public function getBy($fechas)
     {
-        $reporte = DB::connection('cadeco')->select("SELECT int_polizas.fecha                                                AS fecha_poliza,
-       int_polizas.id_int_poliza                                        AS id_poliza,
-       transacciones.tipo_cambio,
-       int_polizas.poliza_contpaq as folio_contpaq,
-       int_polizas_movimientos.cuenta_contable,
-       conceptos.descripcion                                            AS descripcion_concepto,
-       int_polizas_movimientos.importe,
-       int_polizas_movimientos.importe / transacciones.tipo_cambio      AS costo_dolares,
-       int_polizas_movimientos.importe
-        - (int_polizas_movimientos.importe / transacciones.tipo_cambio)  AS costo_dolares_complementaria,
-       int_tipos_polizas_contpaq.descripcion                            AS tipo_poliza_contpaq,
-       int_transacciones_interfaz.descripcion                           AS tipo_poliza_sao
+        $reporte = DB::connection('cadeco')->select(" SELECT int_polizas.fecha AS fecha_poliza,
+int_polizas.id_int_poliza AS id_poliza,
+transacciones.tipo_cambio,
+int_polizas.poliza_contpaq as folio_contpaq,
+int_polizas_movimientos.cuenta_contable,
+conceptos.descripcion AS descripcion_concepto,
+int_polizas_movimientos.importe,
+CAST(
+CASE 
+WHEN transacciones.tipo_cambio = 0
+THEN 0
+ELSE int_polizas_movimientos.importe / transacciones.tipo_cambio
+
+END as float) AS costo_dolares,
+CAST(
+CASE
+WHEN transacciones.tipo_cambio = 0
+THEN 0
+ELSE 
+int_polizas_movimientos.importe
+- (int_polizas_movimientos.importe / transacciones.tipo_cambio)
+END as float) AS costo_dolares_complementaria,
+int_tipos_polizas_contpaq.descripcion AS tipo_poliza_contpaq,
+int_transacciones_interfaz.descripcion AS tipo_poliza_sao
 
   FROM (((((( Contabilidad.int_polizas_movimientos int_polizas_movimientos
         INNER JOIN (SELECT cuentas_conceptos.cuenta FROM  Contabilidad.cuentas_conceptos cuentas_conceptos

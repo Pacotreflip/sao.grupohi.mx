@@ -104,4 +104,11 @@ interface MaterialRepository
      * @return Collection|Material
      */
     public function getHijos($id);
+
+    /**
+     * Obtiene los materiales por descripcion y tipo
+     * @param $id
+     * @return Collection|Material
+     */
+    public function getDescripcionByTipo($descripcion, $tipo);
 }
