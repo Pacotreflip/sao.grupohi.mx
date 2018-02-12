@@ -219,8 +219,7 @@ class PDFSolicitudCambio extends Rotation {
             foreach ($this->solicitud->partidas as $i => $p)
             {
                 $partida = $p->find($p->id);
-                $conceptoBase = DB::connection('cadeco')->table($base->baseDatos->base_datos . ".dbo.conceptos")
-                    ->where('id_concepto', '=', 5465)->first();dd($conceptoBase);
+                $conceptoBase = DB::connection('cadeco')->table($base->baseDatos->base_datos . ".dbo.conceptos")->where('clave_concepto', '=', $partida->concepto->clave_concepto)->first();
                 $items = DB::connection('cadeco')->table($base->baseDatos->base_datos . ".dbo.conceptos")->orderBy('nivel', 'ASC')->where('id_obra', '=', Context::getId())->where('nivel', 'like', $conceptoBase->nivel . '%')->get();
 
                 $this->SetFont('Arial', '', 6);
@@ -245,6 +244,9 @@ class PDFSolicitudCambio extends Rotation {
                     $factor = $partida->cantidad_presupuestada_nueva / $partida->cantidad_presupuestada_original;
                     $cantidad_nueva = $historico ? $historico->cantidad_presupuestada_actualizada : $item->cantidad_presupuestada * $factor;
                     $monto_nuevo = $historico ? $historico->monto_presupuestado_actualizado : $item->monto_presupuestado * $factor;
+
+                    // Si ya existe el histórico, muestra esa info
+                    dd($historico);
 
                     $this->Row([
                         $contador++,
