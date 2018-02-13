@@ -12,7 +12,7 @@
             :solicitud="{{$solicitud}}"
 
             :presupuestos="{{$presupuestos}}"
-            :conceptos_agrupados="{{$conceptos_agrupados}}"
+            :conceptos_agrupados="{{json_encode($conceptos_agrupados['conceptos'])}}"
             v-cloak xmlns:v-on="http://www.w3.org/1999/xhtml">
         <section>
             <div class="row">
@@ -30,7 +30,7 @@
                 </div>
 
                 <div class="col-md-3">
-                    <div class="box box-solid">
+                    <div class="box box-solid" id="detalles_impactos">
                         <div class="box-header with-border">
                             <h3 class="box-title">Detalle de Afectaciones</h3>
                         </div>
@@ -39,19 +39,21 @@
                             <p class="text-muted">@{{ (conceptos_agrupados).length }}</p>
                             <hr>
                             <strong>Importe Conceptos Agrupados</strong>
-                            <p class="text-muted">@{{ solicitud.numero_folio}}</p>
+                            <p class="text-muted text-right">${{number_format( $conceptos_agrupados['imp_nuevo_gen'],'2','.',',')}}</p>
+                            <hr>
+                            <strong>Variacion de Conceptos Agrupados</strong>
+                            <p class="text-muted text-right">${{number_format(($conceptos_agrupados['total_presupuesto']+$conceptos_agrupados['total_variaciones'])- $conceptos_agrupados['total_presupuesto'],'2','.',',')}}</p>
                             <hr>
                             <strong>Importe Presupuesto Actual</strong>
-                            <p class="text-muted">@{{ solicitud.numero_folio}}</p>
+                            <p class="text-muted text-right">${{number_format( $conceptos_agrupados['total_presupuesto'],'2','.',',')}}</p>
                             <hr>
                             <strong>Importe Presupuesto Nuevo</strong>
-                            <p class="text-muted">@{{ solicitud.numero_folio}}</p>
+                            <p class="text-muted text-right">${{number_format($conceptos_agrupados['total_presupuesto']+$conceptos_agrupados['total_variaciones'],'2','.',',')}}</p>
                             <hr>
-
                         </div>
                     </div>
 
-                    <div class="box box-solid">
+                    <div class="box box-solid" >
                         <div class="box-header with-border">
                             <h3 class="box-title">Detalle de la solicitud</h3>
                             <div class="pull-right">
@@ -113,10 +115,9 @@
                                     <td>@{{(i+1)}}</td>
                                     <td>@{{ (agrupado.concepto.descripcion).substr(0, 50) + '...' }}</td>
                                     <td>@{{ parseFloat(agrupado.concepto.cantidad_presupuestada).formatMoney(2, ',','.') }}</td>
-                                    <td class="text-right">$ @{{ parseFloat(agrupado.concepto.
-                                    ).formatMoney(2, ',','.') }}</td>
-                                    <td class="text-right">$ @{{ parseFloat(agrupado.concepto.cantidad_presupuestada-agrupado.concepto.importe_final).formatMoney(2, ',','.') }}</td>
-                                    <td class="text-right">$ @{{ parseFloat(agrupado.concepto.importe_final).formatMoney(2, ',','.') }}</td>
+                                    <td class="text-right">$ @{{ parseFloat(agrupado.concepto.importe_anterior).formatMoney(2, ',','.') }}</td>
+                                    <td class="text-right">$ @{{ parseFloat(agrupado.concepto.variacion).formatMoney(2, ',','.') }}</td>
+                                    <td class="text-right">$ @{{ parseFloat(agrupado.concepto.importe_nuevo).formatMoney(2, ',','.') }}</td>
                                 </tr>
                                 </tbody>
                             </table>
@@ -132,17 +133,23 @@
                         </div>
                         <div class="box-body">
                             <div v-for="(tipos, i) in clasificacion" v-show="tipos.items.length >0">
-                                <table class="table table-striped table-bordered" >
-                                    <div class="form-group" >
-                                        <div class="row">
-                                            <div class="col-md-12">
-                                                <label for="materiales" class="col-sm-9 control-label">
-                                                    <h4>@{{ tipos.tipo }}</h4></label>
-                                            </div>
-                                        </div>
+                                 <table class="table table-striped table-bordered" >
 
-                                    </div>
                                     <thead>
+                                    <tr class="bg-gray-light">
+                                        <th colspan="6" rowspan="3"> <h4>@{{ tipos.tipo }}</h4></th>
+                                    </tr>
+                                    <tr  class="bg-gray-active">
+                                        <th>Importe Inicial</th>
+                                        <th>Variacion de Importe</th>
+                                        <th>Importe Nuevo</th>
+                                    </tr>
+                                    <tr  class="bg-gray-active">
+                                        <td class="text-right">$ @{{ parseFloat(tipos.monto_original).formatMoney(2,'.',',') }}</td>
+                                        <td class="text-right">$ @{{ parseFloat(tipos.variacion).formatMoney(2,'.',',') }}</td>
+                                        <td class="text-right">$ @{{ parseFloat((tipos.monto_nuevo)).formatMoney(2,'.',',') }}</td>
+                                    </tr>
+
                                     <tr>
                                         <th>#</th>
                                         <th style="width: 40%;">Descripción</th>
@@ -173,6 +180,7 @@
                                     </tr>
                                     </tbody>
                                 </table>
+                                <hr >
                             </div>
                         </div>
                     </div>
