@@ -53,7 +53,7 @@
                                 <div class="col-md-12" v-if="tarjetas != {}">
                                     <div class="form-group">
                                         <label><b>Número de Tarjeta</b></label>
-                                        <select2 :disabled="cargando" v-model="form.id_tarjeta" :options="tarjetas" id="tarjetas_select">
+                                        <select2 :disabled="cargando" v-model="form.id_tarjeta" :options="tarjetas" >
                                         </select2>
                                     </div>
                                 </div>
