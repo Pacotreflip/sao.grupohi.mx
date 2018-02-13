@@ -32,6 +32,27 @@
                 <div class="col-md-3">
                     <div class="box box-solid">
                         <div class="box-header with-border">
+                            <h3 class="box-title">Detalle de Afectaciones</h3>
+                        </div>
+                        <div class="box-body">
+                            <strong>Conceptos Agrupados</strong>
+                            <p class="text-muted">@{{ (conceptos_agrupados).length }}</p>
+                            <hr>
+                            <strong>Importe Conceptos Agrupados</strong>
+                            <p class="text-muted">@{{ solicitud.numero_folio}}</p>
+                            <hr>
+                            <strong>Importe Presupuesto Actual</strong>
+                            <p class="text-muted">@{{ solicitud.numero_folio}}</p>
+                            <hr>
+                            <strong>Importe Presupuesto Nuevo</strong>
+                            <p class="text-muted">@{{ solicitud.numero_folio}}</p>
+                            <hr>
+
+                        </div>
+                    </div>
+
+                    <div class="box box-solid">
+                        <div class="box-header with-border">
                             <h3 class="box-title">Detalle de la solicitud</h3>
                         </div>
                         <!-- /.box-header -->
@@ -62,6 +83,7 @@
 
                         <!-- /.box-body -->
                     </div>
+
                 </div>
                 <div class="col-md-9">
                     <div class="box box-solid">
