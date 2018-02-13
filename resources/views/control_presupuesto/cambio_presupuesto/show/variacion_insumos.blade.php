@@ -33,6 +33,9 @@
                     <div class="box box-solid">
                         <div class="box-header with-border">
                             <h3 class="box-title">Detalle de la solicitud</h3>
+                            <div class="pull-right">
+                                <span class="label" ></span><button class="btn btn-xs btn-info mostrar_pdf" :data-pdf_id="solicitud.id" title="Formato"><i class="fa fa-file-pdf-o"></i></button>
+                            </div>
                         </div>
                         <!-- /.box-header -->
                         <div class="box-body">
@@ -152,6 +155,21 @@
                     </div>
 
 
+                </div>
+            </div>
+            <div id="pdf_modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="PDFModal">
+                <div class="modal-dialog modal-lg" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <h4 class="modal-title">Detalles</h4>
+                        </div>
+                        <div class="modal-body">
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                        </div>
+                    </div>
                 </div>
             </div>
         </section>
