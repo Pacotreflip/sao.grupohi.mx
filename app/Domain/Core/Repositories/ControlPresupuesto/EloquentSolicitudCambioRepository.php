@@ -89,7 +89,9 @@ class EloquentSolicitudCambioRepository implements SolicitudCambioRepository
      */
     public function find($id)
     {
-        $solicitudCambio = $this->model->find($id);
+        if(!$solicitudCambio = $this->model->find($id)) {
+            throw new HttpResponseException(new Response('No se encontró la solicitud', 404));
+        }
         return $solicitudCambio;
     }
 

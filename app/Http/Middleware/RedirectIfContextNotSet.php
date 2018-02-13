@@ -52,8 +52,8 @@ class RedirectIfContextNotSet
             // Setea el id y nombre de la base si están presentes en la url
             if (in_array('DATABASE_NAME', array_keys($request->all())) && in_array('ID_OBRA', array_keys($request->all())))
             {
-                $this->context->setId($request->ID_OBRA);
-                $this->context->setDatabaseName($request->DATABASE_NAME);
+                $this->context->setId(base64_decode($request->ID_OBRA));
+                $this->context->setDatabaseName(base64_decode($request->DATABASE_NAME));
             }
 
             else
