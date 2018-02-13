@@ -137,8 +137,7 @@ class CambioPresupuestoController extends Controller
     {
         $solicitud = $this->solicitud->find($id);
 
-        switch ($solicitud->id_tipo_orden)
-        {
+        switch ($solicitud->id_tipo_orden) {
             case TipoOrden::ESCALATORIA:
                 $pdf = new PDFSolicitudCambioEscalatoria($solicitud, $this->partidas);
                 break;
@@ -167,7 +166,7 @@ class CambioPresupuestoController extends Controller
                 return view('control_presupuesto.cambio_presupuesto.show.escalatoria')
                     ->with('solicitud', $solicitud)
                     ->with('cobrabilidad', $solicitud->tipoOrden->cobrabilidad)
-                    ->with('presupuestos',$presupuestos);
+                    ->with('presupuestos', $presupuestos);
                 break;
             case TipoOrden::RECLAMOS_INDIRECTO:
                 break;
@@ -183,13 +182,19 @@ class CambioPresupuestoController extends Controller
                 break;
             case TipoOrden::ORDEN_DE_CAMBIO_DE_INSUMOS:
 
-              //  $clasificacion = $this->partidas->getClasificacionInsumos($solicitud->id);
+                //  $clasificacion = $this->partidas->getClasificacionInsumos($solicitud->id);
                 $conceptos_agrupados = $this->agrupacion->with('concepto')->where([['id_solicitud_cambio', '=', $solicitud->id]])->all();
+                foreach ($conceptos_agrupados as $conceptoAgrupado) {
+                    $data['id_solicitud_cambio'] = $id;
+                    $data['id_concepto'] = $conceptoAgrupado->concepto->id_concepto;
+                    $totales = $this->partidas->getTotalesClasificacionInsumos($data);
+                    $conceptoAgrupado->concepto['importe_final'] = $totales;
+                }
                 return view('control_presupuesto.cambio_presupuesto.show.variacion_insumos')
                     ->with('solicitud', $solicitud)
                     ->with('cobrabilidad', $solicitud->tipoOrden->cobrabilidad)
                     ->with('presupuestos', $presupuestos)
-                    ->with('conceptos_agrupados',$conceptos_agrupados);
+                    ->with('conceptos_agrupados', $conceptos_agrupados);
                 break;
         }
 

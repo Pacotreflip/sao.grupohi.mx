@@ -77,8 +77,9 @@
                                     <th>Concepto</th>
                                     <th>Volumen</th>
                                     <th>Importe Inicial</th>
-                                    <th>Importe Nuevo</th>
                                     <th>Variacion de Importe</th>
+                                    <th>Importe Nuevo</th>
+
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -86,11 +87,11 @@
                                     style="cursor:pointer" v-on:click="mostrarDetalleInsumos(i)">
                                     <td>@{{(i+1)}}</td>
                                     <td>@{{ (agrupado.concepto.descripcion).substr(0, 50) + '...' }}</td>
-                                    <td>@{{ parseFloat(agrupado.concepto.cantidad_presupuestada).formatMoney(3, ',','.') }}</td>
-                                    <td class="text-right">$ @{{ parseFloat(agrupado.concepto.monto_presupuestado).formatMoney(2, ',','.') }}</td>
-                                    <td>importe nuevo</td>
-                                    <td>division entre importe inicial y nuevo</td>
-                                    <td></td>
+                                    <td>@{{ parseFloat(agrupado.concepto.cantidad_presupuestada).formatMoney(2, ',','.') }}</td>
+                                    <td class="text-right">$ @{{ parseFloat(agrupado.concepto.
+                                    ).formatMoney(2, ',','.') }}</td>
+                                    <td class="text-right">$ @{{ parseFloat(agrupado.concepto.cantidad_presupuestada-agrupado.concepto.importe_final).formatMoney(2, ',','.') }}</td>
+                                    <td class="text-right">$ @{{ parseFloat(agrupado.concepto.importe_final).formatMoney(2, ',','.') }}</td>
                                 </tr>
                                 </tbody>
                             </table>
@@ -105,7 +106,7 @@
                             <h3 class="box-title">Afectacion de insumos</h3>
                         </div>
                         <div class="box-body">
-                            <div v-for="(tipos, i) in clasificacion">
+                            <div v-for="(tipos, i) in clasificacion" v-show="tipos.items.length >0">
                                 <table class="table table-striped table-bordered" >
                                     <div class="form-group" >
                                         <div class="row">

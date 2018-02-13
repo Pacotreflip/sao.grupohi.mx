@@ -237,5 +237,53 @@ class EloquentSolicitudCambioPartidaRepository implements SolicitudCambioPartida
         return $data;
     }
 
+    public function getTotalesClasificacionInsumos(array $data)
+    {
+        $partidas = SolicitudCambioPartida::with('material')->where('id_solicitud_cambio', '=', $data['id_solicitud_cambio'])->get();
+        $concepto = Concepto::find($data['id_concepto']);
+        $materiales = 0;
+        $mano_obra = 0;
+        $herramienta = 0;
+        $maquinaria = 0;
+        $totalClasificacion=0;
+        $data = [];
+
+        foreach ($partidas as $partida) {
+
+            if ($partida['rendimiento_nuevo'] != null) {
+                $partida['cantidad_presupuestada'] = $partida['rendimiento_nuevo'] * $concepto->cantidad_presupuestada;
+            } else {
+                $item = Concepto::where('nivel', 'like', $concepto->nivel . '%')->where('id_material', '=', $partida['id_material'])->first();
+                $partida['cantidad_presupuestada'] = $item->cantidad_presupuestada;
+            }
+            if ($partida['precio_unitario_nuevo'] != null) {
+                $partida['precio_unitario_original'] = $partida['precio_unitario_original'];
+                $partida['precio_unitario_nuevo'] = $partida['precio_unitario_nuevo'];
+                $partida['monto_presupuestado'] = $partida['cantidad_presupuestada'] * $partida['precio_unitario_nuevo'];
+            } else {
+                $partida['precio_unitario_nuevo'] = 0;
+                $partida['monto_presupuestado'] = $partida['cantidad_presupuestada'] * $partida['precio_unitario_original'];
+            }
+            switch ($partida->material->tipo_material) {
+                case 1:///materiales
+                  $materiales+=$materiales+ $partida['monto_presupuestado'];
+                    break;
+                case 2:///Mano obra
+                   $mano_obra+=$mano_obra+ $partida['monto_presupuestado'];;
+                    break;
+                case 4:///Herramienta y equipo
+                   $herramienta+=$herramienta+ $partida['monto_presupuestado'];;
+                    break;
+                case 8:/// Maquinaria
+                  $maquinaria+=$maquinaria+ $partida['monto_presupuestado'];
+                    break;
+            }
+        }
+
+        $totalClasificacion=$materiales+$mano_obra+$herramienta+$maquinaria;
+
+        return $totalClasificacion;
+    }
+
 
 }
