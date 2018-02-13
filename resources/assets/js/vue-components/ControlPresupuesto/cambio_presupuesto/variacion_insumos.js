@@ -26,6 +26,12 @@ Vue.component('variacion-insumos', {
             return res;
         }
     },
+    watch : {
+        id_tarjeta : function () {
+            this.get_conceptos();
+            this.form.partidas = []
+        }
+    },
 
     mounted: function () {
         var self = this;

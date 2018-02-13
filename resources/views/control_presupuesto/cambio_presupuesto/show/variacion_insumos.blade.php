@@ -75,13 +75,21 @@
                                 <tr>
                                     <th>#</th>
                                     <th>Concepto</th>
+                                    <th>Volumen</th>
+                                    <th>Importe Inicial</th>
+                                    <th>Importe Nuevo</th>
+                                    <th>Variacion de Importe</th>
                                 </tr>
                                 </thead>
                                 <tbody>
                                 <tr v-for="(agrupado, i) in conceptos_agrupados" :title="agrupado.concepto.path"
                                     style="cursor:pointer" v-on:click="mostrarDetalleInsumos(i)">
                                     <td>@{{(i+1)}}</td>
-                                    <td>@{{agrupado.concepto.descripcion}}</td>
+                                    <td>@{{ (agrupado.concepto.descripcion).substr(0, 50) + '...' }}</td>
+                                    <td>@{{ parseFloat(agrupado.concepto.cantidad_presupuestada).formatMoney(3, ',','.') }}</td>
+                                    <td class="text-right">$ @{{ parseFloat(agrupado.concepto.monto_presupuestado).formatMoney(2, ',','.') }}</td>
+                                    <td>importe nuevo</td>
+                                    <td>division entre importe inicial y nuevo</td>
                                     <td></td>
                                 </tr>
                                 </tbody>
