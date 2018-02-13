@@ -141,7 +141,6 @@ class EloquentSolicitudCambioPartidaRepository implements SolicitudCambioPartida
         $detalle = array();
 
         foreach ($items as $index => $item) {
-
             $historico = SolicitudCambioPartidaHistorico::where('id_solicitud_cambio_partida', '=', $partida->id)
                 ->where('id_base_presupuesto', '=', $data['presupuesto'])
                 ->where('nivel', '=', $item->nivel)
@@ -152,24 +151,32 @@ class EloquentSolicitudCambioPartidaRepository implements SolicitudCambioPartida
             $nivel_hijo = $item->nivel;
             $profundidad = (strlen($nivel_hijo) - strlen($nivel_padre)) / 4;
             $factor = $partida->cantidad_presupuestada_nueva / $partida->cantidad_presupuestada_original;
-            $cantidad_nueva = $historico ? $historico->cantidad_presupuestada_actualizada : $item->cantidad_presupuestada * $factor;
-            $monto_nuevo = $historico ? $historico->monto_presupuestado_actualizado : $item->monto_presupuestado * $factor;
-
 
             $row = array('index' => $index + 1,
                 //'numTarjeta'=>$item->numero_tarjeta,
                 'descripcion' => str_repeat("______", $profundidad) . ' ' . $item->descripcion,
                 'unidad' => utf8_decode($item->unidad),
-                'cantidadPresupuestada' => $historico ? $historico->cantidad_presupuestada_original : $item->cantidad_presupuestada,
-                'cantidadNueva' => $historico ? $historico->cantidad_presupuestada_actualizada : $cantidad_nueva,
-                'monto_presupuestado' => $historico ? $historico->monto_presupuestado_original : $item->monto_presupuestado,
-                'monto_nuevo' => $historico ? $historico->monto_presupuestado_actualizado : $monto_nuevo,
-                'variacion_volumen' => $historico ? $historico->cantidad_presupuestada_actualizada -  $historico->cantidad_presupuestada_original : $cantidad_nueva - $item->cantidad_presupuestada,
                 'pu' => $item->precio_unitario,
-                'variacion_importe' => $historico ? ($historico->monto_presupuestado_actualizado - $historico->monto_presupuestado_original) : ($monto_nuevo - $item->monto_presupuestado),
                 'hijos' => $hijos,
                 'nivel' => $item->nivel
             );
+
+            if($historico) {
+                $row = array_add($row, 'cantidadPresupuestada', $historico->cantidad_presupuestada_original);
+                $row = array_add($row, 'cantidadNueva', $historico->cantidad_presupuestada_actualizada);
+                $row = array_add($row, 'monto_presupuestado', $historico->monto_presupuestado_original);
+                $row = array_add($row, 'monto_nuevo', $historico->monto_presupuestado_actualizado);
+                $row = array_add($row, 'variacion_volumen', $historico->cantidad_presupuestada_actualizada -  $historico->cantidad_presupuestada_original);
+                $row = array_add($row, 'variacion_importe', ($historico->monto_presupuestado_actualizado - $historico->monto_presupuestado_original));
+            } else {
+                $row = array_add($row, 'cantidadPresupuestada', $item->cantidad_presupuestada);
+                $row = array_add($row, 'cantidadNueva',  $item->cantidad_presupuestada * $factor);
+                $row = array_add($row, 'monto_presupuestado',$item->monto_presupuestado);
+                $row = array_add($row, 'monto_nuevo', $item->monto_presupuestado * $factor);
+                $row = array_add($row, 'variacion_volumen', ($item->cantidad_presupuestada * $factor) - $item->cantidad_presupuestada);
+                $row = array_add($row, 'variacion_importe', ($item->monto_presupuestado * $factor) - $item->monto_presupuestado);
+            }
+
             if ($hijos == 1 && strlen($item->nivel) == 40) {
             } else {
                 array_push($afectaciones, $row);
@@ -182,7 +189,6 @@ class EloquentSolicitudCambioPartidaRepository implements SolicitudCambioPartida
     {
         $partidas = SolicitudCambioPartida::with('material')->where('id_solicitud_cambio', '=', $data['id_solicitud_cambio'])->get();
         $concepto = Concepto::find($data['id_concepto']);
-        // dd($concepto);
         $materiales = [];
         $mano_obra = [];
         $herramienta = [];
