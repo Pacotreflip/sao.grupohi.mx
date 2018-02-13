@@ -308,8 +308,8 @@ class PDFSolicitudCambioEscalatoria extends Rotation {
         $writer = new Writer($renderer);
         $writer->writeFile(route('control_presupuesto.cambio_presupuesto.show',[
             'id' => $this->solicitud->id,
-            'DATABASE_NAME' => $this->obra->nombre,
-            'ID_OBRA' => Context::getId()]), $qr_name);
+            'DATABASE_NAME' => base64_encode(Context::getDatabaseName()),
+            'ID_OBRA' => base64_encode(Context::getId())]), $qr_name);
 
         $this->SetY($this->GetPageHeight() - 5);
 
