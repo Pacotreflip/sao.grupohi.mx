@@ -17,7 +17,25 @@ Vue.component('show-variacion-insumos', {
             partida_id:0
         }
     },
+    mounted: function () {
+        var self = this;
 
+        $(document).on('click', '.mostrar_pdf', function () {
+            var _this = $(this),
+                id = _this.data('pdf_id'),
+                url = App.host + '/control_presupuesto/cambio_presupuesto/'+ id +'/pdf';
+
+            $('#pdf_modal').modal('show');
+            $('#pdf_modal .modal-content').css({height: '700px'});
+            $('#pdf_modal .modal-body').html($('<iframe/>', {
+                id:'formatoPDF',
+                src: url,
+                style:'width:99.6%;height:100%',
+                frameborder:"0"
+            })).css({height: '550px'});
+
+        });
+    },
     computed: {},
 
     methods: {

@@ -153,7 +153,9 @@ class CambioPresupuestoController extends Controller
             case TipoOrden::ORDEN_DE_CAMBIO_DE_INSUMOS:
                 break;
         }
-        $pdf->create();
+
+        if (is_object($pdf))
+            $pdf->create();
     }
 
     public function show($id)
