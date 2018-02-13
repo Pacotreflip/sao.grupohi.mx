@@ -243,23 +243,42 @@ class PDFSolicitudCambio extends Rotation {
                     $nivel_hijo = $item->nivel;
                     $profundidad = (strlen($nivel_hijo) - strlen($nivel_padre)) / 4;
                     $factor = $partida->cantidad_presupuestada_nueva / $partida->cantidad_presupuestada_original;
-                    $cantidad_nueva = $historico ? $historico->cantidad_presupuestada_actualizada : $item->cantidad_presupuestada * $factor;
-                    $monto_nuevo = $historico ? $historico->monto_presupuestado_actualizado : $item->monto_presupuestado * $factor;
 
                     // Si ya existe el histórico, muestra esa info
+                    if($historico)
+                    {
+                        $cantidadPresupuestada =  $historico->cantidad_presupuestada_original;
+                        $cantidadNueva =  $historico->cantidad_presupuestada_actualizada;
+                        $monto_presupuestado = $historico->monto_presupuestado_original;
+                        $monto_nuevo = $historico->monto_presupuestado_actualizado;
+                        $variacion_volumen =  $historico->cantidad_presupuestada_actualizada -
+                        $historico->cantidad_presupuestada_original;
+                        $variacion_importe =  ($historico->monto_presupuestado_actualizado -
+                            $historico->monto_presupuestado_original);
+                    }
+
+                    else
+                    {
+                        $cantidadPresupuestada = $item->cantidad_presupuestada;
+                        $cantidadNueva = ($item->cantidad_presupuestada * $factor);
+                        $monto_presupuestado = $item->monto_presupuestado;
+                        $monto_nuevo = ($item->monto_presupuestado * $factor);
+                        $variacion_volumen = ($item->cantidad_presupuestada * $factor) - $item->cantidad_presupuestada;
+                        $variacion_importe = ($item->monto_presupuestado * $factor) - $item->monto_presupuestado;
+                    }
 
                     $this->Row([
                         $contador++,
                         '', //TODO: Buscar de donde demonios sale el número de tarjeta
-                        str_repeat("______", $profundidad) . ' ' . utf8_decode($item->descripcion),
-                        utf8_decode($item->unidad),
-                        '$ ' . number_format($item->precio_unitario, 2, '.', ','),
-                        number_format($historico ? $historico->cantidad_presupuestada_original : $item->cantidad_presupuestada, 2, '.', ','), // cant_anterior
-                        number_format($historico ? $historico->cantidad_presupuestada_actualizada - $historico->cantidad_presupuestada_original :$cantidad_nueva - $item->cantidad_presupuestada, 2, '.', ','), //variacion
-                        number_format($cantidad_nueva, 2, '.', ','),  // cantidad nueva
-                        '$ '. number_format($historico ? $historico->monto_presupuestado_original : $item->monto_presupuestado, 2, '.', ','),
-                        '$ '. number_format($historico ? $historico->monto_presupuestado_actualizado - $historico->monto_presupuestado_original : ($monto_nuevo - $item->monto_presupuestado), 2, '.', ','),
-                        '$ '. number_format($monto_nuevo, 2, '.', ','),
+                        str_repeat("______", $profundidad) . ' ' . utf8_decode($item->descripcion),  // Descripción
+                        utf8_decode($item->unidad), // Unidad
+                        '$ ' . number_format($item->precio_unitario, 2, '.', ','), // Precio unitario
+                        number_format($cantidadPresupuestada, 2, '.', ','), // Vólumen Original
+                        number_format($cantidadNueva), // Vólumen del cambio
+                        number_format($variacion_volumen, 2, '.', ','),  // Vólumen actualizado
+                        '$ '. number_format($monto_presupuestado, 2, '.', ','), // Importe original
+                        '$ '. number_format($monto_nuevo, 2, '.', ','), // Importe del cambio
+                        '$ '. number_format($variacion_importe, 2, '.', ','), // Importe actualizado
                     ]);
                 }
             }
