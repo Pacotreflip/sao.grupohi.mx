@@ -17,6 +17,7 @@ use Ghi\Domain\Core\Models\ControlPresupuesto\SolicitudCambioPartida;
 use Ghi\Domain\Core\Models\ControlPresupuesto\TipoOrden;
 use Ghi\Domain\Core\Reportes\ControlPresupuesto\PDFSolicitudCambio;
 use Ghi\Domain\Core\Reportes\ControlPresupuesto\PDFSolicitudCambioEscalatoria;
+use Ghi\Domain\Core\Reportes\ControlPresupuesto\PDFSolicitudCambioInsumos;
 use Illuminate\Http\Request;
 
 
@@ -151,6 +152,8 @@ class CambioPresupuestoController extends Controller
             case TipoOrden::ORDEN_DE_CAMBIO_NO_COBRABLE:
                 break;
             case TipoOrden::ORDEN_DE_CAMBIO_DE_INSUMOS:
+
+               $pdf = new PDFSolicitudCambioInsumos($solicitud, $this->partidas,$this->agrupacion);
                 break;
         }
 

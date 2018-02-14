@@ -89,7 +89,7 @@ class EloquentSolicitudCambioRepository implements SolicitudCambioRepository
      */
     public function find($id)
     {
-        if(!$solicitudCambio = $this->model->find($id)) {
+        if (!$solicitudCambio = $this->model->find($id)) {
             throw new HttpResponseException(new Response('No se encontró la solicitud', 404));
         }
         return $solicitudCambio;
@@ -155,7 +155,7 @@ class EloquentSolicitudCambioRepository implements SolicitudCambioRepository
     {
         $solicitud = $this->model->with('partidas')->find($id);
 
-        try{
+        try {
             DB::connection('cadeco')->beginTransaction();
 
             // No existe la solicitud
@@ -169,8 +169,7 @@ class EloquentSolicitudCambioRepository implements SolicitudCambioRepository
             $basesAfectadas = AfectacionOrdenesPresupuesto::with('baseDatos')->where('id_tipo_orden', '=', $solicitud->id_tipo_orden)->get();
 
             foreach ($solicitud->partidas as $partida)
-                foreach ($basesAfectadas as $k => $basePresupuesto)
-                {
+                foreach ($basesAfectadas as $k => $basePresupuesto) {
                     // Revisa si ya existe una escalatoria
                     $escalatoria = ConceptoEscalatoria::select('*')->first();
                     $concepto = DB::connection('cadeco')->table($basePresupuesto->baseDatos->base_datos . ".dbo.conceptos")->select('*')->where('descripcion', 'like', '%costo directo%')->first();
@@ -179,19 +178,17 @@ class EloquentSolicitudCambioRepository implements SolicitudCambioRepository
                         throw new HttpResponseException(new Response('No se encontró el concepto costo directo', 404));
 
                     // No existe registro
-                    if (is_null($escalatoria))
-                    {
-                        $max_nivel =  DB::connection('cadeco')->table($basePresupuesto->baseDatos->base_datos . ".dbo.conceptos")->selectRaw('max(nivel) as max_nivel')->whereraw("nivel like '". $concepto->nivel ."___.'")->first();
+                    if (is_null($escalatoria)) {
+                        $max_nivel = DB::connection('cadeco')->table($basePresupuesto->baseDatos->base_datos . ".dbo.conceptos")->selectRaw('max(nivel) as max_nivel')->whereraw("nivel like '" . $concepto->nivel . "___.'")->first();
 
                         // El concepto no tiene hijos
                         if (is_null($max_nivel))
-                            $nuevo_nivel = $concepto->nivel .'001.';
+                            $nuevo_nivel = $concepto->nivel . '001.';
 
                         // Incrementa
-                        else
-                        {
+                        else {
                             $ultimos_numeros = str_replace('.', '', substr($max_nivel->max_nivel, -4));
-                            $nuevo_nivel = $concepto->nivel . str_pad($ultimos_numeros + 1, 3, 0, STR_PAD_LEFT) .'.';
+                            $nuevo_nivel = $concepto->nivel . str_pad($ultimos_numeros + 1, 3, 0, STR_PAD_LEFT) . '.';
                         }
 
                         // Registra el concepto escalatoria
@@ -210,7 +207,7 @@ class EloquentSolicitudCambioRepository implements SolicitudCambioRepository
                             throw new HttpResponseException(new Response('No se creo el registro concepto escalatoria', 404));
 
                         // Registra el "hijo" ESCALATORIA
-                        $nuevo_nivel_hijo = $nuevo_nivel .'001.';
+                        $nuevo_nivel_hijo = $nuevo_nivel . '001.';
                         $concepto_escalatoria_hijo = DB::connection('cadeco')->table($basePresupuesto->baseDatos->base_datos . ".dbo.conceptos")->insert([
                             'id_obra' => Context::getId(),
                             'nivel' => $nuevo_nivel_hijo,
@@ -229,26 +226,22 @@ class EloquentSolicitudCambioRepository implements SolicitudCambioRepository
 
                         if (is_null($escalatoria))
                             throw new HttpResponseException(new Response('No se creo el registro concepto escalatoria', 404));
-                    }
-
-                    // Obtiene el concepto escalatoria
-                    else
-                    {
+                    } // Obtiene el concepto escalatoria
+                    else {
                         $concepto_escalatoria = DB::connection('cadeco')->table($basePresupuesto->baseDatos->base_datos . ".dbo.conceptos")->select('*')->where('id_concepto', '=', $escalatoria->id_concepto)->first();
-                        $concepto_escalatoria_hijo = DB::connection('cadeco')->table($basePresupuesto->baseDatos->base_datos . ".dbo.conceptos")->select('*')->where('nivel', 'like', $concepto_escalatoria->nivel .'___.')->first();
+                        $concepto_escalatoria_hijo = DB::connection('cadeco')->table($basePresupuesto->baseDatos->base_datos . ".dbo.conceptos")->select('*')->where('nivel', 'like', $concepto_escalatoria->nivel . '___.')->first();
                     }
 
                     // Registra el concepto de la partida
-                    $concepto_escalatoria_hijo_max_nivel =  DB::connection('cadeco')->table($basePresupuesto->baseDatos->base_datos . ".dbo.conceptos")->selectRaw('max(nivel) as max_nivel')->whereraw("nivel like '". $concepto_escalatoria_hijo->nivel ."___.'")->first();
+                    $concepto_escalatoria_hijo_max_nivel = DB::connection('cadeco')->table($basePresupuesto->baseDatos->base_datos . ".dbo.conceptos")->selectRaw('max(nivel) as max_nivel')->whereraw("nivel like '" . $concepto_escalatoria_hijo->nivel . "___.'")->first();
 
                     // El concepto escalatoria hijo no tiene hijos
                     if (is_null($concepto_escalatoria_hijo_max_nivel))
-                        $concepto_partida_nivel = $concepto_escalatoria_hijo->nivel .'001.';
+                        $concepto_partida_nivel = $concepto_escalatoria_hijo->nivel . '001.';
 
-                    else
-                    {
+                    else {
                         $concepto_escalatoria_hijo_ultimos_numeros = str_replace('.', '', substr($concepto_escalatoria_hijo_max_nivel->max_nivel, -4));
-                        $concepto_partida_nivel = $concepto_escalatoria_hijo->nivel . str_pad($concepto_escalatoria_hijo_ultimos_numeros + 1, 3, 0, STR_PAD_LEFT) .'.';
+                        $concepto_partida_nivel = $concepto_escalatoria_hijo->nivel . str_pad($concepto_escalatoria_hijo_ultimos_numeros + 1, 3, 0, STR_PAD_LEFT) . '.';
                     }
 
                     // Inserta el nuevo concepto
@@ -356,7 +349,7 @@ class EloquentSolicitudCambioRepository implements SolicitudCambioRepository
                     DB::connection('cadeco')->table($basePresupuesto->baseDatos->base_datos . ".dbo.conceptos")
                         ->where('id_concepto', $concepto->id_concepto)
                         ->update(['cantidad_presupuestada' => $concepto->cantidad_presupuestada * $factor, 'monto_presupuestado' => $concepto->monto_presupuestado * $factor]);
-                    $conc = DB::connection('cadeco')->table($basePresupuesto->baseDatos->base_datos . ".dbo.conceptos")->where('id_concepto', '=', $concepto->id_concepto)->where('id_obra', '=',Context::getId())->first();
+                    $conc = DB::connection('cadeco')->table($basePresupuesto->baseDatos->base_datos . ".dbo.conceptos")->where('id_concepto', '=', $concepto->id_concepto)->where('id_obra', '=', Context::getId())->first();
 
                     //propagacion hacia arriba monto
 
@@ -375,7 +368,6 @@ class EloquentSolicitudCambioRepository implements SolicitudCambioRepository
                                 'monto_presupuestado_original' => $afectaConcepto->monto_presupuestado,
                                 'monto_presupuestado_actualizado' => $cantidadMonto
                             ]);
-
 
 
                             DB::connection('cadeco')->table($basePresupuesto->baseDatos->base_datos . ".dbo.conceptos")
@@ -642,8 +634,8 @@ class EloquentSolicitudCambioRepository implements SolicitudCambioRepository
                     }
 
 
-                    $conceptoReset=Concepto::where('nivel','like',$concepto->nivel.'%')->where('id_material','=',$partida->id_material)->first();
-                    if($conceptoReset) {
+                    $conceptoReset = Concepto::where('nivel', 'like', $concepto->nivel . '%')->where('id_material', '=', $partida->id_material)->first();
+                    if ($conceptoReset) {
                         $partida->id_concepto = $conceptoReset->id_concepto;
                     }
                     switch ($partida->material->tipo_material) {
@@ -835,26 +827,26 @@ class EloquentSolicitudCambioRepository implements SolicitudCambioRepository
                 $conceptoMaterial = Concepto::where('descripcion', '=', 'MATERIALES')->where('nivel', 'like', $concepto->nivel . '%')->first();
                 $totalInsumos = Concepto::where('nivel', 'like', $conceptoMaterial->nivel . '___.')->get();
                 $afectacion_mmonto_propagacion += $totalInsumos->sum('monto_presupuestado');
-                $conceptoMaterial->monto_presupuestado=$totalInsumos->sum('monto_presupuestado');
+                $conceptoMaterial->monto_presupuestado = $totalInsumos->sum('monto_presupuestado');
                 $conceptoMaterial->save();
 
 
                 $conceptoMaterial = Concepto::where('descripcion', '=', 'MANO OBRA')->where('nivel', 'like', $concepto->nivel . '%')->first();
                 $totalInsumos = Concepto::where('nivel', 'like', $conceptoMaterial->nivel . '___.')->get();
                 $afectacion_mmonto_propagacion += $totalInsumos->sum('monto_presupuestado');
-                $conceptoMaterial->monto_presupuestado=$totalInsumos->sum('monto_presupuestado');
+                $conceptoMaterial->monto_presupuestado = $totalInsumos->sum('monto_presupuestado');
                 $conceptoMaterial->save();
 
                 $conceptoMaterial = Concepto::where('descripcion', '=', 'HERRAMIENTA Y EQUIPO')->where('nivel', 'like', $concepto->nivel . '%')->first();
                 $totalInsumos = Concepto::where('nivel', 'like', $conceptoMaterial->nivel . '___.')->get();
                 $afectacion_mmonto_propagacion += $totalInsumos->sum('monto_presupuestado');
-                $conceptoMaterial->monto_presupuestado=$totalInsumos->sum('monto_presupuestado');
+                $conceptoMaterial->monto_presupuestado = $totalInsumos->sum('monto_presupuestado');
                 $conceptoMaterial->save();
 
                 $conceptoMaterial = Concepto::where('descripcion', '=', 'MAQUINARIA')->where('nivel', 'like', $concepto->nivel . '%')->first();
                 $totalInsumos = Concepto::where('nivel', 'like', $conceptoMaterial->nivel . '___.')->get();
                 $afectacion_mmonto_propagacion += $totalInsumos->sum('monto_presupuestado');
-                $conceptoMaterial->monto_presupuestado=$totalInsumos->sum('monto_presupuestado');
+                $conceptoMaterial->monto_presupuestado = $totalInsumos->sum('monto_presupuestado');
                 $conceptoMaterial->save();
                 //dd($afectacion_mmonto_propagacion);
 
@@ -862,10 +854,10 @@ class EloquentSolicitudCambioRepository implements SolicitudCambioRepository
 
                 $tamanioFaltante = strlen($concepto->nivel);
 
-                $monto_anterior= $concepto->monto_presupuestado;
+                $monto_anterior = $concepto->monto_presupuestado;
                 while ($tamanioFaltante > 0) { ///////////////recorrido todos los niveles hacia arriba
-                    $afectaConcepto =Concepto::where('nivel', '=', substr($concepto->nivel, 0, $tamanioFaltante))->where('id_obra','=',Context::getId())->first();
-                    $afectaConcepto->monto_presupuestado=($afectaConcepto->monto_presupuestado-$monto_anterior)+$afectacion_mmonto_propagacion ;
+                    $afectaConcepto = Concepto::where('nivel', '=', substr($concepto->nivel, 0, $tamanioFaltante))->where('id_obra', '=', Context::getId())->first();
+                    $afectaConcepto->monto_presupuestado = ($afectaConcepto->monto_presupuestado - $monto_anterior) + $afectacion_mmonto_propagacion;
                     $afectaConcepto->save();
                     $tamanioFaltante -= 4;
                 }
