@@ -12,6 +12,7 @@ Vue.component('show-variacion-insumos', {
             autorizando:false,
             consultando:false,
             consultandoImportes:false,
+
             partidas:[],
             importes:[],
             partida_id:0
@@ -45,7 +46,7 @@ Vue.component('show-variacion-insumos', {
             var id = self.form.solicitud.id;
             swal({
                 title: "Autorizar la Solicitud de Cambio",
-                html: "¿Estás seguro que desea actualizar la solicitud?",
+                html: "¿Estás seguro que desea actualizar la solicitud? <br> <div id='detalle_sol_cop'></div>",
                 type: "warning",
                 showCancelButton: true,
                 confirmButtonText: "Si, Continuar",
@@ -55,6 +56,8 @@ Vue.component('show-variacion-insumos', {
                     self.autorizar_solicitud(id);
                 }
             });
+
+            $("#detalles_impactos").clone().appendTo("#detalle_sol_cop");
 
         },
         confirm_rechazar_solicitud: function () {
@@ -182,6 +185,30 @@ Vue.component('show-variacion-insumos', {
                 },
                 success: function (data, textStatus, xhr) {
                     self.clasificacion=data.data;
+                    $.each( data.data, function( key, value ) {
+                      switch(value.id_tipo){
+                          case 1:
+                              value.monto_original= agrupado.concepto.materiales_monto_original;
+                              value.variacion=agrupado.concepto.materiales_variacion;
+                              break;
+                          case 2:
+                              value.monto_original= agrupado.concepto.mano_obra_monto_original;
+                              value.variacion=agrupado.concepto.mano_obra_variacion;
+                              break;
+                          case 4:
+                              value.monto_original= agrupado.concepto.herramienta_monto_original;
+                              value.variacion=agrupado.concepto.herramienta_variacion;
+                              break;
+                          case 8:
+                              value.monto_original= agrupado.concepto.maquinaria_monto_original;
+                              value.variacion=agrupado.concepto.maquinaria_variacion;
+                              break;
+
+                      }
+                        value.monto_nuevo= parseFloat(value.monto_original)+ parseFloat(value.variacion);
+                    });
+
+
                     $('#divDetalle').fadeIn();
                 },
                 complete: function () {
