@@ -21432,23 +21432,32 @@ Vue.component('variacion-insumos', {
 
         recalcular: function recalcular(id_concepto, i, tipo) {
             var self = this;
-            var cant_pres = $("#c_p_" + id_concepto + '_' + i).val();
+            var cant_pres = $(".rendimiento" + id_concepto + '_' + i).val();
+            var cant_concepto = self.form.partidas[0].cobrable.cantidad_presupuestada;
             switch (tipo) {
                 case 1:
                     ///agregar a materiales
                     self.form.partidas[0].conceptos.MATERIALES.insumos[i].rendimiento_nuevo = cant_pres;
+                    var total = cant_concepto * self.form.partidas[0].conceptos.MATERIALES.insumos[i].rendimiento_nuevo;
+                    $("#r_p_" + id_concepto + '_' + i).val(total);
                     break;
                 case 2:
                     //// agergar a mano obra
                     self.form.partidas[0].conceptos.MANOOBRA.insumos[i].rendimiento_nuevo = cant_pres;
+                    var total = cant_concepto * self.form.partidas[0].conceptos.MANOOBRA.insumos[i].rendimiento_nuevo;
+                    $("#r_p_" + id_concepto + '_' + i).val(total);
                     break;
                 case 4:
                     ////agregar a herram y equipo
                     self.form.partidas[0].conceptos.HERRAMIENTAYEQUIPO.insumos[i].rendimiento_nuevo = cant_pres;
+                    var total = cant_concepto * self.form.partidas[0].conceptos.HERRAMIENTAYEQUIPO.insumos[i].rendimiento_nuevo;
+                    $("#r_p_" + id_concepto + '_' + i).val(total);
                     break;
                 case 8:
                     ///agregar a maquinaria
                     self.form.partidas[0].conceptos.MAQUINARIA.insumos[i].rendimiento_nuevo = cant_pres;
+                    var total = cant_concepto * self.form.partidas[0].conceptos.MAQUINARIA.insumos[i].rendimiento_nuevo;
+                    $("#r_p_" + id_concepto + '_' + i).val(total);
                     break;
             }
         },
@@ -21473,6 +21482,39 @@ Vue.component('variacion-insumos', {
                 case 8:
                     ///agregar a maquinaria
                     self.form.partidas[0].conceptos.MAQUINARIA.insumos[i].precio_unitario_nuevo = cant;
+                    break;
+            }
+        },
+
+        recalcular_cantidad: function recalcular_cantidad(id_concepto, i, tipo) {
+            var self = this;
+            var cant_pres = $("#r_p_" + id_concepto + '_' + i).val();
+            var cant_concepto = self.form.partidas[0].cobrable.cantidad_presupuestada;
+            switch (tipo) {
+                case 1:
+                    ///agregar a materiales
+                    var total = cant_pres / cant_concepto;
+                    $(".rendimiento" + id_concepto + '_' + i).val(total);
+                    self.form.partidas[0].conceptos.MATERIALES.insumos[i].rendimiento_nuevo = total;
+                    break;
+                case 2:
+                    //// agergar a mano obra
+                    var total = cant_pres / cant_concepto;
+                    $(".rendimiento" + id_concepto + '_' + i).val(total);
+                    self.form.partidas[0].conceptos.MANOOBRA.insumos[i].rendimiento_nuevo = total;
+
+                    break;
+                case 4:
+                    ////agregar a herram y equipo
+                    var total = cant_pres / cant_concepto;
+                    $(".rendimiento" + id_concepto + '_' + i).val(total);
+                    self.form.partidas[0].conceptos.HERRAMIENTAYEQUIPO.insumos[i].rendimiento_nuevo = total;
+                    break;
+                case 8:
+                    ///agregar a maquinaria
+                    var total = cant_pres / cant_concepto;
+                    $(".rendimiento" + id_concepto + '_' + i).val(total);
+                    self.form.partidas[0].conceptos.MAQUINARIA.insumos[i].rendimiento_nuevo = total;
                     break;
             }
         }
