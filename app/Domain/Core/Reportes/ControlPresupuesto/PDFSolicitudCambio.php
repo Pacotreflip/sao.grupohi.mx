@@ -112,7 +112,7 @@ class PDFSolicitudCambio extends Rotation {
         $this->Ln(1);
 
         if($this->encola == 'partidas') {
-            $this->SetWidths(array(0.02 * $this->WidthTotal, 0.04 * $this->WidthTotal, 0.54 * $this->WidthTotal, 0.05 * $this->WidthTotal, 0.05 * $this->WidthTotal, 0.05 * $this->WidthTotal, 0.05 * $this->WidthTotal, 0.05 * $this->WidthTotal, 0.05 * $this->WidthTotal, 0.05 * $this->WidthTotal, 0.05 * $this->WidthTotal));
+            $this->SetWidths(array(0.02 * $this->WidthTotal, 0.04 * $this->WidthTotal, 0.46 * $this->WidthTotal, 0.06 * $this->WidthTotal, 0.06 * $this->WidthTotal, 0.06 * $this->WidthTotal, 0.06 * $this->WidthTotal, 0.06 * $this->WidthTotal, 0.06 * $this->WidthTotal, 0.06 * $this->WidthTotal, 0.06 * $this->WidthTotal));
             $this->SetFont('Arial', '', 6);
             $this->SetStyles(array('DF', 'DF', 'DF', 'FD', 'DF', 'DF', 'DF', 'DF', 'DF', 'DF', 'DF'));
             $this->SetFills(array('180,180,180', '180,180,180', '180,180,180', '180,180,180', '180,180,180', '180,180,180', '180,180,180', '180,180,180', '180,180,180', '180,180,180', '180,180,180'));
@@ -126,7 +126,7 @@ class PDFSolicitudCambio extends Rotation {
             $this->SetTextColors(array('0,0,0', '0,0,0', '0,0,0', '0,0,0', '0,0,0', '0,0,0', '0,0,0', '0,0,0', '0,0,0', '0,0,0', '0,0,0'));
             $this->SetHeights(array(0.35));
             $this->SetAligns(array('L', 'L', 'L', 'L', 'R', 'R', 'R', 'R', 'R', 'R', 'R'));
-            $this->SetWidths(array(0.02 * $this->WidthTotal, 0.04 * $this->WidthTotal, 0.54 * $this->WidthTotal, 0.05 * $this->WidthTotal, 0.05 * $this->WidthTotal, 0.05 * $this->WidthTotal, 0.05 * $this->WidthTotal, 0.05 * $this->WidthTotal, 0.05 * $this->WidthTotal, 0.05 * $this->WidthTotal, 0.05 * $this->WidthTotal));
+            $this->SetWidths(array(0.02 * $this->WidthTotal, 0.04 * $this->WidthTotal, 0.46 * $this->WidthTotal, 0.06 * $this->WidthTotal, 0.06 * $this->WidthTotal, 0.06 * $this->WidthTotal, 0.06 * $this->WidthTotal, 0.06 * $this->WidthTotal, 0.06 * $this->WidthTotal, 0.06 * $this->WidthTotal, 0.06 * $this->WidthTotal));
         }
     }
 
@@ -197,7 +197,7 @@ class PDFSolicitudCambio extends Rotation {
             $this->SetFont('Arial', 'B', $this->txtSeccionTam);
             $this->SetXY($this->GetX(), $this->GetY());
             $this->Cell($this->WidthTotal, 0.7, utf8_decode('PRESUPUESTO DE '. $base->baseDatos->descripcion), 'TRLB', 0, 'C');
-            $this->SetXY($this->GetX(), $this->GetY() + 0.5);
+            $this->SetXY($this->GetX(), $this->GetY() + 0.3);
             $this->SetWidths(array(0));
             $this->SetFills(array('255,255,255'));
             $this->SetTextColors(array('1,1,1'));
@@ -220,7 +220,7 @@ class PDFSolicitudCambio extends Rotation {
             foreach ($this->solicitud->partidas as $i => $p)
             {
                 $partida = $p->find($p->id);
-                 $conceptoBase = DB::connection('cadeco')->table($base->baseDatos->base_datos . ".dbo.conceptos")->where('clave_concepto', '=', $partida->concepto->clave_concepto)->first();
+                $conceptoBase = DB::connection('cadeco')->table($base->baseDatos->base_datos . ".dbo.conceptos")->where('clave_concepto', '=', $partida->concepto->clave_concepto)->first();
                 $items = DB::connection('cadeco')->table($base->baseDatos->base_datos . ".dbo.conceptos")->orderBy('nivel', 'ASC')->where('id_obra', '=', Context::getId())->where('nivel', 'like', $conceptoBase->nivel . '%')->get();
 
                 $this->SetFont('Arial', '', 6);
@@ -232,68 +232,53 @@ class PDFSolicitudCambio extends Rotation {
 
                 $this->encola = 'partidas';
 
-                foreach ($items as $index => $item) {
+                $historico = SolicitudCambioPartidaHistorico::where('id_solicitud_cambio_partida', '=', $partida->id)
+                    ->where('id_base_presupuesto', '=', $base->id_base_presupuesto)
+                    ->where('nivel', '=', $conceptoBase->nivel)
+                    ->first();
 
-                    $historico = SolicitudCambioPartidaHistorico::where('id_solicitud_cambio_partida', '=', $partida->id)
-                        ->where('id_base_presupuesto', '=', $base->id_base_presupuesto)
-                        ->where('nivel', '=', $item->nivel)
-                        ->first();
+                $factor = $partida->cantidad_presupuestada_nueva / $partida->cantidad_presupuestada_original;
 
-                    $nivel_padre = $partida->concepto->nivel;
-                    $nivel_hijo = $item->nivel;
-                    $profundidad = (strlen($nivel_hijo) - strlen($nivel_padre)) / 4;
-                    $factor = $partida->cantidad_presupuestada_nueva / $partida->cantidad_presupuestada_original;
-
-                    // Si ya existe el histórico, muestra esa info
-                    if($historico)
-                    {
-                        $cantidadPresupuestada =  $historico->cantidad_presupuestada_original;
-                        $cantidadNueva =  $historico->cantidad_presupuestada_actualizada;
-                        $monto_presupuestado = $historico->monto_presupuestado_original;
-                        $monto_nuevo = $historico->monto_presupuestado_actualizado;
-                        $variacion_volumen =  $historico->cantidad_presupuestada_actualizada -
-                        $historico->cantidad_presupuestada_original;
-                        $variacion_importe =  ($historico->monto_presupuestado_actualizado -
-                            $historico->monto_presupuestado_original);
-                    }
-
-                    else
-                    {
-                        $cantidadPresupuestada = $item->cantidad_presupuestada;
-                        $cantidadNueva = ($item->cantidad_presupuestada * $factor);
-                        $monto_presupuestado = $item->monto_presupuestado;
-                        $monto_nuevo = ($item->monto_presupuestado * $factor);
-                        $variacion_volumen = ($item->cantidad_presupuestada * $factor) - $item->cantidad_presupuestada;
-                        $variacion_importe = ($item->monto_presupuestado * $factor) - $item->monto_presupuestado;
-                    }
-
-                    $this->Row([
-                        $contador++,
-                        '', //TODO: Buscar de donde demonios sale el número de tarjeta
-                        str_repeat("______", $profundidad) . ' ' . utf8_decode($item->descripcion),  // Descripción
-                        utf8_decode($item->unidad), // Unidad
-                        '$ ' . number_format($item->precio_unitario, 2, '.', ','), // Precio unitario
-                        number_format($cantidadPresupuestada, 2, '.', ','), // Vólumen Original
-                        number_format($cantidadNueva), // Vólumen del cambio
-                        number_format($variacion_volumen, 2, '.', ','),  // Vólumen actualizado
-                        '$ '. number_format($monto_presupuestado, 2, '.', ','), // Importe original
-                        '$ '. number_format($monto_nuevo, 2, '.', ','), // Importe del cambio
-                        '$ '. number_format($variacion_importe, 2, '.', ','), // Importe actualizado
-                    ]);
+                // Si ya existe el histórico, muestra esa info
+                if($historico) {
+                    $cantidadPresupuestada =  $historico->cantidad_presupuestada_original;
+                    $cantidadNueva =  $historico->cantidad_presupuestada_actualizada;
+                    $monto_presupuestado = $historico->monto_presupuestado_original;
+                    $monto_nuevo = $historico->monto_presupuestado_actualizado;
+                    $variacion_volumen =  $historico->cantidad_presupuestada_actualizada - $historico->cantidad_presupuestada_original;
+                    $variacion_importe =  ($historico->monto_presupuestado_actualizado - $historico->monto_presupuestado_original);
+                } else {
+                    $cantidadPresupuestada = $conceptoBase->cantidad_presupuestada;
+                    $cantidadNueva = ($conceptoBase->cantidad_presupuestada * $factor);
+                    $monto_presupuestado = $conceptoBase->monto_presupuestado;
+                    $monto_nuevo = ($conceptoBase->monto_presupuestado * $factor);
+                    $variacion_volumen = ($conceptoBase->cantidad_presupuestada * $factor) - $conceptoBase->cantidad_presupuestada;
+                    $variacion_importe = ($conceptoBase->monto_presupuestado * $factor) - $conceptoBase->monto_presupuestado;
                 }
-            }
 
-            $this->Ln(1);
+                $this->Row([
+                    $contador++,
+                    '', //TODO: Buscar de donde demonios sale el número de tarjeta
+                    utf8_decode($conceptoBase->descripcion),  // Descripción
+                    utf8_decode($conceptoBase->unidad), // Unidad
+                    '$ ' . number_format($conceptoBase->precio_unitario, 2, '.', ','), // Precio unitario
+                    number_format($cantidadPresupuestada, 2, '.', ','), // Vólumen Original
+                    number_format($variacion_volumen), // Vólumen del cambio
+                    number_format($cantidadNueva, 2, '.', ','),  // Vólumen actualizado
+                    '$ '. number_format($monto_presupuestado, 2, '.', ','), // Importe original
+                    '$ '. number_format($variacion_importe, 2, '.', ','), // Importe del cambio
+                    '$ '. number_format($monto_nuevo, 2, '.', ','), // Importe actualizado
+                ]);
+            }
+            $this->Ln(0.5);
         }
 
         $this->encola = '';
     }
     function motivo(){
 
-        $this->encola = "";
+        $this->encola = "motivo";
 
-        if($this->GetY() > $this->GetPageHeight() - 5)
-            $this->AddPage();
 
         $this->SetWidths(array($this->WidthTotal));
         $this->SetFills(array('180,180,180'));
@@ -361,7 +346,7 @@ class PDFSolicitudCambio extends Rotation {
 
         $qrX = $this->GetPageWidth() + 4;
 
-        $this->Image($qr_name, 2.5);
+        $this->Image($qr_name, 1);
         unlink($qr_name);
 
         $this->SetY($this->GetPageHeight() - 4);
