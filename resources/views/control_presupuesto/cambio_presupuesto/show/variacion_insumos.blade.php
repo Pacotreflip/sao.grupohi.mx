@@ -35,14 +35,17 @@
                             <h3 class="box-title">Detalle de Afectaciones</h3>
                         </div>
                         <div class="box-body">
-                            <strong>Conceptos Agrupados</strong>
+                            <strong>Conceptos Modificados</strong>
                             <p class="text-muted">@{{ (conceptos_agrupados).length }}</p>
                             <hr>
-                            <strong>Importe Conceptos Agrupados</strong>
-                            <p class="text-muted text-right">${{number_format( $conceptos_agrupados['imp_nuevo_gen'],'2','.',',')}}</p>
+                            <strong>Importe Conceptos Modificados</strong>
+                            <p class="text-muted text-right">${{number_format( $conceptos_agrupados['imp_nuevo_gen']-$conceptos_agrupados['total_variaciones'],'2','.',',')}}</p>
                             <hr>
-                            <strong>Variacion de Conceptos Agrupados</strong>
-                            <p class="text-muted text-right">${{number_format(($conceptos_agrupados['total_presupuesto']+$conceptos_agrupados['total_variaciones'])- $conceptos_agrupados['total_presupuesto'],'2','.',',')}}</p>
+                            <strong>Importe Variacion</strong>
+                            <p class="text-muted text-right">${{number_format($conceptos_agrupados['total_variaciones'],'2','.',',')}}</p>
+                            <hr>
+                            <strong>Importe Conceptos Actualizados</strong>
+                            <p class="text-muted text-right">${{number_format($conceptos_agrupados['imp_nuevo_gen'],'2','.',',')}}</p>
                             <hr>
                             <strong>Importe Presupuesto Actual</strong>
                             <p class="text-muted text-right">${{number_format( $conceptos_agrupados['total_presupuesto'],'2','.',',')}}</p>
@@ -154,12 +157,14 @@
                                         <th>#</th>
                                         <th style="width: 40%;">Descripción</th>
                                         <th>Unidad</th>
-                                        <th>Rendimiento Actual</th>
-                                        <th>Rendimiento Nuevo</th>
-                                        <th>Cantidad Presupuestada</th>
+
+                                        <th>Cantidad Presupuestada Actual</th>
+                                        <th>Cantidad Presupuestada Nueva</th>
+
                                         <th>Precio Unitario Actual</th>
                                         <th>Precio Unitario Nuevo</th>
-                                        <th>Monto Presupuestado</th>
+                                        <th>Monto Presupuestado Actual</th>
+                                        <th>Monto Presupuestado Nuevo</th>
                                     </tr>
                                     </thead>
                                     <tbody>
@@ -167,13 +172,14 @@
                                         <td>@{{ i+1 }}</td>
                                         <td>@{{ insumo.material.descripcion }}</td>
                                         <td>@{{ insumo.material.unidad }}</td>
-                                        <td>@{{ parseFloat(insumo.rendimiento_original).formatMoney(2,'.',',') }}</td>
-                                        <td>@{{ parseFloat(insumo.rendimiento_nuevo).formatMoney(2,'.',',') }}</td>
                                         <td>@{{ parseFloat(insumo.cantidad_presupuestada).formatMoney(2,'.',',') }}</td>
+                                        <td>@{{ parseFloat(insumo.cantidad_presupuestada_nueva).formatMoney(2,'.',',') }}</td>
                                         <td class="text-right">
                                             $@{{ parseFloat(insumo.precio_unitario_original).formatMoney(2,'.',',') }}</td>
                                         <td class="text-right">
                                             $@{{ parseFloat(insumo.precio_unitario_nuevo).formatMoney(2,'.',',') }}</td>
+                                        <td class="text-right">
+                                            $@{{ parseFloat(insumo.cantidad_presupuestada*insumo.precio_unitario_original).formatMoney(2,'.',',') }}</td>
                                         <td class="text-right">
                                             $@{{ parseFloat(insumo.monto_presupuestado).formatMoney(2,'.',',') }}</td>
 

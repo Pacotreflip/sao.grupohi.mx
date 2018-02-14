@@ -20,6 +20,9 @@ class SolicitudCambioPartidaHistorico extends Model
         'cantidad_presupuestada_original',
         'cantidad_presupuestada_actualizada',
         'monto_presupuestado_original',
-        'monto_presupuestado_actualizado'
+        'monto_presupuestado_actualizado',
+        'id_partidas_insumos_agrupados',
+        'precio_unitario_actualizado',
+        'precio_unitario_original'
     ];
 }
