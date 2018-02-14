@@ -3,6 +3,7 @@
 namespace Ghi\Domain\Core\Repositories\Contabilidad;
 
 use Carbon\Carbon;
+use Ghi\Core\Facades\Context;
 use Ghi\Domain\Core\Contracts\Contabilidad\FacturaRepository;
 use Ghi\Domain\Core\Contracts\Contabilidad\RevaluacionRepository;
 use Ghi\Domain\Core\Models\Cambio;
@@ -138,7 +139,7 @@ class EloquentRevaluacionRepository implements RevaluacionRepository
      * Obtiene el tipo de cambio del ultimo dia habil del mes en curso
      * @return float
      */
-    public function getTipoCambio()
+    public function getTipoCambio($id_moneda)
     {
         $hoy = Carbon::now();
         if($hoy->between($this->getPrimerDiaRevaluacion('last'), $this->getUltimoDiaRevaluacion('last'))) {
@@ -148,7 +149,7 @@ class EloquentRevaluacionRepository implements RevaluacionRepository
         $cambio = Cambio::select('cambio', 'fecha')
             ->where(DB::raw("MONTH(fecha)"), '=' , $hoy->month)
             ->where(DB::raw("YEAR(fecha)"), '=' ,$hoy->year)
-            ->where('id_moneda', '=' , Moneda::DOLARES)
+            ->where('id_moneda', '=' , $id_moneda)
             ->whereNotIn(DB::raw("DATEPART(dw, fecha)"), [1, 7])
             ->whereRaw(DB::raw("fecha not in (SELECT fecha FROM [SEGURIDAD_ERP].[dbo].[dias_festivos])"))
             ->orderBy('fecha', 'DESC')

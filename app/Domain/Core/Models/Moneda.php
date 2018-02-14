@@ -25,4 +25,8 @@ class Moneda extends Model
     {
         return $this->nombre;
     }
+
+    public function scopeExtranjeras($query) {
+        return $query->where('tipo', '=', 0);
+    }
 }
