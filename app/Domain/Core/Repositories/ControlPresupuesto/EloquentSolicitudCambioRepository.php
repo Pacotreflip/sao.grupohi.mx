@@ -113,6 +113,10 @@ class EloquentSolicitudCambioRepository implements SolicitudCambioRepository
                 $partida = SolicitudCambioPartida::create($partida);
             }
 
+            foreach ($data['afectaciones'] as $index => $afectacion) {
+                $solicitud->aplicaciones()->attach([$afectacion => ['registro' => auth()->id()] ]);
+            }
+
             $solicitud = $this->with('partidas')->find($solicitud->id);
             DB::connection('cadeco')->commit();
             return $solicitud;
@@ -273,14 +277,15 @@ class EloquentSolicitudCambioRepository implements SolicitudCambioRepository
 
     /**
      * Autoriza una solicitud de cambio
+     * @param array $data
      * @param $id
-     * @return Solic
-     *
-     * itudCambio
      * @throws \Exception
+     * @return SolicitudCambio
      */
-    public function autorizarVariacionVolumen($id)
+    public function  autorizarVariacionVolumen($id, array $data)
     {
+
+        dd($data);
         try {
             DB::connection('cadeco')->beginTransaction();
             $solicitud = $this->model->with('partidas')->find($id);

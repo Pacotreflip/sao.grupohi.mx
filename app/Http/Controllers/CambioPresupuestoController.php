@@ -215,7 +215,7 @@ class CambioPresupuestoController extends Controller
             case TipoOrden::CONCEPTOS_EXTRAORDINARIOS:
                 break;
             case TipoOrden::VARIACION_VOLUMEN:
-                $solicitud = $this->solicitud->autorizarVariacionVolumen($request->id);
+                $solicitud = $this->solicitud->autorizarVariacionVolumen($request->all());
                 break;
             case TipoOrden::ORDEN_DE_CAMBIO_NO_COBRABLE:
                 break;

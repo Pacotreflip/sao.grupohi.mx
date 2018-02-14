@@ -13,11 +13,12 @@ class CreateControlPresupuestoSolicitudCambioAplicacionTable extends Migration
     public function up()
     {
         Schema::create('ControlPresupuesto.solicitud_cambio_aplicacion', function (Blueprint $table) {
-            $table->increments('id');
             $table->unsignedInteger('id_base_presupuesto');
             $table->unsignedInteger('id_solicitud_cambio');
             $table->integer('registro');
             $table->timestamps();
+
+            $table->primary(['id_base_presupuesto', 'id_solicitud_cambio']);
 
             $table->foreign('id_base_presupuesto')
                 ->references('id')
