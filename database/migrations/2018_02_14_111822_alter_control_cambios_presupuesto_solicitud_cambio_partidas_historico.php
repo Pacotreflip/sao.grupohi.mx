@@ -13,11 +13,8 @@ class AlterControlCambiosPresupuestoSolicitudCambioPartidasHistorico extends Mig
     public function up()
     {
         Schema::table('ControlPresupuesto.solicitud_cambio_partidas_historico', function (Blueprint $table) {
-
             $table->float("precio_unitario_original")->nullable();
-            $table->float("precio_unitario_nuevo")->nullable();
-
-
+            $table->float("precio_unitario_actualizado")->nullable();
         });
     }
 
@@ -30,7 +27,7 @@ class AlterControlCambiosPresupuestoSolicitudCambioPartidasHistorico extends Mig
     {
         Schema::table('ControlPresupuesto.solicitud_cambio_partidas_historico', function (Blueprint $table) {
             $table->dropColumn('precio_unitario_original');
-            $table->dropColumn('precio_unitario_nuevo');
+            $table->dropColumn('precio_unitario_actualizado');
 
         });
     }

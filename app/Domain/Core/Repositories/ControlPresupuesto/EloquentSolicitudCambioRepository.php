@@ -12,6 +12,7 @@ use Ghi\Core\Facades\Context;
 use Ghi\Core\Models\Concepto;
 use Ghi\Domain\Core\Contracts\ControlPresupuesto\SolicitudCambioRepository;
 use Ghi\Domain\Core\Models\ControlPresupuesto\AfectacionOrdenesPresupuesto;
+use Ghi\Domain\Core\Models\ControlPresupuesto\BasePresupuesto;
 use Ghi\Domain\Core\Models\ControlPresupuesto\ConceptoEscalatoria;
 use Ghi\Domain\Core\Models\ControlPresupuesto\ConceptoTarjeta;
 use Ghi\Domain\Core\Models\ControlPresupuesto\Estatus;
@@ -659,17 +660,30 @@ class EloquentSolicitudCambioRepository implements SolicitudCambioRepository
 
                 foreach ($materiales as $material) ////integracion materiales tarjeta nueva
                 {
+
                     if ($material->id_concepto) { ////actualizacion de concepto
+                        $dataHist = [];
                         $conceptoUpdate = Concepto::find($material->id_concepto);
                         $conceptoUpdate->cantidad_presupuestada = $material['cantidad_presupuestada']; //cambio cantidad presupuestada
                         if ($material['precio_unitario_nuevo'] > 0) {
+                            $dataHist['precio_unitario_original'] = $conceptoUpdate->precio_unitario;
                             $conceptoUpdate->precio_unitario = $material['precio_unitario_nuevo'];
+                            $dataHist['precio_unitario_actualizado'] = $conceptoUpdate->precio_unitario;
                         }
+
+                        $dataHist['monto_presupuestado_original'] = $conceptoUpdate->monto_presupuestado;
                         $conceptoUpdate->monto_presupuestado = $conceptoUpdate->cantidad_presupuestada * $conceptoUpdate->precio_unitario;
                         $conceptoUpdate->save();
+                        $dataHist['monto_presupuestado_actualizado'] = $conceptoUpdate->monto_presupuestado;
+                        $dataHist['id_solicitud_cambio_partida'] = $material->id;
+                        $dataHist['id_base_presupuesto'] = 2;
+                        $dataHist['nivel'] = $conceptoUpdate->nivel;
+
+                        SolicitudCambioPartidaHistorico::create($dataHist);
+
 
                     } else { ////nuevo concepto generar nuevo nivel
-
+                        $dataHist = [];
                         $conceptoMaterial = Concepto::where('descripcion', '=', 'MATERIALES')->where('nivel', 'like', $concepto->nivel . '%')->first();
                         $totalInsumos = Concepto::where('nivel', 'like', $conceptoMaterial->nivel . '%')->get();
 
@@ -688,8 +702,19 @@ class EloquentSolicitudCambioRepository implements SolicitudCambioRepository
                             "precio_unitario" => $material->precio_unitario_nuevo,
 
                         ];
-
                         $nuevoInsumo = \Ghi\Domain\Core\Models\Concepto::create($dataNuevoInsumo);
+
+                        $dataHist['precio_unitario_original'] = 0;
+                        $dataHist['precio_unitario_actualizado'] = $nuevoInsumo->precio_unitario;
+                        $dataHist['monto_presupuestado_original'] = 0;
+                        $dataHist['monto_presupuestado_actualizado'] = $nuevoInsumo->monto_presupuestado;
+                        $dataHist['id_solicitud_cambio_partida'] = $material->id;
+                        $dataHist['id_base_presupuesto'] = 2;
+                        $dataHist['nivel'] = $nuevoInsumo->nivel;
+                        SolicitudCambioPartidaHistorico::create($dataHist);
+
+
+
                         //  dd($nuevoInsumo);
 
                     }
@@ -698,13 +723,25 @@ class EloquentSolicitudCambioRepository implements SolicitudCambioRepository
                 foreach ($mano_obra as $manoObra) ////integracion materiales tarjeta nueva
                 {
                     if ($manoObra->id_concepto) { ////actualizacion de concepto
+                        $dataHist = [];
                         $conceptoUpdate = Concepto::find($manoObra->id_concepto);
                         $conceptoUpdate->cantidad_presupuestada = $manoObra['cantidad_presupuestada']; //cambio cantidad presupuestada
                         if ($manoObra['precio_unitario_nuevo'] > 0) {
+                            $dataHist['precio_unitario_original'] = $conceptoUpdate->precio_unitario;
                             $conceptoUpdate->precio_unitario = $manoObra['precio_unitario_nuevo'];
+                            $dataHist['precio_unitario_actualizado'] = $conceptoUpdate->precio_unitario;
                         }
+
+                        $dataHist['monto_presupuestado_original'] = $conceptoUpdate->monto_presupuestado;
                         $conceptoUpdate->monto_presupuestado = $conceptoUpdate->cantidad_presupuestada * $conceptoUpdate->precio_unitario;
                         $conceptoUpdate->save();
+
+                        $dataHist['monto_presupuestado_actualizado'] = $conceptoUpdate->monto_presupuestado;
+                        $dataHist['id_solicitud_cambio_partida'] = $manoObra->id;
+                        $dataHist['id_base_presupuesto'] = 2;
+                        $dataHist['nivel'] = $conceptoUpdate->nivel;
+
+                        SolicitudCambioPartidaHistorico::create($dataHist);
 
                     } else { ////nuevo concepto generar nuevo nivel
 
@@ -728,7 +765,15 @@ class EloquentSolicitudCambioRepository implements SolicitudCambioRepository
                         ];
 
                         $nuevoInsumo = \Ghi\Domain\Core\Models\Concepto::create($dataNuevoInsumo);
-                        //  dd($nuevoInsumo);
+                        $dataHist=[];
+                        $dataHist['precio_unitario_original'] = 0;
+                        $dataHist['precio_unitario_actualizado'] = $nuevoInsumo->precio_unitario;
+                        $dataHist['monto_presupuestado_original'] = 0;
+                        $dataHist['monto_presupuestado_actualizado'] = $nuevoInsumo->monto_presupuestado;
+                        $dataHist['id_solicitud_cambio_partida'] = $manoObra->id;
+                        $dataHist['id_base_presupuesto'] = 2;
+                        $dataHist['nivel'] = $nuevoInsumo->nivel;
+                        SolicitudCambioPartidaHistorico::create($dataHist);
 
                     }
                 }
@@ -737,13 +782,25 @@ class EloquentSolicitudCambioRepository implements SolicitudCambioRepository
                 foreach ($herramienta as $herram) ////integracion materiales tarjeta nueva
                 {
                     if ($herram->id_concepto) { ////actualizacion de concepto
+                        $dataHist = [];
                         $conceptoUpdate = Concepto::find($herram->id_concepto);
                         $conceptoUpdate->cantidad_presupuestada = $herram['cantidad_presupuestada']; //cambio cantidad presupuestada
                         if ($herram['precio_unitario_nuevo'] > 0) {
+                            $dataHist['precio_unitario_original'] = $conceptoUpdate->precio_unitario;
                             $conceptoUpdate->precio_unitario = $herram['precio_unitario_nuevo'];
+                            $dataHist['precio_unitario_actualizado'] = $conceptoUpdate->precio_unitario;
                         }
+
+                        $dataHist['monto_presupuestado_original'] = $conceptoUpdate->monto_presupuestado;
                         $conceptoUpdate->monto_presupuestado = $conceptoUpdate->cantidad_presupuestada * $conceptoUpdate->precio_unitario;
                         $conceptoUpdate->save();
+
+                        $dataHist['monto_presupuestado_actualizado'] = $conceptoUpdate->monto_presupuestado;
+                        $dataHist['id_solicitud_cambio_partida'] = $herram->id;
+                        $dataHist['id_base_presupuesto'] = 2;
+                        $dataHist['nivel'] = $conceptoUpdate->nivel;
+
+                        SolicitudCambioPartidaHistorico::create($dataHist);
 
                     } else { ////nuevo concepto generar nuevo nivel
 
@@ -767,7 +824,15 @@ class EloquentSolicitudCambioRepository implements SolicitudCambioRepository
                         ];
 
                         $nuevoInsumo = \Ghi\Domain\Core\Models\Concepto::create($dataNuevoInsumo);
-                        //  dd($nuevoInsumo);
+                        $dataHist=[];
+                        $dataHist['precio_unitario_original'] = 0;
+                        $dataHist['precio_unitario_actualizado'] = $nuevoInsumo->precio_unitario;
+                        $dataHist['monto_presupuestado_original'] = 0;
+                        $dataHist['monto_presupuestado_actualizado'] = $nuevoInsumo->monto_presupuestado;
+                        $dataHist['id_solicitud_cambio_partida'] = $herram->id;
+                        $dataHist['id_base_presupuesto'] = 2;
+                        $dataHist['nivel'] = $nuevoInsumo->nivel;
+                        SolicitudCambioPartidaHistorico::create($dataHist);
 
                     }
                 }
@@ -775,13 +840,24 @@ class EloquentSolicitudCambioRepository implements SolicitudCambioRepository
                 foreach ($maquinaria as $maquina) ////integracion materiales tarjeta nueva
                 {
                     if ($maquina->id_concepto) { ////actualizacion de concepto
+                        $dataHist = [];
                         $conceptoUpdate = Concepto::find($maquina->id_concepto);
                         $conceptoUpdate->cantidad_presupuestada = $maquina['cantidad_presupuestada']; //cambio cantidad presupuestada
                         if ($maquina['precio_unitario_nuevo'] > 0) {
+                            $dataHist['precio_unitario_original'] = $conceptoUpdate->precio_unitario;
                             $conceptoUpdate->precio_unitario = $maquina['precio_unitario_nuevo'];
+                            $dataHist['precio_unitario_actualizado'] = $conceptoUpdate->precio_unitario;
                         }
+
+                        $dataHist['monto_presupuestado_original'] = $conceptoUpdate->monto_presupuestado;
                         $conceptoUpdate->monto_presupuestado = $conceptoUpdate->cantidad_presupuestada * $conceptoUpdate->precio_unitario;
                         $conceptoUpdate->save();
+                        $dataHist['monto_presupuestado_actualizado'] = $conceptoUpdate->monto_presupuestado;
+                        $dataHist['id_solicitud_cambio_partida'] = $maquina->id;
+                        $dataHist['id_base_presupuesto'] = 2;
+                        $dataHist['nivel'] = $conceptoUpdate->nivel;
+
+                        SolicitudCambioPartidaHistorico::create($dataHist);
 
                     } else { ////nuevo concepto generar nuevo nivel
 
@@ -805,8 +881,15 @@ class EloquentSolicitudCambioRepository implements SolicitudCambioRepository
                         ];
 
                         $nuevoInsumo = \Ghi\Domain\Core\Models\Concepto::create($dataNuevoInsumo);
-                        //  dd($nuevoInsumo);
-
+                        $dataHist=[];
+                        $dataHist['precio_unitario_original'] = 0;
+                        $dataHist['precio_unitario_actualizado'] = $nuevoInsumo->precio_unitario;
+                        $dataHist['monto_presupuestado_original'] = 0;
+                        $dataHist['monto_presupuestado_actualizado'] = $nuevoInsumo->monto_presupuestado;
+                        $dataHist['id_solicitud_cambio_partida'] = $maquina->id;
+                        $dataHist['id_base_presupuesto'] = 2;
+                        $dataHist['nivel'] = $nuevoInsumo->nivel;
+                        SolicitudCambioPartidaHistorico::create($dataHist);
                     }
                 }
 
@@ -837,6 +920,7 @@ class EloquentSolicitudCambioRepository implements SolicitudCambioRepository
                 $conceptoMaterial->monto_presupuestado = $totalInsumos->sum('monto_presupuestado');
                 $conceptoMaterial->save();
 
+
                 $conceptoMaterial = Concepto::where('descripcion', '=', 'HERRAMIENTA Y EQUIPO')->where('nivel', 'like', $concepto->nivel . '%')->first();
                 $totalInsumos = Concepto::where('nivel', 'like', $conceptoMaterial->nivel . '___.')->get();
                 $afectacion_mmonto_propagacion += $totalInsumos->sum('monto_presupuestado');
@@ -857,7 +941,8 @@ class EloquentSolicitudCambioRepository implements SolicitudCambioRepository
                 $monto_anterior = $concepto->monto_presupuestado;
                 while ($tamanioFaltante > 0) { ///////////////recorrido todos los niveles hacia arriba
                     $afectaConcepto = Concepto::where('nivel', '=', substr($concepto->nivel, 0, $tamanioFaltante))->where('id_obra', '=', Context::getId())->first();
-                    $afectaConcepto->monto_presupuestado = ($afectaConcepto->monto_presupuestado - $monto_anterior) + $afectacion_mmonto_propagacion;
+
+                    ->monto_presupuestado = ($afectaConcepto->monto_presupuestado - $monto_anterior) + $afectacion_mmonto_propagacion;
                     $afectaConcepto->save();
                     $tamanioFaltante -= 4;
                 }
