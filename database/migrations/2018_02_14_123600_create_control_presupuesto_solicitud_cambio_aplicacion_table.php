@@ -15,6 +15,7 @@ class CreateControlPresupuestoSolicitudCambioAplicacionTable extends Migration
         Schema::create('ControlPresupuesto.solicitud_cambio_aplicacion', function (Blueprint $table) {
             $table->unsignedInteger('id_base_presupuesto');
             $table->unsignedInteger('id_solicitud_cambio');
+            $table->boolean('aplicada')->nullable();
             $table->integer('registro');
             $table->timestamps();
 

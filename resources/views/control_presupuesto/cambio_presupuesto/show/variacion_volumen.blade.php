@@ -20,7 +20,7 @@
                         <span v-if="rechazando"><i class="fa fa-spinner fa-spin"></i> Rechazando</span>
                         <span v-else><i class="fa fa-close"></i> Rechazar</span>
                     </a>
-                    <a class="btn btn-sm btn-app btn-info pull-right autorizar_solicitud" v-on:click="confirm_autorizar_solicitud"
+                    <a class="btn btn-sm btn-app btn-info pull-right autorizar_solicitud" data-toggle="modal" data-target="#select_presupuestos_modal"
                        v-if="solicitud.id_estatus==1">
                         <span v-if="autorizando"><i class="fa fa-spinner fa-spin"></i> Autorizando</span>
                         <span v-else><i class="fa fa-check"></i> Autorizar</span>
@@ -71,7 +71,7 @@
                         </div>
                         <div class="box-body">
                             <div class="table-responsive">
-                                <table class="table table-bordered table-striped table-hover">
+                                <table class="table table-bordered table-striped table-hover small">
                                     <thead>
                                     <tr>
                                         <th>#</th>
@@ -82,8 +82,12 @@
                                         <th>Descripción</th>
                                         <th>Unidad</th>
                                         <th>P.U</th>
-                                        <th>Volumen Original</th>
-                                        <th width="200px">Volúmen del Cambio</th>
+                                        <th>Volúmen Original</th>
+                                        <th>Volúmen del Cambio</th>
+                                        <th>Volúmen Actualizado</th>
+                                        <th>Importe Original</th>
+                                        <th>Importe del Cambio</th>
+                                        <th>Importe Actualizado</th>
                                     </tr>
                                     </thead>
                                     <tbody>
@@ -95,10 +99,15 @@
                                         <td>@{{ partida.concepto.cuadrante }}</td>
                                         <td>@{{ (partida.concepto.descripcion).substr(0, 50) + '...' }}</td>
                                         <td>@{{ partida.concepto.unidad }}</td>
-                                        <td class="text-right">
-                                            $@{{(parseFloat( partida.concepto.precio_unitario )).formatMoney(2,'.',',')}}</td>
-                                        <td class="text-right">@{{ parseFloat(partida.cantidad_presupuestada_original).formatMoney(2, ',','.') }}</td>
-                                        <td class="text-right">@{{ parseFloat(partida.variacion_volumen).formatMoney(2, ',','.') }}</td>
+                                        <td class="text-right">$&nbsp;@{{(parseFloat( partida.concepto.precio_unitario )).formatMoney(2,'.',',')}}</td>
+
+                                        <td class="text-right">@{{ parseFloat(partida.historico ? partida.historico.cantidad_presupuestada_original : partida.concepto.cantidad_presupuestada).formatMoney(2, '.',',') }}</td>
+                                        <td class="text-right">@{{ parseFloat(partida.historico ? partida.historico.cantidad_presupuestada_actualizada - partida.historico.cantidad_presupuestada_original : partida.variacion_volumen).formatMoney(2, '.',',') }}</td>
+                                        <td class="text-right">@{{ parseFloat(partida.historico ? partida.historico.cantidad_presupuestada_actualizada : partida.concepto.cantidad_presupuestada * partida.factor).formatMoney(2, '.',',') }}</td>
+
+                                        <td class="text-right">$&nbsp;@{{ parseFloat(partida.historico ? partida.historico.monto_presupuestado_orignal : partida.concepto.monto_presupuestado).formatMoney(2, '.',',') }}</td>
+                                        <td class="text-right">$&nbsp;@{{ parseFloat(partida.historico ? partida.historico.monto_presupuestado_actualizado - partida.historico.monto_presupuestado_original : (partida.concepto.monto_presupuestado * partida.factor) - partida.concepto.monto_presupuestado).formatMoney(2, '.',',') }}</td>
+                                        <td class="text-right">$&nbsp;@{{ parseFloat(partida.historico ? partida.historico.monto_presupuestado_actualizado : partida.concepto.monto_presupuestado * partida.factor).formatMoney(2, '.',',') }}</td>
                                     </tr>
                                     </tbody>
                                 </table>
@@ -127,7 +136,7 @@
 
                             </ul>
                             <div class="table-responsive">
-                                <table class="table table-bordered table-striped">
+                                <table class="table small table-bordered table-striped">
                                     <thead>
                                     <tr>
                                         <th class="text-center">#</th>
@@ -164,19 +173,41 @@
                     </div>
                 </div>
             </div>
-            <div class="row">
-                <div id="pdf_modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="PDFModal">
-                    <div class="modal-dialog modal-lg" role="document">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                                <h4 class="modal-title">Detalles</h4>
+            <div id="pdf_modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="PDFModal">
+                <div class="modal-dialog modal-lg" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <h4 class="modal-title">Detalles</h4>
+                        </div>
+                        <div class="modal-body">
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Modal -->
+            <div class="modal fade" id="select_presupuestos_modal" tabindex="-1" role="dialog" aria-labelledby="selectPresupuestosModalLabel">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <h4 class="modal-title" id="myModalLabel">Seleccione los presupuestos que desea afectar con ésta solicitud</h4>
+                        </div>
+                        <div class="modal-body">
+                            <div class="row">
+                                <div class="form-group col-md-4" v-for="presupuesto in presupuestos">
+                                    <label><b>@{{ presupuesto.base_datos.descripcion }}</b></label>
+                                    <input type="checkbox" :checked="true" :value="presupuesto.base_datos.id" v-model="form.afectaciones" :name="'Presupuesto'">
+                                </div>
                             </div>
-                            <div class="modal-body">
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
-                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-primary">Save changes</button>
                         </div>
                     </div>
                 </div>

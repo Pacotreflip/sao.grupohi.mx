@@ -83,6 +83,6 @@ class SolicitudCambio extends BaseModel
     }
 
     public function getAplicadaAttribute() {
-        return $this->has('aplicaciones', '=', BasePresupuesto::all()->count());
+        return $this->aplicaciones()->where('aplicada', '=', true)->count() == BasePresupuesto::all()->count();
     }
 }

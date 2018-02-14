@@ -7,6 +7,7 @@
  */
 
 namespace Ghi\Domain\Core\Models\ControlPresupuesto;
+use Ghi\Core\Facades\Context;
 use Ghi\Domain\Core\Models\Concepto;
 use Ghi\Domain\Core\Models\Material;
 use Illuminate\Database\Eloquent\Model;
@@ -33,6 +34,8 @@ class SolicitudCambioPartida extends Model
         'rendimiento_nuevo'
     ];
 
+    protected $appends = ['factor'];
+
     public function concepto() {
         return $this->belongsTo(Concepto::class, 'id_concepto');
     }
@@ -54,4 +57,11 @@ class SolicitudCambioPartida extends Model
         return $this->hasOne(Material::class, 'id_material', 'id_material');
     }
 
+    public function historico() {
+        return $this->hasOne(SolicitudCambioPartidaHistorico::class, 'id_solicitud_cambio_partida', 'id')->where('id_base_presupuesto', '=', BasePresupuesto::where('base_datos', '=', Context::getDatabaseName())->first()->id);
+    }
+
+    public function getFactorAttribute() {
+        return ($this->concepto->cantidad_presupuestada + $this->variacion_volumen) / $this->concepto->cantidad_presupuestada;
+    }
 }
