@@ -126,6 +126,17 @@ class PDFSolicitudCambioEscalatoria extends Rotation {
             $this->SetAligns(array('L', 'L', 'R'));
             $this->SetWidths(array(0.05 * $this->WidthTotal, 0.85 * $this->WidthTotal, 0.1 * $this->WidthTotal));
         }
+
+        else if($this->encola == 'motivo')
+        {
+            $this->SetWidths(array($this->WidthTotal));
+            $this->SetFills(array('180,180,180'));
+            $this->SetTextColors(array('0,0,0'));
+            $this->SetHeights(array(0.3));
+            $this->SetFont('Arial', '', 6);
+            $this->SetAligns(array('C'));
+
+        }
     }
 
     function titulos(){
@@ -244,11 +255,7 @@ class PDFSolicitudCambioEscalatoria extends Rotation {
     }
     function motivo(){
 
-        $this->encola = "";
-
-        if($this->GetY() > $this->GetPageHeight() - 5)
-            $this->AddPage();
-
+        $this->encola = "motivo";
         $this->SetWidths(array($this->WidthTotal));
         $this->SetFills(array('180,180,180'));
         $this->SetTextColors(array('0,0,0'));

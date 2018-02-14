@@ -7,6 +7,7 @@ Vue.component('variacion-volumen', {
                 partidas : [],
                 motivo : '',
                 id_tarjeta : '',
+                afectaciones : []
             },
             cargando : false,
             guardando : false,
@@ -15,11 +16,22 @@ Vue.component('variacion-volumen', {
         }
     },
 
+    directives: {
+        icheck: {
+            inserted: function (el) {
+                $(el).iCheck({
+                    checkboxClass: 'icheckbox_minimal-grey'
+                });
+            }
+        }
+    },
+
     computed : {
         datos : function () {
             var res = {
                 id_tipo_orden: this.id_tipo_orden,
                 motivo: this.form.motivo,
+                afectaciones : this.form.afectaciones,
                 partidas: []
             };
             this.form.partidas.forEach(function (value) {

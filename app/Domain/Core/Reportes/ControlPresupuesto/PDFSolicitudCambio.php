@@ -128,6 +128,17 @@ class PDFSolicitudCambio extends Rotation {
             $this->SetAligns(array('L', 'L', 'L', 'L', 'R', 'R', 'R', 'R', 'R', 'R', 'R'));
             $this->SetWidths(array(0.02 * $this->WidthTotal, 0.04 * $this->WidthTotal, 0.46 * $this->WidthTotal, 0.06 * $this->WidthTotal, 0.06 * $this->WidthTotal, 0.06 * $this->WidthTotal, 0.06 * $this->WidthTotal, 0.06 * $this->WidthTotal, 0.06 * $this->WidthTotal, 0.06 * $this->WidthTotal, 0.06 * $this->WidthTotal));
         }
+
+        else if($this->encola == 'motivo')
+        {
+            $this->SetWidths(array($this->WidthTotal));
+            $this->SetFills(array('180,180,180'));
+            $this->SetTextColors(array('0,0,0'));
+            $this->SetHeights(array(0.3));
+            $this->SetFont('Arial', '', 6);
+            $this->SetAligns(array('C'));
+
+        }
     }
 
     function titulos(){
@@ -185,7 +196,6 @@ class PDFSolicitudCambio extends Rotation {
     }
 
     function items(){
-
         $tipo_orden = 0;
         foreach ($this->solicitud->partidas as $index => $p)
             $tipo_orden = $p['id_tipo_orden'];
@@ -194,41 +204,19 @@ class PDFSolicitudCambio extends Rotation {
 
         foreach ($baseDatos as $bi => $base)
         {
+            //Nombre base
             $this->SetFont('Arial', 'B', $this->txtSeccionTam);
-            $this->SetXY($this->GetX(), $this->GetY());
-            $this->Cell($this->WidthTotal, 0.7, utf8_decode('PRESUPUESTO DE '. $base->baseDatos->descripcion), 'TRLB', 0, 'C');
-            $this->SetXY($this->GetX(), $this->GetY() + 0.3);
-            $this->SetWidths(array(0));
-            $this->SetFills(array('255,255,255'));
-            $this->SetTextColors(array('1,1,1'));
-            $this->SetHeights(array(0));
-            $this->Row(Array(''));
-            $this->SetFont('Arial', 'B', $this->txtSeccionTam);
-            $this->SetTextColors(array('255,255,255'));
-            $this->MultiCell($this->WidthTotal, .35, utf8_decode($this->solicitud->concepto), 0, 'L');
+            $this->Cell($this->WidthTotal / 2, 1.5, utf8_decode('PRESUPUESTO DE '. $base->baseDatos->descripcion),
+                'TRLB', 0, 'C');
 
-            $this->SetFont('Arial', '', 6);
-            $this->SetStyles(array('DF', 'DF', 'DF', 'FD', 'DF', 'DF', 'DF', 'DF', 'DF', 'DF', 'DF'));
-            $this->SetFills(array('180,180,180', '180,180,180', '180,180,180', '180,180,180', '180,180,180', '180,180,180', '180,180,180', '180,180,180', '180,180,180', '180,180,180', '180,180,180'));
-            $this->SetTextColors(array('0,0,0', '0,0,0', '0,0,0', '0,0,0', '0,0,0', '0,0,0', '0,0,0', '0,0,0', '0,0,0', '0,0,0', '0,0,0'));
-            $this->SetHeights(array(0.28));
-            $this->SetAligns(array('L', 'L', 'L', 'C', 'C', 'C', 'C', 'C', 'C', 'C', 'C'));
-            $this->SetWidths(array(0.02 * $this->WidthTotal, 0.04 * $this->WidthTotal, 0.46 * $this->WidthTotal, 0.06 * $this->WidthTotal, 0.06 * $this->WidthTotal, 0.06 * $this->WidthTotal, 0.06 * $this->WidthTotal, 0.06 * $this->WidthTotal, 0.06 * $this->WidthTotal, 0.06 * $this->WidthTotal, 0.06 * $this->WidthTotal));
-            $this->Row(array('#', 'No. Tarjeta', utf8_decode("Descripción"), utf8_decode("Unidad"), utf8_decode("Precio Unitario"), utf8_decode("Volúmen Original"), utf8_decode("Volúmen del Cambio"), utf8_decode("Volúmen Actualizado"), utf8_decode("Importe Original"), utf8_decode("Importe del Cambio"), utf8_decode("Importe Actualizado") ));
-
+            $estaSolicitudSuma = 0;
             $contador = 1;
+            $partidasRow = [];
             foreach ($this->solicitud->partidas as $i => $p)
             {
                 $partida = $p->find($p->id);
                 $conceptoBase = DB::connection('cadeco')->table($base->baseDatos->base_datos . ".dbo.conceptos")->where('clave_concepto', '=', $partida->concepto->clave_concepto)->first();
                 $items = DB::connection('cadeco')->table($base->baseDatos->base_datos . ".dbo.conceptos")->orderBy('nivel', 'ASC')->where('id_obra', '=', Context::getId())->where('nivel', 'like', $conceptoBase->nivel . '%')->get();
-
-                $this->SetFont('Arial', '', 6);
-                $this->SetFills(array('255,255,255', '255,255,255', '255,255,255', '255,255,255', '255,255,255', '255,255,255', '255,255,255', '255,255,255', '255,255,255', '255,255,255', '255,255,255'));
-                $this->SetTextColors(array('0,0,0', '0,0,0', '0,0,0', '0,0,0', '0,0,0', '0,0,0', '0,0,0', '0,0,0', '0,0,0', '0,0,0', '0,0,0'));
-                $this->SetHeights(array(0.35));
-                $this->SetAligns(array('L', 'L', 'L', 'L', 'R', 'R', 'R', 'R', 'R', 'R', 'R'));
-                $this->SetWidths(array(0.02 * $this->WidthTotal, 0.04 * $this->WidthTotal, 0.46 * $this->WidthTotal, 0.06 * $this->WidthTotal, 0.06 * $this->WidthTotal, 0.06 * $this->WidthTotal, 0.06 * $this->WidthTotal, 0.06 * $this->WidthTotal, 0.06 * $this->WidthTotal, 0.06 * $this->WidthTotal, 0.06 * $this->WidthTotal));
 
                 $this->encola = 'partidas';
 
@@ -256,7 +244,10 @@ class PDFSolicitudCambio extends Rotation {
                     $variacion_importe = ($conceptoBase->monto_presupuestado * $factor) - $conceptoBase->monto_presupuestado;
                 }
 
-                $this->Row([
+                //Calcula total de esta solicitud
+                $estaSolicitudSuma = $estaSolicitudSuma + ($variacion_importe);
+
+                $partidasRow[$i] = [
                     $contador++,
                     '', //TODO: Buscar de donde demonios sale el número de tarjeta
                     utf8_decode($conceptoBase->descripcion),  // Descripción
@@ -268,18 +259,76 @@ class PDFSolicitudCambio extends Rotation {
                     '$ '. number_format($monto_presupuestado, 2, '.', ','), // Importe original
                     '$ '. number_format($variacion_importe, 2, '.', ','), // Importe del cambio
                     '$ '. number_format($monto_nuevo, 2, '.', ','), // Importe actualizado
+                ];
+            }
+
+            $conceptoCD = DB::connection('cadeco')->table($base->baseDatos->base_datos . ".dbo.conceptos")
+                ->select('monto_presupuestado')->where('descripcion', 'like', '%costo directo%')->first();
+
+            //Resumen sumatoria
+            $this->SetFont('Arial', 'B', 6);
+            $this->SetWidths(array($this->WidthTotal / 4, $this->WidthTotal / 4));
+            $this->SetFills(array('255,255,255', '255,255,255'));
+            $this->SetTextColors(array('1,1,1', '1,1,1'));
+            $this->SetHeights(array(0.5));
+            $this->SetAligns(array('L', 'R'));
+            $rowX = $this->GetX();
+            $this->Row(Array('PRESUPUESTO '. $base->baseDatos->descripcion .' C. D.',
+                '$'. number_format($conceptoCD->monto_presupuestado, 2, '.', ',')));
+            $this->SetX($rowX);
+            $this->Row(Array('ESTA SOLICITUD', '$'. number_format($estaSolicitudSuma, 2, '.', ',')));
+            $this->SetX($rowX);
+            $this->Row(Array('COSTO DIRECTO ACTUALIZADO', '$'.number_format($conceptoCD->monto_presupuestado +
+                    ($estaSolicitudSuma), 2, '.', ','
+            )));
+
+            //Tabla
+            //$this->SetXY($this->GetX(), $this->GetY() - 0.5);
+            $this->SetWidths(array(0));
+            $this->SetFills(array('255,255,255'));
+            $this->SetTextColors(array('1,1,1'));
+            $this->SetHeights(array(0));
+           // $this->Row(Array(''));
+            $this->SetFont('Arial', 'B', $this->txtSeccionTam);
+            $this->SetTextColors(array('255,255,255'));
+
+            $this->SetFont('Arial', '', 6);
+            $this->SetStyles(array('DF', 'DF', 'DF', 'FD', 'DF', 'DF', 'DF', 'DF', 'DF', 'DF', 'DF'));
+            $this->SetFills(array('180,180,180', '180,180,180', '180,180,180', '180,180,180', '180,180,180', '180,180,180', '180,180,180', '180,180,180', '180,180,180', '180,180,180', '180,180,180'));
+            $this->SetTextColors(array('0,0,0', '0,0,0', '0,0,0', '0,0,0', '0,0,0', '0,0,0', '0,0,0', '0,0,0', '0,0,0', '0,0,0', '0,0,0'));
+            $this->SetHeights(array(0.28));
+            $this->SetAligns(array('L', 'L', 'L', 'C', 'C', 'C', 'C', 'C', 'C', 'C', 'C'));
+            $this->SetWidths(array(0.02 * $this->WidthTotal, 0.04 * $this->WidthTotal, 0.46 * $this->WidthTotal, 0.06 * $this->WidthTotal, 0.06 * $this->WidthTotal, 0.06 * $this->WidthTotal, 0.06 * $this->WidthTotal, 0.06 * $this->WidthTotal, 0.06 * $this->WidthTotal, 0.06 * $this->WidthTotal, 0.06 * $this->WidthTotal));
+            $this->Row(array('#', 'No. Tarjeta', utf8_decode("Descripción"), utf8_decode("Unidad"), utf8_decode("Precio Unitario"), utf8_decode("Volúmen Original"), utf8_decode("Volúmen del Cambio"), utf8_decode("Volúmen Actualizado"), utf8_decode("Importe Original"), utf8_decode("Importe del Cambio"), utf8_decode("Importe Actualizado") ));
+
+            foreach ($partidasRow as $i => $p)
+            {
+                $this->SetFont('Arial', '', 6);
+                $this->SetFills(array('255,255,255', '255,255,255', '255,255,255', '255,255,255', '255,255,255', '255,255,255', '255,255,255', '255,255,255', '255,255,255', '255,255,255', '255,255,255'));
+                $this->SetTextColors(array('0,0,0', '0,0,0', '0,0,0', '0,0,0', '0,0,0', '0,0,0', '0,0,0', '0,0,0', '0,0,0', '0,0,0', '0,0,0'));
+                $this->SetHeights(array(0.35));
+                $this->SetAligns(array('L', 'L', 'L', 'L', 'R', 'R', 'R', 'R', 'R', 'R', 'R'));
+                $this->SetWidths(array(0.02 * $this->WidthTotal, 0.04 * $this->WidthTotal, 0.46 * $this->WidthTotal, 0.06 * $this->WidthTotal, 0.06 * $this->WidthTotal, 0.06 * $this->WidthTotal, 0.06 * $this->WidthTotal, 0.06 * $this->WidthTotal, 0.06 * $this->WidthTotal, 0.06 * $this->WidthTotal, 0.06 * $this->WidthTotal));
+
+                $this->Row([$contador++, '', //TODO: Buscar de donde demonios sale el número de tarjeta
+                    utf8_decode($conceptoBase->descripcion),  // Descripción
+                    utf8_decode($conceptoBase->unidad), // Unidad
+                    '$ ' . number_format($conceptoBase->precio_unitario, 2, '.', ','), // Precio unitario
+                    number_format($cantidadPresupuestada, 2, '.', ','), // Vólumen Original
+                    number_format($variacion_volumen), // Vólumen del cambio
+                    number_format($cantidadNueva, 2, '.', ','),  // Vólumen actualizado
+                    '$ ' . number_format($monto_presupuestado, 2, '.', ','), // Importe original
+                    '$ ' . number_format($variacion_importe, 2, '.', ','), // Importe del cambio
+                    '$ ' . number_format($monto_nuevo, 2, '.', ','), // Importe actualizado
                 ]);
             }
-            $this->Ln(0.5);
+            $this->encola = '';
+            $this->Ln(1.5);
         }
-
-        $this->encola = '';
     }
     function motivo(){
 
         $this->encola = "motivo";
-
-
         $this->SetWidths(array($this->WidthTotal));
         $this->SetFills(array('180,180,180'));
         $this->SetTextColors(array('0,0,0'));
@@ -409,7 +458,7 @@ class PDFSolicitudCambio extends Rotation {
         $this->SetAutoPageBreak(true,5);
 
         $this->items();
-        $this->Ln();
+        $this->Ln(-0.75);
         $this->motivo();
         try {
             $this->Output('I', 'Solicitud de cambio ('. $this->solicitud->tipoOrden->descripcion .')#'. $this->solicitud->numero_folio .'.pdf', 1);
