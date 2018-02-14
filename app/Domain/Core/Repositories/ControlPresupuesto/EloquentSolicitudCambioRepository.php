@@ -714,7 +714,6 @@ class EloquentSolicitudCambioRepository implements SolicitudCambioRepository
                         SolicitudCambioPartidaHistorico::create($dataHist);
 
 
-
                         //  dd($nuevoInsumo);
 
                     }
@@ -765,7 +764,7 @@ class EloquentSolicitudCambioRepository implements SolicitudCambioRepository
                         ];
 
                         $nuevoInsumo = \Ghi\Domain\Core\Models\Concepto::create($dataNuevoInsumo);
-                        $dataHist=[];
+                        $dataHist = [];
                         $dataHist['precio_unitario_original'] = 0;
                         $dataHist['precio_unitario_actualizado'] = $nuevoInsumo->precio_unitario;
                         $dataHist['monto_presupuestado_original'] = 0;
@@ -824,7 +823,7 @@ class EloquentSolicitudCambioRepository implements SolicitudCambioRepository
                         ];
 
                         $nuevoInsumo = \Ghi\Domain\Core\Models\Concepto::create($dataNuevoInsumo);
-                        $dataHist=[];
+                        $dataHist = [];
                         $dataHist['precio_unitario_original'] = 0;
                         $dataHist['precio_unitario_actualizado'] = $nuevoInsumo->precio_unitario;
                         $dataHist['monto_presupuestado_original'] = 0;
@@ -881,7 +880,7 @@ class EloquentSolicitudCambioRepository implements SolicitudCambioRepository
                         ];
 
                         $nuevoInsumo = \Ghi\Domain\Core\Models\Concepto::create($dataNuevoInsumo);
-                        $dataHist=[];
+                        $dataHist = [];
                         $dataHist['precio_unitario_original'] = 0;
                         $dataHist['precio_unitario_actualizado'] = $nuevoInsumo->precio_unitario;
                         $dataHist['monto_presupuestado_original'] = 0;
@@ -906,13 +905,26 @@ class EloquentSolicitudCambioRepository implements SolicitudCambioRepository
                 }
 
                 ///////////Suma de montos a propagar
+                ///
+                $dataHist = [];
                 $afectacion_mmonto_propagacion = 0;
                 $conceptoMaterial = Concepto::where('descripcion', '=', 'MATERIALES')->where('nivel', 'like', $concepto->nivel . '%')->first();
+                $dataHist['precio_unitario_original'] = $conceptoMaterial;
+
                 $totalInsumos = Concepto::where('nivel', 'like', $conceptoMaterial->nivel . '___.')->get();
                 $afectacion_mmonto_propagacion += $totalInsumos->sum('monto_presupuestado');
                 $conceptoMaterial->monto_presupuestado = $totalInsumos->sum('monto_presupuestado');
                 $conceptoMaterial->save();
 
+
+
+                $dataHist['precio_unitario_actualizado'] = $nuevoInsumo->precio_unitario;
+                $dataHist['monto_presupuestado_original'] = 0;
+                $dataHist['monto_presupuestado_actualizado'] = $nuevoInsumo->monto_presupuestado;
+                $dataHist['id_solicitud_cambio_partida'] = $maquina->id;
+                $dataHist['id_base_presupuesto'] = 2;
+                $dataHist['nivel'] = $nuevoInsumo->nivel;
+                SolicitudCambioPartidaHistorico::create($dataHist);
 
                 $conceptoMaterial = Concepto::where('descripcion', '=', 'MANO OBRA')->where('nivel', 'like', $concepto->nivel . '%')->first();
                 $totalInsumos = Concepto::where('nivel', 'like', $conceptoMaterial->nivel . '___.')->get();
@@ -941,8 +953,7 @@ class EloquentSolicitudCambioRepository implements SolicitudCambioRepository
                 $monto_anterior = $concepto->monto_presupuestado;
                 while ($tamanioFaltante > 0) { ///////////////recorrido todos los niveles hacia arriba
                     $afectaConcepto = Concepto::where('nivel', '=', substr($concepto->nivel, 0, $tamanioFaltante))->where('id_obra', '=', Context::getId())->first();
-
-                    ->monto_presupuestado = ($afectaConcepto->monto_presupuestado - $monto_anterior) + $afectacion_mmonto_propagacion;
+                    $afectaConcepto->monto_presupuestado = ($afectaConcepto->monto_presupuestado - $monto_anterior) + $afectacion_mmonto_propagacion;
                     $afectaConcepto->save();
                     $tamanioFaltante -= 4;
                 }
