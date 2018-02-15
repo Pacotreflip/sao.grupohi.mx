@@ -138,6 +138,22 @@ class PDFSolicitudCambio extends Rotation {
             $this->SetAligns(array('C'));
 
         }
+        else if ($this->encola == 'resumen_h') {$this->SetX(($this->WidthTotal / 2) - 4.5);
+            $this->SetFont('Arial', '', 6);
+            $this->SetStyles(array('DF', 'DF'));
+            $this->SetFills(array('180,180,180', '180,180,180'));
+            $this->SetTextColors(array('0,0,0', '0,0,0'));
+            $this->SetHeights(array(0.38));
+            $this->SetAligns(array('C', 'C'));
+            $this->SetWidths(array(0.2 * $this->WidthTotal, 0.2 * $this->WidthTotal));
+        } else if($this->encola == 'resumen') {
+            $this->SetFills(array('255,255,255', '255,255,255'));
+            $this->SetTextColors(array('0,0,0', '0,0,0'));
+            $this->SetHeights(array(0.38));
+            $this->SetAligns(array('L', 'R'));
+            $this->SetWidths(array(0.2* $this->WidthTotal, 0.2* $this->WidthTotal));
+            $this->SetX(($this->WidthTotal / 2) - 4.5);
+        }
     }
 
     function titulos(){
@@ -292,8 +308,13 @@ class PDFSolicitudCambio extends Rotation {
             $this->SetWidths(array(0.03 * $this->WidthTotal, 0.05 * $this->WidthTotal, 0.42 * $this->WidthTotal, 0.07
                 * $this->WidthTotal, 0.07 * $this->WidthTotal, 0.06 * $this->WidthTotal, 0.06 * $this->WidthTotal, 0.06 * $this->WidthTotal, 0.06 * $this->WidthTotal, 0.06 * $this->WidthTotal, 0.06 * $this->WidthTotal));
 
-            foreach ($partidasRow as $i => $p)
+            $this->encola = 'partidas';
+
+            foreach ($partidasRow as $i => $p){
                 $this->Row($p);
+
+            }
+            $this->encola = '';
 
             $this->resumen([
                 'PRESUPUESTO '. $base->baseDatos->descripcion .' C. D.' => '$'. number_format
@@ -302,14 +323,17 @@ class PDFSolicitudCambio extends Rotation {
                 'COSTO DIRECTO ACTUALIZADO' => '$'.number_format($conceptoCD->monto_presupuestado +
                     ($estaSolicitudSuma), 2, '.', ',')
             ]);
-
-            $this->encola = '';
+            if($bi != count($baseDatos) - 1) {
+                $this->AddPage();
+            } else {
+                $this->Ln();
+            }
         }
     }
 
     function resumen($data = array())
     {
-        $this->Ln(1);
+        $this->Ln( );
         $this->SetX(($this->WidthTotal / 2) - 4.5);
         $this->SetFont('Arial', '', 6);
         $this->SetStyles(array('DF', 'DF'));
@@ -318,7 +342,9 @@ class PDFSolicitudCambio extends Rotation {
         $this->SetHeights(array(0.38));
         $this->SetAligns(array('C', 'C'));
         $this->SetWidths(array(0.2 * $this->WidthTotal, 0.2 * $this->WidthTotal));
+        $this->encola = 'resumen_h';
         $this->Row(array('Detalle', 'Cantidad'));
+        $this->encola = 'resumen';
         $this->SetFills(array('255,255,255', '255,255,255'));
         $this->SetTextColors(array('0,0,0', '0,0,0'));
         $this->SetHeights(array(0.38));
@@ -330,6 +356,8 @@ class PDFSolicitudCambio extends Rotation {
             $this->SetX(($this->WidthTotal / 2) - 4.5);
             $this->Row([$nombre, $valor]);
         }
+
+        $this->encola = '';
 
         $this->Ln(1);
 
