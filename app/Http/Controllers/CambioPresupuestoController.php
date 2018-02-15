@@ -164,7 +164,7 @@ class CambioPresupuestoController extends Controller
     public function show($id)
     {
         $solicitud = $this->solicitud->with(['tipoOrden', 'userRegistro', 'estatus', 'partidas', 'partidas.concepto',
-            'partidas.numeroTarjeta', 'partidas.historico', 'aplicaciones'])->find($id);
+            'partidas.numeroTarjeta', 'partidas.historico'])->find($id);
         $presupuestos = $this->afectacion->with('baseDatos')->getBy('id_tipo_orden', '=', $solicitud->id_tipo_orden);
 
         switch ($solicitud->id_tipo_orden) {
@@ -198,10 +198,7 @@ class CambioPresupuestoController extends Controller
                     ->with('conceptos_agrupados', $conceptos_agrupados);
                 break;
         }
-
-
     }
-
 
     public function autorizarSolicitud(Request $request)
     {
@@ -215,7 +212,7 @@ class CambioPresupuestoController extends Controller
             case TipoOrden::CONCEPTOS_EXTRAORDINARIOS:
                 break;
             case TipoOrden::VARIACION_VOLUMEN:
-                $solicitud = $this->solicitud->autorizarVariacionVolumen($request->all());
+                $solicitud = $this->solicitud->autorizarVariacionVolumen($request->id);
                 break;
             case TipoOrden::ORDEN_DE_CAMBIO_NO_COBRABLE:
                 break;
@@ -223,7 +220,6 @@ class CambioPresupuestoController extends Controller
                 $solicitud = $this->solicitud->autorizarCambioInsumos($request->id);
                 break;
         }
-
 
         return $this->response->item($solicitud, function ($item) {
             return $item;

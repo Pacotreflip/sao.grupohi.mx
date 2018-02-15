@@ -14,19 +14,19 @@
             v-cloak>
         <section>
             <div class="row">
-                <div class="col-md-12">
-                    <a class="btn btn-app btn-danger pull-right rechazar_solicitud" v-on:click="confirm_rechazar_solicitud"
-                       v-if="solicitud.id_estatus==1">
-                        <span v-if="rechazando"><i class="fa fa-spinner fa-spin"></i> Rechazando</span>
-                        <span v-else><i class="fa fa-close"></i> Rechazar</span>
+                <div class="col-md-3" v-if="solicitud.estatus.clave_estado == 1">
+                    <a class="btn btn-app btn-danger rechazar_solicitud" @click="confirm_rechazar_solicitud">
+                        <i class="fa fa-close"></i> Rechazar
                     </a>
-                    <a class="btn btn-sm btn-app btn-info pull-right autorizar_solicitud" data-toggle="modal" data-target="#select_presupuestos_modal"
-                       v-if="solicitud.id_estatus==1">
-                        <span v-if="autorizando"><i class="fa fa-spinner fa-spin"></i> Autorizando</span>
-                        <span v-else><i class="fa fa-check"></i> Autorizar</span>
+                    <a class="btn btn-app btn-success autorizar_solicitud" @click="confirm_autorizar_solicitud()">
+                        <i class="fa fa-check"></i> Autorizar
                     </a>
                 </div>
-
+                <div v-for="presupuesto, index in presupuestos" class="form-group col-md-3 text-center" :class="solicitud.estatus.clave_estado != 1 && index == 0 ? 'col-md-offset-3' : ''">
+                    <label><b>@{{ presupuesto.base_datos.descripcion }}</b></label>
+                </div>
+            </div>
+            <div class="row">
                 <div class="col-md-3">
                     <div class="box box-solid">
                         <div class="box-header with-border">
@@ -57,10 +57,7 @@
                             <hr>
                             <strong>Estatus:</strong>
                             <p class="text-muted">@{{solicitud.estatus.descripcion}}</p>
-                            <hr>
-
                         </div>
-
                         <!-- /.box-body -->
                     </div>
                 </div>
@@ -173,6 +170,7 @@
                     </div>
                 </div>
             </div>
+
             <div id="pdf_modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="PDFModal">
                 <div class="modal-dialog modal-lg" role="document">
                     <div class="modal-content">
@@ -184,30 +182,6 @@
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Modal -->
-            <div class="modal fade" id="select_presupuestos_modal" tabindex="-1" role="dialog" aria-labelledby="selectPresupuestosModalLabel">
-                <div class="modal-dialog" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                            <h4 class="modal-title" id="myModalLabel">Seleccione los presupuestos que desea afectar con ésta solicitud</h4>
-                        </div>
-                        <div class="modal-body">
-                            <div class="row">
-                                <div class="form-group col-md-4" v-for="presupuesto in presupuestos">
-                                    <label><b>@{{ presupuesto.base_datos.descripcion }}</b></label>
-                                    <input type="checkbox" :checked="true" :value="presupuesto.base_datos.id" v-model="form.afectaciones" :name="'Presupuesto'">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                            <button type="button" class="btn btn-primary">Save changes</button>
                         </div>
                     </div>
                 </div>

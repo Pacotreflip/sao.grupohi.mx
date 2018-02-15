@@ -277,120 +277,27 @@ class EloquentSolicitudCambioRepository implements SolicitudCambioRepository
 
     /**
      * Autoriza una solicitud de cambio
-     * @param array $data
      * @param $id
-     * @throws \Exception
      * @return SolicitudCambio
+     * @throws \Exception
      */
-    public function  autorizarVariacionVolumen($id, array $data)
+    public function  autorizarVariacionVolumen($id)
     {
-
-        dd($data);
         try {
             DB::connection('cadeco')->beginTransaction();
             $solicitud = $this->model->with('partidas')->find($id);
-            $basesAfectadas = AfectacionOrdenesPresupuesto::with('baseDatos')->where('id_tipo_orden', '=', $solicitud->id_tipo_orden)->get();
+
 
             // La solicitud ya está autorizada
             if ($solicitud->id_estatus == Estatus::AUTORIZADA)
                 throw new HttpResponseException(new Response('La solicitud ya está autorizada', 404));
 
-            foreach ($solicitud->partidas as $partida) {
-                $conceptoSolicitud = Concepto::find($partida->id_concepto); ///concepto raiz para obtener la clave
-                if ($conceptoSolicitud->clave_concepto == null) {
-                    throw new HttpResponseException(new Response('El concepto ' . $conceptoSolicitud->descripcion . ' no cuenta con clave de concepto registrada', 404));
-                    //////////////////////////////////// sin clave de concepto
-                }
-                foreach ($basesAfectadas as $basePresupuesto) { /////////seleccionamos el tipo de presupuesto a afectar
-                    $concepto = DB::connection('cadeco')->table($basePresupuesto->baseDatos->base_datos . ".dbo.conceptos")->select('*')->where('clave_concepto', '=', $conceptoSolicitud->clave_concepto)->first();
-                    if (!$concepto) {
-                        throw new HttpResponseException(new Response('El concepto ' . $conceptoSolicitud->descripcion . ' no cuenta con clave de concepto registrada en ' . $basePresupuesto->baseDatos->base_datos, 404));
-
-                    }
-                    $monto_presupuestado_original = $concepto->monto_presupuestado;
-
-                    $cantidad_presupuestada_original = $concepto->cantidad_presupuestada;
-                    $cantidad_presupuestada_actualizada = $cantidad_presupuestada_original + $partida->variacion_volumen;
-                    $factor = $cantidad_presupuestada_actualizada / $cantidad_presupuestada_original;
-
-
-                    //propagacion hacia abajo
-                    $conceptos_propagacion = DB::connection('cadeco')->table($basePresupuesto->baseDatos->base_datos . ".dbo.conceptos")->where('nivel', 'like', $concepto->nivel . '%')->where('id_obra', '=', Context::getId())->orderBy('nivel', 'ASC')->get();
-
-                    $afectacion = 0;
-
-                    foreach ($conceptos_propagacion as $concepto_propagacion) {
-                        if ($afectacion > 0) {
-                            //Guardar un registro en una tabla de historicos para conservar la imagen de la solicitud en el momento de la autorización
-                            SolicitudCambioPartidaHistorico::create([
-                                'id_solicitud_cambio_partida' => $partida->id,
-                                'id_base_presupuesto' => $basePresupuesto->id_base_presupuesto,
-                                'nivel' => $concepto_propagacion->nivel,
-                                'cantidad_presupuestada_original' => $concepto_propagacion->cantidad_presupuestada,
-                                'cantidad_presupuestada_actualizada' => $concepto_propagacion->cantidad_presupuestada * $factor,
-                                'monto_presupuestado_original' => $concepto_propagacion->monto_presupuestado,
-                                'monto_presupuestado_actualizado' => $concepto_propagacion->monto_presupuestado * $factor
-                            ]);
-
-                            //Actualizar las cantidades en la base de datos del presupuesto
-                            DB::connection('cadeco')->table($basePresupuesto->baseDatos->base_datos . ".dbo.conceptos")
-                                ->where('id_concepto', $concepto_propagacion->id_concepto)
-                                ->update(['cantidad_presupuestada' => $concepto_propagacion->cantidad_presupuestada * $factor, 'monto_presupuestado' => $concepto_propagacion->monto_presupuestado * $factor]);
-
-                        }
-                        $afectacion++;
-                    }
-
-
-                    SolicitudCambioPartidaHistorico::create([
-                        'id_solicitud_cambio_partida' => $partida->id,
-                        'id_base_presupuesto' => $basePresupuesto->id_base_presupuesto,
-                        'nivel' => $concepto->nivel,
-                        'cantidad_presupuestada_original' => $concepto->cantidad_presupuestada,
-                        'cantidad_presupuestada_actualizada' => $concepto->cantidad_presupuestada * $factor,
-                        'monto_presupuestado_original' => $concepto->monto_presupuestado,
-                        'monto_presupuestado_actualizado' => $concepto->monto_presupuestado * $factor
-                    ]);
-
-                    DB::connection('cadeco')->table($basePresupuesto->baseDatos->base_datos . ".dbo.conceptos")
-                        ->where('id_concepto', $concepto->id_concepto)
-                        ->update(['cantidad_presupuestada' => $concepto->cantidad_presupuestada * $factor, 'monto_presupuestado' => $concepto->monto_presupuestado * $factor]);
-                    $conc = DB::connection('cadeco')->table($basePresupuesto->baseDatos->base_datos . ".dbo.conceptos")->where('id_concepto', '=', $concepto->id_concepto)->where('id_obra', '=', Context::getId())->first();
-
-                    //propagacion hacia arriba monto
-
-                    $tamanioFaltante = strlen($conc->nivel);
-                    $afectacionConcepto = 0;
-
-                    while ($tamanioFaltante > 0) { ///////////////recorrido todos los niveles hacia arriba
-                        $afectaConcepto = DB::connection('cadeco')->table($basePresupuesto->baseDatos->base_datos . ".dbo.conceptos")->where('id_obra', '=', Context::getId())->where('nivel', '=', substr($conc->nivel, 0, $tamanioFaltante))->first();
-                        if ($afectacionConcepto > 0) {///afectamos el concepto de la solicitud
-                            $cantidadMonto = ($afectaConcepto->monto_presupuestado - $monto_presupuestado_original) + $conc->monto_presupuestado;
-
-                            SolicitudCambioPartidaHistorico::create([
-                                'id_solicitud_cambio_partida' => $partida->id,
-                                'id_base_presupuesto' => $basePresupuesto->id_base_presupuesto,
-                                'nivel' => $afectaConcepto->nivel,
-                                'monto_presupuestado_original' => $afectaConcepto->monto_presupuestado,
-                                'monto_presupuestado_actualizado' => $cantidadMonto
-                            ]);
-
-
-                            DB::connection('cadeco')->table($basePresupuesto->baseDatos->base_datos . ".dbo.conceptos")
-                                ->where('id_concepto', $afectaConcepto->id_concepto)
-                                ->update(['monto_presupuestado' => $cantidadMonto]);
-                        }
-                        $afectacionConcepto++;
-                        $tamanioFaltante -= 4;
-                    }
-                }
-            }
-
             $solicitud->id_estatus = Estatus::AUTORIZADA;
             $solicitud->save();
 
             $data = ["id_solicitud_cambio" => $id];
-            $solicitudCambio = SolicitudCambioAutorizada::create($data);
+            SolicitudCambioAutorizada::create($data);
+
             $solicitud = $this->model->with(['tipoOrden', 'userRegistro', 'estatus', 'partidas', 'partidas.concepto', 'partidas.numeroTarjeta'])->find($id);
             $solicitud['cobrabilidad'] = $solicitud->tipoOrden->cobrabilidad;
 
