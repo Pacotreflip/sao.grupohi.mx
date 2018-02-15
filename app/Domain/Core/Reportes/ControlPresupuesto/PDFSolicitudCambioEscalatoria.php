@@ -204,14 +204,12 @@ class PDFSolicitudCambioEscalatoria extends Rotation {
         foreach ($baseDatos as $bi => $base)
         {
             $this->SetFont('Arial', 'B', $this->txtSeccionTam);
-            $this->SetXY($this->GetX(), $this->GetY());
             $this->Cell($this->WidthTotal, 0.7, utf8_decode('PRESUPUESTO DE '. $base->baseDatos->descripcion), 'TRLB', 0, 'C');
-            $this->SetXY($this->GetX(), $this->GetY() + 0.5);
+            $this->SetXY($this->GetX(), $this->GetY() + 0.2);
             $this->SetWidths(array(0));
             $this->SetFills(array('255,255,255'));
             $this->SetTextColors(array('1,1,1'));
             $this->SetHeights(array(0));
-            $this->Row(Array(''));
             $this->SetFont('Arial', 'B', $this->txtSeccionTam);
             $this->SetTextColors(array('255,255,255'));
             $this->MultiCell($this->WidthTotal, .35, utf8_decode($this->solicitud->concepto), 0, 'L');
