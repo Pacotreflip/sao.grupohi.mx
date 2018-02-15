@@ -481,7 +481,7 @@ Vue.component('variacion-insumos', {
 
         recalcular_monto : function (id_concepto, i,tipo) {
             var self = this;
-            var cant = $("#m_p_" +id_concepto+'_'  + i).val();
+            var cant = $(".pre_unit" +id_concepto+'_'  + i).val();
             switch (tipo){
                 case 1: ///agregar a materiales
                     self.form.partidas[0].conceptos.MATERIALES.insumos[i].precio_unitario_nuevo = cant;
