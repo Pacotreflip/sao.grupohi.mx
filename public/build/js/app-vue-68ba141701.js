@@ -19448,7 +19448,7 @@ Vue.component('show-escalatoria', {
 'use strict';
 
 Vue.component('show-variacion-insumos', {
-    props: ['solicitud', 'presupuestos', 'conceptos_agrupados'],
+    props: ['solicitud', 'presupuestos', 'conceptos_agrupados', 'total_proforma_agrupados'],
     data: function data() {
         return {
             form: {
@@ -19666,7 +19666,8 @@ Vue.component('show-variacion-volumen', {
         return {
             form: {
                 solicitud: this.solicitud,
-                cobrabilidad: this.cobrabilidad
+                cobrabilidad: this.cobrabilidad,
+                afectaciones: []
             },
             cargando: false,
             rechazando: false,
@@ -19678,6 +19679,7 @@ Vue.component('show-variacion-volumen', {
             partida_id: 0
         };
     },
+
     mounted: function mounted() {
         var self = this;
 
@@ -19687,7 +19689,6 @@ Vue.component('show-variacion-volumen', {
                 url = App.host + '/control_presupuesto/cambio_presupuesto/' + id + '/pdf';
 
             $('#pdf_modal').modal('show');
-            $('#pdf_modal .modal-content').css({ height: '700px' });
             $('#pdf_modal .modal-body').html($('<iframe/>', {
                 id: 'formatoPDF',
                 src: url,
@@ -19703,6 +19704,7 @@ Vue.component('show-variacion-volumen', {
             var id = self.form.solicitud.id;
 
             $('.autorizar_solicitud').addClass('disabled');
+            $('.rechazar_solicitud').addClass('disabled');
 
             swal({
                 title: "Autorizar la Solicitud de Cambio",
@@ -19716,6 +19718,7 @@ Vue.component('show-variacion-volumen', {
                     self.autorizar_solicitud(id);
                 } else {
                     $('.autorizar_solicitud').removeClass('disabled');
+                    $('.rechazar_solicitud').removeClass('disabled');
                 }
             });
         },
@@ -19869,8 +19872,15 @@ Vue.component('show-variacion-volumen', {
                     self.consultando = false;
                 }
             });
-        }
+        },
 
+        esAfectado: function esAfectado(id) {
+            var res = false;
+            this.presupuestos.forEach(function (value, index) {
+                res = value.base_datos.id == id;
+            });
+            return res;
+        }
     }
 });
 
@@ -20419,7 +20429,8 @@ Vue.component('variacion-volumen', {
             form: {
                 partidas: [],
                 motivo: '',
-                id_tarjeta: ''
+                id_tarjeta: '',
+                afectaciones: []
             },
             cargando: false,
             guardando: false,
@@ -20428,11 +20439,22 @@ Vue.component('variacion-volumen', {
         };
     },
 
+    directives: {
+        icheck: {
+            inserted: function inserted(el) {
+                $(el).iCheck({
+                    checkboxClass: 'icheckbox_minimal-grey'
+                });
+            }
+        }
+    },
+
     computed: {
         datos: function datos() {
             var res = {
                 id_tipo_orden: this.id_tipo_orden,
                 motivo: this.form.motivo,
+                afectaciones: this.form.afectaciones,
                 partidas: []
             };
             this.form.partidas.forEach(function (value) {

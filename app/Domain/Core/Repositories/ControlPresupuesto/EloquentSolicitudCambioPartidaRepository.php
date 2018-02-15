@@ -244,6 +244,7 @@ class EloquentSolicitudCambioPartidaRepository implements SolicitudCambioPartida
 
     public function getTotalesClasificacionInsumos(array $data)
     {
+
         $conceptosSol = [];
         $imp_anterior_gen = 0;
         $imp_nuevo_gen = 0;
@@ -353,12 +354,28 @@ class EloquentSolicitudCambioPartidaRepository implements SolicitudCambioPartida
             $total_presupuesto = Concepto::where('nivel', '=', '000.001.')->where('id_obra', '=', Context::getId())->first();
             $total_presupuesto_hist = $total_presupuesto->monto_presupuestado;
         }
+
+        $baseDatos = BasePresupuesto::find(3); ////validacion proforma
+        $maximo_proforma = 0;
+        foreach ($data as $conceptoAgr) {
+            $afectaciones = [];
+            $conceptoProforma = DB::connection('cadeco')->table($baseDatos->base_datos . ".dbo.conceptos")->where('clave_concepto', '=', $conceptoAgr['concepto']['clave_concepto'])->first();
+            $montoProfC=$conceptoProforma->cantidad_presupuestada*$conceptoProforma->precio_unitario;
+            if (!$conceptoProforma) {
+                throw new HttpResponseException(new Response('El concepto ' . $partida->concepto->descripcion . ' no cuenta con clave de concepto registrada en ' . $baseDatos->base_datos, 404));
+            }
+
+            $maximo_proforma += $montoProfC;
+
+        }
+
         $data = ['conceptos' => $conceptosSol,
             'imp_anterior_gen' => $imp_anterior_gen,
             'imp_nuevo_gen' => $imp_nuevo_gen,
             'total_presupuesto' => $total_presupuesto_hist,
-            'total_variaciones' => $var_gen];
-
+            'total_variaciones' => $var_gen,
+            'total_agrupados_nuevo' => $imp_nuevo_gen - $var_gen,
+            'maximo_proforma' => ['maximo'=>$maximo_proforma,'diferencia'=>($maximo_proforma-$imp_nuevo_gen),'variacion'=>$var_gen]];
 
         return $data;
     }
