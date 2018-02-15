@@ -165,7 +165,7 @@ class PDFSolicitudCambioInsumos extends Rotation
 
         $this->SetFont('Arial', 'B', $this->txtContenidoTam);
         $this->SetX($x);
-        $this->Cell(0.140 * $this->WidthTotal, 0.5, utf8_decode('Obra:'), '', 0, 'LB');
+        $this->Cell(0.125 * $this->WidthTotal, 0.5, utf8_decode('Obra:'), '', 0, 'LB');
         $this->SetFont('Arial', '', $this->txtContenidoTam);
         $this->CellFitScale(0.360 * $this->WidthTotal, 0.5, utf8_decode($this->obra->nombre), '', 1, 'L');
 
@@ -389,14 +389,14 @@ class PDFSolicitudCambioInsumos extends Rotation
         $this->SetFills(array('255,255,255', '255,255,255'));
         $this->SetTextColors(array('0,0,0', '0,0,0'));
         $this->SetHeights(array(0.38));
-        $this->SetAligns(array('R', 'R'));
+        $this->SetAligns(array('L', 'R'));
         $this->SetWidths(array(0.2* $this->WidthTotal, 0.2* $this->WidthTotal));
         $this->SetX(10);
         $this->Row(['Conceptos Modificados',count($this->resumen['conceptos'])]);
         $this->SetX(10);
         $this->Row(['Importe Conceptos Modificados','$ '.number_format($this->resumen['imp_nuevo_gen']-$this->resumen['total_variaciones'], 2, '.', ',')]);
         $this->SetX(10);
-        $this->Row(['Importe Variacion','$ '.number_format($this->resumen['total_variaciones'], 2, '.', ',')]);
+        $this->Row([utf8_decode('Importe Variación'),'$ '.number_format($this->resumen['total_variaciones'], 2, '.', ',')]);
         $this->SetX(10);
         $this->Row(['Importe Conceptos Actualizados','$ '.number_format($this->resumen['imp_nuevo_gen'], 2, '.', ',')]);
         $this->SetX(10);

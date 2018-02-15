@@ -41,7 +41,7 @@
                             <strong>Importe Conceptos Modificados</strong>
                             <p class="text-muted text-right">${{number_format( $conceptos_agrupados['imp_nuevo_gen']-$conceptos_agrupados['total_variaciones'],'2','.',',')}}</p>
                             <hr>
-                            <strong>Importe Variacion</strong>
+                            <strong>Importe Variación</strong>
                             <p class="text-muted text-right">${{number_format($conceptos_agrupados['total_variaciones'],'2','.',',')}}</p>
                             <hr>
                             <strong>Importe Conceptos Actualizados</strong>
@@ -107,7 +107,7 @@
                                     <th>Concepto</th>
                                     <th>Volumen</th>
                                     <th>Importe Inicial</th>
-                                    <th>Variacion de Importe</th>
+                                    <th>Variación de Importe</th>
                                     <th>Importe Nuevo</th>
 
                                 </tr>
@@ -144,7 +144,7 @@
                                     </tr>
                                     <tr  class="bg-gray-active">
                                         <th>Importe Inicial</th>
-                                        <th>Variacion de Importe</th>
+                                        <th>Variación de Importe</th>
                                         <th>Importe Nuevo</th>
                                     </tr>
                                     <tr  class="bg-gray-active">
@@ -166,6 +166,7 @@
                                         <th>Monto Presupuestado Actual</th>
                                         <th>Monto Presupuestado Nuevo</th>
                                     </tr>
+
                                     </thead>
                                     <tbody>
                                     <tr v-for="(insumo, i) in tipos.items">
