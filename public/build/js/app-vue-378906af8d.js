@@ -19845,8 +19845,7 @@ Vue.component('show-variacion-volumen', {
         return {
             form: {
                 solicitud: this.solicitud,
-                cobrabilidad: this.cobrabilidad,
-                afectaciones: []
+                cobrabilidad: this.cobrabilidad
             },
             cargando: false,
             rechazando: false,
@@ -19860,8 +19859,6 @@ Vue.component('show-variacion-volumen', {
     },
 
     mounted: function mounted() {
-        var self = this;
-
         $(document).on('click', '.mostrar_pdf', function () {
             var _this = $(this),
                 id = _this.data('pdf_id'),
@@ -19877,7 +19874,6 @@ Vue.component('show-variacion-volumen', {
         });
     },
     methods: {
-
         confirm_autorizar_solicitud: function confirm_autorizar_solicitud() {
             var self = this;
             var id = self.form.solicitud.id;
@@ -19935,7 +19931,6 @@ Vue.component('show-variacion-volumen', {
             });
         },
         autorizar_solicitud: function autorizar_solicitud(id) {
-
             var self = this;
             var url = App.host + '/control_presupuesto/cambio_presupuesto/autorizarSolicitud';
             $.ajax({
@@ -19967,7 +19962,6 @@ Vue.component('show-variacion-volumen', {
         },
 
         rechazar_solicitud: function rechazar_solicitud(id, motivo) {
-
             var self = this;
             var url = App.host + '/control_presupuesto/cambio_presupuesto/rechazarSolicitud';
             $.ajax({
@@ -19982,7 +19976,6 @@ Vue.component('show-variacion-volumen', {
                     self.rechazando = true;
                 },
                 success: function success(data, textStatus, xhr) {
-
                     swal({
                         type: "success",
                         title: '¡Correcto!',
@@ -20051,14 +20044,6 @@ Vue.component('show-variacion-volumen', {
                     self.consultando = false;
                 }
             });
-        },
-
-        esAfectado: function esAfectado(id) {
-            var res = false;
-            this.presupuestos.forEach(function (value, index) {
-                res = value.base_datos.id == id;
-            });
-            return res;
         }
     }
 });
