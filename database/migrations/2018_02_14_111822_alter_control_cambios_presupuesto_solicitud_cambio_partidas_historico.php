@@ -17,10 +17,12 @@ class AlterControlCambiosPresupuestoSolicitudCambioPartidasHistorico extends Mig
             $table->float("precio_unitario_actualizado")->nullable();
             $table->unsignedInteger('id_partidas_insumos_agrupados')->nullable();
 
+            $table->unsignedInteger("id_solicitud_cambio_partida")->nullable()->change();
 
             $table->foreign('id_partidas_insumos_agrupados')
                 ->references('id')
                 ->on('ControlPresupuesto.partidas_insumos_agrupados');
+
 
         });
     }
@@ -37,6 +39,8 @@ class AlterControlCambiosPresupuestoSolicitudCambioPartidasHistorico extends Mig
             $table->dropColumn('precio_unitario_actualizado');
             $table->dropForeign('controlPresupuesto_solicitud_cambio_partidas_historico_id_partidas_insumos_agrupados_foreign');
             $table->dropColumn('id_partidas_insumos_agrupados');
+
+            $table->unsignedInteger("id_solicitud_cambio_partida")->change();
 
         });
     }

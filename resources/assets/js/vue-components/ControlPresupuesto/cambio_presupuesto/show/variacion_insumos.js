@@ -1,5 +1,5 @@
 Vue.component('show-variacion-insumos', {
-    props: ['solicitud','presupuestos',  'conceptos_agrupados'],
+    props: ['solicitud','presupuestos',  'conceptos_agrupados','total_proforma_agrupados'],
     data: function () {
         return {
             form: {

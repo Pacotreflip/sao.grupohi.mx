@@ -202,6 +202,8 @@ class CambioPresupuestoController extends Controller
 
     public function autorizarSolicitud(Request $request)
     {
+
+
         $solicitud = '';
         switch ($request->id_tipo_orden) {
             case TipoOrden::ESCALATORIA:
@@ -217,6 +219,9 @@ class CambioPresupuestoController extends Controller
             case TipoOrden::ORDEN_DE_CAMBIO_NO_COBRABLE:
                 break;
             case TipoOrden::ORDEN_DE_CAMBIO_DE_INSUMOS:
+
+
+
                 $solicitud = $this->solicitud->autorizarCambioInsumos($request->id);
                 break;
         }

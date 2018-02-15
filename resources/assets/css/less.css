@@ -22301,5 +22301,10 @@ div.dataTables_filter {
   width: 100%;
   height: 5px;
 }
+.hideextra {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
 
 /*# sourceMappingURL=less.css.map */

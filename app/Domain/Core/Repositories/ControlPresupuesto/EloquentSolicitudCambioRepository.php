@@ -590,7 +590,7 @@ class EloquentSolicitudCambioRepository implements SolicitudCambioRepository
                         $dataHist['id_solicitud_cambio_partida'] = $material->id;
                         $dataHist['id_base_presupuesto'] = 2;
                         $dataHist['nivel'] = $conceptoUpdate->nivel;
-
+                        $dataHist['id_partidas_insumos_agrupados']=$insumo->id;
                         SolicitudCambioPartidaHistorico::create($dataHist);
 
 
@@ -623,6 +623,7 @@ class EloquentSolicitudCambioRepository implements SolicitudCambioRepository
                         $dataHist['id_solicitud_cambio_partida'] = $material->id;
                         $dataHist['id_base_presupuesto'] = 2;
                         $dataHist['nivel'] = $nuevoInsumo->nivel;
+                        $dataHist['id_partidas_insumos_agrupados']=$insumo->id;
                         SolicitudCambioPartidaHistorico::create($dataHist);
 
 
@@ -651,7 +652,7 @@ class EloquentSolicitudCambioRepository implements SolicitudCambioRepository
                         $dataHist['id_solicitud_cambio_partida'] = $manoObra->id;
                         $dataHist['id_base_presupuesto'] = 2;
                         $dataHist['nivel'] = $conceptoUpdate->nivel;
-
+                        $dataHist['id_partidas_insumos_agrupados']=$insumo->id;
                         SolicitudCambioPartidaHistorico::create($dataHist);
 
                     } else { ////nuevo concepto generar nuevo nivel
@@ -684,6 +685,7 @@ class EloquentSolicitudCambioRepository implements SolicitudCambioRepository
                         $dataHist['id_solicitud_cambio_partida'] = $manoObra->id;
                         $dataHist['id_base_presupuesto'] = 2;
                         $dataHist['nivel'] = $nuevoInsumo->nivel;
+                        $dataHist['id_partidas_insumos_agrupados']=$insumo->id;
                         SolicitudCambioPartidaHistorico::create($dataHist);
 
                     }
@@ -710,7 +712,7 @@ class EloquentSolicitudCambioRepository implements SolicitudCambioRepository
                         $dataHist['id_solicitud_cambio_partida'] = $herram->id;
                         $dataHist['id_base_presupuesto'] = 2;
                         $dataHist['nivel'] = $conceptoUpdate->nivel;
-
+                        $dataHist['id_partidas_insumos_agrupados']=$insumo->id;
                         SolicitudCambioPartidaHistorico::create($dataHist);
 
                     } else { ////nuevo concepto generar nuevo nivel
@@ -743,6 +745,7 @@ class EloquentSolicitudCambioRepository implements SolicitudCambioRepository
                         $dataHist['id_solicitud_cambio_partida'] = $herram->id;
                         $dataHist['id_base_presupuesto'] = 2;
                         $dataHist['nivel'] = $nuevoInsumo->nivel;
+                        $dataHist['id_partidas_insumos_agrupados']=$insumo->id;
                         SolicitudCambioPartidaHistorico::create($dataHist);
 
                     }
@@ -767,7 +770,7 @@ class EloquentSolicitudCambioRepository implements SolicitudCambioRepository
                         $dataHist['id_solicitud_cambio_partida'] = $maquina->id;
                         $dataHist['id_base_presupuesto'] = 2;
                         $dataHist['nivel'] = $conceptoUpdate->nivel;
-
+                        $dataHist['id_partidas_insumos_agrupados']=$insumo->id;
                         SolicitudCambioPartidaHistorico::create($dataHist);
 
                     } else { ////nuevo concepto generar nuevo nivel
@@ -800,6 +803,7 @@ class EloquentSolicitudCambioRepository implements SolicitudCambioRepository
                         $dataHist['id_solicitud_cambio_partida'] = $maquina->id;
                         $dataHist['id_base_presupuesto'] = 2;
                         $dataHist['nivel'] = $nuevoInsumo->nivel;
+                        $dataHist['id_partidas_insumos_agrupados']=$insumo->id;
                         SolicitudCambioPartidaHistorico::create($dataHist);
                     }
                 }
@@ -821,52 +825,90 @@ class EloquentSolicitudCambioRepository implements SolicitudCambioRepository
                 $dataHist = [];
                 $afectacion_mmonto_propagacion = 0;
                 $conceptoMaterial = Concepto::where('descripcion', '=', 'MATERIALES')->where('nivel', 'like', $concepto->nivel . '%')->first();
-                $dataHist['precio_unitario_original'] = $conceptoMaterial;
+
+                $dataHist['precio_unitario_original'] = $conceptoMaterial->precio_unitario;
+                $dataHist['monto_presupuestado_original'] = $conceptoMaterial->monto_presupuestado;
+                $dataHist['precio_unitario_actualizado'] = $conceptoMaterial->precio_unitario;
+                $dataHist['id_partidas_insumos_agrupados']=$insumo->id;
 
                 $totalInsumos = Concepto::where('nivel', 'like', $conceptoMaterial->nivel . '___.')->get();
                 $afectacion_mmonto_propagacion += $totalInsumos->sum('monto_presupuestado');
                 $conceptoMaterial->monto_presupuestado = $totalInsumos->sum('monto_presupuestado');
                 $conceptoMaterial->save();
 
-
-
-                $dataHist['precio_unitario_actualizado'] = $nuevoInsumo->precio_unitario;
-                $dataHist['monto_presupuestado_original'] = 0;
-                $dataHist['monto_presupuestado_actualizado'] = $nuevoInsumo->monto_presupuestado;
-                $dataHist['id_solicitud_cambio_partida'] = $maquina->id;
+                $dataHist['monto_presupuestado_actualizado'] = $conceptoMaterial->monto_presupuestado;
                 $dataHist['id_base_presupuesto'] = 2;
-                $dataHist['nivel'] = $nuevoInsumo->nivel;
+                $dataHist['nivel'] = $conceptoMaterial->nivel;
                 SolicitudCambioPartidaHistorico::create($dataHist);
 
+
+
+                $dataHist = [];
                 $conceptoMaterial = Concepto::where('descripcion', '=', 'MANO OBRA')->where('nivel', 'like', $concepto->nivel . '%')->first();
+                $dataHist['precio_unitario_original'] = $conceptoMaterial->precio_unitario;
+                $dataHist['monto_presupuestado_original'] = $conceptoMaterial->monto_presupuestado;
+                $dataHist['precio_unitario_actualizado'] = $conceptoMaterial->precio_unitario;
+                $dataHist['id_partidas_insumos_agrupados']=$insumo->id;
                 $totalInsumos = Concepto::where('nivel', 'like', $conceptoMaterial->nivel . '___.')->get();
                 $afectacion_mmonto_propagacion += $totalInsumos->sum('monto_presupuestado');
                 $conceptoMaterial->monto_presupuestado = $totalInsumos->sum('monto_presupuestado');
                 $conceptoMaterial->save();
+                $dataHist['monto_presupuestado_actualizado'] = $conceptoMaterial->monto_presupuestado;
+                $dataHist['id_base_presupuesto'] = 2;
+                $dataHist['nivel'] = $conceptoMaterial->nivel;
+                SolicitudCambioPartidaHistorico::create($dataHist);
 
 
+                $dataHist = [];
                 $conceptoMaterial = Concepto::where('descripcion', '=', 'HERRAMIENTA Y EQUIPO')->where('nivel', 'like', $concepto->nivel . '%')->first();
+                $dataHist['precio_unitario_original'] = $conceptoMaterial->precio_unitario;
+                $dataHist['monto_presupuestado_original'] = $conceptoMaterial->monto_presupuestado;
+                $dataHist['precio_unitario_actualizado'] = $conceptoMaterial->precio_unitario;
+                $dataHist['id_partidas_insumos_agrupados']=$insumo->id;
                 $totalInsumos = Concepto::where('nivel', 'like', $conceptoMaterial->nivel . '___.')->get();
                 $afectacion_mmonto_propagacion += $totalInsumos->sum('monto_presupuestado');
                 $conceptoMaterial->monto_presupuestado = $totalInsumos->sum('monto_presupuestado');
                 $conceptoMaterial->save();
+                $dataHist['monto_presupuestado_actualizado'] = $conceptoMaterial->monto_presupuestado;
+                $dataHist['id_base_presupuesto'] = 2;
+                $dataHist['nivel'] = $conceptoMaterial->nivel;
+                SolicitudCambioPartidaHistorico::create($dataHist);
 
+                $dataHist = [];
                 $conceptoMaterial = Concepto::where('descripcion', '=', 'MAQUINARIA')->where('nivel', 'like', $concepto->nivel . '%')->first();
+                $dataHist['precio_unitario_original'] = $conceptoMaterial->precio_unitario;
+                $dataHist['monto_presupuestado_original'] = $conceptoMaterial->monto_presupuestado;
+                $dataHist['precio_unitario_actualizado'] = $conceptoMaterial->precio_unitario;
+                $dataHist['id_partidas_insumos_agrupados']=$insumo->id;
                 $totalInsumos = Concepto::where('nivel', 'like', $conceptoMaterial->nivel . '___.')->get();
                 $afectacion_mmonto_propagacion += $totalInsumos->sum('monto_presupuestado');
                 $conceptoMaterial->monto_presupuestado = $totalInsumos->sum('monto_presupuestado');
                 $conceptoMaterial->save();
-                //dd($afectacion_mmonto_propagacion);
-
+                $dataHist['monto_presupuestado_actualizado'] = $conceptoMaterial->monto_presupuestado;
+                $dataHist['id_base_presupuesto'] = 2;
+                $dataHist['nivel'] = $conceptoMaterial->nivel;
+                SolicitudCambioPartidaHistorico::create($dataHist);
                 //propagacion hacia arriba monto_presupuestado
 
                 $tamanioFaltante = strlen($concepto->nivel);
 
                 $monto_anterior = $concepto->monto_presupuestado;
                 while ($tamanioFaltante > 0) { ///////////////recorrido todos los niveles hacia arriba
+
+                    $dataHist = [];
                     $afectaConcepto = Concepto::where('nivel', '=', substr($concepto->nivel, 0, $tamanioFaltante))->where('id_obra', '=', Context::getId())->first();
+                    $dataHist['precio_unitario_original'] = $afectaConcepto->precio_unitario;
+                    $dataHist['monto_presupuestado_original'] = $afectaConcepto->monto_presupuestado;
+                    $dataHist['precio_unitario_actualizado'] = $afectaConcepto->precio_unitario;
+                    $dataHist['id_partidas_insumos_agrupados']=$insumo->id;
+
                     $afectaConcepto->monto_presupuestado = ($afectaConcepto->monto_presupuestado - $monto_anterior) + $afectacion_mmonto_propagacion;
                     $afectaConcepto->save();
+
+                    $dataHist['monto_presupuestado_actualizado'] = $afectaConcepto->monto_presupuestado;
+                    $dataHist['id_base_presupuesto'] = 2;
+                    $dataHist['nivel'] = $afectaConcepto->nivel;
+                    SolicitudCambioPartidaHistorico::create($dataHist);
                     $tamanioFaltante -= 4;
                 }
 
