@@ -29,6 +29,14 @@ class SolicitudCambio extends BaseModel
         'id_obra'
     ];
 
+    protected $casts = [
+        'aplicada' => 'boolean'
+    ];
+
+    protected $appends = [
+        'aplicada'
+    ];
+
     protected static function boot()
     {
         parent::boot();
@@ -76,5 +84,13 @@ class SolicitudCambio extends BaseModel
     public function userRegistro()
     {
         return $this->belongsTo(User::class, 'id_solicita');
+    }
+
+    public function aplicaciones() {
+        return $this->belongsToMany(BasePresupuesto::class, 'ControlPresupuesto.solicitud_cambio_aplicacion', 'id_solicitud_cambio', 'id_base_presupuesto')->withPivot(['aplicada', 'created_at', 'updated_at']);
+    }
+
+    public function getAplicadaAttribute() {
+        return  $this->aplicaciones()->where('aplicada', '=', true)->count() == BasePresupuesto::all()->count();
     }
 }
