@@ -249,7 +249,7 @@ class PDFSolicitudCambio extends Rotation {
 
                 $partidasRow[$i] = [
                     $contador++,
-                    $partida->numeroTarjeta->descripcion, // Número de tarjeta
+                    utf8_decode($partida->numeroTarjeta->descripcion), // Número de tarjeta
                     utf8_decode($conceptoBase->descripcion),  // Descripción
                     utf8_decode($conceptoBase->unidad), // Unidad
                     '$ ' . number_format($conceptoBase->precio_unitario, 2, '.', ','), // Precio unitario
@@ -284,30 +284,16 @@ class PDFSolicitudCambio extends Rotation {
                 * $this->WidthTotal, 0.07 * $this->WidthTotal, 0.06 * $this->WidthTotal, 0.06 * $this->WidthTotal, 0.06 * $this->WidthTotal, 0.06 * $this->WidthTotal, 0.06 * $this->WidthTotal, 0.06 * $this->WidthTotal));
             $this->Row(array('#', 'No. Tarjeta', utf8_decode("Descripción"), utf8_decode("Unidad"), utf8_decode("Precio Unitario"), utf8_decode("Volúmen Original"), utf8_decode("Volúmen del Cambio"), utf8_decode("Volúmen Actualizado"), utf8_decode("Importe Original"), utf8_decode("Importe del Cambio"), utf8_decode("Importe Actualizado") ));
 
-            foreach ($partidasRow as $i => $p)
-            {
-                $this->SetFont('Arial', '', 6);
-                $this->SetFills(array('255,255,255', '255,255,255', '255,255,255', '255,255,255', '255,255,255', '255,255,255', '255,255,255', '255,255,255', '255,255,255', '255,255,255', '255,255,255'));
-                $this->SetTextColors(array('0,0,0', '0,0,0', '0,0,0', '0,0,0', '0,0,0', '0,0,0', '0,0,0', '0,0,0', '0,0,0', '0,0,0', '0,0,0'));
-                $this->SetHeights(array(0.35));
-                $this->SetAligns(array('L', 'L', 'L', 'L', 'R', 'R', 'R', 'R', 'R', 'R', 'R'));
-                $this->SetWidths(array(0.03 * $this->WidthTotal, 0.05 * $this->WidthTotal, 0.42 * $this->WidthTotal, 0.07
-                    * $this->WidthTotal, 0.07 * $this->WidthTotal, 0.06 * $this->WidthTotal, 0.06 * $this->WidthTotal, 0.06 * $this->WidthTotal, 0.06 * $this->WidthTotal, 0.06 * $this->WidthTotal, 0.06 * $this->WidthTotal));
+            $this->SetFont('Arial', '', 6);
+            $this->SetFills(array('255,255,255', '255,255,255', '255,255,255', '255,255,255', '255,255,255', '255,255,255', '255,255,255', '255,255,255', '255,255,255', '255,255,255', '255,255,255'));
+            $this->SetTextColors(array('0,0,0', '0,0,0', '0,0,0', '0,0,0', '0,0,0', '0,0,0', '0,0,0', '0,0,0', '0,0,0', '0,0,0', '0,0,0'));
+            $this->SetHeights(array(0.35));
+            $this->SetAligns(array('L', 'L', 'L', 'L', 'R', 'R', 'R', 'R', 'R', 'R', 'R'));
+            $this->SetWidths(array(0.03 * $this->WidthTotal, 0.05 * $this->WidthTotal, 0.42 * $this->WidthTotal, 0.07
+                * $this->WidthTotal, 0.07 * $this->WidthTotal, 0.06 * $this->WidthTotal, 0.06 * $this->WidthTotal, 0.06 * $this->WidthTotal, 0.06 * $this->WidthTotal, 0.06 * $this->WidthTotal, 0.06 * $this->WidthTotal));
 
-                $this->Row([
-                    $contador++,
-                    '', //TODO: Buscar de donde demonios sale el número de tarjeta
-                    utf8_decode($conceptoBase->descripcion),  // Descripción
-                    utf8_decode($conceptoBase->unidad), // Unidad
-                    '$ ' . number_format($conceptoBase->precio_unitario, 2, '.', ','), // Precio unitario
-                    number_format($cantidadPresupuestada, 2, '.', ','), // Vólumen Original
-                    number_format($variacion_volumen), // Vólumen del cambio
-                    number_format($cantidadNueva, 2, '.', ','),  // Vólumen actualizado
-                    '$ ' . number_format($monto_presupuestado, 2, '.', ','), // Importe original
-                    '$ ' . number_format($variacion_importe, 2, '.', ','), // Importe del cambio
-                    '$ ' . number_format($monto_nuevo, 2, '.', ','), // Importe actualizado
-                ]);
-            }
+            foreach ($partidasRow as $i => $p)
+                $this->Row($p);
 
             $this->resumen([
                 'PRESUPUESTO '. $base->baseDatos->descripcion .' C. D.' => '$'. number_format
