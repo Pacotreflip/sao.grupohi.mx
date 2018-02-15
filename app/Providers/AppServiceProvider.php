@@ -364,6 +364,10 @@ class AppServiceProvider extends ServiceProvider
             \Ghi\Domain\Core\Contracts\ControlPresupuesto\PartidasInsumosAgrupadosRepository::class,
             \Ghi\Domain\Core\Repositories\ControlPresupuesto\EloquentPartidasInsumosAgrupadosRepository::class
         );
+        $this->app->bind(
+            \Ghi\Domain\Core\Contracts\UnidadRepository::class,
+            \Ghi\Domain\Core\Repositories\EloquentUnidadRepository::class
+        );
 
     }
 }
