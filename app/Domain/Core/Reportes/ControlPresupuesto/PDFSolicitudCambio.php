@@ -15,6 +15,7 @@ use Ghi\Domain\Core\Contracts\ControlPresupuesto\SolicitudCambioPartidaRepositor
 use Ghi\Domain\Core\Models\Concepto;
 use Ghi\Domain\Core\Models\ControlPresupuesto\AfectacionOrdenesPresupuesto;
 use Ghi\Domain\Core\Models\ControlPresupuesto\BasePresupuesto;
+use Ghi\Domain\Core\Models\ControlPresupuesto\Estatus;
 use Ghi\Domain\Core\Models\ControlPresupuesto\SolicitudCambio;
 use Ghi\Domain\Core\Models\ControlPresupuesto\SolicitudCambioPartidaHistorico;
 use Ghidev\Fpdf\Rotation;
@@ -219,9 +220,15 @@ class PDFSolicitudCambio extends Rotation {
 
         foreach ($baseDatos as $bi => $base)
         {
-            //Nombre base
+            // Título base
+            $siAplicada = array_filter($this->solicitud->aplicaciones->toArray(), function ($el) use ($base){
+                return $el['id'] == $base->baseDatos->id;
+            });
+
+            $aplicadaTitulo =' ('. (empty($siAplicada) ? 'NO ' : '') .'APLICADA)';
+            $tituloBase = 'PRESUPUESTO DE '. $base->baseDatos->descripcion . $aplicadaTitulo;
             $this->SetFont('Arial', 'B', $this->txtSeccionTam);
-            $this->Cell($this->WidthTotal, 0.5, utf8_decode('PRESUPUESTO DE '. $base->baseDatos->descripcion),
+            $this->Cell($this->WidthTotal, 0.5, utf8_decode($tituloBase),
                 'TRLB', 0, 'C');
             $this->Ln();
 
@@ -473,11 +480,28 @@ class PDFSolicitudCambio extends Rotation {
         $this->SetFont('Arial', 'B', $this->txtFooterTam);
         $this->Cell(6.5, .4, utf8_decode('Formato generado desde SAO.'), 0, 0, 'L');
 
-        if($this->solicitud->id_estatus == 1) {
+        if($this->solicitud->id_estatus == Estatus::GENERADA) {
             $this->SetFont('Arial','',80);
             $this->SetTextColor(204,204,204);
             $this->RotatedText(7,17,utf8_decode("PENDIENTE DE"),45);
             $this->RotatedText(9.5,18,utf8_decode("AUTORIZACIÓN"),45);
+            $this->SetTextColor('0,0,0');
+        }
+
+        elseif ($this->solicitud->id_estatus == Estatus::AUTORIZADA && !$this->solicitud->aplicada)
+        {
+            $this->SetFont('Arial','',80);
+            $this->SetTextColor(204,204,204);
+            $this->RotatedText(7,17,utf8_decode("AUTORIZADA"),45);
+            $this->RotatedText(9.5,18,utf8_decode("NO APLICADA"),45);
+            $this->SetTextColor('0,0,0');
+        }
+
+        elseif ($this->solicitud->id_estatus == Estatus::RECHAZADA)
+        {
+            $this->SetFont('Arial','',80);
+            $this->SetTextColor(204,204,204);
+            $this->RotatedText(7,17,utf8_decode("RECHAZADA"),45);
             $this->SetTextColor('0,0,0');
         }
     }

@@ -134,7 +134,8 @@ class CambioPresupuestoController extends Controller
 
     public function pdf(Request $request, $id)
     {
-        $solicitud = $this->solicitud->find($id);
+        $solicitud = $this->solicitud->with(['aplicaciones', 'tipoOrden', 'userRegistro', 'estatus', 'partidas', 'partidas.concepto',
+            'partidas.numeroTarjeta', 'partidas.historico'])->find($id);
 
         switch ($solicitud->id_tipo_orden) {
             case TipoOrden::ESCALATORIA:
