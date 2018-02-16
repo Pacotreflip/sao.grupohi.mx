@@ -222,17 +222,17 @@ class PDFSolicitudCambioInsumos extends Rotation
         $this->SetFont('Arial', 'B', $this->txtSeccionTam);
         $this->SetTextColors(array('255,255,255'));
         $this->MultiCell($this->WidthTotal, .35, utf8_decode($this->solicitud->concepto), 0, 'L');
-
+        $numero_tarjeta='';
 
         foreach ($conceptos_agrupados['conceptos'] as $conceptos) {
 
-           // dd($conceptos);
+          $numero_tarjeta=$conceptos['concepto']['numero_tarjeta'];
             $array_data=[];
 
             $pu=$conceptos['concepto']['importe_anterior']/$conceptos['concepto']['cantidad_presupuestada'];
             $pa=$conceptos['concepto']['importe_nuevo']/$conceptos['concepto']['cantidad_presupuestada'];
             $data_info=[
-                'num_tarjeta'=>'',
+                'num_tarjeta'=>$numero_tarjeta,
                 'descripcion'=>utf8_decode($conceptos['concepto']['descripcion']),
                 'unidad'=>$conceptos['concepto']['unidad'],
                 'pu'=>$pu,
@@ -270,11 +270,11 @@ class PDFSolicitudCambioInsumos extends Rotation
         $this->resumen=$conceptos_agrupados;
         $partidas= $this->partidas-> getClasificacionInsumos(['id_solicitud_cambio'=> $this->solicitud->id,'id_concepto'=>$conceptos['id_concepto']]);
 
-        //dd($partidas);
+
         foreach ($partidas as $partida){
             foreach ( $partida['items'] as $item) {
                 $data_info=[
-                    'num_tarjeta'=>'',
+                    'num_tarjeta'=>$numero_tarjeta,
                     'descripcion'=>utf8_decode($item->material->descripcion),
                     'unidad'=>$item->material->unidad,
                     'pu'=>$item->precio_unitario_original,
@@ -299,7 +299,7 @@ class PDFSolicitudCambioInsumos extends Rotation
               foreach ($partidas as $partida){
                   foreach ( $partida['items'] as $item) {
                       $data_info=[
-                          'num_tarjeta'=>'',
+                          'num_tarjeta'=>$numero_tarjeta,
                           'descripcion'=>$item->material->descripcion,
                           'unidad'=>$item->material->unidad,
                           'pu'=>$item->precio_unitario_original,
@@ -332,7 +332,7 @@ class PDFSolicitudCambioInsumos extends Rotation
 
                      $this->Row([
                          ($contador + 1),
-                         '',
+                         $numero_tarjeta,
                          $row['descripcion'],
                          utf8_decode($row['unidad']),
                          '$ ' . number_format($row['pu'], 2, '.', ','),
