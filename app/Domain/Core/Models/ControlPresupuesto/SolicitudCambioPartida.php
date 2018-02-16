@@ -37,7 +37,8 @@ class SolicitudCambioPartida extends Model
     protected $appends = ['factor'];
 
     public function concepto() {
-        return $this->belongsTo(Concepto::class, 'id_concepto');
+
+           return $this->belongsTo(Concepto::class, 'id_concepto');
     }
     public function numeroTarjeta()
     {

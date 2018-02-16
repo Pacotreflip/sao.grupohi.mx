@@ -106,7 +106,7 @@
                                             <td>
                                                 <div class="form-group"
                                                      :class="{'has-error': validation_errors.has('form_save_solicitud.Rendimiento nuevo material [' + (i + 1) + ']')}">
-                                                    <input type="number" step=".01" placeholder="0.0" style="width: 90%"
+                                                    <input type="text" step=".01" placeholder="0.0" style="width: 90%"
                                                            :id="'c_p_'+insumo.id_elemento+'_' + i"
                                                            @change="recalcular(insumo.id_elemento, i,1)"
                                                            v-validate="insumo.nuevo==true ? 'required' : ''"
@@ -120,7 +120,7 @@
                                             <td>
                                                 <div class="form-group"
                                                      :class="{'has-error': validation_errors.has('form_save_solicitud.Precio unitario material [' + (i + 1) + ']')}">
-                                                    $<input type="number" step=".01" placeholder="0.0"
+                                                    $<input type="text" step=".01" placeholder="0.0"
                                                             style="width: 90%" :id="'m_p_'+insumo.id_elemento+'_' + i"
                                                             @change="recalcular_monto(insumo.id_elemento, i,1)"
                                                             v-validate="insumo.nuevo==true ? 'required' : ''"
@@ -174,7 +174,7 @@
                                             <td>
                                                 <div class="form-group"
                                                      :class="{'has-error': validation_errors.has('form_save_solicitud.Rendimiento nuevo mano de obra [' + (i + 1) + ']')}">
-                                                    <input type="number" step=".01" placeholder="0.0" style="width: 90%"
+                                                    <input type="text" step=".01" placeholder="0.0" style="width: 90%"
                                                            :id="'c_p_'+insumo.id_elemento+'_' + i"
                                                            @change="recalcular(insumo.id_elemento, i,2)"
                                                            v-validate="insumo.nuevo==true ? 'required' : ''"
@@ -188,7 +188,7 @@
                                             <td>
                                                 <div class="form-group"
                                                      :class="{'has-error': validation_errors.has('form_save_solicitud.Precio unitario mano de obra [' + (i + 1) + ']')}">
-                                                    $<input type="number" step=".01" placeholder="0.0"
+                                                    $<input type="text" step=".01" placeholder="0.0"
                                                             style="width: 90%" :id="'m_p_'+insumo.id_elemento+'_' + i"
                                                             @change="recalcular_monto(insumo.id_elemento, i,2)"
                                                             v-validate="insumo.nuevo==true ? 'required' : ''"
@@ -243,7 +243,7 @@
                                             <td>
                                                 <div class="form-group"
                                                      :class="{'has-error': validation_errors.has('form_save_solicitud.Rendimiento nuevo herramienta[' + (i + 1) + ']')}">
-                                                    <input type="number" step=".01" placeholder="0.0" style="width: 90%"
+                                                    <input type="text" step=".01" placeholder="0.0" style="width: 90%"
                                                            :id="'c_p_'+insumo.id_elemento+'_' + i"
                                                            @change="recalcular(insumo.id_elemento, i,4)"
                                                            v-validate="insumo.nuevo==true ? 'required' : ''"
@@ -257,7 +257,7 @@
                                             <td>
                                                 <div class="form-group"
                                                      :class="{'has-error': validation_errors.has('form_save_solicitud.Precio unitario herramienta [' + (i + 1) + ']')}">
-                                                    $<input type="number" step=".01" placeholder="0.0"
+                                                    $<input type="text" step=".01" placeholder="0.0"
                                                             style="width: 90%" :id="'m_p_'+insumo.id_elemento+'_' + i"
                                                             @change="recalcular_monto(insumo.id_elemento, i,4)"
                                                             v-validate="insumo.nuevo==true ? 'required' : ''"
@@ -312,7 +312,7 @@
                                             <td>
                                                 <div class="form-group"
                                                      :class="{'has-error': validation_errors.has('form_save_solicitud.Rendimiento nuevo maquinaria[' + (i + 1) + ']')}">
-                                                    <input type="number" step=".01" placeholder="0.0" style="width: 90%"
+                                                    <input type="text" step=".01" placeholder="0.0" style="width: 90%"
                                                            :id="'c_p_'+insumo.id_elemento+'_' + i"
                                                            @change="recalcular(insumo.id_elemento, i,8)"
                                                            v-validate="insumo.nuevo==true ? 'required' : ''"
@@ -326,7 +326,7 @@
                                             <td>
                                                 <div class="form-group"
                                                      :class="{'has-error': validation_errors.has('form_save_solicitud.Precio unitario maquinaria[' + (i + 1) + ']')}">
-                                                    $<input type="number" step=".01" placeholder="0.0"
+                                                    $<input type="text" step=".01" placeholder="0.0"
                                                             style="width: 90%" :id="'m_p_'+insumo.id_elemento+'_' + i"
                                                             @change="recalcular_monto(insumo.id_elemento, i,8)"
                                                             v-validate="insumo.nuevo==true ? 'required' : ''"
@@ -394,7 +394,7 @@
                                             <td>
                                                 <div class="form-group"
                                                      :class="{'has-error': validation_errors.has('form_save_solicitud.Rendimiento nuevo material [' + (i + 1) + ']')}">
-                                                    <input type="number" step=".01" placeholder="0.0" style="width: 90%"
+                                                    <input type="text" step=".01" placeholder="0.0" style="width: 90%"
                                                            :class="'rendimiento'+insumo.id_elemento+'_' + i"
                                                            :id="'c_p_'+insumo.id_elemento+'_' + i"
                                                            @change="recalcular(insumo.id_elemento, i,1)"
@@ -409,7 +409,7 @@
                                             <td>
                                                 <div class="form-group"
                                                      :class="{'has-error': validation_errors.has('form_save_solicitud.Rendimiento nuevo material [' + (i + 1) + ']')}">
-                                                    <input type="number" step=".01" placeholder="0.0" style="width: 90%"
+                                                    <input type="text" step=".01" placeholder="0.0" style="width: 90%"
                                                            :id="'r_p_'+insumo.id_elemento+'_' + i"
                                                            @change="recalcular_cantidad(insumo.id_elemento, i,1)"
                                                            v-validate="insumo.nuevo==true ? 'required' : ''"
@@ -424,7 +424,7 @@
                                             <td>
                                                 <div class="form-group"
                                                      :class="{'has-error': validation_errors.has('form_save_solicitud.Precio unitario material [' + (i + 1) + ']')}">
-                                                    $<input type="number" step=".01" placeholder="0.0"
+                                                    $<input type="text" step=".01" placeholder="0.0"
                                                             style="width: 90%"
                                                             :class="'pre_unit'+insumo.id_elemento+'_' + i"
                                                             :id="'m_p_'+insumo.id_elemento+'_' + i"
@@ -482,7 +482,7 @@
                                             <td>
                                                 <div class="form-group"
                                                      :class="{'has-error': validation_errors.has('form_save_solicitud.Rendimiento nuevo mano de obra [' + (i + 1) + ']')}">
-                                                    <input type="number" step=".01" placeholder="0.0" style="width: 90%"
+                                                    <input type="text" step=".01" placeholder="0.0" style="width: 90%"
                                                            :class="'rendimiento'+insumo.id_elemento+'_' + i"
                                                            :id="'c_p_'+insumo.id_elemento+'_' + i"
                                                            @change="recalcular(insumo.id_elemento, i,2)"
@@ -497,7 +497,7 @@
                                             <td>
                                                 <div class="form-group"
                                                      :class="{'has-error': validation_errors.has('form_save_solicitud.Rendimiento nuevo mano de obra [' + (i + 1) + ']')}">
-                                                    <input type="number" step=".01" placeholder="0.0" style="width: 90%"
+                                                    <input type="text" step=".01" placeholder="0.0" style="width: 90%"
                                                            :id="'r_p_'+insumo.id_elemento+'_' + i"
                                                            @change="recalcular_cantidad(insumo.id_elemento, i,2)"
                                                            v-validate="insumo.nuevo==true ? 'required' : ''"
@@ -512,7 +512,7 @@
                                             <td>
                                                 <div class="form-group"
                                                      :class="{'has-error': validation_errors.has('form_save_solicitud.Precio unitario mano de obra [' + (i + 1) + ']')}">
-                                                    $<input type="number" step=".01" placeholder="0.0"
+                                                    $<input type="text" step=".01" placeholder="0.0"
                                                             style="width: 90%"
                                                             :class="'pre_unit'+insumo.id_elemento+'_' + i"
                                                             :id="'m_p_'+insumo.id_elemento+'_' + i"
@@ -571,7 +571,7 @@
                                             <td>
                                                 <div class="form-group"
                                                      :class="{'has-error': validation_errors.has('form_save_solicitud.Rendimiento nuevo herramienta[' + (i + 1) + ']')}">
-                                                    <input type="number" step=".01" placeholder="0.0" style="width: 90%"
+                                                    <input type="text" step=".01" placeholder="0.0" style="width: 90%"
                                                            :class="'rendimiento'+insumo.id_elemento+'_' + i"
                                                            :id="'c_p_'+insumo.id_elemento+'_' + i"
                                                            @change="recalcular(insumo.id_elemento, i,4)"
@@ -586,7 +586,7 @@
                                             <td>
                                                 <div class="form-group"
                                                      :class="{'has-error': validation_errors.has('form_save_solicitud.Rendimiento nuevo herramienta [' + (i + 1) + ']')}">
-                                                    <input type="number" step=".01" placeholder="0.0" style="width: 90%"
+                                                    <input type="text" step=".01" placeholder="0.0" style="width: 90%"
                                                            :id="'r_p_'+insumo.id_elemento+'_' + i"
                                                            @change="recalcular_cantidad(insumo.id_elemento, i,4)"
                                                            v-validate="insumo.nuevo==true ? 'required' : ''"
@@ -601,7 +601,7 @@
                                             <td>
                                                 <div class="form-group"
                                                      :class="{'has-error': validation_errors.has('form_save_solicitud.Precio unitario herramienta [' + (i + 1) + ']')}">
-                                                    $<input type="number" step=".01" placeholder="0.0"
+                                                    $<input type="text" step=".01" placeholder="0.0"
                                                             style="width: 90%"
                                                             :class="'pre_unit'+insumo.id_elemento+'_' + i"
                                                             :id="'m_p_'+insumo.id_elemento+'_' + i"
@@ -660,7 +660,7 @@
                                             <td>
                                                 <div class="form-group"
                                                      :class="{'has-error': validation_errors.has('form_save_solicitud.Rendimiento nuevo maquinaria[' + (i + 1) + ']')}">
-                                                    <input type="number" step=".01" placeholder="0.0" style="width: 90%"
+                                                    <input type="text" step=".01" placeholder="0.0" style="width: 90%"
                                                            :class="'rendimiento'+insumo.id_elemento+'_' + i"
                                                            :id="'c_p_'+insumo.id_elemento+'_' + i"
                                                            @change="recalcular(insumo.id_elemento, i,8)"
@@ -675,7 +675,7 @@
                                             <td>
                                                 <div class="form-group"
                                                      :class="{'has-error': validation_errors.has('form_save_solicitud.Rendimiento nuevo maquinaria [' + (i + 1) + ']')}">
-                                                    <input type="number" step=".01" placeholder="0.0" style="width: 90%"
+                                                    <input type="text" step=".01" placeholder="0.0" style="width: 90%"
                                                            :id="'r_p_'+insumo.id_elemento+'_' + i"
                                                            @change="recalcular_cantidad(insumo.id_elemento, i,8)"
                                                            v-validate="insumo.nuevo==true ? 'required' : ''"
@@ -690,7 +690,7 @@
                                             <td>
                                                 <div class="form-group"
                                                      :class="{'has-error': validation_errors.has('form_save_solicitud.Precio unitario maquinaria[' + (i + 1) + ']')}">
-                                                    $<input type="number" step=".01" placeholder="0.0"
+                                                    $<input type="text" step=".01" placeholder="0.0"
                                                             style="width: 90%"
                                                             :class="'pre_unit'+insumo.id_elemento+'_' + i"
                                                             :id="'m_p_'+insumo.id_elemento+'_' + i"

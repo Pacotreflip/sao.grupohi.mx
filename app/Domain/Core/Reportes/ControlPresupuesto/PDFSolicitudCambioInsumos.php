@@ -82,7 +82,7 @@ class PDFSolicitudCambioInsumos extends Rotation
         $x_inicial = $this->GetPageWidth() / 2;
         $this->setY($y_inicial);
         $this->setX($x_inicial);
-        //$this->logo();
+        $this->logo();
 
         //Tabla Detalles de la Asignación
         $this->detallesAsignacion($x_inicial);
@@ -134,7 +134,7 @@ class PDFSolicitudCambioInsumos extends Rotation
             $this->SetHeights(array(0.35));
             $this->SetAligns(array('L', 'L', 'L', 'L', 'R', 'R', 'R', 'R', 'R', 'R', 'R', 'R', 'R'));
             $this->SetWidths(array(0.02 * $this->WidthTotal, 0.04 * $this->WidthTotal, 0.34 * $this->WidthTotal, 0.06 * $this->WidthTotal, 0.06 * $this->WidthTotal, 0.06 * $this->WidthTotal, 0.06 * $this->WidthTotal, 0.06 * $this->WidthTotal, 0.06 * $this->WidthTotal, 0.06 * $this->WidthTotal, 0.06 * $this->WidthTotal, 0.06 * $this->WidthTotal, 0.06 * $this->WidthTotal));
-        }else if($this->encola=='motivo'){
+        } else if ($this->encola == 'motivo') {
             $this->SetWidths(array($this->WidthTotal));
             $this->SetFills(array('180,180,180'));
             $this->SetTextColors(array('0,0,0'));
@@ -222,131 +222,131 @@ class PDFSolicitudCambioInsumos extends Rotation
         $this->SetFont('Arial', 'B', $this->txtSeccionTam);
         $this->SetTextColors(array('255,255,255'));
         $this->MultiCell($this->WidthTotal, .35, utf8_decode($this->solicitud->concepto), 0, 'L');
-        $numero_tarjeta='';
+        $numero_tarjeta = '';
 
         foreach ($conceptos_agrupados['conceptos'] as $conceptos) {
 
-          $numero_tarjeta=$conceptos['concepto']['numero_tarjeta'];
-            $array_data=[];
+            $numero_tarjeta = $conceptos['concepto']['numero_tarjeta'];
+            $array_data = [];
 
-            $pu=$conceptos['concepto']['importe_anterior']/$conceptos['concepto']['cantidad_presupuestada'];
-            $pa=$conceptos['concepto']['importe_nuevo']/$conceptos['concepto']['cantidad_presupuestada'];
-            $data_info=[
-                'num_tarjeta'=>$numero_tarjeta,
-                'descripcion'=>utf8_decode($conceptos['concepto']['descripcion']),
-                'unidad'=>$conceptos['concepto']['unidad'],
-                'pu'=>$pu,
-                'pu_actualizado'=>$pa,
-                'variacion_pu'=>$pa-$pu,
-                'cantidad_original'=>$conceptos['concepto']['cantidad_presupuestada'],
-                'variacion_cantidad'=>'--',
-                'cantidad_nueva'=>'--',
-                'importe_original'=>$conceptos['concepto']['importe_anterior'],
-                'variacion_importe'=>$conceptos['concepto']['variacion'],
-                'importe_actualizado'=>$conceptos['concepto']['importe_nuevo']
+            $pu = $conceptos['concepto']['importe_anterior'] / $conceptos['concepto']['cantidad_presupuestada'];
+            $pa = $conceptos['concepto']['importe_nuevo'] / $conceptos['concepto']['cantidad_presupuestada'];
+            $data_info = [
+                'num_tarjeta' => $numero_tarjeta,
+                'descripcion' => utf8_decode($conceptos['concepto']['descripcion']),
+                'unidad' => $conceptos['concepto']['unidad'],
+                'pu' => $pu,
+                'pu_actualizado' => $pa,
+                'variacion_pu' => $pa - $pu,
+                'cantidad_original' => $conceptos['concepto']['cantidad_presupuestada'],
+                'variacion_cantidad' => '--',
+                'cantidad_nueva' => '--',
+                'importe_original' => $conceptos['concepto']['importe_anterior'],
+                'variacion_importe' => $conceptos['concepto']['variacion'],
+                'importe_actualizado' => $conceptos['concepto']['importe_nuevo']
 
             ];
-            array_push($array_data,$data_info);
-          //  dd($conceptos['concepto']['descripcion']);
+            array_push($array_data, $data_info);
+            //  dd($conceptos['concepto']['descripcion']);
 
-                $this->SetFont('Arial', '', 6);
-                $this->SetStyles(array('DF', 'DF', 'DF', 'FD', 'DF', 'DF', 'DF', 'DF', 'DF', 'DF', 'DF', 'DF', 'DF'));
-                $this->SetFills(array('180,180,180', '180,180,180', '180,180,180', '180,180,180', '180,180,180', '180,180,180', '180,180,180', '180,180,180', '180,180,180', '180,180,180', '180,180,180', '180,180,180', '180,180,180'));
-                $this->SetTextColors(array('0,0,0', '0,0,0', '0,0,0', '0,0,0', '0,0,0', '0,0,0', '0,0,0', '0,0,0', '0,0,0', '0,0,0', '0,0,0', '0,0,0', '0,0,0'));
-                $this->SetHeights(array(0.28));
-                $this->SetAligns(array('L', 'L', 'L', 'C', 'C', 'C', 'C', 'C', 'C', 'C', 'C', 'C', 'C'));
-                $this->SetWidths(array(0.02 * $this->WidthTotal, 0.04 * $this->WidthTotal, 0.34 * $this->WidthTotal, 0.06 * $this->WidthTotal, 0.06 * $this->WidthTotal, 0.06 * $this->WidthTotal, 0.06 * $this->WidthTotal, 0.06 * $this->WidthTotal, 0.06 * $this->WidthTotal, 0.06 * $this->WidthTotal, 0.06 * $this->WidthTotal, 0.06 * $this->WidthTotal, 0.06 * $this->WidthTotal));
-                $this->Row(array('#', 'No. Tarjeta', utf8_decode("Descripción"), utf8_decode("Unidad"), utf8_decode("Precio Unitario"), utf8_decode("Variación Precio Unitario"), "Precio Unitario Actualizado", utf8_decode("Cantidad Original"), utf8_decode("Variacion de Cantidad"), utf8_decode("Cantidad Actualizada"), utf8_decode("Importe Original"), utf8_decode("Variación de Importe"), utf8_decode("Importe Actualizado")));
+            $this->SetFont('Arial', '', 6);
+            $this->SetStyles(array('DF', 'DF', 'DF', 'FD', 'DF', 'DF', 'DF', 'DF', 'DF', 'DF', 'DF', 'DF', 'DF'));
+            $this->SetFills(array('180,180,180', '180,180,180', '180,180,180', '180,180,180', '180,180,180', '180,180,180', '180,180,180', '180,180,180', '180,180,180', '180,180,180', '180,180,180', '180,180,180', '180,180,180'));
+            $this->SetTextColors(array('0,0,0', '0,0,0', '0,0,0', '0,0,0', '0,0,0', '0,0,0', '0,0,0', '0,0,0', '0,0,0', '0,0,0', '0,0,0', '0,0,0', '0,0,0'));
+            $this->SetHeights(array(0.28));
+            $this->SetAligns(array('L', 'L', 'L', 'C', 'C', 'C', 'C', 'C', 'C', 'C', 'C', 'C', 'C'));
+            $this->SetWidths(array(0.02 * $this->WidthTotal, 0.04 * $this->WidthTotal, 0.34 * $this->WidthTotal, 0.06 * $this->WidthTotal, 0.06 * $this->WidthTotal, 0.06 * $this->WidthTotal, 0.06 * $this->WidthTotal, 0.06 * $this->WidthTotal, 0.06 * $this->WidthTotal, 0.06 * $this->WidthTotal, 0.06 * $this->WidthTotal, 0.06 * $this->WidthTotal, 0.06 * $this->WidthTotal));
+            $this->Row(array('#', 'No. Tarjeta', utf8_decode("Descripción"), utf8_decode("Unidad"), utf8_decode("Precio Unitario"), utf8_decode("Variación Precio Unitario"), "Precio Unitario Actualizado", utf8_decode("Cantidad Original"), utf8_decode("Variacion de Cantidad"), utf8_decode("Cantidad Actualizada"), utf8_decode("Importe Original"), utf8_decode("Variación de Importe"), utf8_decode("Importe Actualizado")));
 
-                $contador = 1;
-
-
-    if($this->solicitud->id_estatus==2){ //historico
-
-        //  $clasificacion = $this->partidas->getClasificacionInsumos($solicitud->id);
-        $conceptos_agrupados = $this->agrupacion->with('concepto')->where([['id_solicitud_cambio', '=', $this->solicitud->id]])->all();
-        $conceptos_agrupados = $this->partidas->getTotalesClasificacionInsumos($conceptos_agrupados->toArray());
-
-        $this->resumen=$conceptos_agrupados;
-        $partidas= $this->partidas-> getClasificacionInsumos(['id_solicitud_cambio'=> $this->solicitud->id,'id_concepto'=>$conceptos['id_concepto']]);
+            $contador = 1;
 
 
-        foreach ($partidas as $partida){
-            foreach ( $partida['items'] as $item) {
-                $data_info=[
-                    'num_tarjeta'=>$numero_tarjeta,
-                    'descripcion'=>utf8_decode($item->material->descripcion),
-                    'unidad'=>$item->material->unidad,
-                    'pu'=>$item->precio_unitario_original,
-                    'variacion_pu'=>($item->precio_unitario_nuevo==null?0:$item->precio_unitario_nuevo-$item->precio_unitario_original),
-                    'pu_actualizado'=>$item->precio_unitario_nuevo==null?0:$item->precio_unitario_nuevo,
-                    'cantidad_original'=>$item->cantidad_presupuestada,
-                    'variacion_cantidad'=>$item->cantidad_presupuestada_nueva==null?0:$item->cantidad_presupuestada_nueva-$item->cantidad_presupuestada,
-                    'cantidad_nueva'=>$item->cantidad_presupuestada_nueva==null?0:$item->cantidad_presupuestada_nueva,
-                    'importe_original'=>$item->cantidad_presupuestada*$item->precio_unitario_original,
-                    'variacion_importe'=>$item->monto_presupuestado-($item->cantidad_presupuestada*$item->precio_unitario_original),
-                    'importe_actualizado'=>$item->monto_presupuestado
+            if ($this->solicitud->id_estatus == 2) { //historico
 
-                ];
-                array_push($array_data,$data_info);
+                //  $clasificacion = $this->partidas->getClasificacionInsumos($solicitud->id);
+                $conceptos_agrupados = $this->agrupacion->with('concepto')->where([['id_solicitud_cambio', '=', $this->solicitud->id]])->all();
+                $conceptos_agrupados = $this->partidas->getTotalesClasificacionInsumos($conceptos_agrupados->toArray());
 
+                $this->resumen = $conceptos_agrupados;
+                $partidas = $this->partidas->getClasificacionInsumos(['id_solicitud_cambio' => $this->solicitud->id, 'id_concepto' => $conceptos['id_concepto']]);
+
+
+                foreach ($partidas as $partida) {
+                    foreach ($partida['items'] as $item) {
+                        $data_info = [
+                            'num_tarjeta' => $numero_tarjeta,
+                            'descripcion' => utf8_decode($item->material->descripcion),
+                            'unidad' => $item->material->unidad,
+                            'pu' => $item->precio_unitario_original,
+                            'variacion_pu' => ($item->precio_unitario_nuevo == null ? 0 : $item->precio_unitario_nuevo - $item->precio_unitario_original),
+                            'pu_actualizado' => $item->precio_unitario_nuevo == null ? 0 : $item->precio_unitario_nuevo,
+                            'cantidad_original' => $item->cantidad_presupuestada,
+                            'variacion_cantidad' => $item->cantidad_presupuestada_nueva == null ? 0 : $item->cantidad_presupuestada_nueva - $item->cantidad_presupuestada,
+                            'cantidad_nueva' => $item->cantidad_presupuestada_nueva == null ? 0 : $item->cantidad_presupuestada_nueva,
+                            'importe_original' => $item->cantidad_presupuestada * $item->precio_unitario_original,
+                            'variacion_importe' => $item->monto_presupuestado - ($item->cantidad_presupuestada * $item->precio_unitario_original),
+                            'importe_actualizado' => $item->monto_presupuestado
+
+                        ];
+                        array_push($array_data, $data_info);
+
+                    }
+
+                }
+            } else {
+
+                $partidas = $this->partidas->getClasificacionInsumos(['id_solicitud_cambio' => $this->solicitud->id, 'id_concepto' => $conceptos['id_concepto']]);
+                foreach ($partidas as $partida) {
+                    foreach ($partida['items'] as $item) {
+                        $data_info = [
+                            'num_tarjeta' => $numero_tarjeta,
+                            'descripcion' => $item->material->descripcion,
+                            'unidad' => $item->material->unidad,
+                            'pu' => $item->precio_unitario_original,
+                            'variacion_pu' => ($item->precio_unitario_nuevo == null ? 0 : $item->precio_unitario_nuevo - $item->precio_unitario_original),
+                            'pu_actualizado' => $item->precio_unitario_nuevo == null ? 0 : $item->precio_unitario_nuevo,
+                            'cantidad_original' => $item->cantidad_presupuestada,
+                            'variacion_cantidad' => $item->cantidad_presupuestada_nueva == null ? 0 : $item->cantidad_presupuestada_nueva - $item->cantidad_presupuestada,
+                            'cantidad_nueva' => $item->cantidad_presupuestada_nueva == null ? 0 : $item->cantidad_presupuestada_nueva,
+                            'importe_original' => $item->precio_unitario_original,
+                            'variacion_importe' => $item->precio_unitario_nuevo == 0 || $item->precio_unitario_nuevo == null ? 0 : $item->precio_unitario_nuevo - $item->precio_unitario_original,
+                            'importe_actualizado' => $item->precio_unitario_nuevo
+
+                        ];
+                        array_push($array_data, $data_info);
+
+                    }
+
+                }
             }
-
-        }
-    }else{
-
-              $partidas= $this->partidas-> getClasificacionInsumos(['id_solicitud_cambio'=> $this->solicitud->id,'id_concepto'=>$conceptos['id_concepto']]);
-              foreach ($partidas as $partida){
-                  foreach ( $partida['items'] as $item) {
-                      $data_info=[
-                          'num_tarjeta'=>$numero_tarjeta,
-                          'descripcion'=>$item->material->descripcion,
-                          'unidad'=>$item->material->unidad,
-                          'pu'=>$item->precio_unitario_original,
-                          'variacion_pu'=>($item->precio_unitario_nuevo==null?0:$item->precio_unitario_nuevo-$item->precio_unitario_original),
-                          'pu_actualizado'=>$item->precio_unitario_nuevo==null?0:$item->precio_unitario_nuevo,
-                          'cantidad_original'=>$item->cantidad_presupuestada,
-                          'variacion_cantidad'=>$item->cantidad_presupuestada_nueva==null?0:$item->cantidad_presupuestada_nueva-$item->cantidad_presupuestada,
-                          'cantidad_nueva'=>$item->cantidad_presupuestada_nueva==null?0:$item->cantidad_presupuestada_nueva,
-                          'importe_original'=>$item->precio_unitario_original,
-                          'variacion_importe'=>$item->precio_unitario_nuevo==0||$item->precio_unitario_nuevo==null?0:$item->precio_unitario_nuevo-$item->precio_unitario_original,
-                          'importe_actualizado'=>$item->precio_unitario_nuevo
-
-                      ];
-                      array_push($array_data,$data_info);
-
-                  }
-
-              }
-    }
 
             $this->SetFont('Arial', '', 6);
             $this->SetFills(array('255,255,255', '255,255,255', '255,255,255', '255,255,255', '255,255,255', '255,255,255', '255,255,255', '255,255,255', '255,255,255', '255,255,255', '255,255,255', '255,255,255', '255,255,255'));
             $this->SetTextColors(array('0,0,0', '0,0,0', '0,0,0', '0,0,0', '0,0,0', '0,0,0', '0,0,0', '0,0,0', '0,0,0', '0,0,0', '0,0,0', '0,0,0', '0,0,0'));
             $this->SetHeights(array(0.35));
-            $this->SetAligns(array('L', 'L', 'L', 'L', 'R', 'R', 'R', 'R', 'R', 'R', 'R','R','R'));
+            $this->SetAligns(array('L', 'L', 'L', 'L', 'R', 'R', 'R', 'R', 'R', 'R', 'R', 'R', 'R'));
             $this->SetWidths(array(0.02 * $this->WidthTotal, 0.04 * $this->WidthTotal, 0.34 * $this->WidthTotal, 0.06 * $this->WidthTotal, 0.06 * $this->WidthTotal, 0.06 * $this->WidthTotal, 0.06 * $this->WidthTotal, 0.06 * $this->WidthTotal, 0.06 * $this->WidthTotal, 0.06 * $this->WidthTotal, 0.06 * $this->WidthTotal, 0.06 * $this->WidthTotal, 0.06 * $this->WidthTotal));
             $this->encola = 'partidas';
             //dd($array_data);
-                 foreach ($array_data as $contador => $row) {
+            foreach ($array_data as $contador => $row) {
 
-                     $this->Row([
-                         ($contador + 1),
-                         $numero_tarjeta,
-                         $row['descripcion'],
-                         utf8_decode($row['unidad']),
-                         '$ ' . number_format($row['pu'], 2, '.', ','),
-                         number_format($row['variacion_pu'], 2, '.', ','),
-                         number_format($row['pu_actualizado']),
-                         number_format($row['cantidad_original'], 2, '.', ','),
-                         $row['variacion_cantidad'] != '--' ? '$ ' . number_format($row['variacion_cantidad'], 2, '.', ',') : $row['variacion_cantidad'],
-                         $row['cantidad_nueva'] != '--' ? '$ ' . number_format($row['cantidad_nueva'], 2, '.', ',') : $row['cantidad_nueva'],
-                         '$ ' . number_format($row['importe_original'], 2, '.', ','),
-                         '$ ' . number_format($row['variacion_importe'], 2, '.', ','),
-                         '$ ' . number_format($row['importe_actualizado'], 2, '.', ',')
-                     ]);
+                $this->Row([
+                    ($contador + 1),
+                    $numero_tarjeta,
+                    $row['descripcion'],
+                    utf8_decode($row['unidad']),
+                    '$ ' . number_format($row['pu'], 2, '.', ','),
+                    number_format($row['variacion_pu'], 2, '.', ','),
+                    number_format($row['pu_actualizado']),
+                    number_format($row['cantidad_original'], 2, '.', ','),
+                    $row['variacion_cantidad'] != '--' ? '$ ' . number_format($row['variacion_cantidad'], 2, '.', ',') : $row['variacion_cantidad'],
+                    $row['cantidad_nueva'] != '--' ? '$ ' . number_format($row['cantidad_nueva'], 2, '.', ',') : $row['cantidad_nueva'],
+                    '$ ' . number_format($row['importe_original'], 2, '.', ','),
+                    '$ ' . number_format($row['variacion_importe'], 2, '.', ','),
+                    '$ ' . number_format($row['importe_actualizado'], 2, '.', ',')
+                ]);
 
-             }
+            }
 
         }
         $this->Ln(1);
@@ -374,8 +374,9 @@ class PDFSolicitudCambioInsumos extends Rotation
         $this->Row(array(utf8_decode($this->solicitud->motivo)));
     }
 
-    function resumen(){
-        $this->SetX(10);
+    function resumen()
+    {
+        $this->SetX(17.52);
         $this->SetFont('Arial', '', 6);
         $this->SetStyles(array('DF', 'DF'));
         $this->SetFills(array('180,180,180', '180,180,180'));
@@ -390,25 +391,26 @@ class PDFSolicitudCambioInsumos extends Rotation
         $this->SetTextColors(array('0,0,0', '0,0,0'));
         $this->SetHeights(array(0.38));
         $this->SetAligns(array('L', 'R'));
-        $this->SetWidths(array(0.2* $this->WidthTotal, 0.2* $this->WidthTotal));
-        $this->SetX(10);
-        $this->Row(['Conceptos Modificados',count($this->resumen['conceptos'])]);
-        $this->SetX(10);
-        $this->Row(['Importe Conceptos Modificados','$ '.number_format($this->resumen['imp_nuevo_gen']-$this->resumen['total_variaciones'], 2, '.', ',')]);
-        $this->SetX(10);
-        $this->Row([utf8_decode('Importe Variación'),'$ '.number_format($this->resumen['total_variaciones'], 2, '.', ',')]);
-        $this->SetX(10);
-        $this->Row(['Importe Conceptos Actualizados','$ '.number_format($this->resumen['imp_nuevo_gen'], 2, '.', ',')]);
-        $this->SetX(10);
-        $this->Row(['Importe Presupuesto Actual',  '$ '.number_format($this->resumen['total_presupuesto'], 2, '.', ',')]);
-        $this->SetX(10);
-        $this->Row(['Importe Presupuesto Nuevo', '$ '. number_format(($this->resumen['total_presupuesto']+$this->resumen['total_variaciones']), 2, '.', ',')]);
+        $this->SetWidths(array(0.2 * $this->WidthTotal, 0.2 * $this->WidthTotal));
+        $this->SetX(17.52);
+        $this->Row(['Conceptos Modificados', count($this->resumen['conceptos'])]);
+        $this->SetX(17.52);
+        $this->Row(['Importe Conceptos Modificados', '$ ' . number_format($this->resumen['imp_nuevo_gen'] - $this->resumen['total_variaciones'], 2, '.', ',')]);
+        $this->SetX(17.52);
+        $this->Row([utf8_decode('Importe Variación'), '$ ' . number_format($this->resumen['total_variaciones'], 2, '.', ',')]);
+        $this->SetX(17.52);
+        $this->Row(['Importe Conceptos Actualizados', '$ ' . number_format($this->resumen['imp_nuevo_gen'], 2, '.', ',')]);
+        $this->SetX(17.52);
+        $this->Row(['Importe Presupuesto Actual', '$ ' . number_format($this->resumen['total_presupuesto'], 2, '.', ',')]);
+        $this->SetX(17.52);
+        $this->Row(['Importe Presupuesto Nuevo', '$ ' . number_format(($this->resumen['total_presupuesto'] + $this->resumen['total_variaciones']), 2, '.', ',')]);
         $this->Ln(1);
 
 
-      //  dd($this->resumen);
+        //  dd($this->resumen);
     }
-    /*
+
+
         function logo() {
 
             $data = $this->obra->logotipo;
@@ -420,7 +422,7 @@ class PDFSolicitudCambioInsumos extends Rotation
                 unlink($file);;
             }
         }
-        */
+
 
     function pixelsToCM($val)
     {

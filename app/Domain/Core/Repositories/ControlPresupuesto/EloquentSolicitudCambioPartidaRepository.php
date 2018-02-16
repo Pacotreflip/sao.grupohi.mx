@@ -361,12 +361,11 @@ class EloquentSolicitudCambioPartidaRepository implements SolicitudCambioPartida
             $afectaciones = [];
             $conceptoProforma = DB::connection('cadeco')->table($baseDatos->base_datos . ".dbo.conceptos")->where('clave_concepto', '=', $conceptoAgr['concepto']['clave_concepto'])->first();
             if (!$conceptoProforma) {
-                throw new HttpResponseException(new Response('El concepto ' . $partida->concepto->descripcion . ' no cuenta con clave de concepto registrada en ' . $baseDatos->base_datos, 404));
+              //  throw new HttpResponseException(new Response('El concepto ' . $conceptoAgr['concepto']['descripcion']. ' no cuenta con clave de concepto registrada en ' . $baseDatos->base_datos, 404));
+            }else {
+                $montoProfC = $conceptoProforma->cantidad_presupuestada * $conceptoProforma->precio_unitario;
+                $maximo_proforma += $montoProfC;
             }
-            $montoProfC=$conceptoProforma->cantidad_presupuestada*$conceptoProforma->precio_unitario;
-
-            $maximo_proforma += $montoProfC;
-
         }
 
         $data = ['conceptos' => $conceptosSol,
