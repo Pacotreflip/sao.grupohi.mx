@@ -14,19 +14,19 @@
             v-cloak>
         <section>
             <div class="row">
-                <div class="col-md-3" v-if="solicitud.estatus.clave_estado == 1">
-                    <a class="btn btn-app btn-danger rechazar_solicitud" @click="confirm_rechazar_solicitud">
-                        <i class="fa fa-close"></i> Rechazar
+                <div class="col-md-12">
+                    <a class="btn pull-right btn-app btn-danger rechazar_solicitud" v-on:click="confirm_rechazar_solicitud" v-if="solicitud.estatus.clave_estado == 1">
+                        <span v-if="rechazando"><i class="fa fa-spinner fa-spin"></i> Rechazando</span>
+                        <span v-else><i class="fa fa-close"></i> Rechazar</span>
                     </a>
-                    <a class="btn btn-app btn-success autorizar_solicitud" @click="confirm_autorizar_solicitud()">
-                        <i class="fa fa-check"></i> Autorizar
+                    <a class="btn pull-right btn-sm btn-app btn-info autorizar_solicitud" data-toggle="modal" data-target="#select_presupuestos_modal" v-if="solicitud.estatus.clave_estado == 1" @click="fillAfectaciones(); validation_errors.clear('form_autorizar_solicitud')">
+                        <span v-if="autorizando"><i class="fa fa-spinner fa-spin"></i> Autorizando</span>
+                        <span v-else><i class="fa fa-check"></i> Autorizar</span>
                     </a>
-                </div>
-                <div v-for="presupuesto, index in presupuestos" class="form-group col-md-3 text-center" :class="solicitud.estatus.clave_estado != 1 && index == 0 ? 'col-md-offset-3' : ''">
-                    <label><b>@{{ presupuesto.base_datos.descripcion }}</b></label>
                 </div>
             </div>
             <div class="row">
+
                 <div class="col-md-3">
                     <div class="box box-solid">
                         <div class="box-header with-border">
@@ -56,7 +56,7 @@
                             <p class="text-muted">@{{solicitud.fecha_solicitud}}</p>
                             <hr>
                             <strong>Estatus:</strong>
-                            <p class="text-muted">@{{solicitud.estatus.descripcion}}</p>
+                            <p class="text-muted">@{{solicitud.estatus.descripcion.toUpperCase()}} {{ strtoupper($aplicadaTitulo) }}</p>
                         </div>
                         <!-- /.box-body -->
                     </div>
@@ -126,8 +126,7 @@
                             <ul class="nav nav-tabs">
                                 @foreach($presupuestos as $index=>$presupuesto)
                                     <li v-on:click="mostrar_detalle_presupuesto({{$presupuesto->baseDatos->id}})"
-                                        class="{{$index==0?'active':''}}"><a data-toggle="tab"
-                                                                             href="#menu{{$presupuesto->baseDatos->id}}">{{$presupuesto->baseDatos->descripcion}}</a>
+                                        class="{{$index==0?'active':''}}"><a data-toggle="tab" href="#menu{{$presupuesto->baseDatos->id}}">{{$presupuesto->baseDatos->descripcion}}</a>
                                     </li>
                                 @endforeach
 
@@ -183,6 +182,43 @@
                         <div class="modal-footer">
                             <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
                         </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Modal -->
+            <div class="modal fade" id="select_presupuestos_modal" tabindex="-1" role="dialog" aria-labelledby="selectPresupuestosModalLabel">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <h4 class="modal-title" id="myModalLabel">Seleccione los presupuestos que desea afectar con ésta solicitud<br><small>(Por defecto se marcan los presupuestos seleccionados al crear la solicitud)</small></h4>
+                        </div>
+                        <form  id="form_autorizar_solicitud" @submit.prevent="validateForm('form_autorizar_solicitud', 'autorizar_solicitud')"  data-vv-scope="form_autorizar_solicitud">
+                        <div class="modal-body">
+                            <div class="row">
+                                <div class="form-group col-md-4" :class="{'has-error': validation_errors.has('form_autorizar_solicitud.Presupuesto')}" v-for="presupuesto in presupuestos">
+                                    <span v-if="aplicada(presupuesto.id_base_presupuesto)">
+                                        <label class="text-warning">@{{ presupuesto.base_datos.descripcion }} (Aplicada)</label>
+                                    </span>
+                                    <span v-else>
+                                        <label><b>@{{ aplicada(presupuesto.id_base_presupuesto) ? 'presupuesto.base_datos.descripcion(APLICADA)' : presupuesto.base_datos.descripcion }}</b></label>
+                                    </span>
+                                    <input type="checkbox"
+                                           :disabled="aplicada(presupuesto.id_base_presupuesto)"
+                                           :value="presupuesto.base_datos.id"
+                                           v-model="form.afectaciones"
+                                           :name="'Presupuesto'"
+                                           v-validate="'required'">
+                                </div>
+                            </div>
+                            <label class="help text-red" v-show="validation_errors.has('form_autorizar_solicitud.Presupuesto')">Seleccione por lo menos un presupuesto por afectar.</label>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                            <button type="submit" :disabled="autorizando" class="btn btn-primary">Autorizar Solicitud</button>
+                        </div>
+                        </form>
                     </div>
                 </div>
             </div>

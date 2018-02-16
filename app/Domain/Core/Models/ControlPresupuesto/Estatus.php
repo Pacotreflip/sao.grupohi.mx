@@ -21,4 +21,9 @@ class Estatus extends Model
         'clave_estado',
         'descripcion'
     ];
+
+    public function __toString()
+    {
+        return $this->descripcion;
+    }
 }

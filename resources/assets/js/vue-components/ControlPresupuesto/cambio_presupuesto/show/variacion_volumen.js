@@ -4,7 +4,8 @@ Vue.component('show-variacion-volumen', {
         return {
             form: {
                 solicitud: this.solicitud,
-                cobrabilidad: this.cobrabilidad
+                cobrabilidad: this.cobrabilidad,
+                afectaciones : []
             },
             cargando: false,
             rechazando:false,
@@ -18,6 +19,9 @@ Vue.component('show-variacion-volumen', {
     },
 
     mounted: function () {
+
+        this.fillAfectaciones();
+
         $(document).on('click', '.mostrar_pdf', function () {
             var _this = $(this),
                 id = _this.data('pdf_id'),
@@ -97,7 +101,8 @@ Vue.component('show-variacion-volumen', {
                 url: url,
                 data: {
                     id: id,
-                    id_tipo_orden: self.form.solicitud.id_tipo_orden
+                    id_tipo_orden: self.form.solicitud.id_tipo_orden,
+                    afectaciones : self.form.afectaciones
                 },
                 beforeSend: function () {
                     self.autorizando = true;
@@ -178,6 +183,7 @@ Vue.component('show-variacion-volumen', {
                 }
             });
         },
+
         mostrar_detalle_presupuesto:function (idPresupuesto) {
             var self = this;
             var partida=self.partida_id;
@@ -202,6 +208,38 @@ Vue.component('show-variacion-volumen', {
                 complete: function () {
                     self.consultando = false;
                 }
+            });
+        },
+
+        fillAfectaciones : function () {
+            var self = this;
+            self.form.afectaciones = [];
+            self.solicitud.aplicaciones.forEach(function (value) {
+                self.form.afectaciones.push(value.id);
+            });
+        },
+
+        aplicada: function (id) {
+            var res = false;
+            this.solicitud.aplicaciones.forEach(function(value) {
+                if(id == value.id && value.pivot.aplicada == 1) {
+                    res = true;
+                }
+            });
+            return res;
+        },
+
+        validateForm: function(scope, funcion) {
+            this.$validator.validateAll(scope).then(() => {
+                if(funcion == 'autorizar_solicitud') {
+                    this.confirm_autorizar_solicitud();
+                }
+            }).catch(() => {
+                swal({
+                     type: 'warning',
+                     title: 'Advertencia',
+                     text: 'Por favor corrija los errores del formulario'
+                 });
             });
         }
     }

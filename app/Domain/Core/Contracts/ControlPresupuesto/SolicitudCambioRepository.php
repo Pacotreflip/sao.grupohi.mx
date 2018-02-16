@@ -55,12 +55,13 @@ interface SolicitudCambioRepository
     public function with($relations);
 
     /**
-     * Autoriza una solicitud de cambio de Variación de Volúmen
+     * Autoriza una solicitud de cambio
      * @param $id
+     * @param array $data
      * @return SolicitudCambio
      * @throws \Exception
      */
-    public function  autorizarVariacionVolumen($id);
+    public function  autorizarVariacionVolumen($id, array $data);
 
     /**
      * Rechaza una solicitud de cambio

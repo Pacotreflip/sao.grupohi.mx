@@ -9,11 +9,9 @@ use Ghi\Domain\Core\Contracts\ControlPresupuesto\BasePresupuestoRepository;
 use Ghi\Domain\Core\Contracts\ControlPresupuesto\PartidasInsumosAgrupadosRepository;
 use Ghi\Domain\Core\Contracts\ControlPresupuesto\PresupuestoRepository;
 use Ghi\Domain\Core\Contracts\ControlPresupuesto\SolicitudCambioRepository;
-use Ghi\Domain\Core\Models\Concepto;
 use Ghi\Domain\Core\Contracts\ControlPresupuesto\SolicitudCambioPartidaRepository;
 use Ghi\Domain\Core\Models\ControlPresupuesto\Estatus;
 use Ghi\Domain\Core\Models\ControlPresupuesto\SolicitudCambio;
-use Ghi\Domain\Core\Models\ControlPresupuesto\SolicitudCambioPartida;
 use Ghi\Domain\Core\Models\ControlPresupuesto\TipoOrden;
 use Ghi\Domain\Core\Reportes\ControlPresupuesto\PDFSolicitudCambio;
 use Ghi\Domain\Core\Reportes\ControlPresupuesto\PDFSolicitudCambioEscalatoria;
@@ -136,7 +134,8 @@ class CambioPresupuestoController extends Controller
 
     public function pdf(Request $request, $id)
     {
-        $solicitud = $this->solicitud->find($id);
+        $solicitud = $this->solicitud->with(['aplicaciones', 'tipoOrden', 'userRegistro', 'estatus', 'partidas', 'partidas.concepto',
+            'partidas.numeroTarjeta', 'partidas.historico'])->find($id);
 
         switch ($solicitud->id_tipo_orden) {
             case TipoOrden::ESCALATORIA:
@@ -164,7 +163,7 @@ class CambioPresupuestoController extends Controller
     public function show($id)
     {
         $solicitud = $this->solicitud->with(['tipoOrden', 'userRegistro', 'estatus', 'partidas', 'partidas.concepto',
-            'partidas.numeroTarjeta', 'partidas.historico'])->find($id);
+            'partidas.numeroTarjeta', 'partidas.historico', 'aplicaciones'])->find($id);
         $presupuestos = $this->afectacion->with('baseDatos')->getBy('id_tipo_orden', '=', $solicitud->id_tipo_orden);
 
         switch ($solicitud->id_tipo_orden) {
@@ -179,10 +178,14 @@ class CambioPresupuestoController extends Controller
             case TipoOrden::CONCEPTOS_EXTRAORDINARIOS:
                 break;
             case TipoOrden::VARIACION_VOLUMEN:
+
+                $aplicadaTitulo =' ('. (!$solicitud->aplicada ? 'no ' : '') .'Aplicada)';
+
                 return view('control_presupuesto.cambio_presupuesto.show.variacion_volumen')
                     ->with('solicitud', $solicitud)
                     ->with('cobrabilidad', $solicitud->tipoOrden)
-                    ->with('presupuestos', $presupuestos);
+                    ->with('presupuestos', $presupuestos)
+                    ->with('aplicadaTitulo', $aplicadaTitulo);
                 break;
             case TipoOrden::ORDEN_DE_CAMBIO_NO_COBRABLE:
                 break;
@@ -215,7 +218,7 @@ class CambioPresupuestoController extends Controller
             case TipoOrden::CONCEPTOS_EXTRAORDINARIOS:
                 break;
             case TipoOrden::VARIACION_VOLUMEN:
-                $solicitud = $this->solicitud->autorizarVariacionVolumen($request->id);
+                $solicitud = $this->solicitud->autorizarVariacionVolumen($request->id, $request->all());
                 break;
             case TipoOrden::ORDEN_DE_CAMBIO_NO_COBRABLE:
                 break;
