@@ -91,7 +91,7 @@
                                     @foreach($solicitud->partidas as $index => $partida)
                                     <tr title="{{  $partida->concepto }}" style="cursor: pointer" v-on:click="mostrar_detalle_partida({{$partida->id}})">
                                         <td>{{ $index + 1 }}</td>
-                                        <td>{{ $partida->numero_tarjeta }}</td>
+                                        <td>{{ $partida->numeroTarjeta ? $partida->numeroTarjeta->descripcion : '' }}</td>
                                         <td>{{ $partida->concepto->sector }}</td>
                                         <td>{{ $partida->concepto->cuadrante }}</td>
                                         <td>{{ substr($partida->concepto->descripcion, 0, 50) }} ...</td>
@@ -102,7 +102,7 @@
                                         <td class="text-right">{{ number_format($partida->historico ? $partida->historico->cantidad_presupuestada_actualizada - $partida->historico->cantidad_presupuestada_original : $partida->variacion_volumen, 2, '.', ',') }}</td>
                                         <td class="text-right">{{ number_format($partida->historico ? $partida->historico->cantidad_presupuestada_actualizada : $partida->concepto->cantidad_presupuestada * $partida->factor, 2, '.', ',') }}</td>
 
-                                        <td class="text-right">$&nbsp;{{ number_format($partida->historico ? $partida->historico->monto_presupuestado_orignal : $partida->concepto->monto_presupuestado, 2, '.', ',') }}</td>
+                                        <td class="text-right">$&nbsp;{{ number_format($partida->historico ? $partida->historico->monto_presupuestado_original : $partida->concepto->monto_presupuestado, 2, '.', ',') }}</td>
                                         <td class="text-right">$&nbsp;{{ number_format($partida->historico ? $partida->historico->monto_presupuestado_actualizado - $partida->historico->monto_presupuestado_original : ($partida->concepto->monto_presupuestado * $partida->factor) - $partida->concepto->monto_presupuestado, 2, '.', ',') }}</td>
                                         <td class="text-right">$&nbsp;{{ number_format($partida->historico ? $partida->historico->monto_presupuestado_actualizado : $partida->concepto->monto_presupuestado * $partida->factor, 2, '.', ',') }}</td>
                                     </tr>
