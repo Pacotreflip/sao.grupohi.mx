@@ -109,7 +109,14 @@ class CambioPresupuestoController extends Controller
 
                 $repetidas = SolicitudCambio::whereHas('partidas', function ($query) use ($conceptos_ids) {
                     $query->whereIn('id_concepto', $conceptos_ids);
-                })->where('id_estatus', '=', Estatus::GENERADA)->get();
+                })
+                    ->where('id_estatus', '=', Estatus::GENERADA)
+                    ->orWhere(function ($query){
+                        $query
+                            ->has('aplicacionesPendientes', '>', 0)
+                            ->where('id_estatus', '=', Estatus::AUTORIZADA);
+                    })
+                    ->get();
 
                 if (!$repetidas->isEmpty())
                     return response()->json(
@@ -162,8 +169,8 @@ class CambioPresupuestoController extends Controller
 
     public function show($id)
     {
-        $solicitud = $this->solicitud->with(['tipoOrden', 'userRegistro', 'estatus', 'partidas', 'partidas.concepto',
-            'partidas.numeroTarjeta', 'partidas.historico', 'aplicaciones'])->find($id);
+        $solicitud = SolicitudCambio::with(['tipoOrden', 'userRegistro', 'estatus', 'partidas', 'partidas.concepto',
+            'partidas.numeroTarjeta', 'aplicaciones'])->find($id);
         $presupuestos = $this->afectacion->with('baseDatos')->getBy('id_tipo_orden', '=', $solicitud->id_tipo_orden);
 
         switch ($solicitud->id_tipo_orden) {
