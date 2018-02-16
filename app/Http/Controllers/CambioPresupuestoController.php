@@ -169,8 +169,8 @@ class CambioPresupuestoController extends Controller
 
     public function show($id)
     {
-        $solicitud = $this->solicitud->with(['tipoOrden', 'userRegistro', 'estatus', 'partidas', 'partidas.concepto',
-            'partidas.numeroTarjeta', 'partidas.historico', 'aplicaciones'])->find($id);
+        $solicitud = SolicitudCambio::with(['tipoOrden', 'userRegistro', 'estatus', 'partidas', 'partidas.concepto',
+            'partidas.numeroTarjeta', 'aplicaciones'])->find($id);
         $presupuestos = $this->afectacion->with('baseDatos')->getBy('id_tipo_orden', '=', $solicitud->id_tipo_orden);
 
         switch ($solicitud->id_tipo_orden) {

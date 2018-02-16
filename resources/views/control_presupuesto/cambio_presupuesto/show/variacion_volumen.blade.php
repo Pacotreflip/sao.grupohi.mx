@@ -88,24 +88,25 @@
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    <tr v-for="(partida,i) in solicitud.partidas" :title="partida.concepto.descripcion"
-                                        style="cursor: pointer" v-on:click="mostrar_detalle_partida(partida.id)">
-                                        <td>@{{ i+1 }}</td>
-                                        <td>@{{ partida.numero_tarjeta.descripcion }}</td>
-                                        <td>@{{ partida.concepto.sector }}</td>
-                                        <td>@{{ partida.concepto.cuadrante }}</td>
-                                        <td>@{{ (partida.concepto.descripcion).substr(0, 50) + '...' }}</td>
-                                        <td>@{{ partida.concepto.unidad }}</td>
-                                        <td class="text-right">$&nbsp;@{{(parseFloat( partida.concepto.precio_unitario )).formatMoney(2,'.',',')}}</td>
+                                    @foreach($solicitud->partidas as $index => $partida)
+                                    <tr title="{{  $partida->concepto }}" style="cursor: pointer" v-on:click="mostrar_detalle_partida({{$partida->id}})">
+                                        <td>{{ $index + 1 }}</td>
+                                        <td>{{ $partida->numero_tarjeta }}</td>
+                                        <td>{{ $partida->concepto->sector }}</td>
+                                        <td>{{ $partida->concepto->cuadrante }}</td>
+                                        <td>{{ substr($partida->concepto->descripcion, 0, 50) }} ...</td>
+                                        <td>{{ $partida->concepto->unidad }}</td>
+                                        <td class="text-right">$&nbsp;{{ number_format($partida->concepto->precio_unitario, 2, '.', ',') }}</td>
 
-                                        <td class="text-right">@{{ parseFloat(partida.historico ? partida.historico.cantidad_presupuestada_original : partida.concepto.cantidad_presupuestada).formatMoney(2, '.',',') }}</td>
-                                        <td class="text-right">@{{ parseFloat(partida.historico ? partida.historico.cantidad_presupuestada_actualizada - partida.historico.cantidad_presupuestada_original : partida.variacion_volumen).formatMoney(2, '.',',') }}</td>
-                                        <td class="text-right">@{{ parseFloat(partida.historico ? partida.historico.cantidad_presupuestada_actualizada : partida.concepto.cantidad_presupuestada * partida.factor).formatMoney(2, '.',',') }}</td>
+                                        <td class="text-right">{{ number_format($partida->historico ? $partida->historico->cantidad_presupuestada_original : $partida->concepto->cantidad_presupuestada, 2, '.', ',') }}</td>
+                                        <td class="text-right">{{ number_format($partida->historico ? $partida->historico->cantidad_presupuestada_actualizada - $partida->historico->cantidad_presupuestada_original : $partida->variacion_volumen, 2, '.', ',') }}</td>
+                                        <td class="text-right">{{ number_format($partida->historico ? $partida->historico->cantidad_presupuestada_actualizada : $partida->concepto->cantidad_presupuestada * $partida->factor, 2, '.', ',') }}</td>
 
-                                        <td class="text-right">$&nbsp;@{{ parseFloat(partida.historico ? partida.historico.monto_presupuestado_orignal : partida.concepto.monto_presupuestado).formatMoney(2, '.',',') }}</td>
-                                        <td class="text-right">$&nbsp;@{{ parseFloat(partida.historico ? partida.historico.monto_presupuestado_actualizado - partida.historico.monto_presupuestado_original : (partida.concepto.monto_presupuestado * partida.factor) - partida.concepto.monto_presupuestado).formatMoney(2, '.',',') }}</td>
-                                        <td class="text-right">$&nbsp;@{{ parseFloat(partida.historico ? partida.historico.monto_presupuestado_actualizado : partida.concepto.monto_presupuestado * partida.factor).formatMoney(2, '.',',') }}</td>
+                                        <td class="text-right">$&nbsp;{{ number_format($partida->historico ? $partida->historico->monto_presupuestado_orignal : $partida->concepto->monto_presupuestado, 2, '.', ',') }}</td>
+                                        <td class="text-right">$&nbsp;{{ number_format($partida->historico ? $partida->historico->monto_presupuestado_actualizado - $partida->historico->monto_presupuestado_original : ($partida->concepto->monto_presupuestado * $partida->factor) - $partida->concepto->monto_presupuestado, 2, '.', ',') }}</td>
+                                        <td class="text-right">$&nbsp;{{ number_format($partida->historico ? $partida->historico->monto_presupuestado_actualizado : $partida->concepto->monto_presupuestado * $partida->factor, 2, '.', ',') }}</td>
                                     </tr>
+                                    @endforeach
                                     </tbody>
                                 </table>
 
