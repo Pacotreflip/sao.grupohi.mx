@@ -215,7 +215,8 @@ class PDFSolicitudCambio extends Rotation {
         $this->SetX($x);
         $this->Cell(0.125 * $this->WidthTotal, 0.35, utf8_decode('Estatus:'), '', 0, 'L');
         $this->SetFont('Arial', '', $this->txtContenidoTam);
-        $this->CellFitScale(0.375 * $this->WidthTotal, 0.35, utf8_decode($this->solicitud->estatus . $aplicadaTitulo), '', 1, 'L');
+        $this->CellFitScale(0.375 * $this->WidthTotal, 0.35, utf8_decode(strtoupper($this->solicitud->estatus .
+            $aplicadaTitulo)), '', 1, 'L');
     }
 
     function items(){
