@@ -173,13 +173,7 @@ class PDFSolicitudCambio extends Rotation {
 
     function detallesAsignacion($x){
 
-        $siAplicada = false;
-
-        if ($aplicacion = $this->solicitud->aplicaciones()->wherePivot('aplicada', '=', true)->where('id', '=',
-            $this->solicitud->id_obra)->first())
-            $siAplicada  = true;
-
-        $aplicadaTitulo =' ('. (empty($siAplicada) ? 'no ' : '') .'Aplicada)';
+        $aplicadaTitulo =' ('. (!$this->solicitud->aplicada ? 'no ' : '') .'Aplicada)';
 
         $this->SetFont('Arial', 'B', $this->txtContenidoTam);
         $this->SetX($x);

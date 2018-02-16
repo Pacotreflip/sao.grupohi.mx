@@ -179,12 +179,7 @@ class CambioPresupuestoController extends Controller
                 break;
             case TipoOrden::VARIACION_VOLUMEN:
 
-                $siAplicada = false;
-
-                if ($aplicacion = $solicitud->aplicaciones()->wherePivot('aplicada', '=', true)->where('id', '=', $solicitud->id_obra)->first())
-                    $siAplicada  = true;
-
-                $aplicadaTitulo =' ('. (empty($siAplicada) ? 'no ' : '') .'Aplicada)';
+                $aplicadaTitulo =' ('. (!$solicitud->aplicada ? 'no ' : '') .'Aplicada)';
 
                 return view('control_presupuesto.cambio_presupuesto.show.variacion_volumen')
                     ->with('solicitud', $solicitud)
