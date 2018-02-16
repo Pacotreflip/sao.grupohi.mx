@@ -62,6 +62,8 @@ class SolicitudCambioPartida extends Model
     }
 
     public function getFactorAttribute() {
-        return ($this->concepto->cantidad_presupuestada + $this->variacion_volumen) / $this->concepto->cantidad_presupuestada;
+
+        return $this->concepto ? (($this->concepto->cantidad_presupuestada + $this->variacion_volumen) /
+            $this->concepto->cantidad_presupuestada) : 0;
     }
 }

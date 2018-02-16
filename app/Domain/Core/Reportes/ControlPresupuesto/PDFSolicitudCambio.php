@@ -173,6 +173,14 @@ class PDFSolicitudCambio extends Rotation {
 
     function detallesAsignacion($x){
 
+        $siAplicada = false;
+
+        if ($aplicacion = $this->solicitud->aplicaciones()->wherePivot('aplicada', '=', true)->where('id', '=',
+            $this->solicitud->id_obra)->first())
+            $siAplicada  = true;
+
+        $aplicadaTitulo =' ('. (empty($siAplicada) ? 'no ' : '') .'Aplicada)';
+
         $this->SetFont('Arial', 'B', $this->txtContenidoTam);
         $this->SetX($x);
         $this->Cell(0.140 * $this->WidthTotal, 0.35, utf8_decode('Obra:'), '', 0, 'LB');
@@ -213,7 +221,7 @@ class PDFSolicitudCambio extends Rotation {
         $this->SetX($x);
         $this->Cell(0.125 * $this->WidthTotal, 0.35, utf8_decode('Estatus:'), '', 0, 'L');
         $this->SetFont('Arial', '', $this->txtContenidoTam);
-        $this->CellFitScale(0.375 * $this->WidthTotal, 0.35, utf8_decode($this->solicitud->estatus), '', 1, 'L');
+        $this->CellFitScale(0.375 * $this->WidthTotal, 0.35, utf8_decode($this->solicitud->estatus . $aplicadaTitulo), '', 1, 'L');
     }
 
     function items(){
@@ -230,7 +238,6 @@ class PDFSolicitudCambio extends Rotation {
             if ($aplicacion = $this->solicitud->aplicaciones()->wherePivot('aplicada', '=', true)->where('id', '=', $base->id_base_presupuesto)->first()) {
                 $siAplicada  = true;
             }
-
 
             $aplicadaTitulo =' ('. (empty($siAplicada) ? 'NO ' : '') .'APLICADA)';
             $tituloBase = 'PRESUPUESTO DE '. $base->baseDatos->descripcion . $aplicadaTitulo;
@@ -355,7 +362,7 @@ class PDFSolicitudCambio extends Rotation {
         $this->SetTextColors(array('0,0,0', '0,0,0'));
         $this->SetHeights(array(0.38));
         $this->SetAligns(array('C', 'C'));
-        $this->SetWidths(array(0.2 * $this->WidthTotal, 0.2 * $this->WidthTotal));
+        $this->SetWidths(array(0.15 * $this->WidthTotal, 0.15 * $this->WidthTotal));
         $this->encola = 'resumen_h';
         $this->Row(array('Detalle', 'Cantidad'));
         $this->encola = 'resumen';

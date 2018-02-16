@@ -8,7 +8,7 @@
 @section('main-content')
     <show-escalatoria
             inline-template
-            :solicitud="{{$solicitud}}"
+            :solicitud="{{$solicitud->toJson()}}"
             :cobrabilidad="{{$cobrabilidad->toJson()}}"
             :presupuestos="{{$presupuestos->toJson()}}"
             v-cloak>

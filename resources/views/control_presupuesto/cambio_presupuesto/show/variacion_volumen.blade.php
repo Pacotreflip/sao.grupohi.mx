@@ -56,7 +56,7 @@
                             <p class="text-muted">@{{solicitud.fecha_solicitud}}</p>
                             <hr>
                             <strong>Estatus:</strong>
-                            <p class="text-muted">@{{solicitud.estatus.descripcion}}</p>
+                            <p class="text-muted">@{{solicitud.estatus.descripcion}} {{ $aplicadaTitulo }}</p>
                         </div>
                         <!-- /.box-body -->
                     </div>

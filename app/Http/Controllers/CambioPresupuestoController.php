@@ -178,10 +178,19 @@ class CambioPresupuestoController extends Controller
             case TipoOrden::CONCEPTOS_EXTRAORDINARIOS:
                 break;
             case TipoOrden::VARIACION_VOLUMEN:
+
+                $siAplicada = false;
+
+                if ($aplicacion = $solicitud->aplicaciones()->wherePivot('aplicada', '=', true)->where('id', '=', $solicitud->id_obra)->first())
+                    $siAplicada  = true;
+
+                $aplicadaTitulo =' ('. (empty($siAplicada) ? 'no ' : '') .'Aplicada)';
+
                 return view('control_presupuesto.cambio_presupuesto.show.variacion_volumen')
                     ->with('solicitud', $solicitud)
                     ->with('cobrabilidad', $solicitud->tipoOrden)
-                    ->with('presupuestos', $presupuestos);
+                    ->with('presupuestos', $presupuestos)
+                    ->with('aplicadaTitulo', $aplicadaTitulo);
                 break;
             case TipoOrden::ORDEN_DE_CAMBIO_NO_COBRABLE:
                 break;
