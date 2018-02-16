@@ -177,9 +177,9 @@ class PDFSolicitudCambio extends Rotation {
 
         $this->SetFont('Arial', 'B', $this->txtContenidoTam);
         $this->SetX($x);
-        $this->Cell(0.140 * $this->WidthTotal, 0.35, utf8_decode('Obra:'), '', 0, 'LB');
+        $this->Cell(0.125 * $this->WidthTotal, 0.35, utf8_decode('Obra:'), '', 0, 'LB');
         $this->SetFont('Arial', '', $this->txtContenidoTam);
-        $this->CellFitScale(0.360 * $this->WidthTotal, 0.35, utf8_decode($this->obra->nombre), '', 1, 'L');
+        $this->CellFitScale(0.375 * $this->WidthTotal, 0.35, utf8_decode($this->obra->nombre), '', 1, 'L');
 
         $this->SetFont('Arial', 'B', $this->txtContenidoTam);
         $this->SetX($x);
@@ -215,8 +215,7 @@ class PDFSolicitudCambio extends Rotation {
         $this->SetX($x);
         $this->Cell(0.125 * $this->WidthTotal, 0.35, utf8_decode('Estatus:'), '', 0, 'L');
         $this->SetFont('Arial', '', $this->txtContenidoTam);
-        $this->CellFitScale(0.375 * $this->WidthTotal, 0.35, utf8_decode(strtoupper($this->solicitud->estatus .
-            $aplicadaTitulo)), '', 1, 'L');
+        $this->CellFitScale(0.375 * $this->WidthTotal, 0.35, utf8_decode(strtoupper($this->solicitud->estatus . $aplicadaTitulo)), '', 1, 'L');
     }
 
     function items(){
@@ -357,7 +356,7 @@ class PDFSolicitudCambio extends Rotation {
         $this->SetTextColors(array('0,0,0', '0,0,0'));
         $this->SetHeights(array(0.38));
         $this->SetAligns(array('C', 'C'));
-        $this->SetWidths(array(0.15 * $this->WidthTotal, 0.15 * $this->WidthTotal));
+        $this->SetWidths(array(0.2 * $this->WidthTotal, 0.2 * $this->WidthTotal));
         $this->encola = 'resumen_h';
         $this->Row(array('Detalle', 'Cantidad'));
         $this->encola = 'resumen';
@@ -365,7 +364,7 @@ class PDFSolicitudCambio extends Rotation {
         $this->SetTextColors(array('0,0,0', '0,0,0'));
         $this->SetHeights(array(0.38));
         $this->SetAligns(array('L', 'R'));
-        $this->SetWidths(array(0.2* $this->WidthTotal, 0.2* $this->WidthTotal));
+        $this->SetWidths(array(0.2 * $this->WidthTotal, 0.2* $this->WidthTotal));
 
         foreach ($data as $nombre => $valor)
         {

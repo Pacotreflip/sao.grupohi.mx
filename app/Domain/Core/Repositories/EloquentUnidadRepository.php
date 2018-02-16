@@ -2,23 +2,10 @@
 
 namespace Ghi\Domain\Core\Repositories;
 
-use Dingo\Api\Exception\ResourceException;
-use Dingo\Api\Exception\StoreResourceFailedException;
-use Dingo\Api\Http\Request;
-use Ghi\Core\Models\Unidad;
+use Ghi\Domain\Core\Models\Unidad;
 use Ghi\Domain\Core\Contracts\Compras\Identificador;
-
-use Ghi\Domain\Core\Contracts\ItemRepository;
 use Ghi\Domain\Core\Contracts\Para;
 use Ghi\Domain\Core\Contracts\UnidadRepository;
-use Ghi\Domain\Core\Models\Compras\Requisiciones\ItemExt;
-use Ghi\Domain\Core\Models\Contrato;
-use Ghi\Domain\Core\Models\Transacciones\Item;
-use Ghi\Domain\Core\Models\Transacciones\Tipo;
-use Ghi\Domain\Core\Models\Transacciones\Transaccion;
-use Illuminate\Http\Exception\HttpResponseException;
-use Illuminate\Http\Response;
-use Illuminate\Support\Facades\DB;
 
 class EloquentUnidadRepository implements UnidadRepository
 {

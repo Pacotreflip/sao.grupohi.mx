@@ -114,7 +114,7 @@ class EloquentSolicitudCambioRepository implements SolicitudCambioRepository
             }
 
             foreach ($data['afectaciones'] as $index => $afectacion) {
-                $solicitud->aplicaciones()->attach([$afectacion->id => [
+                $solicitud->aplicaciones()->attach([$afectacion => [
                     'registro' => auth()->id(),
                     'aplicada' => false
                 ]]);
