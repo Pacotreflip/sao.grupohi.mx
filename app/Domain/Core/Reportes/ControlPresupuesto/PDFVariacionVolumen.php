@@ -24,7 +24,7 @@ use Illuminate\Support\Facades\DB;
 use BaconQrCode\Renderer\Image\Png;
 use BaconQrCode\Writer;
 
-class PDFSolicitudCambio extends Rotation {
+class PDFVariacionVolumen extends Rotation {
 
     var $encola = '';
 

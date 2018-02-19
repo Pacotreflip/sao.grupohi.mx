@@ -173,7 +173,6 @@ Vue.component('cambio-presupuesto-create', {
                 },
                 success: function (data, textStatus, xhr) {
                     self.bases_afectadas=data.data;
-
                 },
                 complete: function () {
                     self.consultando = false;

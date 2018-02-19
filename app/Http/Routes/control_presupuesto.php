@@ -25,6 +25,21 @@ Route::group(['prefix' => 'control_presupuesto'], function () {
     Route::get('cambio_presupuesto/{id}', 'CambioPresupuestoController@show')->name('control_presupuesto.cambio_presupuesto.show')->where(['id' => '[0-9]+']);
     Route::post('cambio_presupuesto/autorizarSolicitud', 'CambioPresupuestoController@autorizarSolicitud')->name('control_presupuesto.cambio_presupuesto.autorizarSolicitud');
     Route::post('cambio_presupuesto/rechazarSolicitud', 'CambioPresupuestoController@rechazarSolicitud')->name('control_presupuesto.cambio_presupuesto.rechazarSolicitud');
+
+    /**
+     * Variacion Volúmen Routes
+     */
+    Route::group(['prefix' => 'variacion_volumen'], function () {
+        Route::get('/create', 'VariacionVolumenController@create')->name('control_presupuesto.variacion_volumen.create');
+        Route::get('/{variacion_volumen}', 'VariacionVolumenController@show')->name('control_presupuesto.variacion_volumen.show');
+        Route::post('/', 'VariacionVolumenController@store');
+        Route::post('/{variacion_volumen}/autorizar', 'VariacionVolumenController@autorizar');
+        Route::post('/{variacion_volumen}/rechazar', 'VariacionVolumenController@rechazar');
+        Route::post('/{variacion_volumen}/aplicar', 'VariacionVolumenController@aplicar');
+        Route::get('/{variacion_volumen}/pdf', 'VariacionVolumenController@pdf');
+        Route::post('/{variacion_volumen}/paginate', 'VariacionVolumenController@paginate');
+    });
+
     /**
      * Tipos de Cobrabilidad Routes
      */
