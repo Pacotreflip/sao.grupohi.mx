@@ -35,6 +35,13 @@ class VariacionVolumenController extends Controller
         $this->middleware('auth');
         $this->middleware('context');
 
+        //Permisos
+        $this->middleware('permission:consultar_variacion_volumen', ['only' => ['index', 'paginate', 'pdf', 'show']]);
+        $this->middleware('permission:registrar_variacion_volumen', ['only' => ['create', 'store']]);
+        $this->middleware('permission:autorizar_variacion_volumen', ['only' => ['autorizar']]);
+        $this->middleware('permission:aplicar_variacion_volumen', ['only' => ['aplicar']]);
+        $this->middleware('permission:rechazar_variacion_volumen', ['only' => ['rechazar']]);
+
         $this->presupuesto = $presupuesto;
         $this->basePresupuesto = $basePresupuesto;
         $this->concepto = $concepto;
@@ -148,5 +155,10 @@ class VariacionVolumenController extends Controller
         return $this->response->item($variacionVolumen, function ($item) {
             return $item;
         });
+    }
+
+    public function aplicar(Request $request)
+    {
+
     }
 }
