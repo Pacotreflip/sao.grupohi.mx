@@ -503,13 +503,13 @@ class PDFSolicitudCambioInsumos extends Rotation
         $this->SetFont('Arial', 'B', $this->txtFooterTam);
         $this->Cell(6.5, .4, utf8_decode('Formato generado desde SAO.'), 0, 0, 'L');
 
-        if ($this->solicitud->id_estatus == 1) {
-            $this->SetFont('Arial', '', 80);
-            $this->SetTextColor(204, 204, 204);
-            $this->RotatedText(7, 17, utf8_decode("PENDIENTE DE"), 45);
-            $this->RotatedText(9.5, 18, utf8_decode("AUTORIZACIÓN"), 45);
-            $this->SetTextColor('0,0,0');
-        }
+        //if ($this->solicitud->id_estatus == 1) {
+        //    $this->SetFont('Arial', '', 80);
+        //    $this->SetTextColor(204, 204, 204);
+        //    $this->RotatedText(7, 17, utf8_decode("PENDIENTE DE"), 45);
+        //    $this->RotatedText(9.5, 18, utf8_decode("AUTORIZACIÓN"), 45);
+        //    $this->SetTextColor('0,0,0');
+        //}
     }
 
     function RotatedText($x, $y, $txt, $angle)
