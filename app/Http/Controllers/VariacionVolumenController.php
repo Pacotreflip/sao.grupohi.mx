@@ -84,7 +84,7 @@ class VariacionVolumenController extends Controller
         foreach ($request->partidas as $p)
             $conceptos_ids[] = $p['id_concepto'];
 
-        $repetidas = SolicitudCambio::whereHas('partidas', function ($query) use ($conceptos_ids) {
+        $repetidas = VariacionVolumen::whereHas('partidas', function ($query) use ($conceptos_ids) {
             $query->whereIn('id_concepto', $conceptos_ids);
         })
             ->where('id_estatus', '=', Estatus::GENERADA)
@@ -148,5 +148,10 @@ class VariacionVolumenController extends Controller
         return $this->response->item($variacionVolumen, function ($item) {
             return $item;
         });
+    }
+
+    public function getBasesAfectadas() {
+        $bases = $this->variacionVolumen->getBasesAfectadas();
+        return $this->response->collection($bases, function ($item) { return $item; });
     }
 }

@@ -8,9 +8,28 @@
 
 namespace Ghi\Domain\Core\Models\ControlPresupuesto;
 
+use Carbon\Carbon;
+use Ghi\Core\Facades\Context;
+use Ghi\Domain\Core\Models\Scopes\ObraScope;
+use Ghi\Domain\Core\Models\Scopes\VariacionVolumenScope;
 
 class VariacionVolumen extends SolicitudCambio
 {
+
+    protected static function boot()
+    {
+        parent::boot();
+        static::addGlobalScope(new ObraScope());
+        static::addGlobalScope(new VariacionVolumenScope());
+        static::creating(function ($model) {
+            $model->id_tipo_orden = TipoOrden::VARIACION_VOLUMEN;
+            $model->id_solicita = auth()->id();
+            $model->fecha_solicitud = Carbon::now()->toDateTimeString();
+            $model->id_estatus = Estatus::GENERADA;
+            $model->id_obra = Context::getId();
+            $model->asignaFolio();
+        });
+    }
 
     protected $casts = [
         'aplicada' => 'boolean'

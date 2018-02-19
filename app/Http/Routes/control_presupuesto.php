@@ -31,7 +31,8 @@ Route::group(['prefix' => 'control_presupuesto'], function () {
      */
     Route::group(['prefix' => 'variacion_volumen'], function () {
         Route::get('/create', 'VariacionVolumenController@create')->name('control_presupuesto.variacion_volumen.create');
-        Route::get('/{variacion_volumen}', 'VariacionVolumenController@show')->name('control_presupuesto.variacion_volumen.show');
+        Route::get('/{variacion_volumen}', 'VariacionVolumenController@show')->name('control_presupuesto.variacion_volumen.show')->where(['variacion_volumen' => '[0-9]+']);;
+        Route::get('/getBasesAfectadas', 'VariacionVolumenController@getBasesAfectadas');
         Route::post('/', 'VariacionVolumenController@store');
         Route::post('/{variacion_volumen}/autorizar', 'VariacionVolumenController@autorizar');
         Route::post('/{variacion_volumen}/rechazar', 'VariacionVolumenController@rechazar');

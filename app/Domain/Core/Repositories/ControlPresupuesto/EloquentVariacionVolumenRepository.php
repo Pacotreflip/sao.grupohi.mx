@@ -21,6 +21,7 @@ use Ghi\Domain\Core\Models\ControlPresupuesto\SolicitudCambioPartidaHistorico;
 use Ghi\Domain\Core\Models\ControlPresupuesto\SolicitudCambioRechazada;
 use Ghi\Domain\Core\Models\ControlPresupuesto\TipoOrden;
 use Ghi\Domain\Core\Models\ControlPresupuesto\VariacionVolumen;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Exception\HttpResponseException;
 use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Support\Facades\DB;
@@ -295,5 +296,16 @@ class EloquentVariacionVolumenRepository implements VariacionVolumenRepository
                 'aplicada' => true
             ]]);
         }
+    }
+
+    /**
+     * Obtiene las bases de datos que afecta el tipo de solicitud Variación de Volumen
+     * @return Collection | BasePresupuesto
+     */
+    public function getBasesAfectadas()
+    {
+        return BasePresupuesto::whereHas('tiposOrden', function ($query) {
+            $query->where('id_tipo_orden', '=', TipoOrden::VARIACION_VOLUMEN);
+        })->get();
     }
 }

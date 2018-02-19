@@ -8,17 +8,17 @@
     <variacion-volumen-create inline-template v-cloak>
         <section>
             <div class="row">
-                <div class="col-md-12" v-if="form.id_tipo_orden != '' && form.id_tipo_orden != 1">
-                    <div class="box box-solid">
+                <div class="col-md-12">
+                    <div class="box box-solid" v-if="!cargando_tarjetas">
                         <div class="box-header with-border">
                             <h3 class="box-title">Filtros para consulta de Conceptos</h3>
                         </div>
                         <div class="box-body">
                             <div class="row">
-                                <div class="col-md-12" v-if="tarjetas != {}">
+                                <div class="col-md-12">
                                     <div class="form-group">
                                         <label><b>Número de Tarjeta</b></label>
-                                        <select2 :disabled="cargando" v-model="form.id_tarjeta" :options="tarjetas" >
+                                        <select2 id="tarjetas_select" :disabled="cargando" v-model="id_tarjeta" :options="tarjetas">
                                         </select2>
                                     </div>
                                 </div>
@@ -27,7 +27,6 @@
                     </div>
                 </div>
             </div>
-
 
             <div class="row">
                 <div class="col-md-12">
@@ -124,8 +123,8 @@
                                     </div>
                                     <div class="col-md-4" v-for="base_presupuesto in bases_afectadas">
                                         <div class="form-group text-center" :class="{'has-error': validation_errors.has('form_save_solicitud.Presupuesto')}">
-                                            <label><b>*** @{{ base_presupuesto.base_datos.descripcion }}</b></label>
-                                            <input type="checkbox" v-validate="'required'" :name="'Presupuesto'" :value="base_presupuesto.base_datos.id" v-model="form.afectaciones">
+                                            <label><b>*** @{{ base_presupuesto.descripcion }}</b></label>
+                                            <input type="checkbox" v-validate="'required'" :name="'Presupuesto'" :value="base_presupuesto.id" v-model="form.afectaciones">
                                             <label class="help" v-show="validation_errors.has('form_save_solicitud.Presupuesto')">Seleccione por lo menos un presupuesto por afectar.</label>
                                         </div>
                                     </div>

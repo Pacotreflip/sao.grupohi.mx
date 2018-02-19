@@ -13,4 +13,7 @@ class BasePresupuesto extends Model
         'base_datos'
     ];
 
+    public function tiposOrden() {
+        return $this->belongsToMany(TipoOrden::class, 'ControlPresupuesto.afectacion_ordenes_presupuesto', 'id_base_presupuesto', 'id_tipo_orden');
+    }
 }

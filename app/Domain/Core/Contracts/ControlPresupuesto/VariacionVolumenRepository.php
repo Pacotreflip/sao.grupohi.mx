@@ -8,7 +8,9 @@
 
 namespace Ghi\Domain\Core\Contracts\ControlPresupuesto;
 
+use Ghi\Domain\Core\Models\ControlPresupuesto\BasePresupuesto;
 use \Ghi\Domain\Core\Models\ControlPresupuesto\VariacionVolumen;
+use Illuminate\Database\Eloquent\Collection;
 
 interface VariacionVolumenRepository
 {
@@ -67,4 +69,10 @@ interface VariacionVolumenRepository
      * @return boolean
      */
     public function aplicar(VariacionVolumen $variacionVolumen, $id_base_presupuesto);
+
+    /**
+     * Obtiene las bases de datos que afecta el tipo de solicitud Variación de Volumen
+     * @return Collection | BasePresupuesto
+     */
+    public function getBasesAfectadas();
 }
