@@ -151,12 +151,14 @@ class EloquentMaterialRepository implements MaterialRepository
             }else{
                 $data['nivel'] = $this->getNivelDisponible($data['tipo_material'], null);
             }
-            $data['UsuarioRegistro'] = 'aoro';//auth()->user()->idusuario;
+            $data['UsuarioRegistro'] = auth()->user()->idusuario;
+
+
             $material = $this->model->create($data);
             DB::connection('cadeco')->commit();
         } catch (\Exception $e) {
             DB::connection('cadeco')->rollBack();
-            dd($e);
+            //dd($e);
             throw $e;
         }
         return $material;
@@ -223,8 +225,15 @@ class EloquentMaterialRepository implements MaterialRepository
     public function  getDescripcionByTipo($descripcion,$tipo){
         return $this->model->where('descripcion', 'like', '%'.$descripcion.'%')
             ->where('tipo_material', '=', $tipo)
-
             ->whereRaw('LEN(nivel) > 4')
+            ->get();
+
+
+    }
+    public function  getFamiliasByTipoPadres($descripcion,$tipo){
+        return $this->model->where('descripcion', 'like', '%'.$descripcion.'%')
+            ->where('tipo_material', '=', $tipo)
+            ->whereRaw('LEN(nivel) <=4')
             ->get();
 
 

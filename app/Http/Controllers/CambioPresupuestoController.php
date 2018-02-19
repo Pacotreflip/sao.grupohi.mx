@@ -13,7 +13,7 @@ use Ghi\Domain\Core\Contracts\ControlPresupuesto\SolicitudCambioPartidaRepositor
 use Ghi\Domain\Core\Models\ControlPresupuesto\Estatus;
 use Ghi\Domain\Core\Models\ControlPresupuesto\SolicitudCambio;
 use Ghi\Domain\Core\Models\ControlPresupuesto\TipoOrden;
-use Ghi\Domain\Core\Reportes\ControlPresupuesto\PDFSolicitudCambio;
+use Ghi\Domain\Core\Reportes\ControlPresupuesto\PDFVariacionVolumen;
 use Ghi\Domain\Core\Reportes\ControlPresupuesto\PDFSolicitudCambioEscalatoria;
 use Ghi\Domain\Core\Reportes\ControlPresupuesto\PDFSolicitudCambioInsumos;
 use Illuminate\Http\Request;
@@ -153,7 +153,7 @@ class CambioPresupuestoController extends Controller
             case TipoOrden::CONCEPTOS_EXTRAORDINARIOS:
                 break;
             case TipoOrden::VARIACION_VOLUMEN:
-                $pdf = new PDFSolicitudCambio($solicitud, $this->partidas);
+                $pdf = new PDFVariacionVolumen($solicitud, $this->partidas);
                 break;
             case TipoOrden::ORDEN_DE_CAMBIO_NO_COBRABLE:
                 break;
@@ -201,6 +201,7 @@ class CambioPresupuestoController extends Controller
                 //  $clasificacion = $this->partidas->getClasificacionInsumos($solicitud->id);
                 $conceptos_agrupados = $this->agrupacion->with('concepto')->where([['id_solicitud_cambio', '=', $solicitud->id]])->all();
                 $conceptos_agrupados = $this->partidas->getTotalesClasificacionInsumos($conceptos_agrupados->toArray());
+
                 return view('control_presupuesto.cambio_presupuesto.show.variacion_insumos')
                     ->with('solicitud', $solicitud)
                     ->with('cobrabilidad', $solicitud->tipoOrden->cobrabilidad)

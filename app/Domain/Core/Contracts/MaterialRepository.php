@@ -110,5 +110,10 @@ interface MaterialRepository
      * @param $id
      * @return Collection|Material
      */
-    public function getDescripcionByTipo($descripcion, $tipo);
+    public function getDescripcionByTipo($descripcion, $tipo);    /**
+     * Obtiene los materiales por descripcion y tipo
+     * @param $id
+     * @return Collection|Material
+     */
+    public function getFamiliasByTipoPadres($descripcion, $tipo);
 }

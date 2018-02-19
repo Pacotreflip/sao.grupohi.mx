@@ -36,7 +36,9 @@ Route::get('obra/search', 'ObraController@search')->name('obra.search');
  */
 Route::get('material', 'MaterialController@index')->name('material.index');
 Route::get('material/getFamiliasByTipo', 'MaterialController@getFamiliasByTipo')->name('materiales.getFamiliasByTipo');
+Route::get('material/getFamiliasByTipoPadres', 'MaterialController@getFamiliasByTipoPadres')->name('materiales.getFamiliasByTipoPadres');
 Route::get('material/{id}/getHijos', 'MaterialController@getHijos')->name('material.getHijos');
+Route::post('material', 'MaterialController@store')->name('material.store');
 
 /**
  * Conceptos Routes
@@ -74,3 +76,8 @@ Route::post('almacen/paginate', 'AlmacenController@paginate');
  * Tipo Tran Routes...
  */
 Route::get('tipo_tran/lists', 'TipoTranController@lists');
+
+/**
+ * Unidades
+ */
+Route::get('unidad/getUnidadesByDescripcion', 'UnidadController@getUnidadesByDescripcion')->name('unidad.getUnidadesByDescripcion');

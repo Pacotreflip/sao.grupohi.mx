@@ -99,5 +99,11 @@ class MaterialController extends Controller
         $items = $this->material->getDescripcionByTipo($request->descripcion,$request->tipo);
         return response()->json(['data' => ['materiales' => $items]], 200);
     }
+    public function getFamiliasByTipoPadres(Request $request)
+    {
+        $items = $this->material->getFamiliasByTipoPadres($request->descripcion, $request->tipo);
+        return response()->json(['data' => ['materiales' => $items]], 200);
+    }
 
-}
+
+    }
