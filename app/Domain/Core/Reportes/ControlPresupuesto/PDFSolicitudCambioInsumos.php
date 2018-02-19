@@ -294,10 +294,33 @@ class PDFSolicitudCambioInsumos extends Rotation
 
                 }
             } else {
+                $conceptos_agrupados = $this->agrupacion->with('concepto')->where([['id_solicitud_cambio', '=', $this->solicitud->id]])->all();
+                $conceptos_agrupados = $this->partidas->getTotalesClasificacionInsumos($conceptos_agrupados->toArray());
+
+                $this->resumen = $conceptos_agrupados;
 
                 $partidas = $this->partidas->getClasificacionInsumos(['id_solicitud_cambio' => $this->solicitud->id, 'id_concepto' => $conceptos['id_concepto']]);
                 foreach ($partidas as $partida) {
                     foreach ($partida['items'] as $item) {
+                        $importe_actual = 0;
+                        if($item->id_concepto == null){
+                            $importe_actual = $item->precio_unitario_nuevo * $item->cantidad_presupuestada_nueva;
+                        }else{
+                            if($item->precio_unitario_nuevo == null){
+                                $importe_actual = $item->precio_unitario_original * $item->cantidad_presupuestada_nueva;
+                            }
+                            if($item->cantidad_presupuestada_nueva == null){
+                                $importe_actual = $item->precio_unitario_nuevo * $item->cantidad_presupuestada;
+                            }
+                            if($item->cantidad_presupuestada_nueva != null && $item->precio_unitario_nuevo != null){
+                                $importe_actual = $item->precio_unitario_nuevo * $item->cantidad_presupuestada_nueva;
+                            }
+
+
+                        }
+
+                        //dd($item);
+
                         $data_info = [
                             'num_tarjeta' => $numero_tarjeta,
                             'descripcion' => $item->material->descripcion,
@@ -308,9 +331,9 @@ class PDFSolicitudCambioInsumos extends Rotation
                             'cantidad_original' => $item->cantidad_presupuestada,
                             'variacion_cantidad' => $item->cantidad_presupuestada_nueva == null ? 0 : $item->cantidad_presupuestada_nueva - $item->cantidad_presupuestada,
                             'cantidad_nueva' => $item->cantidad_presupuestada_nueva == null ? 0 : $item->cantidad_presupuestada_nueva,
-                            'importe_original' => $item->precio_unitario_original,
-                            'variacion_importe' => $item->precio_unitario_nuevo == 0 || $item->precio_unitario_nuevo == null ? 0 : $item->precio_unitario_nuevo - $item->precio_unitario_original,
-                            'importe_actualizado' => $item->precio_unitario_nuevo
+                            'importe_original' => $item->precio_unitario_original * $item->cantidad_presupuestada,
+                            'variacion_importe' => $importe_actual - ($item->precio_unitario_original * $item->cantidad_presupuestada),
+                            'importe_actualizado' =>$importe_actual
 
                         ];
                         array_push($array_data, $data_info);

@@ -207,7 +207,12 @@ class EloquentSolicitudCambioPartidaRepository implements SolicitudCambioPartida
             if ($partida['precio_unitario_nuevo'] != null) {
                 $partida['precio_unitario_original'] = $partida['precio_unitario_original'];
                 $partida['precio_unitario_nuevo'] = $partida['precio_unitario_nuevo'];
-                $partida['monto_presupuestado'] = $partida['cantidad_presupuestada'] * $partida['precio_unitario_nuevo'];
+                if($partida['id_concepto'] == null){
+                    $partida['monto_presupuestado'] = $partida['cantidad_presupuestada_nueva'] * $partida['precio_unitario_nuevo'];
+                }else{
+                    $partida['monto_presupuestado'] = $partida['cantidad_presupuestada'] * $partida['precio_unitario_nuevo'];
+                }
+
             } else {
                 $partida['precio_unitario_nuevo'] = 0;
                 $partida['monto_presupuestado'] = $partida['cantidad_presupuestada'] * $partida['precio_unitario_original'];
