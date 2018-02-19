@@ -41,12 +41,12 @@ Breadcrumbs::register('control_presupuesto.cambio_presupuesto.show', function ($
 /**
  * Variación de Volúmen
  */
-Breadcrumbs::register('control_presupuesto.variacion_volumen.index', function ($breadcrumb) {
-    $breadcrumb->parent('control_presupuesto.index');
-    $breadcrumb->push('VARIACIÓN DE VOLÚMEN (ADITIVAS Y DEDUCTIVAS)', route('control_presupuesto.variacion_volumen.index'));
+Breadcrumbs::register('control_presupuesto.variacion_volumen.create', function ($breadcrumb) {
+    $breadcrumb->parent('control_presupuesto.cambio_presupuesto.index');
+    $breadcrumb->push('NUEVA VARIACIÓN DE VOLÚMEN', route('control_presupuesto.variacion_volumen.create'));
 });
 
-Breadcrumbs::register('control_presupuesto.variacion_volumen.create', function ($breadcrumb) {
-    $breadcrumb->parent('control_presupuesto.variacion_volumen.index');
-    $breadcrumb->push('NUEVA', route('control_presupuesto.variacion_volumen.create'));
+Breadcrumbs::register('control_presupuesto.variacion_volumen.show', function ($breadcrumb, $variacion_volumen) {
+    $breadcrumb->parent('control_presupuesto.cambio_presupuesto.index');
+    $breadcrumb->push($variacion_volumen->id, route('control_presupuesto.variacion_volumen.show', $variacion_volumen));
 });
