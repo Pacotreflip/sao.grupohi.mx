@@ -298,7 +298,7 @@ Vue.component('variacion-volumen-create', {
                         title : '¡Correcto!',
                         html : 'Solicitud Guardada con Número de Folio <b>' + response.numero_folio + '</b>'
                     }).then(function () {
-                        window.location.href = App.host + '/control_presupuesto/cambio_presupuesto/' +response.id
+                        window.location.href = App.host + '/control_presupuesto/variacion_volumen/' +response.id
                     });
                 },
                 complete : function () {

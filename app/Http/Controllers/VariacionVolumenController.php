@@ -121,15 +121,8 @@ class VariacionVolumenController extends Controller
     public function show($id)
     {
         $variacionVolumen = VariacionVolumen::with(['tipoOrden', 'userRegistro', 'estatus', 'partidas', 'partidas.concepto', 'partidas.numeroTarjeta', 'aplicaciones'])->find($id);
-        $presupuestos = $this->afectacion->with('baseDatos')->getBy('id_tipo_orden', '=', $variacionVolumen->id_tipo_orden);
-
-        $aplicadaTitulo =' ('. (!$variacionVolumen->aplicada ? 'no ' : '') .'Aplicada)';
-
-        return view('control_presupuesto.cambio_presupuesto.show.variacion_volumen')
-            ->with('solicitud', $variacionVolumen)
-            ->with('cobrabilidad', $variacionVolumen->tipoOrden)
-            ->with('presupuestos', $presupuestos)
-            ->with('aplicadaTitulo', $aplicadaTitulo);
+        return view('control_presupuesto.variacion_volumen.show')
+            ->with('variacion_volumen', $variacionVolumen);
     }
 
     public function autorizar(Request $request)
