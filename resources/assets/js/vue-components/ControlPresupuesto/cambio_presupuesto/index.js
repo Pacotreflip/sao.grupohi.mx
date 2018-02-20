@@ -28,7 +28,9 @@ Vue.component('cambio-presupuesto-index', {
         $(document).on('click', '.mostrar_pdf', function () {
             var _this = $(this),
                 id = _this.data('pdf_id'),
-                url = App.host + '/control_presupuesto/cambio_presupuesto/'+ id +'/pdf';
+                id_tipo_orden = _this.data('id_tipo_orden'),
+                tipo_seleccionado = self.findTipoOrden(id_tipo_orden),
+                url = App.host + '/control_presupuesto/'+ tipo_seleccionado.name +'/'+ id +'/pdf';
 
             $('#pdf_modal').modal('show');
             $('#pdf_modal .modal-content').css({height: '700px'});
@@ -75,8 +77,10 @@ Vue.component('cambio-presupuesto-index', {
                 {
                     data: {},
                     render: function(data, type, row, meta) {
-                        var  button='<span class="label" ></span><button class="btn btn-xs btn-info mostrar_pdf" data-pdf_id="'+ row.id +'" title="Formato"><i class="fa fa-file-pdf-o"></i></button>  ';
-                            button+='<a title="Ver" href="'+App.host+'/control_presupuesto/cambio_presupuesto/'+data.id+'">';
+                        var  tipo_seleccionado = self.findTipoOrden(data.id_tipo_orden),
+                            button='<span class="label" ></span><button class="btn btn-xs btn-info mostrar_pdf" data-pdf_id="'+ row.id +'" data-id_tipo_orden="'+ data.id_tipo_orden +'" title="Formato"><i class="fa fa-file-pdf-o"></i></button>  ';
+
+                        button+='<a title="Ver" href="'+App.host+'/control_presupuesto/'+ tipo_seleccionado.name +'/'+data.id+'">';
                         button+='<button title="Ver" type="button" class="btn btn-xs btn-default" >';
                         button+='<i class="fa fa-eye"></i>';
                         button+='   </button>';
@@ -170,7 +174,7 @@ Vue.component('cambio-presupuesto-index', {
             var self = this;
 
             for (var i = 0; i < self.tipos_orden.length; i++)
-                if (self.tipos_orden[i]['id'] === id)
+                if (self.tipos_orden[i]['id'] == id)
                     return self.tipos_orden[i];
 
             return null;
