@@ -52,14 +52,33 @@ Breadcrumbs::register('control_presupuesto.variacion_volumen.show', function ($b
 });
 
 /**
- * Escalatoria
+ * Escalatoria create
  */
 Breadcrumbs::register('control_presupuesto.escalatoria.create', function ($breadcrumb) {
     $breadcrumb->parent('control_presupuesto.cambio_presupuesto.index');
-    $breadcrumb->push('NUEVA ESCALATORIA', route('control_presupuesto.variacion_volumen.create'));
+    $breadcrumb->push('NUEVA ESCALATORIA', route('control_presupuesto.escalatoria.create'));
 });
 
+/**
+ * Escalatoria show
+ */
 Breadcrumbs::register('control_presupuesto.escalatoria.show', function ($breadcrumb, $escalatoria) {
     $breadcrumb->parent('control_presupuesto.cambio_presupuesto.index');
-    $breadcrumb->push($escalatoria->id, route('control_presupuesto.escaaltoria.show', $escalatoria));
+    $breadcrumb->push($escalatoria->id, route('control_presupuesto.escalatoria.show', $escalatoria));
+});
+
+/**
+ * Ordenes de Cambio de Insumos create
+ */
+Breadcrumbs::register('control_presupuesto.cambio_insumos.create', function ($breadcrumb) {
+    $breadcrumb->parent('control_presupuesto.cambio_presupuesto.index');
+    $breadcrumb->push('NUEVA CAMBIO DE INSUMOS', route('control_presupuesto.cambio_insumos.create'));
+});
+
+/**
+ * Ordenes de Cambio de Insumos show
+ */
+Breadcrumbs::register('control_presupuesto.cambio_insumos.show', function ($breadcrumb, $cambio_insumos) {
+    $breadcrumb->parent('control_presupuesto.cambio_presupuesto.index');
+    $breadcrumb->push($cambio_insumos->id, route('control_presupuesto.cambio_insumos.show', $cambio_insumos));
 });

@@ -56,6 +56,20 @@ Route::group(['prefix' => 'control_presupuesto'], function () {
     });
 
     /**
+     * Ordenes de Cambio de Insumos
+     */
+    Route::group(['prefix' => 'cambio_insumos'], function () {
+        Route::get('/create', 'CambioInsumosController@create')->name('control_presupuesto.cambio_insumos.create');
+        Route::get('/{cambio_insumos}', 'CambioInsumosController@show')->name('control_presupuesto.cambio_insumos.show');
+        Route::post('/', 'CambioInsumosController@store');
+        Route::post('/{cambio_insumos}/autorizar', 'CambioInsumosController@autorizar');
+        Route::post('/{cambio_insumos}/rechazar', 'CambioInsumosController@rechazar');
+        Route::post('/{cambio_insumos}/aplicar', 'CambioInsumosController@aplicar');
+        Route::get('/{cambio_insumos}/pdf', 'CambioInsumosController@pdf');
+        Route::post('/{cambio_insumos}/paginate', 'CambioInsumosController@paginate');
+    });
+
+    /**
      * Tipos de Cobrabilidad Routes
      */
     Route::get('tipo_cobrabilidad', 'TipoCobrabilidadController@index');
