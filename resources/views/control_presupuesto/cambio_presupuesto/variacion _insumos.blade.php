@@ -17,7 +17,7 @@
             <div class="col-md-12">
                 <div class="box box-solid">
                     <div class="box-header with-border">
-                        <h3 class="box-title">Conceptos</h3>
+                        <h3 class="box-title">Conceptos  !!</h3>
 
                     </div>
                     <div class="box-body">
@@ -27,9 +27,9 @@
                                 <tr>
                                     <th v-for="nivel in niveles">@{{ nivel.nombre }}</th>
                                     <th>Unidad</th>
-                                    <th>Cantidad</th>
-                                    <th>Precio Unitario</th>
-                                    <th>Monto</th>
+                                    <th>Volumen</th>
+                                    <th>Costo</th>
+                                    <th>Importe</th>
                                     <th>Agregar</th>
                                 </tr>
                                 </thead>
@@ -50,12 +50,11 @@
             </div>
         </div>
 
-        <div id="insumos_modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="ConceptosModal">
+        <div id="insumos_modal" class="modal fade"  aria-labelledby="ConceptosModal" data-backdrop="static" data-keyboard="false">
             <div class="modal-dialog modal-lg">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-                                    aria-hidden="true">&times;</span></button>
+                        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
                         <h4 class="modal-title">Insumos</h4>
                     </div>
 
@@ -90,10 +89,10 @@
                                             <th>#</th>
                                             <th>Descripción</th>
                                             <th>Unidad</th>
-                                            <th>Rendimiento Actual</th>
-                                            <th>Rendimiento Nuevo</th>
-                                            <th>Precio Unitario Actual</th>
-                                            <th>Precio Unitario Nuevo</th>
+                                            <th>Cantidad Original</th>
+                                            <th>Cantidad Actualizada</th>
+                                            <th>Costo Original</th>
+                                            <th>Costo Actualizado</th>
                                             <th>-</th>
                                         </tr>
                                         </thead>
@@ -160,10 +159,10 @@
                                             <th>#</th>
                                             <th>Descripción</th>
                                             <th>Unidad</th>
-                                            <th>Rendimiento Actual</th>
-                                            <th>Rendimiento Nuevo</th>
-                                            <th>Precio Unitario Actual</th>
-                                            <th>Precio Unitario Nuevo</th>
+                                            <th>Rendimiento Original</th>
+                                            <th>Rendimiento Actializado</th>
+                                            <th>Costo Original</th>
+                                            <th>Costo Actualizado</th>
                                             <th>-</th>
                                         </tr>
                                         </thead>
@@ -231,10 +230,10 @@
                                             <th>#</th>
                                             <th>Descripción</th>
                                             <th>Unidad</th>
-                                            <th>Rendimiento Actual</th>
-                                            <th>Rendimiento Nuevo</th>
-                                            <th>Precio Unitario Actual</th>
-                                            <th>Precio Unitario Nuevo</th>
+                                            <th>Cantidad Original</th>
+                                            <th>Cantidad Actualizada</th>
+                                            <th>Costo Original</th>
+                                            <th>Costo Actualizado</th>
                                             <th>-</th>
                                         </tr>
                                         </thead>
@@ -302,10 +301,10 @@
                                             <th>#</th>
                                             <th>Descripción</th>
                                             <th>Unidad</th>
-                                            <th>Rendimiento Actual</th>
-                                            <th>Rendimiento Nuevo</th>
-                                            <th>Precio Unitario Actual</th>
-                                            <th>Precio Unitario Nuevo</th>
+                                            <th>Cantidad Original</th>
+                                            <th>Cantidad Actualizada</th>
+                                            <th>Costo Original</th>
+                                            <th>Costo Actualizado</th>
                                             <th>-</th>
                                         </tr>
                                         </thead>
@@ -369,6 +368,7 @@
                                     <table class="table table-striped">
                                         <div class="form-group">
                                             <div class="row">
+
                                                 <div class="col-md-12">
                                                     <label for="materiales" class="col-sm-9 control-label"><h4>
                                                             MATERIALES Unitario</h4></label>
@@ -384,12 +384,12 @@
                                             <th>#</th>
                                             <th>Descripción</th>
                                             <th>Unidad</th>
-                                            <th>Rendimiento Actual</th>
-                                            <th>Rendimiento Nuevo</th>
-                                            <th>Cantidad Presupuestara Actual</th>
-                                            <th>Cantidad Presupuestara Nueva</th>
-                                            <th>Precio Unitario Actual</th>
-                                            <th>Precio Unitario Nuevo</th>
+                                            <th>Cantidad Original</th>
+                                            <th>Cantidad Actualizada</th>
+                                            <th>Volumen Original</th>
+                                            <th>Volumen Actualizado</th>
+                                            <th>Costo Original</th>
+                                            <th>Costo Actualizado</th>
                                             <th>-</th>
                                         </tr>
                                         </thead>
@@ -402,7 +402,7 @@
                                             <td>
                                                 <div class="form-group"
                                                      :class="{'has-error': validation_errors.has('form_save_solicitud.Rendimiento nuevo material [' + (i + 1) + ']')}">
-                                                    <input type="text" step=".01" placeholder="0.0" style="width: 90%"
+                                                    <input type="text" step=".01" placeholder="0.0" style="width: 75%"
                                                            :class="'rendimiento'+insumo.id_elemento+'_' + i"
                                                            :id="'c_p_'+insumo.id_elemento+'_' + i"
                                                            @change="recalcular(insumo.id_elemento, i,1)"
@@ -417,7 +417,7 @@
                                             <td>
                                                 <div class="form-group"
                                                      :class="{'has-error': validation_errors.has('form_save_solicitud.Rendimiento nuevo material [' + (i + 1) + ']')}">
-                                                    <input type="text" step=".01" placeholder="0.0" style="width: 90%"
+                                                    <input type="text" step=".01" placeholder="0.0" style="width: 75%"
                                                            :id="'r_p_'+insumo.id_elemento+'_' + i"
                                                            @change="recalcular_cantidad(insumo.id_elemento, i,1)"
                                                            v-validate="insumo.nuevo==true ? 'required' : ''"
@@ -433,7 +433,7 @@
                                                 <div class="form-group"
                                                      :class="{'has-error': validation_errors.has('form_save_solicitud.Precio unitario material [' + (i + 1) + ']')}">
                                                     $<input type="text" step=".01" placeholder="0.0"
-                                                            style="width: 90%"
+                                                            style="width: 70%"
                                                             :class="'pre_unit'+insumo.id_elemento+'_' + i"
                                                             :id="'m_p_'+insumo.id_elemento+'_' + i"
                                                             @change="recalcular_monto(insumo.id_elemento, i,1)"
@@ -472,12 +472,12 @@
                                             <th>#</th>
                                             <th>Descripción</th>
                                             <th>Unidad</th>
-                                            <th>Rendimiento Actual</th>
-                                            <th>Rendimiento Nuevo</th>
-                                            <th>Cantidad Presupuestara Actual</th>
-                                            <th>Cantidad Presupuestara Nueva</th>
-                                            <th>Precio Unitario Actual</th>
-                                            <th>Precio Unitario Nuevo</th>
+                                            <th>Rendimiento Original</th>
+                                            <th>Rendimiento Actualizado</th>
+                                            <th>Volumen Original</th>
+                                            <th>Volumen Actualizado</th>
+                                            <th>Costo Original</th>
+                                            <th>Costo Actualizado</th>
                                             <th>-</th>
                                         </tr>
                                         </thead>
@@ -561,12 +561,12 @@
                                             <th>#</th>
                                             <th>Descripción</th>
                                             <th>Unidad</th>
-                                            <th>Rendimiento Actual</th>
-                                            <th>Rendimiento Nuevo</th>
-                                            <th>Cantidad Presupuestara Actual</th>
-                                            <th>Cantidad Presupuestara Nueva</th>
-                                            <th>Precio Unitario Actual</th>
-                                            <th>Precio Unitario Nuevo</th>
+                                            <th>Cantidad Original</th>
+                                            <th>Cantidad Actualizada</th>
+                                            <th>Volumen Original</th>
+                                            <th>Volumen Actualizado</th>
+                                            <th>Costo Original</th>
+                                            <th>Costo Actualizado</th>
                                             <th>-</th>
                                         </tr>
                                         </thead>
@@ -650,12 +650,12 @@
                                             <th>#</th>
                                             <th>Descripción</th>
                                             <th>Unidad</th>
-                                            <th>Rendimiento Actual</th>
-                                            <th>Rendimiento Nuevo</th>
-                                            <th>Cantidad Presupuestara Actual</th>
-                                            <th>Cantidad Presupuestara Nueva</th>
-                                            <th>Precio Unitario Actual</th>
-                                            <th>Precio Unitario Nuevo</th>
+                                            <th>Cantidad Original</th>
+                                            <th>Cantidad Actualizada</th>
+                                            <th>Volumen Original</th>
+                                            <th>Volumen Actualizado</th>
+                                            <th>Costo Original</th>
+                                            <th>Costo Actualizado</th>
                                             <th>-</th>
                                         </tr>
                                         </thead>
@@ -744,46 +744,45 @@
                     </div>
                 </div>
             </div>
-
-            <div id="add_insumo_modal" class="modal fade" role="dialog" aria-labelledby="addInsumosModal">
-                <div class="modal-dialog modal-lg">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-                                        aria-hidden="true">&times;</span></button>
-                            <h4 class="modal-title">Agregar Insumos</h4>
-
-                            <div class="box-tools pull-right">
-                                <a v-on:click="$emit('abrirModalMateriales',tipo_insumo)" class="btn btn-success btn-app" style="float:right">
-                                    <i class="glyphicon glyphicon-plus-sign"></i>Nuevo
-                                </a>
-                            </div>
-                        </div>
-
-                        <form id="form_save_solicitud"
-                              @submit.prevent="validateForm('form_save_solicitud', 'save_solicitud')"
-                              data-vv-scope="form_save_solicitud">
-                            <div class="modal-body small">
-                                <select class="form-control" :name="'Item'" data-placeholder="BUSCAR INSUMO"
-                                        id="sel_material"
-                                        v-model="id_material_seleccionado"></select>
-
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-default" v-on:click="cancelar_add_insumo()">
-                                    Cancelar
-                                </button>
-                                <button type="button" class="btn btn-primary" v-on:click="agregar_insumo_nuevo()">
-                                    <i class="fa  fa-plus"></i> Agregar
-
-                                </button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
-            <material-index></material-index>
         </div>
 
+        <div id="add_insumo_modal" class="modal fade"  aria-labelledby="addInsumosModal">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+                        <h4 class="modal-title">Agregar Insumos</h4>
+
+                        <div class="box-tools pull-right">
+                            <a v-on:click="$emit('abrirModalMateriales',tipo_insumo)" class="btn btn-success btn-app" style="float:right">
+                                <i class="glyphicon glyphicon-plus-sign"></i>Nuevo
+                            </a>
+                        </div>
+                    </div>
+
+                    <form id="form_save_solicitud"
+                          @submit.prevent="validateForm('form_save_solicitud', 'save_solicitud')"
+                          data-vv-scope="form_save_solicitud">
+                        <div class="modal-body small">
+                            <select class="form-control" :name="'Item'" data-placeholder="BUSCAR INSUMO"
+                                    id="sel_material"
+                                    v-model="id_material_seleccionado"></select>
+
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal" v-on:click="agregar_insumo_nuevo()">
+                                Cancelar
+                            </button>
+                            <button type="button" class="btn btn-primary" v-on:click="agregar_insumo_nuevo()">
+                                <i class="fa  fa-plus"></i> Agregar
+
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <material-index></material-index>
     </section>
 </variacion-insumos>
