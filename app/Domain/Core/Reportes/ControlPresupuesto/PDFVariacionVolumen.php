@@ -488,30 +488,30 @@ class PDFVariacionVolumen extends Rotation {
         $this->SetFont('Arial', 'B', $this->txtFooterTam);
         $this->Cell(6.5, .4, utf8_decode('Formato generado desde SAO.'), 0, 0, 'L');
 
-        if($this->solicitud->id_estatus == Estatus::GENERADA) {
-            $this->SetFont('Arial','',80);
-            $this->SetTextColor(204,204,204);
-            $this->RotatedText(7,17,utf8_decode("PENDIENTE DE"),45);
-            $this->RotatedText(9.5,18,utf8_decode("AUTORIZACIÓN"),45);
-            $this->SetTextColor('0,0,0');
-        }
-
-        elseif ($this->solicitud->id_estatus == Estatus::AUTORIZADA && !$this->solicitud->aplicada)
-        {
-            $this->SetFont('Arial','',80);
-            $this->SetTextColor(204,204,204);
-            $this->RotatedText(7,17,utf8_decode("AUTORIZADA"),45);
-            $this->RotatedText(9.5,18,utf8_decode("NO APLICADA"),45);
-            $this->SetTextColor('0,0,0');
-        }
-
-        elseif ($this->solicitud->id_estatus == Estatus::RECHAZADA)
-        {
-            $this->SetFont('Arial','',80);
-            $this->SetTextColor(204,204,204);
-            $this->RotatedText(7,17,utf8_decode("RECHAZADA"),45);
-            $this->SetTextColor('0,0,0');
-        }
+        //if($this->solicitud->id_estatus == Estatus::GENERADA) {
+        //    $this->SetFont('Arial','',80);
+        //    $this->SetTextColor(204,204,204);
+        //    $this->RotatedText(7,17,utf8_decode("PENDIENTE DE"),45);
+        //    $this->RotatedText(9.5,18,utf8_decode("AUTORIZACIÓN"),45);
+        //    $this->SetTextColor('0,0,0');
+        //}
+        //
+        //elseif ($this->solicitud->id_estatus == Estatus::AUTORIZADA && !$this->solicitud->aplicada)
+        //{
+        //    $this->SetFont('Arial','',80);
+        //    $this->SetTextColor(204,204,204);
+        //    $this->RotatedText(7,17,utf8_decode("AUTORIZADA"),45);
+        //    $this->RotatedText(9.5,18,utf8_decode("NO APLICADA"),45);
+        //    $this->SetTextColor('0,0,0');
+        //}
+        //
+        //elseif ($this->solicitud->id_estatus == Estatus::RECHAZADA)
+        //{
+        //    $this->SetFont('Arial','',80);
+        //    $this->SetTextColor(204,204,204);
+        //    $this->RotatedText(7,17,utf8_decode("RECHAZADA"),45);
+        //    $this->SetTextColor('0,0,0');
+        //}
     }
 
     function RotatedText($x,$y,$txt,$angle)

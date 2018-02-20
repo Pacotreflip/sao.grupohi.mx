@@ -114,6 +114,26 @@ class RolesPermissionsSeeder extends Seeder
         $generar_cierre_periodo = Permission::firstOrCreate(['name' => 'generar_cierre_periodo', 'display_name' => 'Cierre de Periodo', 'description' => 'Cierre de Periodo']);
         $editar_cierre_periodo = Permission::firstOrCreate(['name' => 'editar_cierre_periodo', 'display_name' => 'Cierre de Periodo', 'description' => 'Cierre de Periodo']);
 
+        //Control Presupuesto Variación de Volúmen
+        $registrar_variacion_volumen = Permission::firstOrCreate(['name' => 'registrar_variacion_volumen', 'display_name' => 'Registrar Variacion de Volúmen', 'description' => 'Registrar Variacion de Volúmen']);
+        $autorizar_variacion_volumen = Permission::firstOrCreate(['name' => 'autorizar_variacion_volumen', 'display_name' =>
+            'Autorizar Variacion de Volúmen', 'description' => 'Autorizar Variacion de Volúmen']);
+        $aplicar_variacion_volumen = Permission::firstOrCreate(['name' => 'aplicar_variacion_volumen', 'display_name' => 'Aplicar Variacion de Volúmen', 'description' => 'Aplicar Variacion de Volúmen']);
+        $rechazar_variacion_volumen = Permission::firstOrCreate(['name' => 'rechazar_variacion_volumen', 'display_name' =>
+            'Rechazar Variacion de Volúmen', 'description' => 'Rechazar Variacion de Volúmen']);
+        $consultar_variacion_volumen = Permission::firstOrCreate(['name' => 'consultar_variacion_volumen', 'display_name' =>
+            'Consultar Variacion de Volúmen', 'description' => 'Consultar Variacion de Volúmen']);
+
+        //Control Presupuesto Escalatoria
+        $registrar_escalatoria = Permission::firstOrCreate(['name' => 'registrar_escalatoria', 'display_name' => 'Registrar Escalatoria', 'description' => 'Registrar Escalatoria']);
+        $autorizar_escalatoria = Permission::firstOrCreate(['name' => 'autorizar_escalatoria', 'display_name' =>
+            'Autorizar Escalatoria', 'description' => 'Autorizar Escalatoria']);
+        $aplicar_escalatoria = Permission::firstOrCreate(['name' => 'aplicar_escalatoria', 'display_name' => 'Aplicar Escalatoria', 'description' => 'Aplicar Escalatoria']);
+        $rechazar_escalatoria = Permission::firstOrCreate(['name' => 'rechazar_escalatoria', 'display_name' =>
+            'Rechazar Escalatoria', 'description' => 'Rechazar Escalatoria']);
+        $consultar_escalatoria = Permission::firstOrCreate(['name' => 'consultar_escalatoria', 'display_name' =>
+            'Consultar Escalatoria', 'description' => 'Consultar Escalatoria']);
+
         /**
          * Roles
          */
@@ -124,6 +144,7 @@ class RolesPermissionsSeeder extends Seeder
         $jefe_procuracion  = Role::firstOrCreate(['name' => 'jefe_procuracion', 'description' => 'Jefe de Procuración', 'display_name' => 'Jefe de Procuración']);
         $tesorero          = Role::firstOrCreate(['name' => 'tesorero', 'display_name' => 'Tesorero', 'description' => 'Rol para operar el sistema de finanzas']);
         $consulta_finanzas = Role::firstOrCreate(['name' => 'consulta_finanzas', 'display_name' => 'Consulta Finanzas', 'description' => 'Rol para consultar el sistema de finanzas']);
+        $coordinador_control_proyectos = Role::firstOrCreate(['name' => 'coordinador_control_proyectos', 'display_name' => 'Coordinador de Control de Proyectos', 'description' => 'Coordinador de Control de Proyectos']);
 
         /**
          * Asignaciones
@@ -139,5 +160,17 @@ class RolesPermissionsSeeder extends Seeder
         $consulta_finanzas->attachPermission($consultar_comprobante_fondo_fijo);
         $contador->attachPermissions([$consultar_cierre_periodo, $generar_cierre_periodo, $editar_cierre_periodo]);
         $control_proyecto->attachPermission($consultar_cierre_periodo);
+        $coordinador_control_proyectos->attachPermissions([
+            $registrar_variacion_volumen,
+            $autorizar_variacion_volumen,
+            $aplicar_variacion_volumen,
+            $rechazar_variacion_volumen,
+            $consultar_variacion_volumen,
+            $registrar_escalatoria,
+            $autorizar_escalatoria,
+            $aplicar_escalatoria,
+            $rechazar_escalatoria,
+            $consultar_escalatoria,
+        ]);
     }
 }

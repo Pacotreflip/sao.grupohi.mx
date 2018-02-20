@@ -14465,8 +14465,7 @@ require('./vue-components/ControlCostos/reclasificacion_costos/index');
 require('./vue-components/ControlPresupuesto/presupuesto/index');
 require('./vue-components/ControlPresupuesto/cambio_presupuesto/create');
 require('./vue-components/ControlPresupuesto/cambio_presupuesto/index');
-require('./vue-components/ControlPresupuesto/cambio_presupuesto/show/escalatoria');
-require('./vue-components/ControlPresupuesto/cambio_presupuesto/escalatoria');
+
 require('./vue-components/ControlPresupuesto/cambio_presupuesto/variacion_insumos');
 require('./vue-components/ControlPresupuesto/cambio_presupuesto/show/variacion_insumos');
 
@@ -14476,11 +14475,17 @@ require('./vue-components/ControlPresupuesto/cambio_presupuesto/show/variacion_i
 require('./vue-components/ControlPresupuesto/variacion_volumen/create');
 
 /**
+ * Escalatoria Components
+ */
+require('./vue-components/ControlPresupuesto/escalatoria/show');
+require('./vue-components/ControlPresupuesto/escalatoria/create');
+
+/**
  * Configuración Components
  */
 require('./vue-components/Configuracion/seguridad/index');
 
-},{"./vue-components/Compras/material/index":6,"./vue-components/Compras/requisicion/create":8,"./vue-components/Compras/requisicion/edit":9,"./vue-components/Configuracion/seguridad/index":10,"./vue-components/Contabilidad/cierre/index":11,"./vue-components/Contabilidad/cuenta_almacen/index":12,"./vue-components/Contabilidad/cuenta_bancos/cuenta-bancaria-edit":13,"./vue-components/Contabilidad/cuenta_concepto/index":14,"./vue-components/Contabilidad/cuenta_contable/index":15,"./vue-components/Contabilidad/cuenta_costo/index":16,"./vue-components/Contabilidad/cuenta_empresa/cuenta-empresa-edit":17,"./vue-components/Contabilidad/cuenta_fondo/index":18,"./vue-components/Contabilidad/cuenta_material/index":19,"./vue-components/Contabilidad/datos_contables/edit":20,"./vue-components/Contabilidad/emails":21,"./vue-components/Contabilidad/modulos/revaluacion/create":22,"./vue-components/Contabilidad/poliza_generada/edit":23,"./vue-components/Contabilidad/poliza_generada/index":24,"./vue-components/Contabilidad/poliza_tipo/poliza-tipo-create":25,"./vue-components/Contabilidad/tipo_cuenta_contable/tipo-cuenta-contable-create":26,"./vue-components/Contabilidad/tipo_cuenta_contable/tipo-cuenta-contable-update":27,"./vue-components/ControlCostos/reclasificacion_costos/index":28,"./vue-components/ControlCostos/solicitar_reclasificacion/index":29,"./vue-components/ControlCostos/solicitar_reclasificacion/items":30,"./vue-components/ControlPresupuesto/cambio_presupuesto/create":31,"./vue-components/ControlPresupuesto/cambio_presupuesto/escalatoria":32,"./vue-components/ControlPresupuesto/cambio_presupuesto/index":33,"./vue-components/ControlPresupuesto/cambio_presupuesto/show/escalatoria":34,"./vue-components/ControlPresupuesto/cambio_presupuesto/show/variacion_insumos":35,"./vue-components/ControlPresupuesto/cambio_presupuesto/variacion_insumos":36,"./vue-components/ControlPresupuesto/presupuesto/index":37,"./vue-components/ControlPresupuesto/variacion_volumen/create":38,"./vue-components/Finanzas/comprobante_fondo_fijo/create":39,"./vue-components/Finanzas/comprobante_fondo_fijo/edit":40,"./vue-components/Finanzas/comprobante_fondo_fijo/index":41,"./vue-components/Reportes/subcontratos-estimacion":42,"./vue-components/Tesoreria/movimientos_bancarios/index":43,"./vue-components/Tesoreria/traspaso_cuentas/index":44,"./vue-components/errors":45,"./vue-components/global-errors":46,"./vue-components/kardex_material/kardex-material-index":47,"./vue-components/select2":48}],6:[function(require,module,exports){
+},{"./vue-components/Compras/material/index":6,"./vue-components/Compras/requisicion/create":8,"./vue-components/Compras/requisicion/edit":9,"./vue-components/Configuracion/seguridad/index":10,"./vue-components/Contabilidad/cierre/index":11,"./vue-components/Contabilidad/cuenta_almacen/index":12,"./vue-components/Contabilidad/cuenta_bancos/cuenta-bancaria-edit":13,"./vue-components/Contabilidad/cuenta_concepto/index":14,"./vue-components/Contabilidad/cuenta_contable/index":15,"./vue-components/Contabilidad/cuenta_costo/index":16,"./vue-components/Contabilidad/cuenta_empresa/cuenta-empresa-edit":17,"./vue-components/Contabilidad/cuenta_fondo/index":18,"./vue-components/Contabilidad/cuenta_material/index":19,"./vue-components/Contabilidad/datos_contables/edit":20,"./vue-components/Contabilidad/emails":21,"./vue-components/Contabilidad/modulos/revaluacion/create":22,"./vue-components/Contabilidad/poliza_generada/edit":23,"./vue-components/Contabilidad/poliza_generada/index":24,"./vue-components/Contabilidad/poliza_tipo/poliza-tipo-create":25,"./vue-components/Contabilidad/tipo_cuenta_contable/tipo-cuenta-contable-create":26,"./vue-components/Contabilidad/tipo_cuenta_contable/tipo-cuenta-contable-update":27,"./vue-components/ControlCostos/reclasificacion_costos/index":28,"./vue-components/ControlCostos/solicitar_reclasificacion/index":29,"./vue-components/ControlCostos/solicitar_reclasificacion/items":30,"./vue-components/ControlPresupuesto/cambio_presupuesto/create":31,"./vue-components/ControlPresupuesto/cambio_presupuesto/index":32,"./vue-components/ControlPresupuesto/cambio_presupuesto/show/variacion_insumos":33,"./vue-components/ControlPresupuesto/cambio_presupuesto/variacion_insumos":34,"./vue-components/ControlPresupuesto/escalatoria/create":35,"./vue-components/ControlPresupuesto/escalatoria/show":36,"./vue-components/ControlPresupuesto/presupuesto/index":37,"./vue-components/ControlPresupuesto/variacion_volumen/create":38,"./vue-components/Finanzas/comprobante_fondo_fijo/create":39,"./vue-components/Finanzas/comprobante_fondo_fijo/edit":40,"./vue-components/Finanzas/comprobante_fondo_fijo/index":41,"./vue-components/Reportes/subcontratos-estimacion":42,"./vue-components/Tesoreria/movimientos_bancarios/index":43,"./vue-components/Tesoreria/traspaso_cuentas/index":44,"./vue-components/errors":45,"./vue-components/global-errors":46,"./vue-components/kardex_material/kardex-material-index":47,"./vue-components/select2":48}],6:[function(require,module,exports){
 'use strict';
 
 Vue.component('material-index', {
@@ -20317,119 +20322,6 @@ Vue.component('cambio-presupuesto-create', {
 },{}],32:[function(require,module,exports){
 'use strict';
 
-Vue.component('escalatoria', {
-    props: ['id_tipo_orden'],
-    data: function data() {
-        return {
-            form: {
-                partidas: [],
-                motivo: ''
-            },
-            escalatoria: {
-                monto: '',
-                descripcion: ''
-            },
-            cargando: false,
-            guardando: false
-        };
-    },
-
-    computed: {
-
-        datos: function datos() {
-            var res = {
-                id_tipo_orden: this.id_tipo_orden,
-                motivo: this.form.motivo,
-                partidas: []
-            };
-            this.form.partidas.forEach(function (value) {
-                res.partidas.push({
-                    monto_presupuestado: value.importe,
-                    descripcion: value.descripcion
-                });
-            });
-            return res;
-        }
-
-    },
-
-    methods: {
-        removePartida: function removePartida(index) {
-            Vue.delete(this.form.partidas, index);
-        },
-
-        addPartida: function addPartida() {
-            var partida = _.clone(this.escalatoria);
-            this.form.partidas.push(partida);
-            this.escalatoria = {
-                monto: '',
-                descripcion: ''
-            };
-        },
-        confirmSave: function confirmSave() {
-            var self = this;
-            swal({
-                title: 'Guardar Solicitud de Cambio',
-                text: "¿Está seguro de que la información es correcta?",
-                type: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                confirmButtonText: 'Si, Guardar',
-                cancelButtonText: 'No, Cancelar'
-            }).then(function (result) {
-                if (result.value) {
-                    self.save();
-                }
-            });
-        },
-
-        save: function save() {
-            var self = this;
-            $.ajax({
-                url: App.host + '/control_presupuesto/cambio_presupuesto',
-                type: 'POST',
-                data: self.datos,
-                beforeSend: function beforeSend() {
-                    self.guardando = true;
-                },
-                success: function success(response) {
-                    swal({
-                        type: 'success',
-                        title: '¡Correcto!',
-                        html: 'Solicitud Guardada con Número de Folio <b>' + response.numero_folio + '</b>'
-                    }).then(function () {
-                        window.location.href = App.host + '/control_presupuesto/cambio_presupuesto/' + response.id;
-                    });
-                },
-                complete: function complete() {
-                    self.guardando = false;
-                }
-            });
-        },
-
-        validateForm: function validateForm(scope, funcion) {
-            var _this = this;
-
-            this.$validator.validateAll(scope).then(function () {
-                if (funcion == 'save_solicitud') {
-
-                    _this.confirmSave();
-                }
-            }).catch(function () {
-                swal({
-                    type: 'warning',
-                    title: 'Advertencia',
-                    text: 'Por favor corrija los errores del formulario'
-                });
-            });
-        }
-    }
-});
-
-},{}],33:[function(require,module,exports){
-'use strict';
-
 Vue.component('cambio-presupuesto-index', {
     data: function data() {
         return {
@@ -20523,224 +20415,7 @@ Vue.component('cambio-presupuesto-index', {
 
 });
 
-},{}],34:[function(require,module,exports){
-'use strict';
-
-Vue.component('show-escalatoria', {
-    props: ['solicitud', 'cobrabilidad', 'presupuestos'],
-    data: function data() {
-        return {
-            form: {
-                solicitud: this.solicitud,
-                cobrabilidad: this.cobrabilidad
-            },
-            cargando: false,
-            rechazando: false,
-            autorizando: false,
-            consultando: false,
-            consultandoImportes: false,
-            partidas: [],
-            importes: [],
-            partida_id: 0
-        };
-    },
-    mounted: function mounted() {
-        var self = this;
-
-        $(document).on('click', '.mostrar_pdf', function () {
-            var _this = $(this),
-                id = _this.data('pdf_id'),
-                url = App.host + '/control_presupuesto/cambio_presupuesto/' + id + '/pdf';
-
-            $('#pdf_modal').modal('show');
-            $('#pdf_modal .modal-content').css({ height: '700px' });
-            $('#pdf_modal .modal-body').html($('<iframe/>', {
-                id: 'formatoPDF',
-                src: url,
-                style: 'width:99.6%;height:100%',
-                frameborder: "0"
-            })).css({ height: '550px' });
-        });
-    },
-    methods: {
-
-        confirm_autorizar_solicitud: function confirm_autorizar_solicitud() {
-            var self = this;
-            var id = self.form.solicitud.id;
-
-            $('.autorizar_solicitud').addClass('disabled');
-
-            swal({
-                title: "Autorizar la Solicitud de Cambio",
-                html: "¿Estás seguro que desea actualizar la solicitud?",
-                type: "warning",
-                showCancelButton: true,
-                confirmButtonText: "Si, Continuar",
-                cancelButtonText: "No, Cancelar"
-            }).then(function (result) {
-                if (result.value) {
-                    self.autorizar_solicitud(id);
-                } else {
-                    $('.autorizar_solicitud').removeClass('disabled');
-                }
-            });
-        },
-        confirm_rechazar_solicitud: function confirm_rechazar_solicitud() {
-            var self = this;
-            var id = self.form.solicitud.id;
-
-            $('.rechazar_solicitud').addClass('disabled');
-
-            swal({
-                title: 'Rechazar Solicitud',
-                text: 'Motivo del rechazo',
-                input: 'text',
-                showCancelButton: true,
-                confirmButtonText: 'Rechazar ',
-                cancelButtonText: 'Cancelar',
-                showLoaderOnConfirm: false,
-                preConfirm: function preConfirm(motivo) {
-                    return new Promise(function (resolve) {
-                        if (motivo.length === 0) {
-                            swal.showValidationError('Por favor escriba un motivo para rechazar la solicitud.');
-                        }
-                        resolve();
-                    });
-                },
-                allowOutsideClick: function allowOutsideClick() {
-                    !swal.isLoading();
-                }
-            }).then(function (result) {
-                if (result.value) {
-                    self.rechazar_solicitud(id, result.value);
-                } else {
-                    $('.rechazar_solicitud').removeClass('disabled');
-                }
-            });
-        },
-        autorizar_solicitud: function autorizar_solicitud(id) {
-
-            var self = this;
-            var url = App.host + '/control_presupuesto/cambio_presupuesto/autorizarSolicitud';
-            $.ajax({
-                type: 'POST',
-                url: url,
-                data: {
-                    id: id,
-                    id_tipo_orden: self.form.solicitud.id_tipo_orden
-                },
-                beforeSend: function beforeSend() {
-                    self.autorizando = true;
-                },
-                success: function success(data, textStatus, xhr) {
-                    swal({
-                        type: "success",
-                        title: '¡Correcto!',
-                        text: 'Solicitud autorizada correctamente.',
-                        confirmButtonText: "Ok",
-                        closeOnConfirm: false
-                    }).then(function () {
-                        window.location.reload(true);
-                    });
-                },
-                complete: function complete() {
-                    self.autorizando = false;
-                    $('.autorizar_solicitud').removeClass('disabled');
-                }
-            });
-        },
-
-        rechazar_solicitud: function rechazar_solicitud(id, motivo) {
-
-            var self = this;
-            var url = App.host + '/control_presupuesto/cambio_presupuesto/rechazarSolicitud';
-            $.ajax({
-                type: 'POST',
-                url: url,
-                data: {
-                    id_solicitud_cambio: id,
-                    id_tipo_orden: self.form.solicitud.id_tipo_orden,
-                    motivo: motivo
-                },
-                beforeSend: function beforeSend() {
-                    self.rechazando = true;
-                },
-                success: function success(data, textStatus, xhr) {
-
-                    swal({
-                        type: "success",
-                        title: '¡Correcto!',
-                        text: 'Solicitud rechazada correctamente.',
-                        confirmButtonText: "Ok",
-                        closeOnConfirm: false
-                    }).then(function () {
-                        window.location.reload(true);
-                    });
-                },
-                complete: function complete() {
-                    self.rechazando = false;
-                    $('.rechazar_solicitud').removeClass('disabled');
-                }
-            });
-        },
-        mostrar_detalle_partida: function mostrar_detalle_partida(id) {
-            var self = this;
-            var partida = id;
-            self.partida_id = id;
-            var presupuesto = self.presupuestos[0].base_datos.id;
-            $('#divDetalle').fadeOut();
-
-            var url = App.host + '/control_presupuesto/cambio_presupuesto_partida/detallePresupuesto';
-            $.ajax({
-                type: 'POST',
-                data: {
-                    id_partida: partida,
-                    presupuesto: presupuesto
-                },
-                url: url,
-                beforeSend: function beforeSend() {
-                    self.consultando = true;
-                },
-                success: function success(data, textStatus, xhr) {
-                    self.partidas = data.data;
-                    $('#divDetalle').fadeIn();
-                },
-                complete: function complete() {
-                    self.consultando = false;
-                }
-            });
-        },
-        mostrar_detalle_presupuesto: function mostrar_detalle_presupuesto(idPresupuesto) {
-            var self = this;
-            var partida = self.partida_id;
-            var presupuesto = idPresupuesto;
-            $('#divDetalle').fadeOut();
-
-            var url = App.host + '/control_presupuesto/cambio_presupuesto_partida/detallePresupuesto';
-            $.ajax({
-                type: 'POST',
-                data: {
-                    id_partida: partida,
-                    presupuesto: presupuesto
-                },
-                url: url,
-                beforeSend: function beforeSend() {
-                    self.consultando = true;
-                },
-                success: function success(data, textStatus, xhr) {
-                    self.partidas = data.data;
-                    $('#divDetalle').fadeIn();
-                },
-                complete: function complete() {
-                    self.consultando = false;
-                }
-            });
-        }
-
-    }
-});
-
-},{}],35:[function(require,module,exports){
+},{}],33:[function(require,module,exports){
 'use strict';
 
 Vue.component('show-variacion-insumos', {
@@ -20953,7 +20628,7 @@ Vue.component('show-variacion-insumos', {
     }
 });
 
-},{}],36:[function(require,module,exports){
+},{}],34:[function(require,module,exports){
 'use strict';
 
 Vue.component('variacion-insumos', {
@@ -21486,6 +21161,346 @@ Vue.component('variacion-insumos', {
                     break;
             }
         }
+    }
+});
+
+},{}],35:[function(require,module,exports){
+'use strict';
+
+Vue.component('escalatoria-create', {
+    props: ['id_tipo_orden', 'bases_afectadas'],
+    data: function data() {
+        return {
+            form: {
+                partidas: [],
+                motivo: ''
+            },
+            escalatoria: {
+                monto: '',
+                descripcion: ''
+            },
+            cargando: false,
+            guardando: false
+        };
+    },
+
+    computed: {
+        datos: function datos() {
+            var res = {
+                id_tipo_orden: this.id_tipo_orden,
+                motivo: this.form.motivo,
+                partidas: []
+            };
+            this.form.partidas.forEach(function (value) {
+                res.partidas.push({
+                    monto_presupuestado: value.importe,
+                    descripcion: value.descripcion
+                });
+            });
+            return res;
+        },
+        subtotal: function subtotal() {
+            var res = 0;
+
+            this.form.partidas.forEach(function (partida) {
+                res += parseFloat(partida.monto_presupuestado);
+            });
+            return res;
+        }
+    },
+    mounted: function mounted() {
+        var self = this;
+    },
+
+    methods: {
+
+        removePartida: function removePartida(index) {
+            Vue.delete(this.form.partidas, index);
+        },
+
+        addPartida: function addPartida() {
+            var partida = _.clone(this.escalatoria);
+            this.form.partidas.push(partida);
+            this.escalatoria = {
+                monto: '',
+                descripcion: ''
+            };
+        },
+        confirmSave: function confirmSave() {
+            var self = this;
+            swal({
+                title: 'Guardar Solicitud de Cambio',
+                text: "¿Está seguro de que la información es correcta?",
+                type: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Si, Guardar',
+                cancelButtonText: 'No, Cancelar'
+            }).then(function (result) {
+                if (result.value) {
+                    self.save();
+                }
+            });
+        },
+
+        save: function save() {
+            var self = this;
+            $.ajax({
+                url: App.host + '/control_presupuesto/escalatoria',
+                type: 'POST',
+                data: self.datos,
+                beforeSend: function beforeSend() {
+                    self.guardando = true;
+                },
+                success: function success(response) {
+                    swal({
+                        type: 'success',
+                        title: '¡Correcto!',
+                        html: 'Solicitud Guardada con Número de Folio <b>' + response.numero_folio + '</b>'
+                    }).then(function () {
+                        window.location.href = App.host + '/control_presupuesto/escalatoria/' + response.id;
+                    });
+                },
+                complete: function complete() {
+                    self.guardando = false;
+                }
+            });
+        },
+
+        validateForm: function validateForm(scope, funcion) {
+            var _this = this;
+
+            this.$validator.validateAll(scope).then(function () {
+                if (funcion == 'save_solicitud') {
+
+                    _this.confirmSave();
+                }
+            }).catch(function () {
+                swal({
+                    type: 'warning',
+                    title: 'Advertencia',
+                    text: 'Por favor corrija los errores del formulario'
+                });
+            });
+        }
+    }
+});
+
+},{}],36:[function(require,module,exports){
+'use strict';
+
+Vue.component('escalatoria-show', {
+    props: ['solicitud', 'cobrabilidad', 'presupuestos'],
+    data: function data() {
+        return {
+            form: {
+                solicitud: this.solicitud,
+                cobrabilidad: this.cobrabilidad
+            },
+            cargando: false,
+            rechazando: false,
+            autorizando: false,
+            consultando: false,
+            consultandoImportes: false,
+            partidas: [],
+            importes: [],
+            partida_id: 0
+        };
+    },
+    mounted: function mounted() {
+        var self = this;
+
+        $(document).on('click', '.mostrar_pdf', function () {
+            var _this = $(this),
+                id = _this.data('pdf_id'),
+                url = App.host + '/control_presupuesto/escalatoria/' + id + '/pdf';
+
+            $('#pdf_modal').modal('show');
+            $('#pdf_modal .modal-content').css({ height: '700px' });
+            $('#pdf_modal .modal-body').html($('<iframe/>', {
+                id: 'formatoPDF',
+                src: url,
+                style: 'width:99.6%;height:100%',
+                frameborder: "0"
+            })).css({ height: '550px' });
+        });
+    },
+    methods: {
+
+        confirm_autorizar_solicitud: function confirm_autorizar_solicitud() {
+            var self = this;
+            var id = self.form.solicitud.id;
+
+            $('.autorizar_solicitud').addClass('disabled');
+
+            swal({
+                title: "Autorizar la Solicitud de Cambio",
+                html: "¿Estás seguro que desea actualizar la solicitud?",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonText: "Si, Continuar",
+                cancelButtonText: "No, Cancelar"
+            }).then(function (result) {
+                if (result.value) {
+                    self.autorizar_solicitud(id);
+                } else {
+                    $('.autorizar_solicitud').removeClass('disabled');
+                }
+            });
+        },
+        confirm_rechazar_solicitud: function confirm_rechazar_solicitud() {
+            var self = this;
+            var id = self.form.solicitud.id;
+
+            $('.rechazar_solicitud').addClass('disabled');
+
+            swal({
+                title: 'Rechazar Solicitud',
+                text: 'Motivo del rechazo',
+                input: 'text',
+                showCancelButton: true,
+                confirmButtonText: 'Rechazar ',
+                cancelButtonText: 'Cancelar',
+                showLoaderOnConfirm: false,
+                preConfirm: function preConfirm(motivo) {
+                    return new Promise(function (resolve) {
+                        if (motivo.length === 0) {
+                            swal.showValidationError('Por favor escriba un motivo para rechazar la solicitud.');
+                        }
+                        resolve();
+                    });
+                },
+                allowOutsideClick: function allowOutsideClick() {
+                    !swal.isLoading();
+                }
+            }).then(function (result) {
+                if (result.value) {
+                    self.rechazar_solicitud(id, result.value);
+                } else {
+                    $('.rechazar_solicitud').removeClass('disabled');
+                }
+            });
+        },
+        autorizar_solicitud: function autorizar_solicitud(id) {
+
+            var self = this;
+            var url = App.host + '/control_presupuesto/escalatoria/' + id + '/autorizar';
+            $.ajax({
+                type: 'POST',
+                url: url,
+                data: {
+                    id: id,
+                    id_tipo_orden: self.form.solicitud.id_tipo_orden
+                },
+                beforeSend: function beforeSend() {
+                    self.autorizando = true;
+                },
+                success: function success(data, textStatus, xhr) {
+                    swal({
+                        type: "success",
+                        title: '¡Correcto!',
+                        text: 'Solicitud autorizada correctamente.',
+                        confirmButtonText: "Ok",
+                        closeOnConfirm: false
+                    }).then(function () {
+                        window.location.reload(true);
+                    });
+                },
+                complete: function complete() {
+                    self.autorizando = false;
+                    $('.autorizar_solicitud').removeClass('disabled');
+                }
+            });
+        },
+
+        rechazar_solicitud: function rechazar_solicitud(id, motivo) {
+
+            var self = this;
+            var url = App.host + '/control_presupuesto/escalatoria/' + id + '/rechazar';
+            $.ajax({
+                type: 'POST',
+                url: url,
+                data: {
+                    id_solicitud_cambio: id,
+                    id_tipo_orden: self.form.solicitud.id_tipo_orden,
+                    motivo: motivo
+                },
+                beforeSend: function beforeSend() {
+                    self.rechazando = true;
+                },
+                success: function success(data, textStatus, xhr) {
+
+                    swal({
+                        type: "success",
+                        title: '¡Correcto!',
+                        text: 'Solicitud rechazada correctamente.',
+                        confirmButtonText: "Ok",
+                        closeOnConfirm: false
+                    }).then(function () {
+                        window.location.reload(true);
+                    });
+                },
+                complete: function complete() {
+                    self.rechazando = false;
+                    $('.rechazar_solicitud').removeClass('disabled');
+                }
+            });
+        },
+        mostrar_detalle_partida: function mostrar_detalle_partida(id) {
+            var self = this;
+            var partida = id;
+            self.partida_id = id;
+            var presupuesto = self.presupuestos[0].base_datos.id;
+            $('#divDetalle').fadeOut();
+
+            var url = App.host + '/control_presupuesto/cambio_presupuesto_partida/detallePresupuesto';
+            $.ajax({
+                type: 'POST',
+                data: {
+                    id_partida: partida,
+                    presupuesto: presupuesto
+                },
+                url: url,
+                beforeSend: function beforeSend() {
+                    self.consultando = true;
+                },
+                success: function success(data, textStatus, xhr) {
+                    self.partidas = data.data;
+                    $('#divDetalle').fadeIn();
+                },
+                complete: function complete() {
+                    self.consultando = false;
+                }
+            });
+        },
+        mostrar_detalle_presupuesto: function mostrar_detalle_presupuesto(idPresupuesto) {
+            var self = this;
+            var partida = self.partida_id;
+            var presupuesto = idPresupuesto;
+            $('#divDetalle').fadeOut();
+
+            var url = App.host + '/control_presupuesto/cambio_presupuesto_partida/detallePresupuesto';
+            $.ajax({
+                type: 'POST',
+                data: {
+                    id_partida: partida,
+                    presupuesto: presupuesto
+                },
+                url: url,
+                beforeSend: function beforeSend() {
+                    self.consultando = true;
+                },
+                success: function success(data, textStatus, xhr) {
+                    self.partidas = data.data;
+                    $('#divDetalle').fadeIn();
+                },
+                complete: function complete() {
+                    self.consultando = false;
+                }
+            });
+        }
+
     }
 });
 
