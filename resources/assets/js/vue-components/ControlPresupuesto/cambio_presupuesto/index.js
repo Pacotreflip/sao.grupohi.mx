@@ -1,12 +1,29 @@
 Vue.component('cambio-presupuesto-index', {
     data: function () {
         return {
-            data :''
+            data: '',
+            form: {
+                id_tipo_cobrabilidad: 0,
+                id_tipo_orden: 0
+            },
+            tipos_cobrabilidad: [],
+            tipos_orden: []
         }
     },
+    computed: {
+        tipos_orden_filtered : function () {
+            var self = this;
 
+            return self.tipos_orden.filter(function (tipo_orden) {
+                return tipo_orden.id_tipo_cobrabilidad == self.form.id_tipo_cobrabilidad;
+            });
+        }
+    },
     mounted: function () {
         var self=this;
+
+        this.fetchTiposCobrabilidad();
+        this.fetchTiposOrden();
 
         $(document).on('click', '.mostrar_pdf', function () {
             var _this = $(this),
@@ -97,6 +114,83 @@ Vue.component('cambio-presupuesto-index', {
 
 
         $('#cierres_table').DataTable(data);
+    },
+    methods: {
+        fetchTiposCobrabilidad: function () {
+            var self = this;
+            $.ajax({
+                url : App.host + '/control_presupuesto/tipo_cobrabilidad',
+                type : 'GET',
+                beforeSend : function () {
+                    self.cargando = true
+                },
+                success : function (response) {
+                    self.tipos_cobrabilidad = response;
+                },
+                complete : function () {
+                    self.cargando = false;
+                }
+            });
+        },
+        fetchTiposOrden: function () {
+            var self = this;
+            $.ajax({
+                url : App.host + '/control_presupuesto/tipo_orden',
+                type : 'GET',
+                beforeSend : function () {
+                    self.cargando = true
+                },
+                success : function (response) {
+                    self.tipos_orden = response;
+                },
+                complete : function () {
+                    self.cargando = false;
+                }
+            });
+        },
+        openSelectModal: function () {
+            $('#select_modal').modal('show');
+        },
+        confirmCrear: function () {
+            var self = this;
+            swal({
+                title: 'Crear Solicitud de Cambio',
+                text: "¿Está seguro de que la información es correcta?",
+                type: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Si, Crear',
+                cancelButtonText: 'No, Cancelar'
+            }).then(function(result) {
+                if(result.value) {
+                    self.crearSolicitud();
+                }
+            });
+        },
+        crearSolicitud: function () {
+            var self = this,
+                tipo_seleccionado = self.findTipoOrden(self.form.id_tipo_orden);
+
+                if (tipo_seleccionado === null)
+                    swal({
+                        title: 'Error',
+                        text: "El item seleccionado no es un tipo de solicitud válido",
+                        type: 'error'
+                    });
+
+            // Redirecciona a la ruta correcta
+            window.location.href = App.host + '/control_presupuesto/'+ tipo_seleccionado.name +'/create';
+        },
+        findTipoOrden: function (id) {
+            var self = this;
+
+            for (var i = 0; i < self.tipos_orden.length; i++)
+                if (self.tipos_orden[i]['id'] === id)
+                    return self.tipos_orden[i];
+
+            return null;
+        }
     }
 
 });
