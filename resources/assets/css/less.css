@@ -6,6 +6,9 @@
 /* FONT PATH
  * -------------------------- */
 @import url(https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic);
+
+#insumos_modal { overflow-y:scroll }
+
 @font-face {
   font-family: 'FontAwesome';
   src: url('../fonts/fontawesome-webfont.eot?v=4.7.0');

@@ -51,11 +51,11 @@
                             <p class="text-muted text-right">
                                 ${{number_format($conceptos_agrupados['imp_nuevo_gen'],'2','.',',')}}</p>
                             <hr>
-                            <strong>Importe Presupuesto Actual</strong>
+                            <strong>Importe Presupuesto Original</strong>
                             <p class="text-muted text-right">
                                 ${{number_format( $conceptos_agrupados['total_presupuesto'],'2','.',',')}}</p>
                             <hr>
-                            <strong>Importe Presupuesto Nuevo</strong>
+                            <strong>Importe Presupuesto Actualizado</strong>
                             <p class="text-muted text-right">
                                 ${{number_format($conceptos_agrupados['total_presupuesto']+$conceptos_agrupados['total_variaciones'],'2','.',',')}}</p>
                             <hr>
@@ -124,9 +124,9 @@
                                     <th>#</th>
                                     <th>Concepto</th>
                                     <th>Volumen</th>
-                                    <th>Importe Inicial</th>
+                                    <th>Importe Original</th>
                                     <th>Variación de Importe</th>
-                                    <th>Importe Nuevo</th>
+                                    <th>Importe Actualizado</th>
 
                                 </tr>
                                 </thead>
@@ -164,9 +164,9 @@
                                         <th colspan="6" rowspan="3"><h4>@{{ tipos.tipo }}</h4></th>
                                     </tr>
                                     <tr class="bg-gray-active">
-                                        <th>Importe Inicial</th>
+                                        <th>Importe Original</th>
                                         <th>Variación de Importe</th>
-                                        <th>Importe Nuevo</th>
+                                        <th>Importe Actualizado</th>
                                     </tr>
                                     <tr class="bg-gray-active">
                                         <td class="text-right">
@@ -181,14 +181,12 @@
                                         <th>#</th>
                                         <th style="width: 40%;">Descripción</th>
                                         <th>Unidad</th>
-
-                                        <th>Cantidad Presupuestada Actual</th>
-                                        <th>Cantidad Presupuestada Nueva</th>
-
-                                        <th>Precio Unitario Actual</th>
-                                        <th>Precio Unitario Nuevo</th>
-                                        <th>Monto Presupuestado Actual</th>
-                                        <th>Monto Presupuestado Nuevo</th>
+                                        <th>Volumen Original</th>
+                                        <th>Volumen Actualizado</th>
+                                        <th>Costo Original</th>
+                                        <th>Costo Actualizado</th>
+                                        <th>Importe Original</th>
+                                        <th>Importe Actualizado</th>
                                     </tr>
 
                                     </thead>

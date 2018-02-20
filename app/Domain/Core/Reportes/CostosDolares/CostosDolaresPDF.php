@@ -85,8 +85,8 @@ class CostosDolaresPDF extends Rotation
         $this->SetX(11 );
         $this->SetFont('Arial', '', 8);
         $this->Cell(4, 0.35, 'Periodo :', 0, 0, 'R');
-        $this->CellFitScale(5, 0.35, 'Del : '. $this->costos[0]->fecha_poliza , 'B', 0, 'C');
-        $this->CellFitScale(5, 0.35, 'Al : '. $this->costos[sizeof($this->costos )-1]->fecha_poliza, 'B', 1, 'C');
+        $this->CellFitScale(5, 0.35, 'Del : '. \Carbon\Carbon::parse($this->costos[0]->fecha_poliza)->format('d/m/Y') , 'B', 0, 'C');
+        $this->CellFitScale(5, 0.35, 'Al : '. \Carbon\Carbon::parse($this->costos[sizeof($this->costos )-1]->fecha_poliza)->format('d/m/Y'), 'B', 1, 'C');
 
         $this->Ln();
 

@@ -20493,8 +20493,27 @@ Vue.component('variacion-insumos', {
     },
     watch: {
         id_tarjeta: function id_tarjeta() {
-            this.get_conceptos();
-            this.form.partidas = [];
+            var self = this;
+            if (self.form.partidas.length > 0) {
+                swal({
+                    title: 'Cambiar Tarjeta',
+                    text: "Si Cambia de Tarjeta se Descartarán los Conceptos Seleccionados\n¿Desea Cambiar de Tarjeta?",
+                    type: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Si, Cambiar',
+                    cancelButtonText: 'No, Cancelar'
+                }).then(function () {
+                    self.get_conceptos();
+                    self.form.partidas = [];
+                    self.form.agrupadas = [];
+                });
+            } else {
+                self.get_conceptos();
+                self.form.partidas = [];
+                self.form.agrupadas = [];
+            }
         }
     },
 
@@ -20624,54 +20643,82 @@ Vue.component('variacion-insumos', {
                         self.form.agrupadas.push(response.cobrable.id_concepto);
                     } else {
                         $.each(self.form.partidas, function (index, partida) {
+                            var diferencias = false;
+                            console.log(diferencias);
                             if (partida.conceptos.MATERIALES.insumos.length === response.conceptos.MATERIALES.insumos.length) {
-                                $.each(partida.conceptos.MATERIALES.insumos, function (index, insumo) {
-                                    var temp1 = Math.round(insumo.rendimiento_actual);
-                                    var temp2 = Math.round(response.conceptos.MATERIALES.insumos[index].cantidad_presupuestada / response.cobrable.cantidad_presupuestada);
-                                    if (temp1 != temp2) {
-                                        alert('MATERIALES diferente' + temp1 + ' - ' + temp2);
-                                    }
+                                var total1 = 0;
+                                var total2 = 0;
+                                $.each(partida.conceptos.MATERIALES.insumos, function () {
+                                    total1 = total1 + parseFloat(this.cantidad_presupuestada);
                                 });
+                                $.each(response.conceptos.MATERIALES.insumos, function () {
+                                    total2 = total2 + parseFloat(this.cantidad_presupuestada);
+                                });
+                                if ((total1 / partida.cobrable.cantidad_presupuestada).toFixed(3) != (total2 / response.cobrable.cantidad_presupuestada).toFixed(3)) {
+                                    diferencias = true;
+                                    console.log('Materiales : ' + total1 / partida.cobrable.cantidad_presupuestada + ' - ' + total2 / response.cobrable.cantidad_presupuestada);
+                                }
                             } else {
-                                alert('Concepto Diferente');
+                                diferencias = true;
                             }
                             if (partida.conceptos.HERRAMIENTAYEQUIPO.insumos.length === response.conceptos.HERRAMIENTAYEQUIPO.insumos.length) {
-                                $.each(partida.conceptos.HERRAMIENTAYEQUIPO.insumos, function (index, insumo) {
-                                    var temp1 = Math.round(insumo.rendimiento_actual);
-                                    var temp2 = Math.round(response.conceptos.HERRAMIENTAYEQUIPO.insumos[index].cantidad_presupuestada / response.cobrable.cantidad_presupuestada);
-                                    if (temp1 != temp2) {
-                                        alert('HERRAMIENTAYEQUIPO diferente' + temp1 + ' - ' + temp2);
-                                    }
+                                var total1 = 0;
+                                var total2 = 0;
+                                $.each(partida.conceptos.HERRAMIENTAYEQUIPO.insumos, function () {
+                                    total1 = total1 + parseFloat(this.cantidad_presupuestada);
                                 });
-                                //alert(partida.conceptos.HERRAMIENTAYEQUIPO.insumos.length);
+                                $.each(response.conceptos.HERRAMIENTAYEQUIPO.insumos, function () {
+                                    total2 = total2 + parseFloat(this.cantidad_presupuestada);
+                                });
+                                if ((total1 / partida.cobrable.cantidad_presupuestada).toFixed(3) != (total2 / response.cobrable.cantidad_presupuestada).toFixed(3)) {
+                                    diferencias = true;
+                                    console.log('Herramienta : ' + total1 / partida.cobrable.cantidad_presupuestada + ' - ' + total2 / response.cobrable.cantidad_presupuestada);
+                                }
                             } else {
-                                alert('HERRAMIENTAYEQUIPO Diferente');
+                                diferencias = true;
                             }
                             if (partida.conceptos.MANOOBRA.insumos.length === response.conceptos.MANOOBRA.insumos.length) {
-                                $.each(partida.conceptos.MANOOBRA.insumos, function (index, insumo) {
-                                    var temp1 = Math.round(insumo.rendimiento_actual);
-                                    var temp2 = Math.round(response.conceptos.MANOOBRA.insumos[index].cantidad_presupuestada / response.cobrable.cantidad_presupuestada);
-                                    if (temp1 != temp2) {
-                                        alert('MANOOBRA diferente' + temp1 + ' - ' + temp2);
-                                    }
+                                var total1 = 0;
+                                var total2 = 0;
+                                $.each(partida.conceptos.MANOOBRA.insumos, function () {
+                                    total1 = total1 + parseFloat(this.cantidad_presupuestada);
                                 });
-                                //alert(partida.conceptos.MANOOBRA.insumos.length);
+                                $.each(response.conceptos.MANOOBRA.insumos, function () {
+                                    total2 = total2 + parseFloat(this.cantidad_presupuestada);
+                                });
+                                if ((total1 / partida.cobrable.cantidad_presupuestada).toFixed(3) != (total2 / response.cobrable.cantidad_presupuestada).toFixed(3)) {
+                                    diferencias = true;
+                                    console.log('Mano Obra : ' + total1 / partida.cobrable.cantidad_presupuestada + ' - ' + total2 / response.cobrable.cantidad_presupuestada);
+                                }
                             } else {
-                                alert('MANOOBRA Diferente');
+                                diferencias = true;
                             }
                             if (partida.conceptos.MAQUINARIA.insumos.length === response.conceptos.MAQUINARIA.insumos.length) {
-                                $.each(partida.conceptos.MAQUINARIA.insumos, function (index, insumo) {
-                                    var temp1 = Math.round(insumo.rendimiento_actual);
-                                    var temp2 = Math.round(response.conceptos.MAQUINARIA.insumos[index].cantidad_presupuestada / response.cobrable.cantidad_presupuestada);
-                                    if (temp1 != temp2) {
-                                        alert('MAQUINARIA diferente' + temp1 + ' - ' + temp2);
-                                    }
+                                var total1 = 0;
+                                var total2 = 0;
+                                $.each(partida.conceptos.MAQUINARIA.insumos, function () {
+                                    total1 = total1 + parseFloat(this.cantidad_presupuestada);
                                 });
-                                //alert(partida.conceptos.MAQUINARIA.insumos.length);
+                                $.each(response.conceptos.MAQUINARIA.insumos, function () {
+                                    total2 = total2 + parseFloat(this.cantidad_presupuestada);
+                                });
+                                if ((total1 / partida.cobrable.cantidad_presupuestada).toFixed(3) != (total2 / response.cobrable.cantidad_presupuestada).toFixed(3)) {
+                                    diferencias = true;
+                                    console.log('Maquinaria : ' + total1 / partida.cobrable.cantidad_presupuestada + ' - ' + total2 / response.cobrable.cantidad_presupuestada);
+                                }
                             } else {
-                                alert('MAQUINARIA Diferente');
+                                diferencias = true;
                             }
-                            self.form.agrupadas.push(response.cobrable.id_concepto);
+                            console.log('Final : ' + diferencias);
+                            if (diferencias) {
+                                swal({
+                                    type: 'warning',
+                                    title: 'Advertencia',
+                                    text: 'CONCEPTOS NO AGRUPABLES'
+                                });
+                            } else {
+                                self.form.agrupadas.push(response.cobrable.id_concepto);
+                            }
                         });
                     }
 
@@ -20828,6 +20875,7 @@ Vue.component('variacion-insumos', {
                 // console.log(data);
                 self.material_seleccionado = data;
             });
+
             $('#add_insumo_modal').modal('show');
         },
 
