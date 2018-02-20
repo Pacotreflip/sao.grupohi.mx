@@ -20,6 +20,7 @@ Vue.component('variacion-volumen-create', {
             form : {
                 partidas : [],
                 motivo : '',
+                area_solicitante : '',
                 afectaciones : []
             },
             cargando : false,
@@ -33,6 +34,7 @@ Vue.component('variacion-volumen-create', {
             var res = {
                 motivo: this.form.motivo,
                 afectaciones : this.form.afectaciones,
+                area_solicitante : this.form.area_solicitante,
                 partidas: []
             };
             this.form.partidas.forEach(function (value) {

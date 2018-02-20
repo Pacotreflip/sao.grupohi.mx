@@ -128,13 +128,17 @@ class VariacionVolumenController extends Controller
     public function show($id)
     {
         $variacionVolumen = VariacionVolumen::with(['tipoOrden', 'userRegistro', 'estatus', 'partidas', 'partidas.concepto', 'partidas.numeroTarjeta', 'aplicaciones'])->find($id);
+        $presupuestos = $this->afectacion->with('baseDatos')->getBy('id_tipo_orden', '=', $variacionVolumen->id_tipo_orden);
+
         return view('control_presupuesto.variacion_volumen.show')
-            ->with('variacion_volumen', $variacionVolumen);
+            ->with('variacion_volumen', $variacionVolumen)
+            ->with('cobrabilidad', $variacionVolumen->tipoOrden)
+            ->with('presupuestos', $presupuestos);
     }
 
-    public function autorizar(Request $request)
+    public function autorizar(Request $request, $variacion_volumen)
     {
-        $variacionVolumen = $this->variacionVolumen->autorizar($request->id, $request->all());
+        $variacionVolumen = $this->variacionVolumen->autorizar($variacion_volumen, $request->all());
 
         return $this->response->item($variacionVolumen, function ($item) {
             return $item;

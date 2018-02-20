@@ -40,7 +40,7 @@
                 <div class="col-md-12">
                     <div class="box box-solid">
                         <div class="box-header with-border">
-                            <h3 class="box-title">Conceptos</h3>
+                            <h3 class="box-title">Seleccione los conceptos que desea afectar en ésta solicitud</h3>
                         </div>
                         <div class="box-body">
                             <div class="table-responsive">
@@ -121,8 +121,18 @@
                                             </tbody>
                                         </table>
                                     </div>
+                                    <div class="col-md-12">
+                                        <div class="form-group" :class="{'has-error': validation_errors.has('form_save_solicitud.Area Solicitante')}">
+                                            <label><b>Area Solicitante:</b></label>
+                                            <input type="text" class="form-control input-sm" v-validate="'required'" :name="'Area Solicitante'"  v-model="form.area_solicitante">
+                                            <label class="help" v-show="validation_errors.has('form_save_solicitud.Area Solicitante')">@{{ validation_errors.first('form_save_solicitud.Area Solicitante') }}</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <label :class="{'text-red' : validation_errors.has('form_save_solicitud.Presupuesto')}"><b>Presupuestos en donde se aplicarán los cambios</b></label>
+                                    </div>
                                     <div class="col-md-4" v-for="base_presupuesto in bases_afectadas">
-                                        <div class="form-group text-center" :class="{'has-error': validation_errors.has('form_save_solicitud.Presupuesto')}">
+                                        <div class="form-group" :class="{'has-error': validation_errors.has('form_save_solicitud.Presupuesto')}">
                                             <label><b>*** @{{ base_presupuesto.descripcion }}</b></label>
                                             <input type="checkbox" v-validate="'required'" :name="'Presupuesto'" :value="base_presupuesto.id" v-model="form.afectaciones">
                                             <label class="help" v-show="validation_errors.has('form_save_solicitud.Presupuesto')">Seleccione por lo menos un presupuesto por afectar.</label>

@@ -1,36 +1,48 @@
 Vue.component('variacion-volumen-show', {
-    props: ['id_variacion_volumen'],
+    props: ['solicitud', 'cobrabilidad','presupuestos'],
     data: function () {
         return {
-            variacion_volumen : []
+            form: {
+                solicitud: this.solicitud,
+                cobrabilidad: this.cobrabilidad,
+                afectaciones : []
+            },
+            cargando: false,
+            rechazando:false,
+            autorizando:false,
+            consultando:false,
+            consultandoImportes:false,
+            partidas:[],
+            importes:[],
+            partida_id:0
         }
     },
 
     mounted: function () {
 
-            /*this.fillAfectaciones();
+        this.fillAfectaciones();
 
-            $(document).on('click', '.mostrar_pdf', function () {
-                var _this = $(this),
-                    id = _this.data('pdf_id'),
-                    url = App.host + '/control_presupuesto/cambio_presupuesto/'+ id +'/pdf';
+        $(document).on('click', '.mostrar_pdf', function () {
+            var _this = $(this),
+                id = _this.data('pdf_id'),
+                url = App.host + '/control_presupuesto/variacion_volumen/'+ id +'/pdf';
 
-                $('#pdf_modal').modal('show');
-                $('#pdf_modal .modal-body').html($('<iframe/>', {
-                    id:'formatoPDF',
-                    src: url,
-                    style:'width:99.6%;height:100%',
-                    frameborder:"0"
-                })).css({height: '550px'});
-            });*/
+            $('#pdf_modal').modal('show');
+            $('#pdf_modal .modal-body').html($('<iframe/>', {
+                id:'formatoPDF',
+                src: url,
+                style:'width:99.6%;height:100%',
+                frameborder:"0"
+            })).css({height: '550px'});
+        });
     },
     methods: {
-        fetchVariacionVolumen : function () {
-
-        },
-        /*confirm_autorizar_solicitud: function () {
+        confirm_autorizar_solicitud: function () {
             var self = this;
-            var id = self.id_variacion_volumen;
+            var id = self.form.solicitud.id;
+
+            $('.autorizar_solicitud').addClass('disabled');
+            $('.rechazar_solicitud').addClass('disabled');
 
             swal({
                 title: "Autorizar la Solicitud de Cambio",
@@ -41,7 +53,7 @@ Vue.component('variacion-volumen-show', {
                 cancelButtonText: "No, Cancelar"
             }).then(function (result) {
                 if (result.value) {
-                    self.autorizar_solicitud(id);
+                    self.autorizar(id);
                 } else {
                     $('.autorizar_solicitud').removeClass('disabled');
                     $('.rechazar_solicitud').removeClass('disabled');
@@ -75,20 +87,19 @@ Vue.component('variacion-volumen-show', {
                 }
             }).then(function (result) {
                 if (result.value) {
-                    self.rechazar_solicitud(id, result.value);
+                    self.rechazar(id, result.value);
                 } else {
                     $('.rechazar_solicitud').removeClass('disabled');
                 }
             });
         },
-        autorizar_solicitud: function (id) {
+        autorizar: function (id) {
             var self = this;
-            var url = App.host + '/control_presupuesto/cambio_presupuesto/autorizarSolicitud';
+            var url = App.host + '/control_presupuesto/variacion_volumen/' + id + '/autorizar';
             $.ajax({
                 type: 'POST',
                 url: url,
                 data: {
-                    id: id,
                     id_tipo_orden: self.form.solicitud.id_tipo_orden,
                     afectaciones : self.form.afectaciones
                 },
@@ -112,6 +123,7 @@ Vue.component('variacion-volumen-show', {
                 }
             });
         },
+
         rechazar_solicitud: function (id,motivo) {
             var self = this;
             var url = App.host + '/control_presupuesto/cambio_presupuesto/rechazarSolicitud';
@@ -170,6 +182,7 @@ Vue.component('variacion-volumen-show', {
                 }
             });
         },
+
         mostrar_detalle_presupuesto:function (idPresupuesto) {
             var self = this;
             var partida=self.partida_id;
@@ -196,6 +209,7 @@ Vue.component('variacion-volumen-show', {
                 }
             });
         },
+
         fillAfectaciones : function () {
             var self = this;
             self.form.afectaciones = [];
@@ -203,6 +217,7 @@ Vue.component('variacion-volumen-show', {
                 self.form.afectaciones.push(value.id);
             });
         },
+
         aplicada: function (id) {
             var res = false;
             this.solicitud.aplicaciones.forEach(function(value) {
@@ -212,6 +227,7 @@ Vue.component('variacion-volumen-show', {
             });
             return res;
         },
+
         validateForm: function(scope, funcion) {
             this.$validator.validateAll(scope).then(() => {
                 if(funcion == 'autorizar_solicitud') {
@@ -224,6 +240,6 @@ Vue.component('variacion-volumen-show', {
                          text: 'Por favor corrija los errores del formulario'
                      });
         });
-        }*/
+        }
     }
 });

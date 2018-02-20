@@ -48,7 +48,7 @@ Breadcrumbs::register('control_presupuesto.variacion_volumen.create', function (
 
 Breadcrumbs::register('control_presupuesto.variacion_volumen.show', function ($breadcrumb, $variacion_volumen) {
     $breadcrumb->parent('control_presupuesto.cambio_presupuesto.index');
-    $breadcrumb->push($variacion_volumen->id, route('control_presupuesto.variacion_volumen.show', $variacion_volumen));
+    $breadcrumb->push('#' . $variacion_volumen->id, route('control_presupuesto.variacion_volumen.show', $variacion_volumen));
 });
 
 /**
@@ -61,5 +61,5 @@ Breadcrumbs::register('control_presupuesto.escalatoria.create', function ($bread
 
 Breadcrumbs::register('control_presupuesto.escalatoria.show', function ($breadcrumb, $escalatoria) {
     $breadcrumb->parent('control_presupuesto.cambio_presupuesto.index');
-    $breadcrumb->push($escalatoria->id, route('control_presupuesto.escaaltoria.show', $escalatoria));
+    $breadcrumb->push('#' . $escalatoria->numero_folio, route('control_presupuesto.escalatoria.show', $escalatoria));
 });

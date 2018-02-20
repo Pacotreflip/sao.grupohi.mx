@@ -71,6 +71,7 @@ require('./vue-components/ControlPresupuesto/cambio_presupuesto/show/variacion_i
  * Variacion de Volúmen Components
  */
 require('./vue-components/ControlPresupuesto/variacion_volumen/create');
+require('./vue-components/ControlPresupuesto/variacion_volumen/show');
 
 /**
  * Escalatoria Components
