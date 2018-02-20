@@ -27,24 +27,28 @@ class ControlPresupuestoFlujoOperativoSeeder extends Seeder
             'descripcion' => 'Escalatorias (Ajuste de Costos)',
             'id_tipo_cobrabilidad' => $cobrables->id,
             'estatus' => 1,
+            'name' => 'escalatoria',
             'id' => 1
         ]);
         \Ghi\Domain\Core\Models\ControlPresupuesto\TipoOrden::create([
             'descripcion' => 'Reclamos de Indirecto',
             'id_tipo_cobrabilidad' => $cobrables->id,
             'estatus' => 1,
+            'name' => 'reclamos_indirecto',
             'id' => 2
         ]);
         \Ghi\Domain\Core\Models\ControlPresupuesto\TipoOrden::create([
             'descripcion' => 'Conceptos Extraordinarios',
             'id_tipo_cobrabilidad' => $cobrables->id,
             'estatus' => 1,
+            'name' => 'conceptos_extraordinarios',
             'id' => 3
         ]);
         \Ghi\Domain\Core\Models\ControlPresupuesto\TipoOrden::create([
             'descripcion' => 'Variación de Volumen (Aditivas o Deductivas)',
             'id_tipo_cobrabilidad' => $cobrables->id,
             'estatus' => 1,
+            'name' => 'variacion_volumen',
             'id' => 4
         ]);
 
@@ -52,12 +56,14 @@ class ControlPresupuestoFlujoOperativoSeeder extends Seeder
             'descripcion' => 'Ordenes de Cambio no Cobrables',
             'id_tipo_cobrabilidad' => $NoCobrables->id,
             'estatus' => 1,
+            'name' => 'cambio_no_cobrables',
             'id' => 5
         ]);
         \Ghi\Domain\Core\Models\ControlPresupuesto\TipoOrden::create([
             'descripcion' => 'Ordenes de Cambio de Insumos',
             'id_tipo_cobrabilidad' => $NoCobrables->id,
             'estatus' => 1,
+            'name' => 'cambio_insumos',
             'id' => 6
         ]);
     }
