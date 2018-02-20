@@ -24,7 +24,7 @@
                         <span v-else><i class="fa fa-close"></i> Rechazar</span>
                     </a>
                     <a class="btn btn-sm btn-app btn-info pull-right" v-on:click="confirm_autorizar_solicitud"
-                       v-if="total_proforma_agrupados.diferencia>0&&solicitud.id_estatus==1">
+                       v-if="solicitud.id_estatus==1">
                         <span v-if="autorizando"><i class="fa fa-spinner fa-spin"></i> Autorizando</span>
                         <span v-else><i class="fa fa-check"></i> Autorizar</span>
                     </a>

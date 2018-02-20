@@ -20532,14 +20532,14 @@ Vue.component('variacion-insumos', {
         },
 
         recalcular: function recalcular(id_concepto, i, tipo) {
+
+            alert(id_concepto, i, tipo);
             var self = this;
             var cant_pres = $(".rendimiento" + id_concepto + '_' + i).val();
             var cant_concepto = self.form.partidas[0].cobrable.cantidad_presupuestada;
-            console.log(".rendimiento" + id_concepto + '_' + i);
             switch (tipo) {
                 case 1:
                     ///agregar a materiales
-
                     self.form.partidas[0].conceptos.MATERIALES.insumos[i].rendimiento_nuevo = cant_pres;
                     var total = cant_concepto * self.form.partidas[0].conceptos.MATERIALES.insumos[i].rendimiento_nuevo;
                     $("#r_p_" + id_concepto + '_' + i).val(total);

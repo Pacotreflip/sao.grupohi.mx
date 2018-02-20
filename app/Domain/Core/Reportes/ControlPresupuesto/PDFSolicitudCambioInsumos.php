@@ -135,12 +135,22 @@ class PDFSolicitudCambioInsumos extends Rotation
             $this->SetAligns(array('L', 'L', 'L', 'L', 'R', 'R', 'R', 'R', 'R', 'R', 'R', 'R', 'R'));
             $this->SetWidths(array(0.02 * $this->WidthTotal, 0.04 * $this->WidthTotal, 0.34 * $this->WidthTotal, 0.06 * $this->WidthTotal, 0.06 * $this->WidthTotal, 0.06 * $this->WidthTotal, 0.06 * $this->WidthTotal, 0.06 * $this->WidthTotal, 0.06 * $this->WidthTotal, 0.06 * $this->WidthTotal, 0.06 * $this->WidthTotal, 0.06 * $this->WidthTotal, 0.06 * $this->WidthTotal));
         } else if ($this->encola == 'motivo') {
+
             $this->SetWidths(array($this->WidthTotal));
             $this->SetFills(array('180,180,180'));
             $this->SetTextColors(array('0,0,0'));
             $this->SetHeights(array(0.3));
             $this->SetFont('Arial', '', 6);
             $this->SetAligns(array('C'));
+
+
+        }else if($this->encola=='resumen'){
+            $this->SetFills(array('255,255,255', '255,255,255'));
+            $this->SetTextColors(array('0,0,0', '0,0,0'));
+            $this->SetHeights(array(0.38));
+            $this->SetAligns(array('L', 'R'));
+            $this->SetWidths(array(0.2 * $this->WidthTotal, 0.2 * $this->WidthTotal));
+            $this->SetX(17.52);
 
         }
     }
@@ -259,16 +269,16 @@ class PDFSolicitudCambioInsumos extends Rotation
             $this->Row(array('#', 'No. Tarjeta', utf8_decode("Descripción"), utf8_decode("Unidad"), utf8_decode("Precio Unitario"), utf8_decode("Variación Precio Unitario"), "Precio Unitario Actualizado", utf8_decode("Cantidad Original"), utf8_decode("Variacion de Cantidad"), utf8_decode("Cantidad Actualizada"), utf8_decode("Importe Original"), utf8_decode("Variación de Importe"), utf8_decode("Importe Actualizado")));
 
             $contador = 1;
+            $conceptos_agrupados = $this->agrupacion->with('concepto')->where([['id_solicitud_cambio', '=', $this->solicitud->id]])->all();
+            $conceptos_agrupados = $this->partidas->getTotalesClasificacionInsumos($conceptos_agrupados->toArray());
+
+            $this->resumen = $conceptos_agrupados;
+            $partidas = $this->partidas->getClasificacionInsumos(['id_solicitud_cambio' => $this->solicitud->id, 'id_concepto' => $conceptos['id_concepto']]);
 
 
             if ($this->solicitud->id_estatus == 2) { //historico
 
                 //  $clasificacion = $this->partidas->getClasificacionInsumos($solicitud->id);
-                $conceptos_agrupados = $this->agrupacion->with('concepto')->where([['id_solicitud_cambio', '=', $this->solicitud->id]])->all();
-                $conceptos_agrupados = $this->partidas->getTotalesClasificacionInsumos($conceptos_agrupados->toArray());
-
-                $this->resumen = $conceptos_agrupados;
-                $partidas = $this->partidas->getClasificacionInsumos(['id_solicitud_cambio' => $this->solicitud->id, 'id_concepto' => $conceptos['id_concepto']]);
 
 
                 foreach ($partidas as $partida) {
@@ -294,33 +304,10 @@ class PDFSolicitudCambioInsumos extends Rotation
 
                 }
             } else {
-                $conceptos_agrupados = $this->agrupacion->with('concepto')->where([['id_solicitud_cambio', '=', $this->solicitud->id]])->all();
-                $conceptos_agrupados = $this->partidas->getTotalesClasificacionInsumos($conceptos_agrupados->toArray());
-
-                $this->resumen = $conceptos_agrupados;
 
                 $partidas = $this->partidas->getClasificacionInsumos(['id_solicitud_cambio' => $this->solicitud->id, 'id_concepto' => $conceptos['id_concepto']]);
                 foreach ($partidas as $partida) {
                     foreach ($partida['items'] as $item) {
-                        $importe_actual = 0;
-                        if($item->id_concepto == null){
-                            $importe_actual = $item->precio_unitario_nuevo * $item->cantidad_presupuestada_nueva;
-                        }else{
-                            if($item->precio_unitario_nuevo == null){
-                                $importe_actual = $item->precio_unitario_original * $item->cantidad_presupuestada_nueva;
-                            }
-                            if($item->cantidad_presupuestada_nueva == null){
-                                $importe_actual = $item->precio_unitario_nuevo * $item->cantidad_presupuestada;
-                            }
-                            if($item->cantidad_presupuestada_nueva != null && $item->precio_unitario_nuevo != null){
-                                $importe_actual = $item->precio_unitario_nuevo * $item->cantidad_presupuestada_nueva;
-                            }
-
-
-                        }
-
-                        //dd($item);
-
                         $data_info = [
                             'num_tarjeta' => $numero_tarjeta,
                             'descripcion' => $item->material->descripcion,
@@ -331,9 +318,9 @@ class PDFSolicitudCambioInsumos extends Rotation
                             'cantidad_original' => $item->cantidad_presupuestada,
                             'variacion_cantidad' => $item->cantidad_presupuestada_nueva == null ? 0 : $item->cantidad_presupuestada_nueva - $item->cantidad_presupuestada,
                             'cantidad_nueva' => $item->cantidad_presupuestada_nueva == null ? 0 : $item->cantidad_presupuestada_nueva,
-                            'importe_original' => $item->precio_unitario_original * $item->cantidad_presupuestada,
-                            'variacion_importe' => $importe_actual - ($item->precio_unitario_original * $item->cantidad_presupuestada),
-                            'importe_actualizado' =>$importe_actual
+                            'importe_original' => $item->precio_unitario_original,
+                            'variacion_importe' => $item->precio_unitario_nuevo == 0 || $item->precio_unitario_nuevo == null ? 0 : $item->precio_unitario_nuevo - $item->precio_unitario_original,
+                            'importe_actualizado' => $item->precio_unitario_nuevo
 
                         ];
                         array_push($array_data, $data_info);
@@ -398,7 +385,7 @@ class PDFSolicitudCambioInsumos extends Rotation
     }
 
     function resumen()
-    {
+    {  $this->encola = "resumen";
         $this->SetX(17.52);
         $this->SetFont('Arial', '', 6);
         $this->SetStyles(array('DF', 'DF'));
@@ -409,7 +396,7 @@ class PDFSolicitudCambioInsumos extends Rotation
         $this->SetWidths(array(0.2 * $this->WidthTotal, 0.2 * $this->WidthTotal));
         $this->Row(array('Detalle', 'Cantidad'));
 
-
+//his->resumen);
         $this->SetFills(array('255,255,255', '255,255,255'));
         $this->SetTextColors(array('0,0,0', '0,0,0'));
         $this->SetHeights(array(0.38));
@@ -434,17 +421,17 @@ class PDFSolicitudCambioInsumos extends Rotation
     }
 
 
-        function logo() {
+    function logo() {
 
-            $data = $this->obra->logotipo;
-            $data = pack('H*', $data);
-            $file = public_path('img/logo_temp.png');
-            if (file_put_contents($file, $data) !== false) {
-                list($width, $height) = $this->resizeToFit($file);
-                $this->image($file, ($this->GetPageWidth() / 4) - ($width/2), 1, $width, $height);
-                unlink($file);;
-            }
+        $data = $this->obra->logotipo;
+        $data = pack('H*', $data);
+        $file = public_path('img/logo_temp.png');
+        if (file_put_contents($file, $data) !== false) {
+            list($width, $height) = $this->resizeToFit($file);
+            $this->image($file, ($this->GetPageWidth() / 4) - ($width/2), 1, $width, $height);
+            unlink($file);;
         }
+    }
 
 
     function pixelsToCM($val)
