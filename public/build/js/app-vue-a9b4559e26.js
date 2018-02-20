@@ -22194,7 +22194,7 @@ Vue.component('variacion-volumen-show', {
                 }
             }).then(function (result) {
                 if (result.value) {
-                    self.rechazar(id, result.value);
+                    self.rechazar_solicitud(id, result.value);
                 } else {
                     $('.rechazar_solicitud').removeClass('disabled');
                 }
