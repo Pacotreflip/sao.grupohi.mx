@@ -3,8 +3,8 @@ Vue.component('cambio-presupuesto-index', {
         return {
             data: '',
             form: {
-                id_tipo_cobrabilidad: 0,
-                id_tipo_orden: 0
+                id_tipo_cobrabilidad: '',
+                id_tipo_orden: ''
             },
             tipos_cobrabilidad: [],
             tipos_orden: []
@@ -151,23 +151,7 @@ Vue.component('cambio-presupuesto-index', {
         openSelectModal: function () {
             $('#select_modal').modal('show');
         },
-        confirmCrear: function () {
-            var self = this;
-            swal({
-                title: 'Crear Solicitud de Cambio',
-                text: "¿Está seguro de que la información es correcta?",
-                type: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                confirmButtonText: 'Si, Crear',
-                cancelButtonText: 'No, Cancelar'
-            }).then(function(result) {
-                if(result.value) {
-                    self.crearSolicitud();
-                }
-            });
-        },
+
         crearSolicitud: function () {
             var self = this,
                 tipo_seleccionado = self.findTipoOrden(self.form.id_tipo_orden);

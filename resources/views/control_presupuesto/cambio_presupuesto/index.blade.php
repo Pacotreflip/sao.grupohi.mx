@@ -99,7 +99,7 @@
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-success"
-                                        v-on:click="confirmCrear()" :disabled="!form.id_tipo_orden">Crear</button>
+                                        v-on:click="crearSolicitud()" :disabled="!form.id_tipo_orden">Crear</button>
                                 <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
                             </div>
                         </div>
