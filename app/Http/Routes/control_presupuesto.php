@@ -41,6 +41,20 @@ Route::group(['prefix' => 'control_presupuesto'], function () {
     });
 
     /**
+     * Escalatoria Routes
+     */
+    Route::group(['prefix' => 'escalatoria'], function () {
+        Route::get('/create', 'EscalatoriaController@create')->name('control_presupuesto.escalatoria.create');
+        Route::get('/{escalatoria}', 'EscalatoriaController@show')->name('control_presupuesto.escalatoria.show');
+        Route::post('/', 'EscalatoriaController@store');
+        Route::post('/{escalatoria}/autorizar', 'EscalatoriaController@autorizar');
+        Route::post('/{escalatoria}/rechazar', 'EscalatoriaController@rechazar');
+        Route::post('/{escalatoria}/aplicar', 'EscalatoriaController@aplicar');
+        Route::get('/{escalatoria}/pdf', 'EscalatoriaController@pdf');
+        Route::post('/{escalatoria}/paginate', 'EscalatoriaController@paginate');
+    });
+
+    /**
      * Tipos de Cobrabilidad Routes
      */
     Route::get('tipo_cobrabilidad', 'TipoCobrabilidadController@index');
