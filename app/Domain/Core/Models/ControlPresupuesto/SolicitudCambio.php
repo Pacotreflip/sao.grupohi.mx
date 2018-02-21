@@ -80,8 +80,12 @@ class SolicitudCambio extends BaseModel
     }
 
 
-    public function concepto(){
-        return $this->hasManyThrough(Concepto::class,SolicitudCambioPartida::class, 'id_concepto', 'id_concepto', 'id');
+    public function conceptos(){
+        return $this->hasManyThrough(Concepto::class,SolicitudCambioPartida::class, 'id_solicitud_cambio', 'id_concepto', 'id_concepto');
+    }
+
+    public function conceptosTest() {
+        return $this->belongsToMany(Concepto::class, 'ControlPresupuesto.solicitud_cambio_partidas', 'id_solicitud_cambio', 'id_concepto');
     }
     public function aplicaciones() {
         return $this->belongsToMany(BasePresupuesto::class, 'ControlPresupuesto.solicitud_cambio_aplicacion', 'id_solicitud_cambio', 'id_base_presupuesto')->withPivot(['aplicada', 'created_at', 'updated_at']);
