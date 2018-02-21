@@ -15,16 +15,18 @@
         <section>
             <div class="row">
                 <div class="col-md-12">
-                    <a class="btn btn-app btn-danger pull-right rechazar_solicitud" v-on:click="confirm_rechazar_solicitud"
+                    <button :disabled="cargando" class="btn btn-app btn-danger pull-right rechazar_solicitud"
+                       v-on:click="confirm_rechazar_solicitud"
                        v-if="solicitud.id_estatus==1">
                         <span v-if="rechazando"><i class="fa fa-spinner fa-spin"></i> Rechazando</span>
                         <span v-else><i class="fa fa-close"></i> Rechazar</span>
-                    </a>
-                    <a class="btn btn-sm btn-app btn-info pull-right autorizar_solicitud" v-on:click="confirm_autorizar_solicitud"
+                    </button>
+                    <button :disabled="cargando" class="btn btn-sm btn-app btn-info pull-right autorizar_solicitud"
+                       v-on:click="confirm_autorizar_solicitud"
                        v-if="solicitud.id_estatus==1">
                         <span v-if="autorizando"><i class="fa fa-spinner fa-spin"></i> Autorizando</span>
                         <span v-else><i class="fa fa-check"></i> Autorizar</span>
-                    </a>
+                    </button>
                 </div>
 
                 <div class="col-md-3">

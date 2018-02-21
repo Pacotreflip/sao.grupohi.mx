@@ -41,8 +41,6 @@ Vue.component('escalatoria-show', {
             var self = this;
             var id = self.form.solicitud.id;
 
-            $('.autorizar_solicitud').addClass('disabled');
-
             swal({
                 title: "Autorizar la Solicitud de Cambio",
                 html: "¿Estás seguro que desea actualizar la solicitud?",
@@ -56,7 +54,7 @@ Vue.component('escalatoria-show', {
                 }
 
                 else {
-                    $('.autorizar_solicitud').removeClass('disabled');
+                    self.cargando = false;
                 }
             });
 
@@ -64,8 +62,6 @@ Vue.component('escalatoria-show', {
         confirm_rechazar_solicitud: function () {
             var self = this;
             var id = self.form.solicitud.id;
-
-            $('.rechazar_solicitud').addClass('disabled');
 
             swal({
                 title: 'Rechazar Solicitud',
@@ -92,12 +88,9 @@ Vue.component('escalatoria-show', {
                 }
 
                 else {
-                    $('.rechazar_solicitud').removeClass('disabled');
+                    self.cargando = false;
                 }
             });
-
-
-
         },
         autorizar_solicitud: function (id) {
 
@@ -112,6 +105,7 @@ Vue.component('escalatoria-show', {
                 },
                 beforeSend: function () {
                     self.autorizando = true;
+                    self.cargando = true;
                 },
                 success: function (data, textStatus, xhr) {
                     swal({
@@ -126,7 +120,7 @@ Vue.component('escalatoria-show', {
                 },
                 complete: function () {
                     self.autorizando = false;
-                    $('.autorizar_solicitud').removeClass('disabled');
+                    self.cargando = false;
                 }
             });
         },
@@ -145,6 +139,7 @@ Vue.component('escalatoria-show', {
                 },
                 beforeSend: function () {
                     self.rechazando = true;
+                    self.cargando = true;
                 },
                 success: function (data, textStatus, xhr) {
 
@@ -160,7 +155,7 @@ Vue.component('escalatoria-show', {
                 },
                 complete: function () {
                     self.rechazando = false;
-                    $('.rechazar_solicitud').removeClass('disabled');
+                    self.cargando = false;
                 }
             });
         },
@@ -181,6 +176,7 @@ Vue.component('escalatoria-show', {
                 url: url,
                 beforeSend: function () {
                     self.consultando = true;
+                    self.cargando = true;
                 },
                 success: function (data, textStatus, xhr) {
                     self.partidas=data.data;
@@ -188,7 +184,7 @@ Vue.component('escalatoria-show', {
                 },
                 complete: function () {
                     self.consultando = false;
-
+                    self.cargando = false;
                 }
             });
         },
@@ -208,6 +204,7 @@ Vue.component('escalatoria-show', {
                 url: url,
                 beforeSend: function () {
                     self.consultando = true;
+                    self.cargando = true;
                 },
                 success: function (data, textStatus, xhr) {
                     self.partidas=data.data;
@@ -215,7 +212,7 @@ Vue.component('escalatoria-show', {
                 },
                 complete: function () {
                     self.consultando = false;
-
+                    self.cargando = false;
                 }
             });
 

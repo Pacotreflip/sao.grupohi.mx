@@ -20,14 +20,16 @@
                         <span v-else><i class="fa fa-close"></i> Rechazar</span>
                     </button>
                     <button :disabled="cargando" class="btn pull-right btn-sm btn-app btn-info autorizar_solicitud" data-toggle="modal" data-target="#select_presupuestos_modal"  @click="fillAfectaciones(); validation_errors.clear('form_autorizar_solicitud')">
-                        <span v-if="autorizando"><i class="fa fa-spinner fa-spin"></i> Autorizando</span>
-                        <span v-else><i class="fa fa-check"></i> Autorizar</span>
+                        <span v-if="autorizando"><i class="fa fa-spinner fa-spin"></i> @{{ (!solicitud
+                                        .aplicada && solicitud.estatus.clave_estado == 2 ? 'Aplicando' : 'Autorizando')
+                            }}</span>
+                        <span v-else><i class="fa fa-check"></i> @{{ (!solicitud
+                                        .aplicada && solicitud.estatus.clave_estado == 2 ? 'Aplicar' : 'Autorizar')
+                            }}</span>
                     </button>
-
                 </div>
             </div>
             <div class="row">
-
                 <div class="col-md-3">
                     <div class="box box-solid">
                         <div class="box-header with-border">
@@ -192,7 +194,7 @@
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                             <h4 class="modal-title" id="myModalLabel">Seleccione los presupuestos que desea afectar con ésta solicitud<br><small>(Por defecto se marcan los presupuestos seleccionados al crear la solicitud)</small></h4>
                         </div>
-                        <form id="form_autorizar_solicitud" @submit.prevent="validateForm('form_autorizar_solicitud', 'autorizar_solicitud')"  data-vv-scope="form_autorizar_solicitud">
+                        <form id="form_autorizar_solicitud" @submit.prevent="validateForm('form_autorizar_solicitud', (solicitud.aplicada ? 'autorizar_solicitud' : 'aplicar_solicitud'))"  data-vv-scope="form_autorizar_solicitud">
                             <div class="modal-body">
                                 <div class="row">
                                     <div class="form-group col-md-4" :class="{'has-error': validation_errors.has('form_autorizar_solicitud.Presupuesto')}" v-for="presupuesto in presupuestos">
@@ -215,8 +217,10 @@
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
                                 <button type="submit" :disabled="cargando" class="btn btn-primary">
-                                    <span v-if="autorizando"><i class="fa fa-spinner fa-spin"></i> Autorizando</span>
-                                    <span v-else><i class="fa fa-check"></i> Autorizar</span>
+                                    <span v-if="autorizando"><i class="fa fa-spinner fa-spin"></i> @{{ (solicitud
+                                        .aplicada ? 'Autorizando' : 'Aplicando') }}</span>
+                                    <span v-else><i class="fa fa-check"></i> @{{ (solicitud.aplicada ? 'Autorizar' :
+                                        'Aplicar') }}</span>
                                 </button>
                             </div>
                         </form>

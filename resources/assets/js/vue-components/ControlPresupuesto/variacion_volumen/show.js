@@ -53,6 +53,23 @@ Vue.component('variacion-volumen-show', {
                 }
             });
         },
+        confirm_aplicar_solicitud: function () {
+            var self = this;
+            var id = self.form.solicitud.id;
+
+            swal({
+                title: "Aplicar cambios a la Solicitud de Cambio",
+                html: "¿Estás seguro que desea actualizar la solicitud?",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonText: "Si, Continuar",
+                cancelButtonText: "No, Cancelar"
+            }).then(function (result) {
+                if (result.value) {
+                    self.aplicar(id);
+                }
+            });
+        },
         confirm_rechazar_solicitud: function () {
             var self = this;
             var id = self.form.solicitud.id;
@@ -115,6 +132,37 @@ Vue.component('variacion-volumen-show', {
                     self.cargando = false;
                     self.autorizando = false;
                     $('.autorizar_solicitud').removeClass('disabled');
+                }
+            });
+        },
+        aplicar: function (id) {
+            var self = this;
+            var url = App.host + '/control_presupuesto/variacion_volumen/' + id + '/aplicar';
+            $.ajax({
+                type: 'POST',
+                url: url,
+                data: {
+                    id_tipo_orden: self.form.solicitud.id_tipo_orden,
+                    afectaciones : self.form.afectaciones
+                },
+                beforeSend: function () {
+                    self.cargando = true;
+                    self.autorizando = true;
+                },
+                success: function (data, textStatus, xhr) {
+                    swal({
+                        type: "success",
+                        title: '¡Correcto!',
+                        text: 'Solicitud aplicada correctamente.',
+                        confirmButtonText: "Ok",
+                        closeOnConfirm: false
+                    }).then(function () {
+                        window.location.reload(true);
+                    });
+                },
+                complete: function () {
+                    self.cargando = false;
+                    self.autorizando = false;
                 }
             });
         },
@@ -225,9 +273,14 @@ Vue.component('variacion-volumen-show', {
         },
         validateForm: function(scope, funcion) {
             this.$validator.validateAll(scope).then(() => {
-                if(funcion == 'autorizar_solicitud') {
-                this.confirm_autorizar_solicitud();
-            }
+                switch(funcion) {
+                case 'autorizar_solicitud':
+                    this.confirm_autorizar_solicitud();
+                    break;
+                case 'aplicar_solicitud':
+                    this.confirm_aplicar_solicitud();
+                    break;
+                }
         }).catch(() => {
                 swal({
                          type: 'warning',
