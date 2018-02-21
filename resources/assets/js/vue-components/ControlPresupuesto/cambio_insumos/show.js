@@ -97,7 +97,7 @@ Vue.component('cambio-insumos-show', {
         autorizar_solicitud: function (id) {
 
             var self = this;
-            var url = App.host + '/control_presupuesto/cambio_presupuesto/autorizarSolicitud';
+            var url = App.host + '/control_presupuesto/cambio_insumos/'+id+'/autorizar';
             $.ajax({
                 type: 'POST',
                 url: url,
@@ -133,7 +133,7 @@ Vue.component('cambio-insumos-show', {
         rechazar_solicitud: function (id,motivo) {
 
             var self = this;
-            var url = App.host + '/control_presupuesto/cambio_presupuesto/rechazarSolicitud';
+            var url = App.host + '/control_presupuesto/cambio_insumos/'+id+'/rechazar';
             $.ajax({
                 type: 'POST',
                 url: url,

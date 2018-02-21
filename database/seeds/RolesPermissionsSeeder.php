@@ -134,6 +134,13 @@ class RolesPermissionsSeeder extends Seeder
         $consultar_escalatoria = Permission::firstOrCreate(['name' => 'consultar_escalatoria', 'display_name' =>
             'Consultar Escalatoria', 'description' => 'Consultar Escalatoria']);
 
+        //Control Presupuesto cambio de insumos
+        $registrar_cambio_insumos = Permission::firstOrCreate(['name' => 'registrar_cambio_insumos', 'display_name' => 'Registrar Cambio de Insumos', 'description' => 'Registrar Cambio de Insumos']);
+        $autorizar_cambio_insumos = Permission::firstOrCreate(['name' => 'autorizar_cambio_insumos', 'display_name' => 'Autorizar Cambio de Insumos', 'description' => 'Autorizar Cambio de Insumos']);
+        $rechazar_cambio_insumos= Permission::firstOrCreate(['name' => 'rechazar_cambio_insumos', 'display_name' => 'Rechazar Cambio de Insumos', 'description' => 'Rechazar Cambio de Insumos']);
+        $consultar_cambio_insumos = Permission::firstOrCreate(['name' => 'consultar_cambio_insumos', 'display_name' => 'Consultar Cambio de Insumos', 'description' => 'Consultar Cambio de Insumos']);
+
+
         /**
          * Roles
          */

@@ -10,6 +10,7 @@ use Ghi\Domain\Core\Contracts\ControlPresupuesto\CambioInsumosRepository;
 use Ghi\Domain\Core\Contracts\ControlPresupuesto\PartidasInsumosAgrupadosRepository;
 use Ghi\Domain\Core\Contracts\ControlPresupuesto\PresupuestoRepository;
 use Ghi\Domain\Core\Contracts\ControlPresupuesto\SolicitudCambioPartidaRepository;
+use Ghi\Domain\Core\Contracts\ControlPresupuesto\SolicitudCambioRepository;
 use Ghi\Domain\Core\Models\ControlPresupuesto\CambioInsumos;
 use Ghi\Domain\Core\Models\ControlPresupuesto\Estatus;
 use Ghi\Domain\Core\Models\ControlPresupuesto\SolicitudCambio;
@@ -29,8 +30,9 @@ class CambioInsumosController extends Controller
     private $partidas;
     private $afectacion;
     private $agrupacion;
+    private $solicitud;
 
-    public function __construct(PresupuestoRepository $presupuesto, ConceptoRepository $concepto, BasePresupuestoRepository $basePresupuesto, CambioInsumosRepository $cambio_insumos, SolicitudCambioPartidaRepository $partidas, AfectacionOrdenPresupuestoRepository $afectacion,PartidasInsumosAgrupadosRepository $agrupacion)
+    public function __construct(PresupuestoRepository $presupuesto, ConceptoRepository $concepto, BasePresupuestoRepository $basePresupuesto, CambioInsumosRepository $cambio_insumos, SolicitudCambioPartidaRepository $partidas, AfectacionOrdenPresupuestoRepository $afectacion, PartidasInsumosAgrupadosRepository $agrupacion,SolicitudCambioRepository $solicitud)
     {
         parent::__construct();
 
@@ -51,6 +53,7 @@ class CambioInsumosController extends Controller
         $this->partidas = $partidas;
         $this->afectacion = $afectacion;
         $this->agrupacion = $agrupacion;
+        $this->solicitud = $solicitud;
     }
 
     public function index()
@@ -103,10 +106,9 @@ class CambioInsumosController extends Controller
 
     public function pdf(Request $request, $id)
     {
-        $cambio_insumos = $this->cambio_insumos->with(['aplicaciones', 'tipoOrden', 'userRegistro', 'estatus', 'partidas', 'partidas.concepto', 'partidas.numeroTarjeta'])->find($id);
-
-        $pdf = new PDFSolicitudCambioCambioInsumos($cambio_insumos, $this->partidas);
-
+        $solicitud = $this->solicitud->with(['aplicaciones', 'tipoOrden', 'userRegistro', 'estatus', 'partidas', 'partidas.concepto',
+            'partidas.numeroTarjeta', 'partidas.historico'])->find($id);
+        $pdf = new PDFSolicitudCambioInsumos($solicitud, $this->partidas, $this->agrupacion);
         if (is_object($pdf))
             $pdf->create();
     }
@@ -119,27 +121,28 @@ class CambioInsumosController extends Controller
         $conceptos_agrupados = $this->agrupacion->with('concepto')->where([['id_solicitud_cambio', '=', $solicitud->id]])->all();
         $conceptos_agrupados = $this->partidas->getTotalesClasificacionInsumos($conceptos_agrupados->toArray());
         $solicitud = SolicitudCambio::with(['tipoOrden', 'userRegistro', 'estatus'])->find($id);
-        return view('control_presupuesto.cambio_presupuesto.show.variacion_insumos')
+        return view('control_presupuesto.cambio_insumos.show')
             ->with('solicitud', $solicitud)
             ->with('cobrabilidad', $solicitud->tipoOrden->cobrabilidad)
             ->with('presupuestos', $presupuestos)
             ->with('conceptos_agrupados', $conceptos_agrupados);
+
     }
 
     public function autorizar(Request $request)
     {
-        $cambio_insumos = $this->cambio_insumos->autorizar($request->id, $request->all());
 
-        return $this->response->item($cambio_insumos, function ($item) {
+        $solicitud = $this->cambio_insumos->autorizar($request->id, $request->all());
+        return $this->response->item($solicitud, function ($item) {
             return $item;
         });
+
     }
 
     public function rechazar(Request $request)
     {
-        $cambio_insumos = $this->cambio_insumos->rechazar($request->all());
-
-        return $this->response->item($cambio_insumos, function ($item) {
+        $solicitud = $this->cambio_insumos->rechazar($request->all());
+        return $this->response->item($solicitud, function ($item) {
             return $item;
         });
     }
