@@ -461,10 +461,10 @@ class PDFVariacionVolumen extends Rotation {
         $firmaX2 = ($qrX / 1.50) - ($firmasWidth / 2);
 
         $this->SetX($firmaX1);
-        $this->Cell($firmasWidth, 0.4, utf8_decode('firma 1'), 'TRLB', 0, 'C', 1);
+        $this->Cell($firmasWidth, 0.4, utf8_decode('COORDINADOR DE CONTROL DE PROYECTOS'), 'TRLB', 0, 'C', 1);
 
         $this->SetX($firmaX2);
-        $this->Cell($firmasWidth, 0.4, utf8_decode('firma 2'), 'TRLB', 1, 'C', 1);
+        $this->Cell($firmasWidth, 0.4, utf8_decode('PERSONA QUE SOLICITA'), 'TRLB', 1, 'C', 1);
 
 
         $this->SetX($firmaX1);
@@ -474,10 +474,10 @@ class PDFVariacionVolumen extends Rotation {
         $this->Cell($firmasWidth, 1.2, '', 'TRLB', 1, 'C');
 
         $this->SetX($firmaX1);
-        $this->Cell($firmasWidth, 0.4, utf8_decode('nombre 1'), 'TRLB', 0, 'C', 1);
+        $this->Cell($firmasWidth, 0.4, utf8_decode(''), 'TRLB', 0, 'C', 1);
 
         $this->SetX($firmaX2);
-        $this->Cell($firmasWidth, 0.4, utf8_decode('nombre 2'), 'TRLB', 0, 'C', 1);
+        $this->Cell($firmasWidth, 0.4, utf8_decode($this->solicitud->userRegistro), 'TRLB', 0, 'C', 1);
     }
 
     function Footer() {
