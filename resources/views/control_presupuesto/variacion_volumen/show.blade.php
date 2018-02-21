@@ -213,7 +213,7 @@
                                 <label class="help text-red" v-show="validation_errors.has('form_autorizar_solicitud.Presupuesto')">Seleccione por lo menos un presupuesto por afectar.</label>
                             </div>
                             <div class="modal-footer">
-                                <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                                <button type="button" :disabled="cargando" class="btn btn-default" data-dismiss="modal">Cerrar</button>
                                 <button type="submit" :disabled="cargando" class="btn btn-primary">
                                     <span v-if="autorizando"><i class="fa fa-spinner fa-spin"></i> Autorizando</span>
                                     <span v-else><i class="fa fa-check"></i> Autorizar</span>

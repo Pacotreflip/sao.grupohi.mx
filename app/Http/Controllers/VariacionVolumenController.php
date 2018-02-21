@@ -10,8 +10,6 @@ use Ghi\Domain\Core\Contracts\ControlPresupuesto\PresupuestoRepository;
 use Ghi\Domain\Core\Contracts\ControlPresupuesto\VariacionVolumenRepository;
 use Ghi\Domain\Core\Contracts\ControlPresupuesto\SolicitudCambioPartidaRepository;
 use Ghi\Domain\Core\Models\ControlPresupuesto\Estatus;
-use Ghi\Domain\Core\Models\ControlPresupuesto\SolicitudCambio;
-use Ghi\Domain\Core\Models\ControlPresupuesto\TipoOrden;
 use Ghi\Domain\Core\Models\ControlPresupuesto\VariacionVolumen;
 use Ghi\Domain\Core\Reportes\ControlPresupuesto\PDFVariacionVolumen;
 use Illuminate\Http\Request;
@@ -94,11 +92,13 @@ class VariacionVolumenController extends Controller
         $repetidas = VariacionVolumen::whereHas('partidas', function ($query) use ($conceptos_ids) {
             $query->whereIn('id_concepto', $conceptos_ids);
         })
-            ->where('id_estatus', '=', Estatus::GENERADA)
-            ->orWhere(function ($query){
-                $query
-                    ->has('aplicacionesPendientes', '>', 0)
-                    ->where('id_estatus', '=', Estatus::AUTORIZADA);
+            ->where(function ($q) {
+                $q->where('id_estatus', '=', Estatus::GENERADA)
+                    ->orWhere(function ($query){
+                        $query
+                            ->has('aplicacionesPendientes', '>', 0)
+                            ->where('id_estatus', '=', Estatus::AUTORIZADA);
+                    });
             })
             ->get();
 
@@ -159,9 +159,10 @@ class VariacionVolumenController extends Controller
         return $this->response->collection($bases, function ($item) { return $item; });
     }
 
-    public function aplicar(Request $request, $id)
+    public function aplicar(Request $request,VariacionVolumen $variacionVolumen)
     {
-        $variacion_volumen = $this->variacionVolumen->find($id);
+        $variacion_volumen = $this->variacionVolumen->aplicar($variacionVolumen, $request->afectaciones);
 
+        return $this->response->item($variacion_volumen, function ($item) { return $item; });
     }
 }
