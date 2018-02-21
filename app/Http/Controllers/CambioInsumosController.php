@@ -39,6 +39,7 @@ class CambioInsumosController extends Controller
         $this->middleware('auth');
         $this->middleware('context');
 
+
         //Permisos
         //$this->middleware('permission:consultar_cambio_insumos', ['only' => ['index', 'paginate', 'pdf', 'show']]);
         //$this->middleware('permission:registrar_cambio_insumos', ['only' => ['create', 'store']]);

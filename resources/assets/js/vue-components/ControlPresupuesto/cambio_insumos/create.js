@@ -5,6 +5,7 @@ Vue.component('cambio-insumos-create', {
             form : {
                 partidas : [],
                 agrupadas: [],
+                insumos_eliminados: [],
                 motivo : '',
                 area_solicitante:'',
                 id_tipo_cobrabilidad : '',
@@ -439,6 +440,7 @@ Vue.component('cambio-insumos-create', {
                 $('#conceptos_modal').modal('hide');
             }
         },
+
         addInsumoTipo: function (tipo) {
             var self = this;
             self.tipo_insumo=tipo;
@@ -490,11 +492,12 @@ Vue.component('cambio-insumos-create', {
             });
 
             $('#add_insumo_modal').modal('show');
-        }
-        ,
+        },
+
         cancelar_add_insumo: function () {
             $('#add_insumo_modal').modal('hide');
         },
+
         agregar_insumo_nuevo: function () {
             var self = this;
             $.each(self.form.partidas, function( index, partida ) {
@@ -516,15 +519,22 @@ Vue.component('cambio-insumos-create', {
             });
 
             $('#add_insumo_modal').modal('hide');
-        }
-        ,
+        },
 
         removeRendimiento : function (id_concepto, id, tipo) {
             var self = this;
-            var valor = 0.0;
-            $("#c_p_"+ id_concepto+ '_' + id).val(valor).prop('disabled', true);
-            $("#m_p_"+ id_concepto+ '_' + id).prop('disabled', true);
-            switch (tipo){
+            var index = self.form.insumos_eliminados.indexOf(parseInt(id_concepto));
+            if(index > -1){
+                console.log('entro');
+                self.form.insumos_eliminados.splice(index, 1);
+                $("#c_p_"+ id_concepto+ '_' + id).prop('disabled', false);
+                $("#m_p_"+ id_concepto+ '_' + id).prop('disabled', false);
+            }else{
+                self.form.insumos_eliminados.push(id_concepto);
+                $("#c_p_"+ id_concepto+ '_' + id).prop('disabled', true);
+                $("#m_p_"+ id_concepto+ '_' + id).prop('disabled', true);
+            }
+            /*switch (tipo){
                 case 1: ///agregar a materiales
                     self.form.partidas[0].conceptos.MATERIALES.insumos[id].rendimiento_nuevo = valor;
                     break;
@@ -537,8 +547,11 @@ Vue.component('cambio-insumos-create', {
                 case 8: ///agregar a maquinaria
                     self.form.partidas[0].conceptos.MAQUINARIA.insumos[id].rendimiento_nuevo = valor;
                     break;
-            }
-            this.recalcular(id_concepto, id);
+            }            this.recalcular(id_concepto, id);*/
+        },
+
+        insumoEliminado : function (id_concepto) {
+            return this.form.insumos_eliminados.indexOf(parseInt(id_concepto)) ? true:false;
         },
 
         validateForm: function(scope, funcion) {
@@ -636,6 +649,7 @@ Vue.component('cambio-insumos-create', {
                     break;
             }
         },
+
         set_filtro : function() {
             var nivel = this.form.filtro.nivel;
             var result = this.filtros.filter(function( filtro ) {
@@ -676,7 +690,6 @@ Vue.component('cambio-insumos-create', {
                 Vue.delete(this.filtros, this.filtros.indexOf(filtro));
             }
         },
-
 
         obtenerPresupuestos: function () {
             var self = this;
