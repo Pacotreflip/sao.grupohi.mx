@@ -6,6 +6,7 @@ Vue.component('cambio-insumos-create', {
                 partidas : [],
                 agrupadas: [],
                 motivo : '',
+                area_solicitante:'',
                 id_tipo_cobrabilidad : '',
                 id_tipo_orden : '',
                 id_tarjeta : '',
@@ -23,7 +24,7 @@ Vue.component('cambio-insumos-create', {
             cargando : false,
             guardando : false,
             filtros : [],
-
+            id_tarjeta : '',
             tarjetas : [],
             bases_afectadas:[],
             niveles: [
@@ -42,11 +43,13 @@ Vue.component('cambio-insumos-create', {
             cargando_tarjetas : true
         }
     },
+
     computed : {
         datos : function () {
             var res = {
                 id_tipo_orden: this.id_tipo_orden,
                 motivo: this.form.motivo,
+                area_solicitante:this.form.area_solicitante,
                 agrupadas: this.form.agrupadas,
                 partidas: this.form.partidas
             };
@@ -55,40 +58,12 @@ Vue.component('cambio-insumos-create', {
     },
     watch : {
         id_tarjeta : function () {
-            var self = this;
-            if(self.form.partidas.length > 0){
-                swal({
-                    title: 'Cambiar Tarjeta',
-                    text: "Si Cambia de Tarjeta se Descartarán los Conceptos Seleccionados\n¿Desea Cambiar de Tarjeta?",
-                    type: 'warning',
-                    showCancelButton: true,
-                    confirmButtonColor: '#3085d6',
-                    cancelButtonColor: '#d33',
-                    confirmButtonText: 'Si, Cambiar',
-                    cancelButtonText: 'No, Cancelar'
-                }).then((value) =>  {
-                    if(value.value) {
-                    self.get_conceptos();
-                    self.form.partidas = [];
-                    self.form.agrupadas = [];
-                    self.tarjeta_actual = self.id_tarjeta;
-                }else{
-                    // setear valor anterior en el select2
-                }
-            });
-            }else {
-                self.get_conceptos();
-                self.form.partidas = [];
-                self.form.agrupadas = [];
-                self.tarjeta_actual = self.id_tarjeta;
-            }
+            this.get_conceptos();
+            this.form.partidas = []
         }
     },
 
     mounted: function () {
-        var self = this;
-
-
         var self = this;
 
         self.fetchTarjetas().then(() => {
@@ -189,117 +164,45 @@ Vue.component('cambio-insumos-create', {
             self.removeConcepto(id);
         });
 
-        $('#tarjetas_select').on('select2:select', function () {
-            self.get_conceptos();
-        });
 
-        $(document).on('click', '.btn_add_concepto', function () {
-            var id = $(this).attr('id');
-            self.addConcepto(id);
-        }).on('click', '.btn_remove_concepto', function() {
-            var id = $(this).attr('id');
-            self.removeConcepto(id);
-        });
-
-        $('#conceptos_table').DataTable({
-            "processing": true,
-            "serverSide": true,
-            "ordering" : true,
-            "searching" : false,
-            "ajax": {
-                "url": App.host + '/conceptos/getPathsConceptos',
-                "type" : "POST",
-                "beforeSend" : function () {
-                    self.cargando = true;
-                },
-                "data": function ( d ) {
-                    d.filtros = self.filtros;
-                    d.id_tarjeta = self.id_tarjeta
-                },
-                "complete" : function () {
-                    self.cargando = false;
-                },
-                "dataSrc" : function (json) {
-                    for (var i = 0; i < json.data.length; i++) {
-                        json.data[i].monto_presupuestado = '$' + parseInt(json.data[i].monto_presupuestado).formatMoney(2, ',', '.');
-                        json.data[i].cantidad_presupuestada = parseInt(json.data[i].cantidad_presupuestada).formatMoney(2, ',', '.');
-                        json.data[i].precio_unitario = '$' + parseInt(json.data[i].precio_unitario).formatMoney(2, ',', '.');
-                    }
-                    return json.data;
-                }
-            },
-            "columns" : [
-                {data : 'filtro1'},
-                {data : 'filtro2'},
-                {data : 'filtro3'},
-                {data : 'filtro4'},
-                {data : 'filtro5'},
-                {data : 'filtro6'},
-                {data : 'filtro7'},
-                {data : 'filtro8'},
-                {
-                    data : {},
-                    render : function (data) {
-                        return '<span title="'+data.filtro9+'">'+data.filtro9.substr(0, 55)+'</span>'
-                    }
-                },
-                {data : 'filtro10'},
-                {data : 'filtro11'},
-                {data : 'unidad'},
-                {data : 'cantidad_presupuestada', className : 'text-right'},
-                {data : 'precio_unitario', className : 'text-right'},
-                {data : 'monto_presupuestado', className : 'text-right'},
-                {
-                    data : {},
-                    render : function (data) {
-                        if (self.existe(data.id_concepto)) {
-                            return '<button class="btn btn-xs btn-default btn_remove_concepto"  id="'+data.id_concepto+'"><i class="fa fa-minus text-red"></i></button>';
-                        }
-                        return '<button class="btn btn-xs btn-default btn_add_concepto" id="'+data.id_concepto+'"><i class="fa fa-plus text-green"></i></button>';
-                    }
-                }
-            ],
-            language: {
-                "sProcessing": "Procesando...",
-                "sLengthMenu": "Mostrar _MENU_ registros",
-                "sZeroRecords": "No se encontraron resultados",
-                "sEmptyTable": "Ningún dato disponible en esta tabla",
-                "sInfo": "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
-                "sInfoEmpty": "Mostrando registros del 0 al 0 de un total de 0 registros",
-                "sInfoFiltered": "(filtrado de un total de _MAX_ registros)",
-                "sInfoPostFix": "",
-                "sSearch": "Buscar:",
-                "sUrl": "",
-                "sInfoThousands": ",",
-                "sLoadingRecords": "Cargando...",
-                "oPaginate": {
-                    "sFirst": "Primero",
-                    "sLast": "Último",
-                    "sNext": "Siguiente",
-                    "sPrevious": "Anterior"
-                },
-                "oAria": {
-                    "sSortAscending": ": Activar para ordenar la columna de manera ascendente",
-                    "sSortDescending": ": Activar para ordenar la columna de manera descendente"
-                }
-            }
-        });
     },
-
     methods : {
+
 
         fetchTarjetas : function () {
             var self = this;
+            return new Promise((resolve, reject) => {
+                    $.ajax({
+                    url : App.host + '/control_presupuesto/tarjeta/lists',
+                    type : 'GET',
+                    beforeSend : function () {
+                        self.cargando = true;
+                    },
+                    success : function (response) {
+                        self.tarjetas = response;
+                    },
+                    complete : function () {
+                        self.cargando = false;
+                        resolve();
+                    }
+                });
+        });
+        },
+
+        fetchPresupuestos: function () {
+            var self = this;
+
+            var url = App.host + '/control_presupuesto/variacion_volumen/getBasesAfectadas';
             $.ajax({
-                url : App.host + '/control_presupuesto/tarjeta/lists',
-                type : 'GET',
-                beforeSend : function () {
+                type: 'GET',
+                url: url,
+                beforeSend: function () {
                     self.cargando = true;
                 },
-                success : function (response) {
-                    self.tarjetas = response;
+                success: function (data, textStatus, xhr) {
+                    self.bases_afectadas = data;
                 },
-                complete : function () {
+                complete: function () {
                     self.cargando = false;
                 }
             });
@@ -469,7 +372,7 @@ Vue.component('cambio-insumos-create', {
         save : function () {
             var self = this;
             $.ajax({
-                url : App.host + '/control_presupuesto/cambio_presupuesto',
+                url : App.host + '/control_presupuesto/cambio_insumos',
                 type : 'POST',
                 data : self.datos,
                 beforeSend : function () {

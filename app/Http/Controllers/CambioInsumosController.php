@@ -68,7 +68,7 @@ class CambioInsumosController extends Controller
 
     public function create()
     {
-        $presupuestos = $this->afectacion->with('baseDatos')->getBy('id_tipo_orden','=', TipoOrden::ORDEN_DE_CAMBIO_DE_INSUMOS);
+        $presupuestos = $this->afectacion->with('baseDatos')->getBy('id_tipo_orden', '=', TipoOrden::ORDEN_DE_CAMBIO_DE_INSUMOS);
 
         return view('control_presupuesto.cambio_insumos.create')
             ->with('tipo_orden', TipoOrden::ORDEN_DE_CAMBIO_DE_INSUMOS)
@@ -89,11 +89,13 @@ class CambioInsumosController extends Controller
 
     public function store(Request $request)
     {
-        $cambio_insumos = $this->cambio_insumos->create($request->all());
+        $solicitud = $this->cambio_insumos->create($request->all());
 
-        return $this->response->item($cambio_insumos, function ($item) {
+        return $this->response->item($solicitud, function ($item) {
             return $item;
         });
+
+
     }
 
     public function pdf(Request $request, $id)
@@ -111,7 +113,7 @@ class CambioInsumosController extends Controller
         $cambio_insumos = CambioInsumos::with(['tipoOrden', 'userRegistro', 'estatus', 'partidas', 'partidas.concepto', 'partidas.numeroTarjeta', 'aplicaciones'])->find($id);
         $presupuestos = $this->afectacion->with('baseDatos')->getBy('id_tipo_orden', '=', $cambio_insumos->id_tipo_orden);
 
-        $aplicadaTitulo =' ('. (!$cambio_insumos->aplicada ? 'no ' : '') .'Aplicada)';
+        $aplicadaTitulo = ' (' . (!$cambio_insumos->aplicada ? 'no ' : '') . 'Aplicada)';
 
         return view('control_presupuesto.cambio_insumos.show')
             ->with('solicitud', $cambio_insumos)

@@ -22,6 +22,15 @@ class CreateTableControlPresupuestoSolicitudCambioPartidasHistorico extends Migr
             $table->float('monto_presupuestado_original');
             $table->float('monto_presupuestado_actualizado');
             $table->timestamps();
+            $table->float("precio_unitario_original")->nullable();
+            $table->float("precio_unitario_actualizado")->nullable();
+            $table->unsignedInteger('id_partidas_insumos_agrupados')->nullable();
+
+            $table->unsignedInteger("id_solicitud_cambio_partida")->nullable()->change();
+
+            $table->foreign('id_partidas_insumos_agrupados')
+                ->references('id')
+                ->on('ControlPresupuesto.partidas_insumos_agrupados');
 
             $table->foreign('id_solicitud_cambio_partida')
                 ->references('id')

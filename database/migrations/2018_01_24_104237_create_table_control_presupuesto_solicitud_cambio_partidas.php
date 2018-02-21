@@ -24,6 +24,18 @@ class CreateTableControlPresupuestoSolicitudCambioPartidas extends Migration
             $table->text('descripcion')->nullable();
             $table->float('monto_presupuestado')->nullable();
 
+            $table->unsignedInteger("id_material")->nullable();
+            $table->string("nivel")->nullable();
+            $table->float("precio_unitario_original")->nullable();
+            $table->float("precio_unitario_nuevo")->nullable();
+
+            $table->float("rendimiento_original")->nullable();
+            $table->float("rendimiento_nuevo")->nullable();
+
+            $table->foreign('id_material')
+                ->references('id_material')
+                ->on('dbo.materiales');
+
             $table->foreign('id_solicitud_cambio')
                 ->references('id')
                 ->on('ControlPresupuesto.solicitud_cambio');

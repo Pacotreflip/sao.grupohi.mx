@@ -758,6 +758,14 @@
                                             <label class="help"
                                                    v-show="validation_errors.has('form_save_solicitud.Motivo')">@{{ validation_errors.first('form_save_solicitud.Motivo') }}</label>
                                         </div>
+                                        <div class="form-group"
+                                             :class="{'has-error': validation_errors.has('form_save_solicitud.Area solicitante')}">
+                                            <label><b>Área Solicitante</b></label>
+                                            <textarea class="form-control" v-validate="'required'" :name="'Area solicitante'"
+                                                      v-model="form.area_solicitante"></textarea>
+                                            <label class="help"
+                                                   v-show="validation_errors.has('form_save_solicitud.Area solicitante')">@{{ validation_errors.first('form_save_solicitud.Area solicitante') }}</label>
+                                        </div>
                                     </div>
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
