@@ -48,7 +48,7 @@ Breadcrumbs::register('control_presupuesto.variacion_volumen.create', function (
 
 Breadcrumbs::register('control_presupuesto.variacion_volumen.show', function ($breadcrumb, $variacion_volumen) {
     $breadcrumb->parent('control_presupuesto.cambio_presupuesto.index');
-    $breadcrumb->push($variacion_volumen->id, route('control_presupuesto.variacion_volumen.show', $variacion_volumen));
+    $breadcrumb->push('#' . $variacion_volumen->id, route('control_presupuesto.variacion_volumen.show', $variacion_volumen));
 });
 
 /**
@@ -64,7 +64,7 @@ Breadcrumbs::register('control_presupuesto.escalatoria.create', function ($bread
  */
 Breadcrumbs::register('control_presupuesto.escalatoria.show', function ($breadcrumb, $escalatoria) {
     $breadcrumb->parent('control_presupuesto.cambio_presupuesto.index');
-    $breadcrumb->push($escalatoria->id, route('control_presupuesto.escalatoria.show', $escalatoria));
+    $breadcrumb->push('#' . $escalatoria->numero_folio, route('control_presupuesto.escalatoria.show', $escalatoria));
 });
 
 /**
@@ -80,5 +80,5 @@ Breadcrumbs::register('control_presupuesto.cambio_insumos.create', function ($br
  */
 Breadcrumbs::register('control_presupuesto.cambio_insumos.show', function ($breadcrumb, $cambio_insumos) {
     $breadcrumb->parent('control_presupuesto.cambio_presupuesto.index');
-    $breadcrumb->push($cambio_insumos->id, route('control_presupuesto.cambio_insumos.show', $cambio_insumos));
+    $breadcrumb->push('#' . $cambio_insumos->numero_folio, route('control_presupuesto.escalatoria.show', $cambio_insumos));
 });
