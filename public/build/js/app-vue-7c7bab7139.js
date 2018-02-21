@@ -13352,18 +13352,34 @@ require('./vue-components/ControlCostos/reclasificacion_costos/index');
 require('./vue-components/ControlPresupuesto/presupuesto/index');
 require('./vue-components/ControlPresupuesto/cambio_presupuesto/create');
 require('./vue-components/ControlPresupuesto/cambio_presupuesto/index');
-require('./vue-components/ControlPresupuesto/cambio_presupuesto/variacion_volumen');
-require('./vue-components/ControlPresupuesto/cambio_presupuesto/show/variacion_volumen');
-require('./vue-components/ControlPresupuesto/cambio_presupuesto/show/escalatoria');
-require('./vue-components/ControlPresupuesto/cambio_presupuesto/escalatoria');
+
 require('./vue-components/ControlPresupuesto/cambio_presupuesto/variacion_insumos');
 require('./vue-components/ControlPresupuesto/cambio_presupuesto/show/variacion_insumos');
+
+/**
+ * Variacion de Volúmen Components
+ */
+require('./vue-components/ControlPresupuesto/variacion_volumen/create');
+require('./vue-components/ControlPresupuesto/variacion_volumen/show');
+
+/**
+ * Escalatoria Components
+ */
+require('./vue-components/ControlPresupuesto/escalatoria/show');
+require('./vue-components/ControlPresupuesto/escalatoria/create');
+
+/**
+ * Cambio Insumos Components
+ */
+require('./vue-components/ControlPresupuesto/cambio_insumos/show');
+require('./vue-components/ControlPresupuesto/cambio_insumos/create');
+
 /**
  * Configuración Components
  */
 require('./vue-components/Configuracion/seguridad/index');
 
-},{"./vue-components/Compras/material/index":6,"./vue-components/Compras/requisicion/create":8,"./vue-components/Compras/requisicion/edit":9,"./vue-components/Configuracion/seguridad/index":10,"./vue-components/Contabilidad/cierre/index":11,"./vue-components/Contabilidad/cuenta_almacen/index":12,"./vue-components/Contabilidad/cuenta_bancos/cuenta-bancaria-edit":13,"./vue-components/Contabilidad/cuenta_concepto/index":14,"./vue-components/Contabilidad/cuenta_contable/index":15,"./vue-components/Contabilidad/cuenta_costo/index":16,"./vue-components/Contabilidad/cuenta_empresa/cuenta-empresa-edit":17,"./vue-components/Contabilidad/cuenta_fondo/index":18,"./vue-components/Contabilidad/cuenta_material/index":19,"./vue-components/Contabilidad/datos_contables/edit":20,"./vue-components/Contabilidad/emails":21,"./vue-components/Contabilidad/modulos/revaluacion/create":22,"./vue-components/Contabilidad/poliza_generada/edit":23,"./vue-components/Contabilidad/poliza_generada/index":24,"./vue-components/Contabilidad/poliza_tipo/poliza-tipo-create":25,"./vue-components/Contabilidad/tipo_cuenta_contable/tipo-cuenta-contable-create":26,"./vue-components/Contabilidad/tipo_cuenta_contable/tipo-cuenta-contable-update":27,"./vue-components/ControlCostos/reclasificacion_costos/index":28,"./vue-components/ControlCostos/solicitar_reclasificacion/index":29,"./vue-components/ControlCostos/solicitar_reclasificacion/items":30,"./vue-components/ControlPresupuesto/cambio_presupuesto/create":31,"./vue-components/ControlPresupuesto/cambio_presupuesto/escalatoria":32,"./vue-components/ControlPresupuesto/cambio_presupuesto/index":33,"./vue-components/ControlPresupuesto/cambio_presupuesto/show/escalatoria":34,"./vue-components/ControlPresupuesto/cambio_presupuesto/show/variacion_insumos":35,"./vue-components/ControlPresupuesto/cambio_presupuesto/show/variacion_volumen":36,"./vue-components/ControlPresupuesto/cambio_presupuesto/variacion_insumos":37,"./vue-components/ControlPresupuesto/cambio_presupuesto/variacion_volumen":38,"./vue-components/ControlPresupuesto/presupuesto/index":39,"./vue-components/Finanzas/comprobante_fondo_fijo/create":40,"./vue-components/Finanzas/comprobante_fondo_fijo/edit":41,"./vue-components/Finanzas/comprobante_fondo_fijo/index":42,"./vue-components/Reportes/subcontratos-estimacion":43,"./vue-components/Tesoreria/movimientos_bancarios/index":44,"./vue-components/Tesoreria/traspaso_cuentas/index":45,"./vue-components/errors":46,"./vue-components/global-errors":47,"./vue-components/kardex_material/kardex-material-index":48,"./vue-components/select2":49}],6:[function(require,module,exports){
+},{"./vue-components/Compras/material/index":6,"./vue-components/Compras/requisicion/create":8,"./vue-components/Compras/requisicion/edit":9,"./vue-components/Configuracion/seguridad/index":10,"./vue-components/Contabilidad/cierre/index":11,"./vue-components/Contabilidad/cuenta_almacen/index":12,"./vue-components/Contabilidad/cuenta_bancos/cuenta-bancaria-edit":13,"./vue-components/Contabilidad/cuenta_concepto/index":14,"./vue-components/Contabilidad/cuenta_contable/index":15,"./vue-components/Contabilidad/cuenta_costo/index":16,"./vue-components/Contabilidad/cuenta_empresa/cuenta-empresa-edit":17,"./vue-components/Contabilidad/cuenta_fondo/index":18,"./vue-components/Contabilidad/cuenta_material/index":19,"./vue-components/Contabilidad/datos_contables/edit":20,"./vue-components/Contabilidad/emails":21,"./vue-components/Contabilidad/modulos/revaluacion/create":22,"./vue-components/Contabilidad/poliza_generada/edit":23,"./vue-components/Contabilidad/poliza_generada/index":24,"./vue-components/Contabilidad/poliza_tipo/poliza-tipo-create":25,"./vue-components/Contabilidad/tipo_cuenta_contable/tipo-cuenta-contable-create":26,"./vue-components/Contabilidad/tipo_cuenta_contable/tipo-cuenta-contable-update":27,"./vue-components/ControlCostos/reclasificacion_costos/index":28,"./vue-components/ControlCostos/solicitar_reclasificacion/index":29,"./vue-components/ControlCostos/solicitar_reclasificacion/items":30,"./vue-components/ControlPresupuesto/cambio_insumos/create":31,"./vue-components/ControlPresupuesto/cambio_insumos/show":32,"./vue-components/ControlPresupuesto/cambio_presupuesto/create":33,"./vue-components/ControlPresupuesto/cambio_presupuesto/index":34,"./vue-components/ControlPresupuesto/cambio_presupuesto/show/variacion_insumos":35,"./vue-components/ControlPresupuesto/cambio_presupuesto/variacion_insumos":36,"./vue-components/ControlPresupuesto/escalatoria/create":37,"./vue-components/ControlPresupuesto/escalatoria/show":38,"./vue-components/ControlPresupuesto/presupuesto/index":39,"./vue-components/ControlPresupuesto/variacion_volumen/create":40,"./vue-components/ControlPresupuesto/variacion_volumen/show":41,"./vue-components/Finanzas/comprobante_fondo_fijo/create":42,"./vue-components/Finanzas/comprobante_fondo_fijo/edit":43,"./vue-components/Finanzas/comprobante_fondo_fijo/index":44,"./vue-components/Reportes/subcontratos-estimacion":45,"./vue-components/Tesoreria/movimientos_bancarios/index":46,"./vue-components/Tesoreria/traspaso_cuentas/index":47,"./vue-components/errors":48,"./vue-components/global-errors":49,"./vue-components/kardex_material/kardex-material-index":50,"./vue-components/select2":51}],6:[function(require,module,exports){
 'use strict';
 
 Vue.component('material-index', {
@@ -19026,6 +19042,716 @@ Vue.component('solicitar_reclasificacion-items', {
 },{}],31:[function(require,module,exports){
 'use strict';
 
+var _Vue$component;
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+Vue.component('cambio-insumos-create', (_Vue$component = {
+    props: ['id_tipo_orden'],
+    data: function data() {
+        return {
+            form: {
+                partidas: [],
+                agrupadas: [],
+                motivo: '',
+                id_tipo_cobrabilidad: '',
+                id_tipo_orden: '',
+                id_tarjeta: '',
+                filtro: {
+                    nivel: '',
+                    operador: '',
+                    texto: ''
+                }
+
+            },
+            tipo_insumo: 0,
+            id_material_seleccionado: 0,
+            material_seleccionado: [],
+            tarjeta_actual: 0,
+            cargando: false,
+            guardando: false,
+            filtros: [],
+
+            tarjetas: [],
+            bases_afectadas: [],
+            niveles: [{ nombre: 'Nivel 1', numero: 1 }, { nombre: 'Nivel 2', numero: 2 }, { nombre: 'Nivel 3', numero: 3 }, { nombre: 'Sector', numero: 4 }, { nombre: 'Cuadrante', numero: 5 }, { nombre: 'Especialidad', numero: 6 }, { nombre: 'Partida', numero: 7 }, { nombre: 'Sub Partida o Centa de costo', numero: 8 }, { nombre: 'Concepto', numero: 9 }, { nombre: 'Nivel 10', numero: 10 }, { nombre: 'Nivel 11', numero: 11 }]
+        };
+    },
+    mounted: function mounted() {
+
+        this.fetchTarjetas();
+    },
+    computed: {
+        datos: function datos() {
+            var res = {
+                id_tipo_orden: this.id_tipo_orden,
+                motivo: this.form.motivo,
+                agrupadas: this.form.agrupadas,
+                partidas: this.form.partidas
+            };
+            return res;
+        }
+    },
+    watch: {
+        id_tarjeta: function id_tarjeta() {
+            var self = this;
+            if (self.form.partidas.length > 0) {
+                swal({
+                    title: 'Cambiar Tarjeta',
+                    text: "Si Cambia de Tarjeta se Descartarán los Conceptos Seleccionados\n¿Desea Cambiar de Tarjeta?",
+                    type: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Si, Cambiar',
+                    cancelButtonText: 'No, Cancelar'
+                }).then(function (value) {
+                    if (value.value) {
+                        self.get_conceptos();
+                        self.form.partidas = [];
+                        self.form.agrupadas = [];
+                        self.tarjeta_actual = self.id_tarjeta;
+                    } else {
+                        // setear valor anterior en el select2
+                    }
+                });
+            } else {
+                self.get_conceptos();
+                self.form.partidas = [];
+                self.form.agrupadas = [];
+                self.tarjeta_actual = self.id_tarjeta;
+            }
+        }
+    }
+
+}, _defineProperty(_Vue$component, 'mounted', function mounted() {
+    var self = this;
+
+    $('#tarjetas_select').on('select2:select', function () {
+        self.get_conceptos();
+    });
+
+    $(document).on('click', '.btn_add_concepto', function () {
+        var id = $(this).attr('id');
+        self.addConcepto(id);
+    }).on('click', '.btn_remove_concepto', function () {
+        var id = $(this).attr('id');
+        self.removeConcepto(id);
+    });
+
+    $('#conceptos_table').DataTable({
+        "processing": true,
+        "serverSide": true,
+        "ordering": true,
+        "searching": false,
+        "ajax": {
+            "url": App.host + '/conceptos/getPathsConceptos',
+            "type": "POST",
+            "beforeSend": function beforeSend() {
+                self.cargando = true;
+            },
+            "data": function data(d) {
+                d.filtros = self.filtros;
+                d.id_tarjeta = self.id_tarjeta;
+            },
+            "complete": function complete() {
+                self.cargando = false;
+            },
+            "dataSrc": function dataSrc(json) {
+                for (var i = 0; i < json.data.length; i++) {
+                    json.data[i].monto_presupuestado = '$' + parseInt(json.data[i].monto_presupuestado).formatMoney(2, ',', '.');
+                    json.data[i].cantidad_presupuestada = parseInt(json.data[i].cantidad_presupuestada).formatMoney(2, ',', '.');
+                    json.data[i].precio_unitario = '$' + parseInt(json.data[i].precio_unitario).formatMoney(2, ',', '.');
+                }
+                return json.data;
+            }
+        },
+        "columns": [{ data: 'filtro1' }, { data: 'filtro2' }, { data: 'filtro3' }, { data: 'filtro4' }, { data: 'filtro5' }, { data: 'filtro6' }, { data: 'filtro7' }, { data: 'filtro8' }, {
+            data: {},
+            render: function render(data) {
+                return '<span title="' + data.filtro9 + '">' + data.filtro9.substr(0, 55) + '</span>';
+            }
+        }, { data: 'filtro10' }, { data: 'filtro11' }, { data: 'unidad' }, { data: 'cantidad_presupuestada', className: 'text-right' }, { data: 'precio_unitario', className: 'text-right' }, { data: 'monto_presupuestado', className: 'text-right' }, {
+            data: {},
+            render: function render(data) {
+                if (self.existe(data.id_concepto)) {
+                    return '<button class="btn btn-xs btn-default btn_remove_concepto"  id="' + data.id_concepto + '"><i class="fa fa-minus text-red"></i></button>';
+                }
+                return '<button class="btn btn-xs btn-default btn_add_concepto" id="' + data.id_concepto + '"><i class="fa fa-plus text-green"></i></button>';
+            }
+        }],
+        language: {
+            "sProcessing": "Procesando...",
+            "sLengthMenu": "Mostrar _MENU_ registros",
+            "sZeroRecords": "No se encontraron resultados",
+            "sEmptyTable": "Ningún dato disponible en esta tabla",
+            "sInfo": "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
+            "sInfoEmpty": "Mostrando registros del 0 al 0 de un total de 0 registros",
+            "sInfoFiltered": "(filtrado de un total de _MAX_ registros)",
+            "sInfoPostFix": "",
+            "sSearch": "Buscar:",
+            "sUrl": "",
+            "sInfoThousands": ",",
+            "sLoadingRecords": "Cargando...",
+            "oPaginate": {
+                "sFirst": "Primero",
+                "sLast": "Último",
+                "sNext": "Siguiente",
+                "sPrevious": "Anterior"
+            },
+            "oAria": {
+                "sSortAscending": ": Activar para ordenar la columna de manera ascendente",
+                "sSortDescending": ": Activar para ordenar la columna de manera descendente"
+            }
+        }
+    });
+}), _defineProperty(_Vue$component, 'methods', {
+
+    fetchTarjetas: function fetchTarjetas() {
+        var self = this;
+        $.ajax({
+            url: App.host + '/control_presupuesto/tarjeta/lists',
+            type: 'GET',
+            beforeSend: function beforeSend() {
+                self.cargando = true;
+            },
+            success: function success(response) {
+                self.tarjetas = response;
+            },
+            complete: function complete() {
+                self.cargando = false;
+            }
+        });
+    },
+
+    get_conceptos: function get_conceptos() {
+        var table = $('#conceptos_table').DataTable();
+        table.ajax.reload();
+    },
+
+    addConcepto: function addConcepto(id) {
+        var self = this;
+        $.ajax({
+            url: App.host + '/conceptos/' + id + '/getInsumos',
+            type: 'GET',
+            beforeSend: function beforeSend() {
+                self.guardando = true;
+                $('#' + id).html('<i class="fa fa-spin fa-spinner"></i>');
+                $('#' + id).attr('disabled', true);
+            },
+            success: function success(response) {
+                if (jQuery.isEmptyObject(self.form.partidas)) {
+                    $.each(response.conceptos.MATERIALES.insumos, function (index, partida) {
+                        response.conceptos.MATERIALES.insumos[index].rendimiento_actual = partida.cantidad_presupuestada / response.cobrable.cantidad_presupuestada;
+                        response.conceptos.MATERIALES.insumos[index].id_elemento = response.conceptos.MATERIALES.insumos[index].id_concepto;
+                        response.conceptos.MATERIALES.insumos[index].nuevo = false;
+                    });
+                    $.each(response.conceptos.HERRAMIENTAYEQUIPO.insumos, function (index, partida) {
+                        response.conceptos.HERRAMIENTAYEQUIPO.insumos[index].rendimiento_actual = partida.cantidad_presupuestada / response.cobrable.cantidad_presupuestada;
+                        response.conceptos.HERRAMIENTAYEQUIPO.insumos[index].id_elemento = response.conceptos.HERRAMIENTAYEQUIPO.insumos[index].id_concepto;
+                        response.conceptos.HERRAMIENTAYEQUIPO.insumos[index].nuevo = false;
+                    });
+                    $.each(response.conceptos.MANOOBRA.insumos, function (index, partida) {
+                        response.conceptos.MANOOBRA.insumos[index].rendimiento_actual = partida.cantidad_presupuestada / response.cobrable.cantidad_presupuestada;
+                        response.conceptos.MANOOBRA.insumos[index].id_elemento = response.conceptos.MANOOBRA.insumos[index].id_concepto;
+                        response.conceptos.MANOOBRA.insumos[index].nuevo = false;
+                    });
+                    $.each(response.conceptos.MAQUINARIA.insumos, function (index, partida) {
+                        response.conceptos.MAQUINARIA.insumos[index].rendimiento_actual = partida.cantidad_presupuestada / response.cobrable.cantidad_presupuestada;
+                        response.conceptos.MAQUINARIA.insumos[index].id_elemento = response.conceptos.MAQUINARIA.insumos[index].id_concepto;
+                        response.conceptos.MAQUINARIA.insumos[index].nuevo = false;
+                    });
+                    self.form.partidas.push(response);
+                    self.form.agrupadas.push(response.cobrable.id_concepto);
+                } else {
+                    $.each(self.form.partidas, function (index, partida) {
+                        var diferencias = false;
+                        console.log(diferencias);
+                        if (partida.conceptos.MATERIALES.insumos.length === response.conceptos.MATERIALES.insumos.length) {
+                            var total1 = 0;
+                            var total2 = 0;
+                            $.each(partida.conceptos.MATERIALES.insumos, function () {
+                                total1 = total1 + parseFloat(this.cantidad_presupuestada);
+                            });
+                            $.each(response.conceptos.MATERIALES.insumos, function () {
+                                total2 = total2 + parseFloat(this.cantidad_presupuestada);
+                            });
+                            if ((total1 / partida.cobrable.cantidad_presupuestada).toFixed(3) != (total2 / response.cobrable.cantidad_presupuestada).toFixed(3)) {
+                                diferencias = true;
+                                console.log('Materiales : ' + total1 / partida.cobrable.cantidad_presupuestada + ' - ' + total2 / response.cobrable.cantidad_presupuestada);
+                            }
+                        } else {
+                            diferencias = true;
+                        }
+                        if (partida.conceptos.HERRAMIENTAYEQUIPO.insumos.length === response.conceptos.HERRAMIENTAYEQUIPO.insumos.length) {
+                            var total1 = 0;
+                            var total2 = 0;
+                            $.each(partida.conceptos.HERRAMIENTAYEQUIPO.insumos, function () {
+                                total1 = total1 + parseFloat(this.cantidad_presupuestada);
+                            });
+                            $.each(response.conceptos.HERRAMIENTAYEQUIPO.insumos, function () {
+                                total2 = total2 + parseFloat(this.cantidad_presupuestada);
+                            });
+                            if ((total1 / partida.cobrable.cantidad_presupuestada).toFixed(3) != (total2 / response.cobrable.cantidad_presupuestada).toFixed(3)) {
+                                diferencias = true;
+                                console.log('Herramienta : ' + total1 / partida.cobrable.cantidad_presupuestada + ' - ' + total2 / response.cobrable.cantidad_presupuestada);
+                            }
+                        } else {
+                            diferencias = true;
+                        }
+                        if (partida.conceptos.MANOOBRA.insumos.length === response.conceptos.MANOOBRA.insumos.length) {
+                            var total1 = 0;
+                            var total2 = 0;
+                            $.each(partida.conceptos.MANOOBRA.insumos, function () {
+                                total1 = total1 + parseFloat(this.cantidad_presupuestada);
+                            });
+                            $.each(response.conceptos.MANOOBRA.insumos, function () {
+                                total2 = total2 + parseFloat(this.cantidad_presupuestada);
+                            });
+                            if ((total1 / partida.cobrable.cantidad_presupuestada).toFixed(3) != (total2 / response.cobrable.cantidad_presupuestada).toFixed(3)) {
+                                diferencias = true;
+                                console.log('Mano Obra : ' + total1 / partida.cobrable.cantidad_presupuestada + ' - ' + total2 / response.cobrable.cantidad_presupuestada);
+                            }
+                        } else {
+                            diferencias = true;
+                        }
+                        if (partida.conceptos.MAQUINARIA.insumos.length === response.conceptos.MAQUINARIA.insumos.length) {
+                            var total1 = 0;
+                            var total2 = 0;
+                            $.each(partida.conceptos.MAQUINARIA.insumos, function () {
+                                total1 = total1 + parseFloat(this.cantidad_presupuestada);
+                            });
+                            $.each(response.conceptos.MAQUINARIA.insumos, function () {
+                                total2 = total2 + parseFloat(this.cantidad_presupuestada);
+                            });
+                            if ((total1 / partida.cobrable.cantidad_presupuestada).toFixed(3) != (total2 / response.cobrable.cantidad_presupuestada).toFixed(3)) {
+                                diferencias = true;
+                                console.log('Maquinaria : ' + total1 / partida.cobrable.cantidad_presupuestada + ' - ' + total2 / response.cobrable.cantidad_presupuestada);
+                            }
+                        } else {
+                            diferencias = true;
+                        }
+                        self.cargando = false;
+                        console.log('Final : ' + diferencias);
+                        if (diferencias) {
+                            swal({
+                                type: 'warning',
+                                title: 'Advertencia',
+                                text: 'CONCEPTOS NO AGRUPABLES'
+                            });
+                        } else {
+                            self.form.agrupadas.push(response.cobrable.id_concepto);
+                        }
+                    });
+                }
+
+                $('#' + id).html('<i class="fa fa-minus text-red"></i>');
+                $('#' + id).removeClass('btn_add_concepto');
+                $('#' + id).addClass('btn_remove_concepto');
+            },
+            complete: function complete() {
+                self.guardando = false;
+                $('#' + id).attr('disabled', false);
+            },
+            error: function error() {
+                $('#' + id).html('<i class="fa fa-plus text-green"></i>');
+            }
+        });
+    },
+
+    existe: function existe(id) {
+        var found = this.form.partidas.find(function (partida) {
+            return partida.id_concepto == id;
+        });
+        return found != undefined;
+    },
+
+    confirmSave: function confirmSave() {
+        var self = this;
+        swal({
+            title: 'Guardar Solicitud de Cambio',
+            text: "¿Está seguro de que la información es correcta?",
+            type: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Si, Guardar',
+            cancelButtonText: 'No, Cancelar'
+        }).then(function (result) {
+            if (result.value) {
+                self.save();
+            }
+        });
+    },
+
+    save: function save() {
+        var self = this;
+        $.ajax({
+            url: App.host + '/control_presupuesto/cambio_presupuesto',
+            type: 'POST',
+            data: self.datos,
+            beforeSend: function beforeSend() {
+                self.cargando = true;
+            },
+            success: function success(response) {
+
+                var lista = [];
+
+                // Ya existen solicitudes con las partidas seleccionadas
+                if (typeof response.repetidas != 'undefined') {
+
+                    $.each(response.repetidas, function (key, value) {
+                        lista.push('<li class="list-group-item "><a href="' + App.host + '/control_presupuesto/cambio_presupuesto" onclick="swal.close();">#' + value.solicitud.numero_folio + ' ' + (value.solicitud.motivo.length >= 20 ? value.solicitud.motivo.substring(0, 30) + '...' : value.solicitud.motivo) + '</a></li>');
+                    });
+
+                    var texto = response.repetidas.length > 1 ? 'Ya existen solicitudes' : 'Ya existe una solicitud';
+
+                    swal({
+                        title: texto + " con los items seleccionados",
+                        html: '<ul class="list-group">' + lista.join(' ') + '</ul>',
+                        type: "warning",
+                        showCancelButton: true,
+                        showConfirmButton: true,
+                        cancelButtonText: "Cancelar"
+                    });
+
+                    return;
+                }
+
+                swal({
+                    type: 'success',
+                    title: '¡Correcto!',
+                    //html : 'Solicitud Guardada con Número de Folio <b>' + response.numero_folio + '</b>'
+                    html: 'Solicitud Guardada Exitosamente.'
+                }).then(function () {
+                    $('#conceptos_modal').modal('hide');
+                    $('#insumos_modal').modal('hide');
+                    self.form.partidas = [];
+                    self.$emit('reset-filtros');
+                    Vue.set(self.form, 'motivo', '');
+                    $('#conceptos_table').DataTable().ajax.reload();
+                });
+            },
+            complete: function complete() {
+                self.cargando = false;
+            }
+        });
+    },
+
+    removeConcepto: function removeConcepto(id) {
+        //var index = this.form.agrupadas.map(function (partida) { return partida.id_concepto; }).indexOf(parseInt(id));
+        var self = this;
+        var ag = self.form.agrupadas;
+        var index = ag.indexOf(parseInt(id));
+
+        this.form.agrupadas.splice(index, 1);
+        $('#' + id).html('<i class="fa fa-plus text-green"></i>');
+        $('#' + id).addClass('btn_add_concepto');
+        $('#' + id).removeClass('btn_remove_concepto');
+        if (!this.form.agrupadas.length) {
+            this.form.partidas = [];
+            $('#conceptos_modal').modal('hide');
+        }
+    },
+    addInsumoTipo: function addInsumoTipo(tipo) {
+        var self = this;
+        self.tipo_insumo = tipo;
+        $('#sel_material').select2({
+            width: '100%',
+            ajax: {
+                url: App.host + '/control_presupuesto/cambio_presupuesto/getDescripcionByTipo',
+                dataType: 'json',
+                delay: 500,
+                data: function data(params) {
+                    return {
+                        descripcion: params.term,
+                        tipo: tipo
+                    };
+                },
+                processResults: function processResults(data) {
+                    return {
+                        results: $.map(data.data.materiales, function (item) {
+                            return {
+                                text: item.DescripcionPadre + " -> " + item.descripcion,
+                                descripcion: item.descripcion,
+                                id_material: item.id_material,
+                                unidad: item.unidad,
+                                cantidad_presupuestada: 0,
+                                variacion_cantidad_presupuestada: 0,
+                                cantidad_presupuestada_nueva: 0,
+                                variacion_precio_unitario: 0,
+                                precio_unitario: 0,
+                                id: item.id_material,
+                                nuevo: true,
+                                rendimiento_actual: 0
+                            };
+                        })
+                    };
+                },
+                error: function error(_error) {},
+                cache: true
+            },
+            escapeMarkup: function escapeMarkup(markup) {
+                return markup;
+            }, // let our custom formatter work
+            minimumInputLength: 1
+        }).on('select2:select', function (e) {
+            var data = e.params.data;
+            data.id_elemento = data.id_material;
+            // console.log(data);
+            self.material_seleccionado = data;
+        });
+
+        $('#add_insumo_modal').modal('show');
+    },
+
+    cancelar_add_insumo: function cancelar_add_insumo() {
+        $('#add_insumo_modal').modal('hide');
+    },
+    agregar_insumo_nuevo: function agregar_insumo_nuevo() {
+        var self = this;
+        $.each(self.form.partidas, function (index, partida) {
+            switch (self.tipo_insumo) {
+                case 1:
+                    ///agregar a materiales
+                    partida.conceptos.MATERIALES.insumos.push(self.material_seleccionado);
+                    break;
+                case 2:
+                    //// agergar a mano obra
+                    partida.conceptos.MANOOBRA.insumos.push(self.material_seleccionado);
+                    break;
+                case 4:
+                    ////agregar a herram y equipo
+                    partida.conceptos.HERRAMIENTAYEQUIPO.insumos.push(self.material_seleccionado);
+                    break;
+                case 8:
+                    ///agregar a maquinaria
+                    partida.conceptos.MAQUINARIA.insumos.push(self.material_seleccionado);
+                    break;
+
+            }
+        });
+
+        $('#add_insumo_modal').modal('hide');
+    },
+
+    removeRendimiento: function removeRendimiento(id_concepto, id, tipo) {
+        var self = this;
+        var valor = 0.0;
+        $("#c_p_" + id_concepto + '_' + id).val(valor).prop('disabled', true);
+        $("#m_p_" + id_concepto + '_' + id).prop('disabled', true);
+        switch (tipo) {
+            case 1:
+                ///agregar a materiales
+                self.form.partidas[0].conceptos.MATERIALES.insumos[id].rendimiento_nuevo = valor;
+                break;
+            case 2:
+                //// agergar a mano obra
+                self.form.partidas[0].conceptos.MANOOBRA.insumos[id].rendimiento_nuevo = valor;
+                break;
+            case 4:
+                ////agregar a herram y equipo
+                self.form.partidas[0].conceptos.HERRAMIENTAYEQUIPO.insumos[id].rendimiento_nuevo = valor;
+                break;
+            case 8:
+                ///agregar a maquinaria
+                self.form.partidas[0].conceptos.MAQUINARIA.insumos[id].rendimiento_nuevo = valor;
+                break;
+        }
+        this.recalcular(id_concepto, id);
+    },
+
+    validateForm: function validateForm(scope, funcion) {
+        var _this = this;
+
+        this.$validator.validateAll(scope).then(function () {
+            if (funcion == 'save_solicitud') {
+                _this.confirmSave();
+            }
+            if (funcion == 'add_filtro') {
+                _this.set_filtro();
+            }
+        }).catch(function () {
+            swal({
+                type: 'warning',
+                title: 'Advertencia',
+                text: 'Por favor corrija los errores del formulario'
+            });
+        });
+    },
+
+    recalcular: function recalcular(id_concepto, i, tipo) {
+        var self = this;
+        var cant_pres = $(".rendimiento" + id_concepto + '_' + i).val();
+        var cant_concepto = self.form.partidas[0].cobrable.cantidad_presupuestada;
+        console.log(".rendimiento" + id_concepto + '_' + i);
+        switch (tipo) {
+            case 1:
+                ///agregar a materiales
+
+                self.form.partidas[0].conceptos.MATERIALES.insumos[i].rendimiento_nuevo = cant_pres;
+                var total = cant_concepto * self.form.partidas[0].conceptos.MATERIALES.insumos[i].rendimiento_nuevo;
+                $("#r_p_" + id_concepto + '_' + i).val(total);
+                break;
+            case 2:
+                //// agergar a mano obra
+                self.form.partidas[0].conceptos.MANOOBRA.insumos[i].rendimiento_nuevo = cant_pres;
+                var total = cant_concepto * self.form.partidas[0].conceptos.MANOOBRA.insumos[i].rendimiento_nuevo;
+                $("#r_p_" + id_concepto + '_' + i).val(total);
+                break;
+            case 4:
+                ////agregar a herram y equipo
+                self.form.partidas[0].conceptos.HERRAMIENTAYEQUIPO.insumos[i].rendimiento_nuevo = cant_pres;
+                var total = cant_concepto * self.form.partidas[0].conceptos.HERRAMIENTAYEQUIPO.insumos[i].rendimiento_nuevo;
+                $("#r_p_" + id_concepto + '_' + i).val(total);
+                break;
+            case 8:
+                ///agregar a maquinaria
+                self.form.partidas[0].conceptos.MAQUINARIA.insumos[i].rendimiento_nuevo = cant_pres;
+                var total = cant_concepto * self.form.partidas[0].conceptos.MAQUINARIA.insumos[i].rendimiento_nuevo;
+                $("#r_p_" + id_concepto + '_' + i).val(total);
+                break;
+        }
+    },
+
+    recalcular_monto: function recalcular_monto(id_concepto, i, tipo) {
+        var self = this;
+        var cant = $(".pre_unit" + id_concepto + '_' + i).val();
+        switch (tipo) {
+            case 1:
+                ///agregar a materiales
+                self.form.partidas[0].conceptos.MATERIALES.insumos[i].precio_unitario_nuevo = cant;
+                break;
+            case 2:
+                //// agergar a mano obra
+                self.form.partidas[0].conceptos.MANOOBRA.insumos[i].precio_unitario_nuevo = cant;
+
+                break;
+            case 4:
+                ////agregar a herram y equipo
+                self.form.partidas[0].conceptos.HERRAMIENTAYEQUIPO.insumos[i].precio_unitario_nuevo = cant;
+                break;
+            case 8:
+                ///agregar a maquinaria
+                self.form.partidas[0].conceptos.MAQUINARIA.insumos[i].precio_unitario_nuevo = cant;
+                break;
+        }
+    },
+
+    recalcular_cantidad: function recalcular_cantidad(id_concepto, i, tipo) {
+        var self = this;
+        var cant_pres = $("#r_p_" + id_concepto + '_' + i).val();
+        var cant_concepto = self.form.partidas[0].cobrable.cantidad_presupuestada;
+        switch (tipo) {
+            case 1:
+                ///agregar a materiales
+                var total = cant_pres / cant_concepto;
+                $(".rendimiento" + id_concepto + '_' + i).val(total);
+                self.form.partidas[0].conceptos.MATERIALES.insumos[i].rendimiento_nuevo = total;
+                break;
+            case 2:
+                //// agergar a mano obra
+                var total = cant_pres / cant_concepto;
+                $(".rendimiento" + id_concepto + '_' + i).val(total);
+                self.form.partidas[0].conceptos.MANOOBRA.insumos[i].rendimiento_nuevo = total;
+
+                break;
+            case 4:
+                ////agregar a herram y equipo
+                var total = cant_pres / cant_concepto;
+                $(".rendimiento" + id_concepto + '_' + i).val(total);
+                self.form.partidas[0].conceptos.HERRAMIENTAYEQUIPO.insumos[i].rendimiento_nuevo = total;
+                break;
+            case 8:
+                ///agregar a maquinaria
+                var total = cant_pres / cant_concepto;
+                $(".rendimiento" + id_concepto + '_' + i).val(total);
+                self.form.partidas[0].conceptos.MAQUINARIA.insumos[i].rendimiento_nuevo = total;
+                break;
+        }
+    },
+    set_filtro: function set_filtro() {
+        var nivel = this.form.filtro.nivel;
+        var result = this.filtros.filter(function (filtro) {
+            return filtro.nivel == nivel;
+        });
+
+        if (result.length) {
+            result[0].operadores.push({
+                sql: this.form.filtro.operador.replace('{texto}', this.form.filtro.texto),
+                operador: this.operadores[this.form.filtro.operador],
+                texto: this.form.filtro.texto
+            });
+        } else {
+            this.filtros.push({
+                nivel: this.form.filtro.nivel,
+                operadores: [{
+                    sql: this.form.filtro.operador.replace('{texto}', this.form.filtro.texto),
+                    operador: this.operadores[this.form.filtro.operador],
+                    texto: this.form.filtro.texto
+                }]
+            });
+        }
+
+        this.close_modal();
+    },
+
+    close_modal: function close_modal() {
+        $('#agregar_filtro_modal').modal('hide');
+        Vue.set(this.form, 'filtro', { nivel: '', operador: '', texto: '' });
+    },
+
+    eliminar: function eliminar(filtro, operador) {
+        Vue.delete(filtro.operadores, filtro.operadores.indexOf(operador));
+        if (!filtro.operadores.length) {
+            Vue.delete(this.filtros, this.filtros.indexOf(filtro));
+        }
+    },
+
+    obtenerPresupuestos: function obtenerPresupuestos() {
+        var self = this;
+
+        var tipoOrden = self.form.id_tipo_orden;
+
+        $('#divDetalle').fadeOut();
+
+        var url = App.host + '/control_presupuesto/afectacion_presupuesto/getBasesAfectadas';
+        $.ajax({
+            type: 'POST',
+            data: {
+                tipo_orden: tipoOrden
+            },
+            url: url,
+            beforeSend: function beforeSend() {
+                self.consultando = true;
+            },
+            success: function success(data, textStatus, xhr) {
+                self.bases_afectadas = data.data;
+            },
+            complete: function complete() {
+                self.consultando = false;
+            }
+        });
+    }
+}), _Vue$component));
+
+},{}],32:[function(require,module,exports){
+'use strict';
+
+Vue.component('cambio-insumos-show', {
+    props: [],
+    data: function data() {
+        return {};
+    },
+    mounted: function mounted() {
+        var self = this;
+    },
+    methods: {}
+});
+
+},{}],33:[function(require,module,exports){
+'use strict';
+
 Vue.component('cambio-presupuesto-create', {
     props: ['operadores'],
     data: function data() {
@@ -19197,136 +19923,42 @@ Vue.component('cambio-presupuesto-create', {
     }
 });
 
-},{}],32:[function(require,module,exports){
-'use strict';
-
-Vue.component('escalatoria', {
-    props: ['id_tipo_orden'],
-    data: function data() {
-        return {
-            form: {
-                partidas: [],
-                motivo: ''
-            },
-            escalatoria: {
-                monto: '',
-                descripcion: ''
-            },
-            cargando: false,
-            guardando: false
-        };
-    },
-
-    computed: {
-
-        datos: function datos() {
-            var res = {
-                id_tipo_orden: this.id_tipo_orden,
-                motivo: this.form.motivo,
-                partidas: []
-            };
-            this.form.partidas.forEach(function (value) {
-                res.partidas.push({
-                    monto_presupuestado: value.importe,
-                    descripcion: value.descripcion
-                });
-            });
-            return res;
-        }
-
-    },
-
-    methods: {
-        removePartida: function removePartida(index) {
-            Vue.delete(this.form.partidas, index);
-        },
-
-        addPartida: function addPartida() {
-            var partida = _.clone(this.escalatoria);
-            this.form.partidas.push(partida);
-            this.escalatoria = {
-                monto: '',
-                descripcion: ''
-            };
-        },
-        confirmSave: function confirmSave() {
-            var self = this;
-            swal({
-                title: 'Guardar Solicitud de Cambio',
-                text: "¿Está seguro de que la información es correcta?",
-                type: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                confirmButtonText: 'Si, Guardar',
-                cancelButtonText: 'No, Cancelar'
-            }).then(function (result) {
-                if (result.value) {
-                    self.save();
-                }
-            });
-        },
-
-        save: function save() {
-            var self = this;
-            $.ajax({
-                url: App.host + '/control_presupuesto/cambio_presupuesto',
-                type: 'POST',
-                data: self.datos,
-                beforeSend: function beforeSend() {
-                    self.guardando = true;
-                },
-                success: function success(response) {
-                    swal({
-                        type: 'success',
-                        title: '¡Correcto!',
-                        html: 'Solicitud Guardada con Número de Folio <b>' + response.numero_folio + '</b>'
-                    }).then(function () {
-                        window.location.href = App.host + '/control_presupuesto/cambio_presupuesto/' + response.id;
-                    });
-                },
-                complete: function complete() {
-                    self.guardando = false;
-                }
-            });
-        },
-
-        validateForm: function validateForm(scope, funcion) {
-            var _this = this;
-
-            this.$validator.validateAll(scope).then(function () {
-                if (funcion == 'save_solicitud') {
-
-                    _this.confirmSave();
-                }
-            }).catch(function () {
-                swal({
-                    type: 'warning',
-                    title: 'Advertencia',
-                    text: 'Por favor corrija los errores del formulario'
-                });
-            });
-        }
-    }
-});
-
-},{}],33:[function(require,module,exports){
+},{}],34:[function(require,module,exports){
 'use strict';
 
 Vue.component('cambio-presupuesto-index', {
     data: function data() {
         return {
-            data: ''
+            data: '',
+            form: {
+                id_tipo_cobrabilidad: '',
+                id_tipo_orden: ''
+            },
+            tipos_cobrabilidad: [],
+            tipos_orden: []
         };
     },
+    computed: {
+        tipos_orden_filtered: function tipos_orden_filtered() {
+            var self = this;
 
+            return self.tipos_orden.filter(function (tipo_orden) {
+                return tipo_orden.id_tipo_cobrabilidad == self.form.id_tipo_cobrabilidad;
+            });
+        }
+    },
     mounted: function mounted() {
         var self = this;
+
+        this.fetchTiposCobrabilidad();
+        this.fetchTiposOrden();
 
         $(document).on('click', '.mostrar_pdf', function () {
             var _this = $(this),
                 id = _this.data('pdf_id'),
-                url = App.host + '/control_presupuesto/cambio_presupuesto/' + id + '/pdf';
+                id_tipo_orden = _this.data('id_tipo_orden'),
+                tipo_seleccionado = self.findTipoOrden(id_tipo_orden),
+                url = App.host + '/control_presupuesto/' + tipo_seleccionado.name + '/' + id + '/pdf';
 
             $('#pdf_modal').modal('show');
             $('#pdf_modal .modal-content').css({ height: '700px' });
@@ -19353,20 +19985,30 @@ Vue.component('cambio-presupuesto-index', {
                     //self.guardando = false;
                 },
                 "dataSrc": function dataSrc(json) {
-
+                    console.log(json);
                     for (var i = 0; i < json.data.length; i++) {
-                        json.data[i].created_at = new Date(json.data[i].created_at).dateFormat();
+                        var monto = 0;
+                        for (var j = 0; j < json.data[i].partidas.length; j++) {
+                            if (json.data[i].partidas[j].rendimiento_nuevo != null) {
+                                if (json.data[i].partidas[j].precio_unitario_nuevo != null) {
+                                    monto = json.data[i].partidas[j].rendimiento_nuevo * json.data[i].partidas[j].rendimiento_nuevo;
+                                }
+                            }
+                        }
+                        json.data[i].monto = monto;
+                        json.data[i].created_at = new Date(json.data[i].created_at).dateShortFormat('d-m-Y');
                         json.data[i].registro = json.data[i].user_registro.nombre + ' ' + json.data[i].user_registro.apaterno + ' ' + json.data[i].user_registro.amaterno;
                     }
-
                     return json.data;
                 }
             },
-            "columns": [{ data: 'numero_folio' }, { data: 'tipo_orden.descripcion' }, { data: 'created_at' }, { data: 'registro', orderable: false }, { data: 'estatus.descripcion' }, {
+            "columns": [{ data: 'numero_folio' }, { data: 'tipo_orden.descripcion' }, { data: 'monto' }, { data: 'created_at' }, { data: 'created_at' }, { data: 'registro', orderable: false }, { data: 'estatus.descripcion' }, {
                 data: {},
                 render: function render(data, type, row, meta) {
-                    var button = '<span class="label" ></span><button class="btn btn-xs btn-info mostrar_pdf" data-pdf_id="' + row.id + '" title="Formato"><i class="fa fa-file-pdf-o"></i></button>  ';
-                    button += '<a title="Ver" href="' + App.host + '/control_presupuesto/cambio_presupuesto/' + data.id + '">';
+                    var tipo_seleccionado = self.findTipoOrden(data.id_tipo_orden),
+                        button = '<span class="label" ></span><button class="btn btn-xs btn-info mostrar_pdf" data-pdf_id="' + row.id + '" data-id_tipo_orden="' + data.id_tipo_orden + '" title="Formato"><i class="fa fa-file-pdf-o"></i></button>  ';
+
+                    button += '<a title="Ver" href="' + App.host + '/control_presupuesto/' + tipo_seleccionado.name + '/' + data.id + '">';
                     button += '<button title="Ver" type="button" class="btn btn-xs btn-default" >';
                     button += '<i class="fa fa-eye"></i>';
                     button += '   </button>';
@@ -19402,225 +20044,66 @@ Vue.component('cambio-presupuesto-index', {
         };
 
         $('#cierres_table').DataTable(data);
-    }
-
-});
-
-},{}],34:[function(require,module,exports){
-'use strict';
-
-Vue.component('show-escalatoria', {
-    props: ['solicitud', 'cobrabilidad', 'presupuestos'],
-    data: function data() {
-        return {
-            form: {
-                solicitud: this.solicitud,
-                cobrabilidad: this.cobrabilidad
-            },
-            cargando: false,
-            rechazando: false,
-            autorizando: false,
-            consultando: false,
-            consultandoImportes: false,
-            partidas: [],
-            importes: [],
-            partida_id: 0
-        };
-    },
-    mounted: function mounted() {
-        var self = this;
-
-        $(document).on('click', '.mostrar_pdf', function () {
-            var _this = $(this),
-                id = _this.data('pdf_id'),
-                url = App.host + '/control_presupuesto/cambio_presupuesto/' + id + '/pdf';
-
-            $('#pdf_modal').modal('show');
-            $('#pdf_modal .modal-content').css({ height: '700px' });
-            $('#pdf_modal .modal-body').html($('<iframe/>', {
-                id: 'formatoPDF',
-                src: url,
-                style: 'width:99.6%;height:100%',
-                frameborder: "0"
-            })).css({ height: '550px' });
-        });
     },
     methods: {
-
-        confirm_autorizar_solicitud: function confirm_autorizar_solicitud() {
+        fetchTiposCobrabilidad: function fetchTiposCobrabilidad() {
             var self = this;
-            var id = self.form.solicitud.id;
-
-            $('.autorizar_solicitud').addClass('disabled');
-
-            swal({
-                title: "Autorizar la Solicitud de Cambio",
-                html: "¿Estás seguro que desea actualizar la solicitud?",
-                type: "warning",
-                showCancelButton: true,
-                confirmButtonText: "Si, Continuar",
-                cancelButtonText: "No, Cancelar"
-            }).then(function (result) {
-                if (result.value) {
-                    self.autorizar_solicitud(id);
-                } else {
-                    $('.autorizar_solicitud').removeClass('disabled');
-                }
-            });
-        },
-        confirm_rechazar_solicitud: function confirm_rechazar_solicitud() {
-            var self = this;
-            var id = self.form.solicitud.id;
-
-            $('.rechazar_solicitud').addClass('disabled');
-
-            swal({
-                title: 'Rechazar Solicitud',
-                text: 'Motivo del rechazo',
-                input: 'text',
-                showCancelButton: true,
-                confirmButtonText: 'Rechazar ',
-                cancelButtonText: 'Cancelar',
-                showLoaderOnConfirm: false,
-                preConfirm: function preConfirm(motivo) {
-                    return new Promise(function (resolve) {
-                        if (motivo.length === 0) {
-                            swal.showValidationError('Por favor escriba un motivo para rechazar la solicitud.');
-                        }
-                        resolve();
-                    });
-                },
-                allowOutsideClick: function allowOutsideClick() {
-                    !swal.isLoading();
-                }
-            }).then(function (result) {
-                if (result.value) {
-                    self.rechazar_solicitud(id, result.value);
-                } else {
-                    $('.rechazar_solicitud').removeClass('disabled');
-                }
-            });
-        },
-        autorizar_solicitud: function autorizar_solicitud(id) {
-
-            var self = this;
-            var url = App.host + '/control_presupuesto/cambio_presupuesto/autorizarSolicitud';
             $.ajax({
-                type: 'POST',
-                url: url,
-                data: {
-                    id: id,
-                    id_tipo_orden: self.form.solicitud.id_tipo_orden
-                },
+                url: App.host + '/control_presupuesto/tipo_cobrabilidad',
+                type: 'GET',
                 beforeSend: function beforeSend() {
-                    self.autorizando = true;
+                    self.cargando = true;
                 },
-                success: function success(data, textStatus, xhr) {
-                    swal({
-                        type: "success",
-                        title: '¡Correcto!',
-                        text: 'Solicitud autorizada correctamente.',
-                        confirmButtonText: "Ok",
-                        closeOnConfirm: false
-                    }).then(function () {
-                        window.location.reload(true);
-                    });
+                success: function success(response) {
+                    self.tipos_cobrabilidad = response;
                 },
                 complete: function complete() {
-                    self.autorizando = false;
-                    $('.autorizar_solicitud').removeClass('disabled');
+                    self.cargando = false;
                 }
             });
         },
-
-        rechazar_solicitud: function rechazar_solicitud(id, motivo) {
-
+        fetchTiposOrden: function fetchTiposOrden() {
             var self = this;
-            var url = App.host + '/control_presupuesto/cambio_presupuesto/rechazarSolicitud';
             $.ajax({
-                type: 'POST',
-                url: url,
-                data: {
-                    id_solicitud_cambio: id,
-                    id_tipo_orden: self.form.solicitud.id_tipo_orden,
-                    motivo: motivo
-                },
+                url: App.host + '/control_presupuesto/tipo_orden',
+                type: 'GET',
                 beforeSend: function beforeSend() {
-                    self.rechazando = true;
+                    self.cargando = true;
                 },
-                success: function success(data, textStatus, xhr) {
-
-                    swal({
-                        type: "success",
-                        title: '¡Correcto!',
-                        text: 'Solicitud rechazada correctamente.',
-                        confirmButtonText: "Ok",
-                        closeOnConfirm: false
-                    }).then(function () {
-                        window.location.reload(true);
-                    });
+                success: function success(response) {
+                    self.tipos_orden = response;
                 },
                 complete: function complete() {
-                    self.rechazando = false;
-                    $('.rechazar_solicitud').removeClass('disabled');
+                    self.cargando = false;
                 }
             });
         },
-        mostrar_detalle_partida: function mostrar_detalle_partida(id) {
-            var self = this;
-            var partida = id;
-            self.partida_id = id;
-            var presupuesto = self.presupuestos[0].base_datos.id;
-            $('#divDetalle').fadeOut();
-
-            var url = App.host + '/control_presupuesto/cambio_presupuesto_partida/detallePresupuesto';
-            $.ajax({
-                type: 'POST',
-                data: {
-                    id_partida: partida,
-                    presupuesto: presupuesto
-                },
-                url: url,
-                beforeSend: function beforeSend() {
-                    self.consultando = true;
-                },
-                success: function success(data, textStatus, xhr) {
-                    self.partidas = data.data;
-                    $('#divDetalle').fadeIn();
-                },
-                complete: function complete() {
-                    self.consultando = false;
-                }
-            });
+        openSelectModal: function openSelectModal() {
+            $('#select_modal').modal('show');
         },
-        mostrar_detalle_presupuesto: function mostrar_detalle_presupuesto(idPresupuesto) {
-            var self = this;
-            var partida = self.partida_id;
-            var presupuesto = idPresupuesto;
-            $('#divDetalle').fadeOut();
 
-            var url = App.host + '/control_presupuesto/cambio_presupuesto_partida/detallePresupuesto';
-            $.ajax({
-                type: 'POST',
-                data: {
-                    id_partida: partida,
-                    presupuesto: presupuesto
-                },
-                url: url,
-                beforeSend: function beforeSend() {
-                    self.consultando = true;
-                },
-                success: function success(data, textStatus, xhr) {
-                    self.partidas = data.data;
-                    $('#divDetalle').fadeIn();
-                },
-                complete: function complete() {
-                    self.consultando = false;
-                }
+        crearSolicitud: function crearSolicitud() {
+            var self = this,
+                tipo_seleccionado = self.findTipoOrden(self.form.id_tipo_orden);
+
+            if (tipo_seleccionado === null) swal({
+                title: 'Error',
+                text: "El item seleccionado no es un tipo de solicitud válido",
+                type: 'error'
             });
+
+            // Redirecciona a la ruta correcta
+            window.location.href = App.host + '/control_presupuesto/' + tipo_seleccionado.name + '/create';
+        },
+        findTipoOrden: function findTipoOrden(id) {
+            var self = this;
+
+            for (var i = 0; i < self.tipos_orden.length; i++) {
+                if (self.tipos_orden[i]['id'] == id) return self.tipos_orden[i];
+            }return null;
         }
-
     }
+
 });
 
 },{}],35:[function(require,module,exports){
@@ -19839,258 +20322,6 @@ Vue.component('show-variacion-insumos', {
 },{}],36:[function(require,module,exports){
 'use strict';
 
-Vue.component('show-variacion-volumen', {
-    props: ['solicitud', 'cobrabilidad', 'presupuestos'],
-    data: function data() {
-        return {
-            form: {
-                solicitud: this.solicitud,
-                cobrabilidad: this.cobrabilidad,
-                afectaciones: []
-            },
-            cargando: false,
-            rechazando: false,
-            autorizando: false,
-            consultando: false,
-            consultandoImportes: false,
-            partidas: [],
-            importes: [],
-            partida_id: 0
-        };
-    },
-
-    mounted: function mounted() {
-
-        this.fillAfectaciones();
-
-        $(document).on('click', '.mostrar_pdf', function () {
-            var _this = $(this),
-                id = _this.data('pdf_id'),
-                url = App.host + '/control_presupuesto/cambio_presupuesto/' + id + '/pdf';
-
-            $('#pdf_modal').modal('show');
-            $('#pdf_modal .modal-body').html($('<iframe/>', {
-                id: 'formatoPDF',
-                src: url,
-                style: 'width:99.6%;height:100%',
-                frameborder: "0"
-            })).css({ height: '550px' });
-        });
-    },
-    methods: {
-        confirm_autorizar_solicitud: function confirm_autorizar_solicitud() {
-            var self = this;
-            var id = self.form.solicitud.id;
-
-            $('.autorizar_solicitud').addClass('disabled');
-            $('.rechazar_solicitud').addClass('disabled');
-
-            swal({
-                title: "Autorizar la Solicitud de Cambio",
-                html: "¿Estás seguro que desea actualizar la solicitud?",
-                type: "warning",
-                showCancelButton: true,
-                confirmButtonText: "Si, Continuar",
-                cancelButtonText: "No, Cancelar"
-            }).then(function (result) {
-                if (result.value) {
-                    self.autorizar_solicitud(id);
-                } else {
-                    $('.autorizar_solicitud').removeClass('disabled');
-                    $('.rechazar_solicitud').removeClass('disabled');
-                }
-            });
-        },
-        confirm_rechazar_solicitud: function confirm_rechazar_solicitud() {
-            var self = this;
-            var id = self.form.solicitud.id;
-
-            $('.rechazar_solicitud').addClass('disabled');
-
-            swal({
-                title: 'Rechazar Solicitud',
-                text: 'Motivo del rechazo',
-                input: 'text',
-                showCancelButton: true,
-                confirmButtonText: 'Rechazar ',
-                cancelButtonText: 'Cancelar',
-                showLoaderOnConfirm: false,
-                preConfirm: function preConfirm(motivo) {
-                    return new Promise(function (resolve) {
-                        if (motivo.length === 0) {
-                            swal.showValidationError('Por favor escriba un motivo para rechazar la solicitud.');
-                        }
-                        resolve();
-                    });
-                },
-                allowOutsideClick: function allowOutsideClick() {
-                    !swal.isLoading();
-                }
-            }).then(function (result) {
-                if (result.value) {
-                    self.rechazar_solicitud(id, result.value);
-                } else {
-                    $('.rechazar_solicitud').removeClass('disabled');
-                }
-            });
-        },
-        autorizar_solicitud: function autorizar_solicitud(id) {
-            var self = this;
-            var url = App.host + '/control_presupuesto/cambio_presupuesto/autorizarSolicitud';
-            $.ajax({
-                type: 'POST',
-                url: url,
-                data: {
-                    id: id,
-                    id_tipo_orden: self.form.solicitud.id_tipo_orden,
-                    afectaciones: self.form.afectaciones
-                },
-                beforeSend: function beforeSend() {
-                    self.autorizando = true;
-                },
-                success: function success(data, textStatus, xhr) {
-                    swal({
-                        type: "success",
-                        title: '¡Correcto!',
-                        text: 'Solicitud autorizada correctamente.',
-                        confirmButtonText: "Ok",
-                        closeOnConfirm: false
-                    }).then(function () {
-                        window.location.reload(true);
-                    });
-                },
-                complete: function complete() {
-                    self.autorizando = false;
-                    $('.autorizar_solicitud').removeClass('disabled');
-                }
-            });
-        },
-
-        rechazar_solicitud: function rechazar_solicitud(id, motivo) {
-            var self = this;
-            var url = App.host + '/control_presupuesto/cambio_presupuesto/rechazarSolicitud';
-            $.ajax({
-                type: 'POST',
-                url: url,
-                data: {
-                    id_solicitud_cambio: id,
-                    id_tipo_orden: self.form.solicitud.id_tipo_orden,
-                    motivo: motivo
-                },
-                beforeSend: function beforeSend() {
-                    self.rechazando = true;
-                },
-                success: function success(data, textStatus, xhr) {
-                    swal({
-                        type: "success",
-                        title: '¡Correcto!',
-                        text: 'Solicitud rechazada correctamente.',
-                        confirmButtonText: "Ok",
-                        closeOnConfirm: false
-                    }).then(function () {
-                        window.location.reload(true);
-                    });
-                },
-                complete: function complete() {
-                    self.rechazando = false;
-                    $('.rechazar_solicitud').removeClass('disabled');
-                }
-            });
-        },
-        mostrar_detalle_partida: function mostrar_detalle_partida(id) {
-            var self = this;
-            var partida = id;
-            self.partida_id = id;
-            var presupuesto = self.presupuestos[0].base_datos.id;
-            $('#divDetalle').fadeOut();
-
-            var url = App.host + '/control_presupuesto/cambio_presupuesto_partida/detallePresupuesto';
-            $.ajax({
-                type: 'POST',
-                data: {
-                    id_partida: partida,
-                    presupuesto: presupuesto
-                },
-                url: url,
-                beforeSend: function beforeSend() {
-                    self.consultando = true;
-                },
-                success: function success(data, textStatus, xhr) {
-                    self.partidas = data.data;
-                    $('#divDetalle').fadeIn();
-                },
-                complete: function complete() {
-                    self.consultando = false;
-                }
-            });
-        },
-
-        mostrar_detalle_presupuesto: function mostrar_detalle_presupuesto(idPresupuesto) {
-            var self = this;
-            var partida = self.partida_id;
-            var presupuesto = idPresupuesto;
-            $('#divDetalle').fadeOut();
-
-            var url = App.host + '/control_presupuesto/cambio_presupuesto_partida/detallePresupuesto';
-            $.ajax({
-                type: 'POST',
-                data: {
-                    id_partida: partida,
-                    presupuesto: presupuesto
-                },
-                url: url,
-                beforeSend: function beforeSend() {
-                    self.consultando = true;
-                },
-                success: function success(data, textStatus, xhr) {
-                    self.partidas = data.data;
-                    $('#divDetalle').fadeIn();
-                },
-                complete: function complete() {
-                    self.consultando = false;
-                }
-            });
-        },
-
-        fillAfectaciones: function fillAfectaciones() {
-            var self = this;
-            self.form.afectaciones = [];
-            self.solicitud.aplicaciones.forEach(function (value) {
-                self.form.afectaciones.push(value.id);
-            });
-        },
-
-        aplicada: function aplicada(id) {
-            var res = false;
-            this.solicitud.aplicaciones.forEach(function (value) {
-                if (id == value.id && value.pivot.aplicada == 1) {
-                    res = true;
-                }
-            });
-            return res;
-        },
-
-        validateForm: function validateForm(scope, funcion) {
-            var _this2 = this;
-
-            this.$validator.validateAll(scope).then(function () {
-                if (funcion == 'autorizar_solicitud') {
-                    _this2.confirm_autorizar_solicitud();
-                }
-            }).catch(function () {
-                swal({
-                    type: 'warning',
-                    title: 'Advertencia',
-                    text: 'Por favor corrija los errores del formulario'
-                });
-            });
-        }
-    }
-});
-
-},{}],37:[function(require,module,exports){
-'use strict';
-
 Vue.component('variacion-insumos', {
     props: ['filtros', 'niveles', 'id_tipo_orden', 'id_tarjeta', 'tarjetas'],
     data: function data() {
@@ -20103,6 +20334,7 @@ Vue.component('variacion-insumos', {
             tipo_insumo: 0,
             id_material_seleccionado: 0,
             material_seleccionado: [],
+            tarjeta_actual: 0,
             cargando: false,
             guardando: false
         };
@@ -20132,15 +20364,21 @@ Vue.component('variacion-insumos', {
                     cancelButtonColor: '#d33',
                     confirmButtonText: 'Si, Cambiar',
                     cancelButtonText: 'No, Cancelar'
-                }).then(function () {
-                    self.get_conceptos();
-                    self.form.partidas = [];
-                    self.form.agrupadas = [];
+                }).then(function (value) {
+                    if (value.value) {
+                        self.get_conceptos();
+                        self.form.partidas = [];
+                        self.form.agrupadas = [];
+                        self.tarjeta_actual = self.id_tarjeta;
+                    } else {
+                        // setear valor anterior en el select2
+                    }
                 });
             } else {
                 self.get_conceptos();
                 self.form.partidas = [];
                 self.form.agrupadas = [];
+                self.tarjeta_actual = self.id_tarjeta;
             }
         }
     },
@@ -20192,12 +20430,11 @@ Vue.component('variacion-insumos', {
                 render: function render(data) {
                     return '<span title="' + data.filtro9 + '">' + data.filtro9.substr(0, 55) + '</span>';
                 }
-
             }, { data: 'filtro10' }, { data: 'filtro11' }, { data: 'unidad' }, { data: 'cantidad_presupuestada', className: 'text-right' }, { data: 'precio_unitario', className: 'text-right' }, { data: 'monto_presupuestado', className: 'text-right' }, {
                 data: {},
                 render: function render(data) {
                     if (self.existe(data.id_concepto)) {
-                        return '<button class="btn btn-xs btn-default btn_remove_concepto" id="' + data.id_concepto + '"><i class="fa fa-minus text-red"></i></button>';
+                        return '<button class="btn btn-xs btn-default btn_remove_concepto"  id="' + data.id_concepto + '"><i class="fa fa-minus text-red"></i></button>';
                     }
                     return '<button class="btn btn-xs btn-default btn_add_concepto" id="' + data.id_concepto + '"><i class="fa fa-plus text-green"></i></button>';
                 }
@@ -20337,6 +20574,7 @@ Vue.component('variacion-insumos', {
                             } else {
                                 diferencias = true;
                             }
+                            self.cargando = false;
                             console.log('Final : ' + diferencias);
                             if (diferencias) {
                                 swal({
@@ -20445,7 +20683,10 @@ Vue.component('variacion-insumos', {
 
         removeConcepto: function removeConcepto(id) {
             //var index = this.form.agrupadas.map(function (partida) { return partida.id_concepto; }).indexOf(parseInt(id));
-            var index = this.form.agrupadas.indexOf(id);
+            var self = this;
+            var ag = self.form.agrupadas;
+            var index = ag.indexOf(parseInt(id));
+
             this.form.agrupadas.splice(index, 1);
             $('#' + id).html('<i class="fa fa-plus text-green"></i>');
             $('#' + id).addClass('btn_add_concepto');
@@ -20672,35 +20913,24 @@ Vue.component('variacion-insumos', {
     }
 });
 
-},{}],38:[function(require,module,exports){
+},{}],37:[function(require,module,exports){
 'use strict';
 
-Vue.component('variacion-volumen', {
-    props: ['filtros', 'niveles', 'id_tipo_orden', 'id_tarjeta', 'tarjetas', 'bases_afectadas'],
+Vue.component('escalatoria-create', {
+    props: ['id_tipo_orden', 'bases_afectadas'],
     data: function data() {
         return {
-            datatable_data: {},
             form: {
                 partidas: [],
-                motivo: '',
-                id_tarjeta: '',
-                afectaciones: []
+                motivo: ''
+            },
+            escalatoria: {
+                monto: '',
+                descripcion: ''
             },
             cargando: false,
-            guardando: false,
-            consultando: false,
-            importes: []
+            guardando: false
         };
-    },
-
-    directives: {
-        icheck: {
-            inserted: function inserted(el) {
-                $(el).iCheck({
-                    checkboxClass: 'icheckbox_minimal-grey'
-                });
-            }
-        }
     },
 
     computed: {
@@ -20708,14 +20938,12 @@ Vue.component('variacion-volumen', {
             var res = {
                 id_tipo_orden: this.id_tipo_orden,
                 motivo: this.form.motivo,
-                afectaciones: this.form.afectaciones,
                 partidas: []
             };
             this.form.partidas.forEach(function (value) {
                 res.partidas.push({
-                    id_concepto: value.id_concepto,
-                    cantidad_presupuestada_original: value.cantidad_presupuestada,
-                    variacion_volumen: value.variacion_volumen
+                    monto_presupuestado: value.importe,
+                    descripcion: value.descripcion
                 });
             });
             return res;
@@ -20729,138 +20957,24 @@ Vue.component('variacion-volumen', {
             return res;
         }
     },
-
-    watch: {
-        id_tarjeta: function id_tarjeta() {
-            this.get_conceptos();
-            this.form.partidas = [];
-        }
-    },
-
     mounted: function mounted() {
         var self = this;
-
-        $('#tarjetas_select').on('select2:select', function () {
-            self.get_conceptos();
-        });
-
-        $(document).on('click', '.btn_add_concepto', function () {
-            var id = $(this).attr('id');
-            self.addConcepto(id);
-        }).on('click', '.btn_remove_concepto', function () {
-            var id = $(this).attr('id');
-            self.removeConcepto(id);
-        });
-
-        $('#conceptos_table').DataTable({
-            "processing": true,
-            "serverSide": true,
-            "paging": false,
-            "ordering": true,
-            "searching": false,
-            "ajax": {
-                "url": App.host + '/conceptos/getPathsConceptos',
-                "type": "POST",
-                "beforeSend": function beforeSend() {
-                    self.cargando = true;
-                },
-                "data": function data(d) {
-                    d.filtros = self.filtros;
-                    d.id_tarjeta = self.id_tarjeta;
-                },
-                "complete": function complete() {
-                    self.cargando = false;
-                },
-                "dataSrc": function dataSrc(json) {
-                    for (var i = 0; i < json.data.length; i++) {
-                        json.data[i].monto_presupuestado = '$' + parseFloat(json.data[i].monto_presupuestado).formatMoney(2, ',', '.');
-                        json.data[i].cantidad_presupuestada = parseFloat(json.data[i].cantidad_presupuestada).formatMoney(2, ',', '.');
-                        json.data[i].precio_unitario = '$' + parseFloat(json.data[i].precio_unitario).formatMoney(2, ',', '.');
-                        json.data[i].filtro9_sub = json.data[i].filtro9.length > 50 ? json.data[i].filtro9.substr(0, 50) + '...' : json.data[i].filtro9;
-                    }
-                    return json.data;
-                }
-            },
-            "columns": [{ data: 'filtro1' }, { data: 'filtro2' }, { data: 'filtro3' }, { data: 'filtro4' }, { data: 'filtro5' }, { data: 'filtro6' }, { data: 'filtro7' }, { data: 'filtro8' }, {
-                data: {},
-                render: function render(data) {
-                    return '<span title="' + data.filtro9 + '">' + data.filtro9_sub + '</span>';
-                }
-            }, { data: 'filtro10' }, { data: 'filtro11' }, { data: 'unidad' }, { data: 'cantidad_presupuestada', className: 'text-right' }, { data: 'precio_unitario', className: 'text-right' }, { data: 'monto_presupuestado', className: 'text-right' }, {
-                data: {},
-                render: function render(data) {
-                    if (self.existe(data.id_concepto)) {
-                        return '<button class="btn btn-xs btn-default btn_remove_concepto" id="' + data.id_concepto + '"><i class="fa fa-minus text-red"></i></button>';
-                    }
-                    return '<button class="btn btn-xs btn-default btn_add_concepto" id="' + data.id_concepto + '"><i class="fa fa-plus text-green"></i></button>';
-                }
-            }],
-            language: {
-                "sProcessing": "Procesando...",
-                "sLengthMenu": "Mostrar _MENU_ registros",
-                "sZeroRecords": "No se encontraron resultados",
-                "sEmptyTable": "Ningún dato disponible en esta tabla",
-                "sInfo": "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
-                "sInfoEmpty": "Mostrando registros del 0 al 0 de un total de 0 registros",
-                "sInfoFiltered": "(filtrado de un total de _MAX_ registros)",
-                "sInfoPostFix": "",
-                "sSearch": "Buscar:",
-                "sUrl": "",
-                "sInfoThousands": ",",
-                "sLoadingRecords": "Cargando...",
-                "oPaginate": {
-                    "sFirst": "Primero",
-                    "sLast": "Último",
-                    "sNext": "Siguiente",
-                    "sPrevious": "Anterior"
-                },
-                "oAria": {
-                    "sSortAscending": ": Activar para ordenar la columna de manera ascendente",
-                    "sSortDescending": ": Activar para ordenar la columna de manera descendente"
-                }
-            }
-        });
     },
 
     methods: {
-        get_conceptos: function get_conceptos() {
-            var table = $('#conceptos_table').DataTable();
-            table.ajax.reload();
+
+        removePartida: function removePartida(index) {
+            Vue.delete(this.form.partidas, index);
         },
 
-        addConcepto: function addConcepto(id) {
-            var self = this;
-            $.ajax({
-                url: App.host + '/conceptos/' + id,
-                type: 'GET',
-                beforeSend: function beforeSend() {
-                    self.guardando = true;
-                    $('#' + id).html('<i class="fa fa-spin fa-spinner"></i>');
-                    $('#' + id).attr('disabled', true);
-                },
-                success: function success(response) {
-                    self.form.partidas.push(response);
-                    $('#' + id).html('<i class="fa fa-minus text-red"></i>');
-                    $('#' + id).removeClass('btn_add_concepto');
-                    $('#' + id).addClass('btn_remove_concepto');
-                },
-                complete: function complete() {
-                    self.guardando = false;
-                    $('#' + id).attr('disabled', false);
-                },
-                error: function error() {
-                    $('#' + id).html('<i class="fa fa-plus text-green"></i>');
-                }
-            });
+        addPartida: function addPartida() {
+            var partida = _.clone(this.escalatoria);
+            this.form.partidas.push(partida);
+            this.escalatoria = {
+                monto: '',
+                descripcion: ''
+            };
         },
-
-        existe: function existe(id) {
-            var found = this.form.partidas.find(function (partida) {
-                return partida.id_concepto == id;
-            });
-            return found != undefined;
-        },
-
         confirmSave: function confirmSave() {
             var self = this;
             swal({
@@ -20882,60 +20996,25 @@ Vue.component('variacion-volumen', {
         save: function save() {
             var self = this;
             $.ajax({
-                url: App.host + '/control_presupuesto/cambio_presupuesto',
+                url: App.host + '/control_presupuesto/escalatoria',
                 type: 'POST',
                 data: self.datos,
                 beforeSend: function beforeSend() {
-                    self.cargando = true;
+                    self.guardando = true;
                 },
                 success: function success(response) {
-
-                    var lista = [];
-
-                    // Ya existen solicitudes con las partidas seleccionadas
-                    if (typeof response.repetidas != 'undefined') {
-
-                        $.each(response.repetidas, function (key, value) {
-                            lista.push('<li class="list-group-item "><a href="' + App.host + '/control_presupuesto/cambio_presupuesto/' + value.id + '" onclick="swal.close();">#' + value.numero_folio + ' ' + (value.motivo.length >= 20 ? value.motivo.substring(0, 30) + '...' : value.motivo) + '</a></li>');
-                        });
-
-                        var texto = response.repetidas.length > 1 ? 'Ya existen solicitudes' : 'Ya existe una solicitud';
-
-                        swal({
-                            title: texto + " con los items seleccionados",
-                            html: '<ul class="list-group">' + lista.join(' ') + '</ul>',
-                            type: "warning",
-                            showConfirmButton: true,
-                            cancelButtonText: "Cancelar"
-                        });
-                        return;
-                    }
-
                     swal({
                         type: 'success',
                         title: '¡Correcto!',
                         html: 'Solicitud Guardada con Número de Folio <b>' + response.numero_folio + '</b>'
                     }).then(function () {
-                        window.location.href = App.host + '/control_presupuesto/cambio_presupuesto/' + response.id;
+                        window.location.href = App.host + '/control_presupuesto/escalatoria/' + response.id;
                     });
                 },
                 complete: function complete() {
-                    self.cargando = false;
+                    self.guardando = false;
                 }
             });
-        },
-
-        removeConcepto: function removeConcepto(id) {
-            var index = this.form.partidas.map(function (partida) {
-                return partida.id_concepto;
-            }).indexOf(parseInt(id));
-            this.form.partidas.splice(index, 1);
-            $('#' + id).html('<i class="fa fa-plus text-green"></i>');
-            $('#' + id).addClass('btn_add_concepto');
-            $('#' + id).removeClass('btn_remove_concepto');
-            if (!this.form.partidas.length) {
-                $('#conceptos_modal').modal('hide');
-            }
         },
 
         validateForm: function validateForm(scope, funcion) {
@@ -20943,6 +21022,7 @@ Vue.component('variacion-volumen', {
 
             this.$validator.validateAll(scope).then(function () {
                 if (funcion == 'save_solicitud') {
+
                     _this.confirmSave();
                 }
             }).catch(function () {
@@ -20951,6 +21031,155 @@ Vue.component('variacion-volumen', {
                     title: 'Advertencia',
                     text: 'Por favor corrija los errores del formulario'
                 });
+            });
+        }
+    }
+});
+
+},{}],38:[function(require,module,exports){
+'use strict';
+
+Vue.component('escalatoria-show', {
+    props: ['solicitud', 'cobrabilidad', 'presupuestos'],
+    data: function data() {
+        return {
+            form: {
+                solicitud: this.solicitud,
+                cobrabilidad: this.cobrabilidad
+            },
+            cargando: false,
+            rechazando: false,
+            autorizando: false,
+            consultando: false,
+            partidas: [],
+            importes: [],
+            partida_id: 0
+        };
+    },
+    mounted: function mounted() {
+        var self = this;
+
+        $(document).on('click', '.mostrar_pdf', function () {
+            var _this = $(this),
+                id = _this.data('pdf_id'),
+                url = App.host + '/control_presupuesto/escalatoria/' + id + '/pdf';
+
+            $('#pdf_modal').modal('show');
+            $('#pdf_modal .modal-content').css({ height: '700px' });
+            $('#pdf_modal .modal-body').html($('<iframe/>', {
+                id: 'formatoPDF',
+                src: url,
+                style: 'width:99.6%;height:100%',
+                frameborder: "0"
+            })).css({ height: '550px' });
+        });
+    },
+    methods: {
+        confirm_autorizar_solicitud: function confirm_autorizar_solicitud() {
+            var self = this;
+            var id = self.form.solicitud.id;
+            swal({
+                title: "Autorizar la Solicitud de Cambio",
+                html: "¿Estás seguro que desea actualizar la solicitud?",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonText: "Si, Continuar",
+                cancelButtonText: "No, Cancelar"
+            }).then(function (result) {
+                if (result.value) {
+                    self.autorizar_solicitud(id);
+                }
+            });
+        },
+        confirm_rechazar_solicitud: function confirm_rechazar_solicitud() {
+            var self = this;
+            var id = self.form.solicitud.id;
+            swal({
+                title: 'Rechazar Solicitud',
+                text: 'Motivo del rechazo',
+                input: 'text',
+                showCancelButton: true,
+                confirmButtonText: 'Rechazar ',
+                cancelButtonText: 'Cancelar',
+                showLoaderOnConfirm: false,
+                preConfirm: function preConfirm(motivo) {
+                    return new Promise(function (resolve) {
+                        if (motivo.length === 0) {
+                            swal.showValidationError('Por favor escriba un motivo para rechazar la solicitud.');
+                        }
+                        resolve();
+                    });
+                },
+                allowOutsideClick: function allowOutsideClick() {
+                    !swal.isLoading();
+                }
+            }).then(function (result) {
+                if (result.value) {
+                    self.rechazar_solicitud(id, result.value);
+                }
+            });
+        },
+        autorizar_solicitud: function autorizar_solicitud(id) {
+            var self = this;
+            var url = App.host + '/control_presupuesto/escalatoria/' + id + '/autorizar';
+            $.ajax({
+                type: 'POST',
+                url: url,
+                data: {
+                    id: id,
+                    id_tipo_orden: self.form.solicitud.id_tipo_orden
+                },
+                beforeSend: function beforeSend() {
+                    self.cargando = true;
+                    self.autorizando = true;
+                },
+                success: function success(data, textStatus, xhr) {
+                    swal({
+                        type: "success",
+                        title: '¡Correcto!',
+                        text: 'Solicitud autorizada correctamente.',
+                        confirmButtonText: "Ok",
+                        closeOnConfirm: false
+                    }).then(function () {
+                        window.location.reload(true);
+                    });
+                },
+                complete: function complete() {
+                    self.cargando = false;
+                    self.autorizando = false;
+                }
+            });
+        },
+        rechazar_solicitud: function rechazar_solicitud(id, motivo) {
+            var self = this;
+            var url = App.host + '/control_presupuesto/escalatoria/' + id + '/rechazar';
+            $.ajax({
+                type: 'POST',
+                url: url,
+                data: {
+                    id_solicitud_cambio: id,
+                    id_tipo_orden: self.form.solicitud.id_tipo_orden,
+                    motivo: motivo
+                },
+                beforeSend: function beforeSend() {
+                    self.cargando = true;
+                    self.rechazando = true;
+                },
+                success: function success(data, textStatus, xhr) {
+                    swal({
+                        type: "success",
+                        title: '¡Correcto!',
+                        text: 'Solicitud rechazada correctamente.',
+                        confirmButtonText: "Ok",
+                        closeOnConfirm: false
+                    }).then(function () {
+                        window.location.reload(true);
+                    });
+                },
+                complete: function complete() {
+                    self.cargando = false;
+                    self.rechazando = false;
+                }
             });
         }
     }
@@ -21166,6 +21395,618 @@ Vue.component('control_presupuesto-index', {
 });
 
 },{}],40:[function(require,module,exports){
+'use strict';
+
+Vue.component('variacion-volumen-create', {
+    data: function data() {
+        return {
+            tarjetas: {},
+            bases_afectadas: [],
+            id_tarjeta: '',
+            niveles: [{ nombre: 'Nivel 1', numero: 1 }, { nombre: 'Nivel 2', numero: 2 }, { nombre: 'Nivel 3', numero: 3 }, { nombre: 'Sector', numero: 4 }, { nombre: 'Cuadrante', numero: 5 }, { nombre: 'Especialidad', numero: 6 }, { nombre: 'Partida', numero: 7 }, { nombre: 'Sub Partida o Centa de costo', numero: 8 }, { nombre: 'Concepto', numero: 9 }, { nombre: 'Nivel 10', numero: 10 }, { nombre: 'Nivel 11', numero: 11 }],
+            form: {
+                partidas: [],
+                motivo: '',
+                area_solicitante: '',
+                afectaciones: []
+            },
+            cargando: false,
+            guardando: false,
+            cargando_tarjetas: true
+        };
+    },
+
+    computed: {
+        datos: function datos() {
+            var res = {
+                motivo: this.form.motivo,
+                afectaciones: this.form.afectaciones,
+                area_solicitante: this.form.area_solicitante,
+                partidas: []
+            };
+            this.form.partidas.forEach(function (value) {
+                res.partidas.push({
+                    id_concepto: value.id_concepto,
+                    cantidad_presupuestada_original: value.cantidad_presupuestada,
+                    variacion_volumen: value.variacion_volumen
+                });
+            });
+            return res;
+        },
+        subtotal: function subtotal() {
+            var res = 0;
+
+            this.form.partidas.forEach(function (partida) {
+                res += parseFloat(partida.monto_presupuestado);
+            });
+            return res;
+        }
+    },
+
+    watch: {
+        id_tarjeta: function id_tarjeta() {
+            this.get_conceptos();
+            this.form.partidas = [];
+        }
+    },
+
+    mounted: function mounted() {
+        var self = this;
+
+        self.fetchTarjetas().then(function () {
+            self.cargando_tarjetas = false;
+            $('#conceptos_table').DataTable({
+                "processing": true,
+                "serverSide": true,
+                "paging": false,
+                "ordering": true,
+                "searching": false,
+                "ajax": {
+                    "url": App.host + '/conceptos/getPathsConceptos',
+                    "type": "POST",
+                    "beforeSend": function beforeSend() {
+                        self.cargando = true;
+                    },
+                    "data": function data(d) {
+                        d.filtros = self.filtros;
+                        d.id_tarjeta = self.id_tarjeta;
+                    },
+                    "complete": function complete() {
+                        self.cargando = false;
+                    },
+                    "dataSrc": function dataSrc(json) {
+                        for (var i = 0; i < json.data.length; i++) {
+                            json.data[i].monto_presupuestado = '$' + parseFloat(json.data[i].monto_presupuestado).formatMoney(2, ',', '.');
+                            json.data[i].cantidad_presupuestada = parseFloat(json.data[i].cantidad_presupuestada).formatMoney(2, ',', '.');
+                            json.data[i].precio_unitario = '$' + parseFloat(json.data[i].precio_unitario).formatMoney(2, ',', '.');
+                            json.data[i].filtro9_sub = json.data[i].filtro9.length > 50 ? json.data[i].filtro9.substr(0, 50) + '...' : json.data[i].filtro9;
+                        }
+                        return json.data;
+                    }
+                },
+                "columns": [{ data: 'filtro1' }, { data: 'filtro2' }, { data: 'filtro3' }, { data: 'filtro4' }, { data: 'filtro5' }, { data: 'filtro6' }, { data: 'filtro7' }, { data: 'filtro8' }, {
+                    data: {},
+                    render: function render(data) {
+                        return '<span title="' + data.filtro9 + '">' + data.filtro9_sub + '</span>';
+                    }
+                }, { data: 'filtro10' }, { data: 'filtro11' }, { data: 'unidad' }, { data: 'cantidad_presupuestada', className: 'text-right' }, { data: 'precio_unitario', className: 'text-right' }, { data: 'monto_presupuestado', className: 'text-right' }, {
+                    data: {},
+                    render: function render(data) {
+                        if (self.existe(data.id_concepto)) {
+                            return '<button class="btn btn-xs btn-default btn_remove_concepto" id="' + data.id_concepto + '"><i class="fa fa-minus text-red"></i></button>';
+                        }
+                        return '<button class="btn btn-xs btn-default btn_add_concepto" id="' + data.id_concepto + '"><i class="fa fa-plus text-green"></i></button>';
+                    }
+                }],
+                language: {
+                    "sProcessing": "Procesando...",
+                    "sLengthMenu": "Mostrar _MENU_ registros",
+                    "sZeroRecords": "No se encontraron resultados",
+                    "sEmptyTable": "Ningún dato disponible en esta tabla",
+                    "sInfo": "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
+                    "sInfoEmpty": "Mostrando registros del 0 al 0 de un total de 0 registros",
+                    "sInfoFiltered": "(filtrado de un total de _MAX_ registros)",
+                    "sInfoPostFix": "",
+                    "sSearch": "Buscar:",
+                    "sUrl": "",
+                    "sInfoThousands": ",",
+                    "sLoadingRecords": "Cargando...",
+                    "oPaginate": {
+                        "sFirst": "Primero",
+                        "sLast": "Último",
+                        "sNext": "Siguiente",
+                        "sPrevious": "Anterior"
+                    },
+                    "oAria": {
+                        "sSortAscending": ": Activar para ordenar la columna de manera ascendente",
+                        "sSortDescending": ": Activar para ordenar la columna de manera descendente"
+                    }
+                }
+            });
+        });
+        self.fetchPresupuestos();
+
+        $(document).on('click', '.btn_add_concepto', function () {
+            var id = $(this).attr('id');
+            self.addConcepto(id);
+        }).on('click', '.btn_remove_concepto', function () {
+            var id = $(this).attr('id');
+            self.removeConcepto(id);
+        });
+    },
+
+    methods: {
+        fetchTarjetas: function fetchTarjetas() {
+            var self = this;
+            return new Promise(function (resolve, reject) {
+                $.ajax({
+                    url: App.host + '/control_presupuesto/tarjeta/lists',
+                    type: 'GET',
+                    beforeSend: function beforeSend() {
+                        self.cargando = true;
+                    },
+                    success: function success(response) {
+                        self.tarjetas = response;
+                    },
+                    complete: function complete() {
+                        self.cargando = false;
+                        resolve();
+                    }
+                });
+            });
+        },
+
+        fetchPresupuestos: function fetchPresupuestos() {
+            var self = this;
+
+            var url = App.host + '/control_presupuesto/variacion_volumen/getBasesAfectadas';
+            $.ajax({
+                type: 'GET',
+                url: url,
+                beforeSend: function beforeSend() {
+                    self.cargando = true;
+                },
+                success: function success(data, textStatus, xhr) {
+                    self.bases_afectadas = data;
+                },
+                complete: function complete() {
+                    self.cargando = false;
+                }
+            });
+        },
+
+        get_conceptos: function get_conceptos() {
+            var table = $('#conceptos_table').DataTable();
+            table.ajax.reload();
+        },
+
+        addConcepto: function addConcepto(id) {
+            var self = this;
+            $.ajax({
+                url: App.host + '/conceptos/' + id,
+                type: 'GET',
+                beforeSend: function beforeSend() {
+                    self.guardando = true;
+                    $('#' + id).html('<i class="fa fa-spin fa-spinner"></i>');
+                    $('#' + id).attr('disabled', true);
+                },
+                success: function success(response) {
+                    self.form.partidas.push(response);
+                    $('#' + id).html('<i class="fa fa-minus text-red"></i>');
+                    $('#' + id).removeClass('btn_add_concepto');
+                    $('#' + id).addClass('btn_remove_concepto');
+                },
+                complete: function complete() {
+                    self.guardando = false;
+                    $('#' + id).attr('disabled', false);
+                },
+                error: function error() {
+                    $('#' + id).html('<i class="fa fa-plus text-green"></i>');
+                }
+            });
+        },
+
+        existe: function existe(id) {
+            var found = this.form.partidas.find(function (partida) {
+                return partida.id_concepto == id;
+            });
+            return found != undefined;
+        },
+
+        confirmSave: function confirmSave() {
+            var self = this;
+            swal({
+                title: 'Guardar Solicitud de Cambio',
+                text: "¿Está seguro de que la información es correcta?",
+                type: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Si, Guardar',
+                cancelButtonText: 'No, Cancelar'
+            }).then(function (result) {
+                if (result.value) {
+                    self.save();
+                }
+            });
+        },
+
+        save: function save() {
+            var self = this;
+            $.ajax({
+                url: App.host + '/control_presupuesto/variacion_volumen',
+                type: 'POST',
+                data: self.datos,
+                beforeSend: function beforeSend() {
+                    self.cargando = true;
+                },
+                success: function success(response) {
+
+                    var lista = [];
+
+                    // Ya existen solicitudes con las partidas seleccionadas
+                    if (typeof response.repetidas != 'undefined') {
+
+                        $.each(response.repetidas, function (key, value) {
+                            lista.push('<li class="list-group-item "><a href="' + App.host + '/control_presupuesto/variacion_volumen/' + value.id + '" onclick="swal.close();">#' + value.numero_folio + ' ' + (value.motivo.length >= 20 ? value.motivo.substring(0, 30) + '...' : value.motivo) + '</a></li>');
+                        });
+
+                        var texto = response.repetidas.length > 1 ? 'Ya existen solicitudes' : 'Ya existe una solicitud';
+
+                        swal({
+                            title: texto + " con los items seleccionados",
+                            html: '<ul class="list-group">' + lista.join(' ') + '</ul>',
+                            type: "warning",
+                            showConfirmButton: true,
+                            cancelButtonText: "Cancelar"
+                        });
+                        return;
+                    }
+                    swal({
+                        type: 'success',
+                        title: '¡Correcto!',
+                        html: 'Solicitud Guardada con Número de Folio <b>' + response.numero_folio + '</b>'
+                    }).then(function () {
+                        window.location.href = App.host + '/control_presupuesto/variacion_volumen/' + response.id;
+                    });
+                },
+                complete: function complete() {
+                    self.cargando = false;
+                }
+            });
+        },
+
+        removeConcepto: function removeConcepto(id) {
+            var index = this.form.partidas.map(function (partida) {
+                return partida.id_concepto;
+            }).indexOf(parseInt(id));
+            this.form.partidas.splice(index, 1);
+            $('#' + id).html('<i class="fa fa-plus text-green"></i>');
+            $('#' + id).addClass('btn_add_concepto');
+            $('#' + id).removeClass('btn_remove_concepto');
+            if (!this.form.partidas.length) {
+                $('#conceptos_modal').modal('hide');
+            }
+        },
+
+        validateForm: function validateForm(scope, funcion) {
+            var _this = this;
+
+            this.$validator.validateAll(scope).then(function () {
+                if (funcion == 'save_solicitud') {
+                    _this.confirmSave();
+                }
+            }).catch(function () {
+                swal({
+                    type: 'warning',
+                    title: 'Advertencia',
+                    text: 'Por favor corrija los errores del formulario'
+                });
+            });
+        }
+    }
+});
+
+},{}],41:[function(require,module,exports){
+'use strict';
+
+Vue.component('variacion-volumen-show', {
+    props: ['solicitud', 'cobrabilidad', 'presupuestos'],
+    data: function data() {
+        return {
+            form: {
+                solicitud: this.solicitud,
+                cobrabilidad: this.cobrabilidad,
+                afectaciones: []
+            },
+            cargando: false,
+            rechazando: false,
+            autorizando: false,
+            consultando: false,
+            partidas: [],
+            importes: [],
+            partida_id: 0
+        };
+    },
+
+    mounted: function mounted() {
+
+        this.fillAfectaciones();
+
+        $(document).on('click', '.mostrar_pdf', function () {
+            var _this = $(this),
+                id = _this.data('pdf_id'),
+                url = App.host + '/control_presupuesto/variacion_volumen/' + id + '/pdf';
+
+            $('#pdf_modal').modal('show');
+            $('#pdf_modal .modal-body').html($('<iframe/>', {
+                id: 'formatoPDF',
+                src: url,
+                style: 'width:99.6%;height:100%',
+                frameborder: "0"
+            })).css({ height: '550px' });
+        });
+    },
+    methods: {
+        confirm_autorizar_solicitud: function confirm_autorizar_solicitud() {
+            var self = this;
+            var id = self.form.solicitud.id;
+
+            swal({
+                title: "Autorizar la Solicitud de Cambio",
+                html: "¿Estás seguro que desea actualizar la solicitud?",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonText: "Si, Continuar",
+                cancelButtonText: "No, Cancelar"
+            }).then(function (result) {
+                if (result.value) {
+                    self.autorizar(id);
+                }
+            });
+        },
+        confirm_aplicar_solicitud: function confirm_aplicar_solicitud() {
+            var self = this;
+            var id = self.form.solicitud.id;
+
+            swal({
+                title: "Aplicar cambios a la Solicitud de Cambio",
+                html: "¿Estás seguro que desea actualizar la solicitud?",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonText: "Si, Continuar",
+                cancelButtonText: "No, Cancelar"
+            }).then(function (result) {
+                if (result.value) {
+                    self.aplicar(id);
+                }
+            });
+        },
+        confirm_rechazar_solicitud: function confirm_rechazar_solicitud() {
+            var self = this;
+            var id = self.form.solicitud.id;
+
+            $('.rechazar_solicitud').addClass('disabled');
+
+            swal({
+                title: 'Rechazar Solicitud',
+                text: 'Motivo del rechazo',
+                input: 'text',
+                showCancelButton: true,
+                confirmButtonText: 'Rechazar ',
+                cancelButtonText: 'Cancelar',
+                showLoaderOnConfirm: false,
+                preConfirm: function preConfirm(motivo) {
+                    return new Promise(function (resolve) {
+                        if (motivo.length === 0) {
+                            swal.showValidationError('Por favor escriba un motivo para rechazar la solicitud.');
+                        }
+                        resolve();
+                    });
+                },
+                allowOutsideClick: function allowOutsideClick() {
+                    !swal.isLoading();
+                }
+            }).then(function (result) {
+                if (result.value) {
+                    self.rechazar_solicitud(id, result.value);
+                } else {
+                    $('.rechazar_solicitud').removeClass('disabled');
+                }
+            });
+        },
+        autorizar: function autorizar(id) {
+            var self = this;
+            var url = App.host + '/control_presupuesto/variacion_volumen/' + id + '/autorizar';
+            $.ajax({
+                type: 'POST',
+                url: url,
+                data: {
+                    id_tipo_orden: self.form.solicitud.id_tipo_orden,
+                    afectaciones: self.form.afectaciones
+                },
+                beforeSend: function beforeSend() {
+                    self.cargando = true;
+                    self.autorizando = true;
+                },
+                success: function success(data, textStatus, xhr) {
+                    swal({
+                        type: "success",
+                        title: '¡Correcto!',
+                        text: 'Solicitud autorizada correctamente.',
+                        confirmButtonText: "Ok",
+                        closeOnConfirm: false
+                    }).then(function () {
+                        window.location.reload(true);
+                    });
+                },
+                complete: function complete() {
+                    self.cargando = false;
+                    self.autorizando = false;
+                    $('.autorizar_solicitud').removeClass('disabled');
+                }
+            });
+        },
+        aplicar: function aplicar(id) {
+            var self = this;
+            var url = App.host + '/control_presupuesto/variacion_volumen/' + id + '/aplicar';
+            $.ajax({
+                type: 'POST',
+                url: url,
+                data: {
+                    id_tipo_orden: self.form.solicitud.id_tipo_orden,
+                    afectaciones: self.form.afectaciones
+                },
+                beforeSend: function beforeSend() {
+                    self.cargando = true;
+                    self.autorizando = true;
+                },
+                success: function success(data, textStatus, xhr) {
+                    swal({
+                        type: "success",
+                        title: '¡Correcto!',
+                        text: 'Solicitud aplicada correctamente.',
+                        confirmButtonText: "Ok",
+                        closeOnConfirm: false
+                    }).then(function () {
+                        window.location.reload(true);
+                    });
+                },
+                complete: function complete() {
+                    self.cargando = false;
+                    self.autorizando = false;
+                }
+            });
+        },
+        rechazar_solicitud: function rechazar_solicitud(id, motivo) {
+            var self = this;
+            var url = App.host + '/control_presupuesto/variacion_volumen/' + id + '/rechazar';
+            $.ajax({
+                type: 'POST',
+                url: url,
+                data: {
+                    id_tipo_orden: self.form.solicitud.id_tipo_orden,
+                    motivo: motivo
+                },
+                beforeSend: function beforeSend() {
+                    self.cargando = true;
+                    self.rechazando = true;
+                },
+                success: function success(data, textStatus, xhr) {
+                    swal({
+                        type: "success",
+                        title: '¡Correcto!',
+                        text: 'Solicitud rechazada correctamente.',
+                        confirmButtonText: "Ok",
+                        closeOnConfirm: false
+                    }).then(function () {
+                        window.location.reload(true);
+                    });
+                },
+                complete: function complete() {
+                    self.cargando = false;
+                    self.rechazando = false;
+                    $('.rechazar_solicitud').removeClass('disabled');
+                }
+            });
+        },
+        mostrar_detalle_partida: function mostrar_detalle_partida(id) {
+            var self = this;
+            var partida = id;
+            self.partida_id = id;
+            var presupuesto = self.presupuestos[0].base_datos.id;
+            $('#divDetalle').fadeOut();
+
+            var url = App.host + '/control_presupuesto/cambio_presupuesto_partida/detallePresupuesto';
+            $.ajax({
+                type: 'POST',
+                data: {
+                    id_partida: partida,
+                    presupuesto: presupuesto
+                },
+                url: url,
+                beforeSend: function beforeSend() {
+                    self.cargando = true;
+                    self.consultando = true;
+                },
+                success: function success(data, textStatus, xhr) {
+                    self.partidas = data.data;
+                    $('#divDetalle').fadeIn();
+                },
+                complete: function complete() {
+                    self.cargando = false;
+                    self.consultando = false;
+                }
+            });
+        },
+        mostrar_detalle_presupuesto: function mostrar_detalle_presupuesto(idPresupuesto) {
+            var self = this;
+            var partida = self.partida_id;
+            var presupuesto = idPresupuesto;
+            $('#divDetalle').fadeOut();
+
+            var url = App.host + '/control_presupuesto/cambio_presupuesto_partida/detallePresupuesto';
+            $.ajax({
+                type: 'POST',
+                data: {
+                    id_partida: partida,
+                    presupuesto: presupuesto
+                },
+                url: url,
+                beforeSend: function beforeSend() {
+                    self.cargando = true;
+                    self.consultando = true;
+                },
+                success: function success(data, textStatus, xhr) {
+                    self.partidas = data.data;
+                    $('#divDetalle').fadeIn();
+                },
+                complete: function complete() {
+                    self.cargando = false;
+                    self.consultando = false;
+                }
+            });
+        },
+        fillAfectaciones: function fillAfectaciones() {
+            var self = this;
+            self.form.afectaciones = [];
+            self.solicitud.aplicaciones.forEach(function (value) {
+                self.form.afectaciones.push(value.id);
+            });
+        },
+        aplicada: function aplicada(id) {
+            var res = false;
+            this.solicitud.aplicaciones.forEach(function (value) {
+                if (id == value.id && value.pivot.aplicada == 1) {
+                    res = true;
+                }
+            });
+            return res;
+        },
+        validateForm: function validateForm(scope, funcion) {
+            var _this2 = this;
+
+            this.$validator.validateAll(scope).then(function () {
+                switch (funcion) {
+                    case 'autorizar_solicitud':
+                        _this2.confirm_autorizar_solicitud();
+                        break;
+                    case 'aplicar_solicitud':
+                        _this2.confirm_aplicar_solicitud();
+                        break;
+                }
+            }).catch(function () {
+                swal({
+                    type: 'warning',
+                    title: 'Advertencia',
+                    text: 'Por favor corrija los errores del formulario'
+                });
+            });
+        }
+    }
+});
+
+},{}],42:[function(require,module,exports){
 'use strict';
 
 Vue.component('comprobante-fondo-fijo-create', {
@@ -21666,7 +22507,7 @@ Vue.component('comprobante-fondo-fijo-create', {
     }
 });
 
-},{}],41:[function(require,module,exports){
+},{}],43:[function(require,module,exports){
 'use strict';
 
 Vue.component('comprobante-fondo-fijo-edit', {
@@ -22122,7 +22963,7 @@ Vue.component('comprobante-fondo-fijo-edit', {
     }
 });
 
-},{}],42:[function(require,module,exports){
+},{}],44:[function(require,module,exports){
 'use strict';
 
 Vue.component('comprobante-fondo-fijo-index', {
@@ -22237,7 +23078,7 @@ Vue.component('comprobante-fondo-fijo-index', {
     }
 });
 
-},{}],43:[function(require,module,exports){
+},{}],45:[function(require,module,exports){
 'use strict';
 
 Vue.component('subcontratos-estimacion', {
@@ -22316,7 +23157,7 @@ Vue.component('subcontratos-estimacion', {
     }
 });
 
-},{}],44:[function(require,module,exports){
+},{}],46:[function(require,module,exports){
 'use strict';
 
 Vue.component('movimientos_bancarios-index', {
@@ -22667,7 +23508,7 @@ Vue.component('movimientos_bancarios-index', {
     }
 });
 
-},{}],45:[function(require,module,exports){
+},{}],47:[function(require,module,exports){
 'use strict';
 
 Vue.component('traspaso-cuentas-index', {
@@ -22980,7 +23821,7 @@ Vue.component('traspaso-cuentas-index', {
     }
 });
 
-},{}],46:[function(require,module,exports){
+},{}],48:[function(require,module,exports){
 'use strict';
 
 Vue.component('app-errors', {
@@ -22989,7 +23830,7 @@ Vue.component('app-errors', {
     template: require('./templates/errors.html')
 });
 
-},{"./templates/errors.html":50}],47:[function(require,module,exports){
+},{"./templates/errors.html":52}],49:[function(require,module,exports){
 'use strict';
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
@@ -23015,7 +23856,7 @@ Vue.component('global-errors', {
   }
 });
 
-},{"./templates/global-errors.html":51}],48:[function(require,module,exports){
+},{"./templates/global-errors.html":53}],50:[function(require,module,exports){
 'use strict';
 
 Vue.component('kardex-material-index', {
@@ -23165,7 +24006,7 @@ Vue.component('kardex-material-index', {
 
 });
 
-},{}],49:[function(require,module,exports){
+},{}],51:[function(require,module,exports){
 'use strict';
 
 Vue.component('select2', {
@@ -23221,9 +24062,9 @@ Vue.component('select2', {
     }
 });
 
-},{}],50:[function(require,module,exports){
+},{}],52:[function(require,module,exports){
 module.exports = '<div id="form-errors" v-cloak>\n  <div class="alert alert-danger" v-if="form.errors.length">\n    <ul>\n      <li v-for="error in form.errors">{{ error }}</li>\n    </ul>\n  </div>\n</div>';
-},{}],51:[function(require,module,exports){
+},{}],53:[function(require,module,exports){
 module.exports = '<div class="alert alert-danger" v-show="errors.length">\n  <ul>\n    <li v-for="error in errors">{{ error }}</li>\n  </ul>\n</div>';
 },{}]},{},[4]);
 
