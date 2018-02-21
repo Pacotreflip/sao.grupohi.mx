@@ -26,7 +26,8 @@ class SolicitudCambio extends BaseModel
         'id_tipo_orden',
         'motivo',
         'numero_folio',
-        'id_obra'
+        'id_obra',
+        'area_solicitante'
     ];
 
     protected static function boot()

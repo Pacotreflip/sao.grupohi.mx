@@ -12,12 +12,9 @@ use Carbon\Carbon;
 use Ghi\Core\Facades\Context;
 
 use Ghi\Domain\Core\Contracts\ControlPresupuesto\SolicitudCambioPartidaRepository;
-use Ghi\Domain\Core\Models\Concepto;
 use Ghi\Domain\Core\Models\ControlPresupuesto\AfectacionOrdenesPresupuesto;
-use Ghi\Domain\Core\Models\ControlPresupuesto\BasePresupuesto;
-use Ghi\Domain\Core\Models\ControlPresupuesto\Estatus;
-use Ghi\Domain\Core\Models\ControlPresupuesto\SolicitudCambio;
 use Ghi\Domain\Core\Models\ControlPresupuesto\SolicitudCambioPartidaHistorico;
+use Ghi\Domain\Core\Models\ControlPresupuesto\VariacionVolumen;
 use Ghidev\Fpdf\Rotation;
 use Ghi\Domain\Core\Models\Obra;
 use Illuminate\Support\Facades\DB;
@@ -48,10 +45,10 @@ class PDFVariacionVolumen extends Rotation {
 
     /**
      * Solicitudes constructor.
-     * @param SolicitudCambio|SolicitudCambioRepository $solicitud
+     * @param VariacionVolumen $solicitud
      * @param SolicitudCambioPartidaRepository $partidas
      */
-    public function __construct(SolicitudCambio $solicitud, SolicitudCambioPartidaRepository $partidas)
+    public function __construct(VariacionVolumen $solicitud, SolicitudCambioPartidaRepository $partidas)
     {
         parent::__construct('L', 'cm', 'A4');
 
@@ -139,7 +136,8 @@ class PDFVariacionVolumen extends Rotation {
             $this->SetAligns(array('C'));
 
         }
-        else if ($this->encola == 'resumen_h') {$this->SetX(($this->WidthTotal / 2) - 4.5);
+        else if ($this->encola == 'resumen_h') {
+            $this->SetX(($this->WidthTotal * .6) + 1);
             $this->SetFont('Arial', '', 6);
             $this->SetStyles(array('DF', 'DF'));
             $this->SetFills(array('180,180,180', '180,180,180'));
@@ -153,7 +151,7 @@ class PDFVariacionVolumen extends Rotation {
             $this->SetHeights(array(0.38));
             $this->SetAligns(array('L', 'R'));
             $this->SetWidths(array(0.2* $this->WidthTotal, 0.2* $this->WidthTotal));
-            $this->SetX(($this->WidthTotal / 2) - 4.5);
+            $this->SetX(($this->WidthTotal * .6) + 1);
         }
     }
 
@@ -197,7 +195,7 @@ class PDFVariacionVolumen extends Rotation {
         $this->SetX($x);
         $this->Cell(0.125 * $this->WidthTotal, 0.35, utf8_decode('Número de Folio:'), '', 0, 'LB');
         $this->SetFont('Arial', '', '#'.$this->txtContenidoTam);
-        $this->CellFitScale(0.375 * $this->WidthTotal, 0.35, utf8_decode($this->solicitud->numero_folio), '', 1, 'L');
+        $this->CellFitScale(0.375 * $this->WidthTotal, 0.35, utf8_decode('#' . $this->solicitud->numero_folio), '', 1, 'L');
 
         $this->SetFont('Arial', 'B', '#'.$this->txtContenidoTam);
         $this->SetX($x);
@@ -348,8 +346,8 @@ class PDFVariacionVolumen extends Rotation {
 
     function resumen($data = array())
     {
-        $this->Ln( );
-        $this->SetX(($this->WidthTotal / 2) - 4.5);
+        $this->Ln();
+        $this->SetX(($this->WidthTotal * .6) + 1);
         $this->SetFont('Arial', '', 6);
         $this->SetStyles(array('DF', 'DF'));
         $this->SetFills(array('180,180,180', '180,180,180'));
@@ -364,11 +362,11 @@ class PDFVariacionVolumen extends Rotation {
         $this->SetTextColors(array('0,0,0', '0,0,0'));
         $this->SetHeights(array(0.38));
         $this->SetAligns(array('L', 'R'));
-        $this->SetWidths(array(0.2 * $this->WidthTotal, 0.2* $this->WidthTotal));
+        $this->SetWidths(array(0.2 * $this->WidthTotal, 0.2 * $this->WidthTotal));
 
         foreach ($data as $nombre => $valor)
         {
-            $this->SetX(($this->WidthTotal / 2) - 4.5);
+            $this->SetX(($this->WidthTotal * .6) + 1);
             $this->Row([$nombre, $valor]);
         }
 
@@ -487,31 +485,6 @@ class PDFVariacionVolumen extends Rotation {
         $this->SetY($this->GetPageHeight() - 1.3);
         $this->SetFont('Arial', 'B', $this->txtFooterTam);
         $this->Cell(6.5, .4, utf8_decode('Formato generado desde SAO.'), 0, 0, 'L');
-
-        //if($this->solicitud->id_estatus == Estatus::GENERADA) {
-        //    $this->SetFont('Arial','',80);
-        //    $this->SetTextColor(204,204,204);
-        //    $this->RotatedText(7,17,utf8_decode("PENDIENTE DE"),45);
-        //    $this->RotatedText(9.5,18,utf8_decode("AUTORIZACIÓN"),45);
-        //    $this->SetTextColor('0,0,0');
-        //}
-        //
-        //elseif ($this->solicitud->id_estatus == Estatus::AUTORIZADA && !$this->solicitud->aplicada)
-        //{
-        //    $this->SetFont('Arial','',80);
-        //    $this->SetTextColor(204,204,204);
-        //    $this->RotatedText(7,17,utf8_decode("AUTORIZADA"),45);
-        //    $this->RotatedText(9.5,18,utf8_decode("NO APLICADA"),45);
-        //    $this->SetTextColor('0,0,0');
-        //}
-        //
-        //elseif ($this->solicitud->id_estatus == Estatus::RECHAZADA)
-        //{
-        //    $this->SetFont('Arial','',80);
-        //    $this->SetTextColor(204,204,204);
-        //    $this->RotatedText(7,17,utf8_decode("RECHAZADA"),45);
-        //    $this->SetTextColor('0,0,0');
-        //}
     }
 
     function RotatedText($x,$y,$txt,$angle)
@@ -532,7 +505,7 @@ class PDFVariacionVolumen extends Rotation {
         try {
             $this->Output('I', 'Solicitud de cambio ('. $this->solicitud->tipoOrden->descripcion .')#'. $this->solicitud->numero_folio .'.pdf', 1);
         } catch (\Exception $ex) {
-            dd($ex);
+            throw $ex;
         }
         exit;
     }

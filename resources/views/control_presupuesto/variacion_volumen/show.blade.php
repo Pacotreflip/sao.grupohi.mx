@@ -2,14 +2,16 @@
 @section('title', 'Cambios al Presupuesto')
 @section('contentheader_title', 'VARIACIÓN DE VOLÚMEN (ADITIVAS Y DEDUCTIVAS)')
 @section('breadcrumb')
-    {!! Breadcrumbs::render('control_presupuesto.variacion_volumen.show', $variacion_volumen) !!}
+    {!! Breadcrumbs::render('control_presupuesto.variacion_volumen.show',$variacion_volumen) !!}
 @endsection
 @section('main-content')
+
     <variacion-volumen-show
             inline-template
-            v-cloak
-            :id_variacion_volumen="{{$variacion_volumen->id}}"
-    >
+            :solicitud="{{$variacion_volumen}}"
+            :cobrabilidad="{{$cobrabilidad->toJson()}}"
+            :presupuestos="{{$presupuestos->toJson()}}"
+            v-cloak>
         <section>
             <div class="row">
                 <div class="col-md-12">
@@ -35,26 +37,22 @@
                         </div>
                         <!-- /.box-header -->
                         <div class="box-body">
-                            <strong>Tipo de Orden de Cambio:</strong>
+                            <strong>Tipo de Solicitud de Cambio:</strong>
                             <p class="text-muted">@{{solicitud.tipo_orden.descripcion}}</p>
-                            <hr>
                             <strong>Cobrabilidad:</strong>
                             <p class="text-muted">@{{ cobrabilidad.descripcion}}</p>
-                            <hr>
-                            <strong>Folio de la solicitud:</strong>
-                            <p class="text-muted">@{{ solicitud.numero_folio}}</p>
-                            <hr>
+                            <strong>Número de Folio:</strong>
+                            <p class="text-muted">#@{{ solicitud.numero_folio}}</p>
+                            <strong>Area Solicitante:</strong>
+                            <p class="text-muted">@{{ solicitud.area_solicitante}}</p>
                             <strong>Motivo:</strong>
                             <p class="text-muted">@{{solicitud.motivo}}</p>
-                            <hr>
                             <strong>Usuario que Solicita:</strong>
                             <p class="text-muted">@{{solicitud.user_registro.apaterno +' '+ solicitud.user_registro.amaterno+' '+solicitud.user_registro.nombre}}</p>
-                            <hr>
                             <strong>Fecha de solicitud:</strong>
                             <p class="text-muted">@{{solicitud.fecha_solicitud}}</p>
-                            <hr>
                             <strong>Estatus:</strong>
-                            <p class="text-muted">@{{solicitud.estatus.descripcion.toUpperCase()}} {{ strtoupper($aplicadaTitulo) }}</p>
+                            <p class="text-muted">@{{  solicitud.estatus.descripcion.toUpperCase() + ' (' + (solicitud.aplicada ? 'APLICADA' : 'NO APLICADA') + ')' }}</p>
                         </div>
                         <!-- /.box-body -->
                     </div>
@@ -86,7 +84,7 @@
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    @foreach($solicitud->partidas as $index => $partida)
+                                    @foreach($variacion_volumen->partidas as $index => $partida)
                                         <tr title="{{  $partida->concepto }}" style="cursor: pointer" v-on:click="mostrar_detalle_partida({{$partida->id}})">
                                             <td>{{ $index + 1 }}</td>
                                             <td>{{ $partida->numeroTarjeta ? $partida->numeroTarjeta->descripcion : '' }}</td>
