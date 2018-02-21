@@ -279,7 +279,8 @@ class EloquentSolicitudCambioRepository implements SolicitudCambioRepository
         return $solicitud;
     }
 
-    public function aplicarVariacionVolumen($solicitud, $id_base_presupuesto) {
+    public function aplicarVariacionVolumen($solicitud, $id_base_presupuesto)
+    {
         $db = BasePresupuesto::find($id_base_presupuesto);
 
         foreach ($solicitud->partidas as $partida) {
@@ -289,92 +290,92 @@ class EloquentSolicitudCambioRepository implements SolicitudCambioRepository
                 //////////////////////////////////// sin clave de concepto
             }
             //foreach ($basesAfectadas as $basePresupuesto) { /////////seleccionamos el tipo de presupuesto a afectar
-                $concepto = DB::connection('cadeco')->table($db->base_datos . ".dbo.conceptos")->select('*')->where('clave_concepto', '=', $conceptoSolicitud->clave_concepto)->first();
-                if (!$concepto) {
-                    throw new HttpResponseException(new Response('El concepto ' . $conceptoSolicitud->descripcion . ' no cuenta con clave de concepto registrada en ' . $db->base_datos, 404));
+            $concepto = DB::connection('cadeco')->table($db->base_datos . ".dbo.conceptos")->select('*')->where('clave_concepto', '=', $conceptoSolicitud->clave_concepto)->first();
+            if (!$concepto) {
+                throw new HttpResponseException(new Response('El concepto ' . $conceptoSolicitud->descripcion . ' no cuenta con clave de concepto registrada en ' . $db->base_datos, 404));
+
+            }
+
+            $monto_presupuestado_original = $concepto->monto_presupuestado;
+
+            $cantidad_presupuestada_original = $concepto->cantidad_presupuestada;
+            $cantidad_presupuestada_actualizada = $cantidad_presupuestada_original + $partida->variacion_volumen;
+            $factor = $cantidad_presupuestada_actualizada / $cantidad_presupuestada_original;
+
+
+            //propagacion hacia abajo
+            $conceptos_propagacion = DB::connection('cadeco')->table($db->base_datos . ".dbo.conceptos")->where('nivel', 'like', $concepto->nivel . '%')->where('id_obra', '=', Context::getId())->orderBy('nivel', 'ASC')->get();
+
+            $afectacion = 0;
+
+            foreach ($conceptos_propagacion as $concepto_propagacion) {
+                if ($afectacion > 0) {
+                    //Guardar un registro en una tabla de historicos para conservar la imagen de la solicitud en el momento de la autorización
+                    SolicitudCambioPartidaHistorico::create([
+                        'id_solicitud_cambio_partida' => $partida->id,
+                        'id_base_presupuesto' => $db->id,
+                        'nivel' => $concepto_propagacion->nivel,
+                        'cantidad_presupuestada_original' => $concepto_propagacion->cantidad_presupuestada,
+                        'cantidad_presupuestada_actualizada' => $concepto_propagacion->cantidad_presupuestada * $factor,
+                        'monto_presupuestado_original' => $concepto_propagacion->monto_presupuestado,
+                        'monto_presupuestado_actualizado' => $concepto_propagacion->monto_presupuestado * $factor
+                    ]);
+
+                    //Actualizar las cantidades en la base de datos del presupuesto
+                    DB::connection('cadeco')->table($db->base_datos . ".dbo.conceptos")
+                        ->where('id_concepto', $concepto_propagacion->id_concepto)
+                        ->update(['cantidad_presupuestada' => $concepto_propagacion->cantidad_presupuestada * $factor, 'monto_presupuestado' => $concepto_propagacion->monto_presupuestado * $factor]);
 
                 }
-
-                $monto_presupuestado_original = $concepto->monto_presupuestado;
-
-                $cantidad_presupuestada_original = $concepto->cantidad_presupuestada;
-                $cantidad_presupuestada_actualizada = $cantidad_presupuestada_original + $partida->variacion_volumen;
-                $factor = $cantidad_presupuestada_actualizada / $cantidad_presupuestada_original;
+                $afectacion++;
+            }
 
 
-                //propagacion hacia abajo
-                $conceptos_propagacion = DB::connection('cadeco')->table($db->base_datos . ".dbo.conceptos")->where('nivel', 'like', $concepto->nivel . '%')->where('id_obra', '=', Context::getId())->orderBy('nivel', 'ASC')->get();
+            SolicitudCambioPartidaHistorico::create([
+                'id_solicitud_cambio_partida' => $partida->id,
+                'id_base_presupuesto' => $db->id,
+                'nivel' => $concepto->nivel,
+                'cantidad_presupuestada_original' => $concepto->cantidad_presupuestada,
+                'cantidad_presupuestada_actualizada' => $concepto->cantidad_presupuestada * $factor,
+                'monto_presupuestado_original' => $concepto->monto_presupuestado,
+                'monto_presupuestado_actualizado' => $concepto->monto_presupuestado * $factor
+            ]);
 
-                $afectacion = 0;
+            DB::connection('cadeco')->table($db->base_datos . ".dbo.conceptos")
+                ->where('id_concepto', $concepto->id_concepto)
+                ->update(['cantidad_presupuestada' => $concepto->cantidad_presupuestada * $factor, 'monto_presupuestado' => $concepto->monto_presupuestado * $factor]);
+            $conc = DB::connection('cadeco')->table($db->base_datos . ".dbo.conceptos")->where('id_concepto', '=', $concepto->id_concepto)->where('id_obra', '=', Context::getId())->first();
 
-                foreach ($conceptos_propagacion as $concepto_propagacion) {
-                    if ($afectacion > 0) {
-                        //Guardar un registro en una tabla de historicos para conservar la imagen de la solicitud en el momento de la autorización
-                        SolicitudCambioPartidaHistorico::create([
-                            'id_solicitud_cambio_partida' => $partida->id,
-                            'id_base_presupuesto' => $db->id,
-                            'nivel' => $concepto_propagacion->nivel,
-                            'cantidad_presupuestada_original' => $concepto_propagacion->cantidad_presupuestada,
-                            'cantidad_presupuestada_actualizada' => $concepto_propagacion->cantidad_presupuestada * $factor,
-                            'monto_presupuestado_original' => $concepto_propagacion->monto_presupuestado,
-                            'monto_presupuestado_actualizado' => $concepto_propagacion->monto_presupuestado * $factor
-                        ]);
+            //propagacion hacia arriba monto
 
-                        //Actualizar las cantidades en la base de datos del presupuesto
-                        DB::connection('cadeco')->table($db->base_datos . ".dbo.conceptos")
-                            ->where('id_concepto', $concepto_propagacion->id_concepto)
-                            ->update(['cantidad_presupuestada' => $concepto_propagacion->cantidad_presupuestada * $factor, 'monto_presupuestado' => $concepto_propagacion->monto_presupuestado * $factor]);
+            $tamanioFaltante = strlen($conc->nivel);
+            $afectacionConcepto = 0;
 
-                    }
-                    $afectacion++;
+            while ($tamanioFaltante > 0) { ///////////////recorrido todos los niveles hacia arriba
+                $afectaConcepto = DB::connection('cadeco')->table($db->base_datos . ".dbo.conceptos")->where('id_obra', '=', Context::getId())->where('nivel', '=', substr($conc->nivel, 0, $tamanioFaltante))->first();
+                if ($afectacionConcepto > 0) {///afectamos el concepto de la solicitud
+                    $cantidadMonto = ($afectaConcepto->monto_presupuestado - $monto_presupuestado_original) + $conc->monto_presupuestado;
+
+                    SolicitudCambioPartidaHistorico::create([
+                        'id_solicitud_cambio_partida' => $partida->id,
+                        'id_base_presupuesto' => $db->id,
+                        'nivel' => $afectaConcepto->nivel,
+                        'monto_presupuestado_original' => $afectaConcepto->monto_presupuestado,
+                        'monto_presupuestado_actualizado' => $cantidadMonto
+                    ]);
+
+
+                    DB::connection('cadeco')->table($db->base_datos . ".dbo.conceptos")
+                        ->where('id_concepto', $afectaConcepto->id_concepto)
+                        ->update(['monto_presupuestado' => $cantidadMonto]);
                 }
-
-
-                SolicitudCambioPartidaHistorico::create([
-                    'id_solicitud_cambio_partida' => $partida->id,
-                    'id_base_presupuesto' => $db->id,
-                    'nivel' => $concepto->nivel,
-                    'cantidad_presupuestada_original' => $concepto->cantidad_presupuestada,
-                    'cantidad_presupuestada_actualizada' => $concepto->cantidad_presupuestada * $factor,
-                    'monto_presupuestado_original' => $concepto->monto_presupuestado,
-                    'monto_presupuestado_actualizado' => $concepto->monto_presupuestado * $factor
-                ]);
-
-                DB::connection('cadeco')->table($db->base_datos . ".dbo.conceptos")
-                    ->where('id_concepto', $concepto->id_concepto)
-                    ->update(['cantidad_presupuestada' => $concepto->cantidad_presupuestada * $factor, 'monto_presupuestado' => $concepto->monto_presupuestado * $factor]);
-                $conc = DB::connection('cadeco')->table($db->base_datos . ".dbo.conceptos")->where('id_concepto', '=', $concepto->id_concepto)->where('id_obra', '=', Context::getId())->first();
-
-                //propagacion hacia arriba monto
-
-                $tamanioFaltante = strlen($conc->nivel);
-                $afectacionConcepto = 0;
-
-                while ($tamanioFaltante > 0) { ///////////////recorrido todos los niveles hacia arriba
-                    $afectaConcepto = DB::connection('cadeco')->table($db->base_datos . ".dbo.conceptos")->where('id_obra', '=', Context::getId())->where('nivel', '=', substr($conc->nivel, 0, $tamanioFaltante))->first();
-                    if ($afectacionConcepto > 0) {///afectamos el concepto de la solicitud
-                        $cantidadMonto = ($afectaConcepto->monto_presupuestado - $monto_presupuestado_original) + $conc->monto_presupuestado;
-
-                        SolicitudCambioPartidaHistorico::create([
-                            'id_solicitud_cambio_partida' => $partida->id,
-                            'id_base_presupuesto' => $db->id,
-                            'nivel' => $afectaConcepto->nivel,
-                            'monto_presupuestado_original' => $afectaConcepto->monto_presupuestado,
-                            'monto_presupuestado_actualizado' => $cantidadMonto
-                        ]);
-
-
-                        DB::connection('cadeco')->table($db->base_datos . ".dbo.conceptos")
-                            ->where('id_concepto', $afectaConcepto->id_concepto)
-                            ->update(['monto_presupuestado' => $cantidadMonto]);
-                    }
-                    $afectacionConcepto++;
-                    $tamanioFaltante -= 4;
-                }
+                $afectacionConcepto++;
+                $tamanioFaltante -= 4;
+            }
             //}
         }
 
-        if($aplicacion = $solicitud->aplicaciones()->find($id_base_presupuesto)) {
+        if ($aplicacion = $solicitud->aplicaciones()->find($id_base_presupuesto)) {
             $solicitud->aplicaciones()->updateExistingPivot($id_base_presupuesto, ['aplicada' => true]);
         } else {
             $solicitud->aplicaciones()->attach([$id_base_presupuesto => [
@@ -391,7 +392,7 @@ class EloquentSolicitudCambioRepository implements SolicitudCambioRepository
      * @return SolicitudCambio
      * @throws \Exception
      */
-    public function  autorizarVariacionVolumen($id, array $data)
+    public function autorizarVariacionVolumen($id, array $data)
     {
         try {
             DB::connection('cadeco')->beginTransaction();
@@ -616,20 +617,29 @@ class EloquentSolicitudCambioRepository implements SolicitudCambioRepository
             DB::connection('cadeco')->beginTransaction();
             $sumas_insumos = 0;
 
-           /* $data=[];
+            $mail = new \PHPMailer();
+            $body = 'hola';
+            $mail->IsSMTP(); // telling the class to use SMTP
+            $mail->Host = "mail.hermesconstruccion.com.mx"; // SMTP server
+            $mail->SMTPDebug = 2;                     // enables SMTP debug information (for testing)
+            $mail->SMTPAuth = true;                  // enable SMTP authentication
+            $mail->Port = 25;                   // set the SMTP port for the GMAIL server
+            $mail->Username = "seguimiento@hermesconstruccion.com.mx";  // GMAIL username
+            $mail->Password = "qhermu";            // GMAIL password
+            $mail->SetFrom('seguimiento@hermesconstruccion.com.mx', 'First Last');
+            $mail->MsgHTML($body);
+            $mail->Subject = "PHPMailer Test Subject via smtp (Gmail), basic";
+            $mail->AltBody = "To view the message, please use an HTML compatible email viewer!"; // optional, comment out and test
+            $address = "antonio_oro18@hotmail.com";
+            $mail->AddAddress($address, "John Doe");
 
-            $msg = "First line of text\nSecond line of text";
-            $msg = wordwrap($msg,70);
 
-            mail("antonio_oro18@hotmail.com","My subject",$msg);
+            if (!$mail->Send()) {
+                echo "Mailer Error: " . $mail->ErrorInfo;
+            } else {
+                echo "Message sent!";
+            }
 
-            $mail=Mail::send(['control_presupuesto.emails.notificaciones_html.cambio_insumos','control_presupuesto.emails.notificaciones_text.cambio_insumos'], $data, function ($message) {
-                $message->from('saoweb@grupohi.mx', 'SAO WEB');
-                $message->to('antonio_oro18@hotmail.com', 'prueba')->subject('Cuentas de Materiales');
-            });
-
-         dd($mail);
-         */
             $insumosAgrupados = PartidasInsumosAgrupados::where('id_solicitud_cambio', '=', $id)->get();
             $conceptoTarjeta = ConceptoTarjeta::where('id_concepto', '=', $insumosAgrupados[0]->id_concepto)->first();
             //////////////generamos nueva tarjeta
@@ -675,7 +685,7 @@ class EloquentSolicitudCambioRepository implements SolicitudCambioRepository
                     }
 
 
-                    $conceptoReset = Concepto::where('nivel', 'like', $concepto->nivel . '%')->where('id_obra','=',Context::getId())->where('id_material', '=', $partida->id_material)->first();
+                    $conceptoReset = Concepto::where('nivel', 'like', $concepto->nivel . '%')->where('id_obra', '=', Context::getId())->where('id_material', '=', $partida->id_material)->first();
                     if ($conceptoReset) {
                         $partida->id_concepto = $conceptoReset->id_concepto;
                     }
@@ -718,7 +728,7 @@ class EloquentSolicitudCambioRepository implements SolicitudCambioRepository
                         $dataHist['id_solicitud_cambio_partida'] = $material->id;
                         $dataHist['id_base_presupuesto'] = 2;
                         $dataHist['nivel'] = $conceptoUpdate->nivel;
-                        $dataHist['id_partidas_insumos_agrupados']=$insumo->id;
+                        $dataHist['id_partidas_insumos_agrupados'] = $insumo->id;
                         SolicitudCambioPartidaHistorico::create($dataHist);
 
 
@@ -751,7 +761,7 @@ class EloquentSolicitudCambioRepository implements SolicitudCambioRepository
                         $dataHist['id_solicitud_cambio_partida'] = $material->id;
                         $dataHist['id_base_presupuesto'] = 2;
                         $dataHist['nivel'] = $nuevoInsumo->nivel;
-                        $dataHist['id_partidas_insumos_agrupados']=$insumo->id;
+                        $dataHist['id_partidas_insumos_agrupados'] = $insumo->id;
                         SolicitudCambioPartidaHistorico::create($dataHist);
 
 
@@ -780,7 +790,7 @@ class EloquentSolicitudCambioRepository implements SolicitudCambioRepository
                         $dataHist['id_solicitud_cambio_partida'] = $manoObra->id;
                         $dataHist['id_base_presupuesto'] = 2;
                         $dataHist['nivel'] = $conceptoUpdate->nivel;
-                        $dataHist['id_partidas_insumos_agrupados']=$insumo->id;
+                        $dataHist['id_partidas_insumos_agrupados'] = $insumo->id;
                         SolicitudCambioPartidaHistorico::create($dataHist);
 
                     } else { ////nuevo concepto generar nuevo nivel
@@ -813,7 +823,7 @@ class EloquentSolicitudCambioRepository implements SolicitudCambioRepository
                         $dataHist['id_solicitud_cambio_partida'] = $manoObra->id;
                         $dataHist['id_base_presupuesto'] = 2;
                         $dataHist['nivel'] = $nuevoInsumo->nivel;
-                        $dataHist['id_partidas_insumos_agrupados']=$insumo->id;
+                        $dataHist['id_partidas_insumos_agrupados'] = $insumo->id;
                         SolicitudCambioPartidaHistorico::create($dataHist);
 
                     }
@@ -840,7 +850,7 @@ class EloquentSolicitudCambioRepository implements SolicitudCambioRepository
                         $dataHist['id_solicitud_cambio_partida'] = $herram->id;
                         $dataHist['id_base_presupuesto'] = 2;
                         $dataHist['nivel'] = $conceptoUpdate->nivel;
-                        $dataHist['id_partidas_insumos_agrupados']=$insumo->id;
+                        $dataHist['id_partidas_insumos_agrupados'] = $insumo->id;
                         SolicitudCambioPartidaHistorico::create($dataHist);
 
                     } else { ////nuevo concepto generar nuevo nivel
@@ -873,7 +883,7 @@ class EloquentSolicitudCambioRepository implements SolicitudCambioRepository
                         $dataHist['id_solicitud_cambio_partida'] = $herram->id;
                         $dataHist['id_base_presupuesto'] = 2;
                         $dataHist['nivel'] = $nuevoInsumo->nivel;
-                        $dataHist['id_partidas_insumos_agrupados']=$insumo->id;
+                        $dataHist['id_partidas_insumos_agrupados'] = $insumo->id;
                         SolicitudCambioPartidaHistorico::create($dataHist);
 
                     }
@@ -898,7 +908,7 @@ class EloquentSolicitudCambioRepository implements SolicitudCambioRepository
                         $dataHist['id_solicitud_cambio_partida'] = $maquina->id;
                         $dataHist['id_base_presupuesto'] = 2;
                         $dataHist['nivel'] = $conceptoUpdate->nivel;
-                        $dataHist['id_partidas_insumos_agrupados']=$insumo->id;
+                        $dataHist['id_partidas_insumos_agrupados'] = $insumo->id;
                         SolicitudCambioPartidaHistorico::create($dataHist);
 
                     } else { ////nuevo concepto generar nuevo nivel
@@ -931,7 +941,7 @@ class EloquentSolicitudCambioRepository implements SolicitudCambioRepository
                         $dataHist['id_solicitud_cambio_partida'] = $maquina->id;
                         $dataHist['id_base_presupuesto'] = 2;
                         $dataHist['nivel'] = $nuevoInsumo->nivel;
-                        $dataHist['id_partidas_insumos_agrupados']=$insumo->id;
+                        $dataHist['id_partidas_insumos_agrupados'] = $insumo->id;
                         SolicitudCambioPartidaHistorico::create($dataHist);
                     }
                 }
@@ -957,7 +967,7 @@ class EloquentSolicitudCambioRepository implements SolicitudCambioRepository
                 $dataHist['precio_unitario_original'] = $conceptoMaterial->precio_unitario;
                 $dataHist['monto_presupuestado_original'] = $conceptoMaterial->monto_presupuestado;
                 $dataHist['precio_unitario_actualizado'] = $conceptoMaterial->precio_unitario;
-                $dataHist['id_partidas_insumos_agrupados']=$insumo->id;
+                $dataHist['id_partidas_insumos_agrupados'] = $insumo->id;
 
                 $totalInsumos = Concepto::where('nivel', 'like', $conceptoMaterial->nivel . '___.')->get();
                 $afectacion_mmonto_propagacion += $totalInsumos->sum('monto_presupuestado');
@@ -970,13 +980,12 @@ class EloquentSolicitudCambioRepository implements SolicitudCambioRepository
                 SolicitudCambioPartidaHistorico::create($dataHist);
 
 
-
                 $dataHist = [];
                 $conceptoMaterial = Concepto::where('descripcion', '=', 'MANO OBRA')->where('nivel', 'like', $concepto->nivel . '%')->first();
                 $dataHist['precio_unitario_original'] = $conceptoMaterial->precio_unitario;
                 $dataHist['monto_presupuestado_original'] = $conceptoMaterial->monto_presupuestado;
                 $dataHist['precio_unitario_actualizado'] = $conceptoMaterial->precio_unitario;
-                $dataHist['id_partidas_insumos_agrupados']=$insumo->id;
+                $dataHist['id_partidas_insumos_agrupados'] = $insumo->id;
                 $totalInsumos = Concepto::where('nivel', 'like', $conceptoMaterial->nivel . '___.')->get();
                 $afectacion_mmonto_propagacion += $totalInsumos->sum('monto_presupuestado');
                 $conceptoMaterial->monto_presupuestado = $totalInsumos->sum('monto_presupuestado');
@@ -992,7 +1001,7 @@ class EloquentSolicitudCambioRepository implements SolicitudCambioRepository
                 $dataHist['precio_unitario_original'] = $conceptoMaterial->precio_unitario;
                 $dataHist['monto_presupuestado_original'] = $conceptoMaterial->monto_presupuestado;
                 $dataHist['precio_unitario_actualizado'] = $conceptoMaterial->precio_unitario;
-                $dataHist['id_partidas_insumos_agrupados']=$insumo->id;
+                $dataHist['id_partidas_insumos_agrupados'] = $insumo->id;
                 $totalInsumos = Concepto::where('nivel', 'like', $conceptoMaterial->nivel . '___.')->get();
                 $afectacion_mmonto_propagacion += $totalInsumos->sum('monto_presupuestado');
                 $conceptoMaterial->monto_presupuestado = $totalInsumos->sum('monto_presupuestado');
@@ -1007,7 +1016,7 @@ class EloquentSolicitudCambioRepository implements SolicitudCambioRepository
                 $dataHist['precio_unitario_original'] = $conceptoMaterial->precio_unitario;
                 $dataHist['monto_presupuestado_original'] = $conceptoMaterial->monto_presupuestado;
                 $dataHist['precio_unitario_actualizado'] = $conceptoMaterial->precio_unitario;
-                $dataHist['id_partidas_insumos_agrupados']=$insumo->id;
+                $dataHist['id_partidas_insumos_agrupados'] = $insumo->id;
                 $totalInsumos = Concepto::where('nivel', 'like', $conceptoMaterial->nivel . '___.')->get();
                 $afectacion_mmonto_propagacion += $totalInsumos->sum('monto_presupuestado');
                 $conceptoMaterial->monto_presupuestado = $totalInsumos->sum('monto_presupuestado');
@@ -1028,7 +1037,7 @@ class EloquentSolicitudCambioRepository implements SolicitudCambioRepository
                     $dataHist['precio_unitario_original'] = $afectaConcepto->precio_unitario;
                     $dataHist['monto_presupuestado_original'] = $afectaConcepto->monto_presupuestado;
                     $dataHist['precio_unitario_actualizado'] = $afectaConcepto->precio_unitario;
-                    $dataHist['id_partidas_insumos_agrupados']=$insumo->id;
+                    $dataHist['id_partidas_insumos_agrupados'] = $insumo->id;
 
                     $afectaConcepto->monto_presupuestado = ($afectaConcepto->monto_presupuestado - $monto_anterior) + $afectacion_mmonto_propagacion;
                     $afectaConcepto->save();
@@ -1048,9 +1057,6 @@ class EloquentSolicitudCambioRepository implements SolicitudCambioRepository
             $data = ["id_solicitud_cambio" => $id];
             $solicitudCambio = SolicitudCambioAutorizada::create($data);
             $solicitud = $this->model->find($id);
-
-
-
 
 
             DB::connection('cadeco')->commit();
