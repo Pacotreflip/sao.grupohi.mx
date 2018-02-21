@@ -25,20 +25,24 @@
                                 <table id="cierres_table" class="table table-bordered table-stripped">
                                     <thead>
                                     <tr>
-                                        <th>Número de Folio</th>
+                                        <th>Folio</th>
                                         <th>Tipo Orden</th>
+                                        <th>Importe Conceptos</th>
                                         <th>Fecha Solicitud</th>
-                                        <th>Usuario Solicita</th>
+                                        <th>Solicita</th>
+                                        <th>Autoriza</th>
                                         <th>Estatus</th>
                                         <th>Acciones</th>
                                     </tr>
                                     </thead>
                                     <tfoot>
                                     <tr>
-                                        <th>Número de Folio</th>
+                                        <th>Folio</th>
                                         <th>Tipo Orden</th>
+                                        <th>Importe Conceptos</th>
                                         <th>Fecha Solicitud</th>
-                                        <th>Usuario Solicita</th>
+                                        <th>Solicita</th>
+                                        <th>Autoriza</th>
                                         <th>Estatus</th>
                                         <th>Acciones</th>
                                     </tr>
