@@ -22,8 +22,12 @@
                     </button>
                     <button :disabled="cargando" class="btn btn-sm btn-app btn-info pull-right autorizar_solicitud" v-on:click="confirm_autorizar_solicitud"
                        v-if="solicitud.id_estatus==1">
-                        <span v-if="autorizando"><i class="fa fa-spinner fa-spin"></i> Autorizando</span>
-                        <span v-else><i class="fa fa-check"></i> Autorizar</span>
+                        <span v-if="autorizando"><i class="fa fa-spinner fa-spin"></i> @{{ (!solicitud
+                                        .aplicada && solicitud.estatus.clave_estado == 2 ? 'Aplicando' : 'Autorizando')
+                            }}</span>
+                        <span v-else><i class="fa fa-check"></i> @{{ (!solicitud
+                                        .aplicada && solicitud.estatus.clave_estado == 2 ? 'Aplicar' : 'Autorizar')
+                            }}</span>
                     </button>
                 </div>
 
@@ -159,6 +163,12 @@
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                                <span v-if="autorizando"><i class="fa fa-spinner fa-spin"></i> @{{ (!solicitud
+                                        .aplicada && solicitud.estatus.clave_estado == 2 ? 'Aplicando' : 'Autorizando')
+                            }}</span>
+                                                                    <span v-else><i class="fa fa-check"></i> @{{ (!solicitud
+                                        .aplicada && solicitud.estatus.clave_estado == 2 ? 'Aplicar' : 'Autorizar')
+                            }}</span>
                             </div>
                         </div>
                     </div>
