@@ -55,11 +55,12 @@ interface VariacionVolumenRepository
 
     /**
      * Rechaza una Variación de Volúmen
+     * @param $id
      * @param array $data
      * @throws \Exception
      * @return VariacionVolumen
      */
-    public function  rechazar(array $data);
+    public function  rechazar($id, array $data);
 
     /**
      * Aplica una Variación de Volúmen a un Presupuesto

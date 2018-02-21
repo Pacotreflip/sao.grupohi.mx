@@ -145,9 +145,9 @@ class VariacionVolumenController extends Controller
         });
     }
 
-    public function rechazar(Request $request)
+    public function rechazar(Request $request, $variacion_volumen)
     {
-        $variacionVolumen = $this->variacionVolumen->rechazar($request->all());
+        $variacionVolumen = $this->variacionVolumen->rechazar($variacion_volumen, $request->all());
 
         return $this->response->item($variacionVolumen, function ($item) {
             return $item;

@@ -22118,7 +22118,6 @@ Vue.component('variacion-volumen-show', {
             rechazando: false,
             autorizando: false,
             consultando: false,
-            consultandoImportes: false,
             partidas: [],
             importes: [],
             partida_id: 0
@@ -22148,9 +22147,6 @@ Vue.component('variacion-volumen-show', {
             var self = this;
             var id = self.form.solicitud.id;
 
-            $('.autorizar_solicitud').addClass('disabled');
-            $('.rechazar_solicitud').addClass('disabled');
-
             swal({
                 title: "Autorizar la Solicitud de Cambio",
                 html: "¿Estás seguro que desea actualizar la solicitud?",
@@ -22161,9 +22157,6 @@ Vue.component('variacion-volumen-show', {
             }).then(function (result) {
                 if (result.value) {
                     self.autorizar(id);
-                } else {
-                    $('.autorizar_solicitud').removeClass('disabled');
-                    $('.rechazar_solicitud').removeClass('disabled');
                 }
             });
         },
@@ -22211,6 +22204,7 @@ Vue.component('variacion-volumen-show', {
                     afectaciones: self.form.afectaciones
                 },
                 beforeSend: function beforeSend() {
+                    self.cargando = true;
                     self.autorizando = true;
                 },
                 success: function success(data, textStatus, xhr) {
@@ -22225,24 +22219,24 @@ Vue.component('variacion-volumen-show', {
                     });
                 },
                 complete: function complete() {
+                    self.cargando = false;
                     self.autorizando = false;
                     $('.autorizar_solicitud').removeClass('disabled');
                 }
             });
         },
-
         rechazar_solicitud: function rechazar_solicitud(id, motivo) {
             var self = this;
-            var url = App.host + '/control_presupuesto/cambio_presupuesto/rechazarSolicitud';
+            var url = App.host + '/control_presupuesto/variacion_volumen/' + id + '/rechazar';
             $.ajax({
                 type: 'POST',
                 url: url,
                 data: {
-                    id_solicitud_cambio: id,
                     id_tipo_orden: self.form.solicitud.id_tipo_orden,
                     motivo: motivo
                 },
                 beforeSend: function beforeSend() {
+                    self.cargando = true;
                     self.rechazando = true;
                 },
                 success: function success(data, textStatus, xhr) {
@@ -22257,6 +22251,7 @@ Vue.component('variacion-volumen-show', {
                     });
                 },
                 complete: function complete() {
+                    self.cargando = false;
                     self.rechazando = false;
                     $('.rechazar_solicitud').removeClass('disabled');
                 }
@@ -22278,6 +22273,7 @@ Vue.component('variacion-volumen-show', {
                 },
                 url: url,
                 beforeSend: function beforeSend() {
+                    self.cargando = true;
                     self.consultando = true;
                 },
                 success: function success(data, textStatus, xhr) {
@@ -22285,11 +22281,11 @@ Vue.component('variacion-volumen-show', {
                     $('#divDetalle').fadeIn();
                 },
                 complete: function complete() {
+                    self.cargando = false;
                     self.consultando = false;
                 }
             });
         },
-
         mostrar_detalle_presupuesto: function mostrar_detalle_presupuesto(idPresupuesto) {
             var self = this;
             var partida = self.partida_id;
@@ -22305,6 +22301,7 @@ Vue.component('variacion-volumen-show', {
                 },
                 url: url,
                 beforeSend: function beforeSend() {
+                    self.cargando = true;
                     self.consultando = true;
                 },
                 success: function success(data, textStatus, xhr) {
@@ -22312,11 +22309,11 @@ Vue.component('variacion-volumen-show', {
                     $('#divDetalle').fadeIn();
                 },
                 complete: function complete() {
+                    self.cargando = false;
                     self.consultando = false;
                 }
             });
         },
-
         fillAfectaciones: function fillAfectaciones() {
             var self = this;
             self.form.afectaciones = [];
@@ -22324,7 +22321,6 @@ Vue.component('variacion-volumen-show', {
                 self.form.afectaciones.push(value.id);
             });
         },
-
         aplicada: function aplicada(id) {
             var res = false;
             this.solicitud.aplicaciones.forEach(function (value) {
@@ -22334,7 +22330,6 @@ Vue.component('variacion-volumen-show', {
             });
             return res;
         },
-
         validateForm: function validateForm(scope, funcion) {
             var _this2 = this;
 

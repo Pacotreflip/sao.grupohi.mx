@@ -144,7 +144,8 @@ class EloquentVariacionVolumenRepository implements VariacionVolumenRepository
             $variacion_volumen->id_estatus = Estatus::AUTORIZADA;
             $variacion_volumen->save();
 
-            $data = ["id_solicitud_cambio" => $id];
+
+            $data['id_solicitud_cambio'] = $id;
             SolicitudCambioAutorizada::create($data);
 
             DB::connection('cadeco')->commit();
@@ -158,27 +159,29 @@ class EloquentVariacionVolumenRepository implements VariacionVolumenRepository
 
     /**
      * Rechaza una Variación de Volúmen
+     * @param $id
      * @param array $data
      * @throws \Exception
      * @return VariacionVolumen
      */
-    public function rechazar(array $data)
+    public function rechazar($id, array $data)
     {
         try {
             DB::connection('cadeco')->beginTransaction();
 
-            if(! $variacion_volumen = $this->model->with('partidas')->find($data['id_solicitud_cambio'])) {
+            if(! $variacion_volumen = $this->model->with('partidas')->find($id)) {
                 throw new HttpResponseException(new Response('No existe la solicitud a rechazar', 404));
             }
 
             // La solicitud ya está rechazada
-            if ($variacion_volumen->id_estatus == Estatus::RECHAZADA) {
-                throw new HttpResponseException(new Response('La solicitud ya está rechazada', 404));
+            if ($variacion_volumen->id_estatus == Estatus::RECHAZADA || $variacion_volumen->id_estatus == Estatus::AUTORIZADA) {
+                throw new HttpResponseException(new Response('La solicitud no puede ser rechazada', 404));
             }
 
             $variacion_volumen->id_estatus = Estatus::RECHAZADA;
             $variacion_volumen->save();
 
+            $data['id_solicitud_cambio'] = $id;
             SolicitudCambioRechazada::create($data);
 
             DB::connection('cadeco')->commit();
