@@ -343,6 +343,11 @@ class AppServiceProvider extends ServiceProvider
         );
 
         $this->app->bind(
+            \Ghi\Domain\Core\Contracts\ControlPresupuesto\CambioInsumosRepository::class,
+            \Ghi\Domain\Core\Repositories\ControlPresupuesto\EloquentCambioInsumosRepository::class
+        );
+
+        $this->app->bind(
             \Ghi\Domain\Core\Contracts\ControlPresupuesto\SolicitudCambioPartidaRepository::class,
             \Ghi\Domain\Core\Repositories\ControlPresupuesto\EloquentSolicitudCambioPartidaRepository::class
         );

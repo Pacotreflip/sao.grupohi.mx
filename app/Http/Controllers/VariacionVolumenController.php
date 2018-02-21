@@ -159,8 +159,9 @@ class VariacionVolumenController extends Controller
         return $this->response->collection($bases, function ($item) { return $item; });
     }
 
-    public function aplicar(Request $request)
+    public function aplicar(Request $request, $id)
     {
+        $variacion_volumen = $this->variacionVolumen->find($id);
 
     }
 }

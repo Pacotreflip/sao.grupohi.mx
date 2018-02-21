@@ -80,6 +80,12 @@ require('./vue-components/ControlPresupuesto/escalatoria/show');
 require('./vue-components/ControlPresupuesto/escalatoria/create');
 
 /**
+ * Cambio Insumos Components
+ */
+require('./vue-components/ControlPresupuesto/cambio_insumos/show');
+require('./vue-components/ControlPresupuesto/cambio_insumos/create');
+
+/**
  * Configuración Components
  */
 require('./vue-components/Configuracion/seguridad/index');

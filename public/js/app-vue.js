@@ -14482,11 +14482,17 @@ require('./vue-components/ControlPresupuesto/escalatoria/show');
 require('./vue-components/ControlPresupuesto/escalatoria/create');
 
 /**
+ * Cambio Insumos Components
+ */
+require('./vue-components/ControlPresupuesto/cambio_insumos/show');
+require('./vue-components/ControlPresupuesto/cambio_insumos/create');
+
+/**
  * Configuración Components
  */
 require('./vue-components/Configuracion/seguridad/index');
 
-},{"./vue-components/Compras/material/index":6,"./vue-components/Compras/requisicion/create":8,"./vue-components/Compras/requisicion/edit":9,"./vue-components/Configuracion/seguridad/index":10,"./vue-components/Contabilidad/cierre/index":11,"./vue-components/Contabilidad/cuenta_almacen/index":12,"./vue-components/Contabilidad/cuenta_bancos/cuenta-bancaria-edit":13,"./vue-components/Contabilidad/cuenta_concepto/index":14,"./vue-components/Contabilidad/cuenta_contable/index":15,"./vue-components/Contabilidad/cuenta_costo/index":16,"./vue-components/Contabilidad/cuenta_empresa/cuenta-empresa-edit":17,"./vue-components/Contabilidad/cuenta_fondo/index":18,"./vue-components/Contabilidad/cuenta_material/index":19,"./vue-components/Contabilidad/datos_contables/edit":20,"./vue-components/Contabilidad/emails":21,"./vue-components/Contabilidad/modulos/revaluacion/create":22,"./vue-components/Contabilidad/poliza_generada/edit":23,"./vue-components/Contabilidad/poliza_generada/index":24,"./vue-components/Contabilidad/poliza_tipo/poliza-tipo-create":25,"./vue-components/Contabilidad/tipo_cuenta_contable/tipo-cuenta-contable-create":26,"./vue-components/Contabilidad/tipo_cuenta_contable/tipo-cuenta-contable-update":27,"./vue-components/ControlCostos/reclasificacion_costos/index":28,"./vue-components/ControlCostos/solicitar_reclasificacion/index":29,"./vue-components/ControlCostos/solicitar_reclasificacion/items":30,"./vue-components/ControlPresupuesto/cambio_presupuesto/create":31,"./vue-components/ControlPresupuesto/cambio_presupuesto/index":32,"./vue-components/ControlPresupuesto/cambio_presupuesto/show/variacion_insumos":33,"./vue-components/ControlPresupuesto/cambio_presupuesto/variacion_insumos":34,"./vue-components/ControlPresupuesto/escalatoria/create":35,"./vue-components/ControlPresupuesto/escalatoria/show":36,"./vue-components/ControlPresupuesto/presupuesto/index":37,"./vue-components/ControlPresupuesto/variacion_volumen/create":38,"./vue-components/ControlPresupuesto/variacion_volumen/show":39,"./vue-components/Finanzas/comprobante_fondo_fijo/create":40,"./vue-components/Finanzas/comprobante_fondo_fijo/edit":41,"./vue-components/Finanzas/comprobante_fondo_fijo/index":42,"./vue-components/Reportes/subcontratos-estimacion":43,"./vue-components/Tesoreria/movimientos_bancarios/index":44,"./vue-components/Tesoreria/traspaso_cuentas/index":45,"./vue-components/errors":46,"./vue-components/global-errors":47,"./vue-components/kardex_material/kardex-material-index":48,"./vue-components/select2":49}],6:[function(require,module,exports){
+},{"./vue-components/Compras/material/index":6,"./vue-components/Compras/requisicion/create":8,"./vue-components/Compras/requisicion/edit":9,"./vue-components/Configuracion/seguridad/index":10,"./vue-components/Contabilidad/cierre/index":11,"./vue-components/Contabilidad/cuenta_almacen/index":12,"./vue-components/Contabilidad/cuenta_bancos/cuenta-bancaria-edit":13,"./vue-components/Contabilidad/cuenta_concepto/index":14,"./vue-components/Contabilidad/cuenta_contable/index":15,"./vue-components/Contabilidad/cuenta_costo/index":16,"./vue-components/Contabilidad/cuenta_empresa/cuenta-empresa-edit":17,"./vue-components/Contabilidad/cuenta_fondo/index":18,"./vue-components/Contabilidad/cuenta_material/index":19,"./vue-components/Contabilidad/datos_contables/edit":20,"./vue-components/Contabilidad/emails":21,"./vue-components/Contabilidad/modulos/revaluacion/create":22,"./vue-components/Contabilidad/poliza_generada/edit":23,"./vue-components/Contabilidad/poliza_generada/index":24,"./vue-components/Contabilidad/poliza_tipo/poliza-tipo-create":25,"./vue-components/Contabilidad/tipo_cuenta_contable/tipo-cuenta-contable-create":26,"./vue-components/Contabilidad/tipo_cuenta_contable/tipo-cuenta-contable-update":27,"./vue-components/ControlCostos/reclasificacion_costos/index":28,"./vue-components/ControlCostos/solicitar_reclasificacion/index":29,"./vue-components/ControlCostos/solicitar_reclasificacion/items":30,"./vue-components/ControlPresupuesto/cambio_insumos/create":31,"./vue-components/ControlPresupuesto/cambio_insumos/show":32,"./vue-components/ControlPresupuesto/cambio_presupuesto/create":33,"./vue-components/ControlPresupuesto/cambio_presupuesto/index":34,"./vue-components/ControlPresupuesto/cambio_presupuesto/show/variacion_insumos":35,"./vue-components/ControlPresupuesto/cambio_presupuesto/variacion_insumos":36,"./vue-components/ControlPresupuesto/escalatoria/create":37,"./vue-components/ControlPresupuesto/escalatoria/show":38,"./vue-components/ControlPresupuesto/presupuesto/index":39,"./vue-components/ControlPresupuesto/variacion_volumen/create":40,"./vue-components/ControlPresupuesto/variacion_volumen/show":41,"./vue-components/Finanzas/comprobante_fondo_fijo/create":42,"./vue-components/Finanzas/comprobante_fondo_fijo/edit":43,"./vue-components/Finanzas/comprobante_fondo_fijo/index":44,"./vue-components/Reportes/subcontratos-estimacion":45,"./vue-components/Tesoreria/movimientos_bancarios/index":46,"./vue-components/Tesoreria/traspaso_cuentas/index":47,"./vue-components/errors":48,"./vue-components/global-errors":49,"./vue-components/kardex_material/kardex-material-index":50,"./vue-components/select2":51}],6:[function(require,module,exports){
 'use strict';
 
 Vue.component('material-index', {
@@ -20149,6 +20155,35 @@ Vue.component('solicitar_reclasificacion-items', {
 },{}],31:[function(require,module,exports){
 'use strict';
 
+Vue.component('cambio-insumos-create', {
+    props: ['id_tipo_orden'],
+    data: function data() {
+        return {};
+    },
+    computed: {},
+    mounted: function mounted() {
+        var self = this;
+    },
+    methods: {}
+});
+
+},{}],32:[function(require,module,exports){
+'use strict';
+
+Vue.component('cambio-insumos-show', {
+    props: [],
+    data: function data() {
+        return {};
+    },
+    mounted: function mounted() {
+        var self = this;
+    },
+    methods: {}
+});
+
+},{}],33:[function(require,module,exports){
+'use strict';
+
 Vue.component('cambio-presupuesto-create', {
     props: ['operadores'],
     data: function data() {
@@ -20320,7 +20355,7 @@ Vue.component('cambio-presupuesto-create', {
     }
 });
 
-},{}],32:[function(require,module,exports){
+},{}],34:[function(require,module,exports){
 'use strict';
 
 Vue.component('cambio-presupuesto-index', {
@@ -20353,7 +20388,9 @@ Vue.component('cambio-presupuesto-index', {
         $(document).on('click', '.mostrar_pdf', function () {
             var _this = $(this),
                 id = _this.data('pdf_id'),
-                url = App.host + '/control_presupuesto/cambio_presupuesto/' + id + '/pdf';
+                id_tipo_orden = _this.data('id_tipo_orden'),
+                tipo_seleccionado = self.findTipoOrden(id_tipo_orden),
+                url = App.host + '/control_presupuesto/' + tipo_seleccionado.name + '/' + id + '/pdf';
 
             $('#pdf_modal').modal('show');
             $('#pdf_modal .modal-content').css({ height: '700px' });
@@ -20392,8 +20429,10 @@ Vue.component('cambio-presupuesto-index', {
             "columns": [{ data: 'numero_folio' }, { data: 'tipo_orden.descripcion' }, { data: 'created_at' }, { data: 'registro', orderable: false }, { data: 'estatus.descripcion' }, {
                 data: {},
                 render: function render(data, type, row, meta) {
-                    var button = '<span class="label" ></span><button class="btn btn-xs btn-info mostrar_pdf" data-pdf_id="' + row.id + '" title="Formato"><i class="fa fa-file-pdf-o"></i></button>  ';
-                    button += '<a title="Ver" href="' + App.host + '/control_presupuesto/cambio_presupuesto/' + data.id + '">';
+                    var tipo_seleccionado = self.findTipoOrden(data.id_tipo_orden),
+                        button = '<span class="label" ></span><button class="btn btn-xs btn-info mostrar_pdf" data-pdf_id="' + row.id + '" data-id_tipo_orden="' + data.id_tipo_orden + '" title="Formato"><i class="fa fa-file-pdf-o"></i></button>  ';
+
+                    button += '<a title="Ver" href="' + App.host + '/control_presupuesto/' + tipo_seleccionado.name + '/' + data.id + '">';
                     button += '<button title="Ver" type="button" class="btn btn-xs btn-default" >';
                     button += '<i class="fa fa-eye"></i>';
                     button += '   </button>';
@@ -20484,14 +20523,14 @@ Vue.component('cambio-presupuesto-index', {
             var self = this;
 
             for (var i = 0; i < self.tipos_orden.length; i++) {
-                if (self.tipos_orden[i]['id'] === id) return self.tipos_orden[i];
+                if (self.tipos_orden[i]['id'] == id) return self.tipos_orden[i];
             }return null;
         }
     }
 
 });
 
-},{}],33:[function(require,module,exports){
+},{}],35:[function(require,module,exports){
 'use strict';
 
 Vue.component('show-variacion-insumos', {
@@ -20704,7 +20743,7 @@ Vue.component('show-variacion-insumos', {
     }
 });
 
-},{}],34:[function(require,module,exports){
+},{}],36:[function(require,module,exports){
 'use strict';
 
 Vue.component('variacion-insumos', {
@@ -21240,7 +21279,7 @@ Vue.component('variacion-insumos', {
     }
 });
 
-},{}],35:[function(require,module,exports){
+},{}],37:[function(require,module,exports){
 'use strict';
 
 Vue.component('escalatoria-create', {
@@ -21363,7 +21402,7 @@ Vue.component('escalatoria-create', {
     }
 });
 
-},{}],36:[function(require,module,exports){
+},{}],38:[function(require,module,exports){
 'use strict';
 
 Vue.component('escalatoria-show', {
@@ -21580,7 +21619,7 @@ Vue.component('escalatoria-show', {
     }
 });
 
-},{}],37:[function(require,module,exports){
+},{}],39:[function(require,module,exports){
 'use strict';
 
 Vue.component('control_presupuesto-index', {
@@ -21789,7 +21828,7 @@ Vue.component('control_presupuesto-index', {
     }
 });
 
-},{}],38:[function(require,module,exports){
+},{}],40:[function(require,module,exports){
 'use strict';
 
 Vue.component('variacion-volumen-create', {
@@ -22102,7 +22141,7 @@ Vue.component('variacion-volumen-create', {
     }
 });
 
-},{}],39:[function(require,module,exports){
+},{}],41:[function(require,module,exports){
 'use strict';
 
 Vue.component('variacion-volumen-show', {
@@ -22348,7 +22387,7 @@ Vue.component('variacion-volumen-show', {
     }
 });
 
-},{}],40:[function(require,module,exports){
+},{}],42:[function(require,module,exports){
 'use strict';
 
 Vue.component('comprobante-fondo-fijo-create', {
@@ -22849,7 +22888,7 @@ Vue.component('comprobante-fondo-fijo-create', {
     }
 });
 
-},{}],41:[function(require,module,exports){
+},{}],43:[function(require,module,exports){
 'use strict';
 
 Vue.component('comprobante-fondo-fijo-edit', {
@@ -23305,7 +23344,7 @@ Vue.component('comprobante-fondo-fijo-edit', {
     }
 });
 
-},{}],42:[function(require,module,exports){
+},{}],44:[function(require,module,exports){
 'use strict';
 
 Vue.component('comprobante-fondo-fijo-index', {
@@ -23420,7 +23459,7 @@ Vue.component('comprobante-fondo-fijo-index', {
     }
 });
 
-},{}],43:[function(require,module,exports){
+},{}],45:[function(require,module,exports){
 'use strict';
 
 Vue.component('subcontratos-estimacion', {
@@ -23499,7 +23538,7 @@ Vue.component('subcontratos-estimacion', {
     }
 });
 
-},{}],44:[function(require,module,exports){
+},{}],46:[function(require,module,exports){
 'use strict';
 
 Vue.component('movimientos_bancarios-index', {
@@ -23850,7 +23889,7 @@ Vue.component('movimientos_bancarios-index', {
     }
 });
 
-},{}],45:[function(require,module,exports){
+},{}],47:[function(require,module,exports){
 'use strict';
 
 Vue.component('traspaso-cuentas-index', {
@@ -24163,7 +24202,7 @@ Vue.component('traspaso-cuentas-index', {
     }
 });
 
-},{}],46:[function(require,module,exports){
+},{}],48:[function(require,module,exports){
 'use strict';
 
 Vue.component('app-errors', {
@@ -24172,7 +24211,7 @@ Vue.component('app-errors', {
     template: require('./templates/errors.html')
 });
 
-},{"./templates/errors.html":50}],47:[function(require,module,exports){
+},{"./templates/errors.html":52}],49:[function(require,module,exports){
 'use strict';
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
@@ -24198,7 +24237,7 @@ Vue.component('global-errors', {
   }
 });
 
-},{"./templates/global-errors.html":51}],48:[function(require,module,exports){
+},{"./templates/global-errors.html":53}],50:[function(require,module,exports){
 'use strict';
 
 Vue.component('kardex-material-index', {
@@ -24348,7 +24387,7 @@ Vue.component('kardex-material-index', {
 
 });
 
-},{}],49:[function(require,module,exports){
+},{}],51:[function(require,module,exports){
 'use strict';
 
 Vue.component('select2', {
@@ -24404,9 +24443,9 @@ Vue.component('select2', {
     }
 });
 
-},{}],50:[function(require,module,exports){
+},{}],52:[function(require,module,exports){
 module.exports = '<div id="form-errors" v-cloak>\n  <div class="alert alert-danger" v-if="form.errors.length">\n    <ul>\n      <li v-for="error in form.errors">{{ error }}</li>\n    </ul>\n  </div>\n</div>';
-},{}],51:[function(require,module,exports){
+},{}],53:[function(require,module,exports){
 module.exports = '<div class="alert alert-danger" v-show="errors.length">\n  <ul>\n    <li v-for="error in errors">{{ error }}</li>\n  </ul>\n</div>';
 },{}]},{},[4]);
 
