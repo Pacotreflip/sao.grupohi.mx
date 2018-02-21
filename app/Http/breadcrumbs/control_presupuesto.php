@@ -37,3 +37,48 @@ Breadcrumbs::register('control_presupuesto.cambio_presupuesto.show', function ($
     $breadcrumb->parent('control_presupuesto.cambio_presupuesto.index');
     $breadcrumb->push(mb_strtoupper($solicitud->tipoOrden->descripcion), route('control_presupuesto.cambio_presupuesto.show', $solicitud));
 });
+
+/**
+ * Variación de Volúmen
+ */
+Breadcrumbs::register('control_presupuesto.variacion_volumen.create', function ($breadcrumb) {
+    $breadcrumb->parent('control_presupuesto.cambio_presupuesto.index');
+    $breadcrumb->push('NUEVA VARIACIÓN DE VOLÚMEN', route('control_presupuesto.variacion_volumen.create'));
+});
+
+Breadcrumbs::register('control_presupuesto.variacion_volumen.show', function ($breadcrumb, $variacion_volumen) {
+    $breadcrumb->parent('control_presupuesto.cambio_presupuesto.index');
+    $breadcrumb->push('#' . $variacion_volumen->id, route('control_presupuesto.variacion_volumen.show', $variacion_volumen));
+});
+
+/**
+ * Escalatoria create
+ */
+Breadcrumbs::register('control_presupuesto.escalatoria.create', function ($breadcrumb) {
+    $breadcrumb->parent('control_presupuesto.cambio_presupuesto.index');
+    $breadcrumb->push('NUEVA ESCALATORIA', route('control_presupuesto.escalatoria.create'));
+});
+
+/**
+ * Escalatoria show
+ */
+Breadcrumbs::register('control_presupuesto.escalatoria.show', function ($breadcrumb, $escalatoria) {
+    $breadcrumb->parent('control_presupuesto.cambio_presupuesto.index');
+    $breadcrumb->push('#' . $escalatoria->numero_folio, route('control_presupuesto.escalatoria.show', $escalatoria));
+});
+
+/**
+ * Ordenes de Cambio de Insumos create
+ */
+Breadcrumbs::register('control_presupuesto.cambio_insumos.create', function ($breadcrumb) {
+    $breadcrumb->parent('control_presupuesto.cambio_presupuesto.index');
+    $breadcrumb->push('NUEVA CAMBIO DE INSUMOS', route('control_presupuesto.cambio_insumos.create'));
+});
+
+/**
+ * Ordenes de Cambio de Insumos show
+ */
+Breadcrumbs::register('control_presupuesto.cambio_insumos.show', function ($breadcrumb, $cambio_insumos) {
+    $breadcrumb->parent('control_presupuesto.cambio_presupuesto.index');
+    $breadcrumb->push('#' . $cambio_insumos->numero_folio, route('control_presupuesto.escalatoria.show', $cambio_insumos));
+});

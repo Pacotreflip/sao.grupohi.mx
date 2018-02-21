@@ -17,6 +17,7 @@ class CreateTableControlPresupuestoTiposOrdenes extends Migration
             $table->integer('id');
             $table->primary('id');
             $table->string("descripcion")->unique();
+            $table->string('name')->unique();
             $table->integer('estatus');
             $table->timestamps();
             $table->unsignedInteger("id_tipo_cobrabilidad")->nullable();

@@ -19,7 +19,8 @@ class TipoOrden extends Model
     protected $fillable = [
         'descripcion',
         'id_tipo_cobrabilidad',
-        'estatus'
+        'estatus',
+        'name',
     ];
 
     public function cobrabilidad()

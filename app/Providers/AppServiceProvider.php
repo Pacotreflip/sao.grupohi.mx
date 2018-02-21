@@ -332,6 +332,20 @@ class AppServiceProvider extends ServiceProvider
             \Ghi\Domain\Core\Repositories\ControlPresupuesto\EloquentSolicitudCambioRepository::class
         );
 
+        $this->app->bind(
+            \Ghi\Domain\Core\Contracts\ControlPresupuesto\VariacionVolumenRepository::class,
+            \Ghi\Domain\Core\Repositories\ControlPresupuesto\EloquentVariacionVolumenRepository::class
+        );
+
+        $this->app->bind(
+            \Ghi\Domain\Core\Contracts\ControlPresupuesto\EscalatoriaRepository::class,
+            \Ghi\Domain\Core\Repositories\ControlPresupuesto\EloquentEscalatoriaRepository::class
+        );
+
+        $this->app->bind(
+            \Ghi\Domain\Core\Contracts\ControlPresupuesto\CambioInsumosRepository::class,
+            \Ghi\Domain\Core\Repositories\ControlPresupuesto\EloquentCambioInsumosRepository::class
+        );
 
         $this->app->bind(
             \Ghi\Domain\Core\Contracts\ControlPresupuesto\SolicitudCambioPartidaRepository::class,

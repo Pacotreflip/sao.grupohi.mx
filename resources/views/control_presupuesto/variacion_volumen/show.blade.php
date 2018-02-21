@@ -1,32 +1,35 @@
 @extends('control_presupuesto.layout')
-@section('title', 'Control presupuesto')
-@section('contentheader_title', 'CONTROL DE CAMBIOS AL PRESUPUESTO')
+@section('title', 'Cambios al Presupuesto')
+@section('contentheader_title', 'VARIACIÓN DE VOLÚMEN (ADITIVAS Y DEDUCTIVAS)')
 @section('breadcrumb')
-    {!! Breadcrumbs::render('control_presupuesto.cambio_presupuesto.show',$solicitud) !!}
+    {!! Breadcrumbs::render('control_presupuesto.variacion_volumen.show',$variacion_volumen) !!}
 @endsection
-
 @section('main-content')
-    <show-variacion-volumen
+
+    <variacion-volumen-show
             inline-template
-            :solicitud="{{$solicitud}}"
+            :solicitud="{{$variacion_volumen}}"
             :cobrabilidad="{{$cobrabilidad->toJson()}}"
             :presupuestos="{{$presupuestos->toJson()}}"
             v-cloak>
         <section>
             <div class="row">
                 <div class="col-md-12">
-                    <a class="btn pull-right btn-app btn-danger rechazar_solicitud" v-on:click="confirm_rechazar_solicitud" v-if="solicitud.estatus.clave_estado == 1">
+                    <button :disabled="cargando" class="btn pull-right btn-app btn-danger rechazar_solicitud" v-on:click="confirm_rechazar_solicitud" v-if="solicitud.estatus.clave_estado == 1">
                         <span v-if="rechazando"><i class="fa fa-spinner fa-spin"></i> Rechazando</span>
                         <span v-else><i class="fa fa-close"></i> Rechazar</span>
-                    </a>
-                    <a class="btn pull-right btn-sm btn-app btn-info autorizar_solicitud" data-toggle="modal" data-target="#select_presupuestos_modal" v-if="solicitud.estatus.clave_estado == 1" @click="fillAfectaciones(); validation_errors.clear('form_autorizar_solicitud')">
-                        <span v-if="autorizando"><i class="fa fa-spinner fa-spin"></i> Autorizando</span>
-                        <span v-else><i class="fa fa-check"></i> Autorizar</span>
-                    </a>
+                    </button>
+                    <button :disabled="cargando" class="btn pull-right btn-sm btn-app btn-info autorizar_solicitud" data-toggle="modal" data-target="#select_presupuestos_modal"  @click="fillAfectaciones(); validation_errors.clear('form_autorizar_solicitud')">
+                        <span v-if="autorizando"><i class="fa fa-spinner fa-spin"></i> @{{ (!solicitud
+                                        .aplicada && solicitud.estatus.clave_estado == 2 ? 'Aplicando' : 'Autorizando')
+                            }}</span>
+                        <span v-else><i class="fa fa-check"></i> @{{ (!solicitud
+                                        .aplicada && solicitud.estatus.clave_estado == 2 ? 'Aplicar' : 'Autorizar')
+                            }}</span>
+                    </button>
                 </div>
             </div>
             <div class="row">
-
                 <div class="col-md-3">
                     <div class="box box-solid">
                         <div class="box-header with-border">
@@ -37,25 +40,22 @@
                         </div>
                         <!-- /.box-header -->
                         <div class="box-body">
-                            <strong>Tipo de Orden de Cambio:</strong>
+                            <strong>Tipo de Solicitud de Cambio:</strong>
                             <p class="text-muted">@{{solicitud.tipo_orden.descripcion}}</p>
-                            <hr>
                             <strong>Cobrabilidad:</strong>
                             <p class="text-muted">@{{ cobrabilidad.descripcion}}</p>
-                            <hr>
-                            <strong>Folio de la solicitud:</strong>
-                            <p class="text-muted">@{{ solicitud.numero_folio}}</p>
-                            <hr>
+                            <strong>Número de Folio:</strong>
+                            <p class="text-muted">#@{{ solicitud.numero_folio}}</p>
+                            <strong>Area Solicitante:</strong>
+                            <p class="text-muted">@{{ solicitud.area_solicitante}}</p>
                             <strong>Motivo:</strong>
                             <p class="text-muted">@{{solicitud.motivo}}</p>
-                            <hr>
                             <strong>Usuario que Solicita:</strong>
                             <p class="text-muted">@{{solicitud.user_registro.apaterno +' '+ solicitud.user_registro.amaterno+' '+solicitud.user_registro.nombre}}</p>
-                            <hr>
                             <strong>Fecha de solicitud:</strong>
                             <p class="text-muted">@{{solicitud.fecha_solicitud}}</p>
-                            <hr>
                             <strong>Estatus:</strong>
+                            <p class="text-muted">@{{  solicitud.estatus.descripcion.toUpperCase() + ' (' + (solicitud.aplicada ? 'APLICADA' : 'NO APLICADA') + ')' }}</p>
                         </div>
                         <!-- /.box-body -->
                     </div>
@@ -87,7 +87,7 @@
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    @foreach($solicitud->partidas as $index => $partida)
+                                    @foreach($variacion_volumen->partidas as $index => $partida)
                                         <tr title="{{  $partida->concepto }}" style="cursor: pointer" v-on:click="mostrar_detalle_partida({{$partida->id}})">
                                             <td>{{ $index + 1 }}</td>
                                             <td>{{ $partida->numeroTarjeta ? $partida->numeroTarjeta->descripcion : '' }}</td>
@@ -194,7 +194,7 @@
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                             <h4 class="modal-title" id="myModalLabel">Seleccione los presupuestos que desea afectar con ésta solicitud<br><small>(Por defecto se marcan los presupuestos seleccionados al crear la solicitud)</small></h4>
                         </div>
-                        <form  id="form_autorizar_solicitud" @submit.prevent="validateForm('form_autorizar_solicitud', 'autorizar_solicitud')"  data-vv-scope="form_autorizar_solicitud">
+                        <form id="form_autorizar_solicitud" @submit.prevent="validateForm('form_autorizar_solicitud', (solicitud.aplicada ? 'autorizar_solicitud' : 'aplicar_solicitud'))"  data-vv-scope="form_autorizar_solicitud">
                             <div class="modal-body">
                                 <div class="row">
                                     <div class="form-group col-md-4" :class="{'has-error': validation_errors.has('form_autorizar_solicitud.Presupuesto')}" v-for="presupuesto in presupuestos">
@@ -215,13 +215,18 @@
                                 <label class="help text-red" v-show="validation_errors.has('form_autorizar_solicitud.Presupuesto')">Seleccione por lo menos un presupuesto por afectar.</label>
                             </div>
                             <div class="modal-footer">
-                                <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
-                                <button type="submit" :disabled="autorizando" class="btn btn-primary">Autorizar Solicitud</button>
+                                <button type="button" :disabled="cargando" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                                <button type="submit" :disabled="cargando" class="btn btn-primary">
+                                    <span v-if="autorizando"><i class="fa fa-spinner fa-spin"></i> @{{ (solicitud
+                                        .aplicada ? 'Autorizando' : 'Aplicando') }}</span>
+                                    <span v-else><i class="fa fa-check"></i> @{{ (solicitud.aplicada ? 'Autorizar' :
+                                        'Aplicar') }}</span>
+                                </button>
                             </div>
                         </form>
                     </div>
                 </div>
             </div>
         </section>
-    </show-variacion-volumen>
+    </variacion-volumen-show>
 @endsection

@@ -25,6 +25,50 @@ Route::group(['prefix' => 'control_presupuesto'], function () {
     Route::get('cambio_presupuesto/{id}', 'CambioPresupuestoController@show')->name('control_presupuesto.cambio_presupuesto.show')->where(['id' => '[0-9]+']);
     Route::post('cambio_presupuesto/autorizarSolicitud', 'CambioPresupuestoController@autorizarSolicitud')->name('control_presupuesto.cambio_presupuesto.autorizarSolicitud');
     Route::post('cambio_presupuesto/rechazarSolicitud', 'CambioPresupuestoController@rechazarSolicitud')->name('control_presupuesto.cambio_presupuesto.rechazarSolicitud');
+
+    /**
+     * Variacion Volúmen Routes
+     */
+    Route::group(['prefix' => 'variacion_volumen'], function () {
+        Route::get('/create', 'VariacionVolumenController@create')->name('control_presupuesto.variacion_volumen.create');
+        Route::get('/{variacion_volumen}', 'VariacionVolumenController@show')->name('control_presupuesto.variacion_volumen.show')->where(['variacion_volumen' => '[0-9]+']);;
+        Route::get('/getBasesAfectadas', 'VariacionVolumenController@getBasesAfectadas');
+        Route::post('/', 'VariacionVolumenController@store');
+        Route::post('/{variacion_volumen}/autorizar', 'VariacionVolumenController@autorizar');
+        Route::post('/{variacion_volumen}/rechazar', 'VariacionVolumenController@rechazar');
+        Route::post('/{variacion_volumen}/aplicar', 'VariacionVolumenController@aplicar');
+        Route::get('/{variacion_volumen}/pdf', 'VariacionVolumenController@pdf');
+        Route::post('/{variacion_volumen}/paginate', 'VariacionVolumenController@paginate');
+    });
+
+    /**
+     * Escalatoria Routes
+     */
+    Route::group(['prefix' => 'escalatoria'], function () {
+        Route::get('/create', 'EscalatoriaController@create')->name('control_presupuesto.escalatoria.create');
+        Route::get('/{escalatoria}', 'EscalatoriaController@show')->name('control_presupuesto.escalatoria.show');
+        Route::post('/', 'EscalatoriaController@store');
+        Route::post('/{escalatoria}/autorizar', 'EscalatoriaController@autorizar');
+        Route::post('/{escalatoria}/rechazar', 'EscalatoriaController@rechazar');
+        Route::post('/{escalatoria}/aplicar', 'EscalatoriaController@aplicar');
+        Route::get('/{escalatoria}/pdf', 'EscalatoriaController@pdf');
+        Route::post('/{escalatoria}/paginate', 'EscalatoriaController@paginate');
+    });
+
+    /**
+     * Ordenes de Cambio de Insumos
+     */
+    Route::group(['prefix' => 'cambio_insumos'], function () {
+        Route::get('/create', 'CambioInsumosController@create')->name('control_presupuesto.cambio_insumos.create');
+        Route::get('/{cambio_insumos}', 'CambioInsumosController@show')->name('control_presupuesto.cambio_insumos.show');
+        Route::post('/', 'CambioInsumosController@store');
+        Route::post('/{cambio_insumos}/autorizar', 'CambioInsumosController@autorizar');
+        Route::post('/{cambio_insumos}/rechazar', 'CambioInsumosController@rechazar');
+        Route::post('/{cambio_insumos}/aplicar', 'CambioInsumosController@aplicar');
+        Route::get('/{cambio_insumos}/pdf', 'CambioInsumosController@pdf');
+        Route::post('/{cambio_insumos}/paginate', 'CambioInsumosController@paginate');
+    });
+
     /**
      * Tipos de Cobrabilidad Routes
      */
