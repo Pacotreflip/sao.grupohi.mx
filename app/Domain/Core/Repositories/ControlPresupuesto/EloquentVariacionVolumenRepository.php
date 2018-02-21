@@ -197,7 +197,7 @@ class EloquentVariacionVolumenRepository implements VariacionVolumenRepository
      * Aplica una Variación de Volúmen a un Presupuesto
      * @param VariacionVolumen $variacionVolumen
      * @param $id_base_presupuesto
-     * @return void
+     * @return VariacionVolumen
      * @throws \Exception
      */
     public function aplicar(VariacionVolumen $variacionVolumen, $id_base_presupuesto)
@@ -303,6 +303,8 @@ class EloquentVariacionVolumenRepository implements VariacionVolumenRepository
                 ]]);
             }
             DB::connection('cadeco')->commit();
+
+            return $this->model->find($variacionVolumen->id);
         } catch (\Exception $e) {
             DB::connection('cadeco')->rollback();
             throw $e;

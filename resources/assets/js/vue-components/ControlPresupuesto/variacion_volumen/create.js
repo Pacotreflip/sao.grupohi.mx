@@ -281,7 +281,7 @@ Vue.component('variacion-volumen-create', {
                     if (typeof response.repetidas != 'undefined') {
 
                         $.each(response.repetidas, function( key, value ) {
-                            lista.push('<li class="list-group-item "><a href="'+ App.host + '/control_presupuesto/cambio_presupuesto/' + value.id +'" onclick="swal.close();">#'+ value.numero_folio +' ' + (value.motivo.length >= 20 ? (value.motivo.substring(0, 30) + '...') : value.motivo) + '</a></li>');
+                            lista.push('<li class="list-group-item "><a href="'+ App.host + '/control_presupuesto/variacion_volumen/' + value.id +'" onclick="swal.close();">#'+ value.numero_folio +' ' + (value.motivo.length >= 20 ? (value.motivo.substring(0, 30) + '...') : value.motivo) + '</a></li>');
                         });
 
                         var texto = response.repetidas.length > 1 ? 'Ya existen solicitudes' : 'Ya existe una solicitud';

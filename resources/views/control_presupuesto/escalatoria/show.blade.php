@@ -15,14 +15,12 @@
         <section>
             <div class="row">
                 <div class="col-md-12">
-                    <button :disabled="cargando" class="btn btn-app btn-danger pull-right rechazar_solicitud"
-                       v-on:click="confirm_rechazar_solicitud"
+                    <button :disabled="cargando" class="btn btn-app btn-danger pull-right rechazar_solicitud" v-on:click="confirm_rechazar_solicitud"
                        v-if="solicitud.id_estatus==1">
                         <span v-if="rechazando"><i class="fa fa-spinner fa-spin"></i> Rechazando</span>
                         <span v-else><i class="fa fa-close"></i> Rechazar</span>
                     </button>
-                    <button :disabled="cargando" class="btn btn-sm btn-app btn-info pull-right autorizar_solicitud"
-                       v-on:click="confirm_autorizar_solicitud"
+                    <button :disabled="cargando" class="btn btn-sm btn-app btn-info pull-right autorizar_solicitud" v-on:click="confirm_autorizar_solicitud"
                        v-if="solicitud.id_estatus==1">
                         <span v-if="autorizando"><i class="fa fa-spinner fa-spin"></i> Autorizando</span>
                         <span v-else><i class="fa fa-check"></i> Autorizar</span>
@@ -41,26 +39,18 @@
                         <div class="box-body">
                             <strong>Tipo de Orden de Cambio:</strong>
                             <p class="text-muted">@{{solicitud.tipo_orden.descripcion}}</p>
-                            <hr>
                             <strong>Cobrabilidad:</strong>
                             <p class="text-muted">@{{ cobrabilidad.descripcion}}</p>
-                            <hr>
                             <strong>Folio de la solicitud:</strong>
-                            <p class="text-muted">@{{ solicitud.numero_folio}}</p>
-                            <hr>
+                            <p class="text-muted">#@{{ solicitud.numero_folio}}</p>
                             <strong>Motivo:</strong>
                             <p class="text-muted">@{{solicitud.motivo}}</p>
-                            <hr>
                             <strong>Usuario que Solicita:</strong>
                             <p class="text-muted">@{{solicitud.user_registro.apaterno +' '+ solicitud.user_registro.amaterno+' '+solicitud.user_registro.nombre}}</p>
-                            <hr>
                             <strong>Fecha de solicitud:</strong>
                             <p class="text-muted">@{{solicitud.fecha_solicitud}}</p>
-                            <hr>
                             <strong>Estatus:</strong>
-                            <p class="text-muted">@{{solicitud.estatus.descripcion}}</p>
-                            <hr>
-
+                            <p class="text-muted">@{{  (solicitud.estatus.descripcion).toUpperCase() }}</p>
                         </div>
 
                         <!-- /.box-body -->

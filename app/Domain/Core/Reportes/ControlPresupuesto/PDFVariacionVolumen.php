@@ -197,6 +197,13 @@ class PDFVariacionVolumen extends Rotation {
         $this->SetFont('Arial', '', '#'.$this->txtContenidoTam);
         $this->CellFitScale(0.375 * $this->WidthTotal, 0.35, utf8_decode('#' . $this->solicitud->numero_folio), '', 1, 'L');
 
+        $this->SetFont('Arial', 'B', $this->txtContenidoTam);
+        $this->SetX($x);
+        $this->Cell(0.125 * $this->WidthTotal, 0.35, utf8_decode('Area Solicitante:'), '', 0, 'LB');
+        $this->SetFont('Arial', '', '#'.$this->txtContenidoTam);
+        $this->CellFitScale(0.375 * $this->WidthTotal, 0.35, utf8_decode($this->solicitud->area_solicitante), '', 1, 'L');
+
+
         $this->SetFont('Arial', 'B', '#'.$this->txtContenidoTam);
         $this->SetX($x);
         $this->Cell(0.125 * $this->WidthTotal, 0.35, utf8_decode('Fecha Solicitud:'), '', 0, 'L');
@@ -283,7 +290,7 @@ class PDFVariacionVolumen extends Rotation {
                     utf8_decode($conceptoBase->unidad), // Unidad
                     '$ ' . number_format($conceptoBase->precio_unitario, 2, '.', ','), // Precio unitario
                     number_format($cantidadPresupuestada, 2, '.', ','), // Vólumen Original
-                    number_format($variacion_volumen), // Vólumen del cambio
+                    number_format($variacion_volumen, 2, '.', ','), // Vólumen del cambio
                     number_format($cantidadNueva, 2, '.', ','),  // Vólumen actualizado
                     '$ '. number_format($monto_presupuestado, 2, '.', ','), // Importe original
                     '$ '. number_format($variacion_importe, 2, '.', ','), // Importe del cambio
@@ -454,10 +461,10 @@ class PDFVariacionVolumen extends Rotation {
         $firmaX2 = ($qrX / 1.50) - ($firmasWidth / 2);
 
         $this->SetX($firmaX1);
-        $this->Cell($firmasWidth, 0.4, utf8_decode('firma 1'), 'TRLB', 0, 'C', 1);
+        $this->Cell($firmasWidth, 0.4, utf8_decode('COORDINADOR DE CONTROL DE PROYECTOS'), 'TRLB', 0, 'C', 1);
 
         $this->SetX($firmaX2);
-        $this->Cell($firmasWidth, 0.4, utf8_decode('firma 2'), 'TRLB', 1, 'C', 1);
+        $this->Cell($firmasWidth, 0.4, utf8_decode('PERSONA QUE SOLICITA'), 'TRLB', 1, 'C', 1);
 
 
         $this->SetX($firmaX1);
@@ -467,10 +474,10 @@ class PDFVariacionVolumen extends Rotation {
         $this->Cell($firmasWidth, 1.2, '', 'TRLB', 1, 'C');
 
         $this->SetX($firmaX1);
-        $this->Cell($firmasWidth, 0.4, utf8_decode('nombre 1'), 'TRLB', 0, 'C', 1);
+        $this->Cell($firmasWidth, 0.4, utf8_decode(''), 'TRLB', 0, 'C', 1);
 
         $this->SetX($firmaX2);
-        $this->Cell($firmasWidth, 0.4, utf8_decode('nombre 2'), 'TRLB', 0, 'C', 1);
+        $this->Cell($firmasWidth, 0.4, utf8_decode($this->solicitud->userRegistro), 'TRLB', 0, 'C', 1);
     }
 
     function Footer() {
