@@ -10,7 +10,6 @@ Vue.component('escalatoria-show', {
             rechazando:false,
             autorizando:false,
             consultando:false,
-            consultandoImportes:false,
             partidas:[],
             importes:[],
             partida_id:0
@@ -36,13 +35,9 @@ Vue.component('escalatoria-show', {
         });
     },
     methods: {
-
         confirm_autorizar_solicitud: function () {
             var self = this;
             var id = self.form.solicitud.id;
-
-            $('.autorizar_solicitud').addClass('disabled');
-
             swal({
                 title: "Autorizar la Solicitud de Cambio",
                 html: "¿Estás seguro que desea actualizar la solicitud?",
@@ -54,19 +49,12 @@ Vue.component('escalatoria-show', {
                 if (result.value) {
                     self.autorizar_solicitud(id);
                 }
-
-                else {
-                    $('.autorizar_solicitud').removeClass('disabled');
-                }
             });
 
         },
         confirm_rechazar_solicitud: function () {
             var self = this;
             var id = self.form.solicitud.id;
-
-            $('.rechazar_solicitud').addClass('disabled');
-
             swal({
                 title: 'Rechazar Solicitud',
                 text: 'Motivo del rechazo',
@@ -90,17 +78,9 @@ Vue.component('escalatoria-show', {
                 if (result.value) {
                     self.rechazar_solicitud(id,result.value);
                 }
-
-                else {
-                    $('.rechazar_solicitud').removeClass('disabled');
-                }
             });
-
-
-
         },
         autorizar_solicitud: function (id) {
-
             var self = this;
             var url = App.host + '/control_presupuesto/escalatoria/'+ id +'/autorizar';
             $.ajax({
@@ -111,6 +91,7 @@ Vue.component('escalatoria-show', {
                     id_tipo_orden: self.form.solicitud.id_tipo_orden
                 },
                 beforeSend: function () {
+                    self.cargando = true;
                     self.autorizando = true;
                 },
                 success: function (data, textStatus, xhr) {
@@ -125,14 +106,12 @@ Vue.component('escalatoria-show', {
                     });
                 },
                 complete: function () {
+                    self.cargando = false;
                     self.autorizando = false;
-                    $('.autorizar_solicitud').removeClass('disabled');
                 }
             });
         },
-
         rechazar_solicitud: function (id,motivo) {
-
             var self = this;
             var url = App.host + '/control_presupuesto/escalatoria/'+ id +'/rechazar';
             $.ajax({
@@ -144,10 +123,10 @@ Vue.component('escalatoria-show', {
                     motivo:motivo
                 },
                 beforeSend: function () {
+                    self.cargando = true;
                     self.rechazando = true;
                 },
                 success: function (data, textStatus, xhr) {
-
                     swal({
                         type: "success",
                         title: '¡Correcto!',
@@ -159,67 +138,10 @@ Vue.component('escalatoria-show', {
                     });
                 },
                 complete: function () {
+                    self.cargando = false;
                     self.rechazando = false;
-                    $('.rechazar_solicitud').removeClass('disabled');
                 }
             });
-        },
-        mostrar_detalle_partida:function (id) {
-            var self = this;
-            var partida = id;
-            self.partida_id = id;
-            var presupuesto = self.presupuestos[0].base_datos.id;
-            $('#divDetalle').fadeOut();
-
-            var url = App.host + '/control_presupuesto/cambio_presupuesto_partida/detallePresupuesto';
-            $.ajax({
-                type: 'POST',
-                data:{
-                    id_partida:partida,
-                    presupuesto:presupuesto
-                },
-                url: url,
-                beforeSend: function () {
-                    self.consultando = true;
-                },
-                success: function (data, textStatus, xhr) {
-                    self.partidas=data.data;
-                    $('#divDetalle').fadeIn();
-                },
-                complete: function () {
-                    self.consultando = false;
-
-                }
-            });
-        },
-        mostrar_detalle_presupuesto:function (idPresupuesto) {
-            var self = this;
-            var partida=self.partida_id;
-            var presupuesto=idPresupuesto;
-            $('#divDetalle').fadeOut();
-
-            var url = App.host + '/control_presupuesto/cambio_presupuesto_partida/detallePresupuesto';
-            $.ajax({
-                type: 'POST',
-                data:{
-                    id_partida:partida,
-                    presupuesto:presupuesto
-                },
-                url: url,
-                beforeSend: function () {
-                    self.consultando = true;
-                },
-                success: function (data, textStatus, xhr) {
-                    self.partidas=data.data;
-                    $('#divDetalle').fadeIn();
-                },
-                complete: function () {
-                    self.consultando = false;
-
-                }
-            });
-
         }
-
     }
 });

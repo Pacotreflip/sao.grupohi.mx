@@ -12,7 +12,7 @@
                 <div class="col-md-12">
                     <div class="box box-solid">
                         <div class="box-header with-border">
-                            <h3 class="box-title">Partidas</h3>
+                            <h3 class="box-title">Agregar Escalatoria a la Solicitud</h3>
                             <div class="box-tools pull-right">
                                 <button class="btn-default btn" @click="addPartida()"><i class="fa fa-plus text-green"></i></button>
                             </div>

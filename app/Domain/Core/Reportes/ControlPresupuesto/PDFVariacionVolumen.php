@@ -290,7 +290,7 @@ class PDFVariacionVolumen extends Rotation {
                     utf8_decode($conceptoBase->unidad), // Unidad
                     '$ ' . number_format($conceptoBase->precio_unitario, 2, '.', ','), // Precio unitario
                     number_format($cantidadPresupuestada, 2, '.', ','), // Vólumen Original
-                    number_format($variacion_volumen), // Vólumen del cambio
+                    number_format($variacion_volumen, 2, '.', ','), // Vólumen del cambio
                     number_format($cantidadNueva, 2, '.', ','),  // Vólumen actualizado
                     '$ '. number_format($monto_presupuestado, 2, '.', ','), // Importe original
                     '$ '. number_format($variacion_importe, 2, '.', ','), // Importe del cambio

@@ -329,10 +329,10 @@ class PDFSolicitudCambioEscalatoria extends Rotation {
         $firmaX2 = ($qrX / 1.50) - ($firmasWidth / 2);
 
         $this->SetX($firmaX1);
-        $this->Cell($firmasWidth, 0.4, utf8_decode('firma 1'), 'TRLB', 0, 'C', 1);
+        $this->Cell($firmasWidth, 0.4, utf8_decode('COORDINADOR DE CONTROL DE PROYECTOS'), 'TRLB', 0, 'C', 1);
 
         $this->SetX($firmaX2);
-        $this->Cell($firmasWidth, 0.4, utf8_decode('firma 2'), 'TRLB', 1, 'C', 1);
+        $this->Cell($firmasWidth, 0.4, utf8_decode('PERSONA QUE SOLICITA'), 'TRLB', 1, 'C', 1);
 
 
         $this->SetX($firmaX1);
@@ -342,10 +342,10 @@ class PDFSolicitudCambioEscalatoria extends Rotation {
         $this->Cell($firmasWidth, 1.2, '', 'TRLB', 1, 'C');
 
         $this->SetX($firmaX1);
-        $this->Cell($firmasWidth, 0.4, utf8_decode('nombre 1'), 'TRLB', 0, 'C', 1);
+        $this->Cell($firmasWidth, 0.4, utf8_decode(''), 'TRLB', 0, 'C', 1);
 
         $this->SetX($firmaX2);
-        $this->Cell($firmasWidth, 0.4, utf8_decode('nombre 2'), 'TRLB', 0, 'C', 1);
+        $this->Cell($firmasWidth, 0.4, utf8_decode($this->solicitud->userRegistro), 'TRLB', 0, 'C', 1);
     }
 
     function Footer() {
@@ -361,13 +361,6 @@ class PDFSolicitudCambioEscalatoria extends Rotation {
         $this->SetFont('Arial', 'B', $this->txtFooterTam);
         $this->Cell(6.5, .4, utf8_decode('Formato generado desde SAO.'), 0, 0, 'L');
 
-        //if($this->solicitud->id_estatus == 1) {
-        //    $this->SetFont('Arial','',80);
-        //    $this->SetTextColor(204,204,204);
-        //    $this->RotatedText(3,20,utf8_decode("PENDIENTE DE"),45);
-        //    $this->RotatedText(5.5,22,utf8_decode("AUTORIZACIÓN"),45);
-        //    $this->SetTextColor('0,0,0');
-        //}
     }
 
     function RotatedText($x,$y,$txt,$angle)
