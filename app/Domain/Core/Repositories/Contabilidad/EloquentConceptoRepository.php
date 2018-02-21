@@ -183,6 +183,7 @@ class EloquentConceptoRepository implements ConceptoRepository
      */
     public function getInsumos($id)
     {
+
         $cobrable = $this->model->where('id_concepto', $id)->first();
         $conceptos = $this->model->where('nivel', 'like', $cobrable->nivel.'___.')->get();
         $data = [];
@@ -196,11 +197,14 @@ class EloquentConceptoRepository implements ConceptoRepository
                     'monto_presupuestado' => $concepto->monto_presupuestado,
                     'insumos'  => Concepto::where('nivel', 'like', $concepto->nivel.'___.')->get()->toArray()
                 ];
+
         }
         $cob_conceptos = [
             'cobrable'  => $cobrable->toArray(),
             'conceptos' => $data
         ];
+
+
         return $cob_conceptos;
     }
 }

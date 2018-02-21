@@ -28,6 +28,7 @@ use Ghi\Domain\Core\Models\Material;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Exception\HttpResponseException;
+use Illuminate\Support\Facades\Mail;
 use Symfony\Component\HttpFoundation\Response;
 
 class EloquentSolicitudCambioRepository implements SolicitudCambioRepository
@@ -537,6 +538,7 @@ class EloquentSolicitudCambioRepository implements SolicitudCambioRepository
                             }
                         }
 
+
                         $mano['id_tipo_orden'] = TipoOrden::ORDEN_DE_CAMBIO_DE_INSUMOS;
                         $mano['id_solicitud_cambio'] = $solicitud->id;
                         $mano['precio_unitario_original'] = $mano['precio_unitario'];
@@ -614,6 +616,20 @@ class EloquentSolicitudCambioRepository implements SolicitudCambioRepository
             DB::connection('cadeco')->beginTransaction();
             $sumas_insumos = 0;
 
+           /* $data=[];
+
+            $msg = "First line of text\nSecond line of text";
+            $msg = wordwrap($msg,70);
+
+            mail("antonio_oro18@hotmail.com","My subject",$msg);
+
+            $mail=Mail::send(['control_presupuesto.emails.notificaciones_html.cambio_insumos','control_presupuesto.emails.notificaciones_text.cambio_insumos'], $data, function ($message) {
+                $message->from('saoweb@grupohi.mx', 'SAO WEB');
+                $message->to('antonio_oro18@hotmail.com', 'prueba')->subject('Cuentas de Materiales');
+            });
+
+         dd($mail);
+         */
             $insumosAgrupados = PartidasInsumosAgrupados::where('id_solicitud_cambio', '=', $id)->get();
             $conceptoTarjeta = ConceptoTarjeta::where('id_concepto', '=', $insumosAgrupados[0]->id_concepto)->first();
             //////////////generamos nueva tarjeta
@@ -659,7 +675,7 @@ class EloquentSolicitudCambioRepository implements SolicitudCambioRepository
                     }
 
 
-                    $conceptoReset = Concepto::where('nivel', 'like', $concepto->nivel . '%')->where('id_material', '=', $partida->id_material)->first();
+                    $conceptoReset = Concepto::where('nivel', 'like', $concepto->nivel . '%')->where('id_obra','=',Context::getId())->where('id_material', '=', $partida->id_material)->first();
                     if ($conceptoReset) {
                         $partida->id_concepto = $conceptoReset->id_concepto;
                     }
@@ -1032,6 +1048,10 @@ class EloquentSolicitudCambioRepository implements SolicitudCambioRepository
             $data = ["id_solicitud_cambio" => $id];
             $solicitudCambio = SolicitudCambioAutorizada::create($data);
             $solicitud = $this->model->find($id);
+
+
+
+
 
             DB::connection('cadeco')->commit();
 
