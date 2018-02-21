@@ -39,19 +39,28 @@ Vue.component('cambio-presupuesto-index', {
                     //self.guardando = false;
                 },
                 "dataSrc": function (json) {
-
-
+console.log(json);
                     for (var i = 0; i < json.data.length; i++) {
-                        json.data[i].created_at = new Date(json.data[i].created_at).dateFormat();
+                        var monto = 0;
+                        for(var j = 0; j< json.data[i].partidas.length; j++){
+                            if(json.data[i].partidas[j].rendimiento_nuevo != null){
+                                if(json.data[i].partidas[j].precio_unitario_nuevo != null){
+                                    monto = (json.data[i].partidas[j].rendimiento_nuevo * json.data[i].partidas[j].rendimiento_nuevo)
+                                }
+                            }
+                        }
+                        json.data[i].monto = monto;
+                        json.data[i].created_at = new Date(json.data[i].created_at).dateShortFormat('d-m-Y');
                         json.data[i].registro = json.data[i].user_registro.nombre + ' ' + json.data[i].user_registro.apaterno + ' ' + json.data[i].user_registro.amaterno;
                     }
-
                     return json.data;
                 }
             },
             "columns": [
                 {data: 'numero_folio'},
                 {data: 'tipo_orden.descripcion'},
+                {data: 'monto'},
+                {data: 'created_at'},
                 {data: 'created_at'},
                 {data: 'registro', orderable: false},
                 {data: 'estatus.descripcion'},

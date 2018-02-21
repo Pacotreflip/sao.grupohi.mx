@@ -19353,16 +19353,24 @@ Vue.component('cambio-presupuesto-index', {
                     //self.guardando = false;
                 },
                 "dataSrc": function dataSrc(json) {
-
+                    console.log(json);
                     for (var i = 0; i < json.data.length; i++) {
-                        json.data[i].created_at = new Date(json.data[i].created_at).dateFormat();
+                        var monto = 0;
+                        for (var j = 0; j < json.data[i].partidas.length; j++) {
+                            if (json.data[i].partidas[j].rendimiento_nuevo != null) {
+                                if (json.data[i].partidas[j].precio_unitario_nuevo != null) {
+                                    monto = json.data[i].partidas[j].rendimiento_nuevo * json.data[i].partidas[j].rendimiento_nuevo;
+                                }
+                            }
+                        }
+                        json.data[i].monto = monto;
+                        json.data[i].created_at = new Date(json.data[i].created_at).dateShortFormat('d-m-Y');
                         json.data[i].registro = json.data[i].user_registro.nombre + ' ' + json.data[i].user_registro.apaterno + ' ' + json.data[i].user_registro.amaterno;
                     }
-
                     return json.data;
                 }
             },
-            "columns": [{ data: 'numero_folio' }, { data: 'tipo_orden.descripcion' }, { data: 'created_at' }, { data: 'registro', orderable: false }, { data: 'estatus.descripcion' }, {
+            "columns": [{ data: 'numero_folio' }, { data: 'tipo_orden.descripcion' }, { data: 'monto' }, { data: 'created_at' }, { data: 'created_at' }, { data: 'registro', orderable: false }, { data: 'estatus.descripcion' }, {
                 data: {},
                 render: function render(data, type, row, meta) {
                     var button = '<span class="label" ></span><button class="btn btn-xs btn-info mostrar_pdf" data-pdf_id="' + row.id + '" title="Formato"><i class="fa fa-file-pdf-o"></i></button>  ';
@@ -20103,6 +20111,7 @@ Vue.component('variacion-insumos', {
             tipo_insumo: 0,
             id_material_seleccionado: 0,
             material_seleccionado: [],
+            tarjeta_actual: 0,
             cargando: false,
             guardando: false
         };
@@ -20132,15 +20141,21 @@ Vue.component('variacion-insumos', {
                     cancelButtonColor: '#d33',
                     confirmButtonText: 'Si, Cambiar',
                     cancelButtonText: 'No, Cancelar'
-                }).then(function () {
-                    self.get_conceptos();
-                    self.form.partidas = [];
-                    self.form.agrupadas = [];
+                }).then(function (value) {
+                    if (value.value) {
+                        self.get_conceptos();
+                        self.form.partidas = [];
+                        self.form.agrupadas = [];
+                        self.tarjeta_actual = self.id_tarjeta;
+                    } else {
+                        // setear valor anterior en el select2
+                    }
                 });
             } else {
                 self.get_conceptos();
                 self.form.partidas = [];
                 self.form.agrupadas = [];
+                self.tarjeta_actual = self.id_tarjeta;
             }
         }
     },
@@ -20192,12 +20207,11 @@ Vue.component('variacion-insumos', {
                 render: function render(data) {
                     return '<span title="' + data.filtro9 + '">' + data.filtro9.substr(0, 55) + '</span>';
                 }
-
             }, { data: 'filtro10' }, { data: 'filtro11' }, { data: 'unidad' }, { data: 'cantidad_presupuestada', className: 'text-right' }, { data: 'precio_unitario', className: 'text-right' }, { data: 'monto_presupuestado', className: 'text-right' }, {
                 data: {},
                 render: function render(data) {
                     if (self.existe(data.id_concepto)) {
-                        return '<button class="btn btn-xs btn-default btn_remove_concepto" id="' + data.id_concepto + '"><i class="fa fa-minus text-red"></i></button>';
+                        return '<button class="btn btn-xs btn-default btn_remove_concepto"  id="' + data.id_concepto + '"><i class="fa fa-minus text-red"></i></button>';
                     }
                     return '<button class="btn btn-xs btn-default btn_add_concepto" id="' + data.id_concepto + '"><i class="fa fa-plus text-green"></i></button>';
                 }
@@ -20337,6 +20351,7 @@ Vue.component('variacion-insumos', {
                             } else {
                                 diferencias = true;
                             }
+                            self.cargando = false;
                             console.log('Final : ' + diferencias);
                             if (diferencias) {
                                 swal({
@@ -20445,7 +20460,10 @@ Vue.component('variacion-insumos', {
 
         removeConcepto: function removeConcepto(id) {
             //var index = this.form.agrupadas.map(function (partida) { return partida.id_concepto; }).indexOf(parseInt(id));
-            var index = this.form.agrupadas.indexOf(id);
+            var self = this;
+            var ag = self.form.agrupadas;
+            var index = ag.indexOf(parseInt(id));
+
             this.form.agrupadas.splice(index, 1);
             $('#' + id).html('<i class="fa fa-plus text-green"></i>');
             $('#' + id).addClass('btn_add_concepto');

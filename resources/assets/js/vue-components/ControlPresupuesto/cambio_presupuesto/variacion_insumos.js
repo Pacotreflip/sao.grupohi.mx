@@ -10,6 +10,7 @@ Vue.component('variacion-insumos', {
             tipo_insumo:0,
             id_material_seleccionado:0,
             material_seleccionado:[],
+            tarjeta_actual: 0,
             cargando : false,
             guardando : false
         }
@@ -39,15 +40,21 @@ Vue.component('variacion-insumos', {
                     cancelButtonColor: '#d33',
                     confirmButtonText: 'Si, Cambiar',
                     cancelButtonText: 'No, Cancelar'
-                }).then(function() {
+                }).then((value) =>  {
+                if(value.value) {
                     self.get_conceptos();
                     self.form.partidas = [];
                     self.form.agrupadas = [];
-                });
+                    self.tarjeta_actual = self.id_tarjeta;
+                }else{
+                    // setear valor anterior en el select2
+                }
+            });
             }else {
                 self.get_conceptos();
                 self.form.partidas = [];
                 self.form.agrupadas = [];
+                self.tarjeta_actual = self.id_tarjeta;
             }
         }
     },
@@ -108,7 +115,6 @@ Vue.component('variacion-insumos', {
                     render : function (data) {
                         return '<span title="'+data.filtro9+'">'+data.filtro9.substr(0, 55)+'</span>'
                     }
-
                 },
                 {data : 'filtro10'},
                 {data : 'filtro11'},
@@ -120,7 +126,7 @@ Vue.component('variacion-insumos', {
                     data : {},
                     render : function (data) {
                         if (self.existe(data.id_concepto)) {
-                            return '<button class="btn btn-xs btn-default btn_remove_concepto" id="'+data.id_concepto+'"><i class="fa fa-minus text-red"></i></button>';
+                            return '<button class="btn btn-xs btn-default btn_remove_concepto"  id="'+data.id_concepto+'"><i class="fa fa-minus text-red"></i></button>';
                         }
                         return '<button class="btn btn-xs btn-default btn_add_concepto" id="'+data.id_concepto+'"><i class="fa fa-plus text-green"></i></button>';
                     }
@@ -168,7 +174,6 @@ Vue.component('variacion-insumos', {
                     self.guardando = true;
                     $('#'+id).html('<i class="fa fa-spin fa-spinner"></i>');
                     $('#'+id).attr('disabled', true);
-
                 },
                 success : function (response) {
                     if(jQuery.isEmptyObject( self.form.partidas)){
@@ -262,6 +267,7 @@ Vue.component('variacion-insumos', {
                             }else{
                                 diferencias = true;
                             }
+                            self.cargando = false;
                             console.log('Final : '+ diferencias );
                             if(diferencias){
                                 swal({
@@ -372,7 +378,10 @@ Vue.component('variacion-insumos', {
 
         removeConcepto : function (id) {
             //var index = this.form.agrupadas.map(function (partida) { return partida.id_concepto; }).indexOf(parseInt(id));
-            var index = this.form.agrupadas.indexOf(id);
+            var self = this;
+            var ag = self.form.agrupadas;
+            var index = ag.indexOf(parseInt(id));
+
             this.form.agrupadas.splice(index, 1);
             $('#'+id).html('<i class="fa fa-plus text-green"></i>');
             $('#'+id).addClass('btn_add_concepto');
