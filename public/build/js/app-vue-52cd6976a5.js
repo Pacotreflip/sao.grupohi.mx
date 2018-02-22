@@ -20707,6 +20707,9 @@ Vue.component('cambio-insumos-create', {
 
         cancelar_add_insumo: function cancelar_add_insumo() {
             $('#add_insumo_modal').modal('hide');
+
+            $('#insumos_modal').modal('show');
+            $('#insumos_modal').focus();
         },
 
         agregar_insumo_nuevo: function agregar_insumo_nuevo() {
