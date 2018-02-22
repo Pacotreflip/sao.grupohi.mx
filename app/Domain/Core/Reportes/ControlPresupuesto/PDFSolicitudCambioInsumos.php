@@ -308,6 +308,8 @@ class PDFSolicitudCambioInsumos extends Rotation
                 $partidas = $this->partidas->getClasificacionInsumos(['id_solicitud_cambio' => $this->solicitud->id, 'id_concepto' => $conceptos['id_concepto']]);
                 foreach ($partidas as $partida) {
                     foreach ($partida['items'] as $item) {
+
+                       // dd($item);
                         $data_info = [
                             'num_tarjeta' => $numero_tarjeta,
                             'descripcion' => $item->material->descripcion,
@@ -320,7 +322,8 @@ class PDFSolicitudCambioInsumos extends Rotation
                             'cantidad_nueva' => $item->cantidad_presupuestada_nueva == null ? 0 : $item->cantidad_presupuestada_nueva,
                             'importe_original' => $item->precio_unitario_original,
                             'variacion_importe' => $item->precio_unitario_nuevo == 0 || $item->precio_unitario_nuevo == null ? 0 : $item->precio_unitario_nuevo - $item->precio_unitario_original,
-                            'importe_actualizado' => $item->precio_unitario_nuevo
+                            'importe_actualizado' => $item->cantidad_presupuestada_nueva
+
 
                         ];
                         array_push($array_data, $data_info);
