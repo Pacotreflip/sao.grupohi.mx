@@ -484,12 +484,7 @@ Vue.component('cambio-insumos-create', {
                         //html : 'Solicitud Guardada con Número de Folio <b>' + response.numero_folio + '</b>'
                         html : 'Solicitud Guardada Exitosamente.'
                     }).then(function () {
-                        $('#conceptos_modal').modal('hide');
-                        $('#insumos_modal').modal('hide');
-                        self.form.partidas = [];
-                        self.$emit('reset-filtros');
-                        Vue.set(self.form, 'motivo', '');
-                        $('#conceptos_table').DataTable().ajax.reload();
+                        window.location.href = App.host + '/control_presupuesto/cambio_insumos/' +response.id
 
                     });
                 },
