@@ -70,7 +70,7 @@ class RolesPermissionsSeeder extends Seeder
         $consultar_reclasificacion = Permission::firstOrCreate(['name' => 'consultar_reclasificacion', 'display_name' => 'Consultar Reclasificación', 'description' => 'Permiso para Consultar Reclasificación de Costo']);
 
         //Formato de Orden de Pago Estimación
-        $consultar_reporte_estimacion = Permission::firstOrCreate(['name' => 'consultar_reporte_estimacion', 'description' => 'Consultar Solicitudes de Orden de Pago Estimación', 'display_name' => 'Consultar Solicitudes de Orden de Pago Estimación']);
+        $consultar_reporte_estimacion = Permission::firstOrCreate(['name' => 'consultar_reporte_estimacion', 'description' => 'Consultar Reporte de Orden de Pago Estimación', 'display_name' => 'Consultar Reporte de Orden de Pago Estimación']);
 
         //Comprobante de Fondo Fijo
         $editar_comprobante_fondo_fijo    = Permission::firstOrCreate(['name' => 'editar_comprobante_fondo_fijo', 'display_name' => 'Editar Comprobante de Fondo Fijo', 'description' => 'Permiso para editar un Comprobante de Fondo Fijo']);
@@ -111,8 +111,8 @@ class RolesPermissionsSeeder extends Seeder
 
         //Cierres de Periodo
         $consultar_cierre_periodo = Permission::firstOrCreate(['name' => 'consultar_cierre_periodo', 'display_name' => 'Cierre de Periodo', 'description' => 'Cierre de Periodo']);
-        $generar_cierre_periodo = Permission::firstOrCreate(['name' => 'generar_cierre_periodo', 'display_name' => 'Cierre de Periodo', 'description' => 'Cierre de Periodo']);
-        $editar_cierre_periodo = Permission::firstOrCreate(['name' => 'editar_cierre_periodo', 'display_name' => 'Cierre de Periodo', 'description' => 'Cierre de Periodo']);
+        $generar_cierre_periodo = Permission::firstOrCreate(['name' => 'generar_cierre_periodo', 'display_name' => 'Generar Cierre Periodo', 'description' => 'Generar Cierre Periodo']);
+        $editar_cierre_periodo = Permission::firstOrCreate(['name' => 'editar_cierre_periodo', 'display_name' => 'Editar Cierre Periodo', 'description' => 'Editar Cierre Periodo']);
 
         //Control Presupuesto Variación de Volúmen
         $registrar_variacion_volumen = Permission::firstOrCreate(['name' => 'registrar_variacion_volumen', 'display_name' => 'Registrar Variacion de Volúmen', 'description' => 'Registrar Variacion de Volúmen']);
@@ -144,8 +144,11 @@ class RolesPermissionsSeeder extends Seeder
         /**
          * Roles
          */
-        $contador          = Role::firstOrCreate(['name' => 'contador', 'display_name' => 'Contador', 'description' => 'Rol de Contador']);
-        $consultar         = Role::firstOrCreate(['name' => 'consultar', 'display_name' => 'Consultar', 'description' => 'Rol para consultar']);
+        $contador          = Role::firstOrCreate(['name' => 'contador', 'display_name' => 'Contador', 'description' => 'Rol de Contador
+']);
+        $consultar         = Role::firstOrCreate(['name' => 'consultar', 'display_name' => 'Consultar
+', 'description' => 'Rol para consultar
+']);
         $control_proyecto  = Role::firstOrCreate(['name' => 'control_proyecto', 'display_name' => 'Control de Proyecto', 'description' => 'Rol de usuario de Control de Proyecto']);
         $jefe_subcontratos = Role::firstOrCreate(['name' => 'jefe_subcontratos', 'description' => 'Jefe de Subcontratos', 'display_name' => 'Jefe de Subcontratos']);
         $jefe_procuracion  = Role::firstOrCreate(['name' => 'jefe_procuracion', 'description' => 'Jefe de Procuración', 'display_name' => 'Jefe de Procuración']);
@@ -157,27 +160,27 @@ class RolesPermissionsSeeder extends Seeder
          * Asignaciones
          */
 
-        $control_proyecto->attachPermissions([$solicitar_reclasificacion, $autorizar_reclasificacion, $consultar_reclasificacion]);
-        $jefe_procuracion->attachPermission($consultar_reporte_estimacion);
-        $jefe_subcontratos->attachPermission($consultar_reporte_estimacion);
-        $contador->attachPermissions([$editar_cuenta_fondo, $registrar_cuenta_fondo, $consultar_cuenta_fondo]);
-        $consultar->attachPermission($consultar_cuenta_fondo);
-        $contador->attachPermissions([$editar_cuenta_costo, $registrar_cuenta_costo, $consultar_cuenta_costo, $eliminar_cuenta_costo]);
-        $tesorero->attachPermissions([$editar_comprobante_fondo_fijo, $registrar_comprobante_fondo_fijo, $consultar_comprobante_fondo_fijo,$eliminar_comprobante_fondo_fijo]);
-        $consulta_finanzas->attachPermission($consultar_comprobante_fondo_fijo);
-        $contador->attachPermissions([$consultar_cierre_periodo, $generar_cierre_periodo, $editar_cierre_periodo]);
-        $control_proyecto->attachPermission($consultar_cierre_periodo);
-        $coordinador_control_proyectos->attachPermissions([
-            $registrar_variacion_volumen,
-            $autorizar_variacion_volumen,
-            $aplicar_variacion_volumen,
-            $rechazar_variacion_volumen,
-            $consultar_variacion_volumen,
-            $registrar_escalatoria,
-            $autorizar_escalatoria,
-            $aplicar_escalatoria,
-            $rechazar_escalatoria,
-            $consultar_escalatoria,
+        $control_proyecto->perms()->sync([$solicitar_reclasificacion->id, $autorizar_reclasificacion->id, $consultar_reclasificacion->id]);
+        $jefe_procuracion->perms()->sync([$consultar_reporte_estimacion->id]);
+        $jefe_subcontratos->perms()->sync([$consultar_reporte_estimacion->id]);
+        $contador->perms()->sync([$editar_cuenta_fondo->id, $registrar_cuenta_fondo->id, $consultar_cuenta_fondo->id]);
+        $consultar->perms()->sync([$consultar_cuenta_fondo->id]);
+        $contador->perms()->sync([$editar_cuenta_costo->id, $registrar_cuenta_costo->id, $consultar_cuenta_costo->id, $eliminar_cuenta_costo->id]);
+        $tesorero->perms()->sync([$editar_comprobante_fondo_fijo->id, $registrar_comprobante_fondo_fijo->id, $consultar_comprobante_fondo_fijo->id,$eliminar_comprobante_fondo_fijo->id]);
+        $consulta_finanzas->perms()->sync([$consultar_comprobante_fondo_fijo->id]);
+        $contador->perms()->sync([$consultar_cierre_periodo->id, $generar_cierre_periodo->id, $editar_cierre_periodo->id]);
+        $control_proyecto->perms()->sync([$consultar_cierre_periodo->id]);
+        $coordinador_control_proyectos->perms()->sync([
+            $registrar_variacion_volumen->id,
+            $autorizar_variacion_volumen->id,
+            $aplicar_variacion_volumen->id,
+            $rechazar_variacion_volumen->id,
+            $consultar_variacion_volumen->id,
+            $registrar_escalatoria->id,
+            $autorizar_escalatoria->id,
+            $aplicar_escalatoria->id,
+            $rechazar_escalatoria->id,
+            $consultar_escalatoria->id,
         ]);
     }
 }

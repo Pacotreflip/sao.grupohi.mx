@@ -202,6 +202,17 @@ class EloquentVariacionVolumenRepository implements VariacionVolumenRepository
      */
     public function aplicar(VariacionVolumen $variacionVolumen, $id_base_presupuesto)
     {
+        if (is_array($id_base_presupuesto)) {
+            foreach ($id_base_presupuesto as $id) {
+                $this->exec_aplicar($variacionVolumen, $id);
+            }
+        } else {
+            $this->exec_aplicar($variacionVolumen, $id_base_presupuesto);
+        }
+        return $variacionVolumen;
+    }
+
+    public function exec_aplicar(VariacionVolumen $variacionVolumen, $id_base_presupuesto) {
         try {
             DB::connection('cadeco')->beginTransaction();
             $db = BasePresupuesto::find($id_base_presupuesto);

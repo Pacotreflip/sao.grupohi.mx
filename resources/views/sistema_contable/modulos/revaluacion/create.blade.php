@@ -9,6 +9,8 @@
             :facturas="{{ $facturas->toJson() }}"
             :url_revaluacion="'{{route('sistema_contable.revaluacion.store')}}'"
             inline-template
+            :monedas="{{ $monedas->toJson() }}"
+            :moneda="{{ $moneda }}"
             v-cloak>
     <section >
 
@@ -23,6 +25,18 @@
                             <label for="tipo_cambio"><strong>Tipo de Cambio</strong></label>
                             <input type="number" step="any" name="tipo_cambio" class="form-control"   v-validate="'required|decimal|min_value:0'"  value="{{number_format($tipo_cambio,4)}}"/>
                             <label class="help" v-show="validation_errors.has('form_facturas.tipo_cambio')">@{{ validation_errors.first('form_facturas.tipo_cambio') }}</label>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group" :class="{'has-error': validation_errors.has('form_facturas.tipo_cambio')}">
+                            <label for="moneda"><strong>Moneda</strong></label>
+                            {!!
+                                Form::select(
+                                'id_moneda',
+                                $monedas,
+                                $moneda,
+                                ['class' => 'form-control', 'placeholder' => '[--SELECCIONE--]', 'id' => 'select_moneda'])
+                            !!}
                         </div>
                     </div>
                 </div>

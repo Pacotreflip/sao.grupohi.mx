@@ -19,7 +19,7 @@
                         <span v-if="rechazando"><i class="fa fa-spinner fa-spin"></i> Rechazando</span>
                         <span v-else><i class="fa fa-close"></i> Rechazar</span>
                     </button>
-                    <button :disabled="cargando" class="btn pull-right btn-sm btn-app btn-info autorizar_solicitud" data-toggle="modal" data-target="#select_presupuestos_modal"  @click="fillAfectaciones(); validation_errors.clear('form_autorizar_solicitud')">
+                    <button v-if="solicitud.estatus.clave_estado == 1 || !solicitud.aplicada" :disabled="cargando" class="btn pull-right btn-sm btn-app btn-info autorizar_solicitud" data-toggle="modal" data-target="#select_presupuestos_modal"  @click="fillAfectaciones(); validation_errors.clear('form_autorizar_solicitud')">
                         <span v-if="autorizando"><i class="fa fa-spinner fa-spin"></i> @{{ (!solicitud
                                         .aplicada && solicitud.estatus.clave_estado == 2 ? 'Aplicando' : 'Autorizando')
                             }}</span>
@@ -194,22 +194,18 @@
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                             <h4 class="modal-title" id="myModalLabel">Seleccione los presupuestos que desea afectar con ésta solicitud<br><small>(Por defecto se marcan los presupuestos seleccionados al crear la solicitud)</small></h4>
                         </div>
-                        <form id="form_autorizar_solicitud" @submit.prevent="validateForm('form_autorizar_solicitud', (solicitud.aplicada ? 'autorizar_solicitud' : 'aplicar_solicitud'))"  data-vv-scope="form_autorizar_solicitud">
+                        <form id="form_autorizar_solicitud" @submit.prevent="validateForm('form_autorizar_solicitud', (!solicitud
+                                        .aplicada && solicitud.estatus.clave_estado == 2 ? 'aplicar_solicitud' : 'autorizar_solicitud'))"  data-vv-scope="form_autorizar_solicitud">
                             <div class="modal-body">
                                 <div class="row">
-                                    <div class="form-group col-md-4" :class="{'has-error': validation_errors.has('form_autorizar_solicitud.Presupuesto')}" v-for="presupuesto in presupuestos">
+                                    <div class="form-group col-md-4" :class="{'has-error': validation_errors.has('form_autorizar_solicitud.Presupuesto')}" v-for="presupuesto in presupuestos" v-if="!aplicada(presupuesto.id_base_presupuesto)">
                                     <span v-if="aplicada(presupuesto.id_base_presupuesto)">
                                         <label class="text-warning">@{{ presupuesto.base_datos.descripcion }} (Aplicada)</label>
                                     </span>
                                         <span v-else>
-                                        <label><b>@{{ aplicada(presupuesto.id_base_presupuesto) ? 'presupuesto.base_datos.descripcion(APLICADA)' : presupuesto.base_datos.descripcion }}</b></label>
+                                        <label><b>@{{ presupuesto.base_datos.descripcion }}</b></label>
                                     </span>
-                                        <input type="checkbox"
-                                               :disabled="aplicada(presupuesto.id_base_presupuesto)"
-                                               :value="presupuesto.base_datos.id"
-                                               v-model="form.afectaciones"
-                                               :name="'Presupuesto'"
-                                               v-validate="'required'">
+                                        <input type="checkbox" :value="presupuesto.base_datos.id" v-model="form.afectaciones" :name="'Presupuesto'" v-validate="'required'">
                                     </div>
                                 </div>
                                 <label class="help text-red" v-show="validation_errors.has('form_autorizar_solicitud.Presupuesto')">Seleccione por lo menos un presupuesto por afectar.</label>
@@ -217,10 +213,12 @@
                             <div class="modal-footer">
                                 <button type="button" :disabled="cargando" class="btn btn-default" data-dismiss="modal">Cerrar</button>
                                 <button type="submit" :disabled="cargando" class="btn btn-primary">
-                                    <span v-if="autorizando"><i class="fa fa-spinner fa-spin"></i> @{{ (solicitud
-                                        .aplicada ? 'Autorizando' : 'Aplicando') }}</span>
-                                    <span v-else><i class="fa fa-check"></i> @{{ (solicitud.aplicada ? 'Autorizar' :
-                                        'Aplicar') }}</span>
+                                    <span v-if="autorizando"><i class="fa fa-spinner fa-spin"></i> @{{ (!solicitud
+                                        .aplicada && solicitud.estatus.clave_estado == 2 ? 'Aplicando' : 'Autorizando')
+                            }}</span>
+                                    <span v-else><i class="fa fa-check"></i> @{{ (!solicitud
+                                        .aplicada && solicitud.estatus.clave_estado == 2 ? 'Aplicar' : 'Autorizar')
+                            }}</span>
                                 </button>
                             </div>
                         </form>

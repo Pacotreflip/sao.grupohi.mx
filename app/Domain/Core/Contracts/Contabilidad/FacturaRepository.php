@@ -73,5 +73,5 @@ interface FacturaRepository
      */
     public function scope($scope);
 
-    public function getFacturasPorRevaluar();
+    public function getFacturasPorRevaluar($id_moneda);
 }

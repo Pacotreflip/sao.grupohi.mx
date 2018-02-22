@@ -36,7 +36,7 @@ interface RevaluacionRepository
      * Obtiene el tipo de cambio del ultimo dia habil del mes en curso
      * @return float
      */
-    public function getTipoCambio();
+    public function getTipoCambio($id_moneda);
 
     public function esRevaluable();
 

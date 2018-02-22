@@ -39,7 +39,6 @@ class Revaluacion extends Model
 
         static::creating(function ($model) {
             $model->id_obra = Context::getId();
-            $model->id_moneda=Moneda::DOLARES;
             $model->user_registro = auth()->id();
         });
     }

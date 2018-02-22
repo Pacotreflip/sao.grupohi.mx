@@ -1,12 +1,24 @@
 Vue.component('revaluacion-create', {
-    props: ['facturas','tipo_cambio','url_revaluacion'],
+    props: ['facturas','tipo_cambio','url_revaluacion', 'monedas', 'moneda'],
     data : function() {
         return {
             data: {
-                facturas: this.facturas
+                facturas: this.facturas,
+                monedas: this.monedas,
+                moneda: this.moneda
             },
             guardando : false
         }
+    },
+    mounted: function () {
+        var self = this;
+
+        $(document).ready( function() {
+            $("#select_moneda").change(function() {
+                var moneda = $(this).val();
+                window.location = App.host + '/sistema_contable/revaluacion/create/?id_moneda='+ moneda;
+            });
+        });
     },
     directives: {
         icheck: {

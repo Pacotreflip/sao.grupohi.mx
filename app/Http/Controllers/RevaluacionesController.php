@@ -3,6 +3,7 @@
 namespace Ghi\Http\Controllers;
 
 use Dingo\Api\Routing\Helpers;
+use Ghi\Domain\Core\Models\Moneda;
 use Ghi\Domain\Core\Contracts\Contabilidad\RevaluacionRepository;
 use Ghi\Domain\Core\Contracts\Contabilidad\FacturaRepository;
 use Illuminate\Http\Request;
@@ -48,19 +49,20 @@ class RevaluacionesController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Request $request)
     {
 
-        $facturas = $this->factura->getFacturasPorRevaluar();
+        $id_moneda = ($request->id_moneda ? $request->id_moneda : Moneda::DOLARES);
+        $facturas = $this->factura->getFacturasPorRevaluar($id_moneda);
 
         if(! $facturas->count()) {
             Flash::warning('No existen facturas pendientes de revaluación');
-            return redirect()->back();
         }
-        $tipo_cambio= $this->revaluacion->getTipoCambio();
-
+        $tipo_cambio = $this->revaluacion->getTipoCambio($id_moneda);
         return view('sistema_contable.modulos.revaluacion.create')
             ->with('facturas', $facturas)
+            ->with('monedas', Moneda::extranjeras()->lists('nombre', 'id_moneda'))
+            ->with('moneda', $id_moneda)
             ->with('tipo_cambio', $tipo_cambio);
     }
 
