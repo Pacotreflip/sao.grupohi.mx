@@ -23305,7 +23305,9 @@ Vue.component('variacion-volumen-show', {
             var self = this;
             self.form.afectaciones = [];
             self.solicitud.aplicaciones.forEach(function (value) {
-                self.form.afectaciones.push(value.id);
+                if (!self.aplicada(value.id)) {
+                    self.form.afectaciones.push(value.id);
+                }
             });
         },
         aplicada: function aplicada(id) {
