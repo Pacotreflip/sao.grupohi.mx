@@ -52,34 +52,25 @@ Vue.component('cambio-presupuesto-index', {
                 "url": App.host + '/control_presupuesto/cambio_presupuesto/paginate',
                 "type": "POST",
                 "beforeSend": function () {
-                   // self.guardando = true;
+                    // self.guardando = true;
                 },
                 "complete": function () {
                     //self.guardando = false;
                 },
                 "dataSrc": function (json) {
-console.log(json);
+
+
                     for (var i = 0; i < json.data.length; i++) {
-                        var monto = 0;
-                        for(var j = 0; j< json.data[i].partidas.length; j++){
-                            if(json.data[i].partidas[j].rendimiento_nuevo != null){
-                                if(json.data[i].partidas[j].precio_unitario_nuevo != null){
-                                    monto = (json.data[i].partidas[j].rendimiento_nuevo * json.data[i].partidas[j].rendimiento_nuevo)
-                                }
-                            }
-                        }
-                        json.data[i].monto = monto;
-                        json.data[i].created_at = new Date(json.data[i].created_at).dateShortFormat('d-m-Y');
+                        json.data[i].created_at = new Date(json.data[i].created_at).dateFormat();
                         json.data[i].registro = json.data[i].user_registro.nombre + ' ' + json.data[i].user_registro.apaterno + ' ' + json.data[i].user_registro.amaterno;
                     }
+
                     return json.data;
                 }
             },
             "columns": [
                 {data: 'numero_folio'},
                 {data: 'tipo_orden.descripcion'},
-                {data: 'monto'},
-                {data: 'created_at'},
                 {data: 'created_at'},
                 {data: 'registro', orderable: false},
                 {data: 'estatus.descripcion'},
@@ -94,7 +85,7 @@ console.log(json);
                         button+='<i class="fa fa-eye"></i>';
                         button+='   </button>';
                         button+='  </a>';
-                       return button;
+                        return button;
                     },
                     orderable: false
                 }
@@ -169,12 +160,12 @@ console.log(json);
             var self = this,
                 tipo_seleccionado = self.findTipoOrden(self.form.id_tipo_orden);
 
-                if (tipo_seleccionado === null)
-                    swal({
-                        title: 'Error',
-                        text: "El item seleccionado no es un tipo de solicitud válido",
-                        type: 'error'
-                    });
+            if (tipo_seleccionado === null)
+                swal({
+                    title: 'Error',
+                    text: "El item seleccionado no es un tipo de solicitud válido",
+                    type: 'error'
+                });
 
             // Redirecciona a la ruta correcta
             window.location.href = App.host + '/control_presupuesto/'+ tipo_seleccionado.name +'/create';

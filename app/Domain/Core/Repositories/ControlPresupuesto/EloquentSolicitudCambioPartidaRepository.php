@@ -193,6 +193,8 @@ class EloquentSolicitudCambioPartidaRepository implements SolicitudCambioPartida
         $mano_obra = [];
         $herramienta = [];
         $maquinaria = [];
+        $subcontratos = [];
+        $gastos = [];
         $data = [];
         foreach ($partidas as $partida) {
 
@@ -248,7 +250,7 @@ class EloquentSolicitudCambioPartidaRepository implements SolicitudCambioPartida
              }
             */
             $partida->toArray();
-            switch ($partida->material->tipo_material) {
+            switch ($partida->tipo_agrupador) {
                 case 1:///materiales
                     array_push($materiales, $partida);
                     break;
@@ -261,6 +263,12 @@ class EloquentSolicitudCambioPartidaRepository implements SolicitudCambioPartida
                 case 8:/// Maquinaria
                     array_push($maquinaria, $partida);
                     break;
+                case 5:/// Maquinaria
+                    array_push($subcontratos, $partida);
+                    break;
+                case 6:/// Maquinaria
+                    array_push($gastos, $partida);
+                    break;
             }
         }
 
@@ -269,10 +277,14 @@ class EloquentSolicitudCambioPartidaRepository implements SolicitudCambioPartida
         $mano_obra = ['tipo' => 'MANO DE OBRA', 'id_tipo' => 2, 'items' => $mano_obra];
         $herramienta = ['tipo' => 'HERRAMIENTA', 'id_tipo' => 4, 'items' => $herramienta];
         $maquinaria = ['tipo' => 'MAQUINARIA Y EQUIPO', 'id_tipo' => 8, 'items' => $maquinaria];
+        $subcontratos = ['tipo' => 'SUBCONTRATOS', 'id_tipo' => 5, 'items' => $subcontratos];
+        $gastos = ['tipo' => 'GASTOS', 'id_tipo' => 6, 'items' => $gastos];
         array_push($data, $materiales);
         array_push($data, $mano_obra);
         array_push($data, $herramienta);
         array_push($data, $maquinaria);
+        array_push($data, $subcontratos);
+        array_push($data, $gastos);
 
 
         return $data;
@@ -290,7 +302,7 @@ class EloquentSolicitudCambioPartidaRepository implements SolicitudCambioPartida
         $solicitud = SolicitudCambio::find($data[0]['id_solicitud_cambio']);
         $id_solicitud_historico = 0;
         $total_presupuesto = Concepto::where('nivel', '=', '000.001.')->where('id_obra', '=', Context::getId())->first();
-        $total_presupuesto_hist=$total_presupuesto->monto_presupuestado;
+        $total_presupuesto_hist = $total_presupuesto->monto_presupuestado;
         foreach ($data as $conceptoAgr) {
 
 
@@ -306,6 +318,12 @@ class EloquentSolicitudCambioPartidaRepository implements SolicitudCambioPartida
             $concMaqOr = Concepto::where('nivel', 'like', $conceptoAgr['concepto']['nivel'] . '%')->where('descripcion', '=', 'MAQUINARIA')->first();
             $conceptoAgr['concepto']['maquinaria_monto_original'] = $concMaqOr->monto_presupuestado;
 
+            $concsSubOr = Concepto::where('nivel', 'like', $conceptoAgr['concepto']['nivel'] . '%')->where('descripcion', '=', 'SUBCONTRATOS')->first();
+            $conceptoAgr['concepto']['subcontratos_monto_original'] = $concsSubOr->monto_presupuestado;
+
+            $concGastOr = Concepto::where('nivel', 'like', $conceptoAgr['concepto']['nivel'] . '%')->where('descripcion', '=', 'GASTOS')->first();
+            $conceptoAgr['concepto']['gastos_monto_original'] = $concGastOr->monto_presupuestado;
+
             $id_solicitud_historico = $conceptoAgr['id'];
             //  dd( $conceptoAgr['concepto']);
             $partidas = SolicitudCambioPartida::with('material')->where('id_solicitud_cambio', '=', $conceptoAgr['id_solicitud_cambio'])->get();
@@ -315,6 +333,8 @@ class EloquentSolicitudCambioPartidaRepository implements SolicitudCambioPartida
             $mano_obra = 0;
             $herramienta = 0;
             $maquinaria = 0;
+            $subcontratos = 0;
+            $gastos = 0;
 
             foreach ($partidas as $partida) {
                 $existe = false;
@@ -349,8 +369,6 @@ class EloquentSolicitudCambioPartidaRepository implements SolicitudCambioPartida
                 }
 
 
-
-
                 if ($partida['id_concepto'] != null) {
                     $conceptoMpO = Concepto::find($partida['id_concepto']);
                     $auxmpnto = ($conceptoMpO->monto_presupuestado);
@@ -363,7 +381,7 @@ class EloquentSolicitudCambioPartidaRepository implements SolicitudCambioPartida
 //dd($partida);
 
 //echo "<br var-->". $partida['variacion'];
-                switch ($partida->material->tipo_material) {
+                switch ($partida->tipo_agrupador) {
                     case 1:///materiales
                         $materiales += $partida->variacion;
                         break;
@@ -376,6 +394,12 @@ class EloquentSolicitudCambioPartidaRepository implements SolicitudCambioPartida
                     case 8:/// Maquinaria
                         $maquinaria += $partida->variacion;
                         break;
+                    case 5:/// Subcontratos
+                        $subcontratos += $partida->variacion;
+                        break;
+                    case 6:/// Gastos
+                        $gastos += $partida->variacion;
+                        break;
                 }
 
             }
@@ -385,13 +409,19 @@ class EloquentSolicitudCambioPartidaRepository implements SolicitudCambioPartida
             $conceptoAgr['concepto']['mano_obra_variacion'] = $mano_obra;
             $conceptoAgr['concepto']['herramienta_variacion'] = $herramienta;
             $conceptoAgr['concepto']['maquinaria_variacion'] = $maquinaria;
-            $conceptoAgr['concepto']['variacion'] = $materiales + $mano_obra + $herramienta + $maquinaria;
+            $conceptoAgr['concepto']['subcontratos_variacion'] = $subcontratos;
+            $conceptoAgr['concepto']['gastos_variacion'] = $gastos;
+
+
+            $conceptoAgr['concepto']['variacion'] = $materiales + $mano_obra + $herramienta + $maquinaria + $subcontratos + $gastos;
 
             $importe_new = $conceptoAgr['concepto']['variacion'] +
                 $conceptoAgr['concepto']['materiales_monto_original'] +
                 $conceptoAgr['concepto']['mano_obra_monto_original'] +
                 $conceptoAgr['concepto']['herramienta_monto_original'] +
-                $conceptoAgr['concepto']['maquinaria_monto_original'];
+                $conceptoAgr['concepto']['maquinaria_monto_original'] +
+                $conceptoAgr['concepto']['subcontratos_monto_original'] +
+                $conceptoAgr['concepto']['gastos_monto_original'];
 
 
             $conceptoAgr['concepto']['importe_nuevo'] = $solicitud->id_estatus == 2 ? $importe_new - $conceptoAgr['concepto']['variacion'] : $importe_new;
@@ -414,6 +444,10 @@ class EloquentSolicitudCambioPartidaRepository implements SolicitudCambioPartida
                 $h_herr_equipo = SolicitudCambioPartidaHistorico::where('nivel', '=', $concHyEqOr->nivel)->where('id_partidas_insumos_agrupados', '=', $id_solicitud_historico)->first();
                 $h_maqui = SolicitudCambioPartidaHistorico::where('nivel', '=', $concMaqOr->nivel)->where('id_partidas_insumos_agrupados', '=', $id_solicitud_historico)->first();
 
+                $h_subcon = SolicitudCambioPartidaHistorico::where('nivel', '=', $concsSubOr->nivel)->where('id_partidas_insumos_agrupados', '=', $id_solicitud_historico)->first();
+
+               //dd($h_subcon);
+                $h_gastos = SolicitudCambioPartidaHistorico::where('nivel', '=', $concGastOr->nivel)->where('id_partidas_insumos_agrupados', '=', $id_solicitud_historico)->first();
 
                 $conceptoAgr['concepto']['materiales_monto_original'] = $h_mp_mat->monto_presupuestado_original;
                 $conceptoAgr['concepto']['materiales_variacion'] = $h_mp_mat->monto_presupuestado_actualizado - $h_mp_mat->monto_presupuestado_original;
@@ -424,7 +458,13 @@ class EloquentSolicitudCambioPartidaRepository implements SolicitudCambioPartida
 
 
                 $conceptoAgr['concepto']['maquinaria_monto_original'] = $h_maqui->monto_presupuestado_original;
-               $conceptoAgr['concepto']['maquinaria_variacion'] = $h_maqui->monto_presupuestado_actualizado - $h_maqui->monto_presupuestado_original;
+                $conceptoAgr['concepto']['maquinaria_variacion'] = $h_maqui->monto_presupuestado_actualizado - $h_maqui->monto_presupuestado_original;
+
+                $conceptoAgr['concepto']['subcontratos_monto_original'] = $h_subcon->monto_presupuestado_original;
+                $conceptoAgr['concepto']['subcontratos_variacion'] = $h_subcon->monto_presupuestado_actualizado - $h_subcon->monto_presupuestado_original;
+
+                $conceptoAgr['concepto']['gastos_monto_original'] = $h_gastos->monto_presupuestado_original;
+                $conceptoAgr['concepto']['gastos_variacion'] = $h_gastos->monto_presupuestado_actualizado - $h_gastos->monto_presupuestado_original;
 
 
                 $conceptoAgr['concepto']['importe_anterior'] = $concHA->monto_presupuestado_original;
@@ -443,11 +483,11 @@ class EloquentSolicitudCambioPartidaRepository implements SolicitudCambioPartida
 
         }
 
-        $total_presupuesto_hist=$total_presupuesto_hist;
+        $total_presupuesto_hist = $total_presupuesto_hist;
         if ($solicitud->id_estatus == 2) {
 
             $total_presupuesto = SolicitudCambioPartidaHistorico::where('nivel', '=', '000.001.')->where('id_partidas_insumos_agrupados', '=', $id_solicitud_historico)->first();
-            $total_presupuesto_hist = $total_presupuesto->monto_presupuestado_actualizado-$var_gen;
+            $total_presupuesto_hist = $total_presupuesto->monto_presupuestado_actualizado - $var_gen;
         }
 
         $baseDatos = BasePresupuesto::find(3); ////validacion proforma

@@ -31,4 +31,16 @@ class TipoOrden extends Model
     public function basesPresupuesto() {
         return $this->belongsToMany(BasePresupuesto::class, 'ControlPresupuesto.afectacion_ordenes_presupuesto', 'id_tipo_orden', 'id_base_presupuesto');
     }
+
+    public function partidas() {
+        return $this->hasManyThrough(SolicitudCambioPartida::class, SolicitudCambio::class, 'id_tipo_orden', 'id_solicitud_cambio', 'id', 'id');
+    }
+
+    public function getMontoAutorizadoAttribute() {
+        $res = 0;
+        foreach ($this->partidas()->has('historico')->get() as $partida) {
+            $res += ($partida->historico->monto_presupuestado_actualizado - $partida->historico->monto_presupuestado_original);
+        }
+        return $res;
+    }
 }

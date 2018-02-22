@@ -31,7 +31,8 @@ class SolicitudCambioPartida extends Model
         'precio_unitario_original',
         'precio_unitario_nuevo',
         'rendimiento_original',
-        'rendimiento_nuevo'
+        'rendimiento_nuevo',
+        'tipo_agrupador'
     ];
 
     protected $appends = ['factor'];

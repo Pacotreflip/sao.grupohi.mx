@@ -21,27 +21,19 @@ Vue.component('variacion-volumen-show', {
 
         this.fillAfectaciones();
 
-        $(function() {
-            $(document).on('click', '.mostrar_pdf', function () {
-                var _this = $(this),
-                    id = _this.data('pdf_id'),
-                    url = App.host + '/control_presupuesto/variacion_volumen/'+ id +'/pdf';
+        $(document).on('click', '.mostrar_pdf', function () {
+            var _this = $(this),
+                id = _this.data('pdf_id'),
+                url = App.host + '/control_presupuesto/variacion_volumen/'+ id +'/pdf';
 
-                $('#formatoPDF').attr('src', url).hide();
-                $('#spin_iframe').show();
-
-                $('#pdf_modal').modal('show');
-
-                $('#pdf_modal .modal-body').css({height: '550px'});
-
-                document.getElementById('formatoPDF').onload = function() {
-
-                    $('#formatoPDF').show();
-                    $('#spin_iframe').hide();
-                }
-            });
+            $('#pdf_modal').modal('show');
+            $('#pdf_modal .modal-body').html($('<iframe/>', {
+                id:'formatoPDF',
+                src: url,
+                style:'width:99.6%;height:100%',
+                frameborder:"0"
+            })).css({height: '550px'});
         });
-
     },
     methods: {
         confirm_autorizar_solicitud: function () {

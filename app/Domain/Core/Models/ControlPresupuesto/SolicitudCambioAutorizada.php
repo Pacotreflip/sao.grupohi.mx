@@ -8,6 +8,8 @@
 
 namespace Ghi\Domain\Core\Models\ControlPresupuesto;
 use Ghi\Domain\Core\Models\BaseModel;
+use Ghi\Domain\Core\Models\User;
+
 class SolicitudCambioAutorizada extends BaseModel
 {
     protected $table = 'ControlPresupuesto.solicitud_cambio_autorizada';
@@ -25,4 +27,12 @@ class SolicitudCambioAutorizada extends BaseModel
             $model->id_autorizo = auth()->id();
         });
     }
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function userAutorizo()
+    {
+        return $this->hasOne(User::class, 'idusuario','id_autorizo');
+    }
+
 }

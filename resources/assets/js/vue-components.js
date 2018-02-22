@@ -60,12 +60,12 @@ require('./vue-components/ControlCostos/reclasificacion_costos/index');
 /**
  * Control de Presupuesto Components
  */
-require('./vue-components/ControlPresupuesto/presupuesto/index');
+require('./vue-components/ControlPresupuesto/index');
 require('./vue-components/ControlPresupuesto/cambio_presupuesto/create');
 require('./vue-components/ControlPresupuesto/cambio_presupuesto/index');
 
-require('./vue-components/ControlPresupuesto/cambio_presupuesto/variacion_insumos');
-require('./vue-components/ControlPresupuesto/cambio_presupuesto/show/variacion_insumos');
+//require('./vue-components/ControlPresupuesto/cambio_presupuesto/variacion_insumos');
+//require('./vue-components/ControlPresupuesto/cambio_presupuesto/show/variacion_insumos');
 
 /**
  * Variacion de Volúmen Components

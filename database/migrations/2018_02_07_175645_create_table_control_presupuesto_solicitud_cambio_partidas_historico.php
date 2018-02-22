@@ -14,7 +14,7 @@ class CreateTableControlPresupuestoSolicitudCambioPartidasHistorico extends Migr
     {
         Schema::create('ControlPresupuesto.solicitud_cambio_partidas_historico', function (Blueprint $table) {
             $table->increments('id');
-            $table->unsignedInteger("id_solicitud_cambio_partida");
+            $table->unsignedInteger("id_solicitud_cambio_partida")->nullable();
             $table->unsignedInteger('id_base_presupuesto');
             $table->text('nivel');
             $table->float('cantidad_presupuestada_original')->nullable();
@@ -25,8 +25,6 @@ class CreateTableControlPresupuestoSolicitudCambioPartidasHistorico extends Migr
             $table->float("precio_unitario_original")->nullable();
             $table->float("precio_unitario_actualizado")->nullable();
             $table->unsignedInteger('id_partidas_insumos_agrupados')->nullable();
-
-            $table->unsignedInteger("id_solicitud_cambio_partida")->nullable()->change();
 
             $table->foreign('id_partidas_insumos_agrupados')
                 ->references('id')

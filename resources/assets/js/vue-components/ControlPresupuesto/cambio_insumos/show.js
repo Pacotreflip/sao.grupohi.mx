@@ -97,7 +97,7 @@ Vue.component('cambio-insumos-show', {
         autorizar_solicitud: function (id) {
 
             var self = this;
-            var url = App.host + '/control_presupuesto/cambio_presupuesto/autorizarSolicitud';
+            var url = App.host + '/control_presupuesto/cambio_insumos/'+id+'/autorizar';
             $.ajax({
                 type: 'POST',
                 url: url,
@@ -133,7 +133,7 @@ Vue.component('cambio-insumos-show', {
         rechazar_solicitud: function (id,motivo) {
 
             var self = this;
-            var url = App.host + '/control_presupuesto/cambio_presupuesto/rechazarSolicitud';
+            var url = App.host + '/control_presupuesto/cambio_insumos/'+id+'/rechazar';
             $.ajax({
                 type: 'POST',
                 url: url,
@@ -201,6 +201,14 @@ Vue.component('cambio-insumos-show', {
                             case 8:
                                 value.monto_original= agrupado.concepto.maquinaria_monto_original;
                                 value.variacion=agrupado.concepto.maquinaria_variacion;
+                                break;
+                            case 5:
+                                value.monto_original= agrupado.concepto.subcontratos_monto_original;
+                                value.variacion=agrupado.concepto.subcontratos_variacion;
+                                break;
+                            case 6:
+                                value.monto_original= agrupado.concepto.gastos_monto_original;
+                                value.variacion=agrupado.concepto.gastos_variacion;
                                 break;
 
                         }
