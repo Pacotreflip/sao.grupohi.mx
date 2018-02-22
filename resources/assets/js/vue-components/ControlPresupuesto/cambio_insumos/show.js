@@ -119,7 +119,7 @@ Vue.component('cambio-insumos-show', {
                         closeOnConfirm: false
                     }).then(function () {
                     });
-                    // window.location.reload(true);
+                     window.location.reload(true);
                 },
                 complete: function () {
                     self.autorizando = false;

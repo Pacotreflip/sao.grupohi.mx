@@ -59,8 +59,33 @@ Vue.component('cambio-insumos-create', {
     },
     watch : {
         id_tarjeta : function () {
-            this.get_conceptos();
-            this.form.partidas = []
+            var self = this;
+            if(self.form.partidas.length > 0){
+                swal({
+                    title: 'Cambiar Tarjeta',
+                    text: "Si Cambia de Tarjeta se Descartarán los Conceptos Seleccionados\n¿Desea Cambiar de Tarjeta?",
+                    type: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Si, Cambiar',
+                    cancelButtonText: 'No, Cancelar'
+                }).then((value) =>  {
+                    if(value.value) {
+                    self.get_conceptos();
+                    self.form.partidas = [];
+                    self.form.agrupadas = [];
+                    self.tarjeta_actual = self.id_tarjeta;
+                }else{
+                    // setear valor anterior en el select2
+                }
+            });
+            }else {
+                self.get_conceptos();
+                self.form.partidas = [];
+                self.form.agrupadas = [];
+                self.tarjeta_actual = self.id_tarjeta;
+            }
         }
     },
 
@@ -258,6 +283,9 @@ Vue.component('cambio-insumos-create', {
                         });
                         self.form.partidas.push(response);
                         self.form.agrupadas.push(response.cobrable.id_concepto)
+                        $('#'+id).html('<i class="fa fa-minus text-red"></i>');
+                        $('#'+id).removeClass('btn_add_concepto');
+                        $('#'+id).addClass('btn_remove_concepto');
                     }else{
                         $.each(self.form.partidas, function(index, partida) {
                             var diferencias = false;
@@ -364,6 +392,7 @@ Vue.component('cambio-insumos-create', {
                             self.cargando = false;
                             console.log('Final : '+ diferencias );
                             if(diferencias){
+                                $('#'+id).html('<i class="fa fa-plus text-green"></i>');
                                 swal({
                                     type: 'warning',
                                     title: 'Advertencia',
@@ -371,14 +400,14 @@ Vue.component('cambio-insumos-create', {
                                 });
                             }else{
                                 self.form.agrupadas.push(response.cobrable.id_concepto)
+                                $('#'+id).html('<i class="fa fa-minus text-red"></i>');
+                                $('#'+id).removeClass('btn_add_concepto');
+                                $('#'+id).addClass('btn_remove_concepto');
                             }
 
                         });
                     }
 
-                    $('#'+id).html('<i class="fa fa-minus text-red"></i>');
-                    $('#'+id).removeClass('btn_add_concepto');
-                    $('#'+id).addClass('btn_remove_concepto');
                 },
                 complete : function () {
                     self.guardando = false;

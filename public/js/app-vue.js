@@ -19091,8 +19091,33 @@ Vue.component('cambio-insumos-create', {
     },
     watch: {
         id_tarjeta: function id_tarjeta() {
-            this.get_conceptos();
-            this.form.partidas = [];
+            var self = this;
+            if (self.form.partidas.length > 0) {
+                swal({
+                    title: 'Cambiar Tarjeta',
+                    text: "Si Cambia de Tarjeta se Descartarán los Conceptos Seleccionados\n¿Desea Cambiar de Tarjeta?",
+                    type: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Si, Cambiar',
+                    cancelButtonText: 'No, Cancelar'
+                }).then(function (value) {
+                    if (value.value) {
+                        self.get_conceptos();
+                        self.form.partidas = [];
+                        self.form.agrupadas = [];
+                        self.tarjeta_actual = self.id_tarjeta;
+                    } else {
+                        // setear valor anterior en el select2
+                    }
+                });
+            } else {
+                self.get_conceptos();
+                self.form.partidas = [];
+                self.form.agrupadas = [];
+                self.tarjeta_actual = self.id_tarjeta;
+            }
         }
     },
 
@@ -19270,6 +19295,9 @@ Vue.component('cambio-insumos-create', {
                         });
                         self.form.partidas.push(response);
                         self.form.agrupadas.push(response.cobrable.id_concepto);
+                        $('#' + id).html('<i class="fa fa-minus text-red"></i>');
+                        $('#' + id).removeClass('btn_add_concepto');
+                        $('#' + id).addClass('btn_remove_concepto');
                     } else {
                         $.each(self.form.partidas, function (index, partida) {
                             var diferencias = false;
@@ -19376,6 +19404,7 @@ Vue.component('cambio-insumos-create', {
                             self.cargando = false;
                             console.log('Final : ' + diferencias);
                             if (diferencias) {
+                                $('#' + id).html('<i class="fa fa-plus text-green"></i>');
                                 swal({
                                     type: 'warning',
                                     title: 'Advertencia',
@@ -19383,13 +19412,12 @@ Vue.component('cambio-insumos-create', {
                                 });
                             } else {
                                 self.form.agrupadas.push(response.cobrable.id_concepto);
+                                $('#' + id).html('<i class="fa fa-minus text-red"></i>');
+                                $('#' + id).removeClass('btn_add_concepto');
+                                $('#' + id).addClass('btn_remove_concepto');
                             }
                         });
                     }
-
-                    $('#' + id).html('<i class="fa fa-minus text-red"></i>');
-                    $('#' + id).removeClass('btn_add_concepto');
-                    $('#' + id).addClass('btn_remove_concepto');
                 },
                 complete: function complete() {
                     self.guardando = false;
@@ -19955,7 +19983,7 @@ Vue.component('cambio-insumos-show', {
                         confirmButtonText: "Ok",
                         closeOnConfirm: false
                     }).then(function () {});
-                    // window.location.reload(true);
+                    window.location.reload(true);
                 },
                 complete: function complete() {
                     self.autorizando = false;
@@ -20240,36 +20268,17 @@ Vue.component('cambio-presupuesto-create', {
 Vue.component('cambio-presupuesto-index', {
     data: function data() {
         return {
-            data: '',
-            form: {
-                id_tipo_cobrabilidad: '',
-                id_tipo_orden: ''
-            },
-            tipos_cobrabilidad: [],
-            tipos_orden: []
+            data: ''
         };
     },
-    computed: {
-        tipos_orden_filtered: function tipos_orden_filtered() {
-            var self = this;
 
-            return self.tipos_orden.filter(function (tipo_orden) {
-                return tipo_orden.id_tipo_cobrabilidad == self.form.id_tipo_cobrabilidad;
-            });
-        }
-    },
     mounted: function mounted() {
         var self = this;
-
-        this.fetchTiposCobrabilidad();
-        this.fetchTiposOrden();
 
         $(document).on('click', '.mostrar_pdf', function () {
             var _this = $(this),
                 id = _this.data('pdf_id'),
-                id_tipo_orden = _this.data('id_tipo_orden'),
-                tipo_seleccionado = self.findTipoOrden(id_tipo_orden),
-                url = App.host + '/control_presupuesto/' + tipo_seleccionado.name + '/' + id + '/pdf';
+                url = App.host + '/control_presupuesto/cambio_presupuesto/' + id + '/pdf';
 
             $('#pdf_modal').modal('show');
             $('#pdf_modal .modal-content').css({ height: '700px' });
@@ -20296,30 +20305,20 @@ Vue.component('cambio-presupuesto-index', {
                     //self.guardando = false;
                 },
                 "dataSrc": function dataSrc(json) {
-                    console.log(json);
+
                     for (var i = 0; i < json.data.length; i++) {
-                        var monto = 0;
-                        for (var j = 0; j < json.data[i].partidas.length; j++) {
-                            if (json.data[i].partidas[j].rendimiento_nuevo != null) {
-                                if (json.data[i].partidas[j].precio_unitario_nuevo != null) {
-                                    monto = json.data[i].partidas[j].rendimiento_nuevo * json.data[i].partidas[j].rendimiento_nuevo;
-                                }
-                            }
-                        }
-                        json.data[i].monto = monto;
-                        json.data[i].created_at = new Date(json.data[i].created_at).dateShortFormat('d-m-Y');
+                        json.data[i].created_at = new Date(json.data[i].created_at).dateFormat();
                         json.data[i].registro = json.data[i].user_registro.nombre + ' ' + json.data[i].user_registro.apaterno + ' ' + json.data[i].user_registro.amaterno;
                     }
+
                     return json.data;
                 }
             },
-            "columns": [{ data: 'numero_folio' }, { data: 'tipo_orden.descripcion' }, { data: 'monto' }, { data: 'created_at' }, { data: 'created_at' }, { data: 'registro', orderable: false }, { data: 'estatus.descripcion' }, {
+            "columns": [{ data: 'numero_folio' }, { data: 'tipo_orden.descripcion' }, { data: 'created_at' }, { data: 'registro', orderable: false }, { data: 'estatus.descripcion' }, {
                 data: {},
                 render: function render(data, type, row, meta) {
-                    var tipo_seleccionado = self.findTipoOrden(data.id_tipo_orden),
-                        button = '<span class="label" ></span><button class="btn btn-xs btn-info mostrar_pdf" data-pdf_id="' + row.id + '" data-id_tipo_orden="' + data.id_tipo_orden + '" title="Formato"><i class="fa fa-file-pdf-o"></i></button>  ';
-
-                    button += '<a title="Ver" href="' + App.host + '/control_presupuesto/' + tipo_seleccionado.name + '/' + data.id + '">';
+                    var button = '<span class="label" ></span><button class="btn btn-xs btn-info mostrar_pdf" data-pdf_id="' + row.id + '" title="Formato"><i class="fa fa-file-pdf-o"></i></button>  ';
+                    button += '<a title="Ver" href="' + App.host + '/control_presupuesto/cambio_presupuesto/' + data.id + '">';
                     button += '<button title="Ver" type="button" class="btn btn-xs btn-default" >';
                     button += '<i class="fa fa-eye"></i>';
                     button += '   </button>';
@@ -20355,64 +20354,6 @@ Vue.component('cambio-presupuesto-index', {
         };
 
         $('#cierres_table').DataTable(data);
-    },
-    methods: {
-        fetchTiposCobrabilidad: function fetchTiposCobrabilidad() {
-            var self = this;
-            $.ajax({
-                url: App.host + '/control_presupuesto/tipo_cobrabilidad',
-                type: 'GET',
-                beforeSend: function beforeSend() {
-                    self.cargando = true;
-                },
-                success: function success(response) {
-                    self.tipos_cobrabilidad = response;
-                },
-                complete: function complete() {
-                    self.cargando = false;
-                }
-            });
-        },
-        fetchTiposOrden: function fetchTiposOrden() {
-            var self = this;
-            $.ajax({
-                url: App.host + '/control_presupuesto/tipo_orden',
-                type: 'GET',
-                beforeSend: function beforeSend() {
-                    self.cargando = true;
-                },
-                success: function success(response) {
-                    self.tipos_orden = response;
-                },
-                complete: function complete() {
-                    self.cargando = false;
-                }
-            });
-        },
-        openSelectModal: function openSelectModal() {
-            $('#select_modal').modal('show');
-        },
-
-        crearSolicitud: function crearSolicitud() {
-            var self = this,
-                tipo_seleccionado = self.findTipoOrden(self.form.id_tipo_orden);
-
-            if (tipo_seleccionado === null) swal({
-                title: 'Error',
-                text: "El item seleccionado no es un tipo de solicitud válido",
-                type: 'error'
-            });
-
-            // Redirecciona a la ruta correcta
-            window.location.href = App.host + '/control_presupuesto/' + tipo_seleccionado.name + '/create';
-        },
-        findTipoOrden: function findTipoOrden(id) {
-            var self = this;
-
-            for (var i = 0; i < self.tipos_orden.length; i++) {
-                if (self.tipos_orden[i]['id'] == id) return self.tipos_orden[i];
-            }return null;
-        }
     }
 
 });
