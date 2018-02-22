@@ -120,11 +120,12 @@ class EloquentFacturaRepository implements FacturaRepository
         return $this;
     }
 
-    public function getFacturasPorRevaluar()
+    public function getFacturasPorRevaluar($id_moneda)
     {
         $factura = new Factura();
         $factura->fecha_revaluacion = $this->revaluacion->getFechaRevaluacion();
-        return $factura->where('id_moneda', '=', Moneda::DOLARES)
+
+        return $factura->where('id_moneda', '=', $id_moneda)
             ->has('ordenPago', '=', 0)
             ->has('revaluacionesActuales', '=', 0)
             ->with('empresa')
