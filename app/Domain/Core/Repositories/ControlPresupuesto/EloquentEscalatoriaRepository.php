@@ -145,7 +145,7 @@ class EloquentEscalatoriaRepository implements EscalatoriaRepository
                         $concepto_escalatoria = DB::connection('cadeco')->table($basePresupuesto->baseDatos->base_datos . ".dbo.conceptos")->insert([
                             'id_obra' => Context::getId(),
                             'nivel' => $nuevo_nivel,
-                            'descripcion' => 'ESCALATORIAS',
+                            'descripcion' => 'ESCALATORIAS'
                         ]);
 
                         if (!$concepto_escalatoria)
@@ -199,6 +199,7 @@ class EloquentEscalatoriaRepository implements EscalatoriaRepository
                         'id_obra' => Context::getId(),
                         'nivel' => $concepto_partida_nivel,
                         'descripcion' => $partida->descripcion,
+                        'monto_presupuestado' => $partida->monto_presupuestado
                     ]);
                 }
 
