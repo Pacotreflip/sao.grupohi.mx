@@ -419,7 +419,7 @@
                                                         <label for="subcontrato" class="col-sm-7 control-label"><h4>
                                                                 SUBCONTRATOS</h4></label>
                                                         <button type="button" class="btn btn-default col-sm-3 pull-right"
-                                                                id="subcontrato" v-on:click="addInsumoTipo(2)"> + Subcontrato
+                                                                id="subcontrato" v-on:click="addInsumoTipo(5)"> + Subcontrato
                                                         </button>
                                                     </div>
                                                 </div>
@@ -449,7 +449,7 @@
                                                         <input type="text" step=".01" placeholder="0.0" style="width: 90%"
                                                                :class="'rendimiento'+insumo.id_elemento+'_' + i"
                                                                :id="'c_p_'+insumo.id_elemento+'_' + i"
-                                                               @change="recalcular(insumo.id_elemento, i,8)"
+                                                               @change="recalcular(insumo.id_elemento, i,5)"
                                                                v-validate="insumo.nuevo==true ? 'required' : ''"
                                                                :name="'Rendimiento nuevo subcontrato[' + (i + 1) + ']'">
                                                         <label class="help"
@@ -464,7 +464,7 @@
                                                         $<input type="text" step=".01" placeholder="0.0"
                                                                 :class="'pre_unit'+insumo.id_elemento+'_' + i"
                                                                 style="width: 90%" :id="'m_p_'+insumo.id_elemento+'_' + i"
-                                                                @change="recalcular_monto(insumo.id_elemento, i,8)"
+                                                                @change="recalcular_monto(insumo.id_elemento, i,5)"
                                                                 v-validate="insumo.nuevo==true ? 'required' : ''"
                                                                 :name="'Precio unitario subcontrato[' + (i + 1) + ']'">
                                                         <label class="help"
@@ -489,7 +489,7 @@
                                                         <label for="gastos" class="col-sm-7 control-label"><h4>
                                                                 GASTOS</h4></label>
                                                         <button type="button" class="btn btn-default col-sm-3 pull-right"
-                                                                id="gastos" v-on:click="addInsumoTipo(2)"> + Gasto
+                                                                id="gastos" v-on:click="addInsumoTipo(6)"> + Gasto
                                                         </button>
                                                     </div>
                                                 </div>
@@ -519,7 +519,7 @@
                                                         <input type="text" step=".01" placeholder="0.0" style="width: 90%"
                                                                :class="'rendimiento'+insumo.id_elemento+'_' + i"
                                                                :id="'c_p_'+insumo.id_elemento+'_' + i"
-                                                               @change="recalcular(insumo.id_elemento, i,8)"
+                                                               @change="recalcular(insumo.id_elemento, i,6)"
                                                                v-validate="insumo.nuevo==true ? 'required' : ''"
                                                                :name="'Rendimiento nuevo gastos[' + (i + 1) + ']'">
                                                         <label class="help"
@@ -534,7 +534,7 @@
                                                         $<input type="text" step=".01" placeholder="0.0"
                                                                 :class="'pre_unit'+insumo.id_elemento+'_' + i"
                                                                 style="width: 90%" :id="'m_p_'+insumo.id_elemento+'_' + i"
-                                                                @change="recalcular_monto(insumo.id_elemento, i,8)"
+                                                                @change="recalcular_monto(insumo.id_elemento, i,6)"
                                                                 v-validate="insumo.nuevo==true ? 'required' : ''"
                                                                 :name="'Precio unitario gastos[' + (i + 1) + ']'">
                                                         <label class="help"

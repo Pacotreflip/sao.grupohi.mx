@@ -308,6 +308,8 @@ class PDFSolicitudCambioInsumos extends Rotation
                 $partidas = $this->partidas->getClasificacionInsumos(['id_solicitud_cambio' => $this->solicitud->id, 'id_concepto' => $conceptos['id_concepto']]);
                 foreach ($partidas as $partida) {
                     foreach ($partida['items'] as $item) {
+
+                       // dd($item);
                         $data_info = [
                             'num_tarjeta' => $numero_tarjeta,
                             'descripcion' => $item->material->descripcion,
@@ -318,9 +320,10 @@ class PDFSolicitudCambioInsumos extends Rotation
                             'cantidad_original' => $item->cantidad_presupuestada,
                             'variacion_cantidad' => $item->cantidad_presupuestada_nueva == null ? 0 : $item->cantidad_presupuestada_nueva - $item->cantidad_presupuestada,
                             'cantidad_nueva' => $item->cantidad_presupuestada_nueva == null ? 0 : $item->cantidad_presupuestada_nueva,
-                            'importe_original' => $item->precio_unitario_original,
-                            'variacion_importe' => $item->precio_unitario_nuevo == 0 || $item->precio_unitario_nuevo == null ? 0 : $item->precio_unitario_nuevo - $item->precio_unitario_original,
-                            'importe_actualizado' => $item->precio_unitario_nuevo
+                            'importe_original' => $item->cantidad_presupuestada*$item->precio_unitario_original,
+                            'variacion_importe' => $item->monto_presupuestado-($item->cantidad_presupuestada*$item->precio_unitario_original),
+                            'importe_actualizado' => $item->monto_presupuestado
+
 
                         ];
                         array_push($array_data, $data_info);
@@ -346,11 +349,11 @@ class PDFSolicitudCambioInsumos extends Rotation
                     $row['descripcion'],
                     utf8_decode($row['unidad']),
                     '$ ' . number_format($row['pu'], 2, '.', ','),
-                    number_format($row['variacion_pu'], 2, '.', ','),
-                    number_format($row['pu_actualizado']),
+                    '$ ' . number_format($row['variacion_pu'], 2, '.', ','),
+                    '$ ' . number_format($row['pu_actualizado']),
                     number_format($row['cantidad_original'], 2, '.', ','),
-                    $row['variacion_cantidad'] != '--' ? '$ ' . number_format($row['variacion_cantidad'], 2, '.', ',') : $row['variacion_cantidad'],
-                    $row['cantidad_nueva'] != '--' ? '$ ' . number_format($row['cantidad_nueva'], 2, '.', ',') : $row['cantidad_nueva'],
+                    $row['variacion_cantidad'] != '--' ?  number_format($row['variacion_cantidad'], 2, '.', ',') : $row['variacion_cantidad'],
+                    $row['cantidad_nueva'] != '--' ? number_format($row['cantidad_nueva'], 2, '.', ',') : $row['cantidad_nueva'],
                     '$ ' . number_format($row['importe_original'], 2, '.', ','),
                     '$ ' . number_format($row['variacion_importe'], 2, '.', ','),
                     '$ ' . number_format($row['importe_actualizado'], 2, '.', ',')
