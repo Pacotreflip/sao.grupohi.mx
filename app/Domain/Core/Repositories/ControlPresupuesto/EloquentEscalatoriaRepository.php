@@ -9,6 +9,7 @@ use Ghi\Domain\Core\Models\ControlPresupuesto\ConceptoEscalatoria;
 use Ghi\Domain\Core\Models\ControlPresupuesto\Estatus;
 use Ghi\Domain\Core\Models\ControlPresupuesto\SolicitudCambioAutorizada;
 use Ghi\Domain\Core\Models\ControlPresupuesto\SolicitudCambioPartida;
+use Ghi\Domain\Core\Models\ControlPresupuesto\SolicitudCambioPartidaHistorico;
 use Ghi\Domain\Core\Models\ControlPresupuesto\SolicitudCambioRechazada;
 use Ghi\Domain\Core\Models\ControlPresupuesto\TipoOrden;
 use Ghi\Domain\Core\Models\ControlPresupuesto\Escalatoria;
@@ -201,11 +202,46 @@ class EloquentEscalatoriaRepository implements EscalatoriaRepository
                         'descripcion' => $partida->descripcion,
                         'monto_presupuestado' => $partida->monto_presupuestado
                     ]);
+
+                    $concepto_partida =  DB::connection('cadeco')->table($basePresupuesto->baseDatos->base_datos . ".dbo.conceptos")->where('id_obra', '=', Context::getId())->where('nivel', '=', $concepto_partida_nivel)->first();
+
+                    //Propagación
+                    $continua = true;
+                    $siguienteNivel = substr($concepto_partida_nivel, 0, -4);
+                    $cantidadMonto = $partida->monto_presupuestado;
+
+                    while ($continua)
+                    {
+                        $conceptoAfectado = DB::connection('cadeco')->table($basePresupuesto->baseDatos->base_datos . ".dbo.conceptos")->where('id_obra', '=', Context::getId())->where('nivel', '=', $siguienteNivel)->first();
+
+                        if (!is_null($conceptoAfectado))
+                        {
+                            $cantidadMonto = $conceptoAfectado->monto_presupuestado + $cantidadMonto;
+
+                            SolicitudCambioPartidaHistorico::create([
+                                'id_solicitud_cambio_partida' => $partida->id,
+                                'id_base_presupuesto' => $basePresupuesto->baseDatos->id,
+                                'nivel' => $conceptoAfectado->nivel,
+                                'monto_presupuestado_original' => $partida->monto_presupuestado,
+                                'monto_presupuestado_actualizado' => $cantidadMonto
+                            ]);
+
+                            DB::connection('cadeco')->table($basePresupuesto->baseDatos->base_datos . ".dbo.conceptos")
+                                ->where('id_concepto', $conceptoAfectado->id_concepto)
+                                ->update(['monto_presupuestado' => $cantidadMonto]);
+
+                            $siguienteNivel = substr($conceptoAfectado->nivel, 0, -4);
+                            $continua = $siguienteNivel > 0;
+                        }
+
+                    }
                 }
 
             // Actualiza el estatus de la solicitud
             $solicitud->id_estatus = Estatus::AUTORIZADA;
             $solicitud->save();
+
+
 
             // Inserta registro autorizó
             $autorizo = SolicitudCambioAutorizada::create([
