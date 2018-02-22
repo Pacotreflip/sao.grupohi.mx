@@ -98,7 +98,7 @@ Vue.component('material-index', {
         confirmSave: function () {
             var self = this;
             swal({
-                title: 'Guardar El material',
+                title: 'Guardar Familia',
                 text: "¿Está seguro de que la información es correcta?",
                 type: 'warning',
                 showCancelButton: true,
