@@ -13349,7 +13349,7 @@ require('./vue-components/ControlCostos/reclasificacion_costos/index');
 /**
  * Control de Presupuesto Components
  */
-require('./vue-components/ControlPresupuesto/presupuesto/index');
+require('./vue-components/ControlPresupuesto/index');
 require('./vue-components/ControlPresupuesto/cambio_presupuesto/create');
 require('./vue-components/ControlPresupuesto/cambio_presupuesto/index');
 
@@ -13379,7 +13379,7 @@ require('./vue-components/ControlPresupuesto/cambio_insumos/create');
  */
 require('./vue-components/Configuracion/seguridad/index');
 
-},{"./vue-components/Compras/material/index":6,"./vue-components/Compras/requisicion/create":8,"./vue-components/Compras/requisicion/edit":9,"./vue-components/Configuracion/seguridad/index":10,"./vue-components/Contabilidad/cierre/index":11,"./vue-components/Contabilidad/cuenta_almacen/index":12,"./vue-components/Contabilidad/cuenta_bancos/cuenta-bancaria-edit":13,"./vue-components/Contabilidad/cuenta_concepto/index":14,"./vue-components/Contabilidad/cuenta_contable/index":15,"./vue-components/Contabilidad/cuenta_costo/index":16,"./vue-components/Contabilidad/cuenta_empresa/cuenta-empresa-edit":17,"./vue-components/Contabilidad/cuenta_fondo/index":18,"./vue-components/Contabilidad/cuenta_material/index":19,"./vue-components/Contabilidad/datos_contables/edit":20,"./vue-components/Contabilidad/emails":21,"./vue-components/Contabilidad/modulos/revaluacion/create":22,"./vue-components/Contabilidad/poliza_generada/edit":23,"./vue-components/Contabilidad/poliza_generada/index":24,"./vue-components/Contabilidad/poliza_tipo/poliza-tipo-create":25,"./vue-components/Contabilidad/tipo_cuenta_contable/tipo-cuenta-contable-create":26,"./vue-components/Contabilidad/tipo_cuenta_contable/tipo-cuenta-contable-update":27,"./vue-components/ControlCostos/reclasificacion_costos/index":28,"./vue-components/ControlCostos/solicitar_reclasificacion/index":29,"./vue-components/ControlCostos/solicitar_reclasificacion/items":30,"./vue-components/ControlPresupuesto/cambio_insumos/create":31,"./vue-components/ControlPresupuesto/cambio_insumos/show":32,"./vue-components/ControlPresupuesto/cambio_presupuesto/create":33,"./vue-components/ControlPresupuesto/cambio_presupuesto/index":34,"./vue-components/ControlPresupuesto/escalatoria/create":35,"./vue-components/ControlPresupuesto/escalatoria/show":36,"./vue-components/ControlPresupuesto/presupuesto/index":37,"./vue-components/ControlPresupuesto/variacion_volumen/create":38,"./vue-components/ControlPresupuesto/variacion_volumen/show":39,"./vue-components/Finanzas/comprobante_fondo_fijo/create":40,"./vue-components/Finanzas/comprobante_fondo_fijo/edit":41,"./vue-components/Finanzas/comprobante_fondo_fijo/index":42,"./vue-components/Reportes/subcontratos-estimacion":43,"./vue-components/Tesoreria/movimientos_bancarios/index":44,"./vue-components/Tesoreria/traspaso_cuentas/index":45,"./vue-components/errors":46,"./vue-components/global-errors":47,"./vue-components/kardex_material/kardex-material-index":48,"./vue-components/select2":49}],6:[function(require,module,exports){
+},{"./vue-components/Compras/material/index":6,"./vue-components/Compras/requisicion/create":8,"./vue-components/Compras/requisicion/edit":9,"./vue-components/Configuracion/seguridad/index":10,"./vue-components/Contabilidad/cierre/index":11,"./vue-components/Contabilidad/cuenta_almacen/index":12,"./vue-components/Contabilidad/cuenta_bancos/cuenta-bancaria-edit":13,"./vue-components/Contabilidad/cuenta_concepto/index":14,"./vue-components/Contabilidad/cuenta_contable/index":15,"./vue-components/Contabilidad/cuenta_costo/index":16,"./vue-components/Contabilidad/cuenta_empresa/cuenta-empresa-edit":17,"./vue-components/Contabilidad/cuenta_fondo/index":18,"./vue-components/Contabilidad/cuenta_material/index":19,"./vue-components/Contabilidad/datos_contables/edit":20,"./vue-components/Contabilidad/emails":21,"./vue-components/Contabilidad/modulos/revaluacion/create":22,"./vue-components/Contabilidad/poliza_generada/edit":23,"./vue-components/Contabilidad/poliza_generada/index":24,"./vue-components/Contabilidad/poliza_tipo/poliza-tipo-create":25,"./vue-components/Contabilidad/tipo_cuenta_contable/tipo-cuenta-contable-create":26,"./vue-components/Contabilidad/tipo_cuenta_contable/tipo-cuenta-contable-update":27,"./vue-components/ControlCostos/reclasificacion_costos/index":28,"./vue-components/ControlCostos/solicitar_reclasificacion/index":29,"./vue-components/ControlCostos/solicitar_reclasificacion/items":30,"./vue-components/ControlPresupuesto/cambio_insumos/create":31,"./vue-components/ControlPresupuesto/cambio_insumos/show":32,"./vue-components/ControlPresupuesto/cambio_presupuesto/create":33,"./vue-components/ControlPresupuesto/cambio_presupuesto/index":34,"./vue-components/ControlPresupuesto/escalatoria/create":35,"./vue-components/ControlPresupuesto/escalatoria/show":36,"./vue-components/ControlPresupuesto/index":37,"./vue-components/ControlPresupuesto/variacion_volumen/create":38,"./vue-components/ControlPresupuesto/variacion_volumen/show":39,"./vue-components/Finanzas/comprobante_fondo_fijo/create":40,"./vue-components/Finanzas/comprobante_fondo_fijo/edit":41,"./vue-components/Finanzas/comprobante_fondo_fijo/index":42,"./vue-components/Reportes/subcontratos-estimacion":43,"./vue-components/Tesoreria/movimientos_bancarios/index":44,"./vue-components/Tesoreria/traspaso_cuentas/index":45,"./vue-components/errors":46,"./vue-components/global-errors":47,"./vue-components/kardex_material/kardex-material-index":48,"./vue-components/select2":49}],6:[function(require,module,exports){
 'use strict';
 
 Vue.component('material-index', {
@@ -19596,6 +19596,7 @@ Vue.component('cambio-insumos-create', {
             $('#add_insumo_modal').modal('hide');
 
             $('#insumos_modal').modal('show');
+            $('#insumos_modal').focus();
         },
 
         agregar_insumo_nuevo: function agregar_insumo_nuevo() {
@@ -19992,7 +19993,7 @@ Vue.component('cambio-insumos-show', {
                         confirmButtonText: "Ok",
                         closeOnConfirm: false
                     }).then(function () {});
-                    window.location.reload(true);
+                    // window.location.reload(true);
                 },
                 complete: function complete() {
                     self.autorizando = false;
@@ -20721,209 +20722,9 @@ Vue.component('escalatoria-show', {
 },{}],37:[function(require,module,exports){
 'use strict';
 
-Vue.component('control_presupuesto-index', {
-    props: ['max_niveles', 'operadores'],
+Vue.component('control-presupuesto-index', {
     data: function data() {
-        return {
-            conceptos: [],
-            filtros: [],
-            baseDatos: '',
-            porcentaje: 0,
-            form: {
-                filtro: {
-                    nivel: '',
-                    operador: '',
-                    texto: ''
-                }
-            },
-            cargando: false
-        };
-    },
-    computed: {
-        niveles: function niveles() {
-            var niveles = [],
-                paso = 1;
-            for (paso; paso <= this.max_niveles; paso++) {
-                niveles.push({ numero: paso, nombre: "Nivel " + paso });
-            }
-            return niveles;
-        }
-    },
-    mounted: function mounted() {
-        var self = this;
-        var table = $('#conceptos_table').DataTable({
-            "processing": true,
-            "serverSide": true,
-            destroy: true,
-            "ordering": false,
-            "ajax": {
-                "url": App.host + '/conceptos/getPaths',
-                "type": "POST",
-                "beforeSend": function beforeSend() {
-                    self.cargando = true;
-                },
-                "data": function data(d) {
-                    d.filtros = self.filtros;
-                    d.baseDatos = self.baseDatos;
-                },
-                "complete": function complete() {
-                    self.cargando = false;
-                },
-                "dataSrc": function dataSrc(json) {
-                    for (var i = 0; i < json.data.length; i++) {
-                        json.data[i].cantidad_presupuestada = Number(json.data[i].cantidad_presupuestada);
-                        json.data[i].monto_presupuestado = '$' + parseInt(json.data[i].monto_presupuestado).formatMoney(2, ',', '.');
-                        json.data[i].monto_venta = '$' + parseInt(Number(json.data[i].monto * Number(self.porcentaje))).formatMoney(2, ',', '.');
-                        json.data[i].monto = '$' + parseInt(json.data[i].monto).formatMoney(2, ',', '.');
-                        json.data[i].precio_unitario_venta = '$' + parseInt(Number(json.data[i].precio_unitario) * Number(self.porcentaje)).formatMoney(2, ',', '.');
-                        json.data[i].precio_unitario = '$' + parseInt(json.data[i].precio_unitario).formatMoney(2, ',', '.');
-                    }
-                    return json.data;
-                }
-            },
-            "columns": [{ data: 'filtro1' }, { data: 'filtro2' }, { data: 'filtro3' }, { data: 'filtro4' }, { data: 'filtro5' }, { data: 'filtro6' }, { data: 'filtro7' }, { data: 'filtro8' }, { data: 'filtro9' }, { data: 'filtro10' }, { data: 'filtro11' }, { data: 'unidad' }, { data: 'cantidad_presupuestada', className: 'text-right' }, { data: 'precio_unitario', className: 'text-right' }, { data: 'precio_unitario_venta', className: 'text-right' }, { data: 'monto', className: 'text-right' }, { data: 'monto_venta', className: 'text-right' }],
-            language: {
-                "sProcessing": "Procesando...",
-                "sLengthMenu": "Mostrar _MENU_ registros",
-                "sZeroRecords": "No se encontraron resultados",
-                "sEmptyTable": "Ningún dato disponible en esta tabla",
-                "sInfo": "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
-                "sInfoEmpty": "Mostrando registros del 0 al 0 de un total de 0 registros",
-                "sInfoFiltered": "(filtrado de un total de _MAX_ registros)",
-                "sInfoPostFix": "",
-                "sSearch": "Buscar:",
-                "sUrl": "",
-                "sInfoThousands": ",",
-                "sLoadingRecords": "Cargando...",
-                "oPaginate": {
-                    "sFirst": "Primero",
-                    "sLast": "Último",
-                    "sNext": "Siguiente",
-                    "sPrevious": "Anterior"
-                },
-                "oAria": {
-                    "sSortAscending": ": Activar para ordenar la columna de manera ascendente",
-                    "sSortDescending": ": Activar para ordenar la columna de manera descendente"
-                }
-            }
-        });
-
-        table.column(14).visible(false);
-        table.column(16).visible(false);
-    },
-    methods: {
-        crearFiltro: function crearFiltro() {
-            var self = this;
-            var table = $('#conceptos_table').DataTable({
-                "processing": true,
-                "serverSide": true,
-                destroy: true,
-                "ordering": false,
-                "ajax": {
-                    "url": App.host + '/control_presupuesto/conceptos/getPaths',
-                    "type": "POST",
-                    "beforeSend": function beforeSend() {
-                        self.cargando = true;
-                    },
-                    "data": function data(d) {
-                        d.filtros = self.filtros;
-                        d.baseDatos = self.baseDatos;
-                    },
-                    "complete": function complete() {
-                        self.cargando = false;
-                    },
-                    "dataSrc": function dataSrc(json) {
-                        for (var i = 0; i < json.data.length; i++) {
-                            json.data[i].cantidad_presupuestada = Number(json.data[i].cantidad_presupuestada);
-                            json.data[i].monto_presupuestado = '$' + parseInt(json.data[i].monto_presupuestado).formatMoney(2, ',', '.');
-                            json.data[i].monto_venta = '$' + parseInt(Number(json.data[i].monto * Number(self.porcentaje))).formatMoney(2, ',', '.');
-                            json.data[i].monto = '$' + parseInt(json.data[i].monto).formatMoney(2, ',', '.');
-                            json.data[i].precio_unitario_venta = '$' + parseInt(Number(json.data[i].precio_unitario) * Number(self.porcentaje)).formatMoney(2, ',', '.');
-                            json.data[i].precio_unitario = '$' + parseInt(json.data[i].precio_unitario).formatMoney(2, ',', '.');
-                        }
-                        return json.data;
-                    }
-                },
-                "columns": [{ data: 'filtro1' }, { data: 'filtro2' }, { data: 'filtro3' }, { data: 'filtro4' }, { data: 'filtro5' }, { data: 'filtro6' }, { data: 'filtro7' }, { data: 'filtro8' }, { data: 'filtro9' }, { data: 'filtro10' }, { data: 'filtro11' }, { data: 'unidad' }, { data: 'cantidad_presupuestada', className: 'text-right' }, { data: 'precio_unitario', className: 'text-right' }, { data: 'precio_unitario_venta', className: 'text-right' }, { data: 'monto', className: 'text-right' }, { data: 'monto_venta', className: 'text-right' }],
-                language: {
-                    "sProcessing": "Procesando...",
-                    "sLengthMenu": "Mostrar _MENU_ registros",
-                    "sZeroRecords": "No se encontraron resultados",
-                    "sEmptyTable": "Ningún dato disponible en esta tabla",
-                    "sInfo": "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
-                    "sInfoEmpty": "Mostrando registros del 0 al 0 de un total de 0 registros",
-                    "sInfoFiltered": "(filtrado de un total de _MAX_ registros)",
-                    "sInfoPostFix": "",
-                    "sSearch": "Buscar:",
-                    "sUrl": "",
-                    "sInfoThousands": ",",
-                    "sLoadingRecords": "Cargando...",
-                    "oPaginate": {
-                        "sFirst": "Primero",
-                        "sLast": "Último",
-                        "sNext": "Siguiente",
-                        "sPrevious": "Anterior"
-                    },
-                    "oAria": {
-                        "sSortAscending": ": Activar para ordenar la columna de manera ascendente",
-                        "sSortDescending": ": Activar para ordenar la columna de manera descendente"
-                    }
-                }
-            });
-            if (self.baseDatos != 1) {
-                self.porcentaje = 0;
-                table.column(14).visible(false);
-                table.column(16).visible(false);
-            }
-        },
-
-        set_filtro: function set_filtro() {
-            var nivel = this.form.filtro.nivel;
-            var result = this.filtros.filter(function (filtro) {
-                return filtro.nivel == nivel;
-            });
-
-            if (result.length) {
-                result[0].operadores.push({
-                    sql: this.form.filtro.operador.replace('{texto}', this.form.filtro.texto),
-                    operador: this.operadores[this.form.filtro.operador],
-                    texto: this.form.filtro.texto
-                });
-            } else {
-                this.filtros.push({
-                    nivel: this.form.filtro.nivel,
-                    operadores: [{
-                        sql: this.form.filtro.operador.replace('{texto}', this.form.filtro.texto),
-                        operador: this.operadores[this.form.filtro.operador],
-                        texto: this.form.filtro.texto
-                    }]
-                });
-            }
-
-            this.close_modal();
-        },
-
-        close_modal: function close_modal() {
-            $('#agregar_filtro_modal').modal('hide');
-            Vue.set(this.form, 'filtro', { nivel: '', operador: '', texto: '' });
-        },
-
-        eliminar: function eliminar(filtro, operador) {
-            Vue.delete(filtro.operadores, filtro.operadores.indexOf(operador));
-            if (!filtro.operadores.length) {
-                Vue.delete(this.filtros, this.filtros.indexOf(filtro));
-            }
-
-            if (!this.filtros.length) {
-                var table = $('#conceptos_table').DataTable();
-                table.ajax.reload();
-            }
-        },
-
-        get_conceptos: function get_conceptos() {
-            var table = $('#conceptos_table').DataTable();
-            table.ajax.reload();
-        }
+        return {};
     }
 });
 
