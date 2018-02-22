@@ -83,8 +83,10 @@
 
             <div id="insumos_modal" class="modal fade" aria-labelledby="ConceptosModal" data-backdrop="static"
                  data-keyboard="false">
-                <div class="modal-dialog modal-lg">
+                <div class="modal-dialog modal-lg" >
+
                     <div class="modal-content">
+
                         <div class="modal-header">
                             <button type="button" class="close" data-dismiss="modal"><span
                                         aria-hidden="true">×</span><span class="sr-only">Close</span></button>
@@ -99,6 +101,7 @@
                                     </div>
                                 </div>
                             </div>
+                            <div style="overflow-y: scroll">
                             <form id="form_save_solicitud"
                                   @submit.prevent="validateForm('form_save_solicitud', 'save_solicitud')"
                                   data-vv-scope="form_save_solicitud">
@@ -1011,8 +1014,10 @@
                                     </button>
                                 </div>
                             </form>
+                            </div>
                         </div>
                     </div>
+
                 </div>
             </div>
 

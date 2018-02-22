@@ -18,6 +18,12 @@
   font-weight: normal;
   font-style: normal;
 }
+
+#insumos_modal {
+  padding: 20px;
+  height: 100%;
+  overflow-y: scroll;
+}
 .fa {
   display: inline-block;
   font: normal normal normal 14px/1 FontAwesome;

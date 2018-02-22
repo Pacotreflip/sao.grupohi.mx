@@ -16971,14 +16971,26 @@ Vue.component('emails', {
 'use strict';
 
 Vue.component('revaluacion-create', {
-    props: ['facturas', 'tipo_cambio', 'url_revaluacion'],
+    props: ['facturas', 'tipo_cambio', 'url_revaluacion', 'monedas', 'moneda'],
     data: function data() {
         return {
             data: {
-                facturas: this.facturas
+                facturas: this.facturas,
+                monedas: this.monedas,
+                moneda: this.moneda
             },
             guardando: false
         };
+    },
+    mounted: function mounted() {
+        var self = this;
+
+        $(document).ready(function () {
+            $("#select_moneda").change(function () {
+                var moneda = $(this).val();
+                window.location = App.host + '/sistema_contable/revaluacion/create/?id_moneda=' + moneda;
+            });
+        });
     },
     directives: {
         icheck: {
@@ -19582,6 +19594,8 @@ Vue.component('cambio-insumos-create', {
 
         cancelar_add_insumo: function cancelar_add_insumo() {
             $('#add_insumo_modal').modal('hide');
+
+            $('#insumos_modal').modal('show');
         },
 
         agregar_insumo_nuevo: function agregar_insumo_nuevo() {
@@ -21490,7 +21504,9 @@ Vue.component('variacion-volumen-show', {
             var self = this;
             self.form.afectaciones = [];
             self.solicitud.aplicaciones.forEach(function (value) {
-                self.form.afectaciones.push(value.id);
+                if (!self.aplicada(value.id)) {
+                    self.form.afectaciones.push(value.id);
+                }
             });
         },
         aplicada: function aplicada(id) {
