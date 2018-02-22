@@ -226,6 +226,7 @@ class EloquentMaterialRepository implements MaterialRepository
         return $this->model->where('descripcion', 'like', '%'.$descripcion.'%')
             ->where('tipo_material', '=', $tipo)
             ->whereRaw('LEN(nivel) > 4')
+            ->limit(5)
             ->get();
 
 
