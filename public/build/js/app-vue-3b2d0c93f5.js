@@ -19049,6 +19049,7 @@ Vue.component('cambio-insumos-create', {
             form: {
                 partidas: [],
                 agrupadas: [],
+                insumos_eliminados: [],
                 motivo: '',
                 area_solicitante: '',
                 id_tipo_cobrabilidad: '',
@@ -19257,6 +19258,16 @@ Vue.component('cambio-insumos-create', {
                             response.conceptos.MAQUINARIA.insumos[index].id_elemento = response.conceptos.MAQUINARIA.insumos[index].id_concepto;
                             response.conceptos.MAQUINARIA.insumos[index].nuevo = false;
                         });
+                        $.each(response.conceptos.SUBCONTRATOS.insumos, function (index, partida) {
+                            response.conceptos.SUBCONTRATOS.insumos[index].rendimiento_actual = partida.cantidad_presupuestada / response.cobrable.cantidad_presupuestada;
+                            response.conceptos.SUBCONTRATOS.insumos[index].id_elemento = response.conceptos.SUBCONTRATOS.insumos[index].id_concepto;
+                            response.conceptos.SUBCONTRATOS.insumos[index].nuevo = false;
+                        });
+                        $.each(response.conceptos.GASTOS.insumos, function (index, partida) {
+                            response.conceptos.GASTOS.insumos[index].rendimiento_actual = partida.cantidad_presupuestada / response.cobrable.cantidad_presupuestada;
+                            response.conceptos.GASTOS.insumos[index].id_elemento = response.conceptos.GASTOS.insumos[index].id_concepto;
+                            response.conceptos.GASTOS.insumos[index].nuevo = false;
+                        });
                         self.form.partidas.push(response);
                         self.form.agrupadas.push(response.cobrable.id_concepto);
                     } else {
@@ -19327,6 +19338,41 @@ Vue.component('cambio-insumos-create', {
                             } else {
                                 diferencias = true;
                             }
+
+                            if (partida.conceptos.SUBCONTRATOS.insumos.length === response.conceptos.SUBCONTRATOS.insumos.length) {
+                                var total1 = 0;
+                                var total2 = 0;
+                                $.each(partida.conceptos.SUBCONTRATOS.insumos, function () {
+                                    total1 = total1 + parseFloat(this.cantidad_presupuestada);
+                                });
+                                $.each(response.conceptos.SUBCONTRATOS.insumos, function () {
+                                    total2 = total2 + parseFloat(this.cantidad_presupuestada);
+                                });
+                                if ((total1 / partida.cobrable.cantidad_presupuestada).toFixed(3) != (total2 / response.cobrable.cantidad_presupuestada).toFixed(3)) {
+                                    diferencias = true;
+                                    console.log('Subcontratos : ' + total1 / partida.cobrable.cantidad_presupuestada + ' - ' + total2 / response.cobrable.cantidad_presupuestada);
+                                }
+                            } else {
+                                diferencias = true;
+                            }
+
+                            if (partida.conceptos.GASTOS.insumos.length === response.conceptos.GASTOS.insumos.length) {
+                                var total1 = 0;
+                                var total2 = 0;
+                                $.each(partida.conceptos.GASTOS.insumos, function () {
+                                    total1 = total1 + parseFloat(this.cantidad_presupuestada);
+                                });
+                                $.each(response.conceptos.GASTOS.insumos, function () {
+                                    total2 = total2 + parseFloat(this.cantidad_presupuestada);
+                                });
+                                if ((total1 / partida.cobrable.cantidad_presupuestada).toFixed(3) != (total2 / response.cobrable.cantidad_presupuestada).toFixed(3)) {
+                                    diferencias = true;
+                                    console.log('Gastos : ' + total1 / partida.cobrable.cantidad_presupuestada + ' - ' + total2 / response.cobrable.cantidad_presupuestada);
+                                }
+                            } else {
+                                diferencias = true;
+                            }
+
                             self.cargando = false;
                             console.log('Final : ' + diferencias);
                             if (diferencias) {
@@ -19449,9 +19495,15 @@ Vue.component('cambio-insumos-create', {
                 $('#conceptos_modal').modal('hide');
             }
         },
+
         addInsumoTipo: function addInsumoTipo(tipo) {
             var self = this;
+            var aux_tipo = tipo;
+            if (tipo == 5 || tipo == 6) {
+                tipo = 2;
+            }
             self.tipo_insumo = tipo;
+
             $('#sel_material').select2({
                 width: '100%',
                 ajax: {
@@ -19467,6 +19519,10 @@ Vue.component('cambio-insumos-create', {
                     processResults: function processResults(data) {
                         return {
                             results: $.map(data.data.materiales, function (item) {
+                                if (tipo == 2) {
+                                    tipo = aux_tipo;
+                                }
+                                self.tipo_insumo = tipo;
                                 return {
                                     text: item.DescripcionPadre + " -> " + item.descripcion,
                                     descripcion: item.descripcion,
@@ -19504,6 +19560,7 @@ Vue.component('cambio-insumos-create', {
         cancelar_add_insumo: function cancelar_add_insumo() {
             $('#add_insumo_modal').modal('hide');
         },
+
         agregar_insumo_nuevo: function agregar_insumo_nuevo() {
             var self = this;
             $.each(self.form.partidas, function (index, partida) {
@@ -19524,6 +19581,14 @@ Vue.component('cambio-insumos-create', {
                         ///agregar a maquinaria
                         partida.conceptos.MAQUINARIA.insumos.push(self.material_seleccionado);
                         break;
+                    case 5:
+                        ///agregar a maquinaria
+                        partida.conceptos.SUBCONTRATOS.insumos.push(self.material_seleccionado);
+                        break;
+                    case 6:
+                        ///agregar a maquinaria
+                        partida.conceptos.GASTOS.insumos.push(self.material_seleccionado);
+                        break;
 
                 }
             });
@@ -19533,28 +19598,35 @@ Vue.component('cambio-insumos-create', {
 
         removeRendimiento: function removeRendimiento(id_concepto, id, tipo) {
             var self = this;
-            var valor = 0.0;
-            $("#c_p_" + id_concepto + '_' + id).val(valor).prop('disabled', true);
-            $("#m_p_" + id_concepto + '_' + id).prop('disabled', true);
-            switch (tipo) {
-                case 1:
-                    ///agregar a materiales
+            var index = self.form.insumos_eliminados.indexOf(parseInt(id_concepto));
+            if (index > -1) {
+                console.log('entro');
+                self.form.insumos_eliminados.splice(index, 1);
+                $("#c_p_" + id_concepto + '_' + id).prop('disabled', false);
+                $("#m_p_" + id_concepto + '_' + id).prop('disabled', false);
+            } else {
+                self.form.insumos_eliminados.push(id_concepto);
+                $("#c_p_" + id_concepto + '_' + id).prop('disabled', true);
+                $("#m_p_" + id_concepto + '_' + id).prop('disabled', true);
+            }
+            /*switch (tipo){
+                case 1: ///agregar a materiales
                     self.form.partidas[0].conceptos.MATERIALES.insumos[id].rendimiento_nuevo = valor;
                     break;
-                case 2:
-                    //// agergar a mano obra
+                case 2://// agergar a mano obra
                     self.form.partidas[0].conceptos.MANOOBRA.insumos[id].rendimiento_nuevo = valor;
                     break;
-                case 4:
-                    ////agregar a herram y equipo
+                case 4: ////agregar a herram y equipo
                     self.form.partidas[0].conceptos.HERRAMIENTAYEQUIPO.insumos[id].rendimiento_nuevo = valor;
                     break;
-                case 8:
-                    ///agregar a maquinaria
+                case 8: ///agregar a maquinaria
                     self.form.partidas[0].conceptos.MAQUINARIA.insumos[id].rendimiento_nuevo = valor;
                     break;
-            }
-            this.recalcular(id_concepto, id);
+            }            this.recalcular(id_concepto, id);*/
+        },
+
+        insumoEliminado: function insumoEliminado(id_concepto) {
+            return this.form.insumos_eliminados.indexOf(parseInt(id_concepto)) ? true : false;
         },
 
         validateForm: function validateForm(scope, funcion) {
@@ -19607,6 +19679,18 @@ Vue.component('cambio-insumos-create', {
                     var total = cant_concepto * self.form.partidas[0].conceptos.MAQUINARIA.insumos[i].rendimiento_nuevo;
                     $("#r_p_" + id_concepto + '_' + i).val(total);
                     break;
+                case 5:
+                    ///agregar a subcontratos
+                    self.form.partidas[0].conceptos.SUBCONTRATOS.insumos[i].rendimiento_nuevo = cant_pres;
+                    var total = cant_concepto * self.form.partidas[0].conceptos.SUBCONTRATOS.insumos[i].rendimiento_nuevo;
+                    $("#r_p_" + id_concepto + '_' + i).val(total);
+                    break;
+                case 6:
+                    ///agregar a gastos
+                    self.form.partidas[0].conceptos.GASTOS.insumos[i].rendimiento_nuevo = cant_pres;
+                    var total = cant_concepto * self.form.partidas[0].conceptos.GASTOS.insumos[i].rendimiento_nuevo;
+                    $("#r_p_" + id_concepto + '_' + i).val(total);
+                    break;
             }
         },
 
@@ -19630,6 +19714,14 @@ Vue.component('cambio-insumos-create', {
                 case 8:
                     ///agregar a maquinaria
                     self.form.partidas[0].conceptos.MAQUINARIA.insumos[i].precio_unitario_nuevo = cant;
+                    break;
+                case 5:
+                    ///agregar a subcontratos
+                    self.form.partidas[0].conceptos.SUBCONTRATOS.insumos[i].precio_unitario_nuevo = cant;
+                    break;
+                case 6:
+                    ///agregar a gastos
+                    self.form.partidas[0].conceptos.GASTOS.insumos[i].precio_unitario_nuevo = cant;
                     break;
             }
         },
@@ -19664,8 +19756,21 @@ Vue.component('cambio-insumos-create', {
                     $(".rendimiento" + id_concepto + '_' + i).val(total);
                     self.form.partidas[0].conceptos.MAQUINARIA.insumos[i].rendimiento_nuevo = total;
                     break;
+                case 5:
+                    ///agregar a SUNCONTRATOS
+                    var total = cant_pres / cant_concepto;
+                    $(".rendimiento" + id_concepto + '_' + i).val(total);
+                    self.form.partidas[0].conceptos.SUBCONTRATOS.insumos[i].rendimiento_nuevo = total;
+                    break;
+                case 6:
+                    ///agregar a maquinaria
+                    var total = cant_pres / cant_concepto;
+                    $(".rendimiento" + id_concepto + '_' + i).val(total);
+                    self.form.partidas[0].conceptos.GASTOS.insumos[i].rendimiento_nuevo = total;
+                    break;
             }
         },
+
         set_filtro: function set_filtro() {
             var nivel = this.form.filtro.nivel;
             var result = this.filtros.filter(function (filtro) {
@@ -19930,6 +20035,14 @@ Vue.component('cambio-insumos-show', {
                             case 8:
                                 value.monto_original = agrupado.concepto.maquinaria_monto_original;
                                 value.variacion = agrupado.concepto.maquinaria_variacion;
+                                break;
+                            case 5:
+                                value.monto_original = agrupado.concepto.subcontratos_monto_original;
+                                value.variacion = agrupado.concepto.subcontratos_variacion;
+                                break;
+                            case 6:
+                                value.monto_original = agrupado.concepto.gastos_monto_original;
+                                value.variacion = agrupado.concepto.gastos_variacion;
                                 break;
 
                         }

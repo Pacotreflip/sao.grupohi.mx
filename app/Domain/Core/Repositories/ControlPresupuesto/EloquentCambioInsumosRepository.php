@@ -19,6 +19,7 @@ use Ghi\Domain\Core\Models\ControlPresupuesto\SolicitudCambioRechazada;
 use Ghi\Domain\Core\Models\ControlPresupuesto\Tarjeta;
 use Ghi\Domain\Core\Models\ControlPresupuesto\TipoOrden;
 use Ghi\Domain\Core\Models\ControlPresupuesto\CambioInsumos;
+use Ghi\Domain\Core\Models\Material;
 use Ghi\Domain\Core\Models\Seguridad\Proyecto;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Config\Repository;
@@ -82,8 +83,6 @@ class EloquentCambioInsumosRepository implements CambioInsumosRepository
      */
     public function create(array $data)
     {
-
-
         try {
             DB::connection('cadeco')->beginTransaction();
 
@@ -110,6 +109,7 @@ class EloquentCambioInsumosRepository implements CambioInsumosRepository
                             }
                         }
                         $material['id_tipo_orden'] = TipoOrden::ORDEN_DE_CAMBIO_DE_INSUMOS;
+                        $material['tipo_agrupador']=1;
                         $material['id_solicitud_cambio'] = $solicitud->id;
                         $material['precio_unitario_original'] = $material['precio_unitario'];
                         array_key_exists('precio_unitario_nuevo', $material) ? $material['precio_unitario_nuevo'] = $material['precio_unitario_nuevo'] : '';
@@ -138,7 +138,7 @@ class EloquentCambioInsumosRepository implements CambioInsumosRepository
                         array_key_exists('precio_unitario_nuevo', $mano) ? $mano['precio_unitario_nuevo'] = $mano['precio_unitario_nuevo'] : '';
                         array_key_exists('rendimiento_nuevo', $mano) ? $mano['rendimiento_nuevo'] = $mano['rendimiento_nuevo'] : '';
                         $mano['rendimiento_original'] = $mano['rendimiento_actual'];
-
+                        $mano['tipo_agrupador']=2;
                         if (array_key_exists('precio_unitario_nuevo', $mano) || array_key_exists('rendimiento_nuevo', $mano)) {
                             SolicitudCambioPartida::create($mano);
                         }
@@ -159,7 +159,7 @@ class EloquentCambioInsumosRepository implements CambioInsumosRepository
                         array_key_exists('precio_unitario_nuevo', $herramienta) ? $herramienta['precio_unitario_nuevo'] = $herramienta['precio_unitario_nuevo'] : '';
                         array_key_exists('rendimiento_nuevo', $herramienta) ? $herramienta['rendimiento_nuevo'] = $herramienta['rendimiento_nuevo'] : '';
                         $herramienta['rendimiento_original'] = $herramienta['rendimiento_actual'];
-
+                        $herramienta['tipo_agrupador']=4;
                         if (array_key_exists('precio_unitario_nuevo', $herramienta) || array_key_exists('rendimiento_nuevo', $herramienta)) {
                             SolicitudCambioPartida::create($herramienta);
                         }
@@ -182,7 +182,7 @@ class EloquentCambioInsumosRepository implements CambioInsumosRepository
                         array_key_exists('precio_unitario_nuevo', $maquinaria) ? $maquinaria['precio_unitario_nuevo'] = $maquinaria['precio_unitario_nuevo'] : '';
                         array_key_exists('rendimiento_nuevo', $maquinaria) ? $maquinaria['rendimiento_nuevo'] = $maquinaria['rendimiento_nuevo'] : '';
                         $maquinaria['rendimiento_original'] = $maquinaria['rendimiento_actual'];
-
+                        $maquinaria['tipo_agrupador']=8;
                         if (array_key_exists('precio_unitario_nuevo', $maquinaria) || array_key_exists('rendimiento_nuevo', $maquinaria)) {
                             SolicitudCambioPartida::create($maquinaria);
                         }
@@ -190,9 +190,62 @@ class EloquentCambioInsumosRepository implements CambioInsumosRepository
 
                     }
                 }
-            }
 
-            //   dd($solicitud);
+                ////////impacto Subcontratos
+
+                if (array_key_exists('insumos', $partida['conceptos']['SUBCONTRATOS'])) {
+
+
+                    foreach ($partida['conceptos']['SUBCONTRATOS']['insumos'] as $subcontrato) {
+                        //    dd("subcontratos",$subcontrato);
+                        if (isset($subcontrato['id_concepto'])) {
+                            $conceptoTarjeta = ConceptoTarjeta::where('id_concepto', '=', $subcontrato['id_concepto'])->first();
+                            if ($conceptoTarjeta) {
+                                $subcontrato['id_tarjeta'] = $conceptoTarjeta->id_tarjeta;
+                            }
+                        }
+
+
+                        $subcontrato['id_tipo_orden'] = TipoOrden::ORDEN_DE_CAMBIO_DE_INSUMOS;
+                        $subcontrato['id_solicitud_cambio'] = $solicitud->id;
+                        $subcontrato['precio_unitario_original'] = $subcontrato['precio_unitario'];
+                        array_key_exists('precio_unitario_nuevo', $subcontrato) ? $subcontrato['precio_unitario_nuevo'] = $subcontrato['precio_unitario_nuevo'] : '';
+                        array_key_exists('rendimiento_nuevo', $subcontrato) ? $subcontrato['rendimiento_nuevo'] = $subcontrato['rendimiento_nuevo'] : '';
+                        $subcontrato['rendimiento_original'] = $subcontrato['rendimiento_actual'];
+                        $subcontrato['tipo_agrupador']=5;
+                        if (array_key_exists('precio_unitario_nuevo', $subcontrato) || array_key_exists('rendimiento_nuevo', $subcontrato)) {
+                            SolicitudCambioPartida::create($subcontrato);
+                        }
+
+
+                    }
+                }
+
+                ////////impacto Subcontratos
+
+                if (array_key_exists('insumos', $partida['conceptos']['GASTOS'])) {
+                    foreach ($partida['conceptos']['GASTOS']['insumos'] as $gasto) {
+                        if (isset($gasto['id_concepto'])) {
+                            $conceptoTarjeta = ConceptoTarjeta::where('id_concepto', '=', $gasto['id_concepto'])->first();
+                            if ($conceptoTarjeta) {
+                                $gasto['id_tarjeta'] = $conceptoTarjeta->id_tarjeta;
+                            }
+                        }
+                        $gasto['id_tipo_orden'] = TipoOrden::ORDEN_DE_CAMBIO_DE_INSUMOS;
+                        $gasto['id_solicitud_cambio'] = $solicitud->id;
+                        $gasto['precio_unitario_original'] = $gasto['precio_unitario'];
+                        array_key_exists('precio_unitario_nuevo', $gasto) ? $gasto['precio_unitario_nuevo'] = $gasto['precio_unitario_nuevo'] : '';
+                        array_key_exists('rendimiento_nuevo', $gasto) ? $gasto['rendimiento_nuevo'] = $gasto['rendimiento_nuevo'] : '';
+                        $gasto['rendimiento_original'] = $gasto['rendimiento_actual'];
+                        $gasto['tipo_agrupador']=6;
+                        if (array_key_exists('precio_unitario_nuevo', $gasto) || array_key_exists('rendimiento_nuevo', $gasto)) {
+                            SolicitudCambioPartida::create($gasto);
+                        }
+
+
+                    }
+                }
+            }
             $solicitud = $this->with('partidas')->find($solicitud->id);
             DB::connection('cadeco')->commit();
             return $solicitud;
@@ -259,6 +312,9 @@ class EloquentCambioInsumosRepository implements CambioInsumosRepository
                 $mano_obra = [];
                 $herramienta = [];
                 $maquinaria = [];
+                $subcontratos = [];
+                $gastos = [];
+
                 $data = [];
                 $tarjeta_id = 0;
                 foreach ($partidas as $partida) {
@@ -283,7 +339,7 @@ class EloquentCambioInsumosRepository implements CambioInsumosRepository
                     if ($conceptoReset) {
                         $partida->id_concepto = $conceptoReset->id_concepto;
                     }
-                    switch ($partida->material->tipo_material) {
+                    switch ($partida->tipo_agrupador) {
                         case 1:///materiales
                             array_push($materiales, $partida);
                             break;
@@ -295,6 +351,12 @@ class EloquentCambioInsumosRepository implements CambioInsumosRepository
                             break;
                         case 8:/// Maquinaria
                             array_push($maquinaria, $partida);
+                            break;
+                        case 5:/// Maquinaria
+                            array_push($subcontratos, $partida);
+                            break;
+                        case 6:/// Maquinaria
+                            array_push($gastos, $partida);
                             break;
                     }
 
@@ -540,6 +602,124 @@ class EloquentCambioInsumosRepository implements CambioInsumosRepository
                     }
                 }
 
+////////////subcontratos
+                foreach ($subcontratos as $subcontrato) ////integracion materiales tarjeta nueva
+                {
+                    if ($subcontrato->id_concepto) { ////actualizacion de concepto
+                        $dataHist = [];
+                        $conceptoUpdate = Concepto::find($subcontrato->id_concepto);
+                        $conceptoUpdate->cantidad_presupuestada = $subcontrato['cantidad_presupuestada']; //cambio cantidad presupuestada
+                        if ($subcontrato['precio_unitario_nuevo'] > 0) {
+                            $dataHist['precio_unitario_original'] = $conceptoUpdate->precio_unitario;
+                            $conceptoUpdate->precio_unitario = $subcontrato['precio_unitario_nuevo'];
+                            $dataHist['precio_unitario_actualizado'] = $conceptoUpdate->precio_unitario;
+                        }
+
+                        $dataHist['monto_presupuestado_original'] = $conceptoUpdate->monto_presupuestado;
+                        $conceptoUpdate->monto_presupuestado = $conceptoUpdate->cantidad_presupuestada * $conceptoUpdate->precio_unitario;
+                        $conceptoUpdate->save();
+                        $dataHist['monto_presupuestado_actualizado'] = $conceptoUpdate->monto_presupuestado;
+                        $dataHist['id_solicitud_cambio_partida'] = $subcontrato->id;
+                        $dataHist['id_base_presupuesto'] = 2;
+                        $dataHist['nivel'] = $conceptoUpdate->nivel;
+                        $dataHist['id_partidas_insumos_agrupados'] = $insumo->id;
+                        SolicitudCambioPartidaHistorico::create($dataHist);
+
+                    } else { ////nuevo concepto generar nuevo nivel
+
+                        $conceptoMaterial = Concepto::where('descripcion', '=', 'SUBCONTRATOS')->where('nivel', 'like', $concepto->nivel . '%')->first();
+                        $totalInsumos = Concepto::where('nivel', 'like', $conceptoMaterial->nivel . '%')->get();
+
+                        $total = count($totalInsumos);
+                        $ceros = 3 - strlen($total);
+                        $nuevo_nivel = $conceptoMaterial->nivel . str_repeat("0", $ceros) . $total . '.';
+                        $unidadMaterial = Material::select('unidad')->where('id_material', '=', $subcontrato->id_material)->first();
+                        $dataNuevoInsumo = [
+                            "id_material" => $subcontrato->id_material,
+                            "id_obra" => Context::getId(),
+                            "nivel" => $nuevo_nivel,
+                            "descripcion" => $subcontrato->descripcion,
+                            "unidad" => $unidadMaterial->unidad,
+                            "cantidad_presupuestada" => $subcontrato->rendimiento_nuevo * $concepto->cantidad_presupuestada,
+                            "monto_presupuestado" => ($subcontrato->rendimiento_nuevo * $concepto->cantidad_presupuestada) * $subcontrato->precio_unitario_nuevo,
+                            "precio_unitario" => $subcontrato->precio_unitario_nuevo,
+
+                        ];
+
+                        $nuevoInsumo = \Ghi\Domain\Core\Models\Concepto::create($dataNuevoInsumo);
+                        $dataHist = [];
+                        $dataHist['precio_unitario_original'] = 0;
+                        $dataHist['precio_unitario_actualizado'] = $nuevoInsumo->precio_unitario;
+                        $dataHist['monto_presupuestado_original'] = 0;
+                        $dataHist['monto_presupuestado_actualizado'] = $nuevoInsumo->monto_presupuestado;
+                        $dataHist['id_solicitud_cambio_partida'] = $subcontrato->id;
+                        $dataHist['id_base_presupuesto'] = 2;
+                        $dataHist['nivel'] = $nuevoInsumo->nivel;
+                        $dataHist['id_partidas_insumos_agrupados'] = $insumo->id;
+                        SolicitudCambioPartidaHistorico::create($dataHist);
+                    }
+                }
+
+                ////////////gastos
+                foreach ($gastos as $gasto) ////integracion materiales tarjeta nueva
+                {
+                    if ($gasto->id_concepto) { ////actualizacion de concepto
+                        $dataHist = [];
+                        $conceptoUpdate = Concepto::find($gasto->id_concepto);
+                        $conceptoUpdate->cantidad_presupuestada = $gasto['cantidad_presupuestada']; //cambio cantidad presupuestada
+                        if ($gasto['precio_unitario_nuevo'] > 0) {
+                            $dataHist['precio_unitario_original'] = $conceptoUpdate->precio_unitario;
+                            $conceptoUpdate->precio_unitario = $gasto['precio_unitario_nuevo'];
+                            $dataHist['precio_unitario_actualizado'] = $conceptoUpdate->precio_unitario;
+                        }
+
+                        $dataHist['monto_presupuestado_original'] = $conceptoUpdate->monto_presupuestado;
+                        $conceptoUpdate->monto_presupuestado = $conceptoUpdate->cantidad_presupuestada * $conceptoUpdate->precio_unitario;
+                        $conceptoUpdate->save();
+                        $dataHist['monto_presupuestado_actualizado'] = $conceptoUpdate->monto_presupuestado;
+                        $dataHist['id_solicitud_cambio_partida'] = $gasto->id;
+                        $dataHist['id_base_presupuesto'] = 2;
+                        $dataHist['nivel'] = $conceptoUpdate->nivel;
+                        $dataHist['id_partidas_insumos_agrupados'] = $insumo->id;
+                        SolicitudCambioPartidaHistorico::create($dataHist);
+
+                    } else { ////nuevo concepto generar nuevo nivel
+
+                        $conceptoMaterial = Concepto::where('descripcion', '=', 'GASTOS')->where('nivel', 'like', $concepto->nivel . '%')->first();
+                        $totalInsumos = Concepto::where('nivel', 'like', $conceptoMaterial->nivel . '%')->get();
+
+                        $total = count($totalInsumos);
+                        $ceros = 3 - strlen($total);
+                        $nuevo_nivel = $conceptoMaterial->nivel . str_repeat("0", $ceros) . $total . '.';
+                        $unidadMaterial = Material::select('unidad')->where('id_material', '=', $gasto->id_material)->first();
+                        $dataNuevoInsumo = [
+                            "id_material" => $gasto->id_material,
+                            "id_obra" => Context::getId(),
+                            "nivel" => $nuevo_nivel,
+                            "descripcion" => $gasto->descripcion,
+                            "unidad" => $unidadMaterial->unidad,
+                            "cantidad_presupuestada" => $gasto->rendimiento_nuevo * $concepto->cantidad_presupuestada,
+                            "monto_presupuestado" => ($gasto->rendimiento_nuevo * $concepto->cantidad_presupuestada) * $gasto->precio_unitario_nuevo,
+                            "precio_unitario" => $gasto->precio_unitario_nuevo,
+
+                        ];
+
+                        $nuevoInsumo = \Ghi\Domain\Core\Models\Concepto::create($dataNuevoInsumo);
+                        $dataHist = [];
+                        $dataHist['precio_unitario_original'] = 0;
+                        $dataHist['precio_unitario_actualizado'] = $nuevoInsumo->precio_unitario;
+                        $dataHist['monto_presupuestado_original'] = 0;
+                        $dataHist['monto_presupuestado_actualizado'] = $nuevoInsumo->monto_presupuestado;
+                        $dataHist['id_solicitud_cambio_partida'] = $gasto->id;
+                        $dataHist['id_base_presupuesto'] = 2;
+                        $dataHist['nivel'] = $nuevoInsumo->nivel;
+                        $dataHist['id_partidas_insumos_agrupados'] = $insumo->id;
+                        SolicitudCambioPartidaHistorico::create($dataHist);
+                    }
+                }
+
+
+
                 $conceptosNuevaTarjeta = Concepto::where('nivel', 'like', $concepto->nivel . '%')->get();
                 foreach ($conceptosNuevaTarjeta as $conceptoNuevaTarjeta) {
                     //  $conceptoNuevaTarjeta->id_concepto;
@@ -619,6 +799,38 @@ class EloquentCambioInsumosRepository implements CambioInsumosRepository
                 $dataHist['id_base_presupuesto'] = 2;
                 $dataHist['nivel'] = $conceptoMaterial->nivel;
                 SolicitudCambioPartidaHistorico::create($dataHist);
+
+
+                $dataHist = [];
+                $conceptoMaterial = Concepto::where('descripcion', '=', 'SUBCONTRATOS')->where('nivel', 'like', $concepto->nivel . '%')->first();
+                $dataHist['precio_unitario_original'] = $conceptoMaterial->precio_unitario;
+                $dataHist['monto_presupuestado_original'] = $conceptoMaterial->monto_presupuestado;
+                $dataHist['precio_unitario_actualizado'] = $conceptoMaterial->precio_unitario;
+                $dataHist['id_partidas_insumos_agrupados'] = $insumo->id;
+                $totalInsumos = Concepto::where('nivel', 'like', $conceptoMaterial->nivel . '___.')->get();
+                $afectacion_mmonto_propagacion += $totalInsumos->sum('monto_presupuestado');
+                $conceptoMaterial->monto_presupuestado = $totalInsumos->sum('monto_presupuestado');
+                $conceptoMaterial->save();
+                $dataHist['monto_presupuestado_actualizado'] = $conceptoMaterial->monto_presupuestado;
+                $dataHist['id_base_presupuesto'] = 2;
+                $dataHist['nivel'] = $conceptoMaterial->nivel;
+                SolicitudCambioPartidaHistorico::create($dataHist);
+
+                $dataHist = [];
+                $conceptoMaterial = Concepto::where('descripcion', '=', 'GASTOS')->where('nivel', 'like', $concepto->nivel . '%')->first();
+                $dataHist['precio_unitario_original'] = $conceptoMaterial->precio_unitario;
+                $dataHist['monto_presupuestado_original'] = $conceptoMaterial->monto_presupuestado;
+                $dataHist['precio_unitario_actualizado'] = $conceptoMaterial->precio_unitario;
+                $dataHist['id_partidas_insumos_agrupados'] = $insumo->id;
+                $totalInsumos = Concepto::where('nivel', 'like', $conceptoMaterial->nivel . '___.')->get();
+                $afectacion_mmonto_propagacion += $totalInsumos->sum('monto_presupuestado');
+                $conceptoMaterial->monto_presupuestado = $totalInsumos->sum('monto_presupuestado');
+                $conceptoMaterial->save();
+                $dataHist['monto_presupuestado_actualizado'] = $conceptoMaterial->monto_presupuestado;
+                $dataHist['id_base_presupuesto'] = 2;
+                $dataHist['nivel'] = $conceptoMaterial->nivel;
+                SolicitudCambioPartidaHistorico::create($dataHist);
+
                 //propagacion hacia arriba monto_presupuestado
 
                 $tamanioFaltante = strlen($concepto->nivel);

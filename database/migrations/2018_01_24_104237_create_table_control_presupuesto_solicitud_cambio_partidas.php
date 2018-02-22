@@ -31,6 +31,7 @@ class CreateTableControlPresupuestoSolicitudCambioPartidas extends Migration
 
             $table->float("rendimiento_original")->nullable();
             $table->float("rendimiento_nuevo")->nullable();
+            $table->unsignedInteger("tipo_agrupador")->nullable();
 
             $table->foreign('id_material')
                 ->references('id_material')

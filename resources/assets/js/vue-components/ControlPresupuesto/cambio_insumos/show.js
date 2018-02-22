@@ -202,6 +202,14 @@ Vue.component('cambio-insumos-show', {
                                 value.monto_original= agrupado.concepto.maquinaria_monto_original;
                                 value.variacion=agrupado.concepto.maquinaria_variacion;
                                 break;
+                            case 5:
+                                value.monto_original= agrupado.concepto.subcontratos_monto_original;
+                                value.variacion=agrupado.concepto.subcontratos_variacion;
+                                break;
+                            case 6:
+                                value.monto_original= agrupado.concepto.gastos_monto_original;
+                                value.variacion=agrupado.concepto.gastos_variacion;
+                                break;
 
                         }
                         value.monto_nuevo= parseFloat(value.monto_original)+ parseFloat(value.variacion);
