@@ -97,8 +97,13 @@ Vue.component('material-index', {
 
         confirmSave: function () {
             var self = this;
+            var message='Familia';
+            if(self.material.unidad){
+                message='Insumo';
+            }
+
             swal({
-                title: 'Guardar Familia',
+                title: 'Guardar '+message,
                 text: "¿Está seguro de que la información es correcta?",
                 type: 'warning',
                 showCancelButton: true,
@@ -114,11 +119,21 @@ Vue.component('material-index', {
         },
         save: function () {
             var self = this;
+
+            var message='Familia Guardada';
+            if(self.material.unidad){
+                message='Insumo Guardado';
+            }
             $.each(self.material, function(key, value){
                 if ((value === ''|| value === null)&&key!='nivel'){
                     delete self.material[key];
                 }
             });
+
+
+            if (typeof self.material.nivel == 'undefined'){
+                self.material.nivel='';
+            }
 
             $.ajax({
                 url : App.host + '/material',
@@ -131,7 +146,7 @@ Vue.component('material-index', {
                        swal({
                         type : 'success',
                         title : '¡Correcto!',
-                        html : 'Material Guardado Exitosamente.'
+                        html : message+' Exitosamente.'
                     }).then(function () {
                         $('#add_material_modal').modal('hide');
 

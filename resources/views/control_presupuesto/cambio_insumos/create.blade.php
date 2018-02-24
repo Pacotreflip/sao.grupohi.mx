@@ -550,7 +550,15 @@
                                             </tbody>
                                         </table>
                                     </div>
-
+                                    <div class="form-group"
+                                         :class="{'has-error': validation_errors.has('form_save_solicitud.Area solicitante')}">
+                                        <label><b>Área Solicitante</b></label>
+                                        <Input type="text" class="form-control" v-validate="'required'"
+                                               :name="'Area solicitante'"
+                                               v-model="form.area_solicitante"></Input>
+                                        <label class="help"
+                                               v-show="validation_errors.has('form_save_solicitud.Area solicitante')">@{{ validation_errors.first('form_save_solicitud.Area solicitante') }}</label>
+                                    </div>
                                     <div class="form-group"
                                          :class="{'has-error': validation_errors.has('form_save_solicitud.Motivo')}">
                                         <label><b>Motivo</b></label>
@@ -559,15 +567,7 @@
                                         <label class="help"
                                                v-show="validation_errors.has('form_save_solicitud.Motivo')">@{{ validation_errors.first('form_save_solicitud.Motivo') }}</label>
                                     </div>
-                                    <div class="form-group"
-                                         :class="{'has-error': validation_errors.has('form_save_solicitud.Area solicitante')}">
-                                        <label><b>Área Solicitante</b></label>
-                                        <textarea class="form-control" v-validate="'required'"
-                                                  :name="'Area solicitante'"
-                                                  v-model="form.area_solicitante"></textarea>
-                                        <label class="help"
-                                               v-show="validation_errors.has('form_save_solicitud.Area solicitante')">@{{ validation_errors.first('form_save_solicitud.Area solicitante') }}</label>
-                                    </div>
+
                                 </div>
                                 <div class="modal-body small" v-else>
                                     <div class="table-responsive" v-show="concepto.conceptos.MATERIALES.insumos">

@@ -126,7 +126,7 @@ class PDFSolicitudCambioInsumos extends Rotation
             $this->SetTextColors(array('0,0,0', '0,0,0', '0,0,0', '0,0,0', '0,0,0', '0,0,0', '0,0,0', '0,0,0', '0,0,0', '0,0,0', '0,0,0', '0,0,0', '0,0,0'));
             $this->SetHeights(array(0.3));
             $this->SetAligns(array('R', 'R', 'R', 'C', 'C', 'C', 'C', 'C', 'C', 'C', 'C', 'C', 'C'));
-            $this->Row(array('#', 'No. Tarjeta', utf8_decode("Descripción"), utf8_decode("Unidad"), utf8_decode("Precio Unitario"), utf8_decode("Variación Precio Unitario"), "Precio Unitario Actualizado", utf8_decode("Cantidad Original"), utf8_decode("Variacion de Cantidad"), utf8_decode("Cantidad Actualizada"), utf8_decode("Importe Original"), utf8_decode("Variación de Importe"), utf8_decode("Importe Actualizado")));
+            $this->Row(array('#', 'No. Tarjeta', utf8_decode("Descripción"), utf8_decode("Unidad"), utf8_decode("Costo"), utf8_decode("Variación Costo"), "Costo Actualizado", utf8_decode("Cantidad Original"), utf8_decode("Variacion de Cantidad"), utf8_decode("Cantidad Actualizada"), utf8_decode("Importe Original"), utf8_decode("Variación de Importe"), utf8_decode("Importe Actualizado")));
 
             $this->SetFont('Arial', '', 6);
             $this->SetFills(array('255,255,255', '255,255,255', '255,255,255', '255,255,255', '255,255,255', '255,255,255', '255,255,255', '255,255,255', '255,255,255', '255,255,255', '255,255,255', '255,255,255', '255,255,255'));
@@ -143,14 +143,6 @@ class PDFSolicitudCambioInsumos extends Rotation
             $this->SetFont('Arial', '', 6);
             $this->SetAligns(array('C'));
 
-
-        }else if($this->encola=='resumen'){
-            $this->SetFills(array('255,255,255', '255,255,255'));
-            $this->SetTextColors(array('0,0,0', '0,0,0'));
-            $this->SetHeights(array(0.38));
-            $this->SetAligns(array('L', 'R'));
-            $this->SetWidths(array(0.2 * $this->WidthTotal, 0.2 * $this->WidthTotal));
-            $this->SetX(17.52);
 
         }
     }
@@ -195,7 +187,7 @@ class PDFSolicitudCambioInsumos extends Rotation
         $this->SetX($x);
         $this->Cell(0.125 * $this->WidthTotal, 0.5, utf8_decode('Número de Folio:'), '', 0, 'LB');
         $this->SetFont('Arial', '', '#' . $this->txtContenidoTam);
-        $this->CellFitScale(0.375 * $this->WidthTotal, 0.5, utf8_decode($this->solicitud->numero_folio), '', 1, 'L');
+        $this->CellFitScale(0.375 * $this->WidthTotal, 0.5,'#'.utf8_decode($this->solicitud->numero_folio), '', 1, 'L');
 
         $this->SetFont('Arial', 'B', '#' . $this->txtContenidoTam);
         $this->SetX($x);
@@ -209,6 +201,12 @@ class PDFSolicitudCambioInsumos extends Rotation
         $this->Cell(0.125 * $this->WidthTotal, 0.5, utf8_decode('Persona que Solicita:'), '', 0, 'L');
         $this->SetFont('Arial', '', $this->txtContenidoTam);
         $this->CellFitScale(0.375 * $this->WidthTotal, 0.5, utf8_decode($this->solicitud->userRegistro), '', 1, 'L');
+
+        $this->SetFont('Arial', 'B', $this->txtContenidoTam);
+        $this->SetX($x);
+        $this->Cell(0.125 * $this->WidthTotal, 0.5, utf8_decode('Área Solicitante:'), '', 0, 'L');
+        $this->SetFont('Arial', '', $this->txtContenidoTam);
+        $this->CellFitScale(0.375 * $this->WidthTotal, 0.5, utf8_decode($this->solicitud->area_solicitante), '', 1, 'L');
     }
 
     function items()
@@ -223,7 +221,7 @@ class PDFSolicitudCambioInsumos extends Rotation
         $this->SetFont('Arial', 'B', $this->txtSeccionTam);
         $this->SetXY($this->GetX(), $this->GetY());
         $this->Cell($this->WidthTotal, 0.7, utf8_decode('CAMBIO DE INSUMOS'), 'TRLB', 0, 'C');
-        $this->SetXY($this->GetX(), $this->GetY() + 0.5);
+        $this->SetXY($this->GetX(), $this->GetY() + 0.3);
         $this->SetWidths(array(0));
         $this->SetFills(array('255,255,255'));
         $this->SetTextColors(array('1,1,1'));
@@ -266,7 +264,7 @@ class PDFSolicitudCambioInsumos extends Rotation
             $this->SetHeights(array(0.28));
             $this->SetAligns(array('L', 'L', 'L', 'C', 'C', 'C', 'C', 'C', 'C', 'C', 'C', 'C', 'C'));
             $this->SetWidths(array(0.02 * $this->WidthTotal, 0.04 * $this->WidthTotal, 0.34 * $this->WidthTotal, 0.06 * $this->WidthTotal, 0.06 * $this->WidthTotal, 0.06 * $this->WidthTotal, 0.06 * $this->WidthTotal, 0.06 * $this->WidthTotal, 0.06 * $this->WidthTotal, 0.06 * $this->WidthTotal, 0.06 * $this->WidthTotal, 0.06 * $this->WidthTotal, 0.06 * $this->WidthTotal));
-            $this->Row(array('#', 'No. Tarjeta', utf8_decode("Descripción"), utf8_decode("Unidad"), utf8_decode("Precio Unitario"), utf8_decode("Variación Precio Unitario"), "Precio Unitario Actualizado", utf8_decode("Cantidad Original"), utf8_decode("Variacion de Cantidad"), utf8_decode("Cantidad Actualizada"), utf8_decode("Importe Original"), utf8_decode("Variación de Importe"), utf8_decode("Importe Actualizado")));
+            $this->Row(array('#', 'No. Tarjeta', utf8_decode("Descripción"), utf8_decode("Unidad"), utf8_decode("Costo"), utf8_decode("Variación de Costo"), "Costo Actualizado", utf8_decode("Cantidad Original"), utf8_decode("Variacion de Cantidad"), utf8_decode("Cantidad Actualizada"), utf8_decode("Importe Original"), utf8_decode("Variación de Importe"), utf8_decode("Importe Actualizado")));
 
             $contador = 1;
             $conceptos_agrupados = $this->agrupacion->with('concepto')->where([['id_solicitud_cambio', '=', $this->solicitud->id]])->all();
@@ -343,6 +341,7 @@ class PDFSolicitudCambioInsumos extends Rotation
             //dd($array_data);
             foreach ($array_data as $contador => $row) {
 
+
                 $this->Row([
                     ($contador + 1),
                     $numero_tarjeta,
@@ -350,18 +349,22 @@ class PDFSolicitudCambioInsumos extends Rotation
                     utf8_decode($row['unidad']),
                     '$ ' . number_format($row['pu'], 2, '.', ','),
                     '$ ' . number_format($row['variacion_pu'], 2, '.', ','),
-                    '$ ' . number_format($row['pu_actualizado']),
+                    '$ ' . number_format($row['pu_actualizado'], 2, '.', ','),
                     number_format($row['cantidad_original'], 2, '.', ','),
-                    $row['variacion_cantidad'] != '--' ?  number_format($row['variacion_cantidad'], 2, '.', ',') : $row['variacion_cantidad'],
+
+                    $row['variacion_cantidad'] != '--' ? number_format($row['variacion_cantidad'], 2, '.', ',') : $row['variacion_cantidad'],
                     $row['cantidad_nueva'] != '--' ? number_format($row['cantidad_nueva'], 2, '.', ',') : $row['cantidad_nueva'],
                     '$ ' . number_format($row['importe_original'], 2, '.', ','),
                     '$ ' . number_format($row['variacion_importe'], 2, '.', ','),
                     '$ ' . number_format($row['importe_actualizado'], 2, '.', ',')
                 ]);
 
-            }
 
+            }
         }
+
+
+
         $this->Ln(1);
         $this->encola = '';
     }
@@ -388,7 +391,12 @@ class PDFSolicitudCambioInsumos extends Rotation
     }
 
     function resumen()
-    {  $this->encola = "resumen";
+    {
+
+
+        if($this->getY()>13){
+            $this->addPage();
+        }
         $this->SetX(17.52);
         $this->SetFont('Arial', '', 6);
         $this->SetStyles(array('DF', 'DF'));
@@ -457,17 +465,16 @@ class PDFSolicitudCambioInsumos extends Rotation
 
     function firmas()
     {
-
         $this->SetFont('Arial', '', 6);
         $this->SetFillColor(180, 180, 180);
 
-        $qr_name = 'qrcode_' . mt_rand() . '.png';
+        $qr_name = 'qrcode_'. mt_rand() .'.png';
         $renderer = new Png();
         $renderer->setHeight(132);
         $renderer->setWidth(132);
         $renderer->setMargin(0);
         $writer = new Writer($renderer);
-        $writer->writeFile(route('control_presupuesto.cambio_presupuesto.show', [
+        $writer->writeFile(route('control_presupuesto.cambio_presupuesto.show',[
             'id' => $this->solicitud->id,
             'DATABASE_NAME' => base64_encode(Context::getDatabaseName()),
             'ID_OBRA' => base64_encode(Context::getId())]), $qr_name);
@@ -485,10 +492,10 @@ class PDFSolicitudCambioInsumos extends Rotation
         $firmaX2 = ($qrX / 1.50) - ($firmasWidth / 2);
 
         $this->SetX($firmaX1);
-        $this->Cell($firmasWidth, 0.4, utf8_decode('firma 1'), 'TRLB', 0, 'C', 1);
+        $this->Cell($firmasWidth, 0.4, utf8_decode('COORDINADOR DE CONTROL DE PROYECTOS'), 'TRLB', 0, 'C', 1);
 
         $this->SetX($firmaX2);
-        $this->Cell($firmasWidth, 0.4, utf8_decode('firma 2'), 'TRLB', 1, 'C', 1);
+        $this->Cell($firmasWidth, 0.4, utf8_decode('PERSONA QUE SOLICITA'), 'TRLB', 1, 'C', 1);
 
 
         $this->SetX($firmaX1);
@@ -498,10 +505,10 @@ class PDFSolicitudCambioInsumos extends Rotation
         $this->Cell($firmasWidth, 1.2, '', 'TRLB', 1, 'C');
 
         $this->SetX($firmaX1);
-        $this->Cell($firmasWidth, 0.4, utf8_decode('nombre 1'), 'TRLB', 0, 'C', 1);
+        $this->Cell($firmasWidth, 0.4, utf8_decode(''), 'TRLB', 0, 'C', 1);
 
         $this->SetX($firmaX2);
-        $this->Cell($firmasWidth, 0.4, utf8_decode('nombre 2'), 'TRLB', 0, 'C', 1);
+        $this->Cell($firmasWidth, 0.4, utf8_decode($this->solicitud->userRegistro), 'TRLB', 0, 'C', 1);
     }
 
     function Footer()
@@ -542,7 +549,7 @@ class PDFSolicitudCambioInsumos extends Rotation
         $this->SetAutoPageBreak(true, 5.1);
 
         $this->items();
-        $this->Ln();
+
         $this->resumen();
         $this->motivo();
         try {

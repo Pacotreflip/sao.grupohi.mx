@@ -116,6 +116,15 @@
         h1 {
             font-size: 20px;
         }
+        .div_exedio{
+            background-color: red;
+            color:white;
+            width: 100%;
+            font-size: 15px;
+            height: 50px;
+
+            padding-top: 5px;
+        }
     </style>
 </head>
 <body>
@@ -125,13 +134,9 @@
     <div id="cuerpo">
         <div id="contenido">
             <h1>Estimado Colaborador </h1>
-            <h1>Se le informa que la siguiente solicitud de cambio de insumo fue autorizada por : {{$usuario_autorizo}}, pero el importe de los
-                conceptos agrupados
-                rebaza el importe de los conceptos registrados en proforma.</h1>
+            <h1>Se le informa que la siguiente solicitud de cambio de insumo fue autorizada por : {{$usuario_autorizo}}.</h1>
             <h1>Proyecto: {{$obra}}</h1><br>
-            <h1>Folio de la solicitud:{{$folio_solicitud}} </h1><br>
-
-
+            <h1>Folio de la solicitud: #{{$folio_solicitud}} </h1><br>
             <div id="lista_contratos">
 
 
@@ -148,6 +153,18 @@
                             <hr>
                             <strong>Importe Conceptos Modificados</strong>
                             <p class="text-muted text-right">
+
+
+
+
+                            <div style="{{$dif_proforma<0?'':'display:none'}}" class="div_exedio"><h4>
+                                El Importe Conceptos Actualizados es mayor al importe del presupuesto proforma.
+                                Maximo proforma:
+                                ${{number_format($conceptos_agrupados['maximo_proforma']['maximo'],2, ',','.')}}
+                                ,Variaci&oacute;n:
+                                ${{number_format($conceptos_agrupados['maximo_proforma']['diferencia'],2, ',','.')}}
+                                </h4>
+                            </div>
 
                             <table class="generica" style="width:100%">
                                 <tr>

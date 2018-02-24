@@ -109,7 +109,7 @@ class EloquentCambioInsumosRepository implements CambioInsumosRepository
                             }
                         }
                         $material['id_tipo_orden'] = TipoOrden::ORDEN_DE_CAMBIO_DE_INSUMOS;
-                        $material['tipo_agrupador']=1;
+                        $material['tipo_agrupador'] = 1;
                         $material['id_solicitud_cambio'] = $solicitud->id;
                         $material['precio_unitario_original'] = $material['precio_unitario'];
                         array_key_exists('precio_unitario_nuevo', $material) ? $material['precio_unitario_nuevo'] = $material['precio_unitario_nuevo'] : '';
@@ -138,7 +138,7 @@ class EloquentCambioInsumosRepository implements CambioInsumosRepository
                         array_key_exists('precio_unitario_nuevo', $mano) ? $mano['precio_unitario_nuevo'] = $mano['precio_unitario_nuevo'] : '';
                         array_key_exists('rendimiento_nuevo', $mano) ? $mano['rendimiento_nuevo'] = $mano['rendimiento_nuevo'] : '';
                         $mano['rendimiento_original'] = $mano['rendimiento_actual'];
-                        $mano['tipo_agrupador']=2;
+                        $mano['tipo_agrupador'] = 2;
                         if (array_key_exists('precio_unitario_nuevo', $mano) || array_key_exists('rendimiento_nuevo', $mano)) {
                             SolicitudCambioPartida::create($mano);
                         }
@@ -159,7 +159,7 @@ class EloquentCambioInsumosRepository implements CambioInsumosRepository
                         array_key_exists('precio_unitario_nuevo', $herramienta) ? $herramienta['precio_unitario_nuevo'] = $herramienta['precio_unitario_nuevo'] : '';
                         array_key_exists('rendimiento_nuevo', $herramienta) ? $herramienta['rendimiento_nuevo'] = $herramienta['rendimiento_nuevo'] : '';
                         $herramienta['rendimiento_original'] = $herramienta['rendimiento_actual'];
-                        $herramienta['tipo_agrupador']=4;
+                        $herramienta['tipo_agrupador'] = 4;
                         if (array_key_exists('precio_unitario_nuevo', $herramienta) || array_key_exists('rendimiento_nuevo', $herramienta)) {
                             SolicitudCambioPartida::create($herramienta);
                         }
@@ -182,7 +182,7 @@ class EloquentCambioInsumosRepository implements CambioInsumosRepository
                         array_key_exists('precio_unitario_nuevo', $maquinaria) ? $maquinaria['precio_unitario_nuevo'] = $maquinaria['precio_unitario_nuevo'] : '';
                         array_key_exists('rendimiento_nuevo', $maquinaria) ? $maquinaria['rendimiento_nuevo'] = $maquinaria['rendimiento_nuevo'] : '';
                         $maquinaria['rendimiento_original'] = $maquinaria['rendimiento_actual'];
-                        $maquinaria['tipo_agrupador']=8;
+                        $maquinaria['tipo_agrupador'] = 8;
                         if (array_key_exists('precio_unitario_nuevo', $maquinaria) || array_key_exists('rendimiento_nuevo', $maquinaria)) {
                             SolicitudCambioPartida::create($maquinaria);
                         }
@@ -212,7 +212,7 @@ class EloquentCambioInsumosRepository implements CambioInsumosRepository
                         array_key_exists('precio_unitario_nuevo', $subcontrato) ? $subcontrato['precio_unitario_nuevo'] = $subcontrato['precio_unitario_nuevo'] : '';
                         array_key_exists('rendimiento_nuevo', $subcontrato) ? $subcontrato['rendimiento_nuevo'] = $subcontrato['rendimiento_nuevo'] : '';
                         $subcontrato['rendimiento_original'] = $subcontrato['rendimiento_actual'];
-                        $subcontrato['tipo_agrupador']=5;
+                        $subcontrato['tipo_agrupador'] = 5;
                         if (array_key_exists('precio_unitario_nuevo', $subcontrato) || array_key_exists('rendimiento_nuevo', $subcontrato)) {
                             SolicitudCambioPartida::create($subcontrato);
                         }
@@ -237,7 +237,7 @@ class EloquentCambioInsumosRepository implements CambioInsumosRepository
                         array_key_exists('precio_unitario_nuevo', $gasto) ? $gasto['precio_unitario_nuevo'] = $gasto['precio_unitario_nuevo'] : '';
                         array_key_exists('rendimiento_nuevo', $gasto) ? $gasto['rendimiento_nuevo'] = $gasto['rendimiento_nuevo'] : '';
                         $gasto['rendimiento_original'] = $gasto['rendimiento_actual'];
-                        $gasto['tipo_agrupador']=6;
+                        $gasto['tipo_agrupador'] = 6;
                         if (array_key_exists('precio_unitario_nuevo', $gasto) || array_key_exists('rendimiento_nuevo', $gasto)) {
                             SolicitudCambioPartida::create($gasto);
                         }
@@ -719,7 +719,6 @@ class EloquentCambioInsumosRepository implements CambioInsumosRepository
                 }
 
 
-
                 $conceptosNuevaTarjeta = Concepto::where('nivel', 'like', $concepto->nivel . '%')->get();
                 foreach ($conceptosNuevaTarjeta as $conceptoNuevaTarjeta) {
                     //  $conceptoNuevaTarjeta->id_concepto;
@@ -865,7 +864,6 @@ class EloquentCambioInsumosRepository implements CambioInsumosRepository
             $solicitudCambio = SolicitudCambioAutorizada::create($data);
             $solicitud = $this->model->find($id);
             $this->enviarNotificacionRevasePresupuesto($id);
-
             DB::connection('cadeco')->commit();
 
         } catch (\Exception $e) {
@@ -932,63 +930,60 @@ class EloquentCambioInsumosRepository implements CambioInsumosRepository
             $solicitud = SolicitudCambio::with(['tipoOrden', 'userRegistro', 'estatus'])->find($id);
 
 
-            if ($conceptos_agrupados['maximo_proforma']['diferencia'] < 0) {
+            $data = [];
+            $data['solicitud'] = $solicitud;
+            $data['cobrabilidad'] = $solicitud->tipoOrden->cobrabilidad;
+            $data['presupuestos'] = $presupuestos;
+            $data['conceptos_agrupados'] = $conceptos_agrupados;
+            $data['folio_solicitud'] = $solicitud->numero_folio;
+            $data['usuario_autorizo'] = SolicitudCambioAutorizada::where("id_solicitud_cambio", "=", $id)->first()->userAutorizo;
+            $data['dif_proforma']=$conceptos_agrupados['maximo_proforma']['diferencia'];
+            $basesDatos = Proyecto::get();
+
+            foreach ($basesDatos as $bd) {
+                $this->config->set('database.connections.cadeco.database', $bd->base_datos);
+                $obras = Obra::all();
 
 
-                $data = [];
-                $data['solicitud'] = $solicitud;
-                $data['cobrabilidad'] = $solicitud->tipoOrden->cobrabilidad;
-                $data['presupuestos'] = $presupuestos;
-                $data['conceptos_agrupados'] = $conceptos_agrupados;
-                $data['folio_solicitud'] = $solicitud->numero_folio;
-                $data['usuario_autorizo'] = SolicitudCambioAutorizada::where("id_solicitud_cambio", "=", $id)->first()->userAutorizo;
+                foreach ($obras as $obra) {
+                    if ($obra->id_obra == $solicitud->id_obra) {
+                        $coordinadores_control_proyectos = collect(DB::connection('seguridad')
+                            ->table('role_user')
+                            ->leftJoin('roles', 'role_user.role_id', '=', 'roles.id')
+                            ->leftJoin('proyectos', 'role_user.id_proyecto', '=', 'proyectos.id')
+                            ->select('role_user.user_id')
+                            ->where('role_user.id_obra', '=', $obra->id_obra)
+                            ->where('proyectos.base_datos', '=', $bd->base_datos)
+                            ->where('roles.name', '=', 'coordinador_control_proyectos')
+                            ->get());
 
-                $basesDatos = Proyecto::get();
+                        $data['obra'] = $obra->nombre;
+                        $html = View::make('control_presupuesto.emails.notificaciones_html.cambio_insumos', $data)->render();
 
-                foreach ($basesDatos as $bd) {
-                    $this->config->set('database.connections.cadeco.database', $bd->base_datos);
-                    $obras = Obra::all();
+                        $mail = new \PHPMailer();
+                        $body = $html;
+                        $mail->IsSMTP(); // telling the class to use SMTP
+                        $mail->Host = "mail.hermesconstruccion.com.mx"; // SMTP server
+                        $mail->SMTPDebug = 2;                     // enables SMTP debug information (for testing)
+                        $mail->SMTPAuth = true;                  // enable SMTP authentication
+                        $mail->Port = 25;                   // set the SMTP port for the GMAIL server
+                        $mail->Username = "seguimiento@hermesconstruccion.com.mx";  // GMAIL username
+                        $mail->Password = "qhermu";            // GMAIL password
+                        $mail->SetFrom('seguimiento@hermesconstruccion.com.mx', 'sao.grupohi.mx');
+                        $mail->MsgHTML($body);
+                        $mail->Subject = utf8_decode("Autorización de cambio de insumos");
 
+                        foreach ($coordinadores_control_proyectos as $coordinador_control_proyectos) {
+                            $usuario = User::find($coordinador_control_proyectos->user_id);
+                            $address = $usuario->correo;
+                            $mail->AddAddress($address, $usuario);
+                            $mail->Send();
+//dd("enviado --->". $usuario->correo);
 
-                    foreach ($obras as $obra) {
-                        if ($obra->id_obra == $solicitud->id_obra) {
-                            $coordinadores_control_proyectos = collect(DB::connection('seguridad')
-                                ->table('role_user')
-                                ->leftJoin('roles', 'role_user.role_id', '=', 'roles.id')
-                                ->leftJoin('proyectos', 'role_user.id_proyecto', '=', 'proyectos.id')
-                                ->select('role_user.user_id')
-                                ->where('role_user.id_obra', '=', $obra->id_obra)
-                                ->where('proyectos.base_datos', '=', $bd->base_datos)
-                                ->where('roles.name', '=', 'coordinador_control_proyectos')
-                                ->get());
-
-                            $data['obra'] = $obra->nombre;
-                            $html = View::make('control_presupuesto.emails.notificaciones_html.cambio_insumos', $data)->render();
-
-                            $mail = new \PHPMailer();
-                            $body = $html;
-                            $mail->IsSMTP(); // telling the class to use SMTP
-                            $mail->Host = "mail.hermesconstruccion.com.mx"; // SMTP server
-                            $mail->SMTPDebug = 2;                     // enables SMTP debug information (for testing)
-                            $mail->SMTPAuth = true;                  // enable SMTP authentication
-                            $mail->Port = 25;                   // set the SMTP port for the GMAIL server
-                            $mail->Username = "seguimiento@hermesconstruccion.com.mx";  // GMAIL username
-                            $mail->Password = "qhermu";            // GMAIL password
-                            $mail->SetFrom('seguimiento@hermesconstruccion.com.mx', 'sao.grupohi.mx');
-                            $mail->MsgHTML($body);
-                            $mail->Subject = utf8_decode("Autorización de cambio de insumos");
-
-                            foreach ($coordinadores_control_proyectos as $coordinador_control_proyectos) {
-                                $usuario = User::find($coordinador_control_proyectos->user_id);
-                                $address = $usuario->correo;
-                                $mail->AddAddress($address, $usuario);
-                                $mail->Send();
-
-
-                            }
                         }
-
                     }
+
+
                 }
             }
         } catch (\Exception $e) {

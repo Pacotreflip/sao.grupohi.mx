@@ -13483,8 +13483,13 @@ Vue.component('material-index', {
 
         confirmSave: function confirmSave() {
             var self = this;
+            var message = 'Familia';
+            if (self.material.unidad) {
+                message = 'Insumo';
+            }
+
             swal({
-                title: 'Guardar Familia',
+                title: 'Guardar ' + message,
                 text: "¿Está seguro de que la información es correcta?",
                 type: 'warning',
                 showCancelButton: true,
@@ -13500,11 +13505,20 @@ Vue.component('material-index', {
         },
         save: function save() {
             var self = this;
+
+            var message = 'Familia Guardada';
+            if (self.material.unidad) {
+                message = 'Insumo Guardado';
+            }
             $.each(self.material, function (key, value) {
                 if ((value === '' || value === null) && key != 'nivel') {
                     delete self.material[key];
                 }
             });
+
+            if (typeof self.material.nivel == 'undefined') {
+                self.material.nivel = '';
+            }
 
             $.ajax({
                 url: App.host + '/material',
@@ -13517,7 +13531,7 @@ Vue.component('material-index', {
                     swal({
                         type: 'success',
                         title: '¡Correcto!',
-                        html: 'Material Guardado Exitosamente.'
+                        html: message + ' Exitosamente.'
                     }).then(function () {
                         $('#add_material_modal').modal('hide');
                     });
@@ -19970,7 +19984,8 @@ Vue.component('cambio-insumos-show', {
         },
 
         autorizar_solicitud: function autorizar_solicitud(id) {
-
+            $('#btn_rechazar').prop('disabled', true);
+            $('#btn_autorizar').prop('disabled', true);
             var self = this;
             var url = App.host + '/control_presupuesto/cambio_insumos/' + id + '/autorizar';
             $.ajax({
@@ -19982,8 +19997,6 @@ Vue.component('cambio-insumos-show', {
                 },
                 beforeSend: function beforeSend() {
                     self.autorizando = true;
-                    $('#btn_rechazar').prop('enabled', false);
-                    $('#btn_autorizar').prop('enabled', false);
                 },
                 success: function success(data, textStatus, xhr) {
                     swal({
@@ -19993,17 +20006,17 @@ Vue.component('cambio-insumos-show', {
                         confirmButtonText: "Ok",
                         closeOnConfirm: false
                     }).then(function () {});
-                    // window.location.reload(true);
+                    window.location.reload(true);
                 },
                 complete: function complete() {
                     self.autorizando = false;
-                    $('#btn_rechazar').prop('enabled', true);
-                    $('#btn_autorizar').prop('enabled', true);
                 }
             });
         },
 
         rechazar_solicitud: function rechazar_solicitud(id, motivo) {
+            $('#btn_rechazar').prop('disabled', true);
+            $('#btn_autorizar').prop('disabled', true);
 
             var self = this;
             var url = App.host + '/control_presupuesto/cambio_insumos/' + id + '/rechazar';
@@ -20017,8 +20030,6 @@ Vue.component('cambio-insumos-show', {
                 },
                 beforeSend: function beforeSend() {
                     self.rechazando = true;
-                    $('#btn_rechazar').prop('enabled', false);
-                    $('#btn_autorizar').prop('enabled', false);
                 },
                 success: function success(data, textStatus, xhr) {
 
@@ -20033,8 +20044,6 @@ Vue.component('cambio-insumos-show', {
                 },
                 complete: function complete() {
                     self.rechazando = false;
-                    $('#btn_rechazar').prop('enabled', true);
-                    $('#btn_autorizar').prop('enabled', true);
                 }
             });
         },
