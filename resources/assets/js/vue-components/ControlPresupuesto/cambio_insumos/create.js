@@ -94,92 +94,93 @@ Vue.component('cambio-insumos-create', {
 
         self.fetchTarjetas().then(() => {
             self.cargando_tarjetas = false;
-        $('#conceptos_table').DataTable({
-            "processing": true,
-            "serverSide": true,
-            "paging" : false,
-            "ordering" : true,
-            "searching" : false,
-            "ajax": {
-                "url": App.host + '/conceptos/getPathsConceptos',
-                "type" : "POST",
-                "beforeSend" : function () {
-                    self.cargando = true;
-                },
-                "data": function ( d ) {
-                    d.filtros = self.filtros;
-                    d.id_tarjeta = self.id_tarjeta
-                },
-                "complete" : function () {
-                    self.cargando = false;
-                },
-                "dataSrc" : function (json) {
-                    for (var i = 0; i < json.data.length; i++) {
-                        json.data[i].monto_presupuestado = '$' + parseFloat(json.data[i].monto_presupuestado).formatMoney(2, ',', '.');
-                        json.data[i].cantidad_presupuestada = parseFloat(json.data[i].cantidad_presupuestada).formatMoney(2, ',', '.');
-                        json.data[i].precio_unitario = '$' + parseFloat(json.data[i].precio_unitario).formatMoney(2, ',', '.');
-                        json.data[i].filtro9_sub = json.data[i].filtro9.length > 50 ? json.data[i].filtro9.substr(0, 50) + '...' : json.data[i].filtro9;
-                    }
-                    return json.data;
-                }
-            },
-            "columns" : [
-                {data : 'filtro1'},
-                {data : 'filtro2'},
-                {data : 'filtro3'},
-                {data : 'filtro4'},
-                {data : 'filtro5'},
-                {data : 'filtro6'},
-                {data : 'filtro7'},
-                {data : 'filtro8'},
-                {
-                    data : {},
-                    render : function (data) {
-                        return '<span title="'+data.filtro9+'">'+data.filtro9_sub+'</span>'
-                    }
-                },
-                {data : 'filtro10'},
-                {data : 'filtro11'},
-                {data : 'unidad'},
-                {data : 'cantidad_presupuestada', className : 'text-right'},
-                {data : 'precio_unitario', className : 'text-right'},
-                {data : 'monto_presupuestado', className : 'text-right'},
-                {
-                    data : {},
-                    render : function (data) {
-                        if (self.existe(data.id_concepto)) {
-                            return '<button class="btn btn-xs btn-default btn_remove_concepto" id="'+data.id_concepto+'"><i class="fa fa-minus text-red"></i></button>';
+            $('#conceptos_table').DataTable({
+                "processing": true,
+                "serverSide": true,
+                "paging" : false,
+                "ordering" : true,
+                "searching" : false,
+                "ajax": {
+                    "url": App.host + '/conceptos/getPathsConceptos',
+                    "type" : "POST",
+                    "beforeSend" : function () {
+                        self.cargando = true;
+                    },
+                    "data": function ( d ) {
+                        d.filtros = self.filtros;
+                        d.id_tarjeta = self.id_tarjeta
+                    },
+                    "complete" : function () {
+                        self.cargando = false;
+                    },
+                    "dataSrc" : function (json) {
+                        for (var i = 0; i < json.data.length; i++) {
+                            json.data[i].monto_presupuestado = '$' + parseFloat(json.data[i].monto_presupuestado).formatMoney(2, ',', '.');
+                            json.data[i].cantidad_presupuestada = parseFloat(json.data[i].cantidad_presupuestada).formatMoney(2, ',', '.');
+                            json.data[i].precio_unitario = '$' + parseFloat(json.data[i].precio_unitario).formatMoney(2, ',', '.');
+                            json.data[i].filtro9_sub = json.data[i].filtro9.length > 50 ? json.data[i].filtro9.substr(0, 50) + '...' : json.data[i].filtro9;
                         }
-                        return '<button class="btn btn-xs btn-default btn_add_concepto" id="'+data.id_concepto+'"><i class="fa fa-plus text-green"></i></button>';
+                        return json.data;
+                    }
+                },
+                "columns" : [
+                    {data : 'filtro1'},
+                    {data : 'filtro2'},
+                    {data : 'filtro3'},
+                    {data : 'filtro4'},
+                    {data : 'filtro5'},
+                    {data : 'filtro6'},
+                    {data : 'filtro7'},
+                    {data : 'filtro8'},
+                    {
+                        data : {},
+                        render : function (data) {
+                            return '<span title="'+data.filtro9+'">'+data.filtro9_sub+'</span>'
+                        }
+                    },
+                    {data : 'filtro10'},
+                    {data : 'filtro11'},
+                    {data : 'unidad'},
+                    {data : 'cantidad_presupuestada', className : 'text-right'},
+                    {data : 'precio_unitario', className : 'text-right'},
+                    {data : 'monto_presupuestado', className : 'text-right'},
+                    {
+                        data : {},
+                        render : function (data) {
+                            if (self.existe(data.id_concepto)) {
+                                return '<button class="btn btn-xs btn-default btn_remove_concepto" id="'+data.id_concepto+'"><i class="fa fa-minus text-red"></i></button>';
+                            }
+                            return '<button class="btn btn-xs btn-default btn_add_concepto" id="'+data.id_concepto+'"><i class="fa fa-plus text-green"></i></button>';
+                        }
+                    }
+                ],
+                language: {
+                    "sProcessing": "Procesando...",
+                    "sLengthMenu": "Mostrar _MENU_ registros",
+                    "sZeroRecords": "No se encontraron resultados",
+                    "sEmptyTable": "Ningún dato disponible en esta tabla",
+                    "sInfo": "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
+                    "sInfoEmpty": "Mostrando registros del 0 al 0 de un total de 0 registros",
+                    "sInfoFiltered": "(filtrado de un total de _MAX_ registros)",
+                    "sInfoPostFix": "",
+                    "sSearch": "Buscar:",
+                    "sUrl": "",
+                    "sInfoThousands": ",",
+                    "sLoadingRecords": "Cargando...",
+                    "oPaginate": {
+                        "sFirst": "Primero",
+                        "sLast": "Último",
+                        "sNext": "Siguiente",
+                        "sPrevious": "Anterior"
+                    },
+                    "oAria": {
+                        "sSortAscending": ": Activar para ordenar la columna de manera ascendente",
+                        "sSortDescending": ": Activar para ordenar la columna de manera descendente"
                     }
                 }
-            ],
-            language: {
-                "sProcessing": "Procesando...",
-                "sLengthMenu": "Mostrar _MENU_ registros",
-                "sZeroRecords": "No se encontraron resultados",
-                "sEmptyTable": "Ningún dato disponible en esta tabla",
-                "sInfo": "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
-                "sInfoEmpty": "Mostrando registros del 0 al 0 de un total de 0 registros",
-                "sInfoFiltered": "(filtrado de un total de _MAX_ registros)",
-                "sInfoPostFix": "",
-                "sSearch": "Buscar:",
-                "sUrl": "",
-                "sInfoThousands": ",",
-                "sLoadingRecords": "Cargando...",
-                "oPaginate": {
-                    "sFirst": "Primero",
-                    "sLast": "Último",
-                    "sNext": "Siguiente",
-                    "sPrevious": "Anterior"
-                },
-                "oAria": {
-                    "sSortAscending": ": Activar para ordenar la columna de manera ascendente",
-                    "sSortDescending": ": Activar para ordenar la columna de manera descendente"
-                }
-            }
+            });
         });
-    });
+
         self.fetchPresupuestos();
 
         $(document).on('click', '.btn_add_concepto', function () {
@@ -192,6 +193,7 @@ Vue.component('cambio-insumos-create', {
 
 
     },
+
     methods : {
 
 

@@ -41,11 +41,11 @@ class CambioInsumosController extends Controller
 
 
         //Permisos
-        $this->middleware('permission:consultar_cambio_insumos', ['only' => ['index', 'paginate', 'pdf', 'show']]);
+        /*$this->middleware('permission:consultar_cambio_insumos', ['only' => ['index', 'paginate', 'pdf', 'show']]);
         $this->middleware('permission:registrar_cambio_insumos', ['only' => ['create', 'store']]);
         $this->middleware('permission:autorizar_cambio_insumos', ['only' => ['autorizar']]);
         $this->middleware('permission:aplicar_cambio_insumos', ['only' => ['aplicar']]);
-        $this->middleware('permission:rechazar_cambio_insumos', ['only' => ['rechazar']]);
+        $this->middleware('permission:rechazar_cambio_insumos', ['only' => ['rechazar']]);*/
 
         $this->presupuesto = $presupuesto;
         $this->basePresupuesto = $basePresupuesto;
@@ -76,7 +76,6 @@ class CambioInsumosController extends Controller
     public function create()
     {
         $presupuestos = $this->afectacion->with('baseDatos')->getBy('id_tipo_orden', '=', TipoOrden::ORDEN_DE_CAMBIO_DE_INSUMOS);
-
         return view('control_presupuesto.cambio_insumos.create')
             ->with('tipo_orden', TipoOrden::ORDEN_DE_CAMBIO_DE_INSUMOS)
             ->with('presupuestos', $presupuestos);
@@ -152,4 +151,13 @@ class CambioInsumosController extends Controller
     {
 
     }
+
+    public function indirecto(){
+        $presupuestos = $this->afectacion->with('baseDatos')->getBy('id_tipo_orden', '=', TipoOrden::ORDEN_DE_CAMBIO_DE_INSUMOS);
+        return view('control_presupuesto.cambio_insumos.costo_indirecto.create')
+            ->with('tipo_orden', TipoOrden::ORDEN_DE_CAMBIO_DE_INSUMOS)
+            ->with('presupuestos', $presupuestos);
+    }
+
+
 }

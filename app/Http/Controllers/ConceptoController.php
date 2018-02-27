@@ -23,7 +23,7 @@ class ConceptoController extends Controller
         parent::__construct();
 
         //$this->middleware('auth');
-        $this->middleware('context');
+        //$this->middleware('context');
 
         $this->concepto = $concepto;
     }
@@ -100,6 +100,13 @@ class ConceptoController extends Controller
             'data' => $conceptos->items()
         ], 200);
     }
+
+    public function getPathsCostoIndirecto(Request $request){
+        $items = $this->concepto->pathsCostoIndirecto($request->all());
+        return response()->json(['data' => ['conceptos' => $items]], 200);
+    }
+
+
 
     public function getInsumos($id){
         $insumos = $this->concepto->getInsumos($id);
