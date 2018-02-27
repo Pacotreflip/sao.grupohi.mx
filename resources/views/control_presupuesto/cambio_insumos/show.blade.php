@@ -17,16 +17,18 @@
         <section>
             <div class="row">
                 <div class="col-md-12">
-                    <a class="btn btn-app btn-danger pull-right" v-on:click="confirm_rechazar_solicitud"
-                       v-if="solicitud.id_estatus==1">
+                    <button id="btn_rechazar" class="btn btn-app btn-danger pull-right"
+                            v-on:click="confirm_rechazar_solicitud"
+                            v-if="solicitud.id_estatus==1">
                         <span v-if="rechazando"><i class="fa fa-spinner fa-spin"></i> Rechazando</span>
                         <span v-else><i class="fa fa-close"></i> Rechazar</span>
-                    </a>
-                    <a class="btn btn-sm btn-app btn-info pull-right" v-on:click="confirm_autorizar_solicitud"
-                       v-if="solicitud.id_estatus==1">
+                    </button>
+                    <button  id="btn_autorizar" :disable="rechazando||autorizando" class="btn btn-sm btn-app btn-info pull-right"
+                            v-on:click="confirm_autorizar_solicitud"
+                            v-if="solicitud.id_estatus==1">
                         <span v-if="autorizando"><i class="fa fa-spinner fa-spin"></i> Autorizando</span>
                         <span v-else><i class="fa fa-check"></i> Autorizar</span>
-                    </a>
+                    </button>
                 </div>
 
                 <div class="col-md-3">
@@ -35,29 +37,36 @@
                             <h3 class="box-title">Detalle de Afectaciones</h3>
                         </div>
                         <div class="box-body">
-                            <strong>Conceptos Modificados</strong>
-                            <p class="text-muted">@{{ (conceptos_agrupados).length }}</p>
-                            <hr>
-                            <strong>Importe Conceptos Modificados</strong>
-                            <p class="text-muted text-right">
-                                ${{number_format( $conceptos_agrupados['imp_nuevo_gen']-$conceptos_agrupados['total_variaciones'],'2','.',',')}}</p>
-                            <hr>
-                            <strong>Importe Variación</strong>
-                            <p class="text-muted text-right">
-                                ${{number_format($conceptos_agrupados['total_variaciones'],'2','.',',')}}</p>
-                            <hr>
-                            <strong>Importe Conceptos Actualizados</strong>
-                            <p class="text-muted text-right">
-                                ${{number_format($conceptos_agrupados['imp_nuevo_gen'],'2','.',',')}}</p>
-                            <hr>
-                            <strong>Importe Presupuesto Original</strong>
-                            <p class="text-muted text-right">
-                                ${{number_format( $conceptos_agrupados['total_presupuesto'],'2','.',',')}}</p>
-                            <hr>
-                            <strong>Importe Presupuesto Actualizado</strong>
-                            <p class="text-muted text-right">
-                                ${{number_format($conceptos_agrupados['total_presupuesto']+$conceptos_agrupados['total_variaciones'],'2','.',',')}}</p>
-                            <hr>
+                            <table class="table">
+                                <tr>
+                                    <td><b>Conceptos Modificados</b></td>
+                                    <td>@{{ (conceptos_agrupados).length }}</td>
+                                </tr>
+                                <tr>
+                                    <td><b>Importe Conceptos Modificados</b></td>
+                                    <td class="text-right">
+                                    ${{number_format( $conceptos_agrupados['imp_nuevo_gen']-$conceptos_agrupados['total_variaciones'],'2','.',',')}}</td>
+                                </tr>
+                                <tr>
+                                    <td><b>Importe Variación</b></td>
+                                    <td class="text-right">
+                                    ${{number_format($conceptos_agrupados['total_variaciones'],'2','.',',')}}</td>
+                                </tr>
+                                <tr>
+                                    <td><b>Importe Conceptos Actualizados</b></td>
+                                    <td class="text-right">
+                                    ${{number_format($conceptos_agrupados['imp_nuevo_gen'],'2','.',',')}}</td></tr>
+                                <tr>
+                                    <td><b>Importe Presupuesto Original</b></td>
+                                    <td class="text-right">
+                                    ${{number_format( $conceptos_agrupados['total_presupuesto'],'2','.',',')}}</td></tr>
+                                <tr>
+                                    <td><b>Importe Presupuesto Actualizado</b></td>
+                                    <td class="text-right">
+                                    ${{number_format($conceptos_agrupados['total_presupuesto']+$conceptos_agrupados['total_variaciones'],'2','.',',')}}</td>
+                                </tr>
+                            </table>
+
                         </div>
                     </div>
 
@@ -74,25 +83,18 @@
                         <div class="box-body">
                             <strong>Folio de la solicitud:</strong>
                             <p class="text-muted">@{{ solicitud.numero_folio}}</p>
-                            <hr>
                             <strong>Cobrabilidad:</strong>
                             <p class="text-muted">@{{ solicitud.tipo_orden.cobrabilidad.descripcion}}</p>
-                            <hr>
                             <strong>Tipo de Orden de Cambio:</strong>
                             <p class="text-muted">@{{solicitud.tipo_orden.descripcion}}</p>
-                            <hr>
                             <strong>Motivo:</strong>
                             <p class="text-muted">@{{solicitud.motivo}}</p>
-                            <hr>
                             <strong>Usuario que Solicita:</strong>
                             <p class="text-muted">@{{solicitud.user_registro.apaterno +' '+ solicitud.user_registro.amaterno+' '+solicitud.user_registro.nombre}}</p>
-                            <hr>
                             <strong>Fecha de solicitud:</strong>
                             <p class="text-muted">@{{solicitud.fecha_solicitud}}</p>
-                            <hr>
                             <strong>Estatus:</strong>
                             <p class="text-muted">@{{solicitud.estatus.descripcion}}</p>
-                            <hr>
 
                         </div>
 
@@ -110,9 +112,14 @@
                             <div class="row">
                                 <div class="col-md-12" v-if="total_proforma_agrupados.diferencia<0">
                                     <div class="alert alert-danger alert-dismissible">
-                                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×
+                                        </button>
                                         <h4><i class="icon fa fa-ban"></i> Atención!</h4>
-                                        El Importe Conceptos Actualizados es mayor al importe del presupuesto proforma. Maximo proforma: $ @{{parseFloat(total_proforma_agrupados.maximo).formatMoney(2, ',','.')}} ,Variación: $ @{{parseFloat(Math.abs(total_proforma_agrupados.diferencia)).formatMoney(2, ',','.') }}
+                                        El Importe Conceptos Actualizados es mayor al importe del presupuesto proforma.
+                                        Maximo proforma:
+                                        $ @{{parseFloat(total_proforma_agrupados.maximo).formatMoney(2, ',','.')}}
+                                        ,Variación:
+                                        $ @{{parseFloat(Math.abs(total_proforma_agrupados.diferencia)).formatMoney(2, ',','.') }}
                                     </div>
                                 </div>
                             </div>
@@ -134,13 +141,13 @@
                                     style="cursor:pointer" v-on:click="mostrarDetalleInsumos(i)">
                                     <td>@{{(i+1)}}</td>
                                     <td>@{{ (agrupado.concepto.descripcion).substr(0, 50) + '...' }}</td>
-                                    <td>@{{ parseFloat(agrupado.concepto.cantidad_presupuestada).formatMoney(2, ',','.') }}</td>
+                                    <td>@{{ parseFloat(agrupado.concepto.cantidad_presupuestada).formatMoney(2, '.',',') }}</td>
                                     <td class="text-right">
-                                        $ @{{ parseFloat(agrupado.concepto.importe_anterior).formatMoney(2, ',','.') }}</td>
+                                        $ @{{ parseFloat(agrupado.concepto.importe_anterior).formatMoney(2, '.',',') }}</td>
                                     <td class="text-right">
-                                        $ @{{ parseFloat(agrupado.concepto.variacion).formatMoney(2, ',','.') }}</td>
+                                        $ @{{ parseFloat(agrupado.concepto.variacion).formatMoney(2, '.',',') }}</td>
                                     <td class="text-right">
-                                        $ @{{ parseFloat(agrupado.concepto.importe_nuevo).formatMoney(2, ',','.') }}</td>
+                                        $ @{{ parseFloat(agrupado.concepto.importe_nuevo).formatMoney(2, '.',',') }}</td>
                                 </tr>
                                 </tbody>
                             </table>

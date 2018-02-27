@@ -98,7 +98,8 @@ Vue.component('cambio-insumos-show', {
         },
 
         autorizar_solicitud: function (id) {
-
+            $('#btn_rechazar').prop('disabled',true);
+            $('#btn_autorizar').prop('disabled',true);
             var self = this;
             var url = App.host + '/control_presupuesto/cambio_insumos/'+id+'/autorizar';
             $.ajax({
@@ -110,9 +111,7 @@ Vue.component('cambio-insumos-show', {
                 },
                 beforeSend: function () {
                     self.autorizando = true;
-                    $('#btn_rechazar').prop('enabled',false);
-                    $('#btn_autorizar').prop('enabled',false);
-                },
+                   },
                 success: function (data, textStatus, xhr) {
                     swal({
                         type: "success",
@@ -122,18 +121,18 @@ Vue.component('cambio-insumos-show', {
                         closeOnConfirm: false
                     }).then(function () {
                     });
-                    // window.location.reload(true);
+                     window.location.reload(true);
                 },
                 complete: function () {
                     self.autorizando = false;
-                    $('#btn_rechazar').prop('enabled',true);
-                    $('#btn_autorizar').prop('enabled',true);
-                }
+                    }
             });
 
         },
 
         rechazar_solicitud: function (id,motivo) {
+            $('#btn_rechazar').prop('disabled',true);
+            $('#btn_autorizar').prop('disabled',true);
 
             var self = this;
             var url = App.host + '/control_presupuesto/cambio_insumos/'+id+'/rechazar';
@@ -147,8 +146,7 @@ Vue.component('cambio-insumos-show', {
                 },
                 beforeSend: function () {
                     self.rechazando = true;
-                    $('#btn_rechazar').prop('enabled',false);
-                    $('#btn_autorizar').prop('enabled',false);
+
                 },
                 success: function (data, textStatus, xhr) {
 
@@ -164,8 +162,6 @@ Vue.component('cambio-insumos-show', {
                 },
                 complete: function () {
                     self.rechazando = false;
-                    $('#btn_rechazar').prop('enabled',true);
-                    $('#btn_autorizar').prop('enabled',true);
                 }
             });
         },

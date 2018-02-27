@@ -370,7 +370,7 @@ Vue.component('solicitar_reclasificacion-items', {
         },
         pdf: function (id) {
             var self = this,
-                url = App.host + '/control_costos/solicitudes_reclasificacion/generarpdf?item='+ id;
+                url = App.host + '/control_costos/solicitudes_reclasificacion/generarpdf/'+ id;
 
             self.data.show_pdf = url;
         },

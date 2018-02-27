@@ -91,9 +91,9 @@ class SolicitudesReclasificacionController extends Controller
     /**
      *
      */
-    public  function generar_pdf(Request $request)
+    public  function generar_pdf(Request $request, $id)
     {
-        $solicitud = $this->solicitar->find($request->item);
+        $solicitud = $this->solicitar->find($id);
 
         $pdf = new Solicitudes($solicitud);
         $pdf->create();
