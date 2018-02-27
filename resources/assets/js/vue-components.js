@@ -84,6 +84,7 @@ require('./vue-components/ControlPresupuesto/escalatoria/create');
  */
 require('./vue-components/ControlPresupuesto/cambio_insumos/show');
 require('./vue-components/ControlPresupuesto/cambio_insumos/create');
+require('./vue-components/ControlPresupuesto/cambio_insumos/costo_indirecto/create');
 
 /**
  * Configuración Components

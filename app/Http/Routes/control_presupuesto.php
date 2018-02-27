@@ -67,6 +67,14 @@ Route::group(['prefix' => 'control_presupuesto'], function () {
         Route::post('/{cambio_insumos}/aplicar', 'CambioInsumosController@aplicar');
         Route::get('/{cambio_insumos}/pdf', 'CambioInsumosController@pdf');
         Route::post('/{cambio_insumos}/paginate', 'CambioInsumosController@paginate');
+        Route::get('cambio_insumos_indirecto/create', 'CambioInsumosController@indirecto')->name('control_presupuesto.cambio_insumos_indirecto.create');
+    });
+
+    /**
+     * Ordenes de Cambio de Insumos Costo Indirecto
+     */
+    Route::group(['prefix' => 'cambio_insumos_indirecto'], function () {
+        Route::get('/create', 'CambioInsumosController@indirecto')->name('control_presupuesto.cambio_insumos.costo_indirecto.create');
     });
 
     /**

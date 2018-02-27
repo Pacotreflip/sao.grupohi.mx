@@ -176,6 +176,26 @@ class EloquentConceptoRepository implements ConceptoRepository
 
     }
 
+    public function pathsCostoIndirecto(array $data) {
+        $conceptos = $this->model->select(
+            "conceptos.unidad",
+            "conceptos.cantidad_presupuestada",
+            "conceptos.precio_unitario",
+            "conceptos.monto_presupuestado",
+            "path.*"
+        )
+            ->where('dbo.conceptos.activo', '=', 1)
+            ->where('dbo.conceptos.concepto_medible', '=', 3)
+            ->join('PresupuestoObra.conceptosPath as path', 'conceptos.id_concepto', '=', 'path.id_concepto')
+            ->where('path.filtro3','Like','%COSTO INDIRECTO%')
+            ->where('path.filtro6','Like','%' . $data['descripcion'] . '%')
+            ->limit(5)
+            ->get();
+        //dd($conceptos);
+        return $conceptos;
+
+    }
+
     /**
      * Obtiene los insumos de un concepto medible
      * @param $id

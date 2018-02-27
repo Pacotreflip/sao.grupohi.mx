@@ -82,3 +82,11 @@ Breadcrumbs::register('control_presupuesto.cambio_insumos.show', function ($brea
     $breadcrumb->parent('control_presupuesto.cambio_presupuesto.index');
     $breadcrumb->push('#' . $cambio_insumos->numero_folio, route('control_presupuesto.escalatoria.show', $cambio_insumos));
 });
+
+/**
+ * Ordenes de Cambio de Insumos Costo Indirecto create
+ */
+Breadcrumbs::register('control_presupuesto.cambio_insumos.costo_indirecto.create', function ($breadcrumb) {
+    $breadcrumb->parent('control_presupuesto.cambio_presupuesto.index');
+    $breadcrumb->push('NUEVA CAMBIO DE INSUMOS COSTO INDIRECTO', route('control_presupuesto.cambio_insumos.costo_indirecto.create'));
+});
