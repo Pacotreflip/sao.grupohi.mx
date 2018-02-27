@@ -15,9 +15,9 @@ class CreateSistemasTable extends Migration
         // Create table for storing sistemas
         Schema::create('sistemas', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('nombre')->unique();
+            $table->string('name')->unique();
             $table->string('description')->nullable();
-            $table->timestamps();
+            $table->string('url');
         });
 
         // Create table for associating permissions to sistemas (Many-to-Many)

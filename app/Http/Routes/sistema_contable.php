@@ -1,6 +1,6 @@
 <?php
 
-Route::group(['prefix' => 'sistema_contable'], function () {
+Route::group(['prefix' => 'sistema_contable', 'middleware' => 'system.access:sistema_contable'], function () {
     Route::get('/', 'PagesController@sistema_contable')->name('sistema_contable.index');
 
     /*

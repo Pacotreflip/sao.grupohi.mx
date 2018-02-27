@@ -4,16 +4,18 @@ namespace Ghi\Http\Controllers;
 
 use Ghi\Domain\Core\Contracts\EmpresaRepository;
 use Ghi\Domain\Core\Contracts\EstimacionRepository;
-use Ghi\Domain\Core\Reportes\Subcontratos\Estimacion;
+use Ghi\Domain\Core\Formatos\Subcontratos\Estimacion;
 
-class ReportesController extends Controller
+class FormatosController extends Controller
 {
 
     protected $estimacion;
     protected $empresa;
 
     /**
-     * ReportesController constructor.
+     * FormatosController constructor.
+     * @param EstimacionRepository $estimacion
+     * @param EmpresaRepository $empresa
      */
     public function __construct(EstimacionRepository $estimacion, EmpresaRepository $empresa)
     {
@@ -22,7 +24,7 @@ class ReportesController extends Controller
         $this->middleware('auth');
         $this->middleware('context');
 
-       // $this->middleware('permission:consultar_reporte_estimacion', ['only' => ['estimacion_pdf', 'estimacion']]);
+       // $this->middleware('permission:consultar_formato_estimacion', ['only' => ['estimacion_pdf', 'estimacion']]);
 
         $this->estimacion = $estimacion;
         $this->empresa = $empresa;
@@ -38,7 +40,7 @@ class ReportesController extends Controller
 
     public function estimacion() {
         $empresas = $this->empresa->scope('Subcontratos')->all();
-        return view('reportes.subcontratos.estimacion')
+        return view('formatos.subcontratos.estimacion')
             ->withEmpresas($empresas);
     }
 }

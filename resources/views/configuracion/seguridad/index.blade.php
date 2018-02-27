@@ -85,8 +85,8 @@
             </div>
             <!-- Modal de Asignacion de Roles en Módulo de Seguridad -->
             <div class="modal fade" id="edit_role_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" data-backdrop="static" data-keyboard="false">
-                <div class="modal-dialog" role="document">
-                    <div class="modal-content modal-lg">
+                <div class="modal-dialog  modal-lg" role="document">
+                    <div class="modal-content">
                         <div class="modal-header">
                             <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar" @click="closeModal()"><span aria-hidden="true">&times;</span></button>
                             <h4 class="modal-title" id="myModalLabel">Editar Rol</h4>
@@ -153,8 +153,8 @@
 
             <!-- Modal de Creación de Nuevos Roles en Módulo de Seguridad -->
             <div class="modal fade" id="create_role_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" data-backdrop="static" data-keyboard="false">
-                <div class="modal-dialog" role="document">
-                    <div class="modal-content modal-lg">
+                <div class="modal-dialog modal-lg" role="document">
+                    <div class="modal-content">
                         <div class="modal-header">
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close" @click="closeModal()"><span aria-hidden="true">&times;</span></button>
                             <h4 class="modal-title" id="myModalLabel">Crear Rol</h4>
@@ -228,8 +228,8 @@
 
             <!-- Modal de Asignacion de Rol a usuario en Módulo de Seguridad -->
             <div class="modal fade" id="edit_role_user_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" data-backdrop="static" data-keyboard="false">
-                <div class="modal-dialog" role="document">
-                    <div class="modal-content modal-lg">
+                <div class="modal-dialog modal-lg" role="document">
+                    <div class="modal-content">
                         <div class="modal-header">
                             <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar" @click="closeModal()"><span aria-hidden="true">&times;</span></button>
                             <h4 class="modal-title" id="myModalLabel">Editar Rol Usuario</h4>
@@ -241,14 +241,12 @@
                                         <div class="form-group" >
                                             <label><b>Usuario</b></label>
                                             <br><label v-text="usuario.usuario" ></label>
-
                                         </div>
                                     </div>
                                     <div class="col-md-7">
                                         <div class="form-group" >
                                             <label><b>Nombre</b></label>
                                             <br><label v-text="usuario.nombre" ></label>
-
                                         </div>
                                     </div>
                                 </div>

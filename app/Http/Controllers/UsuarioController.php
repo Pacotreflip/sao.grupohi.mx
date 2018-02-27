@@ -27,6 +27,7 @@ class UsuarioController extends Controller
 
         $this->middleware('auth');
         $this->middleware('context');
+        $this->middleware('permission:administrar_roles_permisos', ['only' => ['saveRoles']]);
 
         $this->usuario = $usuario;
         $this->role = $role;

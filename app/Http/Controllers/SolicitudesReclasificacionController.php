@@ -9,7 +9,7 @@ use Ghi\Domain\Core\Contracts\ControlCostos\SolicitudReclasificacionRepository;
 use Ghi\Domain\Core\Contracts\ControlCostos\SolicitudReclasificacionPartidasRepository;
 use Ghi\Domain\Core\Contracts\ControlCostos\SolicitudReclasificacionAutorizadaRepository;
 use Ghi\Domain\Core\Contracts\ControlCostos\SolicitudReclasificacionRechazadaRepository;
-use Ghi\Domain\Core\Reportes\ControlCostos\Solicitudes;
+use Ghi\Domain\Core\Formatos\ControlCostos\Solicitudes;
 use Illuminate\Http\Request;
 
 /**

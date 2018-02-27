@@ -13,9 +13,9 @@ use Ghi\Domain\Core\Contracts\ControlPresupuesto\SolicitudCambioPartidaRepositor
 use Ghi\Domain\Core\Models\ControlPresupuesto\Estatus;
 use Ghi\Domain\Core\Models\ControlPresupuesto\SolicitudCambio;
 use Ghi\Domain\Core\Models\ControlPresupuesto\TipoOrden;
-use Ghi\Domain\Core\Reportes\ControlPresupuesto\PDFVariacionVolumen;
-use Ghi\Domain\Core\Reportes\ControlPresupuesto\PDFSolicitudCambioEscalatoria;
-use Ghi\Domain\Core\Reportes\ControlPresupuesto\PDFSolicitudCambioInsumos;
+use Ghi\Domain\Core\Formatos\ControlPresupuesto\PDFVariacionVolumen;
+use Ghi\Domain\Core\Formatos\ControlPresupuesto\PDFSolicitudCambioEscalatoria;
+use Ghi\Domain\Core\Formatos\ControlPresupuesto\PDFSolicitudCambioInsumos;
 use Illuminate\Http\Request;
 
 

@@ -1,8 +1,8 @@
-@extends('reportes.layout')
-@section('title', 'Reportes')
+@extends('formatos.layout')
+@section('title', 'Formatos')
 @section('contentheader_title', 'ORDEN DE PAGO ESTIMACIÓN')
 @section('breadcrumb')
-    {!! Breadcrumbs::render('reportes.subcontratos.estimacion') !!}
+    {!! Breadcrumbs::render('formatos.subcontratos.estimacion') !!}
 @endsection
 @section('main-content')
     <subcontratos-estimacion
@@ -50,7 +50,7 @@
                 </div>
                 <div class="box-footer">
                     <div class="col-md-12">
-                        <button v-on:click="pdf(form.id_estimacion)" :disabled="!form.id_estimacion" class="btn btn-info btn-sm pull-right">Ver Informe</button>
+                        <button v-on:click="pdf(form.id_estimacion)" :disabled="!form.id_estimacion" class="btn btn-info btn-sm pull-right">Ver Formato</button>
                     </div>
                 </div>
             </div>

@@ -23,6 +23,7 @@ class RoleController extends Controller
         parent::__construct();
         $this->middleware('auth');
         $this->middleware('context');
+        $this->middleware('permission:administrar_roles_permisos', ['only' => ['store', 'update']]);
 
         $this->role = $role;
     }

@@ -8,6 +8,7 @@ use Ghi\Domain\Core\Models\Contabilidad\Notificacion;
 use Ghi\Domain\Core\Models\Seguridad\Permission;
 use Ghi\Domain\Core\Models\Seguridad\Proyecto;
 use Ghi\Domain\Core\Models\Seguridad\Role;
+use Ghi\Domain\Core\Models\Seguridad\Sistema;
 use Illuminate\Auth\Passwords\CanResetPassword;
 use Illuminate\Database\Eloquent\Model;
 use Ghi\Core\App\Auth\AuthenticatableIntranetUser;
@@ -15,6 +16,7 @@ use Ghi\Core\App\Auth\AuthenticatableIntranetUser;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
 use Illuminate\Support\Facades\Config;
+use \Entrust;
 use Zizaco\Entrust\Traits\EntrustUserTrait;
 
 class User extends Model implements AuthenticatableContract, CanResetPasswordContract
@@ -109,5 +111,10 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         return $this->belongsToMany(Config::get('entrust.role'), Config::get('entrust.role_user_table'), 'user_id', 'role_id')
             ->where('id_obra', Context::getId())
             ->where('id_proyecto', Proyecto::where('base_datos', '=',Context::getDatabaseName())->first()->id);
+    }
+
+    public function canAccessSystem($sistema) {
+        $permisos = Sistema::where('url', '=', $sistema)->first()->permisos()->lists('name')->toArray();
+        return Entrust::can($permisos);
     }
 }

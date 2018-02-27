@@ -6,7 +6,7 @@
  * Time: 12:40 PM
  */
 
-namespace Ghi\Domain\Core\Reportes\ControlPresupuesto;
+namespace Ghi\Domain\Core\Formatos\ControlPresupuesto;
 
 use Carbon\Carbon;
 use Ghi\Core\Facades\Context;

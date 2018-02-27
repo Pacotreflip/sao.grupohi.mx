@@ -23,6 +23,7 @@ class PermissionController extends Controller
         parent::__construct();
         $this->middleware('auth');
         $this->middleware('context');
+        $this->middleware('permission:administrar_roles_permisos', ['only' => ['store']]);
 
         $this->permission = $permission;
     }
@@ -34,7 +35,6 @@ class PermissionController extends Controller
 
     public function store(Request $request) {
         $permission = $this->permission->create($request->all());
-
         return $this->response()->item($permission, function ($item) { return $item; });
     }
 }

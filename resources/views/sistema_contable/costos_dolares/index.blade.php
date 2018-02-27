@@ -38,7 +38,7 @@
                 <button class="btn btn-sm btn-primary pull-right" type="button" id="pdf" onclick="pdf()">Reporte PDF</button>
             </div>
             <div class="col-md-1">
-                <button class="btn btn-sm btn-primary pull-right" type="button" id="xls" onclick="xls()">Reporte Excell</button>
+                <button class="btn btn-sm btn-primary pull-right" type="button" id="xls" onclick="xls()">Reporte Excel</button>
             </div>
         </div>
         <br>
@@ -112,10 +112,6 @@
 
 @section('scripts-content')
     <script>
-        function reporte(){
-            alert("pandita" + $_GET('fechas'));
-        }
-
         $("#fechas").daterangepicker({
             locale: {
                 format: 'YYYY-MM-DD',
@@ -139,10 +135,6 @@
         function xls(){
             var url = App.host + '/sistema_contable/costos_dolares/' + $_GET('fechas') + '/reportexls';
             $("#PDFModal .modal-body").html('<iframe src="'+url+'"  frameborder="0" height="100%" width="99.6%">d</iframe>');
-
-
         }
-
-
     </script>
 @endsection

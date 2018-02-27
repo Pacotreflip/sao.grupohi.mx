@@ -40,9 +40,9 @@ require('./vue-components/Finanzas/comprobante_fondo_fijo/index');
 require('./vue-components/Finanzas/comprobante_fondo_fijo/create');
 require('./vue-components/Finanzas/comprobante_fondo_fijo/edit');
 /**
- * Reportes Components
+ * Formatos Components
  */
-require('./vue-components/Reportes/subcontratos-estimacion');
+require('./vue-components/Formatos/subcontratos-estimacion');
 
 /**
  * Tesoreria Components

@@ -1,5 +1,5 @@
 <?php
-namespace Ghi\Domain\Core\Reportes\Subcontratos;
+namespace Ghi\Domain\Core\Formatos\Subcontratos;
 
 use Ghi\Core\Facades\Context;
 

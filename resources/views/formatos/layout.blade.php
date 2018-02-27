@@ -1,7 +1,7 @@
 @extends('layouts.app')
 @section('content-menu')
     <ul class="sidebar-menu">
-        @permission(['consultar_reporte_estimacion'])
+        @permission(['consultar_formato_estimacion'])
         <li class="treeview">
             <a href="#">
                 <i class="fa fa-book"></i>
@@ -11,8 +11,8 @@
                 </span>
             </a>
             <ul class="treeview-menu">
-                @permission('consultar_reporte_estimacion')
-                <li ><a href="{{route('reportes.subcontratos.estimacion')}}"><i class='fa  fa-circle-o'></i> <span>Orden de Pago Estimación</span></a></li>
+                @permission('consultar_formato_estimacion')
+                <li ><a href="{{route('formatos.subcontratos.estimacion')}}"><i class='fa  fa-circle-o'></i> <span>Orden de Pago Estimación</span></a></li>
                 @endpermission
             </ul>
         </li>

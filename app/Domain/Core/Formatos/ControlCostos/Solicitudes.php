@@ -6,7 +6,7 @@
  * Time: 12:40 PM
  */
 
-namespace Ghi\Domain\Core\Reportes\ControlCostos;
+namespace Ghi\Domain\Core\Formatos\ControlCostos;
 
 use Ghi\Core\Facades\Context;
 use Ghi\Domain\Core\Models\ControlCostos\SolicitudReclasificacion;
