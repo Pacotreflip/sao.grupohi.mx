@@ -13,6 +13,7 @@
         <div class="tab-pane active" id="control-sidebar-home-tab">
             <h3 class="control-sidebar-heading">Sistemas</h3>
             <ul class="control-sidebar-menu">
+                @if(auth()->user()->canAccessSystem('sistema_contable'))
                 <li>
                     <a href="{{route('sistema_contable.index')}}">
                         <i class="menu-icon fa fa-usd fa-fw bg-aqua"></i>
@@ -24,6 +25,9 @@
                         </div>
                     </a>
                 </li>
+                @endif
+
+                @if(auth()->user()->canAccessSystem('finanzas'))
                 <li>
                     <a href="{{route('finanzas.index')}}">
                         <i class="menu-icon fa fa-area-chart bg-yellow"></i>
@@ -35,17 +39,23 @@
                         </div>
                     </a>
                 </li>
+                @endif
+
+                @if(auth()->user()->canAccessSystem('formatos'))
                 <li>
-                    <a href="{{route('reportes.index')}}">
+                    <a href="{{route('formatos.index')}}">
                         <i class="menu-icon fa fa-file-text-o fa-fw bg-green"></i>
 
                         <div class="menu-info">
-                            <h4 class="control-sidebar-subheading">Reportes</h4>
+                            <h4 class="control-sidebar-subheading">Formatos</h4>
 
                             <p>Sistema de gestión de Formatos</p>
                         </div>
                     </a>
                 </li>
+                @endif
+
+                @if(auth()->user()->canAccessSystem('tesoreria'))
                 <li>
                     <a href="{{route('tesoreria.index')}}">
                         <i class="menu-icon fa fa-money fa-fw bg-blue"></i>
@@ -57,6 +67,9 @@
                         </div>
                     </a>
                 </li>
+                @endif
+
+                @if(auth()->user()->canAccessSystem('control_costos'))
                 <li>
                     <a href="{{route('control_costos.index')}}">
                         <i class="menu-icon fa fa-lock fa-fw bg-red"></i>
@@ -68,6 +81,9 @@
                         </div>
                     </a>
                 </li>
+                @endif
+
+                @if(auth()->user()->canAccessSystem('control_presupuesto'))
                 <li>
                     <a href="{{route('control_presupuesto.index')}}">
                         <i class="menu-icon fa fa-lock fa-fw bg-orange"></i>
@@ -79,6 +95,7 @@
                         </div>
                     </a>
                 </li>
+                @endif
             </ul>
             <!-- /.control-sidebar-menu -->
 

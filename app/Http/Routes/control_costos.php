@@ -1,6 +1,6 @@
 <?php
 
-Route::group(['prefix' => 'control_costos'], function () {
+Route::group(['prefix' => 'control_costos', 'middleware' => 'system.access:control_costos'], function () {
 
     /**
      * Index Route...

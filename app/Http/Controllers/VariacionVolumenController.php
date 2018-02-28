@@ -11,7 +11,7 @@ use Ghi\Domain\Core\Contracts\ControlPresupuesto\VariacionVolumenRepository;
 use Ghi\Domain\Core\Contracts\ControlPresupuesto\SolicitudCambioPartidaRepository;
 use Ghi\Domain\Core\Models\ControlPresupuesto\Estatus;
 use Ghi\Domain\Core\Models\ControlPresupuesto\VariacionVolumen;
-use Ghi\Domain\Core\Reportes\ControlPresupuesto\PDFVariacionVolumen;
+use Ghi\Domain\Core\Formatos\ControlPresupuesto\PDFVariacionVolumen;
 use Illuminate\Http\Request;
 
 

@@ -44,6 +44,7 @@ class EloquentRoleRepository implements RoleRepository
             DB::connection('seguridad')->beginTransaction();
 
             $permisos = isset($data['permissions']) ? $data['permissions'] : [];
+
             $role = $this->model->create($data);
             $role->savePermissions($permisos);
 

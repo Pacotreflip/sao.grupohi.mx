@@ -70,7 +70,7 @@ class RolesPermissionsSeeder extends Seeder
         $consultar_reclasificacion = Permission::firstOrCreate(['name' => 'consultar_reclasificacion', 'display_name' => 'Consultar Reclasificación', 'description' => 'Permiso para Consultar Reclasificación de Costo']);
 
         //Formato de Orden de Pago Estimación
-        $consultar_reporte_estimacion = Permission::firstOrCreate(['name' => 'consultar_reporte_estimacion', 'description' => 'Consultar Reporte de Orden de Pago Estimación', 'display_name' => 'Consultar Reporte de Orden de Pago Estimación']);
+        $consultar_formato_estimacion = Permission::firstOrCreate(['name' => 'consultar_formato_estimacion', 'description' => 'Consultar Formato de Orden de Pago Estimación', 'display_name' => 'Consultar Formato de Orden de Pago Estimación']);
 
         //Comprobante de Fondo Fijo
         $editar_comprobante_fondo_fijo    = Permission::firstOrCreate(['name' => 'editar_comprobante_fondo_fijo', 'display_name' => 'Editar Comprobante de Fondo Fijo', 'description' => 'Permiso para editar un Comprobante de Fondo Fijo']);
@@ -110,29 +110,23 @@ class RolesPermissionsSeeder extends Seeder
         $editar_cuenta_costo    = Permission::firstOrCreate(['name' => 'editar_cuenta_costo', 'display_name' => 'Editar Cuenta de Costo', 'description' => 'Permiso para editar cuentas de Costos']);
 
         //Cierres de Periodo
-        $consultar_cierre_periodo = Permission::firstOrCreate(['name' => 'consultar_cierre_periodo', 'display_name' => 'Cierre de Periodo', 'description' => 'Cierre de Periodo']);
+        $consultar_cierre_periodo = Permission::firstOrCreate(['name' => 'consultar_cierre_periodo', 'display_name' => 'Consultar Cierre de Periodo', 'description' => 'Consultar Cierre de Periodo']);
         $generar_cierre_periodo = Permission::firstOrCreate(['name' => 'generar_cierre_periodo', 'display_name' => 'Generar Cierre Periodo', 'description' => 'Generar Cierre Periodo']);
         $editar_cierre_periodo = Permission::firstOrCreate(['name' => 'editar_cierre_periodo', 'display_name' => 'Editar Cierre Periodo', 'description' => 'Editar Cierre Periodo']);
 
         //Control Presupuesto Variación de Volúmen
         $registrar_variacion_volumen = Permission::firstOrCreate(['name' => 'registrar_variacion_volumen', 'display_name' => 'Registrar Variacion de Volúmen', 'description' => 'Registrar Variacion de Volúmen']);
-        $autorizar_variacion_volumen = Permission::firstOrCreate(['name' => 'autorizar_variacion_volumen', 'display_name' =>
-            'Autorizar Variacion de Volúmen', 'description' => 'Autorizar Variacion de Volúmen']);
+        $autorizar_variacion_volumen = Permission::firstOrCreate(['name' => 'autorizar_variacion_volumen', 'display_name' => 'Autorizar Variacion de Volúmen', 'description' => 'Autorizar Variacion de Volúmen']);
         $aplicar_variacion_volumen = Permission::firstOrCreate(['name' => 'aplicar_variacion_volumen', 'display_name' => 'Aplicar Variacion de Volúmen', 'description' => 'Aplicar Variacion de Volúmen']);
-        $rechazar_variacion_volumen = Permission::firstOrCreate(['name' => 'rechazar_variacion_volumen', 'display_name' =>
-            'Rechazar Variacion de Volúmen', 'description' => 'Rechazar Variacion de Volúmen']);
-        $consultar_variacion_volumen = Permission::firstOrCreate(['name' => 'consultar_variacion_volumen', 'display_name' =>
-            'Consultar Variacion de Volúmen', 'description' => 'Consultar Variacion de Volúmen']);
+        $rechazar_variacion_volumen = Permission::firstOrCreate(['name' => 'rechazar_variacion_volumen', 'display_name' => 'Rechazar Variacion de Volúmen', 'description' => 'Rechazar Variacion de Volúmen']);
+        $consultar_variacion_volumen = Permission::firstOrCreate(['name' => 'consultar_variacion_volumen', 'display_name' => 'Consultar Variacion de Volúmen', 'description' => 'Consultar Variacion de Volúmen']);
 
         //Control Presupuesto Escalatoria
         $registrar_escalatoria = Permission::firstOrCreate(['name' => 'registrar_escalatoria', 'display_name' => 'Registrar Escalatoria', 'description' => 'Registrar Escalatoria']);
-        $autorizar_escalatoria = Permission::firstOrCreate(['name' => 'autorizar_escalatoria', 'display_name' =>
-            'Autorizar Escalatoria', 'description' => 'Autorizar Escalatoria']);
+        $autorizar_escalatoria = Permission::firstOrCreate(['name' => 'autorizar_escalatoria', 'display_name' => 'Autorizar Escalatoria', 'description' => 'Autorizar Escalatoria']);
         $aplicar_escalatoria = Permission::firstOrCreate(['name' => 'aplicar_escalatoria', 'display_name' => 'Aplicar Escalatoria', 'description' => 'Aplicar Escalatoria']);
-        $rechazar_escalatoria = Permission::firstOrCreate(['name' => 'rechazar_escalatoria', 'display_name' =>
-            'Rechazar Escalatoria', 'description' => 'Rechazar Escalatoria']);
-        $consultar_escalatoria = Permission::firstOrCreate(['name' => 'consultar_escalatoria', 'display_name' =>
-            'Consultar Escalatoria', 'description' => 'Consultar Escalatoria']);
+        $rechazar_escalatoria = Permission::firstOrCreate(['name' => 'rechazar_escalatoria', 'display_name' => 'Rechazar Escalatoria', 'description' => 'Rechazar Escalatoria']);
+        $consultar_escalatoria = Permission::firstOrCreate(['name' => 'consultar_escalatoria', 'display_name' => 'Consultar Escalatoria', 'description' => 'Consultar Escalatoria']);
 
         //Control Presupuesto cambio de insumos
         $registrar_cambio_insumos = Permission::firstOrCreate(['name' => 'registrar_cambio_insumos', 'display_name' => 'Registrar Cambio de Insumos', 'description' => 'Registrar Cambio de Insumos']);
@@ -140,36 +134,133 @@ class RolesPermissionsSeeder extends Seeder
         $rechazar_cambio_insumos= Permission::firstOrCreate(['name' => 'rechazar_cambio_insumos', 'display_name' => 'Rechazar Cambio de Insumos', 'description' => 'Rechazar Cambio de Insumos']);
         $consultar_cambio_insumos = Permission::firstOrCreate(['name' => 'consultar_cambio_insumos', 'display_name' => 'Consultar Cambio de Insumos', 'description' => 'Consultar Cambio de Insumos']);
 
+        //Roles y Permisos
+        $administrar_roles_permisos = Permission::firstOrCreate(['name' => 'administrar_roles_permisos', 'display_name' => 'Administrar Roles y Permisos', 'description' => 'Permisos para asignación de roles a usuarios']);
 
         /**
          * Roles
          */
-        $contador          = Role::firstOrCreate(['name' => 'contador', 'display_name' => 'Contador', 'description' => 'Rol de Contador
-']);
-        $consultar         = Role::firstOrCreate(['name' => 'consultar', 'display_name' => 'Consultar
-', 'description' => 'Rol para consultar
-']);
-        $control_proyecto  = Role::firstOrCreate(['name' => 'control_proyecto', 'display_name' => 'Control de Proyecto', 'description' => 'Rol de usuario de Control de Proyecto']);
-        $jefe_subcontratos = Role::firstOrCreate(['name' => 'jefe_subcontratos', 'description' => 'Jefe de Subcontratos', 'display_name' => 'Jefe de Subcontratos']);
-        $jefe_procuracion  = Role::firstOrCreate(['name' => 'jefe_procuracion', 'description' => 'Jefe de Procuración', 'display_name' => 'Jefe de Procuración']);
-        $tesorero          = Role::firstOrCreate(['name' => 'tesorero', 'display_name' => 'Tesorero', 'description' => 'Rol para operar el sistema de finanzas']);
-        $consulta_finanzas = Role::firstOrCreate(['name' => 'consulta_finanzas', 'display_name' => 'Consulta Finanzas', 'description' => 'Rol para consultar el sistema de finanzas']);
+        $contador                      = Role::firstOrCreate(['name' => 'contador', 'display_name' => 'Contador', 'description' => 'Rol de Contador']);
+        $consulta_sistema_contable     = Role::firstOrCreate(['name' => 'consulta_sistema_contable', 'display_name' => 'Consulta Sistema Contable', 'description' => 'Rol para consulta dentro del sistema contable']);
+        $tesorero                      = Role::firstOrCreate(['name' => 'tesorero', 'display_name' => 'Tesorero', 'description' => 'Rol para operar el sistema de finanzas']);
+        $consulta_finanzas             = Role::firstOrCreate(['name' => 'consulta_finanzas', 'display_name' => 'Consulta Finanzas', 'description' => 'Rol para consultar el sistema de finanzas']);
+        $jefe_subcontratos             = Role::firstOrCreate(['name' => 'jefe_subcontratos', 'description' => 'Jefe de Subcontratos', 'display_name' => 'Jefe de Subcontratos']);
+        $jefe_procuracion              = Role::firstOrCreate(['name' => 'jefe_procuracion', 'description' => 'Jefe de Procuración', 'display_name' => 'Jefe de Procuración']);
+        $coordinador_sao               = Role::firstOrCreate(['name' => 'coordinador_sao', 'description' => 'Coordinador SAO', 'display_name' => 'Coordinador SAO']);
+        $control_proyecto              = Role::firstOrCreate(['name' => 'control_proyecto', 'display_name' => 'Control de Proyecto', 'description' => 'Rol de usuario de Control de Proyecto']);
         $coordinador_control_proyectos = Role::firstOrCreate(['name' => 'coordinador_control_proyectos', 'display_name' => 'Coordinador de Control de Proyectos', 'description' => 'Coordinador de Control de Proyectos']);
-
+        $administrador_sistema         = Role::firstOrCreate(['name' => 'administrador_sistema', 'display_name' => 'Administrador del Sistema', 'description' => 'Administrador del Sistema']);
         /**
          * Asignaciones
          */
 
-        $control_proyecto->perms()->sync([$solicitar_reclasificacion->id, $autorizar_reclasificacion->id, $consultar_reclasificacion->id]);
-        $jefe_procuracion->perms()->sync([$consultar_reporte_estimacion->id]);
-        $jefe_subcontratos->perms()->sync([$consultar_reporte_estimacion->id]);
-        $contador->perms()->sync([$editar_cuenta_fondo->id, $registrar_cuenta_fondo->id, $consultar_cuenta_fondo->id]);
-        $consultar->perms()->sync([$consultar_cuenta_fondo->id]);
-        $contador->perms()->sync([$editar_cuenta_costo->id, $registrar_cuenta_costo->id, $consultar_cuenta_costo->id, $eliminar_cuenta_costo->id]);
-        $tesorero->perms()->sync([$editar_comprobante_fondo_fijo->id, $registrar_comprobante_fondo_fijo->id, $consultar_comprobante_fondo_fijo->id,$eliminar_comprobante_fondo_fijo->id]);
-        $consulta_finanzas->perms()->sync([$consultar_comprobante_fondo_fijo->id]);
-        $contador->perms()->sync([$consultar_cierre_periodo->id, $generar_cierre_periodo->id, $editar_cierre_periodo->id]);
-        $control_proyecto->perms()->sync([$consultar_cierre_periodo->id]);
+        $contador->perms()->sync([
+            $editar_cuenta_almacen->id,
+            $registrar_cuenta_almacen->id,
+            $consultar_cuenta_almacen->id,
+            $editar_cuenta_concepto->id,
+            $registrar_cuenta_concepto->id,
+            $consultar_cuenta_concepto->id,
+            $editar_cuenta_empresa->id,
+            $registrar_cuenta_empresa->id,
+            $consultar_cuenta_empresa->id,
+            $eliminar_cuenta_empresa->id,
+            $consultar_cuenta_general->id,
+            $registrar_cuenta_general->id,
+            $editar_cuenta_general->id,
+            $consultar_cuenta_material->id,
+            $registrar_cuenta_material->id,
+            $editar_cuenta_material->id,
+            $consultar_tipo_cuenta_contable->id,
+            $registrar_tipo_cuenta_contable->id,
+            $editar_tipo_cuenta_contable->id,
+            $eliminar_tipo_cuenta_contable->id,
+            $consultar_plantilla_prepoliza->id,
+            $registrar_plantilla_prepoliza->id,
+            $eliminar_plantilla_prepoliza->id,
+            $editar_configuracion_contable->id,
+            $consultar_prepolizas_generadas->id,
+            $editar_prepolizas_generadas->id,
+            $consultar_kardex_material->id,
+            $editar_cuenta_fondo->id,
+            $registrar_cuenta_fondo->id,
+            $consultar_cuenta_fondo->id,
+            $eliminar_cuenta_contable_bancaria->id,
+            $registrar_cuenta_contable_bancaria->id,
+            $consultar_cuenta_contable_bancaria->id,
+            $editar_cuenta_contable_bancaria->id,
+            $eliminar_cuenta_costo->id,
+            $registrar_cuenta_costo->id,
+            $consultar_cuenta_costo->id,
+            $editar_cuenta_costo->id,
+            $solicitar_reclasificacion->id,
+            $consultar_reclasificacion->id,
+            $consultar_cierre_periodo->id,
+            $generar_cierre_periodo->id,
+            $editar_cierre_periodo->id
+        ]);
+        $consulta_sistema_contable->perms()->sync([
+            $consultar_cuenta_almacen->id,
+            $consultar_cuenta_concepto->id,
+            $consultar_cuenta_empresa->id,
+            $consultar_cuenta_general->id,
+            $consultar_cuenta_material->id,
+            $consultar_tipo_cuenta_contable->id,
+            $consultar_plantilla_prepoliza->id,
+            $consultar_prepolizas_generadas->id,
+            $consultar_kardex_material->id,
+            $consultar_cuenta_fondo->id
+        ]);
+        $tesorero->perms()->sync([
+            $editar_comprobante_fondo_fijo->id,
+            $registrar_comprobante_fondo_fijo->id,
+            $consultar_comprobante_fondo_fijo->id,
+            $eliminar_comprobante_fondo_fijo->id,
+            $eliminar_traspaso_cuenta->id,
+            $registrar_traspaso_cuenta->id,
+            $consultar_traspaso_cuenta->id,
+            $editar_traspaso_cuenta->id,
+            $eliminar_movimiento_bancario->id,
+            $registrar_movimiento_bancario->id,
+            $consultar_movimiento_bancario->id,
+            $editar_movimiento_bancario->id,
+        ]);
+        $consulta_finanzas->perms()->sync([
+            $consultar_comprobante_fondo_fijo->id,
+            $consultar_traspaso_cuenta->id,
+            $consultar_movimiento_bancario->id,
+        ]);
+        $jefe_subcontratos->perms()->sync([
+            $consultar_formato_estimacion->id
+        ]);
+        $jefe_procuracion->perms()->sync([
+            $consultar_formato_estimacion->id
+        ]);
+        $coordinador_sao->perms()->sync([
+            $consultar_cuenta_almacen->id,
+            $consultar_cuenta_concepto->id,
+            $consultar_cuenta_empresa->id,
+            $consultar_cuenta_general->id,
+            $consultar_cuenta_material->id,
+            $consultar_tipo_cuenta_contable->id,
+            $consultar_plantilla_prepoliza->id,
+            $consultar_prepolizas_generadas->id,
+            $consultar_cuenta_fondo->id,
+            $registrar_comprobante_fondo_fijo->id,
+            $consultar_comprobante_fondo_fijo->id,
+            $eliminar_comprobante_fondo_fijo->id,
+            $consultar_formato_estimacion->id,
+            $consultar_movimiento_bancario->id,
+            $consultar_cuenta_contable_bancaria->id,
+            $consultar_cuenta_costo->id,
+            $consultar_reclasificacion->id,
+        ]);
+        $control_proyecto->perms()->sync([
+            $solicitar_reclasificacion->id,
+            $autorizar_reclasificacion->id,
+            $consultar_reclasificacion->id,
+            $consultar_cierre_periodo->id,
+        ]);
         $coordinador_control_proyectos->perms()->sync([
             $registrar_variacion_volumen->id,
             $autorizar_variacion_volumen->id,
@@ -181,6 +272,13 @@ class RolesPermissionsSeeder extends Seeder
             $aplicar_escalatoria->id,
             $rechazar_escalatoria->id,
             $consultar_escalatoria->id,
+            $registrar_cambio_insumos->id,
+            $autorizar_cambio_insumos->id,
+            $rechazar_cambio_insumos->id,
+            $consultar_cambio_insumos->id,
+        ]);
+        $administrador_sistema->perms()->sync([
+            $administrar_roles_permisos->id,
         ]);
     }
 }

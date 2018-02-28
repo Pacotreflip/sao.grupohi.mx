@@ -9,26 +9,30 @@
     <section class="content">
         <!-- COLOR PALETTE -->
         <div class="row">
-            <div class="col-lg-3 col-xs-6">
+
+            @if(auth()->user()->canAccessSystem('sistema_contable'))
+                <div class="col-lg-3 col-xs-6">
                 <!-- small box -->
-                <div class="small-box bg-aqua">
-                    <div class="inner">
-                        <h4>Contable</h4>
-                        <p>
-                            <br/>
-                        </p>
-                    </div>
-                    <div class="icon">
-                        <i class="fa fa-usd fa-fw "></i>
-                    </div>
+                    <div class="small-box bg-aqua">
+                        <div class="inner">
+                            <h4>Contable</h4>
+                            <p>
+                                <br/>
+                            </p>
+                        </div>
+                        <div class="icon">
+                            <i class="fa fa-usd fa-fw "></i>
+                        </div>
 
-                    <a href="{{route('sistema_contable.index')}}" class="small-box-footer">
-                        Ingresar <i class="fa fa-arrow-circle-right"></i>
-                    </a>
+                        <a href="{{route('sistema_contable.index')}}" class="small-box-footer">
+                            Ingresar <i class="fa fa-arrow-circle-right"></i>
+                        </a>
+                    </div>
                 </div>
-            </div>
+            @endif
 
-            <div class="col-lg-3 col-xs-6">
+            @if(auth()->user()->canAccessSystem('finanzas'))
+                <div class="col-lg-3 col-xs-6">
                 <div class="small-box bg-yellow">
                     <div class="inner">
                         <h4>Finanzas</h4>
@@ -45,11 +49,14 @@
                     </a>
                 </div>
             </div>
-            <div class="col-lg-3 col-xs-6">
+            @endif
+
+            @if(auth()->user()->canAccessSystem('formatos'))
+                <div class="col-lg-3 col-xs-6">
                 <!-- small box -->
                 <div class="small-box bg-green">
                     <div class="inner">
-                        <h4>Reportes</h4>
+                        <h4>Formatos</h4>
                         <p>
                             <br/>
                         </p>
@@ -57,13 +64,15 @@
                     <div class="icon">
                         <i class="fa fa-file-text-o fa-fw "></i>
                     </div>
-                    <a href="{{route('reportes.index')}}" class="small-box-footer">
+                    <a href="{{route('formatos.index')}}" class="small-box-footer">
                         Ingresar <i class="fa fa-arrow-circle-right"></i>
                     </a>
                 </div>
             </div>
-            {{--Tesorería--}}
-            <div class="col-lg-3 col-xs-6">
+            @endif
+
+            @if(auth()->user()->canAccessSystem('tesoreria'))
+                <div class="col-lg-3 col-xs-6">
                 <div class="small-box bg-blue-active">
                     <div class="inner">
                         <h4>Tesorería</h4>
@@ -79,8 +88,10 @@
                     </a>
                 </div>
             </div>
-            {{--Control de Costos--}}
-            <div class="col-lg-3 col-xs-6">
+            @endif
+
+            @if(auth()->user()->canAccessSystem('control_costos'))
+                <div class="col-lg-3 col-xs-6">
                 <div class="small-box bg-red-active">
                     <div class="inner">
                         <h4>Control de Costos</h4>
@@ -96,12 +107,13 @@
                     </a>
                 </div>
             </div>
+            @endif
 
-            {{--Control Presupuesto--}}
-            <div class="col-lg-3 col-xs-6">
+            @if(auth()->user()->canAccessSystem('control_presupuesto'))
+                <div class="col-lg-3 col-xs-6">
                 <div class="small-box bg-orange-active">
                     <div class="inner">
-                        <h4>Control Presupuesto</h4>
+                        <h4>Control del Presupuesto</h4>
                         <p>
                             <br/>
                         </p>
@@ -114,6 +126,7 @@
                     </a>
                 </div>
             </div>
+            @endif
            {{-- <div class="col-lg-3 col-xs-6">
 
                 <div class="small-box bg-green">
@@ -137,7 +150,6 @@
         </div>
     </section>
     <!-- /.bo
-
 
 @endsection
 

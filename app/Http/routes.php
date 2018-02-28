@@ -15,7 +15,7 @@ include('Routes/SAO.php');
 include('Routes/sistema_contable.php');
 //include('routes/compras.php');
 include('Routes/finanzas.php');
-include('Routes/reportes.php');
+include('Routes/formatos.php');
 include('Routes/tesoreria.php');
 include('Routes/control_costos.php');
 include('Routes/control_presupuesto.php');

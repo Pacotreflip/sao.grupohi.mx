@@ -7,7 +7,7 @@ Breadcrumbs::register('index', function ($b) {
 include ('breadcrumbs/sistema_contable.php');
 include ('breadcrumbs/compras.php');
 include ('breadcrumbs/finanzas.php');
-include ('breadcrumbs/reportes.php');
+include ('breadcrumbs/formatos.php');
 include ('breadcrumbs/tesoreria.php');
 include ('breadcrumbs/control_costos.php');
 include ('breadcrumbs/control_presupuesto.php');

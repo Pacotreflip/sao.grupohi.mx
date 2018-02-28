@@ -15,7 +15,7 @@ use Ghi\Domain\Core\Models\ControlPresupuesto\CambioInsumos;
 use Ghi\Domain\Core\Models\ControlPresupuesto\Estatus;
 use Ghi\Domain\Core\Models\ControlPresupuesto\SolicitudCambio;
 use Ghi\Domain\Core\Models\ControlPresupuesto\TipoOrden;
-use Ghi\Domain\Core\Reportes\ControlPresupuesto\PDFSolicitudCambioInsumos;
+use Ghi\Domain\Core\Formatos\ControlPresupuesto\PDFSolicitudCambioInsumos;
 use Illuminate\Http\Request;
 
 
@@ -32,7 +32,7 @@ class CambioInsumosController extends Controller
     private $agrupacion;
     private $solicitud;
 
-    public function __construct(PresupuestoRepository $presupuesto, ConceptoRepository $concepto, BasePresupuestoRepository $basePresupuesto, CambioInsumosRepository $cambio_insumos, SolicitudCambioPartidaRepository $partidas, AfectacionOrdenPresupuestoRepository $afectacion, PartidasInsumosAgrupadosRepository $agrupacion, SolicitudCambioRepository $solicitud)
+    public function __construct(PresupuestoRepository $presupuesto, ConceptoRepository $concepto, BasePresupuestoRepository $basePresupuesto, CambioInsumosRepository $cambio_insumos, SolicitudCambioPartidaRepository $partidas, AfectacionOrdenPresupuestoRepository $afectacion, PartidasInsumosAgrupadosRepository $agrupacion,SolicitudCambioRepository $solicitud)
     {
         parent::__construct();
 
@@ -41,11 +41,11 @@ class CambioInsumosController extends Controller
 
 
         //Permisos
-        /*$this->middleware('permission:consultar_cambio_insumos', ['only' => ['index', 'paginate', 'pdf', 'show']]);
+        $this->middleware('permission:consultar_cambio_insumos', ['only' => ['index', 'paginate', 'pdf', 'show']]);
         $this->middleware('permission:registrar_cambio_insumos', ['only' => ['create', 'store']]);
         $this->middleware('permission:autorizar_cambio_insumos', ['only' => ['autorizar']]);
         $this->middleware('permission:aplicar_cambio_insumos', ['only' => ['aplicar']]);
-        $this->middleware('permission:rechazar_cambio_insumos', ['only' => ['rechazar']]);*/
+        $this->middleware('permission:rechazar_cambio_insumos', ['only' => ['rechazar']]);
 
         $this->presupuesto = $presupuesto;
         $this->basePresupuesto = $basePresupuesto;

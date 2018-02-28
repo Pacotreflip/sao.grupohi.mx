@@ -1,6 +1,6 @@
 <?php
 
-Route::group(['prefix' => 'tesoreria'], function () {
+Route::group(['prefix' => 'tesoreria', 'middleware' => 'system.access:tesoreria'], function () {
 
     /**
      * Index Route...

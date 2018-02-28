@@ -1,6 +1,6 @@
 <?php
 
-Route::group(['prefix' => 'finanzas'], function () {
+Route::group(['prefix' => 'finanzas', 'middleware' => 'system.access:finanzas'], function () {
 
     /**
      * Index Route...

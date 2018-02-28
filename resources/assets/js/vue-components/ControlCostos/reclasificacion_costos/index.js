@@ -282,7 +282,7 @@ Vue.component('reclasificacion_costos-index', {
         },
         pdf: function (id) {
             var self = this,
-                url = App.host + '/control_costos/solicitudes_reclasificacion/generarpdf?item='+ id;
+                url = App.host + '/control_costos/solicitudes_reclasificacion/generarpdf/' + id;
 
             self.show_pdf = url;
         },

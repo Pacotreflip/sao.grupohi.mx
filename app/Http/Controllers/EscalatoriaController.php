@@ -13,7 +13,7 @@ use Ghi\Domain\Core\Models\ControlPresupuesto\Escalatoria;
 use Ghi\Domain\Core\Models\ControlPresupuesto\Estatus;
 use Ghi\Domain\Core\Models\ControlPresupuesto\SolicitudCambio;
 use Ghi\Domain\Core\Models\ControlPresupuesto\TipoOrden;
-use Ghi\Domain\Core\Reportes\ControlPresupuesto\PDFSolicitudCambioEscalatoria;
+use Ghi\Domain\Core\Formatos\ControlPresupuesto\PDFSolicitudCambioEscalatoria;
 use Illuminate\Http\Request;
 
 
