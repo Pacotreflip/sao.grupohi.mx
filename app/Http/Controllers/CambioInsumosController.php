@@ -32,7 +32,7 @@ class CambioInsumosController extends Controller
     private $agrupacion;
     private $solicitud;
 
-    public function __construct(PresupuestoRepository $presupuesto, ConceptoRepository $concepto, BasePresupuestoRepository $basePresupuesto, CambioInsumosRepository $cambio_insumos, SolicitudCambioPartidaRepository $partidas, AfectacionOrdenPresupuestoRepository $afectacion, PartidasInsumosAgrupadosRepository $agrupacion,SolicitudCambioRepository $solicitud)
+    public function __construct(PresupuestoRepository $presupuesto, ConceptoRepository $concepto, BasePresupuestoRepository $basePresupuesto, CambioInsumosRepository $cambio_insumos, SolicitudCambioPartidaRepository $partidas, AfectacionOrdenPresupuestoRepository $afectacion, PartidasInsumosAgrupadosRepository $agrupacion, SolicitudCambioRepository $solicitud)
     {
         parent::__construct();
 
@@ -104,6 +104,16 @@ class CambioInsumosController extends Controller
 
     }
 
+    public function storeIndirecto(Request $request)
+    {
+        $solicitud = $this->cambio_insumos->createIndirecto($request->all());
+
+        return $this->response->item($solicitud, function ($item) {
+            return $item;
+        });
+
+    }
+
     public function pdf(Request $request, $id)
     {
         $solicitud = $this->solicitud->with(['aplicaciones', 'tipoOrden', 'userRegistro', 'estatus', 'partidas', 'partidas.concepto',
@@ -152,7 +162,8 @@ class CambioInsumosController extends Controller
 
     }
 
-    public function indirecto(){
+    public function indirecto()
+    {
         $presupuestos = $this->afectacion->with('baseDatos')->getBy('id_tipo_orden', '=', TipoOrden::ORDEN_DE_CAMBIO_DE_INSUMOS);
         return view('control_presupuesto.cambio_insumos.costo_indirecto.create')
             ->with('tipo_orden', TipoOrden::ORDEN_DE_CAMBIO_DE_INSUMOS)

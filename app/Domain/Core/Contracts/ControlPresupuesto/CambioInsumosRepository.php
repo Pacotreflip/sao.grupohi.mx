@@ -28,6 +28,14 @@ interface CambioInsumosRepository
     public function create(array $data);
 
     /**
+     * Guarda un registro de CambioInsumos
+     * @param array $data
+     * @throws \Exception
+     * @return CambioInsumos
+     */
+    public function createIndirecto(array $data);
+
+    /**
      * Regresa un registro específico de CambioInsumos
      * @param $id
      * @return CambioInsumos

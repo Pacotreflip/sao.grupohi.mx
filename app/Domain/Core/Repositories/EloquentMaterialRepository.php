@@ -85,7 +85,7 @@ class EloquentMaterialRepository implements MaterialRepository
      */
     public function find($tipo, $nivel = null)
     {
-        if($nivel) {
+        if ($nivel) {
             return $this->model->where(function ($query) use ($tipo, $nivel) {
                 $query->orWhere('nivel', 'LIKE', $nivel)
                     ->orWhere('nivel', 'LIKE', $nivel . '___.');
@@ -113,26 +113,27 @@ class EloquentMaterialRepository implements MaterialRepository
     public function getNivelDisponible($tipo, $nivel = null)
     {
         if ($nivel) {
-            $niveles = $this->model->where('nivel', 'like', $nivel.'___.')->where('tipo_material', '=', $tipo)->orderBy('nivel')->get();
+            $niveles = $this->model->where('nivel', 'like', $nivel . '___.')->where('tipo_material', '=', $tipo)->orderBy('nivel')->get();
 
-            for($i = 0; $i < $niveles->count(); $i++) {
+            for ($i = 0; $i < $niveles->count(); $i++) {
                 $nivel_str = explode('.', $niveles[$i]->nivel)[1];
-                if($i != intval($nivel_str)) {
-                    return  explode('.',$niveles[$i]->nivel)[0].'.'.str_pad($i, 3, '0', STR_PAD_LEFT). '.';
+                if ($i != intval($nivel_str)) {
+                    return explode('.', $niveles[$i]->nivel)[0] . '.' . str_pad($i, 3, '0', STR_PAD_LEFT) . '.';
                 }
             }
-            if($niveles->count() > 0) {
-                return  explode('.',$niveles[0]->nivel)[0].'.'.str_pad($i, 3, '0', STR_PAD_LEFT). '.';
-            }else{
+            if ($niveles->count() > 0) {
+                return explode('.', $niveles[0]->nivel)[0] . '.' . str_pad($i, 3, '0', STR_PAD_LEFT) . '.';
+            } else {
                 return $nivel . str_pad($i, 3, '0', STR_PAD_LEFT) . '.';
             }
         } else {
             $niveles = $this->model->familias()->where('tipo_material', '=', $tipo)->orderBy('nivel')->get(['nivel']);
-            for($i = 0; $i < $niveles->count(); $i++) {
-                if($i != intval($niveles[$i]->nivel)) {
-                    return str_pad($i, 3, '0', STR_PAD_LEFT). '.';
+            for ($i = 0; $i < $niveles->count(); $i++) {
+                if ($i != intval($niveles[$i]->nivel)) {
+                    return str_pad($i, 3, '0', STR_PAD_LEFT) . '.';
                 }
             }
+            return str_pad($i, 3, '0', STR_PAD_LEFT) . '.';
         }
     }
 
@@ -146,9 +147,9 @@ class EloquentMaterialRepository implements MaterialRepository
         try {
             //dd($data['nivel']);
             DB::connection('cadeco')->beginTransaction();
-            if($data['nivel']){
+            if ($data['nivel']) {
                 $data['nivel'] = $this->getNivelDisponible($data['tipo_material'], $data['nivel']);
-            }else{
+            } else {
                 $data['nivel'] = $this->getNivelDisponible($data['tipo_material'], null);
             }
             $data['UsuarioRegistro'] = auth()->user()->idusuario;
@@ -172,7 +173,7 @@ class EloquentMaterialRepository implements MaterialRepository
      */
     public function update($data, $id)
     {
-         return $this->model->find($id)->update($data);
+        return $this->model->find($id)->update($data);
     }
 
     /**
@@ -204,7 +205,8 @@ class EloquentMaterialRepository implements MaterialRepository
      * @param $tipo
      * @return Collection|Material
      */
-    public function getFamiliasByTipo($tipo) {
+    public function getFamiliasByTipo($tipo)
+    {
         return $this->model->where('nivel', 'like', Material::NIVEL_FAMILIA)
             ->where('tipo_material', '=', $tipo)
             ->get();
@@ -215,15 +217,17 @@ class EloquentMaterialRepository implements MaterialRepository
      * @param $id
      * @return Collection|Material
      */
-    public function getHijos($id) {
+    public function getHijos($id)
+    {
         $padre = Material::find($id);
         return $this->model->where('nivel', 'like', $padre->nivel_hijos)
             ->where('tipo_material', '=', $padre->tipo_material)
             ->get();
     }
 
-    public function  getDescripcionByTipo($descripcion,$tipo){
-        return $this->model->where('descripcion', 'like', '%'.$descripcion.'%')
+    public function getDescripcionByTipo($descripcion, $tipo)
+    {
+        return $this->model->where('descripcion', 'like', '%' . $descripcion . '%')
             ->where('tipo_material', '=', $tipo)
             ->whereRaw('LEN(nivel) > 4')
             ->limit(5)
@@ -231,8 +235,10 @@ class EloquentMaterialRepository implements MaterialRepository
 
 
     }
-    public function  getFamiliasByTipoPadres($descripcion,$tipo){
-        return $this->model->where('descripcion', 'like', '%'.$descripcion.'%')
+
+    public function getFamiliasByTipoPadres($descripcion, $tipo)
+    {
+        return $this->model->where('descripcion', 'like', '%' . $descripcion . '%')
             ->where('tipo_material', '=', $tipo)
             ->whereRaw('LEN(nivel) <=4')
             ->get();

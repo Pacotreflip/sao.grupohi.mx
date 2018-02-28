@@ -345,7 +345,7 @@ class PDFSolicitudCambioInsumos extends Rotation
                 $this->Row([
                     ($contador + 1),
                     $numero_tarjeta,
-                    $row['descripcion'],
+                    utf8_decode($row['descripcion']),
                     utf8_decode($row['unidad']),
                     '$ ' . number_format($row['pu'], 2, '.', ','),
                     '$ ' . number_format($row['variacion_pu'], 2, '.', ','),

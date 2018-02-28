@@ -13373,13 +13373,14 @@ require('./vue-components/ControlPresupuesto/escalatoria/create');
  */
 require('./vue-components/ControlPresupuesto/cambio_insumos/show');
 require('./vue-components/ControlPresupuesto/cambio_insumos/create');
+require('./vue-components/ControlPresupuesto/cambio_insumos/costo_indirecto/create');
 
 /**
  * Configuración Components
  */
 require('./vue-components/Configuracion/seguridad/index');
 
-},{"./vue-components/Compras/material/index":6,"./vue-components/Compras/requisicion/create":8,"./vue-components/Compras/requisicion/edit":9,"./vue-components/Configuracion/seguridad/index":10,"./vue-components/Contabilidad/cierre/index":11,"./vue-components/Contabilidad/cuenta_almacen/index":12,"./vue-components/Contabilidad/cuenta_bancos/cuenta-bancaria-edit":13,"./vue-components/Contabilidad/cuenta_concepto/index":14,"./vue-components/Contabilidad/cuenta_contable/index":15,"./vue-components/Contabilidad/cuenta_costo/index":16,"./vue-components/Contabilidad/cuenta_empresa/cuenta-empresa-edit":17,"./vue-components/Contabilidad/cuenta_fondo/index":18,"./vue-components/Contabilidad/cuenta_material/index":19,"./vue-components/Contabilidad/datos_contables/edit":20,"./vue-components/Contabilidad/emails":21,"./vue-components/Contabilidad/modulos/revaluacion/create":22,"./vue-components/Contabilidad/poliza_generada/edit":23,"./vue-components/Contabilidad/poliza_generada/index":24,"./vue-components/Contabilidad/poliza_tipo/poliza-tipo-create":25,"./vue-components/Contabilidad/tipo_cuenta_contable/tipo-cuenta-contable-create":26,"./vue-components/Contabilidad/tipo_cuenta_contable/tipo-cuenta-contable-update":27,"./vue-components/ControlCostos/reclasificacion_costos/index":28,"./vue-components/ControlCostos/solicitar_reclasificacion/index":29,"./vue-components/ControlCostos/solicitar_reclasificacion/items":30,"./vue-components/ControlPresupuesto/cambio_insumos/create":31,"./vue-components/ControlPresupuesto/cambio_insumos/show":32,"./vue-components/ControlPresupuesto/cambio_presupuesto/create":33,"./vue-components/ControlPresupuesto/cambio_presupuesto/index":34,"./vue-components/ControlPresupuesto/escalatoria/create":35,"./vue-components/ControlPresupuesto/escalatoria/show":36,"./vue-components/ControlPresupuesto/index":37,"./vue-components/ControlPresupuesto/variacion_volumen/create":38,"./vue-components/ControlPresupuesto/variacion_volumen/show":39,"./vue-components/Finanzas/comprobante_fondo_fijo/create":40,"./vue-components/Finanzas/comprobante_fondo_fijo/edit":41,"./vue-components/Finanzas/comprobante_fondo_fijo/index":42,"./vue-components/Reportes/subcontratos-estimacion":43,"./vue-components/Tesoreria/movimientos_bancarios/index":44,"./vue-components/Tesoreria/traspaso_cuentas/index":45,"./vue-components/errors":46,"./vue-components/global-errors":47,"./vue-components/kardex_material/kardex-material-index":48,"./vue-components/select2":49}],6:[function(require,module,exports){
+},{"./vue-components/Compras/material/index":6,"./vue-components/Compras/requisicion/create":8,"./vue-components/Compras/requisicion/edit":9,"./vue-components/Configuracion/seguridad/index":10,"./vue-components/Contabilidad/cierre/index":11,"./vue-components/Contabilidad/cuenta_almacen/index":12,"./vue-components/Contabilidad/cuenta_bancos/cuenta-bancaria-edit":13,"./vue-components/Contabilidad/cuenta_concepto/index":14,"./vue-components/Contabilidad/cuenta_contable/index":15,"./vue-components/Contabilidad/cuenta_costo/index":16,"./vue-components/Contabilidad/cuenta_empresa/cuenta-empresa-edit":17,"./vue-components/Contabilidad/cuenta_fondo/index":18,"./vue-components/Contabilidad/cuenta_material/index":19,"./vue-components/Contabilidad/datos_contables/edit":20,"./vue-components/Contabilidad/emails":21,"./vue-components/Contabilidad/modulos/revaluacion/create":22,"./vue-components/Contabilidad/poliza_generada/edit":23,"./vue-components/Contabilidad/poliza_generada/index":24,"./vue-components/Contabilidad/poliza_tipo/poliza-tipo-create":25,"./vue-components/Contabilidad/tipo_cuenta_contable/tipo-cuenta-contable-create":26,"./vue-components/Contabilidad/tipo_cuenta_contable/tipo-cuenta-contable-update":27,"./vue-components/ControlCostos/reclasificacion_costos/index":28,"./vue-components/ControlCostos/solicitar_reclasificacion/index":29,"./vue-components/ControlCostos/solicitar_reclasificacion/items":30,"./vue-components/ControlPresupuesto/cambio_insumos/costo_indirecto/create":31,"./vue-components/ControlPresupuesto/cambio_insumos/create":32,"./vue-components/ControlPresupuesto/cambio_insumos/show":33,"./vue-components/ControlPresupuesto/cambio_presupuesto/create":34,"./vue-components/ControlPresupuesto/cambio_presupuesto/index":35,"./vue-components/ControlPresupuesto/escalatoria/create":36,"./vue-components/ControlPresupuesto/escalatoria/show":37,"./vue-components/ControlPresupuesto/index":38,"./vue-components/ControlPresupuesto/variacion_volumen/create":39,"./vue-components/ControlPresupuesto/variacion_volumen/show":40,"./vue-components/Finanzas/comprobante_fondo_fijo/create":41,"./vue-components/Finanzas/comprobante_fondo_fijo/edit":42,"./vue-components/Finanzas/comprobante_fondo_fijo/index":43,"./vue-components/Reportes/subcontratos-estimacion":44,"./vue-components/Tesoreria/movimientos_bancarios/index":45,"./vue-components/Tesoreria/traspaso_cuentas/index":46,"./vue-components/errors":47,"./vue-components/global-errors":48,"./vue-components/kardex_material/kardex-material-index":49,"./vue-components/select2":50}],6:[function(require,module,exports){
 'use strict';
 
 Vue.component('material-index', {
@@ -19068,6 +19069,317 @@ Vue.component('solicitar_reclasificacion-items', {
 },{}],31:[function(require,module,exports){
 'use strict';
 
+Vue.component('cambio-insumos-indirecto-create', {
+    props: ['id_tipo_orden'],
+    data: function data() {
+        return {
+            form: {
+                partidas: [],
+                insumos_eliminados: [],
+                motivo: '',
+                area_solicitante: '',
+                concepto_seleccionado: [],
+                id_tipo_orden: this.id_tipo_orden
+            },
+            concepto: {
+                descripcion: '',
+                id_material: '',
+                monto_presupuestado: '',
+                precio_unitario: '',
+                cantidad_presupuestada: '',
+                cantidad_presupuestada_nueva: '',
+                precio_unitario_nuevo: '',
+                unidad: '',
+                rendimiento_nuevo: '',
+                id_elemento: '',
+                tipo_agrupador: 6
+            },
+            id_material_seleccionado: 0,
+            material_seleccionado: [],
+
+            id_concepto_indirecto: '',
+            concepto_seleccionado: [],
+            cargando: false,
+            guardando: false,
+            cargando_tarjetas: true,
+            consultando: false
+        };
+    },
+    mounted: function mounted() {
+        var self = this;
+        $('#sel_concepto_indirecto').select2({
+            width: '100%',
+            ajax: {
+                url: App.host + '/conceptos/getPathsCostoIndirecto',
+                dataType: 'json',
+                delay: 500,
+                data: function data(params) {
+                    return {
+                        descripcion: params.term
+                    };
+                },
+                processResults: function processResults(data) {
+                    return {
+                        results: $.map(data.data.conceptos, function (item) {
+                            return {
+                                text: item.filtro6 + " -> " + item.filtro7,
+                                id: item.id_concepto,
+                                cantidad_presupuestada: item.cantidad_presupuestada,
+                                monto_presupuestado: item.monto_presupuestado,
+                                precio_unitario: item.precio_unitario,
+                                id_concepto: item.id_concepto
+                            };
+                        })
+                    };
+                },
+                error: function error(_error) {},
+                cache: true
+            },
+            escapeMarkup: function escapeMarkup(markup) {
+                return markup;
+            }, // let our custom formatter work
+            minimumInputLength: 1
+        }).on('select2:select', function (e) {
+            var data = e.params.data;
+            self.form.concepto_seleccionado = data;
+            self.concepto_seleccionado = data;
+            self.form.partidas = [];
+            self.obtenerExplosion(data.id);
+        });
+        self.cargando_tarjetas = false;
+    },
+    methods: {
+
+        obtenerExplosion: function obtenerExplosion(idConcepto) {
+            var self = this;
+            $.ajax({
+                url: App.host + '/conceptos/' + idConcepto + '/getInsumos',
+                type: 'GET',
+                async: 'true',
+                beforeSend: function beforeSend() {
+                    self.consultando = true;
+                },
+                success: function success(response) {
+
+                    $.each(response.conceptos.GASTOS.insumos, function (key, value) {
+                        //console.log(key+"  -  "+value.descripcion);
+
+
+                        self.concepto.id_material = value.id_material;
+                        self.concepto.monto_presupuestado = value.monto_presupuestado;
+                        self.concepto.precio_unitario = value.precio_unitario;
+                        self.concepto.cantidad_presupuestada = value.cantidad_presupuestada;
+                        self.concepto.descripcion = value.descripcion.toString();
+                        self.concepto.unidad = value.unidad;
+                        self.concepto.rendimiento_actual = value.cantidad_presupuestada / self.concepto_seleccionado.cantidad_presupuestada;
+                        self.concepto.id_elemento = value.id_concepto;
+                        self.concepto.id_concepto = value.id_concepto;
+                        self.form.partidas.push(self.concepto);
+                    });
+                    self.concepto = [];
+                    self.consultando = false;
+                },
+                complete: function complete() {
+                    self.consultando = false;
+                }
+            });
+        },
+        insumoEliminado: function insumoEliminado(id_concepto) {
+            return this.form.insumos_eliminados.indexOf(parseInt(id_concepto)) ? true : false;
+        },
+        recalcular: function recalcular(id_concepto, i, tipo) {
+            var self = this;
+            var cant_pres = $(".rendimiento" + id_concepto + '_' + i).val();
+            var cant_concepto = self.concepto_seleccionado.cantidad_presupuestada;
+            console.log(".rendimiento" + id_concepto + '_' + i);
+            self.form.partidas[i].rendimiento_nuevo = cant_pres;
+            var total = cant_concepto * self.form.partidas[i].rendimiento_nuevo;
+            $("#r_p_" + id_concepto + '_' + i).val(total);
+        },
+
+        recalcular_monto: function recalcular_monto(id_concepto, i, tipo) {
+            var self = this;
+            var cant = $(".pre_unit" + id_concepto + '_' + i).val();
+            self.form.partidas[i].precio_unitario_nuevo = cant;
+        },
+
+        recalcular_cantidad: function recalcular_cantidad(id_concepto, i, tipo) {
+            var self = this;
+            var cant_pres = $("#r_p_" + id_concepto + '_' + i).val();
+            var cant_concepto = self.concepto_seleccionado.cantidad_presupuestada;
+            var total = cant_pres / cant_concepto;
+            $(".rendimiento" + id_concepto + '_' + i).val(total);
+            self.form.partidas[i].rendimiento_nuevo = total;
+        },
+        agregar_insumo_nuevo: function agregar_insumo_nuevo() {
+            var self = this;
+            self.form.partidas.push(self.material_seleccionado);
+            $('#add_insumo_modal').modal('hide');
+        },
+        removeRendimiento: function removeRendimiento(id_concepto, id, tipo) {
+            var self = this;
+            var index = self.form.insumos_eliminados.indexOf(parseInt(id_concepto));
+            if (index > -1) {
+                console.log('entro');
+                self.form.insumos_eliminados.splice(index, 1);
+                $("#c_p_" + id_concepto + '_' + id).prop('disabled', false);
+                $("#m_p_" + id_concepto + '_' + id).prop('disabled', false);
+            } else {
+                self.form.insumos_eliminados.push(id_concepto);
+                $("#c_p_" + id_concepto + '_' + id).prop('disabled', true);
+                $("#m_p_" + id_concepto + '_' + id).prop('disabled', true);
+            }
+        },
+
+        validateForm: function validateForm(scope, funcion) {
+            var _this = this;
+
+            this.$validator.validateAll(scope).then(function () {
+                if (funcion == 'save_solicitud') {
+                    _this.confirmSave();
+                }
+            }).catch(function () {
+                swal({
+                    type: 'warning',
+                    title: 'Advertencia',
+                    text: 'Por favor corrija los errores del formulario'
+                });
+            });
+        },
+
+        confirmSave: function confirmSave() {
+            var self = this;
+            swal({
+                title: 'Guardar Solicitud de Cambio',
+                text: "¿Está seguro de que la información es correcta?",
+                type: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Si, Guardar',
+                cancelButtonText: 'No, Cancelar'
+            }).then(function (result) {
+                if (result.value) {
+                    self.save();
+                }
+            });
+        },
+
+        save: function save() {
+            var self = this;
+            $.ajax({
+                url: App.host + '/control_presupuesto/cambio_insumos_indirecto',
+                type: 'POST',
+                data: self.form,
+                beforeSend: function beforeSend() {
+                    self.cargando = true;
+                },
+                success: function success(response) {
+
+                    var lista = [];
+
+                    // Ya existen solicitudes con las partidas seleccionadas
+                    if (typeof response.repetidas != 'undefined') {
+
+                        $.each(response.repetidas, function (key, value) {
+                            lista.push('<li class="list-group-item "><a href="' + App.host + '/control_presupuesto/cambio_presupuesto" onclick="swal.close();">#' + value.solicitud.numero_folio + ' ' + (value.solicitud.motivo.length >= 20 ? value.solicitud.motivo.substring(0, 30) + '...' : value.solicitud.motivo) + '</a></li>');
+                        });
+
+                        var texto = response.repetidas.length > 1 ? 'Ya existen solicitudes' : 'Ya existe una solicitud';
+
+                        swal({
+                            title: texto + " con los items seleccionados",
+                            html: '<ul class="list-group">' + lista.join(' ') + '</ul>',
+                            type: "warning",
+                            showCancelButton: true,
+                            showConfirmButton: true,
+                            cancelButtonText: "Cancelar"
+                        });
+
+                        return;
+                    }
+
+                    swal({
+                        type: 'success',
+                        title: '¡Correcto!',
+                        //html : 'Solicitud Guardada con Número de Folio <b>' + response.numero_folio + '</b>'
+                        html: 'Solicitud Guardada Exitosamente.'
+                    }).then(function () {
+                        window.location.href = App.host + '/control_presupuesto/cambio_insumos/' + response.id;
+                    });
+                },
+                complete: function complete() {
+                    self.cargando = false;
+                }
+            });
+        },
+        addInsumoTipo: function addInsumoTipo(tipo) {
+            var self = this;
+            var aux_tipo = tipo;
+            if (tipo == 5 || tipo == 6) {
+                tipo = 2;
+            }
+            self.tipo_insumo = tipo;
+
+            $('#sel_material').select2({
+                width: '100%',
+                ajax: {
+                    url: App.host + '/control_presupuesto/cambio_presupuesto/getDescripcionByTipo',
+                    dataType: 'json',
+                    delay: 500,
+                    data: function data(params) {
+                        return {
+                            descripcion: params.term,
+                            tipo: tipo
+                        };
+                    },
+                    processResults: function processResults(data) {
+                        return {
+                            results: $.map(data.data.materiales, function (item) {
+                                if (tipo == 2) {
+                                    tipo = aux_tipo;
+                                }
+                                self.tipo_insumo = tipo;
+                                return {
+                                    text: item.DescripcionPadre + " -> " + item.descripcion,
+                                    descripcion: item.descripcion,
+                                    id_material: item.id_material,
+                                    unidad: item.unidad,
+                                    cantidad_presupuestada: 0,
+                                    variacion_cantidad_presupuestada: 0,
+                                    cantidad_presupuestada_nueva: 0,
+                                    variacion_precio_unitario: 0,
+                                    precio_unitario: 0,
+                                    id: item.id_material,
+                                    nuevo: true,
+                                    rendimiento_actual: 0
+                                };
+                            })
+                        };
+                    },
+                    error: function error(_error2) {},
+                    cache: true
+                },
+                escapeMarkup: function escapeMarkup(markup) {
+                    return markup;
+                }, // let our custom formatter work
+                minimumInputLength: 1
+            }).on('select2:select', function (e) {
+                var data = e.params.data;
+                data.id_elemento = data.id_material;
+                // console.log(data);
+                self.material_seleccionado = data;
+            });
+
+            $('#add_insumo_modal').modal('show');
+        }
+
+    }
+});
+
+},{}],32:[function(require,module,exports){
+'use strict';
+
 Vue.component('cambio-insumos-create', {
     props: ['id_tipo_orden'],
     data: function data() {
@@ -19221,6 +19533,7 @@ Vue.component('cambio-insumos-create', {
                 }
             });
         });
+
         self.fetchPresupuestos();
 
         $(document).on('click', '.btn_add_concepto', function () {
@@ -19231,6 +19544,7 @@ Vue.component('cambio-insumos-create', {
             self.removeConcepto(id);
         });
     },
+
     methods: {
 
         fetchTarjetas: function fetchTarjetas() {
@@ -19889,7 +20203,7 @@ Vue.component('cambio-insumos-create', {
     }
 });
 
-},{}],32:[function(require,module,exports){
+},{}],33:[function(require,module,exports){
 'use strict';
 
 Vue.component('cambio-insumos-show', {
@@ -20111,7 +20425,7 @@ Vue.component('cambio-insumos-show', {
     }
 });
 
-},{}],33:[function(require,module,exports){
+},{}],34:[function(require,module,exports){
 'use strict';
 
 Vue.component('cambio-presupuesto-create', {
@@ -20285,7 +20599,7 @@ Vue.component('cambio-presupuesto-create', {
     }
 });
 
-},{}],34:[function(require,module,exports){
+},{}],35:[function(require,module,exports){
 'use strict';
 
 Vue.component('cambio-presupuesto-index', {
@@ -20462,7 +20776,7 @@ Vue.component('cambio-presupuesto-index', {
 
 });
 
-},{}],35:[function(require,module,exports){
+},{}],36:[function(require,module,exports){
 'use strict';
 
 Vue.component('escalatoria-create', {
@@ -20585,7 +20899,7 @@ Vue.component('escalatoria-create', {
     }
 });
 
-},{}],36:[function(require,module,exports){
+},{}],37:[function(require,module,exports){
 'use strict';
 
 Vue.component('escalatoria-show', {
@@ -20738,7 +21052,7 @@ Vue.component('escalatoria-show', {
     }
 });
 
-},{}],37:[function(require,module,exports){
+},{}],38:[function(require,module,exports){
 'use strict';
 
 Vue.component('control-presupuesto-index', {
@@ -20747,7 +21061,7 @@ Vue.component('control-presupuesto-index', {
     }
 });
 
-},{}],38:[function(require,module,exports){
+},{}],39:[function(require,module,exports){
 'use strict';
 
 Vue.component('variacion-volumen-create', {
@@ -21060,7 +21374,7 @@ Vue.component('variacion-volumen-create', {
     }
 });
 
-},{}],39:[function(require,module,exports){
+},{}],40:[function(require,module,exports){
 'use strict';
 
 Vue.component('variacion-volumen-show', {
@@ -21366,7 +21680,7 @@ Vue.component('variacion-volumen-show', {
     }
 });
 
-},{}],40:[function(require,module,exports){
+},{}],41:[function(require,module,exports){
 'use strict';
 
 Vue.component('comprobante-fondo-fijo-create', {
@@ -21867,7 +22181,7 @@ Vue.component('comprobante-fondo-fijo-create', {
     }
 });
 
-},{}],41:[function(require,module,exports){
+},{}],42:[function(require,module,exports){
 'use strict';
 
 Vue.component('comprobante-fondo-fijo-edit', {
@@ -22323,7 +22637,7 @@ Vue.component('comprobante-fondo-fijo-edit', {
     }
 });
 
-},{}],42:[function(require,module,exports){
+},{}],43:[function(require,module,exports){
 'use strict';
 
 Vue.component('comprobante-fondo-fijo-index', {
@@ -22438,7 +22752,7 @@ Vue.component('comprobante-fondo-fijo-index', {
     }
 });
 
-},{}],43:[function(require,module,exports){
+},{}],44:[function(require,module,exports){
 'use strict';
 
 Vue.component('subcontratos-estimacion', {
@@ -22517,7 +22831,7 @@ Vue.component('subcontratos-estimacion', {
     }
 });
 
-},{}],44:[function(require,module,exports){
+},{}],45:[function(require,module,exports){
 'use strict';
 
 Vue.component('movimientos_bancarios-index', {
@@ -22868,7 +23182,7 @@ Vue.component('movimientos_bancarios-index', {
     }
 });
 
-},{}],45:[function(require,module,exports){
+},{}],46:[function(require,module,exports){
 'use strict';
 
 Vue.component('traspaso-cuentas-index', {
@@ -23181,7 +23495,7 @@ Vue.component('traspaso-cuentas-index', {
     }
 });
 
-},{}],46:[function(require,module,exports){
+},{}],47:[function(require,module,exports){
 'use strict';
 
 Vue.component('app-errors', {
@@ -23190,7 +23504,7 @@ Vue.component('app-errors', {
     template: require('./templates/errors.html')
 });
 
-},{"./templates/errors.html":50}],47:[function(require,module,exports){
+},{"./templates/errors.html":51}],48:[function(require,module,exports){
 'use strict';
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
@@ -23216,7 +23530,7 @@ Vue.component('global-errors', {
   }
 });
 
-},{"./templates/global-errors.html":51}],48:[function(require,module,exports){
+},{"./templates/global-errors.html":52}],49:[function(require,module,exports){
 'use strict';
 
 Vue.component('kardex-material-index', {
@@ -23366,7 +23680,7 @@ Vue.component('kardex-material-index', {
 
 });
 
-},{}],49:[function(require,module,exports){
+},{}],50:[function(require,module,exports){
 'use strict';
 
 Vue.component('select2', {
@@ -23422,9 +23736,9 @@ Vue.component('select2', {
     }
 });
 
-},{}],50:[function(require,module,exports){
-module.exports = '<div id="form-errors" v-cloak>\n  <div class="alert alert-danger" v-if="form.errors.length">\n    <ul>\n      <li v-for="error in form.errors">{{ error }}</li>\n    </ul>\n  </div>\n</div>';
 },{}],51:[function(require,module,exports){
+module.exports = '<div id="form-errors" v-cloak>\n  <div class="alert alert-danger" v-if="form.errors.length">\n    <ul>\n      <li v-for="error in form.errors">{{ error }}</li>\n    </ul>\n  </div>\n</div>';
+},{}],52:[function(require,module,exports){
 module.exports = '<div class="alert alert-danger" v-show="errors.length">\n  <ul>\n    <li v-for="error in errors">{{ error }}</li>\n  </ul>\n</div>';
 },{}]},{},[4]);
 

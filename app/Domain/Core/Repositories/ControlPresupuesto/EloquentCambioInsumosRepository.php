@@ -259,6 +259,68 @@ class EloquentCambioInsumosRepository implements CambioInsumosRepository
     }
 
     /**
+     * Guarda un registro de CambioInsumos
+     * @param array $data
+     * @throws \Exception
+     * @return CambioInsumos
+     */
+    public function createIndirecto(array $data)
+    {
+        try {
+            DB::connection('cadeco')->beginTransaction();
+
+
+            $solicitud = $this->model->create($data);
+
+            $partidaInsumo['id_solicitud_cambio'] = $solicitud->id;
+            $partidaInsumo['concepto_seleccionado'] = $data['concepto_seleccionado']['id'];
+            $partidaInsumo['id_concepto'] = $data['concepto_seleccionado']['id_concepto'];
+
+            PartidasInsumosAgrupados::create($partidaInsumo);
+
+            $cantidad_presupuestada_concepto = $data['concepto_seleccionado']['cantidad_presupuestada'];
+
+            foreach ($data['partidas'] as $gasto) {
+
+
+                if (isset($gasto['id_concepto'])) {
+                    $conceptoTarjeta = ConceptoTarjeta::where('id_concepto', '=', $gasto['id_concepto'])->first();
+                    if ($conceptoTarjeta) {
+                        $gasto['id_tarjeta'] = $conceptoTarjeta->id_tarjeta;
+                    }
+                }
+                $gasto['monto_presupuestado']=$cantidad_presupuestada_concepto;
+                $gasto['id_tipo_orden'] = TipoOrden::ORDEN_DE_CAMBIO_DE_INSUMOS;
+                $gasto['id_solicitud_cambio'] = $solicitud->id;
+                $gasto['precio_unitario_original'] = $gasto['precio_unitario'];
+
+                //  dd(strlen($gasto['precio_unitario_nuevo']));
+                strlen($gasto['precio_unitario_nuevo'])> 0 ? $gasto['precio_unitario_nuevo'] = $gasto['precio_unitario_nuevo'] : $gasto['precio_unitario_nuevo']=NULL;
+                strlen($gasto['rendimiento_nuevo']) > 0 ? $gasto['rendimiento_nuevo'] = $gasto['rendimiento_nuevo'] : $gasto['rendimiento_nuevo']=NULL;
+                $gasto['rendimiento_original'] = $gasto['rendimiento_actual'];
+                $gasto['tipo_agrupador'] = 6;
+                if (strlen($gasto['precio_unitario_nuevo'])>0|| strlen($gasto['rendimiento_nuevo'])>0) {
+                    SolicitudCambioPartida::create($gasto);
+                }
+
+
+            }
+            $solicitud = $this->with('partidas')->find($solicitud->id);
+            DB::connection('cadeco')->commit();
+
+          //  dd($solicitud);
+
+            return $solicitud;
+        } catch
+        (\Exception $e) {
+            DB::connection('cadeco')->rollback();
+            throw $e;
+        }
+
+
+    }
+
+    /**
      * Regresa un registro específico de CambioInsumos
      * @param $id
      * @return CambioInsumos
@@ -289,19 +351,21 @@ class EloquentCambioInsumosRepository implements CambioInsumosRepository
 
             $insumosAgrupados = PartidasInsumosAgrupados::where('id_solicitud_cambio', '=', $id)->get();
             $conceptoTarjeta = ConceptoTarjeta::where('id_concepto', '=', $insumosAgrupados[0]->id_concepto)->first();
-            //////////////generamos nueva tarjeta
-            $tarjeta = Tarjeta::find($conceptoTarjeta->id_tarjeta);
-            $numAux = 0;
-            for ($num = 1; ; $num++) {
-                $tarjetaNueva = Tarjeta::where('descripcion', '=', $tarjeta->descripcion . '-' . $num)->get();
-                $numAux = $num;
-                if (count($tarjetaNueva) == 0) {
-                    break;
-                }
-            }
-            $tarjetaNueva = $tarjeta->descripcion . '-' . ($numAux);
-            $nuevaTarjeta = Tarjeta::create(['descripcion' => $tarjetaNueva]);
 
+       if($conceptoTarjeta!=null) {
+           //////////////generamos nueva tarjeta
+           $tarjeta = Tarjeta::find($conceptoTarjeta->id_tarjeta);
+           $numAux = 0;
+           for ($num = 1; ; $num++) {
+               $tarjetaNueva = Tarjeta::where('descripcion', '=', $tarjeta->descripcion . '-' . $num)->get();
+               $numAux = $num;
+               if (count($tarjetaNueva) == 0) {
+                   break;
+               }
+           }
+           $tarjetaNueva = $tarjeta->descripcion . '-' . ($numAux);
+           $nuevaTarjeta = Tarjeta::create(['descripcion' => $tarjetaNueva]);
+       }
 
             foreach ($insumosAgrupados as $insumo) {
 
@@ -719,6 +783,7 @@ class EloquentCambioInsumosRepository implements CambioInsumosRepository
                 }
 
 
+                if($conceptoTarjeta!=null) {
                 $conceptosNuevaTarjeta = Concepto::where('nivel', 'like', $concepto->nivel . '%')->get();
                 foreach ($conceptosNuevaTarjeta as $conceptoNuevaTarjeta) {
                     //  $conceptoNuevaTarjeta->id_concepto;
@@ -729,7 +794,7 @@ class EloquentCambioInsumosRepository implements CambioInsumosRepository
                     } else { ///caso nuevos insert
                         ConceptoTarjeta::create(['id_concepto' => $conceptoNuevaTarjeta->id_concepto, 'id_tarjeta' => $nuevaTarjeta->id]);
                     }
-                }
+                }}
 
                 ///////////Suma de montos a propagar
                 ///
@@ -937,7 +1002,7 @@ class EloquentCambioInsumosRepository implements CambioInsumosRepository
             $data['conceptos_agrupados'] = $conceptos_agrupados;
             $data['folio_solicitud'] = $solicitud->numero_folio;
             $data['usuario_autorizo'] = SolicitudCambioAutorizada::where("id_solicitud_cambio", "=", $id)->first()->userAutorizo;
-            $data['dif_proforma']=$conceptos_agrupados['maximo_proforma']['diferencia'];
+            $data['dif_proforma'] = $conceptos_agrupados['maximo_proforma']['diferencia'];
             $basesDatos = Proyecto::get();
 
             foreach ($basesDatos as $bd) {
