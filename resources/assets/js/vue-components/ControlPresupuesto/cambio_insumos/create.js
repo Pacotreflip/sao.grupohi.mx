@@ -53,7 +53,8 @@ Vue.component('cambio-insumos-create', {
                 motivo: this.form.motivo,
                 area_solicitante:this.form.area_solicitante,
                 agrupadas: this.form.agrupadas,
-                partidas: this.form.partidas
+                partidas: this.form.partidas,
+                insumos_eliminados:this.form.insumos_eliminados
             };
             return res;
         }
@@ -506,11 +507,11 @@ Vue.component('cambio-insumos-create', {
 
         addInsumoTipo: function (tipo) {
             var self = this;
-            var aux_tipo=tipo;
+
             if(tipo==5||tipo==6){
                 tipo=2;
             }
-            self.tipo_insumo=tipo;
+
             self.guardar = true;
             $('#sel_material').select2({
                 width: '100%',
@@ -527,10 +528,7 @@ Vue.component('cambio-insumos-create', {
                     processResults: function (data) {
                         return {
                             results: $.map(data.data.materiales, function (item) {
-                                if(tipo==2){
-                                    tipo=aux_tipo;
-                                }
-                                self.tipo_insumo=tipo;
+
                                 return {
                                     text: item.DescripcionPadre+" -> "+item.descripcion,
                                     descripcion: item.descripcion,
@@ -709,11 +707,13 @@ Vue.component('cambio-insumos-create', {
                 self.form.insumos_eliminados.splice(index, 1);
                 $("#c_p_"+ id_concepto+ '_' + id).prop('disabled', false);
                 $("#m_p_"+ id_concepto+ '_' + id).prop('disabled', false);
+                $("#r_p_"+ id_concepto+ '_' + id).prop('disabled', false);
 
             }else {
                 console.log('salio');
                 $("#c_p_" + id_concepto + '_' + id).prop('disabled', true);
                 $("#m_p_" + id_concepto + '_' + id).prop('disabled', true);
+                $("#r_p_" + id_concepto + '_' + id).prop('disabled', true);
                 switch (tipo) {
                     case 1: ///agregar a materiales
                         if (self.form.partidas[0].conceptos.MATERIALES.insumos[id].nuevo) {

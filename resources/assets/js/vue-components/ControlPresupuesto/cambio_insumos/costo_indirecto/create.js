@@ -25,7 +25,7 @@ Vue.component('cambio-insumos-indirecto-create', {
             },
             id_material_seleccionado:0,
             material_seleccionado:[],
-
+            guardar: false,
             id_concepto_indirecto: '',
             concepto_seleccionado: [],
             cargando: false,
@@ -150,8 +150,23 @@ Vue.component('cambio-insumos-indirecto-create', {
         },
         agregar_insumo_nuevo: function () {
             var self = this;
-            self.form.partidas.push(self.material_seleccionado);
-            $('#add_insumo_modal').modal('hide');
+            var existe=false;
+            $.each(self.form.partidas, function (index, insumo) {
+                if(insumo.id_material == self.material_seleccionado.id_material){
+
+                    existe=true;
+                    swal({
+                        type: 'warning',
+                        title: 'Advertencia',
+                        text: 'Ya Existe el Insumo Seleccionado'
+                    });
+                }
+            });
+            if(!existe){
+                self.form.partidas.push(self.material_seleccionado);
+                $('#add_insumo_modal').modal('hide');
+            }
+
         },
         removeRendimiento : function (id_concepto, id, tipo) {
             var self = this;
@@ -161,10 +176,18 @@ Vue.component('cambio-insumos-indirecto-create', {
                 self.form.insumos_eliminados.splice(index, 1);
                 $("#c_p_"+ id_concepto+ '_' + id).prop('disabled', false);
                 $("#m_p_"+ id_concepto+ '_' + id).prop('disabled', false);
+                $("#r_p_"+ id_concepto+ '_' + id).prop('disabled', false);
             }else{
                 self.form.insumos_eliminados.push(id_concepto);
+
+                if (self.form.partidas[id].nuevo) {
+                  self.form.partidas.splice(id, 1);
+
+                }
+
                 $("#c_p_"+ id_concepto+ '_' + id).prop('disabled', true);
                 $("#m_p_"+ id_concepto+ '_' + id).prop('disabled', true);
+                $("#r_p_"+ id_concepto+ '_' + id).prop('disabled', true);
             }
         },
 
@@ -256,11 +279,13 @@ Vue.component('cambio-insumos-indirecto-create', {
             if (tipo == 5 || tipo == 6) {
                 tipo = 2;
             }
-            self.tipo_insumo = tipo;
+           // self.tipo_insumo = tipo;
 
+            self.guardar = true;
 
             $('#sel_material').select2({
                 width: '100%',
+                async:true,
                 ajax: {
                     url: App.host + '/control_presupuesto/cambio_presupuesto/getDescripcionByTipo',
                     dataType: 'json',
@@ -274,10 +299,7 @@ Vue.component('cambio-insumos-indirecto-create', {
                     processResults: function (data) {
                         return {
                             results: $.map(data.data.materiales, function (item) {
-                                if (tipo == 2) {
-                                    tipo = aux_tipo;
-                                }
-                                self.tipo_insumo = tipo;
+
                                 return {
                                     text: item.DescripcionPadre + " -> " + item.descripcion,
                                     descripcion: item.descripcion,
@@ -295,7 +317,11 @@ Vue.component('cambio-insumos-indirecto-create', {
                             })
                         };
                     },
+                    success: function (data, textStatus, xhr) {
+                      //  self.tipo_insumo = aux_tipo;
+                    },
                     error: function (error) {
+                        //self.tipo_insumo = aux_tipo;
                     },
                     cache: true
                 },
@@ -307,6 +333,7 @@ Vue.component('cambio-insumos-indirecto-create', {
                 var data = e.params.data;
                 data.id_elemento = data.id_material;
                 // console.log(data);
+                self.guardar = false;
                 self.material_seleccionado = data;
             });
 

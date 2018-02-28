@@ -131,11 +131,12 @@ class CambioInsumosController extends Controller
         $conceptos_agrupados = $this->agrupacion->with('concepto')->where([['id_solicitud_cambio', '=', $solicitud->id]])->all();
         $conceptos_agrupados = $this->partidas->getTotalesClasificacionInsumos($conceptos_agrupados->toArray());
         $solicitud = SolicitudCambio::with(['tipoOrden', 'userRegistro', 'estatus'])->find($id);
-        return view('control_presupuesto.cambio_insumos.show')
-            ->with('solicitud', $solicitud)
-            ->with('cobrabilidad', $solicitud->tipoOrden->cobrabilidad)
-            ->with('presupuestos', $presupuestos)
-            ->with('conceptos_agrupados', $conceptos_agrupados);
+
+            return view('control_presupuesto.cambio_insumos.show')
+                ->with('solicitud', $solicitud)
+                ->with('cobrabilidad', $solicitud->tipoOrden->cobrabilidad)
+                ->with('presupuestos', $presupuestos)
+                ->with('conceptos_agrupados', $conceptos_agrupados);
 
     }
 

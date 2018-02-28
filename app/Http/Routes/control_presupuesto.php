@@ -75,15 +75,12 @@ Route::group(['prefix' => 'control_presupuesto'], function () {
      * Ordenes de Cambio de Insumos
      */
     Route::group(['prefix' => 'cambio_insumos_indirecto'], function () {
+        Route::get('/create', 'CambioInsumosController@indirecto')->name('control_presupuesto.cambio_insumos.costo_indirecto.create');
         Route::post('/', 'CambioInsumosController@storeIndirecto');
+        Route::get('/{cambio_insumos}', 'CambioInsumosController@show')->name('control_presupuesto.cambio_insumos.show');
        });
 
-    /**
-     * Ordenes de Cambio de Insumos Costo Indirecto
-     */
-    Route::group(['prefix' => 'cambio_insumos_indirecto'], function () {
-        Route::get('/create', 'CambioInsumosController@indirecto')->name('control_presupuesto.cambio_insumos.costo_indirecto.create');
-    });
+
 
     /**
      * Tipos de Cobrabilidad Routes

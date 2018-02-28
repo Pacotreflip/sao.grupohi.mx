@@ -9,25 +9,24 @@
             :id_tipo_orden="7"
             inline-template v-cloak>
         <section>
+
+
             <div class="row">
                 <div class="col-md-12">
                     <div class="box box-solid">
                         <div class="box-header with-border">
                             <h3 class="box-title">Filtros para consulta de Conceptos</h3>
                         </div>
+                        <form id="form_insumo_indirecto"
+                              data-vv-scope="form_insumo_indirecto">
+                            <div class="box-body ">
+                                <select class="form-control" :name="'Item'"
+                                        data-placeholder="BUSCAR COSTO INDIRECTO"
+                                        id="sel_concepto_indirecto"
+                                        v-model="id_concepto_indirecto"></select>
 
-                        <div class="box box-body with-border">
-                            <form id="form_insumo_indirecto"
-                                  data-vv-scope="form_insumo_indirecto">
-                                <div class="box-body with-border">
-                                    <select class="form-control" :name="'Item'"
-                                            data-placeholder="BUSCAR COSTO INDIRECTO"
-                                            id="sel_concepto_indirecto"
-                                            v-model="id_concepto_indirecto"></select>
-
-                                </div>
-                            </form>
-                        </div>
+                            </div>
+                        </form>
                     </div>
                 </div>
             </div>
@@ -74,7 +73,7 @@
                                         </tr>
                                         </thead>
                                         <tbody>
-                                        <tr v-for="(insumo, i) in form.partidas">
+                                        <tr v-for="(insumo, i) in form.partidas" :class="insumo.nuevo?'bg-yellow':''">
                                             <td>@{{ i+1 }}</td>
                                             <td>@{{ insumo.descripcion }}</td>
                                             <td>@{{ insumo.unidad }}</td>
@@ -228,11 +227,10 @@
 
                             </div>
                             <div class="modal-footer">
-                                <button type="button" class="btn btn-default" data-dismiss="modal"
-                                        v-on:click="agregar_insumo_nuevo()">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">
                                     Cancelar
                                 </button>
-                                <button type="button" class="btn btn-primary" v-on:click="agregar_insumo_nuevo()">
+                                <button type="button" class="btn btn-primary" v-on:click="agregar_insumo_nuevo()" :disabled="guardar">
                                     <i class="fa  fa-plus"></i> Agregar
 
                                 </button>

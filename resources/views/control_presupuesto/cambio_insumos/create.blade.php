@@ -135,7 +135,7 @@
                                                 </tr>
                                                 </thead>
                                                 <tbody>
-                                                <tr v-for="(insumo, i) in concepto.conceptos.MATERIALES.insumos">
+                                                <tr v-for="(insumo, i) in concepto.conceptos.MATERIALES.insumos" :class="insumo.nuevo?'bg-yellow':''">
                                                     <td>@{{ i+1 }}</td>
                                                     <td>@{{ insumo.descripcion }}</td>
                                                     <td>@{{ insumo.unidad }}</td>
@@ -215,7 +215,7 @@
                                                 </tr>
                                                 </thead>
                                                 <tbody>
-                                                <tr v-for="(insumo, i) in concepto.conceptos.MANOOBRA.insumos">
+                                                <tr v-for="(insumo, i) in concepto.conceptos.MANOOBRA.insumos" :class="insumo.nuevo?'bg-yellow':''">
                                                     <td>@{{ i+1 }}</td>
                                                     <td>@{{ insumo.descripcion }}</td>
                                                     <td>@{{ insumo.unidad }}</td>
@@ -291,7 +291,7 @@
                                                 </tr>
                                                 </thead>
                                                 <tbody>
-                                                <tr v-for="(insumo, i) in concepto.conceptos.HERRAMIENTAYEQUIPO.insumos">
+                                                <tr v-for="(insumo, i) in concepto.conceptos.HERRAMIENTAYEQUIPO.insumos" :class="insumo.nuevo?'bg-yellow':''">
                                                     <td>@{{ i+1 }}</td>
                                                     <td>@{{ insumo.descripcion }}</td>
                                                     <td>@{{ insumo.unidad }}</td>
@@ -366,7 +366,7 @@
                                                 </tr>
                                                 </thead>
                                                 <tbody>
-                                                <tr v-for="(insumo, i) in concepto.conceptos.MAQUINARIA.insumos">
+                                                <tr v-for="(insumo, i) in concepto.conceptos.MAQUINARIA.insumos" :class="insumo.nuevo?'bg-yellow':''">
                                                     <td>@{{ i+1 }}</td>
                                                     <td>@{{ insumo.descripcion }}</td>
                                                     <td>@{{ insumo.unidad }}</td>
@@ -438,7 +438,7 @@
                                                 </tr>
                                                 </thead>
                                                 <tbody>
-                                                <tr v-for="(insumo, i) in concepto.conceptos.SUBCONTRATOS.insumos">
+                                                <tr v-for="(insumo, i) in concepto.conceptos.SUBCONTRATOS.insumos" :class="insumo.nuevo?'bg-yellow':''">
                                                     <td>@{{ i+1 }}</td>
                                                     <td>@{{ insumo.descripcion }}</td>
                                                     <td>@{{ insumo.unidad }}</td>
@@ -534,7 +534,7 @@
                                                 </tr>
                                                 </thead>
                                                 <tbody>
-                                                <tr v-for="(insumo, i) in concepto.conceptos.MATERIALES.insumos">
+                                                <tr v-for="(insumo, i) in concepto.conceptos.MATERIALES.insumos" :class="insumo.nuevo?'bg-yellow':''">
                                                     <td>@{{ i+1 }}</td>
                                                     <td>@{{ insumo.descripcion }}</td>
                                                     <td>@{{ insumo.unidad }}</td>
@@ -627,7 +627,7 @@
                                                 </tr>
                                                 </thead>
                                                 <tbody>
-                                                <tr v-for="(insumo, i) in concepto.conceptos.MANOOBRA.insumos">
+                                                <tr v-for="(insumo, i) in concepto.conceptos.MANOOBRA.insumos" :class="insumo.nuevo?'bg-yellow':''">
                                                     <td>@{{ i+1 }}</td>
                                                     <td>@{{ insumo.descripcion }}</td>
                                                     <td>@{{ insumo.unidad }}</td>
@@ -721,7 +721,7 @@
                                                 </tr>
                                                 </thead>
                                                 <tbody>
-                                                <tr v-for="(insumo, i) in concepto.conceptos.HERRAMIENTAYEQUIPO.insumos">
+                                                <tr v-for="(insumo, i) in concepto.conceptos.HERRAMIENTAYEQUIPO.insumos" :class="insumo.nuevo?'bg-yellow':''">
                                                     <td>@{{ i+1 }}</td>
                                                     <td>@{{ insumo.descripcion }}</td>
                                                     <td>@{{ insumo.unidad }}</td>
@@ -814,7 +814,7 @@
                                                 </tr>
                                                 </thead>
                                                 <tbody>
-                                                <tr v-for="(insumo, i) in concepto.conceptos.MAQUINARIA.insumos">
+                                                <tr v-for="(insumo, i) in concepto.conceptos.MAQUINARIA.insumos" :class="insumo.nuevo?'bg-yellow':''">
                                                     <td>@{{ i+1 }}</td>
                                                     <td>@{{ insumo.descripcion }}</td>
                                                     <td>@{{ insumo.unidad }}</td>
@@ -906,7 +906,7 @@
                                                 </tr>
                                                 </thead>
                                                 <tbody>
-                                                <tr v-for="(insumo, i) in concepto.conceptos.SUBCONTRATOS.insumos">
+                                                <tr v-for="(insumo, i) in concepto.conceptos.SUBCONTRATOS.insumos" :class="insumo.nuevo?'bg-yellow':''">
                                                     <td>@{{ i+1 }}</td>
                                                     <td>@{{ insumo.descripcion }}</td>
                                                     <td>@{{ insumo.unidad }}</td>
