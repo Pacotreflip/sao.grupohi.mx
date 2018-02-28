@@ -19407,8 +19407,6 @@ Vue.component('cambio-insumos-indirecto-create', {
 },{}],32:[function(require,module,exports){
 'use strict';
 
-var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
-
 Vue.component('cambio-insumos-create', {
     props: ['id_tipo_orden'],
     data: function data() {
@@ -20090,14 +20088,12 @@ Vue.component('cambio-insumos-create', {
             var self = this;
             var index = self.form.insumos_eliminados.indexOf(parseInt(id_concepto));
             if (index > -1) {
-
-                console.log('entro' + index + ' ' + (typeof index === 'undefined' ? 'undefined' : _typeof(index)));
                 self.form.insumos_eliminados.splice(index, 1);
                 $("#c_p_" + id_concepto + '_' + id).prop('disabled', false);
                 $("#m_p_" + id_concepto + '_' + id).prop('disabled', false);
                 $("#r_p_" + id_concepto + '_' + id).prop('disabled', false);
             } else {
-                console.log('salio');
+
                 $("#c_p_" + id_concepto + '_' + id).prop('disabled', true);
                 $("#m_p_" + id_concepto + '_' + id).prop('disabled', true);
                 $("#r_p_" + id_concepto + '_' + id).prop('disabled', true);
