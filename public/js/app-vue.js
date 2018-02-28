@@ -19884,7 +19884,7 @@ Vue.component('cambio-insumos-create', {
 
         addInsumoTipo: function addInsumoTipo(tipo) {
             var self = this;
-
+            self.tipo_insumo = tipo;
             if (tipo == 5 || tipo == 6) {
                 tipo = 2;
             }
