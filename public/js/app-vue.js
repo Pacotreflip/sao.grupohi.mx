@@ -19380,6 +19380,8 @@ Vue.component('cambio-insumos-indirecto-create', {
 },{}],32:[function(require,module,exports){
 'use strict';
 
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+
 Vue.component('cambio-insumos-create', {
     props: ['id_tipo_orden'],
     data: function data() {
@@ -19406,6 +19408,8 @@ Vue.component('cambio-insumos-create', {
             tarjeta_actual: 0,
             cargando: false,
             guardando: false,
+            guardar: true,
+            nuevo: false,
             filtros: [],
             id_tarjeta: '',
             tarjetas: [],
@@ -19641,7 +19645,6 @@ Vue.component('cambio-insumos-create', {
                     } else {
                         $.each(self.form.partidas, function (index, partida) {
                             var diferencias = false;
-                            console.log(diferencias);
                             if (partida.conceptos.MATERIALES.insumos.length === response.conceptos.MATERIALES.insumos.length) {
                                 var total1 = 0;
                                 var total2 = 0;
@@ -19653,7 +19656,6 @@ Vue.component('cambio-insumos-create', {
                                 });
                                 if ((total1 / partida.cobrable.cantidad_presupuestada).toFixed(3) != (total2 / response.cobrable.cantidad_presupuestada).toFixed(3)) {
                                     diferencias = true;
-                                    console.log('Materiales : ' + total1 / partida.cobrable.cantidad_presupuestada + ' - ' + total2 / response.cobrable.cantidad_presupuestada);
                                 }
                             } else {
                                 diferencias = true;
@@ -19669,7 +19671,6 @@ Vue.component('cambio-insumos-create', {
                                 });
                                 if ((total1 / partida.cobrable.cantidad_presupuestada).toFixed(3) != (total2 / response.cobrable.cantidad_presupuestada).toFixed(3)) {
                                     diferencias = true;
-                                    console.log('Herramienta : ' + total1 / partida.cobrable.cantidad_presupuestada + ' - ' + total2 / response.cobrable.cantidad_presupuestada);
                                 }
                             } else {
                                 diferencias = true;
@@ -19685,7 +19686,6 @@ Vue.component('cambio-insumos-create', {
                                 });
                                 if ((total1 / partida.cobrable.cantidad_presupuestada).toFixed(3) != (total2 / response.cobrable.cantidad_presupuestada).toFixed(3)) {
                                     diferencias = true;
-                                    console.log('Mano Obra : ' + total1 / partida.cobrable.cantidad_presupuestada + ' - ' + total2 / response.cobrable.cantidad_presupuestada);
                                 }
                             } else {
                                 diferencias = true;
@@ -19701,7 +19701,6 @@ Vue.component('cambio-insumos-create', {
                                 });
                                 if ((total1 / partida.cobrable.cantidad_presupuestada).toFixed(3) != (total2 / response.cobrable.cantidad_presupuestada).toFixed(3)) {
                                     diferencias = true;
-                                    console.log('Maquinaria : ' + total1 / partida.cobrable.cantidad_presupuestada + ' - ' + total2 / response.cobrable.cantidad_presupuestada);
                                 }
                             } else {
                                 diferencias = true;
@@ -19718,7 +19717,6 @@ Vue.component('cambio-insumos-create', {
                                 });
                                 if ((total1 / partida.cobrable.cantidad_presupuestada).toFixed(3) != (total2 / response.cobrable.cantidad_presupuestada).toFixed(3)) {
                                     diferencias = true;
-                                    console.log('Subcontratos : ' + total1 / partida.cobrable.cantidad_presupuestada + ' - ' + total2 / response.cobrable.cantidad_presupuestada);
                                 }
                             } else {
                                 diferencias = true;
@@ -19735,14 +19733,12 @@ Vue.component('cambio-insumos-create', {
                                 });
                                 if ((total1 / partida.cobrable.cantidad_presupuestada).toFixed(3) != (total2 / response.cobrable.cantidad_presupuestada).toFixed(3)) {
                                     diferencias = true;
-                                    console.log('Gastos : ' + total1 / partida.cobrable.cantidad_presupuestada + ' - ' + total2 / response.cobrable.cantidad_presupuestada);
                                 }
                             } else {
                                 diferencias = true;
                             }
 
                             self.cargando = false;
-                            console.log('Final : ' + diferencias);
                             if (diferencias) {
                                 $('#' + id).html('<i class="fa fa-plus text-green"></i>');
                                 swal({
@@ -19866,7 +19862,7 @@ Vue.component('cambio-insumos-create', {
                 tipo = 2;
             }
             self.tipo_insumo = tipo;
-
+            self.guardar = true;
             $('#sel_material').select2({
                 width: '100%',
                 ajax: {
@@ -19912,11 +19908,10 @@ Vue.component('cambio-insumos-create', {
                 minimumInputLength: 1
             }).on('select2:select', function (e) {
                 var data = e.params.data;
+                self.guardar = false;
                 data.id_elemento = data.id_material;
-                // console.log(data);
                 self.material_seleccionado = data;
             });
-
             $('#add_insumo_modal').modal('show');
         },
 
@@ -19933,27 +19928,75 @@ Vue.component('cambio-insumos-create', {
                 switch (self.tipo_insumo) {
                     case 1:
                         ///agregar a materiales
-                        partida.conceptos.MATERIALES.insumos.push(self.material_seleccionado);
+                        if (!self.validarInsumo(self.material_seleccionado.id_material, self.tipo_insumo)) {
+                            partida.conceptos.MATERIALES.insumos.push(self.material_seleccionado);
+                        } else {
+                            swal({
+                                type: 'warning',
+                                title: 'Advertencia',
+                                text: 'Ya Existe el Insumo Seleccionado'
+                            });
+                        }
                         break;
                     case 2:
                         //// agergar a mano obra
-                        partida.conceptos.MANOOBRA.insumos.push(self.material_seleccionado);
+                        if (!self.validarInsumo(self.material_seleccionado.id_material, self.tipo_insumo)) {
+                            partida.conceptos.MANOOBRA.insumos.push(self.material_seleccionado);
+                        } else {
+                            swal({
+                                type: 'warning',
+                                title: 'Advertencia',
+                                text: 'Ya Existe el Insumo Seleccionado'
+                            });
+                        }
                         break;
                     case 4:
                         ////agregar a herram y equipo
-                        partida.conceptos.HERRAMIENTAYEQUIPO.insumos.push(self.material_seleccionado);
+                        if (!self.validarInsumo(self.material_seleccionado.id_material, self.tipo_insumo)) {
+                            partida.conceptos.HERRAMIENTAYEQUIPO.insumos.push(self.material_seleccionado);
+                        } else {
+                            swal({
+                                type: 'warning',
+                                title: 'Advertencia',
+                                text: 'Ya Existe el Insumo Seleccionado'
+                            });
+                        }
                         break;
                     case 8:
                         ///agregar a maquinaria
-                        partida.conceptos.MAQUINARIA.insumos.push(self.material_seleccionado);
+                        if (!self.validarInsumo(self.material_seleccionado.id_material, self.tipo_insumo)) {
+                            partida.conceptos.MAQUINARIA.insumos.push(self.material_seleccionado);
+                        } else {
+                            swal({
+                                type: 'warning',
+                                title: 'Advertencia',
+                                text: 'Ya Existe el Insumo Seleccionado'
+                            });
+                        }
                         break;
                     case 5:
                         ///agregar a maquinaria
-                        partida.conceptos.SUBCONTRATOS.insumos.push(self.material_seleccionado);
+                        if (!self.validarInsumo(self.material_seleccionado.id_material, self.tipo_insumo)) {
+                            partida.conceptos.SUBCONTRATOS.insumos.push(self.material_seleccionado);
+                        } else {
+                            swal({
+                                type: 'warning',
+                                title: 'Advertencia',
+                                text: 'Ya Existe el Insumo Seleccionado'
+                            });
+                        }
                         break;
                     case 6:
                         ///agregar a maquinaria
-                        partida.conceptos.GASTOS.insumos.push(self.material_seleccionado);
+                        if (!self.validarInsumo(self.material_seleccionado.id_material, self.tipo_insumo)) {
+                            partida.conceptos.GASTOS.insumos.push(self.material_seleccionado);
+                        } else {
+                            swal({
+                                type: 'warning',
+                                title: 'Advertencia',
+                                text: 'Ya Existe el Insumo Seleccionado'
+                            });
+                        }
                         break;
 
                 }
@@ -19962,33 +20005,120 @@ Vue.component('cambio-insumos-create', {
             $('#add_insumo_modal').modal('hide');
         },
 
+        validarInsumo: function validarInsumo(id_material, agrupador) {
+            var self = this;
+            var validador = false;
+            switch (agrupador) {
+                case 1:
+                    ///validar materiales
+                    $.each(self.form.partidas[0].conceptos.MATERIALES.insumos, function (index, insumo) {
+                        if (insumo.id_material == id_material) {
+                            validador = true;
+                        }
+                    });
+                    break;
+                case 2:
+                    //// agergar a mano obra
+                    $.each(self.form.partidas[0].conceptos.MANOOBRA.insumos, function (index, insumo) {
+                        if (insumo.id_material == id_material) {
+                            validador = true;
+                        }
+                    });
+                    break;
+                case 4:
+                    ////agregar a herram y equipo
+                    $.each(self.form.partidas[0].conceptos.HERRAMIENTAYEQUIPO.insumos, function (index, insumo) {
+                        if (insumo.id_material == id_material) {
+                            validador = true;
+                        }
+                    });
+                    break;
+                case 8:
+                    ///agregar a maquinaria
+                    $.each(self.form.partidas[0].conceptos.MAQUINARIA.insumos, function (index, insumo) {
+                        if (insumo.id_material == id_material) {
+                            validador = true;
+                        }
+                    });
+                    break;
+                case 5:
+                    ///agregar a maquinaria
+                    $.each(self.form.partidas[0].conceptos.SUBCONTRATOS.insumos, function (index, insumo) {
+                        if (insumo.id_material == id_material) {
+                            validador = true;
+                        }
+                    });
+                    break;
+                case 6:
+                    ///agregar a maquinaria
+                    $.each(self.form.partidas[0].conceptos.GASTOS.insumos, function (index, insumo) {
+                        if (insumo.id_material == id_material) {
+                            validador = true;
+                        }
+                    });
+                    break;
+
+            }
+            return validador;
+        },
+
         removeRendimiento: function removeRendimiento(id_concepto, id, tipo) {
             var self = this;
             var index = self.form.insumos_eliminados.indexOf(parseInt(id_concepto));
             if (index > -1) {
-                console.log('entro');
+
+                console.log('entro' + index + ' ' + (typeof index === 'undefined' ? 'undefined' : _typeof(index)));
                 self.form.insumos_eliminados.splice(index, 1);
                 $("#c_p_" + id_concepto + '_' + id).prop('disabled', false);
                 $("#m_p_" + id_concepto + '_' + id).prop('disabled', false);
             } else {
-                self.form.insumos_eliminados.push(id_concepto);
+                console.log('salio');
                 $("#c_p_" + id_concepto + '_' + id).prop('disabled', true);
                 $("#m_p_" + id_concepto + '_' + id).prop('disabled', true);
+                switch (tipo) {
+                    case 1:
+                        ///agregar a materiales
+                        if (self.form.partidas[0].conceptos.MATERIALES.insumos[id].nuevo) {
+                            self.form.partidas[0].conceptos.MATERIALES.insumos.splice(id, 1);
+                        } else {
+                            self.form.insumos_eliminados.push(parseInt(id_concepto));
+                        }
+
+                        break;
+                    case 2:
+                        //// agergar a mano obra
+                        if (self.form.partidas[0].conceptos.MANOOBRA.insumos[id].nuevo) {
+                            self.form.partidas[0].conceptos.MANOOBRA.insumos.splice(id, 1);
+                        } else {
+                            self.form.insumos_eliminados.push(parseInt(id_concepto));
+                        }
+                        break;
+                    case 4:
+                        ////agregar a herram y equipo
+                        if (self.form.partidas[0].conceptos.HERRAMIENTAYEQUIPO.insumos[id].nuevo) {
+                            self.form.partidas[0].conceptos.HERRAMIENTAYEQUIPO.insumos.splice(id, 1);
+                        } else {
+                            self.form.insumos_eliminados.push(parseInt(id_concepto));
+                        }
+                        break;
+                    case 8:
+                        ///agregar a maquinaria
+                        if (self.form.partidas[0].conceptos.MAQUINARIA.insumos[id].nuevo) {
+                            self.form.partidas[0].conceptos.MAQUINARIA.insumos.splice(id, 1);
+                        } else {
+                            self.form.insumos_eliminados.push(parseInt(id_concepto));
+                        }
+                    case 5:
+                        ///agregar a maquinaria
+                        if (self.form.partidas[0].conceptos.SUBCONTRATOS.insumos[id].nuevo) {
+                            self.form.partidas[0].conceptos.SUBCONTRATOS.insumos.splice(id, 1);
+                        } else {
+                            self.form.insumos_eliminados.push(parseInt(id_concepto));
+                        }
+                        break;
+                }
             }
-            /*switch (tipo){
-                case 1: ///agregar a materiales
-                    self.form.partidas[0].conceptos.MATERIALES.insumos[id].rendimiento_nuevo = valor;
-                    break;
-                case 2://// agergar a mano obra
-                    self.form.partidas[0].conceptos.MANOOBRA.insumos[id].rendimiento_nuevo = valor;
-                    break;
-                case 4: ////agregar a herram y equipo
-                    self.form.partidas[0].conceptos.HERRAMIENTAYEQUIPO.insumos[id].rendimiento_nuevo = valor;
-                    break;
-                case 8: ///agregar a maquinaria
-                    self.form.partidas[0].conceptos.MAQUINARIA.insumos[id].rendimiento_nuevo = valor;
-                    break;
-            }            this.recalcular(id_concepto, id);*/
+            this.recalcular(id_concepto, id);
         },
 
         insumoEliminado: function insumoEliminado(id_concepto) {
@@ -20018,7 +20148,6 @@ Vue.component('cambio-insumos-create', {
             var self = this;
             var cant_pres = $(".rendimiento" + id_concepto + '_' + i).val();
             var cant_concepto = self.form.partidas[0].cobrable.cantidad_presupuestada;
-            console.log(".rendimiento" + id_concepto + '_' + i);
             switch (tipo) {
                 case 1:
                     ///agregar a materiales

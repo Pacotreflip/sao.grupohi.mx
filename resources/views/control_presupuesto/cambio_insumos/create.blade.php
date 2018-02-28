@@ -1030,11 +1030,10 @@
 
                             </div>
                             <div class="modal-footer">
-                                <button type="button" class="btn btn-default" data-dismiss="modal"
-                                        v-on:click="agregar_insumo_nuevo()">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">
                                     Cancelar
                                 </button>
-                                <button type="button" class="btn btn-primary" v-on:click="agregar_insumo_nuevo()">
+                                <button type="button" class="btn btn-primary" :disabled="guardar" v-on:click="agregar_insumo_nuevo()">
                                     <i class="fa  fa-plus"></i> Agregar
 
                                 </button>
