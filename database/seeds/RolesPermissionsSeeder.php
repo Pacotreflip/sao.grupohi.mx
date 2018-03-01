@@ -1,5 +1,6 @@
 <?php
 
+use Ghi\Domain\Core\Models\Seguridad\Sistema;
 use Illuminate\Database\Seeder;
 use Ghi\Domain\Core\Models\Seguridad\Permission;
 use Ghi\Domain\Core\Models\Seguridad\Role;
@@ -150,6 +151,7 @@ class RolesPermissionsSeeder extends Seeder
         $control_proyecto              = Role::firstOrCreate(['name' => 'control_proyecto', 'display_name' => 'Control de Proyecto', 'description' => 'Rol de usuario de Control de Proyecto']);
         $coordinador_control_proyectos = Role::firstOrCreate(['name' => 'coordinador_control_proyectos', 'display_name' => 'Coordinador de Control de Proyectos', 'description' => 'Coordinador de Control de Proyectos']);
         $administrador_sistema         = Role::firstOrCreate(['name' => 'administrador_sistema', 'display_name' => 'Administrador del Sistema', 'description' => 'Administrador del Sistema']);
+
         /**
          * Asignaciones
          */
@@ -280,5 +282,112 @@ class RolesPermissionsSeeder extends Seeder
         $administrador_sistema->perms()->sync([
             $administrar_roles_permisos->id,
         ]);
+
+        /**
+         * Sistemas
+         */
+        $sistema_contable = Sistema::firstOrCreate(['name' => 'Sistema Contable', 'description' => 'Sistema para el control contable', 'url' => 'sistema_contable']);
+        $finaznas = Sistema::firstOrCreate(['name' => 'Finanzas', 'description' => 'Sistema para el control financiero', 'url' => 'finanzas']);
+        $formatos = Sistema::firstOrCreate(['name' => 'Formatos', 'description' => 'Sistema de emisión de formatos', 'url' => 'formatos']);
+        $tesoreria = Sistema::firstOrCreate(['name' => 'Tesorería', 'description' => 'Sistema de Tesorería', 'url' => 'tesoreria']);
+        $control_costos = Sistema::firstOrCreate(['name' => 'Control de Costos', 'description' => 'Sistema de control de costos', 'url' => 'control_costos']);
+        $control_presupuesto = Sistema::firstOrCreate(['name' => 'Control del Presupuesto', 'description' => 'Sistema para el control del presupuesto', 'url' => 'control_presupuesto']);
+
+        $sistema_contable->permisos()->sync(
+            [
+                $editar_cuenta_almacen->id,
+                $registrar_cuenta_almacen->id,
+                $consultar_cuenta_almacen->id,
+                $editar_cuenta_concepto->id,
+                $registrar_cuenta_concepto->id,
+                $consultar_cuenta_concepto->id,
+                $editar_cuenta_empresa->id,
+                $registrar_cuenta_empresa->id,
+                $consultar_cuenta_empresa->id,
+                $eliminar_cuenta_empresa->id,
+                $consultar_cuenta_general->id,
+                $registrar_cuenta_general->id,
+                $editar_cuenta_general->id,
+                $consultar_cuenta_material->id,
+                $registrar_cuenta_material->id,
+                $editar_cuenta_material->id,
+                $consultar_tipo_cuenta_contable->id,
+                $registrar_tipo_cuenta_contable->id,
+                $editar_tipo_cuenta_contable->id,
+                $eliminar_tipo_cuenta_contable->id,
+                $consultar_plantilla_prepoliza->id,
+                $registrar_plantilla_prepoliza->id,
+                $eliminar_plantilla_prepoliza->id,
+                $editar_configuracion_contable->id,
+                $consultar_prepolizas_generadas->id,
+                $editar_prepolizas_generadas->id,
+                $consultar_kardex_material->id,
+                $editar_cuenta_fondo->id,
+                $registrar_cuenta_fondo->id,
+                $consultar_cuenta_fondo->id,
+                $eliminar_cuenta_contable_bancaria->id,
+                $registrar_cuenta_contable_bancaria->id,
+                $consultar_cuenta_contable_bancaria->id,
+                $editar_cuenta_contable_bancaria->id,
+                $eliminar_cuenta_costo->id,
+                $registrar_cuenta_costo->id,
+                $consultar_cuenta_costo->id,
+                $editar_cuenta_costo->id,
+                $consultar_cierre_periodo->id,
+                $generar_cierre_periodo->id,
+                $editar_cierre_periodo->id,
+            ]
+        );
+
+        $finaznas->permisos()->sync(
+            [
+                $editar_comprobante_fondo_fijo->id,
+                $registrar_comprobante_fondo_fijo->id,
+                $consultar_comprobante_fondo_fijo->id,
+                $eliminar_comprobante_fondo_fijo->id,
+            ]
+        );
+
+        $formatos->permisos()->sync(
+            [
+                $consultar_formato_estimacion->id,
+            ]
+        );
+
+        $tesoreria->permisos()->sync(
+            [
+                $eliminar_traspaso_cuenta->id,
+                $registrar_traspaso_cuenta->id,
+                $consultar_traspaso_cuenta->id,
+                $editar_traspaso_cuenta->id,
+                $eliminar_movimiento_bancario->id,
+                $registrar_movimiento_bancario->id,
+                $consultar_movimiento_bancario->id,
+                $editar_movimiento_bancario->id,
+            ]
+        );
+
+        $control_costos->permisos()->sync(
+            [
+                $solicitar_reclasificacion->id,
+                $autorizar_reclasificacion->id,
+                $consultar_reclasificacion->id,
+            ]
+        );
+
+        $control_presupuesto->permisos()->sync(
+            [
+                $registrar_variacion_volumen->id,
+                $autorizar_variacion_volumen->id,
+                $aplicar_variacion_volumen->id,
+                $rechazar_variacion_volumen->id,
+                $consultar_variacion_volumen->id,
+                $registrar_escalatoria->id,
+                $autorizar_escalatoria->id,
+                $aplicar_escalatoria->id,
+                $rechazar_escalatoria->id,
+                $consultar_escalatoria->id,
+            ]
+        );
     }
 }
