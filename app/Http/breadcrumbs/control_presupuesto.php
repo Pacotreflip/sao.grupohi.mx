@@ -35,7 +35,7 @@ Breadcrumbs::register('control_presupuesto.cambio_presupuesto.create', function 
  */
 Breadcrumbs::register('control_presupuesto.cambio_presupuesto.show', function ($breadcrumb, $solicitud) {
     $breadcrumb->parent('control_presupuesto.cambio_presupuesto.index');
-    $breadcrumb->push(mb_strtoupper($solicitud->tipoOrden->descripcion), route('control_presupuesto.cambio_presupuesto.show', $solicitud));
+    $breadcrumb->push('#' . $solicitud->numero_folio, route('control_presupuesto.cambio_presupuesto.show', $solicitud));
 });
 
 /**

@@ -87,6 +87,9 @@ class EloquentCambioInsumosRepository implements CambioInsumosRepository
 
             // dd($data);
             DB::connection('cadeco')->beginTransaction();
+            if(!array_key_exists('insumos_eliminados',$data)){
+                $data['insumos_eliminados']=array();
+            }
 
             $solicitud = $this->model->create($data);
 
@@ -290,7 +293,9 @@ class EloquentCambioInsumosRepository implements CambioInsumosRepository
     {
         try {
             DB::connection('cadeco')->beginTransaction();
-
+           if(!array_key_exists('insumos_eliminados',$data)){
+               $data['insumos_eliminados']=array();
+           }
 
             $solicitud = $this->model->create($data);
 
