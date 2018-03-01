@@ -1,6 +1,6 @@
 @extends('control_presupuesto.layout')
 @section('title', 'Control Presupuesto')
-@section('contentheader_title', 'SOLICITUD DE CAMBIO AL PRESUPUESTO COSTO INDIRECTO')
+@section('contentheader_title', 'CAMBIO DE INSUMOS <small>(COSTO INDIRECTO)</small>')
 @section('breadcrumb')
     {!! Breadcrumbs::render('control_presupuesto.cambio_presupuesto.create') !!}
 @endsection
@@ -81,7 +81,7 @@
                                             <td>
                                                 <div class="form-group"
                                                      :class="{'has-error': validation_errors.has('form_save_solicitud.Cantidad Actualizada [' + (i + 1) + ']')}">
-                                                    <input type="text" step=".01" placeholder="0.0"
+                                                    <input type="text" step=".01" placeholder="Ingrese Cantidad"
                                                            style="width: 75%"
                                                            :class="'rendimiento'+insumo.id_elemento+'_' + i"
                                                            :id="'c_p_'+insumo.id_elemento+'_' + i"
@@ -97,7 +97,7 @@
                                             <td>
                                                 <div class="form-group"
                                                      :class="{'has-error': validation_errors.has('form_save_solicitud.Volumen Actualizado [' + (i + 1) + ']')}">
-                                                    <input type="text" step=".01" placeholder="0.0"
+                                                    <input type="text" step=".01" placeholder="Ingrese Cantidad"
                                                            style="width: 75%"
                                                            :id="'r_p_'+insumo.id_elemento+'_' + i"
                                                            @change="recalcular_cantidad(insumo.id_elemento, i,1)"
@@ -113,7 +113,7 @@
                                             <td>
                                                 <div class="form-group"
                                                      :class="{'has-error': validation_errors.has('form_save_solicitud.Costo Actualizado [' + (i + 1) + ']')}">
-                                                    $<input type="text" step=".01" placeholder="0.0"
+                                                    $<input type="text" step=".01" placeholder="Ingrese Cantidad"
                                                             style="width: 70%"
                                                             :class="'pre_unit'+insumo.id_elemento+'_' + i"
                                                             :id="'m_p_'+insumo.id_elemento+'_' + i"
@@ -156,7 +156,6 @@
                             </div>
 
                             <div class="modal-footer">
-                                <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
                                 <button type="submit" class="btn btn-primary" :disabled="cargando">
                                             <span v-if="cargando">
                                                 <i class="fa fa-spinner fa-spin"></i> Guardando

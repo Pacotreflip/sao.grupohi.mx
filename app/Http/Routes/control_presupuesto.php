@@ -78,6 +78,7 @@ Route::group(['prefix' => 'control_presupuesto'], function () {
         Route::get('/create', 'CambioInsumosController@indirecto')->name('control_presupuesto.cambio_insumos.costo_indirecto.create');
         Route::post('/', 'CambioInsumosController@storeIndirecto');
         Route::get('/{cambio_insumos}', 'CambioInsumosController@show')->name('control_presupuesto.cambio_insumos.show');
+        Route::get('/{cambio_insumos}/pdf', 'CambioInsumosController@pdf');
        });
 
 

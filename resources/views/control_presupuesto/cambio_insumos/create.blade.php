@@ -1,6 +1,6 @@
 @extends('control_presupuesto.layout')
 @section('title', 'Control Presupuesto')
-@section('contentheader_title', 'SOLICITUD DE CAMBIO AL PRESUPUESTO')
+@section('contentheader_title', 'CAMBIO DE INSUMOS <small>(COSTO DIRECTO)</small>')
 @section('breadcrumb')
     {!! Breadcrumbs::render('control_presupuesto.cambio_presupuesto.create') !!}
 @endsection
@@ -8,9 +8,7 @@
     <cambio-insumos-create
             :id_tipo_orden="6"
             @reset-filtros="filtros = []"
-            inline-template v-cloak
-
-    >
+            inline-template v-cloak>
         <section>
             <div class="row">
                 <div class="col-md-12">
@@ -143,7 +141,7 @@
                                                     <td>
                                                         <div class="form-group"
                                                              :class="{'has-error': validation_errors.has('form_save_solicitud.Cantidad Actualizada material [' + (i + 1) + ']')}">
-                                                            <input type="text" step=".01" placeholder="0.0"
+                                                            <input type="text" step=".01" placeholder="Ingrese Cantidad"
                                                                    style="width: 90%"
                                                                    :class="'rendimiento'+insumo.id_elemento+'_' + i"
                                                                    :id="'c_p_'+insumo.id_elemento+'_' + i"
@@ -159,7 +157,7 @@
                                                     <td>
                                                         <div class="form-group"
                                                              :class="{'has-error': validation_errors.has('form_save_solicitud.Costo Actualizado material [' + (i + 1) + ']')}">
-                                                            $<input type="text" step=".01" placeholder="0.0"
+                                                            $<input type="text" step=".01" placeholder="Ingrese Cantidad"
                                                                     :class="'pre_unit'+insumo.id_elemento+'_' + i"
                                                                     style="width: 90%"
                                                                     :id="'m_p_'+insumo.id_elemento+'_' + i"
@@ -223,7 +221,7 @@
                                                     <td>
                                                         <div class="form-group"
                                                              :class="{'has-error': validation_errors.has('form_save_solicitud.Rendimiento Actualizado mano de obra [' + (i + 1) + ']')}">
-                                                            <input type="text" step=".01" placeholder="0.0"
+                                                            <input type="text" step=".01" placeholder="Ingrese Cantidad"
                                                                    style="width: 90%"
                                                                    :class="'rendimiento'+insumo.id_elemento+'_' + i"
                                                                    :id="'c_p_'+insumo.id_elemento+'_' + i"
@@ -239,7 +237,7 @@
                                                     <td>
                                                         <div class="form-group"
                                                              :class="{'has-error': validation_errors.has('form_save_solicitud.Costo Actualizado mano de obra [' + (i + 1) + ']')}">
-                                                            $<input type="text" step=".01" placeholder="0.0"
+                                                            $<input type="text" step=".01" placeholder="Ingrese Cantidad"
                                                                     :class="'pre_unit'+insumo.id_elemento+'_' + i"
                                                                     style="width: 90%"
                                                                     :id="'m_p_'+insumo.id_elemento+'_' + i"
@@ -299,7 +297,7 @@
                                                     <td>
                                                         <div class="form-group"
                                                              :class="{'has-error': validation_errors.has('form_save_solicitud.Cantidad Actualizada herramienta [' + (i + 1) + ']')}">
-                                                            <input type="text" step=".01" placeholder="0.0"
+                                                            <input type="text" step=".01" placeholder="Ingrese Cantidad"
                                                                    style="width: 90%"
                                                                    :class="'rendimiento'+insumo.id_elemento+'_' + i"
                                                                    :id="'c_p_'+insumo.id_elemento+'_' + i"
@@ -315,7 +313,7 @@
                                                     <td>
                                                         <div class="form-group"
                                                              :class="{'has-error': validation_errors.has('form_save_solicitud.Costo Actualizado herramienta [' + (i + 1) + ']')}">
-                                                            $<input type="text" step=".01" placeholder="0.0"
+                                                            $<input type="text" step=".01" placeholder="Ingrese Cantidad"
                                                                     :class="'pre_unit'+insumo.id_elemento+'_' + i"
                                                                     style="width: 90%"
                                                                     :id="'m_p_'+insumo.id_elemento+'_' + i"
@@ -374,7 +372,7 @@
                                                     <td>
                                                         <div class="form-group"
                                                              :class="{'has-error': validation_errors.has('form_save_solicitud.Cantidad Actualizada maquinaria [' + (i + 1) + ']')}">
-                                                            <input type="text" step=".01" placeholder="0.0"
+                                                            <input type="text" step=".01" placeholder="Ingrese Cantidad"
                                                                    style="width: 90%"
                                                                    :class="'rendimiento'+insumo.id_elemento+'_' + i"
                                                                    :id="'c_p_'+insumo.id_elemento+'_' + i"
@@ -390,7 +388,7 @@
                                                     <td>
                                                         <div class="form-group"
                                                              :class="{'has-error': validation_errors.has('form_save_solicitud.Costo Actualizado maquinaria [' + (i + 1) + ']')}">
-                                                            $<input type="text" step=".01" placeholder="0.0"
+                                                            $<input type="text" step=".01" placeholder="Ingrese Cantidad"
                                                                     :class="'pre_unit'+insumo.id_elemento+'_' + i"
                                                                     style="width: 90%"
                                                                     :id="'m_p_'+insumo.id_elemento+'_' + i"
@@ -446,7 +444,7 @@
                                                     <td>
                                                         <div class="form-group"
                                                              :class="{'has-error': validation_errors.has('form_save_solicitud.Cantidad Actualizada subcontrato [' + (i + 1) + ']')}">
-                                                            <input type="text" step=".01" placeholder="0.0" style="width: 90%"
+                                                            <input type="text" step=".01" placeholder="Ingrese Cantidad" style="width: 90%"
                                                                    :class="'rendimiento'+insumo.id_elemento+'_' + i"
                                                                    :id="'c_p_'+insumo.id_elemento+'_' + i"
                                                                    @change="recalcular(insumo.id_elemento, i,5)"
@@ -461,7 +459,7 @@
                                                     <td>
                                                         <div class="form-group"
                                                              :class="{'has-error': validation_errors.has('form_save_solicitud.Costo Actualizado subcontrato [' + (i + 1) + ']')}">
-                                                            $<input type="text" step=".01" placeholder="0.0"
+                                                            $<input type="text" step=".01" placeholder="Ingrese Cantidad"
                                                                     :class="'pre_unit'+insumo.id_elemento+'_' + i"
                                                                     style="width: 90%" :id="'m_p_'+insumo.id_elemento+'_' + i"
                                                                     @change="recalcular_monto(insumo.id_elemento, i,5)"
@@ -542,7 +540,7 @@
                                                     <td>
                                                         <div class="form-group"
                                                              :class="{'has-error': validation_errors.has('form_save_solicitud.Cantidad Actualizada Material [' + (i + 1) + ']')}">
-                                                            <input type="text" step=".01" placeholder="0.0"
+                                                            <input type="text" step=".01" placeholder="Ingrese Cantidad"
                                                                    style="width: 75%"
                                                                    :class="'rendimiento'+insumo.id_elemento+'_' + i"
                                                                    :id="'c_p_'+insumo.id_elemento+'_' + i"
@@ -558,7 +556,7 @@
                                                     <td>
                                                         <div class="form-group"
                                                              :class="{'has-error': validation_errors.has('form_save_solicitud.Volumen Actualizado Material [' + (i + 1) + ']')}">
-                                                            <input type="text" step=".01" placeholder="0.0"
+                                                            <input type="text" step=".01" placeholder="Ingrese Cantidad"
                                                                    style="width: 75%"
                                                                    :id="'r_p_'+insumo.id_elemento+'_' + i"
                                                                    @change="recalcular_cantidad(insumo.id_elemento, i,1)"
@@ -574,7 +572,7 @@
                                                     <td>
                                                         <div class="form-group"
                                                              :class="{'has-error': validation_errors.has('form_save_solicitud.Costo Actualizado Material [' + (i + 1) + ']')}">
-                                                            $<input type="text" step=".01" placeholder="0.0"
+                                                            $<input type="text" step=".01" placeholder="Ingrese Cantidad"
                                                                     style="width: 70%"
                                                                     :class="'pre_unit'+insumo.id_elemento+'_' + i"
                                                                     :id="'m_p_'+insumo.id_elemento+'_' + i"
@@ -635,7 +633,7 @@
                                                     <td>
                                                         <div class="form-group"
                                                              :class="{'has-error': validation_errors.has('form_save_solicitud.Rendimiento Actualizado Mano de Obra [' + (i + 1) + ']')}">
-                                                            <input type="text" step=".01" placeholder="0.0"
+                                                            <input type="text" step=".01" placeholder="Ingrese Cantidad"
                                                                    style="width: 90%"
                                                                    :class="'rendimiento'+insumo.id_elemento+'_' + i"
                                                                    :id="'c_p_'+insumo.id_elemento+'_' + i"
@@ -651,7 +649,7 @@
                                                     <td>
                                                         <div class="form-group"
                                                              :class="{'has-error': validation_errors.has('form_save_solicitud.Volumen Actualizado Mano de Obra [' + (i + 1) + ']')}">
-                                                            <input type="text" step=".01" placeholder="0.0"
+                                                            <input type="text" step=".01" placeholder="Ingrese Cantidad"
                                                                    style="width: 90%"
                                                                    :id="'r_p_'+insumo.id_elemento+'_' + i"
                                                                    @change="recalcular_cantidad(insumo.id_elemento, i,2)"
@@ -667,7 +665,7 @@
                                                     <td>
                                                         <div class="form-group"
                                                              :class="{'has-error': validation_errors.has('form_save_solicitud.Costo Actualizado Mano de Obra [' + (i + 1) + ']')}">
-                                                            $<input type="text" step=".01" placeholder="0.0"
+                                                            $<input type="text" step=".01" placeholder="Ingrese Cantidad"
                                                                     style="width: 90%"
                                                                     :class="'pre_unit'+insumo.id_elemento+'_' + i"
                                                                     :id="'m_p_'+insumo.id_elemento+'_' + i"
@@ -729,7 +727,7 @@
                                                     <td>
                                                         <div class="form-group"
                                                              :class="{'has-error': validation_errors.has('form_save_solicitud.Cantidad Actualizada Herramienta [' + (i + 1) + ']')}">
-                                                            <input type="text" step=".01" placeholder="0.0"
+                                                            <input type="text" step=".01" placeholder="Ingrese Cantidad"
                                                                    style="width: 90%"
                                                                    :class="'rendimiento'+insumo.id_elemento+'_' + i"
                                                                    :id="'c_p_'+insumo.id_elemento+'_' + i"
@@ -745,7 +743,7 @@
                                                     <td>
                                                         <div class="form-group"
                                                              :class="{'has-error': validation_errors.has('form_save_solicitud.Volumen Actualizado Herramienta [' + (i + 1) + ']')}">
-                                                            <input type="text" step=".01" placeholder="0.0"
+                                                            <input type="text" step=".01" placeholder="Ingrese Cantidad"
                                                                    style="width: 90%"
                                                                    :id="'r_p_'+insumo.id_elemento+'_' + i"
                                                                    @change="recalcular_cantidad(insumo.id_elemento, i,4)"
@@ -761,7 +759,7 @@
                                                     <td>
                                                         <div class="form-group"
                                                              :class="{'has-error': validation_errors.has('form_save_solicitud.Costo Actualizado Herramienta [' + (i + 1) + ']')}">
-                                                            $<input type="text" step=".01" placeholder="0.0"
+                                                            $<input type="text" step=".01" placeholder="Ingrese Cantidad"
                                                                     style="width: 90%"
                                                                     :class="'pre_unit'+insumo.id_elemento+'_' + i"
                                                                     :id="'m_p_'+insumo.id_elemento+'_' + i"
@@ -822,7 +820,7 @@
                                                     <td>
                                                         <div class="form-group"
                                                              :class="{'has-error': validation_errors.has('form_save_solicitud.Cantidad Actualizada Maquinaria [' + (i + 1) + ']')}">
-                                                            <input type="text" step=".01" placeholder="0.0"
+                                                            <input type="text" step=".01" placeholder="Ingrese Cantidad"
                                                                    style="width: 90%"
                                                                    :class="'rendimiento'+insumo.id_elemento+'_' + i"
                                                                    :id="'c_p_'+insumo.id_elemento+'_' + i"
@@ -838,7 +836,7 @@
                                                     <td>
                                                         <div class="form-group"
                                                              :class="{'has-error': validation_errors.has('form_save_solicitud.Volumen Actualizado Maquinaria [' + (i + 1) + ']')}">
-                                                            <input type="text" step=".01" placeholder="0.0"
+                                                            <input type="text" step=".01" placeholder="Ingrese Cantidad"
                                                                    style="width: 90%"
                                                                    :id="'r_p_'+insumo.id_elemento+'_' + i"
                                                                    @change="recalcular_cantidad(insumo.id_elemento, i,8)"
@@ -854,7 +852,7 @@
                                                     <td>
                                                         <div class="form-group"
                                                              :class="{'has-error': validation_errors.has('form_save_solicitud.Costo Actualizado Maquinaria [' + (i + 1) + ']')}">
-                                                            $<input type="text" step=".01" placeholder="0.0"
+                                                            $<input type="text" step=".01" placeholder="Ingrese Cantidad"
                                                                     style="width: 90%"
                                                                     :class="'pre_unit'+insumo.id_elemento+'_' + i"
                                                                     :id="'m_p_'+insumo.id_elemento+'_' + i"
@@ -914,7 +912,7 @@
                                                     <td>
                                                         <div class="form-group"
                                                              :class="{'has-error': validation_errors.has('form_save_solicitud.Cantidad Actualizada Subcontratos [' + (i + 1) + ']')}">
-                                                            <input type="text" step=".01" placeholder="0.0"
+                                                            <input type="text" step=".01" placeholder="Ingrese Cantidad"
                                                                    style="width: 90%"
                                                                    :class="'rendimiento'+insumo.id_elemento+'_' + i"
                                                                    :id="'c_p_'+insumo.id_elemento+'_' + i"
@@ -929,7 +927,7 @@
                                                     <td>
                                                         <div class="form-group"
                                                              :class="{'has-error': validation_errors.has('form_save_solicitud.Volumen Actualizado Subcontratos [' + (i + 1) + ']')}">
-                                                            <input type="text" step=".01" placeholder="0.0"
+                                                            <input type="text" step=".01" placeholder="Ingrese Cantidad"
                                                                    style="width: 90%"
                                                                    :id="'r_p_'+insumo.id_elemento+'_' + i"
                                                                    @change="recalcular_cantidad(insumo.id_elemento, i,5)"
@@ -944,7 +942,7 @@
                                                     <td>
                                                         <div class="form-group"
                                                              :class="{'has-error': validation_errors.has('form_save_solicitud.Costo Actualizado Subcontratos [' + (i + 1) + ']')}">
-                                                            $<input type="text" step=".01" placeholder="0.0"
+                                                            $<input type="text" step=".01" placeholder="Ingrese Cantidad"
                                                                     style="width: 90%"
                                                                     :class="'pre_unit'+insumo.id_elemento+'_' + i"
                                                                     :id="'m_p_'+insumo.id_elemento+'_' + i"

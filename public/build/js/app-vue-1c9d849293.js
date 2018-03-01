@@ -20780,91 +20780,23 @@ Vue.component('cambio-presupuesto-index', {
         this.fetchTiposCobrabilidad();
         this.fetchTiposOrden();
 
-        $(function () {
-            $(document).on('click', '.mostrar_pdf', function () {
-                var _this = $(this),
-                    id = _this.data('pdf_id'),
-                    url = App.host + '/control_presupuesto/variacion_volumen/' + id + '/pdf';
+        $(document).on('click', '.mostrar_pdf', function () {
+            var _this = $(this),
+                id = _this.data('pdf_id'),
+                id_tipo_orden = _this.data('id_tipo_orden'),
+                name = self.findTipoOrden(id_tipo_orden),
+                url = App.host + '/control_presupuesto/' + name.name + '/' + id + '/pdf';
+            $('#formatoPDF').attr('src', url).hide();
+            $('#spin_iframe').show();
 
-                $('#formatoPDF').attr('src', url).hide();
-                $('#spin_iframe').show();
+            $('#pdf_modal').modal('show');
 
-                $('#pdf_modal').modal('show');
-
-                $('#pdf_modal .modal-body').css({ height: '550px' });
-                document.getElementById('formatoPDF').onload = function () {
-                    $('#formatoPDF').show();
-                    $('#spin_iframe').hide();
-                };
-            });
+            $('#pdf_modal .modal-body').css({ height: '550px' });
+            document.getElementById('formatoPDF').onload = function () {
+                $('#formatoPDF').show();
+                $('#spin_iframe').hide();
+            };
         });
-
-        var data = {
-            "processing": true,
-            "serverSide": true,
-            "ordering": true,
-            "searching": false,
-            "ajax": {
-                "url": App.host + '/control_presupuesto/cambio_presupuesto/paginate',
-                "type": "POST",
-                "beforeSend": function beforeSend() {
-                    // self.guardando = true;
-                },
-                "complete": function complete() {
-                    //self.guardando = false;
-                },
-                "dataSrc": function dataSrc(json) {
-
-                    for (var i = 0; i < json.data.length; i++) {
-                        json.data[i].created_at = new Date(json.data[i].created_at).dateFormat();
-                        json.data[i].registro = json.data[i].user_registro.nombre + ' ' + json.data[i].user_registro.apaterno + ' ' + json.data[i].user_registro.amaterno;
-                    }
-
-                    return json.data;
-                }
-            },
-            "columns": [{ data: 'numero_folio' }, { data: 'tipo_orden.descripcion' }, { data: 'created_at' }, { data: 'registro', orderable: false }, { data: 'estatus.descripcion' }, {
-                data: {},
-                render: function render(data, type, row, meta) {
-                    var tipo_seleccionado = self.findTipoOrden(data.id_tipo_orden),
-                        button = '<span class="label" ></span><button class="btn btn-xs btn-info mostrar_pdf" data-pdf_id="' + row.id + '" data-id_tipo_orden="' + data.id_tipo_orden + '" title="Formato"><i class="fa fa-file-pdf-o"></i></button>  ';
-
-                    button += '<a title="Ver" href="' + App.host + '/control_presupuesto/' + tipo_seleccionado.name + '/' + data.id + '">';
-                    button += '<button title="Ver" type="button" class="btn btn-xs btn-default" >';
-                    button += '<i class="fa fa-eye"></i>';
-                    button += '   </button>';
-                    button += '  </a>';
-                    return button;
-                },
-                orderable: false
-            }],
-            language: {
-                "sProcessing": "Procesando...",
-                "sLengthMenu": "Mostrar _MENU_ registros",
-                "sZeroRecords": "No se encontraron resultados",
-                "sEmptyTable": "Ningún dato disponible en esta tabla",
-                "sInfo": "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
-                "sInfoEmpty": "Mostrando registros del 0 al 0 de un total de 0 registros",
-                "sInfoFiltered": "(filtrado de un total de _MAX_ registros)",
-                "sInfoPostFix": "",
-                "sSearch": "Buscar:",
-                "sUrl": "",
-                "sInfoThousands": ",",
-                "sLoadingRecords": "Cargando...",
-                "oPaginate": {
-                    "sFirst": "Primero",
-                    "sLast": "Último",
-                    "sNext": "Siguiente",
-                    "sPrevious": "Anterior"
-                },
-                "oAria": {
-                    "sSortAscending": ": Activar para ordenar la columna de manera ascendente",
-                    "sSortDescending": ": Activar para ordenar la columna de manera descendente"
-                }
-            }
-        };
-
-        $('#cierres_table').DataTable(data);
     },
     methods: {
         fetchTiposCobrabilidad: function fetchTiposCobrabilidad() {
@@ -20893,6 +20825,73 @@ Vue.component('cambio-presupuesto-index', {
                 },
                 success: function success(response) {
                     self.tipos_orden = response;
+
+                    var data = {
+                        "processing": true,
+                        "serverSide": true,
+                        "ordering": true,
+                        "searching": false,
+                        "ajax": {
+                            "url": App.host + '/control_presupuesto/cambio_presupuesto/paginate',
+                            "type": "POST",
+                            "beforeSend": function beforeSend() {
+                                // self.guardando = true;
+                            },
+                            "complete": function complete() {
+                                //self.guardando = false;
+                            },
+                            "dataSrc": function dataSrc(json) {
+
+                                for (var i = 0; i < json.data.length; i++) {
+                                    json.data[i].created_at = new Date(json.data[i].created_at).dateFormat();
+                                    json.data[i].registro = json.data[i].user_registro.nombre + ' ' + json.data[i].user_registro.apaterno + ' ' + json.data[i].user_registro.amaterno;
+                                }
+
+                                return json.data;
+                            }
+                        },
+                        "columns": [{ data: 'numero_folio' }, { data: 'tipo_orden.descripcion' }, { data: 'created_at' }, { data: 'registro', orderable: false }, { data: 'estatus.descripcion' }, {
+                            data: {},
+                            render: function render(data, type, row, meta) {
+                                var tipo_seleccionado = self.findTipoOrden(data.id_tipo_orden),
+                                    button = '<span class="label" ></span><button class="btn btn-xs btn-info mostrar_pdf" data-pdf_id="' + row.id + '" data-id_tipo_orden="' + data.id_tipo_orden + '" title="Formato"><i class="fa fa-file-pdf-o"></i></button>  ';
+
+                                button += '<a title="Ver" href="' + App.host + '/control_presupuesto/' + tipo_seleccionado.name + '/' + data.id + '">';
+                                button += '<button title="Ver" type="button" class="btn btn-xs btn-default" >';
+                                button += '<i class="fa fa-eye"></i>';
+                                button += '   </button>';
+                                button += '  </a>';
+                                return button;
+                            },
+                            orderable: false
+                        }],
+                        language: {
+                            "sProcessing": "Procesando...",
+                            "sLengthMenu": "Mostrar _MENU_ registros",
+                            "sZeroRecords": "No se encontraron resultados",
+                            "sEmptyTable": "Ningún dato disponible en esta tabla",
+                            "sInfo": "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
+                            "sInfoEmpty": "Mostrando registros del 0 al 0 de un total de 0 registros",
+                            "sInfoFiltered": "(filtrado de un total de _MAX_ registros)",
+                            "sInfoPostFix": "",
+                            "sSearch": "Buscar:",
+                            "sUrl": "",
+                            "sInfoThousands": ",",
+                            "sLoadingRecords": "Cargando...",
+                            "oPaginate": {
+                                "sFirst": "Primero",
+                                "sLast": "Último",
+                                "sNext": "Siguiente",
+                                "sPrevious": "Anterior"
+                            },
+                            "oAria": {
+                                "sSortAscending": ": Activar para ordenar la columna de manera ascendente",
+                                "sSortDescending": ": Activar para ordenar la columna de manera descendente"
+                            }
+                        }
+                    };
+
+                    $('#cierres_table').DataTable(data);
                 },
                 complete: function complete() {
                     self.cargando = false;
@@ -20918,10 +20917,12 @@ Vue.component('cambio-presupuesto-index', {
         },
         findTipoOrden: function findTipoOrden(id) {
             var self = this;
-
             for (var i = 0; i < self.tipos_orden.length; i++) {
-                if (self.tipos_orden[i]['id'] == id) return self.tipos_orden[i];
-            }return null;
+                if (self.tipos_orden[i]['id'] == id) {
+                    return self.tipos_orden[i];
+                }
+            }
+            return null;
         }
     }
 
