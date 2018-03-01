@@ -188,8 +188,11 @@ class EloquentConceptoRepository implements ConceptoRepository
             ->where('dbo.conceptos.concepto_medible', '=', 3)
             ->join('PresupuestoObra.conceptosPath as path', 'conceptos.id_concepto', '=', 'path.id_concepto')
             ->where('path.filtro3','Like','%COSTO INDIRECTO%')
-            ->where('path.filtro6','Like','%' . $data['descripcion'] . '%')
-            ->limit(5)
+        ->where(function ($q) use ($data){
+            $q->where('path.filtro5','Like','%' . $data['descripcion'] . '%')
+                ->orWhere('path.filtro6','Like','%' . $data['descripcion'] . '%')
+                ->orWhere('path.filtro7','Like','%' . $data['descripcion'] . '%');
+        })->limit(5)
             ->get();
         //dd($conceptos);
         return $conceptos;

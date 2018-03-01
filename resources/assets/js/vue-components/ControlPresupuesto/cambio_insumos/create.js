@@ -530,7 +530,7 @@ Vue.component('cambio-insumos-create', {
                             results: $.map(data.data.materiales, function (item) {
 
                                 return {
-                                    text: item.DescripcionPadre+" -> "+item.descripcion,
+                                    text: item.DescripcionPadre+" -> ["+item.numero_parte+"] "+item.descripcion,
                                     descripcion: item.descripcion,
                                     id_material: item.id_material,
                                     unidad:item.unidad,

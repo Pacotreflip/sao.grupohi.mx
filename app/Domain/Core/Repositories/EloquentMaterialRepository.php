@@ -227,8 +227,10 @@ class EloquentMaterialRepository implements MaterialRepository
 
     public function getDescripcionByTipo($descripcion, $tipo)
     {
-        return $this->model->where('descripcion', 'like', '%' . $descripcion . '%')
-            ->where('tipo_material', '=', $tipo)
+        return $this->model->where(function ($q) use ($descripcion){
+            $q->where('descripcion', 'like', '%' . $descripcion . '%')
+                ->orWhere('numero_parte','like', '%' . $descripcion . '%');
+        })->where('tipo_material', '=', $tipo)
             ->whereRaw('LEN(nivel) > 4')
             ->limit(5)
             ->get();

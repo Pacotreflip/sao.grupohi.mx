@@ -51,7 +51,7 @@ Vue.component('cambio-insumos-indirecto-create', {
                     return {
                         results: $.map(data.data.conceptos, function (item) {
                             return {
-                                text: item.filtro6 + " -> " + item.filtro7,
+                                text:  item.filtro5 + " -> " + item.filtro6 + " -> " + item.filtro7,
                                 id: item.id_concepto,
                                 cantidad_presupuestada:item.cantidad_presupuestada,
                                 monto_presupuestado:item.monto_presupuestado,
@@ -301,7 +301,7 @@ Vue.component('cambio-insumos-indirecto-create', {
                             results: $.map(data.data.materiales, function (item) {
 
                                 return {
-                                    text: item.DescripcionPadre + " -> " + item.descripcion,
+                                    text: item.DescripcionPadre+" -> ["+item.numero_parte+"] "+item.descripcion,
                                     descripcion: item.descripcion,
                                     id_material: item.id_material,
                                     unidad: item.unidad,
