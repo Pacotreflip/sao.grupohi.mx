@@ -17,4 +17,22 @@ class ConceptoPath extends BaseModel
         parent::boot();
         static::addGlobalScope(new ObraScope());
     }
+    public $timestamps = false;
+    protected $fillable = [
+        'id_obra'
+        , 'id_concepto'
+        , 'nivel'
+        , 'filtro1'
+        , 'filtro2'
+        , 'filtro3'
+        , 'filtro4'
+        , 'filtro5'
+        , 'filtro6'
+        , 'filtro7'
+        , 'filtro8'
+        , 'filtro9'
+        , 'filtro10'
+        , 'filtro11'
+
+    ];
 }

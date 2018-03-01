@@ -8,6 +8,7 @@ use Ghi\Domain\Core\Contracts\ControlPresupuesto\CambioInsumosRepository;
 use Ghi\Domain\Core\Contracts\ControlPresupuesto\PartidasInsumosAgrupadosRepository;
 use Ghi\Domain\Core\Contracts\ControlPresupuesto\SolicitudCambioPartidaRepository;
 use Ghi\Domain\Core\Models\Concepto;
+use Ghi\Domain\Core\Models\ConceptoPath;
 use Ghi\Domain\Core\Models\ControlPresupuesto\ConceptoTarjeta;
 use Ghi\Domain\Core\Models\ControlPresupuesto\Estatus;
 use Ghi\Domain\Core\Models\ControlPresupuesto\PartidasInsumosAgrupados;
@@ -503,7 +504,7 @@ class EloquentCambioInsumosRepository implements CambioInsumosRepository
 
                         ];
                         $nuevoInsumo = \Ghi\Domain\Core\Models\Concepto::create($dataNuevoInsumo);
-
+                        $this->insertarPath($nuevoInsumo->id_concepto);
                         $dataHist['precio_unitario_original'] = 0;
                         $dataHist['precio_unitario_actualizado'] = $nuevoInsumo->precio_unitario;
                         $dataHist['monto_presupuestado_original'] = 0;
@@ -565,6 +566,7 @@ class EloquentCambioInsumosRepository implements CambioInsumosRepository
                         ];
 
                         $nuevoInsumo = \Ghi\Domain\Core\Models\Concepto::create($dataNuevoInsumo);
+                        $this->insertarPath($nuevoInsumo->id_concepto);
                         $dataHist = [];
                         $dataHist['precio_unitario_original'] = 0;
                         $dataHist['precio_unitario_actualizado'] = $nuevoInsumo->precio_unitario;
@@ -625,6 +627,7 @@ class EloquentCambioInsumosRepository implements CambioInsumosRepository
                         ];
 
                         $nuevoInsumo = \Ghi\Domain\Core\Models\Concepto::create($dataNuevoInsumo);
+                        $this->insertarPath($nuevoInsumo->id_concepto);
                         $dataHist = [];
                         $dataHist['precio_unitario_original'] = 0;
                         $dataHist['precio_unitario_actualizado'] = $nuevoInsumo->precio_unitario;
@@ -683,6 +686,7 @@ class EloquentCambioInsumosRepository implements CambioInsumosRepository
                         ];
 
                         $nuevoInsumo = \Ghi\Domain\Core\Models\Concepto::create($dataNuevoInsumo);
+                        $this->insertarPath($nuevoInsumo->id_concepto);
                         $dataHist = [];
                         $dataHist['precio_unitario_original'] = 0;
                         $dataHist['precio_unitario_actualizado'] = $nuevoInsumo->precio_unitario;
@@ -697,6 +701,8 @@ class EloquentCambioInsumosRepository implements CambioInsumosRepository
                 }
 
 ////////////subcontratos
+///
+
                 foreach ($subcontratos as $subcontrato) ////integracion materiales tarjeta nueva
                 {
                     if ($subcontrato->id_concepto) { ////actualizacion de concepto
@@ -741,6 +747,8 @@ class EloquentCambioInsumosRepository implements CambioInsumosRepository
                         ];
 
                         $nuevoInsumo = \Ghi\Domain\Core\Models\Concepto::create($dataNuevoInsumo);
+
+                        $this->insertarPath($nuevoInsumo->id_concepto);
                         $dataHist = [];
                         $dataHist['precio_unitario_original'] = 0;
                         $dataHist['precio_unitario_actualizado'] = $nuevoInsumo->precio_unitario;
@@ -799,6 +807,7 @@ class EloquentCambioInsumosRepository implements CambioInsumosRepository
                         ];
 
                         $nuevoInsumo = \Ghi\Domain\Core\Models\Concepto::create($dataNuevoInsumo);
+                        $this->insertarPath($nuevoInsumo->id_concepto);
                         $dataHist = [];
                         $dataHist['precio_unitario_original'] = 0;
                         $dataHist['precio_unitario_actualizado'] = $nuevoInsumo->precio_unitario;
@@ -1087,5 +1096,58 @@ class EloquentCambioInsumosRepository implements CambioInsumosRepository
             throw $e;
         }
 
+    }
+
+    public function insertarPath($idConcepto){
+        $concepto=Concepto::find($idConcepto);
+        $concepto->nivel;
+        $nivelPadre=substr($concepto->nivel, 0, strlen($concepto->nivel)-4);
+
+        $conceptoPadre=Concepto::where('nivel','=',$nivelPadre)->first();
+        $conceptoPathPadre=ConceptoPath::where('id_concepto','=',$conceptoPadre->id_concepto)->first();
+
+        $conceptoPathHijo=$conceptoPathPadre;
+        $conceptoPathHijo->id_concepto=$concepto->id_concepto;
+        $conceptoPathHijo->nivel=$concepto->nivel;
+        $conceptoPathHijo->id_obra=Context::getId();
+
+        switch (strlen($concepto->nivel)){
+            case 4:
+                $conceptoPathHijo->filtro1=$concepto->descripcion;
+                break;
+            case 8:
+                $conceptoPathHijo->filtro2=$concepto->descripcion;
+                break;
+            case 12:
+                $conceptoPathHijo->filtro3=$concepto->descripcion;
+                break;
+            case 16:
+                $conceptoPathHijo->filtro4=$concepto->descripcion;
+                break;
+            case 20:
+                $conceptoPathHijo->filtro5=$concepto->descripcion;
+                break;
+            case 24:
+                $conceptoPathHijo->filtro6=$concepto->descripcion;
+                break;
+            case 28:
+                $conceptoPathHijo->filtro7=$concepto->descripcion;
+                break;
+            case 32:
+                $conceptoPathHijo->filtro8=$concepto->descripcion;
+                break;
+            case 36:
+                $conceptoPathHijo->filtro9=$concepto->descripcion;
+                break;
+            case 40:
+                $conceptoPathHijo->filtro10=$concepto->descripcion;
+                break;
+            case 44:
+                $conceptoPathHijo->filtro11=$concepto->descripcion;
+                break;
+
+        }
+
+       $conceptoPathNuevo= ConceptoPath::create($conceptoPathHijo->toArray());
     }
 }
