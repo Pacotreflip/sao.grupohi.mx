@@ -189,6 +189,12 @@ class PDFSolicitudCambioInsumos extends Rotation
         $this->SetFont('Arial', '', '#' . $this->txtContenidoTam);
         $this->CellFitScale(0.375 * $this->WidthTotal, 0.5,'#'.utf8_decode($this->solicitud->numero_folio), '', 1, 'L');
 
+        $this->SetFont('Arial', 'B', $this->txtContenidoTam);
+        $this->SetX($x);
+        $this->Cell(0.125 * $this->WidthTotal, 0.5, utf8_decode('Estatus:'), '', 0, 'LB');
+        $this->SetFont('Arial', '', '#' . $this->txtContenidoTam);
+        $this->CellFitScale(0.375 * $this->WidthTotal, 0.5,utf8_decode($this->solicitud->estatus), '', 1, 'L');
+
         $this->SetFont('Arial', 'B', '#' . $this->txtContenidoTam);
         $this->SetX($x);
         $this->Cell(0.125 * $this->WidthTotal, 0.5, utf8_decode('Fecha Solicitud:'), '', 0, 'L');
