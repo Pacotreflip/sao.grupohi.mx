@@ -146,7 +146,7 @@
                                                                    :class="'rendimiento'+insumo.id_elemento+'_' + i"
                                                                    :id="'c_p_'+insumo.id_elemento+'_' + i"
                                                                    @change="recalcular(insumo.id_elemento, i,1)"
-                                                                   v-validate="insumo.nuevo==true ? 'required' : ''"
+                                                                   v-validate="insumo.nuevo==true ? 'required|decimal|min_value:0' : 'decimal|min_value:0'"
                                                                    :name="'Cantidad Actualizada material [' + (i + 1) + ']'">
                                                             <label class="help"
                                                                    v-show="validation_errors.has('form_save_solicitud.Cantidad Actualizada material [' + (i + 1) + ']')">@{{ validation_errors.first('form_save_solicitud.Cantidad Actualizada material [' + (i + 1) + ']') }}</label>
@@ -162,7 +162,7 @@
                                                                     style="width: 90%"
                                                                     :id="'m_p_'+insumo.id_elemento+'_' + i"
                                                                     @change="recalcular_monto(insumo.id_elemento, i,1)"
-                                                                    v-validate="insumo.nuevo==true ? 'required' : ''"
+                                                                    v-validate="insumo.nuevo==true ? 'required|decimal|min_value:0' : 'decimal|min_value:0'"
                                                                     :name="'Costo Actualizado material [' + (i + 1) + ']'">
                                                             <label class="help"
                                                                    v-show="validation_errors.has('form_save_solicitud.Costo Actualizado material [' + (i + 1) + ']')">@{{ validation_errors.first('form_save_solicitud.Costo Actualizado material [' + (i + 1) + ']') }}</label>
@@ -226,7 +226,7 @@
                                                                    :class="'rendimiento'+insumo.id_elemento+'_' + i"
                                                                    :id="'c_p_'+insumo.id_elemento+'_' + i"
                                                                    @change="recalcular(insumo.id_elemento, i,2)"
-                                                                   v-validate="insumo.nuevo==true ? 'required' : ''"
+                                                                   v-validate="insumo.nuevo==true ? 'required|decimal|min_value:0' : 'decimal|min_value:0'"
                                                                    :name="'Rendimiento Actualizado mano de obra [' + (i + 1) + ']'">
                                                             <label class="help"
                                                                    v-show="validation_errors.has('form_save_solicitud.Rendimiento Actualizado mano de obra [' + (i + 1) + ']')">@{{ validation_errors.first('form_save_solicitud.Rendimiento Actualizado mano de obra [' + (i + 1) + ']') }}</label>
@@ -242,7 +242,7 @@
                                                                     style="width: 90%"
                                                                     :id="'m_p_'+insumo.id_elemento+'_' + i"
                                                                     @change="recalcular_monto(insumo.id_elemento, i,2)"
-                                                                    v-validate="insumo.nuevo==true ? 'required' : ''"
+                                                                    v-validate="insumo.nuevo==true ? 'required|decimal|min_value:0' : 'decimal|min_value:0'"
                                                                     :name="'Costo Actualizado mano de obra [' + (i + 1) + ']'">
                                                             <label class="help"
                                                                    v-show="validation_errors.has('form_save_solicitud.Costo Actualizado mano de obra [' + (i + 1) + ']')">@{{ validation_errors.first('form_save_solicitud.Costo Actualizado mano de obra [' + (i + 1) + ']') }}</label>
@@ -302,7 +302,7 @@
                                                                    :class="'rendimiento'+insumo.id_elemento+'_' + i"
                                                                    :id="'c_p_'+insumo.id_elemento+'_' + i"
                                                                    @change="recalcular(insumo.id_elemento, i,4)"
-                                                                   v-validate="insumo.nuevo==true ? 'required' : ''"
+                                                                   v-validate="insumo.nuevo==true ? 'required|decimal|min_value:0' : 'decimal|min_value:0'"
                                                                    :name="'Cantidad Actualizada herramienta [' + (i + 1) + ']'">
                                                             <label class="help"
                                                                    v-show="validation_errors.has('form_save_solicitud.Cantidad Actualizada herramienta [' + (i + 1) + ']')">@{{ validation_errors.first('form_save_solicitud.Cantidad Actualizada herramienta [' + (i + 1) + ']') }}</label>
@@ -318,7 +318,7 @@
                                                                     style="width: 90%"
                                                                     :id="'m_p_'+insumo.id_elemento+'_' + i"
                                                                     @change="recalcular_monto(insumo.id_elemento, i,4)"
-                                                                    v-validate="insumo.nuevo==true ? 'required' : ''"
+                                                                    v-validate="insumo.nuevo==true ? 'required|decimal|min_value:0' : 'decimal|min_value:0'"
                                                                     :name="'Costo Actualizado herramienta [' + (i + 1) + ']'">
                                                             <label class="help"
                                                                    v-show="validation_errors.has('form_save_solicitud.Costo Actualizado herramienta [' + (i + 1) + ']')">@{{ validation_errors.first('form_save_solicitud.Costo Actualizado herramienta [' + (i + 1) + ']') }}</label>
@@ -377,7 +377,7 @@
                                                                    :class="'rendimiento'+insumo.id_elemento+'_' + i"
                                                                    :id="'c_p_'+insumo.id_elemento+'_' + i"
                                                                    @change="recalcular(insumo.id_elemento, i,8)"
-                                                                   v-validate="insumo.nuevo==true ? 'required' : ''"
+                                                                   v-validate="insumo.nuevo==true ? 'required|decimal|min_value:0' : 'decimal|min_value:0'"
                                                                    :name="'Cantidad Actualizada maquinaria [' + (i + 1) + ']'">
                                                             <label class="help"
                                                                    v-show="validation_errors.has('form_save_solicitud.Cantidad Actualizada maquinaria [' + (i + 1) + ']')">@{{ validation_errors.first('form_save_solicitud.Cantidad Actualizada maquinaria [' + (i + 1) + ']') }}</label>
@@ -393,7 +393,7 @@
                                                                     style="width: 90%"
                                                                     :id="'m_p_'+insumo.id_elemento+'_' + i"
                                                                     @change="recalcular_monto(insumo.id_elemento, i,8)"
-                                                                    v-validate="insumo.nuevo==true ? 'required' : ''"
+                                                                    v-validate="insumo.nuevo==true ? 'required|decimal|min_value:0' : 'decimal|min_value:0'"
                                                                     :name="'Costo Actualizado maquinaria [' + (i + 1) + ']'">
                                                             <label class="help"
                                                                    v-show="validation_errors.has('form_save_solicitud.Costo Actualizado maquinaria [' + (i + 1) + ']')">@{{ validation_errors.first('form_save_solicitud.Costo Actualizado maquinaria [' + (i + 1) + ']') }}</label>
@@ -448,7 +448,7 @@
                                                                    :class="'rendimiento'+insumo.id_elemento+'_' + i"
                                                                    :id="'c_p_'+insumo.id_elemento+'_' + i"
                                                                    @change="recalcular(insumo.id_elemento, i,5)"
-                                                                   v-validate="insumo.nuevo==true ? 'required' : ''"
+                                                                   v-validate="insumo.nuevo==true ? 'required|decimal|min_value:0' : 'decimal|min_value:0'"
                                                                    :name="'Cantidad Actualizada subcontrato [' + (i + 1) + ']'">
                                                             <label class="help"
                                                                    v-show="validation_errors.has('form_save_solicitud.Cantidad Actualizada subcontrato [' + (i + 1) + ']')">@{{ validation_errors.first('form_save_solicitud.Cantidad Actualizada subcontrato [' + (i + 1) + ']') }}</label>
@@ -463,7 +463,7 @@
                                                                     :class="'pre_unit'+insumo.id_elemento+'_' + i"
                                                                     style="width: 90%" :id="'m_p_'+insumo.id_elemento+'_' + i"
                                                                     @change="recalcular_monto(insumo.id_elemento, i,5)"
-                                                                    v-validate="insumo.nuevo==true ? 'required' : ''"
+                                                                    v-validate="insumo.nuevo==true ? 'required|decimal|min_value:0' : 'decimal|min_value:0'"
                                                                     :name="'Costo Actualizado subcontrato [' + (i + 1) + ']'">
                                                             <label class="help"
                                                                    v-show="validation_errors.has('form_save_solicitud.Costo Actualizado subcontrato [' + (i + 1) + ']')">@{{ validation_errors.first('form_save_solicitud.Costo Actualizado subcontrato [' + (i + 1) + ']') }}</label>
@@ -545,7 +545,7 @@
                                                                    :class="'rendimiento'+insumo.id_elemento+'_' + i"
                                                                    :id="'c_p_'+insumo.id_elemento+'_' + i"
                                                                    @change="recalcular(insumo.id_elemento, i,1)"
-                                                                   v-validate="insumo.nuevo==true ? 'required' : ''"
+                                                                   v-validate="insumo.nuevo==true ? 'required|decimal|min_value:0' : 'decimal|min_value:0'"
                                                                    :name="'Cantidad Actualizada Material [' + (i + 1) + ']'">
                                                             <label class="help"
                                                                    v-show="validation_errors.has('form_save_solicitud.Cantidad Actualizada Material [' + (i + 1) + ']')">@{{ validation_errors.first('form_save_solicitud.Cantidad Actualizada Material [' + (i + 1) + ']') }}</label>
@@ -560,7 +560,7 @@
                                                                    style="width: 75%"
                                                                    :id="'r_p_'+insumo.id_elemento+'_' + i"
                                                                    @change="recalcular_cantidad(insumo.id_elemento, i,1)"
-                                                                   v-validate="insumo.nuevo==true ? 'required' : ''"
+                                                                   v-validate="insumo.nuevo==true ? 'required|decimal|min_value:0' : 'decimal|min_value:0'"
                                                                    :name="'Volumen Actualizado Material [' + (i + 1) + ']'">
                                                             <label class="help"
                                                                    v-show="validation_errors.has('form_save_solicitud.Volumen Actualizado Material [' + (i + 1) + ']')">@{{ validation_errors.first('form_save_solicitud.Volumen Actualizado Material [' + (i + 1) + ']') }}</label>
@@ -577,7 +577,7 @@
                                                                     :class="'pre_unit'+insumo.id_elemento+'_' + i"
                                                                     :id="'m_p_'+insumo.id_elemento+'_' + i"
                                                                     @change="recalcular_monto(insumo.id_elemento, i,1)"
-                                                                    v-validate="insumo.nuevo==true ? 'required' : ''"
+                                                                    v-validate="insumo.nuevo==true ? 'required|decimal|min_value:0' : 'decimal|min_value:0'"
                                                                     :name="'Costo Actualizado Material [' + (i + 1) + ']'">
                                                             <label class="help"
                                                                    v-show="validation_errors.has('form_save_solicitud.Costo Actualizado Material [' + (i + 1) + ']')">@{{ validation_errors.first('form_save_solicitud.Costo Actualizado Material [' + (i + 1) + ']') }}</label>
@@ -638,7 +638,7 @@
                                                                    :class="'rendimiento'+insumo.id_elemento+'_' + i"
                                                                    :id="'c_p_'+insumo.id_elemento+'_' + i"
                                                                    @change="recalcular(insumo.id_elemento, i,2)"
-                                                                   v-validate="insumo.nuevo==true ? 'required' : ''"
+                                                                   v-validate="insumo.nuevo==true ? 'required|decimal|min_value:0' : 'decimal|min_value:0'"
                                                                    :name="'Rendimiento Actualizado Mano de Obra [' + (i + 1) + ']'">
                                                             <label class="help"
                                                                    v-show="validation_errors.has('form_save_solicitud.Rendimiento Actualizado Mano de Obra [' + (i + 1) + ']')">@{{ validation_errors.first('form_save_solicitud.Rendimiento Actualizado Mano de Obra [' + (i + 1) + ']') }}</label>
@@ -653,7 +653,7 @@
                                                                    style="width: 90%"
                                                                    :id="'r_p_'+insumo.id_elemento+'_' + i"
                                                                    @change="recalcular_cantidad(insumo.id_elemento, i,2)"
-                                                                   v-validate="insumo.nuevo==true ? 'required' : ''"
+                                                                   v-validate="insumo.nuevo==true ? 'required|decimal|min_value:0' : 'decimal|min_value:0'"
                                                                    :name="'Volumen Actualizado Mano de Obra [' + (i + 1) + ']'">
                                                             <label class="help"
                                                                    v-show="validation_errors.has('form_save_solicitud.Volumen Actualizado Mano de Obra [' + (i + 1) + ']')">@{{ validation_errors.first('form_save_solicitud.Volumen Actualizado Mano de Obra [' + (i + 1) + ']') }}</label>
@@ -670,7 +670,7 @@
                                                                     :class="'pre_unit'+insumo.id_elemento+'_' + i"
                                                                     :id="'m_p_'+insumo.id_elemento+'_' + i"
                                                                     @change="recalcular_monto(insumo.id_elemento, i,2)"
-                                                                    v-validate="insumo.nuevo==true ? 'required' : ''"
+                                                                    v-validate="insumo.nuevo==true ? 'required|decimal|min_value:0' : 'decimal|min_value:0'"
                                                                     :name="'Costo Actualizado Mano de Obra [' + (i + 1) + ']'">
                                                             <label class="help"
                                                                    v-show="validation_errors.has('form_save_solicitud.Costo Actualizado Mano de Obra [' + (i + 1) + ']')">@{{ validation_errors.first('form_save_solicitud.Costo Actualizado Mano de Obra [' + (i + 1) + ']') }}</label>
@@ -732,7 +732,7 @@
                                                                    :class="'rendimiento'+insumo.id_elemento+'_' + i"
                                                                    :id="'c_p_'+insumo.id_elemento+'_' + i"
                                                                    @change="recalcular(insumo.id_elemento, i,4)"
-                                                                   v-validate="insumo.nuevo==true ? 'required' : ''"
+                                                                   v-validate="insumo.nuevo==true ? 'required|decimal|min_value:0' : 'decimal|min_value:0'"
                                                                    :name="'Cantidad Actualizada Herramienta [' + (i + 1) + ']'">
                                                             <label class="help"
                                                                    v-show="validation_errors.has('form_save_solicitud.Cantidad Actualizada Herramienta [' + (i + 1) + ']')">@{{ validation_errors.first('form_save_solicitud.Cantidad Actualizada Herramienta [' + (i + 1) + ']') }}</label>
@@ -747,7 +747,7 @@
                                                                    style="width: 90%"
                                                                    :id="'r_p_'+insumo.id_elemento+'_' + i"
                                                                    @change="recalcular_cantidad(insumo.id_elemento, i,4)"
-                                                                   v-validate="insumo.nuevo==true ? 'required' : ''"
+                                                                   v-validate="insumo.nuevo==true ? 'required|decimal|min_value:0' : 'decimal|min_value:0'"
                                                                    :name="'Volumen Actualizado Herramienta [' + (i + 1) + ']'">
                                                             <label class="help"
                                                                    v-show="validation_errors.has('form_save_solicitud.Volumen Actualizado Herramienta [' + (i + 1) + ']')">@{{ validation_errors.first('form_save_solicitud.Volumen Actualizado Herramienta [' + (i + 1) + ']') }}</label>
@@ -764,7 +764,7 @@
                                                                     :class="'pre_unit'+insumo.id_elemento+'_' + i"
                                                                     :id="'m_p_'+insumo.id_elemento+'_' + i"
                                                                     @change="recalcular_monto(insumo.id_elemento, i,4)"
-                                                                    v-validate="insumo.nuevo==true ? 'required' : ''"
+                                                                    v-validate="insumo.nuevo==true ? 'required|decimal|min_value:0' : 'decimal|min_value:0'"
                                                                     :name="'Costo Actualizado Herramienta [' + (i + 1) + ']'">
                                                             <label class="help"
                                                                    v-show="validation_errors.has('form_save_solicitud.Costo Actualizado Herramienta [' + (i + 1) + ']')">@{{ validation_errors.first('form_save_solicitud.Costo Actualizado Herramienta [' + (i + 1) + ']') }}</label>
@@ -825,7 +825,7 @@
                                                                    :class="'rendimiento'+insumo.id_elemento+'_' + i"
                                                                    :id="'c_p_'+insumo.id_elemento+'_' + i"
                                                                    @change="recalcular(insumo.id_elemento, i,8)"
-                                                                   v-validate="insumo.nuevo==true ? 'required' : ''"
+                                                                   v-validate="insumo.nuevo==true ? 'required|decimal|min_value:0' : 'decimal|min_value:0'"
                                                                    :name="'Cantidad Actualizada Maquinaria [' + (i + 1) + ']'">
                                                             <label class="help"
                                                                    v-show="validation_errors.has('form_save_solicitud.Cantidad Actualizada Maquinaria [' + (i + 1) + ']')">@{{ validation_errors.first('form_save_solicitud.Cantidad Actualizada Maquinaria [' + (i + 1) + ']') }}</label>
@@ -840,7 +840,7 @@
                                                                    style="width: 90%"
                                                                    :id="'r_p_'+insumo.id_elemento+'_' + i"
                                                                    @change="recalcular_cantidad(insumo.id_elemento, i,8)"
-                                                                   v-validate="insumo.nuevo==true ? 'required' : ''"
+                                                                   v-validate="insumo.nuevo==true ? 'required|decimal|min_value:0' : 'decimal|min_value:0'"
                                                                    :name="'Volumen Actualizado Maquinaria [' + (i + 1) + ']'">
                                                             <label class="help"
                                                                    v-show="validation_errors.has('form_save_solicitud.Volumen Actualizado Maquinaria [' + (i + 1) + ']')">@{{ validation_errors.first('form_save_solicitud.Volumen Actualizado Maquinaria [' + (i + 1) + ']') }}</label>
@@ -857,7 +857,7 @@
                                                                     :class="'pre_unit'+insumo.id_elemento+'_' + i"
                                                                     :id="'m_p_'+insumo.id_elemento+'_' + i"
                                                                     @change="recalcular_monto(insumo.id_elemento, i,8)"
-                                                                    v-validate="insumo.nuevo==true ? 'required' : ''"
+                                                                    v-validate="insumo.nuevo==true ? 'required|decimal|min_value:0' : 'decimal|min_value:0'"
                                                                     :name="'Costo Actualizado Maquinaria [' + (i + 1) + ']'">
                                                             <label class="help"
                                                                    v-show="validation_errors.has('form_save_solicitud.Costo Actualizado Maquinaria [' + (i + 1) + ']')">@{{ validation_errors.first('form_save_solicitud.Costo Actualizado Maquinaria [' + (i + 1) + ']') }}</label>
@@ -917,7 +917,7 @@
                                                                    :class="'rendimiento'+insumo.id_elemento+'_' + i"
                                                                    :id="'c_p_'+insumo.id_elemento+'_' + i"
                                                                    @change="recalcular(insumo.id_elemento, i,5)"
-                                                                   v-validate="insumo.nuevo==true ? 'required' : ''"
+                                                                   v-validate="insumo.nuevo==true ? 'required|decimal|min_value:0' : 'decimal|min_value:0'"
                                                                    :name="'Cantidad Actualizada Subcontratos [' + (i + 1) + ']'">
                                                             <label class="help"
                                                                    v-show="validation_errors.has('form_save_solicitud.Cantidad Actualizada Subcontratos [' + (i + 1) + ']')">@{{ validation_errors.first('form_save_solicitud.Cantidad Actualizada Subcontratos [' + (i + 1) + ']') }}</label>
@@ -931,7 +931,7 @@
                                                                    style="width: 90%"
                                                                    :id="'r_p_'+insumo.id_elemento+'_' + i"
                                                                    @change="recalcular_cantidad(insumo.id_elemento, i,5)"
-                                                                   v-validate="insumo.nuevo==true ? 'required' : ''"
+                                                                   v-validate="insumo.nuevo==true ? 'required|decimal|min_value:0' : 'decimal|min_value:0'"
                                                                    :name="'Volumen Actualizado Subcontratos [' + (i + 1) + ']'">
                                                             <label class="help"
                                                                    v-show="validation_errors.has('form_save_solicitud.Volumen Actualizado Subcontratos [' + (i + 1) + ']')">@{{ validation_errors.first('form_save_solicitud.Volumen Actualizado Subcontratos [' + (i + 1) + ']') }}</label>
@@ -947,7 +947,7 @@
                                                                     :class="'pre_unit'+insumo.id_elemento+'_' + i"
                                                                     :id="'m_p_'+insumo.id_elemento+'_' + i"
                                                                     @change="recalcular_monto(insumo.id_elemento, i,5)"
-                                                                    v-validate="insumo.nuevo==true ? 'required' : ''"
+                                                                    v-validate="insumo.nuevo==true ? 'required|decimal|min_value:0' : 'decimal|min_value:0'"
                                                                     :name="'Costo Actualizado Subcontratos [' + (i + 1) + ']'">
                                                             <label class="help"
                                                                    v-show="validation_errors.has('form_save_solicitud.Costo Actualizado Subcontratos [' + (i + 1) + ']')">@{{ validation_errors.first('form_save_solicitud.Costo Actualizado Subcontratos [' + (i + 1) + ']') }}</label>
@@ -1040,6 +1040,7 @@
                     </div>
                 </div>
             </div>
+
 
 
             <material-index></material-index>

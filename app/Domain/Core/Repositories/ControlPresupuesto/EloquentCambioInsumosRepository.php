@@ -22,6 +22,7 @@ use Ghi\Domain\Core\Models\ControlPresupuesto\TipoOrden;
 use Ghi\Domain\Core\Models\ControlPresupuesto\CambioInsumos;
 use Ghi\Domain\Core\Models\Material;
 use Ghi\Domain\Core\Models\Seguridad\Proyecto;
+use Ghi\Utils\Mail;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Config\Repository;
 use Ghi\Domain\Core\Models\Obra;
@@ -1065,15 +1066,9 @@ class EloquentCambioInsumosRepository implements CambioInsumosRepository
                         $data['obra'] = $obra->nombre;
                         $html = View::make('control_presupuesto.emails.notificaciones_html.cambio_insumos', $data)->render();
 
-                        $mail = new \PHPMailer();
+                        $mail = new Mail();
                         $body = $html;
-                        $mail->IsSMTP(); // telling the class to use SMTP
-                        $mail->Host = "mail.hermesconstruccion.com.mx"; // SMTP server
-                        $mail->SMTPDebug = 2;                     // enables SMTP debug information (for testing)
-                        $mail->SMTPAuth = true;                  // enable SMTP authentication
-                        $mail->Port = 25;                   // set the SMTP port for the GMAIL server
-                        $mail->Username = "seguimiento@hermesconstruccion.com.mx";  // GMAIL username
-                        $mail->Password = "qhermu";            // GMAIL password
+
                         $mail->SetFrom('seguimiento@hermesconstruccion.com.mx', 'sao.grupohi.mx');
                         $mail->MsgHTML($body);
                         $mail->Subject = utf8_decode("Autorización de cambio de insumos");
