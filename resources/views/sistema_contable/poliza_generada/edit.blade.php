@@ -27,7 +27,7 @@
                 </div>
                 <div class="row">
                     <div class="col-md-12">
-                        <div class="box box-success">
+                        <div class="box box-solid">
                             <div class="box-header with-border">
                                 <h3 class="box-title">Detalle de Prepóliza</h3>
                             </div>
@@ -179,10 +179,10 @@
                                                     <b>Sumas Iguales</b>
                                                 </th>
                                                 <th class="bg-gray numerico" v-bind:class="color">
-                                                    <b>$ @{{(parseFloat(suma_debe)).formatMoney(2,'.',',')}}</b>
+                                                    <b>$&nbsp;@{{(parseFloat(suma_debe)).formatMoney(2,'.',',')}}</b>
                                                 </th>
                                                 <th class="bg-gray numerico" v-bind:class="color">
-                                                    <b>$ @{{(parseFloat(suma_haber)).formatMoney(2,'.',',')}}</b>
+                                                    <b>$&nbsp;@{{(parseFloat(suma_haber)).formatMoney(2,'.',',')}}</b>
                                                 </th>
                                                 <th class="bg-gray" colspan="3" v-bind:class="color"></th>
                                             </tr>
@@ -190,7 +190,7 @@
                                         </table>
                                         <div class="col-sm-12" style="text-align: right">
                                             <h4><b>Total de la Prepóliza:</b>
-                                                $ @{{ (parseFloat(data.poliza_edit.total)).formatMoney(2,'.',',')}}</h4>
+                                                $&nbsp;@{{ (parseFloat(data.poliza_edit.total)).formatMoney(2,'.',',')}}</h4>
                                         </div>
                                     </div>
                                 </div>

@@ -34,7 +34,7 @@
     </div>
     <div class="row">
         <div class="col-md-12">
-            <div class="box box-info">
+            <div class="box box-solid">
                 <div class="box-header with-border">
                     <h3 class="box-title">Detalle de Prepóliza</h3>
                 </div>
@@ -45,7 +45,7 @@
                                 <th  class="bg-gray-light">Tipo Póliza SAO:<br><label>{{ $poliza->transaccionInterfaz}}</label></th>
                                 <th class="bg-gray-light">Fecha de Prepóliza:<br><label>{{ $poliza->fecha}}</label></th>
                                 <th  class="bg-gray-light">Usuario Solicita:<br><label> {{$poliza->usuario_solicita }}</label></th>
-                                <th class="bg-gray-light">Cuadre:<br><label>$ {{number_format($poliza->cuadre,'2','.',',')}}</label></th>
+                                <th class="bg-gray-light">Cuadre:<br><label>$&nbsp;{{number_format($poliza->cuadre,'2','.',',')}}</label></th>
                             </tr>
                             <tr>
                                 <th class="bg-gray-light">Estatus:<br>
@@ -92,8 +92,8 @@
                                     <tr>
                                         <td>{{$movimiento->cuenta_contable}}</td>
                                         <td>{{$movimiento->tipoCuentaContable ? $movimiento->tipoCuentaContable : 'No Registrada' }}</td>
-                                        <td class="bg-gray-light numerico">{{$movimiento->id_tipo_movimiento_poliza == 1 ? '$' . number_format($movimiento->importe,'2','.',',') : '' }}</td>
-                                        <td class="bg-gray-light numerico">{{$movimiento->id_tipo_movimiento_poliza == 2 ? '$' . number_format($movimiento->importe,'2','.',',') : '' }}</td>
+                                        <td class="bg-gray-light numerico">{{$movimiento->id_tipo_movimiento_poliza == 1 ? '$&nbsp;' . number_format($movimiento->importe,'2','.',',') : '' }}</td>
+                                        <td class="bg-gray-light numerico">{{$movimiento->id_tipo_movimiento_poliza == 2 ? '$&nbsp;' . number_format($movimiento->importe,'2','.',',') : '' }}</td>
                                         <td>{{$movimiento->referencia}}</td>
                                         <td>{{$movimiento->concepto}}</td>
                                     </tr>
@@ -103,17 +103,17 @@
                                         <b>Sumas Iguales</b>
                                     </td>
                                     <td class="bg-gray numerico {{$poliza->cuadrado != 1 ? 'bg-red' : ''}}">
-                                        <b>${{number_format($poliza->sumaDebe,'2','.',',')}}</b>
+                                        <b>$&nbsp;{{number_format($poliza->sumaDebe,'2','.',',')}}</b>
                                     </td>
                                     <td class="bg-gray numerico {{$poliza->cuadrado != 1 ? 'bg-red' : ''}}">
-                                        <b>${{number_format($poliza->sumaHaber,'2','.',',')}}</b>
+                                        <b>$&nbsp;{{number_format($poliza->sumaHaber,'2','.',',')}}</b>
                                     </td>
                                     <td class="bg-gray {{$poliza->cuadrado != 1 ? 'bg-red' : ''}}"></td>
                                     <td class="bg-gray {{$poliza->cuadrado != 1 ? 'bg-red' : ''}}"></td>
                                 </tr>
                             </table>
                             <div class="col-sm-12" style="text-align: right">
-                                <h4><b>Total de la Prepóliza:</b>  ${{number_format($poliza->total,'2','.',',')}}</h4>
+                                <h4><b>Total de la Prepóliza:</b>  $&nbsp;{{number_format($poliza->total,'2','.',',')}}</h4>
                             </div>
                         @endif
                     </div>

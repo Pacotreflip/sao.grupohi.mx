@@ -12,7 +12,7 @@
         <section>
             <div class="row">
                 <div class="col-md-12">
-                    <div class="box box-info">
+                    <div class="box box-solid">
                         <div class="box-header with-border">
                             <h3 class="box-title">Opciones de Búsqueda</h3>
                         </div>
@@ -61,7 +61,7 @@
 
             <div class="row">
                 <div class="col-md-12">
-                    <div class="box box-success">
+                    <div class="box box-solid">
                         <div class="box-header with-border">
                             <h3 class="box-title">Prepólizas Generadas</h3>
                         </div>

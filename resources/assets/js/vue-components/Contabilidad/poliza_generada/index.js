@@ -45,8 +45,8 @@ Vue.component('poliza-generada-index', {
                 "dataSrc" : function (json) {
                     for (var i = 0; i < json.data.length; i++) {
                         json.data[i].index = i + 1;
-                        json.data[i].total = '$ ' + parseFloat(json.data[i].total).formatMoney(2, '.', ',');
-                        json.data[i].cuadre = '$ ' + parseFloat(json.data[i].cuadre).formatMoney(2, '.', ',');
+                        json.data[i].total = '$&nbsp;' + parseFloat(json.data[i].total).formatMoney(2, '.', ',');
+                        json.data[i].cuadre = '$&nbsp; ' + parseFloat(json.data[i].cuadre).formatMoney(2, '.', ',');
                     }
                     return json.data;
                 }
