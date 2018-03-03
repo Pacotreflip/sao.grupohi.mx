@@ -88,7 +88,7 @@ class EloquentPolizaRepository implements PolizaRepository
                 $suma_total = $suma_debe + $suma_haber;
 
                 if (!isset($data['poliza_generada']['poliza_movimientos'])) {
-                    throw new HttpResponseException(new Response('La póliza debe contener al menos un movimiento de cada tipo (Debe, Haber)', 404));
+                    throw new HttpResponseException(new Response('La póliza debe contener al menos un movimiento', 404));
                 }
 
                 foreach ($data['poliza_generada']['poliza_movimientos'] as $polizaMovimiento) {
@@ -111,9 +111,9 @@ class EloquentPolizaRepository implements PolizaRepository
 
 
 
-                if (!$cuentas_debe || !$cuentas_haber) {
+                /*if (!$cuentas_debe || !$cuentas_haber) {
                     throw new HttpResponseException(new Response('La póliza debe contener al menos un movimiento de cada tipo (Debe, Haber)', 404));
-                }
+                }*/
                 if (abs($suma_debe-$suma_haber)>.99) {
                     throw new HttpResponseException(new Response('Las sumas iguales no corresponden.', 404));
                 }
