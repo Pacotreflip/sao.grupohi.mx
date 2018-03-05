@@ -300,7 +300,7 @@ class PDFVariacionVolumen extends Rotation {
             }
 
             $conceptoCD = DB::connection('cadeco')->table($base->baseDatos->base_datos . ".dbo.conceptos")
-                ->select('monto_presupuestado')->where('descripcion', 'like', '%costo directo%')->first();
+                ->where('descripcion', 'like', '%costo directo%')->first();
 
 
             //Tabla
@@ -337,12 +337,15 @@ class PDFVariacionVolumen extends Rotation {
             }
             $this->encola = '';
 
+            $historico = SolicitudCambioPartidaHistorico::where('id_solicitud_cambio_partida', '=', $partida->id)
+                ->where('id_base_presupuesto', '=', $base->id_base_presupuesto)
+                ->where('nivel', '=', $conceptoCD->nivel)
+                ->first();
+
             $this->resumen([
-                'PRESUPUESTO '. $base->baseDatos->descripcion .' C. D.' => '$'. number_format
-                    ($conceptoCD->monto_presupuestado, 2, '.', ','),
+                'PRESUPUESTO '. $base->baseDatos->descripcion .' C. D.' => '$'. number_format($historico ? $historico->monto_presupuestado_original : $conceptoCD->monto_presupuestado, 2, '.', ','),
                 'ESTA SOLICITUD' => '$'. number_format($estaSolicitudSuma, 2, '.', ','),
-                'COSTO DIRECTO ACTUALIZADO' => '$'.number_format($conceptoCD->monto_presupuestado +
-                    ($estaSolicitudSuma), 2, '.', ',')
+                'COSTO DIRECTO ACTUALIZADO' => '$'.number_format(($historico ? $conceptoCD->monto_presupuestado : $conceptoCD->monto_presupuestado + $estaSolicitudSuma), 2, '.', ',')
             ]);
             if($bi != count($baseDatos) - 1) {
                 $this->AddPage();
