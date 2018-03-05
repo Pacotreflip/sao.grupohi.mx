@@ -24,7 +24,8 @@ class FormatosController extends Controller
         $this->middleware('auth');
         $this->middleware('context');
 
-       // $this->middleware('permission:consultar_formato_estimacion', ['only' => ['estimacion_pdf', 'estimacion']]);
+        $this->middleware('permission:consultar_formato_estimacion', ['only' => ['estimacion_pdf', 'estimacion']]);
+        $this->middleware('permission:consultar_formato_comparativa_presupuestos', ['only' => ['comparativa_presupuestos']]);
 
         $this->estimacion = $estimacion;
         $this->empresa = $empresa;
@@ -42,5 +43,9 @@ class FormatosController extends Controller
         $empresas = $this->empresa->scope('Subcontratos')->all();
         return view('formatos.subcontratos.estimacion')
             ->withEmpresas($empresas);
+    }
+
+    public function comparativa_presupuestos() {
+        return view('formatos.subcontratos.comparativa_presupuestos');
     }
 }
