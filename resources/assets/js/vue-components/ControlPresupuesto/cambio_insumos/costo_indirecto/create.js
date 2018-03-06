@@ -31,7 +31,8 @@ Vue.component('cambio-insumos-indirecto-create', {
             cargando: false,
             guardando: false,
             cargando_tarjetas: true,
-            consultando:false
+            consultando:false,
+            tipo_insumo:''
         }
     },
     mounted: function () {
@@ -279,7 +280,7 @@ Vue.component('cambio-insumos-indirecto-create', {
             if (tipo == 5 || tipo == 6) {
                 tipo = 2;
             }
-           // self.tipo_insumo = tipo;
+            self.tipo_insumo = tipo;
 
             self.guardar = true;
 
