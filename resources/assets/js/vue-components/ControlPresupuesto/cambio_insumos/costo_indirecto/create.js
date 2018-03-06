@@ -95,8 +95,7 @@ Vue.component('cambio-insumos-indirecto-create', {
 
                     $.each(response.conceptos.GASTOS.insumos, function (key, value) {
                         //console.log(key+"  -  "+value.descripcion);
-
-
+                        self.concepto = [];
                         self.concepto.id_material = value.id_material;
                         self.concepto.monto_presupuestado = value.monto_presupuestado;
                         self.concepto.precio_unitario = value.precio_unitario;
