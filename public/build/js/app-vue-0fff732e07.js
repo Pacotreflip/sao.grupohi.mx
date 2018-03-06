@@ -14441,12 +14441,10 @@ require('./vue-components/Compras/material/index');
 require('./vue-components/Finanzas/comprobante_fondo_fijo/index');
 require('./vue-components/Finanzas/comprobante_fondo_fijo/create');
 require('./vue-components/Finanzas/comprobante_fondo_fijo/edit');
-
 /**
  * Formatos Components
  */
 require('./vue-components/Formatos/subcontratos-estimacion');
-require('./vue-components/Formatos/subcontratos-comparativa-presupuestos');
 
 /**
  * Tesoreria Components
@@ -14495,7 +14493,7 @@ require('./vue-components/ControlPresupuesto/cambio_insumos/costo_indirecto/crea
  */
 require('./vue-components/Configuracion/seguridad/index');
 
-},{"./vue-components/Compras/material/index":6,"./vue-components/Compras/requisicion/create":8,"./vue-components/Compras/requisicion/edit":9,"./vue-components/Configuracion/seguridad/index":10,"./vue-components/Contabilidad/cierre/index":11,"./vue-components/Contabilidad/cuenta_almacen/index":12,"./vue-components/Contabilidad/cuenta_bancos/cuenta-bancaria-edit":13,"./vue-components/Contabilidad/cuenta_concepto/index":14,"./vue-components/Contabilidad/cuenta_contable/index":15,"./vue-components/Contabilidad/cuenta_costo/index":16,"./vue-components/Contabilidad/cuenta_empresa/cuenta-empresa-edit":17,"./vue-components/Contabilidad/cuenta_fondo/index":18,"./vue-components/Contabilidad/cuenta_material/index":19,"./vue-components/Contabilidad/datos_contables/edit":20,"./vue-components/Contabilidad/emails":21,"./vue-components/Contabilidad/modulos/revaluacion/create":22,"./vue-components/Contabilidad/poliza_generada/edit":23,"./vue-components/Contabilidad/poliza_generada/index":24,"./vue-components/Contabilidad/poliza_tipo/poliza-tipo-create":25,"./vue-components/Contabilidad/tipo_cuenta_contable/tipo-cuenta-contable-create":26,"./vue-components/Contabilidad/tipo_cuenta_contable/tipo-cuenta-contable-update":27,"./vue-components/ControlCostos/reclasificacion_costos/index":28,"./vue-components/ControlCostos/solicitar_reclasificacion/index":29,"./vue-components/ControlCostos/solicitar_reclasificacion/items":30,"./vue-components/ControlPresupuesto/cambio_insumos/costo_indirecto/create":31,"./vue-components/ControlPresupuesto/cambio_insumos/create":32,"./vue-components/ControlPresupuesto/cambio_insumos/show":33,"./vue-components/ControlPresupuesto/cambio_presupuesto/create":34,"./vue-components/ControlPresupuesto/cambio_presupuesto/index":35,"./vue-components/ControlPresupuesto/escalatoria/create":36,"./vue-components/ControlPresupuesto/escalatoria/show":37,"./vue-components/ControlPresupuesto/index":38,"./vue-components/ControlPresupuesto/variacion_volumen/create":39,"./vue-components/ControlPresupuesto/variacion_volumen/show":40,"./vue-components/Finanzas/comprobante_fondo_fijo/create":41,"./vue-components/Finanzas/comprobante_fondo_fijo/edit":42,"./vue-components/Finanzas/comprobante_fondo_fijo/index":43,"./vue-components/Formatos/subcontratos-comparativa-presupuestos":44,"./vue-components/Formatos/subcontratos-estimacion":45,"./vue-components/Tesoreria/movimientos_bancarios/index":46,"./vue-components/Tesoreria/traspaso_cuentas/index":47,"./vue-components/errors":48,"./vue-components/global-errors":49,"./vue-components/kardex_material/kardex-material-index":50,"./vue-components/select2":51}],6:[function(require,module,exports){
+},{"./vue-components/Compras/material/index":6,"./vue-components/Compras/requisicion/create":8,"./vue-components/Compras/requisicion/edit":9,"./vue-components/Configuracion/seguridad/index":10,"./vue-components/Contabilidad/cierre/index":11,"./vue-components/Contabilidad/cuenta_almacen/index":12,"./vue-components/Contabilidad/cuenta_bancos/cuenta-bancaria-edit":13,"./vue-components/Contabilidad/cuenta_concepto/index":14,"./vue-components/Contabilidad/cuenta_contable/index":15,"./vue-components/Contabilidad/cuenta_costo/index":16,"./vue-components/Contabilidad/cuenta_empresa/cuenta-empresa-edit":17,"./vue-components/Contabilidad/cuenta_fondo/index":18,"./vue-components/Contabilidad/cuenta_material/index":19,"./vue-components/Contabilidad/datos_contables/edit":20,"./vue-components/Contabilidad/emails":21,"./vue-components/Contabilidad/modulos/revaluacion/create":22,"./vue-components/Contabilidad/poliza_generada/edit":23,"./vue-components/Contabilidad/poliza_generada/index":24,"./vue-components/Contabilidad/poliza_tipo/poliza-tipo-create":25,"./vue-components/Contabilidad/tipo_cuenta_contable/tipo-cuenta-contable-create":26,"./vue-components/Contabilidad/tipo_cuenta_contable/tipo-cuenta-contable-update":27,"./vue-components/ControlCostos/reclasificacion_costos/index":28,"./vue-components/ControlCostos/solicitar_reclasificacion/index":29,"./vue-components/ControlCostos/solicitar_reclasificacion/items":30,"./vue-components/ControlPresupuesto/cambio_insumos/costo_indirecto/create":31,"./vue-components/ControlPresupuesto/cambio_insumos/create":32,"./vue-components/ControlPresupuesto/cambio_insumos/show":33,"./vue-components/ControlPresupuesto/cambio_presupuesto/create":34,"./vue-components/ControlPresupuesto/cambio_presupuesto/index":35,"./vue-components/ControlPresupuesto/escalatoria/create":36,"./vue-components/ControlPresupuesto/escalatoria/show":37,"./vue-components/ControlPresupuesto/index":38,"./vue-components/ControlPresupuesto/variacion_volumen/create":39,"./vue-components/ControlPresupuesto/variacion_volumen/show":40,"./vue-components/Finanzas/comprobante_fondo_fijo/create":41,"./vue-components/Finanzas/comprobante_fondo_fijo/edit":42,"./vue-components/Finanzas/comprobante_fondo_fijo/index":43,"./vue-components/Formatos/subcontratos-estimacion":44,"./vue-components/Tesoreria/movimientos_bancarios/index":45,"./vue-components/Tesoreria/traspaso_cuentas/index":46,"./vue-components/errors":47,"./vue-components/global-errors":48,"./vue-components/kardex_material/kardex-material-index":49,"./vue-components/select2":50}],6:[function(require,module,exports){
 'use strict';
 
 Vue.component('material-index', {
@@ -21959,9 +21957,10 @@ Vue.component('cambio-presupuesto-index', {
             var self = this;
 
             return self.tipos_orden.filter(function (tipo_orden) {
-                return tipo_orden.id_tipo_cobrabilidad == self.form.id_tipo_cobrabilidad;
+                return tipo_orden.id_tipo_cobrabilidad == self.form.id_tipo_cobrabilidad && $.inArray(tipo_orden.id, [1, 4, 6, 7]);
             });
         }
+
     },
     mounted: function mounted() {
         var self = this;
@@ -24096,30 +24095,6 @@ Vue.component('comprobante-fondo-fijo-index', {
 },{}],44:[function(require,module,exports){
 'use strict';
 
-Vue.component('subcontratos-comparativa-presupuestos', {
-    data: function data() {
-        return {};
-    },
-
-    mounted: function mounted() {
-        $('#remote .typeahead').typeahead(null, {
-            name: 'best-pictures',
-            display: 'value',
-            source: new Bloodhound({
-                datumTokenizer: Bloodhound.tokenizers.obj.whitespace('value'),
-                queryTokenizer: Bloodhound.tokenizers.whitespace,
-                remote: {
-                    url: 'http://localhost:8000/testing?q=%QUERY',
-                    wildcard: '%QUERY'
-                }
-            })
-        });
-    }
-});
-
-},{}],45:[function(require,module,exports){
-'use strict';
-
 Vue.component('subcontratos-estimacion', {
     props: ['subcontratos_url', 'estimaciones_url'],
     data: function data() {
@@ -24196,7 +24171,7 @@ Vue.component('subcontratos-estimacion', {
     }
 });
 
-},{}],46:[function(require,module,exports){
+},{}],45:[function(require,module,exports){
 'use strict';
 
 Vue.component('movimientos_bancarios-index', {
@@ -24547,7 +24522,7 @@ Vue.component('movimientos_bancarios-index', {
     }
 });
 
-},{}],47:[function(require,module,exports){
+},{}],46:[function(require,module,exports){
 'use strict';
 
 Vue.component('traspaso-cuentas-index', {
@@ -24860,7 +24835,7 @@ Vue.component('traspaso-cuentas-index', {
     }
 });
 
-},{}],48:[function(require,module,exports){
+},{}],47:[function(require,module,exports){
 'use strict';
 
 Vue.component('app-errors', {
@@ -24869,7 +24844,7 @@ Vue.component('app-errors', {
     template: require('./templates/errors.html')
 });
 
-},{"./templates/errors.html":52}],49:[function(require,module,exports){
+},{"./templates/errors.html":51}],48:[function(require,module,exports){
 'use strict';
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
@@ -24895,7 +24870,7 @@ Vue.component('global-errors', {
   }
 });
 
-},{"./templates/global-errors.html":53}],50:[function(require,module,exports){
+},{"./templates/global-errors.html":52}],49:[function(require,module,exports){
 'use strict';
 
 Vue.component('kardex-material-index', {
@@ -25045,7 +25020,7 @@ Vue.component('kardex-material-index', {
 
 });
 
-},{}],51:[function(require,module,exports){
+},{}],50:[function(require,module,exports){
 'use strict';
 
 Vue.component('select2', {
@@ -25101,9 +25076,9 @@ Vue.component('select2', {
     }
 });
 
-},{}],52:[function(require,module,exports){
+},{}],51:[function(require,module,exports){
 module.exports = '<div id="form-errors" v-cloak>\n  <div class="alert alert-danger" v-if="form.errors.length">\n    <ul>\n      <li v-for="error in form.errors">{{ error }}</li>\n    </ul>\n  </div>\n</div>';
-},{}],53:[function(require,module,exports){
+},{}],52:[function(require,module,exports){
 module.exports = '<div class="alert alert-danger" v-show="errors.length">\n  <ul>\n    <li v-for="error in errors">{{ error }}</li>\n  </ul>\n</div>';
 },{}]},{},[4]);
 

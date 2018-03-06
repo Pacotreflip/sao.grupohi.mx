@@ -138,7 +138,6 @@ class EloquentSolicitudCambioPartidaRepository implements SolicitudCambioPartida
             ->where('id_obra', '=', Context::getId())
             ->where('nivel', 'like', $conceptoBase->nivel . '%')
             ->get();
-        $detalle = array();
 
         foreach ($items as $index => $item) {
             $historico = SolicitudCambioPartidaHistorico::where('id_solicitud_cambio_partida', '=', $partida->id)
@@ -150,7 +149,9 @@ class EloquentSolicitudCambioPartidaRepository implements SolicitudCambioPartida
             $nivel_padre = $partida->concepto->nivel;
             $nivel_hijo = $item->nivel;
             $profundidad = (strlen($nivel_hijo) - strlen($nivel_padre)) / 4;
-            $factor = $partida->cantidad_presupuestada_nueva / $partida->cantidad_presupuestada_original;
+
+            $variacion_volumen = $partida->cantidad_presupuestada_nueva - $partida->cantidad_presupuestada_original;
+            $factor = ($conceptoBase->cantidad_presupuestada + $variacion_volumen) / $conceptoBase->cantidad_presupuestada;
 
             $row = array('index' => $index + 1,
                 //'numTarjeta'=>$item->numero_tarjeta,

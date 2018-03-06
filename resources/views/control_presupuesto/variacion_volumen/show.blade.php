@@ -1,6 +1,6 @@
 @extends('control_presupuesto.layout')
 @section('title', 'Cambios al Presupuesto')
-@section('contentheader_title', 'VARIACIÓN DE VOLÚMEN (ADITIVAS Y DEDUCTIVAS)')
+@section('contentheader_title', 'VARIACIÓN DE VOLÚMEN <small>(ADITIVAS Y DEDUCTIVAS)</small>')
 @section('breadcrumb')
     {!! Breadcrumbs::render('control_presupuesto.variacion_volumen.show',$variacion_volumen) !!}
 @endsection

@@ -62,7 +62,6 @@ class CambioPresupuestoController extends Controller
     public function paginate(Request $request)
     {
         $solicitudes = $this->solicitud->paginate($request->all());
-        //dd($solicitudes->items());
         return response()->json([
             'recordsTotal' => $solicitudes->total(),
             'recordsFiltered' => $solicitudes->total(),

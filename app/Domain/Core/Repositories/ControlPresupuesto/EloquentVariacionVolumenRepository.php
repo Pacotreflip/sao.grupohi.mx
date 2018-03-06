@@ -230,8 +230,8 @@ class EloquentVariacionVolumenRepository implements VariacionVolumenRepository
                 }
 
                 $monto_presupuestado_original = $concepto->monto_presupuestado;
-
                 $cantidad_presupuestada_original = $concepto->cantidad_presupuestada;
+
                 $cantidad_presupuestada_actualizada = $cantidad_presupuestada_original + $partida->variacion_volumen;
                 $factor = $cantidad_presupuestada_actualizada / $cantidad_presupuestada_original;
 
@@ -294,7 +294,6 @@ class EloquentVariacionVolumenRepository implements VariacionVolumenRepository
                             'monto_presupuestado_original' => $afectaConcepto->monto_presupuestado,
                             'monto_presupuestado_actualizado' => $cantidadMonto
                         ]);
-
 
                         DB::connection('cadeco')->table($db->base_datos . ".dbo.conceptos")
                             ->where('id_concepto', $afectaConcepto->id_concepto)

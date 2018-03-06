@@ -490,6 +490,8 @@ Vue.component('cambio-insumos-create', {
         },
 
         removeConcepto : function (id) {
+
+
             //var index = this.form.agrupadas.map(function (partida) { return partida.id_concepto; }).indexOf(parseInt(id));
             var self = this;
             var ag = self.form.agrupadas;
@@ -698,7 +700,52 @@ Vue.component('cambio-insumos-create', {
             return validador;
         },
 
-        removeRendimiento : function (id_concepto, id, tipo) {
+        confirmRemoveRendimiento: function (id_concepto, id, tipo) {
+            var self = this;
+            switch (tipo) {
+                case 1: ///agregar a materiales
+                    if (self.form.partidas[0].conceptos.MATERIALES.insumos[id].nuevo) {
+                      return false;
+                    }
+                    else if(self.form.partidas[0].conceptos.MATERIALES.insumos[id].entrega){
+                        return true;
+                    }
+                    break;
+                case 2://// agergar a mano obra
+                    if (self.form.partidas[0].conceptos.MANOOBRA.insumos[id].nuevo) {
+                      return false;
+                    }
+                    else if(self.form.partidas[0].conceptos.MANOOBRA.insumos[id].entrega){
+                        return true;
+                    }
+                    break;
+                case 4: ////agregar a herram y equipo
+                    if (self.form.partidas[0].conceptos.HERRAMIENTAYEQUIPO.insumos[id].nuevo) {
+                        return false;
+                    }
+                    else if(self.form.partidas[0].conceptos.HERRAMIENTAYEQUIPO.insumos[id].entrega){
+                            return true;
+                        }
+                    break;
+                case 8: ///agregar a maquinaria
+                    if (self.form.partidas[0].conceptos.MAQUINARIA.insumos[id].nuevo) {
+                      return false;
+                    }
+                    else if(self.form.partidas[0].conceptos.MAQUINARIA.insumos[id].entrega){
+                        return true;
+                    }
+                case 5: ///agregar a maquinaria
+                    if (self.form.partidas[0].conceptos.SUBCONTRATOS.insumos[id].nuevo) {
+                      return false;
+                    }else if(self.form.partidas[0].conceptos.SUBCONTRATOS.insumos[id].entrega){
+                       return true;
+                    }
+                    break;
+            }
+
+            return false;
+        },
+        removerRendimientoValidado:function  (id_concepto, id, tipo)  {
             var self = this;
             var index = self.form.insumos_eliminados.indexOf(parseInt(id_concepto));
             if(index > -1){
@@ -751,6 +798,32 @@ Vue.component('cambio-insumos-create', {
                 }
             }
             this.recalcular(id_concepto, id);
+        },
+        removeRendimiento : function (id_concepto, id, tipo) {
+            var self = this;
+            var confirmar=this.confirmRemoveRendimiento(id_concepto, id, tipo);
+            var eliminado = self.form.insumos_eliminados.indexOf(parseInt(id_concepto));
+           // console.log("eliminado-->"+eliminado);
+            if(confirmar&&eliminado==-1){
+                swal({
+                    title: 'Eliminar insumo',
+                    text: "¿ El insumo que deseas eliminar tiene una solicitud,cotización u orden de compra asociada, desea eliminarlo?",
+                    type: 'warning',
+                    showCancelButton: true,
+
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Si, Eliminar',
+                    cancelButtonText: 'No, Cancelar'
+                }).then(function(result) {
+                    console.log(result);
+                    if(result.value){ //cancelo
+                        self.removerRendimientoValidado(id_concepto, id, tipo);
+                    }
+                });
+            }else{
+                self.removerRendimientoValidado(id_concepto, id, tipo);
+            }
         },
 
         insumoEliminado : function (id_concepto) {

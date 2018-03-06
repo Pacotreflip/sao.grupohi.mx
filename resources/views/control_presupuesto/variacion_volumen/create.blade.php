@@ -106,7 +106,7 @@
                                                 <td class="text-right">@{{ parseFloat(concepto.cantidad_presupuestada).formatMoney(2, ',','.') }}</td>
                                                 <td>
                                                     <div class="form-group" :class="{'has-error': validation_errors.has('form_save_solicitud.Volúmen del Cambio ' + (i+1))}">
-                                                        <input type="text" :name="'Volúmen del Cambio ' + (i+1)" v-validate="'required|decimal|regex:[^0]+'" class="form-control input-sm" v-model="concepto.variacion_volumen">
+                                                        <input type="text" :name="'Volúmen del Cambio ' + (i+1)" v-validate="'required|regex:[^0]+|min_value:' + - parseFloat(concepto.cantidad_presupuestada)" class="form-control input-sm" v-model="concepto.variacion_volumen">
                                                         <label class="help" v-show="validation_errors.has('form_save_solicitud.Volúmen del Cambio ' + (i+1))">@{{ validation_errors.first('form_save_solicitud.Volúmen del Cambio ' + (i+1)) }}</label>
                                                     </div>
                                                 </td>
