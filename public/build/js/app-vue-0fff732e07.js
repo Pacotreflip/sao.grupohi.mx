@@ -21957,9 +21957,10 @@ Vue.component('cambio-presupuesto-index', {
             var self = this;
 
             return self.tipos_orden.filter(function (tipo_orden) {
-                return tipo_orden.id_tipo_cobrabilidad == self.form.id_tipo_cobrabilidad;
+                return tipo_orden.id_tipo_cobrabilidad == self.form.id_tipo_cobrabilidad && $.inArray(tipo_orden.id, [1, 4, 6, 7]);
             });
         }
+
     },
     mounted: function mounted() {
         var self = this;
