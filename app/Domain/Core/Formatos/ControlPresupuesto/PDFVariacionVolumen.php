@@ -253,8 +253,6 @@ class PDFVariacionVolumen extends Rotation {
                 $partida = $p->find($p->id);
                 $conceptoBase = DB::connection('cadeco')->table($base->baseDatos->base_datos . ".dbo.conceptos")->where('clave_concepto', '=', $partida->concepto->clave_concepto)->first();
 
-                $items = DB::connection('cadeco')->table($base->baseDatos->base_datos . ".dbo.conceptos")->orderBy('nivel', 'ASC')->where('id_obra', '=', Context::getId())->where('nivel', 'like', $conceptoBase->nivel . '%')->get();
-
                 $this->encola = 'partidas';
 
                 $historico = SolicitudCambioPartidaHistorico::where('id_solicitud_cambio_partida', '=', $partida->id)
@@ -262,7 +260,8 @@ class PDFVariacionVolumen extends Rotation {
                     ->where('nivel', '=', $conceptoBase->nivel)
                     ->first();
 
-                $factor = $partida->cantidad_presupuestada_nueva / $partida->cantidad_presupuestada_original;
+                $variacion_volumen = $partida->cantidad_presupuestada_nueva - $partida->cantidad_presupuestada_original;
+                $factor = ($conceptoBase->cantidad_presupuestada + $variacion_volumen) / $conceptoBase->cantidad_presupuestada;
 
                 // Si ya existe el histórico, muestra esa info
                 if($historico) {
@@ -282,7 +281,7 @@ class PDFVariacionVolumen extends Rotation {
                 }
 
                 //Calcula total de esta solicitud
-                $estaSolicitudSuma = $estaSolicitudSuma + ($variacion_importe);
+                $estaSolicitudSuma += $variacion_importe;
 
                 $partidasRow[$i] = [
                     $contador++,
@@ -343,7 +342,7 @@ class PDFVariacionVolumen extends Rotation {
                 ->first();
 
             $this->resumen([
-                'PRESUPUESTO '. $base->baseDatos->descripcion .' C. D.' => '$'. number_format($historico ? $historico->monto_presupuestado_original : $conceptoCD->monto_presupuestado, 2, '.', ','),
+                'PRESUPUESTO '. $base->baseDatos->descripcion .' C. D.' => '$'. number_format($historico ? $conceptoCD->monto_presupuestado -  $estaSolicitudSuma : $conceptoCD->monto_presupuestado, 2, '.', ','),
                 'ESTA SOLICITUD' => '$'. number_format($estaSolicitudSuma, 2, '.', ','),
                 'COSTO DIRECTO ACTUALIZADO' => '$'.number_format(($historico ? $conceptoCD->monto_presupuestado : $conceptoCD->monto_presupuestado + $estaSolicitudSuma), 2, '.', ',')
             ]);

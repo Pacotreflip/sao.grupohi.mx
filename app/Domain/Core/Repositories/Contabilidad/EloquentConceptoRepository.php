@@ -134,6 +134,9 @@ class EloquentConceptoRepository implements ConceptoRepository
 
         $query->where('dbo.conceptos.concepto_medible', '=', 3);
         $query->where('dbo.conceptos.activo', '=', 1);
+        $query->where('monto_presupuestado', '!=', 0);
+        $query->where('cantidad_presupuestada', '!=', 0);
+
         $query->where('path.filtro3','Like','%COSTO DIRECTO%');
 
 
