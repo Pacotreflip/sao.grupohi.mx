@@ -94,7 +94,19 @@ Vue.component('cambio-insumos-indirecto-create', {
 
                     $.each(response.conceptos.GASTOS.insumos, function (key, value) {
                         //console.log(key+"  -  "+value.descripcion);
-
+                        self.concepto={
+                            descripcion: '',
+                            id_material: '',
+                            monto_presupuestado: '',
+                            precio_unitario: '',
+                            cantidad_presupuestada: '',
+                            cantidad_presupuestada_nueva: '',
+                            precio_unitario_nuevo: '',
+                            unidad: '',
+                            rendimiento_nuevo:'',
+                            id_elemento: '',
+                            tipo_agrupador: 6
+                        };
 
                         self.concepto.id_material = value.id_material;
                         self.concepto.monto_presupuestado = value.monto_presupuestado;
@@ -109,7 +121,19 @@ Vue.component('cambio-insumos-indirecto-create', {
 
 
                     });
-                    self.concepto=[];
+                    self.concepto={
+                        descripcion: '',
+                        id_material: '',
+                        monto_presupuestado: '',
+                        precio_unitario: '',
+                        cantidad_presupuestada: '',
+                        cantidad_presupuestada_nueva: '',
+                        precio_unitario_nuevo: '',
+                        unidad: '',
+                        rendimiento_nuevo:'',
+                        id_elemento: '',
+                        tipo_agrupador: 6
+                    };
                     self.consultando=false;
                 },
                 complete: function () {
