@@ -147,7 +147,7 @@
                                                                    :id="'c_p_'+insumo.id_elemento+'_' + i"
                                                                    @change="recalcular(insumo.id_elemento, i,1)"
                                                                    v-validate="insumo.nuevo==true ? 'required|decimal|min_value:0' : 'decimal|min_value:0'"
-                                                                   :name="'Cantidad Actualizada material [' + (i + 1) + ']'">
+                                                                   :name="'Cantidad Actualizada de material [' + (i + 1) + ']'">
                                                             <label class="help"
                                                                    v-show="validation_errors.has('form_save_solicitud.Cantidad Actualizada material [' + (i + 1) + ']')">@{{ validation_errors.first('form_save_solicitud.Cantidad Actualizada material [' + (i + 1) + ']') }}</label>
                                                         </div>
@@ -163,7 +163,7 @@
                                                                     :id="'m_p_'+insumo.id_elemento+'_' + i"
                                                                     @change="recalcular_monto(insumo.id_elemento, i,1)"
                                                                     v-validate="insumo.nuevo==true ? 'required|decimal|min_value:0' : 'decimal|min_value:0'"
-                                                                    :name="'Costo Actualizado material [' + (i + 1) + ']'">
+                                                                    :name="'Costo Actualizado de material [' + (i + 1) + ']'">
                                                             <label class="help"
                                                                    v-show="validation_errors.has('form_save_solicitud.Costo Actualizado material [' + (i + 1) + ']')">@{{ validation_errors.first('form_save_solicitud.Costo Actualizado material [' + (i + 1) + ']') }}</label>
                                                         </div>
@@ -227,7 +227,7 @@
                                                                    :id="'c_p_'+insumo.id_elemento+'_' + i"
                                                                    @change="recalcular(insumo.id_elemento, i,2)"
                                                                    v-validate="insumo.nuevo==true ? 'required|decimal|min_value:0' : 'decimal|min_value:0'"
-                                                                   :name="'Rendimiento Actualizado mano de obra [' + (i + 1) + ']'">
+                                                                   :name="'Rendimiento Actualizado de mano de obra [' + (i + 1) + ']'">
                                                             <label class="help"
                                                                    v-show="validation_errors.has('form_save_solicitud.Rendimiento Actualizado mano de obra [' + (i + 1) + ']')">@{{ validation_errors.first('form_save_solicitud.Rendimiento Actualizado mano de obra [' + (i + 1) + ']') }}</label>
                                                         </div>
@@ -243,7 +243,7 @@
                                                                     :id="'m_p_'+insumo.id_elemento+'_' + i"
                                                                     @change="recalcular_monto(insumo.id_elemento, i,2)"
                                                                     v-validate="insumo.nuevo==true ? 'required|decimal|min_value:0' : 'decimal|min_value:0'"
-                                                                    :name="'Costo Actualizado mano de obra [' + (i + 1) + ']'">
+                                                                    :name="'Costo Actualizado de mano de obra [' + (i + 1) + ']'">
                                                             <label class="help"
                                                                    v-show="validation_errors.has('form_save_solicitud.Costo Actualizado mano de obra [' + (i + 1) + ']')">@{{ validation_errors.first('form_save_solicitud.Costo Actualizado mano de obra [' + (i + 1) + ']') }}</label>
                                                         </div>
@@ -303,7 +303,7 @@
                                                                    :id="'c_p_'+insumo.id_elemento+'_' + i"
                                                                    @change="recalcular(insumo.id_elemento, i,4)"
                                                                    v-validate="insumo.nuevo==true ? 'required|decimal|min_value:0' : 'decimal|min_value:0'"
-                                                                   :name="'Cantidad Actualizada herramienta [' + (i + 1) + ']'">
+                                                                   :name="'Cantidad Actualizada de herramienta [' + (i + 1) + ']'">
                                                             <label class="help"
                                                                    v-show="validation_errors.has('form_save_solicitud.Cantidad Actualizada herramienta [' + (i + 1) + ']')">@{{ validation_errors.first('form_save_solicitud.Cantidad Actualizada herramienta [' + (i + 1) + ']') }}</label>
                                                         </div>
@@ -319,7 +319,7 @@
                                                                     :id="'m_p_'+insumo.id_elemento+'_' + i"
                                                                     @change="recalcular_monto(insumo.id_elemento, i,4)"
                                                                     v-validate="insumo.nuevo==true ? 'required|decimal|min_value:0' : 'decimal|min_value:0'"
-                                                                    :name="'Costo Actualizado herramienta [' + (i + 1) + ']'">
+                                                                    :name="'Costo Actualizado de herramienta [' + (i + 1) + ']'">
                                                             <label class="help"
                                                                    v-show="validation_errors.has('form_save_solicitud.Costo Actualizado herramienta [' + (i + 1) + ']')">@{{ validation_errors.first('form_save_solicitud.Costo Actualizado herramienta [' + (i + 1) + ']') }}</label>
                                                         </div>
@@ -378,7 +378,7 @@
                                                                    :id="'c_p_'+insumo.id_elemento+'_' + i"
                                                                    @change="recalcular(insumo.id_elemento, i,8)"
                                                                    v-validate="insumo.nuevo==true ? 'required|decimal|min_value:0' : 'decimal|min_value:0'"
-                                                                   :name="'Cantidad Actualizada maquinaria [' + (i + 1) + ']'">
+                                                                   :name="'Cantidad Actualizada de maquinaria [' + (i + 1) + ']'">
                                                             <label class="help"
                                                                    v-show="validation_errors.has('form_save_solicitud.Cantidad Actualizada maquinaria [' + (i + 1) + ']')">@{{ validation_errors.first('form_save_solicitud.Cantidad Actualizada maquinaria [' + (i + 1) + ']') }}</label>
                                                         </div>
@@ -394,7 +394,7 @@
                                                                     :id="'m_p_'+insumo.id_elemento+'_' + i"
                                                                     @change="recalcular_monto(insumo.id_elemento, i,8)"
                                                                     v-validate="insumo.nuevo==true ? 'required|decimal|min_value:0' : 'decimal|min_value:0'"
-                                                                    :name="'Costo Actualizado maquinaria [' + (i + 1) + ']'">
+                                                                    :name="'Costo Actualizado de maquinaria [' + (i + 1) + ']'">
                                                             <label class="help"
                                                                    v-show="validation_errors.has('form_save_solicitud.Costo Actualizado maquinaria [' + (i + 1) + ']')">@{{ validation_errors.first('form_save_solicitud.Costo Actualizado maquinaria [' + (i + 1) + ']') }}</label>
                                                         </div>
@@ -449,7 +449,7 @@
                                                                    :id="'c_p_'+insumo.id_elemento+'_' + i"
                                                                    @change="recalcular(insumo.id_elemento, i,5)"
                                                                    v-validate="insumo.nuevo==true ? 'required|decimal|min_value:0' : 'decimal|min_value:0'"
-                                                                   :name="'Cantidad Actualizada subcontrato [' + (i + 1) + ']'">
+                                                                   :name="'Cantidad Actualizada de subcontrato [' + (i + 1) + ']'">
                                                             <label class="help"
                                                                    v-show="validation_errors.has('form_save_solicitud.Cantidad Actualizada subcontrato [' + (i + 1) + ']')">@{{ validation_errors.first('form_save_solicitud.Cantidad Actualizada subcontrato [' + (i + 1) + ']') }}</label>
                                                         </div>
@@ -464,7 +464,7 @@
                                                                     style="width: 90%" :id="'m_p_'+insumo.id_elemento+'_' + i"
                                                                     @change="recalcular_monto(insumo.id_elemento, i,5)"
                                                                     v-validate="insumo.nuevo==true ? 'required|decimal|min_value:0' : 'decimal|min_value:0'"
-                                                                    :name="'Costo Actualizado subcontrato [' + (i + 1) + ']'">
+                                                                    :name="'Costo Actualizado de subcontrato [' + (i + 1) + ']'">
                                                             <label class="help"
                                                                    v-show="validation_errors.has('form_save_solicitud.Costo Actualizado subcontrato [' + (i + 1) + ']')">@{{ validation_errors.first('form_save_solicitud.Costo Actualizado subcontrato [' + (i + 1) + ']') }}</label>
                                                         </div>
@@ -963,15 +963,6 @@
                                             </table>
                                         </div>
                                         <br>
-
-                                        <div class="form-group"
-                                             :class="{'has-error': validation_errors.has('form_save_solicitud.Motivo')}">
-                                            <label><b>Motivo</b></label>
-                                            <textarea class="form-control" v-validate="'required'" :name="'Motivo'"
-                                                      v-model="form.motivo"></textarea>
-                                            <label class="help"
-                                                   v-show="validation_errors.has('form_save_solicitud.Motivo')">@{{ validation_errors.first('form_save_solicitud.Motivo') }}</label>
-                                        </div>
                                         <div class="form-group"
                                              :class="{'has-error': validation_errors.has('form_save_solicitud.Area solicitante')}">
                                             <label><b>Área Solicitante</b></label>
@@ -980,6 +971,14 @@
                                                       v-model="form.area_solicitante"></textarea>
                                             <label class="help"
                                                    v-show="validation_errors.has('form_save_solicitud.Area solicitante')">@{{ validation_errors.first('form_save_solicitud.Area solicitante') }}</label>
+                                        </div>
+                                        <div class="form-group"
+                                             :class="{'has-error': validation_errors.has('form_save_solicitud.Motivo')}">
+                                            <label><b>Motivo</b></label>
+                                            <textarea class="form-control" v-validate="'required'" :name="'Motivo'"
+                                                      v-model="form.motivo"></textarea>
+                                            <label class="help"
+                                                   v-show="validation_errors.has('form_save_solicitud.Motivo')">@{{ validation_errors.first('form_save_solicitud.Motivo') }}</label>
                                         </div>
                                     </div>
 
