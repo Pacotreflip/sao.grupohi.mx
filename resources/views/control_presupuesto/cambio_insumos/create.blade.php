@@ -112,7 +112,7 @@
 
                                                         <div class="col-md-12">
                                                             <label for="materiales" class="col-sm-9 control-label"><h4>
-                                                                    MATERIALES Unitario</h4></label>
+                                                                    MATERIALES </h4></label>
                                                             <button type="button"
                                                                     class="btn btn-default col-sm-3 pull-right"
                                                                     id="materiales" v-on:click="addInsumoTipo(1)"> +
