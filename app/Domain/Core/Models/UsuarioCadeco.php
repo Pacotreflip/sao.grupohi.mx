@@ -11,4 +11,8 @@ class UsuarioCadeco extends \Ghi\Core\Models\UsuarioCadeco
     public function user() {
         return $this->belongsTo(User::class, 'usuario', 'usuario');
     }
+
+    public function getUsuarioAttribute($usuario) {
+        return strtoupper($usuario);
+    }
 }
