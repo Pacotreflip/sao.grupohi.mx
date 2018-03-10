@@ -50,6 +50,7 @@ class Transaccion extends Model
         'comentario',
         'observaciones',
         'FechaHoraRegistro',
+        'numero_folio',
     ];
 
 

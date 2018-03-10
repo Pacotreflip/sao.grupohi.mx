@@ -275,7 +275,7 @@ class EloquentConciliacionRepository implements ConciliacionRepository
 
         ConciliacionEstimacion::create(['id_conciliacion' => $request->id_conciliacion, 'id_estimacion' => $registro_estimacion->id_transaccion ]);
 
-        return $registro_estimacion;
+        return $this->estimacion->find($registro_estimacion->id_transaccion);
     }
 
     public function getNivel($id){
@@ -364,6 +364,10 @@ class EloquentConciliacionRepository implements ConciliacionRepository
      */
     public function validarAfectacionPagos($id_estimacion){
         $mensaje = "";
+        $estimacion = Transaccion::where('id_transaccion', '=', $id_estimacion)->first();
+        if($estimacion->estado == 1){
+            return "1:" . $estimacion->numero_folio;
+        }
         $item = Item::where('id_antecedente', '=', $id_estimacion)->first();
         if($item){
             $factura = Transaccion::where('id_transaccion', '=', $item->id_transaccion)->first();
