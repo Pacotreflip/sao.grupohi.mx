@@ -117,4 +117,8 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         $permisos = Sistema::where('url', '=', $sistema)->first()->permisos()->lists('name')->toArray();
         return Entrust::can($permisos);
     }
+
+    public function getUsuarioAttribute($usuario) {
+        return strtoupper($usuario);
+    }
 }
