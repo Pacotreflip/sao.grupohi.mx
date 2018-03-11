@@ -318,7 +318,7 @@ class EloquentConciliacionRepository implements ConciliacionRepository
     {
         $conciliacion = ConciliacionEstimacion::where('id_conciliacion', '=', $id)->first();
         if(!$conciliacion){
-            throw new ResourceException('La Conciliacion No tiene Estimación Registrada en SAO.');
+            throw new ResourceException('2:La Conciliacion No tiene Estimación Registrada en SAO.');
         }
 
         $pagos_asociados = $this->validarAfectacionPagos($conciliacion->id_estimacion); //  = Item::where('id_antecedente', '=', )->first();
