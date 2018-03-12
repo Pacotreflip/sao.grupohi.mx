@@ -29,6 +29,8 @@ use Ghi\Domain\Core\Models\Transacciones\Item;
 use Ghi\Domain\Core\Models\Transacciones\Subcontrato;
 use Ghi\Domain\Core\Models\Costo;
 //use GuzzleHttp\Client;
+use Ghi\Domain\Core\Models\Transacciones\Tipo;
+use Ghi\Domain\Core\Models\Transacciones\Transaccion;
 use Illuminate\Foundation\Auth\User;
 use Illuminate\Support\Facades\DB;
 use function MongoDB\BSON\toJSON;
@@ -273,7 +275,7 @@ class EloquentConciliacionRepository implements ConciliacionRepository
 
         ConciliacionEstimacion::create(['id_conciliacion' => $request->id_conciliacion, 'id_estimacion' => $registro_estimacion->id_transaccion ]);
 
-        return $registro_estimacion;
+        return $this->estimacion->find($registro_estimacion->id_transaccion);
     }
 
     public function getNivel($id){
@@ -316,12 +318,12 @@ class EloquentConciliacionRepository implements ConciliacionRepository
     {
         $conciliacion = ConciliacionEstimacion::where('id_conciliacion', '=', $id)->first();
         if(!$conciliacion){
-            throw new ResourceException('La Conciliacion No tiene Estimación Registrada en SAO.');
+            throw new ResourceException('2:La Conciliacion No tiene Estimación Registrada en SAO.');
         }
 
-        $factura = Item::where('id_antecedente', '=', $conciliacion->id_estimacion)->first();
-        if($factura){
-            throw new ResourceException('La Conciliacion Cuenta con Una Factura Registrada');
+        $pagos_asociados = $this->validarAfectacionPagos($conciliacion->id_estimacion); //  = Item::where('id_antecedente', '=', )->first();
+        if(strlen($pagos_asociados) > 1){
+            throw new ResourceException($pagos_asociados);
         }
         $estimacion = $this->estimacion->find($conciliacion->id_estimacion);
         $conceptos = Item::where('id_transaccion', '=', $estimacion->id_transaccion)->get();
@@ -339,6 +341,8 @@ class EloquentConciliacionRepository implements ConciliacionRepository
                 $contrato->cantidad_original -= $concepto->cantidad;
                 $contrato->save();
             }
+            $registro_conciliacion = ConciliacionEstimacion::where('id_estimacion', '=', $conciliacion->id_estimacion)->first();
+            $registro_conciliacion->delete();
 
             $estimacion->delete();
             $conciliacion->delete();
@@ -351,4 +355,38 @@ class EloquentConciliacionRepository implements ConciliacionRepository
 
         return $conceptos;
     }
+
+    /**
+     * Valida que la Estimación que se va a eliminar no cuente con registro de
+     * factura, orden de pago y pago registrado
+     * @param $id_estimacion
+     * @return string
+     */
+    public function validarAfectacionPagos($id_estimacion){
+        $mensaje = "";
+        $estimacion = Transaccion::where('id_transaccion', '=', $id_estimacion)->first();
+        if($estimacion->estado == 1){
+            return "1:" . $estimacion->numero_folio;
+        }
+        $item = Item::where('id_antecedente', '=', $id_estimacion)->first();
+        if($item){
+            $factura = Transaccion::where('id_transaccion', '=', $item->id_transaccion)->first();
+            $mensaje = $mensaje . "Factura:" . $factura->numero_folio;
+            $contra_recibo = Transaccion::where('id_transaccion', '=', $factura->id_antecedente)->first();
+            if($contra_recibo){
+                $mensaje = $mensaje . ":Contrarecibo:" . $contra_recibo->numero_folio;
+            }
+            $orden_pago = Transaccion::where('id_referente', '=', $item->id_transaccion)->first();
+            if($orden_pago){
+                $mensaje = $mensaje . ":Orden de Pago:" . $orden_pago->numero_folio;
+                $pago = Transaccion::where('numero_folio', '=', $orden_pago->numero_folio)->where('tipo_transaccion', '=', Tipo::PAGO)->first();
+                if($pago){
+                    $mensaje = $mensaje . ":Pago:" . $pago->numero_folio;
+                }
+            }
+        }
+        return $mensaje;
+    }
+
+
 }

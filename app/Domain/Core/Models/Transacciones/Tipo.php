@@ -12,4 +12,5 @@ class Tipo
     const SUBCONTRATO = 51;
     const ESTIMACION = 52;
     const CONTRATO_PROYECTADO = 49;
+    const PAGO = 82;
 }
