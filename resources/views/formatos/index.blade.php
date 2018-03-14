@@ -18,6 +18,9 @@
                         <ul class="nav nav-stacked">
                             <li><a href="{{ route('formatos.subcontratos.estimacion') }}">ORDEN DE PAGO ESTIMACIÓN</a></li>
                         </ul>
+                        <ul class="nav nav-stacked">
+                            <li><a href="{{ route('formatos.subcontratos.comparativa_presupuestos') }}">TABLA COMPARATIVA DE PRESUPUESTOS</a></li>
+                        </ul>
                     </div>
                 </div>
             </div>

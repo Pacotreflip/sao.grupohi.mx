@@ -19,6 +19,13 @@ interface ContratoProyectadoRepository
 {
 
     /**
+     * Devuelve un contrato proyectado por su ID
+     * @param $id
+     * @return ContratoProyectado
+     */
+    public function find($id);
+
+    /**
      * Crea un nuevo registro de Contrato Proyectado
      * @param array $data
      * @return ContratoProyectado

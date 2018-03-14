@@ -13,4 +13,5 @@ class Tipo
     const ESTIMACION = 52;
     const CONTRATO_PROYECTADO = 49;
     const PAGO = 82;
+    const COTIZACION_CONTRATO = 50;
 }
