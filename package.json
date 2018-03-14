@@ -5,6 +5,7 @@
     "dev": "gulp watch"
   },
   "devDependencies": {
+    "bootstrap-3-typeahead": "^4.0.2",
     "gulp": "^3.9.1",
     "laravel-elixir": "^5.0.0"
   },

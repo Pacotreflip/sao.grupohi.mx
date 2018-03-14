@@ -201,7 +201,7 @@ class Estimacion extends Rotation {
 
         $this->SetFills(['180,180,180', '180,180,180', '180,180,180', '180,180,180', '180,180,180', '180,180,180']);
         $this->SetTextColors(['0,0,0', '0,0,0', '0,0,0', '0,0,0', '0,0,0', '0,0,0']);
-        $this->SetHeights([0.5]);
+            $this->SetHeights([0.5]);
         $this->SetAligns(['C', 'C', 'C', 'C', 'C', 'C']);
         $this->Row([
             'Partida',

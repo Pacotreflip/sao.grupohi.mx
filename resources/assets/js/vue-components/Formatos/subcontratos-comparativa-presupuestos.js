@@ -8,7 +8,8 @@ Vue.component('subcontratos-comparativa-presupuestos',{
     mounted : function () {
         $('#remote .typeahead').typeahead(null, {
             name: 'best-pictures',
-            display: 'value',
+            display: 'year',
+
             source: new Bloodhound({
                 datumTokenizer: Bloodhound.tokenizers.obj.whitespace('value'),
                 queryTokenizer: Bloodhound.tokenizers.whitespace,

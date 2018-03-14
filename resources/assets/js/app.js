@@ -2,8 +2,6 @@
  * Created by JFEsquivel on 08/06/2017.
  */
 window.$ = window.jQuery = require('jquery');
-require('typeahead.js/dist/typeahead.jquery');
-window.Bloodhound = require('typeahead.js/dist/bloodhound');
 require('bootstrap');
 require('admin-lte');
 require('admin-lte/plugins/select2/select2');
@@ -27,3 +25,5 @@ window.Chart = require('chart.js');
 require('jquery-slimscroll');
 require('jstree/dist/jstree.js');
 window._ = require('underscore');
+require('typeahead.js/dist/typeahead.bundle');
+window.Bloodhound = require('typeahead.js/dist/bloodhound');

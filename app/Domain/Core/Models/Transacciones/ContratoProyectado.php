@@ -11,8 +11,10 @@ namespace Ghi\Domain\Core\Models\Transacciones;
 
 use Carbon\Carbon;
 use Ghi\Core\Facades\Context;
+use Ghi\Domain\Core\Models\Contrato;
 use Ghi\Domain\Core\Models\Scopes\ContratoProyectadoScope;
 use Ghi\Domain\Core\Models\Scopes\ObraScope;
+use Ghi\Domain\Core\Models\Sucursal;
 
 class ContratoProyectado extends Transaccion
 {
@@ -56,5 +58,13 @@ class ContratoProyectado extends Transaccion
             $model->opciones = 1026;
             $model->comentario = "I;" . date('d/m/Y') . " " . date('h:m:s') . ";SAO|" . auth()->user()->usuario . "|";
         });
+    }
+
+    public function cotizacionesContrato() {
+        return $this->hasMany(CotizacionContrato::class, 'id_antecedente', 'id_transaccion');
+    }
+
+    public function contratos() {
+        return $this->hasMany(Contrato::class, 'id_transaccion', 'id_transaccion');
     }
 }
