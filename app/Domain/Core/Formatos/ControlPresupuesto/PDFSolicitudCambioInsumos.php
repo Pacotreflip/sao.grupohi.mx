@@ -287,7 +287,8 @@ class PDFSolicitudCambioInsumos extends Rotation
 
                 foreach ($partidas as $partida) {
                     foreach ($partida['items'] as $item) {
-                        $data_info = [
+                        $data_info = [];
+                        $data_info =  [
                             'num_tarjeta' => $numero_tarjeta,
                             'descripcion' => utf8_decode($item->material->descripcion),
                             'unidad' => $item->material->unidad,
@@ -313,7 +314,8 @@ class PDFSolicitudCambioInsumos extends Rotation
                 foreach ($partidas as $partida) {
                     foreach ($partida['items'] as $item) {
 
-                       // dd($item);
+                        // dd($item);
+                        $data_info = [];
                         $data_info = [
                             'num_tarjeta' => $numero_tarjeta,
                             'descripcion' => $item->material->descripcion,
