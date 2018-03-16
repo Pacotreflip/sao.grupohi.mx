@@ -35,4 +35,14 @@ class ConceptoPath extends BaseModel
         , 'filtro11'
 
     ];
+
+    public static function getColumnsAttribute() {
+        return DB::connection('cadeco')
+            ->table('INFORMATION_SCHEMA.COLUMNS')
+            ->select('COLUMN_NAME')
+            ->where('TABLE_NAME', '=', 'conceptosPath')
+            ->where('TABLE_SCHEMA', '=', 'PresupuestoObra')
+            ->where('COLUMN_NAME', 'LIKE', 'filtro%')
+            ->lists('COLUMN_NAME');
+    }
 }

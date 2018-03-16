@@ -90,4 +90,5 @@ require('./vue-components/ControlPresupuesto/cambio_insumos/costo_indirecto/crea
  * Configuración Components
  */
 require('./vue-components/Configuracion/seguridad/index');
+require('./vue-components/Configuracion/presupuesto/index');
 
