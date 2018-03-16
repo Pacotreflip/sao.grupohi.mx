@@ -22,8 +22,8 @@ class ConceptoController extends Controller
     {
         parent::__construct();
 
-        //$this->middleware('auth');
-        //$this->middleware('context');
+        $this->middleware('auth');
+        $this->middleware('context');
 
         $this->concepto = $concepto;
     }
