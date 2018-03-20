@@ -1,10 +1,10 @@
 <?php
 
 //Usuarios Routes...
-
+/*
 Route::get('test', function () {
     dd(\Ghi\Domain\Core\Models\ConceptoPath::getColumnsAttribute());
-});
+});*/
 
 Route::post('usuario/paginate', 'UsuarioController@paginate');
 Route::get('usuario/{usuario}', 'UsuarioController@find');
@@ -85,3 +85,8 @@ Route::get('tipo_tran/lists', 'TipoTranController@lists');
  * Unidades
  */
 Route::get('unidad/getUnidadesByDescripcion', 'UnidadController@getUnidadesByDescripcion')->name('unidad.getUnidadesByDescripcion');
+
+
+Route::post('config/niveles/paginate', 'ConfigNivelesPresupuestoController@paginate')->name('config.presupuestoNivel.paginate');
+Route::get('config/niveles/{id}', 'ConfigNivelesPresupuestoController@show')->name('config.presupuestoNivel.show')->where(['id' => '[0-9]+']);
+Route::patch('config/niveles/update/{id}', 'ConfigNivelesPresupuestoController@update')->name('config.presupuestoNivel.update')->where(['id' => '[0-9]+']);

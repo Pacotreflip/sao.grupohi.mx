@@ -133,6 +133,9 @@ class PagesController extends Controller
         return view('configuracion.seguridad.index');
     }
 
+    /**
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     public function presupuesto() {
         return view('configuracion.presupuesto.index');
     }

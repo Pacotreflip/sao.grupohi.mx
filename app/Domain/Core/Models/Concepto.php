@@ -250,4 +250,13 @@ class Concepto extends BaseModel
 
     }
 
+    /**
+     * @return mixed
+     */
+    public static function getMaxNivel()
+    {
+        return DB::connection('cadeco')
+            ->table('dbo.conceptos')
+            ->select(DB::raw('max(LEN([nivel]) / 4) as MAX'))->lists('MAX');
+    }
 }

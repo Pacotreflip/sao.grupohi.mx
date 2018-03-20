@@ -9,3 +9,5 @@ Homestead.json
 /.idea
 /nbproject/project.properties
 /nbproject/project.xml
+/composer.lock
+public/build/
