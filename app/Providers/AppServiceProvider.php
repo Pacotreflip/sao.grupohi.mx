@@ -383,5 +383,9 @@ class AppServiceProvider extends ServiceProvider
             \Ghi\Domain\Core\Repositories\EloquentUnidadRepository::class
         );
 
+        $this->app->bind(
+            \Ghi\Domain\Core\Contracts\Seguridad\ConfigNivelesPresupuestoRepository::class,
+            \Ghi\Domain\Core\Repositories\Seguridad\EloquentConfigNivelesPresupuestoRepository::class
+        );
     }
 }

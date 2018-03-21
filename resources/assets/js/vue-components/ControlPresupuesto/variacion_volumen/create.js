@@ -4,19 +4,7 @@ Vue.component('variacion-volumen-create', {
             tarjetas : {},
             bases_afectadas : [],
             id_tarjeta : '',
-            niveles: [
-                {nombre : 'Nivel 1', numero : 1},
-                {nombre : 'Nivel 2', numero : 2},
-                {nombre : 'Nivel 3', numero : 3},
-                {nombre : 'Sector', numero : 4},
-                {nombre : 'Cuadrante', numero : 5},
-                {nombre : 'Especialidad', numero : 6},
-                {nombre : 'Partida', numero : 7},
-                {nombre : 'Sub Partida o Centa de costo', numero : 8},
-                {nombre : 'Concepto', numero : 9},
-                {nombre : 'Nivel 10', numero : 10},
-                {nombre : 'Nivel 11', numero : 11}
-            ],
+            niveles: [],
             form : {
                 partidas : [],
                 motivo : '',
@@ -65,7 +53,7 @@ Vue.component('variacion-volumen-create', {
 
     mounted: function () {
         var self = this;
-
+        self.getNiveles();
         self.fetchTarjetas().then(() => {
             self.cargando_tarjetas = false;
             $('#conceptos_table').DataTable({
@@ -106,28 +94,23 @@ Vue.component('variacion-volumen-create', {
                     {data : 'filtro6'},
                     {data : 'filtro7'},
                     {data : 'filtro8'},
-                    {
-                        data : {},
-                        render : function (data) {
-                            return '<span title="'+data.filtro9+'">'+data.filtro9_sub+'</span>'
-                        }
-                    },
+                    {data : 'filtro9'},
                     {data : 'filtro10'},
                     {data : 'filtro11'},
                     {data : 'unidad'},
                     {data : 'cantidad_presupuestada', className : 'text-right'},
                     {data : 'precio_unitario', className : 'text-right'},
                     {data : 'monto_presupuestado', className : 'text-right'},
-                    {
-                        data : {},
-                        render : function (data) {
-                            if (self.existe(data.id_concepto)) {
-                                return '<button class="btn btn-xs btn-default btn_remove_concepto" id="'+data.id_concepto+'"><i class="fa fa-minus text-red"></i></button>';
-                            }
-                            return '<button class="btn btn-xs btn-default btn_add_concepto" id="'+data.id_concepto+'"><i class="fa fa-plus text-green"></i></button>';
-                        }
-                    }
+                    {data : 'id_concepto', className : 'text-right'}
                 ],
+                "fnCreatedRow": function( nRow, aData, iDataIndex ) {
+                    $('td:eq(8)', nRow).html( '<span title="'+aData.filtro9+'">'+aData.filtro9_sub+'</span>' );
+                    if (self.existe(aData.id_concepto)) {
+                        $('td:eq(15)', nRow).html( '<button class="btn btn-xs btn-default btn_remove_concepto" id="'+aData.id_concepto+'"><i class="fa fa-minus text-red"></i></button>');
+                    }else {
+                        $('td:eq(15)', nRow).html( '<button class="btn btn-xs btn-default btn_add_concepto" id="' + aData.id_concepto + '"><i class="fa fa-plus text-green"></i></button>');
+                    }
+                },
                 language: {
                     "sProcessing": "Procesando...",
                     "sLengthMenu": "Mostrar _MENU_ registros",
@@ -332,6 +315,29 @@ Vue.component('variacion-volumen-create', {
                      text: 'Por favor corrija los errores del formulario'
                  });
             });
+        },
+        getNiveles : function () {
+            var self = this;
+
+            var url = App.host + '/config/niveles/lists';
+            $.ajax({
+                type: 'GET',
+                url: url,
+                beforeSend: function () {
+                    self.cargando = true;
+                },
+                success: function (response, textStatus, xhr) {
+                    var arrayC = [];
+                    $.each(response.data,function (index, value) {
+                        self.niveles.push({nombre:value.description,numero:value.id})
+                    });
+                    console.log(self.niveles);
+                },
+                complete: function () {
+                    self.cargando = false;
+                }
+            });
         }
+
     }
 });
