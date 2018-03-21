@@ -9,5 +9,11 @@ Homestead.json
 /.idea
 /nbproject/project.properties
 /nbproject/project.xml
+/public/build/
+/public/css/
+/public/js/
 /composer.lock
-public/build/
+/php_errors.log
+composer.lock
+php_errors.log
+.idea
