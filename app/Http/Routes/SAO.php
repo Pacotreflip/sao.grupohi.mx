@@ -90,3 +90,4 @@ Route::get('unidad/getUnidadesByDescripcion', 'UnidadController@getUnidadesByDes
 Route::post('config/niveles/paginate', 'ConfigNivelesPresupuestoController@paginate')->name('config.presupuestoNivel.paginate');
 Route::get('config/niveles/{id}', 'ConfigNivelesPresupuestoController@show')->name('config.presupuestoNivel.show')->where(['id' => '[0-9]+']);
 Route::patch('config/niveles/update/{id}', 'ConfigNivelesPresupuestoController@update')->name('config.presupuestoNivel.update')->where(['id' => '[0-9]+']);
+Route::get('config/niveles/lists', 'ConfigNivelesPresupuestoController@lists')->name('config.presupuestoNivel.lists');

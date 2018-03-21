@@ -42,19 +42,20 @@ class ConfigNivelesPresupuestoController extends Controller
      */
     public function paginate(Request $request){
         $resp = $this->configNivelesPresupuestoRepository->paginate($request->all());
-        if(count($resp)==0){
+        if (count($resp) == 0) {
             $columns = ConceptoPath::getColumnsAttribute();
-            if(count($columns)) {
+            if (count($columns)) {
                 foreach ($columns as $column) {
                     $save = $this->configNivelesPresupuestoRepository->create((array)$column);
-                    if ($save) {
+                    if (!$save) {
                         return response()->json($resp, 404);
                     }
                 }
                 $resp = $this->configNivelesPresupuestoRepository->paginate($request->all());
             }
         }
-        return response()->json([            'recordsTotal' => $resp->total(),
+        return response()->json([
+            'recordsTotal' => $resp->total(),
             'recordsFiltered' => $resp->total(),
             'data' => $resp->items()], 200);
     }
@@ -79,5 +80,23 @@ class ConfigNivelesPresupuestoController extends Controller
                 'configNivel' =>  $configNivel
             ]
         ], 200);
+    }
+
+
+    public function lists(Request $request){
+        $resp = $this->configNivelesPresupuestoRepository->all()->toArray();
+        if (count($resp) == 0) {
+            $columns = ConceptoPath::getColumnsAttribute();
+            if (count($columns)) {
+                foreach ($columns as $column) {
+                    $save = $this->configNivelesPresupuestoRepository->create((array)$column);
+                    if (!$save) {
+                        return response()->json($resp, 404);
+                    }
+                }
+                $resp = $this->configNivelesPresupuestoRepository->all()->toArray();
+            }
+        }
+        return response()->json(['data' => $resp], 200);
     }
 }

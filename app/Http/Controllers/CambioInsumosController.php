@@ -171,5 +171,9 @@ class CambioInsumosController extends Controller
             ->with('presupuestos', $presupuestos);
     }
 
+    public function insumoCantidad(){
+        return view('control_presupuesto.cambio_cantidad_insumos.create');
+    }
+
 
 }

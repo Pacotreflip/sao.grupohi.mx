@@ -73,6 +73,13 @@ class ControlPresupuestoFlujoOperativoSeeder extends Seeder
             'name' => 'cambio_insumos_indirecto',
             'id' => 7
         ]);
+        \Ghi\Domain\Core\Models\ControlPresupuesto\TipoOrden::create([
+            'descripcion' => 'Ordenes de Cambio de Cantidad a Insumos',
+            'id_tipo_cobrabilidad' => $NoCobrables->id,
+            'estatus' => 1,
+            'name' => 'cambio_cantidad_insumos',
+            'id' => 8
+        ]);
     }
 }
 
