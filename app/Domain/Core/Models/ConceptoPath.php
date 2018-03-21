@@ -36,14 +36,6 @@ class ConceptoPath extends BaseModel
 
     ];
 
-    public function getInsumosPorTarjeta($id){
-        $this->join('dbo.conceptos c', 'c.id_concepto', '=', $this->id_concepto)
-            ->join('ControlPresupuesto.concepto_tarjeta ct', 'ct.id_concepto',  '=',  'c.id_concepto')
-            ->join('ControlPresupuesto.tarjeta t', 't.id', '=', 'ct.id_tarjeta')
-            ->where('c.id_material', '=', $id)
-            ->orderBy('cp.filtro5', 'desc')->get();
-    }
-
     public static function getColumnsAttribute() {
         $columns = [];
         try {

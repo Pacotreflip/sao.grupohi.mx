@@ -90,11 +90,3 @@ Breadcrumbs::register('control_presupuesto.cambio_insumos.costo_indirecto.create
     $breadcrumb->parent('control_presupuesto.cambio_presupuesto.index');
     $breadcrumb->push('NUEVA CAMBIO DE INSUMOS COSTO INDIRECTO', route('control_presupuesto.cambio_insumos.costo_indirecto.create'));
 });
-
-/**
- * Ordenes de Cambio de Cantidad a Insumos create
- */
-Breadcrumbs::register('control_presupuesto.cambio_cantidad_insumos.create', function ($breadcrumb) {
-    $breadcrumb->parent('control_presupuesto.cambio_presupuesto.index');
-    $breadcrumb->push('NUEVO CAMBIO DE CANTIDAD A INSUMOS COSTO INDIRECTO', route('control_presupuesto.cambio_cantidad_insumos.create'));
-});
