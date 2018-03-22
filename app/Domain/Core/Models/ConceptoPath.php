@@ -8,6 +8,10 @@ use Illuminate\Support\Facades\DB;
 
 class ConceptoPath extends BaseModel
 {
+    const COLUMN_SECTOR = "cp.filtro4";
+    const COLUMN_CUADRANTE = "cp.filtro5";
+
+
     protected $connection = 'cadeco';
     protected $table = 'PresupuestoObra.conceptosPath';
     protected $primaryKey = 'id_concepto';

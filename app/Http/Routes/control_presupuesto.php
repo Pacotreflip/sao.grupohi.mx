@@ -82,13 +82,12 @@ Route::group(['prefix' => 'control_presupuesto'], function () {
        });
 
     /**
-     * Ordenes de Cambio a Contidad en Insumos
+     * Ordenes de Cambio a Cantidad en Insumos
      */
     Route::group(['prefix' => 'cambio_cantidad_insumos'], function () {
-        Route::get('/create', 'CambioInsumosController@insumoCantidad')->name('control_presupuesto.cambio_cantidad_insumos.create');
-        Route::post('/', 'CambioInsumosController@storeIndirecto');
-        Route::get('/{cambio_insumos}', 'CambioInsumosController@show')->name('control_presupuesto.cambio_insumos.show');
-        Route::get('/{cambio_insumos}/pdf', 'CambioInsumosController@pdf');
+        Route::get('/create', 'CambioCantidadInsumosController@create')->name('control_presupuesto.cambio_insumos.create');
+        Route::post('/getAgrupacionFiltro', 'CambioCantidadInsumosController@getAgrupacionFiltro');
+
     });
 
     /**

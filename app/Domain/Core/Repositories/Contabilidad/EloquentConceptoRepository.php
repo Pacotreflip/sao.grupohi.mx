@@ -64,7 +64,7 @@ class EloquentConceptoRepository implements ConceptoRepository
 
         $concepto = $this->getById($id);
 
-        return $this->model ->orderBy('descripcion', 'desc')->where('nivel', 'like', $concepto->nivel_hijos)->get();
+        return $this->model->orderBy('descripcion', 'desc')->where('nivel', 'like', $concepto->nivel_hijos)->get();
 
     }
 
@@ -96,19 +96,20 @@ class EloquentConceptoRepository implements ConceptoRepository
         return $item->max_nivel;
     }
 
-    public function paths(array $data,$baseDatos=null) {
+    public function paths(array $data, $baseDatos = null)
+    {
         $db = $baseDatos == null ? Context::getDatabaseName() : $baseDatos;
 
-        $query = DB::connection('cadeco')->table($db.'.dbo.conceptos')->where('conceptos.id_obra', '=', Context::getId())->join($db.'.PresupuestoObra.conceptosPath as path', 'conceptos.id_concepto', '=', 'path.id_concepto');
+        $query = DB::connection('cadeco')->table($db . '.dbo.conceptos')->where('conceptos.id_obra', '=', Context::getId())->join($db . '.PresupuestoObra.conceptosPath as path', 'conceptos.id_concepto', '=', 'path.id_concepto');
 
-        if(array_key_exists('filtros', $data)) {
+        if (array_key_exists('filtros', $data)) {
             foreach ($data['filtros'] as $key => $filtro) {
                 $query->where(function ($q) use ($filtro) {
                     foreach ($filtro['operadores'] as $key => $operador) {
-                        if($key == 0) {
-                            $q->whereRaw('filtro' . $filtro['nivel'] . ' ' . str_replace('"', "'",$operador["sql"]));
+                        if ($key == 0) {
+                            $q->whereRaw('filtro' . $filtro['nivel'] . ' ' . str_replace('"', "'", $operador["sql"]));
                         } else {
-                            $q->orWhereRaw('filtro' . $filtro['nivel'] . ' ' . str_replace('"', "'",$operador["sql"]));
+                            $q->orWhereRaw('filtro' . $filtro['nivel'] . ' ' . str_replace('"', "'", $operador["sql"]));
                         }
                     }
                 });
@@ -127,7 +128,8 @@ class EloquentConceptoRepository implements ConceptoRepository
         return $query->paginate($perPage = $data['length'], $columns = ['*'], $pageName = 'page', $page = ($data['start'] / $data['length']) + 1);
     }
 
-    public function pathsConceptos(array $data) {
+    public function pathsConceptos(array $data)
+    {
 
         $query = DB::connection('cadeco')->table('dbo.conceptos')->where('conceptos.id_obra', '=', Context::getId())
             ->join('PresupuestoObra.conceptosPath as path', 'conceptos.id_concepto', '=', 'path.id_concepto');
@@ -137,8 +139,7 @@ class EloquentConceptoRepository implements ConceptoRepository
         $query->where('monto_presupuestado', '!=', 0);
         $query->where('cantidad_presupuestada', '!=', 0);
 
-        $query->where('path.filtro3','Like','%COSTO DIRECTO%');
-
+        $query->where('path.filtro3', 'Like', '%COSTO DIRECTO%');
 
 
         $query->join('ControlPresupuesto.concepto_tarjeta', 'dbo.conceptos.id_concepto', '=', 'ControlPresupuesto.concepto_tarjeta.id_concepto')
@@ -146,21 +147,21 @@ class EloquentConceptoRepository implements ConceptoRepository
             ->where('ControlPresupuesto.tarjeta.id', '=', $data['id_tarjeta'] == '' ? null : $data['id_tarjeta']);
 
 
-        if(isset($data['order'])) {
+        if (isset($data['order'])) {
             foreach ($data['order'] as $order) {
                 $query->orderBy($data['columns'][$order['column']]['data'], $order['dir']);
             }
         }
         $query->orderBy('conceptos.nivel');
 
-        if(array_key_exists('filtros', $data)) {
+        if (array_key_exists('filtros', $data)) {
             foreach ($data['filtros'] as $key => $filtro) {
                 $query->where(function ($q) use ($filtro) {
                     foreach ($filtro['operadores'] as $key => $operador) {
-                        if($key == 0) {
-                            $q->whereRaw('filtro' . $filtro['nivel'] . ' ' . str_replace('"', "'",$operador["sql"]));
+                        if ($key == 0) {
+                            $q->whereRaw('filtro' . $filtro['nivel'] . ' ' . str_replace('"', "'", $operador["sql"]));
                         } else {
-                            $q->orWhereRaw('filtro' . $filtro['nivel'] . ' ' . str_replace('"', "'",$operador["sql"]));
+                            $q->orWhereRaw('filtro' . $filtro['nivel'] . ' ' . str_replace('"', "'", $operador["sql"]));
                         }
                     }
                 });
@@ -179,7 +180,8 @@ class EloquentConceptoRepository implements ConceptoRepository
 
     }
 
-    public function pathsCostoIndirecto(array $data) {
+    public function pathsCostoIndirecto(array $data)
+    {
         $conceptos = $this->model->select(
             "conceptos.unidad",
             "conceptos.cantidad_presupuestada",
@@ -190,12 +192,12 @@ class EloquentConceptoRepository implements ConceptoRepository
             ->where('dbo.conceptos.activo', '=', 1)
             ->where('dbo.conceptos.concepto_medible', '=', 3)
             ->join('PresupuestoObra.conceptosPath as path', 'conceptos.id_concepto', '=', 'path.id_concepto')
-            ->where('path.filtro3','Like','%COSTO INDIRECTO%')
-        ->where(function ($q) use ($data){
-            $q->where('path.filtro5','Like','%' . $data['descripcion'] . '%')
-                ->orWhere('path.filtro6','Like','%' . $data['descripcion'] . '%')
-                ->orWhere('path.filtro7','Like','%' . $data['descripcion'] . '%');
-        })->limit(5)
+            ->where('path.filtro3', 'Like', '%COSTO INDIRECTO%')
+            ->where(function ($q) use ($data) {
+                $q->where('path.filtro5', 'Like', '%' . $data['descripcion'] . '%')
+                    ->orWhere('path.filtro6', 'Like', '%' . $data['descripcion'] . '%')
+                    ->orWhere('path.filtro7', 'Like', '%' . $data['descripcion'] . '%');
+            })->limit(5)
             ->get();
         //dd($conceptos);
         return $conceptos;
@@ -211,26 +213,47 @@ class EloquentConceptoRepository implements ConceptoRepository
     {
 
         $cobrable = $this->model->where('id_concepto', $id)->first();
-        $conceptos = $this->model->where('nivel', 'like', $cobrable->nivel.'___.')->get();
+        $conceptos = $this->model->where('nivel', 'like', $cobrable->nivel . '___.')->get();
         $data = [];
-        foreach ($conceptos as $concepto){
+        foreach ($conceptos as $concepto) {
 
-            $data[str_replace(' ', '',$concepto->descripcion)] =
+            $data[str_replace(' ', '', $concepto->descripcion)] =
                 [
                     'id_concepto' => $concepto->id_concepto,
-                    'nivel'       => $concepto->nivel,
+                    'nivel' => $concepto->nivel,
                     'descripcion' => $concepto->descripcion,
                     'monto_presupuestado' => $concepto->monto_presupuestado,
-                    'insumos'  => Concepto::where('nivel', 'like', $concepto->nivel.'___.')->get()->toArray()
+                    'insumos' => Concepto::where('nivel', 'like', $concepto->nivel . '___.')->get()->toArray()
                 ];
 
         }
         $cob_conceptos = [
-            'cobrable'  => $cobrable->toArray(),
+            'cobrable' => $cobrable->toArray(),
             'conceptos' => $data
         ];
 
 
         return $cob_conceptos;
     }
+
+    public function getPreciosConceptos($id)
+    {
+        $precios = $this->model->select(
+            DB::raw('count(conceptos.id_material) as cantidad, conceptos.id_material, conceptos.descripcion,conceptos.precio_unitario')
+        )
+            ->join('ControlPresupuesto.concepto_tarjeta as ct', 'conceptos.id_concepto', '=', 'ct.id_concepto')
+            ->join('ControlPresupuesto.tarjeta as t ', 't.id', '=', 'ct.id_tarjeta')
+            ->where('id_material', '=', $id)
+            ->groupBy('conceptos.precio_unitario', 'conceptos.descripcion', 'conceptos.id_material')
+            ->orderBy('conceptos.precio_unitario', 'asc')
+            ->get();
+        $lista_precios = [];
+        foreach ($precios as $precio) {
+            array_push($lista_precios, $precio->precio_unitario);
+        }
+        return $lista_precios;
+
+    }
+
+
 }

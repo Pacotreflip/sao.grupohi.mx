@@ -22,8 +22,8 @@ class ConceptoController extends Controller
     {
         parent::__construct();
 
-        //$this->middleware('auth');
-        //$this->middleware('context');
+        $this->middleware('auth');
+        $this->middleware('context');
 
         $this->concepto = $concepto;
     }
@@ -111,5 +111,10 @@ class ConceptoController extends Controller
     public function getInsumos($id){
         $insumos = $this->concepto->getInsumos($id);
         return $insumos;
+    }
+
+    public function getPreciosConceptos($id){
+        $items=$this->concepto->getPreciosConceptos($id);
+        return response()->json(['data' => ['precios' => $items]], 200);
     }
 }

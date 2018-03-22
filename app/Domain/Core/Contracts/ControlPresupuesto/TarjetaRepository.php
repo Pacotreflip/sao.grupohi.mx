@@ -19,4 +19,5 @@ interface TarjetaRepository
      */
     public function all();
     public function lists();
+    public function getAgrupacionFiltro(array $data);
 }
