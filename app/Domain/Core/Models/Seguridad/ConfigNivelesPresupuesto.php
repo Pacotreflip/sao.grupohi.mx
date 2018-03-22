@@ -4,6 +4,7 @@ namespace Ghi\Domain\Core\Models\Seguridad;
 
 use Illuminate\Database\Eloquent\Model;
 use Ghi\Domain\Core\Models\Scopes\ObraScope;
+use Ghi\Domain\Core\Models\Scopes\ProyectoScope;
 use Ghi\Core\Facades\Context;
 
 /**
@@ -33,6 +34,7 @@ class ConfigNivelesPresupuesto extends Model
     {
         parent::boot();
         static::addGlobalScope(new ObraScope());
+        static::addGlobalScope(new ProyectoScope());
         static::creating(function ($model) {
             $model->id_user =  auth()->id();
             $model->id_proyecto = Proyecto::where('base_datos', '=',Context::getDatabaseName())->first()->id;
