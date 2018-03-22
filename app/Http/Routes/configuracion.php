@@ -37,4 +37,8 @@ Route::group(['prefix' => 'configuracion'], function () {
 
         Route::get('/', 'PagesController@presupuesto')->name('configuracion.presupuesto.index');
     });
+    Route::group(['prefix' => 'obra'] , function() {
+
+        Route::get('/', 'PagesController@obra')->name('configuracion.obra.index');
+    });
 });
