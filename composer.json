@@ -21,8 +21,7 @@
         "doctrine/dbal": "^2.5",
         "maatwebsite/excel": "~2.1.0",
         "bacon/bacon-qr-code": "*",
-        "phpmailer/phpmailer": "v5.2.4",
-        "intervention/image": "^2.4"
+        "phpmailer/phpmailer": "v5.2.4"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",

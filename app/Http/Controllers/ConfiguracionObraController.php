@@ -7,7 +7,6 @@ use Ghi\Domain\Core\Contracts\Seguridad\ConfiguracionObraRepository;
 use Ghi\Domain\Core\Models\Seguridad\ConfiguracionObra;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Intervention\Image\ImageManagerStatic as Image;
 
 use Ghi\Http\Requests;
 
@@ -126,15 +125,8 @@ class ConfiguracionObraController extends Controller
     private function setImagen(Request $request){
         $file = $request->file('file');
         $imageData = unpack("H*", file_get_contents($file->getPathname()));
-        $filename    = $file->getClientOriginalName();
-        $newfile = public_path('img/' .$filename);
-        $image_resize = Image::make($file->getRealPath());
-        $image_resize->resize(100, 100);
-        $image_resize->save($newfile);
-        $imageDataResize = unpack("H*", file_get_contents($newfile));
-        unlink($newfile);
         $data['logotipo_original']= DB::raw("CONVERT(VARBINARY(MAX), '".$imageData[1]."')");
-        $data['logotipo_reportes']= DB::raw("CONVERT(VARBINARY(MAX), '".$imageDataResize[1]."')");
+        $data['logotipo_reportes']= DB::raw("CONVERT(VARBINARY(MAX), '".$imageData[1]."')");
         $data['vigencia']= 1;
         return $data;
     }
