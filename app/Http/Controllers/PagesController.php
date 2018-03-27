@@ -139,4 +139,8 @@ class PagesController extends Controller
     public function presupuesto() {
         return view('configuracion.presupuesto.index');
     }
+
+    public function obra() {
+        return view('configuracion.obra.index');
+    }
 }

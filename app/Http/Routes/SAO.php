@@ -91,3 +91,8 @@ Route::post('config/niveles/paginate', 'ConfigNivelesPresupuestoController@pagin
 Route::get('config/niveles/{id}', 'ConfigNivelesPresupuestoController@show')->name('config.presupuestoNivel.show')->where(['id' => '[0-9]+']);
 Route::patch('config/niveles/update/{id}', 'ConfigNivelesPresupuestoController@update')->name('config.presupuestoNivel.update')->where(['id' => '[0-9]+']);
 Route::get('config/niveles/lists', 'ConfigNivelesPresupuestoController@lists')->name('config.presupuestoNivel.lists');
+
+Route::get('configuracion/imagen/show', 'ConfiguracionObraController@show')->name('configuracion.imagen.show');
+Route::post('configuracion/imagen/insert', 'ConfiguracionObraController@insert')->name('configuracion.imagen.insert');
+Route::post('configuracion/imagen/update/{id}', 'ConfiguracionObraController@update')->name('configuracion.imagen.update')->where(['id' => '[0-9]+']);
+Route::delete('configuracion/imagen/delete/{id}', 'ConfiguracionObraController@delete')->name('configuracion.imagen.delete')->where(['id' => '[0-9]+']);

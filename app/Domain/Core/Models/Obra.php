@@ -2,8 +2,11 @@
 
 namespace Ghi\Domain\Core\Models;
 
+use Ghi\Core\Facades\Context;
+use Ghi\Domain\Core\Models\Seguridad\Proyecto;
 use Ghi\Domain\Core\Models\Contabilidad\DatosContables;
 use Ghi\Domain\ModulosSAO\Models\Logotipo;
+use Ghi\Domain\Core\Models\Seguridad\ConfiguracionObra;
 
 class Obra extends \Ghi\Core\Models\Obra
 {
@@ -46,14 +49,17 @@ class Obra extends \Ghi\Core\Models\Obra
         return $this->hasOne(DatosContables::class, 'id_obra');
     }
 
-    public function getLogotipoAttribute() {
+    /**
+     * @return mixed
+     */
+    public function configuracionObra(){
+        return $this->hasOne(ConfiguracionObra::class, 'id_obra')->where('id_proyecto','=',Proyecto::where('base_datos', '=',Context::getDatabaseName())->first()->id);
+    }
 
-        if ($this->nombre == 'PISTA 3 NAICM') {
-            return Logotipo::where('Descripcion', '=', 'Logotipo NAICM')->first()->LogotipoReportes;
-        } else if (in_array($this->nombre, ['TERMINAL NAICM', 'TERMINAL DEV', 'TERMINAL PRU'])) {
-            return Logotipo::where('Descripcion', '=', 'Logotipo Terminal Naicm')->first()->LogotipoReportes;
-        } else {
-            return Logotipo::where('EsDelGrupo', '=', 1)->where('EstaVigente', '=', 1)->first()->LogotipoReportes;
-        }
+    /**
+     * @return mixed
+     */
+    public function getLogotipoAttribute() {
+        return $this->configuracionObra->logotipo_original;
     }
 }
