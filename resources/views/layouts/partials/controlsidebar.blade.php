@@ -174,14 +174,14 @@
                 {{-- TODO: @permission('administrar_presupuesto') --}}
                 <div class="form-group">
                     <label class="control-sidebar-subheading">
-                        <a href="{{ route('configuracion.presupuesto.index') }}">Presupuesto</a>
+                        <a href="{{ route('configuracion.obra.index') }}">Presupuesto</a>
                     </label>
                     <p>Configuración de la estructura del presupuesto</p>
                 </div>
                 {{-- TODO: @endpermission --}}
                 <div class="form-group">
                     <label class="control-sidebar-subheading">
-                        <a href="{{ route('configuracion.presupuesto.index') }}">Obra</a>
+                        <a href="{{ route('configuracion.obra.index') }}">Obra</a>
                     </label>
                     <p>Configuración de la estructura la obra</p>
                 </div>

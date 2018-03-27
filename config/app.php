@@ -211,8 +211,11 @@ return [
          *  Maatwebsite/Laravel-Excel
          */
 
-        Maatwebsite\Excel\ExcelServiceProvider::class
-
+        Maatwebsite\Excel\ExcelServiceProvider::class,
+        /**
+         * tratar imagenes
+         */
+        Intervention\Image\ImageServiceProvider::class,
     ],
 
     /*
@@ -269,6 +272,7 @@ return [
         'Html' => Collective\Html\HtmlFacade::class,
         'Entrust'   => Zizaco\Entrust\EntrustFacade::class,
         'Excel' => Maatwebsite\Excel\Facades\Excel::class,
+        'Image' => Intervention\Image\Facades\Image::class,
     ],
 
 ];

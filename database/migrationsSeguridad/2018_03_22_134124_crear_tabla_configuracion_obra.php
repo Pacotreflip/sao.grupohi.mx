@@ -15,8 +15,8 @@ class CrearTablaConfiguracionObra extends Migration
     {
         Schema::connection('seguridad')->create('configuracion_obra', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('logotipo_original');
-            $table->string('logotipo_reportes');
+            $table->binary('logotipo_original')->nullable();
+            $table->binary('logotipo_reportes')->nullable();
             $table->integer('vigencia');
             $table->integer('id_user');
             $table->integer('id_proyecto')->unsigned();
