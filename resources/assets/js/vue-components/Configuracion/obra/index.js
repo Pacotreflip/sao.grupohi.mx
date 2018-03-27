@@ -51,7 +51,7 @@ Vue.component('configuracion-obra-index', {
                     self.cargando = true;
                 },
                 success: function (response) {
-                    if(count(response[0])>0) {
+                    if(response.length>0) {
                         self.id_config = response[0].id;
                         self.logotipo_original = "data:image/png;base64,"+response[0].logotipo_original;
                         self.logotipo_reportes = "data:image/png;base64,"+response[0].logotipo_reportes;
