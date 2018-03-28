@@ -40,8 +40,8 @@ class VerifyLogo
             if ($request->ajax() || $request->wantsJson()) {
                 return response('Unauthorized.', 401);
             }
-            Flash::error('¡Lo sentimos, debe configura el logotipo de la obra para ver esta información!');
-            return redirect()->guest(route('configuracion.obra.index'));
+            Flash::error('¡Para poder ver el logo de la obra, debe configurarlo!');
+            //return redirect()->guest(route('configuracion.obra.index'));
         }
         return $next($request);
     }
