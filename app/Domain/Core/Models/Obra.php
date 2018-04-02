@@ -57,9 +57,15 @@ class Obra extends \Ghi\Core\Models\Obra
     }
 
     /**
-     * @return mixed
+     * @return array|string
      */
     public function getLogotipoAttribute() {
-        return $this->configuracionObra->logotipo_original;
+        if(isset($this->configuracionObra->logotipo_original)){
+            return $this->configuracionObra->logotipo_original;
+        }else{
+            $file = public_path(str_replace('_','/',env('LOGOTIPO_DEFAULT')));
+            $data = unpack("H*", file_get_contents($file));
+            return bin2hex($data[1]);
+        }
     }
 }
