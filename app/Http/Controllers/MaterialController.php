@@ -109,4 +109,8 @@ class MaterialController extends Controller
         $items = $this->material->getBy($request->attribute, $request->operator, $request->value);
         return response()->json(['data' => ['materiales' => $items]], 200);
     }
+    public function getInsumosConceptos(Request $request){
+        $items = $this->material->getInsumosConceptos($request->attribute, $request->operator, $request->value);
+        return response()->json(['data' => ['materiales' => $items]], 200);
+    }
 }

@@ -40,6 +40,7 @@ Route::get('material/getFamiliasByTipoPadres', 'MaterialController@getFamiliasBy
 Route::get('material/{id}/getHijos', 'MaterialController@getHijos')->name('material.getHijos');
 Route::post('material', 'MaterialController@store')->name('material.store');
 Route::get('material/getInsumos', 'MaterialController@getInsumos')->name('materiales.getInsumos');
+Route::get('material/getInsumosConceptos', 'MaterialController@getInsumosConceptos')->name('materiales.getInsumosConceptos');
 
 /**
  * Conceptos Routes
