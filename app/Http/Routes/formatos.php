@@ -18,5 +18,9 @@ Route::group(['prefix' => 'formatos', 'middleware' => 'system.access:formatos'],
      */
     Route::get('subcontratos/estimacion', 'FormatosController@estimacion')->name('formatos.subcontratos.estimacion');
     Route::get('subcontratos/estimacion/{id}', 'FormatosController@estimacion_pdf')->name('formatos.subcontratos.estimacion.pdf')->where(['id' => '[0-9]+']);
-    Route::get('contratos/contrato_proyectado/{id}/comparativa_presupuestos', 'FormatosController@comparativa_presupuestos_pdf')->where(['id' => '[0-9]+']);
+
+
+    Route::get('contratos/contrato_proyectado/{id}/comparativa_cotizaciones_contrato', 'FormatosController@comparativa_cotizaciones_contrato_pdf')->where(['id' => '[0-9]+']);
+
+    Route::get('compras/requisicion/{id}/comparativa_cotizaciones_compra', 'FormatosController@comparativa_cotizaciones_compra_pdf')->where(['id' => '[0-9]+']);
 });
