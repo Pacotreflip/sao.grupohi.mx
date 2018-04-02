@@ -16,3 +16,5 @@ Homestead.json
 /php_errors.log
 composer.lock
 php_errors.log
+/resources/assets/css/less.css
+/resources/assets/css/less.css.map
