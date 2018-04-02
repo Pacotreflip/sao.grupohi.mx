@@ -35,4 +35,26 @@ class ConceptoPath extends BaseModel
         , 'filtro11'
 
     ];
+
+    public static function getColumnsAttribute() {
+        $columns = [];
+        try {
+            $dbColumns = DB::connection('cadeco')
+                ->table('INFORMATION_SCHEMA.COLUMNS')
+                ->select(
+                    DB::raw('[COLUMN_NAME] as name_column'),
+                    DB::raw("REPLACE ([COLUMN_NAME],'filtro','Nivel ') as description"),
+                    DB::raw("REPLACE ([COLUMN_NAME],'filtro','') as order_by")
+                )
+                ->where('TABLE_NAME', '=', 'conceptosPath')
+                ->where('TABLE_SCHEMA', '=', 'PresupuestoObra')
+                ->where('COLUMN_NAME', 'LIKE', 'filtro%')
+                ->orderby('COLUMN_NAME')->get();
+            $maxColumns = Concepto::getMaxNivel();
+            $columns = array_slice(collect($dbColumns)->sortBy('order_by')->toArray() ,0,($maxColumns?$maxColumns[0]:env('MAX_NIVEL_COLUMNS_PRESUPUESTO')));
+        }catch (\Exception $e){
+            dd($e->getTraceAsString());
+        }
+        return $columns;
+    }
 }

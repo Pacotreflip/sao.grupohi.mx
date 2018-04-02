@@ -159,6 +159,8 @@
         <div class="tab-pane" id="control-sidebar-settings-tab">
             <form method="post">
                 <h4 class="control-sidebar-heading">Configuración General</h4>
+
+                <!-- Administración de Roles y Permisos -->
                 @permission('administrar_roles_permisos')
                 <div class="form-group">
                     <label class="control-sidebar-subheading">
@@ -167,6 +169,22 @@
                     <p>Administración de Roles y Permisos de usuarios para el uso de los Sistemas dentro de SAO</p>
                 </div>
                 @endpermission
+
+                <!-- Administración del Presupuesto -->
+                {{-- TODO: @permission('administrar_presupuesto') --}}
+                <div class="form-group">
+                    <label class="control-sidebar-subheading">
+                        <a href="{{ route('configuracion.obra.index') }}">Presupuesto</a>
+                    </label>
+                    <p>Configuración de la estructura del presupuesto</p>
+                </div>
+                {{-- TODO: @endpermission --}}
+                <div class="form-group">
+                    <label class="control-sidebar-subheading">
+                        <a href="{{ route('configuracion.obra.index') }}">Obra</a>
+                    </label>
+                    <p>Configuración de la estructura la obra</p>
+                </div>
             </form>
         </div>
         @endpermission

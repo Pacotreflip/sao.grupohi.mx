@@ -6,7 +6,7 @@
  * Time: 01:30 PM
  */
 
-Route::group(['prefix' => 'formatos', 'middleware' => 'system.access:formatos'], function () {
+Route::group(['prefix' => 'formatos', 'middleware' => ['system.access:formatos','verify.logo']], function () {
 
     /**
      * Index Route...

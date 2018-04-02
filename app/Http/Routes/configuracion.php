@@ -33,4 +33,12 @@ Route::group(['prefix' => 'configuracion'], function () {
         Route::delete('permission/{permission}', 'Configuracion\PermissionController@destroy');
         Route::patch('permission/{permission}', 'Configuracion\PermissionController@update');
     });
+
+    Route::group(['prefix' => 'presupuesto'] , function() {
+
+        Route::get('/', 'PagesController@presupuesto')->name('configuracion.presupuesto.index');
+    });
+    Route::group(['prefix' => 'obra'] , function() {
+        Route::get('/', 'PagesController@obra')->name('configuracion.obra.index');
+    });
 });
