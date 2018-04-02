@@ -70,8 +70,9 @@ class RolesPermissionsSeeder extends Seeder
         $autorizar_reclasificacion = Permission::firstOrCreate(['name' => 'autorizar_reclasificacion', 'display_name' => 'Autorizar Reclasificación', 'description' => 'Permiso para Autorizar Reclasificación de Costo']);
         $consultar_reclasificacion = Permission::firstOrCreate(['name' => 'consultar_reclasificacion', 'display_name' => 'Consultar Reclasificación', 'description' => 'Permiso para Consultar Reclasificación de Costo']);
 
-        //Formato de Orden de Pago Estimación
+        //Formatos
         $consultar_formato_estimacion = Permission::firstOrCreate(['name' => 'consultar_formato_estimacion', 'description' => 'Consultar Formato de Orden de Pago Estimación', 'display_name' => 'Consultar Formato de Orden de Pago Estimación']);
+        $consultar_formato_comparativa_presupuestos = Permission::firstOrCreate(['name' => 'consultar_formato_comparativa_presupuestos', 'description' => 'Consultar Formato de Tabla Comparativa de Presupuestos', 'display_name' => 'Consultar Formato de Tabla Comparativa de Presupuestos']);
 
         //Comprobante de Fondo Fijo
         $editar_comprobante_fondo_fijo    = Permission::firstOrCreate(['name' => 'editar_comprobante_fondo_fijo', 'display_name' => 'Editar Comprobante de Fondo Fijo', 'description' => 'Permiso para editar un Comprobante de Fondo Fijo']);
@@ -233,7 +234,8 @@ class RolesPermissionsSeeder extends Seeder
             $consultar_movimiento_bancario->id,
         ]);
         $jefe_subcontratos->perms()->sync([
-            $consultar_formato_estimacion->id
+            $consultar_formato_estimacion->id,
+            $consultar_formato_comparativa_presupuestos->id,
         ]);
         $jefe_procuracion->perms()->sync([
             $consultar_formato_estimacion->id
@@ -351,6 +353,7 @@ class RolesPermissionsSeeder extends Seeder
         $formatos->permisos()->sync(
             [
                 $consultar_formato_estimacion->id,
+                $consultar_formato_comparativa_presupuestos->id,
             ]
         );
 

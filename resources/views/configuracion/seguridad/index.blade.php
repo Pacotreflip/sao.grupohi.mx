@@ -1,6 +1,6 @@
 @extends('configuracion.layout')
-@section('title', 'Seguridad')
-@section('contentheader_title', 'SEGURIDAD')
+@section('title', 'Configuración de Seguridad')
+@section('contentheader_title', 'CONFIGURACIÓN DE SEGURIDAD')
 @section('breadcrumb')
     {!! Breadcrumbs::render('configuracion.seguridad.index') !!}
 @endsection

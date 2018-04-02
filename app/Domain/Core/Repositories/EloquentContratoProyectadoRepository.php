@@ -237,4 +237,14 @@ class EloquentContratoProyectadoRepository implements ContratoProyectadoReposito
         }
         return false;
     }
+
+    /**
+     * Devuelve un contrato proyectado por su ID
+     * @param $id
+     * @return ContratoProyectado
+     */
+    public function find($id)
+    {
+        return $this->model->find($id);
+    }
 }

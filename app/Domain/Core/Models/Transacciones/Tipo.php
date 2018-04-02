@@ -4,7 +4,7 @@ namespace Ghi\Domain\Core\Models\Transacciones;
 
 class Tipo
 {
-    const REQUISICION = 16;
+    const REQUISICION = 17;
     const TIPO_TRANSACCION = [33, 34];
     const FACTURA = 65;
     const ORDEN_PAGO = 68;
@@ -13,4 +13,6 @@ class Tipo
     const ESTIMACION = 52;
     const CONTRATO_PROYECTADO = 49;
     const PAGO = 82;
+    const COTIZACION_CONTRATO = 50;
+    const COTIZACION_COMPRA = 18;
 }

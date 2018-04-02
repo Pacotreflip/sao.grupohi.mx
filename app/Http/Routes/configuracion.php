@@ -23,6 +23,7 @@ Route::group(['prefix' => 'configuracion'], function () {
         Route::patch('role/{role}', 'Configuracion\RoleController@update');
         Route::post('role/paginate', 'Configuracion\RoleController@paginate');
         Route::get('role/{role}', 'Configuracion\RoleController@find');
+
         /**
          * Permission Routes
          *
