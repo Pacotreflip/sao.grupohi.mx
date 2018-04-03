@@ -29,7 +29,7 @@ class CostosDolaresXLS
                 });
                 $linea = 2;
                 foreach ($this->costos as $item){
-                    array_push($data, array($item->id_poliza, $item->folio_contpaq, $item->fecha_poliza, $item->tipo_cambio, $item->cuenta_contable, $item->descripcion_concepto, number_format($item->importe,'2','.',','), number_format($item->costo_dolares,'2','.',','),number_format($item->costo_dolares_complementaria,'2','.',','), $item->tipo_poliza_contpaq.' No. '.$item->folio_contpaq, $item->tipo_poliza_sao.' No. '.$item->id_poliza ));
+                    array_push($data, array($item->id_poliza, $item->folio_contpaq, $item->fecha_poliza, $item->tipo_cambio, $item->cuenta_contable, $item->descripcion_concepto, number_format($item->importe,'2','.',','), number_format($item->costo_me,'2','.',','),number_format($item->costo_me_complementaria,'2','.',','), $item->tipo_poliza_contpaq.' No. '.$item->folio_contpaq, $item->tipo_poliza_sao.' No. '.$item->id_poliza ));
                     $sheet->setBorder('A'.$linea.':K'.$linea.'', 'thin');
                     $sheet->cells('A'.$linea.':K'.$linea.'', function ($cells){
                         $cells->setBackground('#F5F5F5');

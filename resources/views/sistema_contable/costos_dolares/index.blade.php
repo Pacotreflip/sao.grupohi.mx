@@ -77,8 +77,8 @@
                                         <td>{{ $item->cuenta_contable}}</td>
                                         <td>{{ $item->descripcion_concepto}}</td>
                                         <td class="numerico">$ {{ number_format($item->importe,'2','.',',')}}</td>
-                                        <td class="numerico">$ {{ number_format($item->costo_dolares,'2','.',',')}}</td>
-                                        <td class="numerico">$ {{ number_format($item->costo_dolares_complementaria,'2','.',',')}}</td>
+                                        <td class="numerico">$ {{ number_format($item->costo_me,'2','.',',')}}</td>
+                                        <td class="numerico">$ {{ number_format($item->costo_me_complementaria,'2','.',',')}}</td>
                                         <td>{{ $item->tipo_poliza_contpaq.' No. '.$item->folio_contpaq}}</td>
                                         <td>{{ $item->tipo_poliza_sao.' No. '.$item->id_poliza}}</td>
                                     </tr>

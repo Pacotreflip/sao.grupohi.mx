@@ -156,14 +156,14 @@ class CostosDolaresPDF extends Rotation
                 $item->cuenta_contable,
                 utf8_decode($item->descripcion_concepto),
                 '$'.number_format($item->importe,'2','.',','),
-                '$'.number_format($item->costo_dolares,'2','.',','),
-                '$'.number_format($item->costo_dolares_complementaria,'2','.',','),
+                '$'.number_format($item->costo_me,'2','.',','),
+                '$'.number_format($item->costo_me_complementaria,'2','.',','),
                 utf8_decode($item->tipo_poliza_contpaq).' No. '.$item->folio_contpaq,
                 utf8_decode($item->tipo_poliza_sao).' No. '.$item->id_poliza
             ]);
             $total_importe += $item->importe;
-            $total_costo_dolares += $item->costo_dolares;
-            $total_costo_dolares_complementaria += $item->costo_dolares_complementaria;
+            $total_costo_dolares += $item->costo_me;
+            $total_costo_dolares_complementaria += $item->costo_me_complementaria;
 
         }
         $this->SetFont('Arial', 'B', 7);
