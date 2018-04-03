@@ -68,6 +68,17 @@ Vue.component('cambio-cantidad-insumos-create', {
         });
     },
     methods: {
+        cambiaPrecios:function (indexRow) {
+            var self = this;
+            if(self.form.agrupacion[indexRow].aplicar_todos){
+                $.each( self.form.agrupacion[indexRow].items,function (index,value) {
+                    if(value.agregado) {
+                        value.cantidad_nueva = self.form.agrupacion[indexRow].cantidad_todos;
+                    }
+                });
+
+            }
+        },
         consulta_detalle_agrupador: function (indexRow) {
             var self = this;
             self.row_consulta=indexRow;
@@ -89,6 +100,7 @@ Vue.component('cambio-cantidad-insumos-create', {
                    if(self.form.agrupacion[indexRow].aplicar_todos){
                        $.each( self.form.agrupacion[indexRow].items,function (index,value) {
                            value.agregado=true;
+                           value.cantidad_nueva=self.form.agrupacion[indexRow].cantidad_todos;
                        });
 
                    }
@@ -111,14 +123,15 @@ Vue.component('cambio-cantidad-insumos-create', {
             this.form.agrupacion[indexRow].mostrar_detalle=true;
         },
         selecciona_rows:function (indexRow) {
-            var self=this;
-            $.each(self.form.agrupacion[indexRow].items,function (index,value) {
-                if(self.form.agrupacion[indexRow].aplicar_todos){
-                    value.agregado=true;
-                    value.cantidad_nueva=self.form.agrupacion[indexRow].cantidad_todos;
-                }else{
-                    value.agregado=false;
-                }
+            var self = this;
+
+
+            var seleccionado = $('#checksSel' + indexRow).prop('checked');
+
+            $.each(self.form.agrupacion[indexRow].items, function (index, value) {
+                    value.agregado = seleccionado;
+                    value.cantidad_nueva = self.form.agrupacion[indexRow].cantidad_todos;
+
             });
 
         },

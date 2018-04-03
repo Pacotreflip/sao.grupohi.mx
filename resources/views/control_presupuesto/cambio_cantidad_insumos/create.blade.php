@@ -138,12 +138,14 @@
                                                            style="width: 75%"
                                                            v-validate="'decimal|min_value:0'"
                                                            :name="'Cantidad Actualizada [' + (i + 1) + ']'"
-                                                           v-model="agrupado.cantidad_todos">
+                                                           v-model="agrupado.cantidad_todos"
+                                                           v-on:blur="cambiaPrecios(i)"
+                                                    >
                                                     <label class="help"
                                                            v-show="validation_errors.has('form_save_solicitud.Cantidad Actualizada [' + (i + 1) + ']')">@{{ validation_errors.first('form_save_solicitud.Cantidad Actualizada [' + (i + 1) + ']') }}</label>
                                                 </div>
                                             </td>
-                                            <td style="width: 20px"><input type="checkbox"
+                                            <td style="width: 20px"><input type="checkbox" :id="'checksSel'+i"
                                                                            v-model="agrupado.aplicar_todos" v-on:click="selecciona_rows(i)"></td>
 
                                         </tr>

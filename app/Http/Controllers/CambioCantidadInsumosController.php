@@ -44,13 +44,12 @@ class CambioCantidadInsumosController extends Controller
         $this->middleware('auth');
         $this->middleware('context');
 
-        /*
-        $this->middleware('permission:consultar_cambio_insumos', ['only' => ['index', 'paginate', 'pdf', 'show']]);
-        $this->middleware('permission:registrar_cambio_insumos', ['only' => ['create', 'store','storeIndirecto','indirecto']]);
-        $this->middleware('permission:autorizar_cambio_insumos', ['only' => ['autorizar']]);
-        $this->middleware('permission:aplicar_cambio_insumos', ['only' => ['aplicar']]);
-        $this->middleware('permission:rechazar_cambio_insumos', ['only' => ['rechazar']]);
-             */
+
+        $this->middleware('permission:consultar_cambio_cantidad_insumos', ['only' => ['pdf', 'show']]);
+        $this->middleware('permission:registrar_cambio_cantidad_insumos', ['only' => ['create', 'store']]);
+        $this->middleware('permission:autorizar_cambio_cantidad_insumos', ['only' => ['autorizar']]);
+        $this->middleware('permission:rechazar_cambio_cantidad_insumos', ['only' => ['rechazar']]);
+
 
         $this->tipo_filtro = $tipo_filtro;
         $this->tarjeta = $tarjeta;
