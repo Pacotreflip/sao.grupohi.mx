@@ -244,7 +244,16 @@ class EloquentMaterialRepository implements MaterialRepository
             ->where('tipo_material', '=', $tipo)
             ->whereRaw('LEN(nivel) <=4')
             ->get();
+    }
 
 
+    public function getInsumosConceptos($attribute, $operator, $value)
+    {
+        return $this->model
+            ->select(
+                DB::raw('distinct top(5) dbo.materiales.id_material,dbo.materiales.descripcion')
+            )
+            ->join('dbo.conceptos as c', 'c.id_material', '=', 'dbo.materiales.id_material')
+            ->where('dbo.materiales.'.$attribute, $operator, $value)->get();
     }
 }

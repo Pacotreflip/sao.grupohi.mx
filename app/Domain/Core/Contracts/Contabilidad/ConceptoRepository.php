@@ -16,7 +16,7 @@ interface ConceptoRepository
      * @param $operator
      * @param $value
      * @return \Illuminate\Database\Eloquent\Collection|Concepto
-    */
+     */
     public function getBy($attribute, $operator, $value, $with = null);
 
     /**
@@ -56,4 +56,10 @@ interface ConceptoRepository
      * @return mixed
      */
     public function getInsumos($id);
+    /**
+     * Obtiene los precios disponibles en conceptos por material
+     * @param $id
+     * @return mixed
+     */
+    public function getPreciosConceptos($id);
 }

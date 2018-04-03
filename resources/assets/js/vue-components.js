@@ -95,3 +95,10 @@ require('./vue-components/Configuracion/seguridad/index');
 require('./vue-components/Configuracion/presupuesto/index');
 require('./vue-components/Configuracion/obra/index');
 
+
+/**
+ * Cambio Cantidad Insumos Components
+ */
+require('./vue-components/ControlPresupuesto/cambio_cantidad_insumos/create');
+require('./vue-components/ControlPresupuesto/cambio_cantidad_insumos/show');
+
