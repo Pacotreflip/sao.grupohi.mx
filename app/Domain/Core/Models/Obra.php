@@ -8,8 +8,20 @@ use Ghi\Domain\Core\Models\Contabilidad\DatosContables;
 use Ghi\Domain\ModulosSAO\Models\Logotipo;
 use Ghi\Domain\Core\Models\Seguridad\ConfiguracionObra;
 
+/**
+ * Class Obra
+ * @package Ghi\Domain\Core\Models
+ */
 class Obra extends \Ghi\Core\Models\Obra
 {
+    /**
+     * Logotipo default ghi
+     */
+    const LOGOTIPO_DEFAULT = 'img/ghi-logo.png';
+
+    /**
+     * @var array
+     */
     protected $fillable = [
         'nombre',
         'tipo_obra',
@@ -63,7 +75,7 @@ class Obra extends \Ghi\Core\Models\Obra
         if(isset($this->configuracionObra->logotipo_original)){
             return $this->configuracionObra->logotipo_original;
         }else{
-            $file = public_path(str_replace('_','/',env('LOGOTIPO_DEFAULT')));
+            $file = public_path(self::LOGOTIPO_DEFAULT);
             $data = unpack("H*", file_get_contents($file));
             return bin2hex($data[1]);
         }
