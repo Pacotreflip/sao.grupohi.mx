@@ -7,7 +7,7 @@
  * Time: 5:13 AM
  */
 
-namespace Ghi\Api\Controllers;
+namespace Ghi\Api\Controllers\v1;
 
 use Dingo\Api\Exception\ResourceException;
 use Dingo\Api\Http\Request;
