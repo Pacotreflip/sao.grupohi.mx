@@ -23,6 +23,7 @@ Route::group(['prefix' => 'configuracion'], function () {
         Route::patch('role/{role}', 'Configuracion\RoleController@update');
         Route::post('role/paginate', 'Configuracion\RoleController@paginate');
         Route::get('role/{role}', 'Configuracion\RoleController@find');
+
         /**
          * Permission Routes
          *
@@ -31,5 +32,13 @@ Route::group(['prefix' => 'configuracion'], function () {
         Route::post('permission', 'Configuracion\PermissionController@store');
         Route::delete('permission/{permission}', 'Configuracion\PermissionController@destroy');
         Route::patch('permission/{permission}', 'Configuracion\PermissionController@update');
+    });
+
+    Route::group(['prefix' => 'presupuesto'] , function() {
+
+        Route::get('/', 'PagesController@presupuesto')->name('configuracion.presupuesto.index');
+    });
+    Route::group(['prefix' => 'obra', 'middleware' => ['verify.logo']] , function() {
+        Route::get('/', 'PagesController@obra')->name('configuracion.obra.index');
     });
 });

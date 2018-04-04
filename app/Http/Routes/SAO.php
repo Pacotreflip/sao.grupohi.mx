@@ -1,15 +1,45 @@
 <?php
 
+Route::get('testing', function (\Illuminate\Http\Request $request) {
+    return response()->json([
+        [
+            "year" => "1949",
+            "value" => "All the Kings Men",
+            "tokens" => [
+                "All",
+                "the",
+                "Kings",
+                "Men"
+            ]
+          ],
+        [
+            "year" => "1957",
+            "value" => "The Bridge on the River Kwai",
+            "tokens" => [
+                "The",
+                "Bridge",
+                "on",
+                "the",
+                "River",
+                "Kwai"
+            ]
+        ]
+    ]);
+});
+
 //Usuarios Routes...
+/*
+Route::get('test', function () {
+    dd(\Ghi\Domain\Core\Models\ConceptoPath::getColumnsAttribute());
+});*/
+
 Route::post('usuario/paginate', 'UsuarioController@paginate');
 Route::get('usuario/{usuario}', 'UsuarioController@find');
 Route::post('usuario', 'UsuarioController@saveRoles');
 //Pages
 Route::get('obras', 'PagesController@obras')->name('obras');
 
-Route::group(['middleware' => 'context'], function () {
-    Route::get('/', 'PagesController@index')->name('index');
-});
+Route::get('/', 'PagesController@index')->name('index');
 
 //Contexto
 Route::get('/context/{database}/{id_obra}','ContextoController@set')->name('context.set')->where(['databaseName'=>'[aA-zZ0-9_-]+','id_obra'=>'[0-9]+']);
@@ -39,6 +69,8 @@ Route::get('material/getFamiliasByTipo', 'MaterialController@getFamiliasByTipo')
 Route::get('material/getFamiliasByTipoPadres', 'MaterialController@getFamiliasByTipoPadres')->name('materiales.getFamiliasByTipoPadres');
 Route::get('material/{id}/getHijos', 'MaterialController@getHijos')->name('material.getHijos');
 Route::post('material', 'MaterialController@store')->name('material.store');
+Route::get('material/getInsumos', 'MaterialController@getInsumos')->name('materiales.getInsumos');
+Route::get('material/getInsumosConceptos', 'MaterialController@getInsumosConceptos')->name('materiales.getInsumosConceptos');
 
 /**
  * Conceptos Routes
@@ -51,6 +83,7 @@ Route::post('conceptos/getPathsConceptos', 'ConceptoController@getPathsConceptos
 Route::get('conceptos/getPathsCostoIndirecto', 'ConceptoController@getPathsCostoIndirecto');
 Route::get('conceptos/{id}', 'ConceptoController@show');
 Route::get('conceptos/{id}/getInsumos', 'ConceptoController@getInsumos');
+Route::get('conceptos/{id}/getPreciosConceptos', 'ConceptoController@getPreciosConceptos');
 
 /**
  * Subcontratos Routes...
@@ -82,3 +115,14 @@ Route::get('tipo_tran/lists', 'TipoTranController@lists');
  * Unidades
  */
 Route::get('unidad/getUnidadesByDescripcion', 'UnidadController@getUnidadesByDescripcion')->name('unidad.getUnidadesByDescripcion');
+
+
+Route::post('config/niveles/paginate', 'ConfigNivelesPresupuestoController@paginate')->name('config.presupuestoNivel.paginate');
+Route::get('config/niveles/{id}', 'ConfigNivelesPresupuestoController@show')->name('config.presupuestoNivel.show')->where(['id' => '[0-9]+']);
+Route::patch('config/niveles/update/{id}', 'ConfigNivelesPresupuestoController@update')->name('config.presupuestoNivel.update')->where(['id' => '[0-9]+']);
+Route::get('config/niveles/lists', 'ConfigNivelesPresupuestoController@lists')->name('config.presupuestoNivel.lists');
+
+Route::get('configuracion/imagen/show', 'ConfiguracionObraController@show')->name('configuracion.imagen.show');
+Route::post('configuracion/imagen/insert', 'ConfiguracionObraController@insert')->name('configuracion.imagen.insert');
+Route::post('configuracion/imagen/update/{id}', 'ConfiguracionObraController@update')->name('configuracion.imagen.update')->where(['id' => '[0-9]+']);
+Route::delete('configuracion/imagen/delete/{id}', 'ConfiguracionObraController@delete')->name('configuracion.imagen.delete')->where(['id' => '[0-9]+']);

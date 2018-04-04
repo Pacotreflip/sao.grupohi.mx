@@ -70,8 +70,9 @@ class RolesPermissionsSeeder extends Seeder
         $autorizar_reclasificacion = Permission::firstOrCreate(['name' => 'autorizar_reclasificacion', 'display_name' => 'Autorizar Reclasificación', 'description' => 'Permiso para Autorizar Reclasificación de Costo']);
         $consultar_reclasificacion = Permission::firstOrCreate(['name' => 'consultar_reclasificacion', 'display_name' => 'Consultar Reclasificación', 'description' => 'Permiso para Consultar Reclasificación de Costo']);
 
-        //Formato de Orden de Pago Estimación
+        //Formatos
         $consultar_formato_estimacion = Permission::firstOrCreate(['name' => 'consultar_formato_estimacion', 'description' => 'Consultar Formato de Orden de Pago Estimación', 'display_name' => 'Consultar Formato de Orden de Pago Estimación']);
+        $consultar_formato_comparativa_presupuestos = Permission::firstOrCreate(['name' => 'consultar_formato_comparativa_presupuestos', 'description' => 'Consultar Formato de Tabla Comparativa de Presupuestos', 'display_name' => 'Consultar Formato de Tabla Comparativa de Presupuestos']);
 
         //Comprobante de Fondo Fijo
         $editar_comprobante_fondo_fijo    = Permission::firstOrCreate(['name' => 'editar_comprobante_fondo_fijo', 'display_name' => 'Editar Comprobante de Fondo Fijo', 'description' => 'Permiso para editar un Comprobante de Fondo Fijo']);
@@ -134,6 +135,12 @@ class RolesPermissionsSeeder extends Seeder
         $autorizar_cambio_insumos = Permission::firstOrCreate(['name' => 'autorizar_cambio_insumos', 'display_name' => 'Autorizar Cambio de Insumos', 'description' => 'Autorizar Cambio de Insumos']);
         $rechazar_cambio_insumos= Permission::firstOrCreate(['name' => 'rechazar_cambio_insumos', 'display_name' => 'Rechazar Cambio de Insumos', 'description' => 'Rechazar Cambio de Insumos']);
         $consultar_cambio_insumos = Permission::firstOrCreate(['name' => 'consultar_cambio_insumos', 'display_name' => 'Consultar Cambio de Insumos', 'description' => 'Consultar Cambio de Insumos']);
+
+        //Control Presupuesto cambio de insumos
+        $registrar_cambio_cantidad_insumos = Permission::firstOrCreate(['name' => 'registrar_cambio_cantidad_insumos', 'display_name' => 'Registrar Cambio de Cantidad de Insumos', 'description' => 'Registrar Cambio de Cantidad de Insumos']);
+        $autorizar_cambio_cantidad_insumos = Permission::firstOrCreate(['name' => 'autorizar_cambio_cantidad_insumos', 'display_name' => 'Autorizar Cambio de Cantidad de Insumos', 'description' => 'Autorizar Cambio de Cantidad de Insumos']);
+        $rechazar_cambio_cantidad_insumos= Permission::firstOrCreate(['name' => 'rechazar_cambio_cantidad_insumos', 'display_name' => 'Rechazar Cambio de Cantidad de Insumos', 'description' => 'Rechazar Cambio de Cantidad de Insumos']);
+        $consultar_cambio_cantidad_insumos = Permission::firstOrCreate(['name' => 'consultar_cambio_cantidad_insumos', 'display_name' => 'Consultar Cambio de Cantidad  de Insumos', 'description' => 'Consultar Cambio de Cantidad de Insumos']);
 
         //Roles y Permisos
         $administrar_roles_permisos = Permission::firstOrCreate(['name' => 'administrar_roles_permisos', 'display_name' => 'Administrar Roles y Permisos', 'description' => 'Permisos para asignación de roles a usuarios']);
@@ -233,7 +240,8 @@ class RolesPermissionsSeeder extends Seeder
             $consultar_movimiento_bancario->id,
         ]);
         $jefe_subcontratos->perms()->sync([
-            $consultar_formato_estimacion->id
+            $consultar_formato_estimacion->id,
+            $consultar_formato_comparativa_presupuestos->id,
         ]);
         $jefe_procuracion->perms()->sync([
             $consultar_formato_estimacion->id
@@ -278,6 +286,10 @@ class RolesPermissionsSeeder extends Seeder
             $autorizar_cambio_insumos->id,
             $rechazar_cambio_insumos->id,
             $consultar_cambio_insumos->id,
+            $registrar_cambio_cantidad_insumos->id,
+            $autorizar_cambio_cantidad_insumos->id,
+            $rechazar_cambio_cantidad_insumos->id,
+            $consultar_cambio_cantidad_insumos->id,
         ]);
         $administrador_sistema->perms()->sync([
             $administrar_roles_permisos->id,
@@ -351,6 +363,7 @@ class RolesPermissionsSeeder extends Seeder
         $formatos->permisos()->sync(
             [
                 $consultar_formato_estimacion->id,
+                $consultar_formato_comparativa_presupuestos->id,
             ]
         );
 
@@ -387,6 +400,10 @@ class RolesPermissionsSeeder extends Seeder
                 $aplicar_escalatoria->id,
                 $rechazar_escalatoria->id,
                 $consultar_escalatoria->id,
+                $registrar_cambio_cantidad_insumos->id,
+                $autorizar_cambio_cantidad_insumos->id,
+                $rechazar_cambio_cantidad_insumos->id,
+                $consultar_cambio_cantidad_insumos->id
             ]
         );
     }

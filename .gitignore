@@ -12,8 +12,10 @@ Homestead.json
 /public/build/
 /public/css/
 /public/js/
+/public/fonts
 /composer.lock
 /php_errors.log
 composer.lock
 php_errors.log
 /resources/assets/css/
+/public/img/logo_temp.png

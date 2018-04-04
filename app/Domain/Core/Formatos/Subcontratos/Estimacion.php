@@ -119,7 +119,7 @@ class Estimacion extends Rotation {
 
     function logo() {
         $data = $this->obra->logotipo;
-        $data = pack('H*', $data);
+        $data = pack('H*', hex2bin($data));
         $file = public_path('img/logo_temp.png');
         if (file_put_contents($file, $data) !== false) {
             list($width, $height) = $this->resizeToFit($file);
@@ -201,7 +201,7 @@ class Estimacion extends Rotation {
 
         $this->SetFills(['180,180,180', '180,180,180', '180,180,180', '180,180,180', '180,180,180', '180,180,180']);
         $this->SetTextColors(['0,0,0', '0,0,0', '0,0,0', '0,0,0', '0,0,0', '0,0,0']);
-        $this->SetHeights([0.5]);
+            $this->SetHeights([0.5]);
         $this->SetAligns(['C', 'C', 'C', 'C', 'C', 'C']);
         $this->Row([
             'Partida',

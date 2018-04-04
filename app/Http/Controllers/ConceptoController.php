@@ -106,10 +106,17 @@ class ConceptoController extends Controller
         return response()->json(['data' => ['conceptos' => $items]], 200);
     }
 
-
-
     public function getInsumos($id){
         $insumos = $this->concepto->getInsumos($id);
         return $insumos;
+    }
+
+    public function getPathColumns() {
+        return $this->concepto->getPathColmns();
+    }
+
+    public function getPreciosConceptos($id){
+        $items=$this->concepto->getPreciosConceptos($id);
+        return response()->json(['data' => ['precios' => $items]], 200);
     }
 }

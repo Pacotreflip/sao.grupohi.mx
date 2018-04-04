@@ -12,7 +12,8 @@ Vue.component('variacion-insumos', {
             material_seleccionado:[],
             tarjeta_actual: 0,
             cargando : false,
-            guardando : false
+            guardando : false,
+            niveles: [],
         }
     },
 
@@ -61,7 +62,7 @@ Vue.component('variacion-insumos', {
 
     mounted: function () {
         var self = this;
-
+        self.getNiveles();
         $('#tarjetas_select').on('select2:select', function () {
             self.get_conceptos();
         });
@@ -110,28 +111,23 @@ Vue.component('variacion-insumos', {
                 {data : 'filtro6'},
                 {data : 'filtro7'},
                 {data : 'filtro8'},
-                {
-                    data : {},
-                    render : function (data) {
-                        return '<span title="'+data.filtro9+'">'+data.filtro9.substr(0, 55)+'</span>'
-                    }
-                },
+                {data : 'filtro9'},
                 {data : 'filtro10'},
                 {data : 'filtro11'},
                 {data : 'unidad'},
                 {data : 'cantidad_presupuestada', className : 'text-right'},
                 {data : 'precio_unitario', className : 'text-right'},
                 {data : 'monto_presupuestado', className : 'text-right'},
-                {
-                    data : {},
-                    render : function (data) {
-                        if (self.existe(data.id_concepto)) {
-                            return '<button class="btn btn-xs btn-default btn_remove_concepto"  id="'+data.id_concepto+'"><i class="fa fa-minus text-red"></i></button>';
-                        }
-                        return '<button class="btn btn-xs btn-default btn_add_concepto" id="'+data.id_concepto+'"><i class="fa fa-plus text-green"></i></button>';
-                    }
-                }
+                {data : 'id_concepto', className : 'text-right'}
             ],
+            "fnCreatedRow": function( nRow, aData, iDataIndex ) {
+                $('td:eq(8)', nRow).html( '<span title="'+aData.filtro9+'">'+aData.filtro9_sub+'</span>' );
+                if (self.existe(aData.id_concepto)) {
+                    $('td:eq(15)', nRow).html( '<button class="btn btn-xs btn-default btn_remove_concepto" id="'+aData.id_concepto+'"><i class="fa fa-minus text-red"></i></button>');
+                }else {
+                    $('td:eq(15)', nRow).html( '<button class="btn btn-xs btn-default btn_add_concepto" id="' + aData.id_concepto + '"><i class="fa fa-plus text-green"></i></button>');
+                }
+            },
             language: {
                 "sProcessing": "Procesando...",
                 "sLengthMenu": "Mostrar _MENU_ registros",
@@ -584,6 +580,28 @@ Vue.component('variacion-insumos', {
                     self.form.partidas[0].conceptos.MAQUINARIA.insumos[i].rendimiento_nuevo = total;
                     break;
             }
+        },
+        getNiveles : function () {
+            var self = this;
+
+            var url = App.host + '/config/niveles/lists';
+            $.ajax({
+                type: 'GET',
+                url: url,
+                beforeSend: function () {
+                    self.cargando = true;
+                },
+                success: function (response, textStatus, xhr) {
+                    var arrayC = [];
+                    $.each(response.data,function (index, value) {
+                        self.niveles.push({nombre:value.description,numero:value.id})
+                    });
+                    console.log(self.niveles);
+                },
+                complete: function () {
+                    self.cargando = false;
+                }
+            });
         }
     }
 });

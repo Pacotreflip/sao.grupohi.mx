@@ -4,6 +4,7 @@ namespace Ghi\Domain\Core\Models\Compras\Requisiciones;
 
 use Carbon\Carbon;
 use Ghi\Core\Facades\Context;
+use Ghi\Domain\Core\Models\Compras\CotizacionCompra;
 use Ghi\Domain\Core\Models\Scopes\ObraScope;
 use Ghi\Domain\Core\Models\Scopes\RequisicionScope;
 use Ghi\Domain\Core\Models\Transacciones\Tipo;
@@ -68,4 +69,9 @@ class Requisicion extends Transaccion
     public function tipoRequisicion() {
         return $this->transaccionExt->tipoRequisicion();
     }
+
+    public function cotizacionesCompra() {
+        return $this->hasMany(CotizacionCompra::class, 'id_antecedente', 'id_transaccion');
+    }
+
 }

@@ -12,6 +12,7 @@ class TipoOrden extends Model
     const VARIACION_VOLUMEN = 4;
     const ORDEN_DE_CAMBIO_NO_COBRABLE = 5;
     const ORDEN_DE_CAMBIO_DE_INSUMOS = 6;
+    const ORDEN_DE_CAMBIO_DE_CANTIDAD_INSUMOS = 8;
 
     protected $table = 'ControlPresupuesto.tipos_ordenes';
     protected $connection = 'cadeco';

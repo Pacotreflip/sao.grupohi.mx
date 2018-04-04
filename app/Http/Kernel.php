@@ -59,6 +59,7 @@ class Kernel extends HttpKernel
         'permission' => EntrustPermission::class,
         'api.permission' => ApiEntrustPermission::class,
         'ability' => \Zizaco\Entrust\Middleware\EntrustAbility::class,
-        'system.access' => \Ghi\Http\Middleware\SystemAccess::class
+        'system.access' => \Ghi\Http\Middleware\SystemAccess::class,
+        'verify.logo' => \Ghi\Http\Middleware\VerifyLogo::class,
     ];
 }

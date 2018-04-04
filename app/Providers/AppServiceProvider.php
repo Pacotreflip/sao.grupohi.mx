@@ -382,6 +382,23 @@ class AppServiceProvider extends ServiceProvider
             \Ghi\Domain\Core\Contracts\UnidadRepository::class,
             \Ghi\Domain\Core\Repositories\EloquentUnidadRepository::class
         );
+        $this->app->bind(
+            \Ghi\Domain\Core\Contracts\ControlPresupuesto\TipoFiltroRepository::class,
+            \Ghi\Domain\Core\Repositories\ControlPresupuesto\EloquentTipoFiltroRepository::class
+        );
+        $this->app->bind(
+            \Ghi\Domain\Core\Contracts\ControlPresupuesto\CambioCantidadInsumosRepository::class,
+            \Ghi\Domain\Core\Repositories\ControlPresupuesto\EloquentCambioCantidadInsumosRepository::class
+        );
 
+        $this->app->bind(
+            \Ghi\Domain\Core\Contracts\Seguridad\ConfigNivelesPresupuestoRepository::class,
+            \Ghi\Domain\Core\Repositories\Seguridad\EloquentConfigNivelesPresupuestoRepository::class
+        );
+
+        $this->app->bind(
+            \Ghi\Domain\Core\Contracts\Seguridad\ConfiguracionObraRepository::class,
+            \Ghi\Domain\Core\Repositories\Seguridad\EloquentConfiguracionObraRepository::class
+        );
     }
 }

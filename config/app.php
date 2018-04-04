@@ -211,8 +211,7 @@ return [
          *  Maatwebsite/Laravel-Excel
          */
 
-        Maatwebsite\Excel\ExcelServiceProvider::class
-
+        Maatwebsite\Excel\ExcelServiceProvider::class,
     ],
 
     /*

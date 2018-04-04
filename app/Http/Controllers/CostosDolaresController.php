@@ -20,8 +20,8 @@ class CostosDolaresController extends Controller
     public function __construct(CostosDolaresRepository $costos_dolares )
     {
         parent::__construct();
-        //$this->middleware('auth');
-        //$this->middleware('context');
+        $this->middleware('auth');
+        $this->middleware('context');
 
         $this->costos_dolares = $costos_dolares;
     }

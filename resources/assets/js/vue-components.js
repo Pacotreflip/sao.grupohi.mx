@@ -39,10 +39,12 @@ require('./vue-components/Compras/material/index');
 require('./vue-components/Finanzas/comprobante_fondo_fijo/index');
 require('./vue-components/Finanzas/comprobante_fondo_fijo/create');
 require('./vue-components/Finanzas/comprobante_fondo_fijo/edit');
+
 /**
  * Formatos Components
  */
 require('./vue-components/Formatos/subcontratos-estimacion');
+require('./vue-components/Formatos/subcontratos-comparativa-presupuestos');
 
 /**
  * Tesoreria Components
@@ -90,4 +92,13 @@ require('./vue-components/ControlPresupuesto/cambio_insumos/costo_indirecto/crea
  * Configuración Components
  */
 require('./vue-components/Configuracion/seguridad/index');
+require('./vue-components/Configuracion/presupuesto/index');
+require('./vue-components/Configuracion/obra/index');
+
+
+/**
+ * Cambio Cantidad Insumos Components
+ */
+require('./vue-components/ControlPresupuesto/cambio_cantidad_insumos/create');
+require('./vue-components/ControlPresupuesto/cambio_cantidad_insumos/show');
 
