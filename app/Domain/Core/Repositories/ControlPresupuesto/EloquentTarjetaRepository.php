@@ -11,6 +11,7 @@ namespace Ghi\Domain\Core\Repositories\ControlPresupuesto;
 
 use Ghi\Domain\Core\Contracts\ControlPresupuesto\TarjetaRepository;
 use Ghi\Domain\Core\Models\ControlPresupuesto\Tarjeta;
+use Illuminate\Support\Facades\DB;
 
 class EloquentTarjetaRepository implements TarjetaRepository
 {
@@ -37,7 +38,10 @@ class EloquentTarjetaRepository implements TarjetaRepository
         return $this->model->get();
     }
 
-    public function lists() {
-        return $this->model->lists('descripcion','id');
+    public function lists()
+    {
+        return $this->model->lists('descripcion', 'id');
     }
+
+
 }

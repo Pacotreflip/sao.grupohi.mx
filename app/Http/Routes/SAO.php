@@ -69,6 +69,8 @@ Route::get('material/getFamiliasByTipo', 'MaterialController@getFamiliasByTipo')
 Route::get('material/getFamiliasByTipoPadres', 'MaterialController@getFamiliasByTipoPadres')->name('materiales.getFamiliasByTipoPadres');
 Route::get('material/{id}/getHijos', 'MaterialController@getHijos')->name('material.getHijos');
 Route::post('material', 'MaterialController@store')->name('material.store');
+Route::get('material/getInsumos', 'MaterialController@getInsumos')->name('materiales.getInsumos');
+Route::get('material/getInsumosConceptos', 'MaterialController@getInsumosConceptos')->name('materiales.getInsumosConceptos');
 
 /**
  * Conceptos Routes
@@ -81,6 +83,7 @@ Route::post('conceptos/getPathsConceptos', 'ConceptoController@getPathsConceptos
 Route::get('conceptos/getPathsCostoIndirecto', 'ConceptoController@getPathsCostoIndirecto');
 Route::get('conceptos/{id}', 'ConceptoController@show');
 Route::get('conceptos/{id}/getInsumos', 'ConceptoController@getInsumos');
+Route::get('conceptos/{id}/getPreciosConceptos', 'ConceptoController@getPreciosConceptos');
 
 /**
  * Subcontratos Routes...
