@@ -54,15 +54,15 @@
                             <table class="table table-bordered table-striped index_table">
                                 <thead>
                                 <tr>
-                                    <th>Id PrePóliza</th>
-                                    <th>Folio Contpaq</th>
                                     <th>Fecha de Póliza</th>
                                     <th>Tipo de Cambio</th>
+                                    <th>Tipo de Moneda</th>
                                     <th>Cuenta Contable</th>
                                     <th>Descripción</th>
                                     <th>Importe Moneda Nacional</th>
                                     <th>Costo Moneda Extranjera</th>
                                     <th>Costo Moneda Extranjera Complementaria</th>
+                                    <th>Efecto Cambiario</th>
                                     <th>Póliza ContPaq</th>
                                     <th>Póliza SAO</th>
                                 </tr>
@@ -70,15 +70,21 @@
                                 <tbody>
                                 @foreach($costos as $index => $item)
                                     <tr>
-                                        <td>{{ $item->id_poliza}}</td>
-                                        <td>{{ $item->folio_contpaq }}</td>
+
+
                                         <td>{{ \Carbon\Carbon::parse($item->fecha_poliza)->format('d/m/Y')}}</td>
                                         <td>{{ $item->tipo_cambio}}</td>
+                                        <td>{{ $item->moneda}}</td>
                                         <td>{{ $item->cuenta_contable}}</td>
                                         <td>{{ $item->descripcion_concepto}}</td>
                                         <td class="numerico">$ {{ number_format($item->importe,'2','.',',')}}</td>
-                                        <td class="numerico">$ {{ number_format($item->costo_dolares,'2','.',',')}}</td>
-                                        <td class="numerico">$ {{ number_format($item->costo_dolares_complementaria,'2','.',',')}}</td>
+                                        <td class="numerico">$ {{ number_format($item->costo_me,'2','.',',')}}</td>
+                                        <td class="numerico">$ {{ number_format($item->costo_me_complementaria,'2','.',',')}}</td>
+                                        @if($item->efecto_cambiario > 0)
+                                            <td class="numerico">$ {{ number_format($item->efecto_cambiario,'2','.',',')}}</td>
+                                        @else
+                                            <td class="numerico">($ {{ number_format(abs($item->efecto_cambiario),'2','.',',') . ')'}}</td>
+                                        @endif
                                         <td>{{ $item->tipo_poliza_contpaq.' No. '.$item->folio_contpaq}}</td>
                                         <td>{{ $item->tipo_poliza_sao.' No. '.$item->id_poliza}}</td>
                                     </tr>

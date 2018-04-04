@@ -18,3 +18,4 @@ Homestead.json
 composer.lock
 php_errors.log
 /resources/assets/css/
+/public/img/logo_temp.png
