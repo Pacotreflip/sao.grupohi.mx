@@ -50,8 +50,6 @@ class CostosDolaresPDF extends Rotation
         if($this->termino == 'TRUE'){
             $this->firmas();
         }
-
-
     }
 
     function logo() {
@@ -187,8 +185,6 @@ class CostosDolaresPDF extends Rotation
             $this->setY($this->getY()-1);
         }
 
-
-
     }
 
     function costos(){
@@ -285,7 +281,6 @@ class CostosDolaresPDF extends Rotation
         $this->SetAligns(['R', 'R', 'R', 'R', 'R']);
 
 
-        $this->termino = 'TRUE';
 
         $this->Row([
             'Totales  :',
@@ -294,8 +289,12 @@ class CostosDolaresPDF extends Rotation
             '$ ' . number_format($total_costo_dolares_complementaria, 2, '.', ','),
             ''
         ]);
-
         $this->encola = '';
+
+        if($this->y >= ($this->h -3)) {
+            $this->AddPage();
+        }
+        $this->termino = 'TRUE';
 
     }
 
@@ -329,13 +328,9 @@ class CostosDolaresPDF extends Rotation
         $this->SetMargins(1, 0.5, 1);
         $this->AliasNbPages();
         $this->AddPage();
-        $this->SetAutoPageBreak(true,2);
+        $this->SetAutoPageBreak(true,1);
         $this->costos();
-        //$this->partidas();
         $this->Ln();
-        //$this->seguimiento();
-        if($this->y > 17.05)
-            $this->AddPage();
         $this->Ln(1);
         //$this->totales();
         try {
