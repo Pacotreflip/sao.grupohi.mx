@@ -75,10 +75,7 @@ class ConfigNivelesPresupuestoController extends Controller
         if(!$configNivel){
             return response()->json($id, 404);
         }
-        return response()->json(['data' =>
-            [
-                'configNivel' =>  $configNivel
-            ]
+        return response()->json(['data' => $configNivel
         ], 200);
     }
 
