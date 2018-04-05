@@ -25,6 +25,8 @@ Vue.component('cambio-cantidad-insumos-create', {
     computed: {},
     mounted: function () {
         var self = this;
+
+
         $('#sel_material').select2({
             width: '100%',
             ajax: {
@@ -80,37 +82,52 @@ Vue.component('cambio-cantidad-insumos-create', {
             }
         },
         consulta_detalle_agrupador: function (indexRow) {
+
             var self = this;
-            self.row_consulta=indexRow;
-            $.ajax({
-                type: 'POST',
-                async: true,
-                url: App.host + '/control_presupuesto/cambio_cantidad_insumos/getExplosionAgrupados',
-                data: {
-                    filtro_agrupado: self.form.filtro_agrupador,
-                    precio: self.form.agrupacion[indexRow].precio_unitario,
-                    descripcion: self.form.agrupacion[indexRow].agrupador
-                },
-                beforeSend: function () {
-                    self.consultando = true;
-                },
-                success: function (data, textStatus, xhr) {
-                   self.form.agrupacion[indexRow].items=data.data;
-                   self.form.agrupacion[indexRow].mostrar_detalle=true;
-                   if(self.form.agrupacion[indexRow].aplicar_todos){
-                       $.each( self.form.agrupacion[indexRow].items,function (index,value) {
-                           value.agregado=true;
-                           value.cantidad_nueva=self.form.agrupacion[indexRow].cantidad_todos;
-                       });
+            if(self.form.agrupacion[indexRow].items.length==0){
 
-                   }
-                   self.consultando=false;
-                },
-                complete: function () {
-                    self.consultando=false;
-                },
+                self.row_consulta=indexRow;
+                $.ajax({
+                    type: 'POST',
+                    async: true,
+                    url: App.host + '/control_presupuesto/cambio_cantidad_insumos/getExplosionAgrupados',
+                    data: {
+                        filtro_agrupado: self.form.filtro_agrupador,
+                        precio: self.form.agrupacion[indexRow].precio_unitario,
+                        descripcion: self.form.agrupacion[indexRow].agrupador
+                    },
+                    beforeSend: function () {
+                        self.consultando = true;
+                    },
+                    success: function (data, textStatus, xhr) {
+                        self.form.agrupacion[indexRow].items=data.data;
+                        self.form.agrupacion[indexRow].expandido=true;
+                        self.form.agrupacion[indexRow].mostrar_detalle=true;
+                        if(self.form.agrupacion[indexRow].aplicar_todos){
+                            $.each( self.form.agrupacion[indexRow].items,function (index,value) {
+                                value.agregado=true;
+                                value.cantidad_nueva=self.form.agrupacion[indexRow].cantidad_todos;
+                            });
 
-            });
+                        }
+                        self.consultando=false;
+                    },
+                    complete: function () {
+                        self.consultando=false;
+                    },
+
+                });
+
+            }else{
+
+                if(self.form.agrupacion[indexRow].expandido==true){
+                    self.form.agrupacion[indexRow].expandido=false;
+                    $('#tr_detalle_'+indexRow).hide();
+                }else{
+                    self.form.agrupacion[indexRow].expandido=true;
+                    $('#tr_detalle_'+indexRow).show();
+                }
+            }
 
 
         },
