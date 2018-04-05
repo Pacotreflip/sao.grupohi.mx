@@ -244,7 +244,7 @@ class PDFSolicitudCambioCantidadInsumos extends Rotation
 
         $this->SetFont('Arial', 'B', $this->txtSeccionTam);
         $this->SetXY($this->GetX(), $this->GetY());
-        $this->Cell($this->WidthTotal, 0.7, utf8_decode('CAMBIO DE CANTIDAD DE INSUMOS'), 'TRLB', 0, 'C');
+        $this->Cell($this->WidthTotal, 0.7, utf8_decode('CAMBIO DE CANTIDAD A INSUMOS'), 'TRLB', 0, 'C');
         $this->SetXY($this->GetX(), $this->GetY() + 0.3);
         $this->SetWidths(array(0));
         $this->SetFills(array('255,255,255'));
