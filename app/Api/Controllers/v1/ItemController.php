@@ -6,7 +6,7 @@
  * Time: 04:14 PM
  */
 
-namespace Ghi\Api\Controllers;
+namespace Ghi\Api\Controllers\v1;
 
 use Ghi\Domain\Core\Contracts\ItemRepository;
 use Ghi\Domain\Core\Transformers\ItemTransformer;
