@@ -95,7 +95,7 @@ class EloquentCambioCantidadInsumosRepository implements CambioCantidadInsumosRe
                     if (array_key_exists('items', $agrupado)) { //puede ser que modifico precios a los items
 
                         foreach ($agrupado['items'] as $item) {
-                            if ($item['agregado']) {
+                            if ($item['agregado']=='true') {
                                 $dataPartida = [];
                                 $dataPartida['id_solicitud_cambio'] = $solicitud->id;
                                 $dataPartida['id_tipo_orden'] = $data['id_tipo_orden'];
@@ -205,8 +205,8 @@ class EloquentCambioCantidadInsumosRepository implements CambioCantidadInsumosRe
 
                 } else {
                     $cant_pres_sol=(Concepto::find($partAgrupada->id_concepto)->cantidad_presupuestada);
-                    $imp_original += ($cant_pres_sol) * $partAgrupada->precio_unitario_original;
-                    $imo_actualizado += ($cant_pres_sol) * $partAgrupada->precio_unitario_nuevo;
+                    $imp_original =$imp_original+(($cant_pres_sol) * $partAgrupada->precio_unitario_original);
+                    $imo_actualizado =$imo_actualizado+(($cant_pres_sol) * $partAgrupada->precio_unitario_nuevo);
                 }
             }
             $agrupado['importe_original'] = $imp_original;

@@ -385,7 +385,7 @@ class PDFSolicitudCambioCantidadInsumos extends Rotation
     {
 
         $data = $this->obra->logotipo;
-        $data = pack('H*', $data);
+        $data = pack('H*', hex2bin($data));
         $file = public_path('img/logo_temp.png');
         if (file_put_contents($file, $data) !== false) {
             list($width, $height) = $this->resizeToFit($file);
