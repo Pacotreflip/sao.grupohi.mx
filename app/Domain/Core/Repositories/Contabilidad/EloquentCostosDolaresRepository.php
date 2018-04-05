@@ -96,7 +96,7 @@ END as float) AS costo_me_complementaria
               
               INNER JOIN dbo.monedas ON transacciones.id_moneda = monedas.id_moneda
 
-			  INNER JOIN  ControlProyectos.cambios_autorizados on monedas.id_moneda = cambios_autorizados.id_moneda
+			  INNER JOIN  ControlPresupuesto.cambios_autorizados on monedas.id_moneda = cambios_autorizados.id_moneda
      
  
             WHERE (int_polizas.estatus IN (2, 3))
@@ -188,7 +188,7 @@ END as float) AS costo_me_complementaria
               
               INNER JOIN dbo.monedas ON transacciones.id_moneda = monedas.id_moneda
 
-			  INNER JOIN  ControlProyectos.cambios_autorizados on monedas.id_moneda = cambios_autorizados.id_moneda
+			  INNER JOIN  ControlPresupuesto.cambios_autorizados on monedas.id_moneda = cambios_autorizados.id_moneda
      
  
             WHERE (int_polizas.estatus IN (2, 3))
