@@ -32,15 +32,7 @@ class Moneda extends Model
         return $query->where('tipo', '=', 0);
     }
 
-    public function getCambioAutorizadoAttribute(){
-        return
-        DB::connection('cadeco')->table('ControlProyectos.cambios_autorizados')
-            ->join('ControlProyectos.cambios_autorizados', 'ControlProyectos.cambios_autorizados.id_moneda', '=', $this->id_moneda)
-            ->where('ControlProyectos.cambios_autorizados.id_moneda', '=', $this->id_moneda);
-            //->first();
-    }
-
     public function scopeCambio($query){
-        return $query->join('ControlProyectos.cambios_autorizados', 'ControlProyectos.cambios_autorizados.id_moneda', '=', 'dbo.monedas.id_moneda');
+        return $query->join('ControlPresupuesto.cambios_autorizados', 'ControlPresupuesto.cambios_autorizados.id_moneda', '=', 'dbo.monedas.id_moneda');
     }
 }
