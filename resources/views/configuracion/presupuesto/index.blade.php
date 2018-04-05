@@ -20,17 +20,17 @@
                                 <table class="table table-bordered table-striped" id="filtros_nivel">
                                     <thead>
                                     <tr>
-                                        <th>Order</th>
-                                        <th>Columns</th>
-                                        <th>Descprion</th>
+                                        <th>Orden</th>
+                                        <th>Columnas</th>
+                                        <th>Descripción</th>
                                         <th>Acciones</th>
                                     </tr>
                                     </thead>
                                     <tfoot>
                                     <tr>
-                                        <th>Order</th>
-                                        <th>Columns</th>
-                                        <th>Descprion</th>
+                                        <th>Orden</th>
+                                        <th>Columnas</th>
+                                        <th>Descripción</th>
                                         <th>Acciones</th>
                                     </tr>
                                     </tfoot>

@@ -155,7 +155,7 @@
         <!-- /.tab-pane -->
 
         <!-- Settings tab content -->
-        @permission(['administrar_roles_permisos'])
+        @permission(['administrar_roles_permisos','administracion_configuracion_presupuesto','administracion_configuracion_obra'])
         <div class="tab-pane" id="control-sidebar-settings-tab">
             <form method="post">
                 <h4 class="control-sidebar-heading">Configuración General</h4>
@@ -171,20 +171,22 @@
                 @endpermission
 
                 <!-- Administración del Presupuesto -->
-                {{-- TODO: @permission('administrar_presupuesto') --}}
+                @permission('administracion_configuracion_presupuesto')
                 <div class="form-group">
                     <label class="control-sidebar-subheading">
-                        <a href="{{ route('configuracion.obra.index') }}">Presupuesto</a>
+                        <a href="{{ route('configuracion.presupuesto.index') }}">Presupuesto</a>
                     </label>
                     <p>Configuración de la estructura del presupuesto</p>
                 </div>
-                {{-- TODO: @endpermission --}}
+                @endpermission
+                @permission('administracion_configuracion_obra')
                 <div class="form-group">
                     <label class="control-sidebar-subheading">
                         <a href="{{ route('configuracion.obra.index') }}">Obra</a>
                     </label>
                     <p>Configuración de la estructura la obra</p>
                 </div>
+                @endpermission
             </form>
         </div>
         @endpermission

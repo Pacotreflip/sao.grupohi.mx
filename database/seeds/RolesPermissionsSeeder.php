@@ -136,8 +136,16 @@ class RolesPermissionsSeeder extends Seeder
         $rechazar_cambio_insumos= Permission::firstOrCreate(['name' => 'rechazar_cambio_insumos', 'display_name' => 'Rechazar Cambio de Insumos', 'description' => 'Rechazar Cambio de Insumos']);
         $consultar_cambio_insumos = Permission::firstOrCreate(['name' => 'consultar_cambio_insumos', 'display_name' => 'Consultar Cambio de Insumos', 'description' => 'Consultar Cambio de Insumos']);
 
+        //Control Presupuesto cambio de insumos
+        $registrar_cambio_cantidad_insumos = Permission::firstOrCreate(['name' => 'registrar_cambio_cantidad_insumos', 'display_name' => 'Registrar Cambio de Cantidad de Insumos', 'description' => 'Registrar Cambio de Cantidad de Insumos']);
+        $autorizar_cambio_cantidad_insumos = Permission::firstOrCreate(['name' => 'autorizar_cambio_cantidad_insumos', 'display_name' => 'Autorizar Cambio de Cantidad de Insumos', 'description' => 'Autorizar Cambio de Cantidad de Insumos']);
+        $rechazar_cambio_cantidad_insumos= Permission::firstOrCreate(['name' => 'rechazar_cambio_cantidad_insumos', 'display_name' => 'Rechazar Cambio de Cantidad de Insumos', 'description' => 'Rechazar Cambio de Cantidad de Insumos']);
+        $consultar_cambio_cantidad_insumos = Permission::firstOrCreate(['name' => 'consultar_cambio_cantidad_insumos', 'display_name' => 'Consultar Cambio de Cantidad  de Insumos', 'description' => 'Consultar Cambio de Cantidad de Insumos']);
+
         //Roles y Permisos
         $administrar_roles_permisos = Permission::firstOrCreate(['name' => 'administrar_roles_permisos', 'display_name' => 'Administrar Roles y Permisos', 'description' => 'Permisos para asignación de roles a usuarios']);
+        $administracion_configuracion_obra = Permission::firstOrCreate(['name' => 'administracion_configuracion_obra', 'display_name' => 'Configuración de la estructura la obra', 'description' => 'Permisos para configuración de la estructura de obra']);
+        $administracion_configuracion_presupuesto = Permission::firstOrCreate(['name' => 'administracion_configuracion_presupuesto', 'display_name' => 'Configuración de la estructura del presupuesto', 'description' => 'Permisos para configuración de la estructura del presupuesto']);
 
         /**
          * Roles
@@ -280,9 +288,15 @@ class RolesPermissionsSeeder extends Seeder
             $autorizar_cambio_insumos->id,
             $rechazar_cambio_insumos->id,
             $consultar_cambio_insumos->id,
+            $registrar_cambio_cantidad_insumos->id,
+            $autorizar_cambio_cantidad_insumos->id,
+            $rechazar_cambio_cantidad_insumos->id,
+            $consultar_cambio_cantidad_insumos->id,
         ]);
         $administrador_sistema->perms()->sync([
             $administrar_roles_permisos->id,
+            $administracion_configuracion_presupuesto->id,
+            $administracion_configuracion_obra->id,
         ]);
 
         /**
@@ -390,6 +404,10 @@ class RolesPermissionsSeeder extends Seeder
                 $aplicar_escalatoria->id,
                 $rechazar_escalatoria->id,
                 $consultar_escalatoria->id,
+                $registrar_cambio_cantidad_insumos->id,
+                $autorizar_cambio_cantidad_insumos->id,
+                $rechazar_cambio_cantidad_insumos->id,
+                $consultar_cambio_cantidad_insumos->id
             ]
         );
     }

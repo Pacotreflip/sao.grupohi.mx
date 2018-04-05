@@ -114,4 +114,9 @@ class ConceptoController extends Controller
     public function getPathColumns() {
         return $this->concepto->getPathColmns();
     }
+
+    public function getPreciosConceptos($id){
+        $items=$this->concepto->getPreciosConceptos($id);
+        return response()->json(['data' => ['precios' => $items]], 200);
+    }
 }
