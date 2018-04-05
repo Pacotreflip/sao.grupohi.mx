@@ -14,14 +14,14 @@
                 <div class="col-md-12">
                     <div class="box box-solid">
                         <div class="box-header with-border">
-                            <h3 class="box-title">Filtros para consulta de Conceptos</h3>
+                            <h3 class="box-title">Filtros para consulta de Insumos</h3>
                         </div>
                         <div class="box-body">
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label><b>Material:</b></label>
-                                        <select class="form-control" name="Familia" data-placeholder="BUSCAR MATERIAL"
+                                        <label><b>Insumo:</b></label>
+                                        <select class="form-control" name="Familia" data-placeholder="BUSCAR INSUMO"
                                                 id="sel_material" v-model="form.filtro_agrupador.id_material"></select>
                                     </div>
 
@@ -67,8 +67,8 @@
                         </div>
                         <div class="box-footer">
                             <button class="btn btn-default pull-right"
-                                    :disabled="form.filtro_agrupador.id_tipo_filtro==0||form.filtro_agrupador.id_material==0"
-                                    v-on:click="buscar_conceptos()">Buscar
+                                    :disabled="form.filtro_agrupador.id_tipo_filtro==0||form.filtro_agrupador.id_material==0||buscando_agrupados"
+                                    v-on:click="buscar_conceptos()" >Buscar
                             </button>
                         </div>
                     </div>
@@ -140,6 +140,7 @@
                                                            :name="'Cantidad Actualizada [' + (i + 1) + ']'"
                                                            v-model="agrupado.cantidad_todos"
                                                            v-on:blur="cambiaPrecios(i)"
+                                                           onkeypress="return filterFloat(event,this);"
                                                     >
                                                     <label class="help"
                                                            v-show="validation_errors.has('form_save_solicitud.Cantidad Actualizada [' + (i + 1) + ']')">@{{ validation_errors.first('form_save_solicitud.Cantidad Actualizada [' + (i + 1) + ']') }}</label>
@@ -190,7 +191,8 @@
                                                                     <input type="text"
                                                                            v-model="item.cantidad_nueva"
                                                                            v-validate="'decimal|min_value:0'"
-                                                                           :name="'Cantidad Nueva  [' + (i + 1) + '][' + (i2 + 1) + ']'">
+                                                                           :name="'Cantidad Nueva  [' + (i + 1) + '][' + (i2 + 1) + ']'"
+                                                                           onkeypress="return filterFloat(event,this);">
                                                                         <label class="help"
                                                                                v-show="validation_errors.has('form_save_solicitud.Cantidad Nueva  [' + (i + 1) + '][' + (i2 + 1) + ']')">@{{ validation_errors.first('form_save_solicitud.Cantidad Nueva  [' + (i + 1) + '][' + (i2 + 1) + ']') }}</label>
                                                                     </div>
@@ -298,5 +300,50 @@
 
         </section>
     </cambio-cantidad-insumos-create>
+
+    <section>
+
+
+    </section>
+@endsection
+
+@section('scripts-content')
+    <script>
+
+            function filterFloat(evt,input){
+                // Backspace = 8, Enter = 13, ‘0′ = 48, ‘9′ = 57, ‘.’ = 46, ‘-’ = 43
+                var key = window.Event ? evt.which : evt.keyCode;
+                var chark = String.fromCharCode(key);
+                var tempValue = input.value+chark;
+                if(key >= 48 && key <= 57){
+                    if(filter(tempValue)=== false){
+                        return false;
+                    }else{
+                        return true;
+                    }
+                }else{
+                    if(key == 8 || key == 13 || key == 0) {
+                        return true;
+                    }else if(key == 46){
+                        if(filter(tempValue)=== false){
+                            return false;
+                        }else{
+                            return true;
+                        }
+                    }else{
+                        return false;
+                    }
+                }
+            }
+        function filter(__val__){
+            var preg = /^([0-9]+\.?[0-9]{0,5})$/;
+            if(preg.test(__val__) === true){
+                return true;
+            }else{
+                return false;
+            }
+
+        }
+    </script>
 
 @endsection

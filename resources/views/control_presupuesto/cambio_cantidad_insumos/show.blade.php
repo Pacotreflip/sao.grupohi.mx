@@ -1,6 +1,6 @@
 @extends('control_presupuesto.layout')
 @section('title', 'Control presupuesto')
-@section('contentheader_title', 'CAMBIO DE INSUMOS')
+@section('contentheader_title', 'CAMBIO DE CANTIDAD A INSUMOS')
 @section('breadcrumb')
     {!! Breadcrumbs::render('control_presupuesto.cambio_presupuesto.show',$solicitud) !!}
 @endsection
@@ -38,11 +38,11 @@
                         <div class="box-body">
                             <table class="table">
                                 <tr>
-                                    <td><b>Conceptos Modificados</b></td>
+                                    <td><b>Insumos Modificados</b></td>
                                     <td>{{ $detalle_afectacion['conceptos_modificados'] }}</td>
                                 </tr>
                                 <tr>
-                                    <td><b>Importe Conceptos Modificados</b></td>
+                                    <td><b>Importe Insumos Modificados</b></td>
                                     <td class="text-right">
                                         ${{number_format( $detalle_afectacion['imp_conceptos_modif'] ,'2','.',',')}}</td>
                                 </tr>
@@ -52,7 +52,7 @@
                                         ${{number_format( $detalle_afectacion['imp_variacion'] ,'2','.',',')}}</td>
                                 </tr>
                                 <tr>
-                                    <td><b>Importe Conceptos Actualizados</b></td>
+                                    <td><b>Importe Insumos Actualizados</b></td>
                                     <td class="text-right">
                                         ${{number_format( $detalle_afectacion['imp_conceptos_actualizados'] ,'2','.',',')}}</td>
                                 </tr>
@@ -108,100 +108,110 @@
                 <div class="col-md-9">
                     <div class="box box-solid">
                         <div class="box-header with-border">
-                            <h3 class="box-title">Conceptos agregados</h3>
+                            <h3 class="box-title">Insumos agregados</h3>
                         </div>
-                        <div class="box-body">
-                            <table id="agrupadores_tablex" class="table table-bordered"
-                                   v-if="form.agrupacion.length>0">
-                                <thead>
-                                <tr>
-                                    <th style="width:20px"></th>
-                                    <th>Cantidad de insumos</th>
-                                    <th v-text="'Agrupados por '+solicitud.filtro_cambio_cantidad.tipo_filtro.descripcion   "></th>
-                                    <th>Cantidad original</th>
-                                    <th class="bg-gray-active">Importe original</th>
-                                    <th class="bg-gray-active">Importe Actualizado</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <template v-for="(agrupado,i) in form.agrupacion">
-                                    <tr>
-                                        <td>
-                                            <div class="btn btn-xs btn-default" :id="'div_expand_'+i"
-                                                 :disabled="consultando" v-if="agrupado.mostrar_detalle"
-                                                 v-on:click="consulta_detalle_agrupador(i)">
+                        <div class="box-body ">
+
+                                <div class="table-responsive col-md-12 container">
+                                    <table id="agrupadores_tablex" class="table table-bordered"
+                                           v-if="form.agrupacion.length>0">
+                                        <thead>
+                                        <tr>
+                                            <th style="width:20px"></th>
+                                            <th>Cantidad de insumos</th>
+                                            <th v-text="'Agrupados por '+solicitud.filtro_cambio_cantidad.tipo_filtro.descripcion   "></th>
+                                            <th>Cantidad original</th>
+                                            <th class="bg-gray-active">Importe original</th>
+                                            <th class="bg-gray-active">Importe Actualizado</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <template v-for="(agrupado,i) in form.agrupacion">
+                                            <tr>
+                                                <td>
+                                                    <div class="btn btn-xs btn-default" :id="'div_expand_'+i"
+                                                         :disabled="consultando" v-if="agrupado.mostrar_detalle"
+                                                         v-on:click="consulta_detalle_agrupador(i)">
                                                             <span v-if="consultando&&i==row_consulta">
                                                             <i class="fa fa-spinner fa-spin"></i>
                                                             </span>
-                                                <span v-else>
+                                                        <span v-else>
                                                             <i class="fa  fa-list"></i>
                                                             </span>
-                                            </div>
-                                            <div v-else class="btn btn-xs btn-default" v-on:click="ocultar_detalle(i)">
+                                                    </div>
+                                                    <div v-else class="btn btn-xs btn-default"
+                                                         v-on:click="ocultar_detalle(i)">
                                                     <span>
                                                         <i class="fa  fa-minus"></i>
                                                     </span>
-                                            </div>
-                                        </td>
-                                        <td>@{{agrupado.cantidad}}</td>
-                                        <td>@{{agrupado.agrupador}}</td>
-                                        <td>@{{agrupado.precio_unitario_original}}</td>
-                                        <td class="text-right bg-gray-active">
-                                            $@{{ parseFloat(agrupado.importe_original).formatMoney(2, '.',',') }}</td>
-                                        <td class="text-right  bg-gray-active">
-                                            $@{{ parseFloat(agrupado.importe_actualizado).formatMoney(2, '.',',') }}</td>
+                                                    </div>
+                                                </td>
+                                                <td>@{{agrupado.cantidad}}</td>
+                                                <td>@{{agrupado.agrupador}}</td>
+                                                <td>@{{agrupado.precio_unitario_original}}</td>
+                                                <td class="text-right bg-gray-active">
+                                                    $@{{ parseFloat(agrupado.importe_original).formatMoney(2, '.',',') }}</td>
+                                                <td class="text-right  bg-gray-active">
+                                                    $@{{ parseFloat(agrupado.importe_actualizado).formatMoney(2, '.',',') }}</td>
 
-                                    </tr>
-                                    <tr v-if="agrupado.mostrar_detalle&&agrupado.items.length>0" :id="'tr_detalle_'+i">
-                                        <td colspan="6">
-                                            <table class="table table-bordered">
-                                                <thead>
-                                                <tr>
-                                                    <table class="table table-bordered table-stripped ">
+                                            </tr>
+                                            <tr v-if="agrupado.mostrar_detalle&&agrupado.items.length>0"
+                                                :id="'tr_detalle_'+i">
+                                                <td colspan="6">
+                                                    <table class="table table-bordered">
                                                         <thead>
                                                         <tr>
-                                                            <th class="bg-gray-active">#</th>
-                                                            <th class="bg-gray-active">Sector</th>
-                                                            <th class="bg-gray-active">Cuadrante</th>
-                                                            <th class="bg-gray-active">Especialidad</th>
-                                                            <th class="bg-gray-active">Partida</th>
-                                                            <th class="bg-gray-active">Subpartida o Cuenta de costo</th>
-                                                            <th class="bg-gray-active">Concepto</th>
-                                                            <th class="bg-gray-active">Filtro10</th>
-                                                            <th class="bg-gray-active">Filtro11</th>
-                                                            <th class="bg-gray-active">Precio unitario original</th>
-                                                            <th class="bg-gray-active">Precio unitario nuevo</th>
+                                                            <table class="table table-bordered table-stripped ">
+                                                                <thead>
+                                                                <tr>
+                                                                    <th class="bg-gray-active">#</th>
+                                                                    <th class="bg-gray-active">Sector</th>
+                                                                    <th class="bg-gray-active">Cuadrante</th>
+                                                                    <th class="bg-gray-active">Especialidad</th>
+                                                                    <th class="bg-gray-active">Partida</th>
+                                                                    <th class="bg-gray-active">Subpartida o Cuenta de
+                                                                        costo
+                                                                    </th>
+                                                                    <th class="bg-gray-active">Concepto</th>
+                                                                    <th class="bg-gray-active">Filtro10</th>
+                                                                    <th class="bg-gray-active">Filtro11</th>
+                                                                    <th class="bg-gray-active">Precio unitario
+                                                                        original
+                                                                    </th>
+                                                                    <th class="bg-gray-active">Precio unitario nuevo
+                                                                    </th>
+                                                                </tr>
+                                                                </thead>
+                                                                <tbody>
+                                                                <tr v-for="(item,i2) in agrupado.items">
+                                                                    <td>@{{i2+1 }}</td>
+                                                                    <td>@{{item.filtro4}}</td>
+                                                                    <td>@{{item.filtro5}}</td>
+                                                                    <td>@{{item.filtro6}}</td>
+                                                                    <td>@{{item.filtro7}}</td>
+                                                                    <td>@{{item.filtro8}}</td>
+                                                                    <td>@{{item.filtro9}}</td>
+                                                                    <td>@{{item.filtro10}}</td>
+                                                                    <td>@{{item.filtro11}}</td>
+                                                                    <td class="text-right">
+                                                                        $@{{ parseFloat(item.precio_unitario_original).formatMoney(2, '.',',') }}</td>
+                                                                    <td class="text-right">
+                                                                        $@{{ parseFloat(item.precio_unitario_nuevo).formatMoney(2, '.',',') }}</td>
+                                                                </tbody>
+                                                                </tr>
+                                                                </thead>
+                                                                <tbody>
+                                                                </tbody>
+                                                            </table>
+                                                            </td>
                                                         </tr>
                                                         </thead>
-                                                        <tbody>
-                                                        <tr v-for="(item,i2) in agrupado.items">
-                                                            <td>@{{i2+1 }}</td>
-                                                            <td>@{{item.filtro4}}</td>
-                                                            <td>@{{item.filtro5}}</td>
-                                                            <td>@{{item.filtro6}}</td>
-                                                            <td>@{{item.filtro7}}</td>
-                                                            <td>@{{item.filtro8}}</td>
-                                                            <td>@{{item.filtro9}}</td>
-                                                            <td>@{{item.filtro10}}</td>
-                                                            <td>@{{item.filtro11}}</td>
-                                                            <td  class="text-right">
-                                                                $@{{ parseFloat(item.precio_unitario_original).formatMoney(2, '.',',') }}</td>
-                                                            <td  class="text-right">
-                                                                $@{{ parseFloat(item.precio_unitario_nuevo).formatMoney(2, '.',',') }}</td>
-                                                        </tbody>
-                                                        </tr>
-                                                        </thead>
-                                                        <tbody>
-                                                        </tbody>
                                                     </table>
-                                                    </td>
-                                                </tr>
-                                                </thead>
-                                            </table>
-                                </template>
-                                </tbody>
+                                        </template>
+                                        </tbody>
 
-                            </table>
+                                    </table>
+                                </div>
 
                         </div>
                     </div>
