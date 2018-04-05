@@ -1,38 +1,6 @@
 <?php
 
-Route::get('testing', function (\Illuminate\Http\Request $request) {
-    return response()->json([
-        [
-            "year" => "1949",
-            "value" => "All the Kings Men",
-            "tokens" => [
-                "All",
-                "the",
-                "Kings",
-                "Men"
-            ]
-          ],
-        [
-            "year" => "1957",
-            "value" => "The Bridge on the River Kwai",
-            "tokens" => [
-                "The",
-                "Bridge",
-                "on",
-                "the",
-                "River",
-                "Kwai"
-            ]
-        ]
-    ]);
-});
-
 //Usuarios Routes...
-/*
-Route::get('test', function () {
-    dd(\Ghi\Domain\Core\Models\ConceptoPath::getColumnsAttribute());
-});*/
-
 Route::post('usuario/paginate', 'UsuarioController@paginate');
 Route::get('usuario/{usuario}', 'UsuarioController@find');
 Route::post('usuario', 'UsuarioController@saveRoles');

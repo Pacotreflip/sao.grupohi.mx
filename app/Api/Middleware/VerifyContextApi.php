@@ -9,6 +9,7 @@ use Illuminate\Contracts\Config\Repository;
 use Illuminate\Http\Request;
 use Illuminate\Contracts\Routing\ResponseFactory;
 use Redirect;
+use JWTAuth;
 
 class VerifyContextApi
 {
@@ -47,10 +48,17 @@ class VerifyContextApi
      */
     public function handle(Request $request, Closure $next)
     {
-        if (($request->get('id_obra') != null && $request->get('database_name') != null) || ($request->header('id_obra') != null && $request->header('database_name') != null)) {
-            $this->context->setId($request->header('id_obra'));
-            $this->context->setDatabaseName($request->header('database_name'));
-
+        $payload = JWTAuth::parseToken()->getPayload();
+        if (($payload->get('id_obra') != null && $payload->get('database_name') != null) ||
+            ($request->get('id_obra') != null && $request->get('database_name') != null) ||
+            ($request->header('id_obra') != null && $request->header('database_name') != null)) {
+            if(($payload->get('id_obra') != null && $payload->get('database_name') != null)){
+                $this->context->setId($payload->get('id_obra'));
+                $this->context->setDatabaseName($payload->get('database_name'));
+            }else {
+                $this->context->setId($request->header('id_obra'));
+                $this->context->setDatabaseName($request->header('database_name'));
+            }
             $this->setContext();
             return $next($request);
         } else {

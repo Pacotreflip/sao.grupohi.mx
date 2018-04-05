@@ -7,7 +7,7 @@
  * Time: 01:13 PM
  */
 
-namespace Ghi\Api\Controllers;
+namespace Ghi\Api\Controllers\v1;
 
 use Dingo\Api\Exception\StoreResourceFailedException;
 use Dingo\Api\Http\Request;

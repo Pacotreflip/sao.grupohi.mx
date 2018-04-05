@@ -1,6 +1,6 @@
 <?php
 
-namespace Ghi\Api\Controllers\Auth;
+namespace Ghi\Api\Controllers\v1\Auth;
 
 use Ghi\Domain\Core\Models\User;
 use Ghi\Http\Controllers\Controller as BaseController;
@@ -37,6 +37,14 @@ class AuthController extends BaseController {
 
         //$token = JWTAuth::fromUser(User::find(3180));
         return compact('token');
+    }
+
+    public function testing2() {
+        return response()->json(['hola' => 'v2']);
+    }
+
+    public function testing() {
+        return response()->json(['hola' => 'v1']);
     }
 }
 

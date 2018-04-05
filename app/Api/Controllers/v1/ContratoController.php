@@ -7,14 +7,14 @@
  * Time: 5:13 AM
  */
 
-namespace Ghi\Api\Controllers;
+namespace Ghi\Api\Controllers\v1;
 
 use Dingo\Api\Exception\ResourceException;
 use Dingo\Api\Http\Request;
 use Dingo\Api\Routing\Helpers;
 use Ghi\Domain\Core\Contracts\ContratoRepository;
 use Ghi\Domain\Core\Models\Contrato;
-use Ghi\Domain\Core\Repositories\EloquentContratoProyectadoRepository;
+use Ghi\Domain\Core\Contracts\ContratoProyectadoRepository;
 use Ghi\Domain\Core\Transformers\ContratoTransformer;
 use Ghi\Http\Controllers\Controller;
 use Illuminate\Support\Facades\DB;
@@ -22,16 +22,24 @@ use Illuminate\Support\Facades\DB;
 class ContratoController extends Controller
 {
     use Helpers;
-
+    /**
+     * @var ContratoRepository
+     */
     private $contrato;
+    /**
+     * @var ContratoProyectadoRepository
+     */
+    private $contratoProyectadoRepository;
 
     /**
      * ContratoController constructor.
      * @param ContratoRepository $contrato
+     * @param ContratoProyectadoRepository $contratoProyectadoRepository
      */
-    public function __construct(ContratoRepository $contrato)
+    public function __construct(ContratoRepository $contrato, ContratoProyectadoRepository $contratoProyectadoRepository)
     {
         $this->contrato = $contrato;
+        $this->contratoProyectadoRepository = $contratoProyectadoRepository;
     }
 
     /**
@@ -85,7 +93,7 @@ class ContratoController extends Controller
             if (!$contrato = $this->contrato->find($id)) {
                 throw new ResourceException('No se encontró el Contrato que se desea actualizar');
             }
-            if (EloquentContratoProyectadoRepository::validarNivel(Contrato::where('id_transaccion', '=', $contrato->id_transaccion)->get(['nivel'])->toArray(), $contrato->nivel)) {
+            if ($this->contratoProyectadoRepository->validarNivel(Contrato::where('id_transaccion', '=', $contrato->id_transaccion)->get(['nivel'])->toArray(), $contrato->nivel)) {
                 //Exception cuando no es un contrato hijo
                 throw new ResourceException('El Contrato no Puede se Actualizado ya que Cuenta con Niveles Subsecuentes');
             }

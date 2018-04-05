@@ -6,7 +6,7 @@
  * Time: 01:48 PM
  */
 
-namespace Ghi\Api\Controllers;
+namespace Ghi\Api\Controllers\v1;
 
 use Dingo\Api\Routing\Helpers;
 use Ghi\Domain\Core\Contracts\ConciliacionRepository;
