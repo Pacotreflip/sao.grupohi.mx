@@ -33,7 +33,6 @@ Vue.component('configuracion-presupuesto-index', {
                     self.guardando = false;
                 },
                 "dataSrc" : function (json) {
-                    console.log(json.data);
                     return json.data;
                 }
             },
@@ -86,7 +85,6 @@ Vue.component('configuracion-presupuesto-index', {
                     self.cargando = true;
                 },
                 success: function (response) {
-                    console.log(response[0]);
                     self.id_config = response[0].id;
                     self.description = response[0].description;
                     self.name_column = response[0].name_column;
@@ -114,11 +112,10 @@ Vue.component('configuracion-presupuesto-index', {
                 success : function (response) {
                     swal({
                         type: 'success',
-                        title: 'Rol ' + response.name_column + ' registrado correctamente'
+                        title: 'El nombre de la columna ' + response.data.name_column + ' fue registrado correctamente'
                     }).then(function() {
                         $('#filtros_nivel').DataTable().ajax.reload(null, false);
                         $('.modal').modal('hide');
-                        self.closeModal();
                     });
                 },
                 complete : function () {
@@ -142,7 +139,6 @@ Vue.component('configuracion-presupuesto-index', {
             });
         },
         validateForm: function(scope, funcion) {
-            console.log(funcion);
             this.$validator.validateAll(scope).then(() => {
                 if(funcion == 'update_config') {
                     this.confirm_update_config();
