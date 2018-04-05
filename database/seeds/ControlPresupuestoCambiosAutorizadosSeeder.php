@@ -2,7 +2,7 @@
 
 use Illuminate\Database\Seeder;
 
-class ControlProyectosCambiosAutorizadosSeeder extends Seeder
+class ControlPresupuestoCambiosAutorizadosSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -11,10 +11,10 @@ class ControlProyectosCambiosAutorizadosSeeder extends Seeder
      */
     public function run()
     {
-        DB::connection('cadeco')->table('ControlProyectos.cambios_autorizados')->insert ([
+        DB::connection('cadeco')->table('ControlPresupuesto.cambios_autorizados')->insert ([
             ['id_moneda' => '2','cambio' => 21.00],
         ]);
-        DB::connection('cadeco')->table('ControlProyectos.cambios_autorizados')->insert ([
+        DB::connection('cadeco')->table('ControlPresupuesto.cambios_autorizados')->insert ([
             ['id_moneda' => '3','cambio' => 23.50],
         ]);
     }

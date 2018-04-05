@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateControlproyectosCambiosAutorizadosTable extends Migration
+class CreateTableControlPresupuestoCambiosAutorizados extends Migration
 {
     /**
      * Run the migrations.
@@ -12,7 +12,7 @@ class CreateControlproyectosCambiosAutorizadosTable extends Migration
      */
     public function up()
     {
-        Schema::create('ControlProyectos.cambios_autorizados', function (Blueprint $table) {
+        Schema::connection('cadeco')->create('ControlPresupuesto.cambios_autorizados', function (Blueprint $table) {
             $table->unsignedInteger('id_moneda');
             $table->float('cambio');
 
@@ -29,6 +29,6 @@ class CreateControlproyectosCambiosAutorizadosTable extends Migration
      */
     public function down()
     {
-        Schema::drop('ControlPresupuesto.cambios_autorizados');
+        Schema::connection('cadeco')->drop('ControlPresupuesto.cambios_autorizados');
     }
 }
