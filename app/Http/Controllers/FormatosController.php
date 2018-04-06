@@ -55,12 +55,12 @@ class FormatosController extends Controller
     public function comparativa_cotizaciones_contrato_pdf($id) {
         $contrato_proyectado = $this->contratoProyectado->find($id);
         $pdf = new ComparativaCotizacionesContrato($contrato_proyectado);
-        $pdf->create();
+        $pdf->create()->Output('I', 'Formato - Comparativa de Cotizaciones Contratos.pdf', 1);
     }
 
     public function comparativa_cotizaciones_compra_pdf($id) {
         $requisicion = $this->requisicion->find($id);
         $pdf = new ComparativaCotizacionesCompra($requisicion);
-        $pdf->create();
+        $pdf->create()->Output('I', 'Formato - Comparativa de Cotizaciones Requisciones.pdf', 1);
     }
 }
