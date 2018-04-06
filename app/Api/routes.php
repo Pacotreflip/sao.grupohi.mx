@@ -33,18 +33,14 @@ $api->version('v1', function ($api) {
 
         $api->delete('conciliacion/{id}', 'Ghi\Api\Controllers\v1\ConciliacionController@delete');
 
+        /*
+         * Formatos Routes
+         */
+        $api->get('formatos/compras/requisicion/{id_requisicion}/comparativa_cotizaciones_compra', 'Ghi\Api\Controllers\v1\FormatosController@comparativa_cotizaciones_compra')
+            ->where(['id' => '[0-9]+']);
     });
 });
 
 $api->version('v2' , function ($api) {
     $api->post('auth', 'Ghi\Api\Controllers\v2\Auth\AuthController@postLogin');
-
-    $api->group(['middleware' => ['jwt.auth', 'api.context']], function($api) {
-
-        /*
-         * Formatos Routes
-         */
-        $api->get('formatos/compras/requisicion/{id_requisicion}/comparativa_cotizaciones_compra', 'Ghi\Api\Controllers\v2\FormatosController@comparativa_cotizaciones_compra')
-            ->where(['id' => '[0-9]+']);
-    });
 });
