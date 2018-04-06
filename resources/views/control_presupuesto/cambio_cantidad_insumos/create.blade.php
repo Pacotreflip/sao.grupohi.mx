@@ -197,7 +197,7 @@
                                                                                v-show="validation_errors.has('form_save_solicitud.Cantidad Nueva  [' + (i + 1) + '][' + (i2 + 1) + ']')">@{{ validation_errors.first('form_save_solicitud.Cantidad Nueva  [' + (i + 1) + '][' + (i2 + 1) + ']') }}</label>
                                                                     </div>
                                                                 </td>
-                                                                <td><input type="checkbox" v-model="item.agregado" :checked="agrupado.aplicar_todos" v-on:click="quitar_row(i)"/>
+                                                                <td><input type="checkbox" v-model="item.agregado" :checked="agrupado.aplicar_todos" v-on:click="quitar_row(i)" :id="'rad_'+i+'_'+i2"/>
                                                             </tbody>
                                                             </tr>
                                                             </thead>

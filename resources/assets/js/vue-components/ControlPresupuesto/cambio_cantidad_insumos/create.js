@@ -162,8 +162,12 @@ Vue.component('cambio-cantidad-insumos-create', {
             var total_rows=self.form.agrupacion[indexRow].items.length;
             var agregados=0;
             $.each(self.form.agrupacion[indexRow].items,function (index,value) {
-              value.agregado?agregados++:'';
+               if($('#rad_'+indexRow+'_'+index).prop('checked')){
+                   agregados++;
+               }
             });
+
+
             total_rows==agregados?  self.form.agrupacion[indexRow].aplicar_todos=true:self.form.agrupacion[indexRow].aplicar_todos=false;
 
         },
