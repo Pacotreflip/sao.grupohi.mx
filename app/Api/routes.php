@@ -38,7 +38,7 @@ $api->version('v1', function ($api) {
          */
         $api->get('formatos/compras/requisicion/{id_requisicion}/comparativa_cotizaciones_compra', 'Ghi\Api\Controllers\v1\FormatosController@comparativa_cotizaciones_compra')
             ->where(['id' => '[0-9]+']);
-        
+
         $api->get('formatos/contratos/contrato_proyectado/{id_contrato_proyectado}/comparativa_cotizaciones_contrato', 'Ghi\Api\Controllers\v1\FormatosController@comparativa_cotizaciones_contrato')
             ->where(['id' => '[0-9]+']);
     });
