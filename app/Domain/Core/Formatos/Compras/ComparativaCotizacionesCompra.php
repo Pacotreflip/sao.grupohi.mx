@@ -399,7 +399,8 @@ class ComparativaCotizacionesCompra extends Rotation
             }
         }
         try {
-            $this->Output('I', 'Formato - Comparativa de Presupestos.pdf', 1);
+            $pdf = $this->Output('S', 'Formato - Comparativa de Presupestos.pdf', 1);
+            return $pdf;
         } catch (\Exception $ex) {
             dd($ex);
         }
