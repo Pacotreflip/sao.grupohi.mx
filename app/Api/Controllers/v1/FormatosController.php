@@ -6,7 +6,7 @@
  * Time: 02:50 PM
  */
 
-namespace Ghi\Api\Controllers\v2;
+namespace Ghi\Api\Controllers\v1;
 
 
 use Ghi\Domain\Core\Contracts\Compras\RequisicionRepository;
