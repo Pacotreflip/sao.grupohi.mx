@@ -393,7 +393,7 @@ class ComparativaCotizacionesContrato extends Rotation
             }
         }
         try {
-            $this->Output('I', 'Formato - Comparativa de Presupestos.pdf', 1);
+            return $this;
         } catch (\Exception $ex) {
             dd($ex);
         }
