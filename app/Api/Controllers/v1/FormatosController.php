@@ -34,6 +34,8 @@ class FormatosController extends BaseController
         $requisicion = $this->requisicion->find($id_requisicion);
 
         $pdf = new ComparativaCotizacionesCompra($requisicion);
-        $pdf->create();
+        $doc = $pdf->create();
+        return response()->json(['pdf' => base64_encode($doc)], 200);
+
     }
 }
