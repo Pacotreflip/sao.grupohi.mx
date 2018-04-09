@@ -184,7 +184,7 @@
                     <label class="control-sidebar-subheading">
                         <a href="{{ route('configuracion.obra.index') }}">Obra</a>
                     </label>
-                    <p>Configuración de la estructura la obra</p>
+                    <p>Configuración de información de la obra</p>
                 </div>
                 @endpermission
             </form>
