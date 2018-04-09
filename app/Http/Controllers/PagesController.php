@@ -34,9 +34,10 @@ class PagesController extends Controller
     {
         parent::__construct();
         $this->middleware('auth');
-        $this->middleware('context', ['only' => ['index', 'sistema_contable', 'formatos', 'finanzas', 'tesoreria', 'control_costos', 'control_presupuesto', 'seguridad']]);
+        $this->middleware('context', ['only' => ['index', 'sistema_contable', 'formatos', 'finanzas', 'tesoreria', 'control_costos', 'control_presupuesto', 'seguridad', 'presupuesto', 'obra']]);
         $this->middleware('permission:administrar_roles_permisos', ['only' => ['seguridad']]);
-        //TODO: $this->middleware('permission:administrar_presupuesto', ['only' => ['presupuesto']]);
+        $this->middleware('permission:administracion_configuracion_presupuesto', ['only' => ['presupuesto']]);
+        $this->middleware('permission:administracion_configuracion_obra', ['only' => ['obra']]);
         $this->session = $session;
         $this->notificacion = $notificacion;
         $this->grafica = $grafica;
@@ -66,13 +67,6 @@ class PagesController extends Controller
     /**
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function welcome() {
-        return view('pages.welcome');
-    }
-
-    /**
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
-     */
     public function sistema_contable() {
         $config = $this->grafica->getChartInfo();
         $acumulado = $this->grafica->getChartAcumuladoInfo();
@@ -84,12 +78,6 @@ class PagesController extends Controller
                         ->with('config', $config);
     }
 
-    /**
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
-     */
-    public function compras() {
-        return view('compras.index');
-    }
 
     /**
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
