@@ -266,6 +266,8 @@ class CostosDolaresPDF extends Rotation
             $total_costo_dolares_complementaria += $item->costo_me_complementaria;
 
         }
+
+        $this->encola = '';
         $this->SetFont('Arial', 'B', 7);
         $this->SetWidths([
             ($this->w - 2) * 0.57,
@@ -289,7 +291,7 @@ class CostosDolaresPDF extends Rotation
             '$ ' . number_format($total_costo_dolares_complementaria, 2, '.', ','),
             ''
         ]);
-        $this->encola = '';
+        //$this->encola = '';
 
         if($this->y >= ($this->h -3)) {
             $this->AddPage();
