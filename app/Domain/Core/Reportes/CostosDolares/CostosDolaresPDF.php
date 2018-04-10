@@ -225,6 +225,7 @@ class CostosDolaresPDF extends Rotation
         $total_importe = 0;
         $total_costo_dolares = 0;
         $total_costo_dolares_complementaria = 0;
+        $total_costo_dolares_utilidad_cambiaria = 0;
         $this->encola = 'partidas';
 
         foreach ($this->costos as $item) {
@@ -264,6 +265,7 @@ class CostosDolaresPDF extends Rotation
             $total_importe += $item->importe;
             $total_costo_dolares += $item->costo_me;
             $total_costo_dolares_complementaria += $item->costo_me_complementaria;
+            $total_costo_dolares_utilidad_cambiaria += $item->efecto_cambiario;
 
         }
 
@@ -274,13 +276,14 @@ class CostosDolaresPDF extends Rotation
             ($this->w - 2) * 0.08,
             ($this->w - 2) * 0.08,
             ($this->w - 2) * 0.08,
-            ($this->w - 2) * 0.18
+            ($this->w - 2) * 0.08,
+            ($this->w - 2) * 0.10
         ]);
 
-        $this->SetFills(['255,255,255', '255,255,255', '255,255,255', '255,255,255', '255,255,255']);
-        $this->SetTextColors(['0,0,0', '0,0,0', '0,0,0', '0,0,0', '0,0,0']);
+        $this->SetFills(['255,255,255', '255,255,255', '255,255,255', '255,255,255', '255,255,255', '255,255,255']);
+        $this->SetTextColors(['0,0,0', '0,0,0', '0,0,0', '0,0,0', '0,0,0', '0,0,0']);
         $this->SetHeights([0.5]);
-        $this->SetAligns(['R', 'R', 'R', 'R', 'R']);
+        $this->SetAligns(['R', 'R', 'R', 'R', 'R', 'R']);
 
 
 
@@ -289,6 +292,7 @@ class CostosDolaresPDF extends Rotation
             '$ ' . number_format($total_importe, 2, '.', ','),
             '$ ' . number_format($total_costo_dolares, 2, '.', ','),
             '$ ' . number_format($total_costo_dolares_complementaria, 2, '.', ','),
+            $total_costo_dolares_utilidad_cambiaria >0?'$ ' . number_format($total_costo_dolares_utilidad_cambiaria, 2, '.', ','):'($'.number_format(abs($total_costo_dolares_utilidad_cambiaria),'2','.',',').')',
             ''
         ]);
         //$this->encola = '';
