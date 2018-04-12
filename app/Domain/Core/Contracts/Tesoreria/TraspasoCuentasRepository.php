@@ -37,4 +37,12 @@ interface TraspasoCuentasRepository
      * @throws \Exception
      */
     public function update($data, $id);
+
+    /**
+     * Regresa registros de traspaso entre cuentas seleccionado
+     * @param array $data
+     * @return mixed
+     */
+    public function paginate(array $data);
+
 }

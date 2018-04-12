@@ -9,6 +9,7 @@
         regex_cuenta: {!! $currentObra ? json_encode($currentObra->datosContables->FormatoCuentaRegExp) : json_encode(null) !!},
         // ID del Usuario Actual
         userId: {!! Auth::check() ? Auth::id() : 'null' !!},
+        app_key : '{{ config('app.key') }}',
 
         // Transformar los errores y asignarlos al formulario
         setErrorsOnForm: function (form, errors) {

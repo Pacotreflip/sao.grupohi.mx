@@ -11,6 +11,11 @@
             :url_traspaso_cuentas_index="'{{ route('tesoreria.traspaso_cuentas.index') }}'"
             :cuentas="{{$dataView['cuentas']->toJson()}}"
             :traspasos="{{$dataView['traspasos']->toJson()}}"
+            :actions_permission="{{ \Entrust::can(['eliminar_traspaso_cuenta', 'editar_traspaso_cuenta', 'consultar_traspaso_cuenta']) ? 'true' : 'false' }}"
+            :permission_consultar_traspaso_cuenta="{{ \Entrust::can(['consultar_traspaso_cuenta']) ? 'true' : 'false' }}"
+            :permission_eliminar_traspaso_cuenta="{{ \Entrust::can(['eliminar_traspaso_cuenta']) ? 'true' : 'false' }}"
+            :permission_editar_traspaso_cuenta="{{ \Entrust::can(['editar_traspaso_cuenta']) ? 'true' : 'false' }}"
+
             inline-template
             v-cloak>
         <section>
@@ -83,7 +88,7 @@
                                     <div class="col-md-4">
                                         <div class="form-group">
                                             <label for="Vencimiento" class="control-label"><b>Vencimiento</b></label>
-                                            <input type="text" name="Vencimiento" class="form-control input-sm " id="vencimiento"  :value="form.vencimiento" v-model="form.vencimiento"
+                                            <input type="text" name="Vencimiento" class="form-control input-sm " id="vencimiento" v-model="form.vencimiento"
                                                    disabled >
                                         </div>
                                     </div>
@@ -134,7 +139,7 @@
                         </div>
                         <div class="box-body">
                             <div class="table-responsive">
-                                <table class="table table-bordered table-striped index_table">
+                                <table id="tableTraspasos" class="table table-bordered table-striped index_table">
                                     <thead>
                                     <tr>
                                         <th>#</th>
@@ -149,7 +154,7 @@
                                         @endpermission
                                     </tr>
                                     </thead>
-                                    <tbody>
+                                    {{-- <tbody>
                                         <tr v-for="(item, index) in data.traspasos">
                                             <td >@{{ index + 1  }}</td>
                                             <td>@{{ item.numero_folio }}</td>
@@ -178,7 +183,7 @@
                                             </td>
                                             @endpermission
                                         </tr>
-                                    </tbody>
+                                    </tbody>--}}
                                 </table>
                             </div>
                         </div>
@@ -272,7 +277,6 @@
                                     <div class="form-group" :class="{'has-error': validation_errors.has('form_editar_traspaso.Editar Importe')}">
                                         <label><b>Importe</b></label>
                                         <input type="text" class="form-control pull-right" id="edit_importe"
-                                               :value="traspaso_edit.importe"
                                                name="Editar Importe"
                                                v-model="traspaso_edit.importe"
                                                v-validate="'required|decimal:6'">

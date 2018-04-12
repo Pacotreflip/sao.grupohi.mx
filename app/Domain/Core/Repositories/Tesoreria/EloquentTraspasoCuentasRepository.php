@@ -202,8 +202,34 @@ class EloquentTraspasoCuentasRepository implements TraspasoCuentasRepository
         return $this->model->with(['cuenta_origen.empresa', 'cuenta_destino.empresa', 'traspaso_transaccion.transaccion_debito'])->find($item->id_traspaso);
     }
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Collection|static[]
+     */
     public function obras()
     {
         return Obra::all();
     }
+
+    /**
+     * @param array $data
+     * @return mixed
+     */
+    public function paginate(array $data)
+    {
+        $query = $this->model->with(['cuenta_destino.empresa', 'cuenta_origen.empresa', 'traspaso_transaccion.transaccion_debito']);
+
+        /*$query->where(function ($q) use ($data) {
+            return $q
+                ->where('description', 'like', '%' . $data['search']['value'] . '%')
+                ->orWhere('name', 'like', '%' . $data['search']['value'] . '%')
+                ->orWhere('display_name', 'like', '%' . $data['search']['value'] . '%');
+        });*/
+
+        foreach ($data['order'] as $order) {
+            $query->orderBy($data['columns'][$order['column']]['data'], $order['dir']);
+        }
+
+        return $query->paginate($perPage = $data['length'], $columns = ['*'], $pageName = 'page', $page = ($data['start'] / $data['length']) + 1);
+    }
+
 }

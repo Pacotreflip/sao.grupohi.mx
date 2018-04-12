@@ -29,7 +29,10 @@
                         <i class="fa fa-fw fa-database"></i>{{$baseDatos}}
                     </li>
                     @foreach($obrasBd as $obra)
-                        <a class="list-group-item" href="{{route('context.set',[$obra->databaseName, $obra])}}">
+                        <a class="list-group-item"
+                           data-id_obra="{{$obra->id_obra}}"
+                           data-database_name = "{{$obra->databaseName}}"
+                           href="{{route('context.set',[$obra->databaseName, $obra])}}">
                             {{mb_strtoupper($obra->nombre)}}
                         </a>
                     @endforeach
@@ -63,6 +66,8 @@
                             return {
                                 text:'[' + item.databaseName + '] ' + item.nombre,
                                 id: item.id_obra,
+                                "data-id_obra":item.id_obra,
+                                "data-database_name":item.databaseName,
                                 url: App.host + '/context/' + item.databaseName + '/' + item.id_obra
                             }
                         })
@@ -78,7 +83,40 @@
         });
         $('#context_set').on('click', function() {
             if($('#obras_select option:selected').data())
-            window.location = $('#obras_select option:selected').data().data.url;
-        })
+                console.log($('#obras_select option:selected').data());
+                var data = {"usuario": "{{auth()->user()->usuario}}",
+                "database_name": $('#obras_select option:selected').data().database_name,
+                "id_obra": $('#obras_select option:selected').data().id_obra,
+                "app_key": "{{env('APP_KEY')}}"};
+                if(obtenerToken(data)) {
+                    window.location = $('#obras_select option:selected').data().data.url;
+                }
+        });
+
+        $('.list-group-item').on('click',function (e) {
+            var data = {"usuario": "{{auth()->user()->usuario}}",
+                "database_name": $(this).data('database_name'),
+                "id_obra": $(this).data('id_obra'),
+                "app_key": App.app_key};
+            obtenerToken(data);
+        });
+        function obtenerToken(data) {
+            $.ajax({
+                "async": true,
+                "url": App.host+"/api/auth",
+                "method": "POST",
+                "headers": {
+                    "accept": "application/vnd.saoweb.v2+json"
+                },
+                dataType  : 'json',
+                "data": data,
+                complete : function (jqXHR, textStatus) {
+                    console.log('prueba');
+                }
+            }).done(function (response) {
+                localStorage.setItem('token', "bearer "+response.token);
+                console.log(localStorage);
+            });
+        }
     </script>
 @endsection

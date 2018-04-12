@@ -1,14 +1,18 @@
 Vue.component('traspaso-cuentas-index', {
-    props: ['url_traspaso_cuentas_index', 'cuentas', 'traspasos', 'monedas'],
-    data : function () {
+    props: [
+        'url_traspaso_cuentas_index', 'cuentas', 'traspasos', 'monedas',
+        'actions_permission',
+        'permission_consultar_traspaso_cuenta',
+        'permission_eliminar_traspaso_cuenta',
+        'permission_editar_traspaso_cuenta'],
+    data: function () {
         return {
-            'data' : {
-                'traspasos' : this.traspasos,
+            'data': {
                 'cuentas': this.cuentas,
                 'monedas': this.monedas,
                 'ver': []
             },
-            'form' : {
+            'form': {
                 'id_cuenta_origen': '',
                 'id_cuenta_destino': '',
                 'observaciones': '',
@@ -29,7 +33,7 @@ Vue.component('traspaso-cuentas-index', {
                 'vencimiento': '',
                 'referencia': ''
             },
-            'guardando' : false
+            'guardando': false
         }
     },
     computed: {
@@ -40,9 +44,119 @@ Vue.component('traspaso-cuentas-index', {
             });
         }
     },
-    mounted: function()
-    {
+    mounted: function () {
         var self = this;
+        $(document).delegate('.modal_ver_traspaso','click',function () {
+           var id =$(this).data('id');
+            console.log(id);
+        });
+        $(document).delegate('.confirm_eliminar','click',function () {
+           var id =$(this).data('id');
+            console.log(id);
+        });
+        $('#tableTraspasos').DataTable({
+            "processing": true,
+            "serverSide": true,
+            "ordering" : true,
+            "searching" : true,
+            "order": [
+                [1, "desc"]
+            ],
+            "searchDelay": 750,
+            "ajax": {
+                "url": App.host + '/api/tesoreria/traspaso_cuentas',
+                "type": "POST",
+                "headers": {
+                    'Authorization': localStorage.getItem('token')
+                },
+                'beforeSend': function (request) {
+                    request.setRequestHeader("Authorization", localStorage.getItem('token'));
+                }
+            },
+            "dataSrc" : function (json) {
+                for (var i = 0; i < json.data.length; i++) {
+                    json.data[i].index = i + 1;
+                    json.data[i].fecha = '$&nbsp;' +  new Date(data.fecha).dateFormat();
+                    json.data[i].importe = '$&nbsp; ' + parseFloat(json.data[i].importe).formatMoney(2, '.', ',');
+                    json.data[i].referencia = '$&nbsp; ' + parseFloat(json.data[i].traspaso_transaccion.transaccion_debito.referencia).formatMoney(2, '.', ',');
+                }
+                return json.data;
+            },
+            "columns": [
+                {data : 'index', 'searchable' : false, orderable : false},
+                {data: 'numero_folio', 'searchable': true},
+                {data: 'fecha', 'searchable': true},
+                {
+                    data : {},
+                    render : function (data) {
+                        var html = ' '+data.cuenta_origen.numero+' '+data.cuenta_origen.abreviatura+'('+data.cuenta_origen.empresa.razon_social+')';
+                        return html;
+                    },
+                    orderable : false,'searchable' : false
+                },
+                {
+                    data : {},
+                    render : function (data) {
+                        var html = ''+data.cuenta_destino.numero+' '+data.cuenta_destino.abreviatura+'('+data.cuenta_destino.empresa.razon_social+')';
+                        return html;
+                    },
+                    orderable : false,'searchable' : false
+                },
+                {data : 'importe', 'searchable' : false, orderable : false},
+                {data : 'referencia', 'searchable' : false, orderable : false},
+                {
+                    data : {},
+                    render : function (data) {
+                        var html = "";
+                        if(self.actions_permission){
+                            html+="";
+                            if(self.permission_consultar_traspaso_cuenta){
+                                html+='<div class="btn-group">\n' +
+                                    '<button type="button" title="Ver" class="btn btn-xs btn-success modal_ver_traspaso" data-id_traspaso="'+data.id_traspaso+'" ><i class="fa fa-eye"></i></button>\n' +
+                                    '</div>';
+                            }
+                            if(self.permission_eliminar_traspaso_cuenta){
+                                html+='<div class="btn-group">\n' +
+                                    '<button type="button" title="Eliminar" class="btn btn-xs btn-danger confirm_eliminar"  data-item="'+data.id_traspaso+'" ><i class="fa fa-trash"></i></button>\n' +
+                                    '</div>';
+                            }
+                            if(self.permission_editar_traspaso_cuenta){
+                                html+=' <div class="btn-group">\n' +
+                                    '<button title="Editar" class="btn btn-xs btn-info modal_editar" type="button" data-id_traspaso="'+data.id_traspaso+'" > <i class="fa fa-edit"></i></button>\n' +
+                                    '</div>';
+                            }
+
+                        }
+                        return html;
+                    },
+                    orderable : false,'searchable' : false
+                }
+            ],
+            "language": {
+                "sProcessing": "Procesando...",
+                "sLengthMenu": "Mostrar _MENU_ registros",
+                "sZeroRecords": "No se encontraron resultados",
+                "sEmptyTable": "Ningún dato disponible en esta tabla",
+                "sInfo": "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
+                "sInfoEmpty": "Mostrando registros del 0 al 0 de un total de 0 registros",
+                "sInfoFiltered": "(filtrado de un total de _MAX_ registros)",
+                "sInfoPostFix": "",
+                "sSearch": "Buscar:",
+                "sUrl": "",
+                "sInfoThousands": ",",
+                "sLoadingRecords": "Cargando...",
+                "oPaginate": {
+                    "sFirst": "Primero",
+                    "sLast": "Último",
+                    "sNext": "Siguiente",
+                    "sPrevious": "Anterior"
+                },
+                "oAria": {
+                    "sSortAscending": ": Activar para ordenar la columna de manera ascendente",
+                    "sSortDescending": ": Activar para ordenar la columna de manera descendente"
+                }
+            }
+        });
 
         $("#cumplimiento").datepicker().on("changeDate",function () {
             Vue.set(self.form, 'vencimiento', $('#cumplimiento').val());
@@ -131,7 +245,7 @@ Vue.component('traspaso-cuentas-index', {
                 }
             });
         },
-        confirm_eliminar: function(id_traspaso) {
+        confirm_eliminar: function (id_traspaso) {
             var self = this;
             swal({
                 title: "Eliminar traspaso",
@@ -170,10 +284,10 @@ Vue.component('traspaso-cuentas-index', {
         },
         modal_ver_traspaso: function (item) {
             Vue.set(this.data, 'ver', item);
-            Vue.set(this.data.ver, 'fecha', this.trim_fecha(item.traspaso_transaccion.transaccion_debito.fecha));
-            Vue.set(this.data.ver, 'importe', this.comma_format(item.importe));
-            Vue.set(this.data.ver, 'cumplimiento', this.trim_fecha(item.traspaso_transaccion.transaccion_debito.cumplimiento));
-            Vue.set(this.data.ver, 'vencimiento', this.trim_fecha(item.traspaso_transaccion.transaccion_debito.vencimiento));
+            Vue.set(this.data.ver, 'fecha', new Date(item.traspaso_transaccion.transaccion_debito.fecha).dateFormat() );
+            Vue.set(this.data.ver, 'importe', "$ "+parseFloat(item.importe).formatMoney(2,',','.'));
+            Vue.set(this.data.ver, 'cumplimiento', new Date(item.traspaso_transaccion.transaccion_debito.cumplimiento).dateFormat());
+            Vue.set(this.data.ver, 'vencimiento', new Date(item.traspaso_transaccion.transaccion_debito.vencimiento)).dateFormat();
             Vue.set(this.data.ver, 'referencia', item.traspaso_transaccion.transaccion_debito.referencia);
             Vue.set(this.data.ver, 'cuenta_origen_texto', item.cuenta_origen.numero +' '+ item.cuenta_origen.abreviatura +' ('+ item.cuenta_origen.empresa.razon_social +')');
             Vue.set(this.data.ver, 'cuenta_destino_texto', item.cuenta_destino.numero +' '+ item.cuenta_destino.abreviatura +' ('+ item.cuenta_destino.empresa.razon_social +')');
@@ -201,9 +315,9 @@ Vue.component('traspaso-cuentas-index', {
             Vue.set(this.traspaso_edit, 'id_cuenta_destino', traspaso.id_cuenta_destino);
             Vue.set(this.traspaso_edit, 'observaciones', traspaso.observaciones);
             Vue.set(this.traspaso_edit, 'importe', traspaso.importe);
-            Vue.set(this.traspaso_edit, 'fecha', this.trim_fecha(traspaso.traspaso_transaccion.transaccion_debito.fecha));
-            Vue.set(this.traspaso_edit, 'cumplimiento', this.trim_fecha(traspaso.traspaso_transaccion.transaccion_debito.cumplimiento));
-            Vue.set(this.traspaso_edit, 'vencimiento', this.trim_fecha(traspaso.traspaso_transaccion.transaccion_debito.vencimiento));
+            Vue.set(this.traspaso_edit, 'fecha', new Date(traspaso.traspaso_transaccion.transaccion_debito.fecha).dateFormat());
+            Vue.set(this.traspaso_edit, 'cumplimiento', new Date(traspaso.traspaso_transaccion.transaccion_debito.cumplimiento).dateFormat());
+            Vue.set(this.traspaso_edit, 'vencimiento', new Date(traspaso.traspaso_transaccion.transaccion_debito.vencimiento).dateFormat());
             Vue.set(this.traspaso_edit, 'referencia', traspaso.traspaso_transaccion.transaccion_debito.referencia);
 
             this.validation_errors.clear('form_editar_traspaso');
@@ -274,9 +388,6 @@ Vue.component('traspaso-cuentas-index', {
                          });
             });
         },
-        trim_fecha: function (fecha){
-            return fecha.substring(0,10);
-        },
         reset_form: function() {
             Vue.set(this.form, 'id_traspaso', '');
             Vue.set(this.form, 'id_cuenta_origen', '');
@@ -287,27 +398,6 @@ Vue.component('traspaso-cuentas-index', {
             Vue.set(this.form, 'cumplimiento', '');
             Vue.set(this.form, 'vencimiento', '');
             Vue.set(this.form, 'referencia', '');
-        },
-        comma_format: function (number) {
-            var n = !isFinite(+number) ? 0 : +number,
-                decimals = 4,
-                prec = !isFinite(+decimals) ? 0 : Math.abs(decimals),
-                sep = (typeof thousands_sep === 'undefined') ? ',' : thousands_sep,
-                dec = (typeof dec_point === 'undefined') ? '.' : dec_point,
-                toFixedFix = function (n, prec) {
-                    // Fix for IE parseFloat(0.55).toFixed(0) = 0;
-                    var k = Math.pow(10, prec);
-                    return Math.round(n * k) / k;
-                },
-                s = (prec ? toFixedFix(n, prec) : Math.round(n)).toString().split('.');
-            if (s[0].length > 3) {
-                s[0] = s[0].replace(/\B(?=(?:\d{3})+(?!\d))/g, sep);
-            }
-            if ((s[1] || '').length < prec) {
-                s[1] = s[1] || '';
-                s[1] += new Array(prec - s[1].length + 1).join('0');
-            }
-            return s.join(dec);
         }
     }
 });

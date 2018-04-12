@@ -10,7 +10,7 @@ $api->version('v1', function ($api) {
 
     $api->post('auth', 'Ghi\Api\Controllers\v1\Auth\AuthController@postLogin');
 
-    $api->group(['middleware' => ['jwt.auth', 'api.context']], function($api) {
+    $api->group(['middleware' => ['jwt.auth', 'api.context','jwt.refresh']], function($api) {
 
         $api->post('empresa', 'Ghi\Api\Controllers\v1\EmpresaController@store');
         $api->post('sucursal', 'Ghi\Api\Controllers\v1\SucursalController@store');
@@ -41,6 +41,8 @@ $api->version('v1', function ($api) {
 
         $api->get('formatos/contratos/contrato_proyectado/{id_contrato_proyectado}/comparativa_cotizaciones_contrato', 'Ghi\Api\Controllers\v1\FormatosController@comparativa_cotizaciones_contrato')
             ->where(['id' => '[0-9]+']);
+
+        $api->post('tesoreria/traspaso_cuentas', 'Ghi\Api\Controllers\v1\Tesoreria\TraspasoCuentasController@paginate');
     });
 });
 
