@@ -47,9 +47,9 @@ class AuthController extends BaseController
                 return response()->json(['error' => 'Error, el usuario no existe'], 500);
             }
             $token = JWTAuth::fromUser($user,$proyecto);
-            if (!$token)
+            if (!$token) {
                 return response()->json(['message' => 'credenciales inválidas'], 401);
-
+            }
         } catch (JWTException $e) {
             return response()->json(['error' => 'no se pudo generar el token'], 500);
         }

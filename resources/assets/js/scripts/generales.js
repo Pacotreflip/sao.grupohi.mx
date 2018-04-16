@@ -3,18 +3,12 @@
  */
 
 $(function ()  {
-    $(document).ajaxSuccess(function(event, jqXHR, ajaxOptions, data) {
-        var authorization = jqXHR.getResponseHeader('Authorization');
-        if(authorization) {
-            localStorage.setItem('token', jqXHR.getResponseHeader('Authorization'));
-        }
-    });
     $.ajaxSetup({
         headers: {
             'X-CSRF-TOKEN': App.csrfToken,
-            'Authorization': localStorage.getItem('token'),
+            'Authorization': localStorage.getItem('token')
         },
-        error: function (jqXHR) {
+        error: function (jqXHR,ajaxOptions, thrownError) {
             swal({
                 type: 'error',
                 title: '¡Error!',

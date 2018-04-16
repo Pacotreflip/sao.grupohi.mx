@@ -139,7 +139,7 @@
                         </div>
                         <div class="box-body">
                             <div class="table-responsive">
-                                <table id="tableTraspasos" class="table table-bordered table-striped index_table">
+                                <table id="tableTraspasos" class="table table-bordered table-striped">
                                     <thead>
                                     <tr>
                                         <th>#</th>

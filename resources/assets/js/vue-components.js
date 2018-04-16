@@ -3,6 +3,10 @@ require('./vue-components/errors');
 require('./vue-components/select2');
 
 /**
+ *
+ */
+require('./vue-components/page/index');
+/**
  * Contabilidad Components...
  */
 require('./vue-components/Contabilidad/emails');

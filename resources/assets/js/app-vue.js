@@ -9,7 +9,9 @@ VeeValidate.Validator.addLocale({
 });
 Vue.use(VeeValidate, { locale: 'es', errorBagName: 'validation_errors'});
 window.Dropzone = require('vue2-dropzone');
+window.VueSession = require('vue-session');
 Vue.use(Dropzone);
+Vue.use(VueSession);
 
 if ($('#app').length) {
     new Vue({

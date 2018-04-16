@@ -19,6 +19,9 @@ interface TraspasoCuentasRepository
      */
     public function create($data);
 
+    /**
+     * @return mixed
+     */
     public function all();
 
     /**
@@ -44,5 +47,18 @@ interface TraspasoCuentasRepository
      * @return mixed
      */
     public function paginate(array $data);
+
+    /**
+     * Regresa el Registro de traspaso cuenta buscado
+     * @param $id
+     * @return TraspasoCuentasRepository
+     */
+    public function find($id);
+
+    /**
+     * @param $relations
+     * @return TraspasoCuentasRepository
+     */
+    public function with($relations);
 
 }
