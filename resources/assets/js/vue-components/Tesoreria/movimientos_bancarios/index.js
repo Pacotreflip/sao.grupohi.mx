@@ -9,7 +9,6 @@ Vue.component('movimientos_bancarios-index', {
             'data' : {
                 'cuentas': this.cuentas,
                 'tipos': this.tipos,
-                'movimientos': this.movimientos,
                 'ver': [],
                 'item':''
             },

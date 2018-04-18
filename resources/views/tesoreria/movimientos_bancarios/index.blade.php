@@ -9,7 +9,6 @@
     <global-errors></global-errors>
     <movimientos_bancarios-index
             :url_movimientos_bancarios_index="'{{ route('tesoreria.movimientos_bancarios.index') }}'"
-            :cuentas="{{$dataView['cuentas']->toJson()}}"
             :tipos="{{$dataView['tipos']->toJson()}}"
             :movimientos="{{$dataView['movimientos']->toJson()}}"
 
