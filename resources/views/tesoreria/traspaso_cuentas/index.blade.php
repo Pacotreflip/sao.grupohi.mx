@@ -10,7 +10,6 @@
     <traspaso-cuentas-index
             :url_traspaso_cuentas_index="'{{ route('tesoreria.traspaso_cuentas.index') }}'"
             :cuentas="{{$dataView['cuentas']->toJson()}}"
-            :traspasos="{{$dataView['traspasos']->toJson()}}"
             :actions_permission="{{ \Entrust::can(['eliminar_traspaso_cuenta', 'editar_traspaso_cuenta', 'consultar_traspaso_cuenta']) ? 'true' : 'false' }}"
             :permission_consultar_traspaso_cuenta="{{ \Entrust::can(['consultar_traspaso_cuenta']) ? 'true' : 'false' }}"
             :permission_eliminar_traspaso_cuenta="{{ \Entrust::can(['eliminar_traspaso_cuenta']) ? 'true' : 'false' }}"

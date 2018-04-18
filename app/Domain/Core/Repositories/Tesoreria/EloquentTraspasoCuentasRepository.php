@@ -222,13 +222,6 @@ class EloquentTraspasoCuentasRepository implements TraspasoCuentasRepository
     {
         $query = $this->model->with(['cuenta_destino.empresa', 'cuenta_origen.empresa', 'traspaso_transaccion.transaccion_debito']);
 
-        /*$query->where(function ($q) use ($data) {
-            return $q
-                ->where('description', 'like', '%' . $data['search']['value'] . '%')
-                ->orWhere('name', 'like', '%' . $data['search']['value'] . '%')
-                ->orWhere('display_name', 'like', '%' . $data['search']['value'] . '%');
-        });*/
-
         foreach ($data['order'] as $order) {
             $query->orderBy($data['columns'][$order['column']]['data'], $order['dir']);
         }

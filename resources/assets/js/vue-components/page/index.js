@@ -5,7 +5,9 @@ Vue.component('obra-index', {
         'route_obra_search'
     ],
     'data': function(){
-        return {}
+        return {
+            'peticion': false
+        }
     },
     mounted: function () {
         var self = this;
@@ -51,20 +53,21 @@ Vue.component('obra-index', {
                     "id_obra": $('#obras_select option:selected').data().id_obra,
                     "app_key": self.app_key
                 };
-                if (self.obtenerToken(data)) {
+                $.when(self.obtenerToken(data)).done(function() {
                     window.location = $('#obras_select option:selected').data().data.url;
-                }
+                });
             }
         });
         $('.list-group-item').on('click',function (event) {
+            self.peticio = false;
             var data = {"usuario": self.usuario,
                 "database_name": $(this).data('database_name'),
                 "id_obra": $(this).data('id_obra'),
                 "app_key": self.app_key
             };
-            if (self.obtenerToken(data)) {
+            $.when(self.obtenerToken(data)).done(function() {
                 window.location = App.host + '/context/' + data.database_name + '/' + data.id_obra;
-            }
+            });
             return false;
         });
     },
@@ -81,7 +84,6 @@ Vue.component('obra-index', {
                 dataType  : 'json',
                 "data": data,
                 success: function (response) {
-                    console.log(response);
                     localStorage.setItem('token', "bearer "+response.token);
                     self.$session.start();
                     self.$session.set('jwt', 'Bearer ' + response.token);

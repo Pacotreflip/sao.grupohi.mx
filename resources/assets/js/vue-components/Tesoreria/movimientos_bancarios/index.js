@@ -1,12 +1,17 @@
 Vue.component('movimientos_bancarios-index', {
-    props: ['url_movimientos_bancarios_index', 'cuentas', 'tipos', 'movimientos'],
+    props: ['url_movimientos_bancarios_index', 'cuentas', 'tipos', 'movimientos',
+        'actions_permission',
+        'permission_consultar_movimiento_bancario',
+        'permission_eliminar_movimiento_bancario',
+        'permission_editar_movimiento_bancario'],
     data : function () {
         return {
             'data' : {
                 'cuentas': this.cuentas,
                 'tipos': this.tipos,
                 'movimientos': this.movimientos,
-                'ver': []
+                'ver': [],
+                'item':''
             },
             'form' : {
                 'id_tipo_movimiento' : '',
@@ -46,13 +51,138 @@ Vue.component('movimientos_bancarios-index', {
                 'vencimiento': '',
                 'referencia': ''
             },
-            'guardando' : false
+            'guardando': false,
+            'peticion': false,
+            'table': ''
         }
     },
     computed: {},
     mounted: function()
     {
         var self = this;
+
+        var self = this;
+        $(document).delegate('.modal_movimiento_ver', 'click', function () {
+            self.peticio = false;
+            var id = $(this).data('id_traspaso');
+            self.show(id);
+            $.when(self.peticion =true).done(function() {
+                self.modal_movimiento_ver()
+            });
+        });
+        $(document).delegate('.confirm_eliminar', 'click', function () {
+            var id = $(this).data('id_traspaso');
+            self.confirm_eliminar(id);
+        });
+
+        $(document).delegate('.modal_editar', 'click', function () {
+            self.peticio = false;
+            var id = $(this).data('id_traspaso');
+            self.show(id);
+            $.when(self.peticion =true).done(function() {
+                self.modal_editar()
+            });
+        });
+
+        var data = {
+            "processing": true,
+            "serverSide": true,
+            "ordering": true,
+            "searching": true,
+            "order": [
+                [1, "desc"]
+            ],
+            "searchDelay": 750,
+            "ajax": {
+                "url": App.host + '/api/tesoreria/movimientos_bancarios',
+                "type": "POST",
+                "headers": {
+                    'Authorization': localStorage.getItem('token')
+                },
+                'beforeSend': function (request) {
+                    request.setRequestHeader("Authorization", localStorage.getItem('token'));
+                },
+                "dataSrc": function (json) {
+                    for (var i = 0; i < json.data.length; i++) {
+                        json.data[i].index = i + 1;
+                        json.data[i].fecha = '$&nbsp;' + new Date(json.data[i].movimiento_transaccion.transaccion.fecha).dateFormat();
+                        json.data[i].tipo = '$&nbsp;' + json.data[i].tipo.descripcion;
+                        json.data[i].cuenta = '$&nbsp;' + json.data[i].cuenta.numero + " " + json.data[i].cuenta.abreviatura + " (" + json.data[i].cuenta.empresa.razon_social + ") ";
+                        json.data[i].importe = '$&nbsp; ' + parseFloat(json.data[i].importe).formatMoney(2, '.', ',');
+                        json.data[i].impuesto = '$&nbsp; ' + parseFloat(json.data[i].impuesto).formatMoney(2, '.', ',');
+                        json.data[i].total = '$&nbsp; ' + parseFloat(self.total(json.data[i].importe, json.data[i].impuesto)).formatMoney(2, '.', ',');
+                        json.data[i].referencia = '$&nbsp; ' + json.data[i].traspaso_transaccion.transaccion_debito.referencia;
+                    }
+                    return json.data;
+                }
+            },
+            "columns": [
+                {data: 'index', 'searchable': false, orderable: false},
+                {data: 'numero_folio', 'searchable': true},
+                {data: 'fecha', 'searchable': true},
+                {data: 'tipo', 'searchable': true},
+                {data: 'cuenta', 'searchable': true},
+                {data: 'importe', 'searchable': true},
+                {data: 'impuesto', 'searchable': true},
+                {data: 'total', 'searchable': true},
+                {data: 'referencia', 'searchable': true},
+            ],
+            "language": {
+                "sProcessing": "Procesando...",
+                "sLengthMenu": "Mostrar _MENU_ registros",
+                "sZeroRecords": "No se encontraron resultados",
+                "sEmptyTable": "Ningún dato disponible en esta tabla",
+                "sInfo": "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
+                "sInfoEmpty": "Mostrando registros del 0 al 0 de un total de 0 registros",
+                "sInfoFiltered": "(filtrado de un total de _MAX_ registros)",
+                "sInfoPostFix": "",
+                "sSearch": "Buscar:",
+                "sUrl": "",
+                "sInfoThousands": ",",
+                "sLoadingRecords": "Cargando...",
+                "oPaginate": {
+                    "sFirst": "Primero",
+                    "sLast": "Último",
+                    "sNext": "Siguiente",
+                    "sPrevious": "Anterior"
+                },
+                "oAria": {
+                    "sSortAscending": ": Activar para ordenar la columna de manera ascendente",
+                    "sSortDescending": ": Activar para ordenar la columna de manera descendente"
+                }
+            }
+        };
+        if (self.actions_permission) {
+            var $a = {
+                data: {},
+                render: function (data) {
+                    var html = "";
+                    if (self.actions_permission) {
+                        html += "";
+                        if (self.permission_consultar_movimiento_bancario) {
+                            html += '<div class="btn-group">\n' +
+                                '<button type="button" title="Ver" class="btn btn-xs btn-success modal_movimiento_ver" data-id_traspaso="' + data.id_movimiento_bancario + '" ><i class="fa fa-eye"></i></button>\n' +
+                                '</div>';
+                        }
+                        if (self.permission_eliminar_movimiento_bancario) {
+                            html += '<div class="btn-group">\n' +
+                                '<button type="button" title="Eliminar" class="btn btn-xs btn-danger confirm_eliminar"  data-id_traspaso="' + data.id_movimiento_bancario + '" ><i class="fa fa-trash"></i></button>\n' +
+                                '</div>';
+                        }
+                        if (self.permission_editar_movimiento_bancario) {
+                            html += ' <div class="btn-group">\n' +
+                                '<button title="Editar" class="btn btn-xs btn-info modal_editar" type="button" data-id_traspaso="' + data.id_movimiento_bancario + '" > <i class="fa fa-edit"></i></button>\n' +
+                                '</div>';
+                        }
+
+                    }
+                    return html;
+                },
+                orderable: false, 'searchable': false
+            };
+            data.columns.push($a);
+        }
+        self.table = $('#tableMovimientos').DataTable(data);
 
         $("#Cumplimiento").datepicker().on("changeDate",function () {
             Vue.set(self.form, 'vencimiento', $('#Cumplimiento').val());

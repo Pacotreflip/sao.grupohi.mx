@@ -12,8 +12,16 @@
             :cuentas="{{$dataView['cuentas']->toJson()}}"
             :tipos="{{$dataView['tipos']->toJson()}}"
             :movimientos="{{$dataView['movimientos']->toJson()}}"
+
+
+            :actions_permission="{{ \Entrust::can(['eliminar_movimiento_bancario', 'editar_movimiento_bancario', 'consultar_movimiento_bancario']) ? 'true' : 'false' }}"
+            :permission_consultar_movimiento_bancario="{{ \Entrust::can(['consultar_movimiento_bancario']) ? 'true' : 'false' }}"
+            :permission_eliminar_movimiento_bancario="{{ \Entrust::can(['eliminar_movimiento_bancario']) ? 'true' : 'false' }}"
+            :permission_editar_movimiento_bancario ="{{ \Entrust::can(['editar_movimiento_bancario']) ? 'true' : 'false' }}"
+
             inline-template
             v-cloak>
+
         <section>
             @permission(['registrar_movimiento_bancario'])
             <div class="row">
@@ -161,7 +169,7 @@
                         </div>
                         <div class="box-body">
                             <div class="table-responsive">
-                                <table class="table table-bordered table-striped index_table">
+                                <table class="table table-bordered table-striped" id="tableMovimientos">
                                     <thead>
                                     <tr>
                                         <th>#</th>
@@ -179,36 +187,36 @@
                                     </tr>
                                     </thead>
                                     <tbody>
-                                        <tr v-for="(item, index) in data.movimientos">
-                                            <td >@{{ index + 1  }}</td>
-                                            <td>@{{ item.numero_folio }}</td>
-                                            <td>@{{trim_fecha(item.movimiento_transaccion.transaccion.fecha)}}</td>
-                                            <td>@{{item.tipo.descripcion }}</td>
-                                            <td>@{{item.cuenta.numero }} @{{item.cuenta.abreviatura }} (@{{item.cuenta.empresa.razon_social}})</td>
-                                            <td class="text-right">@{{comma_format(item.importe)}}</td>
-                                            <td class="text-right">@{{comma_format(item.impuesto)}}</td>
-                                            <td class="text-right">@{{comma_format(total(item.importe, item.impuesto))}}</td>
-                                            <td>@{{item.movimiento_transaccion.transaccion.referencia}}</td>
-                                            @permission(['eliminar_movimiento_bancario', 'editar_movimiento_bancario', 'consultar_movimiento_bancario'])
-                                            <td>
-                                                @permission(['consultar_movimiento_bancario'])
-                                                <div class="btn-group">
-                                                    <button type="button" title="Ver" class="btn btn-xs btn-success" v-on:click="modal_movimiento_ver(item)"><i class="fa fa-eye"></i></button>
-                                                </div>
-                                                @endpermission
-                                                @permission(['eliminar_movimiento_bancario'])
-                                                <div class="btn-group">
-                                                    <button type="button" title="Eliminar" class="btn btn-xs btn-danger" v-on:click="confirm_eliminar(item.id_movimiento_bancario)"><i class="fa fa-trash"></i></button>
-                                                </div>
-                                                @endpermission
-                                                @permission(['editar_movimiento_bancario'])
-                                                <div class="btn-group">
-                                                    <button title="Editar" class="btn btn-xs btn-info" type="button" v-on:click="modal_editar(item)"> <i class="fa fa-edit"></i></button>
-                                                </div>
-                                                @endpermission
-                                            </td>
+                                    {{--<tr v-for="(item, index) in data.movimientos">
+                                        <td >@{{ index + 1  }}</td>
+                                        <td>@{{ item.numero_folio }}</td>
+                                        <td>@{{trim_fecha(item.movimiento_transaccion.transaccion.fecha)}}</td>
+                                        <td>@{{item.tipo.descripcion }}</td>
+                                        <td>@{{item.cuenta.numero }} @{{item.cuenta.abreviatura }} (@{{item.cuenta.empresa.razon_social}})</td>
+                                        <td class="text-right">@{{comma_format(item.importe)}}</td>
+                                        <td class="text-right">@{{comma_format(item.impuesto)}}</td>
+                                        <td class="text-right">@{{comma_format(total(item.importe, item.impuesto))}}</td>
+                                        <td>@{{item.movimiento_transaccion.transaccion.referencia}}</td>
+                                        @permission(['eliminar_movimiento_bancario', 'editar_movimiento_bancario', 'consultar_movimiento_bancario'])
+                                        <td>
+                                            @permission(['consultar_movimiento_bancario'])
+                                            <div class="btn-group">
+                                                <button type="button" title="Ver" class="btn btn-xs btn-success" v-on:click="modal_movimiento_ver(item)"><i class="fa fa-eye"></i></button>
+                                            </div>
                                             @endpermission
-                                        </tr>
+                                            @permission(['eliminar_movimiento_bancario'])
+                                            <div class="btn-group">
+                                                <button type="button" title="Eliminar" class="btn btn-xs btn-danger" v-on:click="confirm_eliminar(item.id_movimiento_bancario)"><i class="fa fa-trash"></i></button>
+                                            </div>
+                                            @endpermission
+                                            @permission(['editar_movimiento_bancario'])
+                                            <div class="btn-group">
+                                                <button title="Editar" class="btn btn-xs btn-info" type="button" v-on:click="modal_editar(item)"> <i class="fa fa-edit"></i></button>
+                                            </div>
+                                            @endpermission
+                                        </td>
+                                        @endpermission
+                                    </tr>--}}
                                     </tbody>
                                 </table>
                             </div>
