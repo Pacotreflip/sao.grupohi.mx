@@ -62,3 +62,16 @@ The Laravel framework is open-sourced software licensed under the [MIT license](
 **Instalación de gulp**
     
     npm install gulp-cli -g
+    
+    
+##Comando de ejecusión 
+
+**Seeders Control de permisos**
+    
+    php artisan db:seed --class=RolesPermissionsSeeder
+    
+**Migraciones DB Seguridad**
+    
+    php artisan migrate --database=seguridad --path=database/migrationsSeguridad
+    
+    

@@ -133,7 +133,8 @@
                                     <div class="col-md-4">
                                         <div class="form-group">
                                             <label for="Vencimiento" class="control-label"><b>Vencimiento</b></label>
-                                            <input type="text" name="Vencimiento" class="form-control input-sm " id="Vencimiento"  :value="form.vencimiento" v-model="form.vencimiento"
+                                            <input type="text" name="Vencimiento" class="form-control input-sm " id="Vencimiento"
+                                                   :value="form.vencimiento"
                                                    disabled >
                                         </div>
                                     </div>
@@ -341,7 +342,8 @@
                                 <div class="col-md-4">
                                     <div class="form-group">
                                         <label for="Vencimiento" class="control-label"><b>Vencimiento</b></label>
-                                        <input type="text" name="Editar Vencimiento" class="form-control input-sm " id="Editar Vencimiento"  :value="movimiento_edit.vencimiento" v-model="movimiento_edit.vencimiento"
+                                        <input type="text" name="Editar Vencimiento" class="form-control input-sm " id="Editar Vencimiento"
+                                               :value="movimiento_edit.vencimiento"
                                                disabled >
                                     </div>
                                 </div>

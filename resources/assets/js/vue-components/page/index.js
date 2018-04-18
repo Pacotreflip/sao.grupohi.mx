@@ -54,19 +54,24 @@ Vue.component('obra-index', {
                     "app_key": self.app_key
                 };
                 $.when(self.obtenerToken(data)).done(function() {
-                    window.location = $('#obras_select option:selected').data().data.url;
+                    console.log(self.peticion);
+                    if(self.peticion === true) {
+                        window.location = $('#obras_select option:selected').data().data.url;
+                    }
                 });
             }
         });
         $('.list-group-item').on('click',function (event) {
-            self.peticio = false;
             var data = {"usuario": self.usuario,
                 "database_name": $(this).data('database_name'),
                 "id_obra": $(this).data('id_obra'),
                 "app_key": self.app_key
             };
             $.when(self.obtenerToken(data)).done(function() {
-                window.location = App.host + '/context/' + data.database_name + '/' + data.id_obra;
+                console.log(self.peticion);
+                if(self.peticion === true) {
+                    window.location = App.host + '/context/' + data.database_name + '/' + data.id_obra;
+                }
             });
             return false;
         });
@@ -87,9 +92,9 @@ Vue.component('obra-index', {
                     localStorage.setItem('token', "bearer "+response.token);
                     self.$session.start();
                     self.$session.set('jwt', 'Bearer ' + response.token);
+                    self.peticion = true;
                 }
             });
-            return true;
         }
     }
 });
