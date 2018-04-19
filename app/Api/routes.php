@@ -41,6 +41,15 @@ $api->version('v1', function ($api) {
 
         $api->get('formatos/contratos/contrato_proyectado/{id_contrato_proyectado}/comparativa_cotizaciones_contrato', 'Ghi\Api\Controllers\v1\FormatosController@comparativa_cotizaciones_contrato')
             ->where(['id' => '[0-9]+']);
+        /**
+         * procuración asignación
+         */
+        $api->post('procuracion/asignacion', 'Ghi\Api\Controllers\v1\Procuracion\AsignacionController@store');
+        $api->post('procuracion/asignacion/paginate', 'Ghi\Api\Controllers\v1\Procuracion\AsignacionController@paginate');
+        $api->get('procuracion/asignacion/{id}', 'Ghi\Api\Controllers\v1\Procuracion\AsignacionController@find')
+            ->where(['id' => '[0-9]+']);
+        $api->delete('procuracion/asignacion', 'Ghi\Api\Controllers\v1\Procuracion\AsignacionController@delete');
+        /***/
     });
 });
 

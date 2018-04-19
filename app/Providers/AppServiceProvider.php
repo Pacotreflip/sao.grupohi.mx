@@ -405,5 +405,10 @@ class AppServiceProvider extends ServiceProvider
             \Ghi\Domain\Core\Contracts\Seguridad\AccesosApiRepository::class,
             \Ghi\Domain\Core\Repositories\Seguridad\EloquentAccesosApiRepository::class
         );
+
+        $this->app->bind(
+            \Ghi\Domain\Core\Models\Procuracion\Asingacion::class,
+            \Ghi\Domain\Core\Repositories\Programacion\EloquentAsignacionRepository::class
+        );
     }
 }

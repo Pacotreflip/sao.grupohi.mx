@@ -147,6 +147,10 @@ class RolesPermissionsSeeder extends Seeder
         $administracion_configuracion_obra = Permission::firstOrCreate(['name' => 'administracion_configuracion_obra', 'display_name' => 'Configuración de la estructura la obra', 'description' => 'Permisos para configuración de la estructura de obra']);
         $administracion_configuracion_presupuesto = Permission::firstOrCreate(['name' => 'administracion_configuracion_presupuesto', 'display_name' => 'Configuración de la estructura del presupuesto', 'description' => 'Permisos para configuración de la estructura del presupuesto']);
 
+        //Procuaracion
+        $consultar_asignacion = Permission::firstOrCreate(['name' => 'consultar_asignacion', 'display_name' => 'Consultar Asignación', 'description' => 'Permisos para la asignación de la consulta de procuración de las asignaciones']);
+        $resgistro_asignacion = Permission::firstOrCreate(['name' => 'registrar_asignacion', 'display_name' => 'Registrar una Asignación', 'description' => 'Permisos para el registro de una asignación de procuración']);
+
         /**
          * Roles
          */
@@ -308,6 +312,7 @@ class RolesPermissionsSeeder extends Seeder
         $tesoreria = Sistema::firstOrCreate(['name' => 'Tesorería', 'description' => 'Sistema de Tesorería', 'url' => 'tesoreria']);
         $control_costos = Sistema::firstOrCreate(['name' => 'Control de Costos', 'description' => 'Sistema de control de costos', 'url' => 'control_costos']);
         $control_presupuesto = Sistema::firstOrCreate(['name' => 'Control del Presupuesto', 'description' => 'Sistema para el control del presupuesto', 'url' => 'control_presupuesto']);
+        $procuracion = Sistema::firstOrCreate(['name' => 'Procuración', 'description' => 'Sistema para el control de asignación', 'url' => 'procuracion']);
 
         $sistema_contable->permisos()->sync(
             [
@@ -408,6 +413,13 @@ class RolesPermissionsSeeder extends Seeder
                 $autorizar_cambio_cantidad_insumos->id,
                 $rechazar_cambio_cantidad_insumos->id,
                 $consultar_cambio_cantidad_insumos->id
+            ]
+        );
+
+        $procuracion->permisos()->sync(
+            [
+                $resgistro_asignacion->id,
+                $consultar_asignacion->id,
             ]
         );
     }
