@@ -274,8 +274,8 @@
                                         </tr>
                                         </thead>
                                         <tbody>
-                                        <tr v-for="precio in form.precios_disponibles">
-                                            <td><input type="checkbox" :id="precio" :value="precio"
+                                        <tr v-for="(precio,index) in form.precios_disponibles">
+                                            <td><input type="checkbox" :id="'precio'+index" :value="precio"
                                                        v-model="form.precios_seleccionados"
                                                        v-on:click="valida_seleccion_all()"></td>
                                             <td> $<label v-text="precio"></label></td>
