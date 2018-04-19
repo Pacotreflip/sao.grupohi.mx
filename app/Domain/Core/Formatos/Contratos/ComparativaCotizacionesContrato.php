@@ -42,8 +42,8 @@ class ComparativaCotizacionesContrato extends Rotation
     /**
      * @var int
      */
-    var $num_cotizaciones, $restantes, $acumuladas, $x_i, $y_i;
-
+    var $num_cotizaciones, $restantes, $x_i, $y_i;
+    var $acumuladas = 0;
     /**
      * @var Obra
      */
@@ -87,7 +87,7 @@ class ComparativaCotizacionesContrato extends Rotation
         for ($i = 0; $i < self::MAX_COTIZACIONES_PP && $i < ($this->num_cotizaciones - $this->acumuladas); $i++) {
 
             foreach (Moneda::all() as $moneda) {
-                $this->subtotales[$i + $this->acumuladas][$moneda->id_moneda] = 0;
+                isset($this->subtotales[$i + $this->acumuladas][$moneda->id_moneda]) ? : $this->subtotales[$i + $this->acumuladas][$moneda->id_moneda] = 0;
             }
 
             $cotizacion = $this->contrato_proyectado->cotizacionesContrato()->orderBy('monto')->get()[$i + $this->acumuladas];
@@ -393,7 +393,7 @@ class ComparativaCotizacionesContrato extends Rotation
             }
         }
         try {
-            return $this;
+            return $this->Output('I', 'Hola Mundo');
         } catch (\Exception $ex) {
             dd($ex);
         }
