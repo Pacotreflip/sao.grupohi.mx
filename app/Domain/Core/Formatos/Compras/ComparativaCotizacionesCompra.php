@@ -89,7 +89,7 @@ class ComparativaCotizacionesCompra extends Rotation
         for ($i = 0; $i < self::MAX_COTIZACIONES_PP && $i < ($this->num_cotizaciones - $this->acumuladas); $i++) {
 
             foreach (Moneda::all() as $moneda) {
-                $this->subtotales[$i + $this->acumuladas][$moneda->id_moneda] = 0;
+                isset($this->subtotales[$i + $this->acumuladas][$moneda->id_moneda]) ? : $this->subtotales[$i + $this->acumuladas][$moneda->id_moneda] = 0;
             }
 
             $cotizacion = $this->requisicion->cotizacionesCompra()->orderBy('monto')->get()[$i + $this->acumuladas];
