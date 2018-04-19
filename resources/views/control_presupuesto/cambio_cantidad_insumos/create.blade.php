@@ -67,7 +67,7 @@
                         </div>
                         <div class="box-footer">
                             <button class="btn btn-default pull-right"
-                                    :disabled="form.filtro_agrupador.id_tipo_filtro==0||form.filtro_agrupador.id_material==0||buscando_agrupados"
+                                    :disabled="form.filtro_agrupador.id_tipo_filtro==0||form.filtro_agrupador.id_material==0||buscando_agrupados||form.precios_seleccionados.length==0"
                                     v-on:click="buscar_conceptos()" >Buscar
                             </button>
                         </div>
@@ -250,7 +250,7 @@
             </div>
 
 
-            <div id="lista_precios_modal" class="modal fade" id="modal-default">
+            <div id="lista_precios_modal" class="modal fade" id="modal-default"  data-backdrop="static" data-keyboard="false">
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-header">
