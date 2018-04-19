@@ -8,6 +8,7 @@
 
 namespace Ghi\Domain\Core\Formatos\Contratos;
 
+use Carbon\Carbon;
 use Ghi\Core\Facades\Context;
 use Ghi\Domain\Core\Models\Moneda;
 use Ghi\Domain\Core\Models\Obra;
@@ -213,6 +214,7 @@ class ComparativaCotizacionesContrato extends Rotation
             $this->AddPage();
         }
         $this->subtotales();
+        $this->condiciones_comerciales();
     }
 
     private function subtotales() {
@@ -288,6 +290,35 @@ class ComparativaCotizacionesContrato extends Rotation
             $this->Cell(($this->w - 2) * (1.4 / (2 * self::MAX_COTIZACIONES_PP)), 0.3, '$ ' . number_format($subtotal, 2, '.', ','), 'LRBT', 2, 'R');
             $this->Cell(($this->w - 2) * (1.4 / (2 * self::MAX_COTIZACIONES_PP)), 0.3, '$ ' . number_format($subtotal * 0.16, 2, '.', ','), 'TLR', 2, 'R');
             $this->Cell(($this->w - 2) * (1.4 / (2 * self::MAX_COTIZACIONES_PP)), 0.3, '$ ' . number_format($subtotal * 1.16, 2, '.', ','), 'BLR', 0, 'R');
+
+        }
+        $this->Ln(0.5);
+    }
+
+    private function condiciones_comerciales() {
+        $this->y_i = $this->y;
+
+        $this->SetFillColor(255, 255, 143);
+        $this->Cell(($this->w - 2) * 0.300, 0.6, 'CONDICIONES COMERCIALES / OBSERVACIONES', 'TLB', '1', 'C', 1);
+
+        $this->Cell(($this->w - 2) * 0.300, 0.3, utf8_decode('FECHA DE COTIZACIÓN'), 'LB', 2, 'R');
+        $this->Cell(($this->w - 2) * 0.300, 0.3, '% ANTICIPO', 'LB', 2, 'R');
+        $this->Cell(($this->w - 2) * 0.300, 0.3, 'CREDITO (DIAS)', 'LB', 2, 'R');
+        $this->Cell(($this->w - 2) * 0.300, 0.3, 'VIGENCIA (DIAS)', 'LB', 0, 'R');
+
+        $this->x_i = $this->x;
+
+        for ($i = 0; $i < self::MAX_COTIZACIONES_PP && $i < ($this->num_cotizaciones - $this->acumuladas); $i++) {
+
+            $cotizacion = $this->cotizaciones[$i + $this->acumuladas];
+
+            $this->y = $this->y_i;
+
+            $this->Cell(($this->w - 2) * (1.4 / (2 * self::MAX_COTIZACIONES_PP)), 0.6, 'EMPRESA #' . ($i + $this->acumuladas + 1), 'TLR', 2, 'C', 1);
+            $this->Cell(($this->w - 2) * (1.4 / (2 * self::MAX_COTIZACIONES_PP)), 0.3, Carbon::createFromFormat('Y-m-d H:i:s.000', $cotizacion['fecha'])->toDateString(), 'TLR', 2, 'R');
+            $this->Cell(($this->w - 2) * (1.4 / (2 * self::MAX_COTIZACIONES_PP)), 0.3, $cotizacion['anticipo'], 'TLR', 2, 'R');
+            $this->Cell(($this->w - 2) * (1.4 / (2 * self::MAX_COTIZACIONES_PP)), 0.3, $cotizacion['DiasCredito'], 'TLR', 2, 'R');
+            $this->Cell(($this->w - 2) * (1.4 / (2 * self::MAX_COTIZACIONES_PP)), 0.3, $cotizacion['DiasVigencia'], 'TLBR', 0, 'R');
 
         }
         $this->Ln(0.75);
