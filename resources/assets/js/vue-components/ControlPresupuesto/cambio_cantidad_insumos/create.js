@@ -244,7 +244,7 @@ Vue.component('cambio-cantidad-insumos-create', {
                     total++;
                 }
             }
-     console.log(total+"  vs   "+self.form.precios_disponibles.length)
+
             if (total == self.form.precios_disponibles.length) {
                 $('#select_all_price').prop('checked', true);
             } else {
