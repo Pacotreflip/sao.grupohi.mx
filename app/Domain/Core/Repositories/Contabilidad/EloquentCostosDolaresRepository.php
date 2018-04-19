@@ -27,6 +27,7 @@ conceptos.id_concepto
 , int_polizas.id_int_poliza AS id_poliza
 , transacciones.tipo_cambio
 , monedas.nombre as moneda
+, cambios_autorizados.cambio
 , int_polizas.poliza_contpaq as folio_contpaq
 , int_polizas_movimientos.cuenta_contable
 , [SubcontratosEstimaciones].[udfRutaDestinoConcepto] (conceptos.id_concepto) AS descripcion_concepto
@@ -102,6 +103,7 @@ END as float) AS costo_me_complementaria
             WHERE (int_polizas.estatus IN (2, 3))
               AND ((transacciones.id_moneda <> 1 )
                 AND int_polizas_movimientos.id_tipo_cuenta_contable = 1
+					AND int_polizas_movimientos.cuenta_contable like '5%'
                 AND int_polizas_movimientos.deleted_at is null
                 ) 
           
@@ -112,6 +114,7 @@ conceptos.id_concepto
 , int_polizas.id_int_poliza AS id_poliza
 , transacciones.tipo_cambio
 , monedas.nombre as moneda
+, cambios_autorizados.cambio
 , int_polizas.poliza_contpaq as folio_contpaq
 , int_polizas_movimientos.cuenta_contable
 , [SubcontratosEstimaciones].[udfRutaDestinoConcepto] (conceptos.id_concepto) AS descripcion_concepto
@@ -195,8 +198,9 @@ END as float) AS costo_me_complementaria
               AND ((transacciones.id_moneda <> 1 
               AND transacciones.tipo_transaccion = 65)
                 AND int_polizas_movimientos.id_tipo_cuenta_contable = 1
+				AND int_polizas_movimientos.cuenta_contable like '5%'
                 AND int_polizas_movimientos.deleted_at is null
-                )  
+                )
              AND int_polizas.fecha BETWEEN ".$fechas." ORDER BY folio_contpaq asc");
 
         return $reporte;
