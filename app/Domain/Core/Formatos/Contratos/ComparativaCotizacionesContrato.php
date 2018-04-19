@@ -393,7 +393,7 @@ class ComparativaCotizacionesContrato extends Rotation
             }
         }
         try {
-            return $this->Output('I', 'Hola Mundo');
+            return $this;
         } catch (\Exception $ex) {
             dd($ex);
         }
