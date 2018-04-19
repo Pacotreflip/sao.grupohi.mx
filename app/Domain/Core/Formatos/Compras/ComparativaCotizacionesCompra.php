@@ -201,8 +201,8 @@ class ComparativaCotizacionesCompra extends Rotation
                 array_push($aligns, 'R');
 
                 array_push($row, isset($item_cotizacion['moneda']['abreviatura']) ? trim($item_cotizacion['moneda']['abreviatura']) : '');
-                array_push($row, isset($item_cotizacion['precio_unitario']) ? '$ ' . number_format($item_cotizacion['precio_unitario'], 2, '.', ',') : '');
-                array_push($row, isset($item_cotizacion['precio_unitario']) ? '$ ' . number_format($item_cotizacion['precio_unitario'] * $item_requisicion['cantidad'], 2, '.', ',') : '');
+                array_push($row, isset($item_cotizacion['precio_unitario']) ? '$ ' . number_format($item_cotizacion['precio_unitario'], 2, '.', ',') : '---');
+                array_push($row, isset($item_cotizacion['precio_unitario']) ? '$ ' . number_format($item_cotizacion['precio_unitario'] * $item_requisicion['cantidad'], 2, '.', ',') : '---');
             }
 
             $this->SetWidths($widths);

@@ -195,8 +195,8 @@ class ComparativaCotizacionesContrato extends Rotation
                 array_push($aligns, 'R');
 
 
-                array_push($row, isset($presupuesto['precio_unitario']) ? '$ ' . number_format($presupuesto['precio_unitario'], 2, '.', ',') : '');
-                array_push($row, isset($presupuesto['precio_unitario']) ? '$ ' . number_format($presupuesto['precio_unitario'] * $contrato['cantidad_presupuestada'], 2, '.', ',') : '');
+                array_push($row, isset($presupuesto['precio_unitario']) ? '$ ' . number_format($presupuesto['precio_unitario'], 2, '.', ',') : '---');
+                array_push($row, isset($presupuesto['precio_unitario']) ? '$ ' . number_format($presupuesto['precio_unitario'] * $contrato['cantidad_presupuestada'], 2, '.', ',') : '---');
             }
 
             $this->SetWidths($widths);
