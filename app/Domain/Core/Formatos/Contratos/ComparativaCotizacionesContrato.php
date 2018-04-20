@@ -233,7 +233,6 @@ class ComparativaCotizacionesContrato extends Rotation
             }
         }
 
-
         $this->Cell(($this->w - 2) * 0.300, 0.3, utf8_decode($total_txt), 'TL', '1', 'R');
         $this->Cell(($this->w - 2) * 0.300, 0.3, 'I.V.A. 16%', 'TL', '1', 'R');
         $this->Cell(($this->w - 2) * 0.300, 0.3, 'TOTAL', 'LB', '0', 'R');
@@ -347,7 +346,7 @@ class ComparativaCotizacionesContrato extends Rotation
         $this->Cell(($this->w - 8) / 7 , 0.4, utf8_decode('Elaboró'), '', 2, 'C');
         $this->Cell(($this->w - 8) / 7, 1, '', '', 2, 'C');
         $this->SetFont('Arial', 'B', 6);
-        $this->Cell(($this->w - 8) / 7, 0.3, utf8_decode('Carlos Job Rojas Ochoa'), 'T', 2, 'C');
+        $this->Cell(($this->w - 8) / 7, 0.3, utf8_decode(title_case(auth()->user())), 'T', 2, 'C');
         $this->SetFont('Arial', '', 6);
         $this->Cell(($this->w - 8) / 7, 0.2, utf8_decode('Coordinador de Procuración'), '', 0, 'C');
 
