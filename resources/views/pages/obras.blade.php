@@ -38,14 +38,10 @@
                             <i class="fa fa-fw fa-database"></i>{{$baseDatos}}
                         </li>
                         @foreach($obrasBd as $obra)
-                            <a class="list-group-item"
-                               data-id_obra="{{$obra->id_obra}}"
-                               data-database_name="{{$obra->databaseName}}"
-                               href="{{route('context.set',[$obra->databaseName, $obra])}}">
+                            <a class="list_obra list-group-item" data-id_obra="{{$obra->id_obra}}" data-database_name="{{$obra->databaseName}}" href="#">
                                 {{mb_strtoupper($obra->nombre)}}
                             </a>
                         @endforeach
-
                     @endforeach
                 </ul>
             </div>
