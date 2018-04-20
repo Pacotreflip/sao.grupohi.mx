@@ -40,6 +40,7 @@ interface ComprobanteFondoFijoRepository
      * @throws Exception
      */
     public function update(array $data, $id);
+
     /**
      * Elimina el Comprobante de Fondo Fijo
      * @param $id
@@ -62,5 +63,15 @@ interface ComprobanteFondoFijoRepository
      * @return Collection | ComprobanteFondoFijo
      */
     public function paginate(array $data);
+
+
+    /**
+     * Buscar conceptos
+     * @param $attribute
+     * @param $operator
+     * @param $value
+     * @return \Illuminate\Database\Eloquent\Collection|Concepto
+     */
+    public function getBy($attribute, $operator, $value, $with = null);
 
 }

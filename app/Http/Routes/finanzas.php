@@ -24,4 +24,6 @@ Route::group(['prefix' => 'finanzas', 'middleware' => 'system.access:finanzas'],
 
     Route::get('material/getBy', 'MaterialController@getBy')->name('finanzas.material.getBy');
     Route::get('material/getBySinFamilias', 'MaterialController@getBySinFamilias')->name('finanzas.material.getBySinFamilias');
+
+    Route::get('comprobante_fondo_fijo/getBy', 'ComprobanteFondoFijoController@getBy')->name('finanzas.comprobante_fondo_fijo.getBy');
 });
