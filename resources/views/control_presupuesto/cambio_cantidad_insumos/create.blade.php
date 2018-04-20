@@ -67,7 +67,7 @@
                         </div>
                         <div class="box-footer">
                             <button class="btn btn-default pull-right"
-                                    :disabled="form.filtro_agrupador.id_tipo_filtro==0||form.filtro_agrupador.id_material==0||buscando_agrupados"
+                                    :disabled="form.filtro_agrupador.id_tipo_filtro==0||form.filtro_agrupador.id_material==0||buscando_agrupados||form.precios_seleccionados.length==0"
                                     v-on:click="buscar_conceptos()" >Buscar
                             </button>
                         </div>
@@ -250,7 +250,7 @@
             </div>
 
 
-            <div id="lista_precios_modal" class="modal fade" id="modal-default">
+            <div id="lista_precios_modal" class="modal fade" id="modal-default"  data-backdrop="static" data-keyboard="false">
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-header">
@@ -274,8 +274,8 @@
                                         </tr>
                                         </thead>
                                         <tbody>
-                                        <tr v-for="precio in form.precios_disponibles">
-                                            <td><input type="checkbox" :id="precio" :value="precio"
+                                        <tr v-for="(precio,index) in form.precios_disponibles">
+                                            <td><input type="checkbox" :id="'precio'+index" :value="precio"
                                                        v-model="form.precios_seleccionados"
                                                        v-on:click="valida_seleccion_all()"></td>
                                             <td> $<label v-text="precio"></label></td>

@@ -227,6 +227,8 @@ Vue.component('cambio-cantidad-insumos-create', {
         },
         selecciona_all_precios: function () {
             var self = this;
+
+
             if ($('#select_all_price').prop('checked')) {
                 self.form.precios_seleccionados = self.form.precios_disponibles;
             } else {
@@ -235,7 +237,15 @@ Vue.component('cambio-cantidad-insumos-create', {
         },
         valida_seleccion_all: function () {
             var self = this;
-            if (self.form.precios_seleccionados.length == self.form.precios_disponibles.length) {
+
+            var total=0;
+            for(var a=0;a<self.form.precios_disponibles.length;a++){
+                if($('#precio'+a).prop("checked")){
+                    total++;
+                }
+            }
+
+            if (total == self.form.precios_disponibles.length) {
                 $('#select_all_price').prop('checked', true);
             } else {
                 $('#select_all_price').prop('checked', false);
