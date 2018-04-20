@@ -3,6 +3,7 @@
 namespace Ghi\Domain\Core\Repositories\Finanzas;
 
 use Ghi\Domain\Core\Contracts\Finanzas\ComprobanteFondoFijoRepository;
+use Ghi\Domain\Core\Models\Concepto;
 use Ghi\Domain\Core\Models\Finanzas\ComprobanteFondoFijo;
 use Illuminate\Support\Facades\DB;
 
@@ -136,5 +137,18 @@ class EloquentComprobanteFondoFijoRepository implements ComprobanteFondoFijoRepo
         }
 
         return $query->paginate($perPage = $data['length'], $columns = ['*'], $pageName = 'page', $page = ($data['start'] / $data['length']) + 1);
+    }
+
+    /**
+     * Buscar conceptos
+     * @param $attribute
+     * @param $operator
+     * @param $value
+     * @return \Illuminate\Database\Eloquent\Collection|Concepto
+     */
+    public function getBy($attribute, $operator, $value, $with = null)
+    {
+
+        return Concepto::where($attribute, $operator, $value)->where('concepto_medible','=','3')->limit(5)->get();
     }
 }
