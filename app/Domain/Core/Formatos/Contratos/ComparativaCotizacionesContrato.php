@@ -138,8 +138,6 @@ class ComparativaCotizacionesContrato extends Rotation
         $this->Cell(($this->w - 2) * 0.8, 0.35, utf8_decode($this->contrato_proyectado['referencia']), 'TB', 2, 'L', 1);
 
         $this->Ln(0.15);
-
-
     }
 
     function logo() {
@@ -210,7 +208,7 @@ class ComparativaCotizacionesContrato extends Rotation
         }
         $this->Ln(0.25);
         //Subtotales
-        if($this->h - $this->y <= 5.7) {
+        if($this->h - $this->y <= 9.65) {
             $this->AddPage();
         }
         $this->subtotales();
@@ -300,26 +298,29 @@ class ComparativaCotizacionesContrato extends Rotation
 
         $this->SetFillColor(255, 255, 143);
         $this->Cell(($this->w - 2) * 0.300, 0.6, 'CONDICIONES COMERCIALES / OBSERVACIONES', 'TLB', '1', 'C', 1);
-
         $this->Cell(($this->w - 2) * 0.300, 0.3, utf8_decode('FECHA DE COTIZACIÓN'), 'LB', 2, 'R');
         $this->Cell(($this->w - 2) * 0.300, 0.3, '% ANTICIPO', 'LB', 2, 'R');
         $this->Cell(($this->w - 2) * 0.300, 0.3, 'CREDITO (DIAS)', 'LB', 2, 'R');
-        $this->Cell(($this->w - 2) * 0.300, 0.3, 'VIGENCIA (DIAS)', 'LB', 0, 'R');
+        $this->Cell(($this->w - 2) * 0.300, 0.3, 'VIGENCIA (DIAS)', 'LB', 1, 'R');
+        $this->MultiCell(($this->w - 2) * 0.300, 0.3, 'OBSERVACIONES', 'LB', 'R', 0);
 
-        $this->x_i = $this->x;
+        $this->x_i = $this->x + ($this->w - 2) * 0.300;
 
         for ($i = 0; $i < self::MAX_COTIZACIONES_PP && $i < ($this->num_cotizaciones - $this->acumuladas); $i++) {
 
             $cotizacion = $this->cotizaciones[$i + $this->acumuladas];
 
             $this->y = $this->y_i;
+            $this->x = $this->x_i;
 
             $this->Cell(($this->w - 2) * (1.4 / (2 * self::MAX_COTIZACIONES_PP)), 0.6, 'EMPRESA #' . ($i + $this->acumuladas + 1), 'TLR', 2, 'C', 1);
             $this->Cell(($this->w - 2) * (1.4 / (2 * self::MAX_COTIZACIONES_PP)), 0.3, Carbon::createFromFormat('Y-m-d H:i:s.000', $cotizacion['fecha'])->toDateString(), 'TLR', 2, 'R');
-            $this->Cell(($this->w - 2) * (1.4 / (2 * self::MAX_COTIZACIONES_PP)), 0.3, $cotizacion['anticipo'], 'TLR', 2, 'R');
-            $this->Cell(($this->w - 2) * (1.4 / (2 * self::MAX_COTIZACIONES_PP)), 0.3, $cotizacion['DiasCredito'], 'TLR', 2, 'R');
-            $this->Cell(($this->w - 2) * (1.4 / (2 * self::MAX_COTIZACIONES_PP)), 0.3, $cotizacion['DiasVigencia'], 'TLBR', 0, 'R');
+            $this->Cell(($this->w - 2) * (1.4 / (2 * self::MAX_COTIZACIONES_PP)), 0.3, $cotizacion['anticipo'] ? $cotizacion['anticipo'] : 'N/A', 'TLR', 2, 'R');
+            $this->Cell(($this->w - 2) * (1.4 / (2 * self::MAX_COTIZACIONES_PP)), 0.3, $cotizacion['DiasCredito'] ? $cotizacion['DiasCredito'] : 'N/A', 'TLR', 2, 'R');
+            $this->Cell(($this->w - 2) * (1.4 / (2 * self::MAX_COTIZACIONES_PP)), 0.3, $cotizacion['DiasVigencia'] ? $cotizacion['DiasVigencia'] : 'N/A', 'TLBR', 2, 'R');
+            $this->MultiCell(($this->w - 2) * (1.4 / (2 * self::MAX_COTIZACIONES_PP)), 0.3, substr(trim($cotizacion['observaciones']), 0, 200), 'LBR', 'R', 0);
 
+            $this->x_i = $this->x_i + ($this->w - 2) * (1.4 / (2 * self::MAX_COTIZACIONES_PP));
         }
         $this->Ln(0.75);
         $this->acumuladas += $i;
