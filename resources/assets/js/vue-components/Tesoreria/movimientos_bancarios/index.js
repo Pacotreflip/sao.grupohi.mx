@@ -104,13 +104,13 @@ Vue.component('movimientos_bancarios-index', {
                 "dataSrc": function (json) {
                     for (var i = 0; i < json.data.length; i++) {
                         json.data[i].index = i + 1;
-                        json.data[i].fecha = '$&nbsp;' + new Date(json.data[i].movimiento_transaccion.transaccion.fecha).dateFormat();
-                        json.data[i].tipo = '$&nbsp;' + json.data[i].tipo.descripcion;
-                        json.data[i].cuenta = '$&nbsp;' + json.data[i].cuenta.numero + " " + json.data[i].cuenta.abreviatura + " (" + json.data[i].cuenta.empresa.razon_social + ") ";
-                        json.data[i].importe = '$&nbsp; ' + parseFloat(json.data[i].importe).formatMoney(2, '.', ',');
-                        json.data[i].impuesto = '$&nbsp; ' + parseFloat(json.data[i].impuesto).formatMoney(2, '.', ',');
-                        json.data[i].total = '$&nbsp; ' + parseFloat(self.total(json.data[i].importe, json.data[i].impuesto)).formatMoney(2, '.', ',');
-                        json.data[i].referencia = '$&nbsp; ' + json.data[i].movimiento_transaccion.transaccion.referencia;
+                        json.data[i].fecha = new Date(json.data[i].movimiento_transaccion.transaccion.fecha).dateFormat();
+                        json.data[i].tipo = json.data[i].tipo.descripcion;
+                        json.data[i].cuenta = json.data[i].cuenta.numero + " " + json.data[i].cuenta.abreviatura + " (" + json.data[i].cuenta.empresa.razon_social + ") ";
+                        json.data[i].importe = '$&nbsp;' + parseFloat(json.data[i].importe).formatMoney(2, '.', ',');
+                        json.data[i].impuesto = '$&nbsp;' + parseFloat(json.data[i].impuesto).formatMoney(2, '.', ',');
+                        json.data[i].total = '$&nbsp;' + parseFloat(self.total(json.data[i].importe, json.data[i].impuesto)).formatMoney(2, '.', ',');
+                        json.data[i].referencia = json.data[i].movimiento_transaccion.transaccion.referencia;
                     }
                     return json.data;
                 }

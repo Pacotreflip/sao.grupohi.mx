@@ -53,17 +53,6 @@ Vue.component('obra-index', {
                     "id_obra": $('#obras_select option:selected').data().id_obra,
                     "app_key": self.app_key
                 };
-<<<<<<< HEAD
-                $.when(self.obtenerToken(data)).done(function() {
-                    console.log(self.peticion);
-                    if(self.peticion === true) {
-                        window.location = $('#obras_select option:selected').data().data.url;
-                    }
-                });
-            }
-        });
-        $('.list-group-item').on('click',function (event) {
-=======
                 self.obtenerToken(data).then(function () {
                     window.location = $('#obras_select option:selected').data().data.url;
                 });
@@ -72,45 +61,19 @@ Vue.component('obra-index', {
         $('.list_obra').on('click',function (e) {
             e.preventDefault();
             self.peticion = false;
->>>>>>> bb6ac50fb948fa37bd8166529011f9ad01c7da0e
             var data = {"usuario": self.usuario,
                 "database_name": $(this).data('database_name'),
                 "id_obra": $(this).data('id_obra'),
                 "app_key": self.app_key
             };
-<<<<<<< HEAD
-            $.when(self.obtenerToken(data)).done(function() {
-                console.log(self.peticion);
-                if(self.peticion === true) {
-                    window.location = App.host + '/context/' + data.database_name + '/' + data.id_obra;
-                }
-=======
+
             self.obtenerToken(data).then(function () {
                 window.location = App.host + '/context/' + data.database_name + '/' + data.id_obra;
->>>>>>> bb6ac50fb948fa37bd8166529011f9ad01c7da0e
             });
         });
     },
     methods: {
         obtenerToken: function(data) {
-<<<<<<< HEAD
-            var self = this;
-            $.ajax({
-                "async": true,
-                "url": App.host+"/api/auth",
-                "method": "POST",
-                "headers": {
-                    "accept": "application/vnd.saoweb.v2+json"
-                },
-                dataType  : 'json',
-                "data": data,
-                success: function (response) {
-                    localStorage.setItem('token', "bearer "+response.token);
-                    self.$session.start();
-                    self.$session.set('jwt', 'Bearer ' + response.token);
-                    self.peticion = true;
-                }
-=======
             return new Promise(function (resolve, reject) {
                 $.ajax({
                     "url": App.host+"/api/auth",
@@ -125,7 +88,6 @@ Vue.component('obra-index', {
                         resolve();
                     }
                 });
->>>>>>> bb6ac50fb948fa37bd8166529011f9ad01c7da0e
             });
         }
     }

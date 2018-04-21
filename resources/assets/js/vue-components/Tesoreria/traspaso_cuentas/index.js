@@ -92,9 +92,9 @@ Vue.component('traspaso-cuentas-index', {
                 "dataSrc": function (json) {
                     for (var i = 0; i < json.data.length; i++) {
                         json.data[i].index = i + 1;
-                        json.data[i].fecha = '$&nbsp;' + new Date(json.data[i].fecha).dateFormat();
-                        json.data[i].importe = '$&nbsp; ' + parseFloat(json.data[i].importe).formatMoney(2, '.', ',');
-                        json.data[i].referencia = '$&nbsp; ' + json.data[i].traspaso_transaccion.transaccion_debito.referencia;
+                        json.data[i].fecha = new Date(json.data[i].fecha).dateFormat();
+                        json.data[i].importe = "$&nbsp;" + parseFloat(json.data[i].importe).formatMoney(2, '.', ',');
+                        json.data[i].referencia = json.data[i].traspaso_transaccion.transaccion_debito.referencia;
                     }
                     return json.data;
                 }
