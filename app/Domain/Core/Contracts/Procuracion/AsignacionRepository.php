@@ -8,7 +8,7 @@
 
 namespace Ghi\Domain\Core\Contracts\Procuracion;
 
-use Ghi\Domain\Core\Models\Procuracion\Asingacion;
+use Ghi\Domain\Core\Models\Procuracion\Asignacion;
 
 /**
  * Interface AsignacionRepository
@@ -19,7 +19,7 @@ interface AsignacionRepository
     /**
      * Guartdar un nuevo registro
      * @param array $data
-     * @return Asingacion
+     * @return Asignacion
      * @throws \Exception
      */
     public function create($data);
@@ -32,7 +32,7 @@ interface AsignacionRepository
     public function all();
 
     /**
-     * Aplica un SoftDelete a la Asingacion seleccionado
+     * Aplica un SoftDelete a la Asignacion seleccionado
      * @param $id Identificador del registro de Tipo de Asinaciones que se va a eliminar
      * @return mixed|void
      * @throws \Exception

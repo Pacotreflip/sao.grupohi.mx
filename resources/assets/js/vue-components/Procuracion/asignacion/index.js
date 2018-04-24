@@ -34,6 +34,8 @@ Vue.component('procuracion-asignacion-index', {
                 "dataSrc" : function (json) {
                     for (var i = 0; i < json.data.length; i++) {
                         json.data[i].created_at = new Date(json.data[i].created_at).dateFormat();
+                        json.data[i].usuario_asigna = json.data[i].usuario_asigna.nombre +" "+ json.data[i].usuario_asigna.apaterno +" "+ json.data[i].usuario_asigna.amaterno;
+                        json.data[i].usuario_asignado = json.data[i].usuario_asignado.nombre +" "+ json.data[i].usuario_asignado.apaterno +" "+ json.data[i].usuario_asignado.amaterno;
                         //json.data[i].tipo_tran = ((json.data[i].transaccion.tipo_transaccion=='49')?json.data[i].transaccion.referencia.trim():json.data[i].transaccion.observaciones.trim());
                     }
                     return json.data;
@@ -41,11 +43,11 @@ Vue.component('procuracion-asignacion-index', {
             },
             "columns" : [
                 {data : 'numero_folio'},
-                {data : 'transaccion.tipo_tran.Descripcion'},
-                {data : 'transaccion.numero_folio'},
-                {data : 'usuario.usuario'},
+                {data : 'transaccion.tipo_tran.Descripcion',orderable : false},
+                {data : 'transaccion.numero_folio',orderable : false},
+                {data : 'usuario_asigna',orderable : false},
                 {data : 'created_at'},
-                {data : 'usuarios.usuario'},
+                {data : 'usuario_asignado',orderable : false},
             ],
             language: {
                 "sProcessing": "Procesando...",

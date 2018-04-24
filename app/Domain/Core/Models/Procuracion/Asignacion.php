@@ -15,10 +15,10 @@ use Ghi\Domain\Core\Models\User;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
- * Class Asingacion
+ * Class Asignacion
  * @package Ghi\Domain\Core\Models\Procuracion
  */
-class Asingacion  extends BaseModel
+class Asignacion  extends BaseModel
 {
     /**
      *  SoftDeletes
@@ -62,7 +62,7 @@ class Asingacion  extends BaseModel
          * numero de folio progresivo
          */
         static::creating(function ($model) {
-            $asignacion = Asingacion::orderBy('numero_folio', 'DESC')->first();
+            $asignacion = Asignacion::orderBy('numero_folio', 'DESC')->first();
             $folio = $asignacion ? $asignacion->numero_folio + 1 : 1;
             $model->numero_folio = $folio;
             $model->id_usuario_asigna = auth()->id();
@@ -72,14 +72,14 @@ class Asingacion  extends BaseModel
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function usuario() {
+    public function usuario_asigna() {
         return $this->belongsTo(User::class, 'id_usuario_asigna', 'idusuario');
     }
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function usuarios() {
+    public function usuario_asignado() {
         return $this->belongsTo(User::class, 'id_usuario_asignado', 'idusuario');
     }
 

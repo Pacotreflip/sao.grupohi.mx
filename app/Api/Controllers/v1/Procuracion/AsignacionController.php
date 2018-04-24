@@ -92,7 +92,7 @@ class AsignacionController extends Controller
      */
     public function paginate(Request $request)
     {
-        $items = $this->asignacionRepository->with(['usuario','usuarios','transaccion.tipotran','transaccion'])->paginate($request->all());
+        $items = $this->asignacionRepository->with(['usuario_asigna','usuario_asignado','transaccion.tipotran','transaccion'])->paginate($request->all());
         return response()->json([
             'recordsTotal' => $items->total(),
             'recordsFiltered' => $items->total(),

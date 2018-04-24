@@ -53,7 +53,7 @@ Vue.component('procuracion-asignacion-create', {
         $.ajax({
             type : "POST",
             url : App.host + "/api/usuario",
-            data: {roles:["comprador","contador"]},
+            data: {roles:["comprador"]},
             headers: {
                 'Authorization': localStorage.getItem('token')
             },
@@ -244,14 +244,15 @@ Vue.component('procuracion-asignacion-create', {
                         var html = "Algunos elementos ya existes en la asignacion<br> " +
                             "<div class=\"table-responsive\">" +
                             "<table class='table table-bordered table-striped'>";
-                        //var tipo_trans = "";
+
                         $.each(data.exists, function (index, value) {
-                            //var dato = ((value.transaccion.tipo_transaccion == '49') ? value.transaccion.referencia.trim() : value.transaccion.observaciones.trim())
+
                             html += "<tr>";
                             html += "<td>" + value.transaccion.numero_folio + "</td>";
                             html += "<td>" + value.transaccion.tipo_tran.Descripcion + "</td>";
-                            html += "<td>" + value.usuarios.usuario + "</td>";
+                            html += "<td>" + value.usuario_asignado.nombre +" "+ value.usuario_asignado.apaterno +" "+ value.usuario_asignado.amaterno + "</td>";
                             html += "</tr>";
+
                         });
                         html += "</table>" +
                             "</div>";

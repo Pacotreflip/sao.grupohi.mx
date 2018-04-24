@@ -9,7 +9,7 @@
 namespace Ghi\Domain\Core\Transformers;
 
 
-use Ghi\Domain\Core\Models\Procuracion\Asingacion;
+use Ghi\Domain\Core\Models\Procuracion\Asignacion;
 use League\Fractal\TransformerAbstract;
 
 /**
@@ -19,10 +19,10 @@ use League\Fractal\TransformerAbstract;
 class AsignacionTransformer extends TransformerAbstract
 {
     /**
-     * @param Asingacion $asignacion
+     * @param Asignacion $asignacion
      * @return mixed
      */
-    public function transform(Asingacion $asignacion) {
+    public function transform(Asignacion $asignacion) {
         return $asignacion;
     }
 }

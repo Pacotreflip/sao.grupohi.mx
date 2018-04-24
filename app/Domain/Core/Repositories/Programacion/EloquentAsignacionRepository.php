@@ -10,20 +10,20 @@ namespace Ghi\Domain\Core\Repositories\Programacion;
 
 use Illuminate\Support\Facades\DB;
 use Ghi\Domain\Core\Contracts\Procuracion\AsignacionRepository;
-use Ghi\Domain\Core\Models\Procuracion\Asingacion;
+use Ghi\Domain\Core\Models\Procuracion\Asignacion;
 
 class EloquentAsignacionRepository implements AsignacionRepository
 {
     /**
-     * @var Asingacion
+     * @var Asignacion
      */
     private $model;
 
     /**
      * EloquentAsignacionRepository constructor.
-     * @param Asingacion $model
+     * @param Asignacion $model
      */
-    public function __construct(Asingacion $model)
+    public function __construct(Asignacion $model)
     {
         $this->model = $model;
     }
@@ -127,7 +127,7 @@ class EloquentAsignacionRepository implements AsignacionRepository
             ['id_transaccion', '=', $data['id_transaccion']],
             ['id_usuario_asignado', '=', $data['id_usuario_asignado']]
         ];
-        $whereAsingacion = $this->with(['usuario','usuarios','transaccion.tipoTran','transaccion'])
+        $whereAsingacion = $this->with(['usuario_asigna','usuario_asignado','transaccion.tipotran','transaccion'])
             ->where($where)->all()->toArray();
 
         return $whereAsingacion;
@@ -135,7 +135,7 @@ class EloquentAsignacionRepository implements AsignacionRepository
 
     public function refresh()
     {
-        self::__construct(new Asingacion);
+        self::__construct(new Asignacion);
         return $this;
     }
 }
