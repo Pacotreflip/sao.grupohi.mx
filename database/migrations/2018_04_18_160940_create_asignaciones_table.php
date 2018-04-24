@@ -19,9 +19,11 @@ class CreateAsignacionesTable extends Migration
             $table->integer("id_usuario_asigna");
             $table->integer("id_usuario_asignado");
             $table->integer("numero_folio");
+            $table->index("id_usuario_asigna",'idx_usuario_asigna');
+            $table->index("id_usuario_asignado",'idx_usuario_asignado');
             $table->foreign('id_transaccion')
-                ->references('id')
-                ->on('dbo.transaciones');
+                ->references('id_transaccion')
+                ->on('dbo.transacciones');
             $table->timestamps();
             $table->softDeletes();
         });

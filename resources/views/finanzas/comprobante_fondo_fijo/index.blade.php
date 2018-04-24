@@ -8,7 +8,6 @@
     <comprobante-fondo-fijo-index
             v-cloak
             inline-template
-            :consultar_comprobante_fondo_fijo="{{ \Entrust::can(['consultar_comprobante_fondo_fijo']) ? 'true' : 'false' }}"
             :editar_comprobante_fondo_fijo="{{ \Entrust::can(['editar_comprobante_fondo_fijo']) ? 'true' : 'false' }}"
             :eliminar_comprobante_fondo_fijo="{{ \Entrust::can(['eliminar_comprobante_fondo_fijo']) ? 'true' : 'false' }}"
         >

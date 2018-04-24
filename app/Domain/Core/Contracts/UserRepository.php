@@ -54,4 +54,10 @@ interface UserRepository
      * @return mixed
      */
     public function saveRoles($data);
+
+    /**
+     * all Roles For Usuarios
+     * @return mixed
+     */
+    public function rolesForUser();
 }

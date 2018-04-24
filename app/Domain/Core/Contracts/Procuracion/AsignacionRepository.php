@@ -45,4 +45,29 @@ interface AsignacionRepository
      * @return mixed
      */
     public function paginate(array $data);
+
+    /**
+     * Crea relaciones con otros modelos
+     * @param array $relations
+     * @return mixed
+     */
+    public function with(array $relations);
+
+    /**
+     *  Contiene los parametros de búsqueda
+     * @param array $where
+     * @return mixed
+     */
+    public function where(array $where);
+    /**
+     *  Si existe un usuarios asignado a las transaccion
+     * @param array $where
+     * @return mixed
+     */
+    public function exists(array $where);
+
+    /**
+     * @return mixed
+     */
+    public function refresh();
 }

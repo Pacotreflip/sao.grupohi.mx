@@ -8,13 +8,11 @@
 
 namespace Ghi\Domain\Core\Models\Procuracion;
 
-use Ghi\Core\Models\Transaccion;
-use Ghi\Domain\Core\Models\BaseModel;
-use Ghi\Domain\Core\Models\Compras\Requisiciones\Requisicion;
+use Ghi\Domain\Core\Models\Transacciones\Transaccion;
 use Ghi\Domain\Core\Models\TipoTransaccion;
-use Ghi\Domain\Core\Models\Transacciones\ContratoProyectado;
-use Ghi\Domain\Core\Models\User as UsuarioAsignado;
-use Ghi\Domain\Core\Models\User as UsuarioAsigna;
+use Ghi\Domain\Core\Models\BaseModel;
+use Ghi\Domain\Core\Models\User;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
  * Class Asingacion
@@ -39,7 +37,7 @@ class Asingacion  extends BaseModel
     /**
      * @var string
      */
-    protected $table = 'Prcuracion.asignacion';
+    protected $table = 'Procuracion.asignacion';
     /**
      * @var string
      */
@@ -51,11 +49,9 @@ class Asingacion  extends BaseModel
         'id_transaccion',
         'id_usuario_asigna',
         'id_usuario_asignado',
-        'tipo_transaccion',
         'numero_folio',
     ];
 
-    protected $appends = array('usuarioAsignado','usuariosAsigna');
     /**
      *
      */
@@ -69,21 +65,22 @@ class Asingacion  extends BaseModel
             $asignacion = Asingacion::orderBy('numero_folio', 'DESC')->first();
             $folio = $asignacion ? $asignacion->numero_folio + 1 : 1;
             $model->numero_folio = $folio;
-        });
+            $model->id_usuario_asigna = auth()->id();
+        },10);
     }
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function usuarioAsignado() {
-        return $this->belongsTo(UsuarioAsignado::class, 'id_usuario_asigna', 'idusuario');
+    public function usuario() {
+        return $this->belongsTo(User::class, 'id_usuario_asigna', 'idusuario');
     }
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function usuariosAsigna() {
-        return $this->belongsTo(UsuarioAsigna::class, 'id_usuario_asignado', 'idusuario');
+    public function usuarios() {
+        return $this->belongsTo(User::class, 'id_usuario_asignado', 'idusuario');
     }
 
     /**
@@ -93,10 +90,4 @@ class Asingacion  extends BaseModel
         return $this->belongsTo(Transaccion::class, 'id_transaccion', 'id_transaccion');
     }
 
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-     */
-    public function tipoTransaccion() {
-        return $this->belongsTo(TipoTransaccion::class, 'tipo_transaccion', 'Tipo_Transaccion');
-    }
 }

@@ -8,11 +8,11 @@
 
 namespace Ghi\Api\Controllers\v1\Procuracion;
 
-use Ghi\Domain\Core\Contracts\Procuracion\AsignacionRepository;
-use Ghi\Domain\Core\Transformers\AsignacionTransformer;
+use Dingo\Api\Routing\Helpers;
 use Ghi\Http\Controllers\Controller;
 use Dingo\Api\Http\Request;
-use Dingo\Api\Routing\Helpers;
+use Ghi\Domain\Core\Contracts\Procuracion\AsignacionRepository;
+use Ghi\Domain\Core\Transformers\AsignacionTransformer;
 
 
 /**
@@ -28,7 +28,7 @@ class AsignacionController extends Controller
     private $asignacionRepository;
 
     /**
-     * ItemController constructor.
+     * AsignacionController constructor.
      * @param AsignacionRepository $asignacionRepository
      */
     public function __construct(AsignacionRepository $asignacionRepository)
@@ -48,6 +48,33 @@ class AsignacionController extends Controller
         return $this->response->item($asignacion, new AsignacionTransformer($asignacion));
     }
 
+
+    /**
+     * @param Request $request
+     * @return \Dingo\Api\Http\Response
+     * @throws \Exception
+     */
+    public function maxivas(Request $request)
+    {
+        if ($request->has('asignaciones')) {
+            $asignaciones = $request->get('asignaciones');
+            if(is_array($asignaciones)) {
+                $arrayAsignacionId['exists'] = [];
+                foreach ($asignaciones as $arrayAsignaciones) {
+                    $whereAsingacion = $this->asignacionRepository->exists($arrayAsignaciones);
+                    if(count($whereAsingacion)>0) {
+                        $arrayAsignacionId['exists'][] = $whereAsingacion[0];
+                    }else{
+                        $this->asignacionRepository->refresh()->create($arrayAsignaciones);
+                    }
+                }
+                return $this->response->array($arrayAsignacionId, function ($item) {
+                      return $item;
+                });
+            }
+        }
+    }
+
     /**
      * @param $id
      * @return \Dingo\Api\Http\Response
@@ -65,7 +92,7 @@ class AsignacionController extends Controller
      */
     public function paginate(Request $request)
     {
-        $items = $this->asignacionRepository->paginate($request->all());
+        $items = $this->asignacionRepository->with(['usuario','usuarios','transaccion.tipotran','transaccion'])->paginate($request->all());
         return response()->json([
             'recordsTotal' => $items->total(),
             'recordsFiltered' => $items->total(),

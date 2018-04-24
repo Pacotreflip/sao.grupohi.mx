@@ -150,6 +150,7 @@ class RolesPermissionsSeeder extends Seeder
         //Procuaracion
         $consultar_asignacion = Permission::firstOrCreate(['name' => 'consultar_asignacion', 'display_name' => 'Consultar Asignación', 'description' => 'Permisos para la asignación de la consulta de procuración de las asignaciones']);
         $resgistro_asignacion = Permission::firstOrCreate(['name' => 'registrar_asignacion', 'display_name' => 'Registrar una Asignación', 'description' => 'Permisos para el registro de una asignación de procuración']);
+        $eliminar_asignacion = Permission::firstOrCreate(['name' => 'eliminar_asignacion', 'display_name' => 'Eliminar una Asignación', 'description' => 'Permisos para poder eliminar el registro de una asignación de procuración']);
 
         /**
          * Roles
@@ -164,6 +165,7 @@ class RolesPermissionsSeeder extends Seeder
         $control_proyecto              = Role::firstOrCreate(['name' => 'control_proyecto', 'display_name' => 'Control de Proyecto', 'description' => 'Rol de usuario de Control de Proyecto']);
         $coordinador_control_proyectos = Role::firstOrCreate(['name' => 'coordinador_control_proyectos', 'display_name' => 'Coordinador de Control de Proyectos', 'description' => 'Coordinador de Control de Proyectos']);
         $administrador_sistema         = Role::firstOrCreate(['name' => 'administrador_sistema', 'display_name' => 'Administrador del Sistema', 'description' => 'Administrador del Sistema']);
+        $comprador                     = Role::firstOrCreate(['name' => 'comprador', 'display_name' => 'Comprador', 'description' => 'Rol de Procuración']);
 
         /**
          * Asignaciones
@@ -250,7 +252,10 @@ class RolesPermissionsSeeder extends Seeder
             $consultar_formato_comparativa_presupuestos->id,
         ]);
         $jefe_procuracion->perms()->sync([
-            $consultar_formato_estimacion->id
+            $consultar_formato_estimacion->id,
+            $consultar_asignacion->id,
+            $resgistro_asignacion->id,
+            $eliminar_asignacion->id,
         ]);
         $coordinador_sao->perms()->sync([
             $consultar_cuenta_almacen->id,
@@ -420,6 +425,7 @@ class RolesPermissionsSeeder extends Seeder
             [
                 $resgistro_asignacion->id,
                 $consultar_asignacion->id,
+                $eliminar_asignacion->id,
             ]
         );
     }

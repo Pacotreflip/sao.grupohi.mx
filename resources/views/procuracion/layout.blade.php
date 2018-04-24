@@ -12,7 +12,7 @@
             </a>
             <ul class="treeview-menu">
                 @permission('consultar_asignacion','registrar_asignacion')
-                <li ><a href="{{route('procuracion.asignacion.index')}}"><i class='fa fa-circle-o'></i> <span>Consultar Asignaciones</span></a></li>
+                <li ><a href="{{route('procuracion.asignacion.index')}}"><i class='fa fa-circle-o'></i> <span>Asignación de Compradores</span></a></li>
                 @endpermission
             </ul>
         </li>

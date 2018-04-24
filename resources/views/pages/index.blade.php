@@ -130,7 +130,7 @@
 
             @if(auth()->user()->canAccessSystem('procuracion'))
                 <div class="col-lg-3 col-xs-6">
-                    <div class="small-box bg-navy-active">
+                    <div class="small-box bg-purple-active">
                         <div class="inner">
                             <h4>Procuración</h4>
                             <p>
@@ -138,7 +138,7 @@
                             </p>
                         </div>
                         <div class="icon">
-                            <i class="fa fa-lock fa-fw "></i>
+                            <i class="fa  fa-legal fa-fw "></i>
                         </div>
                         <a href="{{route('procuracion.index')}}" class="small-box-footer">
                             Ingresar <i class="fa fa-arrow-circle-right"></i>

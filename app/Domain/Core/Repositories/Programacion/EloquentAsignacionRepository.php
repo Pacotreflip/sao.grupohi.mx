@@ -8,7 +8,7 @@
 
 namespace Ghi\Domain\Core\Repositories\Programacion;
 
-
+use Illuminate\Support\Facades\DB;
 use Ghi\Domain\Core\Contracts\Procuracion\AsignacionRepository;
 use Ghi\Domain\Core\Models\Procuracion\Asingacion;
 
@@ -56,11 +56,23 @@ class EloquentAsignacionRepository implements AsignacionRepository
         return $record->id;
     }
 
-    public function with($relations) {
+    /**
+     * @param array $relations
+     * @return $this|mixed
+     */
+    public function with(array $relations) {
         $this->model = $this->model->with($relations);
         return $this;
     }
 
+    /**
+     * @param array $where
+     * @return $this|mixed
+     */
+    public function where(array $where) {
+        $this->model = $this->model->where($where);
+        return $this;
+    }
     /**
      * Aplica un SoftDelete a la asignacion seleccionada
      * @param $id Identificador del registro de asinacion se va a eliminar
@@ -72,7 +84,7 @@ class EloquentAsignacionRepository implements AsignacionRepository
         try {
             DB::connection('cadeco')->beginTransaction();
 
-            $item = $this->model->where('id_traspaso_transaccion', '=', $id);
+            $item = $this->model->where('id', '=', $id);
 
             if (!$item) {
                 throw new \Exception('no se esta el registro');
@@ -103,5 +115,27 @@ class EloquentAsignacionRepository implements AsignacionRepository
         }
 
         return $query->paginate($perPage = $data['length'], $columns = ['*'], $pageName = 'page', $page = ($data['start'] / $data['length']) + 1);
+    }
+
+    /**
+     * @param array $data
+     * @return array|mixed
+     */
+    public function exists(array $data)
+    {
+        $where = [
+            ['id_transaccion', '=', $data['id_transaccion']],
+            ['id_usuario_asignado', '=', $data['id_usuario_asignado']]
+        ];
+        $whereAsingacion = $this->with(['usuario','usuarios','transaccion.tipoTran','transaccion'])
+            ->where($where)->all()->toArray();
+
+        return $whereAsingacion;
+    }
+
+    public function refresh()
+    {
+        self::__construct(new Asingacion);
+        return $this;
     }
 }

@@ -38,18 +38,29 @@ $api->version('v1', function ($api) {
          */
         $api->get('formatos/compras/requisicion/{id_requisicion}/comparativa_cotizaciones_compra', 'Ghi\Api\Controllers\v1\FormatosController@comparativa_cotizaciones_compra')
             ->where(['id' => '[0-9]+']);
-
         $api->get('formatos/contratos/contrato_proyectado/{id_contrato_proyectado}/comparativa_cotizaciones_contrato', 'Ghi\Api\Controllers\v1\FormatosController@comparativa_cotizaciones_contrato')
             ->where(['id' => '[0-9]+']);
         /**
          * procuración asignación
          */
         $api->post('procuracion/asignacion', 'Ghi\Api\Controllers\v1\Procuracion\AsignacionController@store');
+        $api->post('procuracion/asignacion/masivas', 'Ghi\Api\Controllers\v1\Procuracion\AsignacionController@maxivas');
         $api->post('procuracion/asignacion/paginate', 'Ghi\Api\Controllers\v1\Procuracion\AsignacionController@paginate');
         $api->get('procuracion/asignacion/{id}', 'Ghi\Api\Controllers\v1\Procuracion\AsignacionController@find')
             ->where(['id' => '[0-9]+']);
-        $api->delete('procuracion/asignacion', 'Ghi\Api\Controllers\v1\Procuracion\AsignacionController@delete');
-        /***/
+        $api->delete('procuracion/asignacion/{id}', 'Ghi\Api\Controllers\v1\Procuracion\AsignacionController@delete')
+            ->where(['id' => '[0-9]+']);
+
+        /**
+         *
+         */
+        $api->post('usuario', 'Ghi\Api\Controllers\v1\UsuarioController@show');
+        $api->post('tipoTran', 'Ghi\Api\Controllers\v1\TipoTranController@show');
+        $api->post('contratoProyectado', 'Ghi\Api\Controllers\v1\ContratoProyectadoController@show');
+        $api->post('compras/requisicion', 'Ghi\Api\Controllers\v1\Compras\RequisicionController@show');
+        /**
+         *
+         */
     });
 });
 

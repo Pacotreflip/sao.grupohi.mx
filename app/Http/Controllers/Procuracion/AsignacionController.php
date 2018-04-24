@@ -9,8 +9,9 @@
 namespace Ghi\Http\Controllers\Procuracion;
 
 use Ghi\Domain\Core\Contracts\Procuracion\AsignacionRepository;
+use Ghi\Http\Controllers\Controller;
 
-class AsignacionControllers extends Controller
+class AsignacionController extends Controller
 {
     /**
      * @var AsignacionRepository
@@ -18,7 +19,7 @@ class AsignacionControllers extends Controller
     protected $asignacion;
 
     /**
-     * AsignacionControllers constructor.
+     * AsignacionController constructor.
      * @param AsignacionRepository $asignacion
      */
     public function __construct(AsignacionRepository $asignacion)

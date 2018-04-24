@@ -10,6 +10,8 @@ namespace Ghi\Domain\Core\Repositories;
 
 
 use Ghi\Domain\Core\Contracts\TipoTranRepository;
+use Ghi\Domain\Core\Models\User;
+use Illuminate\Support\Facades\DB;
 
 class EloquentTipoTranRepository implements TipoTranRepository
 {
@@ -37,4 +39,23 @@ class EloquentTipoTranRepository implements TipoTranRepository
     {
         return $this->model->orderBy('descripcion')->lists('Descripcion as id', 'Descripcion');
     }
+
+    /**
+     * @param array $orWhere
+     * @return mixed
+     */
+    public function orWhere(array $orWhere)
+    {
+        $m = DB::connection('cadeco')->table('dbo.TipoTran');
+        foreach ($orWhere as $where) {
+            $m
+                ->orWhere(function ($query) use ($where) {
+                    foreach ($where as $column => $value) {
+                        $query->where($column, $value);
+                    }
+                });
+        }
+        return $m->get();
+    }
+
 }

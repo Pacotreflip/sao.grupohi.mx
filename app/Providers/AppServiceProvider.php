@@ -407,7 +407,7 @@ class AppServiceProvider extends ServiceProvider
         );
 
         $this->app->bind(
-            \Ghi\Domain\Core\Models\Procuracion\Asingacion::class,
+            \Ghi\Domain\Core\Contracts\Procuracion\AsignacionRepository::class,
             \Ghi\Domain\Core\Repositories\Programacion\EloquentAsignacionRepository::class
         );
     }

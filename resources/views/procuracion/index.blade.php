@@ -1,8 +1,8 @@
-@extends('tesoreria.layout')
-@section('title', 'Tesorería')
-@section('contentheader_title', 'TESORERÍA')
+@extends('procuracion.layout')
+@section('title', 'Procuración')
+@section('contentheader_title', 'PROCURACIÓN')
 @section('breadcrumb')
-    {!! Breadcrumbs::render('tesoreria.index') !!}
+    {!! Breadcrumbs::render('procuracion.index') !!}
 @endsection
 @section('main-content')
 
@@ -12,11 +12,8 @@
                 <div class="tab-content">
                     <div class="tab-pane active" id="subcontratos">
                         <ul class="nav nav-stacked">
-                            @permission(['consultar_traspaso_cuenta'])
-                            <li><a href="{{ route('tesoreria.traspaso_cuentas.index') }}">TRASPASO ENTRE CUENTAS BANCARIAS</a></li>
-                            @endpermission
-                            @permission(['consultar_movimiento_bancario'])
-                            <li><a href="{{ route('tesoreria.movimientos_bancarios.index') }}">MOVIMIENTOS BANCARIOS</a></li>
+                            @permission(['consultar_asignacion'])
+                            <li><a href="{{ route('procuracion.asignacion.index') }}">ASIGNACIÓN DE COMPRADORES</a></li>
                             @endpermission
                         </ul>
                     </div>
