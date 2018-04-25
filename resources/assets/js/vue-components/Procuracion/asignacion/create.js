@@ -136,7 +136,6 @@ Vue.component('procuracion-asignacion-create', {
                             self.form.id_transaccion = data.id;
                             var textSplit = data.text.split('-');
                             self.idtransaccion = {id:data.id,name:textSplit[1],numero_folio:textSplit[0]};
-
                         });
                     },
                     complete: function () {
@@ -208,6 +207,8 @@ Vue.component('procuracion-asignacion-create', {
                 }).then(function (result) {
                     if (result.value) {
                         self.guardar(id_btn);
+                    }else{
+                        $("#"+id_btn).button('reset');
                     }
                 }).catch(swal.noop);
             }else {

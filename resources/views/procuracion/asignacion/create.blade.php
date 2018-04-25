@@ -80,7 +80,7 @@
                                 <table class="table table-bordered table-striped" id="table_asignacion">
                                     <thead>
                                     <tr>
-                                        <th>Folio de Asignación</th>
+                                        <th>Tipo de Transacción</th>
                                         <th>Número de Folio de la Transacciones</th>
                                         <th>Concepto</th>
                                         <th>Comprador Asignado</th>
@@ -92,8 +92,6 @@
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="row">
                 <div class="col-md-12">
                     <button class="btn btn-sm btn-primary pull-right" id="guardar_asiognacion" v-on:click="confirm_guardar('guardar_asiognacion')">Guardar</button>
                 </div>
