@@ -54,7 +54,6 @@
                                                 id="id_usuario_asignado"
                                                 :disabled="!form.id_transaccion"
                                         >
-                                            <option value>[--SELECCIONE--]</option>
                                         </select>
                                         <label class="help" v-show="validation_errors.has('form_agregar_asignacion.id_usuario_asignado')">Seleccion un(os) Comprador(es)</label>
                                     </div>

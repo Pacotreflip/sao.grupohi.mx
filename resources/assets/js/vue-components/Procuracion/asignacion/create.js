@@ -68,7 +68,8 @@ Vue.component('procuracion-asignacion-create', {
                 });
                 $('#id_usuario_asignado').select2({
                     data: dataUsuarios,
-                    multiple: true
+                    multiple: true,
+                    placeholder: "[--SELECCIONE--]"
                 }).on('select2:select', function (e) {
                     var data = e.params.data;
                     self.form.id_usuario_asignado.push(data.id);
@@ -98,7 +99,9 @@ Vue.component('procuracion-asignacion-create', {
         selectTipoTransaccion: function (id) {
             var self = this;
             $("#id_transaccion").val(null).trigger("change");
-            $("#id_transaccion").select2({placeholder: "[--SELECCIONE--]"}).html("");;
+
+            $("#id_transaccion").select2({placeholder: "Procesando...."}).html("");
+
             var url ='' ;
             if(id=='49'){
                 url = App.host + '/api/contratoProyectado';
