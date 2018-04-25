@@ -156,4 +156,14 @@ class ContratoProyectadoController extends Controller
         $contratos = $this->contrato_proyectado->addContratos($request->all(), $id);
         return $this->response->collection($contratos, new ContratoTransformer());
     }
+
+    /**
+     * @return mixed
+     */
+    public function show()
+    {
+        return $this->response()->array($this->contrato_proyectado->all(), function ($item) {
+            return $item;
+        });
+    }
 }

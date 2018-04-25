@@ -18,10 +18,10 @@ class AuthController extends BaseController
     public function postLogin(Request $request)
     {
         $rules = [
-            'usuario' => ['max:140', 'string', 'filled'],
-            'app_key' => ['max:140', 'string', 'filled'],
-            'id_obra' => ['numeric', 'min:0', 'filled'],
-            'database_name' => ['string', 'max:255', 'filled'],
+            'usuario' => ['max:140', 'string', 'filled','required'],
+            'app_key' => ['max:140', 'string', 'filled','required'],
+            'id_obra' => ['numeric', 'min:0', 'filled','required'],
+            'database_name' => ['string', 'max:255', 'filled','required'],
         ];
 
         $validator = app('validator')->make($request->all(), $rules);

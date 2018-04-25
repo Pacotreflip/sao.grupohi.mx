@@ -247,4 +247,13 @@ class EloquentContratoProyectadoRepository implements ContratoProyectadoReposito
     {
         return $this->model->find($id);
     }
+
+    /**
+     * Devuelve todos los contratos proyectados
+     * @return \Illuminate\Database\Eloquent\Collection|mixed|static[]
+     */
+    public function all()
+    {
+        return $this->model->all();
+    }
 }
