@@ -33,10 +33,12 @@ Vue.component('procuracion-asignacion-index', {
                 },
                 "dataSrc" : function (json) {
                     for (var i = 0; i < json.data.length; i++) {
+                        json.data[i].numero_folio = "#" + json.data[i].numero_folio;
+                        json.data[i].transaccion_numero_folio = "#" + json.data[i].transaccion.numero_folio;
                         json.data[i].created_at = new Date(json.data[i].created_at).dateFormat();
                         json.data[i].usuario_asigna = json.data[i].usuario_asigna.nombre +" "+ json.data[i].usuario_asigna.apaterno +" "+ json.data[i].usuario_asigna.amaterno;
                         json.data[i].usuario_asignado = json.data[i].usuario_asignado.nombre +" "+ json.data[i].usuario_asignado.apaterno +" "+ json.data[i].usuario_asignado.amaterno;
-                        //json.data[i].tipo_tran = ((json.data[i].transaccion.tipo_transaccion=='49')?json.data[i].transaccion.referencia.trim():json.data[i].transaccion.observaciones.trim());
+                        json.data[i].concepto = ((json.data[i].transaccion.tipo_transaccion=='49')?json.data[i].transaccion.referencia.trim():json.data[i].transaccion.observaciones.trim());
                     }
                     return json.data;
                 }
@@ -44,10 +46,11 @@ Vue.component('procuracion-asignacion-index', {
             "columns" : [
                 {data : 'numero_folio'},
                 {data : 'transaccion.tipo_tran.Descripcion',orderable : false},
-                {data : 'transaccion.numero_folio',orderable : false},
-                {data : 'usuario_asigna',orderable : false},
-                {data : 'created_at'},
+                {data : 'transaccion_numero_folio',orderable : false},
+                {data : 'concepto',orderable : false},
                 {data : 'usuario_asignado',orderable : false},
+                {data : 'created_at'},
+                {data : 'usuario_asigna',orderable : false},
             ],
             language: {
                 "sProcessing": "Procesando...",
@@ -120,7 +123,7 @@ Vue.component('procuracion-asignacion-index', {
                     swal({
                         type: 'success',
                         title: 'Correcto',
-                        html: 'Asignación eliminado'
+                        html: 'Asignación eliminada'
                     });
                 },
                 complete: function () { }

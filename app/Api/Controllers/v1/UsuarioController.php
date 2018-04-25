@@ -51,20 +51,22 @@ class UsuarioController extends Controller
      */
     public function show(Request $request)
     {
+        $usuariosArray = array();
+        $usuariosUnique = array();
         if ($request->has('roles')) {
             $roles = $request->get('roles');
             $usuarios = $this->usuarioRepository->rolesForUser();
-            $usuariosArray = array();
-            $usuariosUnique= array();
-            foreach ($usuarios as $usuario) {
-                if (isset($usuario->user->roles)) {
-                    foreach ($usuario->user->roles as $rolesUsuario) {
-                        if (count($rolesUsuario)) {
-                            if (in_array($rolesUsuario->name, $roles)) {
-                                if(!in_array($usuario->user->usuario,$usuariosArray)) {
-                                    $usuariosArray[] = array(
-                                        'idusuarios' => $usuario->user->idusuario,
-                                        'name' => $usuario->user->nombre . "  " . $usuario->user->apaterno . " " . $usuario->user->amaterno);
+            if(count($usuarios)) {
+                foreach ($usuarios as $usuario) {
+                    if (isset($usuario->user->roles)) {
+                        foreach ($usuario->user->roles as $rolesUsuario) {
+                            if (count($rolesUsuario)) {
+                                if (in_array($rolesUsuario->name, $roles)) {
+                                    if (!in_array($usuario->user->usuario, $usuariosArray)) {
+                                        $usuariosArray[] = array(
+                                            'idusuarios' => $usuario->user->idusuario,
+                                            'name' => $usuario->user->nombre . "  " . $usuario->user->apaterno . " " . $usuario->user->amaterno);
+                                    }
                                 }
                             }
                         }
@@ -74,9 +76,9 @@ class UsuarioController extends Controller
 
             if(count($usuariosArray)){
                 $collection = collect($usuariosArray);
-                $usuariosUnique = $collection->unique('idusuarios');
+                $usuariosUnique = $collection->unique('idusuarios')->values()->all();
             }
-            return $this->response()->array($usuariosUnique->values()->all(), function ($item) {
+            return $this->response()->array($usuariosUnique, function ($item) {
                 return $item;
             });
         }

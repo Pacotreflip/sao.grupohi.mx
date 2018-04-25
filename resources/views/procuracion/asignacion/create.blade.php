@@ -2,7 +2,7 @@
 @section('title', 'Asignaciones')
 @section('contentheader_title', 'ASIGNACIÓN DE COMPRADORES')
 @section('breadcrumb')
-    {!! Breadcrumbs::render('procuracion.asignacion.index') !!}
+    {!! Breadcrumbs::render('procuracion.asignacion.create') !!}
 @endsection
 @section('main-content')
     <global-errors></global-errors>
@@ -60,7 +60,7 @@
                                 </div>
                             </div>
                             <div class="box-footer">
-                                <div class="col-md-12">
+                                <div class="col-md-12 text-right">
                                     <button type="submit" class="btn btn-primary" :disabled="!form.id_usuario_asignado.length">Agregar</button>
                                 </div>
                             </div>

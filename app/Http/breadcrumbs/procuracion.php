@@ -19,3 +19,7 @@ Breadcrumbs::register('procuracion.asignacion.index', function($breadcrumbs) {
     $breadcrumbs->parent('procuracion.index');
     $breadcrumbs->push('ASIGNACIÓN DE COMPRADORES', route('procuracion.asignacion.index'));
 });
+Breadcrumbs::register('procuracion.asignacion.create', function($breadcrumbs) {
+    $breadcrumbs->parent('procuracion.asignacion.index');
+    $breadcrumbs->push('REGISTRO DE ASIGNACIONES', route('procuracion.asignacion.create'));
+});

@@ -15,7 +15,10 @@
             @permission(['registrar_asignacion'])
             <div class="row">
                 <div class="col-md-12">
-                    <a class="btn btn-sm btn-primary pull-right" href="{{route('procuracion.asignacion.create')}}" >Registrar Asignación</a>
+                    <a class="btn btn-success btn-app pull-right" href="{{route('procuracion.asignacion.create')}}" >
+                        <i class="glyphicon glyphicon-plus-sign"></i>
+                        Registrar Asignación
+                    </a>
                 </div>
                 <div class="col-md-12">&nbsp;</div>
             </div>
@@ -35,7 +38,8 @@
                                     <tr>
                                         <th>Folio de Asignación</th>
                                         <th>Tipo de Transacción</th>
-                                        <th>Folio de la Transacciones</th>
+                                        <th>Folio de la Transacción</th>
+                                        <th>Concepto</th>
                                         <th>Nombre del Comprador Asignado</th>
                                         <th>Fecha de Registro</th>
                                         <th>Persona que Registro</th>
@@ -54,7 +58,10 @@
             @permission(['registrar_asignacion'])
             <div class="row">
                 <div class="col-md-12">
-                    <a class="btn btn-sm btn-primary pull-right" href="{{route('procuracion.asignacion.create')}}" >Registrar Asignación</a>
+                    <a class="btn btn-success btn-app pull-right" href="{{route('procuracion.asignacion.create')}}" >
+                        <i class="glyphicon glyphicon-plus-sign"></i>
+                        Registrar Asignación
+                    </a>
                 </div>
                 <div class="col-md-12">&nbsp;</div>
             </div>
