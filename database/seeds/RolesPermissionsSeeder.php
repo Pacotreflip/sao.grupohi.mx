@@ -166,6 +166,7 @@ class RolesPermissionsSeeder extends Seeder
         $coordinador_control_proyectos = Role::firstOrCreate(['name' => 'coordinador_control_proyectos', 'display_name' => 'Coordinador de Control de Proyectos', 'description' => 'Coordinador de Control de Proyectos']);
         $administrador_sistema         = Role::firstOrCreate(['name' => 'administrador_sistema', 'display_name' => 'Administrador del Sistema', 'description' => 'Administrador del Sistema']);
         $comprador                     = Role::firstOrCreate(['name' => 'comprador', 'display_name' => 'Comprador', 'description' => 'Rol de Procuración']);
+        $coordinador_procuracion       = Role::firstOrCreate(['name' => 'coordinador_procuracion', 'display_name' => 'Coordinador Procuracion', 'description' => 'Rol de Coordinador Procuración']);
 
         /**
          * Asignaciones
@@ -253,9 +254,6 @@ class RolesPermissionsSeeder extends Seeder
         ]);
         $jefe_procuracion->perms()->sync([
             $consultar_formato_estimacion->id,
-            $consultar_asignacion->id,
-            $resgistro_asignacion->id,
-            $eliminar_asignacion->id,
         ]);
         $coordinador_sao->perms()->sync([
             $consultar_cuenta_almacen->id,
@@ -308,6 +306,11 @@ class RolesPermissionsSeeder extends Seeder
             $administracion_configuracion_obra->id,
         ]);
 
+        $coordinador_procuracion->perms()->sync([
+            $consultar_asignacion->id,
+            $resgistro_asignacion->id,
+            $eliminar_asignacion->id,
+        ]);
         /**
          * Sistemas
          */
