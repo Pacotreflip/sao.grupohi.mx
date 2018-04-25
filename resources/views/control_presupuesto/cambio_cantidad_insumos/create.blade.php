@@ -1,6 +1,6 @@
 @extends('control_presupuesto.layout')
 @section('title', 'Control Presupuesto')
-@section('contentheader_title', 'CAMBIO DE CANTIDAD A INSUMOS <small>(COSTO DIRECTO)</small>')
+@section('contentheader_title', 'CAMBIO DE COSTO A INSUMOS <small>(COSTO DIRECTO)</small>')
 @section('breadcrumb')
     {!! Breadcrumbs::render('control_presupuesto.cambio_presupuesto.create') !!}
 @endsection
@@ -102,10 +102,10 @@
                                     <thead>
                                     <tr>
                                         <th style="width:20px"></th>
-                                        <th>Cantidad de insumos</th>
+                                        <th>Cantidad de Insumos</th>
                                         <th v-text="'Agrupados por '+descripcion_agrupados"></th>
-                                        <th>Cantidad original</th>
-                                        <th>Cantidad actualizada</th>
+                                        <th>Costo Original</th>
+                                        <th>Costo Actualizado</th>
                                         <th style="width:20px"></th>
                                     </tr>
                                     </thead>
@@ -130,7 +130,7 @@
                                             </td>
                                             <td>@{{agrupado.cantidad}}</td>
                                             <td>@{{agrupado.agrupador}}</td>
-                                            <td>@{{agrupado.precio_unitario}}</td>
+                                            <td class="text-right">$@{{parseFloat(agrupado.precio_unitario).formatMoney(2,'.',',')}}</td>
                                             <td style="width: 100px">
                                                 <div class="form-group"
                                                      :class="{'has-error': validation_errors.has('form_save_solicitud.Cantidad Actualizada [' + (i + 1) + ']')}">
@@ -168,8 +168,8 @@
                                                                 <th class="bg-gray-active">Concepto</th>
                                                                 <th class="bg-gray-active">Filtro10</th>
                                                                 <th class="bg-gray-active">Filtro11</th>
-                                                                <th class="bg-gray-active">Precio unitario original</th>
-                                                                <th class="bg-gray-active">Precio unitario nuevo</th>
+                                                                <th class="bg-gray-active">Costo Original</th>
+                                                                <th class="bg-gray-active">Costo Actualizado</th>
                                                                 <th class="bg-gray-active">Seleccionar</th>
                                                             </tr>
                                                             </thead>
@@ -184,7 +184,7 @@
                                                                 <td>@{{item.filtro9}}</td>
                                                                 <td>@{{item.filtro10}}</td>
                                                                 <td>@{{item.filtro11}}</td>
-                                                                <td>@{{item.precio_unitario}}</td>
+                                                                <td class="text-right">$@{{parseFloat(item.precio_unitario).formatMoney(2,'.',',')}}</td>
                                                                 <td>
                                                                     <div class="form-group"
                                                                          :class="{'has-error': validation_errors.has('form_save_solicitud.Cantidad Nueva  [' + (i + 1) + '][' + (i2 + 1) + ']')}">
@@ -270,7 +270,7 @@
                                                        id="select_all_price">
                                                 Seleccionar
                                             </th>
-                                            <th>Precio</th>
+                                            <th>Costo</th>
                                         </tr>
                                         </thead>
                                         <tbody>

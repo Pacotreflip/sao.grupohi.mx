@@ -129,7 +129,7 @@ class PDFSolicitudCambioCantidadInsumos extends Rotation
             $this->SetHeights(array(0.35));
             $this->SetAligns(array('L', 'L', 'L', 'C', 'C', 'C', 'C', 'C', 'C', 'C'));
             $this->SetWidths(array(0.03 * $this->WidthTotal, 0.05 * $this->WidthTotal, 0.13 * $this->WidthTotal, 0.13 * $this->WidthTotal, 0.11 * $this->WidthTotal, 0.11 * $this->WidthTotal, 0.1 * $this->WidthTotal, 0.14 * $this->WidthTotal, 0.1 * $this->WidthTotal, 0.1 * $this->WidthTotal));
-            $this->Row(array('#', 'Numero de Tarjeta', 'Sector', 'Cuadrante', 'Especialidad', 'Partida', 'Subpartida o Cuenta de costo', 'insumo', 'precio unitario original', 'precio unitario nuevo'));
+            $this->Row(array('#', 'Numero de Tarjeta', 'Sector', 'Cuadrante', 'Especialidad', 'Partida', 'Subpartida o Cuenta de Costo', 'Insumo', 'Costo Original', 'Costo Actualizado'));
 
             $this->SetFont('Arial', '', 6);
             $this->SetFills(array('255,255,255', '255,255,255', '255,255,255', '255,255,255', '255,255,255', '255,255,255', '255,255,255', '255,255,255', '255,255,255', '255,255,255'));
@@ -156,7 +156,7 @@ class PDFSolicitudCambioCantidadInsumos extends Rotation
             $this->SetHeights(array(0.28));
             $this->SetAligns(array('L', 'L', 'L', 'C', 'C', 'C'));
             $this->SetWidths(array(0.02 * $this->WidthTotal, 0.1 * $this->WidthTotal, 0.27 * $this->WidthTotal, 0.21 * $this->WidthTotal, 0.2 * $this->WidthTotal, 0.2 * $this->WidthTotal));
-            $this->Row(array('#', 'Cantidad de insumos', 'Agrupados por', 'Cantidad original', 'Importe original', 'Importe Actualizado'));
+            $this->Row(array('#', 'Cantidad de Insumos', 'Agrupados por', 'Costo Original', 'Importe Original', 'Importe Actualizado'));
 
             $this->SetFont('Arial', '', 6);
             $this->SetFills(array('255,255,255', '255,255,255', '255,255,255', '255,255,255', '255,255,255', '255,255,255'));
@@ -194,7 +194,7 @@ class PDFSolicitudCambioCantidadInsumos extends Rotation
 
         $this->SetFont('Arial', 'B', $this->txtContenidoTam);
         $this->SetX($x);
-        $this->Cell(0.125 * $this->WidthTotal, 0.5, utf8_decode('Tipo de solicitud:'), '', 0, 'LB');
+        $this->Cell(0.125 * $this->WidthTotal, 0.5, utf8_decode('Tipo de Solicitud:'), '', 0, 'LB');
         $this->SetFont('Arial', '', $this->txtContenidoTam);
         $this->CellFitScale(0.375 * $this->WidthTotal, 0.5, utf8_decode($this->solicitud->tipoOrden->descripcion), '', 1, 'L');
 
@@ -244,7 +244,7 @@ class PDFSolicitudCambioCantidadInsumos extends Rotation
 
         $this->SetFont('Arial', 'B', $this->txtSeccionTam);
         $this->SetXY($this->GetX(), $this->GetY());
-        $this->Cell($this->WidthTotal, 0.7, utf8_decode('CAMBIO DE CANTIDAD A INSUMOS'), 'TRLB', 0, 'C');
+        $this->Cell($this->WidthTotal, 0.7, utf8_decode('CAMBIO DE COSTO A INSUMOS'), 'TRLB', 0, 'C');
         $this->SetXY($this->GetX(), $this->GetY() + 0.3);
         $this->SetWidths(array(0));
         $this->SetFills(array('255,255,255'));
@@ -266,7 +266,7 @@ class PDFSolicitudCambioCantidadInsumos extends Rotation
         $this->SetHeights(array(0.35));
         $this->SetAligns(array('L', 'L', 'L', 'C', 'C', 'C', 'C', 'C', 'C', 'C'));
         $this->SetWidths(array(0.03 * $this->WidthTotal, 0.05 * $this->WidthTotal, 0.13 * $this->WidthTotal, 0.13 * $this->WidthTotal, 0.11 * $this->WidthTotal, 0.11 * $this->WidthTotal, 0.1 * $this->WidthTotal, 0.14 * $this->WidthTotal, 0.1 * $this->WidthTotal, 0.1 * $this->WidthTotal));
-        $this->Row(array('#', 'Numero de Tarjeta', 'Sector', 'Cuadrante', 'Especialidad', 'Partida', 'Subpartida o Cuenta de costo', 'insumo', 'precio unitario original', 'precio unitario nuevo'));
+        $this->Row(array('#', 'Numero de Tarjeta', 'Sector', 'Cuadrante', 'Especialidad', 'Partida', 'Subpartida o Cuenta de Costo', 'Insumo', 'Costo Original', 'Costo Actualizado'));
 
         $this->SetFont('Arial', '', 6);
         $this->SetFills(array('255,255,255', '255,255,255', '255,255,255', '255,255,255', '255,255,255', '255,255,255', '255,255,255', '255,255,255', '255,255,255', '255,255,255'));
