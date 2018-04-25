@@ -1,6 +1,6 @@
 @extends('control_presupuesto.layout')
 @section('title', 'Control presupuesto')
-@section('contentheader_title', 'CAMBIO DE CANTIDAD A INSUMOS')
+@section('contentheader_title', 'CAMBIO DE COSTO A INSUMOS')
 @section('breadcrumb')
     {!! Breadcrumbs::render('control_presupuesto.cambio_presupuesto.show',$solicitud) !!}
 @endsection
@@ -74,7 +74,7 @@
 
                     <div class="box box-solid">
                         <div class="box-header with-border">
-                            <h3 class="box-title">Detalle de la solicitud</h3>
+                            <h3 class="box-title">Detalle de la Solicitud</h3>
                             <div class="pull-right">
                                 <span class="label"></span>
                                 <button class="btn btn-xs btn-info mostrar_pdf" :data-pdf_id="solicitud.id"
@@ -83,7 +83,7 @@
                         </div>
                         <!-- /.box-header -->
                         <div class="box-body">
-                            <strong>Folio de la solicitud:</strong>
+                            <strong>Folio de la Solicitud:</strong>
                             <p class="text-muted">@{{ solicitud.numero_folio}}</p>
                             <strong>Cobrabilidad:</strong>
                             <p class="text-muted">@{{ solicitud.tipo_orden.cobrabilidad.descripcion}}</p>
@@ -93,7 +93,7 @@
                             <p class="text-muted">@{{solicitud.motivo}}</p>
                             <strong>Usuario que Solicita:</strong>
                             <p class="text-muted">@{{solicitud.user_registro.apaterno +' '+ solicitud.user_registro.amaterno+' '+solicitud.user_registro.nombre}}</p>
-                            <strong>Fecha de solicitud:</strong>
+                            <strong>Fecha de Solicitud:</strong>
                             <p class="text-muted">@{{solicitud.fecha_solicitud}}</p>
                             <strong>Estatus:</strong>
                             <p class="text-muted">@{{solicitud.estatus.descripcion}}</p>
@@ -118,10 +118,10 @@
                                         <thead>
                                         <tr>
                                             <th style="width:20px"></th>
-                                            <th>Cantidad de insumos</th>
+                                            <th>Cantidad de Insumos</th>
                                             <th v-text="'Agrupados por '+solicitud.filtro_cambio_cantidad.tipo_filtro.descripcion   "></th>
-                                            <th>Cantidad original</th>
-                                            <th class="bg-gray-active">Importe original</th>
+                                            <th>Costo Original</th>
+                                            <th class="bg-gray-active">Importe Original</th>
                                             <th class="bg-gray-active">Importe Actualizado</th>
                                         </tr>
                                         </thead>
@@ -148,7 +148,7 @@
                                                 </td>
                                                 <td>@{{agrupado.cantidad}}</td>
                                                 <td>@{{agrupado.agrupador}}</td>
-                                                <td>@{{agrupado.precio_unitario_original}}</td>
+                                                <td class="text-right">$@{{parseFloat(agrupado.precio_unitario_original).formatMoney(2,'.',',')}}</td>
                                                 <td class="text-right bg-gray-active">
                                                     $@{{ parseFloat(agrupado.importe_original).formatMoney(2, '.',',') }}</td>
                                                 <td class="text-right  bg-gray-active">
@@ -170,15 +170,14 @@
                                                                     <th class="bg-gray-active">Especialidad</th>
                                                                     <th class="bg-gray-active">Partida</th>
                                                                     <th class="bg-gray-active">Subpartida o Cuenta de
-                                                                        costo
+                                                                        Costo
                                                                     </th>
                                                                     <th class="bg-gray-active">Concepto</th>
                                                                     <th class="bg-gray-active">Filtro10</th>
                                                                     <th class="bg-gray-active">Filtro11</th>
-                                                                    <th class="bg-gray-active">Precio unitario
-                                                                        original
+                                                                    <th class="bg-gray-active">Costo Original
                                                                     </th>
-                                                                    <th class="bg-gray-active">Precio unitario nuevo
+                                                                    <th class="bg-gray-active">Costo Actualizado
                                                                     </th>
                                                                 </tr>
                                                                 </thead>

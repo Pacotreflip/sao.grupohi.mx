@@ -320,9 +320,9 @@ Vue.component('comprobante-fondo-fijo-create', {
                 $(el).select2({
                     width: '100%',
                     ajax: {
-                        url: App.host + '/sistema_contable/concepto/getBy',
+                        url: App.host + '/finanzas/comprobante_fondo_fijo/getBy',
                         dataType: 'json',
-                        delay: 500,
+                        delay: 1500,
                         data: function (params) {
                             return {
                                 attribute: 'descripcion',
@@ -342,8 +342,8 @@ Vue.component('comprobante-fondo-fijo-create', {
                         },
                         error: function (error) {
 
-                        },
-                        cache: true
+                        }
+
                     },
                     escapeMarkup: function (markup) {
                         return markup;

@@ -333,7 +333,8 @@ class ComprobanteFondoFijoController extends Controller
         }
     }
 
-    public function paginate(Request $request) {
+    public function paginate(Request $request)
+    {
         $comprobantes = $this->comprobante_fondo_fijo->paginate($request->all());
 
         return response()->json([
@@ -341,5 +342,18 @@ class ComprobanteFondoFijoController extends Controller
             'recordsFiltered' => $comprobantes->total(),
             'data' => $comprobantes->items()
         ], 200);
+    }
+
+
+    /**
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function getBy(Request $request)
+    {
+
+
+        $items = $this->comprobante_fondo_fijo->getBy($request->attribute, $request->operator, $request->value, $request->with);
+        return response()->json(['data' => ['conceptos' => $items]], 200);
     }
 }
