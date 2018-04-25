@@ -97,7 +97,7 @@ Vue.component('procuracion-asignacion-index', {
         confirm_eliminar: function(id_asignacion) {
             var self = this;
             swal({
-                title: "Eliminar asingacion",
+                title: "Eliminar asignacion",
                 text: "¿Estás seguro/a de que deseas eliminar la asignación?",
                 type: "warning",
                 showCancelButton: true,

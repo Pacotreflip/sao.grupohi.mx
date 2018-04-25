@@ -30,7 +30,7 @@ class EloquentAsignacionRepository implements AsignacionRepository
 
     /**
      * Obtiene todos los elementos
-     * @return \Illuminate\Database\Eloquent\Collection|\Ghi\Domain\Core\Contracts\Procuracion\Asingacion
+     * @return \Illuminate\Database\Eloquent\Collection|\Ghi\Domain\Core\Contracts\Procuracion\Asignacion
      */
     public function all()
     {
@@ -127,10 +127,10 @@ class EloquentAsignacionRepository implements AsignacionRepository
             ['id_transaccion', '=', $data['id_transaccion']],
             ['id_usuario_asignado', '=', $data['id_usuario_asignado']]
         ];
-        $whereAsingacion = $this->with(['usuario_asigna','usuario_asignado','transaccion.tipotran','transaccion'])
+        $whereAsignacion = $this->with(['usuario_asigna','usuario_asignado','transaccion.tipotran','transaccion'])
             ->where($where)->all()->toArray();
 
-        return $whereAsingacion;
+        return $whereAsignacion;
     }
 
     public function refresh()

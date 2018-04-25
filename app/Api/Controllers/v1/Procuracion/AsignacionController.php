@@ -61,9 +61,9 @@ class AsignacionController extends Controller
             if(is_array($asignaciones)) {
                 $arrayAsignacionId['exists'] = [];
                 foreach ($asignaciones as $arrayAsignaciones) {
-                    $whereAsingacion = $this->asignacionRepository->exists($arrayAsignaciones);
-                    if(count($whereAsingacion)>0) {
-                        $arrayAsignacionId['exists'][] = $whereAsingacion[0];
+                    $whereAsignacion = $this->asignacionRepository->exists($arrayAsignaciones);
+                    if(count($whereAsignacion)>0) {
+                        $arrayAsignacionId['exists'][] = $whereAsignacion[0];
                     }else{
                         $this->asignacionRepository->refresh()->create($arrayAsignaciones);
                     }

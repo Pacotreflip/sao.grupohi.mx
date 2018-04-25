@@ -27,13 +27,13 @@ interface AsignacionRepository
     /**
      * Obtiene todos los registros de la Asignacion
      *
-     * @return \Illuminate\Database\Eloquent\Collection|\Ghi\Domain\Core\Contracts\Asingacion
+     * @return \Illuminate\Database\Eloquent\Collection|\Ghi\Domain\Core\Contracts\Asignacion
      */
     public function all();
 
     /**
      * Aplica un SoftDelete a la Asignacion seleccionado
-     * @param $id Identificador del registro de Tipo de Asinaciones que se va a eliminar
+     * @param $id Identificador del registro de Tipo de Asignaciones que se va a eliminar
      * @return mixed|void
      * @throws \Exception
      */
