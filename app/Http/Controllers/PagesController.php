@@ -128,7 +128,17 @@ class PagesController extends Controller
         return view('configuracion.presupuesto.index');
     }
 
+    /**
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     public function obra() {
         return view('configuracion.obra.index');
+    }
+
+    /**
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function procuracion() {
+        return view('procuracion.index');
     }
 }

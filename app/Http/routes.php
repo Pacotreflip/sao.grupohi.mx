@@ -19,4 +19,5 @@ include('Routes/formatos.php');
 include('Routes/tesoreria.php');
 include('Routes/control_costos.php');
 include('Routes/control_presupuesto.php');
+include('Routes/procuracion.php');
 include('Routes/configuracion.php');

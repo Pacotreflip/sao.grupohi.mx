@@ -5,7 +5,8 @@
 $(function ()  {
     $.ajaxSetup({
         headers: {
-            'X-CSRF-TOKEN': App.csrfToken
+            'X-CSRF-TOKEN': App.csrfToken,
+            'Authorization': localStorage.getItem('token')
         },
         error: function (jqXHR) {
             swal({

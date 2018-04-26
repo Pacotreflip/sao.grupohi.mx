@@ -180,4 +180,17 @@ class EloquentUserRepository extends \Ghi\Core\Repositories\EloquentUserReposito
 
 
     }
+
+    /**
+     * @return mixed
+     */
+    public function rolesForUser(){
+        $query = UsuarioCadeco::where(function($q) {
+            return $q
+                ->where('id_obra', '=', Context::getId())
+                ->orWhereNull('id_obra');
+        })->with('user.roles');
+
+        return $query->get();
+    }
 }

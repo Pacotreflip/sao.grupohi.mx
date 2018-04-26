@@ -12,3 +12,4 @@ include ('breadcrumbs/tesoreria.php');
 include ('breadcrumbs/control_costos.php');
 include ('breadcrumbs/control_presupuesto.php');
 include ('breadcrumbs/configuracion.php');
+include ('breadcrumbs/procuracion.php');

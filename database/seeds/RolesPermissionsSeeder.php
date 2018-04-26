@@ -147,6 +147,11 @@ class RolesPermissionsSeeder extends Seeder
         $administracion_configuracion_obra = Permission::firstOrCreate(['name' => 'administracion_configuracion_obra', 'display_name' => 'Configuración de la estructura la obra', 'description' => 'Permisos para configuración de la estructura de obra']);
         $administracion_configuracion_presupuesto = Permission::firstOrCreate(['name' => 'administracion_configuracion_presupuesto', 'display_name' => 'Configuración de la estructura del presupuesto', 'description' => 'Permisos para configuración de la estructura del presupuesto']);
 
+        //Procuaracion
+        $consultar_asignacion = Permission::firstOrCreate(['name' => 'consultar_asignacion', 'display_name' => 'Consultar Asignación', 'description' => 'Permisos para la asignación de la consulta de procuración de las asignaciones']);
+        $resgistro_asignacion = Permission::firstOrCreate(['name' => 'registrar_asignacion', 'display_name' => 'Registrar una Asignación', 'description' => 'Permisos para el registro de una asignación de procuración']);
+        $eliminar_asignacion = Permission::firstOrCreate(['name' => 'eliminar_asignacion', 'display_name' => 'Eliminar una Asignación', 'description' => 'Permisos para poder eliminar el registro de una asignación de procuración']);
+
         /**
          * Roles
          */
@@ -160,6 +165,8 @@ class RolesPermissionsSeeder extends Seeder
         $control_proyecto              = Role::firstOrCreate(['name' => 'control_proyecto', 'display_name' => 'Control de Proyecto', 'description' => 'Rol de usuario de Control de Proyecto']);
         $coordinador_control_proyectos = Role::firstOrCreate(['name' => 'coordinador_control_proyectos', 'display_name' => 'Coordinador de Control de Proyectos', 'description' => 'Coordinador de Control de Proyectos']);
         $administrador_sistema         = Role::firstOrCreate(['name' => 'administrador_sistema', 'display_name' => 'Administrador del Sistema', 'description' => 'Administrador del Sistema']);
+        $comprador                     = Role::firstOrCreate(['name' => 'comprador', 'display_name' => 'Comprador', 'description' => 'Rol de Procuración']);
+        $coordinador_procuracion       = Role::firstOrCreate(['name' => 'coordinador_procuracion', 'display_name' => 'Coordinador Procuracion', 'description' => 'Rol de Coordinador Procuración']);
 
         /**
          * Asignaciones
@@ -246,7 +253,7 @@ class RolesPermissionsSeeder extends Seeder
             $consultar_formato_comparativa_presupuestos->id,
         ]);
         $jefe_procuracion->perms()->sync([
-            $consultar_formato_estimacion->id
+            $consultar_formato_estimacion->id,
         ]);
         $coordinador_sao->perms()->sync([
             $consultar_cuenta_almacen->id,
@@ -299,6 +306,11 @@ class RolesPermissionsSeeder extends Seeder
             $administracion_configuracion_obra->id,
         ]);
 
+        $coordinador_procuracion->perms()->sync([
+            $consultar_asignacion->id,
+            $resgistro_asignacion->id,
+            $eliminar_asignacion->id,
+        ]);
         /**
          * Sistemas
          */
@@ -308,6 +320,7 @@ class RolesPermissionsSeeder extends Seeder
         $tesoreria = Sistema::firstOrCreate(['name' => 'Tesorería', 'description' => 'Sistema de Tesorería', 'url' => 'tesoreria']);
         $control_costos = Sistema::firstOrCreate(['name' => 'Control de Costos', 'description' => 'Sistema de control de costos', 'url' => 'control_costos']);
         $control_presupuesto = Sistema::firstOrCreate(['name' => 'Control del Presupuesto', 'description' => 'Sistema para el control del presupuesto', 'url' => 'control_presupuesto']);
+        $procuracion = Sistema::firstOrCreate(['name' => 'Procuración', 'description' => 'Sistema para el control de asignación', 'url' => 'procuracion']);
 
         $sistema_contable->permisos()->sync(
             [
@@ -408,6 +421,14 @@ class RolesPermissionsSeeder extends Seeder
                 $autorizar_cambio_cantidad_insumos->id,
                 $rechazar_cambio_cantidad_insumos->id,
                 $consultar_cambio_cantidad_insumos->id
+            ]
+        );
+
+        $procuracion->permisos()->sync(
+            [
+                $resgistro_asignacion->id,
+                $consultar_asignacion->id,
+                $eliminar_asignacion->id,
             ]
         );
     }

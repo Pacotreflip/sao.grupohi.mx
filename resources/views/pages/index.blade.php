@@ -127,6 +127,25 @@
                 </div>
             </div>
             @endif
+
+            @if(auth()->user()->canAccessSystem('procuracion'))
+                <div class="col-lg-3 col-xs-6">
+                    <div class="small-box bg-purple-active">
+                        <div class="inner">
+                            <h4>Procuración</h4>
+                            <p>
+                                <br/>
+                            </p>
+                        </div>
+                        <div class="icon">
+                            <i class="fa  fa-legal fa-fw "></i>
+                        </div>
+                        <a href="{{route('procuracion.index')}}" class="small-box-footer">
+                            Ingresar <i class="fa fa-arrow-circle-right"></i>
+                        </a>
+                    </div>
+                </div>
+            @endif
            {{-- <div class="col-lg-3 col-xs-6">
 
                 <div class="small-box bg-green">
