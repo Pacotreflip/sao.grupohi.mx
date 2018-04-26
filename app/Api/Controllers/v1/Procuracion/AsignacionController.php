@@ -11,7 +11,7 @@ namespace Ghi\Api\Controllers\v1\Procuracion;
 use Dingo\Api\Routing\Helpers;
 use Ghi\Http\Controllers\Controller;
 use Dingo\Api\Http\Request;
-use Ghi\Domain\Core\Contracts\Procuracion\AsignacionRepository;
+use Ghi\Domain\Core\Contracts\Procuracion\AsignacionesRepository;
 use Ghi\Domain\Core\Transformers\AsignacionTransformer;
 
 
@@ -23,15 +23,15 @@ class AsignacionController extends Controller
 {
     use Helpers;
     /**
-     * @var AsignacionRepository
+     * @var AsignacionesRepository
      */
     private $asignacionRepository;
 
     /**
      * AsignacionController constructor.
-     * @param AsignacionRepository $asignacionRepository
+     * @param AsignacionesRepository $asignacionRepository
      */
-    public function __construct(AsignacionRepository $asignacionRepository)
+    public function __construct(AsignacionesRepository $asignacionRepository)
     {
         $this->asignacionRepository = $asignacionRepository;
     }

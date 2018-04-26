@@ -9,28 +9,28 @@
 namespace Ghi\Domain\Core\Repositories\Programacion;
 
 use Illuminate\Support\Facades\DB;
-use Ghi\Domain\Core\Contracts\Procuracion\AsignacionRepository;
-use Ghi\Domain\Core\Models\Procuracion\Asignacion;
+use Ghi\Domain\Core\Contracts\Procuracion\AsignacionesRepository;
+use Ghi\Domain\Core\Models\Procuracion\Asignaciones;
 
-class EloquentAsignacionRepository implements AsignacionRepository
+class EloquentAsignacionesRepository implements AsignacionesRepository
 {
     /**
-     * @var Asignacion
+     * @var Asignaciones
      */
     private $model;
 
     /**
-     * EloquentAsignacionRepository constructor.
-     * @param Asignacion $model
+     * EloquentAsignacionesRepository constructor.
+     * @param Asignaciones $model
      */
-    public function __construct(Asignacion $model)
+    public function __construct(Asignaciones $model)
     {
         $this->model = $model;
     }
 
     /**
      * Obtiene todos los elementos
-     * @return \Illuminate\Database\Eloquent\Collection|\Ghi\Domain\Core\Contracts\Procuracion\Asignacion
+     * @return \Illuminate\Database\Eloquent\Collection|\Ghi\Domain\Core\Contracts\Procuracion\Asignaciones
      */
     public function all()
     {
@@ -135,7 +135,7 @@ class EloquentAsignacionRepository implements AsignacionRepository
 
     public function refresh()
     {
-        self::__construct(new Asignacion);
+        self::__construct(new Asignaciones);
         return $this;
     }
 }

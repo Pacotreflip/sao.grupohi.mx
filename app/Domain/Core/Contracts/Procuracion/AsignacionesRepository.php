@@ -8,31 +8,31 @@
 
 namespace Ghi\Domain\Core\Contracts\Procuracion;
 
-use Ghi\Domain\Core\Models\Procuracion\Asignacion;
+use Ghi\Domain\Core\Models\Procuracion\Asignaciones;
 
 /**
- * Interface AsignacionRepository
+ * Interface AsignacionesRepository
  * @package Ghi\Domain\Core\Contracts\Procuracion
  */
-interface AsignacionRepository
+interface AsignacionesRepository
 {
     /**
      * Guartdar un nuevo registro
      * @param array $data
-     * @return Asignacion
+     * @return Asignaciones
      * @throws \Exception
      */
     public function create($data);
 
     /**
-     * Obtiene todos los registros de la Asignacion
+     * Obtiene todos los registros de la Asignaciones
      *
-     * @return \Illuminate\Database\Eloquent\Collection|\Ghi\Domain\Core\Contracts\Asignacion
+     * @return \Illuminate\Database\Eloquent\Collection|\Ghi\Domain\Core\Contracts\Asignaciones
      */
     public function all();
 
     /**
-     * Aplica un SoftDelete a la Asignacion seleccionado
+     * Aplica un SoftDelete a la Asignaciones seleccionado
      * @param $id Identificador del registro de Tipo de Asignaciones que se va a eliminar
      * @return mixed|void
      * @throws \Exception
