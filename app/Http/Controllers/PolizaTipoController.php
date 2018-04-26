@@ -77,10 +77,9 @@ class PolizaTipoController extends Controller
      */
     public function index()
     {
-        $polizas_tipo = $this->poliza_tipo->all();
-
-        return view('sistema_contable.poliza_tipo.index')
-        ->with('polizas_tipo', $polizas_tipo);
+        //$polizas_tipo = $this->poliza_tipo->all();
+        return view('sistema_contable.poliza_tipo.index');
+        //->with('polizas_tipo', $polizas_tipo);
     }
 
     /**

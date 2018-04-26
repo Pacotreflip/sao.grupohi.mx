@@ -344,8 +344,8 @@ Vue.component('movimientos_bancarios-index', {
             Vue.set(this.movimiento_edit, 'id_tipo_movimiento', self.item.id_tipo_movimiento);
             Vue.set(this.movimiento_edit, 'estatus', self.item.estatus);
             Vue.set(this.movimiento_edit, 'id_cuenta', self.item.id_cuenta);
-            Vue.set(this.movimiento_edit, 'impuesto', parseFloat(self.item.impuesto).formatMoney(2, '.', ','));
-            Vue.set(this.movimiento_edit, 'importe', parseFloat(self.item.importe).formatMoney(2, '.', ','));
+            Vue.set(this.movimiento_edit, 'impuesto', self.item.impuesto);
+            Vue.set(this.movimiento_edit, 'importe', self.item.importe);
             Vue.set(this.movimiento_edit, 'observaciones', self.item.observaciones);
             Vue.set(this.movimiento_edit, 'fecha', this.trim_fecha(self.item.movimiento_transaccion.transaccion.fecha));
             Vue.set(this.movimiento_edit, 'cumplimiento', this.trim_fecha(self.item.movimiento_transaccion.transaccion.cumplimiento));

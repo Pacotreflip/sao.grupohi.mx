@@ -57,6 +57,12 @@ $api->version('v1', function ($api) {
         $api->delete('tesoreria/movimientos_bancarios/{id_traspaso}', 'Ghi\Api\Controllers\v1\Tesoreria\MovimientosBancariosController@delete')->where(['id' => '[0-9]+']);
         $api->get('tesoreria/movimientos_bancarios/{id_traspaso}', 'Ghi\Api\Controllers\v1\Tesoreria\MovimientosBancariosController@show')->where(['id' => '[0-9]+']);
         $api->put('tesoreria/movimientos_bancarios/{id_traspaso}', 'Ghi\Api\Controllers\v1\Tesoreria\MovimientosBancariosController@update')->where(['id' => '[0-9]+']);
+        /**
+         * Sistema Contable
+         * Poliza Tipo
+         */
+        $api->post('sistema_contable/poliza_tipo/paginate', 'Ghi\Api\Controllers\v1\SistemaContable\PolizaTipoController@paginate');
+        $api->delete('sistema_contable/poliza_tipo/{id}', 'Ghi\Api\Controllers\v1\SistemaContable\PolizaTipoController@delete')->where(['id' => '[0-9]+']);
     });
 });
 

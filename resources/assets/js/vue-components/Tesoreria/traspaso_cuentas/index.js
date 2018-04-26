@@ -339,7 +339,7 @@ Vue.component('traspaso-cuentas-index', {
             Vue.set(this.traspaso_edit, 'id_cuenta_origen', self.item.id_cuenta_origen);
             Vue.set(this.traspaso_edit, 'id_cuenta_destino', self.item.id_cuenta_destino);
             Vue.set(this.traspaso_edit, 'observaciones', self.item.observaciones);
-            Vue.set(this.traspaso_edit, 'importe', parseFloat(self.item.importe).formatMoney(2, ',', '.'));
+            Vue.set(this.traspaso_edit, 'importe', self.item.importe);
             Vue.set(this.traspaso_edit, 'fecha', new Date(self.item.traspaso_transaccion.transaccion_debito.fecha).dateFormat());
             Vue.set(this.traspaso_edit, 'cumplimiento', new Date(self.item.traspaso_transaccion.transaccion_debito.cumplimiento).dateFormat());
             Vue.set(this.traspaso_edit, 'vencimiento', new Date(self.item.traspaso_transaccion.transaccion_debito.vencimiento).dateFormat());

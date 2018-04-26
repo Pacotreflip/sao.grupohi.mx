@@ -6,6 +6,11 @@ require('./vue-components/select2');
  *
  */
 require('./vue-components/page/index');
+
+/**
+ *
+ */
+require('./vue-components/SistemaContable/poliza_tipo/index');
 /**
  * Contabilidad Components...
  */
