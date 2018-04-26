@@ -13,7 +13,7 @@ class CreateAsignacionesTable extends Migration
     public function up()
     {
         //
-        Schema::create('Procuracion.asignacion', function (Blueprint $table) {
+        Schema::create('Procuracion.asignaciones', function (Blueprint $table) {
             $table->increments('id');
             $table->unsignedInteger("id_transaccion");
             $table->integer("id_usuario_asigna");
@@ -37,6 +37,6 @@ class CreateAsignacionesTable extends Migration
     public function down()
     {
         //
-        Schema::drop('Procuracion.asignacion');
+        Schema::drop('Procuracion.asignaciones');
     }
 }

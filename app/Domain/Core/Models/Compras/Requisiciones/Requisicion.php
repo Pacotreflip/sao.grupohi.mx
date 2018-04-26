@@ -10,7 +10,7 @@ use Ghi\Domain\Core\Models\Scopes\RequisicionScope;
 use Ghi\Domain\Core\Models\Transacciones\Tipo;
 use Ghi\Domain\Core\Models\Transacciones\Transaccion;
 use Ghi\Domain\Core\Models\Transacciones\TransaccionTrait;
-use Ghi\Domain\Core\Models\Procuracion\Asignacion;
+use Ghi\Domain\Core\Models\Procuracion\Asignaciones;
 
 class Requisicion extends Transaccion
 {
@@ -79,6 +79,6 @@ class Requisicion extends Transaccion
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function asignaciones(){
-        return $this->hasMany(Asignacion::class, 'id_transaccion', 'id_transaccion');
+        return $this->hasMany(Asignaciones::class, 'id_transaccion', 'id_transaccion');
     }
 }

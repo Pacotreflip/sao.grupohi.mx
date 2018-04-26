@@ -12,7 +12,7 @@ namespace Ghi\Domain\Core\Models\Transacciones;
 use Carbon\Carbon;
 use Ghi\Core\Facades\Context;
 use Ghi\Domain\Core\Models\Contrato;
-use Ghi\Domain\Core\Models\Procuracion\Asignacion;
+use Ghi\Domain\Core\Models\Procuracion\Asignaciones;
 use Ghi\Domain\Core\Models\Scopes\ContratoProyectadoScope;
 use Ghi\Domain\Core\Models\Scopes\ObraScope;
 use Ghi\Domain\Core\Models\Sucursal;
@@ -74,7 +74,7 @@ class ContratoProyectado extends Transaccion
      */
     public function asignaciones()
     {
-        return $this->hasMany(Asignacion::class, 'id_transaccion', 'id_transaccion');
+        return $this->hasMany(Asignaciones::class, 'id_transaccion', 'id_transaccion');
 
     }
 }
