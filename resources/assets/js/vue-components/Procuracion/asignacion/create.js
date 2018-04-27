@@ -301,7 +301,7 @@ Vue.component('procuracion-asignacion-create', {
                             //html : 'Solicitud Guardada con Número de Folio <b>' + response.numero_folio + '</b>'
                             html: html
                         }).then(function () {
-                            if(total_exists>0){
+                            /*if(total_exists>0){
                                 var warning = new Array();
                                 $.each(data.exists,function (index, value) {
                                     var found = self.registro.findIndex(function (element) {
@@ -325,9 +325,9 @@ Vue.component('procuracion-asignacion-create', {
                                         }
                                     });
                                 } );
-                            }else {
+                            }else {*/
                                 window.location = self.url_success;
-                            }
+                            //}
                         });
                     }
                 },
