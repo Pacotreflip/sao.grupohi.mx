@@ -50,6 +50,7 @@ class Asignaciones  extends BaseModel
         'id_usuario_asigna',
         'id_usuario_asignado',
         'numero_folio',
+        'id_usuario_deleted',
     ];
 
     /**

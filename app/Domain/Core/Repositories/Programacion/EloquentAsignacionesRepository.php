@@ -97,12 +97,13 @@ class EloquentAsignacionesRepository implements AsignacionesRepository
         try {
             DB::connection('cadeco')->beginTransaction();
 
-            $item = $this->model->where('id', '=', $id);
+            $item = $this->model->where('id', '=', $id)->first();
 
             if (!$item) {
                 throw new \Exception('no se esta el registro');
             }
-
+            $item->id_usuario_deleted = auth()->user()->idusuario;
+            $item->update();
             $item->delete($id);
 
             DB::connection('cadeco')->commit();

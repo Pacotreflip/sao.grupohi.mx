@@ -311,14 +311,17 @@ Vue.component('procuracion-asignacion-create', {
                                         warning.push(found);
                                     }
                                 });
+                                console.log(warning);
                                 self.table.rows().each( function ( indexTable ) {
+                                    console.log('indices de las tabla---',indexTable);
                                     $.each(indexTable,function (index,value) {
                                         var row = self.table.row(value);
-                                        if($.inArray(value,warning)){
-                                            $(row.node()).addClass('danger');
-                                        }else{
+                                        console.log(value,warning,$.inArray(value,warning));
+                                        if($.inArray(value,warning)<0){
                                             var rowNode = row.node().remove();
                                             row.remove();
+                                        }else{
+                                            $(row.node()).addClass('danger');
                                         }
                                     });
                                 } );
