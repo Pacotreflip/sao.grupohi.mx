@@ -8,9 +8,13 @@
 
 namespace Ghi\Domain\Core\Repositories\Programacion;
 
+use Ghi\Domain\Core\Models\User;
+use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\DB;
 use Ghi\Domain\Core\Contracts\Procuracion\AsignacionesRepository;
 use Ghi\Domain\Core\Models\Procuracion\Asignaciones;
+use Illuminate\Support\Facades\Log;
 
 class EloquentAsignacionesRepository implements AsignacionesRepository
 {
@@ -47,13 +51,23 @@ class EloquentAsignacionesRepository implements AsignacionesRepository
     {
         try {
             DB::connection('cadeco')->beginTransaction();
-            $record = $this->model->create($data);
+            /*
+             * Prueba
+             */
+
+            $user = User::find($data['id_usuario_asignado']);
+            $record = $user->transaccionesAsignadas()->attach($data['id_transaccion'], [
+                'id_usuario_asigna' => auth()->user()->idusuario,
+                'numero_folio' => Asignaciones::getFolio()
+            ]);
+
+            //$record = $this->model->create($data);
             DB::connection('cadeco')->commit();
         } catch (\Exception $e) {
             DB::connection('cadeco')->rollBack();
             throw $e;
         }
-        return $record->id;
+        return $record;
     }
 
     /**
@@ -109,9 +123,35 @@ class EloquentAsignacionesRepository implements AsignacionesRepository
     public function paginate(array $data)
     {
         $query = $this->model;
+        Log::debug(print_r($data, true));
+
+        $query = $this->model
+            ->select('Procuracion.asignaciones.numero_folio as asignaciones_numero_folio', 'Procuracion.asignaciones.*')
+            ->join(DB::raw('dbo.transacciones as transacciones'), 'Procuracion.asignaciones.id_transaccion', '=', 'transacciones.id_transaccion')
+            ->join(DB::raw('dbo.[TipoTran] as tipo_transaccion'), 'transacciones.tipo_transaccion', '=', 'tipo_transaccion.Tipo_Transaccion')
+        ;
+
+
+        if (!empty($data['columns']['4']['search']['value'])) {
+            $query->where(function ($query) use ($data) {
+                $query->where('id_usuario_asignado', '=', $data['columns']['4']['search']['value']);
+            });
+        }
+
+        if(!empty($data['columns']['1']['search']['value'])) {
+            $query->where(function ($query) use ($data) {
+                $query->where('tipo_transaccion.Descripcion',  'like', '%' .  $data['columns']['1']['search']['value']. '%');
+            });
+        }
+        if (!empty($data['columns']['2']['search']['value'])) {
+            $query->where(function ($query) use ($data) {
+                $query->where('transacciones.numero_folio', 'like', '%' . $data['columns']['2']['search']['value'] . '%');
+            });
+        }
 
         foreach ($data['order'] as $order) {
-            $query->orderBy($data['columns'][$order['column']]['data'], $order['dir']);
+            $column = ($data['columns'][$order['column']]['data'] == 'asignaciones_numero_folio') ? 'Procuracion.asignaciones.numero_folio' : $data['columns'][$order['column']]['data'];
+            $query->orderBy($column, $order['dir']);
         }
 
         return $query->paginate($perPage = $data['length'], $columns = ['*'], $pageName = 'page', $page = ($data['start'] / $data['length']) + 1);
@@ -127,8 +167,7 @@ class EloquentAsignacionesRepository implements AsignacionesRepository
             ['id_transaccion', '=', $data['id_transaccion']],
             ['id_usuario_asignado', '=', $data['id_usuario_asignado']]
         ];
-        $whereAsignacion = $this->with(['usuario_asigna','usuario_asignado','transaccion.tipotran','transaccion'])
-            ->where($where)->all()->toArray();
+        $whereAsignacion = $this->model->with(['usuario_asigna','usuario_asignado','transaccion.tipotran','transaccion'])->where($where)->first();
 
         return $whereAsignacion;
     }

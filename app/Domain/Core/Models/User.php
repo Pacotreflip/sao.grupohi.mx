@@ -9,6 +9,7 @@ use Ghi\Domain\Core\Models\Seguridad\Permission;
 use Ghi\Domain\Core\Models\Seguridad\Proyecto;
 use Ghi\Domain\Core\Models\Seguridad\Role;
 use Ghi\Domain\Core\Models\Seguridad\Sistema;
+use Ghi\Domain\Core\Models\Transacciones\Transaccion;
 use Illuminate\Auth\Passwords\CanResetPassword;
 use Illuminate\Database\Eloquent\Model;
 use Ghi\Core\App\Auth\AuthenticatableIntranetUser;
@@ -120,5 +121,9 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 
     public function getUsuarioAttribute($usuario) {
         return strtoupper($usuario);
+    }
+
+    public function transaccionesAsignadas() {
+        return $this->belongsToMany(Transaccion::class, 'Procuracion.asignaciones', 'id_usuario_asignado', 'id_transaccion')->withTimestamps();
     }
 }

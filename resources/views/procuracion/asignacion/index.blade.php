@@ -36,6 +36,23 @@
                                 <table class="table table-bordered table-striped" id="asignacion_table">
                                     <thead>
                                     <tr>
+                                        <th></th>
+                                        <th><input id="description" name="description" placeholder="Tipo de Transacción" class="form-control" ></th>
+                                        <th><input id="numero_folio" name="numero_folio" placeholder="Folio de la Transacción" class="form-control" ></th>
+                                        <th></th>
+                                        <th><select class="form-control input-sm" name="id_usuario_asignado"
+                                                    class="form-control"
+                                                    id="id_usuario_asignado"
+                                            ><option value>[--SELECCIONE--]
+                                                </option>
+                                            </select></th>
+                                        <th></th>
+                                        <th></th>
+                                        @permission(['eliminar_asignacion'])
+                                        <th width="150"></th>
+                                        @endpermission
+                                    </tr>
+                                    <tr>
                                         <th>Folio de Asignación</th>
                                         <th>Tipo de Transacción</th>
                                         <th>Folio de la Transacción</th>
@@ -56,7 +73,7 @@
             </div>
             @endpermission
             @permission(['registrar_asignacion'])
-            <div class="row">
+            {{--<div class="row">
                 <div class="col-md-12">
                     <a class="btn btn-success btn-app pull-right" href="{{route('procuracion.asignacion.create')}}" >
                         <i class="glyphicon glyphicon-plus-sign"></i>
@@ -64,7 +81,7 @@
                     </a>
                 </div>
                 <div class="col-md-12">&nbsp;</div>
-            </div>
+            </div>--}}
             @endpermission
         </section>
     </procuracion-asignacion-index>
