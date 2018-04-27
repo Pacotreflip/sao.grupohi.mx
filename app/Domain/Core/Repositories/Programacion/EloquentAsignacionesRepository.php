@@ -54,7 +54,6 @@ class EloquentAsignacionesRepository implements AsignacionesRepository
             /*
              * Prueba
              */
-
             $user = User::find($data['id_usuario_asignado']);
             $record = $user->transaccionesAsignadas()->attach($data['id_transaccion'], [
                 'id_usuario_asigna' => auth()->user()->idusuario,
@@ -122,22 +121,22 @@ class EloquentAsignacionesRepository implements AsignacionesRepository
      */
     public function paginate(array $data)
     {
-        $query = $this->model;
-        Log::debug(print_r($data, true));
-
         $query = $this->model
             ->select('Procuracion.asignaciones.numero_folio as asignaciones_numero_folio', 'Procuracion.asignaciones.*')
             ->join(DB::raw('dbo.transacciones as transacciones'), 'Procuracion.asignaciones.id_transaccion', '=', 'transacciones.id_transaccion')
             ->join(DB::raw('dbo.[TipoTran] as tipo_transaccion'), 'transacciones.tipo_transaccion', '=', 'tipo_transaccion.Tipo_Transaccion')
         ;
-
-
+        $query->where(function ($query) use ($data) {
+            $query->where('tipo_transaccion.tipo_transaccion', '=', '17')->where('tipo_transaccion.Opciones', '=', '1')
+            ;
+            $query->orwhere('tipo_transaccion.tipo_transaccion', '=', '49')->where('tipo_transaccion.Opciones', '=', '1026')
+            ;
+        });
         if (!empty($data['columns']['4']['search']['value'])) {
             $query->where(function ($query) use ($data) {
                 $query->where('id_usuario_asignado', '=', $data['columns']['4']['search']['value']);
             });
         }
-
         if(!empty($data['columns']['1']['search']['value'])) {
             $query->where(function ($query) use ($data) {
                 $query->where('tipo_transaccion.Descripcion',  'like', '%' .  $data['columns']['1']['search']['value']. '%');
@@ -148,12 +147,10 @@ class EloquentAsignacionesRepository implements AsignacionesRepository
                 $query->where('transacciones.numero_folio', 'like', '%' . $data['columns']['2']['search']['value'] . '%');
             });
         }
-
         foreach ($data['order'] as $order) {
             $column = ($data['columns'][$order['column']]['data'] == 'asignaciones_numero_folio') ? 'Procuracion.asignaciones.numero_folio' : $data['columns'][$order['column']]['data'];
             $query->orderBy($column, $order['dir']);
         }
-
         return $query->paginate($perPage = $data['length'], $columns = ['*'], $pageName = 'page', $page = ($data['start'] / $data['length']) + 1);
     }
 
@@ -172,6 +169,9 @@ class EloquentAsignacionesRepository implements AsignacionesRepository
         return $whereAsignacion;
     }
 
+    /**
+     * @return $this|mixed
+     */
     public function refresh()
     {
         self::__construct(new Asignaciones);

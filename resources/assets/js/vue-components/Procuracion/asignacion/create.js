@@ -261,7 +261,6 @@ Vue.component('procuracion-asignacion-create', {
                 data: {asignaciones:self.registro},
                 success: function (data, textStatus, xhr) {
                     $("#"+id_btn).button('reset');
-                    console.log(data.exists.length);
                     if(data.exists.length==0) {
                         self.table
                             .clear()
@@ -312,13 +311,9 @@ Vue.component('procuracion-asignacion-create', {
                                         warning.push(found);
                                     }
                                 });
-                                console.log(warning);
                                 self.table.rows().each( function ( indexTable ) {
-                                    console.log('index--',indexTable);
                                     $.each(indexTable,function (index,value) {
-                                        console.log('---recorrido--',index,value);
                                         var row = self.table.row(value);
-                                        console.log($.inArray(value,warning));
                                         if($.inArray(value,warning)){
                                             $(row.node()).addClass('danger');
                                         }else{

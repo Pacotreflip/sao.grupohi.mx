@@ -95,7 +95,6 @@ Vue.component('procuracion-asignacion-index', {
 
         self.table = $('#asignacion_table').DataTable(data);
         $("#description,#numero_folio").on( 'keyup change', function () {
-            console.log(this.value);
             self.table
                 .column( $(this).parent().index()+':visible' )
                 .search( this.value )

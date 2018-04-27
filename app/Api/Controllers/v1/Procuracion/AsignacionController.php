@@ -13,6 +13,7 @@ use Ghi\Http\Controllers\Controller;
 use Dingo\Api\Http\Request;
 use Ghi\Domain\Core\Contracts\Procuracion\AsignacionesRepository;
 use Ghi\Domain\Core\Transformers\AsignacionTransformer;
+use Illuminate\Support\Facades\Log;
 
 
 /**

@@ -81,7 +81,7 @@
                     </a>
                 </div>
                 <div class="col-md-12">&nbsp;</div>
-            </div>--}}
+            </div>
             @endpermission--}}
         </section>
     </procuracion-asignacion-index>

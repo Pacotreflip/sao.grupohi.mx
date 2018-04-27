@@ -26,6 +26,7 @@ class CreateAsignacionesTable extends Migration
                 ->on('dbo.transacciones');
             $table->timestamps();
             $table->softDeletes();
+            $table->unique(["id_usuario_asignado","id_transaccion","deleted_at"]);
         });
     }
 
