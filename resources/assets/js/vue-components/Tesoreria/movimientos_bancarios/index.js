@@ -113,6 +113,9 @@ Vue.component('movimientos_bancarios-index', {
         },
         confirm_guardar: function() {
             var self = this;
+
+            $('.guardar_movimiento_boton').addClass('disabled').attr('disabled', 'disabled');
+
             swal({
                 title: "Guardar movimiento",
                 text: "¿Estás seguro/a de que la información es correcta?",
@@ -124,6 +127,10 @@ Vue.component('movimientos_bancarios-index', {
                 if(result.value) {
                     self.guardar();
                 }
+
+                else
+                    $('.guardar_movimiento_boton').removeClass('disabled').removeAttr("disabled");
+
             }).catch(swal.noop);
         },
         guardar: function () {
@@ -168,6 +175,7 @@ Vue.component('movimientos_bancarios-index', {
         },
         close_modal_movimiento: function () {
             this.reset_form();
+            $('.guardar_movimiento_boton').removeClass('disabled').removeAttr("disabled");
             $('#movimiento_modal').modal('hide');
         },
         confirm_eliminar: function(id_movimiento_bancario) {
