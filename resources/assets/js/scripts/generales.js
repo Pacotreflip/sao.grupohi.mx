@@ -8,7 +8,7 @@ $(function ()  {
             'X-CSRF-TOKEN': App.csrfToken,
             'Authorization': localStorage.getItem('token')
         },
-        error: function (jqXHR) {
+        error: function (jqXHR,ajaxOptions, thrownError) {
             swal({
                 type: 'error',
                 title: '¡Error!',

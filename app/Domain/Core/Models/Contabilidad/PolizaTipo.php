@@ -27,7 +27,7 @@ class PolizaTipo extends BaseModel
         'id_obra'
     ];
     protected $dates = ['deleted_at', 'inicio_vigencia', 'fin_vigencia'];
-    protected $appends=['vigencia'];
+    protected $appends=['vigencia','num_movimientos'];
 
     protected static function boot()
     {

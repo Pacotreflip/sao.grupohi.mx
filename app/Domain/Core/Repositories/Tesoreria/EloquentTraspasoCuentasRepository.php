@@ -51,18 +51,17 @@ class EloquentTraspasoCuentasRepository implements TraspasoCuentasRepository
     public function create($data)
     {
         $obras = $this->obras();
-        $id_obra = session()->get('id');
+        $id_obra = $data['id_obra'];
         $id_moneda = 0;
 
-        foreach ($obras as $o)
-            if ($o->id_obra == $id_obra)
+        foreach ($obras as $o) {
+            if ($o->id_obra == $data['id_obra']) {
                 $id_moneda = $o->id_moneda;
-
+            }
+        }
         try {
             DB::connection('cadeco')->beginTransaction();
             $record = $this->model->create($data);
-            DB::connection('cadeco')->commit();
-
             $credito = [
                 'tipo_transaccion' => 83,
                 'fecha' => $data['fecha'] ? $data['fecha'] : date('Y-m-d'),
@@ -117,13 +116,18 @@ class EloquentTraspasoCuentasRepository implements TraspasoCuentasRepository
                 'id_transaccion' => $transaccion_credito->id_transaccion,
                 'tipo_transaccion' => $credito['tipo_transaccion'],
             ]);
-
+            $result =  $this->model
+                ->with(['cuenta_destino.empresa', 'cuenta_origen.empresa', 'traspaso_transaccion.transaccion_debito'])
+                ->where('id_traspaso', '=', $record->id_traspaso)
+                ->first();
+            DB::connection('cadeco')->commit();
+            return $result;
         } catch (\Exception $e) {
+            dd($e->getTraceAsString());
             DB::connection('cadeco')->rollBack();
             throw $e;
         }
 
-        return TraspasoCuentas::where('id_traspaso', '=', $record->id_traspaso)->with(['cuenta_destino.empresa', 'cuenta_origen.empresa', 'traspaso_transaccion.transaccion_debito'])->first();
     }
 
     public function regresaTraspaso($id)
@@ -202,8 +206,35 @@ class EloquentTraspasoCuentasRepository implements TraspasoCuentasRepository
         return $this->model->with(['cuenta_origen.empresa', 'cuenta_destino.empresa', 'traspaso_transaccion.transaccion_debito'])->find($item->id_traspaso);
     }
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Collection|static[]
+     */
     public function obras()
     {
         return Obra::all();
+    }
+
+    /**
+     * @param array $data
+     * @return mixed
+     */
+    public function paginate(array $data)
+    {
+        $query = $this->model->with(['cuenta_destino.empresa', 'cuenta_origen.empresa', 'traspaso_transaccion.transaccion_debito']);
+
+        foreach ($data['order'] as $order) {
+            $query->orderBy($data['columns'][$order['column']]['data'], $order['dir']);
+        }
+
+        return $query->paginate($perPage = $data['length'], $columns = ['*'], $pageName = 'page', $page = ($data['start'] / $data['length']) + 1);
+    }
+
+    /**
+     * @param $id
+     * @return TraspasoCuentasRepository
+     */
+    public function find($id)
+    {
+        return $this->model->find($id);
     }
 }

@@ -153,4 +153,19 @@ class EloquentPolizaTipoRepository implements PolizaTipoRepository
         $this->model = $this->model->with($relations);
         return $this;
     }
+
+    /**
+     * @param array $data
+     * @return mixed
+     */
+    public function paginate(array $data)
+    {
+        $query = $this->model->with(['polizatiposao','userregistro','movimientos']);
+
+        foreach ($data['order'] as $order) {
+            $query->orderBy($data['columns'][$order['column']]['data'], $order['dir']);
+        }
+
+        return $query->paginate($perPage = $data['length'], $columns = ['*'], $pageName = 'page', $page = ($data['start'] / $data['length']) + 1);
+    }
 }
