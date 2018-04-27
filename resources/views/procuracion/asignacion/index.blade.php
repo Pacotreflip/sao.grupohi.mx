@@ -72,8 +72,8 @@
                 </div>
             </div>
             @endpermission
-            @permission(['registrar_asignacion'])
-            {{--<div class="row">
+            {{--@permission(['registrar_asignacion'])
+            <div class="row">
                 <div class="col-md-12">
                     <a class="btn btn-success btn-app pull-right" href="{{route('procuracion.asignacion.create')}}" >
                         <i class="glyphicon glyphicon-plus-sign"></i>
@@ -82,7 +82,7 @@
                 </div>
                 <div class="col-md-12">&nbsp;</div>
             </div>--}}
-            @endpermission
+            @endpermission--}}
         </section>
     </procuracion-asignacion-index>
 @endsection
