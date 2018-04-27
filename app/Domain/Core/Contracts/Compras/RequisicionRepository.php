@@ -47,4 +47,10 @@ interface RequisicionRepository
      */
     public function delete($id);
 
+    /**
+     * @param array $cols
+     * @param string $q
+     * @return mixed
+     */
+    public function like(array $cols,$q);
 }

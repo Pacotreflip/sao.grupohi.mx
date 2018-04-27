@@ -158,12 +158,16 @@ class ContratoProyectadoController extends Controller
     }
 
     /**
+     * @param Request $request
      * @return mixed
      */
-    public function show()
+    public function show(Request $request)
     {
-        return $this->response()->array($this->contrato_proyectado->all(), function ($item) {
-            return $item;
-        });
+        if(!empty($request->get('q') && is_array($request->get('columns')) && count($request->get('columns')))) {
+            $result = $this->contrato_proyectado->like($request->get('columns'), $request->get('q'));
+            return $this->response()->array($result, function ($item) {
+                return $item;
+            });
+        }
     }
 }
