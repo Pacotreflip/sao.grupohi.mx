@@ -201,7 +201,7 @@
                                 <button type="button" class="btn btn-default" v-on:click="close_modal_movimiento()">
                                     Cerrar
                                 </button>
-                                <button type="submit" class="btn btn-primary">Guardar</button>
+                                <button type="submit" class="btn btn-primary guardar_movimiento_boton">Guardar</button>
                             </div>
                         </form>
                     </div><!-- /.modal-content -->
@@ -463,7 +463,7 @@
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-default" @click="close_edit_movimiento">Cerrar
                                 </button>
-                                <button type="submit" class="btn btn-primary">Guardar</button>
+                                <button type="submit" class="btn btn-primary guardar_movimiento_boton">Guardar</button>
                             </div>
                         </div>
                     </div>

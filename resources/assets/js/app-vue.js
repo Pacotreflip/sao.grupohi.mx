@@ -5,7 +5,8 @@ window.Vue = require('vue/dist/vue.js');
 
 window.VeeValidate = require('vee-validate');
 VeeValidate.Validator.addLocale({
-    'es' : require('vee-validate/dist/locale/es')
+    'es' : require('vee-validate/dist/locale/es'),
+    name : 'spanish'
 });
 Vue.use(VeeValidate, { locale: 'es', errorBagName: 'validation_errors'});
 window.Dropzone = require('vue2-dropzone');
