@@ -7,6 +7,7 @@ use Ghi\Domain\Core\Models\Compras\Requisiciones\ItemExt;
 use Ghi\Domain\Core\Models\Concepto;
 use Ghi\Domain\Core\Models\Contrato;
 use Ghi\Domain\Core\Models\Material;
+use Ghi\Ghi\Domain\Core\Models\ControlRec\RQCTOCSolicitudPartidas;
 use Illuminate\Database\Eloquent\Model;
 
 class Item extends Model
@@ -123,5 +124,9 @@ class Item extends Model
     public function getMontoAttribute()
     {
         return $this->importe;
+    }
+
+    public function rqctocSolicitudPartida() {
+        return $this->hasOne(RQCTOCSolicitudPartidas::class, 'iditem_sao', 'id_item');
     }
 }

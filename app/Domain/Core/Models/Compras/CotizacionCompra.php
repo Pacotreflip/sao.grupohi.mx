@@ -13,8 +13,8 @@ use Ghi\Domain\Core\Models\Empresa;
 use Ghi\Domain\Core\Models\Scopes\CotizacionCompraScope;
 use Ghi\Domain\Core\Models\Scopes\ObraScope;
 use Ghi\Domain\Core\Models\Sucursal;
-use Ghi\Domain\Core\Models\Transacciones\Item;
 use Ghi\Domain\Core\Models\Transacciones\Transaccion;
+use Ghi\Domain\Core\Models\ControlRec\RQCTOCCotizaciones;
 
 class CotizacionCompra extends Transaccion
 {
@@ -39,5 +39,9 @@ class CotizacionCompra extends Transaccion
 
     public function sucursal() {
         return $this->belongsTo(Sucursal::class, 'id_sucursal', 'id_sucursal');
+    }
+
+    public function rqctocCotizacion() {
+        return $this->hasOne(RQCTOCCotizaciones::class, 'idtransaccion_sao', 'id_transaccion');
     }
 }

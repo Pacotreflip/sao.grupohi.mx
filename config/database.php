@@ -60,6 +60,20 @@ return [
             'engine' => null,
         ],
 
+        'controlrec' => [
+            'driver' => 'mysql',
+            'host' => env('CONTROLREC_DB_HOST', 'localhost'),
+            'port' => env('CONTROLREC_DB_PORT', '3306'),
+            'database' => env('CONTROLREC_DB_DATABASE', 'forge'),
+            'username' => env('CONTROLREC_DB_USERNAME', 'forge'),
+            'password' => env('CONTROLREC_DB_PASSWORD', ''),
+            'charset' => 'utf8',
+            'collation' => 'utf8_unicode_ci',
+            'prefix' => '',
+            'strict' => false,
+            'engine' => null,
+        ],
+
         'generales' => [
             'driver'   => 'sqlsrv',
             'host'     => env('DB_HOST_GENERALES', 'localhost'),

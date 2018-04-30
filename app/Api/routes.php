@@ -41,6 +41,12 @@ $api->version('v1', function ($api) {
 
         $api->get('formatos/contratos/contrato_proyectado/{id_contrato_proyectado}/comparativa_cotizaciones_contrato', 'Ghi\Api\Controllers\v1\FormatosController@comparativa_cotizaciones_contrato')
             ->where(['id' => '[0-9]+']);
+
+        /*
+         * Layouts Routes
+         */
+        $api->get('layouts/compras/requisicion/{id_requiscion}/asignacion', 'Ghi\Api\Controllers\v1\LayoutsController@compras_asignacion');
+        $api->post('layouts/compras/requisicion/{id_requiscion}/asignacion', 'Ghi\Api\Controllers\v1\LayoutsController@compras_asignacion_store');
     });
 });
 

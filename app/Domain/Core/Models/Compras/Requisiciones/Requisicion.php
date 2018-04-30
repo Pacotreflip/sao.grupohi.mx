@@ -10,6 +10,7 @@ use Ghi\Domain\Core\Models\Scopes\RequisicionScope;
 use Ghi\Domain\Core\Models\Transacciones\Tipo;
 use Ghi\Domain\Core\Models\Transacciones\Transaccion;
 use Ghi\Domain\Core\Models\Transacciones\TransaccionTrait;
+use Ghi\Domain\Core\Models\ControlRec\RQCTOCSolicitud;
 
 class Requisicion extends Transaccion
 {
@@ -74,4 +75,7 @@ class Requisicion extends Transaccion
         return $this->hasMany(CotizacionCompra::class, 'id_antecedente', 'id_transaccion');
     }
 
+    public function rqctocSolicitud() {
+        return $this->hasOne(RQCTOCSolicitud::class, 'idtransaccion_sao', 'id_transaccion');
+    }
 }
