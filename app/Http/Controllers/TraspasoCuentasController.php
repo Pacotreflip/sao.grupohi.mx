@@ -40,7 +40,7 @@ class TraspasoCuentasController extends Controller
     {
         $dataView = [
             'cuentas' => Cuenta::paraTraspaso()->with('empresa')->get(),
-            'traspasos' => $this->traspaso->with(['cuenta_destino.empresa', 'cuenta_origen.empresa', 'traspaso_transaccion.transaccion_debito'])->all(),
+            'traspasos' => '',
         ];
 
         return view('tesoreria.traspaso_cuentas.index')

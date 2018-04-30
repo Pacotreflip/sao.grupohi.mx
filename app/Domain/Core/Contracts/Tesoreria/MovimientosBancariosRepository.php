@@ -14,6 +14,9 @@ interface MovimientosBancariosRepository
      */
     public function create($data);
 
+    /**
+     * @return mixed
+     */
     public function all();
 
     /**
@@ -23,4 +26,25 @@ interface MovimientosBancariosRepository
      * @throws \Exception
      */
     public function delete($id);
+
+    /**
+     * Regresa registros de movimientos bancarios entre cuentas seleccionado
+     * @param array $data
+     * @return mixed
+     */
+    public function paginate(array $data);
+
+    /**
+     * Regresa el Registro de un movimiento bancario buscado
+     * @param $id
+     * @return TraspasoCuentasRepository
+     */
+    public function find($id);
+
+    /**
+     * @param $relations
+     * @return TraspasoCuentasRepository
+     */
+    public function with($relations);
+
 }

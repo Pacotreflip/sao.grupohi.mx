@@ -2,6 +2,7 @@
 
 namespace Ghi\Domain\Core\Repositories\Tesoreria;
 
+use Ghi\Core\Facades\Context;
 use Ghi\Domain\Core\Contracts\Tesoreria\MovimientosBancariosRepository;
 use Ghi\Domain\Core\Models\Tesoreria\MovimientosBancarios;
 use Ghi\Domain\Core\Models\Tesoreria\MovimientoTransacciones;
@@ -61,7 +62,7 @@ class EloquentMovimientosBancariosRepository implements MovimientosBancariosRepo
         $tipos_movimientos = TipoMovimiento::get();
 
         $obras = $this->obras();
-        $id_obra = session()->get('id');
+        $id_obra = Context::getId();
         $id_moneda = 0;
 
         foreach ($obras as $o)
@@ -72,11 +73,14 @@ class EloquentMovimientosBancariosRepository implements MovimientosBancariosRepo
             if ($t->id_tipo_movimiento == $data['id_tipo_movimiento'])
                 $tipo = $tipos_transaccion[$t->naturaleza];
 
+        // Convertir a negativo cuando el tipo de movimiento sea "Comisiones Bancarias"
+        if ($data['id_tipo_movimiento'] == 4)
+            $data['importe'] = -1 * abs($data['importe']);
+
         try {
             DB::connection('cadeco')->beginTransaction();
 
             $record = MovimientosBancarios::create($data);
-            DB::connection('cadeco')->commit();
 
             $transaccion = Transaccion::create([
                 'tipo_transaccion' => $tipo,
@@ -113,13 +117,16 @@ class EloquentMovimientosBancariosRepository implements MovimientosBancariosRepo
                 'id_transaccion' => $transaccion->id_transaccion,
                 'tipo_transaccion' => $tipo,
             ]);
-
+            $result = $this->model->with(['tipo', 'cuenta.empresa', 'movimiento_transaccion.transaccion'])
+                ->where('id_movimiento_bancario', '=', $record->id_movimiento_bancario)
+                ->first();
+            DB::connection('cadeco')->commit();
+            return $result;
         } catch (\Exception $e) {
             DB::connection('cadeco')->rollBack();
             throw $e;
         }
 
-        return MovimientosBancarios::where('id_movimiento_bancario', '=', $record->id_movimiento_bancario)->with(['tipo', 'cuenta.empresa', 'movimiento_transaccion.transaccion'])->first();
     }
 
     public function with($relations) {
@@ -221,5 +228,25 @@ class EloquentMovimientosBancariosRepository implements MovimientosBancariosRepo
     public function obras()
     {
         return Obra::all();
+    }
+
+    public function paginate(array $data)
+    {
+        $query = $this->model->with(['tipo', 'cuenta.empresa', 'movimiento_transaccion.transaccion']);
+
+        foreach ($data['order'] as $order) {
+            $query->orderBy($data['columns'][$order['column']]['data'], $order['dir']);
+        }
+
+        return $query->paginate($perPage = $data['length'], $columns = ['*'], $pageName = 'page', $page = ($data['start'] / $data['length']) + 1);
+    }
+
+    /**
+     * @param $id
+     * @return \Ghi\Domain\Core\Contracts\Tesoreria\MovimientosBancariosRepository
+     */
+    public function find($id)
+    {
+        return $this->model->find($id);
     }
 }
