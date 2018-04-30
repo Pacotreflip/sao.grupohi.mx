@@ -6,6 +6,11 @@ require('./vue-components/select2');
  *
  */
 require('./vue-components/page/index');
+
+/**
+ *
+ */
+require('./vue-components/SistemaContable/poliza_tipo/index');
 /**
  * Contabilidad Components...
  */
@@ -106,9 +111,3 @@ require('./vue-components/Configuracion/obra/index');
 require('./vue-components/ControlPresupuesto/cambio_cantidad_insumos/create');
 require('./vue-components/ControlPresupuesto/cambio_cantidad_insumos/show');
 
-
-/**
- * Procuración
- */
-require('./vue-components/Procuracion/asignacion/index');
-require('./vue-components/Procuracion/asignacion/create');

@@ -44,7 +44,7 @@ class MovimientosBancariosController extends Controller
             ->with('dataView', [
             'cuentas' => Cuenta::paraTraspaso()->with('empresa')->get(),
             'tipos' => TipoMovimiento::get(),
-            'movimientos' => MovimientosBancarios::with(['tipo', 'cuenta.empresa', 'movimiento_transaccion.transaccion'])->get(),
+            //'movimientos' => MovimientosBancarios::with(['tipo', 'cuenta.empresa', 'movimiento_transaccion.transaccion'])->get(),
         ]);
     }
 

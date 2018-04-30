@@ -40,10 +40,23 @@ interface PolizaTipoRepository
     public function delete($data, $id);
 
     /**
+     * actualizar un registro de Plantilla de Tipo de Póliza
+     * @param $data
+     * @param $id
+     */
+    public function update($data, $id);
+    /**
      * Crea relaciones eloquent
      * @param array|string $relations
      * @return mixed
      * @internal param array $array
      */
     public function with($relations);
+
+    /**
+     * Regresa registros de poliza tipo seleccionado
+     * @param array $data
+     * @return mixed
+     */
+    public function paginate(array $data);
 }
