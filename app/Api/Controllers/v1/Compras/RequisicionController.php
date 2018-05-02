@@ -36,6 +36,7 @@ class RequisicionController extends Controller
 
     /**
      * @return mixed
+     * @throws \ErrorException
      */
     public function show(){
         return $this->response()->array($this->requisicionRepository->all(), function ($item) {
