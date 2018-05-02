@@ -4,6 +4,8 @@ namespace Ghi\Domain\Core\Repositories\Finanzas;
 
 use Ghi\Domain\Core\Contracts\Finanzas\ComprobanteFondoFijoRepository;
 use Ghi\Domain\Core\Models\Concepto;
+use Ghi\Domain\Core\Models\ConceptoSinPath;
+use Ghi\Core\Facades\Context;
 use Ghi\Domain\Core\Models\Finanzas\ComprobanteFondoFijo;
 use Illuminate\Support\Facades\DB;
 
@@ -149,6 +151,13 @@ class EloquentComprobanteFondoFijoRepository implements ComprobanteFondoFijoRepo
     public function getBy($attribute, $operator, $value, $with = null)
     {
 
-        return Concepto::where($attribute, $operator, $value)->where('concepto_medible','=','3')->limit(5)->get();
+        // ConceptoPath
+        if (in_array(Context::getDatabaseName(), ['SAO1814_DEV_TERMINAL_NAICM', 'SAO1814_TERMINAL_NAICM', 'SAO1814_TERMINAL_NAICM_E7', 'SAO1814_TERMINAL_NAICM_INTEGRACION', 'SAO1814_TERMINAL_NAICM_INTERFAZ', 'SAO1814_TERMINAL_NAICM_PRBS', 'SAO1814_TERMINAL_NAICM_PRO_E7', 'SAO1814_TERMINAL_NAICM_PRO_WBS', 'SAO1814_TERMINAL_NAICM_WBS_CLIENTE',]))
+            return Concepto::where($attribute, $operator, $value)->where('concepto_medible','=','3')->limit(5)->get();
+
+        // Concepto sin path
+        else
+            return ConceptoSinPath::where($attribute, $operator, $value)->where('concepto_medible','=','3')->limit(5)->get();
+
     }
 }
