@@ -268,7 +268,7 @@ Vue.component('movimientos_bancarios-index', {
 
             $.ajax({
                 type: 'POST',
-                url : self.url_movimientos_bancarios_index,
+                url :  App.host+"/api/tesoreria/movimientos_bancarios/store",
                 data: self.form,
                 beforeSend: function () {
                     self.guardando = true;
@@ -327,15 +327,11 @@ Vue.component('movimientos_bancarios-index', {
         eliminar: function (id_movimiento_bancario) {
             var self = this;
             $.ajax({
-                type: 'GET',
-                url : self.url_movimientos_bancarios_index +'/'+ id_movimiento_bancario,
+                type: 'DELETE',
+                url: App.host+"/api/tesoreria/movimientos_bancarios/" + id_movimiento_bancario,
                 beforeSend: function () {},
                 success: function (data, textStatus, xhr) {
-                    /*self.data.movimientos.forEach(function (movimiento) {
-                        if (movimiento.id_movimiento_bancario == data.data.id_movimiento_bancario) {
-                            self.data.movimientos.splice(self.data.movimientos.indexOf(movimiento), 1);
-                        }
-                    });*/
+
                     self.table.ajax.reload( null, false );
                     swal({
                         type: 'success',
@@ -382,10 +378,9 @@ Vue.component('movimientos_bancarios-index', {
         editar: function () {
             var self = this;
 
-            self.movimiento_edit._method = 'PATCH';
             $.ajax({
-                type: 'POST',
-                url : self.url_movimientos_bancarios_index + '/' + self.movimiento_edit.id_movimiento_bancario,
+                type: 'PUT',
+                url :  App.host+"/api/tesoreria/movimientos_bancarios/" + self.movimiento_edit.id_movimiento_bancario,
                 data: self.movimiento_edit,
                 beforeSend: function () {
                 },
@@ -401,11 +396,6 @@ Vue.component('movimientos_bancarios-index', {
 
                     else
                     {
-                        /*self.data.movimientos.forEach(function (movimiento) {
-                            if (movimiento.id_movimiento_bancario === data.data.movimiento.id_movimiento_bancario) {
-                                Vue.set(self.data.movimientos, self.data.movimientos.indexOf(movimiento), data.data.movimiento);
-                            }
-                        });*/
                         self.table.ajax.reload( null, false );
                         swal({
                             type: 'success',
