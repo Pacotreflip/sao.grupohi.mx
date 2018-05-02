@@ -45,19 +45,12 @@ class LayoutsController extends BaseController
         ]);
     }
 
-    public function compras_asignacion_store(Request $request) {
-
-        Excel::load($request->file('file')->getRealPath(), function($reader) {
-
-            // Getting all results
-            $results = $reader->all();
-
-            dd($results);
-
-            // ->all() is a wrapper for ->get() and will work the same
-            $results = $reader->all();
-
-        });
-
+    public function compras_asignacion_store(Request $request, $id_requisicion)
+    {
+        $requisicion = $this->requisicionRepository->find($id_requisicion);
+        $result = (new AsignacionProveedoresLayout($requisicion))->setData($request);
+        return $this->response->array([
+            'error' => $result
+        ]);
     }
 }
