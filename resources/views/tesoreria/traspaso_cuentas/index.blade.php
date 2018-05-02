@@ -132,7 +132,7 @@
             @permission(['consultar_traspaso_cuenta'])
             <div class="row">
                 <div class="col-md-12">
-                    <div class="box box-success">
+                    <div class="box">
                         <div class="box-header with-border">
                             <h3 class="box-title">Traspasos Bancarios</h3>
                         </div>

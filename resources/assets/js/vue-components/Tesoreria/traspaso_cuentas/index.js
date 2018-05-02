@@ -233,8 +233,8 @@ Vue.component('traspaso-cuentas-index', {
         guardar_traspaso: function () {
             var self = this;
             $.ajax({
-                type: 'PUT',
-                url:  App.host + '/api/tesoreria/traspaso_cuentas/'+self.form.id_traspaso,
+                type: 'POST',
+                url :  App.host+"/api/tesoreria/traspaso_cuentas/store",
                 data: self.form,
                 beforeSend: function () {
                     self.guardando = true;

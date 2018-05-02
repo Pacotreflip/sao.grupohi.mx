@@ -63,7 +63,6 @@ class TraspasoCuentasController extends BaseController
             $id_obra = $payload->get('id_obra');
             $create_data = $request->all();
             $create_data['id_obra'] = $id_obra;
-            $create_data['folio'] = $request->get('referencia');
             $record = $this->traspasoCuentas->create($create_data);
             // Si $record es un string hubo un error al guardar el traspaso
             return response()->json(['data' =>
