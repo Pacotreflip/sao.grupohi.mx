@@ -268,8 +268,7 @@ Vue.component('procuracion-asignacion-create', {
                         swal({
                             type: 'success',
                             title: '¡Correcto!',
-                            //html : 'Solicitud Guardada con Número de Folio <b>' + response.numero_folio + '</b>'
-                            html: 'Las Asignaciones seguardaron correctamente'
+                            html: 'Las Asignaciones se guardaron correctamente'
                         }).then(function () {
                             window.location = self.url_success;
                         });
