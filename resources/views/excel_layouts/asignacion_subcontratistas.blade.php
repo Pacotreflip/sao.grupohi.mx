@@ -50,7 +50,7 @@
                 <td style="background-color: #ffffaa">{{ $presupuesto->PorcentajeDescuento }}</td>
                 <td style="background-color: #ffffaa">{{ $presupuesto->precio_unitario_despues_descuento }}</td>
                 <td style="background-color: #ffffaa">{{ $presupuesto->precio_total_despues_descuento }}</td>
-                <td style="background-color: #ffffaa">{{ $presupuesto->moneda->nombre }}</td>
+                <td style="background-color: #ffffaa">{{ ! $presupuesto->moneda ? : $presupuesto->moneda->nombre }}</td>
                 <td style="background-color: #ffffaa">{{ $presupuesto->Observaciones }}</td>
                 <td style="background-color: #86ff88"></td>
             </tr>
