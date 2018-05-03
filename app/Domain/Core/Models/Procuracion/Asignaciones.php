@@ -50,6 +50,7 @@ class Asignaciones  extends BaseModel
         'id_usuario_asigna',
         'id_usuario_asignado',
         'numero_folio',
+        'id_usuario_deleted',
     ];
 
     /**
@@ -90,4 +91,10 @@ class Asignaciones  extends BaseModel
         return $this->belongsTo(Transaccion::class, 'id_transaccion', 'id_transaccion');
     }
 
+    public static function getFolio()
+    {
+        $asignacion = self::orderBy('numero_folio', 'DESC')->first();
+        $folio = $asignacion ? $asignacion->numero_folio + 1 : 1;
+        return $folio;
+    }
 }

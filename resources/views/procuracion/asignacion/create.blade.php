@@ -76,7 +76,7 @@
                         </div>
                         <div class="box-body">
                             <div class="table-responsive">
-                                <table class="table table-bordered table-striped" id="table_asignacion">
+                                <table class="table table-bordered" id="table_asignacion">
                                     <thead>
                                     <tr>
                                         <th>Tipo de Transacción</th>

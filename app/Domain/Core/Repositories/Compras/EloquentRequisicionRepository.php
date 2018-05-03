@@ -8,6 +8,7 @@ use Ghi\Domain\Core\Models\Compras\Requisiciones\Requisicion;
 use Ghi\Domain\Core\Models\Compras\Requisiciones\TipoRequisicion;
 use Ghi\Domain\Core\Models\Compras\Requisiciones\TransaccionExt;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class EloquentRequisicionRepository implements RequisicionRepository
 {
@@ -138,5 +139,19 @@ class EloquentRequisicionRepository implements RequisicionRepository
             throw new HttpResponseException(new Response('No se encontró la requisición', 404));
         }
         $requisicion->delete();
+    }
+
+    /**
+     * @param array $cols
+     * @param string $q
+     * @return mixed
+     */
+    public function like(array $cols, $q)
+    {
+        return $this->model->where(function ($query) use ($cols, $q) {
+            foreach ($cols as $col) {
+                $query->orWhere($col, 'like', "%$q%");
+            }
+        })->limit(10)->get();
     }
 }
