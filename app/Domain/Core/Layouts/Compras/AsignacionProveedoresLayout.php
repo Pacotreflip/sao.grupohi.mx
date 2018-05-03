@@ -75,12 +75,15 @@ class AsignacionProveedoresLayout
         $this->RQCTOCTablaComparativaPartida = new RQCTOCTablaComparativaPartida();
     }
 
+    /**
+     * @return mixed
+     */
     public function getFile()
     {
         $requisicion = $this->requisicion;
 
         return Excel::create('Asignación Proveedores', function ($excel) use ($requisicion) {
-            $excel->sheet('# ' . str_pad($requisicion->numero_folio, 5,'0', STR_PAD_LEFT), function (LaravelExcelWorksheet $sheet) use ($requisicion) {
+            $excel->sheet('# ' . str_pad($requisicion->numero_folio, 5, '0', STR_PAD_LEFT), function (LaravelExcelWorksheet $sheet) use ($requisicion) {
                 $sheet->loadView('excel_layouts.asignacion_proveedores', ['requisicion' => $requisicion]);
                 $sheet->setAutoSize(false);
                 $sheet->setAutoFilter('A1:R1');
@@ -88,74 +91,82 @@ class AsignacionProveedoresLayout
         });
     }
 
+    /**
+     * @param Request $request
+     * @return mixed
+     */
     public function setData(Request $request)
     {
-        $arrayErros['errors'] = [];
-        Excel::load($request->file('file')->getRealPath(), function ($reader) use (&$arrayErros) {
-            $headerRow = $reader->first()->keys()->toArray();
-
-            $resultado = array_diff($this->header, $headerRow);
-            if (count($resultado) > 0) {
-                throw new StoreResourceFailedException('Error al procesar el archivo', $resultado);
-            }
-            $results = $reader->all();
-            $folio_sao = explode(" ",$results->getTitle());
-            $RQCTOCSolicitud = $this->requisicion->rqctocSolicitud()->where('folio_sao',$folio_sao[1])->first();
-            $data['idrqctoc_solicitudes'] = $RQCTOCSolicitud->idrqctoc_solicitudes;
-            $data['idserie'] = $RQCTOCSolicitud->id_serie;
-            $tablaComparativa = $this->RQCTOCTablaComparativa->create($data);
-            if(!$tablaComparativa){
-                throw new StoreResourceFailedException('No se puede guardar la comparación', $tablaComparativa);
-            }
-            $results = $reader->all();
-            if (count($results)) {
-                $sumatorias = [];
-                foreach ($reader->get() as $row) {
-                    //dd($row);
-                    Log::debug($row->id_partida);
-                    if(!empty(trim($row->id_partida)))
-                    {
-                        $partida = $this->requisicion->rqctocSolicitud->rqctocSolicitudPartidas()->find($row->id_partida)->first();
-                        Log::error($partida->cantidad_pendiente);
-                        if (!isset($sumatorias[$row->id_partida])) {
-                            if (empty($sumatorias[$row->id_partida]['total'])) {
-                                $sumatorias[$row->id_partida]['total'] = $partida->cantidad_pendiente;
-                            }
-                        }
-                        Log::debug($sumatorias[$row->id_partida]['total'] . ">=" . $row->cantidad_asignada);
-                        Log::debug($sumatorias[$row->id_partida]['total'] >= $row->cantidad_asignada);
-                        if ($sumatorias[$row->id_partida]['total'] >= $row->cantidad_asignada && is_numeric($row->cantidad_asignada)) {
-                            //save
-                            try {
-                                DB::connection('controlrec')->beginTransaction();
+        $rowResult = array();
+        $folio_sao = [];
+        $mensajegral = '';
+        Excel::load($request->file('file')->getRealPath(), function ($reader) use (&$rowResult, &$folio_sao, &$mensajegral) {
+            try {
+                DB::connection('controlrec')->beginTransaction();
+                $results = $reader->all();
+                $folio_sao = explode(" ", $results->getTitle());
+                $headerRow = $reader->first()->keys()->toArray();
+                $resultado = array_diff($this->header, $headerRow);
+                if (count($resultado) > 0) {
+                    $rowResult = $reader->get()->toArray();
+                    throw new \Exception('Las cabeceras no coinciden');
+                }
+                $RQCTOCSolicitud = $this->requisicion->rqctocSolicitud()->where('folio_sao', $folio_sao[1])->first();
+                $data['idrqctoc_solicitudes'] = $RQCTOCSolicitud->idrqctoc_solicitudes;
+                $data['idserie'] = $RQCTOCSolicitud->id_serie;
+                $tablaComparativa = $this->RQCTOCTablaComparativa->create($data);
+                if (!$tablaComparativa) {
+                    $rowResult = $reader->get()->toArray();
+                    throw new \Exception('No se puede guardar la comparación', $tablaComparativa);
+                }
+                $error = 0;
+                if (count($results)) {
+                    $sumatorias = [];
+                    $rowResult = [];
+                    foreach ($reader->get()->toArray() as $index => $row) {
+                        if (!empty(trim($row['id_partida']))) {
+                            $partida = $this->requisicion->rqctocSolicitud->rqctocSolicitudPartidas()->find((int)$row['id_partida']);
+                            $sumatorias[$row['id_partida']]['total'] = $partida->cantidad_pendiente;
+                            if ($sumatorias[$row['id_partida']]['total'] >= $row['cantidad_asignada'] && is_numeric($row['cantidad_asignada'])) {
+                                //save
                                 //print $row->cantidad_pendiente_de_asignar."\n";
                                 $dataRQCTOCTablaComparativaPartida['idrqctoc_tabla_comparativa'] = $tablaComparativa->idrqctoc_tabla_comparativa;
-                                $dataRQCTOCTablaComparativaPartida['idrqctoc_solicitudes_partidas'] = $row->id_partida;
-                                $dataRQCTOCTablaComparativaPartida['idrqctoc_cotizaciones_partidas'] = $row->id_cotizacion;
-                                $dataRQCTOCTablaComparativaPartida['cantidad_asignada'] = $row->cantidad_asignada;
-                                /*$dataRQCTOCTablaComparativaPartida['cantidad_autorizada'] = $row->cantidad_asignada;
-                                $dataRQCTOCTablaComparativaPartida['autorizo'] = auth()->user()->id;*/
+                                $dataRQCTOCTablaComparativaPartida['idrqctoc_solicitudes_partidas'] = $row['id_partida'];
+                                $dataRQCTOCTablaComparativaPartida['idrqctoc_cotizaciones_partidas'] = $row['id_cotizacion'];
+                                $dataRQCTOCTablaComparativaPartida['cantidad_asignada'] = $row['cantidad_asignada'];
                                 $newRQCTOCTablaComparativaPartida = $this->RQCTOCTablaComparativaPartida->create($dataRQCTOCTablaComparativaPartida);
-                                Log::debug($newRQCTOCTablaComparativaPartida);
                                 if (!$newRQCTOCTablaComparativaPartida) {
-                                    DB::connection('controlrec')->rollback();
-                                    $arrayErros['errors'][$row->id_partida] = (array)$row->toArray();
+                                    $row['error'] = "No se puede guardar el registro";
+                                    $error++;
                                 } else {
-                                    DB::connection('controlrec')->commit();
-                                    $sumatorias[$row->id_partida]['total'] += $row->cantidad_asignada;
+                                    $row['error'] = "";
                                 }
-                            } catch (\ErrorException $e) {
-                                DB::connection('controlrec')->rollback();
-                                $arrayErros['errors'][$row->id_partida] = (array)$row->toArray();
+                            } else {
+                                $row['error'] = "Supera el número máximo asignado";
+                                $error++;
                             }
-                        } else {
-                            $arrayErros['errors'][$row->id_partida] = (array)$row->toArray();
+                            $rowResult[] = $row;
                         }
                     }
+                    if ($error > 0) {
+                        throw new \Exception("hubo $error errores en el documento");
+                    }
+                    DB::connection('controlrec')->commit();
                 }
+            } catch (\Exception $e) {
+                $mensajegral = $e->getMessage();
+                DB::connection('controlrec')->rollback();
             }
         });
-        Log::error($arrayErros);
-        return $arrayErros;
+        $excelFile = Excel::create('Asignación Proveedores', function ($excel) use ($rowResult, $folio_sao, $mensajegral) {
+            $excel->sheet("# " . $folio_sao[1], function ($sheet) use ($rowResult, $mensajegral) {
+                $sheet->loadView('excel_layouts.asignacion_proveedores_result', ['requisicion' => $rowResult, 'mensaje' => $mensajegral]);
+                $sheet->setAutoSize(false);
+                $sheet->setAutoFilter('A1:T1');
+            });
+
+        });
+        //$excelFile->store('xlsx', storage_path('exports'), true);
+        return $excelFile;
     }
 }

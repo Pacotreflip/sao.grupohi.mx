@@ -45,12 +45,18 @@ class LayoutsController extends BaseController
         ]);
     }
 
+    /**
+     * @param Request $request
+     * @param $id_requisicion
+     * @return mixed
+     */
     public function compras_asignacion_store(Request $request, $id_requisicion)
     {
         $requisicion = $this->requisicionRepository->find($id_requisicion);
-        $result = (new AsignacionProveedoresLayout($requisicion))->setData($request);
+        $layout = (new AsignacionProveedoresLayout($requisicion))->setData($request);
         return $this->response->array([
-            'error' => $result
+            'file' => "data:application/vnd.ms-excel;base64,".base64_encode($layout->string()),
+            'name'   => 'AsignacionProveedores'
         ]);
     }
 }
