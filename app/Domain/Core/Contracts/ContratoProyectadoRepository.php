@@ -57,4 +57,11 @@ interface ContratoProyectadoRepository
      * @return mixed
      */
     public function all();
+
+    /**
+     * @param array $cols
+     * @param string $q
+     * @return mixed
+     */
+    public function like(array $cols,$q);
 }

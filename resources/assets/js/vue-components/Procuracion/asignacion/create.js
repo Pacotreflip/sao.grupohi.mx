@@ -84,7 +84,34 @@ Vue.component('procuracion-asignacion-create', {
             "searching": true,
             "ordering": true,
             "info": true,
-            "autoWidth": true
+            "autoWidth": true,
+            "sDom": "<'dt-toolbar'<'col-xs-12 col-sm-6'l><'col-sm-6 col-xs-6 hidden-xs'T>r>"+
+            "t"+
+            "<'dt-toolbar-footer'<'col-sm-6 col-xs-12 hidden-xs'i><'col-sm-6 col-xs-12'p>>",
+            language: {
+                "sProcessing": "Procesando...",
+                "sLengthMenu": "Mostrar _MENU_ registros",
+                "sZeroRecords": "No se encontraron resultados",
+                "sEmptyTable": "Ningún dato disponible en esta tabla",
+                "sInfo": "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
+                "sInfoEmpty": "Mostrando registros del 0 al 0 de un total de 0 registros",
+                "sInfoFiltered": "(filtrado de un total de _MAX_ registros)",
+                "sInfoPostFix": "",
+                "sSearch": "Buscar:",
+                "sUrl": "",
+                "sInfoThousands": ",",
+                "sLoadingRecords": "Cargando...",
+                "oPaginate": {
+                    "sFirst": "Primero",
+                    "sLast": "Último",
+                    "sNext": "Siguiente",
+                    "sPrevious": "Anterior"
+                },
+                "oAria": {
+                    "sSortAscending": ": Activar para ordenar la columna de manera ascendente",
+                    "sSortDescending": ": Activar para ordenar la columna de manera descendente"
+                }
+            }
         });
 
         self.table.on( 'click', '.remove', function () {
@@ -103,47 +130,50 @@ Vue.component('procuracion-asignacion-create', {
             $("#id_transaccion").select2({placeholder: "Procesando...."}).html("");
 
             var url ='' ;
+            var col = [];
             if(id=='49'){
                 url = App.host + '/api/contratoProyectado';
+                col = ['referencia','numero_folio'];
             }
             if(id=='17'){
                 url = App.host + '/api/compras/requisicion';
+                col = ['observaciones','numero_folio'];
             }
             if(url != '') {
-                $.ajax({
-                    type: 'post',
-                    url: url,
-                    data: {tipoTansaccion: id},
-                    headers: {
-                        'Authorization': localStorage.getItem('token')
-                    },
-                    beforeSend: function () {
-                        self.cargando_transacciones = true;
-                    },
-                    success: function (data, textStatus, xhr) {
-                        var transaccion = [{
-                            id: '',
-                            text: '[--SELECCIONE--]'
-                        }];
-                        $.each(data['dbo.transacciones'], function (index, value) {
-                            var text = value.numero_folio + "-" +((id=='49')?value.referencia.trim():value.observaciones.trim());
-                            transaccion.push({
-                                id: value.id_transaccion,
-                                text: text
-                            });
-                        });
-                        $('#id_transaccion').select2({
-                            data: transaccion
-                        }).on('select2:select', function (e) {
-                            var data = e.params.data;
-                            self.form.id_transaccion = data.id;
-                            var textSplit = data.text.split('-');
-                            self.idtransaccion = {id:data.id,name:textSplit[1],numero_folio:textSplit[0]};
-                        });
-                    },
-                    complete: function () {
-                        self.cargando_transacciones = false;
+                $('#id_transaccion').select2({
+                    ajax: {
+                        url: url,
+                        type: 'POST',
+                        delay: 500,
+                        dataType: 'json',
+                        escapeMarkup: function (markup) {
+                            return markup;
+                        },
+                        data: function (params) {
+                            var query = {q: params.term,columns:col}
+                            return query;
+                        },
+                        processResults: function (data) {
+                            return {
+                                results: $.map(data['dbo.transacciones'], function (item) {
+                                    var text = item.numero_folio + "-" +((id=='49')?item.referencia.trim():item.observaciones.trim());
+                                    return {
+                                        text:text,
+                                        id: item.id_transaccion
+                                    }
+                                })
+                            };
+                        },
+                        error: function (error) {
+
+                        },
+                        cache: true
                     }
+                }).on('select2:select', function (e) {
+                    var data = e.params.data;
+                    self.form.id_transaccion = data.id;
+                    var textSplit = data.text.split('-');
+                    self.idtransaccion = {id:data.id,name:textSplit[1],numero_folio:textSplit[0]};
                 });
             }else{
                 $("#id_transaccion").select2().val(null).trigger("change");
@@ -231,7 +261,6 @@ Vue.component('procuracion-asignacion-create', {
                 data: {asignaciones:self.registro},
                 success: function (data, textStatus, xhr) {
                     $("#"+id_btn).button('reset');
-                    console.log(data.exists.length);
                     if(data.exists.length==0) {
                         self.table
                             .clear()
@@ -245,10 +274,16 @@ Vue.component('procuracion-asignacion-create', {
                             window.location = self.url_success;
                         });
                     }else{
-                        var html = "Algunos elementos ya existes en la asignacion<br> " +
+                        var total_exists = data.exists.length;
+                        var total_env = self.registro.length;
+                        var html = "Algunos elementos ya existen en la asignación<br> " +
                             "<div class=\"table-responsive\">" +
-                            "<table class='table table-bordered table-striped'>";
-
+                            "<table class='table table-bordered table-striped' style='font-size: 10px;'>" +
+                            "<tr>" +
+                            "<td>Folio de la Transacción</td>" +
+                            "<td>Tipo de Transacción</td>" +
+                            "<td>Nombre del Comprador Asignado</td>" +
+                            "</tr>";
                         $.each(data.exists, function (index, value) {
 
                             html += "<tr>";
@@ -266,7 +301,33 @@ Vue.component('procuracion-asignacion-create', {
                             //html : 'Solicitud Guardada con Número de Folio <b>' + response.numero_folio + '</b>'
                             html: html
                         }).then(function () {
-                            window.location = self.url_success;
+                            /*if(total_exists>0){
+                                var warning = new Array();
+                                $.each(data.exists,function (index, value) {
+                                    var found = self.registro.findIndex(function (element) {
+                                        return (parseInt(element.id_usuario_asignado) === parseInt(value.id_usuario_asignado) && parseInt(element.id_transaccion) === parseInt(value.id_transaccion));
+                                    });
+                                    if(found>=0) {
+                                        warning.push(found);
+                                    }
+                                });
+                                console.log(warning);
+                                self.table.rows().each( function ( indexTable ) {
+                                    console.log('indices de las tabla---',indexTable);
+                                    $.each(indexTable,function (index,value) {
+                                        var row = self.table.row(value);
+                                        console.log(value,warning,$.inArray(value,warning));
+                                        if($.inArray(value,warning)<0){
+                                            var rowNode = row.node().remove();
+                                            row.remove();
+                                        }else{
+                                            $(row.node()).addClass('danger');
+                                        }
+                                    });
+                                } );
+                            }else {*/
+                                window.location = self.url_success;
+                            //}
                         });
                     }
                 },
