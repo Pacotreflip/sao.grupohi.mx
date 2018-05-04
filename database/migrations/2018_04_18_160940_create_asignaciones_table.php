@@ -21,11 +21,13 @@ class CreateAsignacionesTable extends Migration
             $table->integer("numero_folio");
             $table->index("id_usuario_asigna",'idx_usuario_asigna');
             $table->index("id_usuario_asignado",'idx_usuario_asignado');
+            $table->integer("id_usuario_deleted")->nullable();
             $table->foreign('id_transaccion')
                 ->references('id_transaccion')
                 ->on('dbo.transacciones');
             $table->timestamps();
             $table->softDeletes();
+            $table->unique(["id_usuario_asignado","id_transaccion","deleted_at"]);
         });
     }
 

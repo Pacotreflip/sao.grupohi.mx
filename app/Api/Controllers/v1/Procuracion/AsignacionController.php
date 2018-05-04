@@ -13,6 +13,7 @@ use Ghi\Http\Controllers\Controller;
 use Dingo\Api\Http\Request;
 use Ghi\Domain\Core\Contracts\Procuracion\AsignacionesRepository;
 use Ghi\Domain\Core\Transformers\AsignacionTransformer;
+use Illuminate\Support\Facades\Log;
 
 
 /**
@@ -59,11 +60,16 @@ class AsignacionController extends Controller
         if ($request->has('asignaciones')) {
             $asignaciones = $request->get('asignaciones');
             if(is_array($asignaciones)) {
+                $collection = collect($asignaciones);
+                $asignaciones = $collection->unique(
+                    function ($item) {
+                        return $item['id_transaccion'].$item['id_usuario_asignado'];
+                    })->values()->all();
                 $arrayAsignacionId['exists'] = [];
                 foreach ($asignaciones as $arrayAsignaciones) {
                     $whereAsignacion = $this->asignacionRepository->exists($arrayAsignaciones);
-                    if(count($whereAsignacion)>0) {
-                        $arrayAsignacionId['exists'][] = $whereAsignacion[0];
+                    if($whereAsignacion) {
+                        $arrayAsignacionId['exists'][] = $whereAsignacion->toArray();
                     }else{
                         $this->asignacionRepository->refresh()->create($arrayAsignaciones);
                     }

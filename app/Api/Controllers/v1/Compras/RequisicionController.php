@@ -9,8 +9,10 @@
 namespace Ghi\Api\Controllers\v1\Compras;
 
 use Dingo\Api\Routing\Helpers;
+use Dingo\Api\Http\Request;
 use Ghi\Domain\Core\Contracts\Compras\RequisicionRepository;
 use Ghi\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Log;
 
 /**
  * Class RequisicionController
@@ -35,11 +37,16 @@ class RequisicionController extends Controller
     }
 
     /**
+     * @param Request $request
      * @return mixed
+     * @throws \ErrorException
      */
-    public function show(){
-        return $this->response()->array($this->requisicionRepository->all(), function ($item) {
-            return $item;
-        });
+    public function show(Request $request){
+        if(!empty($request->get('q') && is_array($request->get('columns')) && count($request->get('columns')))) {
+            $result = $this->requisicionRepository->like($request->get('columns'), $request->get('q'));
+            return $this->response()->array($result, function ($item) {
+                return $item;
+            });
+        }
     }
 }
