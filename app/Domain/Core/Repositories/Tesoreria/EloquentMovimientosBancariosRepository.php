@@ -75,7 +75,10 @@ class EloquentMovimientosBancariosRepository implements MovimientosBancariosRepo
 
         // Convertir a negativo cuando el tipo de movimiento sea "Comisiones Bancarias"
         if ($data['id_tipo_movimiento'] == 4)
+        {
             $data['importe'] = -1 * abs($data['importe']);
+            $data['impuesto'] =  -1 * abs($data['impuesto']);
+        }
 
         try {
             DB::connection('cadeco')->beginTransaction();
