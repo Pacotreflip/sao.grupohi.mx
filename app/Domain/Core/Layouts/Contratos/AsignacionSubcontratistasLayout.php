@@ -137,11 +137,12 @@ class AsignacionSubcontratistasLayout
     public function procesarDatos($folio_sao, array $partidas)
     {
         try {
-            if (empty($folio_sao)) {
+            DB::connection('controlrec')->beginTransaction();
+            /*if (empty($folio_sao)) {
                 $this->resultData = $partidas;
                 throw new \Exception('No se puede guardar la comparación');
             }
-            DB::connection('controlrec')->beginTransaction();
+
             $RQCTOCSolicitud = $this->requisicion->rqctocSolicitud()->where('folio_sao', $folio_sao)->first();
             $data['idrqctoc_solicitudes'] = $RQCTOCSolicitud->idrqctoc_solicitudes;
             $data['idserie'] = $RQCTOCSolicitud->id_serie;
@@ -194,7 +195,7 @@ class AsignacionSubcontratistasLayout
                     throw new \Exception("hubo $error errores en el documento");
                 }
                 DB::connection('controlrec')->commit();
-            }
+            }*/
         } catch (\Exception $e) {
             DB::connection('controlrec')->rollback();
             throw new \Exception($e->getMessage());
