@@ -1,5 +1,31 @@
+<?php $totales = isset($requisiciones['totales']) ? $requisiciones['totales'] : 0 ?>
 <table>
     <thead>
+    <tr>
+        {{-- Información de la Partida --}}
+        <th style="background-color: #C8C8C8"></th>
+        <th style="background-color: #C8C8C8"></th>
+        <th style="background-color: #C8C8C8"></th>
+        <th style="background-color: #C8C8C8"></th>
+        <th style="background-color: #C8C8C8"></th>
+        <th style="background-color: #C8C8C8"></th>
+        <th style="background-color: #C8C8C8"></th>
+        <th style="background-color: #C8C8C8"></th>
+        {{-- Información del Proveedor --}}
+        @for($i=0;$i<$totales;$i++)
+            <th style="background-color: #C8C8C8"></th>
+            <th style="background-color: #C8C8C8"></th>
+            <th style="background-color: #C8C8C8"></th>
+            <th style="background-color: #C8C8C8"></th>
+            <th style="background-color: #C8C8C8"></th>
+            <th style="background-color: #C8C8C8"></th>
+            <th style="background-color: #C8C8C8"></th>
+            <td style="background-color: #C8C8C8"></td>
+            <td style="background-color: #C8C8C8"></td>
+            <td style="background-color: #C8C8C8"></td>
+            <td style="background-color: #C8C8C8"></td>
+        @endfor
+    </tr>
     <tr>
         {{-- Información de la Partida --}}
         <th style="background-color: #C8C8C8">#</th>
@@ -12,49 +38,82 @@
         <th style="background-color: #C8C8C8">Cantidad Pendiente de Asignar</th>
 
         {{-- Información del Proveedor --}}
-        <th style="background-color: #C8C8C8">ID Presupuesto</th>
-        <th style="background-color: #C8C8C8">Fecha de Presupuesto</th>
-        <th style="background-color: #C8C8C8">Nombre del Proveedor</th>
-        <th style="background-color: #C8C8C8">Precio Unitario Antes Descto.</th>
-        <th style="background-color: #C8C8C8">Precio Total Antes Descto.</th>
-        <th style="background-color: #C8C8C8">% Descuento</th>
-        <th style="background-color: #C8C8C8">Precio Unitario</th>
-        <th style="background-color: #C8C8C8">Precio Total</th>
-        <th style="background-color: #C8C8C8">Moneda</th>
-        <th style="background-color: #C8C8C8">Observaciones</th>
-        <th style="background-color: #C8C8C8">Cantidad Asignada</th>
+        @for($i=0;$i<$totales;$i++)
+            <th style="background-color: #C8C8C8">ID Presupuesto</th>
+            <th style="background-color: #C8C8C8">Fecha de Presupuesto</th>
+            <th style="background-color: #C8C8C8">Nombre del Proveedor</th>
+            <th style="background-color: #C8C8C8">Precio Unitario Antes Descto.</th>
+            <th style="background-color: #C8C8C8">Precio Total Antes Descto.</th>
+            <th style="background-color: #C8C8C8">% Descuento</th>
+            <th style="background-color: #C8C8C8">Precio Unitario</th>
+            <th style="background-color: #C8C8C8">Precio Total</th>
+            <th style="background-color: #C8C8C8">Moneda</th>
+            <th style="background-color: #C8C8C8">Observaciones</th>
+            <th style="background-color: #C8C8C8">Cantidad Asignada</th>
+        @endfor
     </tr>
     </thead>
     <tbody>
-    @foreach($contrato_proyectado->cotizacionesContrato->filter(function ($value) { return $value->candidata; }) as $key => $cotizacion)
-        @foreach($cotizacion->presupuestos->filter(function ($value) use ($contrato_proyectado){ return $value->no_cotizado == 0 && $contrato_proyectado->contratos()->find($value->id_concepto)->cantidad_pendiente > 0; }) as $index => $presupuesto)
-            {{ $contrato = $contrato_proyectado->contratos()->find($presupuesto->id_concepto) }}
-
+    <?php $index = 1; ?>
+    @if($totales>0):
+        @foreach($contratoProyectados['valores'] as $key => $contratoProyectado)
             <tr>
                 <!-- Información general de la partida -->
-                <td style="background-color: #ffffaa">{{ $index + 1 }}</td>
-                <td style="background-color: #ffffaa">{{ $contrato->id_concepto }}</td>
-                <td style="background-color: #ffffaa">{{ $contrato->descripcion }}</td>
-                <td style="background-color: #ffffaa">{{ $contrato->destinos()->first()->path }}</td>
-                <td style="background-color: #ffffaa">{{ $contrato->unidad }}</td>
-                <td style="background-color: #ffffaa">{{ $contrato->cantidad_original }}</td>
-                <td style="background-color: #ffffaa">{{ $contrato->cantidad_original }}</td>
-                <td style="background-color: #ffffaa">{{ $contrato->cantidad_pendiente }}</td>
-
-                <!-- Información de la cotización -->
-                <td style="background-color: #ffffaa">{{ $cotizacion->id_transaccion }}</td>
-                <td style="background-color: #ffffaa">{{ $cotizacion->fecha }}</td>
-                <td style="background-color: #ffffaa">{{ $cotizacion->empresa->razon_social }}</td>
-                <td style="background-color: #ffffaa">{{ $presupuesto->precio_unitario_antes_descuento }}</td>
-                <td style="background-color: #ffffaa">{{ $presupuesto->precio_total_antes_descuento }}</td>
-                <td style="background-color: #ffffaa">{{ $presupuesto->PorcentajeDescuento }}</td>
-                <td style="background-color: #ffffaa">{{ $presupuesto->precio_unitario_despues_descuento }}</td>
-                <td style="background-color: #ffffaa">{{ $presupuesto->precio_total_despues_descuento }}</td>
-                <td style="background-color: #ffffaa">{{ ! $presupuesto->moneda ? : $presupuesto->moneda->nombre }}</td>
-                <td style="background-color: #ffffaa">{{ $presupuesto->Observaciones }}</td>
-                <td style="background-color: #86ff88"></td>
+                <td style="background-color: #ffffaa">{{ $index }}</td>
+                <td style="background-color: #ffffaa">{{ $contratoProyectado['contrato']->id_concepto }}</td>
+                <td style="background-color: #ffffaa">{{ $contratoProyectado['contrato']->descripcion }}</td>
+                <td style="background-color: #ffffaa">{{ $contratoProyectado['contrato']->destinos()->first()->path }}</td>
+                <td style="background-color: #ffffaa">{{ $contratoProyectado['contrato']->unidad }}</td>
+                <td style="background-color: #ffffaa">{{ $contratoProyectado['contrato']->cantidad_original }}</td>
+                <td style="background-color: #ffffaa">{{ $contratoProyectado['contrato']->cantidad_original }}</td>
+                <td style="background-color: #ffffaa">{{ $contratoProyectado['contrato']->cantidad_pendiente }}</td>
+                <!-- Información de l cotización -->
+            @for($i=0;$i<$totales;$i++)
+                @if(isset($contratoProyectado['cotizacion'][$i]))
+                    <?php $presupuesto = $contratoProyectado['presupuesto'][$i];?>
+                    @if(count($presupuesto)>0)
+                        <!-- Información de la cotización -->
+                            <td style="background-color: #ffffaa">{{ $contratoProyectado['cotizacion'][$i]->id_transaccion }}</td>
+                            <td style="background-color: #ffffaa">{{ $contratoProyectado['cotizacion'][$i]->fecha }}</td>
+                            <td style="background-color: #ffffaa">{{ $contratoProyectado['cotizacion'][$i]->empresa->razon_social }}</td>
+                            <td style="background-color: #ffffaa">{{ $presupuesto->precio_unitario_antes_descuento }}</td>
+                            <td style="background-color: #ffffaa">{{ $presupuesto->precio_total_antes_descuento }}</td>
+                            <td style="background-color: #ffffaa">{{ $presupuesto->PorcentajeDescuento }}</td>
+                            <td style="background-color: #ffffaa">{{ $presupuesto->precio_unitario_despues_descuento }}</td>
+                            <td style="background-color: #ffffaa">{{ $presupuesto->precio_total_despues_descuento }}</td>
+                            <td style="background-color: #ffffaa">{{ ! $presupuesto->moneda ? : $presupuesto->moneda->nombre }}</td>
+                            <td style="background-color: #ffffaa">{{ $presupuesto->Observaciones }}</td>
+                            <td style="background-color: #86ff88"></td>
+                        @else
+                            <td style="background-color: #ffffaa"></td>
+                            <td style="background-color: #ffffaa"></td>
+                            <td style="background-color: #ffffaa"></td>
+                            <td style="background-color: #ffffaa"></td>
+                            <td style="background-color: #ffffaa"></td>
+                            <td style="background-color: #ffffaa"></td>
+                            <td style="background-color: #ffffaa"></td>
+                            <td style="background-color: #ffffaa"></td>
+                            <td style="background-color: #ffffaa"></td>
+                            <td style="background-color: #ffffaa"></td>
+                            <td style="background-color: #86ff88"></td>
+                        @endif
+                    @else
+                        <td style="background-color: #ffffaa"></td>
+                        <td style="background-color: #ffffaa"></td>
+                        <td style="background-color: #ffffaa"></td>
+                        <td style="background-color: #ffffaa"></td>
+                        <td style="background-color: #ffffaa"></td>
+                        <td style="background-color: #ffffaa"></td>
+                        <td style="background-color: #ffffaa"></td>
+                        <td style="background-color: #ffffaa"></td>
+                        <td style="background-color: #ffffaa"></td>
+                        <td style="background-color: #ffffaa"></td>
+                        <td style="background-color: #86ff88"></td>
+                    @endif
+                @endfor
             </tr>
+            <?php $index++; ?>
         @endforeach
-    @endforeach
+    @endif
     </tbody>
 </table>

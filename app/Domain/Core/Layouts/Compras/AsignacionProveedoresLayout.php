@@ -74,29 +74,31 @@ class AsignacionProveedoresLayout
      */
     public function setData(Requisicion $requisicion)
     {
+        $maxRow = 0;
+        $row = 0;
         $arrayResult['totales'] = $requisicion->rqctocSolicitud->rqctocCotizaciones->filter(function ($value) {
             return $value->candidata;
         })->count();
-        foreach ($requisicion->rqctocSolicitud->rqctocCotizaciones->filter(function ($value) {
-            return $value->candidata;
-        }) as $key => $cotizacion) {
-            $row = 0;
-            $maxRow = 0;
-            foreach ($cotizacion->rqctocCotizacionPartidas->filter() as $index => $cotizacionPartida) {
-                $partida = $requisicion->rqctocSolicitud->rqctocSolicitudPartidas()->find($cotizacionPartida->idrqctoc_solicitudes_partidas);
-                if (!isset($arrayResult['valores'][$partida->idrqctoc_solicitudes_partidas])) {
-                    $arrayResult['valores'][$partida->idrqctoc_solicitudes_partidas] = [];
-                    $arrayResult['valores'][$partida->idrqctoc_solicitudes_partidas]['partida'] = $partida;
+        if($arrayResult['totales']>0) {
+            foreach ($requisicion->rqctocSolicitud->rqctocCotizaciones->filter(function ($value) {
+                return $value->candidata;
+            }) as $key => $cotizacion) {
+                foreach ($cotizacion->rqctocCotizacionPartidas->filter() as $index => $cotizacionPartida) {
+                    $partida = $requisicion->rqctocSolicitud->rqctocSolicitudPartidas()->find($cotizacionPartida->idrqctoc_solicitudes_partidas);
+                    if (!isset($arrayResult['valores'][$partida->idrqctoc_solicitudes_partidas])) {
+                        $arrayResult['valores'][$partida->idrqctoc_solicitudes_partidas] = [];
+                        $arrayResult['valores'][$partida->idrqctoc_solicitudes_partidas]['partida'] = $partida;
+                    }
+                    if ($cotizacionPartida->precio_unitario > 0) {
+                        $arrayResult['valores'][$partida->idrqctoc_solicitudes_partidas]['cotizacionPartida'][$key] = $cotizacionPartida;
+                        $arrayResult['valores'][$partida->idrqctoc_solicitudes_partidas]['cotizacion'][$key] = $cotizacion;
+                    } else {
+                        $arrayResult['valores'][$partida->idrqctoc_solicitudes_partidas]['cotizacionPartida'][$key] = [];
+                        $arrayResult['valores'][$partida->idrqctoc_solicitudes_partidas]['cotizacion'][$key] = [];
+                    }
+                    $row++;
+                    $maxRow = ($maxRow < $row) ? $row : $maxRow;
                 }
-                if ($cotizacionPartida->precio_unitario > 0) {
-                    $arrayResult['valores'][$partida->idrqctoc_solicitudes_partidas]['cotizacionPartida'][$key] = $cotizacionPartida;
-                    $arrayResult['valores'][$partida->idrqctoc_solicitudes_partidas]['cotizacion'][$key] = $cotizacion;
-                } else {
-                    $arrayResult['valores'][$partida->idrqctoc_solicitudes_partidas]['cotizacionPartida'][$key] = [];
-                    $arrayResult['valores'][$partida->idrqctoc_solicitudes_partidas]['cotizacion'][$key] = [];
-                }
-                $row++;
-                $maxRow = ($maxRow < $row) ? $row : $maxRow;
             }
         }
         $arrayResult['maxRow'] = $maxRow;
@@ -109,141 +111,57 @@ class AsignacionProveedoresLayout
     public function getFile()
     {
         $requisicion = $this->requisicion;
-        $this->setData($requisicion);
         Config::set(['excel.export.calculate' => true]);
         return Excel::create('Asignación Proveedores', function ($excel) use ($requisicion) {
             $excel->sheet('# ' . str_pad($requisicion->numero_folio, 5, '0', STR_PAD_LEFT), function (LaravelExcelWorksheet $sheet) use ($requisicion) {
-                $arrauRequisicion = $this->setData($requisicion);
+                $arrayRequisicion = $this->setData($requisicion);
                 $sheet->getProtection()->setSheet(true);
-                $sheet->loadView('excel_layouts.asignacion_proveedores', ['requisiciones' => $arrauRequisicion]);
-                $sheet->setAutoSize(false);
-                //$sheet->setAutoFilter('A1:R1');
-                $maxCol = ($arrauRequisicion['totales'] * $this->cotizacionesLength) + $this->partidasLength;
-                $j = $this->partidasLength + ($this->cotizacionesLength - 1);
-                $arrayTotales = [];
-                while ($j <= $maxCol) {
-                    $index = chr(65 + $j);
-                    $sheet->getStyle($index . '' . ($this->cabecerasLength + 1) . ':' . $index . ($arrauRequisicion['maxRow'] + $this->cabecerasLength))
+                $sheet->loadView('excel_layouts.asignacion_proveedores', ['requisiciones' => $arrayRequisicion]);
+                if($arrayRequisicion['totales']>0) {
+                    $sheet->setAutoSize(false);
+                    //$sheet->setAutoFilter('A1:R1');
+                    $maxCol = ($arrayRequisicion['totales'] * $this->cotizacionesLength) + $this->partidasLength;
+                    $j = $this->partidasLength + ($this->cotizacionesLength - 1);
+                    $arrayTotales = [];
+                    while ($j <= $maxCol) {
+                        $index = \PHPExcel_Cell::stringFromColumnIndex($j);
+                        $sheet->getStyle($index . '' . ($this->cabecerasLength + 1) . ':' . $index . ($arrayRequisicion['maxRow'] + $this->cabecerasLength))
+                            ->getProtection()
+                            ->setLocked(
+                                \PHPExcel_Style_Protection::PROTECTION_UNPROTECTED
+                            )->getActiveSheet();
+                        $sheet->getStyle($index . '' . ($this->cabecerasLength + 1) . ':' . $index . ($arrayRequisicion['maxRow'] + $this->cabecerasLength))->getNumberFormat();
+                        $sheet
+                            ->setColumnFormat(array(
+                                $index . '' . ($this->cabecerasLength + 1) . ':' . $index . ($arrayRequisicion['maxRow'] + $this->cabecerasLength) => \PHPExcel_Style_NumberFormat::FORMAT_NUMBER
+                            ));
+                        $arrayTotales[$index] = $index;
+                        $j += $this->cotizacionesLength;
+                    }
+                    $index = \PHPExcel_Cell::stringFromColumnIndex($maxCol);
+                    $sheet->getStyle($index . '' . ($this->cabecerasLength) . ':' . $index . ($arrayRequisicion['maxRow'] + $this->cabecerasLength))
                         ->getProtection()
                         ->setLocked(
                             \PHPExcel_Style_Protection::PROTECTION_UNPROTECTED
                         )->getActiveSheet();
-                    $sheet->getStyle($index . '' . ($this->cabecerasLength + 1) . ':' . $index . ($arrauRequisicion['maxRow'] + $this->cabecerasLength))->getNumberFormat();
-                    $sheet
-                        ->setColumnFormat(array(
-                            $index . '' . ($this->cabecerasLength + 1) . ':' . $index . ($arrauRequisicion['maxRow'] + $this->cabecerasLength) => \PHPExcel_Style_NumberFormat::FORMAT_NUMBER
-                        ));
-                    $arrayTotales[$index] = $index;
-                    $j += $this->cotizacionesLength;
-                }
-                $index = chr(65 + ($maxCol));
-                $sheet->getStyle($index . '' . ($this->cabecerasLength) . ':' . $index . ($arrauRequisicion['maxRow'] + $this->cabecerasLength))
-                    ->getProtection()
-                    ->setLocked(
-                        \PHPExcel_Style_Protection::PROTECTION_UNPROTECTED
-                    )->getActiveSheet();
-                for ($i = ($this->cabecerasLength + 1); $i < ($arrauRequisicion['maxRow'] + ($this->cabecerasLength + 1)); $i++) {
-                    $col = '';
-                    foreach ($arrayTotales as $totales) {
-                        $col .= $totales . "$i,";
+                    for ($i = ($this->cabecerasLength + 1); $i < ($arrayRequisicion['maxRow'] + ($this->cabecerasLength + 1)); $i++) {
+                        $col = '';
+                        foreach ($arrayTotales as $totales) {
+                            $col .= $totales . "$i,";
+                        }
+                        $col = substr($col, 0, -1);
+                        $sheet->setCellValue($index . "$i", "=(H" . $i . "-SUM($col))");
                     }
-                    $col = substr($col, 0, -1);
-                    $sheet->setCellValue($index . "$i", "=(H" . $i . "-SUM($col))");
                 }
             })->getActiveSheetIndex(0);
         });
         //->store('xlsx', storage_path());
     }
 
-    /**
-     * @param $headers
-     * @return bool
-     * @throws \Exception
-     */
-    public function validateHeaders($headers)
-    {
-        /*$resultado = array_diff($this->header, $headers);
-        if (count($resultado) > 0) {
-            throw new \Exception('Las cabeceras no coinciden');
-        }
-        return true;*/
-    }
 
     /**
-     * @param $folio_sao
-     * @param array $data
-     * @return bool
-     * @throws \Exception
-     *
+     * @param Request $request
      */
-    public function procesarDatos($folio_sao, array $partidas)
-    {
-        try {
-            if (empty($folio_sao)) {
-                $this->resultData = $partidas;
-                throw new \Exception('No se puede guardar la comparación');
-            }
-            DB::connection('controlrec')->beginTransaction();
-            $RQCTOCSolicitud = $this->requisicion->rqctocSolicitud()->where('folio_sao', $folio_sao)->first();
-            $data['idrqctoc_solicitudes'] = $RQCTOCSolicitud->idrqctoc_solicitudes;
-            $data['idserie'] = $RQCTOCSolicitud->id_serie;
-            $tablaComparativa = $this->RQCTOCTablaComparativa->create($data);
-            if (!$tablaComparativa) {
-                $this->resultData = $partidas;
-                throw new \Exception('No se puede guardar la comparación');
-            }
-            $error = 0;
-            if (count($partidas)) {
-                foreach ($partidas as $index => $row) {
-                    if (!empty(trim($row['id_partida']))) {
-                        $cotizacion = $this->requisicion->rqctocSolicitud->rqctocCotizaciones()->find($row['id_cotizacion'])->rqctocCotizacionPartidas->filter(function ($value) use ($row) {
-                            return $value->idrqctoc_solicitudes_partidas == $row['id_partida'];
-                        });
-                        $arrayCotizacion = $cotizacion->toArray();
-                        $validarCotizacion = current($arrayCotizacion);
-                        if ($validarCotizacion['precio_unitario'] > 0) {
-                            $partida = $this->requisicion->rqctocSolicitud->rqctocSolicitudPartidas()->find((int)$row['id_partida']);
-                            $sumatorias[$row['id_partida']]['total'] = $partida->cantidad_pendiente;
-                            if (
-                                $sumatorias[$row['id_partida']]['total'] >= $row['cantidad_asignada']
-                                && is_numeric($row['cantidad_asignada'])
-                                && $row['cantidad_asignada'] > 0
-                            ) {
-                                //save
-                                $dataRQCTOCTablaComparativaPartida['idrqctoc_tabla_comparativa'] = $tablaComparativa->idrqctoc_tabla_comparativa;
-                                $dataRQCTOCTablaComparativaPartida['idrqctoc_solicitudes_partidas'] = $row['id_partida'];
-                                $dataRQCTOCTablaComparativaPartida['idrqctoc_cotizaciones_partidas'] = $row['id_cotizacion'];
-                                $dataRQCTOCTablaComparativaPartida['cantidad_asignada'] = $row['cantidad_asignada'];
-                                $newRQCTOCTablaComparativaPartida = $this->RQCTOCTablaComparativaPartida->create($dataRQCTOCTablaComparativaPartida);
-                                if (!$newRQCTOCTablaComparativaPartida) {
-                                    $row['error'] = "No se puede guardar el registro";
-                                    $error++;
-                                } else {
-                                    $row['error'] = "";
-                                }
-                            } else {
-                                $row['error'] = "Supera el número máximo asignado";
-                                $error++;
-                            }
-                        } else {
-                            $row['error'] = "No se permite asignar valores a una cotización que no existe";
-                            $error++;
-                        }
-                        $this->resultData[] = $row;
-                    }
-                }
-                if ($error > 0) {
-                    throw new \Exception("hubo $error errores en el documento");
-                }
-                DB::connection('controlrec')->commit();
-            }
-        } catch (\Exception $e) {
-            throw new \Exception($e->getMessage());
-            DB::connection('controlrec')->rollback();
-        }
-        return true;
-    }
-
     public function qetDataFile(Request $request)
     {
         Excel::load($request->file('file')->getRealPath(), function ($reader) {
