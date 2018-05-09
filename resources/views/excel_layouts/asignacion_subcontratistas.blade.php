@@ -46,30 +46,30 @@
                             <td style="background-color: #ffffaa">{{ $presupuesto->Observaciones }}</td>
                             <td style="background-color: #86ff88"></td>
                         @else
-                            <td style="background-color: #ffffaa"></td>
-                            <td style="background-color: #ffffaa"></td>
-                            <td style="background-color: #ffffaa"></td>
-                            <td style="background-color: #ffffaa"></td>
-                            <td style="background-color: #ffffaa"></td>
-                            <td style="background-color: #ffffaa"></td>
-                            <td style="background-color: #ffffaa"></td>
-                            <td style="background-color: #ffffaa"></td>
-                            <td style="background-color: #ffffaa"></td>
-                            <td style="background-color: #ffffaa"></td>
-                            <td style="background-color: #86ff88"></td>
+                            <td ></td>
+                            <td ></td>
+                            <td ></td>
+                            <td ></td>
+                            <td ></td>
+                            <td ></td>
+                            <td ></td>
+                            <td ></td>
+                            <td ></td>
+                            <td ></td>
+                            <td ></td>
                         @endif
                     @else
-                        <td style="background-color: #ffffaa"></td>
-                        <td style="background-color: #ffffaa"></td>
-                        <td style="background-color: #ffffaa"></td>
-                        <td style="background-color: #ffffaa"></td>
-                        <td style="background-color: #ffffaa"></td>
-                        <td style="background-color: #ffffaa"></td>
-                        <td style="background-color: #ffffaa"></td>
-                        <td style="background-color: #ffffaa"></td>
-                        <td style="background-color: #ffffaa"></td>
-                        <td style="background-color: #ffffaa"></td>
-                        <td style="background-color: #86ff88"></td>
+                        <td ></td>
+                        <td ></td>
+                        <td ></td>
+                        <td ></td>
+                        <td ></td>
+                        <td ></td>
+                        <td ></td>
+                        <td ></td>
+                        <td ></td>
+                        <td ></td>
+                        <td ></td>
                     @endif
                 @endfor
             </tr>

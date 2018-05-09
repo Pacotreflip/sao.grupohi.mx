@@ -166,7 +166,7 @@ class AsignacionSubcontratistasLayout extends ValidacionLayout
                     }
                 }
             })->getActiveSheetIndex(0);
-        })->store('xlsx', storage_path() . '/logs/');
+        });//->store('xlsx', storage_path() . '/logs/');
     }
 
     /**
@@ -239,15 +239,12 @@ class AsignacionSubcontratistasLayout extends ValidacionLayout
                         }
                     }
                 }
-                Log::error($error);
                 if ($error > 0) {
                     throw new \Exception("hubo $error errores en el documento");
                 }
-                Log::debug($this->resultData);
                 DB::connection('cadeco')->commit();
             }
         } catch (\Exception $e) {
-            Log::error($e->getMessage());
             DB::connection('cadeco')->rollback();
             throw new \Exception($e->getMessage());
         }
