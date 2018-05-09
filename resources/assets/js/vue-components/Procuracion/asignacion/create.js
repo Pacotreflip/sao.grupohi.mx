@@ -141,6 +141,7 @@ Vue.component('procuracion-asignacion-create', {
             }
             if(url != '') {
                 $('#id_transaccion').select2({
+                    minimumInputLength:1,
                     ajax: {
                         url: url,
                         type: 'POST',
