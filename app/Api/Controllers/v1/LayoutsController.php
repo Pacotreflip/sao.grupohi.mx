@@ -66,10 +66,7 @@ class LayoutsController extends BaseController
     {
         $requisicion = $this->requisicionRepository->find($id_requisicion);
         $layout = (new AsignacionProveedoresLayout($requisicion))->qetDataFile($request);
-        return $this->response->array([
-            'file' => "data:application/vnd.ms-excel;base64," . base64_encode($layout->string()),
-            'name' => 'AsignacionProveedores'
-        ]);
+        return $this->response->array($layout);
     }
 
     public function contratos_asignacion(Request $request, $id_contrato_proyectado)
@@ -91,12 +88,6 @@ class LayoutsController extends BaseController
         $contrato_proyectado = $this->contratoProyectadoRepository->find($id_contrato_proyectado);
         $layout = (new AsignacionSubcontratistasLayout($contrato_proyectado))->qetDataFile($request);
 
-        try {
-            return $this->response->array([
-                'file' => "data:application/vnd.ms-excel;base64," . base64_encode($layout->string()),
-                'name' => 'AsignacionContratistas'
-            ]);
-        } catch (\ErrorException $e) {
-        }
+        return $this->response->array($layout);
     }
 }

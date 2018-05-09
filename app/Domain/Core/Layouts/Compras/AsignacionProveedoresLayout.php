@@ -20,6 +20,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Maatwebsite\Excel\Classes\LaravelExcelWorksheet;
 use Maatwebsite\Excel\Facades\Excel;
+use Symfony\Component\HttpKernel\Exception\NotAcceptableHttpException;
 
 class AsignacionProveedoresLayout extends ValidacionLayout
 {
@@ -216,10 +217,10 @@ class AsignacionProveedoresLayout extends ValidacionLayout
                             if ($validarCotizacion['precio_unitario'] > 0) {
                                 $partida = $this->requisicion->rqctocSolicitud->rqctocSolicitudPartidas()->find((int)$row['id_partida']);
                                 //->Que la cantidad pendiente de cada partida del layout sea igual a la cantidad pendiente que se calcule con información de la base de datos, para asi evitar duplicidad de información
-                                if(!isset($sumatorias[$row['id_concepto']]['total'])){
-                                    $sumatorias[$row['id_concepto']]['pendiente'] = $partida->cantidad_pendiente;
+                                if(!isset($sumatorias[$row['id_partida']]['pendiente'])){
+                                    $sumatorias[$row['id_partida']]['pendiente'] = $partida->cantidad_pendiente;
                                 }
-                                if ($sumatorias[$row['id_concepto']]['pendiente'] == $row['cantidad_archivo']) {
+                                if ($sumatorias[$row['id_partida']]['pendiente'] == $row['cantidad_archivo']) {
                                     //->Que la cantidad a asignar sea menor o igual a la cantidad pendiente de cada partida
                                     if (
                                         $partida->cantidad_pendiente >= $row['cantidad_asignada']
@@ -313,9 +314,9 @@ class AsignacionProveedoresLayout extends ValidacionLayout
                     throw new \Exception("no hay elementos asignados");
                 }
             } catch (\Exception $e) {
-                Log::debug($this->resultData);
-                dd($e->getMessage());
+                throw new NotAcceptableHttpException($e->getMessage());
             }
         });
+        return true;
     }
 }

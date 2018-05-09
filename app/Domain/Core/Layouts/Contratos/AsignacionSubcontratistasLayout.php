@@ -20,6 +20,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Maatwebsite\Excel\Classes\LaravelExcelWorksheet;
 use Maatwebsite\Excel\Facades\Excel;
+use Symfony\Component\HttpKernel\Exception\NotAcceptableHttpException;
 
 class AsignacionSubcontratistasLayout extends ValidacionLayout
 {
@@ -310,11 +311,10 @@ class AsignacionSubcontratistasLayout extends ValidacionLayout
                     }
                 }
             } catch (\Exception $e) {
-                Log::debug($e->getMessage());
-                Log::debug($this->resultData);
-                dd($e->getMessage());
+                throw new NotAcceptableHttpException($e->getMessage());
             }
         });
+        return true;
     }
 
 
