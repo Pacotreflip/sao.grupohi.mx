@@ -85,4 +85,18 @@ class LayoutsController extends BaseController
         } catch (\ErrorException $e) {
         }
     }
+
+    public function contratos_asignacion_store(Request $request, $id_contrato_proyectado)
+    {
+        $contrato_proyectado = $this->contratoProyectadoRepository->find($id_contrato_proyectado);
+        $layout = (new AsignacionSubcontratistasLayout($contrato_proyectado))->qetDataFile($request);
+
+        try {
+            return $this->response->array([
+                'file' => "data:application/vnd.ms-excel;base64," . base64_encode($layout->string()),
+                'name' => 'AsignacionContratistas'
+            ]);
+        } catch (\ErrorException $e) {
+        }
+    }
 }

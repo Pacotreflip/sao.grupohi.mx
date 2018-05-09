@@ -3,44 +3,14 @@
     <thead>
     <tr>
         {{-- Información de la Partida --}}
-        <th style="background-color: #C8C8C8"></th>
-        <th style="background-color: #C8C8C8"></th>
-        <th style="background-color: #C8C8C8"></th>
-        <th style="background-color: #C8C8C8"></th>
-        <th style="background-color: #C8C8C8"></th>
-        <th style="background-color: #C8C8C8"></th>
-        <th style="background-color: #C8C8C8"></th>
-        <th style="background-color: #C8C8C8"></th>
+        @foreach($headerPartidas as $_headerPartidas)
+            <th style="background-color: #C8C8C8">{{ $_headerPartidas }}</th>
+        @endforeach
         {{-- Información del Proveedor --}}
         @for($i=0;$i<$totales;$i++)
-            <th style="background-color: #C8C8C8"></th>
-            <th style="background-color: #C8C8C8"></th>
-            <th style="background-color: #C8C8C8"></th>
-            <th style="background-color: #C8C8C8"></th>
-            <th style="background-color: #C8C8C8"></th>
-            <th style="background-color: #C8C8C8"></th>
-            <th style="background-color: #C8C8C8"></th>
-        @endfor
-    </tr>
-    <tr>
-        {{-- Información de la Partida --}}
-        <th style="background-color: #C8C8C8">#</th>
-        <th style="background-color: #C8C8C8">ID Partida</th>
-        <th style="background-color: #C8C8C8">Descripción</th>
-        <th style="background-color: #C8C8C8">Unidad</th>
-        <th style="background-color: #C8C8C8">Cantidad Solicitada</th>
-        <th style="background-color: #C8C8C8">Cantidad Autorizada</th>
-        <th style="background-color: #C8C8C8">Cantidad Asignada Previamente</th>
-        <th style="background-color: #C8C8C8">Cantidad Pendiente de Asignar</th>
-
-        @for($i=0;$i<$totales;$i++)
-            <th style="background-color: #C8C8C8">ID Cotización</th>
-            <th style="background-color: #C8C8C8">Precio Unitario</th>
-            <th style="background-color: #C8C8C8">% Descuento</th>
-            <th style="background-color: #C8C8C8">Precio Total</th>
-            <th style="background-color: #C8C8C8">Moneda</th>
-            <th style="background-color: #C8C8C8">Observaciones</th>
-            <th style="background-color: #C8C8C8">Cantidad Asignada</th>
+            @foreach($headerCotizacion as $_headerCotizacion)
+                <th style="background-color: #C8C8C8">{{ $_headerCotizacion }}</th>
+            @endforeach
         @endfor
     </tr>
     </thead>

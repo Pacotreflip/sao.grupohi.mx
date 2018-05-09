@@ -8,13 +8,20 @@
 
 namespace Ghi\Domain\Core\Layouts\Contratos;
 
+use Dingo\Api\Http\Request;
+use Ghi\Domain\Core\Layouts\ValidacionLayout;
+use Ghi\Domain\Core\Models\Subcontratos\Asignaciones;
+use Ghi\Domain\Core\Models\Subcontratos\PartidaAsignacion;
 use Ghi\Domain\Core\Models\Transacciones\ContratoProyectado;
+use Ghi\Domain\Core\Repositories\Subcontratos\EloquentAsignacionesRepository;
+use Ghi\Domain\Core\Repositories\Subcontratos\EloquentPartidaAsignacionRepository;
 use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Maatwebsite\Excel\Classes\LaravelExcelWorksheet;
 use Maatwebsite\Excel\Facades\Excel;
 
-class AsignacionSubcontratistasLayout
+class AsignacionSubcontratistasLayout extends ValidacionLayout
 {
 
     /**
@@ -25,18 +32,40 @@ class AsignacionSubcontratistasLayout
      * @var array
      */
     protected $resultData = [];
+
+    protected $headerFijos = [
+        '' => "#",
+        'id_partida' => "ID Partida",
+        'descripcion' => "Descripción",
+        'destino' => "Destino",
+        'unidad' => "Unidad",
+        'cantidad_solicitada' => "Cantidad Solicitada",
+        'cantidad_autorizada' => "Cantidad Autorizada",
+        'cantidad_pendiente_de_asignar' => "Cantidad Pendiente de Asignar",
+    ];
+
+    protected $headerDinamicos = [
+        'id_presupuesto' => "ID Presupuesto",
+        'fecha_de_presupuesto' => "Fecha de Presupuesto",
+        'nombre_del_proveedor' => "Nombre del Proveedor",
+        'precio_unitario_antes_descto.' => "Precio Unitario Antes Descto.",
+        'precio_total_antes_descto.' => "Precio Total Antes Descto.",
+        'descuento' => "% Descuento",
+        'precio_unitario' => "Precio Unitario",
+        'precio_total' => "Precio Total",
+        'moneda' => "Moneda",
+        'observaciones' => "Observaciones",
+        'cantidad_asignada' => "Cantidad Asignada",
+    ];
+
     /**
-     * @var int
+     * @var EloquentAsignacionesRepository
      */
-    protected $cotizacionesLength = 8;
+    protected $asignacion;
     /**
-     * @var int
+     * @var EloquentPartidaAsignacionRepository
      */
-    protected $presupuestosLength = 11;
-    /**
-     * @var int
-     */
-    protected $cabecerasLength = 2;
+    protected $partidaAsignacion;
 
     /**
      * AsignacionSubcontratistasLayout constructor.
@@ -44,32 +73,38 @@ class AsignacionSubcontratistasLayout
      */
     public function __construct(ContratoProyectado $contrato_proyectado)
     {
+        $this->lengthHeaderFijos = count($this->headerFijos);
+        $this->lengthHeaderDinamicos = count($this->headerDinamicos);
         $this->contrato_proyectado = $contrato_proyectado;
+        $this->asignacion = new EloquentAsignacionesRepository(new Asignaciones());
+        $this->partidaAsignacion = new EloquentPartidaAsignacionRepository(new PartidaAsignacion());
     }
 
     public function setData(ContratoProyectado $contrato_proyectado)
     {
         $row = 0;
         $maxRow = 0;
-        $arrayResult['totales'] = $contrato_proyectado->cotizacionesContrato->filter()->count();
-        foreach ($contrato_proyectado->cotizacionesContrato->filter() as $key => $cotizacion) {
-            foreach ($cotizacion->presupuestos->filter(function ($value) use ($contrato_proyectado) {
-                return $contrato_proyectado->contratos()->find($value->id_concepto)->cantidad_pendiente > 0;
-            }) as $index => $presupuesto) {
-                $contrato = $contrato_proyectado->contratos()->find($presupuesto->id_concepto);
-                if (!isset($arrayResult['valores'][$contrato->id_concepto])) {
-                    $arrayResult['valores'][$contrato->id_concepto] = [];
-                    $arrayResult['valores'][$contrato->id_concepto]['contrato'] = $contrato;
+        $arrayResult['totales'] = $contrato_proyectado->cotizacionesContrato->count();
+        if ($arrayResult['totales'] > 0) {
+            foreach ($contrato_proyectado->cotizacionesContrato as $key => $cotizacion) {
+                foreach ($cotizacion->presupuestos->filter(function ($value) use ($contrato_proyectado) {
+                    return $contrato_proyectado->contratos()->find($value->id_concepto)->cantidad_pendiente > 0;
+                }) as $index => $presupuesto) {
+                    $contrato = $contrato_proyectado->contratos()->find($presupuesto->id_concepto);
+                    if (!isset($arrayResult['valores'][$contrato->id_concepto])) {
+                        $arrayResult['valores'][$contrato->id_concepto] = [];
+                        $arrayResult['valores'][$contrato->id_concepto]['contrato'] = $contrato;
+                        $row++;
+                        $maxRow = ($maxRow < $row) ? $row : $maxRow;
+                    }
+                    if ($presupuesto->no_cotizado == 0) {
+                        $arrayResult['valores'][$contrato->id_concepto]['presupuesto'][$key] = $presupuesto;
+                        $arrayResult['valores'][$contrato->id_concepto]['cotizacion'][$key] = $cotizacion;
+                    } else {
+                        $arrayResult['valores'][$contrato->id_concepto]['presupuesto'][$key] = [];
+                        $arrayResult['valores'][$contrato->id_concepto]['cotizacion'][$key] = [];
+                    }
                 }
-                if ($presupuesto->no_cotizado == 0) {
-                    $arrayResult['valores'][$contrato->id_concepto]['presupuesto'][$key] = $presupuesto;
-                    $arrayResult['valores'][$contrato->id_concepto]['cotizacion'][$key] = $cotizacion;
-                } else {
-                    $arrayResult['valores'][$contrato->id_concepto]['presupuesto'][$key] = [];
-                    $arrayResult['valores'][$contrato->id_concepto]['cotizacion'][$key] = [];
-                }
-                $row++;
-                $maxRow = ($maxRow < $row) ? $row : $maxRow;
             }
         }
         $arrayResult['maxRow'] = $maxRow;
@@ -82,16 +117,21 @@ class AsignacionSubcontratistasLayout
         ini_set("memory_limit", -1);
         $contrato_proyectado = $this->contrato_proyectado;
         Config::set(['excel.export.calculate' => true]);
-        return Excel::create('Asignación Proveedores', function ($excel) use ($contrato_proyectado) {
+        return Excel::create('Asignación subcontratistas', function ($excel) use ($contrato_proyectado) {
             $excel->sheet('# ' . str_pad($contrato_proyectado->numero_folio, 5, '0', STR_PAD_LEFT), function (LaravelExcelWorksheet $sheet) use ($contrato_proyectado) {
                 $arrayContratoProyectado = $this->setData($contrato_proyectado);
                 $sheet->getProtection()->setSheet(true);
-                $sheet->loadView('excel_layouts.asignacion_subcontratistas', ['contratoProyectados' => $arrayContratoProyectado]);
+                $sheet->loadView('excel_layouts.asignacion_subcontratistas',
+                    [
+                        'contratoProyectados' => $arrayContratoProyectado,
+                        'headerCotizaciones' => $this->headerFijos,
+                        'headerPresupuestos' => $this->headerDinamicos,
+                    ]);
                 $sheet->setAutoSize(false);
                 if ($arrayContratoProyectado['totales'] > 0) {
                     //$sheet->setAutoFilter('A1:S1');
-                    $maxCol = ($arrayContratoProyectado['totales'] * $this->presupuestosLength) + $this->cotizacionesLength;
-                    $j = $this->cotizacionesLength + ($this->presupuestosLength - 1);
+                    $maxCol = ($arrayContratoProyectado['totales'] * $this->lengthHeaderDinamicos) + $this->lengthHeaderFijos;
+                    $j = $this->lengthHeaderFijos + ($this->lengthHeaderDinamicos - 1);
                     $arrayTotales = [];
                     while ($j <= $maxCol) {
                         $index = \PHPExcel_Cell::stringFromColumnIndex($j);
@@ -107,7 +147,7 @@ class AsignacionSubcontratistasLayout
                                 $index . '' . ($this->cabecerasLength + 1) . ':' . $index . ($arrayContratoProyectado['maxRow'] + $this->cabecerasLength) => \PHPExcel_Style_NumberFormat::FORMAT_NUMBER
                             ));
                         $arrayTotales[$index] = $index;
-                        $j += $this->presupuestosLength;
+                        $j += $this->lengthHeaderDinamicos;
                     }
                     $index = \PHPExcel_Cell::stringFromColumnIndex($maxCol);
                     $sheet->getStyle($index . '' . ($this->cabecerasLength) . ':' . $index . ($arrayContratoProyectado['maxRow'] + $this->cabecerasLength))
@@ -129,75 +169,85 @@ class AsignacionSubcontratistasLayout
     }
 
     /**
-     * @param $folio_sao
-     * @param array $partidas
+     * @param array $asignaciones
      * @return bool
      * @throws \Exception
      */
-    public function procesarDatos($folio_sao, array $partidas)
+    public function procesarDatos(array $asignaciones)
     {
         try {
-            DB::connection('controlrec')->beginTransaction();
-            /*if (empty($folio_sao)) {
-                $this->resultData = $partidas;
-                throw new \Exception('No se puede guardar la comparación');
-            }
-
-            $RQCTOCSolicitud = $this->requisicion->rqctocSolicitud()->where('folio_sao', $folio_sao)->first();
-            $data['idrqctoc_solicitudes'] = $RQCTOCSolicitud->idrqctoc_solicitudes;
-            $data['idserie'] = $RQCTOCSolicitud->id_serie;
-            $tablaComparativa = $this->RQCTOCTablaComparativa->create($data);
-            if (!$tablaComparativa) {
-                $this->resultData = $partidas;
-                throw new \Exception('No se puede guardar la comparación');
-            }
+            DB::connection('cadeco')->beginTransaction();
             $error = 0;
-            if (count($partidas)) {
-                foreach ($partidas as $index => $row) {
-                    if (!empty(trim($row['id_partida']))) {
-                        $cotizacion = $this->requisicion->rqctocSolicitud->rqctocCotizaciones()->find($row['id_cotizacion'])->rqctocCotizacionPartidas->filter(function ($value) use ($row) {
-                            return $value->idrqctoc_solicitudes_partidas == $row['id_partida'];
-                        });
-                        $arrayCotizacion = $cotizacion->toArray();
-                        $validarCotizacion = current($arrayCotizacion);
-                        if ($validarCotizacion['precio_unitario'] > 0) {
-                            $partida = $this->requisicion->rqctocSolicitud->rqctocSolicitudPartidas()->find((int)$row['id_partida']);
-                            $sumatorias[$row['id_partida']]['total'] = $partida->cantidad_pendiente;
-                            if (
-                                $sumatorias[$row['id_partida']]['total'] >= $row['cantidad_asignada']
-                                && is_numeric($row['cantidad_asignada'])
-                                && $row['cantidad_asignada'] > 0
-                            ) {
-                                //save
-                                $dataRQCTOCTablaComparativaPartida['idrqctoc_tabla_comparativa'] = $tablaComparativa->idrqctoc_tabla_comparativa;
-                                $dataRQCTOCTablaComparativaPartida['idrqctoc_solicitudes_partidas'] = $row['id_partida'];
-                                $dataRQCTOCTablaComparativaPartida['idrqctoc_cotizaciones_partidas'] = $row['id_cotizacion'];
-                                $dataRQCTOCTablaComparativaPartida['cantidad_asignada'] = $row['cantidad_asignada'];
-                                $newRQCTOCTablaComparativaPartida = $this->RQCTOCTablaComparativaPartida->create($dataRQCTOCTablaComparativaPartida);
-                                if (!$newRQCTOCTablaComparativaPartida) {
-                                    $row['error'] = "No se puede guardar el registro";
-                                    $error++;
+            $sumatorias = [];
+            if (count($asignaciones)) {
+                foreach ($asignaciones as $id_transaccion => $rows) {
+                    if (!empty(trim($id_transaccion))) {
+                        //->Que las cotizaciones presentadas en el layout correspondan a los que están registrados en la base de datos  al momento de cargarlo	Listo
+                        $cotizacion = $this->contrato_proyectado->cotizacionesContrato->find($id_transaccion);
+                        if ($cotizacion) {
+                            $dataAsignaciones['id_transaccion'] = $cotizacion->id_transaccion;
+                            $asignacion = $this->asignacion->create($dataAsignaciones);
+                            foreach ($rows as $row) {
+                                $contrato = $this->contrato_proyectado->contratos()->find($row['id_concepto']);
+                                if ($contrato->cantidad_pendiente > 0) {
+                                    //->Que la cantidad pendiente de cada partida del layout sea igual a la cantidad pendiente que se calcule con información de la base de datos, para asi evitar duplicidad de información
+                                    if(!isset($sumatorias[$row['id_concepto']]['pendiente'])){
+                                        $sumatorias[$row['id_concepto']]['pendiente'] = $contrato->cantidad_pendiente;
+                                    }
+                                    if ($sumatorias[$row['id_concepto']]['pendiente'] == $row['cantidad_archivo']) {
+                                        //->Que la cantidad a asignar sea menor o igual a la cantidad pendiente de cada partida
+                                        if (
+                                            $contrato->cantidad_pendiente >= $row['cantidad_asignada']
+                                            && is_numeric($row['cantidad_asignada'])
+                                            && $row['cantidad_asignada'] > 0
+                                        ) {
+                                            //save
+                                            $data['id_concepto'] = $contrato->id_concepto;
+                                            $data['id_transaccion'] = $contrato->id_transaccion;
+                                            $data['id_asignacion'] = $asignacion->id_asignacion;
+                                            $data['cantidad_asignada'] = $row['cantidad_asignada'];
+                                            $data['cantidad_autorizada'] = $row['cantidad_asignada'];
+                                            $newPartidaAsignacion = $this->partidaAsignacion->create($data);
+                                            if (!$newPartidaAsignacion) {
+                                                $row['error'] = "No se puede guardar el registro";
+                                                $row['cantidad_pendiente'] = $contrato->cantidad_pendiente;
+                                                $error++;
+                                            } else {
+                                                $row['error'] = "";
+                                            }
+                                        } else {
+                                            $row['error'] = "Supera el número máximo asignado";
+                                            $row['cantidad_pendiente'] = $contrato->cantidad_pendiente;
+                                            $error++;
+                                        }
+                                    } else {
+                                        $row['error'] = "La cantidad del archivo es diferente a la cantidad pendiente";
+                                        $row['cantidad_pendiente'] = $contrato->cantidad_pendiente;
+                                        $error++;
+                                    }
                                 } else {
-                                    $row['error'] = "";
+                                    $row['error'] = "No se permite asignar valores a una cotización que no tiene cantidades pendeientes";
+                                    $row['cantidad_pendiente'] = $contrato->cantidad_pendiente;
+                                    $error++;
                                 }
-                            } else {
-                                $row['error'] = "Supera el número máximo asignado";
-                                $error++;
-                            }
+                                $this->resultData[$id_transaccion][] = $row;
+                            } 
                         } else {
-                            $row['error'] = "No se permite asignar valores a una cotización que no existe";
-                            $error++;
+                            $this->resultData = $asignaciones;
+                            throw new \Exception('No se puede guardar la cotizacion');
                         }
-                        $this->resultData[] = $row;
                     }
                 }
+                Log::error($error);
                 if ($error > 0) {
                     throw new \Exception("hubo $error errores en el documento");
                 }
-                DB::connection('controlrec')->commit();
-            }*/
+                Log::debug($this->resultData);
+                DB::connection('cadeco')->commit();
+            }
         } catch (\Exception $e) {
-            DB::connection('controlrec')->rollback();
+            Log::error($e->getMessage());
+            DB::connection('cadeco')->rollback();
             throw new \Exception($e->getMessage());
         }
         return true;
@@ -208,36 +258,64 @@ class AsignacionSubcontratistasLayout
      */
     public function qetDataFile(Request $request)
     {
+        set_time_limit(0);
+        ini_set("memory_limit", -1);
         Excel::load($request->file('file')->getRealPath(), function ($reader) {
-            $results = $reader->all();
-            $folio_sao = explode(" ", $results->getTitle());
-            $sheet = $reader->sheet($results->getTitle(), function (LaravelExcelWorksheet $sheet) {
-                $sheet->getProtection()->setSheet(false);
-            });
-            $col = $sheet->toArray();
-            for ($i = ($this->cabecerasLength + 1); $i < count($col); $i++) {
-                $row = $col[$i];
-                $maxCol = count($row);
-                $j = $this->cotizacionesLength + ($this->presupuestosLength - 1);
-                $k = $this->cotizacionesLength;
-                while ($j <= $maxCol) {
-                    if (is_numeric($row[$k]) and !empty($row[$k])) {
-                        $partidas[] = [
-                            'id_partida' => $row[1],
-                            'id_cotizacion' => $row[$k],
-                            'cantidad_asignada' => $row[$k + ($this->presupuestosLength - 1)],
-                        ];
-                    }
-                    $k += $this->presupuestosLength;
-                    $j += $this->presupuestosLength;
-                }
-            }
             try {
-                $this->procesarDatos($folio_sao[1], $partidas);
+
+                $results = $reader->all();
+                $sheet = $reader->sheet($results->getTitle(), function (LaravelExcelWorksheet $sheet) {
+                    $sheet->getProtection()->setSheet(false);
+                });
+                $folio = explode(' ',$results->getTitle());
+                //->Validar que el Layout corresponda a la transacción
+                if('# ' . str_pad($this->contrato_proyectado->numero_folio, 5, '0', STR_PAD_LEFT)!=$results->getTitle()){
+                    throw new \Exception("No corresponde el layout al Contrato");
+                }
+                $headers = $results->getHeading();
+                $layout = $this->setData($this->contrato_proyectado);
+                //->Número y descripción de columnas
+                if($this->validarHeader($headers,$layout)) {
+                    $col = $sheet->toArray();
+                    //->Que las partidas presentadas en el Layout sean las mismas que se encuentran en la base de datos al momento de cargarlo
+                    if (count($col)!=($layout['maxRow']+$this->cabecerasLength))
+                    {
+                        throw new \Exception("No corresponde el numero de filas con las que contiene el layout");
+                    }
+                    $asignaciones = [];
+                    for ($i = $this->cabecerasLength; $i < count($col); $i++) {
+                        $row = $col[$i];
+                        $maxCol = count($row);
+                        $j = $this->lengthHeaderFijos + ($this->lengthHeaderDinamicos - 1);
+                        $k = $this->lengthHeaderFijos;
+                        while ($j <= $maxCol) {
+                            if (is_numeric($row[$k]) and !empty($row[$k])) {
+                                if ($row[$k + ($this->lengthHeaderDinamicos - 1)] > 0) {
+                                    $asignaciones[$row[$k]][] = [
+                                        'id_concepto' => $row[1],
+                                        'id_transaccion' => $row[$k],
+                                        'cantidad_archivo' => $row[($this->lengthHeaderFijos-1)],//->Que la cantidad pendiente de cada partida del layout sea igual a la cantidad pendiente que se calcule con información de la base de datos, para asi evitar duplicidad de información
+                                        'cantidad_asignada' => $row[$k + ($this->lengthHeaderDinamicos - 1)],
+                                    ];
+                                }
+                            }
+                            $k += $this->lengthHeaderDinamicos;
+                            $j += $this->lengthHeaderDinamicos;
+                        }
+                    }
+                    if (count($asignaciones) > 0) {
+                        $this->procesarDatos($asignaciones);
+                    } else {
+                        throw new \Exception("no hay elementos asignados");
+                    }
+                }
             } catch (\Exception $e) {
+                Log::debug($e->getMessage());
                 Log::debug($this->resultData);
                 dd($e->getMessage());
             }
         });
     }
+
+
 }

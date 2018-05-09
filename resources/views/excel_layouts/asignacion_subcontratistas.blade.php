@@ -1,55 +1,16 @@
-<?php $totales = isset($requisiciones['totales']) ? $requisiciones['totales'] : 0 ?>
+<?php $totales = isset($contratoProyectados['totales']) ? $contratoProyectados['totales'] : 0 ?>
 <table>
     <thead>
     <tr>
         {{-- Información de la Partida --}}
-        <th style="background-color: #C8C8C8"></th>
-        <th style="background-color: #C8C8C8"></th>
-        <th style="background-color: #C8C8C8"></th>
-        <th style="background-color: #C8C8C8"></th>
-        <th style="background-color: #C8C8C8"></th>
-        <th style="background-color: #C8C8C8"></th>
-        <th style="background-color: #C8C8C8"></th>
-        <th style="background-color: #C8C8C8"></th>
+        @foreach($headerCotizaciones as $_headerCotizaciones)
+            <th style="background-color: #C8C8C8">{{ $_headerCotizaciones }}</th>
+        @endforeach
         {{-- Información del Proveedor --}}
         @for($i=0;$i<$totales;$i++)
-            <th style="background-color: #C8C8C8"></th>
-            <th style="background-color: #C8C8C8"></th>
-            <th style="background-color: #C8C8C8"></th>
-            <th style="background-color: #C8C8C8"></th>
-            <th style="background-color: #C8C8C8"></th>
-            <th style="background-color: #C8C8C8"></th>
-            <th style="background-color: #C8C8C8"></th>
-            <td style="background-color: #C8C8C8"></td>
-            <td style="background-color: #C8C8C8"></td>
-            <td style="background-color: #C8C8C8"></td>
-            <td style="background-color: #C8C8C8"></td>
-        @endfor
-    </tr>
-    <tr>
-        {{-- Información de la Partida --}}
-        <th style="background-color: #C8C8C8">#</th>
-        <th style="background-color: #C8C8C8">ID Partida</th>
-        <th style="background-color: #C8C8C8">Descripción</th>
-        <th style="background-color: #C8C8C8">Destino</th>
-        <th style="background-color: #C8C8C8">Unidad</th>
-        <th style="background-color: #C8C8C8">Cantidad Solicitada</th>
-        <th style="background-color: #C8C8C8">Cantidad Autorizada</th>
-        <th style="background-color: #C8C8C8">Cantidad Pendiente de Asignar</th>
-
-        {{-- Información del Proveedor --}}
-        @for($i=0;$i<$totales;$i++)
-            <th style="background-color: #C8C8C8">ID Presupuesto</th>
-            <th style="background-color: #C8C8C8">Fecha de Presupuesto</th>
-            <th style="background-color: #C8C8C8">Nombre del Proveedor</th>
-            <th style="background-color: #C8C8C8">Precio Unitario Antes Descto.</th>
-            <th style="background-color: #C8C8C8">Precio Total Antes Descto.</th>
-            <th style="background-color: #C8C8C8">% Descuento</th>
-            <th style="background-color: #C8C8C8">Precio Unitario</th>
-            <th style="background-color: #C8C8C8">Precio Total</th>
-            <th style="background-color: #C8C8C8">Moneda</th>
-            <th style="background-color: #C8C8C8">Observaciones</th>
-            <th style="background-color: #C8C8C8">Cantidad Asignada</th>
+            @foreach($headerPresupuestos as $_headerPresupuestos)
+                <th style="background-color: #C8C8C8">{{ $_headerPresupuestos }}</th>
+            @endforeach
         @endfor
     </tr>
     </thead>
