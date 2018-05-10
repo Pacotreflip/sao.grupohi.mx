@@ -285,7 +285,6 @@ class AsignacionSubcontratistasLayout extends ValidacionLayout
                     $asignaciones = [];
                     for ($i = $this->cabecerasLength; $i < count($col); $i++) {
                         $row = $col[$i];
-                        Log::debug($row);
                         $maxCol = count($row);
                         $j = $this->lengthHeaderFijos + ($this->lengthHeaderDinamicos - 1);
                         $k = $this->lengthHeaderFijos;
@@ -305,7 +304,6 @@ class AsignacionSubcontratistasLayout extends ValidacionLayout
                             $j += $this->lengthHeaderDinamicos;
                         }
                     }
-                    Log::debug($asignaciones);
                     if (count($asignaciones) > 0) {
                         $this->procesarDatos($asignaciones);
                     } else {
