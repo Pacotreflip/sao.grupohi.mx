@@ -18,7 +18,7 @@
                               @submit.prevent="validateForm('form_agregar_asignacion', 'agregar_asignacion')"
                               data-vv-scope="form_agregar_asignacion">
                             <div class="box-header with-border">
-                                <h3 class="box-title">Formulario de Asginación</h3>
+                                <h3 class="box-title">Formulario de Asignación</h3>
                             </div>
                             <div class="box-body">
                                 <div class="col-md-4">
@@ -29,7 +29,7 @@
                                                 id="tipo_transaccion">
                                             <option value>[--SELECCIONE--]</option>
                                         </select>
-                                        <label class="help" v-show="validation_errors.has('form_agregar_asignacion.tipo_transaccion')">Seleccion un Tipo de Transacción</label>
+                                        <label class="help" v-show="validation_errors.has('form_agregar_asignacion.tipo_transaccion')">Seleccione un Tipo de Transacción</label>
                                     </div>
                                 </div>
                                 <div class="col-md-4">
@@ -43,7 +43,7 @@
                                             <option value>[--SELECCIONE--]
                                             </option>
                                         </select>
-                                        <label class="help" v-show="validation_errors.has('form_agregar_asignacion.id_transaccion')">Seleccion una Transacción</label>
+                                        <label class="help" v-show="validation_errors.has('form_agregar_asignacion.id_transaccion')">Seleccione una Transacción</label>
                                     </div>
                                 </div>
                                 <div class="col-md-4">
@@ -55,7 +55,7 @@
                                                 :disabled="!form.id_transaccion"
                                         >
                                         </select>
-                                        <label class="help" v-show="validation_errors.has('form_agregar_asignacion.id_usuario_asignado')">Seleccion un(os) Comprador(es)</label>
+                                        <label class="help" v-show="validation_errors.has('form_agregar_asignacion.id_usuario_asignado')">Seleccione un(os) Comprador(es)</label>
                                     </div>
                                 </div>
                             </div>
@@ -72,7 +72,7 @@
                 <div class="col-md-12">
                     <div class="box">
                         <div class="box-header with-border">
-                            <h3 class="box-title">Listado de Asiganciones agregadas</h3>
+                            <h3 class="box-title">Listado de Asignaciones agregadas</h3>
                         </div>
                         <div class="box-body">
                             <div class="table-responsive">
