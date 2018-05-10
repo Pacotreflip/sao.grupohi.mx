@@ -190,7 +190,7 @@ class AsignacionProveedoresLayout extends ValidacionLayout
         try {
             DB::connection('controlrec')->beginTransaction();
             if (empty($folio_sao)) {
-                $this->resultData = $partidas;
+                //$this->resultData = $partidas;
                 throw new \Exception('No se puede guardar la comparación');
             }
             //->Validar que el Layout corresponda a la transacción
@@ -200,7 +200,7 @@ class AsignacionProveedoresLayout extends ValidacionLayout
                 $data['idserie'] = $RQCTOCSolicitud->id_serie;
                 $tablaComparativa = $this->RQCTOCTablaComparativa->create($data);
                 if (!$tablaComparativa) {
-                    $this->resultData = $partidas;
+                    //$this->resultData = $partidas;
                     throw new \Exception('No se puede guardar la comparación');
                 }
                 $error = 0;
@@ -251,7 +251,7 @@ class AsignacionProveedoresLayout extends ValidacionLayout
                                 $row['error'] = "No se permite asignar valores a una cotización que no existe";
                                 $error++;
                             }
-                            $this->resultData[] = $row;
+                            $this->resultData[$row['linea']][] = $row;
                         }
                     }
                     if ($error > 0) {
@@ -298,6 +298,7 @@ class AsignacionProveedoresLayout extends ValidacionLayout
                             if (is_numeric($row[$k]) and !empty($row[$k])) {
                                 $partidas[] = [
                                     'id_partida' => $row[1],
+                                    'linea' => $i,
                                     'id_cotizacion' => $row[$k],
                                     'cantidad_archivo' => $row[($this->lengthHeaderFijos-1)],//->Que la cantidad pendiente de cada partida del layout sea igual a la cantidad pendiente que se calcule con información de la base de datos, para asi evitar duplicidad de información
                                     'cantidad_asignada' => $row[$k + ($this->lengthHeaderDinamicos - 1)],
@@ -314,7 +315,7 @@ class AsignacionProveedoresLayout extends ValidacionLayout
                     throw new \Exception("no hay elementos asignados");
                 }
             } catch (\Exception $e) {
-                throw new NotAcceptableHttpException($e->getMessage());
+                throw new StoreResourceFailedException($e->getMessage(),$this->resultData);
             }
         });
         return true;

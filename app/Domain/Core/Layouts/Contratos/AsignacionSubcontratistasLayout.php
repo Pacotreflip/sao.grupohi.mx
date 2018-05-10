@@ -8,6 +8,7 @@
 
 namespace Ghi\Domain\Core\Layouts\Contratos;
 
+use Dingo\Api\Exception\StoreResourceFailedException;
 use Dingo\Api\Http\Request;
 use Ghi\Domain\Core\Layouts\ValidacionLayout;
 use Ghi\Domain\Core\Models\Subcontratos\Asignaciones;
@@ -231,7 +232,7 @@ class AsignacionSubcontratistasLayout extends ValidacionLayout
                                     $row['cantidad_pendiente'] = $contrato->cantidad_pendiente;
                                     $error++;
                                 }
-                                $this->resultData[$id_transaccion][] = $row;
+                                $this->resultData[$row['linea']][] = $row;
                             } 
                         } else {
                             $this->resultData = $asignaciones;
@@ -291,6 +292,7 @@ class AsignacionSubcontratistasLayout extends ValidacionLayout
                                 if ($row[$k + ($this->lengthHeaderDinamicos - 1)] > 0) {
                                     $asignaciones[$row[$k]][] = [
                                         'id_concepto' => $row[1],
+                                        'linea' => $i,
                                         'id_transaccion' => $row[$k],
                                         'cantidad_archivo' => $row[($this->lengthHeaderFijos-1)],//->Que la cantidad pendiente de cada partida del layout sea igual a la cantidad pendiente que se calcule con información de la base de datos, para asi evitar duplicidad de información
                                         'cantidad_asignada' => $row[$k + ($this->lengthHeaderDinamicos - 1)],
@@ -308,7 +310,7 @@ class AsignacionSubcontratistasLayout extends ValidacionLayout
                     }
                 }
             } catch (\Exception $e) {
-                throw new NotAcceptableHttpException($e->getMessage());
+                throw new StoreResourceFailedException($e->getMessage(),$this->resultData);
             }
         });
         return true;
