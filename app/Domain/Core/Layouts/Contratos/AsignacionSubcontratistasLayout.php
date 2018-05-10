@@ -254,6 +254,7 @@ class AsignacionSubcontratistasLayout extends ValidacionLayout
 
     /**
      * @param Request $request
+     * @return bool
      */
     public function qetDataFile(Request $request)
     {
@@ -284,6 +285,7 @@ class AsignacionSubcontratistasLayout extends ValidacionLayout
                     $asignaciones = [];
                     for ($i = $this->cabecerasLength; $i < count($col); $i++) {
                         $row = $col[$i];
+                        Log::debug($row);
                         $maxCol = count($row);
                         $j = $this->lengthHeaderFijos + ($this->lengthHeaderDinamicos - 1);
                         $k = $this->lengthHeaderFijos;
@@ -294,8 +296,8 @@ class AsignacionSubcontratistasLayout extends ValidacionLayout
                                         'id_concepto' => $row[1],
                                         'linea' => $i,
                                         'id_transaccion' => $row[$k],
-                                        'cantidad_archivo' => $row[($this->lengthHeaderFijos-1)],//->Que la cantidad pendiente de cada partida del layout sea igual a la cantidad pendiente que se calcule con información de la base de datos, para asi evitar duplicidad de información
-                                        'cantidad_asignada' => $row[$k + ($this->lengthHeaderDinamicos - 1)],
+                                        'cantidad_archivo' => str_replace(",","",$row[($this->lengthHeaderFijos-1)]),//->Que la cantidad pendiente de cada partida del layout sea igual a la cantidad pendiente que se calcule con información de la base de datos, para asi evitar duplicidad de información
+                                        'cantidad_asignada' => str_replace(",","",$row[$k + ($this->lengthHeaderDinamicos - 1)]),
                                     ];
                                 }
                             }
@@ -303,6 +305,7 @@ class AsignacionSubcontratistasLayout extends ValidacionLayout
                             $j += $this->lengthHeaderDinamicos;
                         }
                     }
+                    Log::debug($asignaciones);
                     if (count($asignaciones) > 0) {
                         $this->procesarDatos($asignaciones);
                     } else {

@@ -269,6 +269,10 @@ class AsignacionProveedoresLayout extends ValidacionLayout
         return true;
     }
 
+    /**
+     * @param Request $request
+     * @return bool
+     */
     public function qetDataFile(Request $request)
     {
         Excel::load($request->file('file')->getRealPath(), function ($reader) {
@@ -300,8 +304,8 @@ class AsignacionProveedoresLayout extends ValidacionLayout
                                     'id_partida' => $row[1],
                                     'linea' => $i,
                                     'id_cotizacion' => $row[$k],
-                                    'cantidad_archivo' => $row[($this->lengthHeaderFijos-1)],//->Que la cantidad pendiente de cada partida del layout sea igual a la cantidad pendiente que se calcule con información de la base de datos, para asi evitar duplicidad de información
-                                    'cantidad_asignada' => $row[$k + ($this->lengthHeaderDinamicos - 1)],
+                                    'cantidad_archivo' => str_replace(",","",$row[($this->lengthHeaderFijos-1)]),//->Que la cantidad pendiente de cada partida del layout sea igual a la cantidad pendiente que se calcule con información de la base de datos, para asi evitar duplicidad de información
+                                    'cantidad_asignada' => str_replace(",","",$row[$k + ($this->lengthHeaderDinamicos - 1)]),
                                 ];
                             }
                             $k += $this->lengthHeaderDinamicos;

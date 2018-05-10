@@ -51,7 +51,7 @@ class LayoutsController extends BaseController
         try {
             return $this->response->array([
                 'file' => "data:application/vnd.ms-excel;base64," . base64_encode($layout->string()),
-                'name' => 'AsignacionProveedores'
+                'name' => '# ' . str_pad($requisicion->numero_folio, 5, '0', STR_PAD_LEFT).'-AsignacionProveedores'
             ]);
         } catch (\ErrorException $e) {
         }
@@ -77,7 +77,7 @@ class LayoutsController extends BaseController
         try {
             return $this->response->array([
                 'file' => "data:application/vnd.ms-excel;base64," . base64_encode($layout->string()),
-                'name' => 'AsignacionContratistas'
+                'name' => '# ' . str_pad($contrato_proyectado->numero_folio, 5, '0', STR_PAD_LEFT).'-AsignacionContratistas'
             ]);
         } catch (\ErrorException $e) {
         }
