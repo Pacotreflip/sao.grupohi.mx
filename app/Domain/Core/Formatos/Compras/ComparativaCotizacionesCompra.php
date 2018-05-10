@@ -62,7 +62,7 @@ class ComparativaCotizacionesCompra extends Rotation
 
         $this->requisicion = $requisicion;
         $this->items = $requisicion->items()->with('material')->get()->toArray();
-        $this->cotizaciones = $requisicion->cotizacionesCompra()->with('cotizaciones.moneda')->orderBy('monto')->get()->toArray();
+        $this->cotizaciones = $requisicion->cotizacionesCompra()->with('cotizaciones.moneda', 'rqctocCotizacion')->orderBy('monto')->get()->toArray();
         $this->num_cotizaciones = count($this->cotizaciones);
         $this->restantes = $this->num_cotizaciones;
 
@@ -202,8 +202,8 @@ class ComparativaCotizacionesCompra extends Rotation
                 array_push($aligns, 'R');
 
                 array_push($row, isset($item_cotizacion['moneda']['abreviatura']) ? trim($item_cotizacion['moneda']['abreviatura']) : '');
-                array_push($row, isset($item_cotizacion['precio_unitario']) ? '$ ' . number_format($item_cotizacion['precio_unitario'], 2, '.', ',') : '---');
-                array_push($row, isset($item_cotizacion['precio_unitario']) ? '$ ' . number_format($item_cotizacion['precio_unitario'] * $item_requisicion['cantidad'], 2, '.', ',') : '---');
+                array_push($row, (isset($item_cotizacion['precio_unitario']) && $item_cotizacion['no_cotizado'] == 0) ? '$ ' . number_format($item_cotizacion['precio_unitario'], 2, '.', ',') : '---');
+                array_push($row, (isset($item_cotizacion['precio_unitario']) && $item_cotizacion['no_cotizado'] == 0) ? '$ ' . number_format($item_cotizacion['precio_unitario'] * $item_requisicion['cantidad'], 2, '.', ',') : '---');
             }
 
             $this->SetWidths($widths);
@@ -308,9 +308,12 @@ class ComparativaCotizacionesCompra extends Rotation
         $this->SetFillColor(255, 255, 143);
         $this->Cell(($this->w - 2) * 0.300, 0.6, 'CONDICIONES COMERCIALES / OBSERVACIONES', 'TLB', '1', 'C', 1);
         $this->Cell(($this->w - 2) * 0.300, 0.3, utf8_decode('FECHA DE COTIZACIÓN'), 'LB', 2, 'R');
+        $this->Cell(($this->w - 2) * 0.300, 0.3, utf8_decode('PAGO EN PARCIALIDADES'), 'LB', 2, 'R');
         $this->Cell(($this->w - 2) * 0.300, 0.3, '% ANTICIPO', 'LB', 2, 'R');
         $this->Cell(($this->w - 2) * 0.300, 0.3, 'CREDITO (DIAS)', 'LB', 2, 'R');
+        $this->Cell(($this->w - 2) * 0.300, 0.3, 'TIEMPO DE ENTREGA', 'LB', 2, 'R');
         $this->Cell(($this->w - 2) * 0.300, 0.3, 'VIGENCIA (DIAS)', 'LB', 1, 'R');
+        $this->Cell(($this->w - 2) * 0.300, 0.3, 'DESCUENTO', 'LB', 1, 'R');
         $this->MultiCell(($this->w - 2) * 0.300, 0.3, 'OBSERVACIONES', 'LB', 'R', 0);
 
         $this->x_i = $this->x + ($this->w - 2) * 0.300;
@@ -323,10 +326,13 @@ class ComparativaCotizacionesCompra extends Rotation
             $this->x = $this->x_i;
 
             $this->Cell(($this->w - 2) * (1.4 / (2 * self::MAX_COTIZACIONES_PP)), 0.6, 'EMPRESA #' . ($i + $this->acumuladas + 1), 'TLR', 2, 'C', 1);
-            $this->Cell(($this->w - 2) * (1.4 / (2 * self::MAX_COTIZACIONES_PP)), 0.3, Carbon::createFromFormat('Y-m-d H:i:s.000', $cotizacion['fecha'])->toDateString(), 'TLR', 2, 'R');
-            $this->Cell(($this->w - 2) * (1.4 / (2 * self::MAX_COTIZACIONES_PP)), 0.3, $cotizacion['anticipo'] ? $cotizacion['anticipo'] : 'N/A', 'TLR', 2, 'R');
-            $this->Cell(($this->w - 2) * (1.4 / (2 * self::MAX_COTIZACIONES_PP)), 0.3, $cotizacion['DiasCredito'] ? $cotizacion['DiasCredito'] : 'N/A', 'TLR', 2, 'R');
-            $this->Cell(($this->w - 2) * (1.4 / (2 * self::MAX_COTIZACIONES_PP)), 0.3, $cotizacion['DiasVigencia'] ? $cotizacion['DiasVigencia'] : 'N/A', 'TLBR', 2, 'R');
+            $this->Cell(($this->w - 2) * (1.4 / (2 * self::MAX_COTIZACIONES_PP)), 0.3, Carbon::createFromFormat('Y-m-d H:i:s.000', $cotizacion['cumplimiento'])->toDateString(), 'TLR', 2, 'R');
+            $this->Cell(($this->w - 2) * (1.4 / (2 * self::MAX_COTIZACIONES_PP)), 0.3, $cotizacion['porcentaje_anticipo_pactado'] ? $cotizacion['porcentaje_anticipo_pactado'] : '', 'TLR', 2, 'R');
+            $this->Cell(($this->w - 2) * (1.4 / (2 * self::MAX_COTIZACIONES_PP)), 0.3, $cotizacion['rqctoc_cotizacion']['anticipo'] ? $cotizacion['rqctoc_cotizacion']['anticipo'] : '', 'TLR', 2, 'R');
+            $this->Cell(($this->w - 2) * (1.4 / (2 * self::MAX_COTIZACIONES_PP)), 0.3, $cotizacion['rqctoc_cotizacion']['dias_credito'] ? $cotizacion['rqctoc_cotizacion']['dias_credito'] : '', 'TLR', 2, 'R');
+            $this->Cell(($this->w - 2) * (1.4 / (2 * self::MAX_COTIZACIONES_PP)), 0.3, $cotizacion['rqctoc_cotizacion']['plazo_entrega'] ? $cotizacion['rqctoc_cotizacion']['plazo_entrega'] : '', 'TLR', 2, 'R');
+            $this->Cell(($this->w - 2) * (1.4 / (2 * self::MAX_COTIZACIONES_PP)), 0.3, $cotizacion['rqctoc_cotizacion']['vigencia'] ? $cotizacion['rqctoc_cotizacion']['vigencia'] : '', 'TLR', 2, 'R');
+            $this->Cell(($this->w - 2) * (1.4 / (2 * self::MAX_COTIZACIONES_PP)), 0.3, $cotizacion['rqctoc_cotizacion']['descuento'] ? $cotizacion['rqctoc_cotizacion']['descuento'] : '', 'TLRB', 2, 'R');
             $this->MultiCell(($this->w - 2) * (1.4 / (2 * self::MAX_COTIZACIONES_PP)), 0.3, substr(trim($cotizacion['observaciones']), 0, 200), 'LBR', 'R', 0);
 
             $this->x_i = $this->x_i + ($this->w - 2) * (1.4 / (2 * self::MAX_COTIZACIONES_PP));

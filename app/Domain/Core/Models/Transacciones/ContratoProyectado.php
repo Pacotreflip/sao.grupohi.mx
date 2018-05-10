@@ -12,6 +12,7 @@ namespace Ghi\Domain\Core\Models\Transacciones;
 use Carbon\Carbon;
 use Ghi\Core\Facades\Context;
 use Ghi\Domain\Core\Models\Contrato;
+use Ghi\Domain\Core\Models\Procuracion\Asignaciones;
 use Ghi\Domain\Core\Models\Scopes\ContratoProyectadoScope;
 use Ghi\Domain\Core\Models\Scopes\ObraScope;
 use Ghi\Domain\Core\Models\Sucursal;
@@ -66,5 +67,14 @@ class ContratoProyectado extends Transaccion
 
     public function contratos() {
         return $this->hasMany(Contrato::class, 'id_transaccion', 'id_transaccion');
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function asignaciones()
+    {
+        return $this->hasMany(Asignaciones::class, 'id_transaccion', 'id_transaccion');
+
     }
 }

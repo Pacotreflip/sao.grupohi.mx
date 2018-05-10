@@ -18,4 +18,10 @@ interface TipoTranRepository
      */
     public function lists();
 
+    /**
+     * Contiene los parametros de búsqueda
+     * @param array $orWhere
+     * @return mixed
+     */
+    public function orWhere(array $orWhere);
 }

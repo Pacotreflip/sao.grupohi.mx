@@ -50,4 +50,18 @@ interface ContratoProyectadoRepository
      * @throws \Exception
      */
     public function addContratos(Request $request, $id);
+
+    /**
+     * consultar todos los contratos proyectados
+     * @param $where
+     * @return mixed
+     */
+    public function all();
+
+    /**
+     * @param array $cols
+     * @param string $q
+     * @return mixed
+     */
+    public function like(array $cols,$q);
 }

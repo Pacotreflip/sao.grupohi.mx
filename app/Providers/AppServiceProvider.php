@@ -407,6 +407,11 @@ class AppServiceProvider extends ServiceProvider
         );
 
         $this->app->bind(
+            \Ghi\Domain\Core\Contracts\Procuracion\AsignacionesRepository::class,
+            \Ghi\Domain\Core\Repositories\Programacion\EloquentAsignacionesRepository::class
+        );
+
+        $this->app->bind(
             \Ghi\Domain\Core\Contracts\Subcontratos\AsignacionesRepository::class,
             \Ghi\Domain\Core\Repositories\Subcontratos\EloquentAsignacionesRepository::class
         );

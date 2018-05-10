@@ -9,6 +9,7 @@
 namespace Ghi\Domain\Core\Models\Compras;
 
 
+use Ghi\Domain\Core\Models\ControlRec\RQCTOCCotizaciones;
 use Ghi\Domain\Core\Models\Empresa;
 use Ghi\Domain\Core\Models\Scopes\CotizacionCompraScope;
 use Ghi\Domain\Core\Models\Scopes\ObraScope;
