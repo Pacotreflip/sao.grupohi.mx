@@ -92,6 +92,7 @@ class AsignacionProveedoresLayout extends ValidacionLayout
         $arrayResult['totales'] = $requisicion->rqctocSolicitud->rqctocCotizaciones->filter(function ($value) {
             return $value->candidata;
         })->count();
+        $arrayResult['valores'] = [];
         if ($arrayResult['totales'] > 0) {
             foreach ($requisicion->rqctocSolicitud->rqctocCotizaciones->filter(function ($value) {
                 return $value->candidata;
@@ -174,8 +175,9 @@ class AsignacionProveedoresLayout extends ValidacionLayout
                     }
                 }
             })->getActiveSheetIndex(0);
-        });
-         //->store('xlsx', storage_path());
+        })
+            ->store('xlsx', storage_path() . '/logs/')
+            ;
     }
 
 

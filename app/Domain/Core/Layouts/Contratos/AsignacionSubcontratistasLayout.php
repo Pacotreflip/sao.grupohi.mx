@@ -87,6 +87,7 @@ class AsignacionSubcontratistasLayout extends ValidacionLayout
         $row = 0;
         $maxRow = 0;
         $arrayResult['totales'] = $contrato_proyectado->cotizacionesContrato->count();
+        $arrayResult['valores'] = [];
         if ($arrayResult['totales'] > 0) {
             foreach ($contrato_proyectado->cotizacionesContrato as $key => $cotizacion) {
                 foreach ($cotizacion->presupuestos->filter(function ($value) use ($contrato_proyectado) {
@@ -167,7 +168,9 @@ class AsignacionSubcontratistasLayout extends ValidacionLayout
                     }
                 }
             })->getActiveSheetIndex(0);
-        });//->store('xlsx', storage_path() . '/logs/');
+        })
+        //->store('xlsx', storage_path() . '/logs/')
+        ;
     }
 
     /**

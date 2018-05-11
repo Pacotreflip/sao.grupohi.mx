@@ -16,7 +16,7 @@
     </thead>
     <tbody>
     <?php $index = 1; ?>
-    @if($totales>0):
+    @if($totales>0 && count($contratoProyectados['valores'])>0):
         @foreach($contratoProyectados['valores'] as $key => $contratoProyectado)
             <tr>
                 <!-- Información general de la partida -->
