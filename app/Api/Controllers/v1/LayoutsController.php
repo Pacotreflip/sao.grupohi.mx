@@ -69,14 +69,9 @@ class LayoutsController extends BaseController
         $rules = array(
             'file' => 'required',
         );
-        $messages = [
-            'file.required' => 'Selecciona al menos archvio.',
-            'file.mimes' => 'No puedes utilizar ese tipo de imagen, intenta con (xlsx).',
-            'file.max' => 'El total de imagenes no puede pesar mas de 3MB.'
-        ];
 
-        $validator = Validator::make($request, $rules, $messages);
-        if ($validator->fails()) {
+        $validator =  app('validator')->make($request->all(), $rules);
+        if (count($validator->errors()->all())) {
             throw new StoreResourceFailedException('Could not create new user.', $validator->errors());
         }
         $requisicion = $this->requisicionRepository->find($id_requisicion);
@@ -103,17 +98,12 @@ class LayoutsController extends BaseController
         $rules = array(
             'file' => 'required',
         );
-        $messages = [
-            'file.required' => 'Selecciona al menos archvio.',
-            'file.mimes' => 'No puedes utilizar ese tipo de imagen, intenta con (xlsx).',
-            'file.max' => 'El total de imagenes no puede pesar mas de 3MB.'
-        ];
 
-        $validator = Validator::make($request, $rules, $messages);
-        if ($validator->fails()) {
+        $validator =  app('validator')->make($request->all(), $rules);
+        if (count($validator->errors()->all())) {
             throw new StoreResourceFailedException('Could not create new user.', $validator->errors());
         }
-        
+
         $contrato_proyectado = $this->contratoProyectadoRepository->find($id_contrato_proyectado);
         $layout = (new AsignacionSubcontratistasLayout($contrato_proyectado))->qetDataFile($request);
 
