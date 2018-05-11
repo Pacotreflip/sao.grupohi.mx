@@ -27,7 +27,6 @@
                 <td style="background-color: #ffffaa">{{ $contratoProyectado['contrato']->destinos()->first()->path }}</td>
                 <td style="background-color: #ffffaa">{{ $contratoProyectado['contrato']->unidad }}</td>
                 <td style="background-color: #ffffaa">{{ $contratoProyectado['contrato']->cantidad_original }}</td>
-                <td style="background-color: #ffffaa">{{ $contratoProyectado['contrato']->cantidad_original }}</td>
                 <td style="background-color: #ffffaa">{{ $contratoProyectado['contrato']->cantidad_pendiente }}</td>
                 <!-- Información de l cotización -->
             @for($i=0;$i<$totales;$i++)

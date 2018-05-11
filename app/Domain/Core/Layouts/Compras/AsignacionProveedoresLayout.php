@@ -52,7 +52,6 @@ class AsignacionProveedoresLayout extends ValidacionLayout
         'descripcion' => "Descripción",
         'unidad' => "Unidad",
         'cantidad_solicitada' => "Cantidad Solicitada",
-        'cantidad_autorizada' => "Cantidad Autorizada",
         'cantidad_asignada_previamente' => "Cantidad Asignada Previamente",
         'cantidad_pendiente_de_asignar' => "Cantidad Pendiente de Asignar",
     ];
@@ -94,26 +93,40 @@ class AsignacionProveedoresLayout extends ValidacionLayout
         })->count();
         $arrayResult['valores'] = [];
         if ($arrayResult['totales'] > 0) {
+            $index = 0;
             foreach ($requisicion->rqctocSolicitud->rqctocCotizaciones->filter(function ($value) {
                 return $value->candidata;
             }) as $key => $cotizacion) {
-                foreach ($cotizacion->rqctocCotizacionPartidas->filter() as $index => $cotizacionPartida) {
-                    $partida = $requisicion->rqctocSolicitud->rqctocSolicitudPartidas()->find($cotizacionPartida->idrqctoc_solicitudes_partidas);
-                    if ($partida->cantidad_pendiente > 0) {
-                        if (!isset($arrayResult['valores'][$partida->idrqctoc_solicitudes_partidas])) {
-                            $arrayResult['valores'][$partida->idrqctoc_solicitudes_partidas] = [];
-                            $arrayResult['valores'][$partida->idrqctoc_solicitudes_partidas]['partida'] = $partida;
-                            $row++;
-                            $maxRow = ($maxRow < $row) ? $row : $maxRow;
-                        }
-                        if ($cotizacionPartida->precio_unitario > 0) {
-                            $arrayResult['valores'][$partida->idrqctoc_solicitudes_partidas]['cotizacionPartida'][$key] = $cotizacionPartida;
-                            $arrayResult['valores'][$partida->idrqctoc_solicitudes_partidas]['cotizacion'][$key] = $cotizacion;
-                        } else {
-                            $arrayResult['valores'][$partida->idrqctoc_solicitudes_partidas]['cotizacionPartida'][$key] = [];
-                            $arrayResult['valores'][$partida->idrqctoc_solicitudes_partidas]['cotizacion'][$key] = [];
+                Log::debug($cotizacion->rqctocCotizacionPartidas->count());
+                $totalesPartidas = $cotizacion->rqctocCotizacionPartidas->count();
+                if($totalesPartidas>0) {
+                    foreach ($cotizacion->rqctocCotizacionPartidas->filter() as $_index => $cotizacionPartida) {
+                        echo "---1\n";
+                        $partida = $requisicion->rqctocSolicitud->rqctocSolicitudPartidas()->find($cotizacionPartida->idrqctoc_solicitudes_partidas);
+                        if ($partida->cantidad_pendiente > 0) {
+                            if (!isset($arrayResult['valores'][$partida->idrqctoc_solicitudes_partidas])) {
+                                $arrayResult['valores'][$partida->idrqctoc_solicitudes_partidas] = [];
+                                $arrayResult['valores'][$partida->idrqctoc_solicitudes_partidas]['partida'] = $partida;
+                                $row++;
+                                $maxRow = ($maxRow < $row) ? $row : $maxRow;
+                            }
+                            if ($cotizacionPartida->precio_unitario > 0) {
+                                $arrayResult['valores'][$partida->idrqctoc_solicitudes_partidas]['cotizacionPartida'][$index] = $cotizacionPartida;
+                                $arrayResult['valores'][$partida->idrqctoc_solicitudes_partidas]['cotizacion'][$index] = $cotizacion;
+                            } else {
+                                $arrayResult['valores'][$partida->idrqctoc_solicitudes_partidas]['cotizacionPartida'][$index] = [];
+                                $arrayResult['valores'][$partida->idrqctoc_solicitudes_partidas]['cotizacion'][$index] = [];
+                                $totalesPartidas--;
+                            }
                         }
                     }
+                    if($totalesPartidas==0){
+                        $arrayResult['totales'] = $arrayResult['totales']-1;
+                    }else{
+                        $index++;
+                    }
+                }else{
+                    $arrayResult['totales']=$arrayResult['totales']-1;
                 }
             }
         }

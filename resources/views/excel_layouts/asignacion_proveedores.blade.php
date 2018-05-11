@@ -26,7 +26,6 @@
                 <td style="background-color: #ffffaa">{{ $requisicion['partida']->descripcion }}</td>
                 <td style="background-color: #ffffaa">{{ $requisicion['partida']->unidad_sao }}</td>
                 <td style="background-color: #ffffaa">{{ $requisicion['partida']->cantidad_solicitada }}</td>
-                <td style="background-color: #ffffaa">{{ $requisicion['partida']->cantidad_autorizada }}</td>
                 <td style="background-color: #ffffaa">{{ $requisicion['partida']->cantidad - $requisicion['partida']->cantidad_pendiente }}</td>
                 <td style="background-color: #ffffaa">{{ $requisicion['partida']->cantidad_pendiente }}</td>
                 <!-- Información de l cotización -->

@@ -42,7 +42,6 @@ class AsignacionSubcontratistasLayout extends ValidacionLayout
         'destino' => "Destino",
         'unidad' => "Unidad",
         'cantidad_solicitada' => "Cantidad Solicitada",
-        'cantidad_autorizada' => "Cantidad Autorizada",
         'cantidad_pendiente_de_asignar' => "Cantidad Pendiente de Asignar",
     ];
 
@@ -89,24 +88,38 @@ class AsignacionSubcontratistasLayout extends ValidacionLayout
         $arrayResult['totales'] = $contrato_proyectado->cotizacionesContrato->count();
         $arrayResult['valores'] = [];
         if ($arrayResult['totales'] > 0) {
+            $index = 0;
             foreach ($contrato_proyectado->cotizacionesContrato as $key => $cotizacion) {
-                foreach ($cotizacion->presupuestos->filter(function ($value) use ($contrato_proyectado) {
+                $totalesPartidas = $cotizacion->presupuestos->filter(function ($value) use ($contrato_proyectado) {
                     return $contrato_proyectado->contratos()->find($value->id_concepto)->cantidad_pendiente > 0;
-                }) as $index => $presupuesto) {
-                    $contrato = $contrato_proyectado->contratos()->find($presupuesto->id_concepto);
-                    if (!isset($arrayResult['valores'][$contrato->id_concepto])) {
-                        $arrayResult['valores'][$contrato->id_concepto] = [];
-                        $arrayResult['valores'][$contrato->id_concepto]['contrato'] = $contrato;
-                        $row++;
-                        $maxRow = ($maxRow < $row) ? $row : $maxRow;
+                })->count();
+                if($totalesPartidas>0) {
+                    foreach ($cotizacion->presupuestos->filter(function ($value) use ($contrato_proyectado) {
+                        return $contrato_proyectado->contratos()->find($value->id_concepto)->cantidad_pendiente > 0;
+                    }) as $_index => $presupuesto) {
+                        $contrato = $contrato_proyectado->contratos()->find($presupuesto->id_concepto);
+                        if (!isset($arrayResult['valores'][$contrato->id_concepto])) {
+                            $arrayResult['valores'][$contrato->id_concepto] = [];
+                            $arrayResult['valores'][$contrato->id_concepto]['contrato'] = $contrato;
+                            $row++;
+                            $maxRow = ($maxRow < $row) ? $row : $maxRow;
+                        }
+                        if ($presupuesto->no_cotizado == 0) {
+                            $arrayResult['valores'][$contrato->id_concepto]['presupuesto'][$index] = $presupuesto;
+                            $arrayResult['valores'][$contrato->id_concepto]['cotizacion'][$index] = $cotizacion;
+                        } else {
+                            $arrayResult['valores'][$contrato->id_concepto]['presupuesto'][$index] = [];
+                            $arrayResult['valores'][$contrato->id_concepto]['cotizacion'][$index] = [];
+                            $totalesPartidas--;
+                        }
                     }
-                    if ($presupuesto->no_cotizado == 0) {
-                        $arrayResult['valores'][$contrato->id_concepto]['presupuesto'][$key] = $presupuesto;
-                        $arrayResult['valores'][$contrato->id_concepto]['cotizacion'][$key] = $cotizacion;
-                    } else {
-                        $arrayResult['valores'][$contrato->id_concepto]['presupuesto'][$key] = [];
-                        $arrayResult['valores'][$contrato->id_concepto]['cotizacion'][$key] = [];
+                    if($totalesPartidas==0){
+                        $arrayResult['totales'] = $arrayResult['totales']-1;
+                    }else{
+                        $index++;
                     }
+                }else{
+                    $arrayResult['totales'] = $arrayResult['totales']-1;
                 }
             }
         }
@@ -168,7 +181,7 @@ class AsignacionSubcontratistasLayout extends ValidacionLayout
                 }
             })->getActiveSheetIndex(0);
         })
-        //->store('xlsx', storage_path() . '/logs/')
+        ->store('xlsx', storage_path() . '/logs/')
         ;
     }
 
