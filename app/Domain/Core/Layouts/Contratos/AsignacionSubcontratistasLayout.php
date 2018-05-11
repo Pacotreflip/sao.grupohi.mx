@@ -205,19 +205,20 @@ class AsignacionSubcontratistasLayout extends ValidacionLayout
             $error = 0;
             $sumatorias = [];
             if (count($asignaciones)) {
-                foreach ($asignaciones as $id_transaccion => $rows) {
-                    if (!empty(trim($id_transaccion))) {
+                foreach ($asignaciones as $id_concepto => $rows) {
+                    if (!empty(trim($id_concepto))) {
                         //->Que las cotizaciones presentadas en el layout correspondan a los que están registrados en la base de datos  al momento de cargarlo	Listo
-                        $cotizacion = $this->contrato_proyectado->cotizacionesContrato->find($id_transaccion);
-                        if ($cotizacion) {
-                            $dataAsignaciones['id_transaccion'] = $cotizacion->id_transaccion;
+                        $contrato = $this->contrato_proyectado->contratos()->find($id_concepto);
+                        if ($contrato) {
+                            $dataAsignaciones['id_transaccion'] = $contrato->id_transaccion;
                             $asignacion = $this->asignacion->create($dataAsignaciones);
                             if (!$asignacion) {
                                 //$this->resultData = $partidas;
                                 throw new \Exception('No se puede guardar la asignación');
                             }
                             foreach ($rows as $row) {
-                                $contrato = $this->contrato_proyectado->contratos()->find($row['id_concepto']);
+                                $cotizacion = $this->contrato_proyectado->cotizacionesContrato->find($row['id_transaccion']);
+                                $contrato = $this->contrato_proyectado->contratos()->find($id_concepto);
                                 if ($contrato->cantidad_pendiente > 0) {
                                     //->Que la cantidad pendiente de cada partida del layout sea igual a la cantidad pendiente que se calcule con información de la base de datos, para asi evitar duplicidad de información
                                     if(!isset($sumatorias[$row['id_concepto']]['pendiente'])){
@@ -233,7 +234,7 @@ class AsignacionSubcontratistasLayout extends ValidacionLayout
                                                 ) {
                                                     //save
                                                     $data['id_concepto'] = $contrato->id_concepto;
-                                                    $data['id_transaccion'] = $contrato->id_transaccion;
+                                                    $data['id_transaccion'] = $cotizacion->id_transaccion;
                                                     $data['id_asignacion'] = $asignacion->id_asignacion;
                                                     $data['cantidad_asignada'] = $row['cantidad_asignada'];
                                                     $data['cantidad_autorizada'] = $row['cantidad_asignada'];
@@ -255,6 +256,10 @@ class AsignacionSubcontratistasLayout extends ValidacionLayout
                                                 $row['cantidad_pendiente'] = $contrato->cantidad_pendiente;
                                                 $error++;
                                             }
+                                        }else{
+                                            $row['error'] = "Ingrece por lo menos una cantidad valida";
+                                            $row['cantidad_pendiente'] = $contrato->cantidad_pendiente;
+                                            $error++;
                                         }
                                     } else {
                                         $row['error'] = "No es posible procesar el Layout debido a que presenta diferencias con la información actual del Contrato Proyectado";
@@ -327,7 +332,7 @@ class AsignacionSubcontratistasLayout extends ValidacionLayout
                             $id_transaccion = !empty($row[$k])?$this->mCrypt->decrypt($row[$k]):'';
                             if (is_numeric($id_transaccion) and !empty($id_transaccion)) {
                                 //if ($row[$k + ($this->lengthHeaderDinamicos - 1)] > 0) {
-                                    $asignaciones[$id_transaccion][] = [
+                                    $asignaciones[$id_concepto][] = [
                                         'id_concepto' => $id_concepto,
                                         'linea' => $i,
                                         'id_transaccion' => $id_transaccion,

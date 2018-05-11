@@ -271,6 +271,10 @@ class AsignacionProveedoresLayout extends ValidacionLayout
                                             $row['cantidad_pendiente'] = $partida->cantidad_pendiente;
                                             $error++;
                                         }
+                                    }else{
+                                        $row['error'] = "Ingrece por lo menos una cantidad valida";
+                                        $row['cantidad_pendiente'] = $partida->cantidad_pendiente;
+                                        $error++;
                                     }
                                 } else {
                                     $row['error'] = "No es posible procesar el Layout debido a que presenta diferencias con la información actual de la Requisición";
