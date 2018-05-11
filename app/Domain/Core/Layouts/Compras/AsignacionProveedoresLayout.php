@@ -190,7 +190,7 @@ class AsignacionProveedoresLayout extends ValidacionLayout
             })->getActiveSheetIndex(0);
         })
             //->store('xlsx', storage_path() . '/logs/')
-            ;
+        ;
     }
 
 
