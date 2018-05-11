@@ -168,7 +168,7 @@ class AsignacionSubcontratistasLayout extends ValidacionLayout
                 }
             })->getActiveSheetIndex(0);
         })
-        ->store('xlsx', storage_path() . '/logs/')
+        //->store('xlsx', storage_path() . '/logs/')
         ;
     }
 
