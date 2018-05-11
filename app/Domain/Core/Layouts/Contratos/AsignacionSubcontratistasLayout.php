@@ -191,6 +191,10 @@ class AsignacionSubcontratistasLayout extends ValidacionLayout
                         if ($cotizacion) {
                             $dataAsignaciones['id_transaccion'] = $cotizacion->id_transaccion;
                             $asignacion = $this->asignacion->create($dataAsignaciones);
+                            if (!$asignacion) {
+                                //$this->resultData = $partidas;
+                                throw new \Exception('No se puede guardar la asignación');
+                            }
                             foreach ($rows as $row) {
                                 $contrato = $this->contrato_proyectado->contratos()->find($row['id_concepto']);
                                 if ($contrato->cantidad_pendiente > 0) {
@@ -221,23 +225,23 @@ class AsignacionSubcontratistasLayout extends ValidacionLayout
                                                         $row['error'] = "";
                                                     }
                                                 } else {
-                                                    $row['error'] = "Supera el número máximo asignado";
+                                                    $row['error'] = "La cantidad asignada rebasa la cantidad pendiente de asignar de la partida";
                                                     $row['cantidad_pendiente'] = $contrato->cantidad_pendiente;
                                                     $error++;
                                                 }
                                             }else{
-                                                $row['error'] = "El número asignado no puede ser negativo";
+                                                $row['error'] = "La cantidad asignada no puede ser negativa";
                                                 $row['cantidad_pendiente'] = $contrato->cantidad_pendiente;
                                                 $error++;
                                             }
                                         }
                                     } else {
-                                        $row['error'] = "La cantidad del archivo es diferente a la cantidad pendiente";
+                                        $row['error'] = "No es posible procesar el Layout debido a que presenta diferencias con la información actual de la Requisición";
                                         $row['cantidad_pendiente'] = $contrato->cantidad_pendiente;
                                         $error++;
                                     }
                                 } else {
-                                    $row['error'] = "No se permite asignar valores a una cotización que no tiene cantidades pendeientes";
+                                    $row['error'] = "No es posible procesar el Layout debido a que presenta diferencias con la información actual de la Requisición";
                                     $row['cantidad_pendiente'] = $contrato->cantidad_pendiente;
                                     $error++;
                                 }
@@ -245,7 +249,7 @@ class AsignacionSubcontratistasLayout extends ValidacionLayout
                             } 
                         } else {
                             $this->resultData = $asignaciones;
-                            throw new \Exception('No se puede guardar la cotizacion');
+                            throw new \Exception('No es posible procesar el Layout debido a que presenta diferencias con la información actual de la Requisición');
                         }
                     }
                 }
@@ -289,7 +293,7 @@ class AsignacionSubcontratistasLayout extends ValidacionLayout
                     //->Que las partidas presentadas en el Layout sean las mismas que se encuentran en la base de datos al momento de cargarlo
                     if (count($col)!=($layout['maxRow']+$this->cabecerasLength))
                     {
-                        throw new \Exception("El layout que desea utilizar ya no es válido porque se han hecho asignaciones posteriores a la descarga del mismo. Por favor descargue el layout nuevamente.");
+                        throw new \Exception("No es posible procesar el Layout debido a que presenta diferencias con la información actual de la Requisición ");
                     }
                     $asignaciones = [];
                     for ($i = $this->cabecerasLength; $i < count($col); $i++) {
@@ -316,7 +320,7 @@ class AsignacionSubcontratistasLayout extends ValidacionLayout
                     if (count($asignaciones) > 0) {
                         $this->procesarDatos($asignaciones);
                     } else {
-                        throw new \Exception("no hay elementos asignados");
+                        throw new \Exception("No es posible procesar el Layout debido a que presenta diferencias con la información actual de la Requisición ");
                     }
                 }
             } catch (\Exception $e) {

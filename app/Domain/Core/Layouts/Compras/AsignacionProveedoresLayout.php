@@ -243,22 +243,22 @@ class AsignacionProveedoresLayout extends ValidacionLayout
                                                     $row['error'] = "";
                                                 }
                                             } else {
-                                                $row['error'] = "Supera el número máximo asignado";
+                                                $row['error'] = "La cantidad asignada rebasa la cantidad pendiente de asignar de la partida";
                                                 $row['cantidad_pendiente'] = $partida->cantidad_pendiente;
                                                 $error++;
                                             }
                                         }else{
-                                            $row['error'] = "El número asignado no puede ser negativo";
+                                            $row['error'] = "La cantidad asignada no puede ser negativa";
                                             $row['cantidad_pendiente'] = $partida->cantidad_pendiente;
                                             $error++;
                                         }
                                     }
                                 } else {
-                                    $row['error'] = "No se permite asignar valores a una cotización que no existe";
+                                    $row['error'] = "No es posible procesar el Layout debido a que presenta diferencias con la información actual de la Requisición";
                                     $error++;
                                 }
                             } else {
-                                $row['error'] = "No se permite asignar valores a una cotización que no existe";
+                                $row['error'] = "No es posible procesar el Layout debido a que presenta diferencias con la información actual de la Requisición";
                                 $error++;
                             }
                             $this->resultData[$row['linea']][] = $row;
@@ -270,7 +270,7 @@ class AsignacionProveedoresLayout extends ValidacionLayout
                     DB::connection('controlrec')->commit();
                 }
             } else {
-                $row['error'] = "No se permite asignar valores a una cotización que no existe";
+                $row['error'] = "No es posible procesar el Layout debido a que presenta diferencias con la información actual de la Requisición";
             }
         } catch (\Exception $e) {
             DB::connection('controlrec')->rollback();
@@ -300,7 +300,7 @@ class AsignacionProveedoresLayout extends ValidacionLayout
                     //->Que las partidas presentadas en el Layout sean las mismas que se encuentran en la base de datos al momento de cargarlo
                     if (count($col)!=($layout['maxRow']+$this->cabecerasLength))
                     {
-                        throw new \Exception("El layout que desea utilizar ya no es válido porque se han hecho asignaciones posteriores a la descarga del mismo. Por favor descargue el layout nuevamente.");
+                        throw new \Exception("No es posible procesar el Layout debido a que presenta diferencias con la información actual de la Requisición");
                     }
                     $partidas = array();
                     for ($i = ($this->cabecerasLength); $i < count($col); $i++) {
@@ -326,7 +326,7 @@ class AsignacionProveedoresLayout extends ValidacionLayout
                 if(count($partidas)) {
                     $this->procesarDatos($folio_sao[1], $partidas);
                 }else{
-                    throw new \Exception("no hay elementos asignados");
+                    throw new \Exception("No es posible procesar el Layout debido a que presenta diferencias con la información actual de la Requisición");
                 }
             } catch (\Exception $e) {
                 throw new StoreResourceFailedException($e->getMessage(),$this->resultData);
