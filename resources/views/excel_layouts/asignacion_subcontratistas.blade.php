@@ -22,7 +22,7 @@
             <tr>
                 <!-- Información general de la partida -->
                 <td style="background-color: #ffffaa">{{ $index }}</td>
-                <td style="background-color: #ffffaa">{{ $contratoProyectado['contrato']->id_concepto }}</td>
+                <td style="background-color: #ffffaa">{{ $mcrypt->encrypt($contratoProyectado['contrato']->id_concepto) }}</td>
                 <td style="background-color: #ffffaa">{{ $contratoProyectado['contrato']->descripcion }}</td>
                 <td style="background-color: #ffffaa">{{ $contratoProyectado['contrato']->destinos()->first()->path }}</td>
                 <td style="background-color: #ffffaa">{{ $contratoProyectado['contrato']->unidad }}</td>
@@ -34,7 +34,7 @@
                     <?php $presupuesto = $contratoProyectado['presupuesto'][$i];?>
                     @if(count($presupuesto)>0)
                         <!-- Información de la cotización -->
-                            <td style="background-color: #ffffaa">{{ $contratoProyectado['cotizacion'][$i]->id_transaccion }}</td>
+                            <td style="background-color: #ffffaa">{{ $mcrypt->encrypt($contratoProyectado['cotizacion'][$i]->id_transaccion) }}</td>
                             <td style="background-color: #ffffaa">{{ $contratoProyectado['cotizacion'][$i]->fecha }}</td>
                             <td style="background-color: #ffffaa">{{ $contratoProyectado['cotizacion'][$i]->empresa->razon_social }}</td>
                             <td style="background-color: #ffffaa">{{ $presupuesto->precio_unitario_antes_descuento }}</td>

@@ -16,11 +16,14 @@ use Ghi\Domain\Core\Models\Subcontratos\PartidaAsignacion;
 use Ghi\Domain\Core\Models\Transacciones\ContratoProyectado;
 use Ghi\Domain\Core\Repositories\Subcontratos\EloquentAsignacionesRepository;
 use Ghi\Domain\Core\Repositories\Subcontratos\EloquentPartidaAsignacionRepository;
+use Illuminate\Contracts\Encryption\DecryptException;
 use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Maatwebsite\Excel\Classes\LaravelExcelWorksheet;
 use Maatwebsite\Excel\Facades\Excel;
+use MCrypt\MCrypt;
 use Symfony\Component\HttpKernel\Exception\NotAcceptableHttpException;
 
 class AsignacionSubcontratistasLayout extends ValidacionLayout
@@ -74,6 +77,9 @@ class AsignacionSubcontratistasLayout extends ValidacionLayout
      */
     public function __construct(ContratoProyectado $contrato_proyectado)
     {
+        $this->mCrypt = new MCrypt();
+        $this->mCrypt->setKey($this->Key);
+        $this->mCrypt->setIv($this->Iv);
         $this->lengthHeaderFijos = count($this->headerFijos);
         $this->lengthHeaderDinamicos = count($this->headerDinamicos);
         $this->contrato_proyectado = $contrato_proyectado;
@@ -142,6 +148,7 @@ class AsignacionSubcontratistasLayout extends ValidacionLayout
                         'contratoProyectados' => $arrayContratoProyectado,
                         'headerCotizaciones' => $this->headerFijos,
                         'headerPresupuestos' => $this->headerDinamicos,
+                        'mcrypt' => $this->mCrypt,
                     ]);
                 $sheet->setAutoSize(false);
                 if ($arrayContratoProyectado['totales'] > 0) {
@@ -176,12 +183,13 @@ class AsignacionSubcontratistasLayout extends ValidacionLayout
                             $col .= $totales . "$i,";
                         }
                         $col = substr($col, 0, -1);
-                        $sheet->setCellValue($index . "$i", "=(H" . $i . "-SUM($col))");
+                        $indexSumatoria = \PHPExcel_Cell::stringFromColumnIndex($this->lengthHeaderFijos-1);
+                        $sheet->setCellValue($index . "$i", "=($indexSumatoria" . $i . "-SUM($col))");
                     }
                 }
             })->getActiveSheetIndex(0);
         })
-        //->store('xlsx', storage_path() . '/logs/')
+        ->store('xlsx', storage_path() . '/logs/')
         ;
     }
 
@@ -315,12 +323,14 @@ class AsignacionSubcontratistasLayout extends ValidacionLayout
                         $j = $this->lengthHeaderFijos + ($this->lengthHeaderDinamicos - 1);
                         $k = $this->lengthHeaderFijos;
                         while ($j <= $maxCol) {
-                            if (is_numeric($row[$k]) and !empty($row[$k])) {
+                            $id_concepto = $this->mCrypt->decrypt( $row[1]);
+                            $id_transaccion = !empty($row[$k])?$this->mCrypt->decrypt($row[$k]):'';
+                            if (is_numeric($id_transaccion) and !empty($id_transaccion)) {
                                 if ($row[$k + ($this->lengthHeaderDinamicos - 1)] > 0) {
-                                    $asignaciones[$row[$k]][] = [
-                                        'id_concepto' => $row[1],
+                                    $asignaciones[$id_transaccion][] = [
+                                        'id_concepto' => $id_concepto,
                                         'linea' => $i,
-                                        'id_transaccion' => $row[$k],
+                                        'id_transaccion' => $id_transaccion,
                                         'cantidad_archivo' => str_replace(",","",$row[($this->lengthHeaderFijos-1)]),//->Que la cantidad pendiente de cada partida del layout sea igual a la cantidad pendiente que se calcule con información de la base de datos, para asi evitar duplicidad de información
                                         'cantidad_asignada' => str_replace(",","",$row[$k + ($this->lengthHeaderDinamicos - 1)]),
                                     ];
@@ -337,7 +347,11 @@ class AsignacionSubcontratistasLayout extends ValidacionLayout
                     }
                 }
             } catch (\Exception $e) {
-                throw new StoreResourceFailedException($e->getMessage(),$this->resultData);
+                if(count($this->resultData)>0) {
+                    throw new StoreResourceFailedException($e->getMessage(), $this->resultData);
+                }else{
+                    throw new StoreResourceFailedException($e->getMessage());
+                }
             }
         });
         return true;

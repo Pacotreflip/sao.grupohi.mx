@@ -20,6 +20,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Maatwebsite\Excel\Classes\LaravelExcelWorksheet;
 use Maatwebsite\Excel\Facades\Excel;
+use MCrypt\MCrypt;
 use Symfony\Component\HttpKernel\Exception\NotAcceptableHttpException;
 
 class AsignacionProveedoresLayout extends ValidacionLayout
@@ -72,6 +73,9 @@ class AsignacionProveedoresLayout extends ValidacionLayout
      */
     public function __construct(Requisicion $requisicion)
     {
+        $this->mCrypt = new MCrypt();
+        $this->mCrypt->setKey($this->Key);
+        $this->mCrypt->setIv($this->Iv);
         $this->lengthHeaderFijos = count($this->headerFijos);
         $this->lengthHeaderDinamicos = count($this->headerDinamicos);
         $this->requisicion = $requisicion;
@@ -149,6 +153,7 @@ class AsignacionProveedoresLayout extends ValidacionLayout
                     ['requisiciones' => $arrayRequisicion,
                         'headerPartidas'=>$this->headerFijos,
                         'headerCotizacion'=>$this->headerDinamicos,
+                        'mcrypt' => $this->mCrypt,
                     ]
                 );
                 if ($arrayRequisicion['totales'] > 0) {
@@ -184,7 +189,8 @@ class AsignacionProveedoresLayout extends ValidacionLayout
                             $col .= $totales . "$i,";
                         }
                         $col = substr($col, 0, -1);
-                        $sheet->setCellValue($index . "$i", "=(H" . $i . "-SUM($col))");
+                        $indexSumatoria = \PHPExcel_Cell::stringFromColumnIndex($this->lengthHeaderFijos-1);
+                        $sheet->setCellValue($index . "$i", "=($indexSumatoria" . $i . "-SUM($col))");
                     }
                 }
             })->getActiveSheetIndex(0);
@@ -322,11 +328,13 @@ class AsignacionProveedoresLayout extends ValidacionLayout
                         $j = $this->lengthHeaderFijos + ($this->lengthHeaderDinamicos - 1);
                         $k = $this->lengthHeaderFijos;
                         while ($j <= $maxCol) {
-                            if (is_numeric($row[$k]) and !empty($row[$k])) {
+                            $id_partida = $this->mCrypt->decrypt( $row[1]);
+                            $id_cotizacion = !empty($row[$k])?$this->mCrypt->decrypt($row[$k]):'';
+                            if (is_numeric($id_cotizacion) and !empty($id_cotizacion)) {
                                 $partidas[] = [
-                                    'id_partida' => $row[1],
+                                    'id_partida' => $id_partida,
                                     'linea' => $i,
-                                    'id_cotizacion' => $row[$k],
+                                    'id_cotizacion' => $id_cotizacion,
                                     'cantidad_archivo' => str_replace(",","",$row[($this->lengthHeaderFijos-1)]),//->Que la cantidad pendiente de cada partida del layout sea igual a la cantidad pendiente que se calcule con información de la base de datos, para asi evitar duplicidad de información
                                     'cantidad_asignada' => str_replace(",","",$row[$k + ($this->lengthHeaderDinamicos - 1)]),
                                 ];

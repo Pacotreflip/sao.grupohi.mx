@@ -22,7 +22,7 @@
             <tr>
                 <!-- Información general de la partida -->
                 <td style="background-color: #ffffaa">{{ $index }}</td>
-                <td style="background-color: #ffffaa">{{ $requisicion['partida']->idrqctoc_solicitudes_partidas }}</td>
+                <td style="background-color: #ffffaa">{{ $mcrypt->encrypt($requisicion['partida']->idrqctoc_solicitudes_partidas) }}</td>
                 <td style="background-color: #ffffaa">{{ $requisicion['partida']->descripcion }}</td>
                 <td style="background-color: #ffffaa">{{ $requisicion['partida']->unidad_sao }}</td>
                 <td style="background-color: #ffffaa">{{ $requisicion['partida']->cantidad_solicitada }}</td>
@@ -33,7 +33,7 @@
                     @if(isset($requisicion['cotizacionPartida'][$i]))
                         <?php $cotizacionPartida = $requisicion['cotizacionPartida'][$i];?>
                         @if(count($cotizacionPartida)>0)
-                            <td style="background-color: #ffffaa">{{ $requisicion['cotizacion'][$i]->idrqctoc_cotizaciones  }}</td>
+                            <td style="background-color: #ffffaa">{{ $mcrypt->encrypt($requisicion['cotizacion'][$i]->idrqctoc_cotizaciones)  }}</td>
                             <td style="background-color: #ffffaa">{{ $cotizacionPartida->precio_unitario }}</td>
                             <td style="background-color: #ffffaa">{{ $cotizacionPartida->descuento }}</td>
                             <td style="background-color: #ffffaa">{{ $cotizacionPartida->precio_total }}</td>

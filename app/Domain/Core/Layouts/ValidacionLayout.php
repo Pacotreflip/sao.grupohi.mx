@@ -17,6 +17,18 @@ use Illuminate\Support\Facades\Log;
 class ValidacionLayout
 {
     /**
+     * @var string
+     */
+    protected $Key = 'BY8eK8H3XKmb4LXt';
+    /**
+     * @var string
+     */
+    protected $Iv = 'Y1MVtMxZQaPpfg8y';
+    /**
+     * @var object
+     */
+    protected $mCrypt;
+    /**
      * @var int
      */
     protected $cabecerasLength = 1;
