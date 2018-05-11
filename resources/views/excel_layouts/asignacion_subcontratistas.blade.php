@@ -12,6 +12,7 @@
                 <th style="background-color: #C8C8C8">{{ $_headerPresupuestos }}</th>
             @endforeach
         @endfor
+        <th style="background-color: #C8C8C8" >Pendiente de Asignar</th>
     </tr>
     </thead>
     <tbody>

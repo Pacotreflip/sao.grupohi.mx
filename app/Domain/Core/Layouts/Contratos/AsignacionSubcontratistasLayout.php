@@ -168,7 +168,7 @@ class AsignacionSubcontratistasLayout extends ValidacionLayout
                 }
             })->getActiveSheetIndex(0);
         })
-        //->store('xlsx', storage_path() . '/logs/')
+        ->store('xlsx', storage_path() . '/logs/')
         ;
     }
 
@@ -200,29 +200,36 @@ class AsignacionSubcontratistasLayout extends ValidacionLayout
                                     }
                                     if ($sumatorias[$row['id_concepto']]['pendiente'] == $row['cantidad_archivo']) {
                                         //->Que la cantidad a asignar sea menor o igual a la cantidad pendiente de cada partida
-                                        if (
-                                            $contrato->cantidad_pendiente >= $row['cantidad_asignada']
-                                            && is_numeric($row['cantidad_asignada'])
-                                            && $row['cantidad_asignada'] > 0
-                                        ) {
-                                            //save
-                                            $data['id_concepto'] = $contrato->id_concepto;
-                                            $data['id_transaccion'] = $contrato->id_transaccion;
-                                            $data['id_asignacion'] = $asignacion->id_asignacion;
-                                            $data['cantidad_asignada'] = $row['cantidad_asignada'];
-                                            $data['cantidad_autorizada'] = $row['cantidad_asignada'];
-                                            $newPartidaAsignacion = $this->partidaAsignacion->create($data);
-                                            if (!$newPartidaAsignacion) {
-                                                $row['error'] = "No se puede guardar el registro";
+                                        if(!empty(trim($row['cantidad_asignada']))) {
+                                            if($row['cantidad_asignada'] > 0) {
+                                                if (
+                                                    $contrato->cantidad_pendiente >= $row['cantidad_asignada']
+                                                    && is_numeric($row['cantidad_asignada'])
+                                                ) {
+                                                    //save
+                                                    $data['id_concepto'] = $contrato->id_concepto;
+                                                    $data['id_transaccion'] = $contrato->id_transaccion;
+                                                    $data['id_asignacion'] = $asignacion->id_asignacion;
+                                                    $data['cantidad_asignada'] = $row['cantidad_asignada'];
+                                                    $data['cantidad_autorizada'] = $row['cantidad_asignada'];
+                                                    $newPartidaAsignacion = $this->partidaAsignacion->create($data);
+                                                    if (!$newPartidaAsignacion) {
+                                                        $row['error'] = "No se puede guardar el registro";
+                                                        $row['cantidad_pendiente'] = $contrato->cantidad_pendiente;
+                                                        $error++;
+                                                    } else {
+                                                        $row['error'] = "";
+                                                    }
+                                                } else {
+                                                    $row['error'] = "Supera el número máximo asignado";
+                                                    $row['cantidad_pendiente'] = $contrato->cantidad_pendiente;
+                                                    $error++;
+                                                }
+                                            }else{
+                                                $row['error'] = "El número asignado no puede ser negativo";
                                                 $row['cantidad_pendiente'] = $contrato->cantidad_pendiente;
                                                 $error++;
-                                            } else {
-                                                $row['error'] = "";
                                             }
-                                        } else {
-                                            $row['error'] = "Supera el número máximo asignado";
-                                            $row['cantidad_pendiente'] = $contrato->cantidad_pendiente;
-                                            $error++;
                                         }
                                     } else {
                                         $row['error'] = "La cantidad del archivo es diferente a la cantidad pendiente";
@@ -282,7 +289,7 @@ class AsignacionSubcontratistasLayout extends ValidacionLayout
                     //->Que las partidas presentadas en el Layout sean las mismas que se encuentran en la base de datos al momento de cargarlo
                     if (count($col)!=($layout['maxRow']+$this->cabecerasLength))
                     {
-                        throw new \Exception("No corresponde el numero de filas con las que contiene el layout");
+                        throw new \Exception("El layout que desea utilizar ya no es válido porque se han hecho asignaciones posteriores a la descarga del mismo. Por favor descargue el layout nuevamente.");
                     }
                     $asignaciones = [];
                     for ($i = $this->cabecerasLength; $i < count($col); $i++) {
