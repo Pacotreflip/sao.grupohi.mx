@@ -271,11 +271,11 @@ class AsignacionProveedoresLayout extends ValidacionLayout
                                             $row['cantidad_pendiente'] = $partida->cantidad_pendiente;
                                             $error++;
                                         }
-                                    }else{
+                                    }/*else{
                                         $row['error'] = "Ingrece por lo menos una cantidad valida";
                                         $row['cantidad_pendiente'] = $partida->cantidad_pendiente;
                                         $error++;
-                                    }
+                                    }*/
                                 } else {
                                     $row['error'] = "No es posible procesar el Layout debido a que presenta diferencias con la información actual de la Requisición";
                                     $error++;
@@ -335,13 +335,15 @@ class AsignacionProveedoresLayout extends ValidacionLayout
                             $id_partida = $this->mCrypt->decrypt( $row[1]);
                             $id_cotizacion = !empty($row[$k])?$this->mCrypt->decrypt($row[$k]):'';
                             if (is_numeric($id_cotizacion) and !empty($id_cotizacion)) {
-                                $partidas[] = [
-                                    'id_partida' => $id_partida,
-                                    'linea' => $i,
-                                    'id_cotizacion' => $id_cotizacion,
-                                    'cantidad_archivo' => str_replace(",","",$row[($this->lengthHeaderFijos-1)]),//->Que la cantidad pendiente de cada partida del layout sea igual a la cantidad pendiente que se calcule con información de la base de datos, para asi evitar duplicidad de información
-                                    'cantidad_asignada' => str_replace(",","",$row[$k + ($this->lengthHeaderDinamicos - 1)]),
-                                ];
+                                if ($row[$k + ($this->lengthHeaderDinamicos - 1)] > 0) {
+                                    $partidas[] = [
+                                        'id_partida' => $id_partida,
+                                        'linea' => $i,
+                                        'id_cotizacion' => $id_cotizacion,
+                                        'cantidad_archivo' => str_replace(",", "", $row[($this->lengthHeaderFijos - 1)]),//->Que la cantidad pendiente de cada partida del layout sea igual a la cantidad pendiente que se calcule con información de la base de datos, para asi evitar duplicidad de información
+                                        'cantidad_asignada' => str_replace(",", "", $row[$k + ($this->lengthHeaderDinamicos - 1)]),
+                                    ];
+                                }
                             }
                             $k += $this->lengthHeaderDinamicos;
                             $j += $this->lengthHeaderDinamicos;
@@ -351,7 +353,7 @@ class AsignacionProveedoresLayout extends ValidacionLayout
                 if(count($partidas)) {
                     $this->procesarDatos($folio_sao[1], $partidas);
                 }else{
-                    throw new \Exception("No es posible procesar el Layout debido a que presenta diferencias con la información actual de la Requisición");
+                    throw new \Exception("Ingrese por lo menos una cantidad asignada");
                 }
             } catch (\Exception $e) {
                 throw new StoreResourceFailedException($e->getMessage(),$this->resultData);
