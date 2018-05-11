@@ -257,12 +257,12 @@ class AsignacionSubcontratistasLayout extends ValidacionLayout
                                             }
                                         }
                                     } else {
-                                        $row['error'] = "No es posible procesar el Layout debido a que presenta diferencias con la información actual de la Requisición";
+                                        $row['error'] = "No es posible procesar el Layout debido a que presenta diferencias con la información actual del Contrato Proyectado";
                                         $row['cantidad_pendiente'] = $contrato->cantidad_pendiente;
                                         $error++;
                                     }
                                 } else {
-                                    $row['error'] = "No es posible procesar el Layout debido a que presenta diferencias con la información actual de la Requisición";
+                                    $row['error'] = "No es posible procesar el Layout debido a que presenta diferencias con la información actual del Contrato Proyectado";
                                     $row['cantidad_pendiente'] = $contrato->cantidad_pendiente;
                                     $error++;
                                 }
@@ -270,7 +270,7 @@ class AsignacionSubcontratistasLayout extends ValidacionLayout
                             } 
                         } else {
                             $this->resultData = $asignaciones;
-                            throw new \Exception('No es posible procesar el Layout debido a que presenta diferencias con la información actual de la Requisición');
+                            throw new \Exception('No es posible procesar el Layout debido a que presenta diferencias con la información actual del Contrato Proyectado ');
                         }
                     }
                 }
@@ -314,7 +314,7 @@ class AsignacionSubcontratistasLayout extends ValidacionLayout
                     //->Que las partidas presentadas en el Layout sean las mismas que se encuentran en la base de datos al momento de cargarlo
                     if (count($col)!=($layout['maxRow']+$this->cabecerasLength))
                     {
-                        throw new \Exception("No es posible procesar el Layout debido a que presenta diferencias con la información actual de la Requisición ");
+                        throw new \Exception("No es posible procesar el Layout debido a que presenta diferencias con la información actual del Contrato Proyectado ");
                     }
                     $asignaciones = [];
                     for ($i = $this->cabecerasLength; $i < count($col); $i++) {
@@ -343,7 +343,7 @@ class AsignacionSubcontratistasLayout extends ValidacionLayout
                     if (count($asignaciones) > 0) {
                         $this->procesarDatos($asignaciones);
                     } else {
-                        throw new \Exception("No es posible procesar el Layout debido a que presenta diferencias con la información actual de la Requisición ");
+                        throw new \Exception("No es posible procesar el Layout debido a que presenta diferencias con la información actual del Contrato Proyectado ");
                     }
                 }
             } catch (\Exception $e) {
