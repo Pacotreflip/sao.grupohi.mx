@@ -189,7 +189,7 @@ class AsignacionSubcontratistasLayout extends ValidacionLayout
                 }
             })->getActiveSheetIndex(0);
         })
-        //->store('xlsx', storage_path() . '/logs/')
+        ->store('xlsx', storage_path() . '/logs/')
         ;
     }
 
@@ -203,6 +203,7 @@ class AsignacionSubcontratistasLayout extends ValidacionLayout
         try {
             DB::connection('cadeco')->beginTransaction();
             $error = 0;
+            $success = 0;
             $sumatorias = [];
             if (count($asignaciones)) {
                 foreach ($asignaciones as $id_concepto => $rows) {
@@ -219,6 +220,7 @@ class AsignacionSubcontratistasLayout extends ValidacionLayout
                             foreach ($rows as $row) {
                                 $cotizacion = $this->contrato_proyectado->cotizacionesContrato->find($row['id_transaccion']);
                                 $contrato = $this->contrato_proyectado->contratos()->find($id_concepto);
+                                $row['success'] = false;
                                 if ($contrato->cantidad_pendiente > 0) {
                                     //->Que la cantidad pendiente de cada partida del layout sea igual a la cantidad pendiente que se calcule con información de la base de datos, para asi evitar duplicidad de información
                                     if(!isset($sumatorias[$row['id_concepto']]['pendiente'])){
@@ -244,7 +246,8 @@ class AsignacionSubcontratistasLayout extends ValidacionLayout
                                                         $row['cantidad_pendiente'] = $contrato->cantidad_pendiente;
                                                         $error++;
                                                     } else {
-                                                        $row['error'] = "";
+                                                        $row['success'] = true;
+                                                        $success++;
                                                     }
                                                 } else {
                                                     $row['error'] = "La cantidad asignada rebasa la cantidad pendiente de asignar de la partida";
@@ -272,7 +275,9 @@ class AsignacionSubcontratistasLayout extends ValidacionLayout
                                     $row['cantidad_pendiente'] = $contrato->cantidad_pendiente;
                                     $error++;
                                 }
-                                $this->resultData[$row['linea']][] = $row;
+                                if(!$row['success']) {
+                                    $this->resultData[$row['linea']][] = $row;
+                                }
                             } 
                         } else {
                             $this->resultData = $asignaciones;
@@ -289,7 +294,7 @@ class AsignacionSubcontratistasLayout extends ValidacionLayout
             DB::connection('cadeco')->rollback();
             throw new \Exception($e->getMessage());
         }
-        return true;
+        return ["message"=>"se guardaron correctamente $success registros"];
     }
 
     /**
@@ -300,7 +305,8 @@ class AsignacionSubcontratistasLayout extends ValidacionLayout
     {
         set_time_limit(0);
         ini_set("memory_limit", -1);
-        Excel::load($request->file('file')->getRealPath(), function ($reader) {
+        $results = false;
+        Excel::load($request->file('file')->getRealPath(), function ($reader) use (&$results) {
             try {
 
                 $results = $reader->all();
@@ -347,7 +353,7 @@ class AsignacionSubcontratistasLayout extends ValidacionLayout
                         }
                     }
                     if (count($asignaciones) > 0) {
-                        $this->procesarDatos($asignaciones);
+                        $results = $this->procesarDatos($asignaciones);
                     } else {
                         throw new \Exception("Ingrese por lo menos una cantidad asignada");
                     }
@@ -360,7 +366,7 @@ class AsignacionSubcontratistasLayout extends ValidacionLayout
                 }
             }
         });
-        return true;
+        return $results;
     }
 
 

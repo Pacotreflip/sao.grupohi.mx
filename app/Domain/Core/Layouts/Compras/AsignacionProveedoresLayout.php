@@ -195,7 +195,7 @@ class AsignacionProveedoresLayout extends ValidacionLayout
                 }
             })->getActiveSheetIndex(0);
         })
-         //->store('xlsx', storage_path() . '/logs/')
+         ->store('xlsx', storage_path() . '/logs/')
         ;
     }
 
@@ -225,6 +225,7 @@ class AsignacionProveedoresLayout extends ValidacionLayout
                     throw new \Exception('No se puede guardar la comparación');
                 }
                 $error = 0;
+                $success = 0;
                 $sumatorias = [];
                 if (count($partidas)) {
                     foreach ($partidas as $index => $row) {
@@ -259,7 +260,8 @@ class AsignacionProveedoresLayout extends ValidacionLayout
                                                     $row['error'] = "No se puede guardar el registro";
                                                     $error++;
                                                 } else {
-                                                    $row['error'] = "";
+                                                    $row['success'] = true;
+                                                    $success++;
                                                 }
                                             } else {
                                                 $row['error'] = "La cantidad asignada rebasa la cantidad pendiente de asignar de la partida";
@@ -284,7 +286,9 @@ class AsignacionProveedoresLayout extends ValidacionLayout
                                 $row['error'] = "No es posible procesar el Layout debido a que presenta diferencias con la información actual de la Requisición";
                                 $error++;
                             }
-                            $this->resultData[$row['linea']][] = $row;
+                            if(!$row['success']) {
+                                $this->resultData[$row['linea']][] = $row;
+                            }
                         }
                     }
                     if ($error > 0) {
@@ -299,7 +303,7 @@ class AsignacionProveedoresLayout extends ValidacionLayout
             DB::connection('controlrec')->rollback();
             throw new \Exception($e->getMessage());
         }
-        return true;
+        return ["message"=>"se guardaron correctamente $success registros"];
     }
 
     /**
@@ -308,7 +312,8 @@ class AsignacionProveedoresLayout extends ValidacionLayout
      */
     public function qetDataFile(Request $request)
     {
-        Excel::load($request->file('file')->getRealPath(), function ($reader) {
+        $results = [];
+        Excel::load($request->file('file')->getRealPath(), function ($reader) use (&$results) {
             $results = $reader->all();
             $folio_sao = explode(" ", $results->getTitle());
             $sheet = $reader->sheet($results->getTitle(), function (LaravelExcelWorksheet $sheet) {
@@ -351,7 +356,7 @@ class AsignacionProveedoresLayout extends ValidacionLayout
                     }
                 }
                 if(count($partidas)) {
-                    $this->procesarDatos($folio_sao[1], $partidas);
+                    $results = $this->procesarDatos($folio_sao[1], $partidas);
                 }else{
                     throw new \Exception("Ingrese por lo menos una cantidad asignada");
                 }
@@ -359,6 +364,6 @@ class AsignacionProveedoresLayout extends ValidacionLayout
                 throw new StoreResourceFailedException($e->getMessage(),$this->resultData);
             }
         });
-        return true;
+        return $results;
     }
 }

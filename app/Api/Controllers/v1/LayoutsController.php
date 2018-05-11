@@ -76,6 +76,7 @@ class LayoutsController extends BaseController
         }
         $requisicion = $this->requisicionRepository->find($id_requisicion);
         $layout = (new AsignacionProveedoresLayout($requisicion))->qetDataFile($request);
+
         return $this->response->array($layout);
     }
 
