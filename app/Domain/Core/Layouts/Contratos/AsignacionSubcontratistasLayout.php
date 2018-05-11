@@ -138,7 +138,6 @@ class AsignacionSubcontratistasLayout extends ValidacionLayout
                     $arrayTotales = [];
                     while ($j <= $maxCol) {
                         $index = \PHPExcel_Cell::stringFromColumnIndex($j);
-                        Log::debug($index . '' . ($this->cabecerasLength + 1) . ':' . $index . ($arrayContratoProyectado['maxRow'] + $this->cabecerasLength));
                         $sheet->getStyle($index . '' . ($this->cabecerasLength + 1) . ':' . $index . ($arrayContratoProyectado['maxRow'] + $this->cabecerasLength))
                             ->getProtection()
                             ->setLocked(
