@@ -229,6 +229,7 @@ class AsignacionProveedoresLayout extends ValidacionLayout
                 $sumatorias = [];
                 if (count($partidas)) {
                     foreach ($partidas as $index => $row) {
+                        $row['success'] = false;
                         if (!empty(trim($row['id_partida']))) {
                             //->Que las cotizaciones presentadas en el layout correspondan a los que están registrados en la base de datos  al momento de cargarlo	Listo
                             $cotizacion = $this->requisicion->rqctocSolicitud->rqctocCotizaciones()->find($row['id_cotizacion'])->rqctocCotizacionPartidas->filter(function ($value) use ($row) {

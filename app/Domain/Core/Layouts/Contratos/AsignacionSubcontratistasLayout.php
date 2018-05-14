@@ -99,7 +99,7 @@ class AsignacionSubcontratistasLayout extends ValidacionLayout
                 $totalesPartidas = $cotizacion->presupuestos->filter(function ($value) use ($contrato_proyectado) {
                     return $contrato_proyectado->contratos()->find($value->id_concepto)->cantidad_pendiente > 0;
                 })->count();
-                if($totalesPartidas>0) {
+                if ($totalesPartidas > 0) {
                     foreach ($cotizacion->presupuestos->filter(function ($value) use ($contrato_proyectado) {
                         return $contrato_proyectado->contratos()->find($value->id_concepto)->cantidad_pendiente > 0;
                     }) as $_index => $presupuesto) {
@@ -119,13 +119,13 @@ class AsignacionSubcontratistasLayout extends ValidacionLayout
                             $totalesPartidas--;
                         }
                     }
-                    if($totalesPartidas==0){
-                        $arrayResult['totales'] = $arrayResult['totales']-1;
-                    }else{
+                    if ($totalesPartidas == 0) {
+                        $arrayResult['totales'] = $arrayResult['totales'] - 1;
+                    } else {
                         $index++;
                     }
-                }else{
-                    $arrayResult['totales'] = $arrayResult['totales']-1;
+                } else {
+                    $arrayResult['totales'] = $arrayResult['totales'] - 1;
                 }
             }
         }
@@ -183,14 +183,13 @@ class AsignacionSubcontratistasLayout extends ValidacionLayout
                             $col .= $totales . "$i,";
                         }
                         $col = substr($col, 0, -1);
-                        $indexSumatoria = \PHPExcel_Cell::stringFromColumnIndex($this->lengthHeaderFijos-1);
+                        $indexSumatoria = \PHPExcel_Cell::stringFromColumnIndex($this->lengthHeaderFijos - 1);
                         $sheet->setCellValue($index . "$i", "=($indexSumatoria" . $i . "-SUM($col))");
                     }
                 }
             })->getActiveSheetIndex(0);
         })
-        ->store('xlsx', storage_path() . '/logs/')
-        ;
+            ->store('xlsx', storage_path() . '/logs/');
     }
 
     /**
@@ -206,30 +205,30 @@ class AsignacionSubcontratistasLayout extends ValidacionLayout
             $success = 0;
             $sumatorias = [];
             if (count($asignaciones)) {
-                foreach ($asignaciones as $id_concepto => $rows) {
-                    if (!empty(trim($id_concepto))) {
+                foreach ($asignaciones as $id_transaccion => $rows) {
+                    if (!empty(trim($id_transaccion))) {
                         //->Que las cotizaciones presentadas en el layout correspondan a los que están registrados en la base de datos  al momento de cargarlo	Listo
-                        $contrato = $this->contrato_proyectado->contratos()->find($id_concepto);
-                        if ($contrato) {
-                            $dataAsignaciones['id_transaccion'] = $contrato->id_transaccion;
-                            $asignacion = $this->asignacion->create($dataAsignaciones);
-                            if (!$asignacion) {
-                                //$this->resultData = $partidas;
-                                throw new \Exception('No se puede guardar la asignación');
-                            }
-                            foreach ($rows as $row) {
-                                $cotizacion = $this->contrato_proyectado->cotizacionesContrato->find($row['id_transaccion']);
-                                $contrato = $this->contrato_proyectado->contratos()->find($id_concepto);
-                                $row['success'] = false;
+                        //$contrato = $this->contrato_proyectado->contratos()->find($id_concepto);
+                        $dataAsignaciones['id_transaccion'] = $id_transaccion;
+                        $asignacion = $this->asignacion->create($dataAsignaciones);
+                        if (!$asignacion) {
+                            //$this->resultData = $partidas;
+                            throw new \Exception('No se puede guardar la asignación');
+                        }
+                        foreach ($rows as $row) {
+                            $cotizacion = $this->contrato_proyectado->cotizacionesContrato->find($row['id_transaccion']);
+                            $contrato = $this->contrato_proyectado->contratos()->find($row['id_concepto']);
+                            $row['success'] = false;
+                            if ($contrato) {
                                 if ($contrato->cantidad_pendiente > 0) {
                                     //->Que la cantidad pendiente de cada partida del layout sea igual a la cantidad pendiente que se calcule con información de la base de datos, para asi evitar duplicidad de información
-                                    if(!isset($sumatorias[$row['id_concepto']]['pendiente'])){
+                                    if (!isset($sumatorias[$row['id_concepto']]['pendiente'])) {
                                         $sumatorias[$row['id_concepto']]['pendiente'] = $contrato->cantidad_pendiente;
                                     }
                                     if ($sumatorias[$row['id_concepto']]['pendiente'] == $row['cantidad_archivo']) {
                                         //->Que la cantidad a asignar sea menor o igual a la cantidad pendiente de cada partida
-                                        if(!empty(trim($row['cantidad_asignada']))) {
-                                            if($row['cantidad_asignada'] > 0) {
+                                        if (!empty(trim($row['cantidad_asignada']))) {
+                                            if ($row['cantidad_asignada'] > 0) {
                                                 if (
                                                     $contrato->cantidad_pendiente >= $row['cantidad_asignada']
                                                     && is_numeric($row['cantidad_asignada'])
@@ -254,7 +253,7 @@ class AsignacionSubcontratistasLayout extends ValidacionLayout
                                                     $row['cantidad_pendiente'] = $contrato->cantidad_pendiente;
                                                     $error++;
                                                 }
-                                            }else{
+                                            } else {
                                                 $row['error'] = "La cantidad asignada no puede ser negativa";
                                                 $row['cantidad_pendiente'] = $contrato->cantidad_pendiente;
                                                 $error++;
@@ -275,14 +274,17 @@ class AsignacionSubcontratistasLayout extends ValidacionLayout
                                     $row['cantidad_pendiente'] = $contrato->cantidad_pendiente;
                                     $error++;
                                 }
-                                if(!$row['success']) {
+                                if (!$row['success']) {
                                     $this->resultData[$row['linea']][] = $row;
                                 }
-                            } 
-                        } else {
-                            $this->resultData = $asignaciones;
-                            throw new \Exception('No es posible procesar el Layout debido a que presenta diferencias con la información actual del Contrato Proyectado ');
+                            } else {
+                                $this->resultData = $asignaciones;
+                                throw new \Exception('No es posible procesar el Layout debido a que presenta diferencias con la información actual del Contrato Proyectado ');
+                            }
                         }
+                    } else {
+                        $this->resultData = $asignaciones;
+                        throw new \Exception('No es posible procesar el Layout debido a que presenta diferencias con la información actual del Contrato Proyectado ');
                     }
                 }
                 if ($error > 0) {
@@ -294,7 +296,7 @@ class AsignacionSubcontratistasLayout extends ValidacionLayout
             DB::connection('cadeco')->rollback();
             throw new \Exception($e->getMessage());
         }
-        return ["message"=>"se guardaron correctamente $success registros"];
+        return ["message" => "se guardaron correctamente $success registros"];
     }
 
     /**
@@ -313,19 +315,18 @@ class AsignacionSubcontratistasLayout extends ValidacionLayout
                 $sheet = $reader->sheet($results->getTitle(), function (LaravelExcelWorksheet $sheet) {
                     $sheet->getProtection()->setSheet(false);
                 });
-                $folio = explode(' ',$results->getTitle());
+                $folio = explode(' ', $results->getTitle());
                 //->Validar que el Layout corresponda a la transacción
-                if('# ' . str_pad($this->contrato_proyectado->numero_folio, 5, '0', STR_PAD_LEFT)!=$results->getTitle()){
+                if ('# ' . str_pad($this->contrato_proyectado->numero_folio, 5, '0', STR_PAD_LEFT) != $results->getTitle()) {
                     throw new \Exception("No corresponde el layout al Contrato");
                 }
                 $headers = $results->getHeading();
                 $layout = $this->setData($this->contrato_proyectado);
                 //->Número y descripción de columnas
-                if($this->validarHeader($headers,$layout)) {
+                if ($this->validarHeader($headers, $layout)) {
                     $col = $sheet->toArray();
                     //->Que las partidas presentadas en el Layout sean las mismas que se encuentran en la base de datos al momento de cargarlo
-                    if (count($col)!=($layout['maxRow']+$this->cabecerasLength))
-                    {
+                    if (count($col) != ($layout['maxRow'] + $this->cabecerasLength)) {
                         throw new \Exception("No es posible procesar el Layout debido a que presenta diferencias con la información actual del Contrato Proyectado ");
                     }
                     $asignaciones = [];
@@ -335,16 +336,16 @@ class AsignacionSubcontratistasLayout extends ValidacionLayout
                         $j = $this->lengthHeaderFijos + ($this->lengthHeaderDinamicos - 1);
                         $k = $this->lengthHeaderFijos;
                         while ($j <= $maxCol) {
-                            $id_concepto = $this->mCrypt->decrypt( $row[1]);
-                            $id_transaccion = !empty($row[$k])?$this->mCrypt->decrypt($row[$k]):'';
+                            $id_concepto = $this->mCrypt->decrypt($row[1]);
+                            $id_transaccion = !empty($row[$k]) ? $this->mCrypt->decrypt($row[$k]) : '';
                             if (is_numeric($id_transaccion) and !empty($id_transaccion)) {
                                 if ($row[$k + ($this->lengthHeaderDinamicos - 1)] > 0) {
-                                    $asignaciones[$id_concepto][] = [
+                                    $asignaciones[$this->contrato_proyectado->id_transaccion][] = [
                                         'id_concepto' => $id_concepto,
                                         'linea' => $i,
                                         'id_transaccion' => $id_transaccion,
-                                        'cantidad_archivo' => str_replace(",","",$row[($this->lengthHeaderFijos-1)]),//->Que la cantidad pendiente de cada partida del layout sea igual a la cantidad pendiente que se calcule con información de la base de datos, para asi evitar duplicidad de información
-                                        'cantidad_asignada' => str_replace(",","",$row[$k + ($this->lengthHeaderDinamicos - 1)]),
+                                        'cantidad_archivo' => str_replace(",", "", $row[($this->lengthHeaderFijos - 1)]),//->Que la cantidad pendiente de cada partida del layout sea igual a la cantidad pendiente que se calcule con información de la base de datos, para asi evitar duplicidad de información
+                                        'cantidad_asignada' => str_replace(",", "", $row[$k + ($this->lengthHeaderDinamicos - 1)]),
                                     ];
                                 }
                             }
@@ -359,9 +360,9 @@ class AsignacionSubcontratistasLayout extends ValidacionLayout
                     }
                 }
             } catch (\Exception $e) {
-                if(count($this->resultData)>0) {
+                if (count($this->resultData) > 0) {
                     throw new StoreResourceFailedException($e->getMessage(), $this->resultData);
-                }else{
+                } else {
                     throw new StoreResourceFailedException($e->getMessage());
                 }
             }
