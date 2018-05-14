@@ -6,7 +6,7 @@
     }
 
     .button-border {
-        border-right: thick solid #000000;
+        border-right: 1px solid #000000;
         border-left: 1px solid #000000;
         border-top: 1px solid #000000;
     }

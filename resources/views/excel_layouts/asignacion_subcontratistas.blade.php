@@ -5,8 +5,10 @@
         border: 1px solid #000000;
     }
 
-    .final-border {
-        border-bottom: thick solid #000000;
+    .button-border {
+        border-right: 1px solid #000000;
+        border-left: 1px solid #000000;
+        border-top: 1px solid #000000;
     }
 
     .laterales-right {
