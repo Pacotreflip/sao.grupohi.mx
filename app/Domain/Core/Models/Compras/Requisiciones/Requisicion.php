@@ -83,6 +83,6 @@ class Requisicion extends Transaccion
         return $this->hasMany(Asignaciones::class, 'id_transaccion', 'id_transaccion');
     }
     public function rqctocSolicitud() {
-        return $this->hasOne(RQCTOCSolicitud::class, 'idtransaccion_sao', 'id_transaccion');
+        return $this->hasOne(RQCTOCSolicitud::class, 'idtransaccion_sao', 'id_transaccion')->where('base_sao', '=', Context::getDatabaseName());
     }
 }
