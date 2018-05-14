@@ -101,7 +101,7 @@ class AsignacionProveedoresLayout extends ValidacionLayout
                 return $value->candidata;
             }) as $key => $cotizacion) {
                 $totalesPartidas = $cotizacion->rqctocCotizacionPartidas->count();
-                if($totalesPartidas>0) {
+                if ($totalesPartidas > 0) {
                     foreach ($cotizacion->rqctocCotizacionPartidas->filter() as $_index => $cotizacionPartida) {
                         //echo "---1\n"; PACO WAS HERE!
                         $partida = $requisicion->rqctocSolicitud->rqctocSolicitudPartidas()->find($cotizacionPartida->idrqctoc_solicitudes_partidas);
@@ -122,13 +122,13 @@ class AsignacionProveedoresLayout extends ValidacionLayout
                             }
                         }
                     }
-                    if($totalesPartidas==0){
-                        $arrayResult['totales'] = $arrayResult['totales']-1;
-                    }else{
+                    if ($totalesPartidas == 0) {
+                        $arrayResult['totales'] = $arrayResult['totales'] - 1;
+                    } else {
                         $index++;
                     }
-                }else{
-                    $arrayResult['totales']=$arrayResult['totales']-1;
+                } else {
+                    $arrayResult['totales'] = $arrayResult['totales'] - 1;
                 }
             }
         }
@@ -149,8 +149,8 @@ class AsignacionProveedoresLayout extends ValidacionLayout
                 $sheet->getProtection()->setSheet(true);
                 $sheet->loadView('excel_layouts.asignacion_proveedores',
                     ['requisiciones' => $arrayRequisicion,
-                        'headerPartidas'=>$this->headerFijos,
-                        'headerCotizacion'=>$this->headerDinamicos,
+                        'headerPartidas' => $this->headerFijos,
+                        'headerCotizacion' => $this->headerDinamicos,
                         'mcrypt' => $this->mCrypt,
                     ]
                 );
@@ -160,6 +160,15 @@ class AsignacionProveedoresLayout extends ValidacionLayout
                     $maxCol = ($arrayRequisicion['totales'] * $this->lengthHeaderDinamicos) + $this->lengthHeaderFijos;
                     $j = $this->lengthHeaderFijos + ($this->lengthHeaderDinamicos - 1);
                     $arrayTotales = [];
+
+                    $start = \PHPExcel_Cell::stringFromColumnIndex($this->lengthHeaderFijos);
+                    $sheet->getStyle($start . ($this->cabecerasLength + 1) . ':' . $start . ($arrayRequisicion['maxRow'] + ($this->cabecerasLength)))
+                        ->applyFromArray(array(
+                            'borders' => array(
+                                'left' => array('style' => \PHPExcel_Style_Border::BORDER_THICK),
+                            )
+                        ));
+
                     while ($j <= $maxCol) {
                         $index = \PHPExcel_Cell::stringFromColumnIndex($j);
                         $sheet->getStyle($index . '' . ($this->cabecerasLength + 1) . ':' . $index . ($arrayRequisicion['maxRow'] + $this->cabecerasLength))
@@ -167,7 +176,13 @@ class AsignacionProveedoresLayout extends ValidacionLayout
                             ->setLocked(
                                 \PHPExcel_Style_Protection::PROTECTION_UNPROTECTED
                             )->getActiveSheet();
-                        $sheet->getStyle($index . '' . ($this->cabecerasLength + 1) . ':' . $index . ($arrayRequisicion['maxRow'] + $this->cabecerasLength))->getNumberFormat();
+                        $sheet->getStyle($index . '' . ($this->cabecerasLength + 1) . ':' . $index . ($arrayRequisicion['maxRow'] + $this->cabecerasLength))
+                            ->applyFromArray(array(
+                                'borders' => array(
+                                    'right' => array('style' => \PHPExcel_Style_Border::BORDER_THICK),
+                                )
+                            ))
+                            ->getNumberFormat();
                         $sheet
                             ->setColumnFormat(array(
                                 $index . '' . ($this->cabecerasLength + 1) . ':' . $index . ($arrayRequisicion['maxRow'] + $this->cabecerasLength) => \PHPExcel_Style_NumberFormat::FORMAT_NUMBER
@@ -175,7 +190,7 @@ class AsignacionProveedoresLayout extends ValidacionLayout
                         $arrayTotales[$index] = $index;
                         $j += $this->lengthHeaderDinamicos;
                     }
-                    $index = \PHPExcel_Cell::stringFromColumnIndex($maxCol);
+                    $index = \PHPExcel_Cell::stringFromColumnIndex($maxCol+1);
                     $sheet->getStyle($index . '' . ($this->cabecerasLength) . ':' . $index . ($arrayRequisicion['maxRow'] + $this->cabecerasLength))
                         ->getProtection()
                         ->setLocked(
@@ -187,15 +202,21 @@ class AsignacionProveedoresLayout extends ValidacionLayout
                             $col .= $totales . "$i,";
                         }
                         $col = substr($col, 0, -1);
-                        $indexSumatoria = \PHPExcel_Cell::stringFromColumnIndex($this->lengthHeaderFijos-1);
+                        $indexSumatoria = \PHPExcel_Cell::stringFromColumnIndex($this->lengthHeaderFijos - 1);
                         $sheet->setCellValue($index . "$i", "=($indexSumatoria" . $i . "-SUM($col))");
                     }
-                    $sheet->setBorder("A1:$index".$i, 'thin');
+                    $index = \PHPExcel_Cell::stringFromColumnIndex($maxCol-1);
+                    $sheet->getStyle( 'A' . ($arrayRequisicion['maxRow'] + $this->cabecerasLength) . ':' . $index . ($arrayRequisicion['maxRow'] + $this->cabecerasLength))
+                        ->applyFromArray(array(
+                            'borders' => array(
+                                'bottom' => array('style' => \PHPExcel_Style_Border::BORDER_THICK),
+                            )
+                        ))
+                    ;
                 }
             })->getActiveSheetIndex(0);
         })
-         ->store('xlsx', storage_path() . '/logs/')
-        ;
+            ->store('xlsx', storage_path() . '/logs/');
     }
 
 
@@ -239,13 +260,13 @@ class AsignacionProveedoresLayout extends ValidacionLayout
                             if ($validarCotizacion['precio_unitario'] > 0) {
                                 $partida = $this->requisicion->rqctocSolicitud->rqctocSolicitudPartidas()->find((int)$row['id_partida']);
                                 //->Que la cantidad pendiente de cada partida del layout sea igual a la cantidad pendiente que se calcule con información de la base de datos, para asi evitar duplicidad de información
-                                if(!isset($sumatorias[$row['id_partida']]['pendiente'])){
+                                if (!isset($sumatorias[$row['id_partida']]['pendiente'])) {
                                     $sumatorias[$row['id_partida']]['pendiente'] = $partida->cantidad_pendiente;
                                 }
                                 if ($sumatorias[$row['id_partida']]['pendiente'] == $row['cantidad_archivo']) {
                                     //->Que la cantidad a asignar sea menor o igual a la cantidad pendiente de cada partida
-                                    if(!empty(trim($row['cantidad_asignada']))) {
-                                        if($row['cantidad_asignada'] > 0) {
+                                    if (!empty(trim($row['cantidad_asignada']))) {
+                                        if ($row['cantidad_asignada'] > 0) {
                                             if (
                                                 $partida->cantidad_pendiente >= $row['cantidad_asignada']
                                                 && is_numeric($row['cantidad_asignada'])
@@ -268,7 +289,7 @@ class AsignacionProveedoresLayout extends ValidacionLayout
                                                 $row['cantidad_pendiente'] = $partida->cantidad_pendiente;
                                                 $error++;
                                             }
-                                        }else{
+                                        } else {
                                             $row['error'] = "La cantidad asignada no puede ser negativa";
                                             $row['cantidad_pendiente'] = $partida->cantidad_pendiente;
                                             $error++;
@@ -286,7 +307,7 @@ class AsignacionProveedoresLayout extends ValidacionLayout
                                 $row['error'] = "No es posible procesar el Layout debido a que presenta diferencias con la información actual de la Requisición";
                                 $error++;
                             }
-                            if(!$row['success']) {
+                            if (!$row['success']) {
                                 $this->resultData[$row['linea']][] = $row;
                             }
                         }
@@ -303,7 +324,7 @@ class AsignacionProveedoresLayout extends ValidacionLayout
             DB::connection('controlrec')->rollback();
             throw new \Exception($e->getMessage());
         }
-        return ["message"=>"se guardaron correctamente $success registros"];
+        return ["message" => "se guardaron correctamente $success registros"];
     }
 
     /**
@@ -326,8 +347,7 @@ class AsignacionProveedoresLayout extends ValidacionLayout
                 if ($this->validarHeader($headers, $layout)) {
                     $col = $sheet->toArray();
                     //->Que las partidas presentadas en el Layout sean las mismas que se encuentran en la base de datos al momento de cargarlo
-                    if (count($col)!=($layout['maxRow']+$this->cabecerasLength))
-                    {
+                    if (count($col) != ($layout['maxRow'] + $this->cabecerasLength)) {
                         throw new \Exception("No es posible procesar el Layout debido a que presenta diferencias con la información actual de la Requisición");
                     }
                     $partidas = array();
@@ -337,8 +357,8 @@ class AsignacionProveedoresLayout extends ValidacionLayout
                         $j = $this->lengthHeaderFijos + ($this->lengthHeaderDinamicos - 1);
                         $k = $this->lengthHeaderFijos;
                         while ($j <= $maxCol) {
-                            $id_partida = $this->mCrypt->decrypt( $row[1]);
-                            $id_cotizacion = !empty($row[$k])?$this->mCrypt->decrypt($row[$k]):'';
+                            $id_partida = $this->mCrypt->decrypt($row[1]);
+                            $id_cotizacion = !empty($row[$k]) ? $this->mCrypt->decrypt($row[$k]) : '';
                             if (is_numeric($id_cotizacion) and !empty($id_cotizacion)) {
                                 if ($row[$k + ($this->lengthHeaderDinamicos - 1)] > 0) {
                                     $partidas[] = [
@@ -355,13 +375,13 @@ class AsignacionProveedoresLayout extends ValidacionLayout
                         }
                     }
                 }
-                if(count($partidas)) {
+                if (count($partidas)) {
                     $results = $this->procesarDatos($folio_sao[1], $partidas);
-                }else{
+                } else {
                     throw new \Exception("Ingrese por lo menos una cantidad asignada");
                 }
             } catch (\Exception $e) {
-                throw new StoreResourceFailedException($e->getMessage(),$this->resultData);
+                throw new StoreResourceFailedException($e->getMessage(), $this->resultData);
             }
         });
         return $results;

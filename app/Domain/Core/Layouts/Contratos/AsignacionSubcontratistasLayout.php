@@ -153,6 +153,15 @@ class AsignacionSubcontratistasLayout extends ValidacionLayout
                     $maxCol = ($arrayContratoProyectado['totales'] * $this->lengthHeaderDinamicos) + $this->lengthHeaderFijos;
                     $j = $this->lengthHeaderFijos + ($this->lengthHeaderDinamicos - 1);
                     $arrayTotales = [];
+
+                    $start = \PHPExcel_Cell::stringFromColumnIndex($this->lengthHeaderFijos);
+                    $sheet->getStyle($start . ($this->cabecerasLength + 1) . ':' . $start . ($arrayContratoProyectado['maxRow'] + ($this->cabecerasLength)))
+                        ->applyFromArray(array(
+                            'borders' => array(
+                                'left' => array('style' => \PHPExcel_Style_Border::BORDER_THICK),
+                            )
+                        ));
+
                     while ($j <= $maxCol) {
                         $index = \PHPExcel_Cell::stringFromColumnIndex($j);
                         $sheet->getStyle($index . '' . ($this->cabecerasLength + 1) . ':' . $index . ($arrayContratoProyectado['maxRow'] + $this->cabecerasLength))
@@ -160,7 +169,14 @@ class AsignacionSubcontratistasLayout extends ValidacionLayout
                             ->setLocked(
                                 \PHPExcel_Style_Protection::PROTECTION_UNPROTECTED
                             )->getActiveSheet();
-                        $sheet->getStyle($index . '' . ($this->cabecerasLength + 1) . ':' . $index . ($arrayContratoProyectado['maxRow'] + $this->cabecerasLength))->getNumberFormat();
+                        $sheet->getStyle($index . '' . ($this->cabecerasLength + 1) . ':' . $index . ($arrayContratoProyectado['maxRow'] + $this->cabecerasLength))
+                            ->applyFromArray(array(
+                                'borders' => array(
+                                    'right' => array('style' => \PHPExcel_Style_Border::BORDER_THICK),
+                                )
+                            ))
+                            ->getNumberFormat()
+                        ;
                         $sheet
                             ->setColumnFormat(array(
                                 $index . '' . ($this->cabecerasLength + 1) . ':' . $index . ($arrayContratoProyectado['maxRow'] + $this->cabecerasLength) => \PHPExcel_Style_NumberFormat::FORMAT_NUMBER
@@ -168,7 +184,7 @@ class AsignacionSubcontratistasLayout extends ValidacionLayout
                         $arrayTotales[$index] = $index;
                         $j += $this->lengthHeaderDinamicos;
                     }
-                    $index = \PHPExcel_Cell::stringFromColumnIndex($maxCol);
+                    $index = \PHPExcel_Cell::stringFromColumnIndex($maxCol+1);
                     $sheet->getStyle($index . '' . ($this->cabecerasLength) . ':' . $index . ($arrayContratoProyectado['maxRow'] + $this->cabecerasLength))
                         ->getProtection()
                         ->setLocked(
@@ -183,7 +199,14 @@ class AsignacionSubcontratistasLayout extends ValidacionLayout
                         $indexSumatoria = \PHPExcel_Cell::stringFromColumnIndex($this->lengthHeaderFijos - 1);
                         $sheet->setCellValue($index . "$i", "=($indexSumatoria" . $i . "-SUM($col))");
                     }
-                    $sheet->setBorder("A1:$index".$i, 'thin');
+                    $index = \PHPExcel_Cell::stringFromColumnIndex($maxCol-1);
+                    $sheet->getStyle( 'A' . ($arrayContratoProyectado['maxRow'] + $this->cabecerasLength) . ':' . $index . ($arrayContratoProyectado['maxRow'] + $this->cabecerasLength))
+                        ->applyFromArray(array(
+                            'borders' => array(
+                                'bottom' => array('style' => \PHPExcel_Style_Border::BORDER_THICK),
+                            )
+                        ))
+                    ;
                 }
             })->getActiveSheetIndex(0);
         })
