@@ -21,7 +21,6 @@ use Illuminate\Support\Facades\Log;
 use Maatwebsite\Excel\Classes\LaravelExcelWorksheet;
 use Maatwebsite\Excel\Facades\Excel;
 use MCrypt\MCrypt;
-use Symfony\Component\HttpKernel\Exception\NotAcceptableHttpException;
 
 class AsignacionProveedoresLayout extends ValidacionLayout
 {
@@ -101,7 +100,6 @@ class AsignacionProveedoresLayout extends ValidacionLayout
             foreach ($requisicion->rqctocSolicitud->rqctocCotizaciones->filter(function ($value) {
                 return $value->candidata;
             }) as $key => $cotizacion) {
-                Log::debug($cotizacion->rqctocCotizacionPartidas->count());
                 $totalesPartidas = $cotizacion->rqctocCotizacionPartidas->count();
                 if($totalesPartidas>0) {
                     foreach ($cotizacion->rqctocCotizacionPartidas->filter() as $_index => $cotizacionPartida) {

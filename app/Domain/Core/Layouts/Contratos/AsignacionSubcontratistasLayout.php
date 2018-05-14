@@ -16,15 +16,12 @@ use Ghi\Domain\Core\Models\Subcontratos\PartidaAsignacion;
 use Ghi\Domain\Core\Models\Transacciones\ContratoProyectado;
 use Ghi\Domain\Core\Repositories\Subcontratos\EloquentAsignacionesRepository;
 use Ghi\Domain\Core\Repositories\Subcontratos\EloquentPartidaAsignacionRepository;
-use Illuminate\Contracts\Encryption\DecryptException;
 use Illuminate\Support\Facades\Config;
-use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Maatwebsite\Excel\Classes\LaravelExcelWorksheet;
 use Maatwebsite\Excel\Facades\Excel;
 use MCrypt\MCrypt;
-use Symfony\Component\HttpKernel\Exception\NotAcceptableHttpException;
 
 class AsignacionSubcontratistasLayout extends ValidacionLayout
 {
