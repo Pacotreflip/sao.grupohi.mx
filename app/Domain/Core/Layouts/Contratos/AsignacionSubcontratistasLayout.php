@@ -186,6 +186,7 @@ class AsignacionSubcontratistasLayout extends ValidacionLayout
                         $indexSumatoria = \PHPExcel_Cell::stringFromColumnIndex($this->lengthHeaderFijos - 1);
                         $sheet->setCellValue($index . "$i", "=($indexSumatoria" . $i . "-SUM($col))");
                     }
+                    $sheet->setBorder("A1:$index".$i, 'thin');
                 }
             })->getActiveSheetIndex(0);
         })
