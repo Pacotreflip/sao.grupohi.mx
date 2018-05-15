@@ -40,6 +40,11 @@ class ValidacionLayout
      * @var int 
      */
     protected $lengthHeaderDinamicos = 0;
+
+    /**
+     * @var int
+     */
+    protected $columnsExt = 2;
     
     /**
      * @param $headers
@@ -49,15 +54,15 @@ class ValidacionLayout
      */
     public function validarHeader($headers, $layout)
     {
-        $maxCol = (($layout['totales'] * $this->lengthHeaderDinamicos) + $this->lengthHeaderFijos + 1);
-
+        $maxCol = (($layout['totales'] * $this->lengthHeaderDinamicos) + $this->lengthHeaderFijos);
+        $headers = array_slice($headers, 0, count($headers)-$this->columnsExt);
         if ($maxCol != count($headers)) {
-            throw new \Exception("Las columnas no son iguales a las que descargo en el archivo 1");
+            throw new \Exception("No es posible procesar el Layout debido a que presneta diferencias con la información actual");
         }
         $headersCotizaciones = array_slice($headers, 0, $this->lengthHeaderFijos);
         $diffCotizaciones = array_diff(array_keys($this->headerFijos), $headersCotizaciones);
         if (count($diffCotizaciones) != 0) {
-            throw new \Exception("Las columnas no son iguales a las que descargo en el archivo 2");
+            throw new \Exception("No es posible procesar el Layout debido a que presneta diferencias con la información actual");
         }
         $j = $this->lengthHeaderFijos;
 
@@ -65,7 +70,7 @@ class ValidacionLayout
             $headersCotizaciones = array_slice($headers, $j, $this->lengthHeaderDinamicos);
             $diffCotizaciones = array_diff(array_keys($this->headerDinamicos), $headersCotizaciones);
             if (count($diffCotizaciones) > 0) {
-                throw new \Exception("Las columnas no son iguales a las que descargo en el archivo 3");
+                throw new \Exception("No es posible procesar el Layout debido a que presneta diferencias con la información actual");
             }
             $j += $this->lengthHeaderDinamicos;
         }
