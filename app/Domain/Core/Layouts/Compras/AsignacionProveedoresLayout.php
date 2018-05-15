@@ -248,8 +248,7 @@ class AsignacionProveedoresLayout extends ValidacionLayout
                 $data['idserie'] = $RQCTOCSolicitud->id_serie;
                 $tablaComparativa = $this->RQCTOCTablaComparativa->create($data);
                 if (!$tablaComparativa) {
-                    //$this->resultData = $partidas;
-                    throw new \Exception('No se puede guardar la comparación');
+                    throw new \Exception('No se puede guardar la asignación');
                 }
                 $error = 0;
                 $success = 0;
@@ -281,7 +280,7 @@ class AsignacionProveedoresLayout extends ValidacionLayout
                                                 //save
                                                 $dataRQCTOCTablaComparativaPartida['idrqctoc_tabla_comparativa'] = $tablaComparativa->idrqctoc_tabla_comparativa;
                                                 $dataRQCTOCTablaComparativaPartida['idrqctoc_solicitudes_partidas'] = $row['id_partida'];
-                                                $dataRQCTOCTablaComparativaPartida['idrqctoc_cotizaciones_partidas'] = $row['id_cotizacion'];
+                                                $dataRQCTOCTablaComparativaPartida['idrqctoc_cotizaciones_partidas'] = $validarCotizacion['idrqctoc_cotizaciones_partidas'];
                                                 $dataRQCTOCTablaComparativaPartida['cantidad_asignada'] = $row['cantidad_asignada'];
                                                 $newRQCTOCTablaComparativaPartida = $this->RQCTOCTablaComparativaPartida->create($dataRQCTOCTablaComparativaPartida);
                                                 if (!$newRQCTOCTablaComparativaPartida) {
