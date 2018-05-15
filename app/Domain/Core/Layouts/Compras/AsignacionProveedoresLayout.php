@@ -58,6 +58,7 @@ class AsignacionProveedoresLayout extends ValidacionLayout
 
     protected $headerDinamicos = [
         'id_cotizacion' => "ID Cotización",
+        'nombre_del_proveedor' => "Nombre del Proveedor",
         'precio_unitario' => "Precio Unitario",
         'descuento' => "% Descuento",
         'precio_total' => "Precio Total",
@@ -103,7 +104,6 @@ class AsignacionProveedoresLayout extends ValidacionLayout
                 $totalesPartidas = $cotizacion->rqctocCotizacionPartidas->count();
                 if ($totalesPartidas > 0) {
                     foreach ($cotizacion->rqctocCotizacionPartidas->filter() as $_index => $cotizacionPartida) {
-                        //echo "---1\n"; PACO WAS HERE!
                         $partida = $requisicion->rqctocSolicitud->rqctocSolicitudPartidas()->find($cotizacionPartida->idrqctoc_solicitudes_partidas);
                         if ($partida->cantidad_pendiente > 0) {
                             if (!isset($arrayResult['valores'][$partida->idrqctoc_solicitudes_partidas])) {

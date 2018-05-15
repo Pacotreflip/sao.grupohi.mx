@@ -80,6 +80,8 @@
                         <td style="background-color: #9bc2e6"
                             class="{{$ultimalinealeft}}">{{ $mcrypt->encrypt($requisicion['cotizacion'][$i]->idrqctoc_cotizaciones)  }}</td>
                         <td style="background-color: #9bc2e6"
+                            class="{{$ultimalinealeft}}">{{ $requisicion['cotizacion'][$i]->empresa->razon_social  }}</td>
+                        <td style="background-color: #9bc2e6"
                             class="{{$ultimalinea}}">{{ $cotizacionPartida->precio_unitario }}</td>
                         <td style="background-color: #9bc2e6" class="{{$ultimalinea}}">{{ $cotizacionPartida->descuento }}</td>
                         <td style="background-color: #9bc2e6"
@@ -97,8 +99,12 @@
                         <td class="notSelect"></td>
                         <td class="notSelect"></td>
                         <td class="notSelect"></td>
+                        <td class="notSelect"></td>
+                        <td class="notSelect"></td>
                     @endif
                 @else
+                    <td class="notSelect"></td>
+                    <td class="notSelect"></td>
                     <td class="notSelect"></td>
                     <td class="notSelect"></td>
                     <td class="notSelect"></td>
