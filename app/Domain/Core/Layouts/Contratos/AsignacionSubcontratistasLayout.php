@@ -35,6 +35,9 @@ class AsignacionSubcontratistasLayout extends ValidacionLayout
      */
     protected $resultData = [];
 
+    /**
+     * @var array
+     */
     protected $headerFijos = [
         '' => "#",
         'id_partida' => "ID Partida",
@@ -45,6 +48,9 @@ class AsignacionSubcontratistasLayout extends ValidacionLayout
         'cantidad_pendiente_de_asignar' => "Cantidad Pendiente de Asignar",
     ];
 
+    /**
+     * @var array
+     */
     protected $headerDinamicos = [
         'id_presupuesto' => "ID Presupuesto",
         'fecha_de_presupuesto' => "Fecha de Presupuesto",
@@ -84,6 +90,10 @@ class AsignacionSubcontratistasLayout extends ValidacionLayout
         $this->partidaAsignacion = new EloquentPartidaAsignacionRepository(new PartidaAsignacion());
     }
 
+    /**
+     * @param ContratoProyectado $contrato_proyectado
+     * @return mixed
+     */
     public function setData(ContratoProyectado $contrato_proyectado)
     {
         $row = 0;
@@ -130,6 +140,9 @@ class AsignacionSubcontratistasLayout extends ValidacionLayout
         return $arrayResult;
     }
 
+    /**
+     * @return mixed
+     */
     public function getFile()
     {
         set_time_limit(0);
@@ -210,12 +223,13 @@ class AsignacionSubcontratistasLayout extends ValidacionLayout
                 }
             })->getActiveSheetIndex(0);
         })
-            ->store('xlsx', storage_path() . '/logs/');
+            //->store('xlsx', storage_path() . '/logs/')
+            ;
     }
 
     /**
      * @param array $asignaciones
-     * @return bool
+     * @return array
      * @throws \Exception
      */
     public function procesarDatos(array $asignaciones)
@@ -390,6 +404,4 @@ class AsignacionSubcontratistasLayout extends ValidacionLayout
         });
         return $results;
     }
-
-
 }

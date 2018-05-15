@@ -46,6 +46,9 @@ class AsignacionProveedoresLayout extends ValidacionLayout
      */
     protected $resultData = [];
 
+    /**
+     * @var array
+     */
     protected $headerFijos = [
         '' => "#",
         'id_partida' => "ID Partida",
@@ -56,6 +59,9 @@ class AsignacionProveedoresLayout extends ValidacionLayout
         'cantidad_pendiente_de_asignar' => "Cantidad Pendiente de Asignar",
     ];
 
+    /**
+     * @var array
+     */
     protected $headerDinamicos = [
         'id_cotizacion' => "ID Cotización",
         'nombre_del_proveedor' => "Nombre del Proveedor",
@@ -86,7 +92,8 @@ class AsignacionProveedoresLayout extends ValidacionLayout
     }
 
     /**
-     * @return array
+     * @param Requisicion $requisicion
+     * @return mixed
      */
     public function setData(Requisicion $requisicion)
     {
@@ -216,14 +223,14 @@ class AsignacionProveedoresLayout extends ValidacionLayout
                 }
             })->getActiveSheetIndex(0);
         })
-            ->store('xlsx', storage_path() . '/logs/');
+            //->store('xlsx', storage_path() . '/logs/')
+            ;
     }
-
-
+    
     /**
      * @param $folio_sao
      * @param array $partidas
-     * @return bool
+     * @return array
      * @throws \Exception
      */
     public function procesarDatos($folio_sao, array $partidas)
@@ -329,7 +336,7 @@ class AsignacionProveedoresLayout extends ValidacionLayout
 
     /**
      * @param Request $request
-     * @return bool
+     * @return array
      */
     public function qetDataFile(Request $request)
     {

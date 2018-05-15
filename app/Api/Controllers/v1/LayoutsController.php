@@ -67,12 +67,12 @@ class LayoutsController extends BaseController
     public function compras_asignacion_store(Request $request, $id_requisicion)
     {
         $rules = array(
-            'file' => 'required|mimes:xls,xlsx',
+            'file' => 'required|file|mimes:xls,xlsx',
         );
 
         $validator =  app('validator')->make($request->all(), $rules);
         if (count($validator->errors()->all())) {
-            throw new StoreResourceFailedException('Could not create new user.', $validator->errors());
+            throw new StoreResourceFailedException('No es posible cargar el Layout', $validator->errors());
         }
         $requisicion = $this->requisicionRepository->find($id_requisicion);
         $layout = (new AsignacionProveedoresLayout($requisicion))->qetDataFile($request);
@@ -97,12 +97,12 @@ class LayoutsController extends BaseController
     public function contratos_asignacion_store(Request $request, $id_contrato_proyectado)
     {
         $rules = array(
-            'file' => 'required|mimes:xls,xlsx',
+            'file' => 'required|file|mimes:xls,xlsx',
         );
 
         $validator =  app('validator')->make($request->all(), $rules);
         if (count($validator->errors()->all())) {
-            throw new StoreResourceFailedException('Could not create new user.', $validator->errors());
+            throw new StoreResourceFailedException('No es posible cargar el Layout', $validator->errors());
         }
 
         $contrato_proyectado = $this->contratoProyectadoRepository->find($id_contrato_proyectado);
