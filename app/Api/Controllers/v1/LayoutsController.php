@@ -67,7 +67,7 @@ class LayoutsController extends BaseController
     public function compras_asignacion_store(Request $request, $id_requisicion)
     {
         $rules = array(
-            'file' => 'required|file|mimes:xls,xlsx',
+            'file' => 'required|mimes:xls,xlsx',
         );
 
         $validator =  app('validator')->make($request->all(), $rules);
@@ -97,7 +97,7 @@ class LayoutsController extends BaseController
     public function contratos_asignacion_store(Request $request, $id_contrato_proyectado)
     {
         $rules = array(
-            'file' => 'required|file|mimes:xls,xlsx',
+            'file' => 'required|mimes:xls,xlsx',
         );
 
         $validator =  app('validator')->make($request->all(), $rules);
