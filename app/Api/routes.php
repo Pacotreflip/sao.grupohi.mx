@@ -92,6 +92,9 @@ $api->version('v1', function ($api) {
         $api->get('layouts/contratos/contrato_proyectado/{id_contrato_proyectado}/asignacion', 'Ghi\Api\Controllers\v1\LayoutsController@contratos_asignacion');
         $api->post('layouts/contratos/contrato_proyectado/{id_contrato_proyectado}/asignacion', 'Ghi\Api\Controllers\v1\LayoutsController@contratos_asignacion_store');
 
+        $api->get('layouts/contratos/carga_precios/{id_contrato_proyectado}/asignacion', 'Ghi\Api\Controllers\v1\LayoutsController@carga_precios_asignacion');
+        $api->post('layouts/contratos/carga_precios/{id_contrato_proyectado}/asignacion', 'Ghi\Api\Controllers\v1\LayoutsController@carga_precios_asignacion_store');
+
     });
 });
 
