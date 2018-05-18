@@ -115,16 +115,15 @@ class LayoutsController extends BaseController
     public function carga_precios_asignacion(Request $request, $id_contrato_proyectado)
     {
         $contrato_proyectado = $this->contratoProyectadoRepository->find($id_contrato_proyectado);
-        dd($contrato_proyectado->cotizacionesContrato->toArray());
-        /*$layout = (new AsignacionSubcontratistasLayout($contrato_proyectado))->getFile();
+        $layout = (new AsignacionCargaPreciosLayout($contrato_proyectado))->getFile();
 
         try {
             return $this->response->array([
                 'file' => "data:application/vnd.ms-excel;base64," . base64_encode($layout->string()),
-                'name' => '# ' . str_pad($contrato_proyectado->numero_folio, 5, '0', STR_PAD_LEFT).'-AsignacionContratistas'
+                'name' => '# ' . str_pad($contrato_proyectado->numero_folio, 5, '0', STR_PAD_LEFT).'-AsignacionPresupuesto'
             ]);
         } catch (\ErrorException $e) {
-        }*/
+        }
     }
 
     public function carga_precios_asignacion_store(Request $request, $id_contrato_proyectado)
