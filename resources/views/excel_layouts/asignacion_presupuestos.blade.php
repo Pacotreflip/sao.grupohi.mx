@@ -49,8 +49,6 @@
                 <th style="background-color: #C8C8C8" class="border">{{ $_headerPresupuestos }}</th>
             @endforeach
         @endfor
-        <th></th>
-        <th>Pendiente de Asignar</th>
     </tr>
     </thead>
     <tbody>
@@ -80,6 +78,10 @@
                 @if(count($presupuesto)>0)
                     <!-- Información de la cotización -->
                         <td style="background-color: #9bc2e6;"
+                            class="{{$ultimalinealeft}} ">{{ $mcrypt->encrypt($contratoProyectado['cotizacion'][$i]->id_transaccion) }}</td>
+                        <td style="background-color: #9bc2e6;"
+                            class="{{$ultimalinealeft}} ">{{ $contratoProyectado['cotizacion'][$i]->empresa->razon_social }}</td>
+                        <td style="background-color: #9bc2e6;"
                             class="{{$ultimalinealeft}} ">{{ $mcrypt->encrypt($presupuesto->id_transaccion) }}</td>
                         <td style="background-color: #9bc2e6"
                             class="{{$ultimalinea}} ">{{ $presupuesto->precio_unitario_antes_descuento }}</td>
@@ -99,7 +101,15 @@
                             class="{{$ultimalinea}} ">{{ $presupuesto->precio_total_despues_descuento }}</td>
                         <td style="background-color: #9bc2e6"
                             class="{{$ultimalinea}} ">{{ $presupuesto->Observaciones }}</td>
+                        <td class="notSelect"></td>
+                        <td class="notSelect"></td>
+                        <td class="notSelect"></td>
                     @else
+                        <td class="notSelect"></td>
+                        <td class="notSelect"></td>
+                        <td class="notSelect"></td>
+                        <td class="notSelect"></td>
+                        <td class="notSelect"></td>
                         <td class="notSelect"></td>
                         <td class="notSelect"></td>
                         <td class="notSelect"></td>
@@ -112,6 +122,11 @@
                         <td class="notSelect"></td>
                     @endif
                 @else
+                    <td class="notSelect"></td>
+                    <td class="notSelect"></td>
+                    <td class="notSelect"></td>
+                    <td class="notSelect"></td>
+                    <td class="notSelect"></td>
                     <td class="notSelect"></td>
                     <td class="notSelect"></td>
                     <td class="notSelect"></td>
