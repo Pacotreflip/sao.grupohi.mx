@@ -87,6 +87,9 @@ class AsignacionCargaPreciosLayout extends ValidacionLayout
         "precio_total_mxp" => "precio_total_mxp",
     ];
 
+    /**
+     * @var array
+     */
     protected $rowOperacionesExtra = [
         "descuento" => "% Descuento",
         "subtotal_precio_pesos" => "Subtotal Precios Peso (MXP)",
