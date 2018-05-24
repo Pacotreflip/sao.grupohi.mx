@@ -49,4 +49,11 @@ class EloquentUnidadRepository implements UnidadRepository
 
 
     }
+
+    public function lists()
+    {
+        return $this->model->lists('descripcion', 'unidad');
+    }
+
+
 }

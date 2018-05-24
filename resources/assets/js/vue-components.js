@@ -116,3 +116,8 @@ require('./vue-components/ControlPresupuesto/cambio_cantidad_insumos/show');
  */
 require('./vue-components/Procuracion/asignacion/index');
 require('./vue-components/Procuracion/asignacion/create');
+
+/**
+* Concepto Extraordinario
+ */
+require('./vue-components/ControlPresupuesto/concepto_extraordinario/create');

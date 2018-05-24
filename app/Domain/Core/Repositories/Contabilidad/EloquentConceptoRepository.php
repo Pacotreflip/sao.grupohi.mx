@@ -5,7 +5,9 @@ namespace Ghi\Domain\Core\Repositories\Contabilidad;
 use Ghi\Core\Facades\Context;
 use Ghi\Domain\Core\Contracts\Contabilidad\ConceptoRepository;
 use Ghi\Domain\Core\Models\Concepto;
+use Ghi\Domain\Core\Models\ControlPresupuesto\Tarjeta;
 use Illuminate\Support\Facades\DB;
+use function MongoDB\BSON\toJSON;
 use PhpParser\Node\Expr\Array_;
 
 class EloquentConceptoRepository implements ConceptoRepository
@@ -234,6 +236,39 @@ class EloquentConceptoRepository implements ConceptoRepository
 
 
         return $cob_conceptos;
+    }
+
+    public function geInsumosPorTarjeta($id_tarjeta){
+        $extraordinario = [];
+        $tarjeta = Tarjeta::find($id_tarjeta)->concepto_tarjeta()->first();
+        $concepto = Concepto::find($tarjeta->id_concepto);
+        $extraordinario +=
+                [
+                    'nivel'=>$concepto->nivel,
+                    'descripcion'=>$concepto->descripcion,
+                    'unidad'=>$concepto->unidad,
+                    'id_material'=>$concepto->id_material,
+                    'cantidad_presupuestada'=>$concepto->cantidad_presupuestada,
+                    'precio_unitario'=>$concepto->precio_unidario,
+                    'monto_presupuestado'=>$concepto->monto_presupuestado
+                ]
+            ;
+        $conceptos = $this->model->where('nivel', 'like', $concepto->nivel . '___.')->get();
+        foreach ($conceptos as $concepto) {
+            $extraordinario +=
+            [str_replace(' ', '', $concepto->descripcion) =>
+                [
+                    'id_concepto' => $concepto->id_concepto,
+                    'nivel' => $concepto->nivel,
+                    'descripcion' => $concepto->descripcion,
+                    'monto_presupuestado' => $concepto->monto_presupuestado,
+                    'insumos' => $concepto->insumos()->get(['nivel', 'descripcion', 'unidad', 'id_material', 'cantidad_presupuestada', 'precio_unitario', 'monto_presupuestado'])->toArray()
+
+                ]
+                ]
+            ;
+        }
+        return $extraordinario;
     }
 
     public function getPreciosConceptos($id)

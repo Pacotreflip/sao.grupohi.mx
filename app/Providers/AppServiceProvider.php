@@ -410,5 +410,25 @@ class AppServiceProvider extends ServiceProvider
             \Ghi\Domain\Core\Contracts\Procuracion\AsignacionesRepository::class,
             \Ghi\Domain\Core\Repositories\Programacion\EloquentAsignacionesRepository::class
         );
+
+        $this->app->bind(
+            \Ghi\Domain\Core\Contracts\ControlPresupuesto\ConceptoExtraordinarioRepository::class,
+            \Ghi\Domain\Core\Repositories\ControlPresupuesto\EloquentConceptoExtraordinarioRepository::class
+        );
+
+        $this->app->bind(
+            \Ghi\Domain\Core\Contracts\ControlPresupuesto\TipoExtraordinarioRepository::class,
+            \Ghi\Domain\Core\Repositories\ControlPresupuesto\EloquentTipoExtraordinarioRepository::class
+        );
+
+        $this->app->bind(
+            \Ghi\Domain\Core\Contracts\ControlPresupuesto\CatalogoExtraordinarioRepository::class,
+            \Ghi\Domain\Core\Repositories\ControlPresupuesto\EloquentCatalogoExtraordinarioRepository::class
+        );
+
+        $this->app->bind(
+            \Ghi\Domain\Core\Contracts\ControlPresupuesto\CatalogoExtraordinarioPartidaRepository::class,
+            \Ghi\Domain\Core\Repositories\ControlPresupuesto\EloquentCatalogoExtraordinarioPartidaRepository::class
+        );
     }
 }

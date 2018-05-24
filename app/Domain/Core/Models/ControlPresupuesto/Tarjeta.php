@@ -30,4 +30,8 @@ class Tarjeta extends BaseModel
             $model->id_obra = Context::getId();
         });
     }
+
+    public function concepto_tarjeta(){
+        return $this->hasOne(ConceptoTarjeta::class, 'id_tarjeta', 'id');
+    }
 }

@@ -90,3 +90,11 @@ Breadcrumbs::register('control_presupuesto.cambio_insumos.costo_indirecto.create
     $breadcrumb->parent('control_presupuesto.cambio_presupuesto.index');
     $breadcrumb->push('NUEVA CAMBIO DE INSUMOS COSTO INDIRECTO', route('control_presupuesto.cambio_insumos.costo_indirecto.create'));
 });
+
+/**
+ * Conceptos Extraordinarios Create
+ */
+Breadcrumbs::register('control_presupuesto.conceptos_extraordinarios.create', function ($breadcrumb) {
+    $breadcrumb->parent('control_presupuesto.cambio_presupuesto.index');
+    $breadcrumb->push('NUEVO CONCEPTO EXTRAORDINARIO', route('control_presupuesto.conceptos_extraordinarios.create'));
+});

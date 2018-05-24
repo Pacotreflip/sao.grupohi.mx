@@ -94,6 +94,13 @@ Route::group(['prefix' => 'control_presupuesto'], function () {
         Route::get('/{cambio_insumos}/pdf', 'CambioCantidadInsumosController@pdf');
     });
 
+    /**
+     * Conceptos Extraordinarios
+     */
+    Route::group(['prefix' => 'conceptos_extraordinarios'], function () {
+        Route::get('/create', 'Presupuesto\ConceptosExtraordinariosController@create')->name('control_presupuesto.conceptos_extraordinarios.create');
+        Route::get('/{tipo}/extraordinario/{id}', 'Presupuesto\ConceptosExtraordinariosController@getExtraordinario')->name('control_presupuesto.conceptos_extraordinarios.getExtraordinario');
+    });
 
     /**
      * Tipos de Cobrabilidad Routes

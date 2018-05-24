@@ -223,9 +223,8 @@ class Concepto extends BaseModel
      */
     public function getSectorAttribute()
     {
-
         $conceptoPath = ConceptoPath::where('id_concepto', '=', $this->id_concepto)->first();
-        return $conceptoPath->filtro4;
+        return $conceptoPath ? $conceptoPath->filtro4 : '';
     }
 
     /**
@@ -234,7 +233,7 @@ class Concepto extends BaseModel
     public function getCuadranteAttribute()
     {
         $conceptoPath = ConceptoPath::where('id_concepto', '=', $this->id_concepto)->first();
-        return $conceptoPath->filtro5;
+        return $conceptoPath ? $conceptoPath->filtro5:'';
     }
 
     public function getEntregaAttribute()
@@ -258,5 +257,14 @@ class Concepto extends BaseModel
         return DB::connection('cadeco')
             ->table('dbo.conceptos')
             ->select(DB::raw('max(LEN([nivel]) / 4) as MAX'))->lists('MAX');
+    }
+
+    public function getFamiliaAttribute(){
+        return Concepto::where('nivel', 'like', $this->nivel.'%');
+    }
+
+    public function insumos() {
+        return $this->hasMany(self::class, 'id_obra', 'id_obra')
+            ->where('nivel', 'like', $this->nivel . '___.');
     }
 }

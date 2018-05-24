@@ -62,4 +62,11 @@ interface ConceptoRepository
      * @return mixed
      */
     public function getPreciosConceptos($id);
+
+    /**
+     * Obtiene los insumos desdeuna tarjeta para extraordinario
+     * @param $id_tarjeta
+     * @return mixed
+     */
+    public function geInsumosPorTarjeta($id_tarjeta);
 }
