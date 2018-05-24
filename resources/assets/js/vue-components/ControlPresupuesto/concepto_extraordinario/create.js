@@ -34,7 +34,6 @@ Vue.component('concepto-extraordinario-create', {
                 },
                 success: function (data, textStatus, xhr) {
                     if (self.form.id_origen_extraordinario == 1) {
-                        console.log('Pandita');
                         self.rendimiento_tarjeta(data.data)
                     } else {
                         console.log(self.form.id_origen_extraordinario);
