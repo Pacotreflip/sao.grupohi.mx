@@ -21,7 +21,7 @@ use Ghi\Core\Facades\Context;
 class CotizacionContrato extends Transaccion
 {
     /**
-     * Aplicar Scope Global para recuperar solo las transacciones de tipo Cotización de Contarto
+     * Aplicar Scope Global para recuperar solo las transacciones de tipo Cotización de Contrato
      */
     protected static function boot()
     {

@@ -64,4 +64,8 @@ interface ContratoProyectadoRepository
      * @return mixed
      */
     public function like(array $cols,$q);
+
+    public function getPartidasContratos($id);
+
+    public function getPartidasContratoAgrupadas($id);
 }

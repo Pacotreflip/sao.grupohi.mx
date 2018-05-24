@@ -138,15 +138,24 @@ class LayoutsController extends BaseController
      */
     public function carga_precios_asignacion(Request $request, $id_contrato_proyectado)
     {
-        $contrato_proyectado = $this->contratoProyectadoRepository->find($id_contrato_proyectado);
-        $layout = (new AsignacionCargaPreciosLayout($contrato_proyectado))->getFile();
+        // Obten la información de los filtros y agrupaciones
+        $info = [
+            'id_contrato_proyectado' => $id_contrato_proyectado,
+            'presupuesto_ids' => json_decode($request->ids, true),
+            'agrupadores' => $request->agrupadores,
+            'solo_pendientes' => $request->solo_pendientes
+        ];
+
+        $layout = (new AsignacionCargaPreciosLayout($this->contratoProyectadoRepository, $info))->getFile();
+        $contrato = $this->contratoProyectadoRepository->find($info['id_contrato_proyectado']);
 
         try {
             return $this->response->array([
                 'file' => "data:application/vnd.ms-excel;base64," . base64_encode($layout->string()),
-                'name' => '# ' . str_pad($contrato_proyectado->numero_folio, 5, '0', STR_PAD_LEFT).'-AsignacionPresupuesto'
+                'name' => '# ' . str_pad($contrato->numero_folio, 5, '0', STR_PAD_LEFT).'-AsignacionPresupuesto'
             ]);
         } catch (\ErrorException $e) {
+            dd($e->getMessage());
         }
     }
 
@@ -166,8 +175,9 @@ class LayoutsController extends BaseController
             throw new StoreResourceFailedException('No es posible cargar el Layout', $validator->errors());
         }
 
-        $contrato_proyectado = $this->contratoProyectadoRepository->find($id_contrato_proyectado);
-        $layout = (new AsignacionCargaPreciosLayout($contrato_proyectado))->qetDataFile($request);
+        $layout = (new AsignacionCargaPreciosLayout($this->contratoProyectadoRepository,[]))
+            ->setIdContratoProyectado($id_contrato_proyectado)
+            ->qetDataFile($request);
 
         return $this->response->array($layout);
     }

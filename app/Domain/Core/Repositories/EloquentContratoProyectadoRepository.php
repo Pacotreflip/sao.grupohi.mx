@@ -270,4 +270,127 @@ class EloquentContratoProyectadoRepository implements ContratoProyectadoReposito
             }
         })->limit(10)->get();
     }
+
+    public function getPartidasContratos($id) {
+
+        // This isn't pretty...
+        $query = DB::connection('cadeco')
+            ->select(DB::raw("SELECT
+                        contratos.descripcion as descripcion,
+                        replicate('__', Len(contratos.nivel)/4) +contratos.descripcion as descripcion_span,
+                        contratos.unidad,
+                        contratos.cantidad_presupuestada,
+                        contratos.cantidad_original,
+                        contratos.cantidad_modificada,
+                        conceptos.descripcion as destino,
+                        conceptos.id_concepto as id_destino,
+                        contratos.nivel,
+                        contratos.id_concepto,
+                        contratos.id_concepto as id_bd,
+                        contratos.id_concepto as agrupados,
+                        contratos.clave as clave,
+                        contratos.id_marca as id_marca,
+                        contratos.id_modelo as id_modelo,
+                        (SELECT 
+                        COUNT(1) as en_asig 
+                    FROM 
+                        Subcontratos.partidas_asignacion 
+                    WHERE 
+                        id_transaccion = contratos.id_transaccion AND 
+                        SUBSTRING(
+                        master.dbo.fn_varbintohexstr(
+                            HASHBYTES(
+                                'sha1', 
+                                cast(id_concepto AS VARCHAR(10))
+                            )
+                        ),
+	            3, 40) = contratos.id_concepto) as en_asig,
+                        CASE WHEN (
+                            SELECT count(1)-1
+                            FROM contratos as hijos_contratos
+                            WHERE
+                                 hijos_contratos.id_transaccion = ". $id ." AND
+                                 hijos_contratos.nivel like contratos.nivel + '%'
+                        )>0 THEN '1' ELSE '0' END hijos,
+                        contratos.id_concepto as id_concepto
+                FROM
+                    contratos left join
+                    destinos on(contratos.id_concepto = destinos.id_concepto_contrato) left join
+                    conceptos on(conceptos.id_concepto = destinos.id_concepto)
+                WHERE contratos.id_transaccion = ". $id ."
+                ORDER BY nivel;
+            "));
+
+        return $query;
+    }
+
+    public function getPartidasContratoAgrupadas($id = 0)
+    {
+        // Still not pretty...
+        $query = DB::connection('cadeco')
+            ->select(DB::raw("
+select * from (
+	select
+		contratos.descripcion as descripcion,
+		replicate('__', Len(contratos.nivel)/4) + contratos.descripcion as descripcion_span,
+		contratos.unidad,
+		contratos.cantidad_presupuestada,
+        contratos.cantidad_original,
+        contratos.cantidad_modificada,
+        conceptos.descripcion as destino,
+        conceptos.id_concepto as id_destino,
+        contratos.nivel,
+        contratos.id_concepto as id_bd,
+        contratos.clave as clave,
+        contratos.id_marca as id_marca,
+        contratos.id_modelo as id_modelo,
+		STUFF((
+          SELECT concat(',',gc.id_concepto) as nombre
+          FROM contratos gc
+
+          WHERE case when ( LEN(ltrim(contratos.descripcion)) - CHARINDEX(' ',lTRIM(contratos.descripcion))  > 0) then 
+SUBSTRING( ltrim(contratos.descripcion),CHARINDEX(' ',ltrim(contratos.descripcion)),LEN(ltrim(contratos.descripcion)) - CHARINDEX(' ',ltrim(contratos.descripcion) )+1)
+else
+rtrim(ltrim((contratos.descripcion)))
+end
+ =
+  case when ( LEN(ltrim(gc.descripcion)) - CHARINDEX(' ',lTRIM(gc.descripcion))  > 0) then 
+SUBSTRING( ltrim(gc.descripcion),CHARINDEX(' ',ltrim(gc.descripcion)),LEN(ltrim(gc.descripcion)) - CHARINDEX(' ',ltrim(gc.descripcion) )+1)
+else
+rtrim(ltrim((gc.descripcion)))
+end and gc.id_transaccion = contratos.id_transaccion 
+          FOR XML PATH(''), TYPE).value('.', 'NVARCHAR(MAX)'), 1, 1, '') as agrupados,
+                        CASE WHEN (
+                            SELECT count(1)-1
+                            FROM contratos as hijos_contratos
+                            WHERE
+                                 hijos_contratos.id_transaccion = ". $id ." AND
+                                 hijos_contratos.nivel like contratos.nivel + '%')>0 THEN '1' ELSE '0' END hijos,
+								 contratos.id_concepto as id_concepto
+  FROM contratos
+	left join destinos d on (contratos.id_concepto = d.id_concepto_contrato)
+	left join conceptos on (conceptos.id_concepto = d.id_concepto)
+                WHERE 
+contratos.id_concepto  IN (select  min(tabla.id_concepto) as Id from (
+select 
+case when ( LEN(ltrim(descripcion)) - CHARINDEX(' ',lTRIM(descripcion))  > 0) then 
+SUBSTRING( ltrim(descripcion),CHARINDEX(' ',ltrim(descripcion)),LEN(ltrim(descripcion)) - CHARINDEX(' ',ltrim(descripcion) )+1)
+else
+rtrim(ltrim((descripcion)))
+end as Nombre
+,id_concepto
+FROM contratos
+ WHERE contratos.id_transaccion = ". $id .") tabla
+ group by Nombre
+)
+) z
+where
+z.hijos = 0
+order by z.nivel"));
+
+
+dd($query);
+
+        return $query;
+    }
 }
