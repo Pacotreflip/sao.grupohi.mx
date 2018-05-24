@@ -22,6 +22,10 @@ use Dingo\Api\Exception\StoreResourceFailedException;
 use Dingo\Api\Http\Request;
 use Ghi\Domain\Core\Models\Transacciones\ContratoProyectado;
 
+/**
+ * Class AsignacionCargaPreciosLayout
+ * @package Ghi\Domain\Core\Layouts\Presupuestos
+ */
 class AsignacionCargaPreciosLayout extends ValidacionLayout
 {
     /**
@@ -70,9 +74,6 @@ class AsignacionCargaPreciosLayout extends ValidacionLayout
      * @var array
      */
     protected $headerDinamicos = [
-        "id_empresa" => "Id Empresa",
-        "empresa" => "Empresa",
-        "id" => "Id",
         "precio_unitario_antes_descto" => "Precio Unitario Antes Descto",
         "precio_total_antes_descto" => "Precio Total Antes Descto",
         "descuento" => "% Descuento",
@@ -85,6 +86,7 @@ class AsignacionCargaPreciosLayout extends ValidacionLayout
         "cotizado_img" => "cotizado_img",
         "id_moneda" => "id_moneda",
         "precio_total_mxp" => "precio_total_mxp",
+        "" => "",
     ];
 
     /**
@@ -120,7 +122,7 @@ class AsignacionCargaPreciosLayout extends ValidacionLayout
         $this->lengthHeaderFijos = count($this->headerFijos);
         $this->lengthHeaderDinamicos = count($this->headerDinamicos);
         $this->contrato_proyectado = $contrato_proyectado;
-        $this->cabecerasLength = 1;
+        $this->cabecerasLength = 2;
         $this->partidaAsignacion = new EloquentPartidaAsignacionRepository(new PartidaAsignacion());
     }
 
@@ -285,8 +287,8 @@ class AsignacionCargaPreciosLayout extends ValidacionLayout
                     throw new \Exception("No corresponde el layout al Contrato");
                 }
                 $col = $sheet->toArray();
-                //$headers = $col[($this->cabecerasLength - 1)];
-                $headers = $results->getHeading();
+                $headers = $col[($this->cabecerasLength - 1)];
+                //$headers = $results->getHeading();
                 $layout = $this->setData();
                 if ($this->validarHeader($headers, $layout)) {
                     if (count($col) != ($layout['maxRow'] + $this->cabecerasLength + $this->operaciones)) {
@@ -300,9 +302,9 @@ class AsignacionCargaPreciosLayout extends ValidacionLayout
                         $k = $this->lengthHeaderFijos;
                         while ($j <= $maxCol) {
                             $id_concepto = !empty($row[1]) ? $this->mCrypt->decrypt($row[1]) : '';
+                            $id_transaccion = '';
                             if ($i <= ($layout['maxRow'] + $this->cabecerasLength) - 1) {
-                                $id_transaccion = !empty($row[$k]) ? $this->mCrypt->decrypt($row[$k]) : '';
-                                $id_presupuesto = !empty($row[$k + ($this->lengthHeaderDinamicos - 13)]) ? explode($this->delimiter, $this->mCrypt->decrypt($row[$k + ($this->lengthHeaderDinamicos - 13)])) : '';
+                                //$id_transaccion = !empty($row[$k]) ? $this->mCrypt->decrypt($row[$k]) : '';
                                 if (is_numeric($id_transaccion) and !empty($id_transaccion) && is_numeric($id_concepto) and !empty($id_concepto)) {
                                     //if ($row[$k + ($this->lengthHeaderDinamicos - 1)] > 0) {
                                     $arrayContratos[$id_transaccion]['presupuestos'][] = [
@@ -311,7 +313,6 @@ class AsignacionCargaPreciosLayout extends ValidacionLayout
                                         'cantidad_autorizada' => $row[5],//de contratos
                                         'cantidad_solicitada' => $row[6],//de contratos
                                         'id_transaccion' => $id_transaccion,//transaccion de presupuesto
-                                        "id_transaccion_contrato" => $id_presupuesto,
                                         'id_concepto' => $id_concepto,//de contratos
                                         'precio_unitario' => str_replace(",", "", $row[$k + ($this->lengthHeaderDinamicos - 8)]),
                                         "no_cotizado" => '',
@@ -333,7 +334,6 @@ class AsignacionCargaPreciosLayout extends ValidacionLayout
                                 }
                             } else {
                                 $aux = $col[$this->cabecerasLength + 1];
-                                $id_transaccion = !empty($aux[$k]) ? $this->mCrypt->decrypt($aux[$k]) : '';
                                 $detalle = !empty($row[$this->lengthHeaderFijos - 1]) ? $row[$this->lengthHeaderFijos - 1] : '';
                                 $valorDetalle = !empty($row[$k]) ? $row[$k] : '';
                                 $keyDetalle = array_search($detalle, $this->rowOperacionesExtra);
@@ -424,9 +424,9 @@ class AsignacionCargaPreciosLayout extends ValidacionLayout
                     throw new \Exception("Al menos una partida del presupuesto esta incluida en una asignación de proveedores y no pudo ser modificada, los datos del presupuesto y de las partidas que no estan relacionadas con una asignación fueron actualizadas correctamente.");
                 } else {
                     foreach ($contrato['presupuestos'] as &$arrayPresupuesto) {
-                        if(is_array($arrayPresupuesto['id_transaccion_contrato'])) {
-                            foreach($arrayPresupuesto['id_transaccion_contrato'] as $id_presupuesto) {
-                                $presupuesto = $cotizacionContrato->presupuestos()->where('id_concepto', $arrayPresupuesto['id_concepto'])->where('id_transaccion', $id_presupuesto);
+                        /*if(is_array($arrayPresupuesto['id_transaccion_contrato'])) {
+                            foreach($arrayPresupuesto['id_transaccion_contrato'] as $id_presupuesto) {*/
+                                $presupuesto = $cotizacionContrato->presupuestos()->where('id_concepto', $arrayPresupuesto['id_concepto'])->where('id_transaccion', $key);
                                 $dataUpdatePresupuesto = [
                                     "precio_unitario" => $arrayPresupuesto['precio_unitario'],
                                     "no_cotizado" => $arrayPresupuesto['no_cotizado'],
@@ -447,11 +447,11 @@ class AsignacionCargaPreciosLayout extends ValidacionLayout
                                 if (!$arrayPresupuesto['success']) {
                                     $this->resultData[$arrayPresupuesto['linea']][] = $arrayPresupuesto;
                                 }
-                            }
+                            /*}
                         }else{
                             $arrayPresupuesto['error'] = "No se puede guardar el registro";
                             $error++;
-                        }
+                        }*/
                     }
 
                     if ($error == 0) {

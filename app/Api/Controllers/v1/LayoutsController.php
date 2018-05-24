@@ -22,6 +22,10 @@ use Ghi\Domain\Core\Layouts\Presupuestos\AsignacionCargaPreciosLayout;
 use Ghi\Http\Controllers\Controller as BaseController;
 use Maatwebsite\Excel\Facades\Excel;
 
+/**
+ * Class LayoutsController
+ * @package Ghi\Api\Controllers\v1
+ */
 class LayoutsController extends BaseController
 {
     use Helpers;
@@ -46,6 +50,11 @@ class LayoutsController extends BaseController
         $this->contratoProyectadoRepository = $contratoProyectadoRepository;
     }
 
+    /**
+     * @param Request $request
+     * @param $id_requisicion
+     * @return mixed
+     */
     public function compras_asignacion(Request $request, $id_requisicion)
     {
         $requisicion = $this->requisicionRepository->find($id_requisicion);
@@ -81,6 +90,11 @@ class LayoutsController extends BaseController
         return $this->response->array($layout);
     }
 
+    /**
+     * @param Request $request
+     * @param $id_contrato_proyectado
+     * @return mixed
+     */
     public function contratos_asignacion(Request $request, $id_contrato_proyectado)
     {
         $contrato_proyectado = $this->contratoProyectadoRepository->find($id_contrato_proyectado);
@@ -95,6 +109,11 @@ class LayoutsController extends BaseController
         }
     }
 
+    /**
+     * @param Request $request
+     * @param $id_contrato_proyectado
+     * @return mixed
+     */
     public function contratos_asignacion_store(Request $request, $id_contrato_proyectado)
     {
         $rules = array(
@@ -112,6 +131,11 @@ class LayoutsController extends BaseController
         return $this->response->array($layout);
     }
 
+    /**
+     * @param Request $request
+     * @param $id_contrato_proyectado
+     * @return mixed
+     */
     public function carga_precios_asignacion(Request $request, $id_contrato_proyectado)
     {
         $contrato_proyectado = $this->contratoProyectadoRepository->find($id_contrato_proyectado);
@@ -126,6 +150,11 @@ class LayoutsController extends BaseController
         }
     }
 
+    /**
+     * @param Request $request
+     * @param $id_contrato_proyectado
+     * @return mixed
+     */
     public function carga_precios_asignacion_store(Request $request, $id_contrato_proyectado)
     {
         $rules = array(
