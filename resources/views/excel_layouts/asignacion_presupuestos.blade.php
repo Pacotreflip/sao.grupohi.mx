@@ -38,9 +38,26 @@
 </style>
 <table>
     <thead>
+    {{--Identificador--}}
     <tr>
         <td colspan="{{ count($headerCotizaciones) }}">
-            Identificador
+            <?php $empresas_ids = $presupuestos_ids = []; ?>
+            @if($totales>0 && count($contratoProyectados['valores'])>0):
+                @foreach($contratoProyectados['valores'] as $key => $contratoProyectado)
+                    @foreach($contratoProyectado['presupuesto'] as $key => $presupuesto)
+                        <?php
+                        $empresas_ids[] = $presupuesto->id_empresa;
+                        $presupuestos_ids[] = $presupuesto->id_transaccion;
+                        ?>
+
+                    @endforeach
+                @endforeach
+                <?php
+                $empresas_ids = implode(',', array_unique($empresas_ids));
+                $presupuestos_ids = implode(',', array_unique($presupuestos_ids));
+                ?>
+                {{ $mcrypt->encrypt($presupuestos_ids .'|'.$empresas_ids) }}
+            @endif
         </td>
             <?php $primerValor = array_values($contratoProyectados['valores'])[0]; ?>
                 @foreach($primerValor['presupuesto'] as $key => $presupuesto)
@@ -55,9 +72,12 @@
             <th style="background-color: #C8C8C8" class="border">{{ $_headerCotizaciones }}</th>
         @endforeach
         {{-- Información del Proveedor --}}
+        <?php $ocultar = ["cotizado_img", "id_moneda", "precio_total_mxp"]; ?>
         @for($i=0;$i<$totales;$i++)
             @foreach($headerPresupuestos as $_headerPresupuestos)
-                <th style="background-color: #C8C8C8" class="border">{{ $_headerPresupuestos }}</th>
+                <th style="{{ in_array($_headerPresupuestos, $ocultar) ? 'background-color: #fff; color: #fff' : 'background-color: #C8C8C8' }}" class="border">{{
+                $_headerPresupuestos
+                }}</th>
             @endforeach
         @endfor
     </tr>
@@ -76,7 +96,8 @@
         <tr>
             <!-- Información general de la partida -->
             <td style="background-color: #ffd966" class="laterales-left">{{ $index }}</td>
-            <td style="background-color: #ffd966">{{  $contratoProyectado['partida']->agrupados }}</td>
+            <td style="background-color: #ffd966" class="border">{{  $contratoProyectado['partida']->agrupados }}</td>
+            <td style="background-color: #ffd966" class="border">{{  $contratoProyectado['partida']->hijos }}</td>
             <td style="background-color: #ffd966"
                 class="border">{{ (!empty($contratoProyectado['partida']->clave) ?
                 $contratoProyectado['partida']->clave : '') }}</td>
@@ -138,16 +159,16 @@
             <td style="background-color: #9bc2e6" class="{{$ultimalinea}} "></td>
 
             {{--cotizado_img--}}
-            <td style="background-color: #9bc2e6" class="{{$ultimalinea}} "></td>
+            <td style="background-color: #fff; color: #fff" ></td>
 
             {{--id_moneda--}}
-            <td style="background-color: #9bc2e6" class="{{$ultimalinea}} "></td>
+            <td style="background-color: #fff; color: #fff"></td>
 
             {{--precio_total_mxp--}}
-            <td style="background-color: #9bc2e6" class="{{$ultimalinea}} "></td>
+            <td style="background-color: #fff; color: #fff"></td>
 
             {{--Separador--}}
-            <td></td>
+            <td style="background-color: #fff; color: #fff"></td>
 
         @endforeach
         </tr>

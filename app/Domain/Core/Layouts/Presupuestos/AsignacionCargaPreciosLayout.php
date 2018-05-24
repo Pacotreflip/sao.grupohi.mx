@@ -57,6 +57,7 @@ class AsignacionCargaPreciosLayout extends ValidacionLayout
     protected $headerFijos = [
         "#" => "#",
         "id" => "Id",
+        "hijos" => "hijos",
         "clave" => "clave",
         "descripcion_span" => "descripcion_span",
         "unidad" => "unidad",
@@ -218,7 +219,7 @@ class AsignacionCargaPreciosLayout extends ValidacionLayout
 
 
                         // Precio Unitario Moneda Conversión
-                        $sheet->setCellValue(\PHPExcel_Cell::stringFromColumnIndex($desde + 6) . $haciaAbajo, '=IF('. \PHPExcel_Cell::stringFromColumnIndex($desde + 5) . $haciaAbajo .'="EURO",'. \PHPExcel_Cell::stringFromColumnIndex($desde + 3) . $haciaAbajo .'*'. $this->tipo_cambio[3]['cambio'] .'/1, IF('. \PHPExcel_Cell::stringFromColumnIndex($desde + 5) . $haciaAbajo .'="DOLAR USD",'. \PHPExcel_Cell::stringFromColumnIndex($desde + 3). $haciaAbajo .'*'. $this->tipo_cambio[2]['cambio'] .'/1, IF('. \PHPExcel_Cell::stringFromColumnIndex($desde + 5) . $haciaAbajo .'="PESO MXP",'. \PHPExcel_Cell::stringFromColumnIndex($desde + 3) . $haciaAbajo .'/1, IF('. \PHPExcel_Cell::stringFromColumnIndex($desde + 5) . $haciaAbajo .'="",0))))');
+                        $sheet->setCellValue(\PHPExcel_Cell::stringFromColumnIndex($desde + 6) . $haciaAbajo, '=IF('. \PHPExcel_Cell::stringFromColumnIndex($desde + 5) . $haciaAbajo .'="EURO",'. \PHPExcel_Cell::stringFromColumnIndex($desde + 3) . $haciaAbajo .'*'. $this->tipo_cambio[3]['cambio'] .'/1, IF('. \PHPExcel_Cell::stringFromColumnIndex($desde + 5) . $haciaAbajo .'="DOLAR (USD)",'. \PHPExcel_Cell::stringFromColumnIndex($desde + 3) . $haciaAbajo .'*'. $this->tipo_cambio[3]['cambio'] .'/1, IF('. \PHPExcel_Cell::stringFromColumnIndex($desde + 5) . $haciaAbajo .'="PESO (MXP)",'. \PHPExcel_Cell::stringFromColumnIndex($desde + 3) . $haciaAbajo .'/1,IF('. \PHPExcel_Cell::stringFromColumnIndex($desde + 5) . $haciaAbajo .'="",0))))');
 
                         //id_moneda
                         $sheet->setCellValue(\PHPExcel_Cell::stringFromColumnIndex($desde + 10) . $haciaAbajo,'=IF('. \PHPExcel_Cell::stringFromColumnIndex($desde + 5) . $haciaAbajo .'="EURO",2, IF('. \PHPExcel_Cell::stringFromColumnIndex($desde + 5) . $haciaAbajo .'="DOLAR USD",1, IF('. \PHPExcel_Cell::stringFromColumnIndex($desde + 5) . $haciaAbajo .'="PESO MXP",3,0)))');
