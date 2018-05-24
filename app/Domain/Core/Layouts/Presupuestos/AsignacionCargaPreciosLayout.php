@@ -69,19 +69,19 @@ class AsignacionCargaPreciosLayout extends ValidacionLayout
      * @var array
      */
     protected $headerDinamicos = [
-        "Precio Unitario Antes Descto" => "Precio Unitario Antes Descto",
-        "Precio Total Antes Descto" => "Precio Total Antes Descto",
-        "% Descuento" => "% Descuento",
-        "Precio Unitario" => "Precio Unitario",
-        "Precio Total" => "Precio Total",
-        "Moneda" => "Moneda",
-        "Precio Unitario Moneda Conversión" => "Precio Unitario Moneda Conversión",
-        "Precio Total Moneda Conversión" => "Precio Total Moneda Conversión",
-        "Observaciones" => "Observaciones",
-        "cotizado_img",
-        "id_moneda",
-        "precio_total_mxp",
-        "", // Separador
+        "precio_unitario_antes_descto" => "Precio Unitario Antes Descto",
+        "precio_total_antes_descto" => "Precio Total Antes Descto",
+        "descuento" => "% Descuento",
+        "precio_unitario" => "Precio Unitario",
+        "precio_total" => "Precio Total",
+        "moneda" => "Moneda",
+        "precio_unitario_moneda_conversion" => "Precio Unitario Moneda Conversión",
+        "precio_total_moneda_conversion" => "Precio Total Moneda Conversión",
+        "observaciones" => "Observaciones",
+        "cotizado_img" => "cotizado_img",
+        "id_moneda" => "id_moneda",
+        "precio_total_mxp" => "precio_total_mxp",
+        "" => "",
     ];
     private $tipo_cambio;
 
@@ -219,7 +219,7 @@ class AsignacionCargaPreciosLayout extends ValidacionLayout
 
 
                         // Precio Unitario Moneda Conversión
-                        $sheet->setCellValue(\PHPExcel_Cell::stringFromColumnIndex($desde + 6) . $haciaAbajo, '=IF('. \PHPExcel_Cell::stringFromColumnIndex($desde + 5) . $haciaAbajo .'="EURO",'. \PHPExcel_Cell::stringFromColumnIndex($desde + 3) . $haciaAbajo .'*'. $this->tipo_cambio[3]['cambio'] .'/1, IF('. \PHPExcel_Cell::stringFromColumnIndex($desde + 5) . $haciaAbajo .'="DOLAR (USD)",'. \PHPExcel_Cell::stringFromColumnIndex($desde + 3) . $haciaAbajo .'*'. $this->tipo_cambio[3]['cambio'] .'/1, IF('. \PHPExcel_Cell::stringFromColumnIndex($desde + 5) . $haciaAbajo .'="PESO (MXP)",'. \PHPExcel_Cell::stringFromColumnIndex($desde + 3) . $haciaAbajo .'/1,IF('. \PHPExcel_Cell::stringFromColumnIndex($desde + 5) . $haciaAbajo .'="",0))))');
+                        $sheet->setCellValue(\PHPExcel_Cell::stringFromColumnIndex($desde + 6) . $haciaAbajo, '=IF('. \PHPExcel_Cell::stringFromColumnIndex($desde + 5) . $haciaAbajo .'="EURO",'. \PHPExcel_Cell::stringFromColumnIndex($desde + 3) . $haciaAbajo .'*'. $this->tipo_cambio[3]['cambio'] .'/1, IF('. \PHPExcel_Cell::stringFromColumnIndex($desde + 5) . $haciaAbajo .'="DOLAR (USD)",'. \PHPExcel_Cell::stringFromColumnIndex($desde + 3) . $haciaAbajo .'*'. $this->tipo_cambio[3]['cambio'] .'/1, IF('. \PHPExcel_Cell::stringFromColumnIndex($desde + 5) . $haciaAbajo .'="PESO (MXP)",'. \PHPExcel_Cell::stringFromColumnIndex($desde + 3) . $haciaAbajo .'/1, IF('. \PHPExcel_Cell::stringFromColumnIndex($desde + 5) . $haciaAbajo .'="",0))))');
 
                         //id_moneda
                         $sheet->setCellValue(\PHPExcel_Cell::stringFromColumnIndex($desde + 10) . $haciaAbajo,'=IF('. \PHPExcel_Cell::stringFromColumnIndex($desde + 5) . $haciaAbajo .'="EURO",2, IF('. \PHPExcel_Cell::stringFromColumnIndex($desde + 5) . $haciaAbajo .'="DOLAR USD",1, IF('. \PHPExcel_Cell::stringFromColumnIndex($desde + 5) . $haciaAbajo .'="PESO MXP",3,0)))');
