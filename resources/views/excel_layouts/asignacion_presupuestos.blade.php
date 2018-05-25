@@ -73,7 +73,7 @@
             <th style="background-color: #C8C8C8" class="border">{{ $_headerCotizaciones }}</th>
         @endforeach
         {{-- Información del Proveedor --}}
-        <?php $ocultar = ["separador", "id_moneda", "precio_total_mxp"]; ?>
+        <?php $ocultar = ["cotizado_img", "separador", "id_moneda", "precio_total_mxp"]; ?>
         @for($i=0;$i<$totales;$i++)
             @foreach($headerPresupuestos as $_headerPresupuestos)
                 <th style="{{ in_array($_headerPresupuestos, $ocultar) ? 'background-color: #fff; color: #fff' : 'background-color: #C8C8C8' }}" class="border">{{
@@ -164,6 +164,9 @@
 
             {{--precio_total_mxp--}}
             <td style="background-color: #fff; color: #fff"></td>
+
+            {{--cotizado_img--}}
+            <td style="background-color: #fff; color: #fff" >{{ $contratoProyectado['partida']->en_asig }}</td>
 
             {{--Separador--}}
             <td style="background-color: #fff; color: #fff"></td>
