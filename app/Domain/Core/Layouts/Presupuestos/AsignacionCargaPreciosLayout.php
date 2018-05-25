@@ -636,8 +636,8 @@ class AsignacionCargaPreciosLayout extends ValidacionLayout
                     throw new \Exception("Al menos una partida del presupuesto esta incluida en una asignación de proveedores y no pudo ser modificada, los datos del presupuesto y de las partidas que no estan relacionadas con una asignación fueron actualizadas correctamente.");
                 } else {
                     foreach ($contrato['presupuestos'] as &$arrayPresupuesto) {
-                        /*if(is_array($arrayPresupuesto['id_transaccion_contrato'])) {
-                            foreach($arrayPresupuesto['id_transaccion_contrato'] as $id_presupuesto) {*/
+                        /*if(is_array($arrayPresupuesto['id_concepto'])) {
+                            foreach($arrayPresupuesto['id_concepto'] as $id_concepto) {*/
                         $presupuesto = $cotizacionContrato->presupuestos()->where('id_concepto', $arrayPresupuesto['id_concepto'])->where('id_transaccion', $key);
                         $dataUpdatePresupuesto = [
                             "precio_unitario" => $arrayPresupuesto['precio_unitario'],
@@ -701,6 +701,5 @@ class AsignacionCargaPreciosLayout extends ValidacionLayout
         $this->id_contrato_proyectado = $id_contrato_proyectado;
         return $this;
     }
-
 
 }
