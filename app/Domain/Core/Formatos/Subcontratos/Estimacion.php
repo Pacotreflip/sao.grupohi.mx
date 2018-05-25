@@ -314,10 +314,18 @@ class Estimacion extends Rotation {
         $this->CellFitScale(($this->w - 2) * 0.15, 0.4, number_format($this->estimacion->monto_anticipo_aplicado, 2 ,'.', ','), 'B', 1, 'R');
         $this->Ln(0.1);
 
+        if(in_array(Context::getDatabaseName(),['SAO1814_TERMINAL_NAICM', 'SAO1814_DEV_TERMINAL_NAICM'])) {
+            $this->SetX(($this->w) * 0.45);
+            $this->SetFont('Arial', '', 8);
+            $this->Cell(($this->w - 2) * 0.30, 0.4, 'Total Deductivas :', 0, 0, 'R');
+            $this->CellFitScale(($this->w - 2) * 0.25, 0.4, number_format($this->estimacion->descuentos->sum('importe'), 2, '.', ','), 'B', 1, 'R');
+            $this->Ln(0.1);
+        }
+
         $this->SetX(($this->w) * 0.45);
         $this->SetFont('Arial', '', 8);
         $this->Cell(($this->w - 2) * 0.30, 0.4, 'Subtotal :', 0, 0, 'R');
-        $this->CellFitScale(($this->w - 2) * 0.25, 0.4, number_format($this->estimacion->suma_importes - $this->estimacion->monto_anticipo_aplicado, 2, '.', ','), 'B', 1, 'R');
+        $this->CellFitScale(($this->w - 2) * 0.25, 0.4, number_format($this->estimacion->subtotal, 2, '.', ','), 'B', 1, 'R');
         $this->Ln(0.1);
 
         $this->SetX(($this->w) * 0.45);
@@ -351,11 +359,14 @@ class Estimacion extends Rotation {
         $this->CellFitScale(($this->w - 2) * 0.25, 0.4, '', 'B', 1, 'C');
         $this->Ln(0.1);
 
-        $this->SetX(($this->w) * 0.45);
-        $this->SetFont('Arial', '', 8);
-        $this->Cell(($this->w - 2) * 0.30, 0.4, 'Total Deductivas :', 0, 0, 'R');
-        $this->CellFitScale(($this->w - 2) * 0.25, 0.4, number_format($this->estimacion->descuentos->sum('importe'), 2, '.', ','), 'B', 1, 'R');
-        $this->Ln(0.1);
+        if(!in_array(Context::getDatabaseName(),['SAO1814_TERMINAL_NAICM', 'SAO1814_DEV_TERMINAL_NAICM'])) {
+            $this->SetX(($this->w) * 0.45);
+            $this->SetFont('Arial', '', 8);
+            $this->Cell(($this->w - 2) * 0.30, 0.4, 'Total Deductivas :', 0, 0, 'R');
+            $this->CellFitScale(($this->w - 2) * 0.25, 0.4, number_format($this->estimacion->descuentos->sum('importe'), 2, '.', ','), 'B', 1, 'R');
+            $this->Ln(0.1);
+        }
+
 
         $this->SetX(($this->w) * 0.45);
         $this->SetFont('Arial', '', 8);
