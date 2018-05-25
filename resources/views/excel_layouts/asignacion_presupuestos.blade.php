@@ -56,7 +56,8 @@
                 $empresas_ids = implode(',', array_unique($empresas_ids));
                 $presupuestos_ids = implode(',', array_unique($presupuestos_ids));
                 ?>
-                {{ $mcrypt->encrypt($presupuestos_ids .'|'.$empresas_ids) }}
+                {{ $mcrypt->encrypt($presupuestos_ids .'|'.$empresas_ids .'|'. $info['agrupadores'] .'|'.
+                $info['solo_pendientes']) }}
             @endif
         </td>
             <?php $primerValor = array_values($contratoProyectados['valores'])[0]; ?>
@@ -72,7 +73,7 @@
             <th style="background-color: #C8C8C8" class="border">{{ $_headerCotizaciones }}</th>
         @endforeach
         {{-- Información del Proveedor --}}
-        <?php $ocultar = ["cotizado_img", "id_moneda", "precio_total_mxp"]; ?>
+        <?php $ocultar = ["separador", "id_moneda", "precio_total_mxp"]; ?>
         @for($i=0;$i<$totales;$i++)
             @foreach($headerPresupuestos as $_headerPresupuestos)
                 <th style="{{ in_array($_headerPresupuestos, $ocultar) ? 'background-color: #fff; color: #fff' : 'background-color: #C8C8C8' }}" class="border">{{
@@ -157,9 +158,6 @@
 
             {{--Observaciones--}}
             <td style="background-color: #9bc2e6" class="{{$ultimalinea}} "></td>
-
-            {{--cotizado_img--}}
-            <td style="background-color: #fff; color: #fff" ></td>
 
             {{--id_moneda--}}
             <td style="background-color: #fff; color: #fff"></td>
