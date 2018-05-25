@@ -146,7 +146,7 @@ class LayoutsController extends BaseController
             'solo_pendientes' => $request->solo_pendientes
         ];
 
-        $layout = (new AsignacionCargaPreciosLayout($this->contratoProyectadoRepository, $info))->getFile();
+        $layout = (new AsignacionCargaPreciosLayout($this->contratoProyectadoRepository))->getFile();
         $contrato = $this->contratoProyectadoRepository->find($info['id_contrato_proyectado']);
 
         try {
