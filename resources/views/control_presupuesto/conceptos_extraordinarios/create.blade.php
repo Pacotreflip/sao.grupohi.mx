@@ -13,6 +13,8 @@
             :catalogo="{{ json_encode($catalogo) }}"
             inline-template v-cloak xmlns="http://www.w3.org/1999/html">
         <section>
+
+            <!-- Seccion de opciones de extraordinario -->
             <div class="row">
                 <div class="col-md-12">
                     <div class="box box-solid">
@@ -23,27 +25,27 @@
                             <div class="row">
                                 <div class="col-md-6">
                                     <label for="origen_extraordinario"><b>Origen del Extraordinario</b></label>
-                                    <select class="form-control input-sm" v-model="form.id_origen_extraordinario"  :disabled="!tipos_extraordinarios.length" v-on:change="validacion_opciones(1)">
+                                    <select class="form-control input-sm" v-model="form.id_origen_extraordinario"  :disabled="!tipos_extraordinarios.length || mostrar_tabla" v-on:change="id_opcion = '' ">
                                         <option value>[--SELECCIONE--]</option>
                                         <option v-for="tipo_extraordinario in tipos_extraordinarios" :value="tipo_extraordinario.id">@{{ tipo_extraordinario.descripcion }}</option>
                                     </select>
                                 </div>
-                                <div class="col-md-6" v-if="form.id_origen_extraordinario==1 "  >
+                                <div class="col-md-6" v-if="form.id_origen_extraordinario==1 " >
                                     <label><b>Número de Tarjeta</b></label>
-                                    <select2 id="tarjetas_select"  v-model="id_opcion" v-on:change="validacion_opciones(2)"
+                                    <select2 id="tarjetas_select"  v-model="id_opcion" :disabled="mostrar_tabla"
                                              :options="tarjetas">
                                     </select2>
                                 </div>
                                 <div class="col-md-6" v-if="form.id_origen_extraordinario==2">
                                     <label for="catalogo_extraordinario"><b>Catalogo Extraordinarios</b></label>
-                                    <select class="form-control input-sm" v-model="id_opcion"  :disabled="!tipos_extraordinarios.length" v-on:change="validacion_opciones(2)" >
+                                    <select class="form-control input-sm" v-model="id_opcion"  :disabled="!tipos_extraordinarios.length || mostrar_tabla">
                                         <option value>[--SELECCIONE--]</option>
                                         <option v-for="cat in catalogo" :value="cat.id">@{{ cat.descripcion }}</option>
                                     </select>
                                 </div>
-                                <div class="col-md-6" v-if="form.id_origen_extraordinario==3">
+                                <div class="col-md-6" v-if="form.id_origen_extraordinario==3" >
                                     <label for="origen_catalogo"><b>Tipo de Costo</b></label>
-                                    <select class="form-control input-sm" v-model="id_opcion" v-on:change="validacion_opciones(2)">
+                                    <select class="form-control input-sm" v-model="id_opcion" :disabled="mostrar_tabla">
                                         <option value>[--SELECCIONE--]</option>
                                         <option v-for="tipo_costo in tipos_costos" :value="tipo_costo.id">@{{ tipo_costo.descripcion }}</option>
                                     </select>
@@ -54,11 +56,11 @@
                         <div class="box-footer">
                             <div class="row">
                                 <div class="col-md-offset-11">
-                                    <button type="button" class="btn btn-success" v-on:click="getExtraordinario()" :disabled="id_opcion == '' ">
+                                    <button type="button" class="btn btn-success" v-on:click="getExtraordinario()" v-show="!mostrar_tabla">
                                         <span v-if="cargando"><i class="fa fa-spinner fa-spin"></i> </span>
                                         <span v-else><i class="fa fa-check"></i> Crear </span>
                                     </button>
-                                    <button type="button" class="btn btn-default">Cerrar</button>
+                                    <button type="button" class="btn btn-default" v-on:click="validacion_opciones(1)" v-show="mostrar_tabla">Cerrar</button>
                                 </div>
                             </div>
                         </div>
@@ -66,6 +68,7 @@
                 </div>
             </div>
 
+            <!-- Seccion de presentacion del extraordinario con insumos y sus agrupadores costo directo e indirecto-->
             <div class="row" >
                 <div class="col-md-12">
                     <div class="box box-solid" v-if="mostrar_tabla">
@@ -126,8 +129,8 @@
                                     <div class="col-md-4">
                                         <button type="button"
                                                 class="btn btn-default"
-                                                id="materiales"> +
-                                            Gastos
+                                                id="materiales"
+                                                v-on:click="addInsumoTipo(5)" > +Gastos
                                         </button>
                                     </div>
                                     <div class="col-md-12">
@@ -450,6 +453,51 @@
                     </div>
                 </div>
             </div>
+
+            <!-- Modal para agregar un insumo por agrupador-->
+
+            <div id="add_insumo_modal" class="modal fade" aria-labelledby="addInsumosModal">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal"><span
+                                        aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+                            <h4 class="modal-title">Agregar Insumos</h4>
+
+                            <div class="box-tools pull-right">
+                                <a v-on:click="$emit('abrirModalMateriales',tipo_insumo)"
+                                   class="btn btn-success btn-app" style="float:right">
+                                    <i class="glyphicon glyphicon-plus-sign"></i>Nuevo
+                                </a>
+                            </div>
+                        </div>
+
+                        <form id="form_save_solicitud"
+                              @submit.prevent="validateForm('form_save_solicitud', 'save_solicitud')"
+                              data-vv-scope="form_save_solicitud">
+                            <div class="modal-body small">
+                                <select class="form-control" :name="'Item'" data-placeholder="BUSCAR INSUMO"
+                                        id="sel_material"
+                                        v-model="id_material_seleccionado"></select>
+
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">
+                                    Cancelar
+                                </button>
+                                <button type="button" class="btn btn-primary"> <!--:disabled="guardar" v-on:click="agregar_insumo_nuevo()"-->
+                                    <i class="fa  fa-plus"></i> Agregar
+
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Agregar material nuevo al catálogo -->
+            <material-index></material-index>
+
         </section>
     </concepto-extraordinario-create>
 

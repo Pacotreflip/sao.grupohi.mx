@@ -13,7 +13,13 @@ Vue.component('concepto-extraordinario-create', {
             ],
             id_opcion:'',
             cargando:false,
-            mostrar_tabla:false
+            mostrar_tabla:false,
+
+            agrupador:'',
+            tipo_insumo:'',
+            guardar: false,
+            id_material_seleccionado:'',
+            material_seleccionado:[]
         }
     },
 
@@ -115,13 +121,200 @@ Vue.component('concepto-extraordinario-create', {
                 }).then(function(result) {
                     if(result.value){
                         self.id_opcion = '';
+                        self.form.id_origen_extraordinario='';
                         self.mostrar_tabla = false;
                     }
-
                 });
-            }else if(tipo == 1) {
-                self.id_opcion = '';
             }
+        },
+
+        addInsumoTipo: function (tipo) {
+            var self = this;
+
+            self.agrupador = tipo;
+
+            if(tipo==5||tipo==6){
+                tipo=2;
+            }
+            self.tipo_insumo=tipo;
+
+            self.guardar = true;
+            $('#sel_material').select2({
+                width: '100%',
+                ajax: {
+                    url: App.host + '/control_presupuesto/cambio_presupuesto/getDescripcionByTipo',
+                    dataType: 'json',
+                    delay: 500,
+                    data: function (params) {
+                        return {
+                            descripcion:  params.term,
+                            tipo:tipo
+                        };
+                    },
+                    processResults: function (data) {
+                        return {
+                            results: $.map(data.data.materiales, function (item) {
+
+                                return {
+                                    text: item.DescripcionPadre+" -> ["+item.numero_parte+"] "+item.descripcion,
+                                    descripcion: item.descripcion,
+                                    id_material: item.id_material,
+                                    unidad:item.unidad,
+                                    cantidad_presupuestada:0,
+                                    variacion_cantidad_presupuestada:0,
+                                    cantidad_presupuestada_nueva:0,
+                                    variacion_precio_unitario:0,
+                                    precio_unitario:0,
+                                    id:item.id_material,
+                                    nuevo:true,
+                                    rendimiento_actual:0
+                                }
+                            })
+                        };
+                    },
+                    error: function (error) {
+                    },
+                    cache: true
+                },
+                escapeMarkup: function (markup) {
+                    return markup;
+                }, // let our custom formatter work
+                minimumInputLength: 1
+            }).on('select2:select', function (e) {
+                var data = e.params.data;
+                self.guardar = false;
+                data.id_elemento=data.id_material;
+                self.material_seleccionado=data;
+            });
+            $('#add_insumo_modal').modal('show');
+        },
+
+        agregar_insumo_nuevo: function () {
+            var self = this;
+            $.each(self.form.partidas, function( index, partida ) {
+                switch (self.agrupador){
+                    case 1: ///agregar a materiales
+                        if(!self.validarInsumo(self.material_seleccionado.id_material, self.agrupador)){
+                            partida.conceptos.MATERIALES.insumos.push(self.material_seleccionado);
+                        }else{
+                            swal({
+                                type: 'warning',
+                                title: 'Advertencia',
+                                text: 'Ya Existe el Insumo Seleccionado'
+                            });
+                        }
+                        break;
+                    case 2://// agergar a mano obra
+                        if(!self.validarInsumo(self.material_seleccionado.id_material, self.agrupador)){
+                            partida.conceptos.MANOOBRA.insumos.push(self.material_seleccionado);
+                        }else{
+                            swal({
+                                type: 'warning',
+                                title: 'Advertencia',
+                                text: 'Ya Existe el Insumo Seleccionado'
+                            });
+                        }
+                        break;
+                    case 4: ////agregar a herram y equipo
+                        if(!self.validarInsumo(self.material_seleccionado.id_material, self.agrupador)){
+                            partida.conceptos.HERRAMIENTAYEQUIPO.insumos.push(self.material_seleccionado);
+                        }else{
+                            swal({
+                                type: 'warning',
+                                title: 'Advertencia',
+                                text: 'Ya Existe el Insumo Seleccionado'
+                            });
+                        }
+                        break;
+                    case 8: ///agregar a maquinaria
+                        if(!self.validarInsumo(self.material_seleccionado.id_material, self.agrupador)){
+                            partida.conceptos.MAQUINARIA.insumos.push(self.material_seleccionado);
+                        }else{
+                            swal({
+                                type: 'warning',
+                                title: 'Advertencia',
+                                text: 'Ya Existe el Insumo Seleccionado'
+                            });
+                        }
+                        break;
+                    case 5: ///agregar a maquinaria
+                        if(!self.validarInsumo(self.material_seleccionado.id_material, self.agrupador)){
+                            partida.conceptos.SUBCONTRATOS.insumos.push(self.material_seleccionado);
+                        }else{
+                            swal({
+                                type: 'warning',
+                                title: 'Advertencia',
+                                text: 'Ya Existe el Insumo Seleccionado'
+                            });
+                        }
+                        break;
+                    case 6: ///agregar a maquinaria
+                        if(!self.validarInsumo(self.material_seleccionado.id_material, self.agrupador)){
+                            partida.conceptos.GASTOS.insumos.push(self.material_seleccionado);
+                        }else{
+                            swal({
+                                type: 'warning',
+                                title: 'Advertencia',
+                                text: 'Ya Existe el Insumo Seleccionado'
+                            });
+                        }
+                        break;
+
+                }
+            });
+
+            $('#add_insumo_modal').modal('hide');
+        },
+
+        validarInsumo: function (id_material, agrupador) {
+            var self = this;
+            var validador = false;
+            switch (agrupador){
+                case 1: ///validar materiales
+                    $.each(self.form.partidas[0].conceptos.MATERIALES.insumos, function (index, insumo) {
+                        if(insumo.id_material == id_material){
+                            validador =  true;
+                        }
+                    });
+                    break;
+                case 2://// agergar a mano obra
+                    $.each(self.form.partidas[0].conceptos.MANOOBRA.insumos, function (index, insumo) {
+                        if(insumo.id_material == id_material){
+                            validador =  true;
+                        }
+                    });
+                    break;
+                case 4: ////agregar a herram y equipo
+                    $.each(self.form.partidas[0].conceptos.HERRAMIENTAYEQUIPO.insumos, function (index, insumo) {
+                        if(insumo.id_material == id_material){
+                            validador =  true;
+                        }
+                    });
+                    break;
+                case 8: ///agregar a maquinaria
+                    $.each(self.form.partidas[0].conceptos.MAQUINARIA.insumos, function (index, insumo) {
+                        if(insumo.id_material == id_material){
+                            validador =  true;
+                        }
+                    });
+                    break;
+                case 5: ///agregar a maquinaria
+                    $.each(self.form.partidas[0].conceptos.SUBCONTRATOS.insumos, function (index, insumo) {
+                        if(insumo.id_material == id_material){
+                            validador =  true;
+                        }
+                    });
+                    break;
+                case 6: ///agregar a maquinaria
+                    $.each(self.form.partidas[0].conceptos.GASTOS.insumos, function (index, insumo) {
+                        if(insumo.id_material == id_material){
+                            validador =  true;
+                        }
+                    });
+                    break;
+
+            }
+            return validador;
         }
 
     }
