@@ -63,7 +63,7 @@ class LayoutsController extends BaseController
         try {
             return $this->response->array([
                 'file' => "data:application/vnd.ms-excel;base64," . base64_encode($layout->string()),
-                'name' => '# ' . str_pad($requisicion->numero_folio, 5, '0', STR_PAD_LEFT).'-AsignacionProveedores'
+                'name' => '# ' . str_pad($requisicion->numero_folio, 5, '0', STR_PAD_LEFT) . '-AsignacionProveedores'
             ]);
         } catch (\ErrorException $e) {
         }
@@ -80,7 +80,7 @@ class LayoutsController extends BaseController
             'file' => 'required|file|mimes:xls,xlsx',
         );
 
-        $validator =  app('validator')->make($request->all(), $rules);
+        $validator = app('validator')->make($request->all(), $rules);
         if (count($validator->errors()->all())) {
             throw new StoreResourceFailedException('No es posible cargar el Layout', $validator->errors());
         }
@@ -103,7 +103,7 @@ class LayoutsController extends BaseController
         try {
             return $this->response->array([
                 'file' => "data:application/vnd.ms-excel;base64," . base64_encode($layout->string()),
-                'name' => '# ' . str_pad($contrato_proyectado->numero_folio, 5, '0', STR_PAD_LEFT).'-AsignacionContratistas'
+                'name' => '# ' . str_pad($contrato_proyectado->numero_folio, 5, '0', STR_PAD_LEFT) . '-AsignacionContratistas'
             ]);
         } catch (\ErrorException $e) {
         }
@@ -120,7 +120,7 @@ class LayoutsController extends BaseController
             'file' => 'required|file|mimes:xls,xlsx',
         );
 
-        $validator =  app('validator')->make($request->all(), $rules);
+        $validator = app('validator')->make($request->all(), $rules);
         if (count($validator->errors()->all())) {
             throw new StoreResourceFailedException('No es posible cargar el Layout', $validator->errors());
         }
@@ -152,7 +152,7 @@ class LayoutsController extends BaseController
         try {
             return $this->response->array([
                 'file' => "data:application/vnd.ms-excel;base64," . base64_encode($layout->string()),
-                'name' => '# ' . str_pad($contrato->numero_folio, 5, '0', STR_PAD_LEFT).'-AsignacionPresupuesto'
+                'name' => '# ' . str_pad($contrato->numero_folio, 5, '0', STR_PAD_LEFT) . '-AsignacionPresupuesto'
             ]);
         } catch (\ErrorException $e) {
             dd($e->getMessage());
@@ -170,12 +170,18 @@ class LayoutsController extends BaseController
             'file' => 'required',
         );
 
-        $validator =  app('validator')->make($request->all(), $rules);
+        $validator = app('validator')->make($request->all(), $rules);
         if (count($validator->errors()->all())) {
             throw new StoreResourceFailedException('No es posible cargar el Layout', $validator->errors());
         }
+        $info = [
+            'id_contrato_proyectado' => $id_contrato_proyectado,
+            'presupuesto_ids' => json_decode($request->ids, true),
+            'agrupadores' => $request->agrupadores,
+            'solo_pendientes' => $request->solo_pendientes
+        ];
 
-        $layout = (new AsignacionCargaPreciosLayout($this->contratoProyectadoRepository,[]))
+        $layout = (new AsignacionCargaPreciosLayout($this->contratoProyectadoRepository, $info))
             ->setIdContratoProyectado($id_contrato_proyectado)
             ->qetDataFile($request);
 
