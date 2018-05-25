@@ -100,7 +100,7 @@ class Estimacion extends Transaccion
             $this->monto
 
             - ($this->subcontratoEstimacion ? $this->subcontratoEstimacion->ImporteFondoGarantia : 0)
-            - $this->descuentos->sum('importe')
+            - (!in_array(Context::getDatabaseName(),['SAO1814_TERMINAL_NAICM', 'SAO1814_DEV_TERMINAL_NAICM']) ? $this->descuentos->sum('importe') : 0)
             - $this->retenciones->sum('importe')
             - $this->IVARetenido
             + $this->liberaciones->sum('importe')
@@ -145,5 +145,19 @@ class Estimacion extends Transaccion
         } else {
             return 0;
         }
+    }
+
+    public function getSubtotalAttribute() {
+        return in_array(Context::getDatabaseName(),['SAO1814_TERMINAL_NAICM', 'SAO1814_DEV_TERMINAL_NAICM']) ?
+            $this->suma_importes - $this->monto_anticipo_aplicado - $this->descuentos->sum('importe')
+            : $this->suma_importes - $this->monto_anticipo_aplicado;
+    }
+
+    public function getImpuestoAttribute() {
+        return $this->subtotal * 0.16;
+    }
+
+    public function getMontoAttribute() {
+        return $this->subtotal + $this->impuesto;
     }
 }
