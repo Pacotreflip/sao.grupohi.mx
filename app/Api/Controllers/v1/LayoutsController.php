@@ -15,7 +15,7 @@ use Dingo\Api\Routing\Helpers;
 use Dotenv\Validator;
 use Ghi\Domain\Core\Contracts\Compras\RequisicionRepository;
 use Ghi\Domain\Core\Contracts\ContratoProyectadoRepository;
-use Ghi\Domain\Core\Layouts\Compras\Asignacion;
+use Ghi\Domain\Core\Layouts\Compras\AsignacionCargaProveedoresLayout;
 use Ghi\Domain\Core\Layouts\Compras\AsignacionProveedoresLayout;
 use Ghi\Domain\Core\Layouts\Contratos\AsignacionSubcontratistasLayout;
 use Ghi\Domain\Core\Layouts\Presupuestos\AsignacionCargaPreciosLayout;
@@ -136,6 +136,52 @@ class LayoutsController extends BaseController
     }
 
     public function carga_precios_asignacion_store(Request $request, $id_contrato_proyectado)
+    {
+        $rules = array(
+            'file' => 'required',
+        );
+
+        $validator =  app('validator')->make($request->all(), $rules);
+        if (count($validator->errors()->all())) {
+            throw new StoreResourceFailedException('No es posible cargar el Layout', $validator->errors());
+        }
+
+        $contrato_proyectado = $this->contratoProyectadoRepository->find($id_contrato_proyectado);
+        $layout = (new AsignacionCargaPreciosLayout($contrato_proyectado))->qetDataFile($request);
+
+        return $this->response->array($layout);
+    }
+
+    /**
+     * @param Request $request
+     * @param $id_requisicion
+     * @return mixed
+     */
+    public function carga_precios_compras_asignacion(Request $request, $id_requisicion)
+    {
+        // Obten la información de la requisción
+        $req = $this->requisicionRepository->getRequisicion($id_requisicion);
+
+        $info = [
+            'id_requisicion' => $id_requisicion,
+            'cot_ids' => json_decode($request->cot_ids, true),
+            'agrupadores' => $request->agrupadores,
+            'solo_pendientes' => $request->solo_pendientes
+        ];
+
+        $layout = (new AsignacionCargaProveedoresLayout($this->requisicionRepository, $info))->getFile();
+
+        try {
+            return $this->response->array([
+                'file' => "data:application/vnd.ms-excel;base64," . base64_encode($layout->string()),
+                'name' => '# ' . str_pad($req->folio_sao, 5, '0', STR_PAD_LEFT).'-AsignacionCotizacion'
+            ]);
+        } catch (\ErrorException $e) {
+            dd($e->getMessage());
+        }
+    }
+
+    public function carga_precios_compras_asignacion_store(Request $request, $id_requiscion)
     {
         $rules = array(
             'file' => 'required',

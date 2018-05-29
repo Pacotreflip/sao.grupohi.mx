@@ -86,8 +86,11 @@ $api->version('v1', function ($api) {
         /*
          * Layouts Routes
          */
-        $api->get('layouts/compras/requisicion/{id_requiscion}/asignacion', 'Ghi\Api\Controllers\v1\LayoutsController@compras_asignacion');
-        $api->post('layouts/compras/requisicion/{id_requiscion}/asignacion', 'Ghi\Api\Controllers\v1\LayoutsController@compras_asignacion_store');
+        $api->get('layouts/compras/requisicion/{id_requisicion}/asignacion', 'Ghi\Api\Controllers\v1\LayoutsController@compras_asignacion');
+        $api->post('layouts/compras/requisicion/{id_requisicion}/asignacion', 'Ghi\Api\Controllers\v1\LayoutsController@compras_asignacion_store');
+
+        $api->get('layouts/compras/carga_precios/{id_requisicion}/asignacion', 'Ghi\Api\Controllers\v1\LayoutsController@carga_precios_compras_asignacion');
+        $api->post('layouts/compras/carga_precios/{id_requisicion}/asignacion', 'Ghi\Api\Controllers\v1\LayoutsController@carga_precios_compras_asignacion_store');
 
         $api->get('layouts/contratos/contrato_proyectado/{id_contrato_proyectado}/asignacion', 'Ghi\Api\Controllers\v1\LayoutsController@contratos_asignacion');
         $api->post('layouts/contratos/contrato_proyectado/{id_contrato_proyectado}/asignacion', 'Ghi\Api\Controllers\v1\LayoutsController@contratos_asignacion_store');

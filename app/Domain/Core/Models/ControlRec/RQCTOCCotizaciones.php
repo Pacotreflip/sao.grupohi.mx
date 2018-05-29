@@ -29,6 +29,15 @@ class RQCTOCCotizaciones extends Model
         return $this->hasMany(RQCTOCCotizacionesPartidas::class, 'idrqctoc_cotizaciones', 'idrqctoc_cotizaciones');
     }
 
+    public function rqctocSolicitud() {
+        return $this->belongsTo(RQCTOCSolicitud::class, 'idrqctoc_solicitudes', 'idrqctoc_solicitudes');
+    }
+
+    public function proveedores()
+    {
+        return $this->belongsTo(Proveedores::class, 'idproveedor', 'IdProveedor');
+    }
+
     public function getCandidataAttribute()
     {
         $res = false;

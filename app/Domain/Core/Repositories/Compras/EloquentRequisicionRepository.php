@@ -7,6 +7,10 @@ use Ghi\Domain\Core\Models\Compras\Requisiciones\DepartamentoResponsable;
 use Ghi\Domain\Core\Models\Compras\Requisiciones\Requisicion;
 use Ghi\Domain\Core\Models\Compras\Requisiciones\TipoRequisicion;
 use Ghi\Domain\Core\Models\Compras\Requisiciones\TransaccionExt;
+use Ghi\Domain\Core\Models\ControlRec\RQCTOCCotizaciones;
+use Ghi\Domain\Core\Models\ControlRec\RQCTOCCotizacionesPartidas;
+use Ghi\Domain\Core\Models\ControlRec\RQCTOCSolicitudPartidas;
+use Ghi\Domain\Core\Models\ControlRec\RQCTOCSolicitud;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
@@ -153,5 +157,65 @@ class EloquentRequisicionRepository implements RequisicionRepository
                 $query->orWhere($col, 'like', "%$q%");
             }
         })->limit(10)->get();
+    }
+
+    public  function getCotizaciones($id_requisicion, $ids_cot = [])
+    {
+        return RQCTOCCotizaciones::whereIn('idrqctoc_cotizaciones', $ids_cot)
+            ->where('idrqctoc_solicitudes', $id_requisicion)
+            ->with(['rqctocSolicitud.rqctocSolicitudPartidas.item.transaccion', 'rqctocSolicitud.rqctocSolicitudPartidas.material', 'empresa', 'sucursal'])
+            ->get();
+    }
+
+    /**
+     * @param $id_requisicion
+     * @return mixed
+     */
+    public function getPartidasCotizacion($id_requisicion)
+    {
+        return RQCTOCSolicitudPartidas::where('idrqctoc_solicitudes', $id_requisicion)
+            ->with(['item.transaccion', 'material'])
+            ->groupBy('idmaterial_sao')->get();
+    }
+
+    /**
+     * @param int $id_requisicion
+     * @param array $ids_cot
+     */
+    public function   getPartidasCotizacionAgrupadas($id_requisicion)
+    {
+        return RQCTOCCotizacionesPartidas::select( DB::raw("
+            rqctoc_cotizaciones_partidas.idrqctoc_cotizaciones_partidas,
+            rqctoc_cotizaciones_partidas.idrqctoc_cotizaciones,
+            rqctoc_cotizaciones_partidas.idrqctoc_solicitudes_partidas,
+            rqctoc_cotizaciones_partidas.precio_unitario,
+            format(rqctoc_cotizaciones_partidas.precio_unitario,3) as precio_unitario_f,
+            rqctoc_cotizaciones_partidas.descuento,
+            rqctoc_cotizaciones_partidas.idmoneda,
+            rqctoc_cotizaciones_partidas.observaciones,
+            rqctoc_cotizaciones_partidas.cantidad_asignada,
+            rqctoc_cotizaciones.tc_usd,
+            rqctoc_cotizaciones.vigencia,
+            rqctoc_cotizaciones.tc_eur,
+            rqctoc_cotizaciones.idmoneda as idmoneda_cot,
+            sum(rqctoc_solicitudes_partidas.cantidad) as cantidad,
+            ctg_monedas.moneda as moneda,
+            ctg_monedas.corto as  moneda_corto,
+            (precio_unitario-(precio_unitario*rqctoc_cotizaciones_partidas.descuento/100)) as precio_unitario,
+            sum(rqctoc_solicitudes_partidas.cantidad)*(precio_unitario-(precio_unitario*rqctoc_cotizaciones_partidas.descuento/100)) as precio_total,
+            cantidad_asignada*(precio_unitario-(precio_unitario*rqctoc_cotizaciones_partidas.descuento/100)) as precio_total_asignado,
+            format(sum(rqctoc_solicitudes_partidas.cantidad)*(precio_unitario-(precio_unitario*rqctoc_cotizaciones_partidas.descuento/100)),2) as precio_total_f") )
+            ->from('rqctoc_cotizaciones_partidas as rqctoc_cotizaciones_partidas')
+            ->join('rqctoc_cotizaciones', 'rqctoc_cotizaciones_partidas.idrqctoc_cotizaciones', '=', 'rqctoc_cotizaciones.idrqctoc_cotizaciones')
+            ->join('rqctoc_solicitudes_partidas', 'rqctoc_solicitudes_partidas.idrqctoc_solicitudes_partidas', '=', 'rqctoc_cotizaciones_partidas.idrqctoc_solicitudes_partidas')
+            ->join('ctg_monedas', 'ctg_monedas.id', '=', 'rqctoc_cotizaciones_partidas.idmoneda')
+            ->where('rqctoc_cotizaciones.idrqctoc_solicitudes', $id_requisicion)
+            ->groupBy('rqctoc_solicitudes_partidas.idmaterial_sao', 'rqctoc_cotizaciones.idrqctoc_cotizaciones')
+            ->get();
+    }
+
+    public function getRequisicion($id_requisicion)
+    {
+        return RQCTOCSolicitud::where('idrqctoc_solicitudes', $id_requisicion)->first();
     }
 }

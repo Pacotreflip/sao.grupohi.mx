@@ -2,7 +2,9 @@
 
 namespace Ghi\Domain\Core\Models\ControlRec;
 
+use Ghi\Core\Models\Material;
 use Illuminate\Database\Eloquent\Model;
+use Ghi\Domain\Core\Models\Transacciones;
 
 class RQCTOCCotizacionesPartidas extends Model
 {
@@ -22,4 +24,15 @@ class RQCTOCCotizacionesPartidas extends Model
     public function ctgMoneda() {
         return $this->belongsTo(CTGMoneda::class, 'idmoneda');
     }
+
+    public function item()
+    {
+        return $this->hasOne(Transacciones\Item::class, 'id_item', 'iditem_sao');
+    }
+
+    public function material()
+    {
+        return $this->hasOne(Material::class, 'id_material', 'idmaterial_sao');
+    }
+
 }
