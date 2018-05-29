@@ -82,6 +82,19 @@ $api->version('v1', function ($api) {
          */
         $api->post('sistema_contable/poliza_tipo/paginate', 'Ghi\Api\Controllers\v1\SistemaContable\PolizaTipoController@paginate');
         $api->delete('sistema_contable/poliza_tipo/{id}', 'Ghi\Api\Controllers\v1\SistemaContable\PolizaTipoController@delete')->where(['id' => '[0-9]+']);
+        /**
+         * Reposición Fondo Fijo
+         */
+        $api->post('finanzas/solicitud_cheque/repositorio_fondo_fijo', 'Ghi\Api\Controllers\v1\Finanzas\ReposicionFondoFijoController@store');
+
+        /**
+         * Fondos
+         */
+        $api->get('fondo/lists', 'Ghi\Api\Controllers\v1\FondoController@lists');
+        /**
+         * comprobante fondo fijo
+         */
+        $api->get('finanzas/comprobante_fondo_fijo/search', 'Ghi\Api\Controllers\v1\Finanzas\ComprobanteFondoFijoController@search');
     });
 });
 

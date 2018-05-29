@@ -43,6 +43,7 @@ class ComprobanteFondoFijo extends Transaccion
         static::creating(function ($model) {
             $model->tipo_transaccion = Tipo::COMPROBANTE_FONDO_FIJO;
             $model->opciones = 1;
+            $model->FechaHoraRegistro = Carbon::now()->toDateTimeString();
             $model->id_obra = Context::getId();
         });
     }
