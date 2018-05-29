@@ -5,21 +5,24 @@
     {!! Breadcrumbs::render('finanzas.comprobante_fondo_fijo.show', $comprobante_fondo_fijo) !!}
 @endsection
 @section('main-content')
-
     <div class="row">
         <div class="col-md-3">
-            <div class="box box-primary">
+            <div class="box box-solid">
                 <div class="box-header with-border">
-                    <h3 class="box-title">Información del Comprobante</h3>
+                    <h3 class="box-title">Información General</h3>
                 </div>
                 <!-- /.box-header -->
                 <div class="box-body">
+                    <strong>Número de Folio:</strong>
+                    <p>#&nbsp;{{$comprobante_fondo_fijo->numero_folio}}</p>
+                    <hr>
+
                     <strong>Fecha:</strong>
-                    <p class="text-muted">{{$comprobante_fondo_fijo->fecha}}</p>
+                    <p>{{$comprobante_fondo_fijo->fecha}}</p>
                     <hr>
 
                     <strong>Fondo Fijo</strong>
-                    <p class="text-muted">{{$comprobante_fondo_fijo->FondoFijo}}</p>
+                    <p>{{$comprobante_fondo_fijo->FondoFijo}}</p>
                     <hr>
 
                     <strong>Referencia</strong>
@@ -36,103 +39,92 @@
 
                     <strong>Concepto</strong>
                     <p>{{$comprobante_fondo_fijo->concepto}}</p>
-                    <hr>
                 </div>
                 <!-- /.box-body -->
             </div>
         </div>
-
-            <div class="col-md-9">
-                <div class="box box-success">
-                    <div class="box-header with-border">
-                        <h3 class="box-title">Items</h3>
+        <div class="col-md-9">
+            <div class="box box-solid">
+                <div class="box-header with-border">
+                    <h3 class="box-title">Partidas / Conceptos</h3>
+                </div>
+                <div class="box-body">
+                    <div class="table-responsive">
+                        <!-- Partidas -->
+                        <table class="table table-hover table-bordered table-striped">
+                            <thead>
+                            <tr>
+                                <th style="text-align: center">#</th>
+                                <th style="text-align: center">Partida / Concepto</th>
+                                <th style="text-align: center">Destino</th>
+                            @if($comprobante_fondo_fijo->naturaleza == 1)
+                                    <th style="text-align: center">Unidad</th>
+                                @endif
+                                <th style="text-align: center">Cantidad</th>
+                                @if($comprobante_fondo_fijo->naturaleza == 1)
+                                    <th style="text-align: center">Precio</th>
+                                @endif
+                                <th style="text-align: center">Monto</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            @foreach($items as $index => $item)
+                                <tr>
+                                    <td>{{ $index + 1 }}</td>
+                                    <td>{{ $item->id_material ? $item->material : $item->referencia }}</td>
+                                    <td>{{$item->destino}}</td>
+                                @if($comprobante_fondo_fijo->Naturaleza == 1)
+                                        <td>{{ $item->unidad ? $item->unidad : $item->material->unidad }}</td>
+                                    @endif
+                                    <td style="text-align: right">{{ $item->cantidad }}</td>
+                                    @if($comprobante_fondo_fijo->Naturaleza == 1)
+                                        <td style="text-align: right">{{ $item->precio_unitario }}</td>
+                                    @endif
+                                    <td style="text-align: right">$&nbsp;{{ $item->Monto }}</td>
+                                </tr>
+                            @endforeach
+                            </tbody>
+                        </table>
                     </div>
-                    <div class="box-body">
+
+                    <div class="table-responsive">
+                    <!-- Subtotales -->
+                        <table class="table table-hover table-bordered">
+                            <tr>
+                                <th style="text-align: right; width: 80%">Subtotal</th>
+                                <td style="text-align: right">$&nbsp;{{ number_format(($comprobante_fondo_fijo->Subtotal),'2','.',',') }}</td>
+                            </tr>
+                            <tr>
+                                <th style="text-align: right">IVA</th>
+                                <td style="text-align: right">$&nbsp;{{ number_format(($comprobante_fondo_fijo->impuesto),'2','.',',') }}</td>
+                            </tr>
+                            <tr>
+                                <th style="text-align: right">Total</th>
+                                <td style="text-align: right">$&nbsp;{{ number_format($comprobante_fondo_fijo->monto,'2','.',',') }}</td>
+                            </tr>
+                        </table>
+                    </div>
+
+                    <!-- Observaciones -->
+                    @if($comprobante_fondo_fijo->observaciones)
                         <div class="table-responsive">
-                            <table class="table table-bordered table-striped ">
-                                    <thead>
-                                    <tr>
-                                        <th class="bg-gray-light">#</th>
-                                        <th class="bg-gray-light">{{$comprobante_fondo_fijo->Naturaleza==1 ? 'Item' : 'Concepto'}}</th>
-                                       @if($comprobante_fondo_fijo->Naturaleza==1)<th class="bg-gray-light">Unidad</th>@endif
-                                        <th class="bg-gray-light">Cantidad</th>
-                                        @if($comprobante_fondo_fijo->Naturaleza==1) <th class="bg-gray-light">Precio</th>@endif
-                                        <th class="bg-gray-light">Monto</th>
-                                        <th class="bg-gray-light">Destino</th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    @foreach($items as $index=>$item)
-                                        <tr>
-                                            <td style="white-space: nowrap">{{$index+1}}</td>
-
-                                            <td style="word-wrap:break-word;text-align: left" class="form-group" >
-                                                @if($item->id_material)
-                                                    {{$item->material}}
-                                                @else
-                                                    {{$item->referencia}}
-                                                @endif
-                                            </td>
-                                            @if($comprobante_fondo_fijo->Naturaleza==1)
-                                                <td style="white-space: nowrap">
-                                                {{$item->unidad?$item->unidad:$item->material->unidad}}
-                                            </td>
-                                            @endif
-                                            <td class="form-group">
-                                                {{$item->cantidad}}
-                                            </td>
-                                            @if($comprobante_fondo_fijo->Naturaleza==1)
-                                            <td class="form-group">
-                                                {{$item->precio_unitario}}
-                                            </td>
-                                            @endif
-                                            <td style="white-space: nowrap" class="numerico">
-                                                $ {{$item->Monto}}
-                                            </td>
-                                            <td class="form-group">
-                                                {{$item->destino}}
-                                            </td>
-                                        </tr>
-                                    @endforeach
-                                    </tbody>
-                                </table>
-                                <table class="table table-bordered">
-                                    <thead>
-                                    <tr>
-                                        <td class="bg-gray-light" colspan="7" rowspan="3">
-                                            <strong>Observaciónes:</strong>
-                                            <br><label>{{$comprobante_fondo_fijo->observaciones}}</label>
-
-                                        </td>
-                                        <td class="bg-gray-light"><strong>Subtotal</strong></td>
-                                        <td class="bg-gray-light text-right" style="width: 200px"><strong>${{number_format(($comprobante_fondo_fijo->Subtotal),'2','.',',')}}</strong></td>
-                                    </tr>
-                                    <tr>
-
-                                        <td class="bg-gray-light">
-                                            <strong>IVA</strong>
-                                        </td>
-                                        <th class="bg-gray-light text-right"><strong> ${{number_format(($comprobante_fondo_fijo->impuesto),'2','.',',')}}
-                                                </strong></th>
-                                    </tr>
-                                    <tr>
-
-                                        <td class="bg-gray-light">
-                                            <strong>Total</strong>
-                                        </td>
-                                        <th class="bg-gray-light text-right">
-                                            <strong>${{number_format($comprobante_fondo_fijo->monto,'2','.',',')}}</strong></th>
-                                    </tr>
-
-                                    </thead>
-
-                                </table>
-
+                            <table width="100%" class="table table-striped table-bordered">
+                                <thead>
+                                <tr>
+                                    <th>Observaciones</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                    <td>{{ $comprobante_fondo_fijo->observaciones }}</td>
+                                </tr>
+                                </tbody>
+                            </table>
                         </div>
-                    </div>
+                    @endif
                 </div>
             </div>
-
+        </div>
     </div>
 @endsection
 

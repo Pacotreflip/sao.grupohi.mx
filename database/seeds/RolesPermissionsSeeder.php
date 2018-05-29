@@ -147,10 +147,15 @@ class RolesPermissionsSeeder extends Seeder
         $administracion_configuracion_obra = Permission::firstOrCreate(['name' => 'administracion_configuracion_obra', 'display_name' => 'Configuración de la estructura la obra', 'description' => 'Permisos para configuración de la estructura de obra']);
         $administracion_configuracion_presupuesto = Permission::firstOrCreate(['name' => 'administracion_configuracion_presupuesto', 'display_name' => 'Configuración de la estructura del presupuesto', 'description' => 'Permisos para configuración de la estructura del presupuesto']);
 
-        //Procuaracion
+        //Procuaracion Asignación de Proveedores
         $consultar_asignacion = Permission::firstOrCreate(['name' => 'consultar_asignacion', 'display_name' => 'Consultar Asignación', 'description' => 'Permisos para la asignación de la consulta de procuración de las asignaciones']);
         $resgistro_asignacion = Permission::firstOrCreate(['name' => 'registrar_asignacion', 'display_name' => 'Registrar una Asignación', 'description' => 'Permisos para el registro de una asignación de procuración']);
         $eliminar_asignacion = Permission::firstOrCreate(['name' => 'eliminar_asignacion', 'display_name' => 'Eliminar una Asignación', 'description' => 'Permisos para poder eliminar el registro de una asignación de procuración']);
+
+        //Finanzas Solicitud de Cheque
+        $consultar_solicitud_cheque = Permission::firstOrCreate(['name' => 'consultar_solicitud_cheque', 'display_name' => 'Consultar Solicitudes de Cheque', 'description' => 'Permiso para poder consultar los registros de solicitudes de cheque']);
+        $registrar_solicitud_cheque = Permission::firstOrCreate(['name' => 'registrar_solicitud_cheque', 'display_name' => 'Registrar Solicitudes de Cheque', 'description' => 'Permiso para poder registrar solicitudes de cheque']);
+        $eliminar_solicitud_cheque = Permission::firstOrCreate(['name' => 'eliminar_solicitud_cheque', 'display_name' => 'Eliminar Solicitudes de Cheque', 'description' => 'Permiso para poder eliminar los registros de solicitudes de cheque']);
 
         /**
          * Roles
@@ -374,6 +379,10 @@ class RolesPermissionsSeeder extends Seeder
                 $registrar_comprobante_fondo_fijo->id,
                 $consultar_comprobante_fondo_fijo->id,
                 $eliminar_comprobante_fondo_fijo->id,
+
+                $consultar_solicitud_cheque->id,
+                $registrar_solicitud_cheque->id,
+                $eliminar_solicitud_cheque->id,
             ]
         );
 
