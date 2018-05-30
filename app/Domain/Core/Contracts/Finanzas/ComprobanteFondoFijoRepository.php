@@ -74,4 +74,17 @@ interface ComprobanteFondoFijoRepository
      */
     public function getBy($attribute, $operator, $value, $with = null);
 
+    /**
+     * @param array $orWhere
+     *
+     * @return mixed
+     */
+    public function like(array $orWhere);
+
+    /**
+     * @param $limit
+     *
+     * @return mixed
+     */
+    public function limit($limit);
 }

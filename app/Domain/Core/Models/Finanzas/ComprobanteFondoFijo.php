@@ -12,9 +12,16 @@ use Ghi\Domain\Core\Models\Transacciones\Tipo;
 use Ghi\Domain\Core\Models\Transacciones\Transaccion;
 use Ghi\Core\Facades\Context;
 
+/**
+ * Class ComprobanteFondoFijo
+ * @package Ghi\Domain\Core\Models\Finanzas
+ */
 class ComprobanteFondoFijo extends Transaccion
 {
 
+    /**
+     * @var array
+     */
     protected $fillable = [
         "id_referente",
         "referencia",
@@ -43,15 +50,22 @@ class ComprobanteFondoFijo extends Transaccion
         static::creating(function ($model) {
             $model->tipo_transaccion = Tipo::COMPROBANTE_FONDO_FIJO;
             $model->opciones = 1;
+            $model->FechaHoraRegistro = Carbon::now()->toDateTimeString();
             $model->id_obra = Context::getId();
         });
     }
 
+    /**
+     * @return Item|\Illuminate\Database\Eloquent\Relations\HasMany
+     */
     public function items()
     {
         return $this->hasMany(Item::class, "id_transaccion", "id_transaccion");
     }
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
     public function fondoFijo()
     {
         return $this->belongsTo(Fondo::class, "id_referente", "id_fondo");
@@ -67,6 +81,9 @@ class ComprobanteFondoFijo extends Transaccion
         return $this->belongsTo(Concepto::class, 'id_concepto', 'id_concepto');
     }
 
+    /**
+     * @return int
+     */
     public function getSubtotalAttribute()
     {
         $suma = 0;
@@ -77,6 +94,9 @@ class ComprobanteFondoFijo extends Transaccion
         return $suma;
     }
 
+    /**
+     * @return int
+     */
     public function getNaturalezaAttribute()
     {
         $naturaleza = 0;
@@ -89,16 +109,29 @@ class ComprobanteFondoFijo extends Transaccion
         return $naturaleza;
     }
 
+    /**
+     * @return string
+     */
     public function getDescripcionNaturalezaAttribute()
     {
        return  $this->Naturaleza==1?'Materiales / Servicios':'Gastos Varios';
     }
 
+    /**
+     * @param $cumplimiento
+     *
+     * @return string
+     */
     public function getCumplimientoAttribute($cumplimiento)
     {
         return Carbon::parse($cumplimiento)->format('Y-m-d');
     }
 
+    /**
+     * @param $fecha
+     *
+     * @return string
+     */
     public function getFechaAttribute($fecha) {
         return $fecha?Carbon::parse($fecha)->format('Y-m-d'):'';
     }
