@@ -16,6 +16,7 @@ Vue.component('cambio-insumos-indirecto-create', {
                 monto_presupuestado: '',
                 precio_unitario: '',
                 cantidad_presupuestada: '',
+                cantidad_presupuestada_original:'',
                 cantidad_presupuestada_nueva: '',
                 precio_unitario_nuevo: '',
                 unidad: '',
@@ -101,6 +102,7 @@ Vue.component('cambio-insumos-indirecto-create', {
                             monto_presupuestado: '',
                             precio_unitario: '',
                             cantidad_presupuestada: '',
+                            cantidad_presupuestada_original:'',
                             cantidad_presupuestada_nueva: '',
                             precio_unitario_nuevo: '',
                             unidad: '',
@@ -113,6 +115,7 @@ Vue.component('cambio-insumos-indirecto-create', {
                         self.concepto.monto_presupuestado = value.monto_presupuestado;
                         self.concepto.precio_unitario = value.precio_unitario;
                         self.concepto.cantidad_presupuestada = value.cantidad_presupuestada;
+                        self.concepto.cantidad_presupuestada_original=value.cantidad_presupuestada;
                         self.concepto.descripcion = (value.descripcion).toString();
                         self.concepto.unidad = value.unidad;
                         self.concepto.rendimiento_actual=value.cantidad_presupuestada/self.concepto_seleccionado.cantidad_presupuestada;
@@ -128,6 +131,7 @@ Vue.component('cambio-insumos-indirecto-create', {
                         monto_presupuestado: '',
                         precio_unitario: '',
                         cantidad_presupuestada: '',
+                        cantidad_presupuestada_original:'',
                         cantidad_presupuestada_nueva: '',
                         precio_unitario_nuevo: '',
                         unidad: '',
@@ -141,8 +145,8 @@ Vue.component('cambio-insumos-indirecto-create', {
                     self.consultando=false;
                 }
             });
-
         },
+
         insumoEliminado: function (id_concepto) {
             return this.form.insumos_eliminados.indexOf(parseInt(id_concepto)) ? true : false;
         },
@@ -162,6 +166,7 @@ Vue.component('cambio-insumos-indirecto-create', {
             var cant = $(".pre_unit" + id_concepto + '_' + i).val();
             self.form.partidas[i].precio_unitario_nuevo = cant;
 
+
         },
 
         recalcular_cantidad: function (id_concepto, i, tipo) {
@@ -171,7 +176,7 @@ Vue.component('cambio-insumos-indirecto-create', {
             var total = cant_pres / cant_concepto;
             $(".rendimiento" + id_concepto + '_' + i).val(total);
             self.form.partidas[i].rendimiento_nuevo = total;
-
+            self.form.partidas[i].cantidad_presupuestada_nueva = cant_pres;
         },
         agregar_insumo_nuevo: function () {
             var self = this;
@@ -331,13 +336,15 @@ Vue.component('cambio-insumos-indirecto-create', {
                                     id_material: item.id_material,
                                     unidad: item.unidad,
                                     cantidad_presupuestada: 0,
+
                                     variacion_cantidad_presupuestada: 0,
                                     cantidad_presupuestada_nueva: 0,
                                     variacion_precio_unitario: 0,
-                                    precio_unitario: 0,
+                                    precio_unitario: 1,
                                     id: item.id_material,
                                     nuevo: true,
-                                    rendimiento_actual: 0
+                                    rendimiento_actual: 0,
+                                    precio_unitario_nuevo:1
                                 }
                             })
                         };
@@ -361,8 +368,6 @@ Vue.component('cambio-insumos-indirecto-create', {
                 self.guardar = false;
                 self.material_seleccionado = data;
             });
-
-
             $('#add_insumo_modal').modal('show');
         }
 
