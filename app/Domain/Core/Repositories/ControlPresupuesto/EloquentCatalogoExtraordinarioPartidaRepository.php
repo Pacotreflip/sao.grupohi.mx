@@ -38,14 +38,20 @@ class EloquentCatalogoExtraordinarioPartidaRepository implements CatalogoExtraor
             'precio_unitario'=>$partida->precio_unidario,
             'monto_presupuestado'=>$partida->monto_presupuestado
         ];
-        $insumos = $this->model->where('nivel', 'like', '___.___.')->get();
-        foreach ($insumos as $insumo){
+        $agrupadores = $this->model->where('nivel', 'like', '___.___.')->get();
+        foreach ($agrupadores as $agrupador){
+            $insumos = $agrupador->insumos()->get(['nivel', 'descripcion', 'unidad', 'id_material', 'cantidad_presupuestada', 'precio_unitario', 'monto_presupuestado'])->toArray();
+
+            //// refactorización de montos para eliminar notación científica en rendimientos
+            foreach ($insumos as $key => $insumo){
+                $insumos[$key]['cantidad_presupuestada'] = floatval($insumo['cantidad_presupuestada']);
+            }
             $extraordinario += [
-                str_replace(' ', '', $insumo->descripcion) => [
-                    'nivel' => $insumo->nivel,
-                    'descripcion' => $insumo->descripcion,
-                    'monto_presupuestado' => $insumo->monto_presupuestado,
-                    'insumos' => $insumo->insumos()->get(['nivel', 'descripcion', 'unidad', 'id_material', 'cantidad_presupuestada', 'precio_unitario', 'monto_presupuestado'])->toArray()
+                str_replace(' ', '', $agrupador->descripcion) => [
+                    'nivel' => $agrupador->nivel,
+                    'descripcion' => $agrupador->descripcion,
+                    'monto_presupuestado' => $agrupador->monto_presupuestado,
+                    'insumos' => $insumos
                 ]
             ];
         }

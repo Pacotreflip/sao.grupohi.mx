@@ -132,7 +132,7 @@ class ConceptosExtraordinariosController extends Controller
         switch ($tipo){
             case 1:
                 //dd($this->concepto->geInsumosPorTarjeta($id));
-                return response()->json(['data' => $this->concepto->geInsumosPorTarjeta($id) ], 200);
+                return response()->json(['data' => $this->concepto->getInsumosPorTarjeta($id) ], 200);
                 break;
 
             case 2:

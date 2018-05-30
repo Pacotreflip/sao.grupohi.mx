@@ -238,23 +238,24 @@ class EloquentConceptoRepository implements ConceptoRepository
         return $cob_conceptos;
     }
 
-    public function geInsumosPorTarjeta($id_tarjeta){
+    public function getInsumosPorTarjeta($id_tarjeta){
         $extraordinario = [];
-        $tarjeta = Tarjeta::find($id_tarjeta)->concepto_tarjeta()->first();
-        $concepto = Concepto::find($tarjeta->id_concepto);
-        $extraordinario +=
-                [
-                    'nivel'=>$concepto->nivel,
-                    'descripcion'=>$concepto->descripcion,
-                    'unidad'=>$concepto->unidad,
-                    'id_material'=>$concepto->id_material,
-                    'cantidad_presupuestada'=>$concepto->cantidad_presupuestada,
-                    'precio_unitario'=>$concepto->precio_unidario,
-                    'monto_presupuestado'=>$concepto->monto_presupuestado
-                ]
-            ;
-        $conceptos = $this->model->where('nivel', 'like', $concepto->nivel . '___.')->get();
+        $concepto_precio_unitario = 0;
+
+        $tarjeta = Tarjeta::find($id_tarjeta)->concepto_tarjeta()->get(['id_concepto'])->toArray();
+        $conceptoTarjeta = Concepto::whereIn('id_concepto', $tarjeta)->where('cantidad_presupuestada', '>', 0)->first();
+        $conceptos = $this->model->where('nivel', 'like', $conceptoTarjeta->nivel . '___.')->get();
         foreach ($conceptos as $concepto) {
+            $insumos=$concepto->insumos()->get(['nivel', 'descripcion', 'unidad', 'id_material', 'cantidad_presupuestada', 'precio_unitario', 'monto_presupuestado'])->toArray();
+
+            //// recalcular rendimiento de los insumos por agrupador
+            foreach ($insumos as $key => $insumo){
+                $insumos[$key]['cantidad_presupuestada'] = $insumo['cantidad_presupuestada'] / $conceptoTarjeta->cantidad_presupuestada;
+                $insumos[$key]['monto_presupuestado'] = ($insumo['cantidad_presupuestada'] / $conceptoTarjeta->cantidad_presupuestada) * $insumo['precio_unitario'];
+                $concepto_precio_unitario += $insumos[$key]['monto_presupuestado'];
+            }
+
+            //// ensambla el arreglo con los datos recabados de los insumos
             $extraordinario +=
             [str_replace(' ', '', $concepto->descripcion) =>
                 [
@@ -262,12 +263,23 @@ class EloquentConceptoRepository implements ConceptoRepository
                     'nivel' => $concepto->nivel,
                     'descripcion' => $concepto->descripcion,
                     'monto_presupuestado' => $concepto->monto_presupuestado,
-                    'insumos' => $concepto->insumos()->get(['nivel', 'descripcion', 'unidad', 'id_material', 'cantidad_presupuestada', 'precio_unitario', 'monto_presupuestado'])->toArray()
-
-                ]
-                ]
-            ;
+                    'insumos' => $insumos
+                ]];
         }
+
+        /// Ensamble final del arreglo
+        $extraordinario +=
+            [
+                'id_concepo' =>$conceptoTarjeta->id_concepto,
+                'nivel'=>$conceptoTarjeta->nivel,
+                'descripcion'=>$conceptoTarjeta->descripcion,
+                'unidad'=>$conceptoTarjeta->unidad,
+                'id_material'=>$conceptoTarjeta->id_material,
+                'cantidad_presupuestada'=>0,
+                'precio_unitario'=>$concepto_precio_unitario,
+                'monto_presupuestado'=>$conceptoTarjeta->monto_presupuestado
+            ];
+
         return $extraordinario;
     }
 

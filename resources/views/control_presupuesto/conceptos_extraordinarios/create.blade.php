@@ -60,7 +60,7 @@
                                         <span v-if="cargando"><i class="fa fa-spinner fa-spin"></i> </span>
                                         <span v-else><i class="fa fa-check"></i> Crear </span>
                                     </button>
-                                    <button type="button" class="btn btn-default" v-on:click="validacion_opciones(1)" v-show="mostrar_tabla">Cerrar</button>
+                                    <button type="button" class="btn btn-default" v-on:click="validacion_opciones()" v-show="mostrar_tabla">Cerrar</button>
                                 </div>
                             </div>
                         </div>
@@ -109,7 +109,7 @@
                                                             <input type="text" step=".01" placeholder="Ingrese Cantidad" :value="form.extraordinario.cantidad_presupuestada" :model="form.extraordinario.cantidad_presupuestada" style="width: 100%; height: 34px">
                                                         </div>
                                                     </td>
-                                                    <td></td>
+                                                    <td>@{{ form.extraordinario.precio_unitario }}</td>
                                                     <td></td>
                                                 </tr>
                                             </tbody>
@@ -130,7 +130,7 @@
                                         <button type="button"
                                                 class="btn btn-default"
                                                 id="materiales"
-                                                v-on:click="addInsumoTipo(5)" > +Gastos
+                                                v-on:click="addInsumoTipo(6)" > +Gastos
                                         </button>
                                     </div>
                                     <div class="col-md-12">
@@ -184,8 +184,8 @@
                                     <div class="col-md-4">
                                         <button type="button"
                                                 class="btn btn-default"
-                                                id="materiales"> +
-                                            Materiales
+                                                id="materiales"
+                                                v-on:click="addInsumoTipo(1)"> +Materiales
                                         </button>
                                     </div>
                                     <div class="col-md-12">
@@ -236,8 +236,8 @@
                                     <div class="col-md-4">
                                         <button type="button"
                                                 class="btn btn-default"
-                                                id="materiales"> +
-                                            M / O
+                                                id="materiales"
+                                                v-on:click="addInsumoTipo(2)"> +M / O
                                         </button>
                                     </div>
                                     <div class="col-md-12">
@@ -288,8 +288,8 @@
                                     <div class="col-md-4">
                                         <button type="button"
                                                 class="btn btn-default"
-                                                id="materiales"> +
-                                            Herramienta y Equipo
+                                                id="materiales"
+                                                v-on:click="addInsumoTipo(4)"> +Herramienta y Equipo
                                         </button>
                                     </div>
                                     <div class="col-md-12">
@@ -340,8 +340,8 @@
                                     <div class="col-md-4">
                                         <button type="button"
                                                 class="btn btn-default"
-                                                id="materiales"> +
-                                            Maquinaria
+                                                id="materiales"
+                                                v-on:click="addInsumoTipo(8)"> +Maquinaria
                                         </button>
                                     </div>
                                     <div class="col-md-12">
@@ -392,8 +392,8 @@
                                     <div class="col-md-4">
                                         <button type="button"
                                                 class="btn btn-default"
-                                                id="materiales"> +
-                                            Subcontratos
+                                                id="materiales"
+                                                v-on:click="addInsumoTipo(5)"> +Subcontratos
                                         </button>
                                     </div>
                                     <div class="col-md-12">
@@ -440,7 +440,29 @@
                                     </div>
                                 </div>
 
+                                <!-- Area de campos de solicitante y motivo -->
+
+                                <div class="col-md-12">
+                                    <div class="form-group"
+                                         :class="{'has-error': validation_errors.has('form_save_solicitud.Motivo')}">
+                                        <label><b>Motivo</b></label>
+                                        <textarea class="form-control" v-validate="'required'" :name="'Motivo'"
+                                                  v-model="form.motivo"></textarea>
+                                        <label class="help"
+                                               v-show="validation_errors.has('form_save_solicitud.Motivo')">@{{ validation_errors.first('form_save_solicitud.Motivo') }}</label>
+                                    </div>
+                                    <div class="form-group"
+                                         :class="{'has-error': validation_errors.has('form_save_solicitud.Area solicitante')}">
+                                        <label><b>Área Solicitante</b></label>
+                                        <textarea class="form-control" v-validate="'required'"
+                                                  :name="'Area solicitante'"
+                                                  v-model="form.area_solicitante"></textarea>
+                                        <label class="help"
+                                               v-show="validation_errors.has('form_save_solicitud.Area solicitante')">@{{ validation_errors.first('form_save_solicitud.Area solicitante') }}</label>
+                                    </div>
+                                </div>
                             </div>
+
                         </div>
                         <div class="box-footer">
                             <div class="row">
@@ -485,7 +507,7 @@
                                 <button type="button" class="btn btn-default" data-dismiss="modal">
                                     Cancelar
                                 </button>
-                                <button type="button" class="btn btn-primary"> <!--:disabled="guardar" v-on:click="agregar_insumo_nuevo()"-->
+                                <button type="button" class="btn btn-primary" :disabled="guardar" v-on:click="agregar_insumo_nuevo()">
                                     <i class="fa  fa-plus"></i> Agregar
 
                                 </button>

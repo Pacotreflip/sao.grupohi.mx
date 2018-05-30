@@ -68,5 +68,5 @@ interface ConceptoRepository
      * @param $id_tarjeta
      * @return mixed
      */
-    public function geInsumosPorTarjeta($id_tarjeta);
+    public function getInsumosPorTarjeta($id_tarjeta);
 }

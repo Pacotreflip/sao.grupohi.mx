@@ -267,4 +267,8 @@ class Concepto extends BaseModel
         return $this->hasMany(self::class, 'id_obra', 'id_obra')
             ->where('nivel', 'like', $this->nivel . '___.');
     }
+
+    public function cobrable(){
+        return $this->where('cantidad_presupuestada', '>', 0);
+    }
 }

@@ -4,7 +4,8 @@ Vue.component('concepto-extraordinario-create', {
         return {
             form:{
                 id_origen_extraordinario:'',
-
+                motivo:'',
+                area_solicitante:'',
                 extraordinario: {}
             },
             tipos_costos:[
@@ -28,6 +29,7 @@ Vue.component('concepto-extraordinario-create', {
             this.validacion_opciones(2);
         }
     },
+
     methods: {
         getExtraordinario: function () {
             var self = this;
@@ -39,73 +41,16 @@ Vue.component('concepto-extraordinario-create', {
                     self.mostrar_tabla = false;
                 },
                 success: function (data, textStatus, xhr) {
-                    if (self.form.id_origen_extraordinario == 1) {
-                        self.rendimiento_tarjeta(data.data)
-                    } else {
-                        console.log(self.form.id_origen_extraordinario);
-                        self.reformato_rendimientos(data.data);
-                    }
+                    self.form.extraordinario= data.data;
+                    self.mostrar_tabla = true;
                 },
                 complete: function () {
                     self.cargando = false;
-                    self.mostrar_tabla = true;
                 }
             });
         },
 
-        rendimiento_tarjeta:function (data) {
-            var self = this;
-            $.each(data.MATERIALES.insumos, function (index, partida) {
-                data.MATERIALES.insumos[index].cantidad_presupuestada =   parseFloat(partida.cantidad_presupuestada / data.cantidad_presupuestada).formatMoney(6,'.','');
-                data.MATERIALES.insumos[index].monto_presupuestado =   partida.precio_unitario * data.MATERIALES.insumos[index].cantidad_presupuestada;
-            });
-            $.each(data.MANOOBRA.insumos, function (index, partida) {
-                data.MANOOBRA.insumos[index].cantidad_presupuestada =   parseFloat(partida.cantidad_presupuestada / data.cantidad_presupuestada).formatMoney(6,'.','');
-                data.MANOOBRA.insumos[index].monto_presupuestado =   partida.precio_unitario * data.MANOOBRA.insumos[index].cantidad_presupuestada;
-            });
-            $.each(data.HERRAMIENTAYEQUIPO.insumos, function (index, partida) {
-                data.HERRAMIENTAYEQUIPO.insumos[index].cantidad_presupuestada =   parseFloat(partida.cantidad_presupuestada / data.cantidad_presupuestada).formatMoney(6,'.','');
-                data.HERRAMIENTAYEQUIPO.insumos[index].monto_presupuestado =   partida.precio_unitario * data.HERRAMIENTAYEQUIPO.insumos[index].cantidad_presupuestada;
-            });
-            $.each(data.MAQUINARIA.insumos, function (index, partida) {
-                data.MAQUINARIA.insumos[index].cantidad_presupuestada =   parseFloat(partida.cantidad_presupuestada / data.cantidad_presupuestada).formatMoney(6,'.','');
-                data.MAQUINARIA.insumos[index].monto_presupuestado =   partida.precio_unitario * data.MAQUINARIA.insumos[index].cantidad_presupuestada;
-            });
-            $.each(data.SUBCONTRATOS.insumos, function (index, partida) {
-                data.SUBCONTRATOS.insumos[index].cantidad_presupuestada =   parseFloat(partida.cantidad_presupuestada / data.cantidad_presupuestada).formatMoney(6,'.','');
-                data.SUBCONTRATOS.insumos[index].monto_presupuestado =   partida.precio_unitario * data.SUBCONTRATOS.insumos[index].cantidad_presupuestada;
-            });
-            $.each(data.GASTOS.insumos, function (index, partida) {
-                data.GASTOS.insumos[index].cantidad_presupuestada =   parseFloat(partida.cantidad_presupuestada / data.cantidad_presupuestada).formatMoney(6,'.','');
-                data.GASTOS.insumos[index].monto_presupuestado =   partida.precio_unitario * data.GASTOS.insumos[index].cantidad_presupuestada;
-            });
-            self.form.extraordinario = data;
-        },
-
-        reformato_rendimientos:function (data) {
-            var self = this;
-            $.each(data.MATERIALES.insumos, function (index, partida) {
-                data.MATERIALES.insumos[index].cantidad_presupuestada =   parseFloat(partida.cantidad_presupuestada).formatMoney(6,'.','');
-            });
-            $.each(data.MANOOBRA.insumos, function (index, partida) {
-                data.MANOOBRA.insumos[index].cantidad_presupuestada =   parseFloat(partida.cantidad_presupuestada).formatMoney(6,'.','');
-            });
-            $.each(data.HERRAMIENTAYEQUIPO.insumos, function (index, partida) {
-                data.HERRAMIENTAYEQUIPO.insumos[index].cantidad_presupuestada =   parseFloat(partida.cantidad_presupuestada).formatMoney(6,'.','');
-            });
-            $.each(data.MAQUINARIA.insumos, function (index, partida) {
-                data.MAQUINARIA.insumos[index].cantidad_presupuestada =   parseFloat(partida.cantidad_presupuestada).formatMoney(6,'.',',');
-            });
-            $.each(data.SUBCONTRATOS.insumos, function (index, partida) {
-                data.SUBCONTRATOS.insumos[index].cantidad_presupuestada =   parseFloat(partida.cantidad_presupuestada).formatMoney(6,'.','');
-            });
-            $.each(data.GASTOS.insumos, function (index, partida) {
-                data.GASTOS.insumos[index].cantidad_presupuestada =   parseFloat(partida.cantidad_presupuestada).formatMoney(6,'.','');
-            });
-            self.form.extraordinario = data;
-        },
-
-        validacion_opciones:function (tipo) {
+        validacion_opciones:function () {
             var self = this;
             if(self.mostrar_tabla){
                 swal({
@@ -191,131 +136,110 @@ Vue.component('concepto-extraordinario-create', {
 
         agregar_insumo_nuevo: function () {
             var self = this;
-            $.each(self.form.partidas, function( index, partida ) {
-                switch (self.agrupador){
-                    case 1: ///agregar a materiales
-                        if(!self.validarInsumo(self.material_seleccionado.id_material, self.agrupador)){
-                            partida.conceptos.MATERIALES.insumos.push(self.material_seleccionado);
-                        }else{
-                            swal({
-                                type: 'warning',
-                                title: 'Advertencia',
-                                text: 'Ya Existe el Insumo Seleccionado'
-                            });
-                        }
-                        break;
-                    case 2://// agergar a mano obra
-                        if(!self.validarInsumo(self.material_seleccionado.id_material, self.agrupador)){
-                            partida.conceptos.MANOOBRA.insumos.push(self.material_seleccionado);
-                        }else{
-                            swal({
-                                type: 'warning',
-                                title: 'Advertencia',
-                                text: 'Ya Existe el Insumo Seleccionado'
-                            });
-                        }
-                        break;
-                    case 4: ////agregar a herram y equipo
-                        if(!self.validarInsumo(self.material_seleccionado.id_material, self.agrupador)){
-                            partida.conceptos.HERRAMIENTAYEQUIPO.insumos.push(self.material_seleccionado);
-                        }else{
-                            swal({
-                                type: 'warning',
-                                title: 'Advertencia',
-                                text: 'Ya Existe el Insumo Seleccionado'
-                            });
-                        }
-                        break;
-                    case 8: ///agregar a maquinaria
-                        if(!self.validarInsumo(self.material_seleccionado.id_material, self.agrupador)){
-                            partida.conceptos.MAQUINARIA.insumos.push(self.material_seleccionado);
-                        }else{
-                            swal({
-                                type: 'warning',
-                                title: 'Advertencia',
-                                text: 'Ya Existe el Insumo Seleccionado'
-                            });
-                        }
-                        break;
-                    case 5: ///agregar a maquinaria
-                        if(!self.validarInsumo(self.material_seleccionado.id_material, self.agrupador)){
-                            partida.conceptos.SUBCONTRATOS.insumos.push(self.material_seleccionado);
-                        }else{
-                            swal({
-                                type: 'warning',
-                                title: 'Advertencia',
-                                text: 'Ya Existe el Insumo Seleccionado'
-                            });
-                        }
-                        break;
-                    case 6: ///agregar a maquinaria
-                        if(!self.validarInsumo(self.material_seleccionado.id_material, self.agrupador)){
-                            partida.conceptos.GASTOS.insumos.push(self.material_seleccionado);
-                        }else{
-                            swal({
-                                type: 'warning',
-                                title: 'Advertencia',
-                                text: 'Ya Existe el Insumo Seleccionado'
-                            });
-                        }
-                        break;
-
-                }
-            });
-
-            $('#add_insumo_modal').modal('hide');
-        },
-
-        validarInsumo: function (id_material, agrupador) {
-            var self = this;
             var validador = false;
-            switch (agrupador){
+            var id_material = self.material_seleccionado.id_material;
+            switch (self.agrupador){
                 case 1: ///validar materiales
-                    $.each(self.form.partidas[0].conceptos.MATERIALES.insumos, function (index, insumo) {
+                    $.each(self.form.extraordinario.MATERIALES.insumos, function (index, insumo) {
                         if(insumo.id_material == id_material){
                             validador =  true;
                         }
                     });
-                    break;
+                    if(!validador){
+                        self.form.extraordinario.MATERIALES.insumos.push(self.material_seleccionado);
+                    }else {
+                        swal({
+                            type: 'warning',
+                            title: 'Advertencia',
+                            text: 'Ya Existe el Insumo Seleccionado'
+                        });
+                    }
+                        break;
                 case 2://// agergar a mano obra
-                    $.each(self.form.partidas[0].conceptos.MANOOBRA.insumos, function (index, insumo) {
+                    $.each(self.form.extraordinario.MANOOBRA.insumos, function (index, insumo) {
                         if(insumo.id_material == id_material){
                             validador =  true;
                         }
                     });
+                    if(!validador){
+                        self.form.extraordinario.MANOOBRA.insumos.push(self.material_seleccionado);
+                    }else {
+                        swal({
+                            type: 'warning',
+                            title: 'Advertencia',
+                            text: 'Ya Existe el Insumo Seleccionado'
+                        });
+                    }
+
                     break;
                 case 4: ////agregar a herram y equipo
-                    $.each(self.form.partidas[0].conceptos.HERRAMIENTAYEQUIPO.insumos, function (index, insumo) {
+                    $.each(self.form.extraordinario.HERRAMIENTAYEQUIPO.insumos, function (index, insumo) {
                         if(insumo.id_material == id_material){
                             validador =  true;
                         }
                     });
+                    if(!validador){
+                        self.form.extraordinario.HERRAMIENTAYEQUIPO.insumos.push(self.material_seleccionado);
+                    }else {
+                        swal({
+                            type: 'warning',
+                            title: 'Advertencia',
+                            text: 'Ya Existe el Insumo Seleccionado'
+                        });
+                    }
                     break;
                 case 8: ///agregar a maquinaria
-                    $.each(self.form.partidas[0].conceptos.MAQUINARIA.insumos, function (index, insumo) {
+                    $.each(self.form.extraordinario.MAQUINARIA.insumos, function (index, insumo) {
                         if(insumo.id_material == id_material){
                             validador =  true;
                         }
                     });
+                    if(!validador){
+                        self.form.extraordinario.MAQUINARIA.insumos.push(self.material_seleccionado);
+                    }else {
+                        swal({
+                            type: 'warning',
+                            title: 'Advertencia',
+                            text: 'Ya Existe el Insumo Seleccionado'
+                        });
+                    }
                     break;
-                case 5: ///agregar a maquinaria
-                    $.each(self.form.partidas[0].conceptos.SUBCONTRATOS.insumos, function (index, insumo) {
+                case 5: ///agregar a subcontratos
+                    $.each(self.form.extraordinario.SUBCONTRATOS.insumos, function (index, insumo) {
                         if(insumo.id_material == id_material){
                             validador =  true;
                         }
                     });
+                    if(!validador){
+                        self.form.extraordinario.SUBCONTRATOS.insumos.push(self.material_seleccionado);
+                    }else {
+                        swal({
+                            type: 'warning',
+                            title: 'Advertencia',
+                            text: 'Ya Existe el Insumo Seleccionado'
+                        });
+                    }
                     break;
-                case 6: ///agregar a maquinaria
-                    $.each(self.form.partidas[0].conceptos.GASTOS.insumos, function (index, insumo) {
+                case 6: ///agregar a gastos
+                    $.each(self.form.extraordinario.GASTOS.insumos, function (index, insumo) {
                         if(insumo.id_material == id_material){
                             validador =  true;
                         }
                     });
+                    if(!validador){
+                        self.form.extraordinario.GASTOS.insumos.push(self.material_seleccionado);
+                    }else {
+                        swal({
+                            type: 'warning',
+                            title: 'Advertencia',
+                            text: 'Ya Existe el Insumo Seleccionado'
+                        });
+                    }
                     break;
-
             }
-            return validador;
+            $('#add_insumo_modal').modal('hide');
+            //return validador;
         }
-
     }
+
 });
