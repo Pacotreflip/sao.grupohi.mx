@@ -49,6 +49,8 @@ require('./vue-components/Finanzas/comprobante_fondo_fijo/index');
 require('./vue-components/Finanzas/comprobante_fondo_fijo/create');
 require('./vue-components/Finanzas/comprobante_fondo_fijo/edit');
 
+require('./vue-components/Finanzas/reposicion_fondo_fijo/create')
+
 /**
  * Formatos Components
  */
