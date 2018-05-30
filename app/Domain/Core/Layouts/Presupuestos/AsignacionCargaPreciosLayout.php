@@ -95,7 +95,7 @@ class AsignacionCargaPreciosLayout extends ValidacionLayout
         "cotizado_img" => "cotizado_img",
         "id_moneda" => "id_moneda",
         "precio_total_mxp" => "precio_total_mxp",
-        "" => "",
+        "separador" => "",
     ];
     /**
      * @var array
@@ -242,13 +242,19 @@ class AsignacionCargaPreciosLayout extends ValidacionLayout
 
 
                         // Precio Unitario Moneda Conversión
-                        $sheet->setCellValue(\PHPExcel_Cell::stringFromColumnIndex($desde + 6) . $haciaAbajo, '=IF(' . \PHPExcel_Cell::stringFromColumnIndex($desde + 5) . $haciaAbajo . '="EURO",' . \PHPExcel_Cell::stringFromColumnIndex($desde + 3) . $haciaAbajo . '*' . $this->tipo_cambio[3]['cambio'] . '/1, IF(' . \PHPExcel_Cell::stringFromColumnIndex($desde + 5) . $haciaAbajo . '="DOLAR (USD)",' . \PHPExcel_Cell::stringFromColumnIndex($desde + 3) . $haciaAbajo . '*' . $this->tipo_cambio[3]['cambio'] . '/1, IF(' . \PHPExcel_Cell::stringFromColumnIndex($desde + 5) . $haciaAbajo . '="PESO (MXP)",' . \PHPExcel_Cell::stringFromColumnIndex($desde + 3) . $haciaAbajo . '/1, IF(' . \PHPExcel_Cell::stringFromColumnIndex($desde + 5) . $haciaAbajo . '="",0))))');
+                        $sheet->setCellValue(\PHPExcel_Cell::stringFromColumnIndex($desde + 6) . $haciaAbajo, '=IF(' . \PHPExcel_Cell::stringFromColumnIndex($desde + 5) . $haciaAbajo . '="EURO",' . \PHPExcel_Cell::stringFromColumnIndex($desde + 3) . $haciaAbajo . '*' . $this->tipo_cambio[3]['cambio'] . '/1, IF(' . \PHPExcel_Cell::stringFromColumnIndex($desde + 5) . $haciaAbajo . '="DOLAR USD",' . \PHPExcel_Cell::stringFromColumnIndex($desde + 3) . $haciaAbajo . '*' . $this->tipo_cambio[3]['cambio'] . '/1, IF(' . \PHPExcel_Cell::stringFromColumnIndex($desde + 5) . $haciaAbajo . '="PESO MXP",' . \PHPExcel_Cell::stringFromColumnIndex($desde + 3) . $haciaAbajo . '/1, IF(' . \PHPExcel_Cell::stringFromColumnIndex($desde + 5) . $haciaAbajo . '="",0))))');
+                        $sheet->getStyle(\PHPExcel_Cell::stringFromColumnIndex($desde + 6) . $haciaAbajo)->getProtection()->setLocked(\PHPExcel_Style_Protection::PROTECTION_PROTECTED);
+
+                        // cotizado_img
+                        $sheet->getStyle(\PHPExcel_Cell::stringFromColumnIndex($desde + 9) . $haciaAbajo)->getProtection()->setLocked(\PHPExcel_Style_Protection::PROTECTION_PROTECTED);
 
                         //id_moneda
                         $sheet->setCellValue(\PHPExcel_Cell::stringFromColumnIndex($desde + 10) . $haciaAbajo, '=IF(' . \PHPExcel_Cell::stringFromColumnIndex($desde + 5) . $haciaAbajo . '="EURO",2, IF(' . \PHPExcel_Cell::stringFromColumnIndex($desde + 5) . $haciaAbajo . '="DOLAR USD",1, IF(' . \PHPExcel_Cell::stringFromColumnIndex($desde + 5) . $haciaAbajo . '="PESO MXP",3,0)))');
+                        $sheet->getStyle(\PHPExcel_Cell::stringFromColumnIndex($desde + 10) . $haciaAbajo)->getProtection()->setLocked(\PHPExcel_Style_Protection::PROTECTION_PROTECTED);
 
                         //precio_total_mxp
                         $sheet->setCellValue(\PHPExcel_Cell::stringFromColumnIndex($desde + 11) . $haciaAbajo, '=(G' . $haciaAbajo . '* ' . \PHPExcel_Cell::stringFromColumnIndex($desde + 6) . $haciaAbajo . '*100)/(100-' . \PHPExcel_Cell::stringFromColumnIndex($desde + 2) . $haciaAbajo . ')');
+                        $sheet->getStyle(\PHPExcel_Cell::stringFromColumnIndex($desde + 11) . $haciaAbajo)->getProtection()->setLocked(\PHPExcel_Style_Protection::PROTECTION_PROTECTED);
 
                     }
                     $index++;

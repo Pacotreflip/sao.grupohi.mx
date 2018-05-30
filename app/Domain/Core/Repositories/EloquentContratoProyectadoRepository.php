@@ -400,7 +400,7 @@ end and gc.id_transaccion = contratos.id_transaccion
                             FROM contratos as hijos_contratos
                             WHERE
                                  hijos_contratos.id_transaccion = ". $id ." AND
-                                 hijos_contratos.nivel like contratos.nivel + '%')>0 THEN '1' ELSE '0' END hijos,
+                                 hijos_contratos.nivel like contratos.nivel + '%')>0 THEN '1' ELSE '0' END hijos_gc,
 								 contratos.id_concepto as id_concepto
   FROM contratos
 	left join destinos d on (contratos.id_concepto = d.id_concepto_contrato)

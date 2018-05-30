@@ -56,7 +56,8 @@
                 $empresas_ids = implode(',', array_unique($empresas_ids));
                 $presupuestos_ids = implode(',', array_unique($presupuestos_ids));
                 ?>
-                {{ $mcrypt->encrypt($presupuestos_ids .'|'.$empresas_ids .'|'. $info['agrupadores'] .'|'.
+                {{ $mcrypt->encrypt($presupuestos_ids .'|'.$empresas_ids .'|'. implode(',', (is_array
+                ($info['agrupadores']) ? $info['agrupadores'] : [])) .'|'.
                 $info['solo_pendientes']) }}
             @endif
         </td>
@@ -75,8 +76,9 @@
         {{-- Información del Proveedor --}}
         <?php $ocultar = ["cotizado_img", "separador", "id_moneda", "precio_total_mxp"]; ?>
         @for($i=0;$i<$totales;$i++)
-            @foreach($headerPresupuestos as $_headerPresupuestos)
-                <th style="{{ in_array($_headerPresupuestos, $ocultar) ? 'background-color: #fff; color: #fff' : 'background-color: #C8C8C8' }}" class="border">{{
+            @foreach($headerPresupuestos as $k => $_headerPresupuestos)
+                <th style="{{ in_array($k, $ocultar) ? 'background-color: #fff; color: #fff' : 'background-color:
+                #C8C8C8' }}" class="border">{{
                 $_headerPresupuestos
                 }}</th>
             @endforeach
@@ -119,7 +121,7 @@
             ?>
 
             {{--Precio Unitario Antes Descto--}}
-            <td style="background-color: #9bc2e6;" class="{{$ultimalinealeft}} ">
+            <td style="background-color: #fff;" class="{{$ultimalinealeft}} ">
                 {{ $presupuesto->monto }}
             </td>
 
@@ -131,7 +133,7 @@
             </td>
 
             {{--% Descuento--}}
-            <td style="background-color: #9bc2e6" class="{{$ultimalinea}} ">
+            <td style="background-color: #fff" class="{{$ultimalinea}} ">
                 0
             </td>
 
@@ -146,9 +148,9 @@
             </td>
 
             {{--Moneda - calculado en backend --}}
-            <td style="background-color: #9bc2e6" class="{{$ultimalinea}} "></td>
+            <td style="background-color: #fff" class="{{$ultimalinea}} "></td>
 
-            {{--Precio Unitario Moneda Conversión - calculoado en backend--}}
+            {{--Precio Unitario Moneda Conversión - calculado en backend--}}
             <td style="background-color: #9bc2e6" class="{{$ultimalinea}} ">
 
             </td>
@@ -157,7 +159,7 @@
             <td style="background-color: #9bc2e6" class="{{$ultimalinea}} "></td>
 
             {{--Observaciones--}}
-            <td style="background-color: #9bc2e6" class="{{$ultimalinea}} "></td>
+            <td style="background-color: #fff" class="{{$ultimalinea}} "></td>
 
             {{--id_moneda--}}
             <td style="background-color: #fff; color: #fff"></td>

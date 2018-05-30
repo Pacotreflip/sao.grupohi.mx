@@ -141,12 +141,12 @@ class LayoutsController extends BaseController
         // Obten la información de los filtros y agrupaciones
         $info = [
             'id_contrato_proyectado' => $id_contrato_proyectado,
-            'presupuesto_ids' => json_decode($request->ids, true),
-            'agrupadores' => $request->agrupadores,
+            'presupuesto_ids' => $request->ids,
+            'agrupadores' => !empty($request->agrupadores) ? explode(',', $request->agrupadores) : '',
             'solo_pendientes' => $request->solo_pendientes
         ];
 
-        $layout = (new AsignacionCargaPreciosLayout($this->contratoProyectadoRepository))->getFile();
+        $layout = (new AsignacionCargaPreciosLayout($this->contratoProyectadoRepository, $info))->getFile();
         $contrato = $this->contratoProyectadoRepository->find($info['id_contrato_proyectado']);
 
         try {
@@ -176,8 +176,8 @@ class LayoutsController extends BaseController
         }
         $info = [
             'id_contrato_proyectado' => $id_contrato_proyectado,
-            'presupuesto_ids' => json_decode($request->ids, true),
-            'agrupadores' => $request->agrupadores,
+            'presupuesto_ids' => $request->ids,
+            'agrupadores' => explode(',', $request->agrupadores),
             'solo_pendientes' => $request->solo_pendientes
         ];
 
@@ -200,8 +200,8 @@ class LayoutsController extends BaseController
 
         $info = [
             'id_requisicion' => $id_requisicion,
-            'cot_ids' => json_decode($request->cot_ids, true),
-            'agrupadores' => $request->agrupadores,
+            'cot_ids' => $request->ids,
+            'agrupadores' => explode(',', $request->agrupadores),
             'solo_pendientes' => $request->solo_pendientes
         ];
 
