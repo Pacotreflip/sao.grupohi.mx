@@ -9,6 +9,7 @@
 namespace Ghi\Domain\Core\Models;
 
 
+use Ghi\Domain\Core\Models\Subcontratos\PartidaAsignacion;
 use Ghi\Domain\Core\Models\Transacciones\Item;
 use Illuminate\Database\Eloquent\Model;
 
@@ -45,5 +46,13 @@ class Contrato extends Model
     public function items() {
         return $this->hasMany(Item::class, 'id_concepto', 'id_concepto')
             ->where('items.id_antecedente', '=', $this->id_transaccion);
+    }
+
+    public function partidasAsignacion() {
+        return $this->hasMany(PartidaAsignacion::class, 'id_concepto', 'id_concepto');
+    }
+
+    public function getCantidadPendienteAttribute() {
+        return $this->cantidad_original - $this->partidasAsignacion()->sum('cantidad_asignada');
     }
 }

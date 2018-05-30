@@ -13,7 +13,9 @@ use Illuminate\Support\Facades\DB;
 
 class Moneda extends Model
 {
-    const DOLARES=2;
+    const DOLARES = 2;
+    const PESOS = 1;
+    const EUROS = 3;
 
     protected $connection = 'cadeco';
     protected $table = 'dbo.monedas';

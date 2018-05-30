@@ -5,6 +5,7 @@ namespace Ghi\Domain\Core\Models\ControlRec;
 use Ghi\Domain\Core\Models\Empresa;
 use Ghi\Domain\Core\Models\Sucursal;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 
 class RQCTOCCotizaciones extends Model
 {
@@ -21,6 +22,11 @@ class RQCTOCCotizaciones extends Model
     public function sucursal()
     {
         return $this->belongsTo(Sucursal::class, 'idsucursal_sao', 'id_sucursal');
+    }
+
+    public function rqctocCotizacionPartidas()
+    {
+        return $this->hasMany(RQCTOCCotizacionesPartidas::class, 'idrqctoc_cotizaciones', 'idrqctoc_cotizaciones');
     }
 
     public function getCandidataAttribute()
