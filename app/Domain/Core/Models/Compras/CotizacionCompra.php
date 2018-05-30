@@ -15,6 +15,7 @@ use Ghi\Domain\Core\Models\Scopes\CotizacionCompraScope;
 use Ghi\Domain\Core\Models\Scopes\ObraScope;
 use Ghi\Domain\Core\Models\Sucursal;
 use Ghi\Domain\Core\Models\Transacciones\Transaccion;
+use Ghi\Domain\Core\Models\ControlRec\RQCTOCCotizaciones;
 
 class CotizacionCompra extends Transaccion
 {

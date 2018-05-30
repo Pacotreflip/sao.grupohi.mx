@@ -11,6 +11,7 @@ use Ghi\Domain\Core\Models\Transacciones\Tipo;
 use Ghi\Domain\Core\Models\Transacciones\Transaccion;
 use Ghi\Domain\Core\Models\Transacciones\TransaccionTrait;
 use Ghi\Domain\Core\Models\Procuracion\Asignaciones;
+use Ghi\Domain\Core\Models\ControlRec\RQCTOCSolicitud;
 
 class Requisicion extends Transaccion
 {
@@ -80,5 +81,8 @@ class Requisicion extends Transaccion
      */
     public function asignaciones(){
         return $this->hasMany(Asignaciones::class, 'id_transaccion', 'id_transaccion');
+    }
+    public function rqctocSolicitud() {
+        return $this->hasOne(RQCTOCSolicitud::class, 'idtransaccion_sao', 'id_transaccion')->where('base_sao', '=', Context::getDatabaseName());
     }
 }

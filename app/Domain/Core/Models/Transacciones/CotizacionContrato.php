@@ -39,4 +39,18 @@ class CotizacionContrato extends Transaccion
     public function sucursal() {
         return $this->belongsTo(Sucursal::class, 'id_sucursal');
     }
+
+    public function getCandidataAttribute()
+    {
+        $res = false;
+        foreach ($this->presupuestos as $presupuesto) {
+            if($presupuesto->no_cotizado == 0) {
+                if($presupuesto->contrato->cantidad_pendiente > 0) {
+                    $res = true;
+                }
+            }
+        }
+
+        return $res;
+    }
 }

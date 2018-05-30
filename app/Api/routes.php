@@ -82,6 +82,16 @@ $api->version('v1', function ($api) {
          */
         $api->post('sistema_contable/poliza_tipo/paginate', 'Ghi\Api\Controllers\v1\SistemaContable\PolizaTipoController@paginate');
         $api->delete('sistema_contable/poliza_tipo/{id}', 'Ghi\Api\Controllers\v1\SistemaContable\PolizaTipoController@delete')->where(['id' => '[0-9]+']);
+
+        /*
+         * Layouts Routes
+         */
+        $api->get('layouts/compras/requisicion/{id_requiscion}/asignacion', 'Ghi\Api\Controllers\v1\LayoutsController@compras_asignacion');
+        $api->post('layouts/compras/requisicion/{id_requiscion}/asignacion', 'Ghi\Api\Controllers\v1\LayoutsController@compras_asignacion_store');
+
+        $api->get('layouts/contratos/contrato_proyectado/{id_contrato_proyectado}/asignacion', 'Ghi\Api\Controllers\v1\LayoutsController@contratos_asignacion');
+        $api->post('layouts/contratos/contrato_proyectado/{id_contrato_proyectado}/asignacion', 'Ghi\Api\Controllers\v1\LayoutsController@contratos_asignacion_store');
+
     });
 });
 
