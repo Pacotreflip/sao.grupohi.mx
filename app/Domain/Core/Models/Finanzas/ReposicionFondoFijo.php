@@ -55,6 +55,7 @@ class ReposicionFondoFijo extends Transaccion
             $model->tipo_transaccion = Tipo::REPOSICION_FONDO_FIJO;
             $model->opciones = 1;
             $model->id_moneda = 1;
+            $model->FechaHoraRegistro = Carbon::now()->toDateTimeString();
             $model->id_obra = Context::getId();
         });
     }
