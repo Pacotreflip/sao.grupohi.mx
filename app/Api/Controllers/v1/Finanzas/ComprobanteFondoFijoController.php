@@ -41,29 +41,28 @@ class ComprobanteFondoFijoController extends BaseController
      */
     public function search(Request $request)
     {
-        try {
-            $rules = [
-                //Validaciones de Transaccion
-                'q' => ['required', 'string',],
-                'limit' => ['required', 'int',],
-            ];
-
-            //Validar los datos recibidos con las reglas de validación
-            $validator = app('validator')->make($request->all(), $rules);
-            if (count($validator->errors()->all())) {
-                //Caer en excepción si alguna regla de validación falla
-                throw new ValidationHttpException($validator->errors());
-            } else {
+        $rules = [
+            //Validaciones de Transaccion
+            'q' => ['required', 'string',],
+            'limit' => ['required', 'int',],
+        ];
+        //Validar los datos recibidos con las reglas de validación
+        $validator = app('validator')->make($request->all(), $rules);
+        if (count($validator->errors()->all())) {
+            //Caer en excepción si alguna regla de validación falla
+            throw new ValidationHttpException($validator->errors());
+        } else {
+            try {
                 $comprobanteFondoFijo = $this->comprobanteFondoFijoRepository
                     ->like(["referencia" => $request->q, "observaciones" => $request->q])
                     ->limit($request->limit)
                     ->all();
                 return response()->json($comprobanteFondoFijo, 200);
+            } catch (\Exception $e) {
+                return response()->json([
+                    $e->getTraceAsString(),
+                ], 500);
             }
-        } catch (\Exception $e) {
-            return response()->json([
-                $e->getTraceAsString(),
-            ], 500);
         }
     }
 }

@@ -12,9 +12,16 @@ use Ghi\Domain\Core\Models\Transacciones\Tipo;
 use Ghi\Domain\Core\Models\Transacciones\Transaccion;
 use Ghi\Core\Facades\Context;
 
+/**
+ * Class ReposicionFondoFijo
+ * @package Ghi\Domain\Core\Models\Finanzas
+ */
 class ReposicionFondoFijo extends Transaccion
 {
 
+    /**
+     * @var array
+     */
     protected $fillable = [
         "id_referente",
         "referencia",
@@ -52,6 +59,9 @@ class ReposicionFondoFijo extends Transaccion
         });
     }
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
     public function fondoFijo()
     {
         return $this->belongsTo(Fondo::class, "id_referente", "id_fondo");
