@@ -16,6 +16,16 @@
                     <reposicion-fondo-fijo-create class="tab-pane active" id="tab_reposicion_fondo_fijo" inline-template v-cloak>
                         <section>
                             <div class="row">
+                                <!-- Fecha de la Transaccion -->
+                                <div class="col-md-6 col-md-offset-6">
+                                    <div class="form-group">
+                                        <label for="fecha"><b>Fecha</b></label>
+                                        <input type="text" name="Fecha" class="form-control input-sm"
+                                               id="fecha" v-validate="'required'" v-model="form.fecha"
+                                               v-datepicker>
+                                    </div>
+                                </div>
+
                                 <!-- Fecha de Cheque / Cumplimiento -->
                                 <div class="col-md-6">
                                     <div class="form-group">
@@ -39,9 +49,9 @@
                                 <!-- Comprobante de Fondo Fijo -->
                                 <div class="col-md-12">
                                     <div class="form-group">
-                                        <label for="id_antecedente"><b>Comprobante de Fondo Fijo</b></label>
+                                        <label for="id_antecedente"><b>Comprobante de Fondo Fijo *</b></label>
                                         <select type="text" name="Comprobande de Fondo Fijo" class="form-control input-sm"
-                                                id="id_antecedente" v-validate="'required'" v-model="form.id_antecedente" ></select>
+                                                id="id_antecedente" v-validate="'required'" v-model="form.id_antecedente" @change="test"></select>
                                     </div>
                                 </div>
 
@@ -53,17 +63,24 @@
                                                id="destino" v-validate="'required'" v-model="form.destino" :readonly="form.id_antecedente.length > 0">
                                     </div>
                                 </div>
+
                                 <hr>
-                                <div class="col-md-12">
+                                <div class="col-md-12" v-if="!cargando">
                                     <div class="form-group">
                                         <label for="destino"><b>Destino</b></label>
-                                        <select2 id="id_referente_select" :disabled="cargando" v-model="form.id_referente" :options="fondos"></select2>
+                                        <select2 id="id_referente_select" :disabled="cargando" v-model="form.id_referente" :options="fondos" @change=""></select2>
                                     </div>
                                 </div>
                                 <div class="col-md-12">
                                     <div class="form-group">
                                         <label for="observaciones"><b>Oservaciones</b></label>
                                         <textarea class="form-control" v-model="form.observaciones"></textarea>
+                                    </div>
+                                </div>
+                                <div class="col-md-3 col-md-offset-9">
+                                    <div class="form-group">
+                                        <label for="observaciones"><b>Importe PESOS</b></label>
+                                        <input type="number" step="any" class="form-control input-sm" v-model="form.monto">
                                     </div>
                                 </div>
                             </div>

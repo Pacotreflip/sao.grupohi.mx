@@ -8,10 +8,12 @@ Vue.component('reposicion-fondo-fijo-create', {
                 fecha: '',
                 id_referente: '',
                 id_antecedente: '',
-                observaciones: ''
+                observaciones: '',
+                monto: ''
+
             },
             fondos: {},
-            cargando : false
+            cargando : true
         }
     },
 
@@ -31,59 +33,86 @@ Vue.component('reposicion-fondo-fijo-create', {
 
     mounted: function () {
         var self = this;
-        self.getFondos();
+        setTimeout(function () {
+            self.getFondos();
+        }, 500);
 
-        /*$.ajax({
-            url: App.host + 'http://172.20.73.87/api/fondo/lists',
-            type: 'GET',
-            beforeSend: function () {
-                self.cargando = true;
-            },
-            success: function (data, textStatus, jqXHR) {
-                self.fondos = data;
-                alert('success')
-            },
-            complete: function (jqXHR, textStatus) {
-                self.cargando = false;
-            }
-        })*/
-        /*$('#id_antecedente').select2({
+        $('#cumplimiento').datepicker().on("changeDate", function() {
+            self.form.cumplimiento = $('#cumplimiento').val();
+            //Vue.set(self.form, 'cumplimiento',$('#cumplimiento').val());
+        });
+
+        $('#fecha').datepicker().on("changeDate", function() {
+            self.form.fecha = $('#fecha').val();
+            //Vue.set(self.form, 'cumplimiento',$('#cumplimiento').val());
+        });
+
+        $('#vencimiento').datepicker().on("changeDate", function() {
+            self.form.vencimiento = $('#vencimiento').val()
+            // Vue.set(self.form, 'vencimiento', $('#vencimiento').val())
+        });
+
+        $('#id_antecedente').select2({
             width: '100%',
             ajax: {
                 url: 'http://172.20.73.87/api/finanzas/comprobante_fondo_fijo/search',
                 dataType: 'json',
                 data: function (params) {
                     var query = {
-                        search: params.term
+                        q: params.term,
+                        limit: 10
                     }
                     return query;
-                }
+                },
+                processResults: function (data) {
+                    return {
+                        results: $.map(data, function (item) {
+                            var text = '# ' + item.numero_folio + " - " + item.referencia.trim() + ' (' + item.observaciones.trim() + ')';
+                            return {
+                                text:text,
+                                id: item.id_transaccion
+                            }
+                        })
+
+                    };
+                },
+                error: function (error) {
+
+                },
+                cache: true
             },
-            delay: 250,
+            delay: 500,
+            escapeMarkup: function (markup) {
+                return markup;
+            },
             placeholder: '[--BUSCAR--]',
             minimumInputLength: 1
-        });*/
+        }).on('select2:select', function (e) {
+            var data = e.params.data;
+            self.form.id_antecedente = data.id;
+            var textSplit = data.text.split('-');
+            self.idtransaccion = {id:data.id,name:textSplit[1],numero_folio:textSplit[0]};
+        });
         
     },
 
     methods: {
-        getFondos: function () {
-            var self = this;
 
-            var url = App.host + '/control_presupuesto/variacion_volumen/getBasesAfectadas';
+        getFondos: function() {
+            var self = this;
             $.ajax({
+                url: App.host + '/api/fondo/lists',
                 type: 'GET',
-                url: url,
-                beforeSend: function () {
-                    self.cargando = true;
-                },
-                success: function (data, textStatus, xhr) {
-                    self.bases_afectadas = data;
+                success: function(data) {
+                    self.fondos = data;
                 },
                 complete: function () {
                     self.cargando = false;
                 }
             });
+        },
+        test: function () {
+            alert('test');
         }
     }
 });
