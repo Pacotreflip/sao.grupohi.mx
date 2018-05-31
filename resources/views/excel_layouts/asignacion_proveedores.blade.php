@@ -56,7 +56,8 @@
             $empresas_ids = implode(',', array_unique($empresas_ids));
             $cotizacions_ids = implode(',', array_unique($cotizacions_ids));
             ?>
-            {{ $mcrypt->encrypt($cotizacions_ids .'|'.$empresas_ids .'|'. $info['agrupadores'] .'|'.
+            {{ $mcrypt->encrypt($cotizacions_ids .'|'.$empresas_ids .'|'. implode(',', (is_array
+                ($info['agrupadores']) ? $info['agrupadores'] : [])) .'|'.
             $info['solo_pendientes']) }}
             @endif
         </td>
@@ -170,13 +171,13 @@
                 <td style="background-color: #fff; color: #fff">{{ $cot->idmaterial_sao }}</td>
 
                 {{--idrqctoc_solicitudes_partidas--}}
-                <td style="background-color: #fff; color: #fff">{{ $cot->idrqctoc_solicitudes_partidas }}</td>
+                <td style="background-color: #fff; color: #fff"></td>
 
                 {{--idrqctoc_solicitudes--}}
                 <td style="background-color: #fff; color: #fff" >{{ $cot->idrqctoc_solicitudes }}</td>
 
                 {{--idmoneda--}}
-                <td style="background-color: #fff; color: #fff" ></td>
+                <td style="background-color: #fff; color: #fff" >{{ $cot->idmoneda }}</td>
 
                 {{--Separador--}}
                 <td style="background-color: #fff; color: #fff"></td>

@@ -200,8 +200,8 @@ class LayoutsController extends BaseController
 
         $info = [
             'id_requisicion' => $id_requisicion,
-            'cot_ids' => $request->ids,
-            'agrupadores' => explode(',', $request->agrupadores),
+            'cot_ids' => is_string($request->ids) ? json_decode($request->ids, true): $request->ids,
+            'agrupadores' => !empty($request->agrupadores) ? explode(',', $request->agrupadores) : [],
             'solo_pendientes' => $request->solo_pendientes
         ];
 

@@ -105,7 +105,7 @@ class AsignacionCargaProveedoresLayout extends ValidacionLayout
         $presupuestos = $this->requisicion->getCotizaciones($this->info['id_requisicion'], $this->info['cot_ids']);
 
         // Agrupados/No agrupados
-        $partidas = is_array($this->info['agrupadores']) ? $this->requisicion->getPartidasCotizacionAgrupadas($this->info['id_requisicion']) : $this->requisicion->getPartidasCotizacion($this->info['id_requisicion']);
+        $partidas = !empty($this->info['agrupadores']) ? $this->requisicion->getPartidasCotizacionAgrupadas($this->info['id_requisicion']) : $this->requisicion->getPartidasCotizacion($this->info['id_requisicion']);
 
         $arrayResult['totales'] = $presupuestos->count();
         $arrayResult['valores'] = [];
@@ -182,6 +182,8 @@ class AsignacionCargaProveedoresLayout extends ValidacionLayout
                 $haciaAbajo = 3;
                 foreach($arrayRequisicion['valores'] as $key => $requisicion)
                 {
+                    $reqPresupuestos = $requisicion['presupuesto'];
+
                     foreach($requisicion['presupuesto'] as $key => $cotizacion)
                     {
                         $desde = (count($this->headerDinamicos) * $key) + (count($this->headerFijos));
@@ -193,7 +195,7 @@ class AsignacionCargaProveedoresLayout extends ValidacionLayout
                         $sheet->getStyle(\PHPExcel_Cell::stringFromColumnIndex($desde + 1) . $haciaAbajo)->getProtection()->setLocked(\PHPExcel_Style_Protection::PROTECTION_UNPROTECTED);
 
                         // Precio Total
-                        $sheet->setCellValue(\PHPExcel_Cell::stringFromColumnIndex($desde + 2) . $haciaAbajo, '='. \PHPExcel_Cell::stringFromColumnIndex($desde) . $haciaAbajo .'*'. 'E'. $haciaAbajo .'-(('. \PHPExcel_Cell::stringFromColumnIndex($desde) . $haciaAbajo .'*E'. $haciaAbajo .'*H'. $haciaAbajo .')/100)');
+                        // $sheet->setCellValue(\PHPExcel_Cell::stringFromColumnIndex($desde + 2) . $haciaAbajo, '='. \PHPExcel_Cell::stringFromColumnIndex($desde) . $haciaAbajo .'*'. 'E'. $ $haciaAbajo.'-(('. \PHPExcel_Cell::stringFromColumnIndex($desde) . $haciaAbajo .'*E'.$haciaAbajo.'*'. \PHPExcel_Cell::stringFromColumnIndex($desde + 1) . $haciaAbajo .')/100)');
 
                         // Moneda
                         $objValidation = $sheet->getCell(\PHPExcel_Cell::stringFromColumnIndex($desde + 3) . $haciaAbajo)->getDataValidation();
@@ -215,6 +217,12 @@ class AsignacionCargaProveedoresLayout extends ValidacionLayout
                         // Precio Total Moneda Conversión
                         $sheet->setCellValue(\PHPExcel_Cell::stringFromColumnIndex($desde + 4) . $haciaAbajo, '=IF('. \PHPExcel_Cell::stringFromColumnIndex($desde + 3) . $haciaAbajo .'="EURO",'. \PHPExcel_Cell::stringFromColumnIndex($desde + 3) . $haciaAbajo .'*'. $this->tipo_cambio[3]['cambio'] .'/1, IF('. \PHPExcel_Cell::stringFromColumnIndex($desde + 3) . $haciaAbajo .'="DOLAR USD",'. \PHPExcel_Cell::stringFromColumnIndex($desde + 2) . $haciaAbajo .'*'. $this->tipo_cambio[2]['cambio'] .'/1, IF('. \PHPExcel_Cell::stringFromColumnIndex($desde + 3) . $haciaAbajo .'="PESO MXP",'. \PHPExcel_Cell::stringFromColumnIndex($desde + 2) . $haciaAbajo .'/1, IF('. \PHPExcel_Cell::stringFromColumnIndex($desde + 3) . $haciaAbajo .'="",0))))');
 
+                        // idrqctoc_solicitudes_partidas
+                        $solicitudPartidas = [];
+                        foreach ($cotizacion->rqctocSolicitud->rqctocSolicitudPartidas as $sp)
+                            $solicitudPartidas[] = $sp->idrqctoc_solicitudes_partidas;
+
+                        $sheet->setCellValue(\PHPExcel_Cell::stringFromColumnIndex($desde + 7) . $haciaAbajo, $this->mCrypt->encrypt(implode(',', array_unique($solicitudPartidas))));
 
                         // id moneda
                         $sheet->setCellValue(\PHPExcel_Cell::stringFromColumnIndex($desde + 9) . $haciaAbajo,'=IF('. \PHPExcel_Cell::stringFromColumnIndex($desde + 3) . $haciaAbajo .'="EURO",2, IF('. \PHPExcel_Cell::stringFromColumnIndex($desde + 3) . $haciaAbajo .'="DOLAR (USD)",1, IF('. \PHPExcel_Cell::stringFromColumnIndex($desde + 3) . $haciaAbajo .'="PESO (MXP)",3,0)))');
@@ -229,7 +237,7 @@ class AsignacionCargaProveedoresLayout extends ValidacionLayout
 
                 // % Descuento
                 $pos = ++$haciaAbajo;
-                foreach($requisicion['presupuesto'] as $key => $cotizacion)
+                foreach($reqPresupuestos as $key => $cotizacion)
                 {
                     $desde = ((count($this->headerDinamicos) * $key) + (count($this->headerFijos))) - 1;
                     $sheet->setCellValue(\PHPExcel_Cell::stringFromColumnIndex($desde) . $pos, '% Descuento');
@@ -238,7 +246,7 @@ class AsignacionCargaProveedoresLayout extends ValidacionLayout
 
                 // Subtotal Precios PESO MXP
                 $pos = ++$haciaAbajo;
-                foreach($requisicion['presupuesto'] as $key => $cotizacion)
+                foreach($reqPresupuestos as $key => $cotizacion)
                 {
                     // Referencia de posición para la cotización
                     $desdeCot = ((count($this->headerDinamicos) * $key) + (count($this->headerFijos)));
@@ -252,7 +260,7 @@ class AsignacionCargaProveedoresLayout extends ValidacionLayout
 
                 // Subtotal Precios DOLAR USD
                 $pos = ++$haciaAbajo;
-                foreach($requisicion['presupuesto'] as $key => $cotizacion)
+                foreach($reqPresupuestos as $key => $cotizacion)
                 {
                     // Referencia de posición para la cotización
                     $desdeCot = ((count($this->headerDinamicos) * $key) + (count($this->headerFijos)));
@@ -266,7 +274,7 @@ class AsignacionCargaProveedoresLayout extends ValidacionLayout
 
                 // Subtotal Precios EURO
                 $pos = ++$haciaAbajo;
-                foreach($requisicion['presupuesto'] as $key => $cotizacion)
+                foreach($reqPresupuestos as $key => $cotizacion)
                 {
                     // Referencia de posición para la cotización
                     $desdeCot = ((count($this->headerDinamicos) * $key) + (count($this->headerFijos)));
@@ -280,7 +288,7 @@ class AsignacionCargaProveedoresLayout extends ValidacionLayout
 
                 // TC USD
                 $pos = ++$haciaAbajo;
-                foreach($requisicion['presupuesto'] as $key => $cotizacion)
+                foreach($reqPresupuestos as $key => $cotizacion)
                 {
                     // Referencia de posición para la cotización
                     $desdeCot = ((count($this->headerDinamicos) * $key) + (count($this->headerFijos)));
@@ -293,7 +301,7 @@ class AsignacionCargaProveedoresLayout extends ValidacionLayout
 
                 // TC EURO
                 $pos = ++$haciaAbajo;
-                foreach($requisicion['presupuesto'] as $key => $cotizacion)
+                foreach($reqPresupuestos as $key => $cotizacion)
                 {
                     // Referencia de posición para la cotización
                     $desdeCot = ((count($this->headerDinamicos) * $key) + (count($this->headerFijos)));
@@ -306,7 +314,7 @@ class AsignacionCargaProveedoresLayout extends ValidacionLayout
 
                 // Moneda de Conv.
                 $pos = ++$haciaAbajo;
-                foreach($requisicion['presupuesto'] as $key => $cotizacion)
+                foreach($reqPresupuestos as $key => $cotizacion)
                 {
                     // Referencia de posición para la cotización
                     $desdeCot = ((count($this->headerDinamicos) * $key) + (count($this->headerFijos)));
@@ -329,7 +337,7 @@ class AsignacionCargaProveedoresLayout extends ValidacionLayout
 
                 // Subtotal Moneda Conv.
                 $pos = ++$haciaAbajo;
-                foreach($requisicion['presupuesto'] as $key => $cotizacion)
+                foreach($reqPresupuestos as $key => $cotizacion)
                 {
                     // Referencia de posición para la cotización
                     $desdeCot = ((count($this->headerDinamicos) * $key) + (count($this->headerFijos)));
@@ -342,7 +350,7 @@ class AsignacionCargaProveedoresLayout extends ValidacionLayout
 
                 // IVA
                 $pos = ++$haciaAbajo;
-                foreach($requisicion['presupuesto'] as $key => $cotizacion)
+                foreach($reqPresupuestos as $key => $cotizacion)
                 {
                     // Referencia de posición para la cotización
                     $desdeCot = ((count($this->headerDinamicos) * $key) + (count($this->headerFijos)));
@@ -356,7 +364,7 @@ class AsignacionCargaProveedoresLayout extends ValidacionLayout
 
                 // Total
                 $pos = ++$haciaAbajo;
-                foreach($requisicion['presupuesto'] as $key => $cotizacion)
+                foreach($reqPresupuestos as $key => $cotizacion)
                 {
                     // Referencia de posición para la cotización
                     $desdeCot = ((count($this->headerDinamicos) * $key) + (count($this->headerFijos)));
@@ -370,7 +378,7 @@ class AsignacionCargaProveedoresLayout extends ValidacionLayout
 
                 // Fecha de Presupuesto
                 $pos = ++$haciaAbajo;
-                foreach($requisicion['presupuesto'] as $key => $cotizacion)
+                foreach($reqPresupuestos as $key => $cotizacion)
                 {
                     // Referencia de posición para la cotización
                     $desdeCot = ((count($this->headerDinamicos) * $key) + (count($this->headerFijos)));
@@ -384,7 +392,7 @@ class AsignacionCargaProveedoresLayout extends ValidacionLayout
 
                 // % Anticipo
                 $pos = ++$haciaAbajo;
-                foreach($requisicion['presupuesto'] as $key => $cotizacion)
+                foreach($reqPresupuestos as $key => $cotizacion)
                 {
                     // Referencia de posición para la cotización
                     $desdeCot = ((count($this->headerDinamicos) * $key) + (count($this->headerFijos)));
@@ -398,7 +406,7 @@ class AsignacionCargaProveedoresLayout extends ValidacionLayout
 
                 // Crédito dias
                 $pos = ++$haciaAbajo;
-                foreach($requisicion['presupuesto'] as $key => $cotizacion)
+                foreach($reqPresupuestos as $key => $cotizacion)
                 {
                     // Referencia de posición para la cotización
                     $desdeCot = ((count($this->headerDinamicos) * $key) + (count($this->headerFijos)));
@@ -412,7 +420,7 @@ class AsignacionCargaProveedoresLayout extends ValidacionLayout
 
                 // Vigencia dias
                 $pos = ++$haciaAbajo;
-                foreach($requisicion['presupuesto'] as $key => $cotizacion)
+                foreach($reqPresupuestos as $key => $cotizacion)
                 {
                     // Referencia de posición para la cotización
                     $desdeCot = ((count($this->headerDinamicos) * $key) + (count($this->headerFijos)));
@@ -426,7 +434,7 @@ class AsignacionCargaProveedoresLayout extends ValidacionLayout
 
                 // Observaciones Generales
                 $pos = ++$haciaAbajo;
-                foreach($requisicion['presupuesto'] as $key => $cotizacion)
+                foreach($reqPresupuestos as $key => $cotizacion)
                 {
                     // Referencia de posición para la cotización
                     $desdeCot = ((count($this->headerDinamicos) * $key) + (count($this->headerFijos)));
