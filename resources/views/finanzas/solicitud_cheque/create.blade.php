@@ -60,6 +60,14 @@
                                             </div>
                                         </div>
 
+                                        <div class="col-md-12" v-if="!cargando">
+                                            <div class="form-group" :class="{'has-error': validation_errors.has('form_reposicion_fondo_fijo.Destino')}">
+                                                <label for="destino"><b>Destino</b></label>
+                                                <select2 v-validate="'required'" :name="'Destino'" id="id_referente_select" :disabled="cargando || form.id_antecedente != ''" v-model="form.id_referente" :options="fondos"></select2>
+                                                <label class="help" v-show="validation_errors.has('form_reposicion_fondo_fijo.Destino')">@{{ validation_errors.first('form_reposicion_fondo_fijo.Destino') }}</label>
+                                            </div>
+                                        </div>
+
                                         <!-- A favor de -->
                                         <div class="col-md-12">
                                             <div class="form-group" :class="{'has-error': validation_errors.has('form_reposicion_fondo_fijo.A favor de')}">
@@ -67,14 +75,6 @@
                                                 <input type="text" name="A favor de" class="form-control input-sm"
                                                        id="destino" v-validate="'required'" v-model="form.destino" :readonly="form.id_antecedente != ''">
                                                 <label class="help" v-show="validation_errors.has('form_reposicion_fondo_fijo.A favor de')">@{{ validation_errors.first('form_reposicion_fondo_fijo.A favor de') }}</label>
-                                            </div>
-                                        </div>
-
-                                        <div class="col-md-12" v-if="!cargando">
-                                            <div class="form-group" :class="{'has-error': validation_errors.has('form_reposicion_fondo_fijo.Destino')}">
-                                                <label for="destino"><b>Destino</b></label>
-                                                <select2 v-validate="'required'" :name="'Destino'" id="id_referente_select" :disabled="cargando || form.id_antecedente != ''" v-model="form.id_referente" :options="fondos" @change="setAFavorDe()"></select2>
-                                                <label class="help" v-show="validation_errors.has('form_reposicion_fondo_fijo.Destino')">@{{ validation_errors.first('form_reposicion_fondo_fijo.Destino') }}</label>
                                             </div>
                                         </div>
 
@@ -105,7 +105,6 @@
                                                     </button>
                                                 </div>
                                             </div>
-
                                     </form>
                                 </div>
                             </section>

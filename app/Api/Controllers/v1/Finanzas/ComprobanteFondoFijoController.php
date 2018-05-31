@@ -54,7 +54,7 @@ class ComprobanteFondoFijoController extends BaseController
         } else {
             try {
                 $comprobanteFondoFijo = $this->comprobanteFondoFijoRepository
-                    ->like(["referencia" => $request->q, "observaciones" => $request->q])
+                    ->like(["referencia" => $request->q, "observaciones" => $request->q, 'numero_folio' => $request->q])
                     ->limit($request->limit)
                     ->with($request->with)
                     ->all();

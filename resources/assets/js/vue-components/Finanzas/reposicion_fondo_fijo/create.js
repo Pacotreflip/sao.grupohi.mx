@@ -32,6 +32,16 @@ Vue.component('reposicion-fondo-fijo-create', {
         }
     },
 
+    watch : {
+        'form.id_referente' : function (id) {
+            if(id) {
+                this.setAFavorDe(id);
+            } else {
+                this.form.destino = '';
+            }
+        }
+    },
+
     mounted: function () {
         var self = this;
         setTimeout(function () {
@@ -76,7 +86,8 @@ Vue.component('reposicion-fondo-fijo-create', {
                                 id: item.id_transaccion,
                                 monto: item.monto,
                                 id_referente: item.id_referente,
-                                fondo_fijo: item.fondo_fijo
+                                fondo_fijo: item.fondo_fijo,
+                                observaciones: item.observaciones
                             }
                         })
                     };
@@ -121,11 +132,13 @@ Vue.component('reposicion-fondo-fijo-create', {
             this.form.monto = data.monto;
             this.form.id_referente = data.id_referente;
             this.form.destino = data.fondo_fijo.nombre;
+            this.form.observaciones = data.observaciones;
         },
         validateForm: function(scope, funcion) {
             this.$validator.validateAll(scope).then(() => {
                 if(funcion == 'save_reposicion') {
                 this.confirmSave();
+
             }
         }).catch(() => {
                 swal({
@@ -149,6 +162,22 @@ Vue.component('reposicion-fondo-fijo-create', {
             }).then(function(result) {
                 if(result.value) {
                     self.save();
+                }
+            });
+        },
+        setAFavorDe: function() {
+            var self = this;
+            $.ajax({
+                url: App.host + '/api/fondo/' + self.form.id_referente,
+                type: 'GET',
+                beforeSend: function () {
+                    self.cargando = true;
+                },
+                success: function (response) {
+                    self.form.destino = response.nombre;
+                },
+                complete: function () {
+                    self.cargando = false;
                 }
             });
         },

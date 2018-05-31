@@ -8,6 +8,7 @@
 
 namespace Ghi\Api\Controllers\v1;
 
+use Dingo\Api\Routing\Helpers;
 use Ghi\Http\Controllers\Controller as BaseController;
 use Ghi\Domain\Core\Contracts\FondoRepository;
 use Dingo\Api\Http\Request;
@@ -19,6 +20,8 @@ use JWTAuth;
  */
 class FondoController extends BaseController
 {
+
+    use Helpers;
     /**
      * @var FondoRepository
      */
@@ -41,5 +44,10 @@ class FondoController extends BaseController
     {
         $fondos = $this->fondoRepository->lists();
         return response()->json($fondos, 200);
+    }
+
+    public function find($id) {
+        $fondo = $this->fondoRepository->find($id);
+        return response()->json($fondo, '200');
     }
 }

@@ -91,6 +91,7 @@ $api->version('v1', function ($api) {
          * Fondos
          */
         $api->get('fondo/lists', 'Ghi\Api\Controllers\v1\FondoController@lists');
+        $api->get('fondo/{id}', 'Ghi\Api\Controllers\v1\FondoController@find');
         /**
          * comprobante fondo fijo
          */

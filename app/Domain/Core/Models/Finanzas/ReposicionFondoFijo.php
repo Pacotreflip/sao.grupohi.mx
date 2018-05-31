@@ -23,6 +23,7 @@ class ReposicionFondoFijo extends Transaccion
      * @var array
      */
     protected $fillable = [
+        "id_antecedente",
         "id_referente",
         "referencia",
         "cumplimiento",
@@ -57,6 +58,8 @@ class ReposicionFondoFijo extends Transaccion
             $model->id_moneda = 1;
             $model->FechaHoraRegistro = Carbon::now()->toDateTimeString();
             $model->id_obra = Context::getId();
+            $model->comentario = "I;" . date('d/m/Y') . " " . date('h:m:s') . ";SAO|" . auth()->user()->usuario . "|";
+            $model->saldo = $model->monto;
         });
     }
 
