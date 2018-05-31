@@ -231,7 +231,7 @@ class Estimacion extends Rotation {
                 '',
                 utf8_decode($item->contrato),
                 '$ ' . number_format($item->importe, 2, '.', ','),
-                utf8_decode($item->concepto->padre() ? $item->concepto->padre() : ''),
+                utf8_decode($item->concepto ? $item->concepto->padre() : ''),
                 '',
                 ''
             ]);
@@ -331,7 +331,8 @@ class Estimacion extends Rotation {
         $this->SetX(($this->w) * 0.45);
         $this->SetFont('Arial', '', 8);
         $this->Cell(($this->w - 2) * 0.30, 0.4, 'I.V.A :', 0, 0, 'R');
-        $this->CellFitScale(($this->w - 2) * 0.25, 0.4, number_format($this->estimacion->impuesto, 2, '.', ','), 'B', 1, 'R');
+        // $this->CellFitScale(($this->w - 2) * 0.25, 0.4, number_format($this->estimacion->impuesto, 2, '.', ','), 'B', 1, 'R');
+        $this->CellFitScale(($this->w - 2) * 0.25, 0.4, number_format($this->estimacion->subtotal * $this->estimacion->iva, 2, '.', ','), 'B', 1, 'R');
         $this->Ln(0.1);
 
         $this->SetX(($this->w) * 0.45);
