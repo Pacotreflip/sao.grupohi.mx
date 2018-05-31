@@ -13,6 +13,7 @@ use Dingo\Api\Routing\Helpers;
 use Ghi\Domain\Core\Contracts\Finanzas\ReposicionFondoFijoRepository;
 use Ghi\Http\Controllers\Controller as BaseController;
 use Dingo\Api\Http\Request;
+use Validator;
 use JWTAuth;
 
 /**
@@ -45,6 +46,15 @@ class ReposicionFondoFijoController extends BaseController
      */
     public function store(Request $request)
     {
+        // Email array validator
+        Validator::extend('uniqueid_antecedente', function($attribute, $value, $parameters, $validator) {
+            $option = $this->reposicionFondoFijoRepository->where([$attribute => $value])->get();
+            if (count($option->toArray())) {
+                return false;
+            } else {
+                return true;
+            }
+        });
 
         $rules = [
             //Validaciones de Transaccion
@@ -54,11 +64,12 @@ class ReposicionFondoFijoController extends BaseController
             'monto' => ['required', 'string',],
             'destino' => ['required', 'string',],
             'observaciones' => ['string',],
-            'id_antecedente' => ['int',],
+            'id_antecedente' => ['int','uniqueid_antecedente'],
         ];
+        $messages = [ 'uniqueid_antecedente' => 'El Comprobante seleccionado ya cuenta con un reembolso' ];
 
         //Validar los datos recibidos con las reglas de validación
-        $validator = app('validator')->make($request->all(), $rules);
+        $validator = app('validator')->make($request->all(), $rules,$messages);
         if (count($validator->errors()->all())) {
             //Caer en excepción si alguna regla de validación falla
             throw new ValidationHttpException($validator->errors());

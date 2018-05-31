@@ -42,4 +42,23 @@ class EloquentReposicionFondoFijoRepository implements ReposicionFondoFijoReposi
         }
         return $item;
     }
+
+    /**
+     * @param array $where
+     * @return $this
+     */
+    public function where(array $where)
+    {
+        $this->model = $this->model->where($where);
+
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function get()
+    {
+        return $this->model->get();
+    }
 }

@@ -14,4 +14,15 @@ interface ReposicionFondoFijoRepository
      */
     public function create(array $data);
 
+    /**
+     * @param array $where
+     *
+     * @return mixed
+     */
+    public function where(array $where);
+
+    /**
+     * @return mixed
+     */
+    public function get();
 }

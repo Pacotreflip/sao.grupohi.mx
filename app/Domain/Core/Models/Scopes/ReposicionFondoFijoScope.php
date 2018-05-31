@@ -20,7 +20,7 @@ class ReposicionFondoFijoScope implements Scope
     {
         return $builder
             ->where('tipo_transaccion', '=', Tipo::REPOSICION_FONDO_FIJO)
-            ->where('optiones', '=', 1)
+            ->where('opciones', '=', 1)
             ;
     }
 }
