@@ -153,11 +153,16 @@ class Estimacion extends Transaccion
             : $this->suma_importes - $this->monto_anticipo_aplicado;
     }
 
-    public function getImpuestoAttribute() {
+   /* public function getImpuestoAttribute() {
         return $this->subtotal * 0.16;
-    }
+    }*/
 
     public function getMontoAttribute() {
         return $this->subtotal + $this->impuesto;
+    }
+
+    public function getIvaAttribute()
+    {
+        return $this->subcontrato->impuesto / ($this->subcontrato->monto - $this->subcontrato->impuesto);
     }
 }
