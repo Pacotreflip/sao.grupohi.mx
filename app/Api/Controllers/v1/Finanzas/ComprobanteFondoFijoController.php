@@ -56,6 +56,7 @@ class ComprobanteFondoFijoController extends BaseController
                 $comprobanteFondoFijo = $this->comprobanteFondoFijoRepository
                     ->like(["referencia" => $request->q, "observaciones" => $request->q])
                     ->limit($request->limit)
+                    ->with($request->with)
                     ->all();
                 return response()->json($comprobanteFondoFijo, 200);
             } catch (\Exception $e) {

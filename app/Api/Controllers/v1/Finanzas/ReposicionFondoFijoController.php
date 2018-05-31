@@ -9,6 +9,7 @@
 namespace Ghi\Api\Controllers\v1\Finanzas;
 
 use Dingo\Api\Exception\ValidationHttpException;
+use Dingo\Api\Routing\Helpers;
 use Ghi\Domain\Core\Contracts\Finanzas\ReposicionFondoFijoRepository;
 use Ghi\Http\Controllers\Controller as BaseController;
 use Dingo\Api\Http\Request;
@@ -20,6 +21,7 @@ use JWTAuth;
  */
 class ReposicionFondoFijoController extends BaseController
 {
+    use Helpers;
     /**
      * @var ReposicionFondoFijoRepository
      */
@@ -47,8 +49,8 @@ class ReposicionFondoFijoController extends BaseController
         $rules = [
             //Validaciones de Transaccion
             'id_referente' => ['required', 'int', 'exists:cadeco.fondos,id_fondo'],
-            'fecha_cumplimiento' => ['required', 'date_format:Y-m-d',],
-            'fecha_vencimiento' => ['required', 'date_format:Y-m-d',],
+            'cumplimiento' => ['required', 'date_format:Y-m-d',],
+            'vencimiento' => ['required', 'date_format:Y-m-d',],
             'monto' => ['required', 'string',],
             'destino' => ['required', 'string',],
             'observaciones' => ['string',],
@@ -61,20 +63,9 @@ class ReposicionFondoFijoController extends BaseController
             //Caer en excepción si alguna regla de validación falla
             throw new ValidationHttpException($validator->errors());
         } else {
-            try {
-                $record = $this->reposicionFondoFijoRepository->create($request->all());
-                // Si $record es un string hubo un error al guardar el traspaso
-                return response()->json([
-                    'data' =>
-                        [
-                            'traspaso' => $this->reposicionFondoFijoRepository->find($record->id_traspaso),
-                        ],
-                ], 201);
-            } catch (\Exception $e) {
-                return response()->json([
-                    $e->getTraceAsString(),
-                ], 500);
-            }
+            $record = $this->reposicionFondoFijoRepository->create($request->all());
+
+            return $this->response()->created();
         }
     }
 }

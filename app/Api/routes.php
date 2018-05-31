@@ -85,7 +85,7 @@ $api->version('v1', function ($api) {
         /**
          * Reposición Fondo Fijo
          */
-        $api->post('finanzas/solicitud_cheque/repositorio_fondo_fijo', 'Ghi\Api\Controllers\v1\Finanzas\ReposicionFondoFijoController@store');
+        $api->post('finanzas/solicitud_cheque/reposicion_fondo_fijo', 'Ghi\Api\Controllers\v1\Finanzas\ReposicionFondoFijoController@store');
 
         /**
          * Fondos

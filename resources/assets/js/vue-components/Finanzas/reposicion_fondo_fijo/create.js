@@ -2,18 +2,19 @@ Vue.component('reposicion-fondo-fijo-create', {
     data: function () {
         return {
             form: {
-                cumplimiento: '',
-                vencimiento: '',
+                cumplimiento: new Date().dateShortFormat(),
+                vencimiento: new Date().dateShortFormat(),
                 destino: '',
-                fecha: '',
+                fecha: new Date().dateShortFormat(),
                 id_referente: '',
                 id_antecedente: '',
                 observaciones: '',
                 monto: ''
-
             },
             fondos: {},
-            cargando : true
+            fondo_fijo: {},
+            cargando : true,
+            guardando: false
         }
     },
 
@@ -35,7 +36,7 @@ Vue.component('reposicion-fondo-fijo-create', {
         var self = this;
         setTimeout(function () {
             self.getFondos();
-        }, 500);
+        }, 250);
 
         $('#cumplimiento').datepicker().on("changeDate", function() {
             self.form.cumplimiento = $('#cumplimiento').val();
@@ -55,13 +56,15 @@ Vue.component('reposicion-fondo-fijo-create', {
         $('#id_antecedente').select2({
             width: '100%',
             ajax: {
-                url: 'http://172.20.73.87/api/finanzas/comprobante_fondo_fijo/search',
+                url: App.host + '/api/finanzas/comprobante_fondo_fijo/search',
                 dataType: 'json',
                 data: function (params) {
                     var query = {
                         q: params.term,
-                        limit: 10
+                        limit: 10,
+                        with: 'fondoFijo'
                     }
+
                     return query;
                 },
                 processResults: function (data) {
@@ -70,15 +73,15 @@ Vue.component('reposicion-fondo-fijo-create', {
                             var text = '# ' + item.numero_folio + " - " + item.referencia.trim() + ' (' + item.observaciones.trim() + ')';
                             return {
                                 text:text,
-                                id: item.id_transaccion
+                                id: item.id_transaccion,
+                                monto: item.monto,
+                                id_referente: item.id_referente,
+                                fondo_fijo: item.fondo_fijo
                             }
                         })
-
                     };
                 },
-                error: function (error) {
-
-                },
+                error: function (error) {},
                 cache: true
             },
             delay: 500,
@@ -86,18 +89,21 @@ Vue.component('reposicion-fondo-fijo-create', {
                 return markup;
             },
             placeholder: '[--BUSCAR--]',
-            minimumInputLength: 1
+            minimumInputLength: 1,
+            allowClear: true
         }).on('select2:select', function (e) {
             var data = e.params.data;
             self.form.id_antecedente = data.id;
-            var textSplit = data.text.split('-');
-            self.idtransaccion = {id:data.id,name:textSplit[1],numero_folio:textSplit[0]};
+            self.fillData(e.params.data);
+        }).on('select2:unselecting', function (e) {
+            self.form.id_antecedente = '';
+            self.form.monto = '';
+            self.form.id_referente = '';
+            self.form.destino = '';
         });
-        
     },
 
     methods: {
-
         getFondos: function() {
             var self = this;
             $.ajax({
@@ -111,8 +117,64 @@ Vue.component('reposicion-fondo-fijo-create', {
                 }
             });
         },
-        test: function () {
-            alert('test');
+        fillData: function (data) {
+            this.form.monto = data.monto;
+            this.form.id_referente = data.id_referente;
+            this.form.destino = data.fondo_fijo.nombre;
+        },
+        validateForm: function(scope, funcion) {
+            this.$validator.validateAll(scope).then(() => {
+                if(funcion == 'save_reposicion') {
+                this.confirmSave();
+            }
+        }).catch(() => {
+                swal({
+                         type: 'warning',
+                         title: 'Advertencia',
+                         text: 'Por favor corrija los errores del formulario'
+                     });
+        });
+        },
+        confirmSave: function () {
+            var self = this;
+            swal({
+                title: 'Guardar Reposición de Fondo Fijo',
+                text: "¿Está seguro de que la información es correcta?",
+                type: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Si, Guardar',
+                cancelButtonText: 'No, Cancelar'
+            }).then(function(result) {
+                if(result.value) {
+                    self.save();
+                }
+            });
+        },
+
+        save : function () {
+            var self = this;
+            $.ajax({
+                url : App.host + '/api/finanzas/solicitud_cheque/reposicion_fondo_fijo',
+                type : 'POST',
+                data : self.form,
+                beforeSend : function () {
+                    self.guardando = true;
+                },
+                success : function (response) {
+                    swal({
+                        type : 'success',
+                        title : '¡Correcto!',
+                        html : 'Reposición de Fondo Fijo guardada correctamente'
+                    }).then(function () {
+                        location.reload();
+                    });
+                },
+                complete : function () {
+                    self.guardando = false;
+                }
+            })
         }
     }
 });
