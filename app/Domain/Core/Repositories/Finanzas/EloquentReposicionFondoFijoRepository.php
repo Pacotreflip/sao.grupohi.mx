@@ -38,6 +38,7 @@ class EloquentReposicionFondoFijoRepository implements ReposicionFondoFijoReposi
 
         } catch (\Exception $e) {
             DB::connection('cadeco')->rollBack();
+            throw $e;
         }
         return $item;
     }
@@ -48,10 +49,9 @@ class EloquentReposicionFondoFijoRepository implements ReposicionFondoFijoReposi
      */
     public function where(array $where)
     {
-        $this->model = $this->model->where($where);
-
-        return $this;
+        return  $this->model->where($where);
     }
+
 
     /**
      * @return mixed

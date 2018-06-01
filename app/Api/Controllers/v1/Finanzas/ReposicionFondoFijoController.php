@@ -13,7 +13,7 @@ use Dingo\Api\Routing\Helpers;
 use Ghi\Domain\Core\Contracts\Finanzas\ReposicionFondoFijoRepository;
 use Ghi\Http\Controllers\Controller as BaseController;
 use Dingo\Api\Http\Request;
-use Validator;
+use Illuminate\Support\Facades\Validator;
 use JWTAuth;
 
 /**
@@ -31,7 +31,7 @@ class ReposicionFondoFijoController extends BaseController
     /**
      * TraspasoCuentasController constructor.
      *
-     * @param TraspasoCuentasRepository $traspasoCuentas
+     * @param ReposicionFondoFijoRepository $reposicionFondoFijoRepository
      */
     public function __construct(ReposicionFondoFijoRepository $reposicionFondoFijoRepository)
     {
@@ -41,7 +41,7 @@ class ReposicionFondoFijoController extends BaseController
     /**
      * @param Request $request
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @return \Dingo\Api\Http\Response
      * @throws \Exception
      */
     public function store(Request $request)
@@ -59,14 +59,17 @@ class ReposicionFondoFijoController extends BaseController
         $rules = [
             //Validaciones de Transaccion
             'id_referente' => ['required', 'int', 'exists:cadeco.fondos,id_fondo'],
-            'cumplimiento' => ['required', 'date_format:Y-m-d',],
-            'vencimiento' => ['required', 'date_format:Y-m-d',],
+            'cumplimiento' => ['required', 'date'],
+            'vencimiento' => ['required', 'date'],
+            'fecha' => ['required', 'date'],
             'monto' => ['required', 'string',],
             'destino' => ['required', 'string',],
             'observaciones' => ['string',],
             'id_antecedente' => ['int','uniqueid_antecedente'],
         ];
-        $messages = [ 'uniqueid_antecedente' => 'El Comprobante seleccionado ya cuenta con una reposición de cheque' ];
+        $messages = [
+            'uniqueid_antecedente' => 'El Comprobante seleccionado ya cuenta con una reposición de cheque',
+        ];
 
         //Validar los datos recibidos con las reglas de validación
         $validator = app('validator')->make($request->all(), $rules,$messages);
@@ -75,7 +78,6 @@ class ReposicionFondoFijoController extends BaseController
             throw new ValidationHttpException($validator->errors());
         } else {
             $this->reposicionFondoFijoRepository->create($request->all());
-
             return $this->response()->created();
         }
     }
