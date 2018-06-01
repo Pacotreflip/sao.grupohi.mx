@@ -66,7 +66,7 @@ class ReposicionFondoFijoController extends BaseController
             'observaciones' => ['string',],
             'id_antecedente' => ['int','uniqueid_antecedente'],
         ];
-        $messages = [ 'uniqueid_antecedente' => 'El Comprobante seleccionado ya cuenta con un reembolso' ];
+        $messages = [ 'uniqueid_antecedente' => 'El Comprobante seleccionado ya cuenta con una reposición de cheque' ];
 
         //Validar los datos recibidos con las reglas de validación
         $validator = app('validator')->make($request->all(), $rules,$messages);
@@ -74,7 +74,7 @@ class ReposicionFondoFijoController extends BaseController
             //Caer en excepción si alguna regla de validación falla
             throw new ValidationHttpException($validator->errors());
         } else {
-            $record = $this->reposicionFondoFijoRepository->create($request->all());
+            $this->reposicionFondoFijoRepository->create($request->all());
 
             return $this->response()->created();
         }

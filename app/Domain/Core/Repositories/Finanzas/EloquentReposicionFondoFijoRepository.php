@@ -38,7 +38,6 @@ class EloquentReposicionFondoFijoRepository implements ReposicionFondoFijoReposi
 
         } catch (\Exception $e) {
             DB::connection('cadeco')->rollBack();
-            throw $e;
         }
         return $item;
     }

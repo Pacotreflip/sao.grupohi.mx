@@ -8,6 +8,7 @@
 
 namespace Ghi\Api\Controllers\v1\Finanzas;
 
+use Dingo\Api\Exception\StoreResourceFailedException;
 use Dingo\Api\Exception\ValidationHttpException;
 use Ghi\Domain\Core\Contracts\Finanzas\ComprobanteFondoFijoRepository;
 use Ghi\Http\Controllers\Controller as BaseController;
@@ -50,7 +51,7 @@ class ComprobanteFondoFijoController extends BaseController
         $validator = app('validator')->make($request->all(), $rules);
         if (count($validator->errors()->all())) {
             //Caer en excepción si alguna regla de validación falla
-            throw new ValidationHttpException($validator->errors());
+            throw new StoreResourceFailedException('No se pudo guardar la Reposicón', $validator->errors());
         } else {
             try {
                 $comprobanteFondoFijo = $this->comprobanteFondoFijoRepository

@@ -53,10 +53,12 @@
 
                                         <!-- Comprobante de Fondo Fijo -->
                                         <div class="col-md-12">
-                                            <div class="form-group">
+                                            <div class="form-group" :class="{'has-error': validation_errors.has('form_reposicion_fondo_fijo.Comprobante de Fondo Fijo')}">
                                                 <label for="id_antecedente"><b>Comprobante de Fondo Fijo *</b></label>
-                                                <select type="text" name="Comprobande de Fondo Fijo" class="form-control input-sm"
+                                                <select type="text" name="Comprobante de Fondo Fijo" class="form-control input-sm"
                                                         id="id_antecedente" v-validate="'required'" v-model="form.id_antecedente"></select>
+                                                <label class="help" v-show="validation_errors.has('form_reposicion_fondo_fijo.Comprobante de Fondo Fijo')">@{{ validation_errors.first('form_reposicion_fondo_fijo.Comprobante de Fondo Fijo') }}</label>
+
                                             </div>
                                         </div>
 

@@ -200,6 +200,22 @@ Vue.component('reposicion-fondo-fijo-create', {
                         location.reload();
                     });
                 },
+                error: function(error) {
+                    console.log(error.responseJSON.errors);
+
+                    $.each(error.responseJSON.errors, function(e, key) {
+
+                        var field = $('#' + e );
+                        console.log('#' + e );
+                        self.validation_errors.errors.push({
+                            field: field.attr('name'),
+                            msg: key[0],
+
+                            rule: 'valid',
+                            scope: 'form_reposicion_fondo_fijo'
+                        });
+                    });
+                },
                 complete : function () {
                     self.guardando = false;
                 }
