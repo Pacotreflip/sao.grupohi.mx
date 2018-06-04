@@ -193,13 +193,14 @@ class LayoutsController extends BaseController
      * @param $id_requisicion
      * @return mixed
      */
-    public function carga_precios_compras_asignacion(Request $request, $id_requisicion)
+    public function carga_precios_compras_asignacion(Request $request, $id_transaccion_sao)
     {
         // Obten la información de la requisción
-        $req = $this->requisicionRepository->getRequisicion($id_requisicion);
+        $req = $this->requisicionRepository->getRequisicion($id_transaccion_sao);
 
         $info = [
-            'id_requisicion' => $id_requisicion,
+            'id_requisicion' => $req->idrqctoc_solicitudes,
+            'id_transaccion_sao' => $id_transaccion_sao,
             'cot_ids' => is_string($request->ids) ? json_decode($request->ids, true): $request->ids,
             'agrupadores' => !empty($request->agrupadores) ? explode(',', $request->agrupadores) : [],
             'solo_pendientes' => $request->solo_pendientes

@@ -214,8 +214,8 @@ class EloquentRequisicionRepository implements RequisicionRepository
             ->get();
     }
 
-    public function getRequisicion($id_requisicion)
+    public function getRequisicion($id_transaccion_sao)
     {
-        return RQCTOCSolicitud::where('idrqctoc_solicitudes', $id_requisicion)->first();
+        return RQCTOCSolicitud::where('idtransaccion_sao', $id_transaccion_sao)->first();
     }
 }

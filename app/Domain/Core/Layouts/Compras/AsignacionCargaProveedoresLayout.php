@@ -160,7 +160,7 @@ class AsignacionCargaProveedoresLayout extends ValidacionLayout
     {
         set_time_limit(0);
         ini_set("memory_limit", -1);
-        $req = $this->requisicion->getRequisicion($this->info['id_requisicion']);
+        $req = $this->requisicion->getRequisicion($this->info['id_transaccion_sao']);
 
         Config::set(['excel.export.calculate' => true]);
         return Excel::create('Asignación presupuestos', function ($excel) use ($req) {
@@ -180,6 +180,7 @@ class AsignacionCargaProveedoresLayout extends ValidacionLayout
 
                 $index = 1;
                 $haciaAbajo = 3;
+                $reqPresupuestos = [];
                 foreach($arrayRequisicion['valores'] as $key => $requisicion)
                 {
                     $reqPresupuestos = $requisicion['presupuesto'];
@@ -215,7 +216,7 @@ class AsignacionCargaProveedoresLayout extends ValidacionLayout
 
 
                         // Precio Total Moneda Conversión
-                        $sheet->setCellValue(\PHPExcel_Cell::stringFromColumnIndex($desde + 4) . $haciaAbajo, '=IF('. \PHPExcel_Cell::stringFromColumnIndex($desde + 3) . $haciaAbajo .'="EURO",'. \PHPExcel_Cell::stringFromColumnIndex($desde + 3) . $haciaAbajo .'*'. $this->tipo_cambio[3]['cambio'] .'/1, IF('. \PHPExcel_Cell::stringFromColumnIndex($desde + 3) . $haciaAbajo .'="DOLAR USD",'. \PHPExcel_Cell::stringFromColumnIndex($desde + 2) . $haciaAbajo .'*'. $this->tipo_cambio[2]['cambio'] .'/1, IF('. \PHPExcel_Cell::stringFromColumnIndex($desde + 3) . $haciaAbajo .'="PESO MXP",'. \PHPExcel_Cell::stringFromColumnIndex($desde + 2) . $haciaAbajo .'/1, IF('. \PHPExcel_Cell::stringFromColumnIndex($desde + 3) . $haciaAbajo .'="",0))))');
+                        // $sheet->setCellValue(\PHPExcel_Cell::stringFromColumnIndex($desde + 4) . $haciaAbajo, '=IF('. \PHPExcel_Cell::stringFromColumnIndex($desde + 3) . $haciaAbajo .'="EURO",'. \PHPExcel_Cell::stringFromColumnIndex($desde + 3) . $haciaAbajo .'*'. $this->tipo_cambio[3]['cambio'] .'/1, IF('. \PHPExcel_Cell::stringFromColumnIndex($desde + 3) . $haciaAbajo .'="DOLAR USD",'. \PHPExcel_Cell::stringFromColumnIndex($desde + 2) . $haciaAbajo .'*'. $this->tipo_cambio[2]['cambio'] .'/1, IF('. \PHPExcel_Cell::stringFromColumnIndex($desde + 3) . $haciaAbajo .'="PESO MXP",'. \PHPExcel_Cell::stringFromColumnIndex($desde + 2) . $haciaAbajo .'/1, IF('. \PHPExcel_Cell::stringFromColumnIndex($desde + 3) . $haciaAbajo .'="",0))))');
 
                         // idrqctoc_solicitudes_partidas
                         $solicitudPartidas = [];
