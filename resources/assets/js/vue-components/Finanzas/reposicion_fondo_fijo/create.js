@@ -1,4 +1,7 @@
 Vue.component('reposicion-fondo-fijo-create', {
+    props: ['comprobante_fondo_fijo'],
+    template: require('./templates/create.html'),
+
     data: function () {
         return {
             form: {
@@ -42,8 +45,22 @@ Vue.component('reposicion-fondo-fijo-create', {
         }
     },
 
+    computed: {
+        tiene_compobante: function() {
+            return this.comprobante_fondo_fijo != null;
+        }
+    },
+
     mounted: function () {
         var self = this;
+
+        if(self.tiene_compobante) {
+                self.form.destino = self.comprobante_fondo_fijo.fondo_fijo.nombre;
+                self.form.id_referente = self.comprobante_fondo_fijo.fondo_fijo.id_fondo;
+                Vue.set(self.form, 'id_antecedente', self.comprobante_fondo_fijo.id_transaccion);
+                self.form.observaciones = self.comprobante_fondo_fijo.observaciones;
+                self.form.monto = self.comprobante_fondo_fijo.monto;
+        }
 
         self.getFondos();
 
@@ -98,7 +115,7 @@ Vue.component('reposicion-fondo-fijo-create', {
             escapeMarkup: function (markup) {
                 return markup;
             },
-            placeholder: '[--BUSCAR--]',
+            placeholder: self.tiene_compobante ? '# ' + self.comprobante_fondo_fijo.numero_folio + " - " + self.comprobante_fondo_fijo.referencia.trim() + ' (' + self.comprobante_fondo_fijo.observaciones.trim() + ')' : '[--BUSCAR--]',
             minimumInputLength: 1,
             allowClear: true
         }).on('select2:select', function (e) {
@@ -173,6 +190,10 @@ Vue.component('reposicion-fondo-fijo-create', {
             $.ajax({
                 url: App.host + '/api/fondo/' + self.form.id_referente,
                 type: 'GET',
+                headers: {
+                    'X-CSRF-TOKEN': App.csrfToken,
+                    'Authorization': localStorage.getItem('token')
+                },
                 beforeSend: function () {
                     self.cargando = true;
                 },
@@ -204,16 +225,11 @@ Vue.component('reposicion-fondo-fijo-create', {
                     });
                 },
                 error: function(error) {
-                    console.log(error.responseJSON.errors);
-
                     $.each(error.responseJSON.errors, function(e, key) {
-
                         var field = $('#' + e );
-                        console.log('#' + e );
                         self.validation_errors.errors.push({
                             field: field.attr('name'),
                             msg: key[0],
-
                             rule: 'valid',
                             scope: 'form_reposicion_fondo_fijo'
                         });

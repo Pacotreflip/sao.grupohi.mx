@@ -17,6 +17,12 @@
                     <p>#&nbsp;{{$comprobante_fondo_fijo->numero_folio}}</p>
                     <hr>
 
+                    @if($comprobante_fondo_fijo->reposicionFondoFijo)
+                    <strong>Reposición de Fondo Fijo:</strong>
+                    <p>#&nbsp;{{$comprobante_fondo_fijo->reposicionFondoFijo->numero_folio}}</p>
+                    <hr>
+                    @endif
+
                     <strong>Fecha:</strong>
                     <p>{{$comprobante_fondo_fijo->fecha}}</p>
                     <hr>
@@ -123,8 +129,30 @@
                         </div>
                     @endif
                 </div>
+                @if(! $comprobante_fondo_fijo->reposicionFondoFijo)
+                    <div class="box-footer">
+                        <button class="btn btn-sm btn-primary pull-right" data-toggle="modal" data-target="#reposicion_modal">
+                            <i class="fa fa-check"></i> Generar Reposición
+                        </button>
+
+                        <!-- Modal -->
+                        <div class="modal fade" id="reposicion_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                        <h4 class="modal-title" id="myModalLabel">Reposición de Fondo Fijo</h4>
+                                    </div>
+                                    <div class="modal-body">
+                                        <reposicion-fondo-fijo-create :comprobante_fondo_fijo="{{$comprobante_fondo_fijo->toJson()}}" v-cloak></reposicion-fondo-fijo-create>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                @endif
             </div>
         </div>
     </div>
 @endsection
-

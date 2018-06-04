@@ -135,6 +135,7 @@ class ComprobanteFondoFijo extends Transaccion
         return $fecha?Carbon::parse($fecha)->format('Y-m-d'):'';
     }
 
-
-
+    public function reposicionFondoFijo() {
+        return $this->hasOne(ReposicionFondoFijo::class, 'id_antecedente', 'id_transaccion');
+    }
 }
