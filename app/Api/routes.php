@@ -12,7 +12,12 @@ $api->version('v1', function ($api) {
 
     $api->group(['middleware' => ['jwt.auth', 'api.context']], function($api) {
 
+        $api->get('costo/jstree', 'Ghi\Api\Controllers\v1\CostoController@getRoot');
+        $api->get('costo/{id}/jstree', 'Ghi\Api\Controllers\v1\CostoController@getNode')->where(['id' => '[0-9]+']);
+        
         $api->post('empresa', 'Ghi\Api\Controllers\v1\EmpresaController@store');
+        $api->get('empresa/{id}', 'Ghi\Api\Controllers\v1\EmpresaController@find')->where(['id' => '[0-9]+']);
+        $api->get('empresa/lists', 'Ghi\Api\Controllers\v1\EmpresaController@lists');
         $api->post('sucursal', 'Ghi\Api\Controllers\v1\SucursalController@store');
 
         $api->post('contrato_proyectado', 'Ghi\Api\Controllers\v1\ContratoProyectadoController@store');
@@ -83,9 +88,10 @@ $api->version('v1', function ($api) {
         $api->post('sistema_contable/poliza_tipo/paginate', 'Ghi\Api\Controllers\v1\SistemaContable\PolizaTipoController@paginate');
         $api->delete('sistema_contable/poliza_tipo/{id}', 'Ghi\Api\Controllers\v1\SistemaContable\PolizaTipoController@delete')->where(['id' => '[0-9]+']);
         /**
-         * Reposición Fondo Fijo
+         * Solicitudes de Cheque
          */
         $api->post('finanzas/solicitud_cheque/reposicion_fondo_fijo', 'Ghi\Api\Controllers\v1\Finanzas\ReposicionFondoFijoController@store');
+        $api->post('finanzas/solicitud_cheque/pago_cuenta', 'Ghi\Api\Controllers\v1\Finanzas\PagoCuentaController@store');
 
         /**
          * Fondos

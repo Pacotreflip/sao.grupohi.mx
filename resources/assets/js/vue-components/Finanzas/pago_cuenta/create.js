@@ -1,4 +1,4 @@
-Vue.component('reposicion-fondo-fijo-create', {
+Vue.component('pago-cuenta-create', {
     data: function () {
         return {
             form: {
@@ -6,18 +6,16 @@ Vue.component('reposicion-fondo-fijo-create', {
                 vencimiento: new Date().dateShortFormat(),
                 destino: '',
                 fecha: new Date().dateShortFormat(),
-                id_referente: '',
-                id_antecedente: '',
+                id_empresa: '',
                 observaciones: '',
-                monto: ''
+                monto: '',
+                id_costo: ''
             },
-            fondos: {},
-            fondo_fijo: {},
-            cargando : true,
+            empresas: {},
+            cargando: true,
             guardando: false
         }
     },
-
     directives: {
         datepicker: {
             inserted: function (el) {
@@ -31,9 +29,8 @@ Vue.component('reposicion-fondo-fijo-create', {
             }
         }
     },
-
     watch : {
-        'form.id_referente' : function (id) {
+        'form.id_empresa' : function (id) {
             if(id) {
                 this.setAFavorDe(id);
             } else {
@@ -41,105 +38,90 @@ Vue.component('reposicion-fondo-fijo-create', {
             }
         }
     },
-
     mounted: function () {
+
         var self = this;
 
-        self.getFondos();
-
+        self.getEmpresas();
+        self.carga_arbol();
         $('#cumplimiento').datepicker().on("changeDate", function() {
             self.form.cumplimiento = $('#cumplimiento').val();
-            //Vue.set(self.form, 'cumplimiento',$('#cumplimiento').val());
         });
 
         $('#fecha').datepicker().on("changeDate", function() {
             self.form.fecha = $('#fecha').val();
-            //Vue.set(self.form, 'cumplimiento',$('#cumplimiento').val());
         });
 
         $('#vencimiento').datepicker().on("changeDate", function() {
             self.form.vencimiento = $('#vencimiento').val()
-            // Vue.set(self.form, 'vencimiento', $('#vencimiento').val())
-        });
-
-        $('#id_antecedente').select2({
-            width: '100%',
-            ajax: {
-                url: App.host + '/api/finanzas/comprobante_fondo_fijo/search',
-                dataType: 'json',
-                data: function (params) {
-                    var query = {
-                        q: params.term,
-                        limit: 10,
-                        with: 'fondoFijo'
-                    }
-
-                    return query;
-                },
-                processResults: function (data) {
-                    return {
-                        results: $.map(data, function (item) {
-                            var text = '# ' + item.numero_folio + " - " + item.referencia.trim() + ' (' + item.observaciones.trim() + ')';
-                            return {
-                                text:text,
-                                id: item.id_transaccion,
-                                monto: item.monto,
-                                id_referente: item.id_referente,
-                                fondo_fijo: item.fondo_fijo,
-                                observaciones: item.observaciones
-                            }
-                        })
-                    };
-                },
-                error: function (error) {},
-                cache: true
-            },
-            delay: 500,
-            escapeMarkup: function (markup) {
-                return markup;
-            },
-            placeholder: '[--BUSCAR--]',
-            minimumInputLength: 1,
-            allowClear: true
-        }).on('select2:select', function (e) {
-            var data = e.params.data;
-            self.form.id_antecedente = data.id;
-            self.fillData(e.params.data);
-        }).on('select2:unselecting', function (e) {
-            self.form.id_antecedente = '';
-            self.form.monto = '';
-            self.form.id_referente = '';
-            self.form.destino = '';
         });
     },
-
     methods: {
-        getFondos: function() {
+        carga_arbol: function() {
+            var self = this;
+            
+            var jstreeConf = {
+                'core': {
+                    'multiple': false,
+                    'data': {
+                        "url": function (node) {
+                            var costos = "";
+                            if (node.id === "#") {
+                                return App.host + '/api/costo/jstree';
+                            }
+                            return App.host + '/api/costo/' + node.id + '/jstree';
+                        },
+                        "data": function (node) {
+                            return {
+                                "id": node.id
+                            };
+                        }
+                    }
+                },
+                'types': {
+                    'default': {
+                        'icon': 'fa fa-folder-o text-success'
+                    },
+                    'opened': {
+                        'icon': 'fa fa-folder-open-o text-success'
+                    }
+                },
+                'plugins': ['types']
+            };
+
+            $('#myModal').on('shown.bs.modal', function (e) {
+                $('#jstree').jstree(jstreeConf);
+            }).on('hidden.bs.modal', function (e) {
+                var jstree = $('#jstree').jstree(true);
+                var node = jstree.get_selected(true)[0];
+
+                if (node) {
+                    self.form.id_costo = node.id;
+                    $('#costo').val(node.text);
+                }
+            });
+        },
+        getEmpresas: function() {
             var self = this;
             $.ajax({
-                url: App.host + '/api/fondo/lists',
+
+                url: App.host + '/api/empresa/lists',
                 type: 'GET',
                 headers: {
                     'X-CSRF-TOKEN': App.csrfToken,
                     'Authorization': localStorage.getItem('token')
                 },
                 success: function(data) {
-                    self.fondos = data;
+                    self.empresas = data;
                 },
                 complete: function () {
                     self.cargando = false;
                 }
             });
         },
-        fillData: function (data) {
-            this.form.monto = data.monto;
-            this.form.id_referente = data.id_referente;
-            this.form.destino = data.fondo_fijo.nombre;
-            this.form.observaciones = data.observaciones;
-        },
         validateForm: function(scope, funcion) {
             this.$validator.validateAll(scope).then(() => {
-                if(funcion == 'save_reposicion') {
+                if(funcion == 'save_pago') {
                 this.confirmSave();
 
             }
@@ -154,7 +136,7 @@ Vue.component('reposicion-fondo-fijo-create', {
         confirmSave: function () {
             var self = this;
             swal({
-                title: 'Guardar Reposición de Fondo Fijo',
+                title: 'Guardar Pago a Cuenda',
                 text: "¿Está seguro de que la información es correcta?",
                 type: 'warning',
                 showCancelButton: true,
@@ -168,16 +150,16 @@ Vue.component('reposicion-fondo-fijo-create', {
                 }
             });
         },
-        setAFavorDe: function() {
+        setAFavorDe: function(id) {
             var self = this;
             $.ajax({
-                url: App.host + '/api/fondo/' + self.form.id_referente,
+                url: App.host + '/api/empresa/' + id,
                 type: 'GET',
                 beforeSend: function () {
                     self.cargando = true;
                 },
                 success: function (response) {
-                    self.form.destino = response.nombre;
+                    self.form.destino = response.data.razon_social;
                 },
                 complete: function () {
                     self.cargando = false;
@@ -185,20 +167,20 @@ Vue.component('reposicion-fondo-fijo-create', {
             });
         },
 
-        save : function () {
+        save: function () {
             var self = this;
             $.ajax({
-                url : App.host + '/api/finanzas/solicitud_cheque/reposicion_fondo_fijo',
+                url : App.host + '/api/finanzas/solicitud_cheque/pago_cuenta',
                 type : 'POST',
                 data : self.form,
                 beforeSend : function () {
                     self.guardando = true;
                 },
-                success : function (response) {
+                success : function () {
                     swal({
                         type : 'success',
                         title : '¡Correcto!',
-                        html : 'Reposición de Fondo Fijo guardada correctamente'
+                        html : 'Pago a Cuenta guardado correctamente'
                     }).then(function () {
                         location.reload();
                     });
@@ -213,9 +195,8 @@ Vue.component('reposicion-fondo-fijo-create', {
                         self.validation_errors.errors.push({
                             field: field.attr('name'),
                             msg: key[0],
-
                             rule: 'valid',
-                            scope: 'form_reposicion_fondo_fijo'
+                            scope: 'form_pago_cuenta'
                         });
                     });
                 },
