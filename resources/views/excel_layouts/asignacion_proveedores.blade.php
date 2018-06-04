@@ -47,8 +47,8 @@
             @foreach($requisicion['valores'] as $key => $req)
                 @foreach($req['presupuesto'] as $key => $cot)
                     <?php
-                    $empresas_ids[] = $cot->idtransaccion_sao;
-                    $cotizacions_ids[] = $cot->empresa->id_empresa;
+                        $cotizacions_ids[] = $cot->idtransaccion_sao;
+                        $empresas_ids[] = $cot->empresa->id_empresa;
                     ?>
                 @endforeach
             @endforeach
@@ -103,7 +103,7 @@
         <?php $ultimalinearinght = ($index==count($requisicion['valores']))? 'laterales-right-sin':'laterales-right'; ?>
         {{--Cantidades--}}
         <?php
-        if($req['partida']->item->transaccion->estatus_transaccion == 1)
+        if(isset($req['partida']->item) && $req['partida']->item->transaccion->estatus_transaccion == 1)
         {
             if($req['partida']->cantidad_original !=0)
             {

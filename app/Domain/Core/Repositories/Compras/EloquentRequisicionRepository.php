@@ -161,8 +161,7 @@ class EloquentRequisicionRepository implements RequisicionRepository
 
     public  function getCotizaciones($id_requisicion, $ids_cot = [])
     {
-        return RQCTOCCotizaciones::whereIn('idrqctoc_cotizaciones', $ids_cot)
-            ->where('idrqctoc_solicitudes', $id_requisicion)
+        return RQCTOCCotizaciones::whereIn('idtransaccion_sao', $ids_cot)
             ->with(['rqctocSolicitud.rqctocSolicitudPartidas.item.transaccion', 'rqctocSolicitud.rqctocSolicitudPartidas.material', 'empresa', 'sucursal'])
             ->get();
     }
