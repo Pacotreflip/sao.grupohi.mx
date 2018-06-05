@@ -12,7 +12,12 @@ $api->version('v1', function ($api) {
 
     $api->group(['middleware' => ['jwt.auth', 'api.context']], function($api) {
 
+        $api->get('costo/jstree', 'Ghi\Api\Controllers\v1\CostoController@getRoot');
+        $api->get('costo/{id}/jstree', 'Ghi\Api\Controllers\v1\CostoController@getNode')->where(['id' => '[0-9]+']);
+
         $api->post('empresa', 'Ghi\Api\Controllers\v1\EmpresaController@store');
+        $api->get('empresa/{id}', 'Ghi\Api\Controllers\v1\EmpresaController@find')->where(['id' => '[0-9]+']);
+        $api->get('empresa/lists', 'Ghi\Api\Controllers\v1\EmpresaController@lists');
         $api->post('sucursal', 'Ghi\Api\Controllers\v1\SucursalController@store');
 
         $api->post('contrato_proyectado', 'Ghi\Api\Controllers\v1\ContratoProyectadoController@store');
@@ -92,6 +97,21 @@ $api->version('v1', function ($api) {
         $api->get('layouts/contratos/contrato_proyectado/{id_contrato_proyectado}/asignacion', 'Ghi\Api\Controllers\v1\LayoutsController@contratos_asignacion');
         $api->post('layouts/contratos/contrato_proyectado/{id_contrato_proyectado}/asignacion', 'Ghi\Api\Controllers\v1\LayoutsController@contratos_asignacion_store');
 
+        /**
+         * Solicitudes de Cheque
+         */
+        $api->post('finanzas/solicitud_cheque/reposicion_fondo_fijo', 'Ghi\Api\Controllers\v1\Finanzas\ReposicionFondoFijoController@store');
+        $api->post('finanzas/solicitud_cheque/pago_cuenta', 'Ghi\Api\Controllers\v1\Finanzas\PagoCuentaController@store');
+
+        /**
+         * Fondos
+         */
+        $api->get('fondo/lists', 'Ghi\Api\Controllers\v1\FondoController@lists');
+        $api->get('fondo/{id}', 'Ghi\Api\Controllers\v1\FondoController@find');
+        /**
+         * comprobante fondo fijo
+         */
+        $api->get('finanzas/comprobante_fondo_fijo/search', 'Ghi\Api\Controllers\v1\Finanzas\ComprobanteFondoFijoController@search');
     });
 });
 

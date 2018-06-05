@@ -15,18 +15,22 @@ interface EmpresaRepository
 {
     /**
      * @param $with
+     *
      * @return \Ghi\Domain\Core\Models\Contabilidad\collection|CuentaEmpresa
      */
     public function all();
 
     /**
      * @param $id
+     *
      * @return \Ghi\Domain\Core\Models\Contabilidad\CuentaEmpresa
      */
     public function find($id);
 
     /**Crea relaciones con otros modelos
+     *
      * @param array $array
+     *
      * @return mixed
      */
     public function with($relations);
@@ -38,8 +42,16 @@ interface EmpresaRepository
 
     /**
      * Crea un registro de Empresa
+     *
      * @param array $data
+     *
      * @return Empresa
      */
     public function create(array $data);
+
+    /**
+     * Devuelve una lista de empresas para listas
+     * @return array
+     */
+    public function lists();
 }

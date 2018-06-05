@@ -62,7 +62,7 @@ class CostoController extends Controller
     public function getNode($id)
     {
         $node = $this->costo->getDescendantsOf($id);
-        $resp=CostoTreeTransformer::transform($node);
+        $resp = CostoTreeTransformer::transform($node);
 
         return response()->json($resp, 200);
 
