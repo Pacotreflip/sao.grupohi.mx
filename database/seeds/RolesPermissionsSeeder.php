@@ -246,6 +246,8 @@ class RolesPermissionsSeeder extends Seeder
             $registrar_movimiento_bancario->id,
             $consultar_movimiento_bancario->id,
             $editar_movimiento_bancario->id,
+            $registrar_pago_cuenta->id,
+            $registrar_reposicion_fondo_fijo->id,
         ]);
         $consulta_finanzas->perms()->sync([
             $consultar_comprobante_fondo_fijo->id,
