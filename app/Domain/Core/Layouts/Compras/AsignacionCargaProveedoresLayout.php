@@ -3,6 +3,7 @@
 namespace Ghi\Domain\Core\Layouts\Compras;
 
 use Carbon\Carbon;
+use Ghi\Core\Facades\Context;
 use Ghi\Domain\Core\Layouts\ValidacionLayout;
 use Ghi\Domain\Core\Contracts\Compras\RequisicionRepository;
 use Ghi\Domain\Core\Models\ControlRec\RQCTOCCotizacionesPartidas;
@@ -414,7 +415,7 @@ class AsignacionCargaProveedoresLayout extends ValidacionLayout
                     $sheet->setCellValue(\PHPExcel_Cell::stringFromColumnIndex($desde +1) . $pos, '='. \PHPExcel_Cell::stringFromColumnIndex($desde +1) . ($pos - 2) .'+'. \PHPExcel_Cell::stringFromColumnIndex($desde + 1) . ($pos - 1));
                 }
 
-                // Fecha de Presupuesto
+                // Fecha de Cotización
                 $pos = ++$haciaAbajo;
                 foreach($reqPresupuestos as $key => $cotizacion)
                 {
@@ -428,6 +429,20 @@ class AsignacionCargaProveedoresLayout extends ValidacionLayout
                     $sheet->getStyle(\PHPExcel_Cell::stringFromColumnIndex($desde +1) . $pos)->getProtection()->setLocked(\PHPExcel_Style_Protection::PROTECTION_PROTECTED);
                 }
 
+                // Pago en Parcialdades (%)
+                $pos = ++$haciaAbajo;
+                foreach($reqPresupuestos as $key => $cotizacion)
+                {
+                    // Referencia de posición para la cotización
+                    $desdeCot = ((count($this->headerDinamicos) * $key) + (count($this->headerFijos)));
+
+                    // Referencia de posición para los totales/subtotales
+                    $desde = $desdeCot - 1;
+                    $sheet->setCellValue(\PHPExcel_Cell::stringFromColumnIndex($desde) . $pos, 'Pago en Parcialdades (%)');
+                    $sheet->setCellValue(\PHPExcel_Cell::stringFromColumnIndex($desde +1) . $pos, $cotizacion->anticipo_pactado);
+                    $sheet->getStyle(\PHPExcel_Cell::stringFromColumnIndex($desde +1) . $pos)->getProtection()->setLocked(\PHPExcel_Style_Protection::PROTECTION_UNPROTECTED);
+                }
+
                 // % Anticipo
                 $pos = ++$haciaAbajo;
                 foreach($reqPresupuestos as $key => $cotizacion)
@@ -438,11 +453,11 @@ class AsignacionCargaProveedoresLayout extends ValidacionLayout
                     // Referencia de posición para los totales/subtotales
                     $desde = $desdeCot - 1;
                     $sheet->setCellValue(\PHPExcel_Cell::stringFromColumnIndex($desde) . $pos, '% Anticipo');
-                    $sheet->setCellValue(\PHPExcel_Cell::stringFromColumnIndex($desde +1) . $pos, '0');
+                    $sheet->setCellValue(\PHPExcel_Cell::stringFromColumnIndex($desde +1) . $pos, $cotizacion->anticipo);
                     $sheet->getStyle(\PHPExcel_Cell::stringFromColumnIndex($desde +1) . $pos)->getProtection()->setLocked(\PHPExcel_Style_Protection::PROTECTION_UNPROTECTED);
                 }
 
-                // Crédito dias
+                // Crédito días
                 $pos = ++$haciaAbajo;
                 foreach($reqPresupuestos as $key => $cotizacion)
                 {
@@ -451,12 +466,12 @@ class AsignacionCargaProveedoresLayout extends ValidacionLayout
 
                     // Referencia de posición para los totales/subtotales
                     $desde = $desdeCot - 1;
-                    $sheet->setCellValue(\PHPExcel_Cell::stringFromColumnIndex($desde) . $pos, 'Crédito dias');
-                    $sheet->setCellValue(\PHPExcel_Cell::stringFromColumnIndex($desde +1) . $pos, '');
+                    $sheet->setCellValue(\PHPExcel_Cell::stringFromColumnIndex($desde) . $pos, 'Crédito días');
+                    $sheet->setCellValue(\PHPExcel_Cell::stringFromColumnIndex($desde +1) . $pos, $cotizacion->días_credito);
                     $sheet->getStyle(\PHPExcel_Cell::stringFromColumnIndex($desde +1) . $pos)->getProtection()->setLocked(\PHPExcel_Style_Protection::PROTECTION_UNPROTECTED);
                 }
 
-                // Vigencia dias
+                // Plazo entrega
                 $pos = ++$haciaAbajo;
                 foreach($reqPresupuestos as $key => $cotizacion)
                 {
@@ -465,8 +480,22 @@ class AsignacionCargaProveedoresLayout extends ValidacionLayout
 
                     // Referencia de posición para los totales/subtotales
                     $desde = $desdeCot - 1;
-                    $sheet->setCellValue(\PHPExcel_Cell::stringFromColumnIndex($desde) . $pos, 'Vigencia dias');
-                    $sheet->setCellValue(\PHPExcel_Cell::stringFromColumnIndex($desde +1) . $pos, '');
+                    $sheet->setCellValue(\PHPExcel_Cell::stringFromColumnIndex($desde) . $pos, 'Tiempo de Entrega (días)');
+                    $sheet->setCellValue(\PHPExcel_Cell::stringFromColumnIndex($desde +1) . $pos, $cotizacion->plazo_entrega);
+                    $sheet->getStyle(\PHPExcel_Cell::stringFromColumnIndex($desde +1) . $pos)->getProtection()->setLocked(\PHPExcel_Style_Protection::PROTECTION_UNPROTECTED);
+                }
+
+                // Vigencia días
+                $pos = ++$haciaAbajo;
+                foreach($reqPresupuestos as $key => $cotizacion)
+                {
+                    // Referencia de posición para la cotización
+                    $desdeCot = ((count($this->headerDinamicos) * $key) + (count($this->headerFijos)));
+
+                    // Referencia de posición para los totales/subtotales
+                    $desde = $desdeCot - 1;
+                    $sheet->setCellValue(\PHPExcel_Cell::stringFromColumnIndex($desde) . $pos, 'Vigencia días');
+                    $sheet->setCellValue(\PHPExcel_Cell::stringFromColumnIndex($desde +1) . $pos, $cotizacion->vigencia);
                     $sheet->getStyle(\PHPExcel_Cell::stringFromColumnIndex($desde +1) . $pos)->getProtection()->setLocked(\PHPExcel_Style_Protection::PROTECTION_UNPROTECTED);
                 }
 

@@ -47,8 +47,8 @@
             @foreach($requisicion['valores'] as $key => $req)
                 @foreach($req['presupuesto'] as $key => $cot)
                     <?php
-                    $empresas_ids[] = $cot->idtransaccion_sao;
-                    $cotizacions_ids[] = $cot->empresa->id_empresa;
+                        $cotizacions_ids[] = $cot->idtransaccion_sao;
+                        $empresas_ids[] = $cot->empresa->id_empresa;
                     ?>
                 @endforeach
             @endforeach
@@ -103,7 +103,7 @@
         <?php $ultimalinearinght = ($index==count($requisicion['valores']))? 'laterales-right-sin':'laterales-right'; ?>
         {{--Cantidades--}}
         <?php
-        if($req['partida']->item->transaccion->estatus_transaccion == 1)
+        if(isset($req['partida']->item) && $req['partida']->item->transaccion->estatus_transaccion == 1)
         {
             if($req['partida']->cantidad_original !=0)
             {
@@ -140,17 +140,20 @@
             <!-- Información de la cotización -->
             @foreach($req['presupuesto'] as $key => $cot)
                 <?php
+                $cot_partida = $cot->rqctocCotizacionPartidas()->with('material')->where('idrqctoc_solicitudes_partidas', '=',
+                    $req['partida']->idrqctoc_solicitudes_partidas)->first();
                 $desde = (count($headerCotizaciones) * $key) + (count($headerRequisiciones));
+
                 ?>
 
                 {{--Precio Unitario--}}
                 <td style="background-color: #9bc2e6;" class="{{$ultimalinealeft}} ">
-                    {{ $cot->importe }}
+                    {{ $cot_partida ? $cot_partida->precio_unitario : '' }}
                 </td>
 
                 {{--% Descuento--}}
                 <td style="background-color: #9bc2e6" class="{{$ultimalinea}} ">
-                    0
+                    {{ $cot_partida ? $cot_partida->porcentaje_descuento : '' }}
                 </td>
 
                 {{--Precio Total--}}
@@ -168,7 +171,7 @@
                 <td style="background-color: #9bc2e6" class="{{$ultimalinea}} "></td>
 
                 {{--material_sao--}}
-                <td style="background-color: #fff; color: #fff">{{ $cot->idmaterial_sao }}</td>
+                <td style="background-color: #fff; color: #fff">{{ $req['partida']->material->id_material }}</td>
 
                 {{--idrqctoc_solicitudes_partidas--}}
                 <td style="background-color: #fff; color: #fff"></td>
