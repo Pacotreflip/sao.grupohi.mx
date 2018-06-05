@@ -15,8 +15,11 @@ use Ghi\Domain\Core\Models\Scopes\CotizacionCompraScope;
 use Ghi\Domain\Core\Models\Scopes\ObraScope;
 use Ghi\Domain\Core\Models\Sucursal;
 use Ghi\Domain\Core\Models\Transacciones\Transaccion;
-use Ghi\Domain\Core\Models\ControlRec\RQCTOCCotizaciones;
 
+/**
+ * Class CotizacionCompra
+ * @package Ghi\Domain\Core\Models\Compras
+ */
 class CotizacionCompra extends Transaccion
 {
     /**
@@ -30,18 +33,30 @@ class CotizacionCompra extends Transaccion
         static::addGlobalScope(new ObraScope());
     }
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
     public function cotizaciones() {
         return $this->hasMany(Cotizacion::class, 'id_transaccion', 'id_transaccion');
     }
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
     public function empresa() {
         return $this->belongsTo(Empresa::class, 'id_empresa', 'id_empresa');
     }
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
     public function sucursal() {
         return $this->belongsTo(Sucursal::class, 'id_sucursal', 'id_sucursal');
     }
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
     public function rqctocCotizacion() {
         return $this->hasOne(RQCTOCCotizaciones::class, 'idtransaccion_sao', 'id_transaccion');
     }

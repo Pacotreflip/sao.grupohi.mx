@@ -491,17 +491,17 @@ class AsignacionCargaPreciosLayout extends ValidacionLayout
                 $col = $sheet->toArray();
                 $_headers = $results->getHeading();
                 $identificadores = !empty($_headers[0]) ? $this->mCrypt->decrypt($_headers[0]) : [];
-                $idTransaciones = current(explode($this->delimiter, $identificadores));
-                $idTransacion = explode(',', $idTransaciones);
+                $idTransaciones = explode($this->delimiter, $identificadores);
+                $idTransacion = explode(',', current($idTransaciones));
                 $headers = $col[($this->cabecerasLength - 1)];
-                /*$agrupadores = $_headers[2];
-                $solo_pendientes = $_headers[3];
+                $agrupadores = $idTransaciones[2];
+                $solo_pendientes = $idTransaciones[3];
                 $this->info = [
                     'id_contrato_proyectado' => $this->id_contrato_proyectado,
                     'presupuesto_ids' => $idTransacion,
                     'agrupadores' => $agrupadores,
                     'solo_pendientes' => $solo_pendientes
-                ];*/
+                ];
 
                 $layout = $this->setData();
                 if ($this->validarHeader($headers, $layout)) {

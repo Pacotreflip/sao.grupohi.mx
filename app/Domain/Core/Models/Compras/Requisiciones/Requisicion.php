@@ -13,9 +13,16 @@ use Ghi\Domain\Core\Models\Transacciones\TransaccionTrait;
 use Ghi\Domain\Core\Models\Procuracion\Asignaciones;
 use Ghi\Domain\Core\Models\ControlRec\RQCTOCSolicitud;
 
+/**
+ * Class Requisicion
+ * @package Ghi\Domain\Core\Models\Compras\Requisiciones
+ */
 class Requisicion extends Transaccion
 {
 
+    /**
+     * @var array
+     */
     protected $fillable = [
         'tipo_transaccion',
         'fecha',
@@ -23,6 +30,9 @@ class Requisicion extends Transaccion
         'observaciones'
     ];
 
+    /**
+     * @var array
+     */
     protected $dates = ['fecha'];
 
     /**
@@ -72,6 +82,9 @@ class Requisicion extends Transaccion
         return $this->transaccionExt->tipoRequisicion();
     }
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
     public function cotizacionesCompra() {
         return $this->hasMany(CotizacionCompra::class, 'id_antecedente', 'id_transaccion');
     }
@@ -82,6 +95,10 @@ class Requisicion extends Transaccion
     public function asignaciones(){
         return $this->hasMany(Asignaciones::class, 'id_transaccion', 'id_transaccion');
     }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
     public function rqctocSolicitud() {
         return $this->hasOne(RQCTOCSolicitud::class, 'idtransaccion_sao', 'id_transaccion')->where('base_sao', '=', Context::getDatabaseName());
     }

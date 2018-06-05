@@ -5,6 +5,8 @@ namespace Ghi\Domain\Core\Layouts\Compras;
 use Carbon\Carbon;
 use Ghi\Domain\Core\Layouts\ValidacionLayout;
 use Ghi\Domain\Core\Contracts\Compras\RequisicionRepository;
+use Ghi\Domain\Core\Models\ControlRec\RQCTOCCotizacionesPartidas;
+use Ghi\Domain\Core\Models\ControlRec\RQCTOCSolicitudPartidas;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\DB;
@@ -15,6 +17,10 @@ use Dingo\Api\Exception\StoreResourceFailedException;
 use Dingo\Api\Http\Request;
 use Ghi\Domain\Core\Models\Cambio;
 
+/**
+ * Class AsignacionCargaProveedoresLayout
+ * @package Ghi\Domain\Core\Layouts\Compras
+ */
 class AsignacionCargaProveedoresLayout extends ValidacionLayout
 {
     /**
@@ -35,43 +41,74 @@ class AsignacionCargaProveedoresLayout extends ValidacionLayout
      * @var int
      */
     protected $partidaAsignacion = 0;
-
+    /**
+     * @var int
+     */
     protected $operaciones = 15;
-
+    /**
+     * @var string
+     */
+    protected $delimiter = '|';
     /**
      * @var array
      */
     protected $headerFijos = [
         "#" => "#",
-        "id" => "Id",
+        "Id" => "Id",
         "descripcion_span" => "descripcion_span",
         "unidad" => "unidad",
-        "cantidad_solicitada" => "cantidad solicitada",
-        "cantidad_autorizada" => "cantidad_aprobada",
+        "cantidad solicitada" => "cantidad solicitada",
+        "cantidad_aprobada" => "cantidad_aprobada",
     ];
 
     /**
      * @var array
      */
     protected $headerDinamicos = [
-
-        "precio_unitario" => "Precio Unitario",
-        "descuento" => "% Descuento",
-        "precio_total" => "Precio Total",
-        "moneda" => "Moneda",
-        "precio_total_moneda_conversion" => "Precio Total Moneda Conversión",
-        "observaciones" => "Observaciones",
+        "Precio Unitario" => "Precio Unitario",
+        "% Descuento" => "% Descuento",
+        "Precio Total" => "Precio Total",
+        "Moneda" => "Moneda",
+        "Precio Total Moneda Conversión" => "Precio Total Moneda Conversión",
+        "Observaciones" => "Observaciones",
         "material_sao" => "material_sao",
         "idrqctoc_solicitudes_partidas" => "idrqctoc_solicitudes_partidas",
         "idrqctoc_solicitudes" => "idrqctoc_solicitudes",
         "idmoneda" => "idmoneda",
-        "separador" => "",
+        "" => "",
     ];
+    /**
+     * @var array
+     */
+    protected $rowOperacionesExtra = [
+        "descuento" => "% Descuento",
+        "subtotal_precio_pesos" => "Subtotal Precios PESO MXP",
+        "subtotal_precio_dolar" => "Subtotal Precios DOLAR USD",
+        "subtotal_precio_euro" => "Subtotal Precios EURO",
+        "tc_usd" => "TC USD",
+        "tc_euro" => "TC EURO",
+        "moneda_de_conv" => "Moneda de Conv",
+        "subtotal_moneda_conv" => "Subtotal Moneda Conv",
+        "iva" => "IVA",
+        "total" => "Total",
+        "fecha_de_presupuesto" => "Fecha de Presupuesto",
+        "anticipio" => "% Anticipo",
+        "credito_dias" => "Crédito dias",
+        "vigencia_dias" => "Vigencia dias",
+        "observaciones" => "Observaciones Generales",
+    ];
+    /**
+     * @var
+     */
     private $tipo_cambio;
     /**
      * @var RequisicionRepository
      */
     private $requisicion;
+    /**
+     * @var int
+     */
+    protected $id_requisicion;
 
     /**
      * AsignacionSubcontratistasLayout constructor.
@@ -88,7 +125,7 @@ class AsignacionCargaProveedoresLayout extends ValidacionLayout
         $this->lengthHeaderDinamicos = count($this->headerDinamicos);
         $this->requisicion = $requisicionRepository;
         $this->info = $info;
-        $this->cabecerasLength = 1;
+        $this->cabecerasLength = 2;
 
         // Tipo cambio hoy
         $tipo_cambio = Cambio::where('fecha', '=', date('Y-m-d'))->get()->toArray();
@@ -455,66 +492,107 @@ class AsignacionCargaProveedoresLayout extends ValidacionLayout
 
     /**
      * @param Request $request
+     *
      * @return bool
      */
     public function qetDataFile(Request $request)
     {
+        $requisicion = $this->requisicion->find($this->id_requisicion);
         set_time_limit(0);
         ini_set("memory_limit", -1);
         $results = false;
-        Excel::load($request->file('file')->getRealPath(), function ($reader) use (&$results) {
+        Excel::load($request->file('file')->getRealPath(), function ($reader) use (&$results, $requisicion) {
             try {
                 $results = $reader->all();
                 $sheet = $reader->sheet($results->getTitle(), function (LaravelExcelWorksheet $sheet) {
                     $sheet->getProtection()->setSheet(false);
                 });
-                $folio = explode(' ', $results->getTitle());
                 //->Validar que el Layout corresponda a la transacción
-                /*if ('# ' . str_pad($this->requisicion->numero_folio, 5, '0', STR_PAD_LEFT) != $results->getTitle()) {
-                    throw new \Exception("No corresponde el layout al Contrato");
-                }*/
-                //$headers = $results->getHeading();
+                if ('# ' . str_pad($requisicion->numero_folio, 5, '0', STR_PAD_LEFT) != $results->getTitle()) {
+                    throw new \Exception("No corresponde el layout al Contrato con el folio [" . $results->getTitle() . "]");
+                }
                 $col = $sheet->toArray();
-                $headers = $col[$this->cabecerasLength];
+                $_headers = $results->getHeading();
+                $identificadores = !empty($_headers[0]) ? $this->mCrypt->decrypt($_headers[0]) : [];
+                $idTransaciones = explode($this->delimiter, $identificadores);
+                $idTransacion = explode(',', current($idTransaciones));
+                $idTransacion = ['17429'];
+                $headers = $col[($this->cabecerasLength - 1)];
+                $cot_ids = $idTransaciones[1];
+                $cot_ids = '106492';
+                $agrupadores = $idTransaciones[2];
+                $solo_pendientes = $idTransaciones[3];
+                $req = $this->requisicion->getRequisicion($this->id_requisicion);
+                $this->info = [
+                    'id_requisicion' => $req->idrqctoc_solicitudes,
+                    'id_transaccion_sao' => $this->id_requisicion,
+                    'cot_ids' => explode(',', $cot_ids),
+                    'agrupadores' => !empty($agrupadores) ? explode(',', $agrupadores) : [],
+                    'solo_pendientes' => $solo_pendientes,
+                ];
                 $layout = $this->setData();
                 if ($this->validarHeader($headers, $layout)) {
                     if (count($col) != ($layout['maxRow'] + $this->cabecerasLength + $this->operaciones)) {
                         throw new \Exception("No es posible procesar el Layout debido a que presenta diferencias con la información actual del Contrato Proyectado ");
                     }
-                    $asignaciones = [];
+                    $arrayCotiazaciones = [];
                     for ($i = $this->cabecerasLength; $i < count($col); $i++) {
                         $row = $col[$i];
                         $maxCol = count($row);
                         $j = $this->lengthHeaderFijos + ($this->lengthHeaderDinamicos - 1);
                         $k = $this->lengthHeaderFijos;
+                        $l = 0;
                         while ($j <= $maxCol) {
-                            $id_concepto = $row[1];
-                            $id_transaccion = !empty($row[$k]) ? $this->mCrypt->decrypt($row[$k]) : '';
-                            if (is_numeric($id_transaccion) and !empty($id_transaccion)) {
-                                if ($row[$k + ($this->lengthHeaderDinamicos - 1)] > 0) {
-                                    $asignaciones[$id_transaccion]['partidas'][] = [
+                            //$cotizaciones = !empty($row[1]) ? $this->mCrypt->decrypt($row[1]) : '';
+                            $id_cotizacion = explode($this->delimiter, $row[1]);
+                            $id_transaccion = !empty($idTransacion[$l]) ? $idTransacion[$l] : '';
+
+                            if ($i < ($layout['maxRow'] + $this->cabecerasLength)) {
+                                if (is_numeric($id_transaccion) and !empty($id_transaccion) && is_array($id_cotizacion) and count($id_cotizacion)) {
+                                    $arrayCotiazaciones[$id_transaccion]['partidas'][] = [
                                         'linea' => $i,
-                                        'id_concepto' => $id_concepto,//de contratos
-                                        'id_transaccion'=> $id_transaccion,//transaccion de presupuesto
-                                        'precio_unitario_antes_descuento' => str_replace(",", "", $row[$k + ($this->lengthHeaderDinamicos - 1)]),
-                                        'precio_tototal_antes_descuento' => str_replace(",", "", $row[$k + ($this->lengthHeaderDinamicos - 1)]),
-                                        'porcentaje_descuento' => "",
-                                        'precio_unitario' => str_replace(",", "", $row[$k + ($this->lengthHeaderDinamicos - 1)]),
-                                        'precio_total' => str_replace(",", "", $row[$k + ($this->lengthHeaderDinamicos - 1)]),
-                                        'moneda' => $row[$k + ($this->lengthHeaderDinamicos - 1)],
-                                        'precio_unitario_moneda_convertido' =>  str_replace(",", "", $row[$k + ($this->lengthHeaderDinamicos - 1)]),
-                                        'precio_total_moneda_convertido' => str_replace(",", "", $row[$k + ($this->lengthHeaderDinamicos - 1)]),
-                                        'observaciones' =>  $row[$k + ($this->lengthHeaderDinamicos - 1)],
+                                        'unidad' => $row[3],//de contratos
+                                        'cantidad solicitada' => $row[4],//de contratos
+                                        'cantidad_aprobada' => $row[5],//de contratos
+                                        'id_cotizacion' => $id_cotizacion,//de contratos
+
+
+                                        'precio_unitario' => str_replace(",", "",
+                                            $row[$k + ($this->lengthHeaderDinamicos - 11)]),
+                                        "PorcentajeDescuento" => $row[$k + ($this->lengthHeaderDinamicos - 10)],
+                                        'precio_total' => str_replace(",", "",
+                                            $row[$k + ($this->lengthHeaderDinamicos - 9)]),
+                                        //
+                                        "Observaciones" => $row[$k + ($this->lengthHeaderDinamicos - 7)],
+                                        "precio_total_moneda_convertido" => $row[$k + ($this->lengthHeaderDinamicos - 6)],
+                                        'material_sao' => str_replace(",", "",
+                                            $row[$k + ($this->lengthHeaderDinamicos - 5)]),
+                                        'idrqctoc_solicitudes_partidas' => $this->mCrypt->decrypt($row[$k + ($this->lengthHeaderDinamicos - 4)]),
+                                        'idrqctoc_solicitudes' => $row[$k + ($this->lengthHeaderDinamicos - 3)],
+                                        "IdMoneda" => $row[$k + ($this->lengthHeaderDinamicos - 2)],
+                                        "estado" => 1,
                                     ];
                                 }
+                            } else {
+                                $aux = $col[$this->cabecerasLength + 1];
+                                $detalle = !empty($row[$this->lengthHeaderFijos - 1]) ? $row[$this->lengthHeaderFijos - 1] : '';
+                                $valorDetalle = !empty($row[$k]) ? $row[$k] : '';
+                                $keyDetalle = array_search($detalle, $this->rowOperacionesExtra);
+                                $arrayCotiazaciones[$id_transaccion]['cotizacion'][$keyDetalle] = $valorDetalle;
                             }
                             $k += $this->lengthHeaderDinamicos;
                             $j += $this->lengthHeaderDinamicos;
+                            $l++;
                         }
                     }
-                    dd($asignaciones);
+                    if (count($arrayCotiazaciones) > 0) {
+                        $results = $this->procesarDatos($arrayCotiazaciones);
+                    } else {
+                        throw new \Exception("Ingrese por lo menos una cantidad asignada");
+                    }
                 }
             } catch (\Exception $e) {
+                dd($e->getTraceAsString());
                 if (count($this->resultData) > 0) {
                     throw new StoreResourceFailedException($e->getMessage(), $this->resultData);
                 } else {
@@ -525,19 +603,217 @@ class AsignacionCargaProveedoresLayout extends ValidacionLayout
         return $results;
     }
 
-    public function procesarDatos(array $asignaciones)
+    /**
+     * @param array $cotizaciones
+     *
+     * @return array
+     * @throws \Exception
+     */
+    public function procesarDatos(array $cotizaciones)
     {
         try {
             DB::connection('cadeco')->beginTransaction();
+            DB::connection('controlrec')->beginTransaction();
             $error = 0;
             $success = 0;
             $sumatorias = [];
+            $mensajeError = '';
+            $requisicion = $this->requisicion->find($this->id_requisicion);
+            foreach ($cotizaciones as $key => $gralCotizacion) {
+                $cotizacionCompra = $requisicion->cotizacionesCompra()->find($key);
+                if(count($cotizacionCompra)) {
+                    $anticipo = $gralCotizacion["cotizacion"]["anticipio"];
+                    $idmoneda = ($gralCotizacion["cotizacion"]["moneda_de_conv"] == 'PESO MX') ? 3 : 0;
+                    $vigencia = $gralCotizacion["cotizacion"]["vigencia_dias"];
+                    $ex = explode("-", $gralCotizacion["cotizacion"]["fecha_de_presupuesto"]);
+                    $fecha_cotizacion = $ex[2] . "-" . $ex[1] . "-" . $ex[0];
+                    if ($anticipo > 100) {
+                        $mensajeError = "El porcentaje de anticipo no puede ser mayor a 100";
+                        $error++;
+                    }
+                    $idCotizacion = $cotizacionCompra->rqctocCotizacion->idrqctoc_cotizaciones;
+                    $con_asignacion = $this->requisicion->getNumAsignaciones($idCotizacion);
+                    if ($con_asignacion) {
+                        $mensajeError = "La cotización no puede ser modificada debido a que se encuentra relacionada en al menos una asignación de compra";
+                        $error++;
+                    }
 
+                    /*if ($error > 0) {
+                        $this->resultData = $cotizaciones;
+                        throw new \Exception($mensajeError);
+                    }*/
+
+                    $precio_unitario = '';
+                    $cantidad = '';
+                    $anticipo_pactado = '';
+                    $subtotal = str_replace(",", "", $gralCotizacion["cotizacion"]["subtotal_moneda_conv"]);
+                    $impuesto = str_replace(",", "", $gralCotizacion["cotizacion"]["iva"]);
+                    $monto = str_replace(",", "", $gralCotizacion["cotizacion"]["total"]);
+                    $dias_credito = $gralCotizacion["cotizacion"]["credito_dias"];
+                    $plazo_entrega = $gralCotizacion["cotizacion"]["credito_dias"];
+                    $segundos_sumar = $vigencia * 86400;
+                    $month = $ex[1];
+                    $day = $ex[2];
+                    $year = $ex[0];
+                    $segundos_iniciales = mktime(0, 0, 0, $month, $day, $year);
+                    $segundos_totales = $segundos_sumar + $segundos_iniciales;
+                    $cumplimiento = $fecha_cotizacion;
+                    $vencimiento = date("Y-m-d", $segundos_totales);
+                    if ($idmoneda == 1) {
+                        $id_moneda = 2;
+                    } elseif ($idmoneda == 2) {
+                        $id_moneda = 3;
+                    } elseif ($idmoneda == 3) {
+                        $id_moneda = 1;
+                    }
+                    $datos_transaccion = [
+                        "cumplimiento" => $cumplimiento,
+                        "vencimiento" => $vencimiento,
+                        "monto" => $monto,
+                        "impuesto" => $impuesto,
+                        "observaciones" => $gralCotizacion["cotizacion"]["observaciones"],
+                        "id_moneda" => $id_moneda,
+                        "porcentaje_anticipo_pactado" => ($anticipo_pactado == "") ? 0 : $anticipo_pactado,
+                        "estado" => 1,
+                    ];
+                    if (! $cotizacionCompra->update($datos_transaccion)) {
+                        $mensajeError = "No se puede procesar la cotización";
+                        $this->resultData = $cotizaciones;
+                        throw new \Exception($mensajeError);
+                    }
+                    $descuento = $gralCotizacion["cotizacion"]["descuento"];
+                    $datos_cotizacion = [];
+                    $datos_cotizacion["idmoneda"] = $idmoneda;
+                    $datos_cotizacion["fecha_cotizacion"] = $fecha_cotizacion;
+                    $datos_cotizacion["anticipo"] = ($anticipo == "") ? 0 : $anticipo;
+                    $datos_cotizacion["anticipo_pactado"] = ($anticipo_pactado == "") ? 0 : $anticipo_pactado;
+                    $datos_cotizacion["dias_credito"] = ($dias_credito == "") ? 0 : $dias_credito;
+                    $datos_cotizacion["plazo_entrega"] = ($plazo_entrega == "") ? 0 : $plazo_entrega;
+                    $datos_cotizacion["observaciones"] = $gralCotizacion["cotizacion"]["observaciones"];
+                    $datos_cotizacion["vigencia"] = ($vigencia == "") ? 0 : $vigencia;
+                    $datos_cotizacion["tc_usd"] = $gralCotizacion["cotizacion"]["tc_usd"];
+                    $datos_cotizacion["tc_eur"] = $gralCotizacion["cotizacion"]["tc_euro"];
+                    $datos_cotizacion["importe"] = $subtotal;
+                    $datos_cotizacion["iva"] = $impuesto;
+                    $datos_cotizacion["total"] = $monto;
+                    $datos_cotizacion["descuento"] = ($descuento == "") ? 0 : $descuento;
+                    if (!$cotizacionCompra->rqctocCotizacion->update($datos_cotizacion)) {
+                        $mensajeError = "No se puede procesar la cotización";
+                        $this->resultData = $cotizaciones;
+                        throw new \Exception($mensajeError);
+                    }
+
+
+                    $nocotizadas = $cotizacionCompra->rqctocCotizacion->rqctocSolicitudesPartidas;
+                    dd($nocotizadas);
+
+                    foreach ($gralCotizacion["partidas"] as $key => $partidas) {
+                        $idMaterial = $partidas['material_sao'];
+                        $descuento_partida = $partidas['PorcentajeDescuento'];
+                        $descuento_compuesto = $descuento_partida+$descuento-($descuento_partida*$descuento/100);
+                        if ($partidas['IdMoneda'] == 1) {
+                            $id_moneda_partida = 2;
+                        } elseif ($partidas['IdMoneda'] == 2) {
+                            $id_moneda_partida = 3;
+                        } elseif ($partidas['IdMoneda'] == 3) {
+                            $id_moneda_partida = 1;
+                        }
+                        $rqctocCotizacionPartidas = $cotizacionCompra->rqctocCotizacion->rqctocCotizacionPartidas->filter(function ($value) use ($idMaterial){
+                            if($value->idmaterial_sao==$idMaterial){
+                                return $value;
+                            }
+                        });
+
+                        foreach ($gralCotizacion["partidas"]["id_cotizacion"] as $key => $idCotizacion) {
+                            $cotizacion = $cotizacionCompra->cotizaciones()->filter(function ($value) use (
+                                $idCotizacion,
+                                $idMaterial
+                            ) {
+                                if($value->id_transaccion==$idCotizacion&&$value->id_material==$idMaterial) {
+                                    return $value;
+                                }
+                                return false;
+                            });
+                            $idrqctocCotizaciones = $cotizacionCompra->rqctocCotizacion->idrqctoc_cotizaciones;
+                            $rqctocSolicutdesPartidas = $cotizacionCompra->rqctocCotizacion->rqctocSolicutdesPartidas->filter(function ($value) use ($idMaterial,$idrqctocCotizaciones){
+                                if($value->idmaterial_sao==$idMaterial && $idrqctocCotizaciones==$value->idrqctoc_cotizaciones){
+                                    return $value;
+                                }
+                            });
+                            if($cotizacion) {
+                                $datos_sao = [
+                                    "disponibles" => 1,
+                                    "precio_unitario" => str_replace(",", "",
+                                        $partidas["precio_unitario"]),
+                                    "precio_unitario_mxp" => "",
+                                    "descuento" => ($descuento_compuesto == "") ? 0 : $descuento_compuesto,
+                                    "anticipo" => ($anticipo == "") ? 0 : $anticipo,
+                                    "dias_entrega" => ($plazo_entrega == "") ? 0 : $plazo_entrega,
+                                    "id_moneda" => $id_moneda_partida,
+                                    "dias_credito" => ($dias_credito == "") ? 0 : $dias_credito,
+                                    "no_cotizado" => 0,
+                                ];
+
+                                $datos_partida_edicion = [
+                                    "idmoneda"=>$id_moneda_partida,
+                                    "precio_unitario"=>str_replace(",", "",
+                                        $partidas["precio_unitario"]),
+                                    "precio_unitario_mxp" => "",
+                                    "descuento" => ($descuento_compuesto == "") ? 0 : $descuento_compuesto,
+                                    "observaciones" => $partidas['Observaciones'],
+                                ] ;
+                                if (isset($rqctocCotizacionPartidas->idmaterial_sao)) {
+                                    $rqctocCotizacionPartidas->update($datos_partida_edicion);
+                                } else {
+                                    $datos_partida_edicion["idrqctoc_cotizaciones"]=$cotizacionCompra->rqctocCotizacion->idrqctoc_cotizaciones;
+                                    $datos_partida_edicion["idrqctoc_solicitudes_partidas"]=$rqctocSolicutdesPartidas->idrqctoc_solicitudes_partidas;
+                                    RQCTOCCotizacionesPartidas::create($datos_partida_edicion);
+                                }
+                                $cotizacion->update($datos_sao);
+                            }else{
+                                $mensajeError = "No se puede procesar la cotización";
+                                $error++;
+                            }
+                        }
+                    }
+                }else{
+                    $mensajeError = "La cotización no exite";
+                    $error++;
+                }
+            }
+            if ($error > 0) {
+                $this->resultData = $cotizaciones;
+                throw new \Exception('No es posible procesar el Layout debido a que presenta diferencias con la información actual del Contrato Proyectado ');
+            }
+            DB::connection('cadeco')->rollback();
+            DB::connection('controlrec')->rollback();
         } catch (\Exception $e) {
             DB::connection('cadeco')->rollback();
+            DB::connection('controlrec')->rollback();
+            dd($e->getMessage());
             throw new \Exception($e->getMessage());
         }
         return ["message" => "se guardaron correctamente $success registros"];
+    }
+
+    /**
+     * @return int
+     */
+    public function getIdRequisicion()
+    {
+        return $this->id_requisicion;
+    }
+
+    /**
+     * @param $id_requisicion
+     *
+     * @return $this
+     */
+    public function setIdRequisicion($id_requisicion)
+    {
+        $this->id_requisicion = $id_requisicion;
+
+        return $this;
     }
 
 }

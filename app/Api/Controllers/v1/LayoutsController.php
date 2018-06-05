@@ -174,14 +174,8 @@ class LayoutsController extends BaseController
         if (count($validator->errors()->all())) {
             throw new StoreResourceFailedException('No es posible cargar el Layout', $validator->errors());
         }
-        $info = [
-            'id_contrato_proyectado' => $id_contrato_proyectado,
-            'presupuesto_ids' => $request->ids,
-            'agrupadores' => explode(',', $request->agrupadores),
-            'solo_pendientes' => $request->solo_pendientes
-        ];
 
-        $layout = (new AsignacionCargaPreciosLayout($this->contratoProyectadoRepository, $info))
+        $layout = (new AsignacionCargaPreciosLayout($this->contratoProyectadoRepository, []))
             ->setIdContratoProyectado($id_contrato_proyectado)
             ->qetDataFile($request);
 
@@ -223,14 +217,14 @@ class LayoutsController extends BaseController
         $rules = array(
             'file' => 'required',
         );
-
         $validator =  app('validator')->make($request->all(), $rules);
         if (count($validator->errors()->all())) {
             throw new StoreResourceFailedException('No es posible cargar el Layout', $validator->errors());
         }
 
-        $contrato_proyectado = $this->contratoProyectadoRepository->find($id_contrato_proyectado);
-        $layout = (new AsignacionCargaPreciosLayout($contrato_proyectado))->qetDataFile($request);
+        $layout = (new AsignacionCargaProveedoresLayout($this->requisicionRepository,[]))
+            ->setIdRequisicion($id_requiscion)
+            ->qetDataFile($request);
 
         return $this->response->array($layout);
     }

@@ -14,6 +14,10 @@ use Ghi\Domain\Core\Models\ControlRec\RQCTOCSolicitud;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
+/**
+ * Class EloquentRequisicionRepository
+ * @package Ghi\Domain\Core\Repositories\Compras
+ */
 class EloquentRequisicionRepository implements RequisicionRepository
 {
     /**
@@ -217,5 +221,27 @@ class EloquentRequisicionRepository implements RequisicionRepository
     public function getRequisicion($id_transaccion_sao)
     {
         return RQCTOCSolicitud::where('idtransaccion_sao', $id_transaccion_sao)->first();
+    }
+
+    /**
+     * @param $id_cotizacion
+     *
+     * @return bool
+     */
+    public function getNumAsignaciones($id_cotizacion)
+    {
+        $query = DB::connection('controlrec')
+            ->select(DB::raw("
+          SELECT count(*) as cantidad FROM rqctoc_cotizaciones as c join
+            rqctoc_cotizaciones_partidas as cp on(c.idrqctoc_cotizaciones = cp.idrqctoc_cotizaciones) join
+            rqctoc_tabla_comparativa_partidas as tcp on(tcp.idrqctoc_cotizaciones_partidas = cp.idrqctoc_cotizaciones_partidas)
+            where c.idrqctoc_cotizaciones = $id_cotizacion group by tcp.idrqctoc_tabla_comparativa;
+          "));
+        if(isset($query[0])) {
+            if ($query[0]->cantidad > 0) {
+                return true;
+            }
+        }
+        return false;
     }
 }
