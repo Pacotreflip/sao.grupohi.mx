@@ -59,7 +59,7 @@ class EloquentCatalogoExtraordinarioPartidaRepository implements CatalogoExtraor
         return $extraordinario;
     }
 
-    public function getExtraordinarioNuevo($id)
+    public function getExtraordinarioNuevo()
     {
         $extraordinario = [];
         $extraordinario += [

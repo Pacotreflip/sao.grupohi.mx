@@ -17,6 +17,7 @@ class Concepto extends BaseModel
         'nivel_padre',
         'id_padre',
         'tiene_hijos',
+        'hijos_cobrables',
         'cargado',
         'path',
         'clave',
@@ -88,6 +89,10 @@ class Concepto extends BaseModel
     public function getTieneHijosAttribute()
     {
         return Concepto::where('nivel', 'like', $this->nivel_hijos)->count();
+    }
+
+    public function getHijosCobrablesAttribute(){
+        return Concepto::where('nivel', 'like', $this->nivel_hijos)->where('concepto_medible', '=', 3)->count();
     }
 
     /**

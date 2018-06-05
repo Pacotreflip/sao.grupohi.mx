@@ -121,3 +121,4 @@ require('./vue-components/Procuracion/asignacion/create');
 * Concepto Extraordinario
  */
 require('./vue-components/ControlPresupuesto/concepto_extraordinario/create');
+require('./vue-components/ControlPresupuesto/concepto_extraordinario/show');

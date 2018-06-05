@@ -98,3 +98,11 @@ Breadcrumbs::register('control_presupuesto.conceptos_extraordinarios.create', fu
     $breadcrumb->parent('control_presupuesto.cambio_presupuesto.index');
     $breadcrumb->push('NUEVO CONCEPTO EXTRAORDINARIO', route('control_presupuesto.conceptos_extraordinarios.create'));
 });
+
+/**
+ * Conceptos Extraordinarios Show
+ */
+Breadcrumbs::register('control_presupuesto.conceptos_extraordinarios.show', function ($breadcrumb, $cambio_insumos) {
+    $breadcrumb->parent('control_presupuesto.conceptos_extraordinarios.index');
+    $breadcrumb->push('#' . $cambio_insumos->numero_folio, route('control_presupuesto.escalatoria.show', $cambio_insumos));
+});

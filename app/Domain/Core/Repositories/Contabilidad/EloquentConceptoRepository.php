@@ -275,9 +275,9 @@ class EloquentConceptoRepository implements ConceptoRepository
                 'descripcion'=>$conceptoTarjeta->descripcion,
                 'unidad'=>$conceptoTarjeta->unidad,
                 'id_material'=>$conceptoTarjeta->id_material,
-                'cantidad_presupuestada'=>0,
+                'cantidad_presupuestada'=>1,
                 'precio_unitario'=>$concepto_precio_unitario,
-                'monto_presupuestado'=>$conceptoTarjeta->monto_presupuestado
+                'monto_presupuestado'=>$concepto_precio_unitario
             ];
 
         return $extraordinario;

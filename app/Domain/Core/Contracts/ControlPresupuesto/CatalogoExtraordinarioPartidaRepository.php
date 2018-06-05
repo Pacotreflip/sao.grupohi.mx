@@ -12,5 +12,5 @@ namespace Ghi\Domain\Core\Contracts\ControlPresupuesto;
 interface CatalogoExtraordinarioPartidaRepository
 {
     public function getPartidasByIdCatalogo($id);
-    public function getExtraordinarioNuevo($id);
+    public function getExtraordinarioNuevo();
 }

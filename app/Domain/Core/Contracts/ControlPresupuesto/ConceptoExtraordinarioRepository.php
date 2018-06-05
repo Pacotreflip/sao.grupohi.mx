@@ -11,6 +11,6 @@ namespace Ghi\Domain\Core\Contracts\ControlPresupuesto;
 
 interface ConceptoExtraordinarioRepository
 {
-    public function getDesdeTarjeta($id_tarjeta);
-
+    public function store(array $data);
+    public function autorizar($id);
 }

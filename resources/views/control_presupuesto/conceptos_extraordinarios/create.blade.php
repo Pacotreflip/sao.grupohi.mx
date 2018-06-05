@@ -7,6 +7,8 @@
 @section('main-content')
     <concepto-extraordinario-create
             :id_tipo_orden="3"
+            :conceptos="{{$conceptos}}"
+            :url_concepto_get_by="'{{route('sistema_contable.concepto.getBy')}}'"
             :unidades="{{ json_encode($unidades) }}"
             :tipos_extraordinarios="{{ json_encode($tipos_extraordinarios) }}"
             :tarjetas="{{ json_encode($tarjetas) }}"
@@ -25,27 +27,27 @@
                             <div class="row">
                                 <div class="col-md-6">
                                     <label for="origen_extraordinario"><b>Origen del Extraordinario</b></label>
-                                    <select class="form-control input-sm" v-model="form.id_origen_extraordinario"  :disabled="!tipos_extraordinarios.length || mostrar_tabla" v-on:change="id_opcion = '' ">
+                                    <select class="form-control input-sm" v-model="form.id_origen_extraordinario"  :disabled="!tipos_extraordinarios.length || mostrar_tabla" v-on:change="form.id_opcion = '' ">
                                         <option value>[--SELECCIONE--]</option>
                                         <option v-for="tipo_extraordinario in tipos_extraordinarios" :value="tipo_extraordinario.id">@{{ tipo_extraordinario.descripcion }}</option>
                                     </select>
                                 </div>
                                 <div class="col-md-6" v-if="form.id_origen_extraordinario==1 " >
                                     <label><b>Número de Tarjeta</b></label>
-                                    <select2 id="tarjetas_select"  v-model="id_opcion" :disabled="mostrar_tabla"
+                                    <select2 id="tarjetas_select"  v-model="form.id_opcion" :disabled="mostrar_tabla"
                                              :options="tarjetas">
                                     </select2>
                                 </div>
                                 <div class="col-md-6" v-if="form.id_origen_extraordinario==2">
                                     <label for="catalogo_extraordinario"><b>Catalogo Extraordinarios</b></label>
-                                    <select class="form-control input-sm" v-model="id_opcion"  :disabled="!tipos_extraordinarios.length || mostrar_tabla">
+                                    <select class="form-control input-sm" v-model="form.id_opcion"  :disabled="!tipos_extraordinarios.length || mostrar_tabla">
                                         <option value>[--SELECCIONE--]</option>
                                         <option v-for="cat in catalogo" :value="cat.id">@{{ cat.descripcion }}</option>
                                     </select>
                                 </div>
                                 <div class="col-md-6" v-if="form.id_origen_extraordinario==3" >
                                     <label for="origen_catalogo"><b>Tipo de Costo</b></label>
-                                    <select class="form-control input-sm" v-model="id_opcion" :disabled="mostrar_tabla">
+                                    <select class="form-control input-sm" v-model="form.id_opcion" :disabled="mostrar_tabla">
                                         <option value>[--SELECCIONE--]</option>
                                         <option v-for="tipo_costo in tipos_costos" :value="tipo_costo.id">@{{ tipo_costo.descripcion }}</option>
                                     </select>
@@ -55,7 +57,7 @@
                         </div>
                         <div class="box-footer">
                             <div class="row">
-                                <div class="col-md-offset-11">
+                                <div class="col-md-offset-11 col-sm-6">
                                     <button type="button" class="btn btn-success" v-on:click="getExtraordinario()" v-show="!mostrar_tabla">
                                         <span v-if="cargando"><i class="fa fa-spinner fa-spin"></i> </span>
                                         <span v-else><i class="fa fa-check"></i> Crear </span>
@@ -75,7 +77,12 @@
                         <div class="box-header with-border">
                             <h3 class="box-title">Datos del Concepto</h3>
                         </div>
-                        <div class="box-body">
+
+                        <form id="form_save_solicitud"
+                              @submit.prevent="validateForm('form_save_solicitud', 'save_solicitud')"
+                              data-vv-scope="form_save_solicitud">
+
+                            <div class="box-body">
                             <div class="row">
                                 <div class="col-md-12">
                                     <div class="table-responsive">
@@ -109,8 +116,8 @@
                                                             <input type="text" step=".01" placeholder="Ingrese Cantidad" :value="form.extraordinario.cantidad_presupuestada" :model="form.extraordinario.cantidad_presupuestada" style="width: 100%; height: 34px">
                                                         </div>
                                                     </td>
-                                                    <td>@{{ form.extraordinario.precio_unitario }}</td>
-                                                    <td></td>
+                                                    <td >$@{{ parseFloat(form.extraordinario.precio_unitario).formatMoney(2,'.',',') }}</td>
+                                                    <td >$@{{ parseFloat(form.extraordinario.monto_presupuestado).formatMoney(2,'.',',') }}</td>
                                                 </tr>
                                             </tbody>
                                         </table>
@@ -122,7 +129,7 @@
                                     <h4 class="box-title">Insumos</h4>
                                 </div>
 
-                                <div class="form-group" v-if="form.id_origen_extraordinario == 3 && id_opcion == 2">
+                                <div class="form-group" v-if="form.id_origen_extraordinario == 3 && form.id_opcion == 2">
                                     <div class="col-md-8">
                                         <label for="materiales" class="control-label"><h4>Gastos </h4></label>
                                     </div>
@@ -340,8 +347,8 @@
                                     <div class="col-md-4">
                                         <button type="button"
                                                 class="btn btn-default"
-                                                id="materiales"
-                                                v-on:click="addInsumoTipo(8)"> +Maquinaria
+                                                id="maquinaria"
+                                                v-on:click="addInsumoTipo(8)" > +Maquinaria
                                         </button>
                                     </div>
                                     <div class="col-md-12">
@@ -442,6 +449,23 @@
 
                                 <!-- Area de campos de solicitante y motivo -->
 
+                                <div class="form-group" :class="{'has-error': validation_errors.has('form_save_solicitud.Buscar')}">
+                                    <div class="col-md-12">
+                                        <label for="buscar" class="control-label"><b>Agregar extraordinario en la siguiente ruta del presupuesto: </b></label>
+                                    </div>
+                                    <div class="col-md-11">
+                                        <textarea class="form-control"  v-validate="'required'" :name="'Buscar'" style="width: 100%" v-model="form.path_base" disabled="true"></textarea>
+                                        <label class="help" v-show="validation_errors.has('form_save_solicitud.Buscar')">@{{ validation_errors.first('form_save_solicitud.Buscar') }}</label>
+                                    </div>
+                                    <div class="col-md-1">
+                                        <button type="button"
+                                                class="btn btn-success"
+                                                id="buscar"
+                                                data-toggle="modal" data-target="#seleccion_concepto_modal"> Buscar
+                                        </button>
+                                    </div>
+                                </div>
+
                                 <div class="col-md-12">
                                     <div class="form-group"
                                          :class="{'has-error': validation_errors.has('form_save_solicitud.Motivo')}">
@@ -464,14 +488,23 @@
                             </div>
 
                         </div>
-                        <div class="box-footer">
+                            <div class="box-footer">
                             <div class="row">
-                                <div class="col-md-offset-11">
-                                    <button type="button" class="btn btn-success">Crear</button>
-                                    <button type="button" class="btn btn-default">Cerrar</button>
+                                <div class="col-md-offset-10 col-sm-6">
+                                    <button type="button" class="btn btn-default" >Cerrar</button>
+                                    <button type="submit" class="btn btn-primary" :disabled="cargando">
+                                            <span v-if="cargando">
+                                                <i class="fa fa-spinner fa-spin"></i> Guardando
+                                            </span>
+                                        <span v-else>
+                                                <i class="fa fa-save"></i> Guardar
+                                            </span>
+                                    </button>
                                 </div>
                             </div>
                         </div>
+
+                        </form>
                     </div>
                 </div>
             </div>
@@ -513,6 +546,65 @@
                                 </button>
                             </div>
                         </form>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Modal para seleccionar el lugar donde posicionar el extraordnario en el arbol de conceptos -->
+
+            <div id="seleccion_concepto_modal" class="modal fade" aria-labelledby="addExtraordinarioModal">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal"><span
+                                        aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+                            <h4 class="modal-title">Agregar Extraordinario</h4>
+                            <div class="box-body">
+                                <div class="table-responsive">
+                                    <table class="table table-bordered table-striped" v-treegrid id="concepto_tree">
+                                        <thead>
+                                            <tr>
+                                                <th>Concepto</th>
+                                                <th>Asignar</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr  v-for="(concepto, index) in conceptos_ordenados" :class="tr_class(concepto)" :id="tr_id(concepto)" >
+                                                <td v-if="concepto.id_padre == null">
+                                                    @{{ concepto.descripcion }}
+                                                    <button style="border: 0; background-color: transparent" :disabled="cargando" v-if="concepto.tiene_hijos > 0 && ! concepto.cargado" @click="get_hijos(concepto)">
+                                                                <span v-if="cargando">
+                                                                    <i class="fa fa-spin fa-spinner"></i>
+                                                                </span>
+                                                        <span v-else>
+                                                                    <i class="fa fa-plus"></i>
+                                                                </span>
+                                                    </button>
+                                                </td>
+                                                <td  v-else>
+                                                    @{{ concepto.descripcion}}
+                                                    <button style="border: 0; background-color: transparent" :disabled="cargando" v-if="concepto.tiene_hijos > 0 && ! concepto.cargado && concepto.hijos_cobrables == 0" @click="get_hijos(concepto)">
+                                                                <span v-if="cargando">
+                                                                    <i class="fa fa-spin fa-spinner"></i>
+                                                                </span>
+                                                        <span v-else>
+                                                                    <i class="fa fa-plus"></i>
+                                                                </span>
+                                                    </button>
+                                                </td>
+                                                <td v-if="concepto.hijos_cobrables >0" class="-align-center">
+                                                    <button type="button" class="btn btn-success fa fa-check small" @click="confirmacion_ruta(concepto)">Agregar</button>
+                                                </td>
+                                                <td v-else>
+                                                    ---
+                                                </td>
+
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

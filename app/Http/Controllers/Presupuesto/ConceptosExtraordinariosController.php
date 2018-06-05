@@ -9,10 +9,15 @@ use Ghi\Domain\Core\Contracts\ControlPresupuesto\ConceptoExtraordinarioRepositor
 use Ghi\Domain\Core\Contracts\ControlPresupuesto\TarjetaRepository;
 use Ghi\Domain\Core\Contracts\ControlPresupuesto\TipoExtraordinarioRepository;
 use Ghi\Domain\Core\Contracts\UnidadRepository;
+use Ghi\Domain\Core\Models\ControlPresupuesto\SolicitudCambio;
 use Ghi\Http\Controllers\Controller;
+use Illuminate\Http\Request;
+use Dingo\Api\Routing\Helpers;
 
 class ConceptosExtraordinariosController extends Controller
 {
+    use Helpers;
+
     private $extraordinario;
     private $unidades;
     private $tipos_extraordinario;
@@ -66,33 +71,48 @@ class ConceptosExtraordinariosController extends Controller
      */
     public function create()
     {
-        //dd($this->extraordinario->getDesdeTarjeta(11));
+        $conceptos = $this->concepto->getBy('nivel', 'like', '___.', 'cuentaConcepto');
+        $unidades = $this->unidades->lists();
+        $tipos_extraordinarios = $this->tipos_extraordinario->all();
+        $tarjetas = $this->tarjetas->lists();
+        $catalogo = $this->catalogo->all();
+
         return view('control_presupuesto.conceptos_extraordinarios.create')
-            ->with('unidades', $this->unidades->lists())
-            ->with('tipos_extraordinarios', $this->tipos_extraordinario->all())
-            ->with('tarjetas', $this->tarjetas->lists())
-            ->with('catalogo', $this->catalogo->all());
+            ->with('unidades', $unidades)
+            ->with('tipos_extraordinarios',$tipos_extraordinarios )
+            ->with('tarjetas', $tarjetas)
+            ->with('catalogo', $catalogo)
+            ->with('conceptos', $conceptos);
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @return Response
+     * @return \Dingo\Api\Http\Response
      */
-    public function store()
+    public function store(Request $request)
     {
-        //
+        $solicitud = $this->extraordinario->store($request->all());
+        return $this->response->item($solicitud, function ($item) {
+            return $item;
+        });
     }
 
     /**
      * Display the specified resource.
      *
      * @param  int  $id
-     * @return Response
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function show($id)
     {
-        //
+        //$solicitud = SolicitudCambio::with(['tipoOrden', 'userRegistro', 'estatus', 'partidas.concepto',
+           // 'partidas.numeroTarjeta', 'aplicaciones'])->find($id);
+        //dd('Panda', $solicitud);
+        $solicitud = SolicitudCambio::with(['tipoOrden', 'userRegistro', 'estatus', 'partidas'])->find($id);
+        return view('control_presupuesto.conceptos_extraordinarios.show')
+            ->with('solicitud', $solicitud);
+
     }
 
     /**
@@ -131,16 +151,13 @@ class ConceptosExtraordinariosController extends Controller
     public function getExtraordinario($tipo, $id){
         switch ($tipo){
             case 1:
-                //dd($this->concepto->geInsumosPorTarjeta($id));
                 return response()->json(['data' => $this->concepto->getInsumosPorTarjeta($id) ], 200);
                 break;
-
             case 2:
                 return response()->json([ 'data' => $this->extraordinario_partidas->getPartidasByIdCatalogo($id)], 200);
                 break;
-
             case 3:
-                return response()->json([ 'data' => $this->extraordinario_partidas->getExtraordinarioNuevo($id)], 200);
+                return response()->json([ 'data' => $this->extraordinario_partidas->getExtraordinarioNuevo()], 200);
                 break;
         }
     }
