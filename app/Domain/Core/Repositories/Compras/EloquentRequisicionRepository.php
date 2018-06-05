@@ -2,6 +2,7 @@
 
 namespace Ghi\Domain\Core\Repositories\Compras;
 
+use Ghi\Core\Facades\Context;
 use Ghi\Domain\Core\Contracts\Compras\RequisicionRepository;
 use Ghi\Domain\Core\Models\Compras\Requisiciones\DepartamentoResponsable;
 use Ghi\Domain\Core\Models\Compras\Requisiciones\Requisicion;
@@ -162,6 +163,8 @@ class EloquentRequisicionRepository implements RequisicionRepository
     public  function getCotizaciones($id_requisicion, $ids_cot = [])
     {
         return RQCTOCCotizaciones::whereIn('idtransaccion_sao', $ids_cot)
+            ->where('base_sao', Context::getDatabaseName())
+            ->where('idobra_sao', Context::getID())
             ->with(['rqctocSolicitud.rqctocSolicitudPartidas.item.transaccion', 'rqctocSolicitud.rqctocSolicitudPartidas.material', 'empresa', 'sucursal'])
             ->get();
     }
@@ -209,6 +212,8 @@ class EloquentRequisicionRepository implements RequisicionRepository
             ->join('rqctoc_solicitudes_partidas', 'rqctoc_solicitudes_partidas.idrqctoc_solicitudes_partidas', '=', 'rqctoc_cotizaciones_partidas.idrqctoc_solicitudes_partidas')
             ->join('ctg_monedas', 'ctg_monedas.id', '=', 'rqctoc_cotizaciones_partidas.idmoneda')
             ->where('rqctoc_cotizaciones.idrqctoc_solicitudes', $id_requisicion)
+            ->where('rqctoc_cotizaciones.base_sao', Context::getDatabaseName())
+            ->where('rqctoc_cotizaciones.idobra_sao', Context::getID())
             ->groupBy('rqctoc_solicitudes_partidas.idmaterial_sao', 'rqctoc_cotizaciones.idrqctoc_cotizaciones')
             ->get();
     }
