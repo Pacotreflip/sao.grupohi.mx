@@ -35,6 +35,9 @@ class PagoCuentaController extends BaseController
     public function __construct(PagoCuentaRepository $pagoCuentaRepository)
     {
         $this->pagoCuentaRepository = $pagoCuentaRepository;
+        $this->middleware('auth');
+        $this->middleware('context');
+        $this->middleware('permission:registrar_pago_cuenta', ['only' => ['store']]);
     }
 
     /**

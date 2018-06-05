@@ -16,7 +16,7 @@ class SolicitudChequeController extends Controller {
     {
         $this->middleware('auth');
         $this->middleware('context');
-        $this->middleware('permission:registrar_solicitud_cheque', ['only' => ['create']]);
+        $this->middleware('permission:registrar_reposicion_fondo_fijo|registrar_pago_cuenta', ['only' => ['create']]);
     }
 
     public function create() {

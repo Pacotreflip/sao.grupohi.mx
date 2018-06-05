@@ -153,9 +153,8 @@ class RolesPermissionsSeeder extends Seeder
         $eliminar_asignacion = Permission::firstOrCreate(['name' => 'eliminar_asignacion', 'display_name' => 'Eliminar una Asignación', 'description' => 'Permisos para poder eliminar el registro de una asignación de procuración']);
 
         //Finanzas Solicitud de Cheque
-        $consultar_solicitud_cheque = Permission::firstOrCreate(['name' => 'consultar_solicitud_cheque', 'display_name' => 'Consultar Solicitudes de Cheque', 'description' => 'Permiso para poder consultar los registros de solicitudes de cheque']);
-        $registrar_solicitud_cheque = Permission::firstOrCreate(['name' => 'registrar_solicitud_cheque', 'display_name' => 'Registrar Solicitudes de Cheque', 'description' => 'Permiso para poder registrar solicitudes de cheque']);
-        $eliminar_solicitud_cheque = Permission::firstOrCreate(['name' => 'eliminar_solicitud_cheque', 'display_name' => 'Eliminar Solicitudes de Cheque', 'description' => 'Permiso para poder eliminar los registros de solicitudes de cheque']);
+        $registrar_reposicion_fondo_fijo = Permission::firstOrCreate(['name' => 'registrar_reposicion_fondo_fijo', 'display_name' => 'Registrar eposicion de fondo fijo', 'description' => 'Permiso para poder registrar reposiciónes de fondo fijo']);
+        $registrar_pago_cuenta = Permission::firstOrCreate(['name' => 'registrar_pago_cuenta', 'display_name' => 'Registrar pagos a cuenta', 'description' => 'Permiso para poder registrar pagos a cuenta']);
 
         /**
          * Roles
@@ -380,9 +379,8 @@ class RolesPermissionsSeeder extends Seeder
                 $consultar_comprobante_fondo_fijo->id,
                 $eliminar_comprobante_fondo_fijo->id,
 
-                $consultar_solicitud_cheque->id,
-                $registrar_solicitud_cheque->id,
-                $eliminar_solicitud_cheque->id,
+                $registrar_reposicion_fondo_fijo->id,
+                $registrar_pago_cuenta->id,
             ]
         );
 

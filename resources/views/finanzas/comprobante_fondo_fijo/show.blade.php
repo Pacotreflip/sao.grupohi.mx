@@ -130,6 +130,7 @@
                     @endif
                 </div>
                 @if(! $comprobante_fondo_fijo->reposicionFondoFijo)
+                    @permission('registrar_reposicion_fondo_fijo')
                     <div class="box-footer">
                         <button class="btn btn-sm btn-primary pull-right" data-toggle="modal" data-target="#reposicion_modal">
                             <i class="fa fa-check"></i> Generar Reposición
@@ -149,8 +150,8 @@
                                 </div>
                             </div>
                         </div>
-
                     </div>
+                    @endpermission
                 @endif
             </div>
         </div>
