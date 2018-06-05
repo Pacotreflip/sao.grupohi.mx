@@ -35,10 +35,8 @@ class ReposicionFondoFijoController extends BaseController
      */
     public function __construct(ReposicionFondoFijoRepository $reposicionFondoFijoRepository)
     {
+        $this->middleware('api.permission:registrar_reposicion_fondo_fijo', ['only' => ['store']]);
         $this->reposicionFondoFijoRepository = $reposicionFondoFijoRepository;
-        $this->middleware('auth');
-        $this->middleware('context');
-        $this->middleware('permission:registrar_reposicion_fondo_fijo', ['only' => ['store']]);
     }
 
     /**
