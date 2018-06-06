@@ -813,8 +813,8 @@ class AsignacionCargaProveedoresLayout extends ValidacionLayout
                 $this->resultData = $cotizaciones;
                 throw new \Exception('No es posible procesar el Layout debido a que presenta diferencias con la información actual del Contrato Proyectado 1');
             }
-            DB::connection('cadeco')->rollback();
-            DB::connection('controlrec')->rollback();
+            DB::connection('cadeco')->commit();
+            DB::connection('controlrec')->commit();
         } catch (\Exception $e) {
             DB::connection('cadeco')->rollback();
             DB::connection('controlrec')->rollback();
