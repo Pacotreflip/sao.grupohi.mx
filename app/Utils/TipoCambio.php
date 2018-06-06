@@ -34,11 +34,9 @@ class TipoCambio
         $tipo_cambio = Cambio::where('fecha', '=', date('Y-m-d'))->get()->toArray();
 
         foreach ($tipo_cambio as $k => $v) {
-            $tipoCambio[$v['id_moneda']] = $v;
+            $tipoCambio[$v['id_moneda']] = $v['cambio'];
         }
-
         $importeCambio = ($importe * $tipoCambio[$idmoneda]) / $tipoCambio[self::TCEURO];
-
         return $importeCambio;
     }
 }

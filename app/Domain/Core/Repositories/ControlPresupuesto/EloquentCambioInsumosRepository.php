@@ -335,8 +335,6 @@ class EloquentCambioInsumosRepository implements CambioInsumosRepository
                 if (strlen($gasto['precio_unitario_nuevo']) > 0 || strlen($gasto['rendimiento_nuevo']) > 0) {
                     SolicitudCambioPartida::create($gasto);
                 }
-
-
             }
             $solicitud = $this->with('partidas')->find($solicitud->id);
             DB::connection('cadeco')->commit();
@@ -381,6 +379,7 @@ class EloquentCambioInsumosRepository implements CambioInsumosRepository
             DB::connection('cadeco')->beginTransaction();
             $sumas_insumos = 0;
 
+            $sol_cambio = SolicitudCambio::where('id', '=', $id)->get(['id_tipo_orden'])->first();
             $insumosAgrupados = PartidasInsumosAgrupados::where('id_solicitud_cambio', '=', $id)->get();
             $conceptoTarjeta = ConceptoTarjeta::where('id_concepto', '=', $insumosAgrupados[0]->id_concepto)->first();
 
@@ -701,9 +700,7 @@ class EloquentCambioInsumosRepository implements CambioInsumosRepository
                     }
                 }
 
-////////////subcontratos
-///
-
+                /////subcontratos
                 foreach ($subcontratos as $subcontrato) ////integracion materiales tarjeta nueva
                 {
                     if ($subcontrato->id_concepto) { ////actualizacion de concepto
@@ -770,9 +767,9 @@ class EloquentCambioInsumosRepository implements CambioInsumosRepository
                         $dataHist = [];
                         $conceptoUpdate = Concepto::find($gasto->id_concepto);
                         $conceptoUpdate->cantidad_presupuestada = $gasto['cantidad_presupuestada']; //cambio cantidad presupuestada
+
                         if ($gasto['precio_unitario_nuevo'] > 0) {
                             $dataHist['precio_unitario_original'] = $conceptoUpdate->precio_unitario;
-                            $conceptoUpdate->precio_unitario = $gasto['precio_unitario_nuevo'];
                             $dataHist['precio_unitario_actualizado'] = $conceptoUpdate->precio_unitario;
                         }
 
@@ -923,6 +920,7 @@ class EloquentCambioInsumosRepository implements CambioInsumosRepository
 
                 $dataHist = [];
                 $conceptoMaterial = Concepto::where('descripcion', '=', 'GASTOS')->where('nivel', 'like', $concepto->nivel . '%')->first();
+
                 $dataHist['precio_unitario_original'] = $conceptoMaterial->precio_unitario;
                 $dataHist['monto_presupuestado_original'] = $conceptoMaterial->monto_presupuestado;
                 $dataHist['precio_unitario_actualizado'] = $conceptoMaterial->precio_unitario;
@@ -939,6 +937,8 @@ class EloquentCambioInsumosRepository implements CambioInsumosRepository
                 //propagacion hacia arriba monto_presupuestado
 
                 $tamanioFaltante = strlen($concepto->nivel);
+                $sol_cambio->id_tipo_orden == 7 ? $concepto->cantidad_presupuestada = $afectacion_mmonto_propagacion:'';
+                $concepto->save();
 
                 $monto_anterior = $concepto->monto_presupuestado;
                 while ($tamanioFaltante > 0) { ///////////////recorrido todos los niveles hacia arriba

@@ -129,7 +129,14 @@
                                 <tr>
                                     <th>#</th>
                                     <th>Concepto</th>
-                                    <th>Volumen</th>
+
+                                    <th  v-if="solicitud.tipo_orden.id == 7">
+
+                                    </th>
+                                    <th v-else>
+                                        Volumen
+                                    </th>
+
                                     <th>Importe Original</th>
                                     <th>Variación de Importe</th>
                                     <th>Importe Actualizado</th>
@@ -141,7 +148,8 @@
                                     style="cursor:pointer" v-on:click="mostrarDetalleInsumos(i)">
                                     <td>@{{(i+1)}}</td>
                                     <td>@{{ (agrupado.concepto.descripcion).substr(0, 50) + '...' }}</td>
-                                    <td>@{{ parseFloat(agrupado.concepto.cantidad_presupuestada).formatMoney(2, '.',',') }}</td>
+                                    <td v-if="solicitud.tipo_orden.id == 7"></td>
+                                    <td v-else>@{{ parseFloat(agrupado.concepto.cantidad_presupuestada).formatMoney(2, '.',',') }}</td>
                                     <td class="text-right">
                                         $ @{{ parseFloat(agrupado.concepto.importe_anterior).formatMoney(2, '.',',') }}</td>
                                     <td class="text-right">
@@ -187,10 +195,14 @@
                                         <th>#</th>
                                         <th style="width: 40%;">Descripción</th>
                                         <th>Unidad</th>
-                                        <th>Volumen Original</th>
-                                        <th>Volumen Actualizado</th>
-                                        <th>Costo Original</th>
-                                        <th>Costo Actualizado</th>
+                                        <th v-if="solicitud.tipo_orden.id != 7">Volumen Original</th>
+                                        <th v-else></th>
+                                        <th v-if="solicitud.tipo_orden.id != 7">Volumen Actualizado</th>
+                                        <th v-else></th>
+                                        <th v-if="solicitud.tipo_orden.id != 7">Costo Original</th>
+                                        <th v-else></th>
+                                        <th v-if="solicitud.tipo_orden.id != 7">Costo Actualizado</th>
+                                        <th v-else></th>
                                         <th>Importe Original</th>
                                         <th>Importe Actualizado</th>
                                     </tr>
@@ -201,17 +213,24 @@
                                         <td>@{{ i+1 }}</td>
                                         <td>@{{ insumo.material.descripcion }}</td>
                                         <td>@{{ insumo.material.unidad }}</td>
-                                        <td>@{{ parseFloat(insumo.cantidad_presupuestada).formatMoney(2,'.',',') }}</td>
-                                        <td>@{{ parseFloat(insumo.cantidad_presupuestada_nueva).formatMoney(2,'.',',') }}</td>
-                                        <td class="text-right">
+                                        <td v-if="solicitud.tipo_orden.id != 7">@{{ parseFloat(insumo.cantidad_presupuestada).formatMoney(2,'.',',') }}</td>
+                                        <th v-else></th>
+                                        <td v-if="solicitud.tipo_orden.id != 7">@{{ parseFloat(insumo.cantidad_presupuestada_nueva).formatMoney(2,'.',',') }}</td>
+                                        <th v-else></th>
+                                        <td class="text-right" v-if="solicitud.tipo_orden.id != 7">
                                             $@{{ parseFloat(insumo.precio_unitario_original).formatMoney(2,'.',',') }}</td>
-                                        <td class="text-right">
+                                        <th v-else></th>
+                                        <td class="text-right" v-if="solicitud.tipo_orden.id != 7">
                                             $@{{ parseFloat(insumo.precio_unitario_nuevo).formatMoney(2,'.',',') }}</td>
-                                        <td class="text-right">
+                                        <th v-else></th>
+                                        <td class="text-right"  v-if="solicitud.estatus.clave_estado == 2">
+                                            $@{{ parseFloat(insumo.historico.monto_presupuestado_original).formatMoney(2,'.',',') }}</td>
+                                        <td class="text-right" v-else>
                                             $@{{ parseFloat(insumo.cantidad_presupuestada*insumo.precio_unitario_original).formatMoney(2,'.',',') }}</td>
-                                        <td class="text-right">
+                                        <td class="text-right"  v-if="solicitud.estatus.clave_estado == 2">
+                                            $@{{ parseFloat(insumo.historico.monto_presupuestado_actualizado).formatMoney(2,'.',',') }}</td>
+                                        <td class="text-right" v-else>
                                             $@{{ parseFloat(insumo.monto_presupuestado).formatMoney(2,'.',',') }}</td>
-
                                     </tr>
                                     </tbody>
                                 </table>

@@ -9,6 +9,7 @@
 namespace Ghi\Domain\Core\Models\Compras;
 
 
+use Ghi\Core\Facades\Context;
 use Ghi\Domain\Core\Models\ControlRec\RQCTOCCotizaciones;
 use Ghi\Domain\Core\Models\Empresa;
 use Ghi\Domain\Core\Models\Scopes\CotizacionCompraScope;
@@ -58,6 +59,7 @@ class CotizacionCompra extends Transaccion
      * @return \Illuminate\Database\Eloquent\Relations\HasOne
      */
     public function rqctocCotizacion() {
-        return $this->hasOne(RQCTOCCotizaciones::class, 'idtransaccion_sao', 'id_transaccion');
+        return $this->hasOne(RQCTOCCotizaciones::class, 'idtransaccion_sao', 'id_transaccion')
+            ->where(['idobra_sao'=>Context::getId(),'base_sao'=>Context::getDatabaseName(),]);
     }
 }

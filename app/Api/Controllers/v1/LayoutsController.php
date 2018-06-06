@@ -12,7 +12,6 @@ namespace Ghi\Api\Controllers\v1;
 use Dingo\Api\Exception\StoreResourceFailedException;
 use Dingo\Api\Http\Request;
 use Dingo\Api\Routing\Helpers;
-use Dotenv\Validator;
 use Ghi\Domain\Core\Contracts\Compras\RequisicionRepository;
 use Ghi\Domain\Core\Contracts\ContratoProyectadoRepository;
 use Ghi\Domain\Core\Layouts\Compras\AsignacionCargaProveedoresLayout;
@@ -20,7 +19,6 @@ use Ghi\Domain\Core\Layouts\Compras\AsignacionProveedoresLayout;
 use Ghi\Domain\Core\Layouts\Contratos\AsignacionSubcontratistasLayout;
 use Ghi\Domain\Core\Layouts\Presupuestos\AsignacionCargaPreciosLayout;
 use Ghi\Http\Controllers\Controller as BaseController;
-use Maatwebsite\Excel\Facades\Excel;
 
 /**
  * Class LayoutsController
@@ -77,7 +75,7 @@ class LayoutsController extends BaseController
     public function compras_asignacion_store(Request $request, $id_requisicion)
     {
         $rules = array(
-            'file' => 'required|file|mimes:xls,xlsx',
+            'file' => 'required|mimetypes:application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-office',
         );
 
         $validator = app('validator')->make($request->all(), $rules);
@@ -117,7 +115,7 @@ class LayoutsController extends BaseController
     public function contratos_asignacion_store(Request $request, $id_contrato_proyectado)
     {
         $rules = array(
-            'file' => 'required|file|mimes:xls,xlsx',
+            'file' => 'required|mimetypes:application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-office',
         );
 
         $validator = app('validator')->make($request->all(), $rules);
