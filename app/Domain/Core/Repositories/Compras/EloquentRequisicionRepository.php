@@ -165,7 +165,7 @@ class EloquentRequisicionRepository implements RequisicionRepository
         return RQCTOCCotizaciones::whereIn('idtransaccion_sao', $ids_cot)
             ->where('base_sao', Context::getDatabaseName())
             ->where('idobra_sao', Context::getID())
-            ->with(['rqctocSolicitud.rqctocSolicitudPartidas.item.transaccion', 'rqctocSolicitud.rqctocSolicitudPartidas.material', 'empresa', 'sucursal'])
+            ->with(['rqctocCotizacionPartidas', 'rqctocSolicitud.rqctocSolicitudPartidas.item.transaccion', 'rqctocSolicitud.rqctocSolicitudPartidas.material', 'empresa', 'sucursal'])
             ->get();
     }
 
