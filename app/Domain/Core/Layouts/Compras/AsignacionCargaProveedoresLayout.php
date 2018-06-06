@@ -8,6 +8,7 @@ use Ghi\Domain\Core\Layouts\ValidacionLayout;
 use Ghi\Domain\Core\Contracts\Compras\RequisicionRepository;
 use Ghi\Domain\Core\Models\ControlRec\RQCTOCCotizacionesPartidas;
 use Ghi\Domain\Core\Models\ControlRec\RQCTOCSolicitudPartidas;
+use Ghi\Utils\TipoCambio;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\DB;
@@ -93,9 +94,11 @@ class AsignacionCargaProveedoresLayout extends ValidacionLayout
         "iva" => "IVA",
         "total" => "Total",
         "fecha_de_presupuesto" => "Fecha de Presupuesto",
+        "pago_en_parcialidades" => "Pago en Parcialdades (%)",
         "anticipio" => "% Anticipo",
-        "credito_dias" => "Crédito dias",
-        "vigencia_dias" => "Vigencia dias",
+        "credito_dias" => "Crédito días",
+        "tiempo_de_entrega" => "Tiempo de Entrega (días)",
+        "vigencia_dias" => "Vigencia días",
         "observaciones" => "Observaciones Generales",
     ];
     /**
@@ -113,8 +116,10 @@ class AsignacionCargaProveedoresLayout extends ValidacionLayout
 
     /**
      * AsignacionSubcontratistasLayout constructor.
+     *
      * @param RequisicionRepository $requisicionRepository
      * @param $info
+     *
      * @internal param ContratoProyectado $contrato_proyectado
      */
     public function __construct(RequisicionRepository $requisicionRepository, $info)
@@ -124,6 +129,7 @@ class AsignacionCargaProveedoresLayout extends ValidacionLayout
         $this->mCrypt->setIv($this->Iv);
         $this->lengthHeaderFijos = count($this->headerFijos);
         $this->lengthHeaderDinamicos = count($this->headerDinamicos);
+        $this->operaciones = count($this->rowOperacionesExtra);
         $this->requisicion = $requisicionRepository;
         $this->info = $info;
         $this->cabecerasLength = 2;
@@ -131,8 +137,9 @@ class AsignacionCargaProveedoresLayout extends ValidacionLayout
         // Tipo cambio hoy
         $tipo_cambio = Cambio::where('fecha', '=', date('Y-m-d'))->get()->toArray();
 
-        foreach ($tipo_cambio as $k => $v)
+        foreach ($tipo_cambio as $k => $v) {
             $this->tipo_cambio[$v['id_moneda']] = $v;
+        }
         $this->requisicion = $requisicionRepository;
     }
 
@@ -159,18 +166,14 @@ class AsignacionCargaProveedoresLayout extends ValidacionLayout
                 }
 
                 $totalesPartidas = $presupuestos->count();
-                if ($totalesPartidas > 0)
-                {
-                    if ($totalesPartidas == 0)
+                if ($totalesPartidas > 0) {
+                    if ($totalesPartidas == 0) {
                         $arrayResult['totales'] = $arrayResult['totales'] - 1;
-
-                    else
-                    {
-                        foreach ($presupuestos as $_index => $presupuesto)
-                        {
+                    } else {
+                        foreach ($presupuestos as $_index => $presupuesto) {
 
                             //if ($presupuesto->no_cotizado == 0) {
-                                $arrayResult['valores'][$solicitud_partida->iditem_sao]['presupuesto'][$_index] = $presupuesto;
+                            $arrayResult['valores'][$solicitud_partida->iditem_sao]['presupuesto'][$_index] = $presupuesto;
                             /*} else {
                                 $arrayResult['valores'][$partida->id_concepto]['presupuesto'][$index] = [];
                                 $arrayResult['valores'][$partida->id_concepto]['partida'][$index] = [];
@@ -181,9 +184,9 @@ class AsignacionCargaProveedoresLayout extends ValidacionLayout
 
                         }
                     }
-                }
-                else
+                } else {
                     $arrayResult['totales'] = $arrayResult['totales'] - 1;
+                }
             }
         }
         $arrayResult['maxRow'] = $maxRow;
@@ -202,319 +205,328 @@ class AsignacionCargaProveedoresLayout extends ValidacionLayout
 
         Config::set(['excel.export.calculate' => true]);
         return Excel::create('Asignación presupuestos', function ($excel) use ($req) {
-            $excel->sheet('# ' . str_pad($req->folio_sao, 5, '0', STR_PAD_LEFT), function (LaravelExcelWorksheet $sheet) use ($req) {
-                $arrayRequisicion = $this->setData();
+            $excel->sheet('# ' . str_pad($req->folio_sao, 5, '0', STR_PAD_LEFT),
+                function (LaravelExcelWorksheet $sheet) use ($req) {
+                    $arrayRequisicion = $this->setData();
 
-                $sheet->getProtection()->setSheet(true);
-                $sheet->loadView('excel_layouts.asignacion_proveedores',
-                    [
-                        'requisicion' => $arrayRequisicion,
-                        'headerRequisiciones' => $this->headerFijos,
-                        'headerCotizaciones' => $this->headerDinamicos,
-                        'mcrypt' => $this->mCrypt,
-                        'info' => $this->info
-                    ]);
-                $sheet->setAutoSize(false);
+                    $sheet->getProtection()->setSheet(true);
+                    $sheet->loadView('excel_layouts.asignacion_proveedores',
+                        [
+                            'requisicion' => $arrayRequisicion,
+                            'headerRequisiciones' => $this->headerFijos,
+                            'headerCotizaciones' => $this->headerDinamicos,
+                            'mcrypt' => $this->mCrypt,
+                            'info' => $this->info,
+                        ]);
+                    $sheet->setAutoSize(false);
 
-                $index = 1;
-                $haciaAbajo = 3;
-                $reqPresupuestos = [];
-                foreach($arrayRequisicion['valores'] as $key => $requisicion)
-                {
-                    $reqPresupuestos = $requisicion['presupuesto'];
+                    $index = 1;
+                    $haciaAbajo = 3;
+                    $reqPresupuestos = [];
+                    foreach ($arrayRequisicion['valores'] as $key => $requisicion) {
+                        $reqPresupuestos = $requisicion['presupuesto'];
 
-                    foreach($requisicion['presupuesto'] as $key => $cotizacion)
-                    {
-                        $desde = (count($this->headerDinamicos) * $key) + (count($this->headerFijos));
+                        foreach ($requisicion['presupuesto'] as $key => $cotizacion) {
+                            $desde = (count($this->headerDinamicos) * $key) + (count($this->headerFijos));
 
-                        // Precio Unitario
-                        $sheet->getStyle(\PHPExcel_Cell::stringFromColumnIndex($desde) . $haciaAbajo)->getProtection()->setLocked(\PHPExcel_Style_Protection::PROTECTION_UNPROTECTED);
+                            // Precio Unitario
+                            $sheet->getStyle(\PHPExcel_Cell::stringFromColumnIndex($desde) . $haciaAbajo)->getProtection()->setLocked(\PHPExcel_Style_Protection::PROTECTION_UNPROTECTED);
 
-                        // % Descuento
-                        $sheet->getStyle(\PHPExcel_Cell::stringFromColumnIndex($desde + 1) . $haciaAbajo)->getProtection()->setLocked(\PHPExcel_Style_Protection::PROTECTION_UNPROTECTED);
+                            // % Descuento
+                            $sheet->getStyle(\PHPExcel_Cell::stringFromColumnIndex($desde + 1) . $haciaAbajo)->getProtection()->setLocked(\PHPExcel_Style_Protection::PROTECTION_UNPROTECTED);
 
-                        // Precio Total
-                        $sheet->setCellValue(\PHPExcel_Cell::stringFromColumnIndex($desde + 2) . $haciaAbajo, '='. \PHPExcel_Cell::stringFromColumnIndex($desde) . $haciaAbajo .'*'. 'E'. $haciaAbajo.'-(('. \PHPExcel_Cell::stringFromColumnIndex($desde) . $haciaAbajo .'*E'.$haciaAbajo.'*'. \PHPExcel_Cell::stringFromColumnIndex($desde + 1) . $haciaAbajo .')/100)');
+                            // Precio Total
+                            $sheet->setCellValue(\PHPExcel_Cell::stringFromColumnIndex($desde + 2) . $haciaAbajo,
+                                '=' . \PHPExcel_Cell::stringFromColumnIndex($desde) . $haciaAbajo . '*' . 'E' . $haciaAbajo . '-((' . \PHPExcel_Cell::stringFromColumnIndex($desde) . $haciaAbajo . '*E' . $haciaAbajo . '*' . \PHPExcel_Cell::stringFromColumnIndex($desde + 1) . $haciaAbajo . ')/100)');
 
-                        // Moneda
-                        $objValidation = $sheet->getCell(\PHPExcel_Cell::stringFromColumnIndex($desde + 3) . $haciaAbajo)->getDataValidation();
+                            // Moneda
+                            $objValidation = $sheet->getCell(\PHPExcel_Cell::stringFromColumnIndex($desde + 3) . $haciaAbajo)->getDataValidation();
+                            $objValidation->setType(\PHPExcel_Cell_DataValidation::TYPE_LIST);
+                            $objValidation->setErrorStyle(\PHPExcel_Cell_DataValidation::STYLE_INFORMATION);
+                            $objValidation->setAllowBlank(false);
+                            $objValidation->setShowInputMessage(true);
+                            $objValidation->setShowErrorMessage(true);
+                            $objValidation->setShowDropDown(true);
+                            $objValidation->setErrorTitle('error');
+                            $objValidation->setError('Valor no está en la lista');
+                            $objValidation->setPromptTitle('Tipo de Moneda');
+                            $objValidation->setPrompt('Selecciona un valor de la lista');
+                            $objValidation->setFormula1('"EURO, DOLAR USD, PESO MXP"');
+
+                            $sheet->getStyle(\PHPExcel_Cell::stringFromColumnIndex($desde + 3) . $haciaAbajo)->getProtection()->setLocked(\PHPExcel_Style_Protection::PROTECTION_UNPROTECTED);
+
+
+                            // Precio Total Moneda Conversión
+                            $sheet->setCellValue(\PHPExcel_Cell::stringFromColumnIndex($desde + 4) . $haciaAbajo,
+                                '=IF(' . \PHPExcel_Cell::stringFromColumnIndex($desde + 3) . $haciaAbajo . '="EURO",' . \PHPExcel_Cell::stringFromColumnIndex($desde + 3) . $haciaAbajo . '*' . $this->tipo_cambio[3]['cambio'] . '/1, IF(' . \PHPExcel_Cell::stringFromColumnIndex($desde + 3) . $haciaAbajo . '="DOLAR USD",' . \PHPExcel_Cell::stringFromColumnIndex($desde + 2) . $haciaAbajo . '*' . $this->tipo_cambio[2]['cambio'] . '/1, IF(' . \PHPExcel_Cell::stringFromColumnIndex($desde + 3) . $haciaAbajo . '="PESO MXP",' . \PHPExcel_Cell::stringFromColumnIndex($desde + 2) . $haciaAbajo . '/1, IF(' . \PHPExcel_Cell::stringFromColumnIndex($desde + 3) . $haciaAbajo . '="",0))))');
+
+                            // idrqctoc_solicitudes_partidas
+                            $solicitudPartidas = [];
+                            foreach ($cotizacion->rqctocSolicitud->rqctocSolicitudPartidas as $sp) {
+                                $solicitudPartidas[] = $sp->idrqctoc_solicitudes_partidas;
+                            }
+
+                            $sheet->setCellValue(\PHPExcel_Cell::stringFromColumnIndex($desde + 7) . $haciaAbajo,
+                                $this->mCrypt->encrypt(implode(',', array_unique($solicitudPartidas))));
+
+                            // id moneda
+                            $sheet->setCellValue(\PHPExcel_Cell::stringFromColumnIndex($desde + 9) . $haciaAbajo,
+                                '=IF(' . \PHPExcel_Cell::stringFromColumnIndex($desde + 3) . $haciaAbajo . '="EURO",2, IF(' . \PHPExcel_Cell::stringFromColumnIndex($desde + 3) . $haciaAbajo . '="DOLAR (USD)",1, IF(' . \PHPExcel_Cell::stringFromColumnIndex($desde + 3) . $haciaAbajo . '="PESO (MXP)",3,0)))');
+
+                        }
+                        $index++;
+                        $haciaAbajo++;
+                    }
+
+                    // Referencia última fila
+                    $haciaAbajo = $haciaAbajo - 1;
+                    $ultimaFila = $haciaAbajo;
+
+                    // % Descuento
+                    $pos = ++$haciaAbajo;
+                    foreach ($reqPresupuestos as $key => $cotizacion) {
+                        $desde = ((count($this->headerDinamicos) * $key) + (count($this->headerFijos))) - 1;
+                        $sheet->setCellValue(\PHPExcel_Cell::stringFromColumnIndex($desde) . $pos, '% Descuento');
+                        $sheet->setCellValue(\PHPExcel_Cell::stringFromColumnIndex($desde + 1) . $pos, '0');
+                    }
+
+                    // Subtotal Precios PESO MXP
+                    $pos = ++$haciaAbajo;
+                    foreach ($reqPresupuestos as $key => $cotizacion) {
+                        // Referencia de posición para la cotización
+                        $desdeCot = ((count($this->headerDinamicos) * $key) + (count($this->headerFijos)));
+
+                        // Referencia de posición para los totales/subtotales
+                        $desde = $desdeCot - 1;
+
+                        $sheet->setCellValue(\PHPExcel_Cell::stringFromColumnIndex($desde) . $pos,
+                            'Subtotal Precios PESO MXP');
+                        $sheet->setCellValue(\PHPExcel_Cell::stringFromColumnIndex($desde + 1) . $pos,
+                            '=SUMIF(' . \PHPExcel_Cell::stringFromColumnIndex($desdeCot + 3) . '3:' . \PHPExcel_Cell::stringFromColumnIndex($desdeCot + 3) . $ultimaFila . ',"PESO MXP",' . \PHPExcel_Cell::stringFromColumnIndex($desdeCot + 2) . '3:' . \PHPExcel_Cell::stringFromColumnIndex($desdeCot + 2) . $ultimaFila . ')-(SUMIF(' . \PHPExcel_Cell::stringFromColumnIndex($desdeCot + 3) . '3:' . \PHPExcel_Cell::stringFromColumnIndex($desdeCot + 3) . $ultimaFila . ',"PESO MXP",' . \PHPExcel_Cell::stringFromColumnIndex($desdeCot + 2) . '3:' . \PHPExcel_Cell::stringFromColumnIndex($desdeCot + 2) . $ultimaFila . ')*' . \PHPExcel_Cell::stringFromColumnIndex($desdeCot) . ($ultimaFila) . '/100)');
+                    }
+
+                    // Subtotal Precios DOLAR USD
+                    $pos = ++$haciaAbajo;
+                    foreach ($reqPresupuestos as $key => $cotizacion) {
+                        // Referencia de posición para la cotización
+                        $desdeCot = ((count($this->headerDinamicos) * $key) + (count($this->headerFijos)));
+
+                        // Referencia de posición para los totales/subtotales
+                        $desde = $desdeCot - 1;
+
+                        $sheet->setCellValue(\PHPExcel_Cell::stringFromColumnIndex($desde) . $pos,
+                            'Subtotal Precios DOLAR USD');
+                        $sheet->setCellValue(\PHPExcel_Cell::stringFromColumnIndex($desde + 1) . $pos,
+                            '=SUMIF(' . \PHPExcel_Cell::stringFromColumnIndex($desdeCot + 3) . '3:' . \PHPExcel_Cell::stringFromColumnIndex($desdeCot + 3) . $pos . ',"DOLAR USD",' . \PHPExcel_Cell::stringFromColumnIndex($desdeCot + 2) . '3:' . \PHPExcel_Cell::stringFromColumnIndex($desdeCot + 2) . $pos . ')-(SUMIF(' . \PHPExcel_Cell::stringFromColumnIndex($desdeCot + 3) . '3:' . \PHPExcel_Cell::stringFromColumnIndex($desdeCot + 3) . $pos . ',"DOLAR USD",' . \PHPExcel_Cell::stringFromColumnIndex($desdeCot + 2) . '3:' . \PHPExcel_Cell::stringFromColumnIndex($desdeCot + 2) . $pos . ')*' . \PHPExcel_Cell::stringFromColumnIndex($desdeCot) . ($haciaAbajo + 1) . '/100)');
+                    }
+
+                    // Subtotal Precios EURO
+                    $pos = ++$haciaAbajo;
+                    foreach ($reqPresupuestos as $key => $cotizacion) {
+                        // Referencia de posición para la cotización
+                        $desdeCot = ((count($this->headerDinamicos) * $key) + (count($this->headerFijos)));
+
+                        // Referencia de posición para los totales/subtotales
+                        $desde = $desdeCot - 1;
+
+                        $sheet->setCellValue(\PHPExcel_Cell::stringFromColumnIndex($desde) . $pos,
+                            'Subtotal Precios EURO');
+                        $sheet->setCellValue(\PHPExcel_Cell::stringFromColumnIndex($desde + 1) . $pos,
+                            '=SUMIF(' . \PHPExcel_Cell::stringFromColumnIndex($desdeCot + 3) . '3:' . \PHPExcel_Cell::stringFromColumnIndex($desdeCot + 3) . $ultimaFila . ',"EURO",' . \PHPExcel_Cell::stringFromColumnIndex($desdeCot + 2) . '3:' . \PHPExcel_Cell::stringFromColumnIndex($desdeCot + 2) . $ultimaFila . ')-(SUMIF(' . \PHPExcel_Cell::stringFromColumnIndex($desdeCot + 3) . '3:' . \PHPExcel_Cell::stringFromColumnIndex($desdeCot + 3) . $ultimaFila . ',"EURO",' . \PHPExcel_Cell::stringFromColumnIndex($desdeCot + 2) . '3:' . \PHPExcel_Cell::stringFromColumnIndex($desdeCot + 2) . $ultimaFila . ')*' . \PHPExcel_Cell::stringFromColumnIndex($desdeCot) . ($ultimaFila + 1) . '/100)');
+                    }
+
+                    // TC USD
+                    $pos = ++$haciaAbajo;
+                    foreach ($reqPresupuestos as $key => $cotizacion) {
+                        // Referencia de posición para la cotización
+                        $desdeCot = ((count($this->headerDinamicos) * $key) + (count($this->headerFijos)));
+
+                        // Referencia de posición para los totales/subtotales
+                        $desde = $desdeCot - 1;
+                        $sheet->setCellValue(\PHPExcel_Cell::stringFromColumnIndex($desde) . $pos, 'TC USD');
+                        $sheet->setCellValue(\PHPExcel_Cell::stringFromColumnIndex($desde + 1) . $pos,
+                            $this->tipo_cambio[2]['cambio']);
+                    }
+
+                    // TC EURO
+                    $pos = ++$haciaAbajo;
+                    foreach ($reqPresupuestos as $key => $cotizacion) {
+                        // Referencia de posición para la cotización
+                        $desdeCot = ((count($this->headerDinamicos) * $key) + (count($this->headerFijos)));
+
+                        // Referencia de posición para los totales/subtotales
+                        $desde = $desdeCot - 1;
+                        $sheet->setCellValue(\PHPExcel_Cell::stringFromColumnIndex($desde) . $pos, 'TC EURO');
+                        $sheet->setCellValue(\PHPExcel_Cell::stringFromColumnIndex($desde + 1) . $pos,
+                            $this->tipo_cambio[3]['cambio']);
+                    }
+
+                    // Moneda de Conv.
+                    $pos = ++$haciaAbajo;
+                    foreach ($reqPresupuestos as $key => $cotizacion) {
+                        // Referencia de posición para la cotización
+                        $desdeCot = ((count($this->headerDinamicos) * $key) + (count($this->headerFijos)));
+
+                        // Referencia de posición para los totales/subtotales
+                        $desde = $desdeCot - 1;
+
+                        $objValidation = $sheet->getCell(\PHPExcel_Cell::stringFromColumnIndex($desde + 1) . $pos)->getDataValidation();
                         $objValidation->setType(\PHPExcel_Cell_DataValidation::TYPE_LIST);
                         $objValidation->setErrorStyle(\PHPExcel_Cell_DataValidation::STYLE_INFORMATION);
                         $objValidation->setAllowBlank(false);
                         $objValidation->setShowInputMessage(true);
                         $objValidation->setShowErrorMessage(true);
                         $objValidation->setShowDropDown(true);
-                        $objValidation->setErrorTitle('error');
-                        $objValidation->setError('Valor no está en la lista');
-                        $objValidation->setPromptTitle('Tipo de Moneda');
-                        $objValidation->setPrompt('Selecciona un valor de la lista');
-                        $objValidation->setFormula1('"EURO, DOLAR USD, PESO MXP"');
+                        $objValidation->setFormula1('"PESO MX"');
+                        $sheet->getStyle(\PHPExcel_Cell::stringFromColumnIndex($desde + 1) . $pos)->getProtection()->setLocked(\PHPExcel_Style_Protection::PROTECTION_UNPROTECTED);
 
-                        $sheet->getStyle(\PHPExcel_Cell::stringFromColumnIndex($desde + 3) . $haciaAbajo)->getProtection()->setLocked(\PHPExcel_Style_Protection::PROTECTION_UNPROTECTED);
-
-
-                        // Precio Total Moneda Conversión
-                        $sheet->setCellValue(\PHPExcel_Cell::stringFromColumnIndex($desde + 4) . $haciaAbajo, '=IF('. \PHPExcel_Cell::stringFromColumnIndex($desde + 3) . $haciaAbajo .'="EURO",'. \PHPExcel_Cell::stringFromColumnIndex($desde + 3) . $haciaAbajo .'*'. $this->tipo_cambio[3]['cambio'] .'/1, IF('. \PHPExcel_Cell::stringFromColumnIndex($desde + 3) . $haciaAbajo .'="DOLAR USD",'. \PHPExcel_Cell::stringFromColumnIndex($desde + 2) . $haciaAbajo .'*'. $this->tipo_cambio[2]['cambio'] .'/1, IF('. \PHPExcel_Cell::stringFromColumnIndex($desde + 3) . $haciaAbajo .'="PESO MXP",'. \PHPExcel_Cell::stringFromColumnIndex($desde + 2) . $haciaAbajo .'/1, IF('. \PHPExcel_Cell::stringFromColumnIndex($desde + 3) . $haciaAbajo .'="",0))))');
-
-                        // idrqctoc_solicitudes_partidas
-                        $solicitudPartidas = [];
-                        foreach ($cotizacion->rqctocSolicitud->rqctocSolicitudPartidas as $sp)
-                            $solicitudPartidas[] = $sp->idrqctoc_solicitudes_partidas;
-
-                        $sheet->setCellValue(\PHPExcel_Cell::stringFromColumnIndex($desde + 7) . $haciaAbajo, $this->mCrypt->encrypt(implode(',', array_unique($solicitudPartidas))));
-
-                        // id moneda
-                        $sheet->setCellValue(\PHPExcel_Cell::stringFromColumnIndex($desde + 9) . $haciaAbajo,'=IF('. \PHPExcel_Cell::stringFromColumnIndex($desde + 3) . $haciaAbajo .'="EURO",2, IF('. \PHPExcel_Cell::stringFromColumnIndex($desde + 3) . $haciaAbajo .'="DOLAR (USD)",1, IF('. \PHPExcel_Cell::stringFromColumnIndex($desde + 3) . $haciaAbajo .'="PESO (MXP)",3,0)))');
-
+                        $sheet->setCellValue(\PHPExcel_Cell::stringFromColumnIndex($desde) . $pos, 'Moneda de Conv');
                     }
-                    $index++; $haciaAbajo++;
-                }
 
-                // Referencia última fila
-                $haciaAbajo = $haciaAbajo -1;
-                $ultimaFila = $haciaAbajo;
+                    // Subtotal Moneda Conv.
+                    $pos = ++$haciaAbajo;
+                    foreach ($reqPresupuestos as $key => $cotizacion) {
+                        // Referencia de posición para la cotización
+                        $desdeCot = ((count($this->headerDinamicos) * $key) + (count($this->headerFijos)));
 
-                // % Descuento
-                $pos = ++$haciaAbajo;
-                foreach($reqPresupuestos as $key => $cotizacion)
-                {
-                    $desde = ((count($this->headerDinamicos) * $key) + (count($this->headerFijos))) - 1;
-                    $sheet->setCellValue(\PHPExcel_Cell::stringFromColumnIndex($desde) . $pos, '% Descuento');
-                    $sheet->setCellValue(\PHPExcel_Cell::stringFromColumnIndex($desde +1) . $pos, '0');
-                }
+                        // Referencia de posición para los totales/subtotales
+                        $desde = $desdeCot - 1;
+                        $sheet->setCellValue(\PHPExcel_Cell::stringFromColumnIndex($desde) . $pos,
+                            'Subtotal Moneda Conv');
+                        $sheet->setCellValue(\PHPExcel_Cell::stringFromColumnIndex($desde + 1) . $pos,
+                            '=SUM(' . \PHPExcel_Cell::stringFromColumnIndex($desdeCot + 4) . '3:' . \PHPExcel_Cell::stringFromColumnIndex($desdeCot + 4) . $ultimaFila . ')-(SUM(' . \PHPExcel_Cell::stringFromColumnIndex($desdeCot + 4) . '3:' . \PHPExcel_Cell::stringFromColumnIndex($desdeCot + 4) . $ultimaFila . ')*' . \PHPExcel_Cell::stringFromColumnIndex($desdeCot) . ($ultimaFila + 1) . '/100)');
+                    }
 
-                // Subtotal Precios PESO MXP
-                $pos = ++$haciaAbajo;
-                foreach($reqPresupuestos as $key => $cotizacion)
-                {
-                    // Referencia de posición para la cotización
-                    $desdeCot = ((count($this->headerDinamicos) * $key) + (count($this->headerFijos)));
+                    // IVA
+                    $pos = ++$haciaAbajo;
+                    foreach ($reqPresupuestos as $key => $cotizacion) {
+                        // Referencia de posición para la cotización
+                        $desdeCot = ((count($this->headerDinamicos) * $key) + (count($this->headerFijos)));
 
-                    // Referencia de posición para los totales/subtotales
-                    $desde = $desdeCot - 1;
+                        // Referencia de posición para los totales/subtotales
+                        $desde = $desdeCot - 1;
 
-                    $sheet->setCellValue(\PHPExcel_Cell::stringFromColumnIndex($desde) . $pos, 'Subtotal Precios PESO MXP');
-                    $sheet->setCellValue(\PHPExcel_Cell::stringFromColumnIndex($desde +1) . $pos, '=SUMIF('. \PHPExcel_Cell::stringFromColumnIndex($desdeCot + 3) .'3:'. \PHPExcel_Cell::stringFromColumnIndex($desdeCot + 3) . $ultimaFila .',"PESO MXP",'. \PHPExcel_Cell::stringFromColumnIndex($desdeCot + 2) .'3:'. \PHPExcel_Cell::stringFromColumnIndex($desdeCot + 2) . $ultimaFila .')-(SUMIF('. \PHPExcel_Cell::stringFromColumnIndex($desdeCot + 3) .'3:'. \PHPExcel_Cell::stringFromColumnIndex($desdeCot + 3) . $ultimaFila .',"PESO MXP",'. \PHPExcel_Cell::stringFromColumnIndex($desdeCot + 2) .'3:'. \PHPExcel_Cell::stringFromColumnIndex($desdeCot + 2) . $ultimaFila .')*'. \PHPExcel_Cell::stringFromColumnIndex($desdeCot) .($ultimaFila).'/100)');
-                }
+                        $sheet->setCellValue(\PHPExcel_Cell::stringFromColumnIndex($desde) . $pos, 'IVA');
+                        $sheet->setCellValue(\PHPExcel_Cell::stringFromColumnIndex($desde + 1) . $pos,
+                            '=' . \PHPExcel_Cell::stringFromColumnIndex($desde + 1) . ($pos - 1) . '*' . '.16');
+                    }
 
-                // Subtotal Precios DOLAR USD
-                $pos = ++$haciaAbajo;
-                foreach($reqPresupuestos as $key => $cotizacion)
-                {
-                    // Referencia de posición para la cotización
-                    $desdeCot = ((count($this->headerDinamicos) * $key) + (count($this->headerFijos)));
+                    // Total
+                    $pos = ++$haciaAbajo;
+                    foreach ($reqPresupuestos as $key => $cotizacion) {
+                        // Referencia de posición para la cotización
+                        $desdeCot = ((count($this->headerDinamicos) * $key) + (count($this->headerFijos)));
 
-                    // Referencia de posición para los totales/subtotales
-                    $desde = $desdeCot - 1;
+                        // Referencia de posición para los totales/subtotales
+                        $desde = $desdeCot - 1;
 
-                    $sheet->setCellValue(\PHPExcel_Cell::stringFromColumnIndex($desde) . $pos, 'Subtotal Precios DOLAR USD');
-                    $sheet->setCellValue(\PHPExcel_Cell::stringFromColumnIndex($desde +1) . $pos, '=SUMIF('. \PHPExcel_Cell::stringFromColumnIndex($desdeCot + 3) .'3:'. \PHPExcel_Cell::stringFromColumnIndex($desdeCot + 3) . $pos .',"DOLAR USD",'. \PHPExcel_Cell::stringFromColumnIndex($desdeCot + 2) .'3:'. \PHPExcel_Cell::stringFromColumnIndex($desdeCot + 2) . $pos .')-(SUMIF('. \PHPExcel_Cell::stringFromColumnIndex($desdeCot + 3) .'3:'. \PHPExcel_Cell::stringFromColumnIndex($desdeCot + 3) . $pos .',"DOLAR USD",'. \PHPExcel_Cell::stringFromColumnIndex($desdeCot + 2) .'3:'. \PHPExcel_Cell::stringFromColumnIndex($desdeCot + 2) . $pos .')*'. \PHPExcel_Cell::stringFromColumnIndex($desdeCot) .($haciaAbajo + 1) . '/100)');
-                }
+                        $sheet->setCellValue(\PHPExcel_Cell::stringFromColumnIndex($desde) . $pos, 'Total');
+                        $sheet->setCellValue(\PHPExcel_Cell::stringFromColumnIndex($desde + 1) . $pos,
+                            '=' . \PHPExcel_Cell::stringFromColumnIndex($desde + 1) . ($pos - 2) . '+' . \PHPExcel_Cell::stringFromColumnIndex($desde + 1) . ($pos - 1));
+                    }
 
-                // Subtotal Precios EURO
-                $pos = ++$haciaAbajo;
-                foreach($reqPresupuestos as $key => $cotizacion)
-                {
-                    // Referencia de posición para la cotización
-                    $desdeCot = ((count($this->headerDinamicos) * $key) + (count($this->headerFijos)));
+                    // Fecha de Cotización
+                    $pos = ++$haciaAbajo;
+                    foreach ($reqPresupuestos as $key => $cotizacion) {
+                        // Referencia de posición para la cotización
+                        $desdeCot = ((count($this->headerDinamicos) * $key) + (count($this->headerFijos)));
 
-                    // Referencia de posición para los totales/subtotales
-                    $desde = $desdeCot - 1;
+                        // Referencia de posición para los totales/subtotales
+                        $desde = $desdeCot - 1;
+                        $sheet->setCellValue(\PHPExcel_Cell::stringFromColumnIndex($desde) . $pos,
+                            'Fecha de Presupuesto');
+                        $sheet->setCellValue(\PHPExcel_Cell::stringFromColumnIndex($desde + 1) . $pos, date("d-m-Y"));
+                        $sheet->getStyle(\PHPExcel_Cell::stringFromColumnIndex($desde + 1) . $pos)->getProtection()->setLocked(\PHPExcel_Style_Protection::PROTECTION_PROTECTED);
+                    }
 
-                    $sheet->setCellValue(\PHPExcel_Cell::stringFromColumnIndex($desde) . $pos, 'Subtotal Precios EURO');
-                    $sheet->setCellValue(\PHPExcel_Cell::stringFromColumnIndex($desde +1) . $pos, '=SUMIF('. \PHPExcel_Cell::stringFromColumnIndex($desdeCot + 3) .'3:'. \PHPExcel_Cell::stringFromColumnIndex($desdeCot + 3) . $ultimaFila .',"EURO",'. \PHPExcel_Cell::stringFromColumnIndex($desdeCot + 2) .'3:'. \PHPExcel_Cell::stringFromColumnIndex($desdeCot + 2) . $ultimaFila .')-(SUMIF('. \PHPExcel_Cell::stringFromColumnIndex($desdeCot + 3) .'3:'. \PHPExcel_Cell::stringFromColumnIndex($desdeCot + 3) . $ultimaFila .',"EURO",'. \PHPExcel_Cell::stringFromColumnIndex($desdeCot + 2) .'3:'. \PHPExcel_Cell::stringFromColumnIndex($desdeCot + 2) . $ultimaFila .')*'. \PHPExcel_Cell::stringFromColumnIndex($desdeCot) .($ultimaFila + 1) . '/100)');
-                }
+                    // Pago en Parcialdades (%)
+                    $pos = ++$haciaAbajo;
+                    foreach ($reqPresupuestos as $key => $cotizacion) {
+                        // Referencia de posición para la cotización
+                        $desdeCot = ((count($this->headerDinamicos) * $key) + (count($this->headerFijos)));
 
-                // TC USD
-                $pos = ++$haciaAbajo;
-                foreach($reqPresupuestos as $key => $cotizacion)
-                {
-                    // Referencia de posición para la cotización
-                    $desdeCot = ((count($this->headerDinamicos) * $key) + (count($this->headerFijos)));
+                        // Referencia de posición para los totales/subtotales
+                        $desde = $desdeCot - 1;
+                        $sheet->setCellValue(\PHPExcel_Cell::stringFromColumnIndex($desde) . $pos,
+                            'Pago en Parcialdades (%)');
+                        $sheet->setCellValue(\PHPExcel_Cell::stringFromColumnIndex($desde + 1) . $pos,
+                            $cotizacion->anticipo_pactado);
+                        $sheet->getStyle(\PHPExcel_Cell::stringFromColumnIndex($desde + 1) . $pos)->getProtection()->setLocked(\PHPExcel_Style_Protection::PROTECTION_UNPROTECTED);
+                    }
 
-                    // Referencia de posición para los totales/subtotales
-                    $desde = $desdeCot - 1;
-                    $sheet->setCellValue(\PHPExcel_Cell::stringFromColumnIndex($desde) . $pos, 'TC USD');
-                    $sheet->setCellValue(\PHPExcel_Cell::stringFromColumnIndex($desde +1) . $pos, $this->tipo_cambio[2]['cambio']);
-                }
+                    // % Anticipo
+                    $pos = ++$haciaAbajo;
+                    foreach ($reqPresupuestos as $key => $cotizacion) {
+                        // Referencia de posición para la cotización
+                        $desdeCot = ((count($this->headerDinamicos) * $key) + (count($this->headerFijos)));
 
-                // TC EURO
-                $pos = ++$haciaAbajo;
-                foreach($reqPresupuestos as $key => $cotizacion)
-                {
-                    // Referencia de posición para la cotización
-                    $desdeCot = ((count($this->headerDinamicos) * $key) + (count($this->headerFijos)));
+                        // Referencia de posición para los totales/subtotales
+                        $desde = $desdeCot - 1;
+                        $sheet->setCellValue(\PHPExcel_Cell::stringFromColumnIndex($desde) . $pos, '% Anticipo');
+                        $sheet->setCellValue(\PHPExcel_Cell::stringFromColumnIndex($desde + 1) . $pos,
+                            $cotizacion->anticipo);
+                        $sheet->getStyle(\PHPExcel_Cell::stringFromColumnIndex($desde + 1) . $pos)->getProtection()->setLocked(\PHPExcel_Style_Protection::PROTECTION_UNPROTECTED);
+                    }
 
-                    // Referencia de posición para los totales/subtotales
-                    $desde = $desdeCot - 1;
-                    $sheet->setCellValue(\PHPExcel_Cell::stringFromColumnIndex($desde) . $pos, 'TC EURO');
-                    $sheet->setCellValue(\PHPExcel_Cell::stringFromColumnIndex($desde +1) . $pos, $this->tipo_cambio[3]['cambio']);
-                }
+                    // Crédito días
+                    $pos = ++$haciaAbajo;
+                    foreach ($reqPresupuestos as $key => $cotizacion) {
+                        // Referencia de posición para la cotización
+                        $desdeCot = ((count($this->headerDinamicos) * $key) + (count($this->headerFijos)));
 
-                // Moneda de Conv.
-                $pos = ++$haciaAbajo;
-                foreach($reqPresupuestos as $key => $cotizacion)
-                {
-                    // Referencia de posición para la cotización
-                    $desdeCot = ((count($this->headerDinamicos) * $key) + (count($this->headerFijos)));
+                        // Referencia de posición para los totales/subtotales
+                        $desde = $desdeCot - 1;
+                        $sheet->setCellValue(\PHPExcel_Cell::stringFromColumnIndex($desde) . $pos, 'Crédito días');
+                        $sheet->setCellValue(\PHPExcel_Cell::stringFromColumnIndex($desde + 1) . $pos,
+                            $cotizacion->días_credito);
+                        $sheet->getStyle(\PHPExcel_Cell::stringFromColumnIndex($desde + 1) . $pos)->getProtection()->setLocked(\PHPExcel_Style_Protection::PROTECTION_UNPROTECTED);
+                    }
 
-                    // Referencia de posición para los totales/subtotales
-                    $desde = $desdeCot - 1;
+                    // Plazo entrega
+                    $pos = ++$haciaAbajo;
+                    foreach ($reqPresupuestos as $key => $cotizacion) {
+                        // Referencia de posición para la cotización
+                        $desdeCot = ((count($this->headerDinamicos) * $key) + (count($this->headerFijos)));
 
-                    $objValidation = $sheet->getCell(\PHPExcel_Cell::stringFromColumnIndex($desde +1) . $pos)->getDataValidation();
-                    $objValidation->setType( \PHPExcel_Cell_DataValidation::TYPE_LIST );
-                    $objValidation->setErrorStyle( \PHPExcel_Cell_DataValidation::STYLE_INFORMATION );
-                    $objValidation->setAllowBlank(false);
-                    $objValidation->setShowInputMessage(true);
-                    $objValidation->setShowErrorMessage(true);
-                    $objValidation->setShowDropDown(true);
-                    $objValidation->setFormula1('"PESO MX"');
-                    $sheet->getStyle(\PHPExcel_Cell::stringFromColumnIndex($desde +1) . $pos)->getProtection()->setLocked(\PHPExcel_Style_Protection::PROTECTION_UNPROTECTED);
+                        // Referencia de posición para los totales/subtotales
+                        $desde = $desdeCot - 1;
+                        $sheet->setCellValue(\PHPExcel_Cell::stringFromColumnIndex($desde) . $pos,
+                            'Tiempo de Entrega (días)');
+                        $sheet->setCellValue(\PHPExcel_Cell::stringFromColumnIndex($desde + 1) . $pos,
+                            $cotizacion->plazo_entrega);
+                        $sheet->getStyle(\PHPExcel_Cell::stringFromColumnIndex($desde + 1) . $pos)->getProtection()->setLocked(\PHPExcel_Style_Protection::PROTECTION_UNPROTECTED);
+                    }
 
-                    $sheet->setCellValue(\PHPExcel_Cell::stringFromColumnIndex($desde) . $pos, 'Moneda de Conv');
-                }
+                    // Vigencia días
+                    $pos = ++$haciaAbajo;
+                    foreach ($reqPresupuestos as $key => $cotizacion) {
+                        // Referencia de posición para la cotización
+                        $desdeCot = ((count($this->headerDinamicos) * $key) + (count($this->headerFijos)));
 
-                // Subtotal Moneda Conv.
-                $pos = ++$haciaAbajo;
-                foreach($reqPresupuestos as $key => $cotizacion)
-                {
-                    // Referencia de posición para la cotización
-                    $desdeCot = ((count($this->headerDinamicos) * $key) + (count($this->headerFijos)));
+                        // Referencia de posición para los totales/subtotales
+                        $desde = $desdeCot - 1;
+                        $sheet->setCellValue(\PHPExcel_Cell::stringFromColumnIndex($desde) . $pos, 'Vigencia días');
+                        $sheet->setCellValue(\PHPExcel_Cell::stringFromColumnIndex($desde + 1) . $pos,
+                            $cotizacion->vigencia);
+                        $sheet->getStyle(\PHPExcel_Cell::stringFromColumnIndex($desde + 1) . $pos)->getProtection()->setLocked(\PHPExcel_Style_Protection::PROTECTION_UNPROTECTED);
+                    }
 
-                    // Referencia de posición para los totales/subtotales
-                    $desde = $desdeCot - 1;
-                    $sheet->setCellValue(\PHPExcel_Cell::stringFromColumnIndex($desde) . $pos, 'Subtotal Moneda Conv');
-                    $sheet->setCellValue(\PHPExcel_Cell::stringFromColumnIndex($desde +1) . $pos, '=SUM('. \PHPExcel_Cell::stringFromColumnIndex($desdeCot + 4) .'3:'. \PHPExcel_Cell::stringFromColumnIndex($desdeCot + 4) . $ultimaFila .')-(SUM('. \PHPExcel_Cell::stringFromColumnIndex($desdeCot + 4) .'3:'. \PHPExcel_Cell::stringFromColumnIndex($desdeCot + 4) . $ultimaFila .')*'. \PHPExcel_Cell::stringFromColumnIndex($desdeCot) . ($ultimaFila + 1) .'/100)');
-                }
+                    // Observaciones Generales
+                    $pos = ++$haciaAbajo;
+                    foreach ($reqPresupuestos as $key => $cotizacion) {
+                        // Referencia de posición para la cotización
+                        $desdeCot = ((count($this->headerDinamicos) * $key) + (count($this->headerFijos)));
 
-                // IVA
-                $pos = ++$haciaAbajo;
-                foreach($reqPresupuestos as $key => $cotizacion)
-                {
-                    // Referencia de posición para la cotización
-                    $desdeCot = ((count($this->headerDinamicos) * $key) + (count($this->headerFijos)));
-
-                    // Referencia de posición para los totales/subtotales
-                    $desde = $desdeCot - 1;
-
-                    $sheet->setCellValue(\PHPExcel_Cell::stringFromColumnIndex($desde) . $pos, 'IVA');
-                    $sheet->setCellValue(\PHPExcel_Cell::stringFromColumnIndex($desde +1) . $pos, '='. \PHPExcel_Cell::stringFromColumnIndex($desde + 1) . ($pos - 1) .'*'.'.16');
-                }
-
-                // Total
-                $pos = ++$haciaAbajo;
-                foreach($reqPresupuestos as $key => $cotizacion)
-                {
-                    // Referencia de posición para la cotización
-                    $desdeCot = ((count($this->headerDinamicos) * $key) + (count($this->headerFijos)));
-
-                    // Referencia de posición para los totales/subtotales
-                    $desde = $desdeCot - 1;
-
-                    $sheet->setCellValue(\PHPExcel_Cell::stringFromColumnIndex($desde) . $pos, 'Total');
-                    $sheet->setCellValue(\PHPExcel_Cell::stringFromColumnIndex($desde +1) . $pos, '='. \PHPExcel_Cell::stringFromColumnIndex($desde +1) . ($pos - 2) .'+'. \PHPExcel_Cell::stringFromColumnIndex($desde + 1) . ($pos - 1));
-                }
-
-                // Fecha de Cotización
-                $pos = ++$haciaAbajo;
-                foreach($reqPresupuestos as $key => $cotizacion)
-                {
-                    // Referencia de posición para la cotización
-                    $desdeCot = ((count($this->headerDinamicos) * $key) + (count($this->headerFijos)));
-
-                    // Referencia de posición para los totales/subtotales
-                    $desde = $desdeCot - 1;
-                    $sheet->setCellValue(\PHPExcel_Cell::stringFromColumnIndex($desde) . $pos, 'Fecha de Presupuesto');
-                    $sheet->setCellValue(\PHPExcel_Cell::stringFromColumnIndex($desde +1) . $pos, date("d-m-Y"));
-                    $sheet->getStyle(\PHPExcel_Cell::stringFromColumnIndex($desde +1) . $pos)->getProtection()->setLocked(\PHPExcel_Style_Protection::PROTECTION_PROTECTED);
-                }
-
-                // Pago en Parcialdades (%)
-                $pos = ++$haciaAbajo;
-                foreach($reqPresupuestos as $key => $cotizacion)
-                {
-                    // Referencia de posición para la cotización
-                    $desdeCot = ((count($this->headerDinamicos) * $key) + (count($this->headerFijos)));
-
-                    // Referencia de posición para los totales/subtotales
-                    $desde = $desdeCot - 1;
-                    $sheet->setCellValue(\PHPExcel_Cell::stringFromColumnIndex($desde) . $pos, 'Pago en Parcialdades (%)');
-                    $sheet->setCellValue(\PHPExcel_Cell::stringFromColumnIndex($desde +1) . $pos, $cotizacion->anticipo_pactado);
-                    $sheet->getStyle(\PHPExcel_Cell::stringFromColumnIndex($desde +1) . $pos)->getProtection()->setLocked(\PHPExcel_Style_Protection::PROTECTION_UNPROTECTED);
-                }
-
-                // % Anticipo
-                $pos = ++$haciaAbajo;
-                foreach($reqPresupuestos as $key => $cotizacion)
-                {
-                    // Referencia de posición para la cotización
-                    $desdeCot = ((count($this->headerDinamicos) * $key) + (count($this->headerFijos)));
-
-                    // Referencia de posición para los totales/subtotales
-                    $desde = $desdeCot - 1;
-                    $sheet->setCellValue(\PHPExcel_Cell::stringFromColumnIndex($desde) . $pos, '% Anticipo');
-                    $sheet->setCellValue(\PHPExcel_Cell::stringFromColumnIndex($desde +1) . $pos, $cotizacion->anticipo);
-                    $sheet->getStyle(\PHPExcel_Cell::stringFromColumnIndex($desde +1) . $pos)->getProtection()->setLocked(\PHPExcel_Style_Protection::PROTECTION_UNPROTECTED);
-                }
-
-                // Crédito días
-                $pos = ++$haciaAbajo;
-                foreach($reqPresupuestos as $key => $cotizacion)
-                {
-                    // Referencia de posición para la cotización
-                    $desdeCot = ((count($this->headerDinamicos) * $key) + (count($this->headerFijos)));
-
-                    // Referencia de posición para los totales/subtotales
-                    $desde = $desdeCot - 1;
-                    $sheet->setCellValue(\PHPExcel_Cell::stringFromColumnIndex($desde) . $pos, 'Crédito días');
-                    $sheet->setCellValue(\PHPExcel_Cell::stringFromColumnIndex($desde +1) . $pos, $cotizacion->días_credito);
-                    $sheet->getStyle(\PHPExcel_Cell::stringFromColumnIndex($desde +1) . $pos)->getProtection()->setLocked(\PHPExcel_Style_Protection::PROTECTION_UNPROTECTED);
-                }
-
-                // Plazo entrega
-                $pos = ++$haciaAbajo;
-                foreach($reqPresupuestos as $key => $cotizacion)
-                {
-                    // Referencia de posición para la cotización
-                    $desdeCot = ((count($this->headerDinamicos) * $key) + (count($this->headerFijos)));
-
-                    // Referencia de posición para los totales/subtotales
-                    $desde = $desdeCot - 1;
-                    $sheet->setCellValue(\PHPExcel_Cell::stringFromColumnIndex($desde) . $pos, 'Tiempo de Entrega (días)');
-                    $sheet->setCellValue(\PHPExcel_Cell::stringFromColumnIndex($desde +1) . $pos, $cotizacion->plazo_entrega);
-                    $sheet->getStyle(\PHPExcel_Cell::stringFromColumnIndex($desde +1) . $pos)->getProtection()->setLocked(\PHPExcel_Style_Protection::PROTECTION_UNPROTECTED);
-                }
-
-                // Vigencia días
-                $pos = ++$haciaAbajo;
-                foreach($reqPresupuestos as $key => $cotizacion)
-                {
-                    // Referencia de posición para la cotización
-                    $desdeCot = ((count($this->headerDinamicos) * $key) + (count($this->headerFijos)));
-
-                    // Referencia de posición para los totales/subtotales
-                    $desde = $desdeCot - 1;
-                    $sheet->setCellValue(\PHPExcel_Cell::stringFromColumnIndex($desde) . $pos, 'Vigencia días');
-                    $sheet->setCellValue(\PHPExcel_Cell::stringFromColumnIndex($desde +1) . $pos, $cotizacion->vigencia);
-                    $sheet->getStyle(\PHPExcel_Cell::stringFromColumnIndex($desde +1) . $pos)->getProtection()->setLocked(\PHPExcel_Style_Protection::PROTECTION_UNPROTECTED);
-                }
-
-                // Observaciones Generales
-                $pos = ++$haciaAbajo;
-                foreach($reqPresupuestos as $key => $cotizacion)
-                {
-                    // Referencia de posición para la cotización
-                    $desdeCot = ((count($this->headerDinamicos) * $key) + (count($this->headerFijos)));
-
-                    // Referencia de posición para los totales/subtotales
-                    $desde = $desdeCot - 1;
-                    $sheet->setCellValue(\PHPExcel_Cell::stringFromColumnIndex($desde) . $pos, 'Observaciones Generales');
-                    $sheet->setCellValue(\PHPExcel_Cell::stringFromColumnIndex($desde +1) . $pos, '');
-                    $sheet->getStyle(\PHPExcel_Cell::stringFromColumnIndex($desde +1) . $pos)->getProtection()->setLocked(\PHPExcel_Style_Protection::PROTECTION_UNPROTECTED);
-                }
+                        // Referencia de posición para los totales/subtotales
+                        $desde = $desdeCot - 1;
+                        $sheet->setCellValue(\PHPExcel_Cell::stringFromColumnIndex($desde) . $pos,
+                            'Observaciones Generales');
+                        $sheet->setCellValue(\PHPExcel_Cell::stringFromColumnIndex($desde + 1) . $pos, '');
+                        $sheet->getStyle(\PHPExcel_Cell::stringFromColumnIndex($desde + 1) . $pos)->getProtection()->setLocked(\PHPExcel_Style_Protection::PROTECTION_UNPROTECTED);
+                    }
 
 
-            })->getActiveSheetIndex(0);
+                })->getActiveSheetIndex(0);
         })
             ->store('xlsx', storage_path() . '/logs/');
     }
@@ -545,24 +557,22 @@ class AsignacionCargaProveedoresLayout extends ValidacionLayout
                 $identificadores = !empty($_headers[0]) ? $this->mCrypt->decrypt($_headers[0]) : [];
                 $idTransaciones = explode($this->delimiter, $identificadores);
                 $idTransacion = explode(',', current($idTransaciones));
-                $idTransacion = ['17429'];
                 $headers = $col[($this->cabecerasLength - 1)];
                 $cot_ids = $idTransaciones[1];
-                $cot_ids = '106492';
                 $agrupadores = $idTransaciones[2];
                 $solo_pendientes = $idTransaciones[3];
                 $req = $this->requisicion->getRequisicion($this->id_requisicion);
                 $this->info = [
                     'id_requisicion' => $req->idrqctoc_solicitudes,
                     'id_transaccion_sao' => $this->id_requisicion,
-                    'cot_ids' => explode(',', $cot_ids),
+                    'cot_ids' => $idTransacion,
                     'agrupadores' => !empty($agrupadores) ? explode(',', $agrupadores) : [],
                     'solo_pendientes' => $solo_pendientes,
                 ];
                 $layout = $this->setData();
                 if ($this->validarHeader($headers, $layout)) {
                     if (count($col) != ($layout['maxRow'] + $this->cabecerasLength + $this->operaciones)) {
-                        throw new \Exception("No es posible procesar el Layout debido a que presenta diferencias con la información actual del Contrato Proyectado ");
+                        throw new \Exception("No es posible procesar el Layout debido a que presenta diferencias con la información actual");
                     }
                     $arrayCotiazaciones = [];
                     for ($i = $this->cabecerasLength; $i < count($col); $i++) {
@@ -621,7 +631,6 @@ class AsignacionCargaProveedoresLayout extends ValidacionLayout
                     }
                 }
             } catch (\Exception $e) {
-                dd($e->getTraceAsString());
                 if (count($this->resultData) > 0) {
                     throw new StoreResourceFailedException($e->getMessage(), $this->resultData);
                 } else {
@@ -650,7 +659,7 @@ class AsignacionCargaProveedoresLayout extends ValidacionLayout
             $requisicion = $this->requisicion->find($this->id_requisicion);
             foreach ($cotizaciones as $key => $gralCotizacion) {
                 $cotizacionCompra = $requisicion->cotizacionesCompra()->find($key);
-                if(count($cotizacionCompra)) {
+                if (count($cotizacionCompra)) {
                     $anticipo = $gralCotizacion["cotizacion"]["anticipio"];
                     $idmoneda = ($gralCotizacion["cotizacion"]["moneda_de_conv"] == 'PESO MX') ? 3 : 0;
                     $vigencia = $gralCotizacion["cotizacion"]["vigencia_dias"];
@@ -660,6 +669,7 @@ class AsignacionCargaProveedoresLayout extends ValidacionLayout
                         $mensajeError = "El porcentaje de anticipo no puede ser mayor a 100";
                         $error++;
                     }
+                    dd($cotizacionCompra->rqctocCotizacion);
                     $idCotizacion = $cotizacionCompra->rqctocCotizacion->idrqctoc_cotizaciones;
                     $con_asignacion = $this->requisicion->getNumAsignaciones($idCotizacion);
                     if ($con_asignacion) {
@@ -672,14 +682,12 @@ class AsignacionCargaProveedoresLayout extends ValidacionLayout
                         throw new \Exception($mensajeError);
                     }
 
-                    $precio_unitario = '';
-                    $cantidad = '';
-                    $anticipo_pactado = '';
+                    $anticipo_pactado = $gralCotizacion["cotizacion"]["pago_en_parcialidades"];
                     $subtotal = str_replace(",", "", $gralCotizacion["cotizacion"]["subtotal_moneda_conv"]);
                     $impuesto = str_replace(",", "", $gralCotizacion["cotizacion"]["iva"]);
                     $monto = str_replace(",", "", $gralCotizacion["cotizacion"]["total"]);
                     $dias_credito = $gralCotizacion["cotizacion"]["credito_dias"];
-                    $plazo_entrega = $gralCotizacion["cotizacion"]["credito_dias"];
+                    $plazo_entrega = $gralCotizacion["cotizacion"]["tiempo_de_entrega"];
                     $segundos_sumar = $vigencia * 86400;
                     $month = $ex[1];
                     $day = $ex[2];
@@ -705,7 +713,7 @@ class AsignacionCargaProveedoresLayout extends ValidacionLayout
                         "porcentaje_anticipo_pactado" => ($anticipo_pactado == "") ? 0 : $anticipo_pactado,
                         "estado" => 1,
                     ];
-                    if (! $cotizacionCompra->update($datos_transaccion)) {
+                    if (!$cotizacionCompra->update($datos_transaccion)) {
                         $mensajeError = "No se puede procesar la cotización";
                         $this->resultData = $cotizaciones;
                         throw new \Exception($mensajeError);
@@ -736,7 +744,7 @@ class AsignacionCargaProveedoresLayout extends ValidacionLayout
                     foreach ($gralCotizacion["partidas"] as $key => $partidas) {
                         $idMaterial = $partidas['material_sao'];
                         $descuento_partida = $partidas['PorcentajeDescuento'];
-                        $descuento_compuesto = $descuento_partida+$descuento-($descuento_partida*$descuento/100);
+                        $descuento_compuesto = $descuento_partida + $descuento - ($descuento_partida * $descuento / 100);
                         if ($partidas['IdMoneda'] == 1) {
                             $id_moneda_partida = 2;
                         } elseif ($partidas['IdMoneda'] == 2) {
@@ -744,8 +752,10 @@ class AsignacionCargaProveedoresLayout extends ValidacionLayout
                         } elseif ($partidas['IdMoneda'] == 3) {
                             $id_moneda_partida = 1;
                         }
-                        $rqctocCotizacionPartidas = $cotizacionCompra->rqctocCotizacion->rqctocCotizacionPartidas->filter(function ($value) use ($idMaterial){
-                            if($value->idmaterial_sao==$idMaterial){
+                        $rqctocCotizacionPartidas = $cotizacionCompra->rqctocCotizacion->rqctocCotizacionPartidas->filter(function (
+                            $value
+                        ) use ($idMaterial) {
+                            if ($value->idmaterial_sao == $idMaterial) {
                                 return $value;
                             }
                         });
@@ -755,23 +765,26 @@ class AsignacionCargaProveedoresLayout extends ValidacionLayout
                                 $idCotizacion,
                                 $idMaterial
                             ) {
-                                if($value->id_transaccion==$idCotizacion&&$value->id_material==$idMaterial) {
+                                if ($value->id_transaccion == $idCotizacion && $value->id_material == $idMaterial) {
                                     return $value;
                                 }
                                 return false;
                             });
                             $idrqctocCotizaciones = $cotizacionCompra->rqctocCotizacion->idrqctoc_cotizaciones;
-                            $rqctocSolicutdesPartidas = $cotizacionCompra->rqctocCotizacion->rqctocSolicutdesPartidas->filter(function ($value) use ($idMaterial,$idrqctocCotizaciones){
-                                if($value->idmaterial_sao==$idMaterial && $idrqctocCotizaciones==$value->idrqctoc_cotizaciones){
+                            $rqctocSolicutdesPartidas = $cotizacionCompra->rqctocCotizacion->rqctocSolicutdesPartidas->filter(function (
+                                $value
+                            ) use ($idMaterial, $idrqctocCotizaciones) {
+                                if ($value->idmaterial_sao == $idMaterial && $idrqctocCotizaciones == $value->idrqctoc_cotizaciones) {
                                     return $value;
                                 }
                             });
-                            if($cotizacion) {
+                            if ($cotizacion) {
                                 $datos_sao = [
                                     "disponibles" => 1,
                                     "precio_unitario" => str_replace(",", "",
                                         $partidas["precio_unitario"]),
-                                    "precio_unitario_mxp" => "",
+                                    "precio_unitario_mxp" => TipoCambio::cambio(str_replace(",", "",
+                                        $partidas["precio_unitario"]), $id_moneda_partida),
                                     "descuento" => ($descuento_compuesto == "") ? 0 : $descuento_compuesto,
                                     "anticipo" => ($anticipo == "") ? 0 : $anticipo,
                                     "dias_entrega" => ($plazo_entrega == "") ? 0 : $plazo_entrega,
@@ -781,42 +794,43 @@ class AsignacionCargaProveedoresLayout extends ValidacionLayout
                                 ];
 
                                 $datos_partida_edicion = [
-                                    "idmoneda"=>$id_moneda_partida,
-                                    "precio_unitario"=>str_replace(",", "",
+                                    "idmoneda" => $id_moneda_partida,
+                                    "precio_unitario" => str_replace(",", "",
                                         $partidas["precio_unitario"]),
-                                    "precio_unitario_mxp" => "",
+                                    "precio_unitario_mxp" => TipoCambio::cambio(str_replace(",", "",
+                                        $partidas["precio_unitario"]), $id_moneda_partida),
                                     "descuento" => ($descuento_compuesto == "") ? 0 : $descuento_compuesto,
                                     "observaciones" => $partidas['Observaciones'],
-                                ] ;
+                                ];
                                 if (isset($rqctocCotizacionPartidas->idmaterial_sao)) {
                                     $rqctocCotizacionPartidas->update($datos_partida_edicion);
                                 } else {
-                                    $datos_partida_edicion["idrqctoc_cotizaciones"]=$cotizacionCompra->rqctocCotizacion->idrqctoc_cotizaciones;
-                                    $datos_partida_edicion["idrqctoc_solicitudes_partidas"]=$rqctocSolicutdesPartidas->idrqctoc_solicitudes_partidas;
+                                    $datos_partida_edicion["idrqctoc_cotizaciones"] = $cotizacionCompra->rqctocCotizacion->idrqctoc_cotizaciones;
+                                    $datos_partida_edicion["idrqctoc_solicitudes_partidas"] = $rqctocSolicutdesPartidas->idrqctoc_solicitudes_partidas;
                                     RQCTOCCotizacionesPartidas::create($datos_partida_edicion);
                                 }
                                 $cotizacion->update($datos_sao);
-                            }else{
+                            } else {
                                 $cotizaciones[$key]['error'][] = "No se puede procesar la cotización";
                                 $error++;
                             }
                         }
                     }
-                }else{
+                } else {
                     $cotizaciones[$key]['error'][] = "La cotización no exite";
                     $error++;
                 }
             }
             if ($error > 0) {
                 $this->resultData = $cotizaciones;
-                throw new \Exception('No es posible procesar el Layout debido a que presenta diferencias con la información actual del Contrato Proyectado ');
+                throw new \Exception('No es posible procesar el Layout debido a que presenta diferencias con la información actual del Contrato Proyectado 1');
             }
             DB::connection('cadeco')->rollback();
             DB::connection('controlrec')->rollback();
         } catch (\Exception $e) {
+            print_r($e->getTraceAsString());
             DB::connection('cadeco')->rollback();
             DB::connection('controlrec')->rollback();
-            dd($e->getMessage());
             throw new \Exception($e->getMessage());
         }
         return ["message" => "se guardaron correctamente $success registros"];
