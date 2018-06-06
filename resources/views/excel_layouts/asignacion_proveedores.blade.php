@@ -140,6 +140,7 @@
             <!-- Información de la cotización -->
             @foreach($req['presupuesto'] as $key => $cot)
                 <?php
+
                 $cot_partida = $cot->rqctocCotizacionPartidas()->with('material')->where('idrqctoc_solicitudes_partidas', '=',
                     $req['partida']->idrqctoc_solicitudes_partidas)->first();
                 $desde = (count($headerCotizaciones) * $key) + (count($headerRequisiciones));
@@ -158,7 +159,6 @@
 
                 {{--Precio Total--}}
                 <td style="background-color: #9bc2e6" class="{{$ultimalinea}} ">
-                    ={{ \PHPExcel_Cell::stringFromColumnIndex($desde +1) }}{{ $haciaAbajo }}-({{ \PHPExcel_Cell::stringFromColumnIndex($desde +2) }}{{ $haciaAbajo }}*{{ \PHPExcel_Cell::stringFromColumnIndex($desde +1) }}{{ $haciaAbajo }}/100)
                 </td>
 
                 {{--Moneda - calculado en backend --}}

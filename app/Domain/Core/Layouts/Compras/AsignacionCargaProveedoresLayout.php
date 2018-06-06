@@ -149,7 +149,14 @@ class AsignacionCargaProveedoresLayout extends ValidacionLayout
         $arrayResult['valores'] = [];
         if ($arrayResult['totales'] > 0) {
             $index = 0;
-            foreach ($partidas as $key => $cotizacion) {
+            foreach ($partidas as $key => $solicitud_partida) {
+
+                if (!isset($arrayResult['valores'][$solicitud_partida->iditem_sao])) {
+                    $arrayResult['valores'][$solicitud_partida->iditem_sao] = [];
+                    $arrayResult['valores'][$solicitud_partida->iditem_sao]['partida'] = $solicitud_partida;
+                    $row++;
+                    $maxRow = ($maxRow < $row) ? $row : $maxRow;
+                }
 
                 $totalesPartidas = $presupuestos->count();
                 if ($totalesPartidas > 0)
@@ -162,15 +169,8 @@ class AsignacionCargaProveedoresLayout extends ValidacionLayout
                         foreach ($presupuestos as $_index => $presupuesto)
                         {
 
-                            if (!isset($arrayResult['valores'][$cotizacion->id_concepto])) {
-                                $arrayResult['valores'][$cotizacion->id_concepto] = [];
-                                $arrayResult['valores'][$cotizacion->id_concepto]['partida'] = $cotizacion;
-                                $row++;
-                                $maxRow = ($maxRow < $row) ? $row : $maxRow;
-                            }
                             //if ($presupuesto->no_cotizado == 0) {
-                                $arrayResult['valores'][$cotizacion->id_concepto]['presupuesto'][$_index] = $presupuesto;
-                                $arrayResult['valores'][$cotizacion->id_concepto]['cotizacion'][$_index] = $cotizacion;
+                                $arrayResult['valores'][$solicitud_partida->iditem_sao]['presupuesto'][$_index] = $presupuesto;
                             /*} else {
                                 $arrayResult['valores'][$partida->id_concepto]['presupuesto'][$index] = [];
                                 $arrayResult['valores'][$partida->id_concepto]['partida'][$index] = [];
@@ -234,7 +234,7 @@ class AsignacionCargaProveedoresLayout extends ValidacionLayout
                         $sheet->getStyle(\PHPExcel_Cell::stringFromColumnIndex($desde + 1) . $haciaAbajo)->getProtection()->setLocked(\PHPExcel_Style_Protection::PROTECTION_UNPROTECTED);
 
                         // Precio Total
-                        // $sheet->setCellValue(\PHPExcel_Cell::stringFromColumnIndex($desde + 2) . $haciaAbajo, '='. \PHPExcel_Cell::stringFromColumnIndex($desde) . $haciaAbajo .'*'. 'E'. $ $haciaAbajo.'-(('. \PHPExcel_Cell::stringFromColumnIndex($desde) . $haciaAbajo .'*E'.$haciaAbajo.'*'. \PHPExcel_Cell::stringFromColumnIndex($desde + 1) . $haciaAbajo .')/100)');
+                        $sheet->setCellValue(\PHPExcel_Cell::stringFromColumnIndex($desde + 2) . $haciaAbajo, '='. \PHPExcel_Cell::stringFromColumnIndex($desde) . $haciaAbajo .'*'. 'E'. $haciaAbajo.'-(('. \PHPExcel_Cell::stringFromColumnIndex($desde) . $haciaAbajo .'*E'.$haciaAbajo.'*'. \PHPExcel_Cell::stringFromColumnIndex($desde + 1) . $haciaAbajo .')/100)');
 
                         // Moneda
                         $objValidation = $sheet->getCell(\PHPExcel_Cell::stringFromColumnIndex($desde + 3) . $haciaAbajo)->getDataValidation();
@@ -254,7 +254,7 @@ class AsignacionCargaProveedoresLayout extends ValidacionLayout
 
 
                         // Precio Total Moneda Conversión
-                        // $sheet->setCellValue(\PHPExcel_Cell::stringFromColumnIndex($desde + 4) . $haciaAbajo, '=IF('. \PHPExcel_Cell::stringFromColumnIndex($desde + 3) . $haciaAbajo .'="EURO",'. \PHPExcel_Cell::stringFromColumnIndex($desde + 3) . $haciaAbajo .'*'. $this->tipo_cambio[3]['cambio'] .'/1, IF('. \PHPExcel_Cell::stringFromColumnIndex($desde + 3) . $haciaAbajo .'="DOLAR USD",'. \PHPExcel_Cell::stringFromColumnIndex($desde + 2) . $haciaAbajo .'*'. $this->tipo_cambio[2]['cambio'] .'/1, IF('. \PHPExcel_Cell::stringFromColumnIndex($desde + 3) . $haciaAbajo .'="PESO MXP",'. \PHPExcel_Cell::stringFromColumnIndex($desde + 2) . $haciaAbajo .'/1, IF('. \PHPExcel_Cell::stringFromColumnIndex($desde + 3) . $haciaAbajo .'="",0))))');
+                        $sheet->setCellValue(\PHPExcel_Cell::stringFromColumnIndex($desde + 4) . $haciaAbajo, '=IF('. \PHPExcel_Cell::stringFromColumnIndex($desde + 3) . $haciaAbajo .'="EURO",'. \PHPExcel_Cell::stringFromColumnIndex($desde + 3) . $haciaAbajo .'*'. $this->tipo_cambio[3]['cambio'] .'/1, IF('. \PHPExcel_Cell::stringFromColumnIndex($desde + 3) . $haciaAbajo .'="DOLAR USD",'. \PHPExcel_Cell::stringFromColumnIndex($desde + 2) . $haciaAbajo .'*'. $this->tipo_cambio[2]['cambio'] .'/1, IF('. \PHPExcel_Cell::stringFromColumnIndex($desde + 3) . $haciaAbajo .'="PESO MXP",'. \PHPExcel_Cell::stringFromColumnIndex($desde + 2) . $haciaAbajo .'/1, IF('. \PHPExcel_Cell::stringFromColumnIndex($desde + 3) . $haciaAbajo .'="",0))))');
 
                         // idrqctoc_solicitudes_partidas
                         $solicitudPartidas = [];
