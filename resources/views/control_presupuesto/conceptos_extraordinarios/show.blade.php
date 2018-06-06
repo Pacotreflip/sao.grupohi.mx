@@ -9,7 +9,7 @@
     <concepto-extraordinario-show
             inline-template
             :solicitud="{{$solicitud}}"
-
+            :partidas="{{json_encode($partidas)}}"
             v-cloak xmlns:v-on="http://www.w3.org/1999/xhtml">
         <section>
             <div class="row">
@@ -75,10 +75,7 @@
                             <p class="text-muted">@{{solicitud.estatus.descripcion}}</p>
 
                         </div>
-
-
                     </div>
-
                 </div>
 
                 <div class="col-md-9">
@@ -87,69 +84,73 @@
                             <h3 class="box-title">Concepto Extraordinario</h3>
                         </div>
                         <div class="box-body">
-                            <div v-for="(partida, i) in form.solicitud.partidas" >
-                                <table class="table table-striped table-bordered" v-if="partida.tipo_agrupador == null">
+                            <table class="table table-striped table-bordered">
+
+                                <thead>
+                                <tr class="bg-gray-light">
+                                    <th colspan="2" rowspan="9" width="60%"><b>@{{ partidas.descripcion }}</b></th>
+                                </tr>
+                                <tr class="bg-gray-active">
+                                    <th>Unidad</th>
+                                    <th>Volumen</th>
+                                    <th>Costo</th>
+                                    <th>Importe</th>
+                                </tr>
+
+                                <tr class="bg-gray-active">
+                                    <td >@{{ partidas.unidad }}</td>
+                                    <td >@{{ parseFloat((partidas.cantidad_presupuestada)).formatMoney(2,'.',',') }}</td>
+                                    <td class="text-right">$ @{{ parseFloat((partidas.precio_unitario)).formatMoney(2,'.',',') }}</td>
+                                    <td class="text-right">$ @{{ parseFloat((partidas.monto_presupuestado)).formatMoney(2,'.',',') }}</td>
+                                </tr>
+                                </thead>
+                            </table>
+                            <br>
+                            <div v-for="(tipos, i) in partidas.agrupadores" v-show="tipos.insumos.length >0">
+                                <table class="table table-striped table-bordered">
+
                                     <thead>
-                                        <tr class="bg-gray-light">
-                                            <th colspan="4" rowspan="3">@{{  partida.descripcion }}</th>
-                                        </tr>
-                                        <tr class="bg-gray-active">
-                                            <th>Volumen</th>
-                                            <th>Importe</th>
-                                            <th>Costo</th>
-                                        </tr>
-                                        <tr class="bg-gray-active">
-                                            <td>
-                                                  @{{ parseFloat(partida.cantidad_presupuestada_nueva).formatMoney(2,'.',',') }}</td>
-                                            <td class="text-right">
-                                                $ @{{ parseFloat(partida.precio_unitario_nuevo).formatMoney(2,'.',',') }}</td>
-                                            <td class="text-right">
-                                                $ @{{ parseFloat(partida.monto_presupuestado).formatMoney(2,'.',',') }}</td>
-                                        </tr>
-                                    </thead>
-                                </table>
-                                <table class="table table-striped table-bordered" v-else>
-                                    <thead if="partida.precio_unitario_nuevo === null">
                                     <tr class="bg-gray-light">
-                                        <th colspan="2" rowspan="3"><h4>@{{ partida.descripcion }}</h4></th>
+                                        <th colspan="5" rowspan="3" width="80%"><h4>@{{ tipos.descripcion }}</h4></th>
                                     </tr>
                                     <tr class="bg-gray-active">
-                                        <th>Importe Original</th>
-                                        <th>Variación de Importe</th>
-                                        <th>Importe Actualizado</th>
+                                        <th width="10%">Importe Agrupador</th>
                                     </tr>
                                     <tr class="bg-gray-active">
                                         <td class="text-right">
-                                              @{{ parseFloat(partida.cantidad_presupuestada_nueva).formatMoney(2,'.',',') }}</td>
-                                        <td class="text-right">
-                                            $ @{{ parseFloat(partida.precio_unitario_nuevo).formatMoney(2,'.',',') }}</td>
-                                        <td class="text-right">
-                                            $ @{{ parseFloat((partida.monto_presupuestado)).formatMoney(2,'.',',') }}</td>
+                                            $ @{{ parseFloat((tipos.monto_presupuestado)).formatMoney(2,'.',',') }}</td>
                                     </tr>
 
                                     <tr>
-                                        <th style="width: 50%;">Descripción</th>
+                                        <th>#</th>
+                                        <th style="width: 40%;">Descripción</th>
                                         <th>Unidad</th>
-                                        <th>Costo Actualizado</th>
-                                        <th>Importe Original</th>
-                                        <th>Importe Actualizado</th>
+                                        <th>Volumen</th>
+                                        <th>Costo</th>
+                                        <th>Importe</th>
                                     </tr>
 
                                     </thead>
-                                    <tbody v-else>
-                                        <td>----</td>
-                                        <td>----</td>
-                                        <td>----</td>
-                                        <td>----</td>
-                                        <td>----</td>
+                                    <tbody>
+                                    <tr v-for="(insumo, i) in tipos.insumos">
+                                        <td>@{{ i+1 }}</td>
+                                        <td>@{{ insumo.descripcion }}</td>
+                                        <td>@{{ insumo.unidad }}</td>
+                                        <td>
+                                            @{{ parseFloat(insumo.cantidad_presupuestada_nueva).formatMoney(2,'.',',') }}</td>
+                                        <td class="text-right">
+                                            $@{{ parseFloat(insumo.precio_unitario_nuevo).formatMoney(2,'.',',') }}</td>
+                                        <td class="text-right">
+                                            $@{{ parseFloat(insumo.monto_presupuestado).formatMoney(2,'.',',') }}</td>
+
+                                    </tr>
                                     </tbody>
                                 </table>
+                                <hr>
                             </div>
                         </div>
                     </div>
                 </div>
-
-
 
             </div>
         </section>

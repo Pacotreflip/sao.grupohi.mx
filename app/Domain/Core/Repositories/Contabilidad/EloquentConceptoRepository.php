@@ -270,7 +270,7 @@ class EloquentConceptoRepository implements ConceptoRepository
         /// Ensamble final del arreglo
         $extraordinario +=
             [
-                'id_concepo' =>$conceptoTarjeta->id_concepto,
+                'id_concepto' =>$conceptoTarjeta->id_concepto,
                 'nivel'=>$conceptoTarjeta->nivel,
                 'descripcion'=>$conceptoTarjeta->descripcion,
                 'unidad'=>$conceptoTarjeta->unidad,

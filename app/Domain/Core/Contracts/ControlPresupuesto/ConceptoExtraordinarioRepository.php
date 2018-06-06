@@ -13,4 +13,5 @@ interface ConceptoExtraordinarioRepository
 {
     public function store(array $data);
     public function autorizar($id);
+    public function getSolicitudCambioPartidas($id);
 }

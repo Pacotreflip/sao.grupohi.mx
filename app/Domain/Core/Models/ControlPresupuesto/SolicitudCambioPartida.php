@@ -32,10 +32,11 @@ class SolicitudCambioPartida extends Model
         'precio_unitario_nuevo',
         'rendimiento_original',
         'rendimiento_nuevo',
-        'tipo_agrupador'
+        'tipo_agrupador',
+        'unidad'
     ];
 
-    protected $appends = ['factor'];
+    protected $appends = ['factor', 'unidad'];
 
     public function concepto() {
         return $this->belongsTo(Concepto::class, 'id_concepto', 'id_concepto');
@@ -74,6 +75,16 @@ class SolicitudCambioPartida extends Model
                         $this->concepto->cantidad_presupuestada;
             }
         }
+
+    }
+
+    public function getUnidadAttribute(){
+
+            if($this->material)
+            {
+                return (string)$this->material->unidad;
+            }
+            return '';
 
     }
 }

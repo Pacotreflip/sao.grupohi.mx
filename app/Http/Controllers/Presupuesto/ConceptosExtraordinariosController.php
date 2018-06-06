@@ -106,12 +106,14 @@ class ConceptosExtraordinariosController extends Controller
      */
     public function show($id)
     {
+        $partidas = $this->extraordinario->getSolicitudCambioPartidas($id);
         //$solicitud = SolicitudCambio::with(['tipoOrden', 'userRegistro', 'estatus', 'partidas.concepto',
            // 'partidas.numeroTarjeta', 'aplicaciones'])->find($id);
         //dd('Panda', $solicitud);
         $solicitud = SolicitudCambio::with(['tipoOrden', 'userRegistro', 'estatus', 'partidas'])->find($id);
         return view('control_presupuesto.conceptos_extraordinarios.show')
-            ->with('solicitud', $solicitud);
+            ->with('solicitud', $solicitud)
+            ->with('partidas', $partidas);
 
     }
 

@@ -1,5 +1,5 @@
 Vue.component('concepto-extraordinario-show', {
-    props: ['solicitud'],
+    props: ['solicitud', 'partidas'],
     data: function () {
         return{
             form: {

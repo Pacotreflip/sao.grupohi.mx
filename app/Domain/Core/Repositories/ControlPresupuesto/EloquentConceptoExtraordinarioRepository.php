@@ -67,7 +67,7 @@ class EloquentConceptoExtraordinarioRepository implements ConceptoExtraordinario
                         $insumo['id_tipo_orden'] = $data['id_tipo_orden'];
                         $insumo['tipo_agrupador'] = $agrupador['tipo_agrupador'];
                         $insumo['id_tarjeta'] = $agrupador['id_tarjeta'];
-                        $insumo['nivel'] = $agrupador['nivel'] . $nivel_insumo[sizeof($nivel_insumo) - 2];
+                        $insumo['nivel'] = $agrupador['nivel'] . $nivel_insumo[sizeof($nivel_insumo) - 2].'.';
                         $insumo['cantidad_presupuestada_nueva'] = $insumo['cantidad_presupuestada'] * $concepto_ext->cantidad_presupuestada_nueva;
                         $insumo['precio_unitario_nuevo'] = $insumo['precio_unitario'];
                         $insumo['monto_presupuestado'] = $insumo['cantidad_presupuestada_nueva'] * $insumo['precio_unitario'];
@@ -112,4 +112,36 @@ class EloquentConceptoExtraordinarioRepository implements ConceptoExtraordinario
         ///  autorizar solicitud
     }
 
+
+    public function getSolicitudCambioPartidas($id)
+    {
+        $extraordinario = [];
+        $agrupadores_insumos = [];
+        $partida = $this->solicitud_partidas->where('id_solicitud_cambio', '=', $id)->with('material', 'concepto')->orderBy('nivel', 'asc')->first();
+        $extraordinario += [
+            'nivel'=>$partida->nivel,
+            'descripcion'=>$partida->descripcion,
+            'unidad'=>$partida->concepto->unidad,
+            'id_material'=>$partida->id_material,
+            'cantidad_presupuestada'=>$partida->cantidad_presupuestada_nueva,
+            'precio_unitario'=>$partida->precio_unitario_nuevo,
+            'monto_presupuestado'=>$partida->monto_presupuestado
+        ];
+        $agrupadores = $this->solicitud_partidas->where('nivel', 'like', $partida->nivel.'___.')->get();
+        foreach ($agrupadores as $key =>$agrupador){
+            $insumos = SolicitudCambioPartida::where('nivel', 'like', $agrupador->nivel.'___.')->get()->toArray();
+            //dd($insumos, $agrupador->nivel.'___.');
+            $agrupadores_insumos += [
+                $key => [
+                    'nivel' => $agrupador->nivel,
+                    'descripcion' => $agrupador->descripcion,
+                    'monto_presupuestado' => $agrupador->monto_presupuestado,
+                    'insumos' => $insumos
+                ]
+            ];
+        }
+        $extraordinario += ['agrupadores' => $agrupadores_insumos];
+
+        return $extraordinario;
+    }
 }
