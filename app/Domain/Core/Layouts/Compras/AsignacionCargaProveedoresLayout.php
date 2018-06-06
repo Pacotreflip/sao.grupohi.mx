@@ -667,10 +667,10 @@ class AsignacionCargaProveedoresLayout extends ValidacionLayout
                         $error++;
                     }
 
-                    /*if ($error > 0) {
+                    if ($error > 0) {
                         $this->resultData = $cotizaciones;
                         throw new \Exception($mensajeError);
-                    }*/
+                    }
 
                     $precio_unitario = '';
                     $cantidad = '';
@@ -726,15 +726,12 @@ class AsignacionCargaProveedoresLayout extends ValidacionLayout
                     $datos_cotizacion["iva"] = $impuesto;
                     $datos_cotizacion["total"] = $monto;
                     $datos_cotizacion["descuento"] = ($descuento == "") ? 0 : $descuento;
+
                     if (!$cotizacionCompra->rqctocCotizacion->update($datos_cotizacion)) {
                         $mensajeError = "No se puede procesar la cotización";
                         $this->resultData = $cotizaciones;
                         throw new \Exception($mensajeError);
                     }
-
-
-                    $nocotizadas = $cotizacionCompra->rqctocCotizacion->rqctocSolicitudesPartidas;
-                    dd($nocotizadas);
 
                     foreach ($gralCotizacion["partidas"] as $key => $partidas) {
                         $idMaterial = $partidas['material_sao'];
@@ -800,13 +797,13 @@ class AsignacionCargaProveedoresLayout extends ValidacionLayout
                                 }
                                 $cotizacion->update($datos_sao);
                             }else{
-                                $mensajeError = "No se puede procesar la cotización";
+                                $cotizaciones[$key]['error'][] = "No se puede procesar la cotización";
                                 $error++;
                             }
                         }
                     }
                 }else{
-                    $mensajeError = "La cotización no exite";
+                    $cotizaciones[$key]['error'][] = "La cotización no exite";
                     $error++;
                 }
             }
