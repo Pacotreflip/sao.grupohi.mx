@@ -99,17 +99,31 @@
         <tr>
             <!-- Información general de la partida -->
             <td style="background-color: #ffd966" class="laterales-left">{{ $index }}</td>
-            <td style="background-color: #ffd966" class="border">{{  $contratoProyectado['partida']->agrupados }}</td>
+
+            {{--IDs--}}
+            <td style="background-color: #ffd966" class="border">{{  $mcrypt->encrypt($contratoProyectado['partida']->agrupados) }}</td>
+
+            {{--Hijos--}}
             <td style="background-color: #ffd966" class="border">{{  $contratoProyectado['partida']->hijos }}</td>
+
+            {{--Clave--}}
             <td style="background-color: #ffd966"
                 class="border">{{ (!empty($contratoProyectado['partida']->clave) ?
                 $contratoProyectado['partida']->clave : '') }}</td>
+
+            {{--Descripción--}}
             <td style="background-color: #ffd966" class="border">{{ (!empty($contratoProyectado['partida']->descripcion_span) ?
             $contratoProyectado['partida']->descripcion_span : '') }}</td>
+
+            {{--Unidad--}}
             <td style="background-color: #ffd966" class="border">{{ (!empty($contratoProyectado['partida']->unidad) ?
             $contratoProyectado['partida']->unidad : '') }}</td>
+
+            {{--Cantidad Autorizada--}}
             <td style="background-color: #ffd966"
                 class="border">{{ $contratoProyectado['partida']->cantidad_original }}</td>
+
+            {{--Cantidad Solicitada--}}
             <td style="background-color: #ffd966"
                 class="laterales-right">{{ $contratoProyectado['partida']->cantidad_presupuestada }}</td>
 
@@ -168,7 +182,7 @@
             <td style="background-color: #fff; color: #fff"></td>
 
             {{--cotizado_img--}}
-            <td style="background-color: #fff; color: #fff" >{{ $contratoProyectado['partida']->en_asig }}</td>
+            <td style="background-color: #fff; color: #fff" ></td>
 
             {{--Separador--}}
             <td style="background-color: #fff; color: #fff"></td>
