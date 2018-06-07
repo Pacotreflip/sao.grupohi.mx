@@ -145,7 +145,7 @@
                                         <h4 class="modal-title" id="myModalLabel">Reposición de Fondo Fijo</h4>
                                     </div>
                                     <div class="modal-body">
-                                        <reposicion-fondo-fijo-create :comprobante_fondo_fijo="{{$comprobante_fondo_fijo->toJson()}}" v-cloak></reposicion-fondo-fijo-create>
+                                        <reposicion-fondo-fijo-create :id_antecedente="{{$comprobante_fondo_fijo->id_transaccion}}" v-cloak></reposicion-fondo-fijo-create>
                                     </div>
                                 </div>
                             </div>
