@@ -84,9 +84,9 @@
                                     @endif
                                     <td style="text-align: right">{{ $item->cantidad }}</td>
                                     @if($comprobante_fondo_fijo->Naturaleza == 1)
-                                        <td style="text-align: right">{{ $item->precio_unitario }}</td>
+                                        <td style="text-align: right"><span class="pull-left">$</span>{{ number_format(($item->precio_unitario),'2','.',',') }}</td>
                                     @endif
-                                    <td style="text-align: right">$&nbsp;{{ $item->Monto }}</td>
+                                    <td style="text-align: right"><span class="pull-left">$</span>{{ number_format(($item->Monto),'2','.',',') }}</td>
                                 </tr>
                             @endforeach
                             </tbody>

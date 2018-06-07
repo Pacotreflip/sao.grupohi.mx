@@ -8,15 +8,16 @@ Vue.component('reposicion-fondo-fijo-create', {
                 cumplimiento: new Date().dateShortFormat(),
                 vencimiento: new Date().dateShortFormat(),
                 destino: '',
-                fecha: new Date().dateShortFormat(),
+                fecha: '',
                 id_referente: '',
                 id_antecedente: '',
                 observaciones: '',
                 monto: ''
             },
             comprobante_fondo_fijo: {},
-            cargando : true,
+            cargando : false,
             guardando: false
+
         }
     },
 
@@ -30,6 +31,28 @@ Vue.component('reposicion-fondo-fijo-create', {
                     clearBtn: true,
                     format: 'yyyy-mm-dd'
                 });
+            }
+        }
+    },
+
+
+
+    watch: {
+        'comprobante_fondo_fijo': function (comprobante_fondo_fijo) {
+            if (Object.keys(comprobante_fondo_fijo).length === 0) {
+                this.form.destino = '';
+                this.form.fecha = '';
+                this.form.id_referente = '';
+                this.form.id_antecedente = '';
+                this.form.observaciones = '';
+                this.form.monto = '';
+            } else {
+                this.form.destino = comprobante_fondo_fijo.fondo_fijo.nombre;
+                this.form.fecha = comprobante_fondo_fijo.fecha;
+                this.form.id_referente = comprobante_fondo_fijo.fondo_fijo.id_fondo;
+                this.form.id_antecedente = comprobante_fondo_fijo.id_transaccion;
+                this.form.observaciones = comprobante_fondo_fijo.observaciones;
+                this.form.monto = comprobante_fondo_fijo.monto;
             }
         }
     },
@@ -82,16 +105,13 @@ Vue.component('reposicion-fondo-fijo-create', {
                 self.form.id_antecedente = data.id;
                 self.comprobante_fondo_fijo = data.comprobante_fondo_fijo;
             }).on('select2:unselecting', function () {
+                self.form.id_antecedente = '';
                 self.comprobante_fondo_fijo = {};
             });
         }
 
         $('#cumplimiento').datepicker().on("changeDate", function() {
             self.form.cumplimiento = $('#cumplimiento').val();
-        });
-
-        $('#fecha').datepicker().on("changeDate", function() {
-            self.form.fecha = $('#fecha').val();
         });
 
         $('#vencimiento').datepicker().on("changeDate", function() {
@@ -110,8 +130,9 @@ Vue.component('reposicion-fondo-fijo-create', {
                         self.cargando = true;
                     },
                     success: function (response) {
-                        self.comprobante_fondo_fijo = response;
-                    }
+                        self.cargando = false;
+                        resolve({comprobante_fondo_fijo: response});
+                    },
                 });
             });
         },
