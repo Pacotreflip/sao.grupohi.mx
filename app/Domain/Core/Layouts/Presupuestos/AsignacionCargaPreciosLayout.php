@@ -198,7 +198,8 @@ class AsignacionCargaPreciosLayout extends ValidacionLayout
     {
         set_time_limit(0);
         ini_set("memory_limit", -1);
-        $contrato = $this->contrato_proyectado->find($this->info['id_contrato_proyectado']);
+        $contrato = $this->contrato_proyectado->find([$this->info['id_contrato_proyectado']])->first();
+
         Config::set(['excel.export.calculate' => true]);
         return Excel::create('Asignación presupuestos', function ($excel) use ($contrato) {
             $excel->sheet('# ' . str_pad($contrato->numero_folio, 5, '0', STR_PAD_LEFT), function (LaravelExcelWorksheet $sheet) use ($contrato) {

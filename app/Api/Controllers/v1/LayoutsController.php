@@ -141,7 +141,7 @@ class LayoutsController extends BaseController
         // Obten la información de los filtros y agrupaciones
         $info = [
             'id_contrato_proyectado' => $id_contrato_proyectado,
-            'presupuesto_ids' => $request->ids,
+            'presupuesto_ids' => (is_string($request->ids) ? json_decode($request->ids, true) : $request->ids),
             'agrupadores' => !empty($request->agrupadores) ? explode(',', $request->agrupadores) : '',
             'solo_pendientes' => $request->solo_pendientes
         ];

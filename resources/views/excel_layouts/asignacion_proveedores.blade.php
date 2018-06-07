@@ -171,13 +171,13 @@
                 <td style="background-color: #9bc2e6" class="{{$ultimalinea}} "></td>
 
                 {{--material_sao--}}
-                <td style="background-color: #fff; color: #fff">{{ $req['partida']->material->id_material }}</td>
+                <td style="background-color: #fff; color: #fff">{{ $mcrypt->encrypt($req['partida']->material->id_material) }}</td>
 
                 {{--idrqctoc_solicitudes_partidas--}}
                 <td style="background-color: #fff; color: #fff"></td>
 
                 {{--idrqctoc_solicitudes--}}
-                <td style="background-color: #fff; color: #fff" >{{ $cot->idrqctoc_solicitudes }}</td>
+                <td style="background-color: #fff; color: #fff" >{{ $mcrypt->encrypt($cot->idrqctoc_solicitudes) }}</td>
 
                 {{--idmoneda--}}
                 <td style="background-color: #fff; color: #fff" >{{ $cot->idmoneda }}</td>

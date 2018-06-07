@@ -372,6 +372,13 @@ select * from (
                  hijos_contratos.id_transaccion = ". $id ." AND
                  hijos_contratos.nivel like contratos.nivel + '%'
         )>0 THEN '1' ELSE '0' END hijos,
+        (SELECT 
+                        COUNT(1) as en_asig 
+                    FROM 
+                        Subcontratos.partidas_asignacion 
+                    WHERE 
+                        id_transaccion = contratos.id_transaccion AND 
+                        id_concepto = contratos.id_concepto) as en_asig,
         STUFF((
           SELECT concat(',',gc.id_concepto) as id_hijo
           FROM contratos gc
