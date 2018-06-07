@@ -148,12 +148,12 @@
                 ?>
 
                 {{--Precio Unitario--}}
-                <td style="background-color: #9bc2e6;" class="{{$ultimalinealeft}} ">
+                <td style="background-color: #fff;" class="{{$ultimalinealeft}} ">
                     {{ $cot_partida ? $cot_partida->precio_unitario : '' }}
                 </td>
 
                 {{--% Descuento--}}
-                <td style="background-color: #9bc2e6" class="{{$ultimalinea}} ">
+                <td style="background-color: #fff" class="{{$ultimalinea}} ">
                     {{ $cot_partida ? $cot_partida->porcentaje_descuento : '' }}
                 </td>
 
@@ -168,7 +168,7 @@
                 <td style="background-color: #9bc2e6" class="{{$ultimalinea}} "></td>
 
                 {{--Observaciones--}}
-                <td style="background-color: #9bc2e6" class="{{$ultimalinea}} "></td>
+                <td style="background-color: #fff" class="{{$ultimalinea}} "></td>
 
                 {{--material_sao--}}
                 <td style="background-color: #fff; color: #fff">{{ $mcrypt->encrypt($req['partida']->material->id_material) }}</td>

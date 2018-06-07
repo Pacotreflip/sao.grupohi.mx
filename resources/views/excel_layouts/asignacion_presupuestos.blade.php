@@ -135,9 +135,7 @@
             ?>
 
             {{--Precio Unitario Antes Descto--}}
-            <td style="background-color: #fff;" class="{{$ultimalinealeft}} ">
-                {{ $presupuesto->monto }}
-            </td>
+            <td style="background-color: #fff;" class="{{$ultimalinealeft}} "></td>
 
             {{--Precio Total Antes Descto--}}
             <td style="background-color: #9bc2e6" class="{{$ultimalinea}} ">

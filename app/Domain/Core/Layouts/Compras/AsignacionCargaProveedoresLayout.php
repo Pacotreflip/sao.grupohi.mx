@@ -77,7 +77,7 @@ class AsignacionCargaProveedoresLayout extends ValidacionLayout
         "idrqctoc_solicitudes_partidas" => "idrqctoc_solicitudes_partidas",
         "idrqctoc_solicitudes" => "idrqctoc_solicitudes",
         "idmoneda" => "idmoneda",
-        "" => "",
+        "separador" => "",
     ];
     /**
      * @var array
@@ -262,6 +262,10 @@ class AsignacionCargaProveedoresLayout extends ValidacionLayout
                             // Precio Total Moneda Conversión
                             $sheet->setCellValue(\PHPExcel_Cell::stringFromColumnIndex($desde + 4) . $haciaAbajo,
                                 '=IF(' . \PHPExcel_Cell::stringFromColumnIndex($desde + 3) . $haciaAbajo . '="EURO",' . \PHPExcel_Cell::stringFromColumnIndex($desde + 3) . $haciaAbajo . '*' . $this->tipo_cambio[3]['cambio'] . '/1, IF(' . \PHPExcel_Cell::stringFromColumnIndex($desde + 3) . $haciaAbajo . '="DOLAR USD",' . \PHPExcel_Cell::stringFromColumnIndex($desde + 2) . $haciaAbajo . '*' . $this->tipo_cambio[2]['cambio'] . '/1, IF(' . \PHPExcel_Cell::stringFromColumnIndex($desde + 3) . $haciaAbajo . '="PESO MXP",' . \PHPExcel_Cell::stringFromColumnIndex($desde + 2) . $haciaAbajo . '/1, IF(' . \PHPExcel_Cell::stringFromColumnIndex($desde + 3) . $haciaAbajo . '="",0))))');
+                            $sheet->getStyle(\PHPExcel_Cell::stringFromColumnIndex($desde + 4) . $haciaAbajo)->getProtection()->setLocked(\PHPExcel_Style_Protection::PROTECTION_PROTECTED);
+
+                            // Observaciones
+                            $sheet->getStyle(\PHPExcel_Cell::stringFromColumnIndex($desde + 5) . $haciaAbajo)->getProtection()->setLocked(\PHPExcel_Style_Protection::PROTECTION_UNPROTECTED);
 
                             // idrqctoc_solicitudes_partidas
                             $solicitudPartidas = [];
@@ -271,10 +275,12 @@ class AsignacionCargaProveedoresLayout extends ValidacionLayout
 
                             $sheet->setCellValue(\PHPExcel_Cell::stringFromColumnIndex($desde + 7) . $haciaAbajo,
                                 $this->mCrypt->encrypt(implode(',', array_unique($solicitudPartidas))));
+                            $sheet->getStyle(\PHPExcel_Cell::stringFromColumnIndex($desde + 7) . $haciaAbajo)->getProtection()->setLocked(\PHPExcel_Style_Protection::PROTECTION_PROTECTED);
 
                             // id moneda
                             $sheet->setCellValue(\PHPExcel_Cell::stringFromColumnIndex($desde + 9) . $haciaAbajo,
                                 '=IF(' . \PHPExcel_Cell::stringFromColumnIndex($desde + 3) . $haciaAbajo . '="EURO",2, IF(' . \PHPExcel_Cell::stringFromColumnIndex($desde + 3) . $haciaAbajo . '="DOLAR (USD)",1, IF(' . \PHPExcel_Cell::stringFromColumnIndex($desde + 3) . $haciaAbajo . '="PESO (MXP)",3,0)))');
+                            $sheet->getStyle(\PHPExcel_Cell::stringFromColumnIndex($desde + 9) . $haciaAbajo)->getProtection()->setLocked(\PHPExcel_Style_Protection::PROTECTION_PROTECTED);
 
                         }
                         $index++;

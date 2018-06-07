@@ -206,6 +206,7 @@ class AsignacionCargaPreciosLayout extends ValidacionLayout
                 $arrayContratoProyectado = $this->setData($contrato);
 
                 $sheet->getProtection()->setSheet(true);
+
                 $sheet->loadView('excel_layouts.asignacion_presupuestos',
                     [
                         'contratoProyectados' => $arrayContratoProyectado,
@@ -221,6 +222,12 @@ class AsignacionCargaPreciosLayout extends ValidacionLayout
                 foreach ($arrayContratoProyectado['valores'] as $key => $contratoProyectado) {
                     foreach ($contratoProyectado['presupuesto'] as $key => $presupuesto) {
                         $desde = (count($this->headerDinamicos) * $key) + (count($this->headerFijos));
+
+                        // Precio Unitario Antes Descuento
+                        $sheet->getStyle(\PHPExcel_Cell::stringFromColumnIndex($desde) . $haciaAbajo)->getProtection()->setLocked(\PHPExcel_Style_Protection::PROTECTION_UNPROTECTED);
+
+                        // % Descuento
+                        $sheet->getStyle(\PHPExcel_Cell::stringFromColumnIndex($desde + 2) . $haciaAbajo)->getProtection()->setLocked(\PHPExcel_Style_Protection::PROTECTION_UNPROTECTED);
 
                         //Moneda
                         if ($contratoProyectado['cotizacion'][0]->hijos == 0) {
@@ -241,14 +248,16 @@ class AsignacionCargaPreciosLayout extends ValidacionLayout
                         } else
                             $sheet->setCellValue(\PHPExcel_Cell::stringFromColumnIndex($desde + 5) . $haciaAbajo, '');
 
-
                         // Precio Unitario Moneda Conversión
                         $sheet->setCellValue(\PHPExcel_Cell::stringFromColumnIndex($desde + 6) . $haciaAbajo, '=IF(' . \PHPExcel_Cell::stringFromColumnIndex($desde + 5) . $haciaAbajo . '="EURO",' . \PHPExcel_Cell::stringFromColumnIndex($desde + 3) . $haciaAbajo . '*' . $this->tipo_cambio[3]['cambio'] . '/1, IF(' . \PHPExcel_Cell::stringFromColumnIndex($desde + 5) . $haciaAbajo . '="DOLAR USD",' . \PHPExcel_Cell::stringFromColumnIndex($desde + 3) . $haciaAbajo . '*' . $this->tipo_cambio[3]['cambio'] . '/1, IF(' . \PHPExcel_Cell::stringFromColumnIndex($desde + 5) . $haciaAbajo . '="PESO MXP",' . \PHPExcel_Cell::stringFromColumnIndex($desde + 3) . $haciaAbajo . '/1, IF(' . \PHPExcel_Cell::stringFromColumnIndex($desde + 5) . $haciaAbajo . '="",0))))');
                         $sheet->getStyle(\PHPExcel_Cell::stringFromColumnIndex($desde + 6) . $haciaAbajo)->getProtection()->setLocked(\PHPExcel_Style_Protection::PROTECTION_PROTECTED);
 
                         // Precio Total Moneda Conversión
                         $sheet->setCellValue(\PHPExcel_Cell::stringFromColumnIndex($desde + 7) . $haciaAbajo, '=IF('. \PHPExcel_Cell::stringFromColumnIndex($desde + 5) . $haciaAbajo .'="EURO",H'. $haciaAbajo .'*'. \PHPExcel_Cell::stringFromColumnIndex($desde + 6) . $haciaAbajo .'/1, IF('. \PHPExcel_Cell::stringFromColumnIndex($desde + 5) . $haciaAbajo .'="DOLAR USD",H'.$haciaAbajo.'*'. \PHPExcel_Cell::stringFromColumnIndex($desde + 6) . $haciaAbajo .'/1, IF('. \PHPExcel_Cell::stringFromColumnIndex($desde + 5) . $haciaAbajo .'="PESO MXP",'. \PHPExcel_Cell::stringFromColumnIndex($desde + 4) . $haciaAbajo .'/1,IF('. \PHPExcel_Cell::stringFromColumnIndex($desde + 5) . $haciaAbajo .'="",0))))');
-                        $sheet->getStyle(\PHPExcel_Cell::stringFromColumnIndex($desde + 6) . $haciaAbajo)->getProtection()->setLocked(\PHPExcel_Style_Protection::PROTECTION_PROTECTED);
+                        $sheet->getStyle(\PHPExcel_Cell::stringFromColumnIndex($desde + 7) . $haciaAbajo)->getProtection()->setLocked(\PHPExcel_Style_Protection::PROTECTION_PROTECTED);
+
+                        // Observaciones
+                        $sheet->getStyle(\PHPExcel_Cell::stringFromColumnIndex($desde + 8) . $haciaAbajo)->getProtection()->setLocked(\PHPExcel_Style_Protection::PROTECTION_UNPROTECTED);
 
                         // cotizado_img
                         $sheet->setCellValue(\PHPExcel_Cell::stringFromColumnIndex($desde + 9) . $haciaAbajo, $contratoProyectado['partida']->en_asig);
