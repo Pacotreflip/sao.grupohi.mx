@@ -95,7 +95,7 @@ class AsignacionCargaPreciosLayout extends ValidacionLayout
         "cotizado_img" => "cotizado_img",
         "id_moneda" => "id_moneda",
         "precio_total_mxp" => "precio_total_mxp",
-        "separador" => "",
+        "" => "",
     ];
     /**
      * @var array
@@ -201,7 +201,7 @@ class AsignacionCargaPreciosLayout extends ValidacionLayout
         $contrato = $this->contrato_proyectado->find([$this->info['id_contrato_proyectado']])->first();
 
         Config::set(['excel.export.calculate' => true]);
-        return Excel::create('Asignación presupuestos', function ($excel) use ($contrato) {
+        return Excel::create('Asignación Carga Precios Layout', function ($excel) use ($contrato) {
             $excel->sheet('# ' . str_pad($contrato->numero_folio, 5, '0', STR_PAD_LEFT), function (LaravelExcelWorksheet $sheet) use ($contrato) {
                 $arrayContratoProyectado = $this->setData($contrato);
 
@@ -532,6 +532,7 @@ class AsignacionCargaPreciosLayout extends ValidacionLayout
                         $l = 0;
                         while ($j <= $maxCol) {
                             $concepto = !empty($row[1]) ? $this->mCrypt->decrypt($row[1]) : '';
+                            //$concepto = $row[1];
                             $id_concepto = explode($this->delimiter, $concepto);
                             $id_transaccion = !empty($idTransacion[$l]) ? $idTransacion[$l] : '';
                             if ($i < ($layout['maxRow'] + $this->cabecerasLength)) {
