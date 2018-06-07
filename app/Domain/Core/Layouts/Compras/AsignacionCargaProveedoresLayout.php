@@ -756,8 +756,7 @@ class AsignacionCargaProveedoresLayout extends ValidacionLayout
                         }
                         foreach ($partidas["id_cotizacion"] as $idCotizacion) {
                             $rqctocSolicitudPartida = $cotizacionCompra->rqctocCotizacion->rqctocSolicitudesPartidas()
-                                ->whereIn("idrqctoc_solicitudes_partidas",explode(",",$idrqctocSolicitudesPartidas))
-                                ->where(['idmaterial_sao'=>$idMaterial])->first();
+                                ->where(['idrqctoc_solicitudes_partidas'=>$idCotizacion,'idmaterial_sao'=>$idMaterial])->first();
                             $rqctocCotizacionPartidas = false;
                             if($rqctocSolicitudPartida) {
                                 if(isset($rqctocSolicitudPartida->rqctocCotizacionPartida)) {
