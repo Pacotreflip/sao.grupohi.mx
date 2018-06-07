@@ -162,7 +162,7 @@
                 </td>
 
                 {{--Moneda - calculado en backend --}}
-                <td style="background-color: #9bc2e6" class="{{$ultimalinea}} "></td>
+                <td style="background-color: #fff" class="{{$ultimalinea}} "></td>
 
                 {{--Precio Total Moneda Conversión--}}
                 <td style="background-color: #9bc2e6" class="{{$ultimalinea}} "></td>
