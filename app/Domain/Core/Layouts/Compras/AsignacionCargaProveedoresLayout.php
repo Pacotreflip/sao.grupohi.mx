@@ -585,8 +585,8 @@ class AsignacionCargaProveedoresLayout extends ValidacionLayout
                         $k = $this->lengthHeaderFijos;
                         $l = 0;
                         while ($j <= $maxCol) {
-                            //$cotizaciones = !empty($row[1]) ? $this->mCrypt->decrypt($row[1]) : '';
-                            $id_cotizacion = explode($this->delimiter, $row[1]);
+                            $cotizaciones = !empty($row[1]) ? $this->mCrypt->decrypt($row[1]) : '';
+                            $id_cotizacion = explode($this->delimiter, $cotizaciones);
                             $id_transaccion = !empty($idTransacion[$l]) ? $idTransacion[$l] : '';
 
                             if ($i < ($layout['maxRow'] + $this->cabecerasLength)) {
