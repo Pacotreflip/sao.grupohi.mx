@@ -207,7 +207,7 @@ class AsignacionCargaProveedoresLayout extends ValidacionLayout
         $req = $this->requisicion->getRequisicion($this->info['id_transaccion_sao']);
 
         Config::set(['excel.export.calculate' => true]);
-        return Excel::create('Asignación presupuestos', function ($excel) use ($req) {
+        return Excel::create('Asignación Carga Proveedores Layout', function ($excel) use ($req) {
             $excel->sheet('# ' . str_pad($req->folio_sao, 5, '0', STR_PAD_LEFT),
                 function (LaravelExcelWorksheet $sheet) use ($req) {
                     $arrayRequisicion = $this->setData();
