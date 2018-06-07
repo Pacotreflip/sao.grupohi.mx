@@ -67,4 +67,8 @@ class ComprobanteFondoFijoController extends BaseController
             }
         }
     }
+
+    public function find($id) {
+        return response()->json($this->comprobanteFondoFijoRepository->find($id), 200);
+    }
 }
