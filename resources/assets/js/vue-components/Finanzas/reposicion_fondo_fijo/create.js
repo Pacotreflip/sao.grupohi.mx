@@ -130,12 +130,16 @@ Vue.component('reposicion-fondo-fijo-create', {
                 $.ajax({
                     url: App.host + '/api/finanzas/comprobante_fondo_fijo/' + self.id_antecedente,
                     type: 'GET',
+                    data: {
+                        with: 'fondoFijo'
+                    },
                     headers: {
                         'X-CSRF-TOKEN': App.csrfToken,
                         'Authorization': localStorage.getItem('token')
                     },
                     beforeSend: function () {
                         self.cargando = true;
+
                     },
                     success: function (response) {
                         self.cargando = false;
