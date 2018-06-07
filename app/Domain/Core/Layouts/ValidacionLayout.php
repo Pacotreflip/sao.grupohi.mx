@@ -37,7 +37,7 @@ class ValidacionLayout
      */
     protected $lengthHeaderFijos = 0;
     /**
-     * @var int
+     * @var int 
      */
     protected $lengthHeaderDinamicos = 0;
     /**

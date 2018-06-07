@@ -15,7 +15,6 @@ use Ghi\Domain\Core\Models\Contrato;
 use Ghi\Domain\Core\Models\Procuracion\Asignaciones;
 use Ghi\Domain\Core\Models\Scopes\ContratoProyectadoScope;
 use Ghi\Domain\Core\Models\Scopes\ObraScope;
-use Ghi\Domain\Core\Models\Sucursal;
 
 class ContratoProyectado extends Transaccion
 {
@@ -33,13 +32,13 @@ class ContratoProyectado extends Transaccion
         'observaciones',
         'FechaHoraRegistro',
         'cumplimiento',
-        'vencimiento'
+        'vencimiento',
     ];
 
     protected $dates = [
         'fecha',
         'cumplimiento',
-        'vencimiento'
+        'vencimiento',
     ];
 
     /**
@@ -52,7 +51,7 @@ class ContratoProyectado extends Transaccion
         static::addGlobalScope(new ContratoProyectadoScope());
         static::addGlobalScope(new ObraScope());
 
-        static::creating(function($model) {
+        static::creating(function ($model) {
             $model->id_obra = Context::getId();
             $model->FechaHoraRegistro = Carbon::now()->toDateTimeString();
             $model->tipo_transaccion = Tipo::CONTRATO_PROYECTADO;
@@ -61,11 +60,13 @@ class ContratoProyectado extends Transaccion
         });
     }
 
-    public function cotizacionesContrato() {
+    public function cotizacionesContrato()
+    {
         return $this->hasMany(CotizacionContrato::class, 'id_antecedente', 'id_transaccion');
     }
 
-    public function contratos() {
+    public function contratos()
+    {
         return $this->hasMany(Contrato::class, 'id_transaccion', 'id_transaccion');
     }
 
@@ -75,6 +76,5 @@ class ContratoProyectado extends Transaccion
     public function asignaciones()
     {
         return $this->hasMany(Asignaciones::class, 'id_transaccion', 'id_transaccion');
-
     }
 }

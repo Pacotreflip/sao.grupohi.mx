@@ -12,7 +12,6 @@ namespace Ghi\Api\Controllers\v1;
 use Dingo\Api\Exception\StoreResourceFailedException;
 use Dingo\Api\Http\Request;
 use Dingo\Api\Routing\Helpers;
-use Dotenv\Validator;
 use Ghi\Domain\Core\Contracts\Compras\RequisicionRepository;
 use Ghi\Domain\Core\Contracts\ContratoProyectadoRepository;
 use Ghi\Domain\Core\Layouts\Compras\AsignacionCargaProveedoresLayout;
@@ -20,7 +19,6 @@ use Ghi\Domain\Core\Layouts\Compras\AsignacionProveedoresLayout;
 use Ghi\Domain\Core\Layouts\Contratos\AsignacionSubcontratistasLayout;
 use Ghi\Domain\Core\Layouts\Presupuestos\AsignacionCargaPreciosLayout;
 use Ghi\Http\Controllers\Controller as BaseController;
-use Maatwebsite\Excel\Facades\Excel;
 
 /**
  * Class LayoutsController
@@ -77,7 +75,7 @@ class LayoutsController extends BaseController
     public function compras_asignacion_store(Request $request, $id_requisicion)
     {
         $rules = array(
-            'file' => 'required|file|mimes:xls,xlsx',
+            'file' => 'required|mimetypes:application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-office',
         );
 
         $validator = app('validator')->make($request->all(), $rules);
@@ -117,7 +115,7 @@ class LayoutsController extends BaseController
     public function contratos_asignacion_store(Request $request, $id_contrato_proyectado)
     {
         $rules = array(
-            'file' => 'required|file|mimes:xls,xlsx',
+            'file' => 'required|mimetypes:application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-office',
         );
 
         $validator = app('validator')->make($request->all(), $rules);
@@ -174,14 +172,8 @@ class LayoutsController extends BaseController
         if (count($validator->errors()->all())) {
             throw new StoreResourceFailedException('No es posible cargar el Layout', $validator->errors());
         }
-        $info = [
-            'id_contrato_proyectado' => $id_contrato_proyectado,
-            'presupuesto_ids' => $request->ids,
-            'agrupadores' => explode(',', $request->agrupadores),
-            'solo_pendientes' => $request->solo_pendientes
-        ];
 
-        $layout = (new AsignacionCargaPreciosLayout($this->contratoProyectadoRepository, $info))
+        $layout = (new AsignacionCargaPreciosLayout($this->contratoProyectadoRepository, []))
             ->setIdContratoProyectado($id_contrato_proyectado)
             ->qetDataFile($request);
 
@@ -223,14 +215,14 @@ class LayoutsController extends BaseController
         $rules = array(
             'file' => 'required',
         );
-
         $validator =  app('validator')->make($request->all(), $rules);
         if (count($validator->errors()->all())) {
             throw new StoreResourceFailedException('No es posible cargar el Layout', $validator->errors());
         }
 
-        $contrato_proyectado = $this->contratoProyectadoRepository->find($id_contrato_proyectado);
-        $layout = (new AsignacionCargaPreciosLayout($contrato_proyectado))->qetDataFile($request);
+        $layout = (new AsignacionCargaProveedoresLayout($this->requisicionRepository,[]))
+            ->setIdRequisicion($id_requiscion)
+            ->qetDataFile($request);
 
         return $this->response->array($layout);
     }

@@ -79,4 +79,14 @@ class EmpresaController extends Controller
         return $this->response->item($empresa, new EmpresaTransformer());
 
     }
+
+    public function find($id) {
+        $empresa = $this->empresa->find($id);
+        return $this->response->item($empresa, new EmpresaTransformer());
+    }
+
+    public function lists(Request $request) {
+        $empresas_list = $this->empresa->lists();
+        return $this->response->array($empresas_list);
+    }
 }

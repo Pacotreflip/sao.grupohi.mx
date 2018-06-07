@@ -60,8 +60,7 @@ class SolicitudCambioPartida extends Model
 
     public function historico() {
         return $this->hasOne(SolicitudCambioPartidaHistorico::class, 'id_solicitud_cambio_partida', 'id')
-            ->where('id_base_presupuesto', '=', BasePresupuesto::where('base_datos', '=', Context::getDatabaseName())->first()->id)
-            ->where('nivel', '=', $this->concepto->nivel);
+            ->where('id_base_presupuesto', '=', BasePresupuesto::where('base_datos', '=', Context::getDatabaseName())->first()->id);
     }
 
     public function getFactorAttribute() {

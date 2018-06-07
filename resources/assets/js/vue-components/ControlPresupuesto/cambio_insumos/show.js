@@ -15,7 +15,8 @@ Vue.component('cambio-insumos-show', {
 
             partidas:[],
             importes:[],
-            partida_id:0
+            partida_id:0,
+            tipo_gastos:false
         }
     },
     mounted: function () {
@@ -208,12 +209,12 @@ Vue.component('cambio-insumos-show', {
                             case 6:
                                 value.monto_original= agrupado.concepto.gastos_monto_original;
                                 value.variacion=agrupado.concepto.gastos_variacion;
+
                                 break;
 
                         }
                         value.monto_nuevo= parseFloat(value.monto_original)+ parseFloat(value.variacion);
                     });
-
 
                     $('#divDetalle').fadeIn();
                 },

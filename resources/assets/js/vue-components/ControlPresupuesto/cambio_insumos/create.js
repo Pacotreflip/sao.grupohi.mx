@@ -19,6 +19,7 @@ Vue.component('cambio-insumos-create', {
 
             },
             tipo_insumo:0,
+            agrupador:0,
             id_material_seleccionado:0,
             material_seleccionado:[],
             tarjeta_actual: 0,
@@ -492,10 +493,13 @@ Vue.component('cambio-insumos-create', {
 
         addInsumoTipo: function (tipo) {
             var self = this;
-             self.tipo_insumo=tipo;
+
+            self.agrupador = tipo;
+
             if(tipo==5||tipo==6){
                 tipo=2;
             }
+            self.tipo_insumo=tipo;
 
             self.guardar = true;
             $('#sel_material').select2({
@@ -558,9 +562,9 @@ Vue.component('cambio-insumos-create', {
         agregar_insumo_nuevo: function () {
             var self = this;
             $.each(self.form.partidas, function( index, partida ) {
-                switch (self.tipo_insumo){
+                switch (self.agrupador){
                     case 1: ///agregar a materiales
-                        if(!self.validarInsumo(self.material_seleccionado.id_material, self.tipo_insumo)){
+                        if(!self.validarInsumo(self.material_seleccionado.id_material, self.agrupador)){
                             partida.conceptos.MATERIALES.insumos.push(self.material_seleccionado);
                         }else{
                             swal({
@@ -571,7 +575,7 @@ Vue.component('cambio-insumos-create', {
                         }
                         break;
                     case 2://// agergar a mano obra
-                        if(!self.validarInsumo(self.material_seleccionado.id_material, self.tipo_insumo)){
+                        if(!self.validarInsumo(self.material_seleccionado.id_material, self.agrupador)){
                             partida.conceptos.MANOOBRA.insumos.push(self.material_seleccionado);
                         }else{
                             swal({
@@ -582,7 +586,7 @@ Vue.component('cambio-insumos-create', {
                         }
                         break;
                     case 4: ////agregar a herram y equipo
-                        if(!self.validarInsumo(self.material_seleccionado.id_material, self.tipo_insumo)){
+                        if(!self.validarInsumo(self.material_seleccionado.id_material, self.agrupador)){
                             partida.conceptos.HERRAMIENTAYEQUIPO.insumos.push(self.material_seleccionado);
                         }else{
                             swal({
@@ -593,7 +597,7 @@ Vue.component('cambio-insumos-create', {
                         }
                         break;
                     case 8: ///agregar a maquinaria
-                        if(!self.validarInsumo(self.material_seleccionado.id_material, self.tipo_insumo)){
+                        if(!self.validarInsumo(self.material_seleccionado.id_material, self.agrupador)){
                             partida.conceptos.MAQUINARIA.insumos.push(self.material_seleccionado);
                         }else{
                             swal({
@@ -604,7 +608,7 @@ Vue.component('cambio-insumos-create', {
                         }
                         break;
                     case 5: ///agregar a maquinaria
-                        if(!self.validarInsumo(self.material_seleccionado.id_material, self.tipo_insumo)){
+                        if(!self.validarInsumo(self.material_seleccionado.id_material, self.agrupador)){
                             partida.conceptos.SUBCONTRATOS.insumos.push(self.material_seleccionado);
                         }else{
                             swal({
@@ -615,7 +619,7 @@ Vue.component('cambio-insumos-create', {
                         }
                         break;
                     case 6: ///agregar a maquinaria
-                        if(!self.validarInsumo(self.material_seleccionado.id_material, self.tipo_insumo)){
+                        if(!self.validarInsumo(self.material_seleccionado.id_material, self.agrupador)){
                             partida.conceptos.GASTOS.insumos.push(self.material_seleccionado);
                         }else{
                             swal({

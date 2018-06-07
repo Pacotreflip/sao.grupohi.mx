@@ -2,6 +2,7 @@
 
 namespace Ghi\Domain\Core\Models\ControlRec;
 
+use Ghi\Core\Facades\Context;
 use Illuminate\Database\Eloquent\Model;
 
 class RQCTOCSolicitud extends Model

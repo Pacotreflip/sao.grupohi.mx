@@ -71,10 +71,13 @@ class EloquentMovimientosBancariosRepository implements MovimientosBancariosRepo
 
         foreach ( $tipos_movimientos as $t)
             if ($t->id_tipo_movimiento == $data['id_tipo_movimiento'])
+            {
+                $naturaleza = $t->naturaleza;
                 $tipo = $tipos_transaccion[$t->naturaleza];
+            }
 
-        // Convertir a negativo cuando el tipo de movimiento sea "Comisiones Bancarias"
-        if ($data['id_tipo_movimiento'] == 4)
+        // Convertir a negativo cuando la naturaleza del movimiento sea 2
+        if ((int) $naturaleza == 2)
         {
             $data['importe'] = -1 * abs($data['importe']);
             $data['impuesto'] =  -1 * abs($data['impuesto']);
