@@ -107,9 +107,6 @@ class ConceptosExtraordinariosController extends Controller
     public function show($id)
     {
         $partidas = $this->extraordinario->getSolicitudCambioPartidas($id);
-        //$solicitud = SolicitudCambio::with(['tipoOrden', 'userRegistro', 'estatus', 'partidas.concepto',
-           // 'partidas.numeroTarjeta', 'aplicaciones'])->find($id);
-        //dd('Panda', $solicitud);
         $solicitud = SolicitudCambio::with(['tipoOrden', 'userRegistro', 'estatus', 'partidas'])->find($id);
         return view('control_presupuesto.conceptos_extraordinarios.show')
             ->with('solicitud', $solicitud)
@@ -162,5 +159,19 @@ class ConceptosExtraordinariosController extends Controller
                 return response()->json([ 'data' => $this->extraordinario_partidas->getExtraordinarioNuevo()], 200);
                 break;
         }
+    }
+
+    public function autorizar($id){
+        $solicitud = $this->extraordinario->autorizar($id);
+        return $this->response->item($solicitud, function ($item) {
+            return $item;
+        });
+    }
+
+    public function rechazar(Request $request){
+        $solicitud = $this->extraordinario->rechazar($request->all());
+        return $this->response->item($solicitud, function ($item) {
+            return $item;
+        });
     }
 }

@@ -56,6 +56,86 @@ Vue.component('concepto-extraordinario-create', {
     },
 
     methods: {
+        recalcular_insumo:function (id_insumo, agrupador) {
+            var self = this;
+            var c_presup = 0;
+            var p_unitario = 0;
+            switch (agrupador){
+                case 1: ///agregar a materiales
+                    c_presup = $(".c_p_mat_" + id_insumo).val();
+                    p_unitario = $(".p_u_mat_" + id_insumo).val();
+                    self.form.extraordinario.MATERIALES.insumos[id_insumo].cantidad_presupuestada  = c_presup;
+                    self.form.extraordinario.MATERIALES.insumos[id_insumo].precio_unitario  = p_unitario;
+                    self.form.extraordinario.MATERIALES.insumos[id_insumo].monto_presupuestado  = p_unitario * c_presup;
+                    self.recalcular_agrupadores(self.form.extraordinario.MATERIALES);
+                    break;
+                case 2://// agergar a mano obra
+                    c_presup = $(".c_p_mdo_" + id_insumo).val();
+                    p_unitario = $(".p_u_mdo_" + id_insumo).val();
+                    self.form.extraordinario.MANOOBRA.insumos[id_insumo].cantidad_presupuestada  = c_presup;
+                    self.form.extraordinario.MANOOBRA.insumos[id_insumo].precio_unitario  = p_unitario;
+                    self.form.extraordinario.MANOOBRA.insumos[id_insumo].monto_presupuestado  = p_unitario * c_presup;
+                    self.recalcular_agrupadores(self.form.extraordinario.MANOOBRA);
+                    break;
+                case 4: ////agregar a herram y equipo
+                    c_presup = $(".c_p_hye_" + id_insumo).val();
+                    p_unitario = $(".p_u_hye_" + id_insumo).val();
+                    console.log(c_presup , p_unitario );
+                    self.form.extraordinario.HERRAMIENTAYEQUIPO.insumos[id_insumo].cantidad_presupuestada  = c_presup;
+                    self.form.extraordinario.HERRAMIENTAYEQUIPO.insumos[id_insumo].precio_unitario  = p_unitario;
+                    self.form.extraordinario.HERRAMIENTAYEQUIPO.insumos[id_insumo].monto_presupuestado  = p_unitario * c_presup;
+                    self.recalcular_agrupadores(self.form.extraordinario.HERRAMIENTAYEQUIPO);
+                    break;
+                case 8: ///agregar a maquinaria
+                    c_presup = $(".c_p_maq_" + id_insumo).val();
+                    p_unitario = $(".p_u_maq_" + id_insumo).val();
+                    self.form.extraordinario.MAQUINARIA.insumos[id_insumo].cantidad_presupuestada  = c_presup;
+                    self.form.extraordinario.MAQUINARIA.insumos[id_insumo].precio_unitario  = p_unitario;
+                    self.form.extraordinario.MAQUINARIA.insumos[id_insumo].monto_presupuestado  = p_unitario * c_presup;
+                    self.recalcular_agrupadores(self.form.extraordinario.MAQUINARIA);
+                    break;
+                case 5: ///agregar a subcontratos
+                    c_presup = $(".c_p_sub_" + id_insumo).val();
+                    p_unitario = $(".p_u_sub_" + id_insumo).val();
+                    self.form.extraordinario.SUBCONTRATOS.insumos[id_insumo].cantidad_presupuestada  = c_presup;
+                    self.form.extraordinario.SUBCONTRATOS.insumos[id_insumo].precio_unitario  = p_unitario;
+                    self.form.extraordinario.SUBCONTRATOS.insumos[id_insumo].monto_presupuestado  = p_unitario * c_presup;
+                    self.recalcular_agrupadores(self.form.extraordinario.SUBCONTRATOS);
+                    break;
+                case 6: ///agregar a gastos
+                    c_presup = $(".c_p_gas_" + id_insumo).val();
+                    p_unitario = $(".p_u_gas_" + id_insumo).val();
+                    self.form.extraordinario.GASTOS.insumos[id_insumo].cantidad_presupuestada  = c_presup;
+                    self.form.extraordinario.GASTOS.insumos[id_insumo].precio_unitario  = p_unitario;
+                    self.form.extraordinario.GASTOS.insumos[id_insumo].monto_presupuestado  = p_unitario * c_presup;
+                    self.recalcular_agrupadores(self.form.extraordinario.GASTOS);
+                    break;
+            }
+        },
+
+        recalcular_agrupadores: function (agrupador) {
+            var monto = 0;
+            var monto_agrupadores = 0;
+            $.each(agrupador.insumos, function (index, partida) {
+                monto += parseFloat(partida.monto_presupuestado);
+            });
+
+            agrupador.monto_presupuestado = monto;
+            monto_agrupadores += parseFloat(this.form.extraordinario.MATERIALES.monto_presupuestado);
+            monto_agrupadores += parseFloat(this.form.extraordinario.MANOOBRA.monto_presupuestado);
+            monto_agrupadores += parseFloat(this.form.extraordinario.HERRAMIENTAYEQUIPO.monto_presupuestado);
+            monto_agrupadores += parseFloat(this.form.extraordinario.MAQUINARIA.monto_presupuestado);
+            monto_agrupadores += parseFloat(this.form.extraordinario.SUBCONTRATOS.monto_presupuestado);
+            monto_agrupadores += parseFloat(this.form.extraordinario.GASTOS.monto_presupuestado);
+            this.form.extraordinario.precio_unitario = monto_agrupadores;
+            this.recalcular_concepto();
+        },
+
+        recalcular_concepto: function () {
+            var self = this;
+            self.form.extraordinario.monto_presupuestado = self.form.extraordinario.cantidad_presupuestada * self.form.extraordinario.precio_unitario;
+        },
+
         guardar_extraordinario: function () {
             var self = this;
 
@@ -118,6 +198,7 @@ Vue.component('concepto-extraordinario-create', {
                     if(result.value){
                         self.form.id_opcion = '';
                         self.form.id_origen_extraordinario='';
+                        self.form.extraordinario = {};
                         self.mostrar_tabla = false;
                     }
                 });

@@ -113,7 +113,10 @@
 
                                                     <td>
                                                         <div class="form-group">
-                                                            <input type="text" step=".01" placeholder="Ingrese Cantidad" :value="form.extraordinario.cantidad_presupuestada" :model="form.extraordinario.cantidad_presupuestada" style="width: 100%; height: 34px">
+                                                            <input type="text" step=".01" placeholder="Ingrese Cantidad"
+                                                                   style="width: 100%; height: 34px"
+                                                                   v-model="form.extraordinario.cantidad_presupuestada"
+                                                                   @change="recalcular_concepto()">
                                                         </div>
                                                     </td>
                                                     <td >$@{{ parseFloat(form.extraordinario.precio_unitario).formatMoney(2,'.',',') }}</td>
@@ -166,12 +169,18 @@
                                                     <td>@{{ insumo.unidad }}</td>
                                                     <td>
                                                         <div class="form-group">
-                                                            <input type="text" step=".01" placeholder="Ingrese Cantidad" :value="insumo.cantidad_presupuestada" style="width: 100%; height: 25px">
+                                                            <input type="text" step=".01" placeholder="Ingrese Cantidad"
+                                                                   :value="insumo.cantidad_presupuestada" style="width: 100%; height: 25px"
+                                                                   :class="'c_p_gas_' + i"
+                                                                   @change="recalcular_insumo(i,6)">
                                                         </div>
                                                     </td>
                                                     <td>
                                                         <div class="form-group">
-                                                            $<input type="text" step=".01" placeholder="Ingrese Cantidad" :value="insumo.precio_unitario" style="width: 90%; height: 25px">
+                                                            $<input type="text" step=".01" placeholder="Ingrese Cantidad"
+                                                                    :value="insumo.precio_unitario" style="width: 90%; height: 25px"
+                                                                    :class="'p_u_gas_' + i"
+                                                                    @change="recalcular_insumo(i,6)">
                                                         </div>
                                                     </td>
                                                     <td>$@{{ parseFloat(insumo.monto_presupuestado).formatMoney(2,'.',',') }}</td>
@@ -221,12 +230,18 @@
                                                         <td>@{{ insumo.unidad }}</td>
                                                         <td>
                                                             <div class="form-group">
-                                                                <input type="text" step=".01" placeholder="Ingrese Cantidad" :value="insumo.cantidad_presupuestada" style="width: 100%; height: 25px">
+                                                                <input type="text" step=".01" placeholder="Ingrese Cantidad"
+                                                                       :value="insumo.cantidad_presupuestada" style="width: 100%; height: 25px"
+                                                                       :class="'c_p_mat_' + i"
+                                                                       @change="recalcular_insumo(i,1)">
                                                             </div>
                                                         </td>
                                                         <td>
                                                             <div class="form-group">
-                                                               $ <input type="text" step=".01" placeholder="Ingrese Cantidad" :value="insumo.precio_unitario" style="width: 90%; height: 25px">
+                                                               $ <input type="text" step=".01" placeholder="Ingrese Cantidad"
+                                                                        :value="insumo.precio_unitario" style="width: 90%; height: 25px"
+                                                                        :class="'p_u_mat_' + i"
+                                                                        @change="recalcular_insumo(i,1)">
                                                             </div>
                                                         </td>
                                                         <td>$@{{ parseFloat(insumo.monto_presupuestado).formatMoney(2,'.',',') }}</td>
@@ -273,12 +288,17 @@
                                                     <td>@{{ insumo.unidad }}</td>
                                                     <td>
                                                         <div class="form-group">
-                                                            <input type="text" step=".01" placeholder="Ingrese Cantidad" :value="insumo.cantidad_presupuestada" style="width: 100%; height: 25px">
+                                                            <input type="text" step=".01" placeholder="Ingrese Cantidad" :value="insumo.cantidad_presupuestada" style="width: 100%; height: 25px"
+                                                                   :class="'c_p_mdo_' + i"
+                                                                   @change="recalcular_insumo(i,2)">
                                                         </div>
                                                     </td>
                                                     <td>
                                                         <div class="form-group">
-                                                            $<input type="text" step=".01" placeholder="Ingrese Cantidad" :value="insumo.precio_unitario" style="width: 90%; height: 25px">
+                                                            $<input type="text" step=".01" placeholder="Ingrese Cantidad"
+                                                                    :value="insumo.precio_unitario" style="width: 90%; height: 25px"
+                                                                    :class="'p_u_mdo_' + i"
+                                                                    @change="recalcular_insumo(i,2)">
                                                         </div>
                                                     </td>
                                                     <td>$@{{ parseFloat(insumo.monto_presupuestado).formatMoney(2,'.',',') }}</td>
@@ -325,12 +345,18 @@
                                                     <td>@{{ insumo.unidad }}</td>
                                                     <td>
                                                         <div class="form-group">
-                                                            <input type="text" step=".01" placeholder="Ingrese Cantidad" :value="insumo.cantidad_presupuestada" style="width: 100%; height: 25px">
+                                                            <input type="text" step=".01" placeholder="Ingrese Cantidad"
+                                                                   :value="insumo.cantidad_presupuestada" style="width: 100%; height: 25px"
+                                                                   :class="'c_p_hye_' + i"
+                                                                   @change="recalcular_insumo(i,4)">
                                                         </div>
                                                     </td>
                                                     <td>
                                                         <div class="form-group">
-                                                            $<input type="text" step=".01" placeholder="Ingrese Cantidad" :value="insumo.precio_unitario" style="width: 90%; height: 25px">
+                                                            $<input type="text" step=".01" placeholder="Ingrese Cantidad"
+                                                                    :value="insumo.precio_unitario" style="width: 90%; height: 25px"
+                                                                    :class="'p_u_hye_' + i"
+                                                                    @change="recalcular_insumo(i,4)">
                                                         </div>
                                                     </td>
                                                     <td>$@{{ parseFloat(insumo.monto_presupuestado).formatMoney(2,'.',',') }}</td>
@@ -377,12 +403,18 @@
                                                     <td>@{{ insumo.unidad }}</td>
                                                     <td>
                                                         <div class="form-group">
-                                                            <input type="text" step=".01" placeholder="Ingrese Cantidad" :value="insumo.cantidad_presupuestada" style="width: 100%; height: 25px">
+                                                            <input type="text" step=".01" placeholder="Ingrese Cantidad"
+                                                                   :value="insumo.cantidad_presupuestada" style="width: 100%; height: 25px"
+                                                                   :class="'c_p_maq_' + i"
+                                                                   @change="recalcular_insumo(i,8)">
                                                         </div>
                                                     </td>
                                                     <td>
                                                         <div class="form-group">
-                                                            $ <input type="text" step=".01" placeholder="Ingrese Cantidad" :value="insumo.precio_unitario" style="width: 90%; height: 25px">
+                                                            $ <input type="text" step=".01" placeholder="Ingrese Cantidad"
+                                                                     :value="insumo.precio_unitario" style="width: 90%; height: 25px"
+                                                                     :class="'p_u_maq_' + i"
+                                                                     @change="recalcular_insumo(i,8)">
                                                         </div>
                                                     </td>
                                                     <td>$@{{ parseFloat(insumo.monto_presupuestado).formatMoney(2,'.',',') }}</td>
@@ -429,12 +461,18 @@
                                                     <td>@{{ insumo.unidad }}</td>
                                                     <td>
                                                         <div class="form-group">
-                                                            <input type="text" step=".01" placeholder="Ingrese Cantidad" :value="insumo.cantidad_presupuestada" style="width: 100%; height: 25px">
+                                                            <input type="text" step=".01" placeholder="Ingrese Cantidad"
+                                                                   :value="insumo.cantidad_presupuestada" style="width: 100%; height: 25px"
+                                                                   :class="'c_p_sub_' + i"
+                                                                   @change="recalcular_insumo(i,5)">
                                                         </div>
                                                     </td>
                                                     <td>
                                                         <div class="form-group">
-                                                            $<input type="text" step=".01" placeholder="Ingrese Cantidad" :value="insumo.precio_unitario" style="width: 90%; height: 25px">
+                                                            $<input type="text" step=".01" placeholder="Ingrese Cantidad"
+                                                                    :value="insumo.precio_unitario" style="width: 90%; height: 25px"
+                                                                    :class="'p_u_sub_' + i"
+                                                                    @change="recalcular_insumo(i,5)">
                                                         </div>
                                                     </td>
                                                     <td>$@{{ parseFloat(insumo.monto_presupuestado).formatMoney(2,'.',',') }}</td>

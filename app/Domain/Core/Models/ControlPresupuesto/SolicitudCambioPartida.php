@@ -36,7 +36,7 @@ class SolicitudCambioPartida extends Model
         'unidad'
     ];
 
-    protected $appends = ['factor', 'unidad'];
+    protected $appends = ['factor'];
 
     public function concepto() {
         return $this->belongsTo(Concepto::class, 'id_concepto', 'id_concepto');
@@ -78,13 +78,4 @@ class SolicitudCambioPartida extends Model
 
     }
 
-    public function getUnidadAttribute(){
-
-            if($this->material)
-            {
-                return (string)$this->material->unidad;
-            }
-            return '';
-
-    }
 }

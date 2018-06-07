@@ -15,11 +15,13 @@
             <div class="row">
                 <div class="col-md-12">
                     <button id="btn_rechazar" class="btn btn-app btn-danger pull-right"
+                            v-on:click="confirm_rechazar_solicitud"
                             v-if="solicitud.id_estatus==1">
                         <span v-if="rechazando"><i class="fa fa-spinner fa-spin"></i> Rechazando</span>
                         <span v-else><i class="fa fa-close"></i> Rechazar</span>
                     </button>
                     <button  id="btn_autorizar" :disable="rechazando||autorizando" class="btn btn-sm btn-app btn-info pull-right"
+                             v-on:click="confirm_autorizar_solicitud"
                              v-if="solicitud.id_estatus==1">
                         <span v-if="autorizando"><i class="fa fa-spinner fa-spin"></i> Autorizando</span>
                         <span v-else><i class="fa fa-check"></i> Autorizar</span>
@@ -35,7 +37,7 @@
                             <table class="table">
                                 <tr>
                                     <td><b>Importe Concepto Extraordinario</b></td>
-                                    <td class="text-right"></td>
+                                    <td class="text-right">$ @{{ parseFloat((partidas.monto_presupuestado)).formatMoney(2,'.',',') }}</td>
                                 </tr>
                                     <td><b>Importe Presupuesto Original</b></td>
                                     <td class="text-right"></td></tr>
@@ -132,18 +134,17 @@
 
                                     </thead>
                                     <tbody>
-                                    <tr v-for="(insumo, i) in tipos.insumos">
-                                        <td>@{{ i+1 }}</td>
-                                        <td>@{{ insumo.descripcion }}</td>
-                                        <td>@{{ insumo.unidad }}</td>
-                                        <td>
-                                            @{{ parseFloat(insumo.cantidad_presupuestada_nueva).formatMoney(2,'.',',') }}</td>
-                                        <td class="text-right">
-                                            $@{{ parseFloat(insumo.precio_unitario_nuevo).formatMoney(2,'.',',') }}</td>
-                                        <td class="text-right">
-                                            $@{{ parseFloat(insumo.monto_presupuestado).formatMoney(2,'.',',') }}</td>
-
-                                    </tr>
+                                        <tr v-for="(insumo, i) in tipos.insumos">
+                                            <td>@{{ i+1 }}</td>
+                                            <td>@{{ insumo.descripcion }}</td>
+                                            <td>@{{ insumo.unidad }}</td>
+                                            <td>
+                                                @{{ parseFloat(insumo.cantidad_presupuestada_nueva).formatMoney(2,'.',',') }}</td>
+                                            <td class="text-right">
+                                                $@{{ parseFloat(insumo.precio_unitario_nuevo).formatMoney(2,'.',',') }}</td>
+                                            <td class="text-right">
+                                                $@{{ parseFloat(insumo.monto_presupuestado).formatMoney(2,'.',',') }}</td>
+                                        </tr>
                                     </tbody>
                                 </table>
                                 <hr>

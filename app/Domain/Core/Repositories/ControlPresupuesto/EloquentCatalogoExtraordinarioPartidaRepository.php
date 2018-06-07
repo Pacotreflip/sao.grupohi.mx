@@ -18,7 +18,7 @@ class EloquentCatalogoExtraordinarioPartidaRepository implements CatalogoExtraor
 
     /**
      * EloquentCatalogoExtraordinarioRepository constructor.
-     * @param CatalogoExtraordinario $model
+     * @param CatalogoExtraordinarioPartidas $model
      */
     public function __construct(CatalogoExtraordinarioPartidas $model)
     {
@@ -35,7 +35,7 @@ class EloquentCatalogoExtraordinarioPartidaRepository implements CatalogoExtraor
             'unidad'=>$partida->unidad,
             'id_material'=>$partida->id_material,
             'cantidad_presupuestada'=>$partida->cantidad_presupuestada,
-            'precio_unitario'=>$partida->precio_unidario,
+            'precio_unitario'=>$partida->precio_unitario,
             'monto_presupuestado'=>$partida->monto_presupuestado
         ];
         $agrupadores = $this->model->where('nivel', 'like', '___.___.')->get();
