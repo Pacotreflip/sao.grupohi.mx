@@ -246,7 +246,12 @@ class AsignacionCargaPreciosLayout extends ValidacionLayout
                         $sheet->setCellValue(\PHPExcel_Cell::stringFromColumnIndex($desde + 6) . $haciaAbajo, '=IF(' . \PHPExcel_Cell::stringFromColumnIndex($desde + 5) . $haciaAbajo . '="EURO",' . \PHPExcel_Cell::stringFromColumnIndex($desde + 3) . $haciaAbajo . '*' . $this->tipo_cambio[3]['cambio'] . '/1, IF(' . \PHPExcel_Cell::stringFromColumnIndex($desde + 5) . $haciaAbajo . '="DOLAR USD",' . \PHPExcel_Cell::stringFromColumnIndex($desde + 3) . $haciaAbajo . '*' . $this->tipo_cambio[3]['cambio'] . '/1, IF(' . \PHPExcel_Cell::stringFromColumnIndex($desde + 5) . $haciaAbajo . '="PESO MXP",' . \PHPExcel_Cell::stringFromColumnIndex($desde + 3) . $haciaAbajo . '/1, IF(' . \PHPExcel_Cell::stringFromColumnIndex($desde + 5) . $haciaAbajo . '="",0))))');
                         $sheet->getStyle(\PHPExcel_Cell::stringFromColumnIndex($desde + 6) . $haciaAbajo)->getProtection()->setLocked(\PHPExcel_Style_Protection::PROTECTION_PROTECTED);
 
+                        // Precio Total Moneda Conversión
+                        $sheet->setCellValue(\PHPExcel_Cell::stringFromColumnIndex($desde + 7) . $haciaAbajo, '=IF('. \PHPExcel_Cell::stringFromColumnIndex($desde + 5) . $haciaAbajo .'="EURO",H'. $haciaAbajo .'*'. \PHPExcel_Cell::stringFromColumnIndex($desde + 6) . $haciaAbajo .'/1, IF('. \PHPExcel_Cell::stringFromColumnIndex($desde + 5) . $haciaAbajo .'="DOLAR USD",H'.$haciaAbajo.'*'. \PHPExcel_Cell::stringFromColumnIndex($desde + 6) . $haciaAbajo .'/1, IF('. \PHPExcel_Cell::stringFromColumnIndex($desde + 5) . $haciaAbajo .'="PESO MXP",'. \PHPExcel_Cell::stringFromColumnIndex($desde + 4) . $haciaAbajo .'/1,IF('. \PHPExcel_Cell::stringFromColumnIndex($desde + 5) . $haciaAbajo .'="",0))))');
+                        $sheet->getStyle(\PHPExcel_Cell::stringFromColumnIndex($desde + 6) . $haciaAbajo)->getProtection()->setLocked(\PHPExcel_Style_Protection::PROTECTION_PROTECTED);
+
                         // cotizado_img
+                        $sheet->setCellValue(\PHPExcel_Cell::stringFromColumnIndex($desde + 9) . $haciaAbajo, $contratoProyectado['partida']->en_asig);
                         $sheet->getStyle(\PHPExcel_Cell::stringFromColumnIndex($desde + 9) . $haciaAbajo)->getProtection()->setLocked(\PHPExcel_Style_Protection::PROTECTION_PROTECTED);
 
                         //id_moneda
