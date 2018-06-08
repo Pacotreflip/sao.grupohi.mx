@@ -11,6 +11,7 @@ namespace Ghi\Domain\Core\Models\Compras;
 
 use Carbon\Carbon;
 use Ghi\Core\Facades\Context;
+use Ghi\Domain\Core\Models\Compras\Requisiciones\Requisicion;
 use Ghi\Domain\Core\Models\Costo;
 use Ghi\Domain\Core\Models\Empresa;
 use Ghi\Domain\Core\Models\Scopes\ObraScope;
@@ -45,6 +46,10 @@ class OrdenCompra extends Transaccion
 
     public function costo() {
         return $this->belongsTo(Costo::class, 'id_costo');
+    }
+
+    public function requisicion() {
+        return $this->belongsTo(Requisicion::class, 'id_antecedente');
     }
 
 }

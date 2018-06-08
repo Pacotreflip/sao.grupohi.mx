@@ -73,4 +73,8 @@ class Subcontrato extends Transaccion
     public function costo() {
         return $this->belongsTo(Costo::class, 'id_costo');
     }
+
+    public function contratoProyectado() {
+        return $this->belongsTo(ContratoProyectado::class, 'id_antecedente');
+    }
 }

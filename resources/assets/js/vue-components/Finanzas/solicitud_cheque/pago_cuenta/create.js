@@ -55,7 +55,7 @@ Vue.component('pago-cuenta-create', {
                         var query = {
                             q: params.term,
                             limit: 10,
-                            with: ['empresa', 'costo'],
+                            with: ['empresa', 'costo', (self.form.tipo_transaccion == 19 ? 'requisicion' : 'contrato_proyectado')],
                             cols: ['numero_folio', 'referencia', 'observaciones']
                         };
                         return query;

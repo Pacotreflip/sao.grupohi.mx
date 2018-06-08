@@ -31,7 +31,7 @@
             <div class="col-md-4">
                 <div class="form-group"
                      :class="{'has-error': validation_errors.has('form_pago_cuenta.Tipo de Transacción')}">
-                    <label for="tipo_transaccion_pc">Tipo de Transacción</label>
+                    <label for="tipo_transaccion_pc"><b>Tipo de Transacción</b></label>
                     <select name="Tipo de Transacción" id="tipo_transaccion_pc" v-validate="'required'" class="form-control input-sm" v-model="form.tipo_transaccion">
                         <option value>[--SELECCIONE EL TIPO--]</option>
                         <option v-for="item in tipos_tran" :value="item.Tipo_Transaccion">{{ item.Descripcion }}</option>
@@ -48,6 +48,60 @@
                             id="id_antecedente_pc" v-model="form.id_antecedente"></select>
                     <label class="help" v-show="validation_errors.has('form_reposicion_fondo_fijo.Comprobante de Fondo Fijo')">{{ validation_errors.first('form_reposicion_fondo_fijo.Comprobante de Fondo Fijo') }}</label>
                 </div>
+            </div>
+
+            <div v-if="Object.keys(transaccion).length !== 0" class="col-md-12">
+                <section class="invoice">
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <h2 class="page-header">
+                                Información de la transacción
+                                <small class="pull-right">Fecha: {{new Date(transaccion.fecha).dateShortFormat()}}</small>
+                            </h2>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <ul class="list-group list-group-unbordered">
+                                <li class="list-group-item">
+                                    <b>Número de Folio</b> <p class="pull-right">#{{ transaccion.numero_folio }}</p>
+                                </li>
+                                <li v-if="form.tipo_transaccion == 51" class="list-group-item">
+                                    <b>Contrato Proyectado</b><br> <p>{{ transaccion.contrato_proyectado.observaciones }}</p>
+                                </li>
+                                <li v-if="form.tipo_transaccion == 19" class="list-group-item">
+                                    <b>Requisición</b><br><p>{{ transaccion.requisicion.observaciones }}</p>
+                                </li>
+                                <li class="list-group-item">
+                                    <b>Empresa</b> <p class="pull-right">{{ transaccion.empresa.razon_social }}</p>
+                                </li>
+                                <li class="list-group-item">
+                                    <b>Referencia</b><br> <p>{{ transaccion.referencia }}</p>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="col-sm-6 col-sm-offset-6">
+                            <div class="table-responsive">
+                                <table class="table table-striped">
+                                    <tbody>
+                                    <tr>
+                                        <th>Subtotal:</th>
+                                        <td style="text-align: right;">$&nbsp;{{parseFloat(transaccion.monto - transaccion.impuesto).formatMoney(2, '.', ',')}}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>IVA:</th>
+                                        <td style="text-align: right;">$&nbsp;{{parseFloat(transaccion.impuesto).formatMoney(2, '.', ',')}}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Total:</th>
+                                        <td style="text-align: right;">$&nbsp;{{parseFloat(transaccion.monto).formatMoney(2, '.', ',')}}</td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </section>
             </div>
 
             <div class="col-md-12">
