@@ -127,7 +127,7 @@
         <tr>
             <!-- Información general de la partida -->
             <td style="background-color: #ffd966" class="laterales-left">{{ $index }}</td>
-            <td style="background-color: #ffd966" class="border">{{  $req['partida']->idrqctoc_solicitudes_partidas }}</td>
+            <td style="background-color: #ffd966" class="border">{{  $mcrypt->encrypt($req['partida']->idrqctoc_solicitudes_partidas) }}</td>
             <td style="background-color: #ffd966" class="border">{{ (!empty($req['partida']->material->numero_parte) ?
             '['. $req['partida']->material->numero_parte .']' : '') . $req['partida']->material->descripcion }}</td>
             <td style="background-color: #ffd966" class="border">{{ (!empty($req['partida']->material->unidad) ?

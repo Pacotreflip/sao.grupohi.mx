@@ -95,7 +95,7 @@ class AsignacionCargaPreciosLayout extends ValidacionLayout
         "cotizado_img" => "cotizado_img",
         "id_moneda" => "id_moneda",
         "precio_total_mxp" => "precio_total_mxp",
-        "" => "",
+        "separador" => "separador",
     ];
     /**
      * @var array

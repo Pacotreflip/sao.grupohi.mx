@@ -77,7 +77,7 @@ class AsignacionCargaProveedoresLayout extends ValidacionLayout
         "idrqctoc_solicitudes_partidas" => "idrqctoc_solicitudes_partidas",
         "idrqctoc_solicitudes" => "idrqctoc_solicitudes",
         "idmoneda" => "idmoneda",
-        "" => "",
+        "separador" => "separador",
     ];
     /**
      * @var array
