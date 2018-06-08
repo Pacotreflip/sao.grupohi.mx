@@ -23,7 +23,7 @@ class CreateControlPresupuestoCatalogosExtraordinariosTables extends Migration
         Schema::create('ControlPresupuesto.catalogo_extraordinarios_partidas', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('id_catalogo_extraordinarios');
-            $table->integer('id_material');
+            $table->integer('id_material')->nullable();
             $table->string("nivel");
             $table->string("descripcion");
             $table->string("unidad")->nullable();
