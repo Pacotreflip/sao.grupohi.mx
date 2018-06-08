@@ -24,7 +24,7 @@ class AlterTableControlPresupuestoSolicitudCambiosPartidas extends Migration
      */
     public function down()
     {
-        Schema::table('Contabilidad.solicitud_cambio_partidas', function (Blueprint $table) {
+        Schema::table('ControlPresupuesto.solicitud_cambio_partidas', function (Blueprint $table) {
             $table->dropColumn('unidad');
         });
     }
