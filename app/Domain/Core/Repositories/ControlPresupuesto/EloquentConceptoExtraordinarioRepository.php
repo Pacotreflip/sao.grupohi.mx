@@ -199,7 +199,7 @@ class EloquentConceptoExtraordinarioRepository implements ConceptoExtraordinario
             $solicitud->save();
 
             SolicitudCambioAutorizada::create(["id_solicitud_cambio" => $id]);
-            //$this->enviarNotificacionRevasePresupuesto($id);
+            $this->enviarNotificacionRevasePresupuesto($id);
 
 
             DB::connection('cadeco')->commit();
@@ -414,4 +414,5 @@ class EloquentConceptoExtraordinarioRepository implements ConceptoExtraordinario
             return SolicitudCambioPartidaHistorico::where('id_solicitud_cambio_partida', '=', $partida_base->id)->where('nivel', 'like', '___.')->first();
         }
     }
+
 }

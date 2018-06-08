@@ -14,8 +14,10 @@ class CatalogoExtraordinarioPartidas extends Model
         'nivel',
         'descripcion',
         'unidad',
+        'id_material',
         'cantidad_presupuestada',
-        'precio_unitario'
+        'precio_unitario',
+        'monto_presupuestado'
     ];
 
     public function insumos() {

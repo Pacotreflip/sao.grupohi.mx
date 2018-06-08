@@ -8,10 +8,10 @@ class CatalogoExtraordinario extends Model
 {
     protected $table = 'ControlPresupuesto.catalogo_extraordinarios';
     protected $connection = 'cadeco';
-    public $incrementing = false;
     protected $fillable = [
         'descripcion',
-        'creado_por'
+        'creado_por',
+        'tipo_costo'
     ];
     protected static function boot()
     {

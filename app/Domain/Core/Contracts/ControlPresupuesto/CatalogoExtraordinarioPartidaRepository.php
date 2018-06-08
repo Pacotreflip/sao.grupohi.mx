@@ -13,4 +13,5 @@ interface CatalogoExtraordinarioPartidaRepository
 {
     public function getPartidasByIdCatalogo($id);
     public function getExtraordinarioNuevo();
+    public function guardarExtraordinario(array $array);
 }

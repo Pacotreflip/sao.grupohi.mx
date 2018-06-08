@@ -80,7 +80,6 @@ Vue.component('concepto-extraordinario-create', {
                 case 4: ////agregar a herram y equipo
                     c_presup = $(".c_p_hye_" + id_insumo).val();
                     p_unitario = $(".p_u_hye_" + id_insumo).val();
-                    console.log(c_presup , p_unitario );
                     self.form.extraordinario.HERRAMIENTAYEQUIPO.insumos[id_insumo].cantidad_presupuestada  = c_presup;
                     self.form.extraordinario.HERRAMIENTAYEQUIPO.insumos[id_insumo].precio_unitario  = p_unitario;
                     self.form.extraordinario.HERRAMIENTAYEQUIPO.insumos[id_insumo].monto_presupuestado  = p_unitario * c_presup;
@@ -147,7 +146,6 @@ Vue.component('concepto-extraordinario-create', {
 
         guardar_extraordinario: function () {
             var self = this;
-
             $.ajax({
                 url : App.host + '/control_presupuesto/conceptos_extraordinarios/store',
                 type : 'POST',
@@ -158,17 +156,65 @@ Vue.component('concepto-extraordinario-create', {
                 success : function (response) {
                     swal({
                         type : 'success',
-                        title : '¡Correcto!',
-                        html : 'Solicitud Guardada con Número de Folio <b>' + response.numero_folio + '</b>',
-                        html : 'Solicitud Guardada Exitosamente.'
-                    }).then(function () {
-                        window.location.href = App.host + '/control_presupuesto/conceptos_extraordinarios/' +response.id
+                        title: 'Extraordinadio Guardado Correctamente',
+                        text: 'Si desea guardar el extraordinario en catalogo ingrese una descripción, de lo contrario solo de clik en continuar',
+                        input: 'text',
+                        showCancelButton: true,
+                        confirmButtonText: 'Guardar y Continuar ',
+                        cancelButtonText: 'Continuar',
+                        showLoaderOnConfirm: false,
+                        preConfirm: function preConfirm(motivo) {
+                            return new Promise(function (resolve) {
+                                if (motivo.length === 0) {
+                                    swal.showValidationError('Por favor escriba una descripción.');
+                                }
+                                resolve();
+                            });
+                        },
+                        allowOutsideClick: function allowOutsideClick() {
+                            !swal.isLoading();
+                        }
+                    }).then(function (result) {
+                        if (result.value) {
+                            self.registrar_extraordinario_catalogo(result.value,response.id );
+                        }else{
+                            window.location.href = App.host + '/control_presupuesto/conceptos_extraordinarios/' +response.id
+                        }
                     });
                 },
                 complete : function () {
                     self.cargando = false;
                 }
-            })
+            })////
+        },
+
+        registrar_extraordinario_catalogo: function (motivo, id_solicitud) {
+            var self = this;
+            self.form.motivo = motivo;
+
+            var url = App.host + '/control_presupuesto/conceptos_extraordinarios/guardarCatalogo';
+            $.ajax({
+                type: 'POST',
+                url: url,
+                data : self.form,
+                beforeSend: function () {
+                    self.cargando = true;
+                },
+                success: function (data, textStatus, xhr) {
+                    swal({
+                        type: "success",
+                        title: '¡Correcto!',
+                        text: 'Extraordinario guardado en catálogo correctamente',
+                        confirmButtonText: "Ok",
+                        closeOnConfirm: false
+                    }).then(function () {
+                    });
+                    window.location.href = App.host + '/control_presupuesto/conceptos_extraordinarios/' + id_solicitud
+                },
+                complete: function () {
+                    self.rechazando = false;
+                }
+            });
         },
 
         getExtraordinario: function () {
@@ -448,6 +494,5 @@ Vue.component('concepto-extraordinario-create', {
                 }
             });
         }
-
     }
 });

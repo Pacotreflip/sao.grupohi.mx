@@ -184,4 +184,11 @@ class ConceptosExtraordinariosController extends Controller
         if (is_object($pdf))
             $pdf->create();
     }
+
+    public function guardarCatalogo(Request $request){
+        $solicitud = $this->extraordinario_partidas->guardarExtraordinario($request->all());
+        return $this->response->item($solicitud, function ($item) {
+            return $item;
+        });
+    }
 }

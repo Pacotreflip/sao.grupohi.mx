@@ -98,8 +98,11 @@
                                                 <tbody>
                                                 <tr>
                                                     <td>
-                                                        <div class="form-group">
-                                                            <input type="text" step=".01" placeholder="Ingrese Nombre Concepto"   v-model="form.extraordinario.descripcion"  style="width: 100%; height: 34px">
+                                                        <div class="form-group" :class="{'has-error': validation_errors.has('form_save_solicitud.Descripcion Concepto')}">
+                                                            <input type="text" step=".01" placeholder="Ingrese Nombre Concepto"   v-model="form.extraordinario.descripcion"  style="width: 100%; height: 34px"  v-validate="'required'"
+                                                                   :name="'Descripcion Concepto'" class="form-control">
+                                                            <label class="help"
+                                                                   v-show="validation_errors.has('form_save_solicitud.Descripcion Concepto')">@{{ validation_errors.first('form_save_solicitud.Descripcion Concepto') }}</label>
                                                         </div>
                                                     </td>
                                                     <td>
@@ -133,24 +136,34 @@
                                                 <tbody>
                                                 <tr>
                                                     <td>
-                                                        <div class="form-group">
-                                                            <input type="text" step=".01" placeholder="Ingrese Nombre Concepto"   v-model="form.extraordinario.descripcion"  style="width: 100%; height: 34px">
+                                                        <div class="form-group" :class="{'has-error': validation_errors.has('form_save_solicitud.Concepto Descripcion')}">
+                                                            <input type="text" step=".01" placeholder="Ingrese Nombre Concepto"   v-model="form.extraordinario.descripcion"  style="width: 100%; height: 34px"
+                                                                   class="form-control" v-validate="'required'"
+                                                                   :name="'Concepto Descripcion'">
+                                                            <label class="help"
+                                                                   v-show="validation_errors.has('form_save_solicitud.Concepto Descripcion')">@{{ validation_errors.first('form_save_solicitud.Concepto Descripcion') }}</label>
                                                         </div>
                                                     </td>
                                                     <td>
-                                                        <div class="form-group">
-                                                            <select2 id="unidad_select"  v-model="form.extraordinario.unidad"
+                                                        <div class="form-group" :class="{'has-error': validation_errors.has('form_save_solicitud.Concepto Unidad')}">
+                                                            <select2 id="unidad_select"  v-model="form.extraordinario.unidad" class="form-control" v-validate="'required'"
+                                                                     :name="'Concepto Unidad'"
                                                                      :options="unidades">
                                                             </select2>
+                                                            <label class="help"
+                                                                   v-show="validation_errors.has('form_save_solicitud.Concepto Unidad')">@{{ validation_errors.first('form_save_solicitud.Concepto Unidad') }}</label>
                                                         </div>
                                                     </td>
 
                                                     <td>
-                                                        <div class="form-group">
-                                                            <input type="text" step=".01" placeholder="Ingrese Cantidad"
+                                                        <div class="form-group" :class="{'has-error': validation_errors.has('form_save_solicitud.Concepto Cantidad')}">
+                                                            <input type="text" step=".01" placeholder="Ingrese Cantidad" class="form-control" v-validate="'required'"
+                                                                   :name="'Concepto Cantidad'"
+                                                                   :options="unidades"
                                                                    style="width: 100%; height: 34px"
                                                                    v-model="form.extraordinario.cantidad_presupuestada"
                                                                    @change="recalcular_concepto()">
+                                                            <label class="help" v-show="validation_errors.has('form_save_solicitud.Concepto Cantidad')">@{{ validation_errors.first('form_save_solicitud.Concepto Cantidad') }}</label>
                                                         </div>
                                                     </td>
                                                     <td >$@{{ parseFloat(form.extraordinario.precio_unitario).formatMoney(2,'.',',') }}</td>
@@ -199,11 +212,13 @@
                                                     <td>@{{ insumo.unidad }}</td>
 
                                                     <td>
-                                                        <div class="form-group">
-                                                            $<input type="text" step=".01" placeholder="Ingrese Cantidad"
-                                                                    :value="insumo.monto_presupuestado" style="width: 90%; height: 25px"
+                                                        <div class="form-group" :class="{'has-error': validation_errors.has('form_save_solicitud.Insumo Cantidad [' + (i + 1) + ']')}">
+                                                            $<input type="text" step=".01" placeholder="Ingrese Cantidad"  v-validate="'required|decimal|min_value:0'"
+                                                                    :name="'Insumo Cantidad [' + (i + 1) + ']'"
+                                                                    v-model="insumo.monto_presupuestado" style="width: 80%; height: 25px"
                                                                     :class="'m_p_gas_' + i"
                                                                     @change="recalcular_insumo(i,6)">
+                                                            <label class="help" v-show="validation_errors.has('form_save_solicitud.Insumo Cantidad [' + (i + 1) + ']')">@{{ validation_errors.first('form_save_solicitud.Insumo Cantidad [' + (i + 1) + ']') }}</label>
                                                         </div>
                                                     </td>
 
@@ -251,19 +266,23 @@
                                                         <td>@{{ insumo.descripcion }}</td>
                                                         <td>@{{ insumo.unidad }}</td>
                                                         <td>
-                                                            <div class="form-group">
-                                                                <input type="text" step=".01" placeholder="Ingrese Cantidad"
-                                                                       :value="insumo.cantidad_presupuestada" style="width: 100%; height: 25px"
+                                                            <div class="form-group" :class="{'has-error': validation_errors.has('form_save_solicitud.Material Cantidad [' + (i + 1) + ']')}">
+                                                                <input type="text" step=".01" placeholder="Ingrese Cantidad" v-validate="'required|decimal|min_value:0'"
+                                                                       :name="'Material Cantidad [' + (i + 1) + ']'"
+                                                                       v-model="insumo.cantidad_presupuestada" style="width: 100%; height: 25px"
                                                                        :class="'c_p_mat_' + i"
                                                                        @change="recalcular_insumo(i,1)">
+                                                                <label class="help" v-show="validation_errors.has('form_save_solicitud.Material Cantidad [' + (i + 1) + ']')">@{{ validation_errors.first('form_save_solicitud.Material Cantidad [' + (i + 1) + ']') }}</label>
                                                             </div>
                                                         </td>
                                                         <td>
-                                                            <div class="form-group">
-                                                               $ <input type="text" step=".01" placeholder="Ingrese Cantidad"
-                                                                        :value="insumo.precio_unitario" style="width: 90%; height: 25px"
+                                                            <div class="form-group" :class="{'has-error': validation_errors.has('form_save_solicitud.Material Importe [' + (i + 1) + ']')}">
+                                                               $ <input type="text" step=".01" placeholder="Ingrese Cantidad" v-validate="'required|decimal|min_value:0'"
+                                                                        :name="'Material Importe [' + (i + 1) + ']'"
+                                                                        v-model="insumo.precio_unitario" style="width: 90%; height: 25px"
                                                                         :class="'p_u_mat_' + i"
                                                                         @change="recalcular_insumo(i,1)">
+                                                                <label class="help" v-show="validation_errors.has('form_save_solicitud.Material Importe [' + (i + 1) + ']')">@{{ validation_errors.first('form_save_solicitud.Material Importe [' + (i + 1) + ']') }}</label>
                                                             </div>
                                                         </td>
                                                         <td>$@{{ parseFloat(insumo.monto_presupuestado).formatMoney(2,'.',',') }}</td>
@@ -309,18 +328,22 @@
                                                     <td>@{{ insumo.descripcion }}</td>
                                                     <td>@{{ insumo.unidad }}</td>
                                                     <td>
-                                                        <div class="form-group">
-                                                            <input type="text" step=".01" placeholder="Ingrese Cantidad" :value="insumo.cantidad_presupuestada" style="width: 100%; height: 25px"
+                                                        <div class="form-group" :class="{'has-error': validation_errors.has('form_save_solicitud.Mano de Obra Cantidad [' + (i + 1) + ']')}">
+                                                            <input type="text" step=".01" placeholder="Ingrese Cantidad" v-model="insumo.cantidad_presupuestada" style="width: 100%; height: 25px" v-validate="'required'"
+                                                                   :name="'Mano de Obra Cantidad [' + (i + 1) + ']'"
                                                                    :class="'c_p_mdo_' + i"
                                                                    @change="recalcular_insumo(i,2)">
+                                                            <label class="help" v-show="validation_errors.has('form_save_solicitud.Mano de Obra Cantidad [' + (i + 1) + ']')">@{{ validation_errors.first('form_save_solicitud.Mano de Obra Cantidad [' + (i + 1) + ']') }}</label>
                                                         </div>
                                                     </td>
                                                     <td>
-                                                        <div class="form-group">
-                                                            $<input type="text" step=".01" placeholder="Ingrese Cantidad"
-                                                                    :value="insumo.precio_unitario" style="width: 90%; height: 25px"
+                                                        <div class="form-group" :class="{'has-error': validation_errors.has('form_save_solicitud.Mano de Obra Importe [' + (i + 1) + ']')}">
+                                                            $<input type="text" step=".01" placeholder="Ingrese Cantidad" v-validate="'required'"
+                                                                    :name="'Mano de Obra Importe [' + (i + 1) + ']'"
+                                                                    v-model="insumo.precio_unitario" style="width: 90%; height: 25px"
                                                                     :class="'p_u_mdo_' + i"
                                                                     @change="recalcular_insumo(i,2)">
+                                                            <label class="help" v-show="validation_errors.has('form_save_solicitud.Mano de Obra Importe [' + (i + 1) + ']')">@{{ validation_errors.first('form_save_solicitud.Mano de Obra Importe [' + (i + 1) + ']') }}</label>
                                                         </div>
                                                     </td>
                                                     <td>$@{{ parseFloat(insumo.monto_presupuestado).formatMoney(2,'.',',') }}</td>
@@ -366,19 +389,23 @@
                                                     <td>@{{ insumo.descripcion }}</td>
                                                     <td>@{{ insumo.unidad }}</td>
                                                     <td>
-                                                        <div class="form-group">
-                                                            <input type="text" step=".01" placeholder="Ingrese Cantidad"
-                                                                   :value="insumo.cantidad_presupuestada" style="width: 100%; height: 25px"
+                                                        <div class="form-group" :class="{'has-error': validation_errors.has('form_save_solicitud.Herramienta y Equipo Cantidad [' + (i + 1) + ']')}">
+                                                            <input type="text" step=".01" placeholder="Ingrese Cantidad" v-validate="'required'"
+                                                                   :name="'Herramienta y Equipo Cantidad [' + (i + 1) + ']'"
+                                                                   v-model="insumo.cantidad_presupuestada" style="width: 100%; height: 25px"
                                                                    :class="'c_p_hye_' + i"
                                                                    @change="recalcular_insumo(i,4)">
+                                                            <label class="help" v-show="validation_errors.has('form_save_solicitud.Herramienta y Equipo Cantidad [' + (i + 1) + ']')">@{{ validation_errors.first('form_save_solicitud.Herramienta y Equipo Cantidad [' + (i + 1) + ']') }}</label>
                                                         </div>
                                                     </td>
                                                     <td>
-                                                        <div class="form-group">
-                                                            $<input type="text" step=".01" placeholder="Ingrese Cantidad"
-                                                                    :value="insumo.precio_unitario" style="width: 90%; height: 25px"
+                                                        <div class="form-group" :class="{'has-error': validation_errors.has('form_save_solicitud.Herramienta y Equipo Importe [' + (i + 1) + ']')}">
+                                                            $<input type="text" step=".01" placeholder="Ingrese Cantidad" v-validate="'required'"
+                                                                    :name="'Herramienta y Equipo Importe [' + (i + 1) + ']'"
+                                                                    v-model="insumo.precio_unitario" style="width: 90%; height: 25px"
                                                                     :class="'p_u_hye_' + i"
                                                                     @change="recalcular_insumo(i,4)">
+                                                            <label class="help" v-show="validation_errors.has('form_save_solicitud.Herramienta y Equipo Importe [' + (i + 1) + ']')">@{{ validation_errors.first('form_save_solicitud.Herramienta y Equipo Importe [' + (i + 1) + ']') }}</label>
                                                         </div>
                                                     </td>
                                                     <td>$@{{ parseFloat(insumo.monto_presupuestado).formatMoney(2,'.',',') }}</td>
@@ -424,19 +451,23 @@
                                                     <td>@{{ insumo.descripcion }}</td>
                                                     <td>@{{ insumo.unidad }}</td>
                                                     <td>
-                                                        <div class="form-group">
-                                                            <input type="text" step=".01" placeholder="Ingrese Cantidad"
-                                                                   :value="insumo.cantidad_presupuestada" style="width: 100%; height: 25px"
+                                                        <div class="form-group" :class="{'has-error': validation_errors.has('form_save_solicitud.Maquinaria Cantidad [' + (i + 1) + ']')}">
+                                                            <input type="text" step=".01" placeholder="Ingrese Cantidad" v-validate="'required'"
+                                                                   :name="'Maquinaria Cantidad [' + (i + 1) + ']'"
+                                                                   v-model="insumo.cantidad_presupuestada" style="width: 100%; height: 25px"
                                                                    :class="'c_p_maq_' + i"
                                                                    @change="recalcular_insumo(i,8)">
+                                                            <label class="help" v-show="validation_errors.has('form_save_solicitud.Maquinaria Cantidad [' + (i + 1) + ']')">@{{ validation_errors.first('form_save_solicitud.Maquinaria Cantidad [' + (i + 1) + ']') }}</label>
                                                         </div>
                                                     </td>
                                                     <td>
-                                                        <div class="form-group">
-                                                            $ <input type="text" step=".01" placeholder="Ingrese Cantidad"
-                                                                     :value="insumo.precio_unitario" style="width: 90%; height: 25px"
+                                                        <div class="form-group" :class="{'has-error': validation_errors.has('form_save_solicitud.Maquinaria Importe [' + (i + 1) + ']')}">
+                                                            $ <input type="text" step=".01" placeholder="Ingrese Cantidad" v-validate="'required'"
+                                                                     :name="'Maquinaria Importe [' + (i + 1) + ']'"
+                                                                     v-model="insumo.precio_unitario" style="width: 90%; height: 25px"
                                                                      :class="'p_u_maq_' + i"
                                                                      @change="recalcular_insumo(i,8)">
+                                                            <label class="help" v-show="validation_errors.has('form_save_solicitud.Maquinaria Importe [' + (i + 1) + ']')">@{{ validation_errors.first('form_save_solicitud.Maquinaria Importe [' + (i + 1) + ']') }}</label>
                                                         </div>
                                                     </td>
                                                     <td>$@{{ parseFloat(insumo.monto_presupuestado).formatMoney(2,'.',',') }}</td>
@@ -482,19 +513,23 @@
                                                     <td>@{{ insumo.descripcion }}</td>
                                                     <td>@{{ insumo.unidad }}</td>
                                                     <td>
-                                                        <div class="form-group">
-                                                            <input type="text" step=".01" placeholder="Ingrese Cantidad"
+                                                        <div class="form-group" :class="{'has-error': validation_errors.has('form_save_solicitud.Subcontratos Cantidad [' + (i + 1) + ']')}">
+                                                            <input type="text" step=".01" placeholder="Ingrese Cantidad" v-validate="'required'"
+                                                                   :name="'Subcontratos Cantidad [' + (i + 1) + ']'"
                                                                    :value="insumo.cantidad_presupuestada" style="width: 100%; height: 25px"
                                                                    :class="'c_p_sub_' + i"
                                                                    @change="recalcular_insumo(i,5)">
+                                                            <label class="help" v-show="validation_errors.has('form_save_solicitud.Subcontratos Cantidad [' + (i + 1) + ']')">@{{ validation_errors.first('form_save_solicitud.Subcontratos Cantidad [' + (i + 1) + ']') }}</label>
                                                         </div>
                                                     </td>
                                                     <td>
-                                                        <div class="form-group">
-                                                            $<input type="text" step=".01" placeholder="Ingrese Cantidad"
+                                                        <div class="form-group" :class="{'has-error': validation_errors.has('form_save_solicitud.Subcontratos Importe [' + (i + 1) + ']')}">
+                                                            $<input type="text" step=".01" placeholder="Ingrese Cantidad" v-validate="'required'"
+                                                                    :name="'Subcontratos Importe [' + (i + 1) + ']'"
                                                                     :value="insumo.precio_unitario" style="width: 90%; height: 25px"
                                                                     :class="'p_u_sub_' + i"
                                                                     @change="recalcular_insumo(i,5)">
+                                                            <label class="help" v-show="validation_errors.has('form_save_solicitud.Subcontratos Importe [' + (i + 1) + ']')">@{{ validation_errors.first('form_save_solicitud.Subcontratos Importe [' + (i + 1) + ']') }}</label>
                                                         </div>
                                                     </td>
                                                     <td>$@{{ parseFloat(insumo.monto_presupuestado).formatMoney(2,'.',',') }}</td>
