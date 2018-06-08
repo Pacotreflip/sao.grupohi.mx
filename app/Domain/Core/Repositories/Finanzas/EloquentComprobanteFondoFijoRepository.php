@@ -160,4 +160,30 @@ class EloquentComprobanteFondoFijoRepository implements ComprobanteFondoFijoRepo
             return ConceptoSinPath::where($attribute, $operator, $value)->where('concepto_medible','=','3')->limit(5)->get();
 
     }
+
+    /**
+     * @param array $where
+     *
+     * @return $this
+     */
+    public function like(array $orWhere)
+    {
+        $this->model = $this->model->where(function ($query) use ($orWhere) {
+            foreach ($orWhere as $col => $q) {
+                $query->orWhere($col,'like', "%$q%");
+            }
+        });
+        return $this;
+    }
+
+    /**
+     * @param $limit
+     *
+     * @return $this
+     */
+    public function limit($limit)
+    {
+        $this->model = $this->model->limit($limit);
+        return $this;
+    }
 }

@@ -14,11 +14,14 @@ use Ghi\Domain\Core\Models\Presupuesto;
 use Ghi\Domain\Core\Models\Scopes\CotizacionContratoScope;
 use Ghi\Domain\Core\Models\Scopes\ObraScope;
 use Ghi\Domain\Core\Models\Sucursal;
+use Illuminate\Support\Facades\DB;
+use Ghi\Domain\Core\Models\Transacciones\Tipo;
+use Ghi\Core\Facades\Context;
 
 class CotizacionContrato extends Transaccion
 {
     /**
-     * Aplicar Scope Global para recuperar solo las transacciones de tipo Cotización de Contarto
+     * Aplicar Scope Global para recuperar solo las transacciones de tipo Cotización de Contrato
      */
     protected static function boot()
     {
@@ -52,5 +55,25 @@ class CotizacionContrato extends Transaccion
         }
 
         return $res;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getTotalesPresupiestos()
+    {
+        //t.id_transaccion = p.id_transaccion
+        return DB::connection('cadeco')
+            ->table('dbo.transacciones')
+            ->select(
+                DB::raw("sum(cast(( contratos.cantidad_original * presupuestos.precio_unitario ) * ((100-case when presupuestos.PorcentajeDescuento is null then 0 else presupuestos.PorcentajeDescuento end)/100)*((100- case when transacciones.PorcentajeDescuento is null then 0 else transacciones.PorcentajeDescuento end)/100) as float(2))) as monto"),
+                DB::raw("sum(cast(( contratos.cantidad_original * presupuestos.precio_unitario ) * ((100-case when presupuestos.PorcentajeDescuento is null then 0 else presupuestos.PorcentajeDescuento end)/100)*((100- case when transacciones.PorcentajeDescuento is null then 0 else transacciones.PorcentajeDescuento end)/100) as float(2)))*.16 as impuesto")
+            )
+            ->join('presupuestos', 'transacciones.id_transaccion', '=', 'presupuestos.id_transaccion')
+            ->join('contratos', 'contratos.id_concepto', '=', 'presupuestos.id_concepto')
+            ->where('presupuestos.id_transaccion',$this->id_transaccion)
+            ->where('tipo_transaccion', Tipo::COTIZACION_CONTRATO)
+            ->where('opciones ',0)
+            ->where('dbo.transacciones.id_obra',Context::getId())->get();
     }
 }

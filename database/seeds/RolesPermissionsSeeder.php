@@ -147,10 +147,14 @@ class RolesPermissionsSeeder extends Seeder
         $administracion_configuracion_obra = Permission::firstOrCreate(['name' => 'administracion_configuracion_obra', 'display_name' => 'Configuración de la estructura la obra', 'description' => 'Permisos para configuración de la estructura de obra']);
         $administracion_configuracion_presupuesto = Permission::firstOrCreate(['name' => 'administracion_configuracion_presupuesto', 'display_name' => 'Configuración de la estructura del presupuesto', 'description' => 'Permisos para configuración de la estructura del presupuesto']);
 
-        //Procuaracion
+        //Procuaracion Asignación de Proveedores
         $consultar_asignacion = Permission::firstOrCreate(['name' => 'consultar_asignacion', 'display_name' => 'Consultar Asignación', 'description' => 'Permisos para la asignación de la consulta de procuración de las asignaciones']);
         $resgistro_asignacion = Permission::firstOrCreate(['name' => 'registrar_asignacion', 'display_name' => 'Registrar una Asignación', 'description' => 'Permisos para el registro de una asignación de procuración']);
         $eliminar_asignacion = Permission::firstOrCreate(['name' => 'eliminar_asignacion', 'display_name' => 'Eliminar una Asignación', 'description' => 'Permisos para poder eliminar el registro de una asignación de procuración']);
+
+        //Finanzas Solicitud de Cheque
+        $registrar_reposicion_fondo_fijo = Permission::firstOrCreate(['name' => 'registrar_reposicion_fondo_fijo', 'display_name' => 'Registrar eposicion de fondo fijo', 'description' => 'Permiso para poder registrar reposiciónes de fondo fijo']);
+        $registrar_pago_cuenta = Permission::firstOrCreate(['name' => 'registrar_pago_cuenta', 'display_name' => 'Registrar pagos a cuenta', 'description' => 'Permiso para poder registrar pagos a cuenta']);
 
         /**
          * Roles
@@ -242,6 +246,8 @@ class RolesPermissionsSeeder extends Seeder
             $registrar_movimiento_bancario->id,
             $consultar_movimiento_bancario->id,
             $editar_movimiento_bancario->id,
+            $registrar_pago_cuenta->id,
+            $registrar_reposicion_fondo_fijo->id,
         ]);
         $consulta_finanzas->perms()->sync([
             $consultar_comprobante_fondo_fijo->id,
@@ -374,6 +380,9 @@ class RolesPermissionsSeeder extends Seeder
                 $registrar_comprobante_fondo_fijo->id,
                 $consultar_comprobante_fondo_fijo->id,
                 $eliminar_comprobante_fondo_fijo->id,
+
+                $registrar_reposicion_fondo_fijo->id,
+                $registrar_pago_cuenta->id,
             ]
         );
 

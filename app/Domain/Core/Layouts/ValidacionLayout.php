@@ -40,12 +40,11 @@ class ValidacionLayout
      * @var int 
      */
     protected $lengthHeaderDinamicos = 0;
-
     /**
      * @var int
      */
     protected $columnsExt = 2;
-    
+
     /**
      * @param $headers
      * @param $layout
@@ -55,7 +54,7 @@ class ValidacionLayout
     public function validarHeader($headers, $layout)
     {
         $maxCol = (($layout['totales'] * $this->lengthHeaderDinamicos) + $this->lengthHeaderFijos);
-        $headers = array_slice($headers, 0, count($headers)-$this->columnsExt);
+        $headers = array_slice($headers, 0, count($headers) - $this->columnsExt);
         if ($maxCol != count($headers)) {
             throw new \Exception("No es posible procesar el Layout debido a que presenta diferencias con la información actual");
         }
@@ -66,7 +65,7 @@ class ValidacionLayout
         }
         $j = $this->lengthHeaderFijos;
 
-        while ($j < ($maxCol-1)) {
+        while ($j < ($maxCol - 1)) {
             $headersCotizaciones = array_slice($headers, $j, $this->lengthHeaderDinamicos);
             $diffCotizaciones = array_diff(array_keys($this->headerDinamicos), $headersCotizaciones);
             if (count($diffCotizaciones) > 0) {

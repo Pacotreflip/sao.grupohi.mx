@@ -2,14 +2,23 @@
 
 namespace Ghi\Domain\Core\Repositories\Compras;
 
+use Ghi\Core\Facades\Context;
 use Ghi\Domain\Core\Contracts\Compras\RequisicionRepository;
 use Ghi\Domain\Core\Models\Compras\Requisiciones\DepartamentoResponsable;
 use Ghi\Domain\Core\Models\Compras\Requisiciones\Requisicion;
 use Ghi\Domain\Core\Models\Compras\Requisiciones\TipoRequisicion;
 use Ghi\Domain\Core\Models\Compras\Requisiciones\TransaccionExt;
+use Ghi\Domain\Core\Models\ControlRec\RQCTOCCotizaciones;
+use Ghi\Domain\Core\Models\ControlRec\RQCTOCCotizacionesPartidas;
+use Ghi\Domain\Core\Models\ControlRec\RQCTOCSolicitudPartidas;
+use Ghi\Domain\Core\Models\ControlRec\RQCTOCSolicitud;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
+/**
+ * Class EloquentRequisicionRepository
+ * @package Ghi\Domain\Core\Repositories\Compras
+ */
 class EloquentRequisicionRepository implements RequisicionRepository
 {
     /**
@@ -153,5 +162,90 @@ class EloquentRequisicionRepository implements RequisicionRepository
                 $query->orWhere($col, 'like', "%$q%");
             }
         })->limit(10)->get();
+    }
+
+    public  function getCotizaciones($id_requisicion, $ids_cot = [])
+    {
+        return RQCTOCCotizaciones::whereIn('idtransaccion_sao', $ids_cot)
+            ->where('base_sao', Context::getDatabaseName())
+            ->where('idobra_sao', Context::getID())
+            ->with(['rqctocCotizacionPartidas', 'rqctocSolicitud.rqctocSolicitudPartidas.item.transaccion', 'rqctocSolicitud.rqctocSolicitudPartidas.material', 'empresa', 'sucursal'])
+            ->get();
+    }
+
+    /**
+     * @param $id_requisicion
+     * @return mixed
+     */
+    public function getPartidasCotizacion($id_requisicion)
+    {
+        return RQCTOCSolicitudPartidas::where('idrqctoc_solicitudes', $id_requisicion)
+            ->with(['item.transaccion', 'material'])
+            ->groupBy('idmaterial_sao')->get();
+    }
+
+    /**
+     * @param int $id_requisicion
+     * @param array $ids_cot
+     */
+    public function   getPartidasCotizacionAgrupadas($id_requisicion)
+    {
+        return RQCTOCCotizacionesPartidas::select( DB::raw("
+            rqctoc_cotizaciones_partidas.idrqctoc_cotizaciones_partidas,
+            rqctoc_cotizaciones_partidas.idrqctoc_cotizaciones,
+            rqctoc_cotizaciones_partidas.idrqctoc_solicitudes_partidas,
+            rqctoc_cotizaciones_partidas.precio_unitario,
+            format(rqctoc_cotizaciones_partidas.precio_unitario,3) as precio_unitario_f,
+            rqctoc_cotizaciones_partidas.descuento,
+            rqctoc_cotizaciones_partidas.idmoneda,
+            rqctoc_cotizaciones_partidas.observaciones,
+            rqctoc_cotizaciones_partidas.cantidad_asignada,
+            rqctoc_cotizaciones.tc_usd,
+            rqctoc_cotizaciones.vigencia,
+            rqctoc_cotizaciones.tc_eur,
+            rqctoc_cotizaciones.idmoneda as idmoneda_cot,
+            sum(rqctoc_solicitudes_partidas.cantidad) as cantidad,
+            ctg_monedas.moneda as moneda,
+            ctg_monedas.corto as  moneda_corto,
+            (precio_unitario-(precio_unitario*rqctoc_cotizaciones_partidas.descuento/100)) as precio_unitario,
+            sum(rqctoc_solicitudes_partidas.cantidad)*(precio_unitario-(precio_unitario*rqctoc_cotizaciones_partidas.descuento/100)) as precio_total,
+            cantidad_asignada*(precio_unitario-(precio_unitario*rqctoc_cotizaciones_partidas.descuento/100)) as precio_total_asignado,
+            format(sum(rqctoc_solicitudes_partidas.cantidad)*(precio_unitario-(precio_unitario*rqctoc_cotizaciones_partidas.descuento/100)),2) as precio_total_f") )
+            ->from('rqctoc_cotizaciones_partidas as rqctoc_cotizaciones_partidas')
+            ->join('rqctoc_cotizaciones', 'rqctoc_cotizaciones_partidas.idrqctoc_cotizaciones', '=', 'rqctoc_cotizaciones.idrqctoc_cotizaciones')
+            ->join('rqctoc_solicitudes_partidas', 'rqctoc_solicitudes_partidas.idrqctoc_solicitudes_partidas', '=', 'rqctoc_cotizaciones_partidas.idrqctoc_solicitudes_partidas')
+            ->join('ctg_monedas', 'ctg_monedas.id', '=', 'rqctoc_cotizaciones_partidas.idmoneda')
+            ->where('rqctoc_cotizaciones.idrqctoc_solicitudes', $id_requisicion)
+            ->where('rqctoc_cotizaciones.base_sao', Context::getDatabaseName())
+            ->where('rqctoc_cotizaciones.idobra_sao', Context::getID())
+            ->groupBy('rqctoc_solicitudes_partidas.idmaterial_sao', 'rqctoc_cotizaciones.idrqctoc_cotizaciones')
+            ->get();
+    }
+
+    public function getRequisicion($id_transaccion_sao)
+    {
+        return RQCTOCSolicitud::where('idtransaccion_sao', $id_transaccion_sao)->first();
+    }
+
+    /**
+     * @param $id_cotizacion
+     *
+     * @return bool
+     */
+    public function getNumAsignaciones($id_cotizacion)
+    {
+        $query = DB::connection('controlrec')
+            ->select(DB::raw("
+          SELECT count(*) as cantidad FROM rqctoc_cotizaciones as c join
+            rqctoc_cotizaciones_partidas as cp on(c.idrqctoc_cotizaciones = cp.idrqctoc_cotizaciones) join
+            rqctoc_tabla_comparativa_partidas as tcp on(tcp.idrqctoc_cotizaciones_partidas = cp.idrqctoc_cotizaciones_partidas)
+            where c.idrqctoc_cotizaciones = $id_cotizacion group by tcp.idrqctoc_tabla_comparativa;
+          "));
+        if(isset($query[0])) {
+            if ($query[0]->cantidad > 0) {
+                return true;
+            }
+        }
+        return false;
     }
 }

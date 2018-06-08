@@ -12,10 +12,51 @@ namespace Ghi\Domain\Core\Models;
 use Ghi\Domain\Core\Models\Transacciones\CotizacionContrato;
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * Class Presupuesto
+ * @package Ghi\Domain\Core\Models
+ */
 class Presupuesto extends Model
 {
+    /**
+     * @var string
+     */
     protected $connection = 'cadeco';
+
+    /**
+     * name data base
+     * @var string
+     */
     protected $table = 'dbo.presupuestos';
+    /**
+     * @var bool
+     */
+    public $timestamps = false;
+
+    /**
+     * @var array
+     */
+    protected $fillable = [
+        'id_transaccion',
+        'id_concepto',
+        'precio_unitario',
+        'precio_material',
+        'precio_mano_obra',
+        'materiales',
+        'mano_obra',
+        'ind_material',
+        'ind_mano_obra',
+        'ind_total',
+        'consumibles',
+        'herramienta',
+        'desperdicio',
+        'id_destino',
+        'no_cotizado',
+        'PorcentajeDescuento',
+        'IdMoneda',
+        'Observaciones',
+        'cantidad_contratista',
+    ];
 
     public function contrato() {
         return $this->belongsTo(Contrato::class, 'id_concepto', 'id_concepto');
