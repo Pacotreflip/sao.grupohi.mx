@@ -67,7 +67,7 @@
                                     <b>Número de Folio</b> <p class="pull-right">#{{ transaccion.numero_folio }}</p>
                                 </li>
                                 <li v-if="form.tipo_transaccion == 51" class="list-group-item">
-                                    <b>Contrato Proyectado</b><br> <p>{{ transaccion.contrato_proyectado.observaciones }}</p>
+                                    <b>Contrato Proyectado</b><br> <p>{{ transaccion.contrato_proyectado.referencia }}</p>
                                 </li>
                                 <li v-if="form.tipo_transaccion == 19" class="list-group-item">
                                     <b>Requisición</b><br><p>{{ transaccion.requisicion.observaciones }}</p>
