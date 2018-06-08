@@ -77,7 +77,7 @@ class AsignacionCargaProveedoresLayout extends ValidacionLayout
         "idrqctoc_solicitudes_partidas" => "idrqctoc_solicitudes_partidas",
         "idrqctoc_solicitudes" => "idrqctoc_solicitudes",
         "idmoneda" => "idmoneda",
-        "separador" => "",
+        "" => "",
     ];
     /**
      * @var array
@@ -174,17 +174,7 @@ class AsignacionCargaProveedoresLayout extends ValidacionLayout
                         $arrayResult['totales'] = $arrayResult['totales'] - 1;
                     } else {
                         foreach ($presupuestos as $_index => $presupuesto) {
-
-                            //if ($presupuesto->no_cotizado == 0) {
                             $arrayResult['valores'][$solicitud_partida->iditem_sao]['presupuesto'][$_index] = $presupuesto;
-                            /*} else {
-                                $arrayResult['valores'][$partida->id_concepto]['presupuesto'][$index] = [];
-                                $arrayResult['valores'][$partida->id_concepto]['partida'][$index] = [];
-                                $totalesPartidas--;
-                            }*/
-
-                            $maxRow = ($maxRow < $totalesPartidas) ? $totalesPartidas : $maxRow;
-
                         }
                     }
                 } else {
@@ -816,7 +806,7 @@ class AsignacionCargaProveedoresLayout extends ValidacionLayout
             }
             if ($error > 0) {
                 $this->resultData = $cotizaciones;
-                throw new \Exception('No es posible procesar el Layout debido a que presenta diferencias con la información actual del Contrato Proyectado 1');
+                throw new \Exception('No es posible procesar el Layout debido a que presenta diferencias con la información actual');
             }
             DB::connection('cadeco')->commit();
             DB::connection('controlrec')->commit();
