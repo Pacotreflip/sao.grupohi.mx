@@ -663,8 +663,24 @@ class AsignacionCargaProveedoresLayout extends ValidacionLayout
                     $vigencia = $gralCotizacion["cotizacion"]["vigencia_dias"];
                     $ex = explode("-", $gralCotizacion["cotizacion"]["fecha_de_presupuesto"]);
                     $fecha_cotizacion = $ex[2] . "-" . $ex[1] . "-" . $ex[0];
+                    $anticipo_pactado = $gralCotizacion["cotizacion"]["pago_en_parcialidades"];
+                    $subtotal = str_replace(",", "", $gralCotizacion["cotizacion"]["subtotal_moneda_conv"]);
+                    $impuesto = str_replace(",", "", $gralCotizacion["cotizacion"]["iva"]);
+                    $monto = str_replace(",", "", $gralCotizacion["cotizacion"]["total"]);
                     if ($anticipo > 100) {
                         $mensajeError = "El porcentaje de anticipo no puede ser mayor a 100";
+                        $error++;
+                    }
+                    if (is_numeric($subtotal)) {
+                        $mensajeError = "El subtotal_moneda_conv no es número";
+                        $error++;
+                    }
+                    if (is_numeric($impuesto)) {
+                        $mensajeError = "El iva no es número";
+                        $error++;
+                    }
+                    if (is_numeric($monto)) {
+                        $mensajeError = "El total no es número";
                         $error++;
                     }
                     $rqctocCotizacion = $cotizacionCompra->rqctocCotizacion()->get();
@@ -678,10 +694,7 @@ class AsignacionCargaProveedoresLayout extends ValidacionLayout
                         $this->resultData = $cotizaciones;
                         throw new \Exception($mensajeError);
                     }
-                    $anticipo_pactado = $gralCotizacion["cotizacion"]["pago_en_parcialidades"];
-                    $subtotal = str_replace(",", "", $gralCotizacion["cotizacion"]["subtotal_moneda_conv"]);
-                    $impuesto = str_replace(",", "", $gralCotizacion["cotizacion"]["iva"]);
-                    $monto = str_replace(",", "", $gralCotizacion["cotizacion"]["total"]);
+
                     $dias_credito = $gralCotizacion["cotizacion"]["credito_dias"];
                     $plazo_entrega = $gralCotizacion["cotizacion"]["tiempo_de_entrega"];
                     $segundos_sumar = $vigencia * 86400;
@@ -758,6 +771,10 @@ class AsignacionCargaProveedoresLayout extends ValidacionLayout
                                 if(isset($rqctocSolicitudPartida->rqctocCotizacionPartida)) {
                                     $rqctocCotizacionPartidas = $rqctocSolicitudPartida->rqctocCotizacionPartida;
                                 }
+                            }
+                            if (is_numeric($descuento_compuesto)) {
+                                $cotizaciones[$key]['error'][] = "El porcentaje de anticipo no puede, por que no es número";
+                                $error++;
                             }
                             $cotizacion = $cotizacionCompra->cotizaciones()->where(['id_transaccion'=>$key,'id_material'=>$idMaterial])->first();
                             if ($cotizacion) {
