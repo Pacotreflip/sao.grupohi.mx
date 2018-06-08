@@ -103,14 +103,24 @@ Vue.component('concepto-extraordinario-create', {
                     self.recalcular_agrupadores(self.form.extraordinario.SUBCONTRATOS);
                     break;
                 case 6: ///agregar a gastos
-                    c_presup = $(".c_p_gas_" + id_insumo).val();
-                    p_unitario = $(".p_u_gas_" + id_insumo).val();
+                    c_presup = $(".m_p_gas_" + id_insumo).val();
                     self.form.extraordinario.GASTOS.insumos[id_insumo].cantidad_presupuestada  = c_presup;
-                    self.form.extraordinario.GASTOS.insumos[id_insumo].precio_unitario  = p_unitario;
-                    self.form.extraordinario.GASTOS.insumos[id_insumo].monto_presupuestado  = p_unitario * c_presup;
-                    self.recalcular_agrupadores(self.form.extraordinario.GASTOS);
+                    self.form.extraordinario.GASTOS.insumos[id_insumo].precio_unitario  = 1;
+                    self.form.extraordinario.GASTOS.insumos[id_insumo].monto_presupuestado  = c_presup;
+                    self.recalcular_gastos(self.form.extraordinario.GASTOS);
                     break;
             }
+        },
+
+        recalcular_gastos:function (agrupador) {
+            var monto = 0;
+            $.each(agrupador.insumos, function (index, partida) {
+                monto += parseFloat(partida.monto_presupuestado);
+            });
+            agrupador.monto_presupuestado = monto;
+            this.form.extraordinario.precio_unitario = 0;
+            this.form.extraordinario.cantidad_presupuestada = 0;
+            this.form.extraordinario.monto_presupuestado = monto;
         },
 
         recalcular_agrupadores: function (agrupador) {
@@ -119,7 +129,6 @@ Vue.component('concepto-extraordinario-create', {
             $.each(agrupador.insumos, function (index, partida) {
                 monto += parseFloat(partida.monto_presupuestado);
             });
-
             agrupador.monto_presupuestado = monto;
             monto_agrupadores += parseFloat(this.form.extraordinario.MATERIALES.monto_presupuestado);
             monto_agrupadores += parseFloat(this.form.extraordinario.MANOOBRA.monto_presupuestado);
@@ -133,7 +142,7 @@ Vue.component('concepto-extraordinario-create', {
 
         recalcular_concepto: function () {
             var self = this;
-            self.form.extraordinario.monto_presupuestado = self.form.extraordinario.cantidad_presupuestada * self.form.extraordinario.precio_unitario;
+            self.form.extraordinario.monto_presupuestado = parseFloat(self.form.extraordinario.cantidad_presupuestada) * parseFloat(self.form.extraordinario.precio_unitario);
         },
 
         guardar_extraordinario: function () {
@@ -358,7 +367,6 @@ Vue.component('concepto-extraordinario-create', {
             }).then(function(result) {
                 if(result.value) {
                     self.guardar_extraordinario();
-
                 }
             });
         },

@@ -1,5 +1,5 @@
 Vue.component('concepto-extraordinario-show', {
-    props: ['solicitud', 'partidas'],
+    props: ['solicitud', 'partidas', 'resumen'],
     data: function () {
         return{
             form: {
@@ -9,6 +9,28 @@ Vue.component('concepto-extraordinario-show', {
             rechazando:false,
             autorizando:false
         }
+    },
+    mounted: function () {
+        var self = this;
+
+        $(function() {
+            $(document).on('click', '.mostrar_pdf', function () {
+                var _this = $(this),
+                    id = _this.data('pdf_id'),
+                    url = App.host + '/control_presupuesto/conceptos_extraordinarios/'+ id +'/pdf';
+
+                $('#formatoPDF').attr('src', url).hide();
+                $('#spin_iframe').show();
+
+                $('#pdf_modal').modal('show');
+
+                $('#pdf_modal .modal-body').css({height: '550px'});
+                document.getElementById('formatoPDF').onload = function() {
+                    $('#formatoPDF').show();
+                    $('#spin_iframe').hide();
+                }
+            });
+        });
     },
     methods: {
         confirm_autorizar_solicitud: function () {
@@ -87,7 +109,7 @@ Vue.component('concepto-extraordinario-show', {
                         closeOnConfirm: false
                     }).then(function () {
                     });
-                    //window.location.reload(true);
+                    window.location.reload(true);
                 },
                 complete: function () {
                     self.autorizando = false;

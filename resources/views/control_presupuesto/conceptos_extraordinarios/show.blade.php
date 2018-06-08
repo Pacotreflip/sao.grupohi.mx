@@ -10,6 +10,7 @@
             inline-template
             :solicitud="{{$solicitud}}"
             :partidas="{{json_encode($partidas)}}"
+            :resumen="{{json_encode($resumen)}}"
             v-cloak xmlns:v-on="http://www.w3.org/1999/xhtml">
         <section>
             <div class="row">
@@ -40,10 +41,13 @@
                                     <td class="text-right">$ @{{ parseFloat((partidas.monto_presupuestado)).formatMoney(2,'.',',') }}</td>
                                 </tr>
                                     <td><b>Importe Presupuesto Original</b></td>
-                                    <td class="text-right"></td></tr>
+                                    <td class="text-right" v-if="solicitud.id_estatus == 1">$ @{{ parseFloat((resumen.monto_presupuestado)).formatMoney(2,'.',',') }}</td>
+                                    <td class="text-right" v-else>$ @{{ parseFloat((resumen.monto_presupuestado_original)).formatMoney(2,'.',',') }}</td>
+                                </tr>
                                 <tr>
                                     <td><b>Importe Presupuesto Actualizado</b></td>
-                                    <td class="text-right"></td>
+                                    <td class="text-right" v-if="solicitud.id_estatus == 1">$ {{ number_format(($resumen->monto_presupuestado+$partidas['monto_presupuestado']),'2','.',',')}}</td>
+                                    <td class="text-right" v-else>$ @{{ parseFloat((resumen.monto_presupuestado_actualizado)).formatMoney(2,'.',',') }}</td>
                                 </tr>
                             </table>
 
@@ -94,15 +98,15 @@
                                 </tr>
                                 <tr class="bg-gray-active">
                                     <th>Unidad</th>
-                                    <th>Volumen</th>
-                                    <th>Costo</th>
+                                    <th v-show="partidas.agrupadores[5].insumos.length <= 0">Volumen</th>
+                                    <th v-show="partidas.agrupadores[5].insumos.length <= 0">Costo</th>
                                     <th>Importe</th>
                                 </tr>
 
                                 <tr class="bg-gray-active">
                                     <td >@{{ partidas.unidad }}</td>
-                                    <td >@{{ parseFloat((partidas.cantidad_presupuestada)).formatMoney(2,'.',',') }}</td>
-                                    <td class="text-right">$ @{{ parseFloat((partidas.precio_unitario)).formatMoney(2,'.',',') }}</td>
+                                    <td  v-show="partidas.agrupadores[5].insumos.length <= 0">@{{ parseFloat((partidas.cantidad_presupuestada)).formatMoney(2,'.',',') }}</td>
+                                    <td class="text-right" v-show="partidas.agrupadores[5].insumos.length <= 0">$ @{{ parseFloat((partidas.precio_unitario)).formatMoney(2,'.',',') }}</td>
                                     <td class="text-right">$ @{{ parseFloat((partidas.monto_presupuestado)).formatMoney(2,'.',',') }}</td>
                                 </tr>
                                 </thead>
@@ -113,7 +117,9 @@
 
                                     <thead>
                                     <tr class="bg-gray-light">
-                                        <th colspan="5" rowspan="3" width="80%"><h4>@{{ tipos.descripcion }}</h4></th>
+                                        <th colspan="3" rowspan="3" width="80%" v-if="tipos.descripcion == 'GASTOS'"><h4>@{{ tipos.descripcion }}</h4></th>
+                                        <th colspan="5" rowspan="3" width="80%" v-else><h4>@{{ tipos.descripcion }}</h4></th>
+
                                     </tr>
                                     <tr class="bg-gray-active">
                                         <th width="10%">Importe Agrupador</th>
@@ -127,8 +133,8 @@
                                         <th>#</th>
                                         <th style="width: 40%;">Descripción</th>
                                         <th>Unidad</th>
-                                        <th>Volumen</th>
-                                        <th>Costo</th>
+                                        <th v-show="tipos.descripcion != 'GASTOS'">Volumen</th>
+                                        <th v-show="tipos.descripcion != 'GASTOS'">Costo</th>
                                         <th>Importe</th>
                                     </tr>
 
@@ -138,9 +144,9 @@
                                             <td>@{{ i+1 }}</td>
                                             <td>@{{ insumo.descripcion }}</td>
                                             <td>@{{ insumo.unidad }}</td>
-                                            <td>
+                                            <td v-show="tipos.descripcion != 'GASTOS'">
                                                 @{{ parseFloat(insumo.cantidad_presupuestada_nueva).formatMoney(2,'.',',') }}</td>
-                                            <td class="text-right">
+                                            <td class="text-right" v-show="tipos.descripcion != 'GASTOS'">
                                                 $@{{ parseFloat(insumo.precio_unitario_nuevo).formatMoney(2,'.',',') }}</td>
                                             <td class="text-right">
                                                 $@{{ parseFloat(insumo.monto_presupuestado).formatMoney(2,'.',',') }}</td>
@@ -152,8 +158,28 @@
                         </div>
                     </div>
                 </div>
-
             </div>
+
+            <div id="pdf_modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="PDFModal">
+                <div class="modal-dialog modal-lg" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                        aria-hidden="true">&times;</span></button>
+                            <h4 class="modal-title">Detalles</h4>
+                        </div>
+                        <div class="modal-body">
+                            <i class="fa fa-spin fa-spinner fa-5x text-center" id="spin_iframe" style="margin: auto;
+                            display: block;"></i>
+                            <iframe id="formatoPDF"  style="width:99.6%;height:100%" frameborder="0"></iframe>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
         </section>
     </concepto-extraordinario-show>
 @endsection

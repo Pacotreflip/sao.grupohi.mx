@@ -53,7 +53,7 @@ class EloquentConceptoExtraordinarioRepository implements ConceptoExtraordinario
             $data['extraordinario']['monto_presupuestado'] = $data['extraordinario']['cantidad_presupuestada'] * $data['extraordinario']['precio_unitario'];
             $concepto_ext = $this->solicitud_partidas->create($data['extraordinario']);
 
-            foreach ($agrupador_conceptos as  $agrupador_insumos){
+            foreach ($agrupador_conceptos as $key_a =>  $agrupador_insumos){
                 $agrupador = $data['extraordinario'][$agrupador_insumos];
                 $nivel_agrupador = explode('.', $agrupador['nivel']);
                 $agrupador['tipo_agrupador'] = (int)$nivel_agrupador[sizeof($nivel_agrupador)-2];
@@ -61,26 +61,32 @@ class EloquentConceptoExtraordinarioRepository implements ConceptoExtraordinario
                 $agrupador['id_tipo_orden'] = $data['id_tipo_orden'];
                 $agrupador['id_tarjeta'] = $data['extraordinario']['id_tarjeta'];
                 $agrupador['id_material'] = null;
-                $agrupador['nivel'] =  $data['extraordinario']['nivel'].$nivel_agrupador[sizeof($nivel_agrupador)-2]. '.';
+                $agrupador['nivel'] =  $data['extraordinario']['nivel']. str_pad($key_a + 1,3,"0", STR_PAD_LEFT) . '.';
                 $agrupador['descripcion'] == 'MANOOBRA'? $agrupador['descripcion'] = 'MANO OBRA':'';
                 $agrupador['descripcion'] == 'HERRAMIENTAYEQUIPO'? $agrupador['descripcion'] = 'HERRAMIENTA Y EQUIPO':'';
                 $monto_presupuestado_agrupador = 0;
                 $agrupado = $this->solicitud_partidas->create($agrupador);
                 /// Inicia ciclo para guardar insumos del agrupador
                 if(array_key_exists('insumos', $agrupador)) {
-                    foreach ($agrupador['insumos'] as $insumo) {
-                        $nivel_insumo = explode('.', $insumo['nivel']);
+                    foreach ($agrupador['insumos'] as $key => $insumo) {
                         $insumo['id_solicitud_cambio'] = $solicitud->id;
                         $insumo['id_tipo_orden'] = $data['id_tipo_orden'];
                         $insumo['tipo_agrupador'] = $agrupador['tipo_agrupador'];
                         $insumo['id_tarjeta'] = $agrupador['id_tarjeta'];
-                        $insumo['nivel'] = $agrupador['nivel'] . $nivel_insumo[sizeof($nivel_insumo) - 2].'.';
-                        $insumo['cantidad_presupuestada_nueva'] = $insumo['cantidad_presupuestada'] * $concepto_ext->cantidad_presupuestada_nueva;
+                        $insumo['nivel'] = $agrupador['nivel'] . str_pad($key + 1,3,"0", STR_PAD_LEFT) . '.';
+                        $insumo['cantidad_presupuestada_nueva'] = $agrupador['descripcion'] == 'GASTOS'?$insumo['cantidad_presupuestada']:$insumo['cantidad_presupuestada'] * $concepto_ext->cantidad_presupuestada_nueva;
                         $insumo['precio_unitario_nuevo'] = $insumo['precio_unitario'];
-                        $insumo['monto_presupuestado'] = $insumo['cantidad_presupuestada_nueva'] * $insumo['precio_unitario'];
+                        $insumo['monto_presupuestado'] = $agrupador['descripcion'] == 'GASTOS'?$insumo['monto_presupuestado']:$insumo['cantidad_presupuestada_nueva'] * $insumo['precio_unitario'];
                         $monto_presupuestado_agrupador += $insumo['monto_presupuestado'];
 
                         $this->solicitud_partidas->create($insumo);
+                    }
+                    if($agrupador['descripcion'] == 'GASTOS'){
+                        $concepto_update = SolicitudCambioPartida::find($concepto_ext->id);
+                        $concepto_update->cantidad_presupuestada_nueva = $monto_presupuestado_agrupador;
+                        $concepto_update->precio_unitario_nuevo = 1;
+                        $concepto_update->monto_presupuestado = $monto_presupuestado_agrupador;
+                        $concepto_update->save();
                     }
                 };
 
@@ -107,12 +113,20 @@ class EloquentConceptoExtraordinarioRepository implements ConceptoExtraordinario
             $partida_base = $this->solicitud_partidas->where('id_solicitud_cambio', '=', $id)->orderBY('nivel')->first();
             $partidas = $this->solicitud_partidas->where('id_solicitud_cambio', '=', $id)->orderBY('nivel')->get();
 
-            /// buscar y crear una nueva tarjeta
+            /// buscar y/o crear una nueva tarjeta
             $tarjeta = Tarjeta::where('id', '=', $partida_base->id_tarjeta)->first();
-            $tarjeta_nueva = Tarjeta::create(['descripcion' => $tarjeta->descripcion.'-'.$tarjeta->cantidad_descripcion]);
+            if($tarjeta){
+                $tarjeta_nueva = Tarjeta::create(['descripcion' => $tarjeta->descripcion.'-'.$tarjeta->cantidad_descripcion]);
+            }else{
+                $tarjeta_ext = Tarjeta::where('descripcion', 'like', 'EXT-%')->first();
+                if($tarjeta_ext){
+                    $tarjeta_nueva = Tarjeta::create(['descripcion' => 'EXT-'.$tarjeta_ext->cantidad_descripcion]);
 
+                }else{
+                    $tarjeta_nueva = Tarjeta::create(['descripcion' => 'EXT-0']);
+                }
+            }
 
-            //dd('Pandita', $partidas);
             ///     comenzar a iterar los conceptos
 
             foreach ($partidas as $key => $partida){
@@ -142,10 +156,10 @@ class EloquentConceptoExtraordinarioRepository implements ConceptoExtraordinario
                 $dataHist['monto_presupuestado_actualizado'] = $nuevoInsumo->monto_presupuestado;
                 $dataHist['cantidad_presupuestada_original'] = 0;
                 $dataHist['cantidad_presupuestada_actualizada'] = $nuevoInsumo->cantidad_presupuestada;
-                $dataHist['id_solicitud_cambio_partida'] = $partida->id;
+                $dataHist['id_solicitud_cambio_partida'] = $partida_base->id;
                 $dataHist['id_base_presupuesto'] = 2;
                 $dataHist['nivel'] = $nuevoInsumo->nivel;
-                ///$dataHist['id_partidas_insumos_agrupados'] = $insumo->id;
+                //$dataHist['id_partidas_insumos_agrupados'] = $id;
                 SolicitudCambioPartidaHistorico::create($dataHist);
 
                 ///     guardar en concepto tarjeta
@@ -166,6 +180,7 @@ class EloquentConceptoExtraordinarioRepository implements ConceptoExtraordinario
                 $dataHist['monto_presupuestado_original'] = $afectaConcepto->monto_presupuestado;
                 $dataHist['precio_unitario_actualizado'] = $afectaConcepto->precio_unitario;
                 //$dataHist['id_partidas_insumos_agrupados'] = $insumo->id;
+                $dataHist['id_solicitud_cambio_partida'] = $partida_base->id;
 
                 $afectaConcepto->monto_presupuestado = $afectaConcepto->monto_presupuestado + $afectacion_mmonto_propagacion;
                 $afectaConcepto->save();
@@ -238,9 +253,10 @@ class EloquentConceptoExtraordinarioRepository implements ConceptoExtraordinario
             'precio_unitario'=>$partida->precio_unitario_nuevo,
             'monto_presupuestado'=>$partida->monto_presupuestado
         ];
-        $agrupadores = $this->solicitud_partidas->where('nivel', 'like', $partida->nivel.'___.')->get();
+
+        $agrupadores = $this->solicitud_partidas->where('nivel', 'like', $partida->nivel.'___.')->where('id_solicitud_cambio', '=', $id)->get();
         foreach ($agrupadores as $key =>$agrupador){
-            $insumos = SolicitudCambioPartida::where('nivel', 'like', $agrupador->nivel.'___.')->get()->toArray();
+            $insumos = SolicitudCambioPartida::where('nivel', 'like', $agrupador->nivel.'___.')->where('id_solicitud_cambio', '=', $id)->get()->toArray();
             $agrupadores_insumos += [
                 $key => [
                     'nivel' => $agrupador->nivel,
@@ -375,5 +391,27 @@ class EloquentConceptoExtraordinarioRepository implements ConceptoExtraordinario
             throw $e;
         }
 
+    }
+
+    public function getPdfData($id)
+    {
+        $resumen = $this->getResumenExtraordinario($id);
+        $solicitud = $this->solicitud->with(['aplicaciones', 'tipoOrden', 'userRegistro', 'estatus', 'partidas', 'partidas.concepto',
+            'partidas.numeroTarjeta', 'partidas.historico'])->find($id);
+        $solicitud_partidas = $this->getSolicitudCambioPartidas($id);
+        return ['resumen' => $resumen,
+                'solicitud' => $solicitud,
+                'solicitud_partidas' => $solicitud_partidas];
+    }
+
+    public function getResumenExtraordinario($id)
+    {
+        $sol_cambio = $this->solicitud->find($id);
+        if($sol_cambio->id_estatus == 1){
+             return Concepto::where('nivel', 'like', '___.')->first();
+        }else{
+            $partida_base = $this->solicitud_partidas->where('id_solicitud_cambio', '=', $id)->orderBY('nivel')->first();
+            return SolicitudCambioPartidaHistorico::where('id_solicitud_cambio_partida', '=', $partida_base->id)->where('nivel', 'like', '___.')->first();
+        }
     }
 }

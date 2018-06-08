@@ -15,4 +15,6 @@ interface ConceptoExtraordinarioRepository
     public function autorizar($id);
     public function rechazar(array $data);
     public function getSolicitudCambioPartidas($id);
+    public function getPdfData($id);
+    public function getResumenExtraordinario($id);
 }

@@ -63,13 +63,13 @@ class EloquentCatalogoExtraordinarioPartidaRepository implements CatalogoExtraor
     {
         $extraordinario = [];
         $extraordinario += [
-            'nivel'=>'',
+            'nivel'=>'001.',
             'descripcion'=>'',
             'unidad'=>'',
             'id_material'=>'',
-            'cantidad_presupuestada'=>'',
-            'precio_unitario'=>'',
-            'monto_presupuestado'=>''
+            'cantidad_presupuestada'=>0,
+            'precio_unitario'=>1,
+            'monto_presupuestado'=>0
         ];
         $insumos = [
             'MATERIALES',
@@ -79,12 +79,12 @@ class EloquentCatalogoExtraordinarioPartidaRepository implements CatalogoExtraor
             'SUBCONTRATOS',
             'GASTOS'
         ];
-        foreach ($insumos as $insumo){
+        foreach ($insumos as $key => $insumo){
             $extraordinario += [
                 str_replace(' ', '', $insumo) => [
-                    'nivel' => '',
-                    'descripcion' => '',
-                    'monto_presupuestado' => '',
+                    'nivel' => '001.00'.($key+1),
+                    'descripcion' => $insumo,
+                    'monto_presupuestado' => 0,
                     'insumos' => []
                 ]
             ];

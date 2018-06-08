@@ -9,6 +9,7 @@ use Ghi\Domain\Core\Contracts\ControlPresupuesto\ConceptoExtraordinarioRepositor
 use Ghi\Domain\Core\Contracts\ControlPresupuesto\TarjetaRepository;
 use Ghi\Domain\Core\Contracts\ControlPresupuesto\TipoExtraordinarioRepository;
 use Ghi\Domain\Core\Contracts\UnidadRepository;
+use Ghi\Domain\Core\Formatos\ControlPresupuesto\PDFSolicitudCambioExtraordinario;
 use Ghi\Domain\Core\Models\ControlPresupuesto\SolicitudCambio;
 use Ghi\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -106,11 +107,13 @@ class ConceptosExtraordinariosController extends Controller
      */
     public function show($id)
     {
+        $resumen = $this->extraordinario->getResumenExtraordinario($id);
         $partidas = $this->extraordinario->getSolicitudCambioPartidas($id);
         $solicitud = SolicitudCambio::with(['tipoOrden', 'userRegistro', 'estatus', 'partidas'])->find($id);
         return view('control_presupuesto.conceptos_extraordinarios.show')
             ->with('solicitud', $solicitud)
-            ->with('partidas', $partidas);
+            ->with('partidas', $partidas)
+            ->with('resumen', $resumen);
 
     }
 
@@ -173,5 +176,12 @@ class ConceptosExtraordinariosController extends Controller
         return $this->response->item($solicitud, function ($item) {
             return $item;
         });
+    }
+
+    public function pdf($id){
+        $partidas = $this->extraordinario->getPdfData($id);
+        $pdf = new PDFSolicitudCambioExtraordinario($partidas);
+        if (is_object($pdf))
+            $pdf->create();
     }
 }

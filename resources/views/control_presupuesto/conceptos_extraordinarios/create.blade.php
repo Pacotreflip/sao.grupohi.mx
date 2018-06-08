@@ -84,24 +84,58 @@
 
                             <div class="box-body">
                             <div class="row">
-                                <div class="col-md-12">
-                                    <div class="table-responsive">
-                                        <table id="concepto_table" class=" table table-bordered table-striped">
-                                            <thead>
-                                            <tr>
-                                                <th style="width: 60%">Descripción</th>
-                                                <th style="width: 10%">Unidad</th>
-                                                <th style="width: 10%">Cantidad</th>
-                                                <th style="width: 10%">Importe</th>
-                                                <th style="width: 10%">Monto</th>
-                                            </tr>
-                                            </thead>
-                                            <tbody>
+                                <div class="form-group" v-if="form.id_origen_extraordinario == 3 && form.id_opcion == 2">
+                                    <div class="col-md-12">
+                                        <div class="table-responsive">
+                                            <table id="concepto_table" class=" table table-bordered table-striped">
+                                                <thead>
+                                                <tr>
+                                                    <th style="width: 60%">Descripción</th>
+                                                    <th style="width: 10%">Unidad</th>
+                                                    <th style="width: 10%">Importe</th>
+                                                </tr>
+                                                </thead>
+                                                <tbody>
                                                 <tr>
                                                     <td>
                                                         <div class="form-group">
                                                             <input type="text" step=".01" placeholder="Ingrese Nombre Concepto"   v-model="form.extraordinario.descripcion"  style="width: 100%; height: 34px">
-                                                           </div>
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        <div class="form-group">
+                                                            <select2 id="unidad_select"  v-model="form.extraordinario.unidad = 'PESOS'"
+                                                                     :options="unidades" :disabled="true">
+                                                            </select2>
+                                                        </div>
+                                                    </td>
+
+                                                    <td >$@{{ parseFloat(form.extraordinario.monto_presupuestado).formatMoney(2,'.',',') }}</td>
+                                                </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group" v-else>
+                                    <div class="col-md-12">
+                                        <div class="table-responsive">
+                                            <table id="concepto_table" class=" table table-bordered table-striped">
+                                                <thead>
+                                                <tr>
+                                                    <th style="width: 60%">Descripción</th>
+                                                    <th style="width: 10%">Unidad</th>
+                                                    <th style="width: 10%">Cantidad</th>
+                                                    <th style="width: 10%">Importe</th>
+                                                    <th style="width: 10%">Monto</th>
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+                                                <tr>
+                                                    <td>
+                                                        <div class="form-group">
+                                                            <input type="text" step=".01" placeholder="Ingrese Nombre Concepto"   v-model="form.extraordinario.descripcion"  style="width: 100%; height: 34px">
+                                                        </div>
                                                     </td>
                                                     <td>
                                                         <div class="form-group">
@@ -122,11 +156,11 @@
                                                     <td >$@{{ parseFloat(form.extraordinario.precio_unitario).formatMoney(2,'.',',') }}</td>
                                                     <td >$@{{ parseFloat(form.extraordinario.monto_presupuestado).formatMoney(2,'.',',') }}</td>
                                                 </tr>
-                                            </tbody>
-                                        </table>
+                                                </tbody>
+                                            </table>
+                                        </div>
                                     </div>
                                 </div>
-
                                 <!-- Inicia la seccion de los agrupadores de insumos-->
                                 <div class="col-md-12">
                                     <h4 class="box-title">Insumos</h4>
@@ -151,14 +185,10 @@
                                                 <col width="300">
                                                 <col width="80">
                                                 <col width="80">
-                                                <col width="80">
-                                                <col width="80">
                                                 <tr>
                                                     <th>#</th>
                                                     <th>Descripción</th>
                                                     <th>Unidad</th>
-                                                    <th>Rendimiento U. T.</th>
-                                                    <th>Costo Unitario</th>
                                                     <th>Importe</th>
                                                 </tr>
                                                 </thead>
@@ -167,23 +197,15 @@
                                                     <td>@{{ i+1 }}</td>
                                                     <td>@{{ insumo.descripcion }}</td>
                                                     <td>@{{ insumo.unidad }}</td>
-                                                    <td>
-                                                        <div class="form-group">
-                                                            <input type="text" step=".01" placeholder="Ingrese Cantidad"
-                                                                   :value="insumo.cantidad_presupuestada" style="width: 100%; height: 25px"
-                                                                   :class="'c_p_gas_' + i"
-                                                                   @change="recalcular_insumo(i,6)">
-                                                        </div>
-                                                    </td>
+
                                                     <td>
                                                         <div class="form-group">
                                                             $<input type="text" step=".01" placeholder="Ingrese Cantidad"
-                                                                    :value="insumo.precio_unitario" style="width: 90%; height: 25px"
-                                                                    :class="'p_u_gas_' + i"
+                                                                    :value="insumo.monto_presupuestado" style="width: 90%; height: 25px"
+                                                                    :class="'m_p_gas_' + i"
                                                                     @change="recalcular_insumo(i,6)">
                                                         </div>
                                                     </td>
-                                                    <td>$@{{ parseFloat(insumo.monto_presupuestado).formatMoney(2,'.',',') }}</td>
 
                                                 </tr>
                                                 </tbody>

@@ -104,6 +104,7 @@ Route::group(['prefix' => 'control_presupuesto'], function () {
         Route::get('/{id}', 'Presupuesto\ConceptosExtraordinariosController@show')->name('control_presupuesto.conceptos_extraordinarios.show')->where(['id' => '[0-9]+']);
         Route::post('/{id}/autorizar', 'Presupuesto\ConceptosExtraordinariosController@autorizar')->name('control_presupuesto.conceptos_extraordinarios.autorizar')->where(['id' => '[0-9]+']);
         Route::post('/{id}/rechazar', 'Presupuesto\ConceptosExtraordinariosController@rechazar')->name('control_presupuesto.conceptos_extraordinarios.rechazar');
+        Route::get('/{cambio_insumos}/pdf', 'Presupuesto\ConceptosExtraordinariosController@pdf');
     });
 
     /**

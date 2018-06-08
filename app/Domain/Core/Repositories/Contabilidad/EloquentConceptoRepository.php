@@ -247,14 +247,15 @@ class EloquentConceptoRepository implements ConceptoRepository
         $conceptos = $this->model->where('nivel', 'like', $conceptoTarjeta->nivel . '___.')->get();
         foreach ($conceptos as $concepto) {
             $insumos=$concepto->insumos()->get(['nivel', 'descripcion', 'unidad', 'id_material', 'cantidad_presupuestada', 'precio_unitario', 'monto_presupuestado'])->toArray();
+            $agrupador_monto_presupuestado = 0;
 
             //// recalcular rendimiento de los insumos por agrupador
             foreach ($insumos as $key => $insumo){
                 $insumos[$key]['cantidad_presupuestada'] = $insumo['cantidad_presupuestada'] / $conceptoTarjeta->cantidad_presupuestada;
                 $insumos[$key]['monto_presupuestado'] = ($insumo['cantidad_presupuestada'] / $conceptoTarjeta->cantidad_presupuestada) * $insumo['precio_unitario'];
-                $concepto_precio_unitario += $insumos[$key]['monto_presupuestado'];
+                $agrupador_monto_presupuestado += ($insumo['cantidad_presupuestada'] / $conceptoTarjeta->cantidad_presupuestada) * $insumo['precio_unitario'];
+                $concepto_precio_unitario += ($insumo['cantidad_presupuestada'] / $conceptoTarjeta->cantidad_presupuestada) * $insumo['precio_unitario'];
             }
-
             //// ensambla el arreglo con los datos recabados de los insumos
             $extraordinario +=
             [str_replace(' ', '', $concepto->descripcion) =>
@@ -262,11 +263,10 @@ class EloquentConceptoRepository implements ConceptoRepository
                     'id_concepto' => $concepto->id_concepto,
                     'nivel' => $concepto->nivel,
                     'descripcion' => $concepto->descripcion,
-                    'monto_presupuestado' => $concepto->monto_presupuestado,
+                    'monto_presupuestado' => $agrupador_monto_presupuestado,
                     'insumos' => $insumos
                 ]];
         }
-
         /// Ensamble final del arreglo
         $extraordinario +=
             [
