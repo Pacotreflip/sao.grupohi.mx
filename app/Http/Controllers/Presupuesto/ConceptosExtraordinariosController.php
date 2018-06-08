@@ -41,12 +41,11 @@ class ConceptosExtraordinariosController extends Controller
 
 
         //Permisos
-        /*$this->middleware('permission:consultar_cambio_insumos', ['only' => ['index', 'paginate', 'pdf', 'show']]);
-        $this->middleware('permission:registrar_cambio_insumos', ['only' => ['create', 'store','storeIndirecto','indirecto']]);
-        $this->middleware('permission:autorizar_cambio_insumos', ['only' => ['autorizar']]);
-        $this->middleware('permission:aplicar_cambio_insumos', ['only' => ['aplicar']]);
-        $this->middleware('permission:rechazar_cambio_insumos', ['only' => ['rechazar']]);
-*/
+        $this->middleware('permission:consultar_escalatoria', ['only' => ['index', 'pdf', 'show', 'getExtraordinario']]);
+        $this->middleware('permission:registrar_escalatoria', ['only' => ['create', 'store', 'guardarCatalogo']]);
+        $this->middleware('permission:autorizar_escalatoria', ['only' => ['autorizar']]);
+        $this->middleware('permission:rechazar_escalatoria', ['only' => ['rechazar']]);
+
         $this->extraordinario = $extraordinario;
         $this->unidades = $unidades;
         $this->tipos_extraordinario = $tipos_extraordinario;
