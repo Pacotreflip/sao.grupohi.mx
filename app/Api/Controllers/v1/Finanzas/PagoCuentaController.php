@@ -9,6 +9,7 @@
 namespace Ghi\Api\Controllers\v1\Finanzas;
 
 use Dingo\Api\Exception\ValidationHttpException;
+use Illuminate\Support\Facades\Validator;
 use Dingo\Api\Routing\Helpers;
 use Ghi\Domain\Core\Contracts\Finanzas\PagoCuentaRepository;
 use Ghi\Http\Controllers\Controller as BaseController;
@@ -47,6 +48,15 @@ class PagoCuentaController extends BaseController
      */
     public function store(Request $request)
     {
+        Validator::extend('uniqueid_antecedente', function($attribute, $value, $parameters, $validator) {
+            $option = $this->pagoCuentaRepository->where([$attribute => $value])->get();
+            if (count($option->toArray())) {
+                return false;
+            } else {
+                return true;
+            }
+        });
+
         $rules = [
             'cumplimiento' => ['required', 'date'],
             'vencimiento' => ['required', 'date'],
@@ -55,15 +65,24 @@ class PagoCuentaController extends BaseController
             'destino' => ['required', 'string',],
             'observaciones' => ['string',],
             'id_empresa' => ['required', 'exists:cadeco.empresas,id_empresa'],
-            'id_costo' => ['required', 'exists:cadeco.costos,id_costo']
+            'id_costo' => ['required', 'exists:cadeco.costos,id_costo'],
+            'id_antecedente' => ['required', 'uniqueid_antecedente'],
         ];
 
-        $validator = app('validator')->make($request->all(), $rules);
+        $messages = [
+            'uniqueid_antecedente' => 'Ya existe una solicitud generada para la transacción seleccionada',
+        ];
+
+        $validator = app('validator')->make($request->all(), $rules, $messages);
         if (count($validator->errors()->all())) {
             throw new ValidationHttpException($validator->errors());
         } else {
             $this->pagoCuentaRepository->create($request->all());
             return $this->response()->created();
         }
+    }
+
+    public function getTiposTran() {
+        return response()->json($this->pagoCuentaRepository->getTiposTran());
     }
 }

@@ -20,10 +20,10 @@ use Ghi\Domain\Core\Models\Transacciones\Transaccion;
 class PagoCuenta extends Transaccion
 {
     protected $fillable = [
+        "id_antecedente",
         "referencia",
         "cumplimiento",
         "fecha",
-        'cumplimiento',
         "vencimiento",
         "id_concepto",
         "monto",
@@ -34,6 +34,12 @@ class PagoCuenta extends Transaccion
         "observaciones",
         "id_empresa",
         "id_costo"
+    ];
+
+    //Tipos de transaccions que sirven como antedecende en una solicitud de pago
+    public $tipos_transaccion = [
+        ['Tipo_Transaccion' => 19, 'Opciones' => 1],
+        ['Tipo_Transaccion' => 51, 'Opciones' => 2]
     ];
 
 

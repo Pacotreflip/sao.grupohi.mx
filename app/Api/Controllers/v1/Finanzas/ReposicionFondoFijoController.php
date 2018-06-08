@@ -47,7 +47,6 @@ class ReposicionFondoFijoController extends BaseController
      */
     public function store(Request $request)
     {
-        // Email array validator
         Validator::extend('uniqueid_antecedente', function($attribute, $value, $parameters, $validator) {
             $option = $this->reposicionFondoFijoRepository->where([$attribute => $value])->get();
             if (count($option->toArray())) {
@@ -66,10 +65,10 @@ class ReposicionFondoFijoController extends BaseController
             'monto' => ['required', 'string',],
             'destino' => ['required', 'string',],
             'observaciones' => ['string',],
-            'id_antecedente' => ['int','uniqueid_antecedente'],
+            'id_antecedente' => ['required', 'int','uniqueid_antecedente'],
         ];
         $messages = [
-            'uniqueid_antecedente' => 'El Comprobante seleccionado ya cuenta con una reposición de cheque',
+            'uniqueid_antecedente' => 'Ya existe una solicitud generada para la transacción seleccionada',
         ];
 
         //Validar los datos recibidos con las reglas de validación

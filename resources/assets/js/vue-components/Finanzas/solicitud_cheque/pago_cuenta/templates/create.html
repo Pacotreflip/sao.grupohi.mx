@@ -1,0 +1,122 @@
+<section>
+    <div class="row">
+        <form id="form_pago_cuenta" @submit.prevent="validateForm('form_pago_cuenta', 'save_pago')"
+              data-vv-scope="form_pago_cuenta">
+            <!-- Fecha de Cheque / Cumplimiento -->
+            <div class="col-md-6">
+                <div class="form-group"
+                     :class="{'has-error': validation_errors.has('form_pago_cuenta.Fecha de Cheque')}">
+                    <label for="cumplimiento_pc"><b>Fecha de Cheque</b></label>
+                    <input type="text" name="Fecha de Cheque" class="form-control input-sm"
+                           id="cumplimiento_pc" v-validate="'required'" v-model="form.cumplimiento"
+                           v-datepicker>
+                    <label class="help" v-show="validation_errors.has('form_pago_cuenta.Fecha de Cheque')">{{
+                        validation_errors.first('form_pago_cuenta.Fecha de Cheque') }}</label>
+                </div>
+            </div>
+
+            <!-- Fecha de Cobro / Vencimiento -->
+            <div class="col-md-6">
+                <div class="form-group"
+                     :class="{'has-error': validation_errors.has('form_pago_cuenta.Fecha de Cobro')}">
+                    <label for="vencimiento_pc"><b>Fecha de Cobro</b></label>
+                    <input type="text" name="Fecha de Cobro" class="form-control input-sm"
+                           id="vencimiento_pc" v-validate="'required'" v-model="form.vencimiento"
+                           v-datepicker>
+                    <label class="help" v-show="validation_errors.has('form_pago_cuenta.Fecha de Cobro')">{{
+                        validation_errors.first('form_pago_cuenta.Fecha de Cobro') }}</label>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="form-group"
+                     :class="{'has-error': validation_errors.has('form_pago_cuenta.Tipo de Transacción')}">
+                    <label for="tipo_transaccion_pc">Tipo de Transacción</label>
+                    <select name="Tipo de Transacción" id="tipo_transaccion_pc" v-validate="'required'" class="form-control input-sm" v-model="form.tipo_transaccion">
+                        <option value>[--SELECCIONE EL TIPO--]</option>
+                        <option v-for="item in tipos_tran" :value="item.Tipo_Transaccion">{{ item.Descripcion }}</option>
+                    </select>
+                    <label class="help" v-show="validation_errors.has('form_pago_cuenta.Tipo de Transacción')">{{
+                        validation_errors.first('form_pago_cuenta.Tipo de Transacción') }}</label>
+                </div>
+            </div>
+
+            <div class="col-md-8">
+                <div class="form-group" :class="{'has-error': validation_errors.has('form_pago_cuenta.Transaccion')}">
+                    <label for="id_antecedente_pc"><b>Transacción</b></label>
+                    <select :disabled="! form.tipo_transaccion" type="text" name="Transacción" class="form-control input-sm"
+                            id="id_antecedente_pc" v-model="form.id_antecedente"></select>
+                    <label class="help" v-show="validation_errors.has('form_reposicion_fondo_fijo.Comprobante de Fondo Fijo')">{{ validation_errors.first('form_reposicion_fondo_fijo.Comprobante de Fondo Fijo') }}</label>
+                </div>
+            </div>
+
+            <div class="col-md-12">
+                <div class="form-group">
+                    <label for="observaciones_pc"><b>Oservaciones</b></label>
+                    <textarea id="observaciones_pc" class="form-control" v-model="form.observaciones"></textarea>
+                </div>
+            </div>
+
+            <!-- Tipo de Gasto -->
+            <div class="col-md-12" v-if="Object.keys(transaccion).length !== 0" :class="{'has-error': validation_errors.has('form_pago_cuenta.Tipo de Gasto')}">
+                <label for="id_costo_pc"><b>Tipo de Gasto</b></label>
+            </div>
+            <div class="col-md-12" v-if="Object.keys(transaccion).length !== 0">
+                <div class="form-group">
+                    <div class="input-group"
+                         :class="{'has-error': validation_errors.has('form_pago_cuenta.Tipo de Gasto')}">
+                        <input class="form-control" v-model="form.id_costo" type="hidden" name="Tipo de Gasto"
+                               v-validate="'required'" id="id_costo_pc">
+                        <input v-model="costo" type="text" class="form-control" readonly id="costo_pc"
+                               placeholder="Clic aquí para seleccionar Tipo de Gasto...">
+                        <span class="input-group-btn">
+                        <button :disabled="transaccion.costo != null" data-toggle="modal" data-target="#myModal_pc" class="btn btn-default" type="button"><i
+                                class="fa fa-search"></i></button>
+                        </span>
+                    </div>
+                    <div :class="{'has-error': validation_errors.has('form_pago_cuenta.Tipo de Gasto')}">
+                        <label class="help" v-show="validation_errors.has('form_pago_cuenta.Tipo de Gasto')">{{
+                            validation_errors.first('form_pago_cuenta.Tipo de Gasto') }}</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-12">
+                <div class="form-group">
+                    <button type="submit" class="btn btn-primary pull-right" :disabled="guardando || cargando">
+                    <span v-if="guardando">
+                        <i class="fa fa-spinner fa-spin"></i> Guardando
+                    </span>
+                        <span v-else>
+                        <i class="fa fa-save"></i> Guardar
+                    </span>
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <div id="myModal_pc" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="arbolCostos"
+         data-backdrop="static" data-keyboard="false">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" aria-label="Close" data-dismiss="modal">
+                        <span aria-hidden="true">×</span></button>
+                    <h4 class="modal-title">
+                        <span>
+                        Costos
+                        </span>
+                    </h4>
+                </div>
+                <div class="modal-body" style="overflow-x: auto;">
+                    <div id="jstree_pc"></div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>

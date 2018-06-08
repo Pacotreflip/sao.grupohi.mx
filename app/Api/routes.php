@@ -26,6 +26,7 @@ $api->version('v1', function ($api) {
         $api->patch('contrato/{id}', 'Ghi\Api\Controllers\v1\ContratoController@update');
 
         $api->post('subcontrato', 'Ghi\Api\Controllers\v1\SubcontratoController@store');
+        $api->get('subcontrato/{id}', 'Ghi\Api\Controllers\v1\SubcontratoController@find');
 
         $api->post('item', 'Ghi\Api\Controllers\v1\ItemController@store');
         $api->patch('item/{id_item}', 'Ghi\Api\Controllers\v1\ItemController@update');
@@ -64,23 +65,21 @@ $api->version('v1', function ($api) {
         $api->post('contratoProyectado', 'Ghi\Api\Controllers\v1\ContratoProyectadoController@show');
         $api->post('compras/requisicion', 'Ghi\Api\Controllers\v1\Compras\RequisicionController@show');
 
-
         /**
-         * traspaso cuentas
+         * Tesoreria Routes
          */
         $api->post('tesoreria/traspaso_cuentas', 'Ghi\Api\Controllers\v1\Tesoreria\TraspasoCuentasController@paginate');
         $api->post('tesoreria/traspaso_cuentas/store', 'Ghi\Api\Controllers\v1\Tesoreria\TraspasoCuentasController@store');
         $api->delete('tesoreria/traspaso_cuentas/{id_traspaso}', 'Ghi\Api\Controllers\v1\Tesoreria\TraspasoCuentasController@delete')->where(['id' => '[0-9]+']);
         $api->get('tesoreria/traspaso_cuentas/{id_traspaso}', 'Ghi\Api\Controllers\v1\Tesoreria\TraspasoCuentasController@show')->where(['id' => '[0-9]+']);
         $api->put('tesoreria/traspaso_cuentas/{id_traspaso}', 'Ghi\Api\Controllers\v1\Tesoreria\TraspasoCuentasController@update')->where(['id' => '[0-9]+']);
-        /**
-         * movimientos bancarios
-         */
+
         $api->post('tesoreria/movimientos_bancarios', 'Ghi\Api\Controllers\v1\Tesoreria\MovimientosBancariosController@paginate');
         $api->post('tesoreria/movimientos_bancarios/store', 'Ghi\Api\Controllers\v1\Tesoreria\MovimientosBancariosController@store');
         $api->delete('tesoreria/movimientos_bancarios/{id_traspaso}', 'Ghi\Api\Controllers\v1\Tesoreria\MovimientosBancariosController@delete')->where(['id' => '[0-9]+']);
         $api->get('tesoreria/movimientos_bancarios/{id_traspaso}', 'Ghi\Api\Controllers\v1\Tesoreria\MovimientosBancariosController@show')->where(['id' => '[0-9]+']);
         $api->put('tesoreria/movimientos_bancarios/{id_traspaso}', 'Ghi\Api\Controllers\v1\Tesoreria\MovimientosBancariosController@update')->where(['id' => '[0-9]+']);
+
         /**
          * Sistema Contable
          * Poliza Tipo
@@ -91,28 +90,40 @@ $api->version('v1', function ($api) {
         /*
          * Layouts Routes
          */
-        $api->get('layouts/compras/requisicion/{id_requiscion}/asignacion', 'Ghi\Api\Controllers\v1\LayoutsController@compras_asignacion');
-        $api->post('layouts/compras/requisicion/{id_requiscion}/asignacion', 'Ghi\Api\Controllers\v1\LayoutsController@compras_asignacion_store');
+        $api->get('layouts/compras/requisicion/{id}/asignacion', 'Ghi\Api\Controllers\v1\LayoutsController@compras_asignacion')->where(['id' => '[0-9]+']);
+        $api->post('layouts/compras/requisicion/{id}/asignacion', 'Ghi\Api\Controllers\v1\LayoutsController@compras_asignacion_store')->where(['id' => '[0-9]+']);
 
-        $api->get('layouts/contratos/contrato_proyectado/{id_contrato_proyectado}/asignacion', 'Ghi\Api\Controllers\v1\LayoutsController@contratos_asignacion');
-        $api->post('layouts/contratos/contrato_proyectado/{id_contrato_proyectado}/asignacion', 'Ghi\Api\Controllers\v1\LayoutsController@contratos_asignacion_store');
+        $api->get('layouts/contratos/contrato_proyectado/{id}/asignacion', 'Ghi\Api\Controllers\v1\LayoutsController@contratos_asignacion')->where(['id' => '[0-9]+']);
+        $api->post('layouts/contratos/contrato_proyectado/{id}/asignacion', 'Ghi\Api\Controllers\v1\LayoutsController@contratos_asignacion_store')->where(['id' => '[0-9]+']);
 
         /**
          * Solicitudes de Cheque
          */
         $api->post('finanzas/solicitud_cheque/reposicion_fondo_fijo', 'Ghi\Api\Controllers\v1\Finanzas\ReposicionFondoFijoController@store');
         $api->post('finanzas/solicitud_cheque/pago_cuenta', 'Ghi\Api\Controllers\v1\Finanzas\PagoCuentaController@store');
+        $api->get('finanzas/solicitud_cheque/pago_cuenta/tipos_transaccion', 'Ghi\Api\Controllers\v1\Finanzas\PagoCuentaController@getTiposTran');
 
         /**
          * Fondos
          */
         $api->get('fondo/lists', 'Ghi\Api\Controllers\v1\FondoController@lists');
-        $api->get('fondo/{id}', 'Ghi\Api\Controllers\v1\FondoController@find');
+        $api->get('fondo/{id}', 'Ghi\Api\Controllers\v1\FondoController@find')->where(['id' => '[0-9]+']);
         /**
          * comprobante fondo fijo
          */
         $api->get('finanzas/comprobante_fondo_fijo/search', 'Ghi\Api\Controllers\v1\Finanzas\ComprobanteFondoFijoController@search');
-        $api->get('finanzas/comprobante_fondo_fijo/{id}', 'Ghi\Api\Controllers\v1\Finanzas\ComprobanteFondoFijoController@find');
+        $api->get('finanzas/comprobante_fondo_fijo/{id}', 'Ghi\Api\Controllers\v1\Finanzas\ComprobanteFondoFijoController@find')->where(['id' => '[0-9]+']);
+
+        /**
+         * Compras Routes
+         */
+        $api->get('compras/orden_compra/{id}', 'Ghi\Api\Controllers\v1\Compras\OrdenCompraController@find')->where(['id' => '[0-9]+']);
+        $api->get('compras/orden_compra/search', 'Ghi\Api\Controllers\v1\Compras\OrdenCompraController@search');
+
+        /**
+         * Contratos Routes
+         */
+        $api->get('contratos/subcontrato/search', 'Ghi\Api\Controllers\v1\SubcontratoController@search');
     });
 });
 

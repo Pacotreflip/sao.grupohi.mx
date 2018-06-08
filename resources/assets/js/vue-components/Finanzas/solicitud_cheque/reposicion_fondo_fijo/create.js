@@ -65,7 +65,7 @@ Vue.component('reposicion-fondo-fijo-create', {
                 self.comprobante_fondo_fijo = data.comprobante_fondo_fijo;
             });
         } else {
-            $('#id_antecedente').select2({
+            $('#id_antecedente_rff').select2({
                 width: '100%',
                 ajax: {
                     url: App.host + '/api/finanzas/comprobante_fondo_fijo/search',
@@ -85,7 +85,7 @@ Vue.component('reposicion-fondo-fijo-create', {
                     processResults: function (data) {
                         return {
                             results: $.map(data, function (item) {
-                                var text = '# ' + item.numero_folio + " - " + item.referencia.trim() + ' (' + item.observaciones.trim() + ')';
+                                var text = '# ' + item.numero_folio + " - " + (item.referencia ? item.referencia.trim() : '---') + (item.observaciones ? ' (' + item.observaciones.trim() + ')' : '');
                                 return {
                                     text:text,
                                     id: item.id_transaccion,
@@ -114,12 +114,12 @@ Vue.component('reposicion-fondo-fijo-create', {
             });
         }
 
-        $('#cumplimiento').datepicker().on("changeDate", function() {
-            self.form.cumplimiento = $('#cumplimiento').val();
+        $('#cumplimiento_rff').datepicker().on("changeDate", function() {
+            self.form.cumplimiento = $('#cumplimiento_rff').val();
         });
 
-        $('#vencimiento').datepicker().on("changeDate", function() {
-            self.form.vencimiento = $('#vencimiento').val()
+        $('#vencimiento_rff').datepicker().on("changeDate", function() {
+            self.form.vencimiento = $('#vencimiento_rff').val()
         });
     },
 
@@ -199,7 +199,7 @@ Vue.component('reposicion-fondo-fijo-create', {
                 },
                 error: function(error) {
                     $.each(error.responseJSON.errors, function(e, key) {
-                        var field = $('#' + e );
+                        var field = $('#' + e + '_rff' );
                         self.validation_errors.errors.push({
                             field: field.attr('name'),
                             msg: key[0],

@@ -8,7 +8,6 @@
 
 namespace Ghi\Api\Controllers\v1;
 
-use Dingo\Api\Exception\StoreResourceFailedException;
 use Dingo\Api\Http\Request;
 use Dingo\Api\Routing\Helpers;
 use Ghi\Domain\Core\Contracts\TipoTranRepository;
@@ -40,6 +39,7 @@ class TipoTranController extends Controller
 
     /**
      * @return \Dingo\Api\Http\Response
+     * @throws \ErrorException
      */
     public function show(Request $request)
     {

@@ -1,12 +1,12 @@
-<section>
+<section class="rffc">
     <div class="row">
         <form id="form_reposicion_fondo_fijo" @submit.prevent="validateForm('form_reposicion_fondo_fijo', 'save_reposicion')"  data-vv-scope="form_reposicion_fondo_fijo">
             <!-- Fecha de Cheque / Cumplimiento -->
             <div class="col-md-6">
                 <div class="form-group" :class="{'has-error': validation_errors.has('form_reposicion_fondo_fijo.Fecha de Cheque')}">
-                    <label for="cumplimiento"><b>Fecha de Cheque</b></label>
+                    <label for="cumplimiento_rff"><b>Fecha de Cheque</b></label>
                     <input type="text" name="Fecha de Cheque" class="form-control input-sm"
-                           id="cumplimiento" v-validate="'required'" v-model="form.cumplimiento"
+                           id="cumplimiento_rff" v-validate="'required'" v-model="form.cumplimiento"
                            v-datepicker>
                     <label class="help" v-show="validation_errors.has('form_reposicion_fondo_fijo.Fecha de Cheque')">{{ validation_errors.first('form_reposicion_fondo_fijo.Fecha de Cheque') }}</label>
                 </div>
@@ -15,9 +15,9 @@
             <!-- Fecha de Cobro / Vencimiento -->
             <div class="col-md-6">
                 <div class="form-group" :class="{'has-error': validation_errors.has('form_reposicion_fondo_fijo.Fecha de Cobro')}">
-                    <label for="vencimiento"><b>Fecha de Cobro</b></label>
+                    <label for="vencimiento_rff"><b>Fecha de Cobro</b></label>
                     <input type="text" name="Fecha de Cobro" class="form-control input-sm"
-                           id="vencimiento" v-validate="'required'" v-model="form.vencimiento"
+                           id="vencimiento_rff" v-validate="'required'" v-model="form.vencimiento"
                            v-datepicker>
                     <label class="help" v-show="validation_errors.has('form_reposicion_fondo_fijo.Fecha de Cobro')">{{ validation_errors.first('form_reposicion_fondo_fijo.Fecha de Cobro') }}</label>
                 </div>
@@ -26,10 +26,9 @@
             <!-- Comprobante de Fondo Fijo -->
             <div v-if="! id_antecedente" class="col-md-12">
                 <div class="form-group" :class="{'has-error': validation_errors.has('form_reposicion_fondo_fijo.Comprobante de Fondo Fijo')}">
-                    <label for="id_antecedente"><b>Comprobante de Fondo Fijo</b></label>
+                    <label for="id_antecedente_rff"><b>Comprobante de Fondo Fijo</b></label>
                     <select type="text" name="Comprobante de Fondo Fijo" class="form-control input-sm"
-                            id="id_antecedente" v-model="form.id_antecedente" :disabled="id_antecedente"></select>
-
+                            id="id_antecedente_rff" v-model="form.id_antecedente"></select>
                     <label class="help" v-show="validation_errors.has('form_reposicion_fondo_fijo.Comprobante de Fondo Fijo')">{{ validation_errors.first('form_reposicion_fondo_fijo.Comprobante de Fondo Fijo') }}</label>
                 </div>
             </div>

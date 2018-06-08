@@ -95,4 +95,14 @@ class SubcontratoController extends Controller
         $subcontrato = $this->subcontrato->create($request);
         return $this->response()->item($subcontrato, new SubcontratoTransformer());
     }
+
+    public function search(Request $request)
+    {
+        $subontratos = $this->subcontrato
+            ->limit($request->limit)
+            ->with($request->with)
+            ->search($request->q, $request->cols);
+
+        return response()->json($subontratos, 200);
+    }
 }

@@ -17,4 +17,5 @@ class Tipo
     const COTIZACION_COMPRA = 18;
     const REPOSICION_FONDO_FIJO = 72;
     const PAGO_A_CUENTA = 72;
+    const ORDEN_COMPRA = 19;
 }

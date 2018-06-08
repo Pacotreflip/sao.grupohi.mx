@@ -11,6 +11,7 @@ namespace Ghi\Domain\Core\Models\Transacciones;
 
 use Carbon\Carbon;
 use Ghi\Core\Facades\Context;
+use Ghi\Domain\Core\Models\Costo;
 use Ghi\Domain\Core\Models\Empresa;
 use Ghi\Domain\Core\Models\Scopes\ObraScope;
 use Ghi\Domain\Core\Models\Scopes\SubcontratoScope;
@@ -67,5 +68,9 @@ class Subcontrato extends Transaccion
     }
     public function items(){
         return $this->hasMany(Item::class, 'id_transaccion', 'id_transaccion');
+    }
+
+    public function costo() {
+        return $this->belongsTo(Costo::class, 'id_costo');
     }
 }
