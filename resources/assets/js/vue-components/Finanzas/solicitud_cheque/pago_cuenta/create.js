@@ -163,7 +163,7 @@ Vue.component('pago-cuenta-create', {
         },
         carga_arbol: function() {
             var self = this;
-            
+
             var jstreeConf = {
                 'core': {
                     'multiple': false,
@@ -195,14 +195,6 @@ Vue.component('pago-cuenta-create', {
 
             $('#myModal_pc').on('shown.bs.modal', function (e) {
                 $('#jstree_pc').jstree(jstreeConf);
-            }).on('hidden.bs.modal', function (e) {
-                var jstree = $('#jstree_pc').jstree(true);
-                var node = jstree.get_selected(true)[0];
-
-                if (node) {
-                    self.form.id_costo = node.id;
-                    self.costo = node.text;
-                }
             });
         },
 
@@ -240,37 +232,46 @@ Vue.component('pago-cuenta-create', {
         save: function () {
             var self = this;
             $.ajax({
-                url : App.host + '/api/finanzas/solicitud_cheque/pago_cuenta',
-                type : 'POST',
-                data : self.form,
-                beforeSend : function () {
+                url: App.host + '/api/finanzas/solicitud_cheque/pago_cuenta',
+                type: 'POST',
+                data: self.form,
+                beforeSend: function () {
                     self.guardando = true;
                 },
-                success : function () {
+                success: function () {
                     swal({
-                        type : 'success',
-                        title : '¡Correcto!',
-                        html : 'Solicitud generada correctamente'
+                        type: 'success',
+                        title: '¡Correcto!',
+                        html: 'Solicitud generada correctamente'
                     }).then(function () {
                         location.reload();
                     });
                 },
-                error: function(error) {
-                    $.each(error.responseJSON.errors, function(e, key) {
+                error: function (error) {
+                    $.each(error.responseJSON.errors, function (e, key) {
                         var field = $('#' + e + '_pc');
                         self.validation_errors.errors.push({
                             field: field.attr('name'),
                             msg: key[0],
                             rule: 'valid',
                             scope: 'form_pago_cuenta'
-
                         });
                     });
                 },
-                complete : function () {
+                complete: function () {
                     self.guardando = false;
                 }
             })
+        },
+        select_costo: function () {
+            var self = this;
+            var jstree = $('#jstree_pc').jstree(true);
+            var node = jstree.get_selected(true)[0];
+
+            if (node) {
+                self.form.id_costo = node.id;
+                self.costo = node.text;
+            }
         }
     }
 });

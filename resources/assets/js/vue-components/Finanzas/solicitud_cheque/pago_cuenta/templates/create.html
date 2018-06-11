@@ -165,9 +165,17 @@
                 </div>
                 <div class="modal-body" style="overflow-x: auto;">
                     <div id="jstree_pc"></div>
+                    <hr>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <p><small>Doble clic en la descripción del Costo para desplegar el árbol</small></p>
+                            <p><small>Clic en la descripción del Costo deseado y después de clic en el botón seleccionar</small></p>
+                        </div>
+                    </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                    <button type="button" class="btn btn-primary" data-dismiss="modal" @click="select_costo">Seleccionar</button>
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
                 </div>
                 </form>
             </div>

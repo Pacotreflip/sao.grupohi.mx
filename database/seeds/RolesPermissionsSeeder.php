@@ -153,7 +153,7 @@ class RolesPermissionsSeeder extends Seeder
         $eliminar_asignacion = Permission::firstOrCreate(['name' => 'eliminar_asignacion', 'display_name' => 'Eliminar una Asignación', 'description' => 'Permisos para poder eliminar el registro de una asignación de procuración']);
 
         //Finanzas Solicitud de Cheque
-        $registrar_reposicion_fondo_fijo = Permission::firstOrCreate(['name' => 'registrar_reposicion_fondo_fijo', 'display_name' => 'Registrar eposicion de fondo fijo', 'description' => 'Permiso para poder registrar reposiciónes de fondo fijo']);
+        $registrar_reposicion_fondo_fijo = Permission::firstOrCreate(['name' => 'registrar_reposicion_fondo_fijo', 'display_name' => 'Registrar Reposicion de fondo fijo', 'description' => 'Permiso para poder registrar reposiciónes de fondo fijo']);
         $registrar_pago_cuenta = Permission::firstOrCreate(['name' => 'registrar_pago_cuenta', 'display_name' => 'Registrar pagos a cuenta', 'description' => 'Permiso para poder registrar pagos a cuenta']);
 
         /**
