@@ -4,6 +4,7 @@ namespace Ghi\Domain\Core\Models\Transacciones;
 
 use Carbon\Carbon;
 use Ghi\Domain\Core\Models\Contabilidad\Cierre;
+use Ghi\Domain\Core\Models\Contabilidad\Factura;
 use Ghi\Domain\Core\Models\TipoTransaccion;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Exception\HttpResponseException;
@@ -122,6 +123,15 @@ class Transaccion extends Model
 
     public function getTipoTransaccionStringAttribute() {
           return (String) $this->tipoTran;
+    }
+
+    public function getTieneFacturasAttribute() {
+        $facturas = Factura::whereHas('items', function ($q) {
+            $q->whereIn('id_antecedente', $this->items()->get(['id_item'])->toArray());
+        })->get();
+
+        return count($facturas) ? true : false;
+
     }
 
     public function getAppends() {

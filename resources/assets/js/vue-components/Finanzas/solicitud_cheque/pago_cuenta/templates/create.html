@@ -42,11 +42,11 @@
             </div>
 
             <div class="col-md-8">
-                <div class="form-group" :class="{'has-error': validation_errors.has('form_pago_cuenta.Transaccion')}">
+                <div class="form-group" :class="{'has-error': validation_errors.has('form_pago_cuenta.Transacción')}">
                     <label for="id_antecedente_pc"><b>Transacción</b></label>
                     <select v-validate="'required'" :disabled="! form.tipo_transaccion" type="text" name="Transacción" class="form-control input-sm"
                             id="id_antecedente_pc" v-model="form.id_antecedente"></select>
-                    <label class="help" v-show="validation_errors.has('form_reposicion_fondo_fijo.Comprobante de Fondo Fijo')">{{ validation_errors.first('form_reposicion_fondo_fijo.Comprobante de Fondo Fijo') }}</label>
+                    <label class="help" v-show="validation_errors.has('form_pago_cuenta.Transacción')">{{ validation_errors.first('form_pago_cuenta.Transacción') }}</label>
                 </div>
             </div>
 

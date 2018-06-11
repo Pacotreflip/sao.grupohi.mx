@@ -4,6 +4,8 @@ namespace Ghi\Http\Middleware;
 
 use Closure;
 use Ghi\Domain\Core\Models\Seguridad\Sistema;
+use Illuminate\Http\Exception\HttpResponseException;
+use Illuminate\Http\Response;
 use Illuminate\Session\Store;
 use \Entrust;
 use Laracasts\Flash\Flash;
