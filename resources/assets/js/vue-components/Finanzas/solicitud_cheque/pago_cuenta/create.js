@@ -257,7 +257,7 @@ Vue.component('pago-cuenta-create', {
                 },
                 error: function(error) {
                     $.each(error.responseJSON.errors, function(e, key) {
-                        var field = $('#' + e + '_pc'
+                        var field = $('#' + e + '_pc');
                         self.validation_errors.errors.push({
                             field: field.attr('name'),
                             msg: key[0],
