@@ -21,6 +21,6 @@ class CatalogoExtraordinarioPartidas extends Model
     ];
 
     public function insumos() {
-        return $this->where('nivel', 'like', $this->nivel . '___.');
+        return $this->where('nivel', 'like', $this->nivel . '___.')->where('id_catalogo_extraordinarios', '=', $this->id);
     }
 }

@@ -157,7 +157,7 @@ Vue.component('concepto-extraordinario-create', {
                     swal({
                         type : 'success',
                         title: 'Extraordinadio Guardado Correctamente',
-                        text: 'Si desea guardar el extraordinario en catalogo ingrese una descripción, de lo contrario solo de clik en continuar',
+                        text: 'Si desea guardar el extraordinario en catalogo ingrese una descripción, de lo contrario solo de clic en continuar',
                         input: 'text',
                         showCancelButton: true,
                         confirmButtonText: 'Guardar y Continuar ',
@@ -493,6 +493,20 @@ Vue.component('concepto-extraordinario-create', {
                         }, 500);
                 }
             });
+        },
+
+        tipo_costo: function () {
+            var self = this;
+            var pos = -1;
+            if(self.form.id_origen_extraordinario == 2){
+                pos = self.catalogo.map(function(e) { return e.id; }).indexOf(self.form.id_opcion);
+                if(self.catalogo[pos].tipo_costo == 2){
+                    return true;
+                }
+            }else if(self.form.id_origen_extraordinario == 3 && self.form.id_opcion == 2){
+                return true;
+            }
+            return false;
         }
     }
 });

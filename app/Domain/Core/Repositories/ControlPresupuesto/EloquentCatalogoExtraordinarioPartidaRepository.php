@@ -49,9 +49,12 @@ class EloquentCatalogoExtraordinarioPartidaRepository implements CatalogoExtraor
             'precio_unitario'=>$partida->precio_unitario,
             'monto_presupuestado'=>$partida->monto_presupuestado
         ];
-        $agrupadores = $this->model->where('nivel', 'like', '___.___.')->get();
-        foreach ($agrupadores as $agrupador){
-            $insumos = $agrupador->insumos()->get(['nivel', 'descripcion', 'unidad', 'id_material', 'cantidad_presupuestada', 'precio_unitario', 'monto_presupuestado'])->toArray();
+        $agrupadores = $this->model->where('nivel', 'like', '___.___.')->where('id_catalogo_extraordinarios', '=', $id)->get();
+        foreach ($agrupadores as $key =>$agrupador){
+            $insumos = $agrupador->where('nivel', 'like', $agrupador->nivel.'___.')
+                ->where('id_catalogo_extraordinarios', '=', $id)
+                ->get(['nivel', 'descripcion', 'unidad', 'id_material', 'cantidad_presupuestada', 'precio_unitario', 'monto_presupuestado'])
+                ->toArray();
 
             //// refactorización de montos para eliminar notación científica en rendimientos
             foreach ($insumos as $key => $insumo){
@@ -102,7 +105,7 @@ class EloquentCatalogoExtraordinarioPartidaRepository implements CatalogoExtraor
         try{
             DB::connection('cadeco')->beginTransaction();
 
-            $tipo_costo = $array['id_origen_extraordinario'] == 3?2:1;
+            $tipo_costo = $array['id_origen_extraordinario'] == 3 && $array['id_opcion'] == 2?2:1;
             $registro_extraordinario = CatalogoExtraordinario::create(['descripcion' => $array['motivo'], 'tipo_costo' => $tipo_costo]);
 
             $extraordinario = $array['extraordinario'];

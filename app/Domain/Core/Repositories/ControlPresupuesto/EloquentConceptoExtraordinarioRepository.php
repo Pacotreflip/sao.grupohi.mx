@@ -9,6 +9,7 @@
 namespace Ghi\Domain\Core\Repositories\ControlPresupuesto;
 
 use Ghi\Core\Facades\Context;
+use Ghi\Core\Models\User;
 use Ghi\Domain\Core\Contracts\ControlPresupuesto\ConceptoExtraordinarioRepository;
 use Ghi\Domain\Core\Models\Concepto;
 use Ghi\Domain\Core\Models\ConceptoPath;
@@ -20,6 +21,7 @@ use Ghi\Domain\Core\Models\ControlPresupuesto\SolicitudCambioPartida;
 use Ghi\Domain\Core\Models\ControlPresupuesto\SolicitudCambioPartidaHistorico;
 use Ghi\Domain\Core\Models\ControlPresupuesto\SolicitudCambioRechazada;
 use Ghi\Domain\Core\Models\ControlPresupuesto\Tarjeta;
+use Ghi\Domain\Core\Models\Seguridad\Proyecto;
 use Illuminate\Support\Facades\DB;
 
 class EloquentConceptoExtraordinarioRepository implements ConceptoExtraordinarioRepository
@@ -118,10 +120,9 @@ class EloquentConceptoExtraordinarioRepository implements ConceptoExtraordinario
             if($tarjeta){
                 $tarjeta_nueva = Tarjeta::create(['descripcion' => $tarjeta->descripcion.'-'.$tarjeta->cantidad_descripcion]);
             }else{
-                $tarjeta_ext = Tarjeta::where('descripcion', 'like', 'EXT-%')->first();
-                if($tarjeta_ext){
-                    $tarjeta_nueva = Tarjeta::create(['descripcion' => 'EXT-'.$tarjeta_ext->cantidad_descripcion]);
-
+                $tarjeta_ext = Tarjeta::where('descripcion', 'like', 'EXT-%')->count();
+                if($tarjeta_ext > 0){
+                    $tarjeta_nueva = Tarjeta::create(['descripcion' => 'EXT-'.$tarjeta_ext ]);
                 }else{
                     $tarjeta_nueva = Tarjeta::create(['descripcion' => 'EXT-0']);
                 }
@@ -199,7 +200,7 @@ class EloquentConceptoExtraordinarioRepository implements ConceptoExtraordinario
             $solicitud->save();
 
             SolicitudCambioAutorizada::create(["id_solicitud_cambio" => $id]);
-            $this->enviarNotificacionRevasePresupuesto($id);
+            //$this->enviarNotificacionRevasePresupuesto($id);
 
 
             DB::connection('cadeco')->commit();
@@ -324,7 +325,7 @@ class EloquentConceptoExtraordinarioRepository implements ConceptoExtraordinario
         $conceptoPathNuevo= ConceptoPath::create($conceptoPathHijo->toArray());
     }
 
-    public function enviarNotificacionRevasePresupuesto($id)
+    /*public function enviarNotificacionRevasePresupuesto($id)
     {
         try {
 
@@ -391,7 +392,7 @@ class EloquentConceptoExtraordinarioRepository implements ConceptoExtraordinario
             throw $e;
         }
 
-    }
+    }*/
 
     public function getPdfData($id)
     {
@@ -407,7 +408,7 @@ class EloquentConceptoExtraordinarioRepository implements ConceptoExtraordinario
     public function getResumenExtraordinario($id)
     {
         $sol_cambio = $this->solicitud->find($id);
-        if($sol_cambio->id_estatus == 1){
+        if($sol_cambio->id_estatus == 1 || $sol_cambio->id_estatus == 3){
              return Concepto::where('nivel', 'like', '___.')->first();
         }else{
             $partida_base = $this->solicitud_partidas->where('id_solicitud_cambio', '=', $id)->orderBY('nivel')->first();
