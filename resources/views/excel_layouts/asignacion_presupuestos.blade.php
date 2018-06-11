@@ -61,7 +61,8 @@
                 $info['solo_pendientes']) }}
             @endif
         </td>
-            <?php $primerValor = array_values($contratoProyectados['valores'])[0]; ?>
+            <?php $primerValor = !empty($contratoProyectados['valores']) ? array_values
+        ($contratoProyectados['valores'])[0] : ['presupuesto' => []]; ?>
                 @foreach($primerValor['presupuesto'] as $key => $presupuesto)
                         <td colspan="{{ count($headerPresupuestos) }}">
                         {{ $presupuesto->empresa->razon_social }}

@@ -162,6 +162,7 @@ class AsignacionCargaPreciosLayout extends ValidacionLayout
         $arrayResult['valores'] = [];
         if ($arrayResult['totales'] > 0) {
             $index = 0;
+            $maxRow = count($partidas);
             foreach ($partidas as $key => $cotizacion) {
 
                 $totalesPartidas = $presupuestos->count();
@@ -176,7 +177,6 @@ class AsignacionCargaPreciosLayout extends ValidacionLayout
                                 $arrayResult['valores'][$cotizacion->id_concepto] = [];
                                 $arrayResult['valores'][$cotizacion->id_concepto]['partida'] = $cotizacion;
                                 $row++;
-                                $maxRow = ($maxRow < $row) ? $row : $maxRow;
                             }
                             $arrayResult['valores'][$cotizacion->id_concepto]['presupuesto'][$_index] = $presupuesto;
                             $arrayResult['valores'][$cotizacion->id_concepto]['cotizacion'][$_index] = $cotizacion;
@@ -219,8 +219,12 @@ class AsignacionCargaPreciosLayout extends ValidacionLayout
 
                 $index = 1;
                 $haciaAbajo = 3;
-                foreach ($arrayContratoProyectado['valores'] as $key => $contratoProyectado) {
-                    foreach ($contratoProyectado['presupuesto'] as $key => $presupuesto) {
+                $contratoProyectadoRef = [];
+                foreach ($arrayContratoProyectado['valores'] as $key => $contratoProyectado)
+                {
+                    $contratoProyectadoRef = $contratoProyectado['presupuesto'];
+                    foreach ($contratoProyectado['presupuesto'] as $key => $presupuesto)
+                    {
                         $desde = (count($this->headerDinamicos) * $key) + (count($this->headerFijos));
 
                         // Precio Unitario Antes Descuento
@@ -282,7 +286,7 @@ class AsignacionCargaPreciosLayout extends ValidacionLayout
 
                 // % Descuento
                 $pos = ++$haciaAbajo;
-                foreach ($contratoProyectado['presupuesto'] as $key => $presupuesto) {
+                foreach ($contratoProyectadoRef as $key => $presupuesto) {
                     $desde = ((count($this->headerDinamicos) * $key) + (count($this->headerFijos))) - 1;
                     $sheet->setCellValue(\PHPExcel_Cell::stringFromColumnIndex($desde) . $pos, '% Descuento');
                     $sheet->setCellValue(\PHPExcel_Cell::stringFromColumnIndex($desde + 1) . $pos, '0');
@@ -290,7 +294,7 @@ class AsignacionCargaPreciosLayout extends ValidacionLayout
 
                 // Subtotal Precios PESO MXP
                 $pos = ++$haciaAbajo;
-                foreach ($contratoProyectado['presupuesto'] as $key => $presupuesto) {
+                foreach ($contratoProyectadoRef as $key => $presupuesto) {
                     // Referencia de posición para la cotización
                     $desdeCot = ((count($this->headerDinamicos) * $key) + (count($this->headerFijos)));
 
@@ -303,7 +307,7 @@ class AsignacionCargaPreciosLayout extends ValidacionLayout
 
                 // Subtotal Precios DOLAR USD
                 $pos = ++$haciaAbajo;
-                foreach ($contratoProyectado['presupuesto'] as $key => $presupuesto) {
+                foreach ($contratoProyectadoRef as $key => $presupuesto) {
                     // Referencia de posición para la cotización
                     $desdeCot = ((count($this->headerDinamicos) * $key) + (count($this->headerFijos)));
 
@@ -316,7 +320,7 @@ class AsignacionCargaPreciosLayout extends ValidacionLayout
 
                 // Subtotal Precios EURO
                 $pos = ++$haciaAbajo;
-                foreach ($contratoProyectado['presupuesto'] as $key => $presupuesto) {
+                foreach ($contratoProyectadoRef as $key => $presupuesto) {
                     // Referencia de posición para la cotización
                     $desdeCot = ((count($this->headerDinamicos) * $key) + (count($this->headerFijos)));
 
@@ -329,7 +333,7 @@ class AsignacionCargaPreciosLayout extends ValidacionLayout
 
                 // TC USD
                 $pos = ++$haciaAbajo;
-                foreach ($contratoProyectado['presupuesto'] as $key => $presupuesto) {
+                foreach ($contratoProyectadoRef as $key => $presupuesto) {
                     // Referencia de posición para la cotización
                     $desdeCot = ((count($this->headerDinamicos) * $key) + (count($this->headerFijos)));
 
@@ -341,7 +345,7 @@ class AsignacionCargaPreciosLayout extends ValidacionLayout
 
                 // TC EURO
                 $pos = ++$haciaAbajo;
-                foreach ($contratoProyectado['presupuesto'] as $key => $presupuesto) {
+                foreach ($contratoProyectadoRef as $key => $presupuesto) {
                     // Referencia de posición para la cotización
                     $desdeCot = ((count($this->headerDinamicos) * $key) + (count($this->headerFijos)));
 
@@ -353,7 +357,7 @@ class AsignacionCargaPreciosLayout extends ValidacionLayout
 
                 // Moneda de Conv.
                 $pos = ++$haciaAbajo;
-                foreach ($contratoProyectado['presupuesto'] as $key => $presupuesto) {
+                foreach ($contratoProyectadoRef as $key => $presupuesto) {
                     // Referencia de posición para la cotización
                     $desdeCot = ((count($this->headerDinamicos) * $key) + (count($this->headerFijos)));
 
@@ -375,7 +379,7 @@ class AsignacionCargaPreciosLayout extends ValidacionLayout
 
                 // Subtotal Moneda Conv.
                 $pos = ++$haciaAbajo;
-                foreach ($contratoProyectado['presupuesto'] as $key => $presupuesto) {
+                foreach ($contratoProyectadoRef as $key => $presupuesto) {
                     // Referencia de posición para la cotización
                     $desdeCot = ((count($this->headerDinamicos) * $key) + (count($this->headerFijos)));
 
@@ -387,7 +391,7 @@ class AsignacionCargaPreciosLayout extends ValidacionLayout
 
                 // IVA
                 $pos = ++$haciaAbajo;
-                foreach ($contratoProyectado['presupuesto'] as $key => $presupuesto) {
+                foreach ($contratoProyectadoRef as $key => $presupuesto) {
                     // Referencia de posición para la cotización
                     $desdeCot = ((count($this->headerDinamicos) * $key) + (count($this->headerFijos)));
 
@@ -400,7 +404,7 @@ class AsignacionCargaPreciosLayout extends ValidacionLayout
 
                 // Total
                 $pos = ++$haciaAbajo;
-                foreach ($contratoProyectado['presupuesto'] as $key => $presupuesto) {
+                foreach ($contratoProyectadoRef as $key => $presupuesto) {
                     // Referencia de posición para la cotización
                     $desdeCot = ((count($this->headerDinamicos) * $key) + (count($this->headerFijos)));
 
@@ -413,7 +417,7 @@ class AsignacionCargaPreciosLayout extends ValidacionLayout
 
                 // Fecha de Presupuesto
                 $pos = ++$haciaAbajo;
-                foreach ($contratoProyectado['presupuesto'] as $key => $presupuesto) {
+                foreach ($contratoProyectadoRef as $key => $presupuesto) {
                     // Referencia de posición para la cotización
                     $desdeCot = ((count($this->headerDinamicos) * $key) + (count($this->headerFijos)));
 
@@ -426,7 +430,7 @@ class AsignacionCargaPreciosLayout extends ValidacionLayout
 
                 // % Anticipo
                 $pos = ++$haciaAbajo;
-                foreach ($contratoProyectado['presupuesto'] as $key => $presupuesto) {
+                foreach ($contratoProyectadoRef as $key => $presupuesto) {
                     // Referencia de posición para la cotización
                     $desdeCot = ((count($this->headerDinamicos) * $key) + (count($this->headerFijos)));
 
@@ -439,7 +443,7 @@ class AsignacionCargaPreciosLayout extends ValidacionLayout
 
                 // Crédito dias
                 $pos = ++$haciaAbajo;
-                foreach ($contratoProyectado['presupuesto'] as $key => $presupuesto) {
+                foreach ($contratoProyectadoRef as $key => $presupuesto) {
                     // Referencia de posición para la cotización
                     $desdeCot = ((count($this->headerDinamicos) * $key) + (count($this->headerFijos)));
 
@@ -452,7 +456,7 @@ class AsignacionCargaPreciosLayout extends ValidacionLayout
 
                 // Vigencia dias
                 $pos = ++$haciaAbajo;
-                foreach ($contratoProyectado['presupuesto'] as $key => $presupuesto) {
+                foreach ($contratoProyectadoRef as $key => $presupuesto) {
                     // Referencia de posición para la cotización
                     $desdeCot = ((count($this->headerDinamicos) * $key) + (count($this->headerFijos)));
 
@@ -465,7 +469,7 @@ class AsignacionCargaPreciosLayout extends ValidacionLayout
 
                 // Observaciones Generales
                 $pos = ++$haciaAbajo;
-                foreach ($contratoProyectado['presupuesto'] as $key => $presupuesto) {
+                foreach ($contratoProyectadoRef as $key => $presupuesto) {
                     // Referencia de posición para la cotización
                     $desdeCot = ((count($this->headerDinamicos) * $key) + (count($this->headerFijos)));
 
