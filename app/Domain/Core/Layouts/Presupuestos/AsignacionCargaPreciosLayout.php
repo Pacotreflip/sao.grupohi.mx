@@ -519,9 +519,10 @@ class AsignacionCargaPreciosLayout extends ValidacionLayout
                 ];
 
                 $layout = $this->setData();
+                $this->setMessage("No es posible procesar el Layout debido a que presenta diferencias con la estructura original descargada");
                 if ($this->validarHeader($headers, $layout)) {
                     if (count($col) != ($layout['maxRow'] + $this->cabecerasLength + $this->operaciones)) {
-                        throw new \Exception("No es posible procesar el Layout debido a que presenta diferencias con la información actual del Contrato Proyectado ");
+                        throw new \Exception("No es posible procesar el Layout debido a que presenta diferencias con la estructura original descargada");
                     }
                     $arrayContratos = [];
                     for ($i = $this->cabecerasLength; $i < count($col); $i++) {

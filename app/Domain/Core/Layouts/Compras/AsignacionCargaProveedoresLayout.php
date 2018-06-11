@@ -668,26 +668,26 @@ class AsignacionCargaProveedoresLayout extends ValidacionLayout
                     $impuesto = str_replace(",", "", $gralCotizacion["cotizacion"]["iva"]);
                     $monto = str_replace(",", "", $gralCotizacion["cotizacion"]["total"]);
                     if ($anticipo > 100) {
-                        $mensajeError = "El porcentaje de anticipo no puede ser mayor a 100";
+                        $mensajeError .= "El porcentaje de anticipo no puede ser mayor a 100\n";
                         $error++;
                     }
                     if (is_numeric($subtotal)) {
-                        $mensajeError = "El subtotal_moneda_conv no es número";
+                        $mensajeError .= "El subtotal_moneda_conv [$subtotal] no es número\n";
                         $error++;
                     }
                     if (is_numeric($impuesto)) {
-                        $mensajeError = "El iva no es número";
+                        $mensajeError .= "El iva [$impuesto]  no es número\n";
                         $error++;
                     }
                     if (is_numeric($monto)) {
-                        $mensajeError = "El total no es número";
+                        $mensajeError .= "El total [$monto]  no es número\n";
                         $error++;
                     }
                     $rqctocCotizacion = $cotizacionCompra->rqctocCotizacion()->get();
                     $idrqctocCotizaciones=$rqctocCotizacion[0]->idrqctoc_cotizaciones;
                     $con_asignacion = $this->requisicion->getNumAsignaciones($idrqctocCotizaciones);
                     if ($con_asignacion) {
-                        $mensajeError = "La cotización no puede ser modificada debido a que se encuentra relacionada en al menos una asignación de compra";
+                        $mensajeError = "La cotización no puede ser modificada debido a que se encuentra relacionada en al menos una asignación de compra,\n";
                         $error++;
                     }
                     if ($error > 0) {
@@ -729,6 +729,10 @@ class AsignacionCargaProveedoresLayout extends ValidacionLayout
                         throw new \Exception($mensajeError);
                     }
                     $descuento = $gralCotizacion["cotizacion"]["descuento"];
+                    if (is_numeric($descuento)) {
+                        $cotizaciones[$key]['error'][] = "El descuento [$descuento] no puede subirse, por que no es número";
+                        $error++;
+                    }
                     $datos_cotizacion = [];
                     $datos_cotizacion["idmoneda"] = $idmoneda;
                     $datos_cotizacion["fecha_cotizacion"] = $fecha_cotizacion;
@@ -755,6 +759,10 @@ class AsignacionCargaProveedoresLayout extends ValidacionLayout
                         $idMaterial = $partidas['material_sao'];
                         $idrqctocSolicitudesPartidas = $partidas['idrqctoc_solicitudes_partidas'];
                         $descuento_partida = $partidas['PorcentajeDescuento'];
+                        if (is_numeric($descuento_partida)) {
+                            $cotizaciones[$key]['error'][] = "El porcentaje de descuento no puede subirse, por que no es número";
+                            $error++;
+                        }
                         $descuento_compuesto = $descuento_partida + $descuento - ($descuento_partida * $descuento / 100);
                         if ($partidas['IdMoneda'] == 1) {
                             $id_moneda_partida = 2;

@@ -44,7 +44,10 @@ class ValidacionLayout
      * @var int
      */
     protected $columnsExt = 2;
-
+    /**
+     * @var string
+     */
+    protected $message = 'No es posible procesar el Layout debido a que presenta diferencias con la información actual';
     /**
      * @param $headers
      * @param $layout
@@ -56,12 +59,12 @@ class ValidacionLayout
         $maxCol = (($layout['totales'] * $this->lengthHeaderDinamicos) + $this->lengthHeaderFijos);
         $headers = array_slice($headers, 0, count($headers) - $this->columnsExt);
         if ($maxCol != count($headers)) {
-            throw new \Exception("No es posible procesar el Layout debido a que presenta diferencias con la información actual");
+            throw new \Exception($this->message);
         }
         $headersCotizaciones = array_slice($headers, 0, $this->lengthHeaderFijos);
         $diffCotizaciones = array_diff(array_keys($this->headerFijos), $headersCotizaciones);
         if (count($diffCotizaciones) != 0) {
-            throw new \Exception("No es posible procesar el Layout debido a que presenta diferencias con la información actual");
+            throw new \Exception($this->message);
         }
         $j = $this->lengthHeaderFijos;
 
@@ -69,10 +72,18 @@ class ValidacionLayout
             $headersCotizaciones = array_slice($headers, $j, $this->lengthHeaderDinamicos);
             $diffCotizaciones = array_diff(array_keys($this->headerDinamicos), $headersCotizaciones);
             if (count($diffCotizaciones) > 0) {
-                throw new \Exception("No es posible procesar el Layout debido a que presenta diferencias con la información actual");
+                throw new \Exception($this->message);
             }
             $j += $this->lengthHeaderDinamicos;
         }
         return true;
+    }
+
+    /**
+     * @param string $message
+     */
+    public function setMessage($message)
+    {
+        $this->message = $message;
     }
 }
