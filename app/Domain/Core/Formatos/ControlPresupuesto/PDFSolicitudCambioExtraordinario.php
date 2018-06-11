@@ -304,7 +304,7 @@ class PDFSolicitudCambioExtraordinario extends Rotation
 
         $this->SetX(17.58);
         $this->Row(['Importe del Extraordinario', '$ ' . number_format($this->partidas['monto_presupuestado'], 2, '.', ',')]);
-        if($this->solicitud['id_estatus'] == 1){
+        if($this->solicitud['id_estatus'] == 1 || $this->solicitud['id_estatus'] == 3){
             $this->SetX(17.58);
             $this->Row(['Importe Presupuesto Actual', '$ ' . number_format($this->resumen['monto_presupuestado'], 2, '.', ',')]);
             $this->SetX(17.58);

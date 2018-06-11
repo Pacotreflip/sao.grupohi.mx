@@ -41,12 +41,12 @@
                                     <td class="text-right">$ @{{ parseFloat((partidas.monto_presupuestado)).formatMoney(2,'.',',') }}</td>
                                 </tr>
                                     <td><b>Importe Presupuesto Original</b></td>
-                                    <td class="text-right" v-if="solicitud.id_estatus == 1">$ @{{ parseFloat((resumen.monto_presupuestado)).formatMoney(2,'.',',') }}</td>
+                                    <td class="text-right" v-if="solicitud.id_estatus == 1 || solicitud.id_estatus == 3">$ @{{ parseFloat((resumen.monto_presupuestado)).formatMoney(2,'.',',') }}</td>
                                     <td class="text-right" v-else>$ @{{ parseFloat((resumen.monto_presupuestado_original)).formatMoney(2,'.',',') }}</td>
                                 </tr>
                                 <tr>
                                     <td><b>Importe Presupuesto Actualizado</b></td>
-                                    <td class="text-right" v-if="solicitud.id_estatus == 1">$ {{ number_format(($resumen->monto_presupuestado+$partidas['monto_presupuestado']),'2','.',',')}}</td>
+                                    <td class="text-right" v-if="solicitud.id_estatus == 1  || solicitud.id_estatus == 3">$ {{ number_format(($resumen->monto_presupuestado+$partidas['monto_presupuestado']),'2','.',',')}}</td>
                                     <td class="text-right" v-else>$ @{{ parseFloat((resumen.monto_presupuestado_actualizado)).formatMoney(2,'.',',') }}</td>
                                 </tr>
                             </table>
