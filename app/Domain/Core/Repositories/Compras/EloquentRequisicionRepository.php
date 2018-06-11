@@ -177,20 +177,29 @@ class EloquentRequisicionRepository implements RequisicionRepository
      * @param $id_requisicion
      * @return mixed
      */
-    public function getPartidasCotizacion($id_requisicion)
+    public function getPartidasCotizacion($id_requisicion, $id_transaccion_sao, $solo_pendientes)
     {
-        return RQCTOCSolicitudPartidas::where('idrqctoc_solicitudes', $id_requisicion)
+        $partidas = RQCTOCSolicitudPartidas::where('idrqctoc_solicitudes', $id_requisicion)
             ->with(['item.transaccion', 'material'])
             ->groupBy('idmaterial_sao')->get();
+
+        $that = $this;
+
+        if ($solo_pendientes)
+            $partidas->filter(function ($p) use ($that, $id_transaccion_sao) {
+                return $that->partidaFincada($id_transaccion_sao, $p['iditem_sao']);
+            });
+
+        return $partidas;
     }
 
     /**
      * @param int $id_requisicion
      * @param array $ids_cot
      */
-    public function   getPartidasCotizacionAgrupadas($id_requisicion)
+    public function   getPartidasCotizacionAgrupadas($id_requisicion, $id_transaccion_sao, $solo_pendientes)
     {
-        return RQCTOCCotizacionesPartidas::select( DB::raw("
+        $partidas =  RQCTOCCotizacionesPartidas::select( DB::raw("
             rqctoc_cotizaciones_partidas.idrqctoc_cotizaciones_partidas,
             rqctoc_cotizaciones_partidas.idrqctoc_cotizaciones,
             rqctoc_cotizaciones_partidas.idrqctoc_solicitudes_partidas,
@@ -220,6 +229,14 @@ class EloquentRequisicionRepository implements RequisicionRepository
             ->where('rqctoc_cotizaciones.idobra_sao', Context::getID())
             ->groupBy('rqctoc_solicitudes_partidas.idmaterial_sao', 'rqctoc_cotizaciones.idrqctoc_cotizaciones')
             ->get();
+
+        $that = $this;
+        if ($solo_pendientes)
+            $partidas->filter(function ($p) use ($that, $id_transaccion_sao) {
+                return $that->partidaFincada($id_transaccion_sao, $p['iditem_sao']);
+            });
+
+        return $partidas;
     }
 
     public function getRequisicion($id_transaccion_sao)
@@ -247,5 +264,29 @@ class EloquentRequisicionRepository implements RequisicionRepository
             }
         }
         return false;
+    }
+
+    function partidaFincada($id_transaccion, $id_material)
+    {
+        $fincada = false;
+
+        // Se necesitan ambos parametros
+        if (empty($id_transaccion) || empty($id_material))
+            return $fincada;
+
+        $query = DB::connection('cadeco')->select(DB::raw("
+select
+case when
+(ISNULL((select cantidad from cotizaciones
+ where id_transaccion  in (select top 1 id_transaccion from transacciones where id_antecedente = ". $id_transaccion ." and tipo_transaccion = 18 ) and id_material = ". $id_material ."), 0)) -
+(ISNULL((select sum(cantidad) from items where id_antecedente = ". $id_transaccion ." and id_material = ". $id_material ."),0))
+ < 0.01 then 1 else 0 end as fincada
+"));
+
+        // Si se obtuvo un resultado, la partida está fincada
+        foreach ($query as $q)
+            $fincada = $q->fincada;
+
+        return (bool) $fincada;
     }
 }

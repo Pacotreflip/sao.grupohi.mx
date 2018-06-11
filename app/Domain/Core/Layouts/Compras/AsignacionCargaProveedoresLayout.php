@@ -137,9 +137,9 @@ class AsignacionCargaProveedoresLayout extends ValidacionLayout
         // Tipo cambio hoy
         $tipo_cambio = Cambio::where('fecha', '=', date('Y-m-d'))->get()->toArray();
 
-        foreach ($tipo_cambio as $k => $v) {
+        foreach ($tipo_cambio as $k => $v)
             $this->tipo_cambio[$v['id_moneda']] = $v;
-        }
+
         $this->requisicion = $requisicionRepository;
     }
 
@@ -153,7 +153,7 @@ class AsignacionCargaProveedoresLayout extends ValidacionLayout
         $presupuestos = $this->requisicion->getCotizaciones($this->info['id_requisicion'], $this->info['cot_ids']);
 
         // Agrupados/No agrupados
-        $partidas = !empty($this->info['agrupadores']) ? $this->requisicion->getPartidasCotizacionAgrupadas($this->info['id_requisicion']) : $this->requisicion->getPartidasCotizacion($this->info['id_requisicion']);
+        $partidas = !empty($this->info['agrupadores']) ? $this->requisicion->getPartidasCotizacionAgrupadas($this->info['id_requisicion'], $this->info['id_transaccion_sao'], $this->info['solo_pendientes']) : $this->requisicion->getPartidasCotizacion($this->info['id_requisicion'], $this->info['id_transaccion_sao'], $this->info['solo_pendientes']);
 
         $arrayResult['totales'] = $presupuestos->count();
         $arrayResult['valores'] = [];
@@ -216,10 +216,12 @@ class AsignacionCargaProveedoresLayout extends ValidacionLayout
                     $index = 1;
                     $haciaAbajo = 3;
                     $reqPresupuestos = [];
-                    foreach ($arrayRequisicion['valores'] as $key => $requisicion) {
+                    foreach ($arrayRequisicion['valores'] as $key => $requisicion)
+                    {
                         $reqPresupuestos = $requisicion['presupuesto'];
 
-                        foreach ($requisicion['presupuesto'] as $key => $cotizacion) {
+                        foreach ($requisicion['presupuesto'] as $key => $cotizacion)
+                        {
                             $desde = (count($this->headerDinamicos) * $key) + (count($this->headerFijos));
 
                             // Precio Unitario
@@ -251,7 +253,7 @@ class AsignacionCargaProveedoresLayout extends ValidacionLayout
 
                             // Precio Total Moneda Conversión
                             $sheet->setCellValue(\PHPExcel_Cell::stringFromColumnIndex($desde + 4) . $haciaAbajo,
-                                '=IF(' . \PHPExcel_Cell::stringFromColumnIndex($desde + 3) . $haciaAbajo . '="EURO",' . \PHPExcel_Cell::stringFromColumnIndex($desde + 3) . $haciaAbajo . '*' . $this->tipo_cambio[3]['cambio'] . '/1, IF(' . \PHPExcel_Cell::stringFromColumnIndex($desde + 3) . $haciaAbajo . '="DOLAR USD",' . \PHPExcel_Cell::stringFromColumnIndex($desde + 2) . $haciaAbajo . '*' . $this->tipo_cambio[2]['cambio'] . '/1, IF(' . \PHPExcel_Cell::stringFromColumnIndex($desde + 3) . $haciaAbajo . '="PESO MXP",' . \PHPExcel_Cell::stringFromColumnIndex($desde + 2) . $haciaAbajo . '/1, IF(' . \PHPExcel_Cell::stringFromColumnIndex($desde + 3) . $haciaAbajo . '="",0))))');
+                                '=IF(' . \PHPExcel_Cell::stringFromColumnIndex($desde + 3) . $haciaAbajo . '="EURO",' . \PHPExcel_Cell::stringFromColumnIndex($desde + 2) . $haciaAbajo . '*' . $this->tipo_cambio[3]['cambio'] . '/1, IF(' . \PHPExcel_Cell::stringFromColumnIndex($desde + 3) . $haciaAbajo . '="DOLAR USD",' . \PHPExcel_Cell::stringFromColumnIndex($desde + 2) . $haciaAbajo . '*' . $this->tipo_cambio[2]['cambio'] . '/1, IF(' . \PHPExcel_Cell::stringFromColumnIndex($desde + 3) . $haciaAbajo . '="PESO MXP",' . \PHPExcel_Cell::stringFromColumnIndex($desde + 2) . $haciaAbajo . '/1, IF(' . \PHPExcel_Cell::stringFromColumnIndex($desde + 3) . $haciaAbajo . '="",0))))');
                             $sheet->getStyle(\PHPExcel_Cell::stringFromColumnIndex($desde + 4) . $haciaAbajo)->getProtection()->setLocked(\PHPExcel_Style_Protection::PROTECTION_PROTECTED);
 
                             // Observaciones

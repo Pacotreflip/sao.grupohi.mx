@@ -61,7 +61,8 @@
             $info['solo_pendientes']) }}
             @endif
         </td>
-        <?php $primerValor = array_values($requisicion['valores'])[0]; ?>
+        <?php $primerValor = !empty($requisicion['valores']) ? array_values($requisicion['valores'])[0] :
+            ['presupuesto' => []]; ?>
         @foreach($primerValor['presupuesto'] as $key => $cotizacion)
             <td colspan="{{ count($headerCotizaciones) }}">
                 {{ $cotizacion->empresa->razon_social }}

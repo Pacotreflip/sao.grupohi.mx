@@ -11,10 +11,13 @@ namespace Ghi\Domain\Core\Repositories;
 
 use Dingo\Api\Exception\StoreResourceFailedException;
 use Dingo\Api\Http\Request;
+use Ghi\Core\Models\Transaccion;
 use Ghi\Domain\Core\Contracts\ContratoProyectadoRepository;
 use Ghi\Domain\Core\Models\Acarreos\MaterialAcarreo;
 use Ghi\Domain\Core\Models\Contrato;
+use Ghi\Domain\Core\Models\Subcontratos\PartidaAsignacion;
 use Ghi\Domain\Core\Models\Transacciones\ContratoProyectado;
+use Ghi\Domain\Core\Repositories\Subcontratos\EloquentPartidaAsignacionRepository;
 use Illuminate\Support\Facades\DB;
 
 class EloquentContratoProyectadoRepository implements ContratoProyectadoRepository
@@ -273,7 +276,6 @@ class EloquentContratoProyectadoRepository implements ContratoProyectadoReposito
 
     public function getPartidasContratos($id = 0, $solo_pendientes = false)
     {
-
         // This isn't pretty...
         $query = DB::connection('cadeco')->select(DB::raw("SELECT
                         contratos.descripcion as descripcion,
@@ -321,21 +323,29 @@ class EloquentContratoProyectadoRepository implements ContratoProyectadoReposito
                 ORDER BY nivel;
             "));
 
+        $transacciones = Transaccion::where('id_antecedente', $id)->get()->toArray();
+        $tIds = [];
+
+        foreach ($transacciones as $t)
+            $tIds[] = $t['id_transaccion'];
+
         // Sólo devuelve las partidas pendientes de asignar
         if ($solo_pendientes)
         {
-            $query = array_where($query, function ($value, $key) {
-                return (int) $value['en_asig'] == 0;
+            $query = array_where($query, function ($key, $value) use ($tIds) {
+                $partidas = PartidaAsignacion::whereIn('id_transaccion', $tIds)->where('id_concepto', $value->id_concepto)->get()->first();
+
+                return (!empty($partidas) && $partidas->id_concepto == $value->id_concepto) ? false : true;
             });
 
             // No muestres el padre si todos los hijos ya se encuentran fincados
-            $query = array_where($query, function ($value, $key) use($id) {
+            $query = array_where($query, function ($key, $value) use($id) {
 
-                if ($value['hijos'] == 1)
+                if ($value->hijos == 1)
                 {
-                    $encontrados = Contrato::where('id_transaccion', $id)->where('nivel', 'like', $value['nivel'])->get()->toArray();
+                    $encontrados = Contrato::where('id_transaccion', $id)->where('nivel', 'like', $value->nivel)->get(['id_concepto'])->first()->toArray();
 
-                    return array_diff(explode(',', $value['hijos_ids']), $encontrados) == array();
+                    return array_diff(explode(',', $value->hijos_ids), array_values($encontrados)) == [];
                 }
 
                 return true;
