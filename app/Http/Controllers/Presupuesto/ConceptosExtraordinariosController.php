@@ -108,7 +108,7 @@ class ConceptosExtraordinariosController extends Controller
     {
         $resumen = $this->extraordinario->getResumenExtraordinario($id);
         $partidas = $this->extraordinario->getSolicitudCambioPartidas($id);
-        $solicitud = SolicitudCambio::with(['tipoOrden', 'userRegistro', 'estatus', 'partidas'])->find($id);
+        $solicitud = SolicitudCambio::with(['tipoOrden', 'userRegistro', 'estatus', 'partidas', 'aplicaciones'])->find($id);
         return view('control_presupuesto.conceptos_extraordinarios.show')
             ->with('solicitud', $solicitud)
             ->with('partidas', $partidas)

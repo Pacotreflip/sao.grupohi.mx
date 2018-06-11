@@ -68,7 +68,7 @@
                             <strong>Folio de la solicitud:</strong>
                             <p class="text-muted">@{{ solicitud.numero_folio}}</p>
                             <strong>Cobrabilidad:</strong>
-                            <p class="text-muted">@{{ solicitud.tipo_orden.descripcion}}</p>
+                            <p class="text-muted">@{{ solicitud.tipo_orden.cobrabilidad.descripcion}}</p>
                             <strong>Tipo de Orden de Cambio:</strong>
                             <p class="text-muted">@{{solicitud.tipo_orden.descripcion}}</p>
                             <strong>Motivo:</strong>

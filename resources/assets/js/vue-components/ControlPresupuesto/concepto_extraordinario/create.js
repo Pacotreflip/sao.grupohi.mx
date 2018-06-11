@@ -157,7 +157,7 @@ Vue.component('concepto-extraordinario-create', {
                     swal({
                         type : 'success',
                         title: 'Extraordinadio Guardado Correctamente',
-                        text: 'Si desea guardar el extraordinario en catalogo ingrese una descripción, de lo contrario solo de clic en continuar',
+                        text: 'Si desea guardar el extraordinario en catálogo ingrese una descripción, de lo contrario solo de clic en continuar',
                         input: 'text',
                         showCancelButton: true,
                         confirmButtonText: 'Guardar y Continuar ',

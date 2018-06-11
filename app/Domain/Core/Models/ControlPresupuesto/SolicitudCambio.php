@@ -58,7 +58,7 @@ class SolicitudCambio extends BaseModel
 
     public function tipoOrden()
     {
-        return $this->hasOne(TipoOrden::class, "id", "id_tipo_orden");
+        return $this->hasOne(TipoOrden::class, "id", "id_tipo_orden")->with(['cobrabilidad']);
     }
 
     public function estatus()
