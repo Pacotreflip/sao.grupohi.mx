@@ -122,7 +122,7 @@
 
             {{--Cantidad Autorizada--}}
             <td style="background-color: #ffd966"
-                class="border">{{ $contratoProyectado['partida']->cantidad_original }}</td>
+                class="border">{{ $contratoProyectado['partida']->cantidad }}</td>
 
             {{--Cantidad Solicitada--}}
             <td style="background-color: #ffd966"
