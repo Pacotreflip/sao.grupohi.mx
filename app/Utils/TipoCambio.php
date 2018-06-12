@@ -32,7 +32,7 @@ class TipoCambio
             $tipoCambio[$v['id_moneda']] = $v['cambio'];
         }
         $importeCambio = $importe;
-        if($idmoneda!=3) {
+        if($idmoneda!=1) {
             $importeCambio = ($importe * $tipoCambio[$idmoneda]);
         }
         return $importeCambio;

@@ -807,7 +807,7 @@ class AsignacionCargaProveedoresLayout extends ValidacionLayout
                                         "precio_unitario" => str_replace(",", "",
                                             $partidas["precio_unitario"]),
                                         "precio_unitario_mxp" => TipoCambio::cambio(str_replace(",", "",
-                                            $partidas["precio_unitario"]), $partidas['IdMoneda']),
+                                            $partidas["precio_unitario"]), $id_moneda_partida),
                                         "descuento" => ($descuento_partida == "") ? 0 : $descuento_partida,
                                         "observaciones" => $partidas['Observaciones'],
                                     ];
