@@ -666,9 +666,9 @@ class AsignacionCargaProveedoresLayout extends ValidacionLayout
                     $ex = explode("-", $gralCotizacion["cotizacion"]["fecha_de_presupuesto"]);
                     $fecha_cotizacion = $ex[2] . "-" . $ex[1] . "-" . $ex[0];
                     $anticipo_pactado = $gralCotizacion["cotizacion"]["pago_en_parcialidades"];
-                    $subtotal = str_replace(",", "", $gralCotizacion["cotizacion"]["subtotal_moneda_conv"]);
-                    $impuesto = str_replace(",", "", $gralCotizacion["cotizacion"]["iva"]);
-                    $monto = str_replace(",", "", $gralCotizacion["cotizacion"]["total"]);
+                    $subtotal = empty($gralCotizacion["cotizacion"]["iva"])?0:str_replace(",", "", $gralCotizacion["cotizacion"]["subtotal_moneda_conv"]);
+                    $impuesto = empty($gralCotizacion["cotizacion"]["iva"])?0:str_replace(",", "", $gralCotizacion["cotizacion"]["iva"]);
+                    $monto = empty($gralCotizacion["cotizacion"]["total"])?0:str_replace(",", "", $gralCotizacion["cotizacion"]["total"]);
                     if ($anticipo > 100) {
                         $cotizaciones[$key]['error'][] = "El porcentaje de anticipo no puede ser mayor a 100\n";
                         $error++;
@@ -726,7 +726,7 @@ class AsignacionCargaProveedoresLayout extends ValidacionLayout
                             $this->resultData = $cotizaciones;
                             throw new \Exception($mensajeError);
                         }
-                        $descuento = $gralCotizacion["cotizacion"]["descuento"];
+                        $descuento = empty($gralCotizacion["cotizacion"]["descuento"])?0:$gralCotizacion["cotizacion"]["descuento"];
                         if (!is_numeric($descuento)) {
                             $cotizaciones[$key]['error'][] = "El descuento [$descuento] no puede guardar, por que no es número";
                             $error++;
