@@ -7,6 +7,8 @@ use Illuminate\Database\Eloquent\Model;
 use Ghi\Core\Models\Material;
 use Ghi\Domain\Core\Models\Transacciones;
 use Illuminate\Support\Facades\DB;
+use Ghi\Core\Facades\Context;
+
 
 /**
  * Class RQCTOCSolicitudPartidas
@@ -47,6 +49,13 @@ class RQCTOCSolicitudPartidas extends Model
      */
     public function rqctocCotizacionPartida() {
         return $this->hasOne(RQCTOCCotizacionesPartidas::class, 'idrqctoc_solicitudes_partidas', 'idrqctoc_solicitudes_partidas');
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function rqctocCotizacionPartidas() {
+        return $this->hasMany(RQCTOCCotizacionesPartidas::class, 'idrqctoc_solicitudes_partidas');
     }
 
     /**
@@ -100,5 +109,17 @@ class RQCTOCSolicitudPartidas extends Model
             }
         }
         return $this->cantidad;
+    }
+
+    public function getFincadaAttribute() {
+        $fincada = DB::connection('cadeco')->select(DB::raw("
+            select
+            case when
+            (ISNULL((select cantidad from cotizaciones
+            where id_transaccion  in (select top 1 id_transaccion from transacciones where id_antecedente = ". $this->rqctocSolicitud->idtransaccion_sao ." and tipo_transaccion = ". Transacciones\Tipo::COTIZACION_COMPRA.") and id_material = ". $this->idmaterial_sao ."), 0)) -
+            (ISNULL((select sum(cantidad) from items where id_antecedente = ". $this->rqctocSolicitud->idtransaccion_sao ." and id_material = ". $this->idmaterial_sao ."),0))
+            < 0.01 then 1 else 0 end as fincada
+        "))[0];
+        return $fincada->fincada == '1';
     }
 }

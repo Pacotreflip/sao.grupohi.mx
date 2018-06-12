@@ -13,7 +13,6 @@ use Ghi\Domain\Core\Models\ControlRec\RQCTOCCotizacionesPartidas;
 use Ghi\Domain\Core\Models\ControlRec\RQCTOCSolicitudPartidas;
 use Ghi\Domain\Core\Models\ControlRec\RQCTOCSolicitud;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
 
 /**
  * Class EloquentRequisicionRepository
@@ -183,14 +182,9 @@ class EloquentRequisicionRepository implements RequisicionRepository
             ->with(['item.transaccion', 'material'])
             ->groupBy('idmaterial_sao')->get();
 
-        $that = $this;
-
-        if ($solo_pendientes)
-            $partidas->filter(function ($p) use ($that, $id_transaccion_sao) {
-                return $that->partidaFincada($id_transaccion_sao, $p['iditem_sao']);
-            });
-
-        return $partidas;
+        return $solo_pendientes ? $partidas->filter(function ($p){
+            return !$p->fincada;
+        }) : $partidas;
     }
 
     /**
@@ -266,27 +260,4 @@ class EloquentRequisicionRepository implements RequisicionRepository
         return false;
     }
 
-    function partidaFincada($id_transaccion, $id_material)
-    {
-        $fincada = false;
-
-        // Se necesitan ambos parametros
-        if (empty($id_transaccion) || empty($id_material))
-            return $fincada;
-
-        $query = DB::connection('cadeco')->select(DB::raw("
-select
-case when
-(ISNULL((select cantidad from cotizaciones
- where id_transaccion  in (select top 1 id_transaccion from transacciones where id_antecedente = ". $id_transaccion ." and tipo_transaccion = 18 ) and id_material = ". $id_material ."), 0)) -
-(ISNULL((select sum(cantidad) from items where id_antecedente = ". $id_transaccion ." and id_material = ". $id_material ."),0))
- < 0.01 then 1 else 0 end as fincada
-"));
-
-        // Si se obtuvo un resultado, la partida está fincada
-        foreach ($query as $q)
-            $fincada = $q->fincada;
-
-        return (bool) $fincada;
-    }
 }
