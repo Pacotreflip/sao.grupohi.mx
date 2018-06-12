@@ -315,7 +315,7 @@ class AsignacionCargaPreciosLayout extends ValidacionLayout
                         $sheet->setCellValue(\PHPExcel_Cell::stringFromColumnIndex($desde) . $pos,
                             'Subtotal Precios PESO MXP');
                         $sheet->setCellValue(\PHPExcel_Cell::stringFromColumnIndex($desde + 1) . $pos,
-                            '=SUMIF(' . \PHPExcel_Cell::stringFromColumnIndex($desdeCot + 5) . '3:' . \PHPExcel_Cell::stringFromColumnIndex($desdeCot + 5) . $ultimaFila . ',"PESO MXP",' . \PHPExcel_Cell::stringFromColumnIndex($desdeCot + 4) . '3:' . \PHPExcel_Cell::stringFromColumnIndex($desdeCot + 4) . $ultimaFila . ')-(SUMIF(' . \PHPExcel_Cell::stringFromColumnIndex($desdeCot + 5) . '3:' . \PHPExcel_Cell::stringFromColumnIndex($desdeCot + 5) . $ultimaFila . ',"PESO MXP",' . \PHPExcel_Cell::stringFromColumnIndex($desdeCot + 4) . '3:' . \PHPExcel_Cell::stringFromColumnIndex($desdeCot + 4) . $ultimaFila . ')*' . \PHPExcel_Cell::stringFromColumnIndex($desdeCot) . ($ultimaFila) . '/100)');
+                            '=SUMIF(' . \PHPExcel_Cell::stringFromColumnIndex($desdeCot + 5) . '3:' . \PHPExcel_Cell::stringFromColumnIndex($desdeCot + 5) . $ultimaFila . ',"PESO MXP",' . \PHPExcel_Cell::stringFromColumnIndex($desdeCot + 4) . '3:' . \PHPExcel_Cell::stringFromColumnIndex($desdeCot + 4) . $ultimaFila . ')-(SUMIF(' . \PHPExcel_Cell::stringFromColumnIndex($desdeCot + 5) . '3:' . \PHPExcel_Cell::stringFromColumnIndex($desdeCot + 5) . $ultimaFila . ',"PESO MXP",' . \PHPExcel_Cell::stringFromColumnIndex($desdeCot + 4) . '3:' . \PHPExcel_Cell::stringFromColumnIndex($desdeCot + 4) . $ultimaFila . ')*' . \PHPExcel_Cell::stringFromColumnIndex($desdeCot) . ($ultimaFila + 1) . '/100)');
                     }
 
                     // Subtotal Precios DOLAR USD
@@ -330,7 +330,7 @@ class AsignacionCargaPreciosLayout extends ValidacionLayout
                         $sheet->setCellValue(\PHPExcel_Cell::stringFromColumnIndex($desde) . $pos,
                             'Subtotal Precios DOLAR USD');
                         $sheet->setCellValue(\PHPExcel_Cell::stringFromColumnIndex($desde + 1) . $pos,
-                            '=SUMIF(' . \PHPExcel_Cell::stringFromColumnIndex($desdeCot + 5) . '3:' . \PHPExcel_Cell::stringFromColumnIndex($desdeCot + 5) . $pos . ',"DOLAR USD",' . \PHPExcel_Cell::stringFromColumnIndex($desdeCot + 4) . '3:' . \PHPExcel_Cell::stringFromColumnIndex($desdeCot + 4) . $pos . ')-(SUMIF(' . \PHPExcel_Cell::stringFromColumnIndex($desdeCot + 5) . '3:' . \PHPExcel_Cell::stringFromColumnIndex($desdeCot + 5) . $pos . ',"DOLAR USD",' . \PHPExcel_Cell::stringFromColumnIndex($desdeCot + 4) . '3:' . \PHPExcel_Cell::stringFromColumnIndex($desdeCot + 4) . $pos . ')*' . \PHPExcel_Cell::stringFromColumnIndex($desdeCot) . ($haciaAbajo + 1) . '/100)');
+                            '=SUMIF(' . \PHPExcel_Cell::stringFromColumnIndex($desdeCot + 5) . '3:' . \PHPExcel_Cell::stringFromColumnIndex($desdeCot + 5) . $ultimaFila . ',"DOLAR USD",' . \PHPExcel_Cell::stringFromColumnIndex($desdeCot + 4) . '3:' . \PHPExcel_Cell::stringFromColumnIndex($desdeCot + 4) . $ultimaFila . ')-(SUMIF(' . \PHPExcel_Cell::stringFromColumnIndex($desdeCot + 5) . '3:' . \PHPExcel_Cell::stringFromColumnIndex($desdeCot + 5) . $ultimaFila . ',"DOLAR USD",' . \PHPExcel_Cell::stringFromColumnIndex($desdeCot + 4) . '3:' . \PHPExcel_Cell::stringFromColumnIndex($desdeCot + 4) . $ultimaFila . ')*' . \PHPExcel_Cell::stringFromColumnIndex($desdeCot) . ($ultimaFila + 1) . '/100)');
                     }
 
                     // Subtotal Precios EURO
@@ -662,6 +662,7 @@ class AsignacionCargaPreciosLayout extends ValidacionLayout
                     $contratos[$key]['error'][] = "Ingrese un valor válido para el Tipo de Cambio del Euro";
                     $error++;
                 }
+                empty($contrato['cotizacion']['iva'])? $contrato['cotizacion']['iva'] = 0:'';
                 if (!is_numeric($contrato['cotizacion']['iva'])/*is_nan($contrato['cotizacion']['iva'])*/) {
                     $contratos[$key]['error'][] = "Ingrese un valor válido para el IVA";
                     $error++;
@@ -670,10 +671,12 @@ class AsignacionCargaPreciosLayout extends ValidacionLayout
                     $contratos[$key]['error'][] = "Ingrese un valor válido para el IVA";
                     $error++;
                 }
+                empty($contrato['cotizacion']['credito_dias'])? $contrato['cotizacion']['credito_dias'] = 0:'';
                 if (!is_numeric($contrato['cotizacion']['credito_dias'])) {
-                    $contratos[$key]['error'][] = "Ingrese un valor válido para los dáas de crédito.";
+                    $contratos[$key]['error'][] = "Ingrese un valor válido para los días de crédito.";
                     $error++;
                 }
+                 empty($contrato['cotizacion']['vigencia_dias'])? $contrato['cotizacion']['vigencia_dias'] = 0:'';
                 if (!is_numeric($contrato['cotizacion']['vigencia_dias'])) {
                     $contratos[$key]['error'][] = "Ingrese un valor válido para los días de vigencia del presupuesto.";
                     $error++;

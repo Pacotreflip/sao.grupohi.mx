@@ -319,7 +319,7 @@ class AsignacionCargaProveedoresLayout extends ValidacionLayout
                         $sheet->setCellValue(\PHPExcel_Cell::stringFromColumnIndex($desde) . $pos,
                             'Subtotal Precios DOLAR USD');
                         $sheet->setCellValue(\PHPExcel_Cell::stringFromColumnIndex($desde + 1) . $pos,
-                            '=SUMIF(' . \PHPExcel_Cell::stringFromColumnIndex($desdeCot + 3) . '3:' . \PHPExcel_Cell::stringFromColumnIndex($desdeCot + 3) . $pos . ',"DOLAR USD",' . \PHPExcel_Cell::stringFromColumnIndex($desdeCot + 2) . '3:' . \PHPExcel_Cell::stringFromColumnIndex($desdeCot + 2) . $pos . ')-(SUMIF(' . \PHPExcel_Cell::stringFromColumnIndex($desdeCot + 3) . '3:' . \PHPExcel_Cell::stringFromColumnIndex($desdeCot + 3) . $pos . ',"DOLAR USD",' . \PHPExcel_Cell::stringFromColumnIndex($desdeCot + 2) . '3:' . \PHPExcel_Cell::stringFromColumnIndex($desdeCot + 2) . $pos . ')*' . \PHPExcel_Cell::stringFromColumnIndex($desdeCot) . ($haciaAbajo + 1) . '/100)');
+                            '=SUMIF(' . \PHPExcel_Cell::stringFromColumnIndex($desdeCot + 3) . '3:' . \PHPExcel_Cell::stringFromColumnIndex($desdeCot + 3) . $ultimaFila . ',"DOLAR USD",' . \PHPExcel_Cell::stringFromColumnIndex($desdeCot + 2) . '3:' . \PHPExcel_Cell::stringFromColumnIndex($desdeCot + 2) . $ultimaFila . ')-(SUMIF(' . \PHPExcel_Cell::stringFromColumnIndex($desdeCot + 3) . '3:' . \PHPExcel_Cell::stringFromColumnIndex($desdeCot + 3) . $ultimaFila . ',"DOLAR USD",' . \PHPExcel_Cell::stringFromColumnIndex($desdeCot + 2) . '3:' . \PHPExcel_Cell::stringFromColumnIndex($desdeCot + 2) . $ultimaFila . ')*' . \PHPExcel_Cell::stringFromColumnIndex($desdeCot) . ($ultimaFila + 1) . '/100)');
                     }
 
                     // Subtotal Precios EURO
