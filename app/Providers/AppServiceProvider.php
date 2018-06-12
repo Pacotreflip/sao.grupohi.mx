@@ -2,8 +2,10 @@
 
 namespace Ghi\Providers;
 
+use Ghi\Domain\Core\Models\Transacciones\Transaccion;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
+use Validator;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -15,6 +17,14 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {
         View::composer('*', \Ghi\Http\Composers\ObraComposer::class);
+
+        Validator::extend('periodo_abierto', function($attribute, $value, $parameters, $validator) {
+            return Transaccion::periodoAbierto($value);
+        });
+
+        Validator::extend('sin_facturas', function ($attribute, $value) {
+            return ! Transaccion::find($value)->tiene_facturas;
+        });
     }
 
     /**

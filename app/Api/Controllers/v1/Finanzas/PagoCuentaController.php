@@ -9,7 +9,6 @@
 namespace Ghi\Api\Controllers\v1\Finanzas;
 
 use Dingo\Api\Exception\ValidationHttpException;
-use Ghi\Domain\Core\Models\Transacciones\Transaccion;
 use Illuminate\Support\Facades\Validator;
 use Dingo\Api\Routing\Helpers;
 use Ghi\Domain\Core\Contracts\Finanzas\PagoCuentaRepository;
@@ -58,25 +57,20 @@ class PagoCuentaController extends BaseController
             }
         });
 
-        Validator::extend('sin_factura', function ($attribute, $value) {
-            return ! Transaccion::find($value)->tiene_facturas;
-        });
-
         $rules = [
             'cumplimiento' => ['required', 'date'],
             'vencimiento' => ['required', 'date'],
-            'fecha' => ['required', 'date'],
+            'fecha' => ['required', 'date', 'periodo_abierto'],
             'monto' => ['required', 'string',],
             'destino' => ['required', 'string',],
             'observaciones' => ['string',],
             'id_empresa' => ['required', 'exists:cadeco.empresas,id_empresa'],
             'id_costo' => ['required', 'exists:cadeco.costos,id_costo'],
-            'id_antecedente' => ['required', 'uniqueid_antecedente', 'sin_factura'],
+            'id_antecedente' => ['required', 'uniqueid_antecedente', 'sin_facturas'],
         ];
 
         $messages = [
             'uniqueid_antecedente' => 'Ya existe una solicitud generada para la transacción seleccionada',
-            'sin_factura' => 'La transacción seleccionada tiene por lo menos una factura asociada',
         ];
 
         $validator = app('validator')->make($request->all(), $rules, $messages);

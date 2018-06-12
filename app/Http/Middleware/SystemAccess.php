@@ -37,7 +37,7 @@ class SystemAccess
 
         if (! Entrust::can($permisos)) {
             if($request->ajax()) {
-                throw new HttpResponseException(new Response('¡LO SENTIMOS, NO CUENTAS CON LOS PERMISOS NECESARIOS PARA REALIZAR LA OPERACIÓN SELECCIONADA!', 404));
+                throw new HttpResponseException(new Response('¡LO SENTIMOS, NO CUENTAS CON LOS PERMISOS NECESARIOS PARA REALIZAR LA OPERACIÓN SELECCIONADA!', 403));
             }
             Flash::error('¡LO SENTIMOS, NO CUENTAS CON LOS PERMISOS NECESARIOS PARA REALIZAR LA OPERACIÓN SELECCIONADA!');
             return redirect()->back();
