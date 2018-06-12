@@ -289,6 +289,7 @@ class AsignacionCargaProveedoresLayout extends ValidacionLayout
                         $desde = ((count($this->headerDinamicos) * $key) + (count($this->headerFijos))) - 1;
                         $sheet->setCellValue(\PHPExcel_Cell::stringFromColumnIndex($desde) . $pos, '% Descuento');
                         $sheet->setCellValue(\PHPExcel_Cell::stringFromColumnIndex($desde + 1) . $pos, '0');
+                        $sheet->getStyle(\PHPExcel_Cell::stringFromColumnIndex($desde + 1) . $pos)->getProtection()->setLocked(\PHPExcel_Style_Protection::PROTECTION_UNPROTECTED);
                     }
 
                     // Subtotal Precios PESO MXP
@@ -451,7 +452,7 @@ class AsignacionCargaProveedoresLayout extends ValidacionLayout
                         $sheet->setCellValue(\PHPExcel_Cell::stringFromColumnIndex($desde) . $pos,
                             'Pago en Parcialdades (%)');
                         $sheet->setCellValue(\PHPExcel_Cell::stringFromColumnIndex($desde + 1) . $pos,
-                            $cotizacion->anticipo_pactado);
+                            ($cotizacion->anticipo_pactado ?: 0));
                         $sheet->getStyle(\PHPExcel_Cell::stringFromColumnIndex($desde + 1) . $pos)->getProtection()->setLocked(\PHPExcel_Style_Protection::PROTECTION_UNPROTECTED);
                     }
 
@@ -465,7 +466,7 @@ class AsignacionCargaProveedoresLayout extends ValidacionLayout
                         $desde = $desdeCot - 1;
                         $sheet->setCellValue(\PHPExcel_Cell::stringFromColumnIndex($desde) . $pos, '% Anticipo');
                         $sheet->setCellValue(\PHPExcel_Cell::stringFromColumnIndex($desde + 1) . $pos,
-                            $cotizacion->anticipo);
+                            ($cotizacion->anticipo ?: 0));
                         $sheet->getStyle(\PHPExcel_Cell::stringFromColumnIndex($desde + 1) . $pos)->getProtection()->setLocked(\PHPExcel_Style_Protection::PROTECTION_UNPROTECTED);
                     }
 
@@ -479,7 +480,7 @@ class AsignacionCargaProveedoresLayout extends ValidacionLayout
                         $desde = $desdeCot - 1;
                         $sheet->setCellValue(\PHPExcel_Cell::stringFromColumnIndex($desde) . $pos, 'Crédito días');
                         $sheet->setCellValue(\PHPExcel_Cell::stringFromColumnIndex($desde + 1) . $pos,
-                            $cotizacion->días_credito);
+                            ($cotizacion->días_credito ?: 0));
                         $sheet->getStyle(\PHPExcel_Cell::stringFromColumnIndex($desde + 1) . $pos)->getProtection()->setLocked(\PHPExcel_Style_Protection::PROTECTION_UNPROTECTED);
                     }
 
@@ -494,7 +495,7 @@ class AsignacionCargaProveedoresLayout extends ValidacionLayout
                         $sheet->setCellValue(\PHPExcel_Cell::stringFromColumnIndex($desde) . $pos,
                             'Tiempo de Entrega (días)');
                         $sheet->setCellValue(\PHPExcel_Cell::stringFromColumnIndex($desde + 1) . $pos,
-                            $cotizacion->plazo_entrega);
+                            ($cotizacion->plazo_entrega ?: 0));
                         $sheet->getStyle(\PHPExcel_Cell::stringFromColumnIndex($desde + 1) . $pos)->getProtection()->setLocked(\PHPExcel_Style_Protection::PROTECTION_UNPROTECTED);
                     }
 
@@ -508,7 +509,7 @@ class AsignacionCargaProveedoresLayout extends ValidacionLayout
                         $desde = $desdeCot - 1;
                         $sheet->setCellValue(\PHPExcel_Cell::stringFromColumnIndex($desde) . $pos, 'Vigencia días');
                         $sheet->setCellValue(\PHPExcel_Cell::stringFromColumnIndex($desde + 1) . $pos,
-                            $cotizacion->vigencia);
+                            ($cotizacion->vigencia ?: 0));
                         $sheet->getStyle(\PHPExcel_Cell::stringFromColumnIndex($desde + 1) . $pos)->getProtection()->setLocked(\PHPExcel_Style_Protection::PROTECTION_UNPROTECTED);
                     }
 
