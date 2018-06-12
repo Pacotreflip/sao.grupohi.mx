@@ -278,7 +278,7 @@ class AsignacionCargaPreciosLayout extends ValidacionLayout
 
                             //id_moneda
                             $sheet->setCellValue(\PHPExcel_Cell::stringFromColumnIndex($desde + 10) . $haciaAbajo,
-                                '=IF(' . \PHPExcel_Cell::stringFromColumnIndex($desde + 5) . $haciaAbajo . '="EURO",2, IF(' . \PHPExcel_Cell::stringFromColumnIndex($desde + 5) . $haciaAbajo . '="DOLAR USD",1, IF(' . \PHPExcel_Cell::stringFromColumnIndex($desde + 5) . $haciaAbajo . '="PESO MXP",3,0)))');
+                                '=IF(' . \PHPExcel_Cell::stringFromColumnIndex($desde + 5) . $haciaAbajo . '="EURO",3, IF(' . \PHPExcel_Cell::stringFromColumnIndex($desde + 5) . $haciaAbajo . '="DOLAR USD",2, IF(' . \PHPExcel_Cell::stringFromColumnIndex($desde + 5) . $haciaAbajo . '="PESO MXP",1,0)))');
                             $sheet->getStyle(\PHPExcel_Cell::stringFromColumnIndex($desde + 10) . $haciaAbajo)->getProtection()->setLocked(\PHPExcel_Style_Protection::PROTECTION_PROTECTED);
 
                             //precio_total_mxp
@@ -642,6 +642,7 @@ class AsignacionCargaPreciosLayout extends ValidacionLayout
     public function procesarDatos(array $contratos)
     {
         $contrato_proyectado = $this->contrato_proyectado->find($this->id_contrato_proyectado);
+        Log::debug($contratos);
         try {
             DB::connection('cadeco')->beginTransaction();
             $error = 0;
@@ -701,13 +702,14 @@ class AsignacionCargaPreciosLayout extends ValidacionLayout
                         y no pudo ser modificada, los datos del presupuesto y de las partidas que no estan relacionadas con una asignación fueron actualizadas correctamente.";
                         $error++;
                     } else {
-                        foreach ($contrato['presupuestos'] as &$arrayPresupuesto) {
+                        foreach ($contrato['presupuestos'] as $arrayPresupuesto) {
                             if (is_array($arrayPresupuesto['id_concepto'])) {
                                 foreach ($arrayPresupuesto['id_concepto'] as $id_concepto) {
-                                    $presupuesto = $cotizacionContrato->presupuestos()->where('id_concepto',
-                                        $id_concepto)->where('id_transaccion', $key);
+                                    $presupuesto = $cotizacionContrato->presupuestos()
+                                        ->where('id_concepto',$id_concepto)
+                                        ->where('id_transaccion', $key);
                                     $dataUpdatePresupuesto = [
-                                        "precio_unitario" => $arrayPresupuesto['precio_unitario'],
+                                        "precio_unitario" =>TipoCambio::cambio($arrayPresupuesto['precio_unitario'], $arrayPresupuesto['IdMoneda']),
                                         "no_cotizado" => $arrayPresupuesto['no_cotizado'],
                                         "PorcentajeDescuento" => $arrayPresupuesto['PorcentajeDescuento'],
                                         "IdMoneda" => $arrayPresupuesto['IdMoneda'],
@@ -715,6 +717,7 @@ class AsignacionCargaPreciosLayout extends ValidacionLayout
                                         //"clave" =>  $arrayPresupuesto['clave'],
                                         //"descripcion" => $arrayPresupuesto['descripcion'],
                                     ];
+                                    Log::error($dataUpdatePresupuesto);
                                     $updatePartidas = $presupuesto->update($dataUpdatePresupuesto);
                                     if (!$updatePartidas) {
                                         $contratos[$key]['error'][] = "No se puede guardar el registro";
