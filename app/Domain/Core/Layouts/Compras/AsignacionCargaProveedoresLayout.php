@@ -651,6 +651,7 @@ class AsignacionCargaProveedoresLayout extends ValidacionLayout
      */
     public function procesarDatos(array $cotizaciones)
     {
+        dd($cotizaciones);
         try {
             DB::connection('cadeco')->beginTransaction();
             DB::connection('controlrec')->beginTransaction();
