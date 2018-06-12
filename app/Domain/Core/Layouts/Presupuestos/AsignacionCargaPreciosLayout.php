@@ -662,6 +662,7 @@ class AsignacionCargaPreciosLayout extends ValidacionLayout
                     $contratos[$key]['error'][] = "Ingrese un valor válido para el Tipo de Cambio del Euro";
                     $error++;
                 }
+                empty($contrato['cotizacion']['iva'])? $contrato['cotizacion']['iva'] = 0:'';
                 if (!is_numeric($contrato['cotizacion']['iva'])/*is_nan($contrato['cotizacion']['iva'])*/) {
                     $contratos[$key]['error'][] = "Ingrese un valor válido para el IVA";
                     $error++;
@@ -670,10 +671,12 @@ class AsignacionCargaPreciosLayout extends ValidacionLayout
                     $contratos[$key]['error'][] = "Ingrese un valor válido para el IVA";
                     $error++;
                 }
+                empty($contrato['cotizacion']['credito_dias'])? $contrato['cotizacion']['credito_dias'] = 0:'';
                 if (!is_numeric($contrato['cotizacion']['credito_dias'])) {
-                    $contratos[$key]['error'][] = "Ingrese un valor válido para los dáas de crédito.";
+                    $contratos[$key]['error'][] = "Ingrese un valor válido para los días de crédito.";
                     $error++;
                 }
+                 empty($contrato['cotizacion']['vigencia_dias'])? $contrato['cotizacion']['vigencia_dias'] = 0:'';
                 if (!is_numeric($contrato['cotizacion']['vigencia_dias'])) {
                     $contratos[$key]['error'][] = "Ingrese un valor válido para los días de vigencia del presupuesto.";
                     $error++;
