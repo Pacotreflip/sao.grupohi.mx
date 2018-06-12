@@ -626,8 +626,6 @@ class AsignacionCargaProveedoresLayout extends ValidacionLayout
                             $l++;
                         }
                     }
-                    dd($this->tipo_cambio);
-                    dd($arrayCotiazaciones);
                     if (count($arrayCotiazaciones) > 0) {
                         $results = $this->procesarDatos($arrayCotiazaciones);
                     } else {
@@ -813,7 +811,6 @@ class AsignacionCargaProveedoresLayout extends ValidacionLayout
                                         "descuento" => ($descuento_partida == "") ? 0 : $descuento_partida,
                                         "observaciones" => $partidas['Observaciones'],
                                     ];
-                                    Log::error($datos_partida_edicion);
                                     if ($rqctocCotizacionPartidas) {
                                         $rqctocCotizacionPartidas->update($datos_partida_edicion);
                                     } else {
