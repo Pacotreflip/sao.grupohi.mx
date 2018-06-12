@@ -754,81 +754,89 @@ class AsignacionCargaProveedoresLayout extends ValidacionLayout
                             $this->resultData = $cotizaciones;
                             throw new \Exception($mensajeError);
                         }
-
-                        foreach ($gralCotizacion["partidas"] as $partidas) {
-                            $idMaterial = $partidas['material_sao'];
-                            $idrqctocSolicitudesPartidas = $partidas['idrqctoc_solicitudes_partidas'];
-                            $descuento_partida = $partidas['PorcentajeDescuento'];
-                            if (!is_numeric($descuento_partida)) {
-                                $cotizaciones[$key]['error'][] = "El porcentaje de descuento no puede guardar, por que no es número";
-                                $error++;
-                            }
-                            $descuento_compuesto = $descuento_partida + $descuento - ($descuento_partida * $descuento / 100);
-                            //Dolar mysql
-                            if ($partidas['IdMoneda'] == 1) {
-                                //Dolar SAO
-                                $id_moneda_partida = 2;
-                            //Euro mysql
-                            } elseif ($partidas['IdMoneda'] == 2) {
-                                //EURO SAO
-                                $id_moneda_partida = 3;
-                            } elseif ($partidas['IdMoneda'] == 3) {
-                                $id_moneda_partida = 1;
-                            }
-                            foreach ($partidas["idrqctoc_solicitudes_partidas"] as $idrqctoc_solicitudes_partidas) {
-                                $rqctocCotizacionPartidas = $cotizacionCompra->rqctocCotizacion
-                                    ->rqctocCotizacionPartidas()
-                                    ->where(['idrqctoc_solicitudes_partidas' => $idrqctoc_solicitudes_partidas,'idrqctoc_cotizaciones'=>$idrqctocCotizaciones]
-                                    )->first();
-                                if (!is_numeric($descuento_compuesto)) {
-                                    $cotizaciones[$key]['error'][] = "El descuento compuesto no puede guardar, por que no es número";
+                        if(isset($gralCotizacion["partidas"]))
+                        {
+                            foreach ($gralCotizacion["partidas"] as $partidas) {
+                                $idMaterial = $partidas['material_sao'];
+                                $idrqctocSolicitudesPartidas = $partidas['idrqctoc_solicitudes_partidas'];
+                                $descuento_partida = $partidas['PorcentajeDescuento'];
+                                if (!is_numeric($descuento_partida)) {
+                                    $cotizaciones[$key]['error'][] = "El porcentaje de descuento no puede guardar, por que no es número";
                                     $error++;
                                 }
-                                $cotizacion = $cotizacionCompra->cotizaciones()->where([
-                                    'id_transaccion' => $key,
-                                    'id_material' => $idMaterial
-                                ])->first();
-                                if ($cotizacion) {
-                                    $datos_sao = [
-                                        "disponibles" => 1,
-                                        "precio_unitario" => str_replace(",", "",
-                                            $partidas["precio_unitario"]),
-                                        /*"precio_unitario_mxp" => TipoCambio::cambio(str_replace(",", "",
-                                            $partidas["precio_unitario"]), $partidas['IdMoneda']),*/
-                                        "descuento" => ($descuento_compuesto == "") ? 0 : $descuento_compuesto,
-                                        "anticipo" => ($anticipo == "") ? 0 : $anticipo,
-                                        "dias_entrega" => ($plazo_entrega == "") ? 0 : $plazo_entrega,
-                                        "id_moneda" => $id_moneda_partida,
-                                        "dias_credito" => ($dias_credito == "") ? 0 : $dias_credito,
-                                        "no_cotizado" => 0,
-                                    ];
-
-                                    $datos_partida_edicion = [
-                                        "idmoneda" => $partidas['IdMoneda'],
-                                        "precio_unitario" => str_replace(",", "",
-                                            $partidas["precio_unitario"]),
-                                        "precio_unitario_mxp" => TipoCambio::cambio(str_replace(",", "",
-                                            $partidas["precio_unitario"]), $id_moneda_partida),
-                                        "descuento" => ($descuento_partida == "") ? 0 : $descuento_partida,
-                                        "observaciones" => $partidas['Observaciones'],
-                                    ];
-                                    if ($rqctocCotizacionPartidas) {
-                                        $rqctocCotizacionPartidas->update($datos_partida_edicion);
-                                    } else {
-                                        $datos_partida_edicion["idrqctoc_cotizaciones"] = $cotizacionCompra->rqctocCotizacion->idrqctoc_cotizaciones;
-                                        $datos_partida_edicion["idrqctoc_solicitudes_partidas"] = $idrqctoc_solicitudes_partidas;
-                                        RQCTOCCotizacionesPartidas::create($datos_partida_edicion);
+                                $descuento_compuesto = $descuento_partida + $descuento - ($descuento_partida * $descuento / 100);
+                                //Dolar mysql
+                                if ($partidas['IdMoneda'] == 1) {
+                                    //Dolar SAO
+                                    $id_moneda_partida = 2;
+                                    //Euro mysql
+                                } elseif ($partidas['IdMoneda'] == 2) {
+                                    //EURO SAO
+                                    $id_moneda_partida = 3;
+                                } elseif ($partidas['IdMoneda'] == 3) {
+                                    $id_moneda_partida = 1;
+                                }
+                                foreach ($partidas["idrqctoc_solicitudes_partidas"] as $idrqctoc_solicitudes_partidas) {
+                                    $rqctocCotizacionPartidas = $cotizacionCompra->rqctocCotizacion
+                                        ->rqctocCotizacionPartidas()
+                                        ->where([
+                                                'idrqctoc_solicitudes_partidas' => $idrqctoc_solicitudes_partidas,
+                                                'idrqctoc_cotizaciones' => $idrqctocCotizaciones
+                                            ]
+                                        )->first();
+                                    if (!is_numeric($descuento_compuesto)) {
+                                        $cotizaciones[$key]['error'][] = "El descuento compuesto no puede guardar, por que no es número";
+                                        $error++;
                                     }
-                                    $cotizacionCompra->cotizaciones()->where([
+                                    $cotizacion = $cotizacionCompra->cotizaciones()->where([
                                         'id_transaccion' => $key,
                                         'id_material' => $idMaterial
-                                    ])->update($datos_sao);
-                                    $success++;
-                                } else {
-                                    $cotizaciones[$key]['error'][] = "No se puede procesar la cotización";
-                                    $error++;
+                                    ])->first();
+                                    if ($cotizacion) {
+                                        $datos_sao = [
+                                            "disponibles" => 1,
+                                            "precio_unitario" => str_replace(",", "",
+                                                $partidas["precio_unitario"]),
+                                            /*"precio_unitario_mxp" => TipoCambio::cambio(str_replace(",", "",
+                                                $partidas["precio_unitario"]), $partidas['IdMoneda']),*/
+                                            "descuento" => ($descuento_compuesto == "") ? 0 : $descuento_compuesto,
+                                            "anticipo" => ($anticipo == "") ? 0 : $anticipo,
+                                            "dias_entrega" => ($plazo_entrega == "") ? 0 : $plazo_entrega,
+                                            "id_moneda" => $id_moneda_partida,
+                                            "dias_credito" => ($dias_credito == "") ? 0 : $dias_credito,
+                                            "no_cotizado" => 0,
+                                        ];
+
+                                        $datos_partida_edicion = [
+                                            "idmoneda" => $partidas['IdMoneda'],
+                                            "precio_unitario" => str_replace(",", "",
+                                                $partidas["precio_unitario"]),
+                                            "precio_unitario_mxp" => TipoCambio::cambio(str_replace(",", "",
+                                                $partidas["precio_unitario"]), $id_moneda_partida),
+                                            "descuento" => ($descuento_partida == "") ? 0 : $descuento_partida,
+                                            "observaciones" => $partidas['Observaciones'],
+                                        ];
+                                        if ($rqctocCotizacionPartidas) {
+                                            $rqctocCotizacionPartidas->update($datos_partida_edicion);
+                                        } else {
+                                            $datos_partida_edicion["idrqctoc_cotizaciones"] = $cotizacionCompra->rqctocCotizacion->idrqctoc_cotizaciones;
+                                            $datos_partida_edicion["idrqctoc_solicitudes_partidas"] = $idrqctoc_solicitudes_partidas;
+                                            RQCTOCCotizacionesPartidas::create($datos_partida_edicion);
+                                        }
+                                        $cotizacionCompra->cotizaciones()->where([
+                                            'id_transaccion' => $key,
+                                            'id_material' => $idMaterial
+                                        ])->update($datos_sao);
+                                        $success++;
+                                    } else {
+                                        $cotizaciones[$key]['error'][] = "No se puede procesar la cotización";
+                                        $error++;
+                                    }
                                 }
                             }
+                        }else{
+                            $cotizaciones[$key]['error'][] = "No cuenta con ningún contización para cargar";
+                            $error++;
                         }
                     }
                 } else {
