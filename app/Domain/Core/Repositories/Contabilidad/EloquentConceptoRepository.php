@@ -251,8 +251,9 @@ class EloquentConceptoRepository implements ConceptoRepository
 
             //// recalcular rendimiento de los insumos por agrupador
             foreach ($insumos as $key => $insumo){
-                $insumos[$key]['cantidad_presupuestada'] = $insumo['cantidad_presupuestada'] / $conceptoTarjeta->cantidad_presupuestada;
-                $insumos[$key]['monto_presupuestado'] = ($insumo['cantidad_presupuestada'] / $conceptoTarjeta->cantidad_presupuestada) * $insumo['precio_unitario'];
+                $insumos[$key]['cantidad_presupuestada'] = number_format($insumo['cantidad_presupuestada'] / $conceptoTarjeta->cantidad_presupuestada, 3, '.', '');
+                $insumos[$key]['monto_presupuestado'] = number_format(($insumo['cantidad_presupuestada'] / $conceptoTarjeta->cantidad_presupuestada) * $insumo['precio_unitario'], 3, '.', '');
+                $insumos[$key]['precio_unitario'] = number_format($insumo['precio_unitario'], 3, '.', '');
                 $agrupador_monto_presupuestado += ($insumo['cantidad_presupuestada'] / $conceptoTarjeta->cantidad_presupuestada) * $insumo['precio_unitario'];
                 $concepto_precio_unitario += ($insumo['cantidad_presupuestada'] / $conceptoTarjeta->cantidad_presupuestada) * $insumo['precio_unitario'];
             }

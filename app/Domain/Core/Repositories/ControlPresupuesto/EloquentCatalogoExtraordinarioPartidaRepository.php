@@ -58,7 +58,8 @@ class EloquentCatalogoExtraordinarioPartidaRepository implements CatalogoExtraor
 
             //// refactorización de montos para eliminar notación científica en rendimientos
             foreach ($insumos as $key => $insumo){
-                $insumos[$key]['cantidad_presupuestada'] = floatval($insumo['cantidad_presupuestada']);
+                $insumos[$key]['cantidad_presupuestada'] = number_format(floatval($insumo['cantidad_presupuestada']), 3, '.', '');
+                $insumos[$key]['precio_unitario'] = number_format(floatval($insumo['precio_unitario']), 3, '.', '');
             }
             $extraordinario += [
                 str_replace(' ', '', $agrupador->descripcion) => [

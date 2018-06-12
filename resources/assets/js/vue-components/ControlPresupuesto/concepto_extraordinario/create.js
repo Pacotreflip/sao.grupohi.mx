@@ -507,6 +507,10 @@ Vue.component('concepto-extraordinario-create', {
                 return true;
             }
             return false;
+        },
+
+        format_decimals: function (cantidad) {
+            return parseFloat(cantidad).formatMoney(3, ',', '.');
         }
     }
 });

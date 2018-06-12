@@ -57,12 +57,12 @@
                         </div>
                         <div class="box-footer">
                             <div class="row">
-                                <div class="col-md-offset-11 col-sm-6">
-                                    <button type="button" class="btn btn-success" v-on:click="getExtraordinario()" v-show="!mostrar_tabla">
+                                <div class="col-md-12 col-sm-6">
+                                    <button type="button" class="btn btn-success pull-right" v-on:click="getExtraordinario()" v-show="!mostrar_tabla" :disabled="form.id_opcion == ''">
                                         <span v-if="cargando"><i class="fa fa-spinner fa-spin"></i> </span>
                                         <span v-else><i class="fa fa-check"></i> Crear </span>
                                     </button>
-                                    <button type="button" class="btn btn-default" v-on:click="validacion_opciones()" v-show="mostrar_tabla" style="width: 13%">Cerrar</button>
+                                    <button type="button" class="btn btn-default pull-right" v-on:click="validacion_opciones()" v-show="mostrar_tabla">Cerrar</button>
                                 </div>
                             </div>
                         </div>
@@ -185,8 +185,8 @@
                                     </div>
                                     <div class="col-md-4">
                                         <button type="button"
-                                                class="btn btn-default"
-                                                id="materiales"
+                                                class="btn btn-default pull-right"
+                                                id="materiales" style="width: 50%"
                                                 v-on:click="addInsumoTipo(6)" > +Gastos
                                         </button>
                                     </div>
@@ -236,8 +236,8 @@
                                     </div>
                                     <div class="col-md-4">
                                         <button type="button"
-                                                class="btn btn-default"
-                                                id="materiales"
+                                                class="btn btn-default pull-right"
+                                                id="materiales" style="width: 50%"
                                                 v-on:click="addInsumoTipo(1)"> +Materiales
                                         </button>
                                     </div>
@@ -298,8 +298,8 @@
                                     </div>
                                     <div class="col-md-4">
                                         <button type="button"
-                                                class="btn btn-default"
-                                                id="materiales"
+                                                class="btn btn-default pull-right"
+                                                id="materiales" style="width: 50%"
                                                 v-on:click="addInsumoTipo(2)"> +M / O
                                         </button>
                                     </div>
@@ -359,8 +359,8 @@
                                     </div>
                                     <div class="col-md-4">
                                         <button type="button"
-                                                class="btn btn-default"
-                                                id="materiales"
+                                                class="btn btn-default pull-right"
+                                                id="materiales" style="width: 50%"
                                                 v-on:click="addInsumoTipo(4)"> +Herramienta y Equipo
                                         </button>
                                     </div>
@@ -421,8 +421,8 @@
                                     </div>
                                     <div class="col-md-4">
                                         <button type="button"
-                                                class="btn btn-default"
-                                                id="maquinaria"
+                                                class="btn btn-default pull-right"
+                                                id="maquinaria" style="width: 50%"
                                                 v-on:click="addInsumoTipo(8)" > +Maquinaria
                                         </button>
                                     </div>
@@ -483,8 +483,8 @@
                                     </div>
                                     <div class="col-md-4">
                                         <button type="button"
-                                                class="btn btn-default"
-                                                id="materiales"
+                                                class="btn btn-default pull-right"
+                                                id="materiales" style="width: 50%"
                                                 v-on:click="addInsumoTipo(5)"> +Subcontratos
                                         </button>
                                     </div>
@@ -554,7 +554,7 @@
                                     </div>
                                     <div class="col-md-1">
                                         <button type="button"
-                                                class="btn btn-success"
+                                                class="btn btn-success pull-right"
                                                 id="buscar"
                                                 data-toggle="modal" data-target="#seleccion_concepto_modal"> Buscar
                                         </button>
@@ -585,9 +585,9 @@
                         </div>
                             <div class="box-footer">
                             <div class="row">
-                                <div class="col-md-offset-10 col-sm-6">
-                                    <button type="button" class="btn btn-default" >Cerrar</button>
-                                    <button type="submit" class="btn btn-primary" :disabled="cargando">
+                                <div class="col-md-12 col-sm-6">
+                                    <button type="button" class="btn btn-default pull-right" >Cerrar</button>
+                                    <button type="submit" class="btn btn-primary pull-right" :disabled="cargando">
                                             <span v-if="cargando">
                                                 <i class="fa fa-spinner fa-spin"></i> Guardando
                                             </span>
