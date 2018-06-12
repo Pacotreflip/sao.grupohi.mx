@@ -18,12 +18,6 @@ use Illuminate\Support\Facades\Log;
  */
 class TipoCambio
 {
-
-    /**
-     *
-     */
-    const TCEURO = 3;
-
     /**
      * @param $importe
      * @param $idmoneda
@@ -37,7 +31,7 @@ class TipoCambio
         foreach ($tipo_cambio as $k => $v) {
             $tipoCambio[$v['id_moneda']] = $v['cambio'];
         }
-        $importeCambio = ($importe * $tipoCambio[$idmoneda]) / $tipoCambio[self::TCEURO];
+        $importeCambio = ($importe * $tipoCambio[$idmoneda]);
         return $importeCambio;
     }
 }
