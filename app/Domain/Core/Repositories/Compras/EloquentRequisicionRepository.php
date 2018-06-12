@@ -182,6 +182,23 @@ class EloquentRequisicionRepository implements RequisicionRepository
             ->with(['item.transaccion', 'material'])
             ->groupBy('idmaterial_sao')->get();
 
+        $partidas->map(function ($p) use ($id_requisicion){
+            $agrupadas = RQCTOCSolicitudPartidas::where('idrqctoc_solicitudes', $id_requisicion)
+                ->where('idmaterial_sao', $p->idmaterial_sao)
+                ->where('idrqctoc_solicitudes_partidas', '<>', $p->idrqctoc_solicitudes_partidas)
+                ->get(['idrqctoc_solicitudes_partidas', 'cantidad'])->toArray();
+
+            $cantidad = $p->cantidad;
+            $agrupar = [$p->idrqctoc_solicitudes_partidas];
+            foreach ($agrupadas as $a)
+            {
+                $agrupar[] = $a['idrqctoc_solicitudes_partidas'];
+                $cantidad = $cantidad + $a['cantidad'];
+            }
+            $p->idrqctoc_solicitudes_partidas = implode(',', $agrupar);
+            $p->cantidad = $cantidad;
+        });
+
         return $solo_pendientes ? $partidas->filter(function ($p){
             return !$p->fincada;
         }) : $partidas;
@@ -208,6 +225,7 @@ class EloquentRequisicionRepository implements RequisicionRepository
             rqctoc_cotizaciones.tc_eur,
             rqctoc_cotizaciones.idmoneda as idmoneda_cot,
             sum(rqctoc_solicitudes_partidas.cantidad) as cantidad,
+            rqctoc_solicitudes_partidas.idmaterial_sao,
             ctg_monedas.moneda as moneda,
             ctg_monedas.corto as  moneda_corto,
             (precio_unitario-(precio_unitario*rqctoc_cotizaciones_partidas.descuento/100)) as precio_unitario,
@@ -224,13 +242,10 @@ class EloquentRequisicionRepository implements RequisicionRepository
             ->groupBy('rqctoc_solicitudes_partidas.idmaterial_sao', 'rqctoc_cotizaciones.idrqctoc_cotizaciones')
             ->get();
 
-        $that = $this;
-        if ($solo_pendientes)
-            $partidas->filter(function ($p) use ($that, $id_transaccion_sao) {
-                return $that->partidaFincada($id_transaccion_sao, $p['iditem_sao']);
-            });
 
-        return $partidas;
+        return $solo_pendientes ? $partidas->filter(function ($p){
+            return !$p->fincada;
+        }) : $partidas;
     }
 
     public function getRequisicion($id_transaccion_sao)
