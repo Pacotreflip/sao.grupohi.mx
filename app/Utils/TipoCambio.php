@@ -10,6 +10,7 @@ namespace Ghi\Utils;
 
 
 use Ghi\Domain\Core\Models\Cambio;
+use Illuminate\Support\Facades\Log;
 
 /**
  * Class TipoCambio
