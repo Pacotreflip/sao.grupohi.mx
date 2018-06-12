@@ -570,6 +570,7 @@ class AsignacionCargaProveedoresLayout extends ValidacionLayout
                     'agrupadores' => !empty($agrupadores) ? explode(',', $agrupadores) : [],
                     'solo_pendientes' => $solo_pendientes,
                 ];
+                $moneda = ["EURO"=>2,"DOLAR USD"=>1,"PESO MXP"=>3];
                 $layout = $this->setData();
                 if ($this->validarHeader($headers, $layout)) {
                     if (count($col) != ($layout['maxRow'] + $this->cabecerasLength + $this->operaciones)) {
@@ -590,6 +591,7 @@ class AsignacionCargaProveedoresLayout extends ValidacionLayout
                             if ($i < ($layout['maxRow'] + $this->cabecerasLength)) {
                                 if (is_numeric($id_transaccion) and !empty($id_transaccion) && is_array($idrqctoc_solicitudes_partidas) and count($idrqctoc_solicitudes_partidas)) {
                                     if(is_numeric($row[$k + ($this->lengthHeaderDinamicos - 11)])) {
+                                        $idMoneda = isset($moneda[$row[$k + ($this->lengthHeaderDinamicos - 8)]])?$moneda[$row[$k + ($this->lengthHeaderDinamicos - 8)]]:3;
                                         $arrayCotiazaciones[$id_transaccion]['partidas'][] = [
                                             'linea' => $i,
                                             'unidad' => $row[3],//de contratos
@@ -601,13 +603,13 @@ class AsignacionCargaProveedoresLayout extends ValidacionLayout
                                             "PorcentajeDescuento" => $row[$k + ($this->lengthHeaderDinamicos - 10)],
                                             'precio_total' => str_replace(",", "",
                                                 $row[$k + ($this->lengthHeaderDinamicos - 9)]),
-                                            "Observaciones" => $row[$k + ($this->lengthHeaderDinamicos - 7)],
-                                            "precio_total_moneda_convertido" => $row[$k + ($this->lengthHeaderDinamicos - 6)],
+                                            "precio_total_moneda_convertido" => $row[$k + ($this->lengthHeaderDinamicos - 7)],
+                                            "Observaciones" => $row[$k + ($this->lengthHeaderDinamicos - 6)],
                                             'material_sao' => str_replace(",", "",
                                                 $this->mCrypt->decrypt($row[$k + ($this->lengthHeaderDinamicos - 5)])),
                                             'idrqctoc_solicitudes_partidas_2' => $this->mCrypt->decrypt($row[$k + ($this->lengthHeaderDinamicos - 4)]),
                                             'idrqctoc_solicitudes' => $this->mCrypt->decrypt($row[$k + ($this->lengthHeaderDinamicos - 3)]),
-                                            "IdMoneda" => $row[$k + ($this->lengthHeaderDinamicos - 2)],
+                                            "IdMoneda" => $idMoneda,
                                             "estado" => 1,
                                         ];
                                     }
@@ -624,6 +626,8 @@ class AsignacionCargaProveedoresLayout extends ValidacionLayout
                             $l++;
                         }
                     }
+                    dd($this->tipo_cambio);
+                    dd($arrayCotiazaciones);
                     if (count($arrayCotiazaciones) > 0) {
                         $results = $this->procesarDatos($arrayCotiazaciones);
                     } else {
@@ -703,7 +707,6 @@ class AsignacionCargaProveedoresLayout extends ValidacionLayout
                         $segundos_totales = $segundos_sumar + $segundos_iniciales;
                         $cumplimiento = $fecha_cotizacion;
                         $vencimiento = date("Y-m-d", $segundos_totales);
-
                         if ($idmoneda == 1) {
                             $id_moneda = 2;
                         } elseif ($idmoneda == 2) {
@@ -762,9 +765,13 @@ class AsignacionCargaProveedoresLayout extends ValidacionLayout
                                 $error++;
                             }
                             $descuento_compuesto = $descuento_partida + $descuento - ($descuento_partida * $descuento / 100);
+                            //Dolar mysql
                             if ($partidas['IdMoneda'] == 1) {
+                                //Dolar SAO
                                 $id_moneda_partida = 2;
+                            //Euro mysql
                             } elseif ($partidas['IdMoneda'] == 2) {
+                                //EURO SAO
                                 $id_moneda_partida = 3;
                             } elseif ($partidas['IdMoneda'] == 3) {
                                 $id_moneda_partida = 1;
@@ -792,7 +799,7 @@ class AsignacionCargaProveedoresLayout extends ValidacionLayout
                                         "descuento" => ($descuento_compuesto == "") ? 0 : $descuento_compuesto,
                                         "anticipo" => ($anticipo == "") ? 0 : $anticipo,
                                         "dias_entrega" => ($plazo_entrega == "") ? 0 : $plazo_entrega,
-                                        "id_moneda" => $partidas['IdMoneda'],
+                                        "id_moneda" => $id_moneda_partida,
                                         "dias_credito" => ($dias_credito == "") ? 0 : $dias_credito,
                                         "no_cotizado" => 0,
                                     ];

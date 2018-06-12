@@ -31,7 +31,10 @@ class TipoCambio
         foreach ($tipo_cambio as $k => $v) {
             $tipoCambio[$v['id_moneda']] = $v['cambio'];
         }
-        $importeCambio = ($importe * $tipoCambio[$idmoneda]);
+        $importeCambio = $importe;
+        if($idmoneda!=3) {
+            $importeCambio = ($importe * $tipoCambio[$idmoneda]);
+        }
         return $importeCambio;
     }
 }
