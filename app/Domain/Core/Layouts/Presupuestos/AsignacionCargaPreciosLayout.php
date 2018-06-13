@@ -12,6 +12,7 @@ use Carbon\Carbon;
 use Ghi\Domain\Core\Layouts\ValidacionLayout;
 use Ghi\Domain\Core\Models\Subcontratos\PartidaAsignacion;
 use Ghi\Domain\Core\Repositories\Subcontratos\EloquentPartidaAsignacionRepository;
+use Ghi\Utils\TipoCambio;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\DB;
@@ -708,8 +709,11 @@ class AsignacionCargaPreciosLayout extends ValidacionLayout
                                     $presupuesto = $cotizacionContrato->presupuestos()
                                         ->where('id_concepto',$id_concepto)
                                         ->where('id_transaccion', $key);
+                                    /**
+                                     * insert presupuesto precio unitario
+                                    */
                                     $dataUpdatePresupuesto = [
-                                        "precio_unitario" =>TipoCambio::cambio($arrayPresupuesto['precio_unitario'], $arrayPresupuesto['IdMoneda']),
+                                        "precio_unitario" =>TipoCambio::cambio($arrayPresupuesto['precio_unitario_antes_descuento'], $arrayPresupuesto['IdMoneda']),
                                         "no_cotizado" => $arrayPresupuesto['no_cotizado'],
                                         "PorcentajeDescuento" => $arrayPresupuesto['PorcentajeDescuento'],
                                         "IdMoneda" => $arrayPresupuesto['IdMoneda'],
