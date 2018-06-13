@@ -17,9 +17,38 @@ use Ghi\Domain\Core\Models\Sucursal;
 use Illuminate\Support\Facades\DB;
 use Ghi\Domain\Core\Models\Transacciones\Tipo;
 use Ghi\Core\Facades\Context;
+use Illuminate\Support\Facades\Log;
 
 class CotizacionContrato extends Transaccion
 {
+    /**
+     * @var bool
+     */
+    public $timestamps = false;
+
+    protected $fillable = [
+        'tipo_transaccion',
+        'fecha',
+        'estado',
+        'id_obra',
+        'id_cuenta',
+        'id_moneda',
+        'cumplimiento',
+        'vencimiento',
+        'opciones',
+        'monto',
+        'impuesto',
+        'referencia',
+        'comentario',
+        'observaciones',
+        'FechaHoraRegistro',
+        'numero_folio',
+        'PorcentajeDescuento',
+        'TcUSD',
+        'TcEuro',
+        'DiasCredito',
+        'DiasVigencia',
+    ];
     /**
      * Aplicar Scope Global para recuperar solo las transacciones de tipo Cotización de Contrato
      */
@@ -62,7 +91,6 @@ class CotizacionContrato extends Transaccion
      */
     public function getTotalesPresupiestos()
     {
-        //t.id_transaccion = p.id_transaccion
         return DB::connection('cadeco')
             ->table('dbo.transacciones')
             ->select(

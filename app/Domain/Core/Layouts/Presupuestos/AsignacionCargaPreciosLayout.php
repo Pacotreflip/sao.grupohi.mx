@@ -102,20 +102,20 @@ class AsignacionCargaPreciosLayout extends ValidacionLayout
      * @var array
      */
     protected $rowOperacionesExtra = [
-        "descuento" => "% Descuento",
+        "PorcentajeDescuento" => "% Descuento",
         "subtotal_precio_pesos" => "Subtotal Precios Peso (MXP)",
         "subtotal_precio_dolar" => "Subtotal Precios Dolar (USD)",
         "subtotal_precio_euro" => "Subtotal Precios EURO",
-        "tc_usd" => "TC USD",
-        "tc_euro" => "TC EURO",
+        "TcUSD" => "TC USD",
+        "TcEuro" => "TC EURO",
         "moneda_de_conv" => "Moneda de Conv.",
         "subtotal_moneda_conv" => "Subtotal Moneda Conv.",
         "iva" => "IVA",
         "total" => "Total",
-        "fecha_de_presupuesto" => "Fecha de Presupuesto",
+        "fecha" => "Fecha de Presupuesto",
         "anticipio" => "% Anticipo",
-        "credito_dias" => "Crédito dias",
-        "vigencia_dias" => "Vigencia dias",
+        "DiasCredito" => "Crédito dias",
+        "DiasVigencia" => "Vigencia dias",
         "observaciones" => "Observaciones Generales",
     ];
     /**
@@ -651,16 +651,16 @@ class AsignacionCargaPreciosLayout extends ValidacionLayout
             $sumatorias = [];
             $mensajeError = '';
             foreach ($contratos as $key => $contrato) {
-                if ($contrato['cotizacion']['descuento'] > 100 || $contrato['cotizacion']['descuento'] < 0) {
+                if ($contrato['cotizacion']['PorcentajeDescuento'] > 100 || $contrato['cotizacion']['PorcentajeDescuento'] < 0) {
                     $contratos[$key]['error'][] = "El valor del descuento debe estar entre 0% y 100%";
                     $error++;
                 }
-                if ($contrato['cotizacion']['tc_usd'] > 25 || $contrato['cotizacion']['tc_usd'] < 10) {
+                if ($contrato['cotizacion']['TcUSD'] > 25 || $contrato['cotizacion']['TcUSD'] < 10) {
                     $error++;
                     $contratos[$key]['error'][] = "Ingrese un valor válido para el Tipo de Cambio del dólar";
                 }
 
-                if ($contrato['cotizacion']['tc_euro'] > 25 || $contrato['cotizacion']['tc_euro'] < 10) {
+                if ($contrato['cotizacion']['TcEuro'] > 25 || $contrato['cotizacion']['TcEuro'] < 10) {
                     $contratos[$key]['error'][] = "Ingrese un valor válido para el Tipo de Cambio del Euro";
                     $error++;
                 }
@@ -673,22 +673,22 @@ class AsignacionCargaPreciosLayout extends ValidacionLayout
                     $contratos[$key]['error'][] = "Ingrese un valor válido para el IVA";
                     $error++;
                 }
-                empty($contrato['cotizacion']['credito_dias'])? $contrato['cotizacion']['credito_dias'] = 0:'';
-                if (!is_numeric($contrato['cotizacion']['credito_dias'])) {
+                empty($contrato['cotizacion']['DiasCredito'])? $contrato['cotizacion']['DiasCredito'] = 0:'';
+                if (!is_numeric($contrato['cotizacion']['DiasCredito'])) {
                     $contratos[$key]['error'][] = "Ingrese un valor válido para los días de crédito.";
                     $error++;
                 }
-                 empty($contrato['cotizacion']['vigencia_dias'])? $contrato['cotizacion']['vigencia_dias'] = 0:'';
-                if (!is_numeric($contrato['cotizacion']['vigencia_dias'])) {
+                 empty($contrato['cotizacion']['DiasVigencia'])? $contrato['cotizacion']['DiasVigencia'] = 0:'';
+                if (!is_numeric($contrato['cotizacion']['DiasVigencia'])) {
                     $contratos[$key]['error'][] = "Ingrese un valor válido para los días de vigencia del presupuesto.";
                     $error++;
                 }
-                $fecha_ex = explode("-", $contrato['cotizacion']['fecha_de_presupuesto']);
+                $fecha_ex = explode("-", $contrato['cotizacion']['fecha']);
                 if (!checkdate($fecha_ex[1], $fecha_ex[0], $fecha_ex[2])) {
                     $contratos[$key]['error'][] = "Ingrese un valor válido para la fecha del presupuesto.";
                     $error++;
                 }
-
+                $contrato['cotizacion']['fecha'] =  $fecha_ex[2]."-". $fecha_ex[1]."-".$fecha_ex[0];
                 if ($error == 0) {
                     $cotizacionContrato = $contrato_proyectado->cotizacionesContrato()->find($key);
                     $presupuestos = $cotizacionContrato->presupuestos->filter(function ($value) use ($key) {
