@@ -742,10 +742,11 @@ class AsignacionCargaPreciosLayout extends ValidacionLayout
                         }
 
                         if ($error == 0) {
-                            $totalesContratos = $cotizacionContrato->getTotalesPresupiestos();
-                            $contrato['cotizacion']['monto'] = $totalesContratos[0]->monto;
-                            $contrato['cotizacion']['impuesto'] = $totalesContratos[0]->impuesto;
                             if ($cotizacionContrato->update($contrato['cotizacion'])) {
+                                $totalesContratos = $cotizacionContrato->getTotalesPresupiestos();
+                                $cotizacionContrato->monto = $totalesContratos[0]->monto;
+                                $cotizacionContrato->impuesto = $totalesContratos[0]->impuesto;
+                                $cotizacionContrato->save();
                                 $arrayPresupuesto['success'] = true;
                                 $success++;
                             } else {
