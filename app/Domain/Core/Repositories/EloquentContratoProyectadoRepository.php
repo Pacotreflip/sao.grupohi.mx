@@ -283,6 +283,7 @@ class EloquentContratoProyectadoRepository implements ContratoProyectadoReposito
                         contratos.unidad,
                         contratos.cantidad_presupuestada,
                         contratos.cantidad_original,
+                        contratos.cantidad_original as cantidad,
                         contratos.cantidad_modificada,
                         conceptos.descripcion as destino,
                         conceptos.id_concepto as id_destino,
