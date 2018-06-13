@@ -271,7 +271,7 @@ class AsignacionCargaProveedoresLayout extends ValidacionLayout
 
                             // id moneda
                             $sheet->setCellValue(\PHPExcel_Cell::stringFromColumnIndex($desde + 9) . $haciaAbajo,
-                                '=IF(' . \PHPExcel_Cell::stringFromColumnIndex($desde + 3) . $haciaAbajo . '="EURO",2, IF(' . \PHPExcel_Cell::stringFromColumnIndex($desde + 3) . $haciaAbajo . '="DOLAR (USD)",1, IF(' . \PHPExcel_Cell::stringFromColumnIndex($desde + 3) . $haciaAbajo . '="PESO (MXP)",3,0)))');
+                                '=IF(' . \PHPExcel_Cell::stringFromColumnIndex($desde + 3) . $haciaAbajo . '="EURO",3, IF(' . \PHPExcel_Cell::stringFromColumnIndex($desde + 3) . $haciaAbajo . '="DOLAR (USD)",2, IF(' . \PHPExcel_Cell::stringFromColumnIndex($desde + 3) . $haciaAbajo . '="PESO (MXP)",1,0)))');
                             $sheet->getStyle(\PHPExcel_Cell::stringFromColumnIndex($desde + 9) . $haciaAbajo)->getProtection()->setLocked(\PHPExcel_Style_Protection::PROTECTION_PROTECTED);
 
                         }
@@ -730,7 +730,7 @@ class AsignacionCargaProveedoresLayout extends ValidacionLayout
                         }
                         $descuento = empty($gralCotizacion["cotizacion"]["descuento"])?0:$gralCotizacion["cotizacion"]["descuento"];
                         if (!is_numeric($descuento)) {
-                            $cotizaciones[$key]['error'][] = "El descuento [$descuento] no puede guardar, por que no es número";
+                            $cotizaciones[$key]['error'][] = "El descuento [$descuento] no se puede guardar por que no es número";
                             $error++;
                         }
                         $datos_cotizacion = [];
@@ -761,7 +761,7 @@ class AsignacionCargaProveedoresLayout extends ValidacionLayout
                                 $idrqctocSolicitudesPartidas = $partidas['idrqctoc_solicitudes_partidas'];
                                 $descuento_partida = $partidas['PorcentajeDescuento'];
                                 if (!is_numeric($descuento_partida)) {
-                                    $cotizaciones[$key]['error'][] = "El porcentaje de descuento no puede guardar, por que no es número";
+                                    $cotizaciones[$key]['error'][] = "El porcentaje de descuento no se puede guardar porque no es número";
                                     $error++;
                                 }
                                 $descuento_compuesto = $descuento_partida + $descuento - ($descuento_partida * $descuento / 100);
@@ -785,7 +785,7 @@ class AsignacionCargaProveedoresLayout extends ValidacionLayout
                                             ]
                                         )->first();
                                     if (!is_numeric($descuento_compuesto)) {
-                                        $cotizaciones[$key]['error'][] = "El descuento compuesto no puede guardar, por que no es número";
+                                        $cotizaciones[$key]['error'][] = "El descuento compuesto no se puede guardar, porque no es número";
                                         $error++;
                                     }
                                     $cotizacion = $cotizacionCompra->cotizaciones()->where([
@@ -835,12 +835,12 @@ class AsignacionCargaProveedoresLayout extends ValidacionLayout
                                 }
                             }
                         }else{
-                            $cotizaciones[$key]['error'][] = "No cuenta con ningún contización para cargar";
+                            $cotizaciones[$key]['error'][] = "No cuenta con ninguna cotización para cargar";
                             $error++;
                         }
                     }
                 } else {
-                    $cotizaciones[$key]['error'][] = "La cotización no exite";
+                    $cotizaciones[$key]['error'][] = "La cotización no existe";
                     $error++;
                 }
             }

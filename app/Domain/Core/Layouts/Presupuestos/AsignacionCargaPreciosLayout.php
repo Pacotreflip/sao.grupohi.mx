@@ -261,7 +261,7 @@ class AsignacionCargaPreciosLayout extends ValidacionLayout
 
                             // Precio Unitario Moneda Conversión
                             $sheet->setCellValue(\PHPExcel_Cell::stringFromColumnIndex($desde + 6) . $haciaAbajo,
-                                '=IF(' . \PHPExcel_Cell::stringFromColumnIndex($desde + 5) . $haciaAbajo . '="EURO",' . \PHPExcel_Cell::stringFromColumnIndex($desde + 3) . $haciaAbajo . '*' . $this->tipo_cambio[3]['cambio'] . '/1, IF(' . \PHPExcel_Cell::stringFromColumnIndex($desde + 5) . $haciaAbajo . '="DOLAR USD",' . \PHPExcel_Cell::stringFromColumnIndex($desde + 3) . $haciaAbajo . '*' . $this->tipo_cambio[3]['cambio'] . '/1, IF(' . \PHPExcel_Cell::stringFromColumnIndex($desde + 5) . $haciaAbajo . '="PESO MXP",' . \PHPExcel_Cell::stringFromColumnIndex($desde + 3) . $haciaAbajo . '/1, IF(' . \PHPExcel_Cell::stringFromColumnIndex($desde + 5) . $haciaAbajo . '="",0))))');
+                                '=IF(' . \PHPExcel_Cell::stringFromColumnIndex($desde + 5) . $haciaAbajo . '="EURO",' . \PHPExcel_Cell::stringFromColumnIndex($desde + 3) . $haciaAbajo . '*' . $this->tipo_cambio[3]['cambio'] . '/1, IF(' . \PHPExcel_Cell::stringFromColumnIndex($desde + 5) . $haciaAbajo . '="DOLAR USD",' . \PHPExcel_Cell::stringFromColumnIndex($desde + 3) . $haciaAbajo . '*' . $this->tipo_cambio[2]['cambio'] . '/1, IF(' . \PHPExcel_Cell::stringFromColumnIndex($desde + 5) . $haciaAbajo . '="PESO MXP",' . \PHPExcel_Cell::stringFromColumnIndex($desde + 3) . $haciaAbajo . '/1, IF(' . \PHPExcel_Cell::stringFromColumnIndex($desde + 5) . $haciaAbajo . '="",0))))');
                             $sheet->getStyle(\PHPExcel_Cell::stringFromColumnIndex($desde + 6) . $haciaAbajo)->getProtection()->setLocked(\PHPExcel_Style_Protection::PROTECTION_PROTECTED);
 
                             // Precio Total Moneda Conversión
@@ -302,6 +302,7 @@ class AsignacionCargaPreciosLayout extends ValidacionLayout
                         $desde = ((count($this->headerDinamicos) * $key) + (count($this->headerFijos))) - 1;
                         $sheet->setCellValue(\PHPExcel_Cell::stringFromColumnIndex($desde) . $pos, '% Descuento');
                         $sheet->setCellValue(\PHPExcel_Cell::stringFromColumnIndex($desde + 1) . $pos, '0');
+                        $sheet->getStyle(\PHPExcel_Cell::stringFromColumnIndex($desde + 1) . $pos)->getProtection()->setLocked(\PHPExcel_Style_Protection::PROTECTION_UNPROTECTED);
                     }
 
                     // Subtotal Precios PESO MXP
