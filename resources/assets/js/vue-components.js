@@ -49,8 +49,9 @@ require('./vue-components/Finanzas/comprobante_fondo_fijo/index');
 require('./vue-components/Finanzas/comprobante_fondo_fijo/create');
 require('./vue-components/Finanzas/comprobante_fondo_fijo/edit');
 
-require('./vue-components/Finanzas/solicitud_cheque/reposicion_fondo_fijo/create')
-require('./vue-components/Finanzas/solicitud_cheque/pago_cuenta/create')
+require('./vue-components/Finanzas/solicitud_cheque/index');
+require('./vue-components/Finanzas/solicitud_cheque/reposicion_fondo_fijo/create');
+require('./vue-components/Finanzas/solicitud_cheque/pago_cuenta/create');
 
 /**
  * Formatos Components

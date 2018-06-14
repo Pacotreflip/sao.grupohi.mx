@@ -19,6 +19,10 @@ class SolicitudChequeController extends Controller {
         $this->middleware('permission:registrar_reposicion_fondo_fijo|registrar_pago_cuenta', ['only' => ['create']]);
     }
 
+    public function index() {
+        return view('finanzas.solicitud_cheque.index');
+    }
+
     public function create() {
         return view('finanzas.solicitud_cheque.create');
     }

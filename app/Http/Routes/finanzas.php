@@ -30,6 +30,7 @@ Route::group(['prefix' => 'finanzas', 'middleware' => 'system.access:finanzas'],
     /**
      * Solicitud de Cheque routes
      */
-    Route::get('solicitud_cheque', 'Finanzas\SolicitudChequeController@create')->name('finanzas.solicitud_cheque.create');
+    Route::get('solicitud_cheque', 'Finanzas\SolicitudChequeController@index')->name('finanzas.solicitud_cheque.index');
+    Route::get('solicitud_cheque/create', 'Finanzas\SolicitudChequeController@create')->name('finanzas.solicitud_cheque.create');
 
 });

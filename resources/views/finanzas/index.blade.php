@@ -11,8 +11,8 @@
                 <div class="tab-content">
                     <div class="tab-pane active">
                         <ul class="nav nav-stacked">
-                            @permission(['registrar_reposicion_fondo_fijo', 'registrar_pago_cuenta'])
-                            <li><a href="{{ route('finanzas.solicitud_cheque.create') }}">SOLICITUD DE CHEQUE</a> </li>
+                            @permission('consultar_solicitud_cheque')
+                            <li><a href="{{ route('finanzas.solicitud_cheque.index') }}">SOLICITUD DE CHEQUE</a> </li>
                             @endpermission
                             @permission('consultar_comprobante_fondo_fijo')
                             <li><a href="{{route('finanzas.comprobante_fondo_fijo.index')}}">COMPROBANTE DE FONDO FIJO</a></li>

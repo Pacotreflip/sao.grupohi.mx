@@ -35,7 +35,12 @@ Breadcrumbs::register('finanzas.comprobante_fondo_fijo.show', function ($breadcr
 /*
  * Solicitud de Cheque Breadcrumbs...
  */
-Breadcrumbs::register('finanzas.solicitud_cheque.create', function ($breadcrumb) {
+Breadcrumbs::register('finanzas.solicitud_cheque.index', function ($breadcrumb) {
     $breadcrumb->parent('finanzas.index');
-    $breadcrumb->push('NUEVA SOLICITUD DE CHEQUE', route('finanzas.solicitud_cheque.create'));
+    $breadcrumb->push('SOLICITUD DE CHEQUE', route('finanzas.solicitud_cheque.index'));
+});
+
+Breadcrumbs::register('finanzas.solicitud_cheque.create', function ($breadcrumb) {
+    $breadcrumb->parent('finanzas.solicitud_cheque.index');
+    $breadcrumb->push('NUEVA', route('finanzas.solicitud_cheque.create'));
 });
