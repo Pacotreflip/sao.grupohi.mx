@@ -468,7 +468,7 @@ Vue.component('concepto-extraordinario-create', {
             var self = this;
             $.ajax({
                 type:'GET',
-                url: self.url_concepto_get_by,
+                url: App.host + '/control_presupuesto/conceptos_extraordinarios/getBy',
                 data:{
                     attribute: 'nivel',
                     operator: 'like',

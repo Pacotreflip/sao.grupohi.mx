@@ -145,16 +145,22 @@ class EloquentMaterialRepository implements MaterialRepository
     public function create($data)
     {
         try {
-            //dd($data['nivel']);
+
             DB::connection('cadeco')->beginTransaction();
             if ($data['nivel']) {
+                if($this->model->where('descripcion', '=', $data['descripcion'])){
+                    return response()->json(['message'=> 'El insumo ya está registrado.'], 404);
+                }
                 $data['nivel'] = $this->getNivelDisponible($data['tipo_material'], $data['nivel']);
             } else {
+                if($this->model->where('descripcion', '=', $data['descripcion'])){
+                    return response()->json(['message'=> 'La familia ya está registrada.'], 404);
+                }
                 $data['nivel'] = $this->getNivelDisponible($data['tipo_material'], null);
             }
             $data['UsuarioRegistro'] = auth()->user()->idusuario;
 
-
+            //return response()->json(['message'=> 'Familia ya existe'], 404);
             $material = $this->model->create($data);
             DB::connection('cadeco')->commit();
         } catch (\Exception $e) {

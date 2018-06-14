@@ -60,7 +60,7 @@ class EloquentSolicitudCambioRepository implements SolicitudCambioRepository
 
     public function paginate(array $data)
     {
-        $query = $this->model->with(['tipoOrden', 'userRegistro', 'estatus']);
+        $query = $this->model->with(['tipoOrden', 'userRegistro', 'estatus', 'partidas']);
         return $query->paginate($perPage = $data['length'], $columns = ['*'], $pageName = 'page', $page = ($data['start'] / $data['length']) + 1);
     }
 

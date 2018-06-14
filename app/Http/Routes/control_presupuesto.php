@@ -106,6 +106,7 @@ Route::group(['prefix' => 'control_presupuesto'], function () {
         Route::post('/{id}/rechazar', 'Presupuesto\ConceptosExtraordinariosController@rechazar')->name('control_presupuesto.conceptos_extraordinarios.rechazar');
         Route::get('/{cambio_insumos}/pdf', 'Presupuesto\ConceptosExtraordinariosController@pdf');
         Route::post('/guardarCatalogo', 'Presupuesto\ConceptosExtraordinariosController@guardarCatalogo')->name('control_presupuesto.conceptos_extraordinarios.guardarCatalogo');
+        Route::get('/getBy', 'Presupuesto\ConceptosExtraordinariosController@getBy')->name('control_presupuesto.conceptos_extraordinarios.getBy');
     });
 
     /**

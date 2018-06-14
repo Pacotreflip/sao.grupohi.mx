@@ -190,4 +190,13 @@ class ConceptosExtraordinariosController extends Controller
             return $item;
         });
     }
+
+    /**
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function getBy(Request $request) {
+        $items = $this->concepto->getBy($request->attribute, $request->operator, $request->value, $request->with);
+        return response()->json(['data' => ['conceptos' => $items]], 200);
+    }
 }
