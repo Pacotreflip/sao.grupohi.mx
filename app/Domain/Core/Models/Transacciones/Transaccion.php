@@ -5,6 +5,7 @@ namespace Ghi\Domain\Core\Models\Transacciones;
 use Carbon\Carbon;
 use Ghi\Domain\Core\Models\Contabilidad\Cierre;
 use Ghi\Domain\Core\Models\Contabilidad\Factura;
+use Ghi\Domain\Core\Models\Scopes\ObraScope;
 use Ghi\Domain\Core\Models\TipoTransaccion;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Exception\HttpResponseException;
@@ -61,6 +62,7 @@ class Transaccion extends Model
     protected static function boot()
     {
         parent::boot();
+        static::addGlobalScope(new ObraScope());
 
         static::creating(function ($model){
 

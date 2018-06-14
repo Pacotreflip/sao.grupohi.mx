@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Scope;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
 
-class PagoCuentaScope implements Scope
+class SolicitudChequeScope implements Scope
 {
     /**
      * Apply the scope to a given Eloquent query builder.
@@ -19,7 +19,6 @@ class PagoCuentaScope implements Scope
     public function apply(Builder $builder, Model $model)
     {
         return $builder
-            ->where('tipo_transaccion', '=', Tipo::SOLICITUD_CHEQUE)
-            ->where('opciones', '=', 327681);
+            ->where('tipo_transaccion', '=', Tipo::SOLICITUD_CHEQUE);
     }
 }
