@@ -148,12 +148,12 @@ class EloquentMaterialRepository implements MaterialRepository
 
             DB::connection('cadeco')->beginTransaction();
             if ($data['nivel']) {
-                if($this->model->where('descripcion', '=', $data['descripcion'])){
+                if($this->model->where('descripcion', '=', $data['descripcion'])->count() > 0){
                     return response()->json(['message'=> 'El insumo ya está registrado.'], 404);
                 }
                 $data['nivel'] = $this->getNivelDisponible($data['tipo_material'], $data['nivel']);
             } else {
-                if($this->model->where('descripcion', '=', $data['descripcion'])){
+                if($this->model->where('descripcion', '=', $data['descripcion'])->count() > 0){
                     return response()->json(['message'=> 'La familia ya está registrada.'], 404);
                 }
                 $data['nivel'] = $this->getNivelDisponible($data['tipo_material'], null);
