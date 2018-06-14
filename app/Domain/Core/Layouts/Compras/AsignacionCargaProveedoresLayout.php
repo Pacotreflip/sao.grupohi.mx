@@ -614,6 +614,11 @@ class AsignacionCargaProveedoresLayout extends ValidacionLayout
                                             "estado" => 1,
                                         ];
                                     }
+
+                                    else{
+                                        // Precio unitario sólo caracteres numericos
+                                        throw new \Exception("El precio unitario no se puede guardar porque no es número");
+                                    }
                                 }
                             } else {
                                 $aux = $col[$this->cabecerasLength + 1];
