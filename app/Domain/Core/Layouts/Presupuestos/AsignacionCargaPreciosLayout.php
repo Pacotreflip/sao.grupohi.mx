@@ -706,34 +706,40 @@ class AsignacionCargaPreciosLayout extends ValidacionLayout
                     } else {
                         foreach ($contrato['presupuestos'] as $arrayPresupuesto) {
                             if (is_array($arrayPresupuesto['id_concepto'])) {
-                                foreach ($arrayPresupuesto['id_concepto'] as $id_concepto) {
-                                    $presupuesto = $cotizacionContrato->presupuestos()
-                                        ->where('id_concepto',$id_concepto)
-                                        ->where('id_transaccion', $key);
-                                    /**
-                                     * insert presupuesto precio unitario
-                                    */
-                                    $dataUpdatePresupuesto = [
-                                        "precio_unitario" =>TipoCambio::cambio($arrayPresupuesto['precio_unitario_antes_descuento'], $arrayPresupuesto['IdMoneda']),
-                                        "no_cotizado" => $arrayPresupuesto['no_cotizado'],
-                                        "PorcentajeDescuento" => $arrayPresupuesto['PorcentajeDescuento'],
-                                        "IdMoneda" => $arrayPresupuesto['IdMoneda'],
-                                        "Observaciones" => $arrayPresupuesto['Observaciones'],
-                                        //"clave" =>  $arrayPresupuesto['clave'],
-                                        //"descripcion" => $arrayPresupuesto['descripcion'],
-                                    ];
-                                    Log::error($dataUpdatePresupuesto);
-                                    $updatePartidas = $presupuesto->update($dataUpdatePresupuesto);
-                                    if (!$updatePartidas) {
-                                        $contratos[$key]['error'][] = "No se puede guardar el registro";
-                                        $error++;
-                                    } else {
-                                        $arrayPresupuesto['success'] = true;
-                                        $success++;
+                                if(is_numeric($arrayPresupuesto['precio_unitario_antes_descuento'])) {
+                                    foreach ($arrayPresupuesto['id_concepto'] as $id_concepto) {
+                                        $presupuesto = $cotizacionContrato->presupuestos()
+                                            ->where('id_concepto', $id_concepto)
+                                            ->where('id_transaccion', $key);
+                                        /**
+                                         * insert presupuesto precio unitario
+                                         */
+                                        $dataUpdatePresupuesto = [
+                                            "precio_unitario" => TipoCambio::cambio($arrayPresupuesto['precio_unitario_antes_descuento'],
+                                                $arrayPresupuesto['IdMoneda']),
+                                            "no_cotizado" => $arrayPresupuesto['no_cotizado'],
+                                            "PorcentajeDescuento" => $arrayPresupuesto['PorcentajeDescuento'],
+                                            "IdMoneda" => $arrayPresupuesto['IdMoneda'],
+                                            "Observaciones" => $arrayPresupuesto['Observaciones'],
+                                            //"clave" =>  $arrayPresupuesto['clave'],
+                                            //"descripcion" => $arrayPresupuesto['descripcion'],
+                                        ];
+                                        Log::error($dataUpdatePresupuesto);
+                                        $updatePartidas = $presupuesto->update($dataUpdatePresupuesto);
+                                        if (!$updatePartidas) {
+                                            $contratos[$key]['error'][] = "No se puede guardar el registro";
+                                            $error++;
+                                        } else {
+                                            $arrayPresupuesto['success'] = true;
+                                            $success++;
+                                        }
+                                        if (!$arrayPresupuesto['success']) {
+                                            $this->resultData[$arrayPresupuesto['linea']][] = $arrayPresupuesto;
+                                        }
                                     }
-                                    if (!$arrayPresupuesto['success']) {
-                                        $this->resultData[$arrayPresupuesto['linea']][] = $arrayPresupuesto;
-                                    }
+                                }else{
+                                    $contratos[$key]['error'][] = "No se puede guardar el registro, por que el Precio Unitario Antes Descto no es múmerioco";
+                                    $error++;
                                 }
                             } else {
                                 $contratos[$key]['error'][] = "No se puede guardar el registro";
