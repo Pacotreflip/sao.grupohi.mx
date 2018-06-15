@@ -445,5 +445,10 @@ class AppServiceProvider extends ServiceProvider
             \Ghi\Domain\Core\Contracts\Compras\OrdenCompraRepository::class,
             \Ghi\Domain\Core\Repositories\Compras\EloquentOrdenCompraRepository::class
         );
+
+        $this->app->bind(
+            \Ghi\Domain\Core\Contracts\Finanzas\SolicitudPagoRepository::class,
+            \Ghi\Domain\Core\Repositories\Finanzas\EloquentSolicitudPagoRepository::class
+        );
     }
 }

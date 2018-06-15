@@ -102,6 +102,8 @@ $api->version('v1', function ($api) {
         $api->post('finanzas/solicitud_pago/reposicion_fondo_fijo', 'Ghi\Api\Controllers\v1\Finanzas\ReposicionFondoFijoController@store');
         $api->post('finanzas/solicitud_pago/pago_cuenta', 'Ghi\Api\Controllers\v1\Finanzas\PagoCuentaController@store');
         $api->get('finanzas/solicitud_pago/pago_cuenta/tipos_transaccion', 'Ghi\Api\Controllers\v1\Finanzas\PagoCuentaController@getTiposTran');
+        $api->get('finanzas/solicitud_pago', 'Ghi\Api\Controllers\v1\Finanzas\SolicitudPagoController@index');
+        $api->post('finanzas/solicitud_pago/paginate', 'Ghi\Api\Controllers\v1\Finanzas\SolicitudPagoController@paginate');
 
         /**
          * Fondos
