@@ -16,7 +16,9 @@ class CreateTransaccionesRubrosTable extends Migration
             $table->increments('id');
             $table->integer('id_transaccion');
             $table->integer('id_rubro');
-            $table->unique(["id"]);
+            $table->foreign('id_transaccion')
+                ->references('id_transaccion')
+                ->on('dbo.transacciones');
         });
     }
 
@@ -27,6 +29,6 @@ class CreateTransaccionesRubrosTable extends Migration
      */
     public function down()
     {
-        //
+        Schema::connection('cadeco')->drop('Finanzas.transacciones_rubros');
     }
 }

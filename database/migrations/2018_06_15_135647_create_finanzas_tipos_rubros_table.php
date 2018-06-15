@@ -17,7 +17,6 @@ class CreateTiposRubrosTable extends Migration
             $table->string("descripcion", 50);
             $table->timestamps();
             $table->softDeletes();
-            $table->unique(["id"]);
         });
     }
 
