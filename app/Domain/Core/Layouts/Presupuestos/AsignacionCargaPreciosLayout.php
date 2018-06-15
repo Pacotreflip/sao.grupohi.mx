@@ -628,7 +628,7 @@ class AsignacionCargaPreciosLayout extends ValidacionLayout
                 if (count($this->resultData) > 0) {
                     throw new StoreResourceFailedException($e->getMessage(), $this->resultData);
                 } else {
-                    throw new StoreResourceFailedException("No es posible procesar el Layout debido a que los campos a guardar se encuentran vacíos");
+                    throw new StoreResourceFailedException($e->getMessage());
                 }
             }
         });
