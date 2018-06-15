@@ -97,11 +97,11 @@ $api->version('v1', function ($api) {
         $api->post('layouts/contratos/contrato_proyectado/{id}/asignacion', 'Ghi\Api\Controllers\v1\LayoutsController@contratos_asignacion_store')->where(['id' => '[0-9]+']);
 
         /**
-         * Solicitudes de Cheque
+         * Solicitudes de Pago
          */
-        $api->post('finanzas/solicitud_cheque/reposicion_fondo_fijo', 'Ghi\Api\Controllers\v1\Finanzas\ReposicionFondoFijoController@store');
-        $api->post('finanzas/solicitud_cheque/pago_cuenta', 'Ghi\Api\Controllers\v1\Finanzas\PagoCuentaController@store');
-        $api->get('finanzas/solicitud_cheque/pago_cuenta/tipos_transaccion', 'Ghi\Api\Controllers\v1\Finanzas\PagoCuentaController@getTiposTran');
+        $api->post('finanzas/solicitud_pago/reposicion_fondo_fijo', 'Ghi\Api\Controllers\v1\Finanzas\ReposicionFondoFijoController@store');
+        $api->post('finanzas/solicitud_pago/pago_cuenta', 'Ghi\Api\Controllers\v1\Finanzas\PagoCuentaController@store');
+        $api->get('finanzas/solicitud_pago/pago_cuenta/tipos_transaccion', 'Ghi\Api\Controllers\v1\Finanzas\PagoCuentaController@getTiposTran');
 
         /**
          * Fondos

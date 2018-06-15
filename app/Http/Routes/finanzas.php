@@ -28,9 +28,9 @@ Route::group(['prefix' => 'finanzas', 'middleware' => 'system.access:finanzas'],
     Route::get('comprobante_fondo_fijo/getBy', 'ComprobanteFondoFijoController@getBy')->name('finanzas.comprobante_fondo_fijo.getBy');
 
     /**
-     * Solicitud de Cheque routes
+     * Solicitud de Pago routes
      */
-    Route::get('solicitud_cheque', 'Finanzas\SolicitudChequeController@index')->name('finanzas.solicitud_cheque.index');
-    Route::get('solicitud_cheque/create', 'Finanzas\SolicitudChequeController@create')->name('finanzas.solicitud_cheque.create');
+    Route::get('solicitud_pago', 'Finanzas\SolicitudPagoController@index')->name('finanzas.solicitud_pago.index');
+    Route::get('solicitud_pago/create', 'Finanzas\SolicitudPagoController@create')->name('finanzas.solicitud_pago.create');
 
 });

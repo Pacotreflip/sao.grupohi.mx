@@ -2,29 +2,29 @@
     <div class="row">
         <form id="form_pago_cuenta" @submit.prevent="validateForm('form_pago_cuenta', 'save_pago')"
               data-vv-scope="form_pago_cuenta">
-            <!-- Fecha de Cheque / Cumplimiento -->
+            <!-- Fecha de Solicitud / Cumplimiento -->
             <div class="col-md-6">
                 <div class="form-group"
-                     :class="{'has-error': validation_errors.has('form_pago_cuenta.Fecha de Cheque')}">
-                    <label for="cumplimiento_pc"><b>Fecha de Cheque</b></label>
-                    <input type="text" name="Fecha de Cheque" class="form-control input-sm"
+                     :class="{'has-error': validation_errors.has('form_pago_cuenta.Fecha de Solicitud')}">
+                    <label for="cumplimiento_pc"><b>Fecha de Solicitud</b></label>
+                    <input type="text" name="Fecha de Solicitud" class="form-control input-sm"
                            id="cumplimiento_pc" v-validate="'required'" v-model="form.cumplimiento"
                            v-datepicker>
-                    <label class="help" v-show="validation_errors.has('form_pago_cuenta.Fecha de Cheque')">{{
-                        validation_errors.first('form_pago_cuenta.Fecha de Cheque') }}</label>
+                    <label class="help" v-show="validation_errors.has('form_pago_cuenta.Fecha de Solicitud')">{{
+                        validation_errors.first('form_pago_cuenta.Fecha de Solicitud') }}</label>
                 </div>
             </div>
 
-            <!-- Fecha de Cobro / Vencimiento -->
+            <!-- Fecha límite de Pago / Vencimiento -->
             <div class="col-md-6">
                 <div class="form-group"
-                     :class="{'has-error': validation_errors.has('form_pago_cuenta.Fecha de Cobro')}">
-                    <label for="vencimiento_pc"><b>Fecha de Cobro</b></label>
-                    <input type="text" name="Fecha de Cobro" class="form-control input-sm"
+                     :class="{'has-error': validation_errors.has('form_pago_cuenta.Fecha límite de Pago')}">
+                    <label for="vencimiento_pc"><b>Fecha límite de Pago</b></label>
+                    <input type="text" name="Fecha límite de Pago" class="form-control input-sm"
                            id="vencimiento_pc" v-validate="'required'" v-model="form.vencimiento"
                            v-datepicker>
-                    <label class="help" v-show="validation_errors.has('form_pago_cuenta.Fecha de Cobro')">{{
-                        validation_errors.first('form_pago_cuenta.Fecha de Cobro') }}</label>
+                    <label class="help" v-show="validation_errors.has('form_pago_cuenta.Fecha límite de Pago')">{{
+                        validation_errors.first('form_pago_cuenta.Fecha límite de Pago') }}</label>
                 </div>
             </div>
 

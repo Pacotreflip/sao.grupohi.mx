@@ -19,7 +19,7 @@ class PagoCuentaScope implements Scope
     public function apply(Builder $builder, Model $model)
     {
         return $builder
-            ->where('tipo_transaccion', '=', Tipo::SOLICITUD_CHEQUE)
+            ->where('tipo_transaccion', '=', Tipo::SOLICITUD_PAGO)
             ->where('opciones', '=', 327681);
     }
 }

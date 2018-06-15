@@ -1,8 +1,8 @@
 @extends('finanzas.layout')
 @section('title', 'Sistema de Finanzas')
-@section('contentheader_title', 'SOLICITUD DE CHEQUE')
+@section('contentheader_title', 'SOLICITUD DE PAGO')
 @section('breadcrumb')
-    {!! Breadcrumbs::render('finanzas.solicitud_cheque.create') !!}
+    {!! Breadcrumbs::render('finanzas.solicitud_pago.create') !!}
 @endsection
 @section('main-content')
 
@@ -16,7 +16,7 @@
                     @permission('registrar_pago_cuenta')
                     <li class="" id="li_pago_cuenta"><a href="#tab_pago_cuenta" data-toggle="tab" aria-expanded="false">PAGO A CUENTA</a></li>
                     @endpermission
-                    <li class="pull-left header"><i class="fa fa-th"></i> Solicitud de Cheque</li>
+                    <li class="pull-left header"><i class="fa fa-th"></i> Solicitud de Pago</li>
                 </ul>
                 <div class="tab-content">
                     <div class="tab-pane" id="tab_reposicion_fondo_fijo">

@@ -1,25 +1,25 @@
 <section class="rffc">
     <div class="row">
         <form id="form_reposicion_fondo_fijo" @submit.prevent="validateForm('form_reposicion_fondo_fijo', 'save_reposicion')"  data-vv-scope="form_reposicion_fondo_fijo">
-            <!-- Fecha de Cheque / Cumplimiento -->
+            <!-- Fecha de Solicitud / Cumplimiento -->
             <div class="col-md-6">
-                <div class="form-group" :class="{'has-error': validation_errors.has('form_reposicion_fondo_fijo.Fecha de Cheque')}">
-                    <label for="cumplimiento_rff"><b>Fecha de Cheque</b></label>
-                    <input type="text" name="Fecha de Cheque" class="form-control input-sm"
+                <div class="form-group" :class="{'has-error': validation_errors.has('form_reposicion_fondo_fijo.Fecha de Solicitud')}">
+                    <label for="cumplimiento_rff"><b>Fecha de Solicitud</b></label>
+                    <input type="text" name="Fecha de Solicitud" class="form-control input-sm"
                            id="cumplimiento_rff" v-validate="'required'" v-model="form.cumplimiento"
                            v-datepicker>
-                    <label class="help" v-show="validation_errors.has('form_reposicion_fondo_fijo.Fecha de Cheque')">{{ validation_errors.first('form_reposicion_fondo_fijo.Fecha de Cheque') }}</label>
+                    <label class="help" v-show="validation_errors.has('form_reposicion_fondo_fijo.Fecha de Solicitud')">{{ validation_errors.first('form_reposicion_fondo_fijo.Fecha de Solicitud') }}</label>
                 </div>
             </div>
 
-            <!-- Fecha de Cobro / Vencimiento -->
+            <!-- Fecha límite de Pago / Vencimiento -->
             <div class="col-md-6">
-                <div class="form-group" :class="{'has-error': validation_errors.has('form_reposicion_fondo_fijo.Fecha de Cobro')}">
-                    <label for="vencimiento_rff"><b>Fecha de Cobro</b></label>
-                    <input type="text" name="Fecha de Cobro" class="form-control input-sm"
+                <div class="form-group" :class="{'has-error': validation_errors.has('form_reposicion_fondo_fijo.Fecha límite de Pago')}">
+                    <label for="vencimiento_rff"><b>Fecha límite de Pago</b></label>
+                    <input type="text" name="Fecha límite de Pago" class="form-control input-sm"
                            id="vencimiento_rff" v-validate="'required'" v-model="form.vencimiento"
                            v-datepicker>
-                    <label class="help" v-show="validation_errors.has('form_reposicion_fondo_fijo.Fecha de Cobro')">{{ validation_errors.first('form_reposicion_fondo_fijo.Fecha de Cobro') }}</label>
+                    <label class="help" v-show="validation_errors.has('form_reposicion_fondo_fijo.Fecha límite de Pago')">{{ validation_errors.first('form_reposicion_fondo_fijo.Fecha límite de Pago') }}</label>
                 </div>
             </div>
 

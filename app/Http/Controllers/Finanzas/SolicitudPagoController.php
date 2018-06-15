@@ -10,7 +10,7 @@ namespace Ghi\Http\Controllers\Finanzas;
 
 use Ghi\Http\Controllers\Controller;
 
-class SolicitudChequeController extends Controller {
+class SolicitudPagoController extends Controller {
 
     public function __construct()
     {
@@ -20,10 +20,10 @@ class SolicitudChequeController extends Controller {
     }
 
     public function index() {
-        return view('finanzas.solicitud_cheque.index');
+        return view('finanzas.solicitud_pago.index');
     }
 
     public function create() {
-        return view('finanzas.solicitud_cheque.create');
+        return view('finanzas.solicitud_pago.create');
     }
 }

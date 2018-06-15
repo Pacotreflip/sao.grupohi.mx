@@ -36,10 +36,10 @@ class PagoCuenta extends Transaccion
         "id_costo"
     ];
 
-    //Tipos de transaccions que sirven como antedecende en una solicitud de pago
+    //Tipos de transaccions que sirven como antedecende en una solicitud de Pago a Cuenta
     public $tipos_transaccion = [
-        ['Tipo_Transaccion' => 19, 'Opciones' => 1],
-        ['Tipo_Transaccion' => 51, 'Opciones' => 2]
+        ['Tipo_Transaccion' => Tipo::ORDEN_COMPRA, 'Opciones' => 1],
+        ['Tipo_Transaccion' => Tipo::SUBCONTRATO, 'Opciones' => 2]
     ];
 
 
@@ -54,7 +54,7 @@ class PagoCuenta extends Transaccion
         static::addGlobalScope(new ObraScope());
 
         static::creating(function ($model) {
-            $model->tipo_transaccion = Tipo::PAGO_A_CUENTA;
+            $model->tipo_transaccion = Tipo::SOLICITUD_PAGO;
             $model->opciones = 327681;
             $model->id_moneda = 1;
             $model->FechaHoraRegistro = Carbon::now()->toDateTimeString();

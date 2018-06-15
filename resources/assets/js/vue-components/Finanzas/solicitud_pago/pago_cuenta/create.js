@@ -143,7 +143,7 @@ Vue.component('pago-cuenta-create', {
         get_tipos_tran: function() {
             var self = this;
             $.ajax({
-                url: App.host + '/api/finanzas/solicitud_cheque/pago_cuenta/tipos_transaccion',
+                url: App.host + '/api/finanzas/solicitud_pago/pago_cuenta/tipos_transaccion',
                 type: 'GET',
                 headers: {
                     'X-CSRF-TOKEN': App.csrfToken,
@@ -215,7 +215,7 @@ Vue.component('pago-cuenta-create', {
         confirmSave: function () {
             var self = this;
             swal({
-                title: 'Generar Solicitud de Cheque',
+                title: 'Generar Solicitud de Pago',
                 text: "¿Está seguro de que la información es correcta?",
                 type: 'warning',
                 showCancelButton: true,
@@ -232,7 +232,7 @@ Vue.component('pago-cuenta-create', {
         save: function () {
             var self = this;
             $.ajax({
-                url: App.host + '/api/finanzas/solicitud_cheque/pago_cuenta',
+                url: App.host + '/api/finanzas/solicitud_pago/pago_cuenta',
                 type: 'POST',
                 data: self.form,
                 beforeSend: function () {

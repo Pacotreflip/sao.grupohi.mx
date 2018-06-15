@@ -1,4 +1,4 @@
-Vue.component('solicitud-cheque-index', {
+Vue.component('solicitud-pago-index', {
     data: function () {
         return {
             solicitudes: [],

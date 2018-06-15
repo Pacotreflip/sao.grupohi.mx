@@ -9,21 +9,22 @@
 namespace Ghi\Domain\Core\Models\Finanzas;
 
 
-use Ghi\Domain\Core\Models\Scopes\SolicitudChequeScope;
+use Ghi\Domain\Core\Models\Scopes\SolicitudPagoScope;
+use Ghi\Domain\Core\Models\Transacciones\Tipo;
 use Ghi\Domain\Core\Models\Transacciones\Transaccion;
 
-class SolicitudCheque extends Transaccion
+class SolicitudPago extends Transaccion
 {
     /**
-     * Aplicar Scope Global para recuperar solo las transacciones de tipo Solicitud de Cheque
+     * Aplicar Scope Global para recuperar solo las transacciones de tipo Solicitud de Pago
      */
     protected static function boot()
     {
         parent::boot();
-        static::addGlobalScope(new SolicitudChequeScope());
+        static::addGlobalScope(new SolicitudPagoScope());
 
         static::creating(function ($model) {
-            $model->tipo_transaccion = Tipo::PAGO_A_CUENTA;
+            $model->tipo_transaccion = Tipo::SOLICITUD_PAGO;
             $model->opciones = 327681;
             $model->id_moneda = 1;
             $model->FechaHoraRegistro = Carbon::now()->toDateTimeString();

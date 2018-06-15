@@ -165,7 +165,7 @@ Vue.component('reposicion-fondo-fijo-create', {
         confirmSave: function () {
             var self = this;
             swal({
-                title: 'Generar Solicitud de Cheque',
+                title: 'Generar Solicitud de Pago',
                 text: "¿Está seguro de que la información es correcta?",
                 type: 'warning',
                 showCancelButton: true,
@@ -182,7 +182,7 @@ Vue.component('reposicion-fondo-fijo-create', {
         save : function () {
             var self = this;
             $.ajax({
-                url : App.host + '/api/finanzas/solicitud_cheque/reposicion_fondo_fijo',
+                url : App.host + '/api/finanzas/solicitud_pago/reposicion_fondo_fijo',
                 type : 'POST',
                 data : self.form,
                 beforeSend : function () {

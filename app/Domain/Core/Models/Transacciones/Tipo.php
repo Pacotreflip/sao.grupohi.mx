@@ -15,6 +15,6 @@ class Tipo
     const PAGO = 82;
     const COTIZACION_CONTRATO = 50;
     const COTIZACION_COMPRA = 18;
-    const SOLICITUD_CHEQUE = 72;
+    const SOLICITUD_PAGO = 72;
     const ORDEN_COMPRA = 19;
 }
