@@ -738,7 +738,7 @@ class AsignacionCargaPreciosLayout extends ValidacionLayout
                                         }
                                     }
                                 }else{
-                                    $contratos[$key]['error'][] = "No se puede guardar el registro, por que el Precio Unitario Antes Descto no es múmerioco";
+                                    $contratos[$key]['error'][] = "No se puede guardar el registro, por que el Precio Unitario Antes Descto no es numérico";
                                     $error++;
                                 }
                             } else {
