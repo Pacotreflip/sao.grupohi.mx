@@ -34,7 +34,9 @@ class SolicitudPagoController extends Controller
     }
 
     public function paginate(Request $request){
-        $resp = $this->solicitudPagoRepository->paginate($request->all());
+
+        $resp = $this->solicitudPagoRepository->with($request->with)->paginate($request->all());
+
         return response()->json([
             'recordsTotal' => $resp->total(),
             'recordsFiltered' => $resp->total(),

@@ -33,4 +33,8 @@ class SolicitudPago extends Transaccion
             $model->saldo = $model->monto;
         });
     }
+
+    public function antecedente() {
+        return $this->belongsTo(Transaccion::class, 'id_antecedente');
+    }
 }

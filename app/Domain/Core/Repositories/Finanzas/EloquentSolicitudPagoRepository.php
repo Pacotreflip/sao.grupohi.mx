@@ -37,12 +37,32 @@ class EloquentSolicitudPagoRepository implements SolicitudPagoRepository
      */
     public function paginate(array $data)
     {
-        $query = $this->model->with(['TipoTran']);
+        $query = $this->model;
+
+
+        $query->where(function ($q) use ($data){
+            $q
+                ->where('numero_folio', 'LIKE', '%' . $data['search']['value'] . '%')
+                ->orWhere('observaciones', 'LIKE', '%' . $data['search']['value'] . '%')
+                ->orWhere('referencia', 'LIKE', '%' . $data['search']['value'] . '%')
+                ->orWhere('destino', 'LIKE', '%' . $data['search']['value'] . '%')
+                ->orWhere('monto', 'LIKE', '%' . $data['search']['value'] . '%');
+        });
 
         foreach ($data['order'] as $order) {
             $query->orderBy($data['columns'][$order['column']]['data'], $order['dir']);
         }
 
         return $query->paginate($perPage = $data['length'], $columns = ['*'], $pageName = 'page', $page = ($data['start'] / $data['length']) + 1);
+    }
+
+    /**
+     * Devuelve modelo relacionado con otros modelos
+     * @param $with
+     * @return EloquentSolicitudPagoRepository
+     */
+    public function with($with) {
+        $this->model = $this->model->with($with);
+        return $this;
     }
 }

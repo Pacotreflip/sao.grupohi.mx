@@ -2,6 +2,8 @@
 
 namespace Ghi\Domain\Core\Contracts\Finanzas;
 
+use Ghi\Domain\Core\Repositories\Finanzas\EloquentSolicitudPagoRepository;
+
 interface SolicitudPagoRepository
 {
     /**
@@ -15,4 +17,11 @@ interface SolicitudPagoRepository
      * @return mixed
      */
     public function paginate(array $data);
+
+    /**
+     * Devuelve modelo relacionado con otros modelos
+     * @param $with
+     * @return EloquentSolicitudPagoRepository
+     */
+    public function with($with);
 }

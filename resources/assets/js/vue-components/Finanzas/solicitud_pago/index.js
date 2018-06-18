@@ -2,29 +2,31 @@ Vue.component('solicitud-pago-index', {
     template: require('./templates/index.html'),
     data: function () {
         return {
-            solicitudes: [],
             cargando: false
         }
     },
 
     mounted: function () {
         var self = this;
-        this.getSolicitudes().then(function (data) {
-            self.solicitudes = data;
-            self.cargando = false;
-        });
 
         var data = {
             "processing": true,
             "serverSide": true,
             "ordering" : true,
-            "searching" : false,
+            "searching" : true,
             "order": [
                 [0, "desc"]
             ],
             "ajax": {
-                "url": App.host + '/finanzas/solicitud_pago/paginate',
-                "type" : "POST",
+                "url": App.host + '/api/finanzas/solicitud_pago/paginate',
+                "type": "POST",
+                "data": {
+                    with: ['TipoTran', 'antecedente']
+                },
+                headers: {
+                    'X-CSRF-TOKEN': App.csrfToken,
+                    'Authorization': localStorage.getItem('token')
+                },
                 "beforeSend" : function () {
                     self.cargando = true;
                 },
@@ -33,30 +35,22 @@ Vue.component('solicitud-pago-index', {
                 },
                 "dataSrc" : function (json) {
                     for (var i = 0; i < json.data.length; i++) {
-                        json.data[i].monto = '<span class="pull-left">$</span>' + '<span class="pull-right">' + parseFloat(json.data[i].monto).formatMoney(2, '.', ',') + '</span>';
+                        json.data[i].transaccion_antedecente = (json.data[i].antecedente != null ? '# ' + json.data[i].antecedente.numero_folio + " - " + (json.data[i].antecedente.referencia ? json.data[i].antecedente.referencia.trim() : '---') + (json.data[i].antecedente.observaciones ? ' (' + json.data[i].antecedente.observaciones.trim() + ')' : '') : 'NINGUNA');
                         json.data[i].FechaHoraRegistro = new Date(json.data[i].FechaHoraRegistro).dateFormat();
+                        json.data[i].monto = '<span class="pull-left">$</span>' + '<span class="pull-right">' + parseFloat(json.data[i].monto).formatMoney(2, '.', ',') + '</span>';
                     }
                     return json.data;
                 }
             },
-
-
             "columns" : [
                 {data : 'numero_folio'},
-                {data : 'tipo_tran.TipoTransaccion'},
-                {data : 'monto', className : 'text-right'},
-                {data : 'fecha'},
-                {data : 'referencia'},
+                {data : 'tipo_tran.Descripcion', orderable : false},
+                {data : 'transaccion_antedecente', orderable : false},
+                {data : 'monto'},
+                {data : 'destino'},
                 {data : 'FechaHoraRegistro'},
-                {
-                    data : {},
-                    render : function(data) {
-                        return (self.consultar_comprobante_fondo_fijo ? '<a href="'+App.host+'/finanzas/comprobante_fondo_fijo/'+data.id_transaccion+'" title="Ver" class="btn btn-xs btn-default"><i class="fa fa-eye"></i></a>' : '') +
-                            (self.editar_comprobante_fondo_fijo ? '<a href="'+App.host+'/finanzas/comprobante_fondo_fijo/'+data.id_transaccion+'/edit'+'" title="Editar" class="btn btn-xs btn-info"> <i class="fa fa-pencil"></i></a>' : '') +
-                            (self.eliminar_comprobante_fondo_fijo ? '<button title="Eliminar" type="button" class="btn btn-xs btn-danger btn_delete" id="'+data.id_transaccion+'"><i class="fa fa-trash"></i></button>' : '');
-                    },
-                    orderable : false
-                }
+                {data : 'observaciones', orderable : false}
+
             ],
             language: {
                 "sProcessing": "Procesando...",
@@ -84,28 +78,6 @@ Vue.component('solicitud-pago-index', {
             }
         };
 
-        $('#comprobantes_table').DataTable(data);
-    },
-
-    methods: {
-        getSolicitudes: function () {
-            var self = this;
-            return new Promise(function (resolve, reject) {
-                $.ajax({
-                    url: App.host + '/api/finanzas/solicitud_pago',
-                    type: 'GET',
-                    headers: {
-                        'X-CSRF-TOKEN': App.csrfToken,
-                        'Authorization': localStorage.getItem('token')
-                    },
-                    beforeSend: function () {
-                        self.cargando = true;
-                    },
-                    success: function (response) {
-                        resolve(response);
-                    }
-                })
-            });
-        }
+        $('#solicitudes_table').DataTable(data);
     }
 });
