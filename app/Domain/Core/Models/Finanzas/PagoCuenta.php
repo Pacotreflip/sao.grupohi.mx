@@ -61,6 +61,7 @@ class PagoCuenta extends Transaccion
             $model->id_obra = Context::getId();
             $model->comentario = "I;" . date('d/m/Y') . " " . date('h:m:s') . ";SAO|" . auth()->user()->usuario . "|";
             $model->saldo = $model->monto;
+            $model->fecha = Carbon::now()->toDateString();
         });
     }
 

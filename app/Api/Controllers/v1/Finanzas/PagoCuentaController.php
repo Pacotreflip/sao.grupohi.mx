@@ -60,7 +60,6 @@ class PagoCuentaController extends BaseController
         $rules = [
             'cumplimiento' => ['required', 'date'],
             'vencimiento' => ['required', 'date'],
-            'fecha' => ['required', 'date', 'periodo_abierto'],
             'monto' => ['required', 'string',],
             'destino' => ['required', 'string',],
             'observaciones' => ['string',],

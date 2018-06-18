@@ -8,7 +8,6 @@ Vue.component('reposicion-fondo-fijo-create', {
                 cumplimiento: new Date().dateShortFormat(),
                 vencimiento: new Date().dateShortFormat(),
                 destino: '',
-                fecha: '',
                 id_referente: '',
                 id_antecedente: '',
                 observaciones: '',
@@ -41,14 +40,12 @@ Vue.component('reposicion-fondo-fijo-create', {
         'comprobante_fondo_fijo': function (comprobante_fondo_fijo) {
             if (Object.keys(comprobante_fondo_fijo).length === 0) {
                 this.form.destino = '';
-                this.form.fecha = '';
                 this.form.id_referente = '';
                 this.form.id_antecedente = '';
                 this.form.observaciones = '';
                 this.form.monto = '';
             } else {
                 this.form.destino = comprobante_fondo_fijo.fondo_fijo.nombre;
-                this.form.fecha = comprobante_fondo_fijo.fecha;
                 this.form.id_referente = comprobante_fondo_fijo.fondo_fijo.id_fondo;
                 this.form.id_antecedente = comprobante_fondo_fijo.id_transaccion;
                 this.form.observaciones = comprobante_fondo_fijo.observaciones;

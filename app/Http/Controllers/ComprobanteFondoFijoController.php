@@ -31,8 +31,6 @@ class ComprobanteFondoFijoController extends Controller
     {
         parent::__construct();
 
-        $this->middleware('auth');
-        $this->middleware('context');
         $this->middleware('permission:consultar_comprobante_fondo_fijo', ['only' => ['index', 'show']]);
         $this->middleware('permission:editar_comprobante_fondo_fijo', ['only' => ['edit', 'update']]);
         $this->middleware('permission:registrar_comprobante_fondo_fijo', ['only' => ['create', 'store']]);

@@ -7,7 +7,6 @@ Vue.component('pago-cuenta-create', {
                 vencimiento: new Date().dateShortFormat(),
                 id_antecedente: '',
                 destino: '',
-                fecha: '',
                 id_empresa: '',
                 observaciones: '',
                 monto: '',
@@ -95,7 +94,6 @@ Vue.component('pago-cuenta-create', {
         'transaccion': function (transaccion) {
             if (Object.keys(transaccion).length === 0) {
                 this.form.destino = '';
-                this.form.fecha = '';
                 this.form.id_empresa = '';
                 this.form.id_antecedente = '';
                 this.form.observaciones = '';
@@ -105,7 +103,6 @@ Vue.component('pago-cuenta-create', {
 
             } else {
                 this.form.destino = transaccion.empresa.razon_social;
-                this.form.fecha = transaccion.fecha;
                 this.form.id_empresa = transaccion.id_empresa;
                 this.form.id_antecedente = transaccion.id_transaccion;
                 this.form.observaciones = transaccion.observaciones;
