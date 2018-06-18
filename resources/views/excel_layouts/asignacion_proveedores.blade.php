@@ -129,8 +129,10 @@
             <!-- Información general de la partida -->
             <td style="background-color: #ffd966" class="laterales-left">{{ $index }}</td>
             <td style="background-color: #ffd966" class="border">{{  $mcrypt->encrypt($req['partida']->idrqctoc_solicitudes_partidas) }}</td>
-            <td style="background-color: #ffd966" class="border">{{ (!empty($req['partida']->material->numero_parte) ?
-            '['. $req['partida']->material->numero_parte .']' : '') . $req['partida']->material->descripcion }}</td>
+            <td style="background-color: #ffd966" class="border">{{ (!empty($req['partida']->material) ?
+            '['. $req['partida']->material->numero_parte .']' : '') . (!empty($req['partida']->material) ?
+            $req['partida']->material->descripcion : '')
+            }}</td>
             <td style="background-color: #ffd966" class="border">{{ (!empty($req['partida']->material->unidad) ?
             $req['partida']->material->unidad : '') }}</td>
             <td style="background-color: #ffd966"
@@ -172,7 +174,8 @@
                 <td style="background-color: #fff" class="{{$ultimalinea}} "></td>
 
                 {{--material_sao--}}
-                <td style="background-color: #fff; color: #fff">{{ $mcrypt->encrypt($req['partida']->material->id_material) }}</td>
+                <td style="background-color: #fff; color: #fff">{{ $mcrypt->encrypt((!empty($req['partida']->material) ?
+                $req['partida']->material->id_material : '0')) }}</td>
 
                 {{--idrqctoc_solicitudes_partidas--}}
                 <td style="background-color: #fff; color: #fff"></td>
