@@ -57,10 +57,10 @@ class AsignacionCargaProveedoresLayout extends ValidacionLayout
     protected $headerFijos = [
         "#" => "#",
         "Id" => "Id",
-        "descripcion_span" => "descripcion_span",
-        "unidad" => "unidad",
-        "cantidad solicitada" => "cantidad solicitada",
-        "cantidad_aprobada" => "cantidad_aprobada",
+        "descripcion_span" => "Descripción",
+        "unidad" => "Unidad",
+        "cantidad solicitada" => "Cantidad Solicitada",
+        "cantidad_aprobada" => "Cantidad Aprobada",
     ];
 
     /**

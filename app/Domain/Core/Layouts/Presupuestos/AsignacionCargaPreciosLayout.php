@@ -73,12 +73,12 @@ class AsignacionCargaPreciosLayout extends ValidacionLayout
     protected $headerFijos = [
         "#" => "#",
         "Id" => "Id",
-        "hijos" => "hijos",
-        "clave" => "clave",
-        "descripcion_span" => "descripcion_span",
-        "unidad" => "unidad",
-        "cantidad_autorizada" => "cantidad_autorizada",
-        "cantidad_solicitada" => "cantidad_solicitada",
+        "hijos" => "Descendientes",
+        "clave" => "Clave",
+        "descripcion_span" => "Descripción",
+        "unidad" => "Unidad",
+        "cantidad_autorizada" => "Cantidad Autorizada",
+        "cantidad_solicitada" => "Cantidad Solicitada",
     ];
     /**
      * @var array
