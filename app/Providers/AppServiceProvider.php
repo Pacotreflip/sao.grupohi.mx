@@ -25,6 +25,10 @@ class AppServiceProvider extends ServiceProvider
         Validator::extend('sin_facturas', function ($attribute, $value) {
             return ! Transaccion::find($value)->tiene_facturas;
         });
+
+        Validator::extend('after_or_equal', function($attribute, $value, $parameters, $validator) {
+            return strtotime($validator->getData()[$parameters[0]]) <= strtotime($value);
+        });
     }
 
     /**

@@ -59,7 +59,7 @@ class PagoCuentaController extends BaseController
 
         $rules = [
             'cumplimiento' => ['required', 'date'],
-            'vencimiento' => ['required', 'date'],
+            'vencimiento' => ['required', 'date', 'after_or_equal:cumplimiento'],
             'monto' => ['required', 'string',],
             'destino' => ['required', 'string',],
             'observaciones' => ['string',],
@@ -70,6 +70,7 @@ class PagoCuentaController extends BaseController
 
         $messages = [
             'uniqueid_antecedente' => 'Ya existe una solicitud generada para la transacción seleccionada',
+            'after_or_equal' => 'La "Fecha Límite de Pago" debe ser mayor o igual a la "Fecha de Solicitud"'
         ];
 
         $validator = app('validator')->make($request->all(), $rules, $messages);

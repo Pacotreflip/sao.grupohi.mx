@@ -60,7 +60,7 @@ class ReposicionFondoFijoController extends BaseController
             //Validaciones de Transaccion
             'id_referente' => ['required', 'int', 'exists:cadeco.fondos,id_fondo'],
             'cumplimiento' => ['required', 'date'],
-            'vencimiento' => ['required', 'date'],
+            'vencimiento' => ['required', 'date', 'after_or_equal:cumplimiento'],
             'fecha' => ['required', 'date'],
             'monto' => ['required', 'string',],
             'destino' => ['required', 'string',],
@@ -69,6 +69,7 @@ class ReposicionFondoFijoController extends BaseController
         ];
         $messages = [
             'uniqueid_antecedente' => 'Ya existe una solicitud generada para la transacción seleccionada',
+            'after_or_equal' => 'La "Fecha Límite de Pago" debe ser mayor o igual a la "Fecha de Solicitud"'
         ];
 
         //Validar los datos recibidos con las reglas de validación
