@@ -46,6 +46,10 @@ class Concepto extends BaseModel
     {
         parent::boot();
         static::addGlobalScope(new ObraScope());
+
+        static::creating(function ($model) {
+            $model->id_obra = Context::getId();
+        });
     }
 
     /**

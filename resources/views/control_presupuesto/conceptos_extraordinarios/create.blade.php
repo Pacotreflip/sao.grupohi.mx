@@ -8,7 +8,6 @@
     <concepto-extraordinario-create
             :id_tipo_orden="3"
             :conceptos="{{$conceptos}}"
-            :url_concepto_get_by="'{{route('sistema_contable.concepto.getBy')}}'"
             :unidades="{{ json_encode($unidades) }}"
             :tipos_extraordinarios="{{ json_encode($tipos_extraordinarios) }}"
             :tarjetas="{{ json_encode($tarjetas) }}"
@@ -21,13 +20,15 @@
                 <div class="col-md-12">
                     <div class="box box-solid">
                         <div class="box-header with-border">
-                            <h3 class="box-title">Seleccione un Extraordinario</h3>
+                            <div class="col-md-10"><h3 class="box-title">Seleccione un Extraordinario</h3></div>
+                            <div class="col-md-2"><button type="button" class="btn btn-primary pull-right" :disabled="modificar_estructura" v-show="form.id_origen_extraordinario == ''" v-on:click="modificar_estructura = !modificar_estructura"> Modificar Estructura Presupuestal</button></div>
+
                         </div>
                         <div class="box-body">
                             <div class="row">
                                 <div class="col-md-6">
                                     <label for="origen_extraordinario"><b>Origen del Extraordinario</b></label>
-                                    <select class="form-control input-sm" v-model="form.id_origen_extraordinario"  :disabled="!tipos_extraordinarios.length || mostrar_tabla" v-on:change="form.id_opcion = '' ">
+                                    <select class="form-control input-sm" v-model="form.id_origen_extraordinario"  :disabled="!tipos_extraordinarios.length || mostrar_tabla || modificar_estructura" v-on:change="form.id_opcion = '' ">
                                         <option value>[--SELECCIONE--]</option>
                                         <option v-for="tipo_extraordinario in tipos_extraordinarios" :value="tipo_extraordinario.id">@{{ tipo_extraordinario.descripcion }}</option>
                                     </select>
@@ -604,6 +605,68 @@
                 </div>
             </div>
 
+            <!-- Seccion para agregar partidas al presupuesto -->
+            <div class="row" v-show="modificar_estructura">
+                <div class="col-md-12">
+                    <div class="box box-solid">
+                        <div class="box-header with-border">
+                            <div class="col-md-10"><h3 class="box-title">Modificar Estructura Presupuestal</h3></div>
+                            <div class="col-md-2"><button type="button" class="btn btn-default pull-right" v-on:click="modificar_estructura = !modificar_estructura" >Cerrar</button></div>
+                        </div>
+
+                        <div class="box-body">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="table-responsive">
+                                        <table class="table table-bordered table-striped" v-treegrid id="concepto_tree">
+                                            <thead>
+                                                <tr>
+                                                    <th>Concepto</th>
+                                                    <th>Agregar Partida</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr  v-for="(concepto, index) in conceptos_ordenados" :class="tr_class(concepto)" :id="tr_id(concepto)" >
+                                                    <td v-if="concepto.id_padre == null">
+                                                        @{{ concepto.descripcion }}
+                                                        <button style="border: 0; background-color: transparent" :disabled="cargando" v-if="concepto.tiene_hijos > 0 && ! concepto.cargado" @click="get_hijos(concepto)">
+                                                                    <span v-if="cargando">
+                                                                        <i class="fa fa-spin fa-spinner"></i>
+                                                                    </span>
+                                                            <span v-else>
+                                                                        <i class="fa fa-plus"></i>
+                                                                    </span>
+                                                        </button>
+                                                    </td>
+                                                    <td  v-else>
+                                                        @{{ concepto.descripcion}}
+                                                        <button style="border: 0; background-color: transparent" :disabled="cargando" v-if="concepto.tiene_hijos > 0 && ! concepto.cargado && concepto.hijos_cobrables == 0" @click="get_hijos(concepto)">
+                                                                    <span v-if="cargando">
+                                                                        <i class="fa fa-spin fa-spinner"></i>
+                                                                    </span>
+                                                            <span v-else>
+                                                                        <i class="fa fa-plus"></i>
+                                                                    </span>
+                                                        </button>
+                                                    </td>
+                                                    <td >
+                                                        <button type="button" class="btn btn-success " @click="modal_agregar_partidas(concepto)">
+                                                            <span v-if="cargando"><i class="fa fa-spinner fa-spin"></i> </span>
+                                                            <span v-else><i class="fa fa-plus large"></i></span>
+                                                        </button>
+                                                    </td>
+
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <!-- Modal para agregar un insumo por agrupador-->
 
             <div id="add_insumo_modal" class="modal fade" aria-labelledby="addInsumosModal">
@@ -645,6 +708,64 @@
                 </div>
             </div>
 
+
+            <!-- Modal para agregar una partida al presupuesto-->
+
+            <div id="add_partida_modal" class="modal fade" aria-labelledby="addPartidaModal">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header with-border">
+                            <button type="button" class="close" data-dismiss="modal"><span
+                                        aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+                            <h4 class="modal-title">Agregar Partidas al Presupuesto</h4>
+                        </div>
+                        <div class="modal-body">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <label><h4>Partidas pertenecientes a:  @{{ concepto_base.descripcion }}</h4></label>
+                                </div>
+                                <div class="col-md-12">
+                                    <table id="concepto_table" class=" table table-bordered table-striped">
+                                        <thead>
+                                        <tr>
+                                            <th style="width: 60%">Descripción</th>
+                                            <th style="width: 10%">Importe</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody v-show="!cargando">
+                                        <tr v-for="(partida, index) in partidas_concepto">
+                                            <td>@{{ partida.descripcion }}</td>
+                                            <td class="text-right">$ @{{ parseFloat(partida.monto_presupuestado).formatMoney(2,'.',',') }}</td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                    <div class="callout callout-info">
+                                        <p>Para agregar una partida en @{{ concepto_base.descripcion }} solo ingrese una descripción</p>
+                                    </div>
+                                    <form id="form_save_partida" @submit.prevent="validateForm('form_save_partida', 'save_partida')"
+                                          data-vv-scope="form_save_partida">
+                                        <div class="form-group" :class="{'has-error': validation_errors.has('form_save_partida.Partida Descripcion')}">
+                                            <input type="text" placeholder="Ingrese Descripción de la Partida"  style="width: 100%; height: 34px"
+                                                   class="form-control" v-validate="'required'"
+                                                   v-model="partida_descripcion" :disabled="cargando"
+                                                   :name="'Partida Descripcion'">
+                                            <label class="help"
+                                                   v-show="validation_errors.has('form_save_partida.Partida Descripcion')">@{{ validation_errors.first('form_save_partida.Partida Descripcion') }}</label>
+                                        </div>
+                                        <button type="button" class="btn btn-default pull-right" v-on:click="close_modal_partida()" style="margin-left: 5px">Cerrar</button>
+                                        <button type="submit" class="btn btn-primary pull-right">
+                                            <span v-if="cargando"><i class="fa fa-spinner fa-spin"></i> </span>
+                                            <span v-else><i class="fa fa-plus large">Agregar</i></span>
+                                        </button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+
+
+                    </div>
+                </div>
+            </div>
             <!-- Modal para seleccionar el lugar donde posicionar el extraordnario en el arbol de conceptos -->
 
             <div id="seleccion_concepto_modal" class="modal fade" aria-labelledby="addExtraordinarioModal">
@@ -709,5 +830,5 @@
 
         </section>
     </concepto-extraordinario-create>
-
+    <section></section>
 @endsection

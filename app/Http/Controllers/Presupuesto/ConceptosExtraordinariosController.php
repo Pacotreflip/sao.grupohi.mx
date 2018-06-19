@@ -191,12 +191,22 @@ class ConceptosExtraordinariosController extends Controller
         });
     }
 
+    public function guardarPartida(Request $request){
+        $partida = $this->concepto->storePartida($request->all());
+        return response()->json(['data' => ['partida' => $partida]], 200);
+    }
+
     /**
      * @param Request $request
      * @return \Illuminate\Http\JsonResponse
      */
     public function getBy(Request $request) {
         $items = $this->concepto->getBy($request->attribute, $request->operator, $request->value, $request->with);
+        return response()->json(['data' => ['conceptos' => $items]], 200);
+    }
+
+    public function getNivelHijos(Request $request) {
+        $items = $this->concepto->getBy($request->attribute, $request->operator, $request->value);
         return response()->json(['data' => ['conceptos' => $items]], 200);
     }
 }

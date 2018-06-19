@@ -160,7 +160,6 @@ class EloquentMaterialRepository implements MaterialRepository
             }
             $data['UsuarioRegistro'] = auth()->user()->idusuario;
 
-            //return response()->json(['message'=> 'Familia ya existe'], 404);
             $material = $this->model->create($data);
             DB::connection('cadeco')->commit();
         } catch (\Exception $e) {

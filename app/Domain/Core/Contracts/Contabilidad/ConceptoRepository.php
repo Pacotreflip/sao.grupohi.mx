@@ -69,4 +69,11 @@ interface ConceptoRepository
      * @return mixed
      */
     public function getInsumosPorTarjeta($id_tarjeta);
+
+    /**
+     * Guarda una nueva partida en el arbol de presupuesto
+     * @param array $data
+     * @return mixed
+     */
+    public function storePartida(array $data);
 }

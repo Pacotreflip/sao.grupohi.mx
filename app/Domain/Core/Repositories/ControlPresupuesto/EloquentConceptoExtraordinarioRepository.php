@@ -35,7 +35,6 @@ class EloquentConceptoExtraordinarioRepository implements ConceptoExtraordinario
         $this->solicitud_partidas = $solicitud_partidas;
     }
 
-
     public function store(array $data)
     {
         try {

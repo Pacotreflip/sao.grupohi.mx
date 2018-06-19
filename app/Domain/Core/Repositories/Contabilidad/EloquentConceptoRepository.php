@@ -36,8 +36,8 @@ class EloquentConceptoRepository implements ConceptoRepository
     public function getBy($attribute, $operator, $value, $with = null)
     {
         if ($with != null)
-            return $this->model->with($with)->where($attribute, $operator, $value)->get();
-        return $this->model->where($attribute, $operator, $value)->limit(5)->get();
+            return $this->model->with($with)->where($attribute, $operator, $value)->orderBy('nivel','asc')->get();
+        return $this->model->where($attribute, $operator, $value)->orderBy('nivel','asc')->get();
     }
 
     /**
@@ -304,4 +304,40 @@ class EloquentConceptoRepository implements ConceptoRepository
     }
 
 
+    /**
+     * Guarda una nueva partida en el arbol de presupuesto
+     * @param array $data
+     * @return mixed
+     * @throws \Exception
+     */
+    public function storePartida(array $data)
+    {
+        try{
+            DB::connection('cadeco')->beginTransaction();
+            $nivel_partida = 0;
+            $descendientes = $this->model->where('nivel', 'like', $data['nivel'].'___.')->orderBy('nivel', 'asc')->get(['nivel']);
+            if($descendientes->count() > 0) {
+                for ($i = 1; $i <= $descendientes->count(); $i++) {
+                    $nivel = explode('.', $descendientes[$i - 1]->nivel);
+                    if (intval($nivel[sizeof($nivel) - 2]) != $i) {
+                        $nivel_partida = $data['nivel'] . str_pad($i, 3, '0', STR_PAD_LEFT) . '.';
+                        break;
+                    }else{
+                        $nivel_partida = $data['nivel'] . str_pad($i+1, 3, '0', STR_PAD_LEFT) . '.';
+                    }
+                }
+
+            }else{
+                $nivel_partida = $data['nivel'] . str_pad(1, 3, '0', STR_PAD_LEFT) . '.';
+            }
+             $partida = Concepto::create(['nivel' => $nivel_partida , 'descripcion' => $data['descripcion'], 'unidad' => '']);
+
+            DB::connection('cadeco')->commit();
+            return Concepto::find($partida->id_concepto);
+        } catch (\Exception $e) {
+            DB::connection('cadeco')->rollback();
+            throw $e;
+        }
+
+    }
 }

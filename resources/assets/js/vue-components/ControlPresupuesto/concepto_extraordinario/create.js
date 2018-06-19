@@ -1,9 +1,10 @@
 Vue.component('concepto-extraordinario-create', {
-    props : ['unidades', 'tipos_extraordinarios', 'tarjetas', 'catalogo', 'id_tipo_orden','url_concepto_get_by', 'conceptos'],
+    props : ['unidades', 'tipos_extraordinarios', 'tarjetas', 'catalogo', 'id_tipo_orden', 'conceptos'],
     data:function () {
         return {
             'data': {
                 'conceptos' : this.conceptos
+
             },
             form:{
                 path_base:'',
@@ -29,7 +30,11 @@ Vue.component('concepto-extraordinario-create', {
             tipo_insumo:'',
             guardar: false,
             id_material_seleccionado:'',
-            material_seleccionado:[]
+            material_seleccionado:[],
+            concepto_base:[],
+            partidas_concepto:[],
+            modificar_estructura:false,
+            partida_descripcion:''
         }
     },
 
@@ -442,8 +447,11 @@ Vue.component('concepto-extraordinario-create', {
 
         validateForm: function(scope, funcion) {
             this.$validator.validateAll(scope).then(() => {
-                if(funcion == 'save_solicitud') {
+            if(funcion == 'save_solicitud') {
                 this.confirmSave();
+            }
+            if(funcion == 'save_partida') {
+                this.confirmPartidaSave();
             }
         }).catch(() => {
                 swal({
@@ -472,8 +480,7 @@ Vue.component('concepto-extraordinario-create', {
                 data:{
                     attribute: 'nivel',
                     operator: 'like',
-                    value: concepto.nivel_hijos,
-                    with : 'cuentaConcepto'
+                    value: concepto.nivel_hijos
                 },
                 beforeSend: function () {
                     self.cargando = true;
@@ -495,6 +502,95 @@ Vue.component('concepto-extraordinario-create', {
             });
         },
 
+        modal_agregar_partidas:function (concepto) {
+            var self = this;
+            self.partida_descripcion = '';
+            self.concepto_base = concepto;
+            $.ajax({
+                type:'GET',
+                url: App.host + '/control_presupuesto/conceptos_extraordinarios/getNivelHijos',
+                data:{
+                    attribute: 'nivel',
+                    operator: 'like',
+                    value: concepto.nivel_hijos
+                },
+                beforeSend: function () {
+                    self.cargando = true;
+                },
+                success: function (data, textStatus, xhr) {
+                    self.partidas_concepto = data.data.conceptos;
+                },
+                complete: function() {
+                    self.cargando = false;
+
+                    $('#add_partida_modal').modal('show');
+
+                }
+            });
+
+        },
+
+        confirmPartidaSave:function () {
+            var self = this;
+            swal({
+                title: 'Guardar Nueva Partida',
+                html: "La partida </br>"+self.partida_descripcion+"</br> se guardará en la siguiente ruta del presupuesto </br>" + self.concepto_base.path+ "</br> ¿Está seguro de que la información es correcta?",
+                type: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Si, Guardar',
+                cancelButtonText: 'No, Cancelar'
+            }).then(function(result) {
+                if(result.value) {
+                    self.guardar_partida();
+                }
+            });
+        },
+
+        guardar_partida:function () {
+            var self = this;
+
+            var url = App.host + '/control_presupuesto/conceptos_extraordinarios/guardarPartida';
+            $.ajax({
+                type: 'POST',
+                url: url,
+                data : {
+                    nivel:self.concepto_base.nivel,
+                    descripcion:self.partida_descripcion
+                },
+                beforeSend: function () {
+                    self.cargando = true;
+                },
+                success: function (data, textStatus, xhr) {
+                    swal({
+                        type: "success",
+                        title: '¡Correcto!',
+                        text: 'Partida guardada correctamente',
+                        confirmButtonText: "Ok",
+                        closeOnConfirm: false
+                    }).then(function () {
+                    });
+                    try {
+                        if(self.concepto_base.cargado) {
+                            self.data.conceptos.push(data.data.partida);
+                        }
+                    }
+                    catch(error) {
+                        console.error(error);
+                    }
+                },
+                complete: function () {
+                    self.concepto_base.tiene_hijos = parseInt(self.concepto_base.tiene_hijos) + 1;
+                    self.modal_agregar_partidas(self.concepto_base);
+                }
+            });
+        },
+
+        close_modal_partida: function () {
+            $('#add_partida_modal').modal('hide');
+        },
+
         tipo_costo: function () {
             var self = this;
             var pos = -1;
@@ -507,10 +603,7 @@ Vue.component('concepto-extraordinario-create', {
                 return true;
             }
             return false;
-        },
-
-        format_decimals: function (cantidad) {
-            return parseFloat(cantidad).formatMoney(3, ',', '.');
         }
+
     }
 });
