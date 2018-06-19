@@ -21,7 +21,7 @@ Vue.component('solicitud-pago-index', {
                 "url": App.host + '/api/finanzas/solicitud_pago/paginate',
                 "type": "POST",
                 "data": {
-                    with: ['TipoTran', 'antecedente']
+                    with: ['TipoTran', 'antecedente', 'rubros']
                 },
                 headers: {
                     'X-CSRF-TOKEN': App.csrfToken,
@@ -35,9 +35,24 @@ Vue.component('solicitud-pago-index', {
                 },
                 "dataSrc" : function (json) {
                     for (var i = 0; i < json.data.length; i++) {
-                        json.data[i].transaccion_antedecente = (json.data[i].antecedente != null ? '# ' + json.data[i].antecedente.numero_folio + " - " + (json.data[i].antecedente.referencia ? json.data[i].antecedente.referencia.trim() : '---') + (json.data[i].antecedente.observaciones ? ' (' + json.data[i].antecedente.observaciones.trim() + ')' : '') : 'NINGUNA');
+                        var tipo_antecedente = '';
+                        if(json.data[i].antecedente != null){
+                            switch (json.data[i].antecedente.tipo_transaccion) {
+                                case '19':
+                                    tipo_antecedente = '(ORDEN DE COMPRA) ';
+                                    break;
+                                case '51':
+                                    tipo_antecedente = '(SUBCONTRATO) ';
+                                    break;
+                                case '101':
+                                    tipo_antecedente = '(COMPROBANTE FF) ';
+                            }
+                        }
+
+                        json.data[i].transaccion_antedecente = tipo_antecedente + (json.data[i].antecedente != null ? '# ' + json.data[i].antecedente.numero_folio + " - " + (json.data[i].antecedente.referencia ? json.data[i].antecedente.referencia.trim() : '---') + (json.data[i].antecedente.observaciones ? ' (' + json.data[i].antecedente.observaciones.trim() + ')' : '') : 'NINGUNA');
                         json.data[i].FechaHoraRegistro = new Date(json.data[i].FechaHoraRegistro).dateFormat();
                         json.data[i].monto = '<span class="pull-left">$</span>' + '<span class="pull-right">' + parseFloat(json.data[i].monto).formatMoney(2, '.', ',') + '</span>';
+                        json.data[i].rubro = json.data[i].rubros[0] ? json.data[i].rubros[0].descripcion : '---';
                     }
                     return json.data;
                 }
@@ -45,6 +60,7 @@ Vue.component('solicitud-pago-index', {
             "columns" : [
                 {data : 'numero_folio'},
                 {data : 'tipo_tran.Descripcion', orderable : false},
+                {data : 'rubro', orderable : false},
                 {data : 'transaccion_antedecente', orderable : false},
                 {data : 'monto'},
                 {data : 'destino'},
