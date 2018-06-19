@@ -66,6 +66,7 @@ class ReposicionFondoFijoController extends BaseController
             'destino' => ['required', 'string',],
             'observaciones' => ['string',],
             'id_antecedente' => ['required', 'int','uniqueid_antecedente'],
+            'id_rubro' => ['required', 'int', 'exists:cadeco,Finanzas.rubros,id_rubro']
         ];
         $messages = [
             'uniqueid_antecedente' => 'Ya existe una solicitud generada para la transacción seleccionada',

@@ -20,7 +20,7 @@ class TransaccionRubro extends BaseModel
         'id_rubro',
     ];
 
-    protected static function boot()
-    {
+    public function rubro() {
+        return $this->hasOne(Rubro::class, 'id_rubro');
     }
 }

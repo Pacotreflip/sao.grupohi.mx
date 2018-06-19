@@ -15,9 +15,8 @@ use Ghi\Domain\Core\Models\Empresa;
 use Ghi\Domain\Core\Models\Scopes\ObraScope;
 use Ghi\Domain\Core\Models\Scopes\PagoCuentaScope;
 use Ghi\Domain\Core\Models\Transacciones\Tipo;
-use Ghi\Domain\Core\Models\Transacciones\Transaccion;
 
-class PagoCuenta extends Transaccion
+class PagoCuenta extends SolicitudPago
 {
     protected $fillable = [
         "id_antecedente",
@@ -54,14 +53,10 @@ class PagoCuenta extends Transaccion
         static::addGlobalScope(new ObraScope());
 
         static::creating(function ($model) {
-            $model->tipo_transaccion = Tipo::SOLICITUD_PAGO;
             $model->opciones = 327681;
-            $model->id_moneda = 1;
-            $model->FechaHoraRegistro = Carbon::now()->toDateTimeString();
-            $model->id_obra = Context::getId();
-            $model->comentario = "I;" . date('d/m/Y') . " " . date('h:m:s') . ";SAO|" . auth()->user()->usuario . "|";
-            $model->saldo = $model->monto;
-            $model->fecha = Carbon::now()->toDateString();
+        });
+        static::created(function ($model) {
+            $model->rubros()->attach(12);
         });
     }
 

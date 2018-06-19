@@ -3,20 +3,17 @@
 namespace Ghi\Domain\Core\Models\Finanzas;
 
 use Carbon\Carbon;
-use Ghi\Domain\Core\Models\Concepto;
 use Ghi\Domain\Core\Models\Fondo;
 use Ghi\Domain\Core\Models\Scopes\ReposicionFondoFijoScope;
 use Ghi\Domain\Core\Models\Scopes\ObraScope;
-use Ghi\Domain\Core\Models\Transacciones\Item;
 use Ghi\Domain\Core\Models\Transacciones\Tipo;
-use Ghi\Domain\Core\Models\Transacciones\Transaccion;
 use Ghi\Core\Facades\Context;
 
 /**
  * Class ReposicionFondoFijo
  * @package Ghi\Domain\Core\Models\Finanzas
  */
-class ReposicionFondoFijo extends Transaccion
+class ReposicionFondoFijo extends SolicitudPago
 {
 
     /**
@@ -53,14 +50,10 @@ class ReposicionFondoFijo extends Transaccion
         static::addGlobalScope(new ObraScope());
 
         static::creating(function ($model) {
-            $model->tipo_transaccion = Tipo::REPOSICION_FONDO_FIJO;
             $model->opciones = 1;
-            $model->id_moneda = 1;
-            $model->FechaHoraRegistro = Carbon::now()->toDateTimeString();
-            $model->id_obra = Context::getId();
-            $model->comentario = "I;" . date('d/m/Y') . " " . date('h:m:s') . ";SAO|" . auth()->user()->usuario . "|";
-            $model->saldo = $model->monto;
-            $model->fecha = Carbon::now()->toDateString();
+        });
+        static::created(function ($model) {
+            dd($model->id_rubro);
         });
     }
 

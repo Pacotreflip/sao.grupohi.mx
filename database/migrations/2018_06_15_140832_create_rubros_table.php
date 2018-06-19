@@ -29,6 +29,6 @@ class CreateRubrosTable extends Migration
      */
     public function down()
     {
-        Schema::connection('cadeco')->drop('Finanzas.transacciones_rubros');
+        Schema::connection('cadeco')->drop('Finanzas.rubros');
     }
 }

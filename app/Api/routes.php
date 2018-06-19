@@ -126,6 +126,11 @@ $api->version('v1', function ($api) {
          * Contratos Routes
          */
         $api->get('contratos/subcontrato/search', 'Ghi\Api\Controllers\v1\SubcontratoController@search');
+
+        /**
+         * Rubros Routes
+         */
+        $api->get('finanzas/rubro/lists', 'Ghi\Api\Controllers\v1\Finanzas\RubroController@lists');
     });
 });
 

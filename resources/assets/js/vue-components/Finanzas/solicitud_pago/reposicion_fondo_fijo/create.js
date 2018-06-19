@@ -11,7 +11,8 @@ Vue.component('reposicion-fondo-fijo-create', {
                 id_referente: '',
                 id_antecedente: '',
                 observaciones: '',
-                monto: ''
+                monto: '',
+                id_rubro: ''
             },
             comprobante_fondo_fijo: {},
             cargando : false,
@@ -111,6 +112,10 @@ Vue.component('reposicion-fondo-fijo-create', {
             });
         }
 
+        self.getRubros().then(function (data) {
+            self.rubros = data.rubros;
+        });
+
         $('#cumplimiento_rff').datepicker().on("changeDate", function() {
             self.form.cumplimiento = $('#cumplimiento_rff').val();
         });
@@ -121,6 +126,28 @@ Vue.component('reposicion-fondo-fijo-create', {
     },
 
     methods: {
+        getRubros: function() {
+            var self = this;
+            return new Promise(function (resolve, reject) {
+                $.ajax({
+                    url: App.host + '/api/finanzas/rubro/lists',
+                    type: 'GET',
+                    headers: {
+                        'X-CSRF-TOKEN': App.csrfToken,
+                        'Authorization': localStorage.getItem('token')
+                    },
+                    beforeSend: function () {
+                        self.cargando = true;
+                    },
+                    success: function(response) {
+                        self.cargando = false;
+                        resolve({
+                            rubros: response
+                        });
+                    }
+                });
+            });
+        },
         getComprobanteFondoFijo: function() {
             var self =this;
             return new Promise(function (resolve, reject) {

@@ -9,6 +9,8 @@
 namespace Ghi\Domain\Core\Models\Finanzas;
 
 
+use Carbon\Carbon;
+use Ghi\Core\Facades\Context;
 use Ghi\Domain\Core\Models\Moneda;
 use Ghi\Domain\Core\Models\Scopes\SolicitudPagoScope;
 use Ghi\Domain\Core\Models\Transacciones\Tipo;
@@ -26,16 +28,20 @@ class SolicitudPago extends Transaccion
 
         static::creating(function ($model) {
             $model->tipo_transaccion = Tipo::SOLICITUD_PAGO;
-            $model->opciones = 327681;
             $model->id_moneda = Moneda::PESOS;
             $model->FechaHoraRegistro = Carbon::now()->toDateTimeString();
             $model->id_obra = Context::getId();
             $model->comentario = "I;" . date('d/m/Y') . " " . date('h:m:s') . ";SAO|" . auth()->user()->usuario . "|";
+            $model->fecha = Carbon::now()->toDateString();
             $model->saldo = $model->monto;
         });
     }
 
     public function antecedente() {
         return $this->belongsTo(Transaccion::class, 'id_antecedente');
+    }
+
+    public function rubros() {
+        return $this->belongsToMany(Rubro::class, 'Finanzas.transacciones_rubros', 'id_transaccion', 'id_rubro');
     }
 }
