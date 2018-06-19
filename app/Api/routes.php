@@ -106,6 +106,11 @@ $api->version('v1', function ($api) {
         $api->post('finanzas/solicitud_pago/paginate', 'Ghi\Api\Controllers\v1\Finanzas\SolicitudPagoController@paginate');
 
         /**
+         * Carga de Expediente
+         */
+        $api->post('finanzas/carga_expediente/{id}', 'Ghi\Api\Controllers\v1\Finanzas\CargaExpedienteController@store');
+
+        /**
          * Fondos
          */
         $api->get('fondo/lists', 'Ghi\Api\Controllers\v1\FondoController@lists');
