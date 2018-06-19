@@ -1,5 +1,6 @@
 <?php
 
+use Carbon\Carbon;
 use Illuminate\Database\Seeder;
 use Ghi\Domain\Core\Models\Finanzas\Rubro;
 
@@ -30,10 +31,16 @@ class RubrosSeeder extends Seeder
             'REPOSICIÓN FONDO FIJO'=> 3,
         ];
 
+        $string = '';
+        $id = 0;
+        $len = count($rubros);
         foreach ($rubros as $descripcion => $tipo)
-            Rubro::firstOrCreate([
-                'descripcion' => $descripcion,
-                'id_tipo' => $tipo
-            ]);
+            $string .= "('". ++$id ."', '". $tipo ."', '". $descripcion ."', '". Carbon::now() ."', null, null)". ($id == $len  ? '': ', ');
+
+        DB::connection("cadeco")->statement('
+SET IDENTITY_INSERT Finanzas.rubros ON;
+INSERT INTO Finanzas.rubros(id, id_tipo, descripcion, created_at, updated_at, deleted_at)
+VALUES '. $string .';
+SET IDENTITY_INSERT Finanzas.rubros OFF;');
     }
 }

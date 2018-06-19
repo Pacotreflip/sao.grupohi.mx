@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateTransaccionesRubrosTable extends Migration
+class CreateRubrosTable extends Migration
 {
     /**
      * Run the migrations.
@@ -12,11 +12,12 @@ class CreateTransaccionesRubrosTable extends Migration
      */
     public function up()
     {
-        Schema::create('Finanzas.transacciones_rubros', function (Blueprint $table) {
+        Schema::create('Finanzas.rubros', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('id_transaccion');
-            $table->integer('id_rubro');
-            $table->unique(["id"]);
+            $table->integer('id_tipo');
+            $table->string("descripcion", 50);
+            $table->timestamps();
+            $table->softDeletes();
         });
     }
 
@@ -27,6 +28,6 @@ class CreateTransaccionesRubrosTable extends Migration
      */
     public function down()
     {
-        //
+        Schema::connection('cadeco')->drop('Finanzas.rubros');
     }
 }
