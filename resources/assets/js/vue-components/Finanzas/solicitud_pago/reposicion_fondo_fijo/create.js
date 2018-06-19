@@ -51,6 +51,15 @@ Vue.component('reposicion-fondo-fijo-create', {
     },
 
     watch: {
+        'form.id_rubro' : function (id_rubro) {
+            var self = this;
+            if (id_rubro == 13) {
+                $('#id_antecedente_rff').val(null).trigger('change');
+                $('#id_referente_rff').val(null).trigger('change');
+                self.form.id_antecedente = '';
+                self.comprobante_fondo_fijo = {};
+            }
+        },
         'comprobante_fondo_fijo': function (comprobante_fondo_fijo) {
             if (Object.keys(comprobante_fondo_fijo).length === 0) {
                 this.form.destino = '';
@@ -124,6 +133,49 @@ Vue.component('reposicion-fondo-fijo-create', {
                 self.comprobante_fondo_fijo = {};
             });
         }
+
+        $('#id_referente_rff').select2({
+            width: '100%',
+            ajax: {
+                url: App.host + '/api/fondo/search',
+                dataType: 'json',
+                headers: {
+                    'X-CSRF-TOKEN': App.csrfToken,
+                    'Authorization': localStorage.getItem('token')
+                },
+                data: function (params) {
+                    var query = {
+                        q: params.term,
+                        limit: 10
+                    };
+                    return query;
+                },
+                processResults: function (data) {
+                    return {
+                        results: $.map(data, function (item) {
+                            return {
+                                text:item.descripcion,
+                                id: item.id_fondo
+                            }
+                        })
+                    };
+                },
+                error: function (error) {},
+                cache: true
+            },
+            delay: 500,
+            escapeMarkup: function (markup) {
+                return markup;
+            },
+            placeholder: '[--BUSCAR FONDO FIJO--]',
+            minimumInputLength: 1,
+            allowClear: true
+        }).on('select2:select', function (e) {
+            var data = e.params.data;
+            self.form.id_referente = data.id;
+        }).on('select2:unselecting', function () {
+            self.form.id_referente = '';
+        });
 
         self.getRubros().then(function (data) {
             self.rubros = data.rubros;

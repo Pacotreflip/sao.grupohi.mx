@@ -55,4 +55,10 @@ class FondoController extends BaseController
         $fondos = $this->fondoRepository->where($request->where ? : [])->with($request->with ? : [])->all();
         return response()->json($fondos);
     }
+
+    public function search(Request $request) {
+        $fondos = $this->fondoRepository->search($request->all());
+
+        return response()->json($fondos, 200);
+    }
 }

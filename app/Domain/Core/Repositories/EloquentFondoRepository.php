@@ -70,4 +70,14 @@ class EloquentFondoRepository implements FondoRepository
         $this->model = $this->model->where($where);
         return $this;
     }
+
+    public function search($data)
+    {
+        return $this->model
+            ->where(function ($q) use ($data) {
+                $q->where('descripcion', 'LIKE', '%' . (isset($data['q']) ? $data['q']: '') . '%');
+            })
+            ->limit(isset($data['limit']) ? $data['limit'] : 10)
+            ->get();
+    }
 }

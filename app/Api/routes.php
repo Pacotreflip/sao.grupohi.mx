@@ -116,6 +116,8 @@ $api->version('v1', function ($api) {
         $api->get('fondo', 'Ghi\Api\Controllers\v1\FondoController@index');
         $api->get('fondo/lists', 'Ghi\Api\Controllers\v1\FondoController@lists');
         $api->get('fondo/{id}', 'Ghi\Api\Controllers\v1\FondoController@find')->where(['id' => '[0-9]+']);
+        $api->get('fondo/search', 'Ghi\Api\Controllers\v1\FondoController@search');
+
         /**
          * comprobante fondo fijo
          */

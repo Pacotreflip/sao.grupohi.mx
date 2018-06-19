@@ -38,4 +38,6 @@ interface FondoRepository
      * @return $this|FondoRepository
      */
     public function where($where);
+
+    public function search($data);
 }

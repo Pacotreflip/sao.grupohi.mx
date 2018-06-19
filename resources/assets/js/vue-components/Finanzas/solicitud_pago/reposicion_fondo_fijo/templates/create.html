@@ -24,7 +24,7 @@
             </div>
 
             <!-- Rubro -->
-            <div class="col-md-6">
+            <div :class="id_antecedente ? 'col-md-12' : 'col-md-6'">
                 <div class="form-group" :class="{'has-error': validation_errors.has('form_reposicion_fondo_fijo.Rubro')}">
                     <label for="id_rubro_rff"><b>Rubro</b></label>
                     <select v-validate="'required'" type="text" name="Rubro" class="form-control input-sm" id="id_rubro_rff" v-model="form.id_rubro">
@@ -35,26 +35,29 @@
                 </div>
             </div>
 
-            <!-- Comprobante de Fondo Fijo -->
-            <div v-if="! id_antecedente && form.id_rubro != 13" class="col-md-6">
-                <div class="form-group" :class="{'has-error': validation_errors.has('form_reposicion_fondo_fijo.Comprobante de Fondo Fijo')}">
-                    <label for="id_antecedente_rff"><b>Comprobante de Fondo Fijo</b></label>
-                    <select v-validate="'required'" type="text" name="Comprobante de Fondo Fijo" class="form-control input-sm"
-                            id="id_antecedente_rff" v-model="form.id_antecedente"></select>
-                    <label class="help" v-show="validation_errors.has('form_reposicion_fondo_fijo.Comprobante de Fondo Fijo')">{{ validation_errors.first('form_reposicion_fondo_fijo.Comprobante de Fondo Fijo') }}</label>
+            <span v-show="! id_antecedente && form.id_rubro != 13">
+                <!-- Comprobante de Fondo Fijo -->
+                <div class="col-md-6">
+                    <div class="form-group" :class="{'has-error': validation_errors.has('form_reposicion_fondo_fijo.Comprobante de Fondo Fijo')}">
+                        <label for="id_antecedente_rff"><b>Comprobante de Fondo Fijo</b></label>
+                        <select v-validate="(form.id_rubro != 13 ? 'required' : '')" type="text" name="Comprobante de Fondo Fijo" class="form-control input-sm"
+                                id="id_antecedente_rff" v-model="form.id_antecedente"></select>
+                        <label class="help" v-show="validation_errors.has('form_reposicion_fondo_fijo.Comprobante de Fondo Fijo')">{{ validation_errors.first('form_reposicion_fondo_fijo.Comprobante de Fondo Fijo') }}</label>
+                    </div>
                 </div>
-            </div>
-            <!-- Fondo Fijo -->
-            <div v-else class="col-md-6">
-                <div class="form-group" :class="{'has-error': validation_errors.has('form_reposicion_fondo_fijo.Fondo Fijo')}">
-                    <label for="id_referente_rff"><b>Fondo Fijo</b></label>
-                    <select v-validate="'required'" name="Fondo Fijo" class="form-control input-sm" id="id_referente_rff" v-model="form.id_referente">
-                        <option value disabled>[--SELECCIONE--]</option>
-                        <option v-for="fondo in fondos" :value="fondo.id_fondo">{{ fondo.descripcion }}</option>
-                    </select>
-                    <label class="help" v-show="validation_errors.has('form_reposicion_fondo_fijo.Fondo Fijo')">{{ validation_errors.first('form_reposicion_fondo_fijo.Fondo Fijo') }}</label>
+            </span>
+
+            <span v-show="form.id_rubro == 13">
+                <!-- Fondo Fijo -->
+                <div class="col-md-6">
+                    <div class="form-group" :class="{'has-error': validation_errors.has('form_reposicion_fondo_fijo.Fondo Fijo')}">
+                        <label for="id_referente_rff"><b>Fondo Fijo</b></label>
+                        <select v-validate="(form.id_rubro == 13 ? 'required' : '')" type="text" name="Fondo Fijo" class="form-control input-sm"
+                                id="id_referente_rff" v-model="form.id_referente"></select>
+                        <label class="help" v-show="validation_errors.has('form_reposicion_fondo_fijo.Fondo Fijo')">{{ validation_errors.first('form_reposicion_fondo_fijo.Fondo Fijo') }}</label>
+                    </div>
                 </div>
-            </div>
+            </span>
 
             <div v-if="form.id_antecedente" class="col-md-12">
                 <section class="invoice">
