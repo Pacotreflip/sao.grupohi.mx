@@ -113,6 +113,7 @@ $api->version('v1', function ($api) {
         /**
          * Fondos
          */
+        $api->get('fondo', 'Ghi\Api\Controllers\v1\FondoController@index');
         $api->get('fondo/lists', 'Ghi\Api\Controllers\v1\FondoController@lists');
         $api->get('fondo/{id}', 'Ghi\Api\Controllers\v1\FondoController@find')->where(['id' => '[0-9]+']);
         /**
@@ -135,7 +136,7 @@ $api->version('v1', function ($api) {
         /**
          * Rubros Routes
          */
-        $api->get('finanzas/rubro/lists', 'Ghi\Api\Controllers\v1\Finanzas\RubroController@lists');
+        $api->get('finanzas/rubro', 'Ghi\Api\Controllers\v1\Finanzas\RubroController@index');
     });
 });
 

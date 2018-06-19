@@ -3,6 +3,7 @@
 namespace Ghi\Domain\Core\Contracts;
 
 use Ghi\Domain\Core\Models\Fondo;
+use Ghi\Domain\Core\Repositories\EloquentFondoRepository;
 use Illuminate\Database\Eloquent\Collection;
 
 interface FondoRepository
@@ -21,9 +22,8 @@ interface FondoRepository
     public function find($id);
 
     /**
-     * Crea relaciones con otros modelos
-     * @param $relations
-     * @return mixed
+     * @param array|string $relations Relations
+     * @return $this|FondoRepository
      */
     public function with($relations);
 
@@ -32,4 +32,10 @@ interface FondoRepository
      * @return array
      */
     public function lists();
+
+    /**
+     * @param array|string $where Where
+     * @return $this|FondoRepository
+     */
+    public function where($where);
 }

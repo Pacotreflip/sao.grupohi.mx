@@ -41,10 +41,10 @@ class EloquentFondoRepository implements FondoRepository
         return $this->model->findOrFail($id);
     }
 
+
     /**
-     * Crea relaciones con otros modelos
-     * @param $relations
-     * @return mixed
+     * @param array|string $relations Relations
+     * @return $this|FondoRepository
      */
     public function with($relations)
     {
@@ -59,5 +59,15 @@ class EloquentFondoRepository implements FondoRepository
     public function lists()
     {
         return $this->model->orderBy('descripcion', 'ASC')->lists('descripcion', 'id_fondo');
+    }
+
+    /**
+     * @param array|string $where Where
+     * @return $this|FondoRepository
+     */
+    public function where($where)
+    {
+        $this->model = $this->model->where($where);
+        return $this;
     }
 }

@@ -15,9 +15,10 @@ Vue.component('reposicion-fondo-fijo-create', {
                 id_rubro: ''
             },
             comprobante_fondo_fijo: {},
-            cargando : false,
-            guardando: false
-
+            cargando: false,
+            guardando: false,
+            rubros: [],
+            fondos: []
         }
     },
 
@@ -35,7 +36,19 @@ Vue.component('reposicion-fondo-fijo-create', {
         }
     },
 
-
+    computed: {
+        rubros_filtrados: function () {
+            var self = this;
+            return this.rubros.filter(function (value) {
+                if(self.id_antecedente) {
+                    return value.id != 13;
+                }
+                else {
+                    return true
+                };
+            });
+        }
+    },
 
     watch: {
         'comprobante_fondo_fijo': function (comprobante_fondo_fijo) {
@@ -116,6 +129,10 @@ Vue.component('reposicion-fondo-fijo-create', {
             self.rubros = data.rubros;
         });
 
+        self.getFondos().then(function (data) {
+            self.fondos = data.fondos;
+        });
+
         $('#cumplimiento_rff').datepicker().on("changeDate", function() {
             self.form.cumplimiento = $('#cumplimiento_rff').val();
         });
@@ -130,11 +147,14 @@ Vue.component('reposicion-fondo-fijo-create', {
             var self = this;
             return new Promise(function (resolve, reject) {
                 $.ajax({
-                    url: App.host + '/api/finanzas/rubro/lists',
+                    url: App.host + '/api/finanzas/rubro',
                     type: 'GET',
                     headers: {
                         'X-CSRF-TOKEN': App.csrfToken,
                         'Authorization': localStorage.getItem('token')
+                    },
+                    data: {
+                        where: {'id_tipo': 3}
                     },
                     beforeSend: function () {
                         self.cargando = true;
@@ -147,6 +167,26 @@ Vue.component('reposicion-fondo-fijo-create', {
                     }
                 });
             });
+        },
+        getFondos: function() {
+            return new Promise(function (resolve, reject) {
+                $.ajax({
+                    url: App.host + '/api/fondo',
+                    type: 'GET',
+                    headers: {
+                        'X-CSRF-TOKEN': App.csrfToken,
+                        'Authorization': localStorage.getItem('token')
+                    },
+                    data: {
+                        where: [['descripcion', 'like', '%GXC%']]
+                    },
+                    success: function(response) {
+                        resolve({
+                            fondos: response
+                        })
+                    }
+                });
+            })
         },
         getComprobanteFondoFijo: function() {
             var self =this;

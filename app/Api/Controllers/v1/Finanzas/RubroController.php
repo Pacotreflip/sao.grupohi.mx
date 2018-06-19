@@ -10,6 +10,7 @@ namespace Ghi\Api\Controllers\v1\Finanzas;
 
 use Ghi\Domain\Core\Contracts\Finanzas\RubroRepository;
 use Ghi\Http\Controllers\Controller as BaseController;
+use Illuminate\Http\Request;
 
 class RubroController extends BaseController
 {
@@ -28,7 +29,8 @@ class RubroController extends BaseController
         $this->rubroRepository = $rubroRepository;
     }
 
-    public function lists() {
-        return $this->rubroRepository->lists();
+    public function index(Request $request) {
+        $rubros = $this->rubroRepository->where($request->where ? : [])->with($request->with ? : [])->all();
+        return response()->json($rubros);
     }
 }
