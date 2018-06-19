@@ -61,12 +61,11 @@ class ReposicionFondoFijoController extends BaseController
             'id_referente' => ['required', 'int', 'exists:cadeco.fondos,id_fondo'],
             'cumplimiento' => ['required', 'date'],
             'vencimiento' => ['required', 'date', 'after_or_equal:cumplimiento'],
-            'fecha' => ['required', 'date'],
             'monto' => ['required', 'string',],
             'destino' => ['required', 'string',],
             'observaciones' => ['string',],
-            'id_antecedente' => ['required', 'int','uniqueid_antecedente'],
-            'id_rubro' => ['required', 'int', 'exists:cadeco,Finanzas.rubros,id_rubro']
+            'id_antecedente' => ['required_unless:id_rubro,13', 'int','uniqueid_antecedente'],
+            'id_rubro' => ['required', 'int', 'exists:cadeco.Finanzas.rubros,id']
         ];
         $messages = [
             'uniqueid_antecedente' => 'Ya existe una solicitud generada para la transacción seleccionada',
@@ -79,7 +78,7 @@ class ReposicionFondoFijoController extends BaseController
             //Caer en excepción si alguna regla de validación falla
             throw new ValidationHttpException($validator->errors());
         } else {
-            $this->reposicionFondoFijoRepository->create($request->all());
+            $this->reposicionFondoFijoRepository->create($request->id_rubro == 13 ? $request->except('id_antecedente') : $request->all());
             return $this->response()->created();
         }
     }

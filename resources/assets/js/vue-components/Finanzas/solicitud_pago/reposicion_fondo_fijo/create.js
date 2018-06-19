@@ -155,7 +155,8 @@ Vue.component('reposicion-fondo-fijo-create', {
                         results: $.map(data, function (item) {
                             return {
                                 text:item.descripcion,
-                                id: item.id_fondo
+                                id: item.id_fondo,
+                                fondo: item
                             }
                         })
                     };
@@ -173,8 +174,10 @@ Vue.component('reposicion-fondo-fijo-create', {
         }).on('select2:select', function (e) {
             var data = e.params.data;
             self.form.id_referente = data.id;
+            self.form.destino = data.fondo.nombre;
         }).on('select2:unselecting', function () {
             self.form.id_referente = '';
+            self.form.destino = '';
         });
 
         self.getRubros().then(function (data) {

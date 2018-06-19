@@ -40,7 +40,7 @@
                 <div class="col-md-6">
                     <div class="form-group" :class="{'has-error': validation_errors.has('form_reposicion_fondo_fijo.Comprobante de Fondo Fijo')}">
                         <label for="id_antecedente_rff"><b>Comprobante de Fondo Fijo</b></label>
-                        <select v-validate="(form.id_rubro != 13 ? 'required' : '')" type="text" name="Comprobante de Fondo Fijo" class="form-control input-sm"
+                        <select v-validate="(! id_antecedente && form.id_rubro != 13 ? 'required' : '')" type="text" name="Comprobante de Fondo Fijo" class="form-control input-sm"
                                 id="id_antecedente_rff" v-model="form.id_antecedente"></select>
                         <label class="help" v-show="validation_errors.has('form_reposicion_fondo_fijo.Comprobante de Fondo Fijo')">{{ validation_errors.first('form_reposicion_fondo_fijo.Comprobante de Fondo Fijo') }}</label>
                     </div>
@@ -106,6 +106,14 @@
                     </div>
                 </section>
             </div>
+            <div v-if="form.id_rubro == 13" class="col-md-4 col-md-offset-8">
+                <div class="form-group" :class="{'has-error': validation_errors.has('form_reposicion_fondo_fijo.Monto')}">
+                    <label for="monto_rff"><b>Monto</b></label>
+                    <input type="number" step="any" name="Monto" v-validate="(form.id_rubro == 13 ? 'required' : '')" v-model="form.monto" id="monto_rff" class="form-control input-sm">
+                    <label class="help" v-show="validation_errors.has('form_reposicion_fondo_fijo.Monto')">{{ validation_errors.first('form_reposicion_fondo_fijo.Monto') }}</label>
+                </div>
+            </div>
+
             <div class="col-md-12">
                 <div class="form-group">
                     <label for="observaciones"><b>Oservaciones</b></label>
