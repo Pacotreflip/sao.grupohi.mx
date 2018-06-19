@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateRubrosTable extends Migration
+class CreateFinanzasRubrosTable extends Migration
 {
     /**
      * Run the migrations.
