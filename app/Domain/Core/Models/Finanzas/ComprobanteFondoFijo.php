@@ -94,15 +94,12 @@ class ComprobanteFondoFijo extends Transaccion
        return  $this->Naturaleza==1?'Materiales / Servicios':'Gastos Varios';
     }
 
-    public function getCumplimientoAttribute($cumplimiento)
+    /*public function getCumplimientoAttribute($cumplimiento)
     {
         return Carbon::parse($cumplimiento)->format('Y-m-d');
-    }
+    }*/
 
-    public function getFechaAttribute($fecha) {
+    /*public function getFechaAttribute($fecha) {
         return $fecha?Carbon::parse($fecha)->format('Y-m-d'):'';
-    }
-
-
-
+    }*/
 }
