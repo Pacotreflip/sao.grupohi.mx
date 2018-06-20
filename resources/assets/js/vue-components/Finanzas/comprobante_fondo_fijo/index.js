@@ -34,7 +34,7 @@ Vue.component('comprobante-fondo-fijo-index',{
                 "dataSrc" : function (json) {
                     for (var i = 0; i < json.data.length; i++) {
                         json.data[i].monto = '<span class="pull-left">$</span>' + '<span class="pull-right">' + parseFloat(json.data[i].monto).formatMoney(2, '.', ',') + '</span>';
-                        json.data[i].fecha = new Date(json.data[i].fecha).dateFormat();
+                        json.data[i].fecha = new Date(json.data[i].fecha).dateShortFormat();
                         json.data[i].FechaHoraRegistro = new Date(json.data[i].FechaHoraRegistro).dateFormat();
                     }
                     return json.data;
