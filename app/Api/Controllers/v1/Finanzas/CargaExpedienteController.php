@@ -19,5 +19,15 @@ class CargaExpedienteController extends Controller
      */
     public function store(Request $request)
     {
+        $rules = array(
+            'file' => 'required|mimetypes:application/pdf',
+        );
+
+        $validator =  app('validator')->make($request->all(), $rules);
+        if (count($validator->errors()->all())) {
+            throw new StoreResourceFailedException('No es posible cargar el Layout', $validator->errors());
+        }
+
+        $path = Storage::putFile('', $request->file(''));
     }
 }
