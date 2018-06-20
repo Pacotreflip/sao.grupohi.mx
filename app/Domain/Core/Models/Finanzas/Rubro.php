@@ -19,7 +19,7 @@ class Rubro extends BaseModel
         'descripcion',
     ];
 
-    protected static function boot()
-    {
+    public function tipoRubro() {
+        return $this->belongsTo(TipoRubro::class, 'id_tipo');
     }
 }

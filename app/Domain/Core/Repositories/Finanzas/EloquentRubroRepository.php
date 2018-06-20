@@ -23,10 +23,30 @@ class EloquentRubroRepository implements RubroRepository
     }
 
     /**
-     * @return mixed
+     * @return Rubro[]|\Illuminate\Database\Eloquent\Collection
      */
-    public function lists()
+    public function all()
     {
-        return $this->model->lists('descripcion', 'id_rubro');
+        return $this->model->get();
+    }
+
+    /**
+     * @param array|string $with
+     * @return $this|RubroRepository
+     */
+    public function with($with)
+    {
+        $this->model = $this->model->with($with);
+        return $this;
+    }
+
+    /**
+     * @param array|string $where Where
+     * @return $this|RubroRepository
+     */
+    public function where($where)
+    {
+        $this->model = $this->model->where($where);
+        return $this;
     }
 }

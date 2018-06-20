@@ -15,9 +15,10 @@ Vue.component('reposicion-fondo-fijo-create', {
                 id_rubro: ''
             },
             comprobante_fondo_fijo: {},
-            cargando : false,
-            guardando: false
-
+            cargando: false,
+            guardando: false,
+            rubros: [],
+            fondos: []
         }
     },
 
@@ -35,9 +36,30 @@ Vue.component('reposicion-fondo-fijo-create', {
         }
     },
 
-
+    computed: {
+        rubros_filtrados: function () {
+            var self = this;
+            return this.rubros.filter(function (value) {
+                if(self.id_antecedente) {
+                    return value.id != 13;
+                }
+                else {
+                    return true
+                };
+            });
+        }
+    },
 
     watch: {
+        'form.id_rubro' : function (id_rubro) {
+            var self = this;
+            if (id_rubro == 13) {
+                $('#id_antecedente_rff').val(null).trigger('change');
+                $('#id_referente_rff').val(null).trigger('change');
+                self.form.id_antecedente = '';
+                self.comprobante_fondo_fijo = {};
+            }
+        },
         'comprobante_fondo_fijo': function (comprobante_fondo_fijo) {
             if (Object.keys(comprobante_fondo_fijo).length === 0) {
                 this.form.destino = '';
@@ -112,8 +134,58 @@ Vue.component('reposicion-fondo-fijo-create', {
             });
         }
 
+        $('#id_referente_rff').select2({
+            width: '100%',
+            ajax: {
+                url: App.host + '/api/fondo/search',
+                dataType: 'json',
+                headers: {
+                    'X-CSRF-TOKEN': App.csrfToken,
+                    'Authorization': localStorage.getItem('token')
+                },
+                data: function (params) {
+                    var query = {
+                        q: params.term,
+                        limit: 10
+                    };
+                    return query;
+                },
+                processResults: function (data) {
+                    return {
+                        results: $.map(data, function (item) {
+                            return {
+                                text:item.descripcion,
+                                id: item.id_fondo,
+                                fondo: item
+                            }
+                        })
+                    };
+                },
+                error: function (error) {},
+                cache: true
+            },
+            delay: 500,
+            escapeMarkup: function (markup) {
+                return markup;
+            },
+            placeholder: '[--BUSCAR FONDO FIJO--]',
+            minimumInputLength: 1,
+            allowClear: true
+        }).on('select2:select', function (e) {
+            var data = e.params.data;
+            self.form.id_referente = data.id;
+            self.form.destino = data.fondo.nombre;
+        }).on('select2:unselecting', function () {
+            self.form.id_referente = '';
+            self.form.destino = '';
+        });
+
         self.getRubros().then(function (data) {
             self.rubros = data.rubros;
+        });
+
+        self.getFondos().then(function (data) {
+            self.fondos = data.fondos;
         });
 
         $('#cumplimiento_rff').datepicker().on("changeDate", function() {
@@ -130,11 +202,14 @@ Vue.component('reposicion-fondo-fijo-create', {
             var self = this;
             return new Promise(function (resolve, reject) {
                 $.ajax({
-                    url: App.host + '/api/finanzas/rubro/lists',
+                    url: App.host + '/api/finanzas/rubro',
                     type: 'GET',
                     headers: {
                         'X-CSRF-TOKEN': App.csrfToken,
                         'Authorization': localStorage.getItem('token')
+                    },
+                    data: {
+                        where: {'id_tipo': 3}
                     },
                     beforeSend: function () {
                         self.cargando = true;
@@ -147,6 +222,26 @@ Vue.component('reposicion-fondo-fijo-create', {
                     }
                 });
             });
+        },
+        getFondos: function() {
+            return new Promise(function (resolve, reject) {
+                $.ajax({
+                    url: App.host + '/api/fondo',
+                    type: 'GET',
+                    headers: {
+                        'X-CSRF-TOKEN': App.csrfToken,
+                        'Authorization': localStorage.getItem('token')
+                    },
+                    data: {
+                        where: [['descripcion', 'like', '%GXC%']]
+                    },
+                    success: function(response) {
+                        resolve({
+                            fondos: response
+                        })
+                    }
+                });
+            })
         },
         getComprobanteFondoFijo: function() {
             var self =this;

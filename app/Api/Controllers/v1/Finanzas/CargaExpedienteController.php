@@ -9,6 +9,7 @@
 namespace Ghi\Api\Controllers\v1\Finanzas;
 
 use Illuminate\Contracts\Cache\Store;
+use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Storage;
 
 class CargaExpedienteController extends Controller

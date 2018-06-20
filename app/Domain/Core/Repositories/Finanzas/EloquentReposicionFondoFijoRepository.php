@@ -33,14 +33,14 @@ class EloquentReposicionFondoFijoRepository implements ReposicionFondoFijoReposi
     {
         try {
             DB::connection('cadeco')->beginTransaction();
-            $item = $this->model->create($data);
+            $record = $this->model->create($data);
+            $record->rubros()->attach($data['id_rubro']);
             DB::connection('cadeco')->commit();
-
         } catch (\Exception $e) {
             DB::connection('cadeco')->rollBack();
             throw $e;
         }
-        return $item;
+        return $record;
     }
 
     /**

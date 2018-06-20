@@ -52,9 +52,6 @@ class ReposicionFondoFijo extends SolicitudPago
         static::creating(function ($model) {
             $model->opciones = 1;
         });
-        static::created(function ($model) {
-            dd($model->id_rubro);
-        });
     }
 
     /**
