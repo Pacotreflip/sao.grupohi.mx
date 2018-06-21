@@ -3,6 +3,7 @@
 namespace Ghi\Domain\Core\Models\ControlRec;
 
 use Ghi\Domain\Core\Models\Empresa;
+use Ghi\Domain\Core\Models\Scopes\DatabaseScope;
 use Ghi\Domain\Core\Models\Sucursal;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
@@ -51,6 +52,12 @@ class RQCTOCCotizaciones extends Model
      * @var bool
      */
     public $timestamps = false;
+
+    protected static function boot()
+    {
+        parent::boot();
+        static::addGlobalScope(new DatabaseScope());
+    }
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
