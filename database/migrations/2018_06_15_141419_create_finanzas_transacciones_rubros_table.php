@@ -19,6 +19,9 @@ class CreateFinanzasTransaccionesRubrosTable extends Migration
             $table->foreign('id_transaccion')
                 ->references('id_transaccion')
                 ->on('dbo.transacciones');
+            $table->foreign('id_rubro')
+                ->references('id')
+                ->on('Finanzas.rubros');
         });
     }
 

@@ -18,6 +18,9 @@ class CreateFinanzasRubrosTable extends Migration
             $table->string("descripcion", 50);
             $table->timestamps();
             $table->softDeletes();
+            $table->foreign('id_tipo')
+                ->references('id')
+                ->on('Finanzas.tipos_rubros');
         });
     }
 

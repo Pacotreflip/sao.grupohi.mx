@@ -13,8 +13,8 @@ class AlterFinanzasComplementoFacturaTable extends Migration
     public function up()
     {
         Schema::table('Finanzas.complemento_factura', function (Blueprint $table) {
-            $table->string('fecha_inicio_referencia')->nullable();
-            $table->string('fecha_fin_referencia')->nullable();
+            $table->string('fecha_referencia')->nullable();
+            $table->string('vencimiento_referencia')->nullable();
         });
     }
 
