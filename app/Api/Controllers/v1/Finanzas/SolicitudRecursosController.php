@@ -9,9 +9,9 @@
 namespace Ghi\Api\Controllers\v1\Finanzas;
 
 
+use Dingo\Api\Exception\StoreResourceFailedException;
 use Dingo\Api\Http\Request;
 use Dingo\Api\Routing\Helpers;
-use Dotenv\Exception\ValidationException;
 use Ghi\Domain\Core\Contracts\Finanzas\SolicitudRecursosRepository;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Validator;
@@ -28,9 +28,12 @@ class SolicitudRecursosController extends Controller
         $this->solicitudRecursosRepository = $solicitudRecursosRepository;
     }
 
-
+    /**
+     * @param Request $request
+     * @return \Dingo\Api\Http\Response
+     * @throws \Exception
+     */
     public function store(Request $request) {
-
         $rules = [
             'id_tipo' => ['required', 'exists:cadeco.Finanzas.ctg_tipos_solicitud,id'],
             'partidas' => ['required', 'array'],
@@ -39,14 +42,14 @@ class SolicitudRecursosController extends Controller
 
         $validator = Validator::make($request->all(), $rules);
         if (count($validator->errors()->all())) {
-            throw new ValidationException($validator->errors());
+            throw new StoreResourceFailedException('Error al generar la solicitud', $validator->errors());
         } else {
             try {
                 $this->solicitudRecursosRepository->create($request->all());
+                return $this->response()->created();
             } catch (\Exception $e) {
-
+                throw $e;
             }
-            return $this->response()->created();
         }
     }
 }

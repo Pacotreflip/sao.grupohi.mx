@@ -157,6 +157,9 @@ class RolesPermissionsSeeder extends Seeder
         $registrar_pago_cuenta = Permission::firstOrCreate(['name' => 'registrar_pago_cuenta', 'display_name' => 'Registrar pagos a cuenta', 'description' => 'Permiso para poder registrar pagos a cuenta']);
         $consultar_solicitud_pago = Permission::firstOrCreate(['name' => 'consultar_solicitud_pago', 'display_name' => 'Consultar Solicitudes de Pago', 'description' => 'Permiso para poder Consultar Solicitudes de Pago']);
 
+        //Finanzas Solicitud de Recursos
+        $registrar_solicitud_recursos = Permission::firstOrCreate(['name' => 'registrar_solicitud_recursos', 'display_name' => 'Registrar Solicitudes de Recursos', 'description' => 'Permiso para poder Registrar Solicitudes de Recursos']);
+
         /**
          * Roles
          */
@@ -250,6 +253,7 @@ class RolesPermissionsSeeder extends Seeder
             $registrar_pago_cuenta->id,
             $registrar_reposicion_fondo_fijo->id,
             $consultar_solicitud_pago->id,
+            $registrar_solicitud_recursos->id,
         ]);
         $consulta_finanzas->perms()->sync([
             $consultar_comprobante_fondo_fijo->id,
@@ -386,6 +390,7 @@ class RolesPermissionsSeeder extends Seeder
                 $registrar_reposicion_fondo_fijo->id,
                 $registrar_pago_cuenta->id,
                 $consultar_solicitud_pago->id,
+                $registrar_solicitud_recursos->id
             ]
         );
 

@@ -12,12 +12,13 @@ class CreateFinanzasRubrosTable extends Migration
      */
     public function up()
     {
-        Schema::create('Finanzas.rubros', function (Blueprint $table) {
+        Schema::connection('cadeco')->create('Finanzas.rubros', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('id_tipo');
+            $table->integer('id_tipo')->unsigned();
             $table->string("descripcion", 50);
             $table->timestamps();
             $table->softDeletes();
+
             $table->foreign('id_tipo')
                 ->references('id')
                 ->on('Finanzas.tipos_rubros');

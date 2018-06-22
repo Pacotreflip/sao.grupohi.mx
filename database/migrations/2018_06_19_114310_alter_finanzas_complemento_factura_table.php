@@ -12,7 +12,7 @@ class AlterFinanzasComplementoFacturaTable extends Migration
      */
     public function up()
     {
-        Schema::table('Finanzas.complemento_factura', function (Blueprint $table) {
+        Schema::connection('cadeco')->table('Finanzas.complemento_factura', function (Blueprint $table) {
             $table->string('fecha_referencia')->nullable();
             $table->string('vencimiento_referencia')->nullable();
         });
@@ -25,9 +25,9 @@ class AlterFinanzasComplementoFacturaTable extends Migration
      */
     public function down()
     {
-        Schema::table('Finanzas.complemento_factura', function (Blueprint $table) {
-            $table->dropColumn('fecha_inicio_referencia');
-            $table->dropColumn('fecha_fin_referencia');
+        Schema::connection('cadeco')->table('Finanzas.complemento_factura', function (Blueprint $table) {
+            $table->dropColumn('fecha_referencia');
+            $table->dropColumn('vencimiento_referencia');
         });
     }
 }

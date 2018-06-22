@@ -12,16 +12,19 @@ class CreateFinanzasTransaccionesRubrosTable extends Migration
      */
     public function up()
     {
-        Schema::create('Finanzas.transacciones_rubros', function (Blueprint $table) {
-            $table->increments('id');
-            $table->integer('id_transaccion');
-            $table->integer('id_rubro');
+        Schema::connection('cadeco')->create('Finanzas.transacciones_rubros', function (Blueprint $table) {
+            $table->integer('id_transaccion')->unsigned();
+            $table->integer('id_rubro')->unsigned();
+
+            $table->primary('id_transaccion');
+
             $table->foreign('id_transaccion')
                 ->references('id_transaccion')
                 ->on('dbo.transacciones');
             $table->foreign('id_rubro')
                 ->references('id')
                 ->on('Finanzas.rubros');
+
         });
     }
 
