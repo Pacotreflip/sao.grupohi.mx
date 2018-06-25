@@ -29,7 +29,7 @@ class SolicitudRecursos extends Model
     /**
      * @var string
      */
-    protected $table = 'Finanzas.solicitud_recursos';
+    protected $table = 'Finanzas.solicitudes_recursos';
 
     /**
      * @var array
