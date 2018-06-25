@@ -237,6 +237,7 @@ class AsignacionCargaPreciosLayout extends ValidacionLayout
 
                             // % Descuento
                             $sheet->getStyle(\PHPExcel_Cell::stringFromColumnIndex($desde + 2) . $haciaAbajo)->getProtection()->setLocked(\PHPExcel_Style_Protection::PROTECTION_UNPROTECTED);
+                            $sheet->setCellValue(\PHPExcel_Cell::stringFromColumnIndex($desde + 2) . $haciaAbajo, 0);
 
                             //Moneda
                             if ($contratoProyectado['cotizacion'][0]->hijos == 0) {

@@ -229,6 +229,7 @@ class AsignacionCargaProveedoresLayout extends ValidacionLayout
 
                             // % Descuento
                             $sheet->getStyle(\PHPExcel_Cell::stringFromColumnIndex($desde + 1) . $haciaAbajo)->getProtection()->setLocked(\PHPExcel_Style_Protection::PROTECTION_UNPROTECTED);
+                            $sheet->setCellValue(\PHPExcel_Cell::stringFromColumnIndex($desde + 1) . $haciaAbajo, 0);
 
                             // Precio Total
                             $sheet->setCellValue(\PHPExcel_Cell::stringFromColumnIndex($desde + 2) . $haciaAbajo,
