@@ -34,7 +34,12 @@ class RQCTOCSolicitudPartidas extends Model
      * @return mixed
      */
     public function getCantidadPendienteAttribute() {
-        return $this->cantidad - $this->rqctocTablaComparativaPartidas()->sum('cantidad_asignada');
+        $res = $this->cantidad_solicitada;
+        foreach ($this->partidasAgrupadas as $partida) {
+
+            $res -= $partida->rqctocTablaComparativaPartidas()->sum('cantidad_asignada');
+        }
+        return $res;
     }
 
     /**
@@ -52,7 +57,7 @@ class RQCTOCSolicitudPartidas extends Model
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function rqctocCotizacionPartidas() {
         return $this->hasMany(RQCTOCCotizacionesPartidas::class, 'idrqctoc_solicitudes_partidas');
@@ -108,7 +113,7 @@ class RQCTOCSolicitudPartidas extends Model
                 return $this->cantidad_original;
             }
         }
-        return $this->cantidad;
+        return $this->partidasAgrupadas()->sum('cantidad');
     }
 
     public function getFincadaAttribute() {
@@ -121,5 +126,9 @@ class RQCTOCSolicitudPartidas extends Model
             < 0.01 then 1 else 0 end as fincada
         "))[0];
         return $fincada->fincada == '1';
+    }
+
+    public function partidasAgrupadas() {
+        return $this->hasMany(self::class, 'idrqctoc_solicitudes', 'idrqctoc_solicitudes')->where('idmaterial_sao', '=', $this->idmaterial_sao);
     }
 }

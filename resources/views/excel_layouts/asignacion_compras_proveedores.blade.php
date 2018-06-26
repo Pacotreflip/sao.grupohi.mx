@@ -78,7 +78,8 @@ $totales = isset($requisiciones['totales']) ? $requisiciones['totales'] : 0 ?>
         <td style="background-color: #ffd966"
             class="border ">{{ $requisicion['partida']->cantidad_solicitada }}</td>
         <td style="background-color: #ffd966"
-            class="border ">{{ $requisicion['partida']->cantidad - $requisicion['partida']->cantidad_pendiente }}</td>
+            class="border ">{{ $requisicion['partida']->cantidad_solicitada -
+            $requisicion['partida']->cantidad_pendiente }}</td>
         <td style="background-color: #ffd966" class="border ">{{ $requisicion['partida']->cantidad_pendiente }}</td>
         <!-- Información de l cotización -->
         @for($i=0;$i<$totales;$i++)
