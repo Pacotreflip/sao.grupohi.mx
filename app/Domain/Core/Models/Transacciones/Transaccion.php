@@ -5,6 +5,7 @@ namespace Ghi\Domain\Core\Models\Transacciones;
 use Carbon\Carbon;
 use Ghi\Domain\Core\Models\Contabilidad\Cierre;
 use Ghi\Domain\Core\Models\Contabilidad\Factura;
+use Ghi\Domain\Core\Models\Moneda;
 use Ghi\Domain\Core\Models\Scopes\ObraScope;
 use Ghi\Domain\Core\Models\TipoTransaccion;
 use Illuminate\Database\Eloquent\Model;
@@ -57,7 +58,7 @@ class Transaccion extends Model
 
 
 
-    protected $appends = ['tipo_transaccion_string'];
+    protected $appends = ['tipo_transaccion_string', 'tipo_cambio'];
 
     protected static function boot()
     {
@@ -144,5 +145,26 @@ class Transaccion extends Model
             return true;
         }
         return true;
+    }
+
+    public function moneda() {
+        return $this->belongsTo(Moneda::class, 'id_moneda');
+    }
+
+    public function getTipoCambioAttribute() {
+        switch ($this->moneda->id_moneda) {
+            case Moneda::PESOS:
+                return 1;
+                break;
+            case Moneda::EUROS:
+                return $this->TcEuro;
+                break;
+            case Moneda::DOLARES:
+                return $this->TcUSD;
+                break;
+            default:
+                return null;
+                break;
+        }
     }
 }

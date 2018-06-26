@@ -88,18 +88,19 @@
                             </thead>
                             <tbody>
                             <tr v-for="transaccion in transacciones">
-                                <td>{{ transaccion.numero_folio }}</td>
-                                <td>{{ transaccion.rubros[0].descripcion }}</td>
-
-                                <td>{{ transaccion.numero_folio }}</td>
-                                <td>{{ transaccion.numero_folio }}</td>
-                                <td>{{ transaccion.numero_folio }}</td>
-                                <td>{{ transaccion.numero_folio }}</td>
-                                <td>{{ transaccion.numero_folio }}</td>
-                                <td>{{ transaccion.numero_folio }}</td>
-                                <td>{{ transaccion.numero_folio }}</td>
-                                <td>{{ transaccion.numero_folio }}</td>
-                                <td>{{ transaccion.numero_folio }}</td>
+                                <td>#{{ transaccion.numero_folio }}</td>
+                                <td>{{ transaccion.rubros[0] ? transaccion.rubros[0].descripcion: '---' }}</td>
+                                <td>{{ transaccion.tipo_tran.Descripcion }}</td>
+                                <td>{{ transaccion.referencia }}</td>
+                                <td>#{{ transaccion.contrarecibo ? transaccion.contrarecibo.numero_folio : '---' }}</td>
+                                <td>{{ new Date(transaccion.fecha).dateShortFormat() }}</td>
+                                <td>{{ new Date(transaccion.vencimiento).dateShortFormat() }}</td>
+                                <td style="text-align: right"><span class="pull-left">$</span> {{ parseFloat(transaccion.monto).formatMoney(2, '.', ',') }}</td>
+                                <td>{{ transaccion.moneda.nombre }}</td>
+                                <td style="text-align: right"><span class="pull-left">$</span> {{ parseFloat(transaccion.tipo_cambio).formatMoney(2, '.', ',') }}</td>
+                                <td style="text-align: right"><span class="pull-left">$</span> {{ parseFloat(transaccion.monto * transaccion.tipo_cambio).formatMoney(2, '.', ',') }}</td>
+                                <td></td>
+                                <td></td>
                             </tr>
                             </tbody>
                         </table>

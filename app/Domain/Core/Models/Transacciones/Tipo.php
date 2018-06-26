@@ -17,4 +17,5 @@ class Tipo
     const COTIZACION_COMPRA = 18;
     const SOLICITUD_PAGO = 72;
     const ORDEN_COMPRA = 19;
+    const CONTRARECIBO = 67;
 }

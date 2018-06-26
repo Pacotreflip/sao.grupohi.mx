@@ -34,7 +34,7 @@ Vue.component('solicitud-recursos-create', {
                     type: 'GET',
                     data: {
                         where: [['estado', '=', 1], ['saldo', '>', 0]],
-                        with: ['rubros']
+                        with: ['rubros', 'contrarecibo', 'moneda']
                     },
                     headers: {
                         'X-CSRF-TOKEN': App.csrfToken,
@@ -63,7 +63,9 @@ Vue.component('solicitud-recursos-create', {
                     url: App.host + '/api/finanzas/solicitud_pago',
                     type: 'GET',
                     data: {
-                        with: ['rubros']
+                        with: ['rubros', 'moneda'],
+                        where:[['saldo', '>', 0]]
+
                     },
                     headers: {
                         'X-CSRF-TOKEN': App.csrfToken,

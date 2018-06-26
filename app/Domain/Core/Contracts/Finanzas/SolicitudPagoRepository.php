@@ -24,4 +24,10 @@ interface SolicitudPagoRepository
      * @return EloquentSolicitudPagoRepository
      */
     public function with($with);
+
+    /**
+     * @param $conditions
+     * @return EloquentSolicitudPagoRepository
+     */
+    public function where($conditions);
 }

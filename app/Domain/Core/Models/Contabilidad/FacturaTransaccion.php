@@ -30,4 +30,8 @@ class FacturaTransaccion extends Transaccion
     public function rubros() {
         return $this->belongsToMany(Rubro::class, 'Finanzas.transacciones_rubros', 'id_transaccion', 'id_rubro');
     }
+
+    public function contrarecibo() {
+        return $this->belongsTo(Contrarecibo::class, 'id_antecedente');
+    }
 }

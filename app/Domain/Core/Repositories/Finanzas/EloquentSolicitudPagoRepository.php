@@ -27,7 +27,7 @@ class EloquentSolicitudPagoRepository implements SolicitudPagoRepository
      */
     public function all()
     {
-        return $this->model->all();
+        return $this->model->get();
     }
 
     /**
@@ -63,6 +63,16 @@ class EloquentSolicitudPagoRepository implements SolicitudPagoRepository
      */
     public function with($with) {
         $this->model = $this->model->with($with);
+        return $this;
+    }
+
+    /**
+     * @param $conditions
+     * @return EloquentSolicitudPagoRepository
+     */
+    public function where($conditions)
+    {
+        $this->model = $this->model->where($conditions);
         return $this;
     }
 }
