@@ -33,4 +33,9 @@ Route::group(['prefix' => 'finanzas', 'middleware' => ['auth', 'context', 'syste
     Route::get('solicitud_pago', 'Finanzas\SolicitudPagoController@index')->name('finanzas.solicitud_pago.index');
     Route::get('solicitud_pago/create', 'Finanzas\SolicitudPagoController@create')->name('finanzas.solicitud_pago.create');
 
+    /**
+     * Solicitud de Recursos routes
+     */
+    Route::get('solicitud_recursos', 'Finanzas\SolicitudRecursosController@index')->name('finanzas.solicitud_recursos.index');
+    Route::get('solicitud_recursos/create', 'Finanzas\SolicitudRecursosController@create')->name('finanzas.solicitud_recursos.create');
 });

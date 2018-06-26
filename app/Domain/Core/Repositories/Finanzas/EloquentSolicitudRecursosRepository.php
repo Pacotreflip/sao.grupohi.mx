@@ -58,4 +58,32 @@ class EloquentSolicitudRecursosRepository implements SolicitudRecursosRepository
             throw $e;
         }
     }
+
+    public function paginate(array $data)
+    {
+        $query = $this->model;
+
+
+        $query->where(function ($q) use ($data) {
+            $q
+                ->where('folio', 'LIKE', '%' . $data['search']['value'] . '%');
+        });
+
+        foreach ($data['order'] as $order) {
+            $query->orderBy($data['columns'][$order['column']]['data'], $order['dir']);
+        }
+
+        return $query->paginate($perPage = $data['length'], $columns = ['*'], $pageName = 'page', $page = ($data['start'] / $data['length']) + 1);
+    }
+
+    /**
+     * Devuelve modelo relacionado con otros modelos
+     * @param $with
+     * @return EloquentSolicitudRecursosRepository
+     */
+    public function with($with)
+    {
+        $this->model = $this->model->with($with);
+        return $this;
+    }
 }

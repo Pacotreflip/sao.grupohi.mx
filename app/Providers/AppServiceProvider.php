@@ -464,5 +464,9 @@ class AppServiceProvider extends ServiceProvider
             \Ghi\Domain\Core\Contracts\Finanzas\SolicitudRecursosRepository::class,
             \Ghi\Domain\Core\Repositories\Finanzas\EloquentSolicitudRecursosRepository::class
         );
+        $this->app->bind(
+            \Ghi\Domain\Core\Contracts\Contabilidad\FacturaTransaccionRepository::class,
+            \Ghi\Domain\Core\Repositories\Contabilidad\EloquentFacturaTransaccionRepository::class
+        );
     }
 }

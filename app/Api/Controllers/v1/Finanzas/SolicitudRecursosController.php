@@ -52,4 +52,18 @@ class SolicitudRecursosController extends Controller
             }
         }
     }
+
+    /**
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function paginate(Request $request){
+
+        $resp = $this->solicitudRecursosRepository->paginate($request->all());
+
+        return response()->json([
+            'recordsTotal' => $resp->total(),
+            'recordsFiltered' => $resp->total(),
+            'data' => $resp->items()], 200);
+    }
 }

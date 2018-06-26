@@ -60,7 +60,7 @@ class SolicitudRecursos extends Model
             $model->consecutivo =
             $model->folio =
             $model->registro =
-            $model->semama =
+            $model->semana =
             $model->anio =
             */
         });

@@ -87,6 +87,8 @@ $api->version('v1', function ($api) {
         $api->post('sistema_contable/poliza_tipo/paginate', 'Ghi\Api\Controllers\v1\SistemaContable\PolizaTipoController@paginate');
         $api->delete('sistema_contable/poliza_tipo/{id}', 'Ghi\Api\Controllers\v1\SistemaContable\PolizaTipoController@delete')->where(['id' => '[0-9]+']);
 
+        $api->get('sistema_contable/factura_transaccion', 'Ghi\Api\Controllers\v1\SistemaContable\FacturaTransaccionController@index');
+
         /*
          * Layouts Routes
          */
@@ -108,6 +110,7 @@ $api->version('v1', function ($api) {
         /**
          * Solicitud de Recursos
          */
+        $api->post('finanzas/solicitud_recursos/paginate', 'Ghi\Api\Controllers\v1\Finanzas\SolicitudRecursosController@paginate');
         $api->post('finanzas/solicitud_recursos', 'Ghi\Api\Controllers\v1\Finanzas\SolicitudRecursosController@store');
 
         /**

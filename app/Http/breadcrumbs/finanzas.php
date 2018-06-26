@@ -44,3 +44,15 @@ Breadcrumbs::register('finanzas.solicitud_pago.create', function ($breadcrumb) {
     $breadcrumb->parent('finanzas.solicitud_pago.index');
     $breadcrumb->push('NUEVA', route('finanzas.solicitud_pago.create'));
 });
+
+/*
+ * Solicitud de Recursos Breadcrumbs...
+ */
+Breadcrumbs::register('finanzas.solicitud_recursos.index', function ($breadcrumb) {
+    $breadcrumb->parent('finanzas.index');
+    $breadcrumb->push('SOLICIUD DE RECURSOS', route('finanzas.solicitud_recursos.index'));
+});
+Breadcrumbs::register('finanzas.solicitud_recursos.create', function ($breadcrumb) {
+    $breadcrumb->parent('finanzas.solicitud_recursos.index');
+    $breadcrumb->push('GENERAR', route('finanzas.solicitud_recursos.create'));
+});

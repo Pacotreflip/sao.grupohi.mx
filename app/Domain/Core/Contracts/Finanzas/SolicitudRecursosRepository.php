@@ -10,6 +10,7 @@ namespace Ghi\Domain\Core\Contracts\Finanzas;
 
 
 use Ghi\Domain\Core\Models\Finanzas\SolicitudRecursos;
+use Ghi\Domain\Core\Repositories\Finanzas\EloquentSolicitudRecursosRepository;
 
 interface SolicitudRecursosRepository
 {
@@ -21,4 +22,13 @@ interface SolicitudRecursosRepository
      * @throws \Exception
      */
     public function create($data);
+
+    public function paginate(array $data);
+
+    /**
+     * Devuelve modelo relacionado con otros modelos
+     * @param $with
+     * @return EloquentSolicitudRecursosRepository
+     */
+    public function with($with);
 }

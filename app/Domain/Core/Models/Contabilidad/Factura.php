@@ -2,16 +2,12 @@
 
 namespace Ghi\Domain\Core\Models\Contabilidad;
 
-use Carbon\Carbon;
-use Ghi\Core\Facades\Context;
 use Ghi\Domain\Core\Models\Empresa;
 use Ghi\Domain\Core\Models\Scopes\FacturaScope;
 use Ghi\Domain\Core\Models\Scopes\ObraScope;
-use Ghi\Domain\Core\Models\Transacciones\Tipo;
-use Ghi\Domain\Core\Models\Transacciones\Transaccion;
 use Illuminate\Support\Facades\DB;
 
-class Factura extends Transaccion
+class Factura extends FacturaTransaccion
 {
 
     public $fecha_revaluacion;
@@ -27,13 +23,9 @@ class Factura extends Transaccion
         static::addGlobalScope(new ObraScope());
 
         static::creating(function ($model) {
-            $model->tipo_transaccion = Tipo::FACTURA;
             $model->opciones = 0;
-            $model->fecha = Carbon::now();
-            $model->id_obra = Context::getId();
         });
     }
-
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasOne | OrdenPago

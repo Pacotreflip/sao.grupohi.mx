@@ -29,8 +29,12 @@ class SolicitudPagoController extends Controller
         $this->solicitudPagoRepository = $solicitudPagoRepository;
     }
 
-    public function index() {
-        return response()->json($this->solicitudPagoRepository->all());
+    public function index(Request $request) {
+        return response()->json($this->solicitudPagoRepository
+            ->where($request->where)
+            ->with($request->with)
+            ->all()
+        );
     }
 
     public function paginate(Request $request){
