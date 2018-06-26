@@ -8,14 +8,15 @@ Vue.component('solicitud-recursos-create', {
             grupos: [],
             group_by: '',
             title: '',
-            text: ''
+            text: '',
+            fecha_inicio: '',
+            fecha_fin: ''
         }
     },
 
-
     watch: {
         group_by: function (agrupador) {
-            this.grupos = _.groupBy(this.transacciones, agrupador);
+            this.grupos = _.groupBy(this.transacciones_filtradas, agrupador);
             switch (agrupador) {
                 case 'id_empresa':
                     this.title = 'empresa';
@@ -31,8 +32,8 @@ Vue.component('solicitud-recursos-create', {
                     break;
             }
         },
-        transacciones: function (transacciones) {
-            this.grupos = _.groupBy(transacciones, this.group_by);
+        fecha_inicio: function () {
+            this.grupos = _.groupBy(this.transacciones_filtradas, this.group_by);
             switch (this.group_by) {
                 case 'id_empresa':
                     this.title = 'empresa';
@@ -59,6 +60,16 @@ Vue.component('solicitud-recursos-create', {
                 }
             });
             return res;
+        },
+
+        transacciones_filtradas: function () {
+            var self = this;
+            return self.transacciones.filter(function (value) {
+                if(self.fecha_inicio != '' || self.fecha_fin != '') {
+                    return (new Date(value.vencimiento) >= self.fecha_inicio && new Date(value.vencimiento) <= self.fecha_fin)
+                }
+                return true;
+            });
         }
     },
 
@@ -79,60 +90,35 @@ Vue.component('solicitud-recursos-create', {
     },
 
     methods: {
-        get_transacciones: function(i, f) {
+        set_fechas: function(i, f) {
             var self = this;
-            self.transacciones = [];
-            var fechas = undefined;
             if (i && f) {
-                fechas = [];
-
                 var date2 = new Date();
                 date2.setDate(date2.getDate() + (f + 1));
-                fechas.push(date2.dateShortFormat());
-
+                self.fecha_inicio = date2;
 
                 var date = new Date();
                 date.setDate(date.getDate() + (i));
-                fechas.push(date.dateShortFormat());
-
-
+                self.fecha_fin = date;
             } else if (!i && f) {
-                fechas = [];
-
                 var date = new Date();
                 date.setDate(date.getDate() + (f + 1));
-                fechas.push(date.dateShortFormat());
+                self.fecha_inicio = date;
 
-                var date = new Date();
-                date.setDate(date.getDay() + 3650);
-                fechas.push(date.dateShortFormat());
+                var date2 = new Date();
+                date2.setDate(date2.getDay() + 3650);
+                self.fecha_fin = date2;
             } else  if (i && !f) {
-                fechas = [];
-
                 var date = new Date(1);
-                fechas.push(date.dateShortFormat());
+                self.fecha_inicio = date;
 
-                var date = new Date();
-                date.setDate(date.getDate() + (i));
-                fechas.push(date.dateShortFormat());
+                var date2 = new Date();
+                date2.setDate(date2.getDate() + (i));
+                self.fecha_fin = date2;
             }
-
-            self.getFacturas(fechas).then(function (data) {
-                data.facturas.forEach(function (factura) {
-                    self.transacciones.push(factura);
-                });
-            });
-
-            self.getSolicitudesPago(fechas).then(function (data) {
-                data.solicitudes.forEach(function (solicitud) {
-                    self.transacciones.push(solicitud);
-                });
-            });
         },
 
-
-        getFacturas: function (fechas) {
-            console.log(fechas);
+        getFacturas: function () {
             var self = this;
             return new Promise(function (resolve, reject) {
 
@@ -141,9 +127,7 @@ Vue.component('solicitud-recursos-create', {
                     type: 'GET',
                     data: {
                         where: [['estado', '=', 1], ['saldo', '>', 0]],
-                        with: ['rubros', 'contrarecibo', 'moneda', 'empresa'],
-                        betweenColumn: 'vencimiento',
-                        betweenValues: fechas
+                        with: ['rubros', 'contrarecibo', 'moneda', 'empresa']
                     },
                     headers: {
                         'X-CSRF-TOKEN': App.csrfToken,
@@ -168,9 +152,7 @@ Vue.component('solicitud-recursos-create', {
             })
         },
 
-        getSolicitudesPago: function (fechas) {
-            console.log(fechas);
-
+        getSolicitudesPago: function () {
             var self = this;
             return new Promise(function (resolve, reject) {
                 $.ajax({
@@ -178,9 +160,7 @@ Vue.component('solicitud-recursos-create', {
                     type: 'GET',
                     data: {
                         with: ['rubros', 'moneda', 'empresa'],
-                        where:[['saldo', '>', 0]],
-                        betweenColumn: 'vencimiento',
-                        betweenValues: fechas
+                        where:[['saldo', '>', 0]]
                     },
                     headers: {
                         'X-CSRF-TOKEN': App.csrfToken,
@@ -197,6 +177,7 @@ Vue.component('solicitud-recursos-create', {
                         self.cargando = false;
                         resolve({
                             solicitudes: response
+
                         });
                     },
                     complete: function () {

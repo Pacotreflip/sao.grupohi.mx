@@ -33,21 +33,21 @@
                     <p><b>Vencimiento (días)</b></p>
                     <div class="btn-group btn-group-justified" role="group" aria-label="...">
                         <div class="btn-group" role="group">
-                            <button :disabled="cargando || guardando" type="button" class="btn btn-sm btn-default" @click="get_transacciones(false, -20)">V < 20
+                            <button :disabled="cargando || guardando" type="button" class="btn btn-sm btn-default" @click="set_fechas(false, -20)">V < 20
                             </button>
                         </div>
                         <div class="btn-group" role="group">
-                            <button :disabled="cargando || guardando" type="button" class="btn btn-sm btn-default" @click="get_transacciones(-20, -40)">V <= 20 <
+                            <button :disabled="cargando || guardando" type="button" class="btn btn-sm btn-default" @click="set_fechas(-20, -40)">V <= 20 <
                                 40
                             </button>
                         </div>
                         <div class="btn-group" role="group">
-                            <button :disabled="cargando || guardando" type="button" class="btn btn-sm btn-default" @click="get_transacciones(-40, -60)">V <= 40 <
+                            <button :disabled="cargando || guardando" type="button" class="btn btn-sm btn-default" @click="set_fechas(-40, -60)">V <= 40 <
                                 60
                             </button>
                         </div>
                         <div class="btn-group" role="group">
-                            <button :disabled="cargando || guardando" type="button" class="btn btn-sm btn-default" @click="get_transacciones(-60, false)">60 <= V
+                            <button :disabled="cargando || guardando" type="button" class="btn btn-sm btn-default" @click="set_fechas(-60, false)">60 <= V
                             </button>
                         </div>
                         <div class="btn-group" role="group">
