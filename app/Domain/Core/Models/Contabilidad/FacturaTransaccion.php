@@ -13,6 +13,7 @@ use Ghi\Domain\Core\Models\Transacciones\Transaccion;
 class FacturaTransaccion extends Transaccion
 {
 
+    protected $appends = ['tipo_transaccion_string', 'tipo_cambio', 'id_rubro'];
     /**
      * Aplicar Scope Global para recuperar solo las transacciones de tipo Factura
      */
@@ -33,5 +34,9 @@ class FacturaTransaccion extends Transaccion
 
     public function contrarecibo() {
         return $this->belongsTo(Contrarecibo::class, 'id_antecedente');
+    }
+
+    public function getIdRubroAttribute() {
+        return isset($this->rubros[0]) ? $this->rubros[0]->id : null;
     }
 }

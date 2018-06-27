@@ -47,4 +47,17 @@ class EloquentFacturaTransaccionRepository implements FacturaTransaccionReposito
         $this->model = $this->model->with($with);
         return $this;
     }
+
+    /**
+     * @param $column
+     * @param $values
+     * @return $this
+     */
+    public function whereBetween($column, $values)
+    {
+        if($column && $values) {
+            $this->model = $this->model->whereBetween($column, $values);
+        }
+        return $this;
+    }
 }

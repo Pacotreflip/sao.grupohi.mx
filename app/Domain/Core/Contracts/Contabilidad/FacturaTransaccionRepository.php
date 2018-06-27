@@ -28,4 +28,10 @@ interface FacturaTransaccionRepository
 
     public function with($with);
 
+    /**
+     * @param $column
+     * @param $values
+     * @return $this
+     */
+    public function whereBetween($column, $values);
 }

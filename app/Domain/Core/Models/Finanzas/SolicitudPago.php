@@ -18,6 +18,9 @@ use Ghi\Domain\Core\Models\Transacciones\Transaccion;
 
 class SolicitudPago extends Transaccion
 {
+
+    protected $appends = ['tipo_transaccion_string', 'tipo_cambio', 'id_rubro'];
+
     /**
      * Aplicar Scope Global para recuperar solo las transacciones de tipo Solicitud de Pago
      */
@@ -43,5 +46,9 @@ class SolicitudPago extends Transaccion
 
     public function rubros() {
         return $this->belongsToMany(Rubro::class, 'Finanzas.transacciones_rubros', 'id_transaccion', 'id_rubro');
+    }
+
+    public function getIdRubroAttribute() {
+        return isset($this->rubros[0]) ? $this->rubros[0]->id : null;
     }
 }

@@ -6,22 +6,22 @@
                     <p><b>Agrupación</b></p>
                     <div class="btn-group btn-group-justified" role="group" aria-label="...">
                         <div class="btn-group" role="group">
-                            <button :disabled="cargando || guardando" type="button" class="btn btn-default">Proveedor
+                            <button :disabled="cargando || guardando" type="button" class="btn btn-sm btn-default" @click="group_by='id_empresa'">Proveedor
                             </button>
                         </div>
                         <div class="btn-group" role="group">
-                            <button :disabled="cargando || guardando" type="button" class="btn btn-default">Movimiento
+                            <button :disabled="cargando || guardando" type="button" class="btn btn-sm btn-default" @click="group_by='id_rubro'">Movimiento
                             </button>
                         </div>
                         <div class="btn-group" role="group">
-                            <button :disabled="cargando || guardando" type="button" class="btn btn-default">Moneda
+                            <button :disabled="cargando || guardando" type="button" class="btn btn-sm btn-default" @click="group_by='id_moneda'">Moneda
                             </button>
                         </div>
                         <div class="btn-group" role="group">
-                            <button :disabled="cargando || guardando" type="button" class="btn btn-default">
-                                Vencimiento
+                            <button :disabled="cargando || guardando" type="button" class="btn btn-sm btn-default" @click="group_by='id_moneda'">Vencimiento
                             </button>
                         </div>
+
                     </div>
                 </div>
             </div>
@@ -33,25 +33,25 @@
                     <p><b>Vencimiento (días)</b></p>
                     <div class="btn-group btn-group-justified" role="group" aria-label="...">
                         <div class="btn-group" role="group">
-                            <button :disabled="cargando || guardando" type="button" class="btn btn-default">V < 20
+                            <button :disabled="cargando || guardando" type="button" class="btn btn-sm btn-default" @click="get_transacciones(false, -20)">V < 20
                             </button>
                         </div>
                         <div class="btn-group" role="group">
-                            <button :disabled="cargando || guardando" type="button" class="btn btn-default">V <= 20 <
+                            <button :disabled="cargando || guardando" type="button" class="btn btn-sm btn-default" @click="get_transacciones(-20, -40)">V <= 20 <
                                 40
                             </button>
                         </div>
                         <div class="btn-group" role="group">
-                            <button :disabled="cargando || guardando" type="button" class="btn btn-default">V <= 40 <
+                            <button :disabled="cargando || guardando" type="button" class="btn btn-sm btn-default" @click="get_transacciones(-40, -60)">V <= 40 <
                                 60
                             </button>
                         </div>
                         <div class="btn-group" role="group">
-                            <button :disabled="cargando || guardando" type="button" class="btn btn-default">60 <= V
+                            <button :disabled="cargando || guardando" type="button" class="btn btn-sm btn-default" @click="get_transacciones(-60, false)">60 <= V
                             </button>
                         </div>
                         <div class="btn-group" role="group">
-                            <button :disabled="cargando || guardando" type="button" class="btn btn-default">Otro
+                            <button :disabled="cargando || guardando" type="button" class="btn btn-sm btn-default">Otro
                             </button>
                         </div>
                     </div>
@@ -61,13 +61,14 @@
 
     </div>
     <div class="row">
-        <div class="col-md-12">
+        <div v-for="(grupo, key) in grupos" class="col-md-12">
             <div class="box box-solid">
                 <div class="box-header with-border">
-                    <h3 class="box-title">Movimientos</h3>
+                    <h3 class="box-title">{{grupo[0][title] ? grupo[0][title][text] : 'SIN AGRUPAR'}}</h3>
                 </div>
+
                 <div class="box-body">
-                    <div class="table-responsive">
+                    <div class="table-responsive pre-scrollable">
                         <table class="table table-bordered table-striped">
                             <thead>
                             <tr>
@@ -87,9 +88,9 @@
                             </tr>
                             </thead>
                             <tbody>
-                            <tr v-for="transaccion in transacciones">
+                            <tr v-for="transaccion in grupo">
                                 <td>#{{ transaccion.numero_folio }}</td>
-                                <td>{{ transaccion.rubros[0] ? transaccion.rubros[0].descripcion: '---' }}</td>
+                                <td>{{ transaccion.rubro ? transaccion.rubro.descripcion: '---' }}</td>
                                 <td>{{ transaccion.tipo_tran.Descripcion }}</td>
                                 <td>{{ transaccion.referencia }}</td>
                                 <td>#{{ transaccion.contrarecibo ? transaccion.contrarecibo.numero_folio : '---' }}</td>
@@ -100,13 +101,24 @@
                                 <td style="text-align: right"><span class="pull-left">$</span> {{ parseFloat(transaccion.tipo_cambio).formatMoney(2, '.', ',') }}</td>
                                 <td style="text-align: right"><span class="pull-left">$</span> {{ parseFloat(transaccion.monto * transaccion.tipo_cambio).formatMoney(2, '.', ',') }}</td>
                                 <td></td>
-                                <td></td>
+                                <td><input type="checkbox" v-model="transaccion.seleccionada"></td>
                             </tr>
                             </tbody>
                         </table>
                     </div>
                 </div>
             </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <p class="pull-right">
+                <b>Total Solicitado: </b> $ {{ parseFloat(total_solicitado).formatMoney(2, '.', ',') }}
+            </p>
+        </div>
+        <hr>
+        <div class="col-md-12">
+            <button class="pull-right btn btn-sm btn-success">Finalizar</button>
         </div>
     </div>
 </section>

@@ -72,7 +72,21 @@ class EloquentSolicitudPagoRepository implements SolicitudPagoRepository
      */
     public function where($conditions)
     {
-        $this->model = $this->model->where($conditions);
+        if($conditions) {
+            $this->model = $this->model->where($conditions);
+        }
+        return $this;
+    }
+
+    /**
+     * @param $column
+     * @param $values
+     * @return EloquentSolicitudPagoRepository
+     */
+    public function whereBetween($column, $values) {
+        if($column && $values) {
+            $this->model = $this->model->whereBetween($column, $values);
+        }
         return $this;
     }
 }

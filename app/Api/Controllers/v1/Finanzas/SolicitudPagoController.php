@@ -32,6 +32,7 @@ class SolicitudPagoController extends Controller
     public function index(Request $request) {
         return response()->json($this->solicitudPagoRepository
             ->where($request->where)
+            ->whereBetween($request->betweenColumn, $request->betweenValues)
             ->with($request->with)
             ->all()
         );

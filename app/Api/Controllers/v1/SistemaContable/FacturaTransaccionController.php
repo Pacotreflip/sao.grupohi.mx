@@ -32,6 +32,7 @@ class FacturaTransaccionController extends Controller
     public function index(Request $request) {
         return response()->json($this->facturaTransaccionRepository
             ->with($request->with)
+            ->whereBetween($request->betweenColumn, $request->betweenValues)
             ->where($request->where)
             ->all()
         );

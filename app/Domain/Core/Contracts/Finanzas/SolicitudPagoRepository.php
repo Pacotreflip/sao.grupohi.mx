@@ -30,4 +30,11 @@ interface SolicitudPagoRepository
      * @return EloquentSolicitudPagoRepository
      */
     public function where($conditions);
+
+    /**
+     * @param $column
+     * @param $values
+     * @return EloquentSolicitudPagoRepository
+     */
+    public function whereBetween($column, $values);
 }

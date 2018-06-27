@@ -5,6 +5,7 @@ namespace Ghi\Domain\Core\Models\Transacciones;
 use Carbon\Carbon;
 use Ghi\Domain\Core\Models\Contabilidad\Cierre;
 use Ghi\Domain\Core\Models\Contabilidad\Factura;
+use Ghi\Domain\Core\Models\Empresa;
 use Ghi\Domain\Core\Models\Moneda;
 use Ghi\Domain\Core\Models\Scopes\ObraScope;
 use Ghi\Domain\Core\Models\TipoTransaccion;
@@ -166,5 +167,13 @@ class Transaccion extends Model
                 return null;
                 break;
         }
+    }
+
+    public function empresa() {
+        return $this->belongsTo(Empresa::class, 'id_empresa');
+    }
+
+    public function getRangoVencimientoAttribute() {
+
     }
 }
