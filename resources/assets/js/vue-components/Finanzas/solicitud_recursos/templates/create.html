@@ -5,14 +5,13 @@
                 <div class="box-body">
                     <p><b>Agrupación</b></p>
                     <div class="btn-group btn-group-justified" data-toggle="buttons">
-                        <label class="btn btn-primary">
+                        <label class="btn btn-default btn-sm">
                             <input type="radio" name="options" autocomplete="off" v-on:focus="group_by='id_empresa'"> Proveedor
                         </label>
-                        <label class="btn btn-primary">
+                        <label class="btn btn-default btn-sm">
                             <input type="radio" name="options" autocomplete="off" v-on:focus="group_by='id_rubro'"> Movimiento
                         </label>
-                        <label class="btn btn-primary">
-
+                        <label class="btn btn-default btn-sm">
                             <input type="radio" name="options" autocomplete="off" v-on:focus="group_by='id_moneda'"> Moneda
                         </label>
                        <!-- <label class="btn btn-primary">
@@ -27,25 +26,20 @@
             <div class="box box-solid">
                 <div class="box-body">
                     <p><b>Vencimiento (días)</b></p>
-                    <div class="btn-group btn-group-justified" role="group" aria-label="...">
-                        <div class="btn-group" role="group">
-                            <button :disabled="cargando || guardando" type="button" class="btn btn-sm btn-default" @click="set_fechas(false, -20)">V < 20
-                            </button>
-                        </div>
-                        <div class="btn-group" role="group">
-                            <button :disabled="cargando || guardando" type="button" class="btn btn-sm btn-default" @click="set_fechas(-20, -40)">V <= 20 <
-                                40
-                            </button>
-                        </div>
-                        <div class="btn-group" role="group">
-                            <button :disabled="cargando || guardando" type="button" class="btn btn-sm btn-default" @click="set_fechas(-40, -60)">V <= 40 <
-                                60
-                            </button>
-                        </div>
-                        <div class="btn-group" role="group">
-                            <button :disabled="cargando || guardando" type="button" class="btn btn-sm btn-default" @click="set_fechas(-60, false)">60 <= V
-                            </button>
-                        </div>
+                    <div class="btn-group btn-group-justified" data-toggle="buttons">
+                        <label class="btn btn-default btn-sm">
+                            <input type="radio" name="options" autocomplete="off" v-on:focus="set_fechas(false, -20)"> V < 20
+                        </label>
+                        <label class="btn btn-default btn-sm">
+                            <input type="radio" name="options" autocomplete="off" v-on:focus="set_fechas(-20, -40)"> V <= 20 < 40
+                        </label>
+                        <label class="btn btn-default btn-sm">
+                            <input type="radio" name="options" autocomplete="off" v-on:focus="set_fechas(-40, -60)"> V <= 40 < 60
+                        </label>
+                        <label class="btn btn-default btn-sm">
+                            <input type="radio" name="options" autocomplete="off" v-on:focus="set_fechas(-60, false)"> 60 <= V
+                        </label>
+
                         <div class="btn-group" role="group">
                             <button :disabled="cargando || guardando" type="button" class="btn btn-sm btn-default">Otro
                             </button>
