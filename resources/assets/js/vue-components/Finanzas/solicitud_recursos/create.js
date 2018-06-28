@@ -6,7 +6,7 @@ Vue.component('solicitud-recursos-create', {
             cargando: false,
             guardando:false,
             grupos: [],
-            group_by: '',
+            group_by: 'id_empresa',
             title: '',
             text: '',
             fecha_inicio: '',
@@ -16,39 +16,16 @@ Vue.component('solicitud-recursos-create', {
     },
 
     watch: {
-        group_by: function (agrupador) {
-            this.grupos = _.groupBy(this.transacciones_filtradas, agrupador);
-            switch (agrupador) {
-                case 'id_empresa':
-                    this.title = 'empresa';
-                    this.text = 'razon_social';
-                    break;
-                case 'id_rubro':
-                    this.title = 'rubro';
-                    this.text = 'descripcion';
-                    break;
-                case 'id_moneda':
-                    this.title = 'moneda';
-                    this.text = 'nombre';
-                    break;
-            }
+        group_by: {
+            handler: function (){
+                this.agrupados(this.group_by);
+
+                //element = $('data')
+            },
+            immediate: true
         },
         fecha_inicio: function () {
-            this.grupos = _.groupBy(this.transacciones_filtradas, this.group_by);
-            switch (this.group_by) {
-                case 'id_empresa':
-                    this.title = 'empresa';
-                    this.text = 'razon_social';
-                    break;
-                case 'id_rubro':
-                    this.title = 'rubro';
-                    this.text = 'descripcion';
-                    break;
-                case 'id_moneda':
-                    this.title = 'moneda';
-                    this.text = 'nombre';
-                    break;
-            }
+            this.agrupados(this.group_by);
         }
     },
 
@@ -100,12 +77,9 @@ Vue.component('solicitud-recursos-create', {
         self.getSolicitudesPago().then(function (data) {
             data.solicitudes.forEach(function (solicitud) {
                 self.transacciones.push(solicitud);
+                self.agrupados(self.group_by);
             });
         });
-
-        /*$('#vencimiento').datepicker().on('changeDate', function(selected){
-
-        });*/
     },
 
     methods: {
@@ -204,6 +178,24 @@ Vue.component('solicitud-recursos-create', {
                     }
                 })
             })
+        },
+
+        agrupados: function (agrupador) {
+            this.grupos = _.groupBy(this.transacciones_filtradas, agrupador);
+            switch (agrupador) {
+                case 'id_empresa':
+                    this.title = 'empresa';
+                    this.text = 'razon_social';
+                    break;
+                case 'id_rubro':
+                    this.title = 'rubro';
+                    this.text = 'descripcion';
+                    break;
+                case 'id_moneda':
+                    this.title = 'moneda';
+                    this.text = 'nombre';
+                    break;
+            }
         },
 
         set_fecha_modal: function (e) {
