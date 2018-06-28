@@ -5,19 +5,19 @@
                 <div class="box-body">
                     <p><b>Agrupación</b></p>
                     <div class="btn-group btn-group-justified" data-toggle="buttons">
-                        <label class="btn btn-primary active">
-                            <input type="radio" name="options" autocomplete="off" v-model="group_by" value="id_empresa"> Proveedor
+                        <label class="btn btn-primary">
+                            <input type="radio" name="options" autocomplete="off" v-on:focus="group_by='id_empresa'"> Proveedor
                         </label>
-                        <label class="btn btn-primary active">
-                            <input type="radio" name="options" autocomplete="off" v-model="group_by" value="id_rubro"> Movimiento
+                        <label class="btn btn-primary">
+                            <input type="radio" name="options" autocomplete="off" v-on:focus="group_by='id_rubro'"> Movimiento
                         </label>
-                        <label class="btn btn-primary active">
-                            <input type="radio" name="options" autocomplete="off" v-model="group_by" value="id_moneda"> Moneda
-                        </label>
-                        <label class="btn btn-primary active">
-                            <input type="radio" name="options" autocomplete="off" v-model="group_by" value="id_rubro"> Vencimiento
-                        </label>
+                        <label class="btn btn-primary">
 
+                            <input type="radio" name="options" autocomplete="off" v-on:focus="group_by='id_moneda'"> Moneda
+                        </label>
+                       <!-- <label class="btn btn-primary">
+                            <input type="radio" name="options" autocomplete="off" v-on:focus="group_by='id_empresa'"> Proveedor
+                        </label>-->
                     </div>
                 </div>
             </div>
