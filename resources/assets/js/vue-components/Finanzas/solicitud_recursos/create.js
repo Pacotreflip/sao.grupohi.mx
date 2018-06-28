@@ -10,7 +10,8 @@ Vue.component('solicitud-recursos-create', {
             title: '',
             text: '',
             fecha_inicio: '',
-            fecha_fin: ''
+            fecha_fin: '',
+            posterior: false
         }
     },
 
@@ -51,6 +52,20 @@ Vue.component('solicitud-recursos-create', {
         }
     },
 
+    directives: {
+        datepicker: {
+            inserted: function (el) {
+                $(el).datepicker({
+                    autoclose: true,
+                    language: 'es',
+                    todayHighlight: true,
+                    clearBtn: true,
+                    format: 'yyyy-mm-dd'
+                });
+            }
+        }
+    },
+
     computed: {
         total_solicitado: function () {
             var res = 0;
@@ -87,6 +102,10 @@ Vue.component('solicitud-recursos-create', {
                 self.transacciones.push(solicitud);
             });
         });
+
+        /*$('#vencimiento').datepicker().on('changeDate', function(selected){
+
+        });*/
     },
 
     methods: {
@@ -185,6 +204,20 @@ Vue.component('solicitud-recursos-create', {
                     }
                 })
             })
+        },
+
+        set_fecha_modal: function (e) {
+            var self = this;
+            if(self.posterior) {
+                self.fecha_inicio =  new Date($('#vencimiento').val());
+                self.fecha_fin =  new Date();
+                self.fecha_fin.setDate(self.fecha_fin.getDay() + 3650);
+            } else {
+                self.fecha_inicio = new Date(1);
+                self.fecha_fin =  new Date($('#vencimiento').val());
+            }
+            $('#vencimiento').val('');
+            $('#vencimientoModal').modal('hide');
         }
     }
 });

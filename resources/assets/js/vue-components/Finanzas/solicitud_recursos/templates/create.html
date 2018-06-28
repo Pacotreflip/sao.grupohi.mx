@@ -28,20 +28,19 @@
                     <p><b>Vencimiento (días)</b></p>
                     <div class="btn-group btn-group-justified" data-toggle="buttons">
                         <label class="btn btn-default btn-sm">
-                            <input type="radio" name="options" autocomplete="off" v-on:focus="set_fechas(false, -20)"> V < 20
+                            <input type="radio" v-on:focus="set_fechas(false, -20)"> V < 20
                         </label>
                         <label class="btn btn-default btn-sm">
-                            <input type="radio" name="options" autocomplete="off" v-on:focus="set_fechas(-20, -40)"> V <= 20 < 40
+                            <input type="radio" v-on:focus="set_fechas(-20, -40)"> V <= 20 < 40
                         </label>
                         <label class="btn btn-default btn-sm">
-                            <input type="radio" name="options" autocomplete="off" v-on:focus="set_fechas(-40, -60)"> V <= 40 < 60
+                            <input type="radio" v-on:focus="set_fechas(-40, -60)"> V <= 40 < 60
                         </label>
                         <label class="btn btn-default btn-sm">
-                            <input type="radio" name="options" autocomplete="off" v-on:focus="set_fechas(-60, false)"> 60 <= V
+                            <input type="radio" v-on:focus="set_fechas(-60, false)"> 60 <= V
                         </label>
-
                         <div class="btn-group" role="group">
-                            <button :disabled="cargando || guardando" type="button" class="btn btn-sm btn-default">Otro
+                            <button :disabled="cargando || guardando" type="button" class="btn btn-sm btn-default" data-toggle="modal" data-target="#vencimientoModal" >Otro
                             </button>
                         </div>
                     </div>
@@ -68,29 +67,27 @@
                                 <th>Folio de Factura</th>
                                 <th>Folio CR</th>
                                 <th>Fecha</th>
-                                <th>Venc.</th>
+                                <th>Vencimiento</th>
                                 <th>Monto</th>
                                 <th>Moneda</th>
                                 <th>T.C.</th>
                                 <th>Monto M.N.</th>
-                                <th></th>
                                 <th></th>
                             </tr>
                             </thead>
                             <tbody>
                             <tr v-for="transaccion in grupo">
                                 <td>#{{ transaccion.numero_folio }}</td>
-                                <td>{{ transaccion.rubro ? transaccion.rubro.descripcion: '---' }}</td>
+                                <td>{{ transaccion.rubro ? transaccion.rubro.descripcion: 'N/A' }}</td>
                                 <td>{{ transaccion.tipo_tran.Descripcion }}</td>
-                                <td>{{ transaccion.referencia }}</td>
-                                <td>#{{ transaccion.contrarecibo ? transaccion.contrarecibo.numero_folio : '---' }}</td>
+                                <td>{{ transaccion.referencia ?  transaccion.referencia : 'N/A'}}</td>
+                                <td>{{ transaccion.contrarecibo ? '#' + transaccion.contrarecibo.numero_folio : 'N/A' }}</td>
                                 <td>{{ new Date(transaccion.fecha).dateShortFormat() }}</td>
                                 <td>{{ new Date(transaccion.vencimiento).dateShortFormat() }}</td>
                                 <td style="text-align: right"><span class="pull-left">$</span> {{ parseFloat(transaccion.monto).formatMoney(2, '.', ',') }}</td>
                                 <td>{{ transaccion.moneda.nombre }}</td>
                                 <td style="text-align: right"><span class="pull-left">$</span> {{ parseFloat(transaccion.tipo_cambio).formatMoney(2, '.', ',') }}</td>
                                 <td style="text-align: right"><span class="pull-left">$</span> {{ parseFloat(transaccion.monto * transaccion.tipo_cambio).formatMoney(2, '.', ',') }}</td>
-                                <td></td>
                                 <td><input type="checkbox" v-model="transaccion.seleccionada"></td>
                             </tr>
                             </tbody>
@@ -112,11 +109,6 @@
         </div>
     </div>
 
-    <!-- Button trigger modal -->
-    <button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">
-        Launch demo modal
-    </button>
-
     <!-- Modal -->
     <div class="modal fade" id="vencimientoModal" tabindex="-1" role="dialog" aria-labelledby="vencimientoModalLabel">
         <div class="modal-dialog" role="document">
@@ -125,15 +117,28 @@
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                     <h4 class="modal-title" id="myModalLabel">Vencimiento</h4>
                 </div>
+                <form @submit.prevent="set_fecha_modal">
                 <div class="modal-body">
+                    <div class="btn-group btn-group-justified" data-toggle="buttons">
+                        <label class="btn btn-default active focus">
+                            <input type="radio" autocomplete="off" v-on:focus="posterior=false"> ANTERIOR A
+                        </label>
+                        <label class="btn btn-default">
+                            <input type="radio" autocomplete="off" v-on:focus="posterior=true"> POSTERIOR A
+                        </label>
+                    </div>
+                    <br>
+                    <div class="form-group">
+                        <input type="text" id ="vencimiento" autocomplete="off" class="input-sm form-control" v-datepicker required>
+                    </div>
 
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary">Save changes</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn btn-primary">Aceptar</button>
                 </div>
+                </form>
             </div>
         </div>
     </div>
-
 </section>
