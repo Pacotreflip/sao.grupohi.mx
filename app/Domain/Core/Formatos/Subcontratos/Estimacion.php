@@ -464,7 +464,7 @@ class Estimacion extends Rotation {
 
             $this->Cell(($this->GetPageWidth() - 4) / 4, 0.6, '', 'RL', 0, 'C');
             $this->Cell(0.73);
-            $this->Cell(($this->GetPageWidth() - 4) / 4, 0.6, utf8_decode('C.P. Andrés Moreno Ayala'), 'RL', 0, 'C');
+            $this->Cell(($this->GetPageWidth() - 4) / 4, 0.6, utf8_decode('C.P. Eleazar Ortega Valerio'), 'RL', 0, 'C');
             $this->Cell(0.73);
             $this->Cell(($this->GetPageWidth() - 4) / 4, 0.6, utf8_decode('Ing. Victor Manuel Orozco Muñoz'), 'RL', 0, 'C');
             $this->Cell(0.73);
