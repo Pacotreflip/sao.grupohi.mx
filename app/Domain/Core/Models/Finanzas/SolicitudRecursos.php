@@ -59,7 +59,7 @@ class SolicitudRecursos extends Model
             TODO:
             $model->consecutivo =
             $model->folio =
-            $model->registro =
+            $model->registro = auth()->user()->idusuario;
             $model->semana =
             $model->anio =
             */
@@ -85,5 +85,9 @@ class SolicitudRecursos extends Model
      */
     public function usuario() {
         return $this->belongsTo(User::class, 'registro');
+    }
+
+    public function solicitudesUrgentes() {
+        return $this->hasMany(self::class, 'semana', 'semana')->where('anio', '=', $this->anio)->whereNotNull('consecutivo');
     }
 }

@@ -51,4 +51,11 @@ class SolicitudPago extends Transaccion
     public function getIdRubroAttribute() {
         return isset($this->rubros[0]) ? $this->rubros[0]->id : null;
     }
+
+    public function getSeleccionadaAttribute() {
+       /* SolicitudRecursos::where()->whereHas('partidas', function ($q) {
+           $q->where('id_transaccion', '=', $this->id_transaccion);
+        })->first();*/
+        //TODO: regresa TRUE si hay una SolicitudRecursosPartida para la SolicitudRecursos semana actual y el año actual
+    }
 }

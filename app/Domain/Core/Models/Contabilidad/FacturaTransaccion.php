@@ -39,4 +39,9 @@ class FacturaTransaccion extends Transaccion
     public function getIdRubroAttribute() {
         return isset($this->rubros[0]) ? $this->rubros[0]->id : null;
     }
+
+    public function getSeleccionadaAttribute() {
+        //TODO:
+
+    }
 }

@@ -238,9 +238,20 @@ Vue.component('solicitud-recursos-create', {
                 this.text = '';
                 this.title = '';
             }
+        },
+        agregar: function (transaccion) {
+            if (transaccion.)
+            $.ajax({
+                url: App.host + '/api/finanzas/solicitud_recursos/sync_partida/',
+                type: 'POST',
+                headers: {
+                    'X-CSRF-TOKEN': App.csrfToken,
+                    'Authorization': localStorage.getItem('token')
+                },
+                data: {
+                    id_transaccion: transaccion.id_transaccion
+                }
+            })
         }
-
     }
-
-
 });

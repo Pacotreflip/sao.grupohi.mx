@@ -52,7 +52,7 @@ class SolicitudRecursosPartida extends Model
         parent::boot();
 
         static::creating(function ($model) {
-           // TODO: monto, registro
+           // TODO:  registro
         });
     }
 

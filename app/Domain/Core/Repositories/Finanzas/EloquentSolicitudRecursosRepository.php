@@ -47,10 +47,6 @@ class EloquentSolicitudRecursosRepository implements SolicitudRecursosRepository
             DB::connection('cadeco')->beginTransaction();
             $record = $this->model->create($data);
 
-            foreach ($data['partidas'] as $partida) {
-                $record->partidas()->create($partida);
-            }
-
             DB::connection('cadeco')->commit();
             return $record;
         } catch (\Exception $e) {
