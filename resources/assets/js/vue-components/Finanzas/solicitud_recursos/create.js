@@ -11,7 +11,8 @@ Vue.component('solicitud-recursos-create', {
             text: '',
             fecha_inicio: '',
             fecha_fin: '',
-            posterior: false
+            posterior: false,
+            filtro: ''
         }
     },
 
@@ -19,8 +20,6 @@ Vue.component('solicitud-recursos-create', {
         group_by: {
             handler: function (){
                 this.agrupados(this.group_by);
-
-                //element = $('data')
             },
             immediate: true
         },
@@ -83,9 +82,21 @@ Vue.component('solicitud-recursos-create', {
     },
 
     methods: {
-        set_fechas: function(i, f) {
+        set_fechas: function (i, f, id) {
             var self = this;
-            if (i && f) {
+
+            var element = $('#' + id);
+
+            if (element.hasClass('active')) {
+                element.removeClass('active');
+
+                self.fecha_inicio = new Date(1);
+                self.fecha_fin = new Date();
+                self.fecha_fin.setDate(self.fecha_fin.getDay() + 3650);
+                self.filtro = '';
+            } else if (i && f) {
+                self.filtro = id;
+
                 var date2 = new Date();
                 date2.setDate(date2.getDate() + (f + 1));
                 self.fecha_inicio = date2;
@@ -94,6 +105,8 @@ Vue.component('solicitud-recursos-create', {
                 date.setDate(date.getDate() + (i));
                 self.fecha_fin = date;
             } else if (!i && f) {
+                self.filtro = id;
+
                 var date = new Date();
                 date.setDate(date.getDate() + (f + 1));
                 self.fecha_inicio = date;
@@ -101,7 +114,9 @@ Vue.component('solicitud-recursos-create', {
                 var date2 = new Date();
                 date2.setDate(date2.getDay() + 3650);
                 self.fecha_fin = date2;
-            } else  if (i && !f) {
+            } else if (i && !f) {
+                self.filtro = id;
+
                 var date = new Date(1);
                 self.fecha_inicio = date;
 
@@ -153,7 +168,7 @@ Vue.component('solicitud-recursos-create', {
                     type: 'GET',
                     data: {
                         with: ['rubros', 'moneda', 'empresa'],
-                        where:[['saldo', '>', 0]]
+                        where: [['saldo', '>', 0]]
                     },
                     headers: {
                         'X-CSRF-TOKEN': App.csrfToken,
@@ -200,16 +215,32 @@ Vue.component('solicitud-recursos-create', {
 
         set_fecha_modal: function (e) {
             var self = this;
-            if(self.posterior) {
-                self.fecha_inicio =  new Date($('#vencimiento').val());
-                self.fecha_fin =  new Date();
+            if (self.posterior) {
+                self.fecha_inicio = new Date($('#vencimiento').val());
+                self.fecha_fin = new Date();
                 self.fecha_fin.setDate(self.fecha_fin.getDay() + 3650);
             } else {
                 self.fecha_inicio = new Date(1);
-                self.fecha_fin =  new Date($('#vencimiento').val());
+                self.fecha_fin = new Date($('#vencimiento').val());
             }
             $('#vencimiento').val('');
+            self.filtro = '';
             $('#vencimientoModal').modal('hide');
+        },
+
+        toggle: function (value) {
+            this.group_by = value;
+            var element = $('#' + this.group_by);
+            if (element.hasClass('active')) {
+                element.removeClass('active');
+
+                this.group_by = '';
+                this.text = '';
+                this.title = '';
+            }
         }
+
     }
+
+
 });

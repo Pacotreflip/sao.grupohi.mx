@@ -4,25 +4,16 @@
             <div class="box box-solid">
                 <div class="box-body">
                     <p><b>Agrupación</b></p>
-                    <div class="btn-group btn-group-justified" data-toggle="buttons">
-                        <label class="btn btn-default btn-sm agrupador">
-                            <input type="radio" name="options" autocomplete="off" v-on:focus="group_by='id_empresa'"
-                                   data-group="id_empresa"
-                            > Proveedor
-                        </label>
-                        <label class="btn btn-default btn-sm agrupador">
-                            <input type="radio" name="options" autocomplete="off" v-on:focus="group_by='id_rubro'"
-                                   data-group="id_rubro">
+                    <div class="btn-group" style="width: 100%">
+                        <button style="width: 33.33%;" id="id_empresa" type="button" class="btn btn-default" :class="group_by == 'id_empresa' ? 'active' : ''" v-on:click="toggle('id_empresa')">
+                            Proveedor
+                        </button>
+                        <button style="width: 33.33%;" id="id_rubro" type="button" class="btn btn-default" :class="group_by == 'id_rubro' ? 'active' : ''" v-on:click="toggle('id_rubro')">
                             Movimiento
-                        </label>
-                        <label class="btn btn-default btn-sm agrupador">
-                            <input type="radio" name="options" autocomplete="off" v-on:focus="group_by='id_moneda'"
-                                   data-group="id_moneda">
+                        </button>
+                        <button style="width: 33.33%;" id="id_moneda" type="button" class="btn btn-default" :class="group_by == 'id_moneda' ? 'active' : ''" v-on:click="toggle('id_moneda')">
                             Moneda
-                        </label>
-                       <!-- <label class="btn btn-primary">
-                            <input type="radio" name="options" autocomplete="off" v-on:focus="group_by='id_empresa'"> Proveedor
-                        </label>-->
+                        </button>
                     </div>
                 </div>
             </div>
@@ -32,8 +23,8 @@
             <div class="box box-solid">
                 <div class="box-body">
                     <p><b>Vencimiento (días)</b></p>
-                    <div class="btn-group btn-group-justified" data-toggle="buttons">
-                        <label class="btn btn-default btn-sm">
+                    <div class="btn-group" style="width: 100%">
+                        <!--<label class="btn btn-default btn-sm">
                             <input type="radio" v-on:focus="set_fechas(false, -20)"> V < 20
                         </label>
                         <label class="btn btn-default btn-sm">
@@ -44,11 +35,27 @@
                         </label>
                         <label class="btn btn-default btn-sm">
                             <input type="radio" v-on:focus="set_fechas(-60, false)"> 60 <= V
-                        </label>
-                        <div class="btn-group" role="group">
+                        </label>-->
+                        <button style="width: 20%;" id="v0020" type="button" class="btn btn-default" :class="filtro == 'v0020' ? 'active' : ''" v-on:click="set_fechas(false, -20, 'v0020')">
+                            V < 20
+                        </button>
+                        <button style="width: 20%;" id="v2040" type="button" class="btn btn-default" :class="filtro == 'v2040' ? 'active' : ''" v-on:click="set_fechas(-20, -40, 'v2040')">
+                            V <= 20 < 40
+                        </button>
+                        <button style="width: 20%;" id="v4060" type="button" class="btn btn-default" :class="filtro == 'v4060' ? 'active' : ''" v-on:click="set_fechas(-40, -60, 'v4060')">
+                            V <= 40 < 60
+                        </button>
+                        <button style="width: 20%;" id="v6000" type="button" class="btn btn-default" :class="filtro == 'v6000' ? 'active' : ''" v-on:click="set_fechas(-60, false, 'v6000')">
+                            60 <= V
+                        </button>
+                        <button style="width: 20%;" type="button" class="btn btn-default" data-toggle="modal" data-target="#vencimientoModal">
+                            Otro
+                        </button>
+
+                        <!--<div class="btn-group" role="group">
                             <button :disabled="cargando || guardando" type="button" class="btn btn-sm btn-default" data-toggle="modal" data-target="#vencimientoModal" >Otro
                             </button>
-                        </div>
+                        </div>-->
                     </div>
                 </div>
             </div>
