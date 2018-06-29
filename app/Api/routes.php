@@ -112,6 +112,8 @@ $api->version('v1', function ($api) {
          */
         $api->post('finanzas/solicitud_recursos/paginate', 'Ghi\Api\Controllers\v1\Finanzas\SolicitudRecursosController@paginate');
         $api->post('finanzas/solicitud_recursos', 'Ghi\Api\Controllers\v1\Finanzas\SolicitudRecursosController@store');
+        $api->get('finanzas/solicitud_recursos/solicitud_semana', 'Ghi\Api\Controllers\v1\Finanzas\SolicitudRecursosController@getSolicitudSemana');
+        $api->get('finanzas/solicitud_recursos/sync_partida', 'Ghi\Api\Controllers\v1\Finanzas\SolicitudRecursosController@syncPartida');
 
         /**
          * Carga de Expediente

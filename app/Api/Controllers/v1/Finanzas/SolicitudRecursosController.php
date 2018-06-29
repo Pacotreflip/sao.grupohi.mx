@@ -66,4 +66,14 @@ class SolicitudRecursosController extends Controller
             'recordsFiltered' => $resp->total(),
             'data' => $resp->items()], 200);
     }
+
+    public function syncPartida(Request $request)
+    {
+
+    }
+
+    public function getSolicitudSemana(Request $request)
+    {
+
+    }
 }

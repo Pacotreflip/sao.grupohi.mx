@@ -77,5 +77,32 @@ Vue.component('solicitud-recursos-index', {
         };
 
         $('#solicitudes_recursos_table').DataTable(data);
+    },
+    methods: {
+        confirmar_solicitud: function(){
+            $.ajax({
+                url: App.host + '/api/finanzas/solicitud_recursos/solicitud_semana',
+                type: 'GET',
+                headers: {
+                    'X-CSRF-TOKEN': App.csrfToken,
+                    'Authorization': localStorage.getItem('token')
+                },
+                beforeSend: function () {
+                    // self.cargando = true;
+                },
+                success: function (response) {
+                    response.forEach(function (transaccion) {
+                        transaccion.rubro = transaccion.rubros[0];
+                    });
+                    self.cargando = false;
+                    resolve({
+                        facturas: response
+                    })
+                },
+                complete: function () {
+                    self.cargando = false;
+                }
+            });
+        }
     }
 });
