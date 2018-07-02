@@ -68,9 +68,7 @@ class SolicitudRecursosController extends Controller
     }
 
     public function syncPartida(Request $request)
-    {
-
-    }
+    {}
 
     public function getSolicitudSemana(Request $request)
     {
