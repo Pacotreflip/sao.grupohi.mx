@@ -37,5 +37,6 @@ Route::group(['prefix' => 'finanzas', 'middleware' => ['auth', 'context', 'syste
      * Solicitud de Recursos routes
      */
     Route::get('solicitud_recursos', 'Finanzas\SolicitudRecursosController@index')->name('finanzas.solicitud_recursos.index');
-    Route::post('solicitud_recursos/{id}/edit', 'Finanzas\SolicitudRecursosController@edit')->name('finanzas.solicitud_recursos.edit')->where(['id' => '[0-9]+']);
+    Route::get('solicitud_recursos/{id}', 'Finanzas\SolicitudRecursosController@show')->name('finanzas.solicitud_recursos.show')->where(['id' => '[0-9]+']);
+    Route::get('solicitud_recursos/{id}/edit', 'Finanzas\SolicitudRecursosController@edit')->name('finanzas.solicitud_recursos.edit')->where(['id' => '[0-9]+']);
 });

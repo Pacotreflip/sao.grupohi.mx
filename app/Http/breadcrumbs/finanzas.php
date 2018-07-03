@@ -55,7 +55,7 @@ Breadcrumbs::register('finanzas.solicitud_recursos.index', function ($breadcrumb
 
 Breadcrumbs::register('finanzas.solicitud_recursos.show', function ($breadcrumb, $solicitud) {
     $breadcrumb->parent('finanzas.solicitud_recursos.index');
-    $breadcrumb->push($solicitud->folio, route('finanzas.solicitud_recursos.show'));
+    $breadcrumb->push($solicitud->folio, route('finanzas.solicitud_recursos.show', $solicitud));
 });
 
 Breadcrumbs::register('finanzas.solicitud_recursos.edit', function ($breadcrumb, $solicitud) {

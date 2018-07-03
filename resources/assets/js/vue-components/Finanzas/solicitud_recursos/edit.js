@@ -1,5 +1,5 @@
-Vue.component('solicitud-recursos-create', {
-    template: require('./templates/create.html'),
+Vue.component('solicitud-recursos-edit', {
+    template: require('./templates/edit.html'),
     data: function () {
         return {
             transacciones : [],

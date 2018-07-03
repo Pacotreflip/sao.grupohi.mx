@@ -1,3 +1,5 @@
+composer update
+
 php artisan cache:clear
 php artisan route:cache
 php artisan api:cache
@@ -11,4 +13,3 @@ echo "YES" | php artisan db:seed --class='TiposRubrosSeeder'
 echo "YES" | php artisan db:seed --class='TiposSolicitudSeeder'
 echo "YES" | php artisan db:seed --class='RubrosSeeder'
 echo "YES" | php artisan db:seed --class='RolesPermissionsSeeder'
-
