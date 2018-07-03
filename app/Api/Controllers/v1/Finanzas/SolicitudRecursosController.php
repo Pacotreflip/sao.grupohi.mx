@@ -70,9 +70,7 @@ class SolicitudRecursosController extends Controller
     }
 
     public function syncPartida(Request $request)
-    {
-
-    }
+    {}
 
     /**
      * @param Request $request
