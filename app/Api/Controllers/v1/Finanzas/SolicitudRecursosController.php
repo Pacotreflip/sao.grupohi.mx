@@ -54,9 +54,9 @@ class SolicitudRecursosController extends Controller
             'data' => $resp->items()], 200);
     }
 
-    public function syncPartida(Request $request)
-    {}
+    public function syncPartidas(Request $request) {
 
+    }
 
     /**
      * @return \Dingo\Api\Http\Response
@@ -64,7 +64,7 @@ class SolicitudRecursosController extends Controller
     public function getSolicitudSemana()
     {
         $hoy = Carbon::now();
-        $solicitud = SolicitudRecursos::where('semana', '=', $hoy->weekOfYear)->where('anio', '=', $hoy->year)->first();
+        $solicitud = SolicitudRecursos::where('semana', '=', $hoy->weekOfYear)->where('anio', '=', $hoy->year)->orderBy('id', 'DESC')->first();
 
         if($solicitud){
             return response()->json($solicitud, 200);

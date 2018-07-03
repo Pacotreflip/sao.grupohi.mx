@@ -102,7 +102,6 @@ Vue.component('solicitud-recursos-index', {
                         self.crear_solicitud().then(function (data) {
                             return window.location.href = App.host + "/finanzas/solicitud_recursos/" + data.solicitud.id + "/edit";
                         });
-
                     } else {
                         var estado = response.estado;
                         var texto = estado == 1 ? 'Ya existe una solicitud para esta semana y aún no se ha finalizado, se mostrará para editarla' : 'Ya existe una solicitud finalizada para esta semana, se creará una nueva solicitud urgente';
@@ -115,7 +114,13 @@ Vue.component('solicitud-recursos-index', {
                             cancelButtonText: 'No, Cancelar',
                         }).then(function (result) {
                             if(result.value) {
-                                window.location.href = 'solicitud_recursos/'+  +'/edit';
+                                if(estado == 1) {
+                                    return window.location.href = App.host + "/finanzas/solicitud_recursos/" + response.id + "/edit";
+                                } else {
+                                    self.crear_solicitud().then(function (data) {
+                                        return window.location.href = App.host + "/finanzas/solicitud_recursos/" + data.solicitud.id + "/edit";
+                                    });
+                                }
                             }
                         });
                     }
