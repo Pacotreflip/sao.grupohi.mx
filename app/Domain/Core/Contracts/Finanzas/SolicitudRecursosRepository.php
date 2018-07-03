@@ -17,11 +17,10 @@ interface SolicitudRecursosRepository
     /**
      * Crea un registro de Solicitud de Recursos con sus Partidas
      *
-     * @param array $data
      * @return SolicitudRecursos|mixed
      * @throws \Exception
      */
-    public function create($data);
+    public function create();
 
     public function paginate(array $data);
 

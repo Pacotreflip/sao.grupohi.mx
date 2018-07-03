@@ -16,7 +16,7 @@ class CreateFinanzasSolicitudesRecursos extends Migration
             $table->increments('id');
             $table->integer('id_tipo')->unsigned();
             $table->tinyInteger('semana');
-            $table->tinyInteger('anio');
+            $table->smallInteger('anio');
             $table->smallInteger('consecutivo')->nullable();
             $table->string('folio');
             $table->integer('registro');

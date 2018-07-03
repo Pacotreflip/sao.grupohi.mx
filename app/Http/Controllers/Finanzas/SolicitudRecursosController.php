@@ -28,7 +28,14 @@ class SolicitudRecursosController extends Controller {
     /**
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function create() {
+    public function edit(Request $request, $id) {
+
+        $solicitud = SolicitudRecursos::find($id);
+
+        return view('finanzas.solicitud_recursos.create');
+    }
+
+    public function update(Request $request, $id) {
 
         $hoy = Carbon::now();
         $solicitud = SolicitudRecursos::where('semana', '=', $hoy->weekOfYear)->where('anio', '=', $hoy->year)->get();

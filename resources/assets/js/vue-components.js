@@ -54,7 +54,7 @@ require('./vue-components/Finanzas/solicitud_pago/reposicion_fondo_fijo/create')
 require('./vue-components/Finanzas/solicitud_pago/pago_cuenta/create');
 
 require('./vue-components/Finanzas/solicitud_recursos/index');
-require('./vue-components/Finanzas/solicitud_recursos/create');
+require('./vue-components/Finanzas/solicitud_recursos/edit');
 
 /**
  * Formatos Components

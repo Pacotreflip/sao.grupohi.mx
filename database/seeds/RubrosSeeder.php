@@ -13,6 +13,7 @@ class RubrosSeeder extends Seeder
      */
     public function run()
     {
+        echo "START RubroSeeder";
         $rubros = [
             'SUELDOS Y SALARIOS' => 1,
             'SUBCONTRATOS, ACARREOS Y DESTAJOS'=> 1,
@@ -42,5 +43,7 @@ SET IDENTITY_INSERT Finanzas.rubros ON;
 INSERT INTO Finanzas.rubros(id, id_tipo, descripcion, created_at, updated_at, deleted_at)
 VALUES '. $string .';
 SET IDENTITY_INSERT Finanzas.rubros OFF;');
+
+        echo "/n  END RubrosSeeder";
     }
 }

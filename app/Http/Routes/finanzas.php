@@ -37,5 +37,5 @@ Route::group(['prefix' => 'finanzas', 'middleware' => ['auth', 'context', 'syste
      * Solicitud de Recursos routes
      */
     Route::get('solicitud_recursos', 'Finanzas\SolicitudRecursosController@index')->name('finanzas.solicitud_recursos.index');
-    Route::get('solicitud_recursos/create', 'Finanzas\SolicitudRecursosController@create')->name('finanzas.solicitud_recursos.create');
+    Route::post('solicitud_recursos/{id}/edit', 'Finanzas\SolicitudRecursosController@edit')->name('finanzas.solicitud_recursos.edit')->where(['id' => '[0-9]+']);
 });

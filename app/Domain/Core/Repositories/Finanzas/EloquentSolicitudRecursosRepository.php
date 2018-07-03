@@ -37,15 +37,14 @@ class EloquentSolicitudRecursosRepository implements SolicitudRecursosRepository
     /**
      * Crea un registro de Solicitud de Recursos con sus Partidas
      *
-     * @param array $data
      * @return SolicitudRecursos|mixed
      * @throws \Exception
      */
-    public function create($data)
+    public function create()
     {
         try {
             DB::connection('cadeco')->beginTransaction();
-            $record = $this->model->create($data);
+            $record = $this->model->create();
 
             DB::connection('cadeco')->commit();
             return $record;
@@ -57,7 +56,7 @@ class EloquentSolicitudRecursosRepository implements SolicitudRecursosRepository
 
     public function paginate(array $data)
     {
-        $query = $this->model;
+        $query = $this->model->with(['usuario', 'partidas']);
 
 
         $query->where(function ($q) use ($data) {

@@ -2,8 +2,8 @@
 @section('title', 'Sistema de Finanzas')
 @section('contentheader_title', 'SOLICITUD DE RECURSOS')
 @section('breadcrumb')
-    {!! Breadcrumbs::render('finanzas.solicitud_recursos.create') !!}
+    {!! Breadcrumbs::render('finanzas.solicitud_recursos.edit') !!}
 @endsection
 @section('main-content')
-    <solicitud-recursos-create v-cloak></solicitud-recursos-create>
+    <solicitud-recursos-edit v-cloak :id="{{$solicitud->id}}"></solicitud-recursos-edit>
 @endsection

@@ -9,6 +9,7 @@
 namespace Ghi\Domain\Core\Models\Finanzas;
 
 
+use Carbon\Carbon;
 use Ghi\Domain\Core\Models\User;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -38,14 +39,6 @@ class SolicitudRecursos extends Model
         'id_tipo',
     ];
 
-    /**
-     * @var array
-     */
-    protected $appends = [
-        'partidas',
-        'tipo',
-        'usuario',
-    ];
 
     /**
      *
@@ -55,14 +48,13 @@ class SolicitudRecursos extends Model
         parent::boot();
 
         static::creating(function ($model) {
-            /*
-            TODO:
-            $model->consecutivo =
-            $model->folio =
-            $model->registro = auth()->user()->idusuario;
-            $model->semana =
-            $model->anio =
-            */
+            $model->id_tipo = (new SolicitudRecursos)->getTipo()->id;
+            $model->registro = auth()->id();
+            $model->semana = Carbon::now()->weekOfYear;
+            $model->anio = Carbon::now()->year;
+            $model->folio = '';
+            $model->consecutivo = $model->tipo->descripcion_corta == 'UR' ? $model->getConsecutivo() : null;
+            $model->folio = $model->tipo->descripcion_corta . '-' . $model->semana . '-' . $model->anio . ($model->consecutivo ? '-' . $model->consecutivo : '');
         });
     }
 
@@ -90,4 +82,20 @@ class SolicitudRecursos extends Model
     public function solicitudesUrgentes() {
         return $this->hasMany(self::class, 'semana', 'semana')->where('anio', '=', $this->anio)->whereNotNull('consecutivo');
     }
+
+    public static function getTipo()
+    {
+        $hoy = Carbon::now();
+
+        if (self::where('semana', '=', $hoy->weekOfYear)->where('anio', '=', $hoy->year)->first())
+            return CTGTipoSolicitud::where('descripcion_corta', '=', 'UR')->first();
+        else
+            return CTGTipoSolicitud::where('descripcion_corta', '=', 'PR')->first();
+    }
+
+    public function getConsecutivo()
+    {
+        return $this->solicitudesUrgentes()->count() + 1;
+    }
+
 }

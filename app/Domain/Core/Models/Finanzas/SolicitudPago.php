@@ -19,7 +19,7 @@ use Ghi\Domain\Core\Models\Transacciones\Transaccion;
 class SolicitudPago extends Transaccion
 {
 
-    protected $appends = ['tipo_transaccion_string', 'tipo_cambio', 'id_rubro'];
+    protected $appends = ['tipo_transaccion_string', 'tipo_cambio', 'id_rubro', 'seleccionada'];
 
     /**
      * Aplicar Scope Global para recuperar solo las transacciones de tipo Solicitud de Pago

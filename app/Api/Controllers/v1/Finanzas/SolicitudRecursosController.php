@@ -35,24 +35,9 @@ class SolicitudRecursosController extends Controller
      * @return \Dingo\Api\Http\Response
      * @throws \Exception
      */
-    public function store(Request $request) {
-        $rules = [
-            'id_tipo' => ['required', 'exists:cadeco.Finanzas.ctg_tipos_solicitud,id'],
-            'partidas' => ['required', 'array'],
-            'partidas.*.id_transaccion' => ['required', 'exists:cadeco.dbo.transacciones,id_transaccion']
-        ];
-
-        $validator = Validator::make($request->all(), $rules);
-        if (count($validator->errors()->all())) {
-            throw new StoreResourceFailedException('Error al generar la solicitud', $validator->errors());
-        } else {
-            try {
-                $this->solicitudRecursosRepository->create($request->all());
-                return $this->response()->created();
-            } catch (\Exception $e) {
-                throw $e;
-            }
-        }
+    public function store() {
+        $solicitud = $this->solicitudRecursosRepository->create();
+        return response()->json($solicitud, 201);
     }
 
     /**
@@ -72,17 +57,19 @@ class SolicitudRecursosController extends Controller
     public function syncPartida(Request $request)
     {}
 
+
     /**
-     * @param Request $request
-     * @return bool|null
+     * @return \Dingo\Api\Http\Response
      */
-    public function getSolicitudSemana(Request $request)
+    public function getSolicitudSemana()
     {
         $hoy = Carbon::now();
+        $solicitud = SolicitudRecursos::where('semana', '=', $hoy->weekOfYear)->where('anio', '=', $hoy->year)->first();
 
-        $solicitud = SolicitudRecursos::where('semana', '=', $hoy->weekOfYear)->where('anio', '=', $hoy->year)->get();
-
-        return response()->json([
-            'solicitud' => ($solicitud->count() > 0 ? $solicitud : false)], 200);
+        if($solicitud){
+            return response()->json($solicitud, 200);
+        } else {
+            return $this->response->noContent();
+        }
     }
 }

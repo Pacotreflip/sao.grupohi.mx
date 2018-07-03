@@ -32,12 +32,16 @@ Vue.component('solicitud-recursos-index', {
                 },
                 "dataSrc" : function (json) {
                     for (var i = 0; i < json.data.length; i++) {
+                        json.data[i].total = 0;
+
                         json.data[i].fecha_registro = new Date(json.data[i].created_at).dateShortFormat();
                         json.data[i].usuario_registro = json.data[i].usuario.amaterno + ' ' + json.data[i].usuario.apaterno + ' ' + json.data[i].usuario.nombre;
-                        json.data[i].cantidad_transacciones = json.data[i].partidas.length;
+                        json.data[i].cantidad_transacciones = json.data[i].partidas.length ? json.data[i].partidas.length : 0;
                         $.each(json.data[i].partidas, function(index, value) {
                             json.data[i].total += value.monto;
                         });
+
+                        json.data[i].total = '$ ' + parseFloat(json.data[i].total).formatMoney(2, '.', ',');
                     }
                     return json.data;
                 }
@@ -46,8 +50,7 @@ Vue.component('solicitud-recursos-index', {
                 {data : 'folio'},
                 {data : 'fecha_registro'},
                 {data : 'usuario_registro'},
-                {data : 'FechaHoraRegistro'},
-                {data : 'total'},
+                {data : 'cantidad_transacciones'},
                 {data : 'total'}
             ],
             language: {
@@ -82,8 +85,7 @@ Vue.component('solicitud-recursos-index', {
         confirmar_solicitud: function(){
 
             // finanzas.solicitud_recursos.create
-            var self = this,
-                creada = false;
+            var self = this;
 
             $.ajax({
                 url: App.host + '/api/finanzas/solicitud_recursos/solicitud_semana',
@@ -96,17 +98,14 @@ Vue.component('solicitud-recursos-index', {
                     self.cargando = true;
                 },
                 success: function (response) {
+                    if(! response) {
+                        self.crear_solicitud().then(function (data) {
+                            return window.location.href = App.host + "/finanzas/solicitud_recursos/" + data.solicitud.id + "/edit";
+                        });
 
-                    var texto = '',
-                        estado = 0;
-
-                    if (response.solicitud === false)
-                        return window.location.href = App.host + "solicitud_recursos/create";
-
-                    else
-                    {
-                        estado = response.solicitud.estado;
-                        texto = estado == 1 ? 'Ya existe una solicitud para esta semana y aún no se ha finalizado, se mostrará para editarla' : 'Ya existe una solicitud finalizada para esta semana, se creará una nueva solicitud urgente';
+                    } else {
+                        var estado = response.estado;
+                        var texto = estado == 1 ? 'Ya existe una solicitud para esta semana y aún no se ha finalizado, se mostrará para editarla' : 'Ya existe una solicitud finalizada para esta semana, se creará una nueva solicitud urgente';
                         swal({
                             title: 'Crear solicitud',
                             text: texto,
@@ -116,16 +115,33 @@ Vue.component('solicitud-recursos-index', {
                             cancelButtonText: 'No, Cancelar',
                         }).then(function (result) {
                             if(result.value) {
-                                window.location.href = 'solicitud_recursos/create';
+                                window.location.href = 'solicitud_recursos/'+  +'/edit';
                             }
                         });
                     }
-
                 },
                 complete: function () {
                     self.cargando = false;
                 }
             });
+        },
+
+        crear_solicitud: function () {
+            return new Promise(function (resolve, reject) {
+                $.ajax({
+                    url: App.host + '/api/finanzas/solicitud_recursos',
+                    type: 'POST',
+                    headers: {
+                        'X-CSRF-TOKEN': App.csrfToken,
+                        'Authorization': localStorage.getItem('token')
+                    },
+                    success: function (response) {
+                        resolve({
+                           solicitud: response
+                        });
+                    }
+                });
+            })
         }
     }
 });

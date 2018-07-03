@@ -52,7 +52,13 @@ Breadcrumbs::register('finanzas.solicitud_recursos.index', function ($breadcrumb
     $breadcrumb->parent('finanzas.index');
     $breadcrumb->push('SOLICIUD DE RECURSOS', route('finanzas.solicitud_recursos.index'));
 });
-Breadcrumbs::register('finanzas.solicitud_recursos.create', function ($breadcrumb) {
+
+Breadcrumbs::register('finanzas.solicitud_recursos.show', function ($breadcrumb, $solicitud) {
     $breadcrumb->parent('finanzas.solicitud_recursos.index');
-    $breadcrumb->push('GENERAR', route('finanzas.solicitud_recursos.create'));
+    $breadcrumb->push($solicitud->folio, route('finanzas.solicitud_recursos.show'));
+});
+
+Breadcrumbs::register('finanzas.solicitud_recursos.edit', function ($breadcrumb, $solicitud) {
+    $breadcrumb->parent('finanzas.solicitud_recursos.show', $solicitud);
+    $breadcrumb->push('EDITAR', route('finanzas.solicitud_recursos.edit', $solicitud));
 });
