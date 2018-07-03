@@ -1,5 +1,6 @@
 Vue.component('solicitud-recursos-edit', {
     template: require('./templates/edit.html'),
+    props: ['id'],
     data: function () {
         return {
             transacciones : [],
