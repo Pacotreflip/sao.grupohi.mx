@@ -121,6 +121,8 @@ $api->version('v1', function ($api) {
          * comprobante fondo fijo
          */
         $api->get('finanzas/comprobante_fondo_fijo/search', 'Ghi\Api\Controllers\v1\Finanzas\ComprobanteFondoFijoController@search');
+
+        // test
     });
 });
 
