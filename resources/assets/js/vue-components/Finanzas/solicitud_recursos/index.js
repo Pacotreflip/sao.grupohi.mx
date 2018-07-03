@@ -99,8 +99,9 @@ Vue.component('solicitud-recursos-index', {
 
                     var texto = '',
                         estado = 0;
+
                     if (response.solicitud === false)
-                        return window.location.href = "solicitud_recursos/create";
+                        return window.location.href = App.host + "solicitud_recursos/create";
 
                     else
                     {

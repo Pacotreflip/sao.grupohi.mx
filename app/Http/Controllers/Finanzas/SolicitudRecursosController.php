@@ -8,6 +8,8 @@
 
 namespace Ghi\Http\Controllers\Finanzas;
 
+use Carbon\Carbon;
+use Ghi\Domain\Core\Models\Finanzas\SolicitudRecursos;
 use Ghi\Http\Controllers\Controller;
 use Ghi\Http\Requests\Request;
 
@@ -23,10 +25,14 @@ class SolicitudRecursosController extends Controller {
         return view('finanzas.solicitud_recursos.index');
     }
 
+    /**
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     public function create() {
 
+        $hoy = Carbon::now();
         $solicitud = SolicitudRecursos::where('semana', '=', $hoy->weekOfYear)->where('anio', '=', $hoy->year)->get();
 
-        return view('finanzas.solicitud_recursos.create', '');
+        return view('finanzas.solicitud_recursos.create');
     }
 }
