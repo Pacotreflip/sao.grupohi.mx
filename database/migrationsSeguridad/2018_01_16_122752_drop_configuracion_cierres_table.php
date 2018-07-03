@@ -12,7 +12,7 @@ class DropConfiguracionCierresTable extends Migration
      */
     public function up()
     {
-        Schema::drop('Configuracion.cierres');
+        Schema::connection('seguridad')->drop('Configuracion.cierres');
     }
 
     /**
@@ -21,7 +21,7 @@ class DropConfiguracionCierresTable extends Migration
      * @return void
      */
     public function down()
-    { Schema::create('Configuracion.cierres', function (Blueprint $table) {
+    { Schema::connection('seguridad')->create('Configuracion.cierres', function (Blueprint $table) {
         $table->increments('id');
         $table->integer('anio');
         $table->integer('mes');

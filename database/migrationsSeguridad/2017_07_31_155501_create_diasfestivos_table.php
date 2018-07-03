@@ -12,7 +12,7 @@ class CreateDiasfestivosTable extends Migration
      */
     public function up()
     {
-        Schema::create('dias_festivos', function (Blueprint $table) {
+        Schema::connection('seguridad')->create('dias_festivos', function (Blueprint $table) {
             $table->increments('id');
             $table->date('fecha');
         });
@@ -25,6 +25,6 @@ class CreateDiasfestivosTable extends Migration
      */
     public function down()
     {
-        Schema::drop('dias_festivos');
+        Schema::connection('seguridad')->drop('dias_festivos');
     }
 }

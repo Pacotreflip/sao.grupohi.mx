@@ -13,7 +13,7 @@ class ErpSetupTables extends Migration
     {
 
         // Create table for storing proyectos
-        Schema::create('proyectos', function (Blueprint $table) {
+        Schema::connection('seguridad')->create('proyectos', function (Blueprint $table) {
             $table->increments('id');
             $table->string('base_datos')->unique();
             $table->string('description')->nullable();
@@ -23,7 +23,7 @@ class ErpSetupTables extends Migration
 
 
         // Create table for storing roles
-        Schema::create('roles', function (Blueprint $table) {
+        Schema::connection('seguridad')->create('roles', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name')->unique();
             $table->string('display_name')->nullable();

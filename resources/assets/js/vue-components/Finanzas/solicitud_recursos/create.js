@@ -238,8 +238,8 @@ Vue.component('solicitud-recursos-create', {
                 this.text = '';
                 this.title = '';
             }
-        },
-        agregar: function (transaccion) {
+        }
+        /*agregar: function (transaccion) {
             if (transaccion.)
             $.ajax({
                 url: App.host + '/api/finanzas/solicitud_recursos/sync_partida/',
@@ -252,6 +252,6 @@ Vue.component('solicitud-recursos-create', {
                     id_transaccion: transaccion.id_transaccion
                 }
             })
-        }
+        }*/
     }
 });
