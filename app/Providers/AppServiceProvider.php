@@ -31,8 +31,6 @@ class AppServiceProvider extends ServiceProvider
         Validator::extend('after_or_equal', function($attribute, $value, $parameters, $validator) {
             return strtotime($validator->getData()[$parameters[0]]) <= strtotime($value);
         });
-
-        BusinessDay::enable(Carbon::class);
     }
 
     /**
