@@ -9,6 +9,7 @@
 namespace Ghi\Http\Controllers\Finanzas;
 
 use Ghi\Http\Controllers\Controller;
+use Ghi\Http\Requests\Request;
 
 class SolicitudRecursosController extends Controller {
 
@@ -23,6 +24,9 @@ class SolicitudRecursosController extends Controller {
     }
 
     public function create() {
-        return view('finanzas.solicitud_recursos.create');
+
+        $solicitud = SolicitudRecursos::where('semana', '=', $hoy->weekOfYear)->where('anio', '=', $hoy->year)->get();
+
+        return view('finanzas.solicitud_recursos.create', '');
     }
 }

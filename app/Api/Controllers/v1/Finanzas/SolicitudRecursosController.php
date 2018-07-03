@@ -9,10 +9,12 @@
 namespace Ghi\Api\Controllers\v1\Finanzas;
 
 
+use Carbon\Carbon;
 use Dingo\Api\Exception\StoreResourceFailedException;
 use Dingo\Api\Http\Request;
 use Dingo\Api\Routing\Helpers;
 use Ghi\Domain\Core\Contracts\Finanzas\SolicitudRecursosRepository;
+use Ghi\Domain\Core\Models\Finanzas\SolicitudRecursos;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Validator;
 
@@ -72,8 +74,17 @@ class SolicitudRecursosController extends Controller
 
     }
 
+    /**
+     * @param Request $request
+     * @return bool|null
+     */
     public function getSolicitudSemana(Request $request)
     {
+        $hoy = Carbon::now();
 
+        $solicitud = SolicitudRecursos::where('semana', '=', $hoy->weekOfYear)->where('anio', '=', $hoy->year)->get();
+
+        return response()->json([
+            'solicitud' => ($solicitud->count() > 0 ? $solicitud : false)], 200);
     }
 }

@@ -80,6 +80,11 @@ Vue.component('solicitud-recursos-index', {
     },
     methods: {
         confirmar_solicitud: function(){
+
+            // finanzas.solicitud_recursos.create
+            var self = this,
+                creada = false;
+
             $.ajax({
                 url: App.host + '/api/finanzas/solicitud_recursos/solicitud_semana',
                 type: 'GET',
@@ -88,16 +93,33 @@ Vue.component('solicitud-recursos-index', {
                     'Authorization': localStorage.getItem('token')
                 },
                 beforeSend: function () {
-                    // self.cargando = true;
+                    self.cargando = true;
                 },
                 success: function (response) {
-                    response.forEach(function (transaccion) {
-                        transaccion.rubro = transaccion.rubros[0];
-                    });
-                    self.cargando = false;
-                    resolve({
-                        facturas: response
-                    })
+
+                    var texto = '',
+                        estado = 0;
+                    if (response.solicitud === false)
+                        return window.location.href = "solicitud_recursos/create";
+
+                    else
+                    {
+                        estado = response.solicitud.estado;
+                        texto = estado == 1 ? 'Ya existe una solicitud para esta semana y aún no se ha finalizado, se mostrará para editarla' : 'Ya existe una solicitud finalizada para esta semana, se creará una nueva solicitud urgente';
+                        swal({
+                            title: 'Crear solicitud',
+                            text: texto,
+                            type: 'warning',
+                            showCancelButton: true,
+                            confirmButtonText: 'Si, Continuar',
+                            cancelButtonText: 'No, Cancelar',
+                        }).then(function (result) {
+                            if(result.value) {
+                                window.location.href = 'solicitud_recursos/create';
+                            }
+                        });
+                    }
+
                 },
                 complete: function () {
                     self.cargando = false;

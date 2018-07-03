@@ -240,7 +240,7 @@ Vue.component('solicitud-recursos-create', {
             }
         },
         agregar: function (transaccion) {
-            if (transaccion.)
+            if (transaccion)
             $.ajax({
                 url: App.host + '/api/finanzas/solicitud_recursos/sync_partida/',
                 type: 'POST',
