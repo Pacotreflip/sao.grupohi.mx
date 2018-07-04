@@ -16,4 +16,11 @@ class Estimacion extends Model
     protected $connection = 'cadeco';
     protected $table = 'SubcontratosEstimaciones.Estimaciones';
     protected $primaryKey = 'IDEstimacion';
+
+    protected $fillable = [
+        'IDEstimacion',
+        'NumeroFolioConsecutivo'
+    ];
+
+    public $timestamps = false;
 }
