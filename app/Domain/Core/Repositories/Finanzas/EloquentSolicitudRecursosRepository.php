@@ -81,4 +81,16 @@ class EloquentSolicitudRecursosRepository implements SolicitudRecursosRepository
         $this->model = $this->model->with($with);
         return $this;
     }
+
+    /**
+     * @param $id
+     * @return SolicitudRecursos|mixed
+     */
+    public function finalizar($id)
+    {
+        $solicitud = $this->model->findOrFail($id);
+
+        $solicitud->estado = 2;
+        $solicitud->save();
+    }
 }

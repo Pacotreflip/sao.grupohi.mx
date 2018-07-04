@@ -72,4 +72,11 @@ class SolicitudRecursosController extends Controller
             return $this->response->noContent();
         }
     }
+
+    public function finalizar(Request $request, $id) {
+        $solicitud = $this->solicitudRecursosRepository->finalizar($id);
+        return $this->response->item($solicitud, function ($item) {
+            return $item;
+        });
+    }
 }

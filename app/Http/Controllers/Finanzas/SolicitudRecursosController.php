@@ -29,7 +29,7 @@ class SolicitudRecursosController extends Controller {
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function edit(Request $request, $id) {
-        $solicitud = SolicitudRecursos::find($id);
+        $solicitud = SolicitudRecursos::abiertas()->findOrFail($id);
         return view('finanzas.solicitud_recursos.edit')->withSolicitud($solicitud);
     }
 }

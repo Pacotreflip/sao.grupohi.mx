@@ -39,14 +39,6 @@ class SolicitudRecursosPartida extends Model
         'id_transaccion',
     ];
 
-    /**
-     * @var array
-     */
-    protected $appends = [
-        'transaccion',
-        'usuario'
-    ];
-
     protected static function boot()
     {
         parent::boot();

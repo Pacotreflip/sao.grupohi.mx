@@ -98,4 +98,8 @@ class SolicitudRecursos extends Model
         return $this->solicitudesUrgentes()->count() + 1;
     }
 
+    public function scopeAbiertas($query) {
+        return $query->where('estado', '=', 1);
+    }
+
 }

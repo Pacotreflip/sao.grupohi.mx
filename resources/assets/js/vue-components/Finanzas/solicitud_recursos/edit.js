@@ -215,7 +215,7 @@ Vue.component('solicitud-recursos-edit', {
         },
 
         set_fecha_modal: function (e) {
-            var self = this;
+            let self = this;
             if (self.posterior) {
                 self.fecha_inicio = new Date($('#vencimiento').val());
                 self.fecha_fin = new Date();
@@ -231,7 +231,7 @@ Vue.component('solicitud-recursos-edit', {
 
         toggle: function (value) {
             this.group_by = value;
-            var element = $('#' + this.group_by);
+            let element = $('#' + this.group_by);
             if (element.hasClass('active')) {
                 element.removeClass('active');
 
@@ -253,6 +253,49 @@ Vue.component('solicitud-recursos-edit', {
                     id_transaccion: transaccion.id_transaccion
                 }
             })
+        },
+        confirm_finalizar: function () {
+            let self = this;
+
+            swal({
+                title: '¿Está seguro de finalizar?',
+                text: "Si finaliza la captura de esta solicitud de recursos no podrá agregar más transacciones",
+                type: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Si, Finalizar',
+                cancelButtonText: 'No, Cancelar'
+            }).then(function(result) {
+                if(result.value) {
+                    self.finalizar();
+                }
+            });
+        },
+
+        finalizar: function () {
+            let self = this;
+            $.ajax({
+                url: App.host + '/api/finanzas/solicitud_recursos/' + self.id + '/finalizar',
+                type: 'POST',
+                beforeSend: function () {
+                    self.guardando = true;
+                },
+                success: function () {
+                    swal({
+                        title: '¡Correcto!',
+                        text: 'Solicitud finalizada correctamente',
+                        type: "success",
+                        confirmButtonText: "Ok",
+                        closeOnConfirm: false
+                    }).then(function () {
+                        return window.location.href = App.host + "/finanzas/solicitud_recursos";
+                    }).catch(swal.noop);
+                },
+                complete: function () {
+                    self.guardando = false;
+                }
+            });
         }
     }
 });

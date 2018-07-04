@@ -30,4 +30,11 @@ interface SolicitudRecursosRepository
      * @return EloquentSolicitudRecursosRepository
      */
     public function with($with);
+
+
+    /**
+     * @param $id
+     * @return SolicitudRecursos|mixed
+     */
+    public function finalizar($id);
 }
