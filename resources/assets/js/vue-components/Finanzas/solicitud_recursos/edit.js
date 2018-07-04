@@ -240,10 +240,19 @@ Vue.component('solicitud-recursos-edit', {
                 this.title = '';
             }
         },
-        agregar: function (transaccion) {
-            if (transaccion)
+
+        sync: function(transaccion) {
+            if (transaccion.seleccionada) {
+                this.quitar_partida(transaccion);
+            } else {
+                this.agregar_partida(transaccion);
+            }
+        },
+
+
+        agregar_partida: function (transaccion) {
             $.ajax({
-                url: App.host + '/api/finanzas/solicitud_recursos/sync_partida/',
+                url: App.host + '/api/finanzas/solicitud_recursos/' + this.id + '/agregar_partida',
                 type: 'POST',
                 headers: {
                     'X-CSRF-TOKEN': App.csrfToken,
@@ -251,9 +260,32 @@ Vue.component('solicitud-recursos-edit', {
                 },
                 data: {
                     id_transaccion: transaccion.id_transaccion
+                },
+                success: function () {
+                    alert('Partida agregada correctamente')
                 }
             })
         },
+
+        quitar_partida: function(transaccion) {
+            $.ajax({
+                url: App.host + '/api/finanzas/solicitud_recursos/' + this.id + '/remover_partida',
+                type: 'POST',
+                headers: {
+                    'X-CSRF-TOKEN': App.csrfToken,
+                    'Authorization': localStorage.getItem('token')
+                },
+                data: {
+                    _method: 'DELETE',
+                    id_transaccion: transaccion.id_transaccion
+                },
+                success: function () {
+
+                    alert('Partida quitada correctamente')
+                }
+            })
+        },
+
         confirm_finalizar: function () {
             let self = this;
 

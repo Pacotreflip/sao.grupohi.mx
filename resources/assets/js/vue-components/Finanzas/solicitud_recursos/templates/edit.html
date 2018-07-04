@@ -84,7 +84,7 @@
                                 <td>{{ transaccion.moneda.nombre }}</td>
                                 <td style="text-align: right"><span class="pull-left">$</span> {{ parseFloat(transaccion.tipo_cambio).formatMoney(2, '.', ',') }}</td>
                                 <td style="text-align: right"><span class="pull-left">$</span> {{ parseFloat(transaccion.monto * transaccion.tipo_cambio).formatMoney(2, '.', ',') }}</td>
-                                <td><input type="checkbox" v-model="transaccion.seleccionada" v-on:click="agregar(transaccion)"></td>
+                                <td><input type="checkbox" v-model="transaccion.seleccionada" v-on:click="sync(transaccion)"></td>
                             </tr>
                             </tbody>
                         </table>

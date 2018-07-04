@@ -10,6 +10,7 @@ namespace Ghi\Api\Controllers\v1\Finanzas;
 
 
 use Carbon\Carbon;
+use Dingo\Api\Exception\DeleteResourceFailedException;
 use Dingo\Api\Exception\StoreResourceFailedException;
 use Dingo\Api\Exception\UpdateResourceFailedException;
 use Dingo\Api\Http\Request;
@@ -55,7 +56,7 @@ class SolicitudRecursosController extends Controller
             'data' => $resp->items()], 200);
     }
 
-    public function syncPartidas(Request $request) {
+    public function syncPartidas(Request $request, $id_partida) {
 
     }
 
@@ -87,6 +88,54 @@ class SolicitudRecursosController extends Controller
             });
         } catch (\Exception $e) {
             throw new UpdateResourceFailedException($e->getMessage());
+        }
+    }
+
+    /**
+     * @param Request $request
+     * @param $id
+     * @return \Dingo\Api\Http\Response
+     */
+    public function agregarPartida(Request $request, $id) {
+        $rules = [
+            'id_transaccion' => ['required'],
+        ];
+
+        $validator = app('validator')->make($request->all(), $rules);
+
+        try {
+            if (count($validator->errors()->all())) {
+                throw new StoreResourceFailedException('Error al agregar la partida', $validator->errors());
+            } else {
+                $this->solicitudRecursosRepository->addPartida($id, $request->id_transaccion);
+                return $this->response->created();
+            }
+        } catch (\Exception $e) {
+            throw new StoreResourceFailedException($e->getMessage());
+        }
+    }
+
+    /**
+     * @param Request $request
+     * @param $id
+     * @return \Dingo\Api\Http\Response
+     */
+    public function removerPartida(Request $request, $id) {
+        $rules = [
+            'id_transaccion' => ['required'],
+        ];
+
+        $validator = app('validator')->make($request->all(), $rules);
+
+        try {
+            if (count($validator->errors()->all())) {
+                throw new DeleteResourceFailedException('Error al remover la partida', $validator->errors());
+            } else {
+                $this->solicitudRecursosRepository->removePartida($id, $request->id_transaccion);
+                return $this->response->noContent();
+            }
+        } catch (\Exception $e) {
+            throw new DeleteResourceFailedException($e->getMessage());
         }
     }
 }

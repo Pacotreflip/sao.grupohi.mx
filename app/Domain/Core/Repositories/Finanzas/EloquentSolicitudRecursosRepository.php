@@ -102,4 +102,43 @@ class EloquentSolicitudRecursosRepository implements SolicitudRecursosRepository
             throw $e;
         }
     }
+
+    /**
+     * @param $id
+     * @param $id_transaccion
+     * @throws \Exception
+     */
+    public function addPartida($id, $id_transaccion)
+    {
+        try {
+            $solicitud = $this->model->findOrFail($id);
+
+            if($solicitud->partidas()->where('id_transaccion', '=', $id_transaccion)->first()) {
+                throw new \Exception('La Transacción que desea agregar ya esta contenida en esta Solicitud');
+            }
+            $solicitud->partidas()->create([
+                'id_transaccion' => $id_transaccion
+            ]);
+        } catch (\Exception $e) {
+            throw $e;
+        }
+    }
+
+    /**
+     * @param $id
+     * @param $id_transaccion
+     * @throws \Exception
+     */
+    public function removePartida($id, $id_transaccion)
+    {
+        try {
+            $solicitud = $this->model->findOrFail($id);
+            if(! $solicitud->partidas()->where('id_transaccion', '=', $id_transaccion)->first()) {
+                throw new \Exception('La Transacción que desea quitar no esta contenida en esta Solicitud');
+            }
+            $solicitud->partidas()->where('id_transaccion', '=', $id_transaccion)->delete();
+        } catch (\Exception $e) {
+            throw $e;
+        }
+    }
 }

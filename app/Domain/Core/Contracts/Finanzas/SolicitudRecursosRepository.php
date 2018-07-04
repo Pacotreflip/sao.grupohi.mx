@@ -38,4 +38,18 @@ interface SolicitudRecursosRepository
      * @throws \Exception
      */
     public function finalizar($id);
+
+    /**
+     * @param $id
+     * @param $id_transaccion
+     * @throws \Exception
+     */
+    public function addPartida($id, $id_transaccion);
+
+    /**
+     * @param $id
+     * @param $id_transaccion
+     * @throws \Exception
+     */
+    public function removePartida($id, $id_transaccion);
 }

@@ -114,7 +114,8 @@ $api->version('v1', function ($api) {
         $api->post('finanzas/solicitud_recursos', 'Ghi\Api\Controllers\v1\Finanzas\SolicitudRecursosController@store');
         $api->get('finanzas/solicitud_recursos/solicitud_semana', 'Ghi\Api\Controllers\v1\Finanzas\SolicitudRecursosController@getSolicitudSemana');
         $api->post('finanzas/solicitud_recursos/{id}/finalizar', 'Ghi\Api\Controllers\v1\Finanzas\SolicitudRecursosController@finalizar')->where(['id' => '[0-9]+']);
-        $api->get('finanzas/solicitud_recursos/sync_partida', 'Ghi\Api\Controllers\v1\Finanzas\SolicitudRecursosController@syncPartida');
+        $api->post('finanzas/solicitud_recursos/{id}/agregar_partida', 'Ghi\Api\Controllers\v1\Finanzas\SolicitudRecursosController@agregarPartida')->where(['id' => '[0-9]+']);
+        $api->delete('finanzas/solicitud_recursos/{id}/remover_partida', 'Ghi\Api\Controllers\v1\Finanzas\SolicitudRecursosController@removerPartida')->where(['id' => '[0-9]+']);
 
         /**
          * Carga de Expediente

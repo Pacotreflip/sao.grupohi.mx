@@ -44,7 +44,8 @@ class SolicitudRecursosPartida extends Model
         parent::boot();
 
         static::creating(function ($model) {
-           // TODO:  registro
+            $model->registro = auth()->id();
+            $model->monto = $model->transaccion->monto;
         });
     }
 
