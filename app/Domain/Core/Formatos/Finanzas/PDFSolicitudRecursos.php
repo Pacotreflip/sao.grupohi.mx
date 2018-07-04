@@ -9,10 +9,8 @@
 namespace Ghi\Domain\Core\Formatos\Finanzas;
 
 
-use BaconQrCode\Renderer\Image\Png;
 use Ghi\Core\Facades\Context;
 use Ghi\Domain\Core\Models\Finanzas\SolicitudRecursos;
-use Ghi\Domain\Core\Models\Finanzas\SolicitudRecursosPartida;
 use Ghi\Domain\Core\Models\Obra;
 use Ghidev\Fpdf\Rotation;
 
@@ -29,6 +27,10 @@ class PDFSolicitudRecursos extends Rotation
     const MAX_WIDTH = 225;
     const MAX_HEIGHT = 100;
 
+    const TAMANO_CONTENIDO = 6;
+    const TAMANO_TITULO = 12;
+    const TAMANO_SUBTITULO = 9;
+
     /**
      * @var SolicitudRecursos
      */
@@ -36,9 +38,9 @@ class PDFSolicitudRecursos extends Rotation
     private $obra;
 
     /**
-     * @var SolicitudRecursosPartida
+     * @var array
      */
-    private $partidas;
+    private $grupos;
 
     public function __construct(SolicitudRecursos $solicitud)
     {
@@ -56,17 +58,66 @@ class PDFSolicitudRecursos extends Rotation
         $this->obra = Obra::find(Context::getId());
         $this->partidas = $solicitud->partidas;
 
-    }
+        $this->grupos = $this->partidas->groupBy('transaccion.id_rubro');
+     }
 
     function Header()
     {
 
-        $this->titulos();
-
-
+        $this->encabezados();
         if ($this->encola == 'partidas') {
-            $this->setPartidasEstilos();
+            $this->SetFont('Arial', '', 6);
+            $this->SetFills(array('255,255,255', '255,255,255', '255,255,255', '255,255,255', '255,255,255', '255,255,255', '255,255,255', '255,255,255', '255,255,255', '255,255,255', '255,255,255'));
+            $this->SetTextColors(array('0,0,0', '0,0,0', '0,0,0', '0,0,0', '0,0,0', '0,0,0', '0,0,0', '0,0,0', '0,0,0', '0,0,0', '0,0,0'));
+            $this->SetHeights(array(0.35));
+            $this->SetAligns(array('L', 'L', 'L', 'L', 'L', 'L', 'L', 'R', 'L', 'R', 'R'));
+            $this->SetWidths(array(0.078 * $this->WidthTotal, 0.125 * $this->WidthTotal, 0.203 * $this->WidthTotal, 0.104 * $this->WidthTotal, 0.063 * $this->WidthTotal, 0.078 * $this->WidthTotal, 0.086 * $this->WidthTotal, 0.07 * $this->WidthTotal, 0.062 * $this->WidthTotal, 0.048 * $this->WidthTotal, 0.083 * $this->WidthTotal));
         }
+    }
+
+    protected function encabezados() {
+        $this->logo();
+        $this->SetXY($this->w * 0.25, 1);
+        $this->SetFont('Arial', 'B', self::TAMANO_TITULO + 4);
+        $this->Cell(($this->w * 0.75),1.05,utf8_decode('Solicitud de Recursos'),'',1,'L');
+        $this->SetLineWidth(0.075);
+        $this->Line($this->w * 0.25, $this->y, $this->w - 1, $this->y);
+        $this->SetLineWidth(0.02);
+
+
+        $this->SetXY($this->w * 0.25, $this->y);
+        $this->SetFont('Arial', '', self::TAMANO_CONTENIDO + 2);
+        $this->Cell(($this->w * 0.75) * 0.25,0.50,utf8_decode('Proyecto:'),'',0,'L');
+        $this->Cell(($this->w * 0.75) * 0.75,0.50,utf8_decode($this->obra->nombre),'',1,'L');
+        $this->SetXY($this->w * 0.25, $this->y);
+        $this->Cell(($this->w * 0.75) * 0.25,0.50,utf8_decode('Periodo:'),'',0,'L');
+        $this->Cell(($this->w * 0.75) * 0.75,0.50,
+            utf8_decode($this->solicitud->anio . ' - Semana ' .
+                $this->solicitud->semana . ' - ' . 'Solicitud ' .
+                ($this->solicitud->tipo->descripcion) . ($this->solicitud->consecutivo ? ' [' . $this->solicitud->consecutivo .']' : '')
+            )
+            ,'',1,'L');
+        $this->Ln(1);
+
+        /*$this->y = 1;
+        $this->SetFont('Arial', '', self::TAMANO_TITULO);
+        $this->Cell(($this->w - 2) * 0.6,1.05,'TABLA COMPARATIVA DE COTIZACIONES','BR',2,'C');
+        $this->Ln(0.15);
+
+        $this->SetFont('Arial', 'B', self::TAMANO_CONTENIDO);
+
+        $this->y_i = $this->y;
+        $this->Cell(($this->w - 2) * 0.200, 0.35, utf8_decode('Proyecto:'), '', 2, 'R');
+        $this->Cell(($this->w - 2) * 0.200, 0.35, utf8_decode('Número de concurso:'), '', 2, 'R');
+
+        $this->y = $this->y_i;
+
+        $this->SetFont('Arial', '', self::TAMANO_CONTENIDO);
+        $this->SetFillColor(220);
+        $this->Cell(($this->w - 2) * 0.8, 0.35, utf8_decode($this->obra->nombre), '', 2, 'L');
+        $this->Cell(($this->w - 2) * 0.8, 0.35, '#' . $this->solicitud->folio, 'TB', 2, 'L');
+
+        $this->Ln(0.5);*/
     }
 
     function setPartidasEstilos()
@@ -160,26 +211,30 @@ class PDFSolicitudRecursos extends Rotation
     function items()
     {
 
-        $this->setPartidasEstilos();
 
-        foreach ($this->partidas as $partida) {
 
-            $this->encola = 'partidas';
-            $this->Row(array(
-                '#'. $partida->transaccion->numero_folio,
-                $partida->transaccion->rubro ? utf8_decode($partida->transaccion->rubro->descripcion) : 'N/A',
-                utf8_decode($partida->transaccion->tipoTran->Descripcion),
-                $partida->transaccion->referencia ? utf8_decode($partida->transaccion->referencia) : 'N/A',
-                $partida->transaccion->contrarecibo ? ('#'. utf8_decode($partida->transaccion->contrarecibo->numero_folio)) : 'N/A',
-                $partida->transaccion->fecha->format('Y-m-d'),
-                $partida->transaccion->vencimiento->format('Y-m-d'),
-                '$ '. number_format($partida->transaccion->monto, 2, '.', ','),
-                utf8_decode($partida->transaccion->moneda->nombre),
-                '$ '. number_format($partida->transaccion->tipo_cambio, 2, '.', ','),
-                '$ '. number_format($partida->transaccion->monto * $partida->transaccion->tipo_cambio, 2, '.', ',')
-            ));
+        foreach ($this->grupos as $grupo) {
+            $this->setPartidasEstilos();
+            foreach ($grupo as $partida) {
+                $this->encola = 'partidas';
+                $this->Row(array(
+                    '#'. $partida->transaccion->numero_folio,
+                    $partida->transaccion->rubros[0] ? utf8_decode($partida->transaccion->rubros[0]->descripcion) : 'N/A',
+                    utf8_decode($partida->transaccion->tipoTran->Descripcion),
+                    $partida->transaccion->referencia ? utf8_decode($partida->transaccion->referencia) : 'N/A',
+                    $partida->transaccion->contrarecibo ? ('#'. utf8_decode($partida->transaccion->contrarecibo->numero_folio)) : 'N/A',
+                    $partida->transaccion->fecha->format('Y-m-d'),
+                    $partida->transaccion->vencimiento->format('Y-m-d'),
+                    '$ '. number_format($partida->transaccion->monto, 2, '.', ','),
+                    utf8_decode($partida->transaccion->moneda->nombre),
+                    '$ '. number_format($partida->transaccion->tipo_cambio, 2, '.', ','),
+                    '$ '. number_format($partida->transaccion->monto * $partida->transaccion->tipo_cambio, 2, '.', ',')
+                ));
+            }
+            $this->Ln(0.75);
         }
-        $this->encola = '';
+        $this->encola = 'total';
+
     }
 
     function motivo()
@@ -254,7 +309,7 @@ class PDFSolicitudRecursos extends Rotation
         $file = public_path('img/logo_temp.png');
         if (file_put_contents($file, $data) !== false) {
             list($width, $height) = $this->resizeToFit($file);
-            $this->image($file, ($this->GetPageWidth() / 4) - ($width / 2), 1, $width, $height);
+            $this->image($file, 1, 1, $width, $height);
             unlink($file);;
         }
     }

@@ -6,6 +6,7 @@ use Carbon\Carbon;
 use Ghi\Domain\Core\Models\Contabilidad\Cierre;
 use Ghi\Domain\Core\Models\Contabilidad\Factura;
 use Ghi\Domain\Core\Models\Empresa;
+use Ghi\Domain\Core\Models\Finanzas\Rubro;
 use Ghi\Domain\Core\Models\Moneda;
 use Ghi\Domain\Core\Models\Scopes\ObraScope;
 use Ghi\Domain\Core\Models\TipoTransaccion;
@@ -171,6 +172,12 @@ class Transaccion extends Model
 
     public function empresa() {
         return $this->belongsTo(Empresa::class, 'id_empresa');
+    }
+    public function rubros() {
+        return $this->belongsToMany(Rubro::class, 'Finanzas.transacciones_rubros', 'id_transaccion', 'id_rubro');
+    }
+    public function getIdRubroAttribute() {
+        return isset($this->rubros[0]) ? $this->rubros[0]->id : null;
     }
 
     public function getRangoVencimientoAttribute() {
