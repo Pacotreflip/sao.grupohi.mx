@@ -262,7 +262,6 @@ Vue.component('solicitud-recursos-edit', {
                     id_transaccion: transaccion.id_transaccion
                 },
                 success: function () {
-                    alert('Partida agregada correctamente')
                 }
             })
         },
@@ -281,7 +280,6 @@ Vue.component('solicitud-recursos-edit', {
                 },
                 success: function () {
 
-                    alert('Partida quitada correctamente')
                 }
             })
         },

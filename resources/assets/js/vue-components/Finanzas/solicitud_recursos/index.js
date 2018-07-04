@@ -36,6 +36,7 @@ Vue.component('solicitud-recursos-index', {
 
                         json.data[i].fecha_registro = new Date(json.data[i].created_at).dateShortFormat();
                         json.data[i].usuario_registro = json.data[i].usuario.amaterno + ' ' + json.data[i].usuario.apaterno + ' ' + json.data[i].usuario.nombre;
+                        json.data[i].estado = json.data[i].estado == 1 ? 'Generada' : 'Finalizada';
                         json.data[i].cantidad_transacciones = json.data[i].partidas.length ? json.data[i].partidas.length : 0;
                         $.each(json.data[i].partidas, function(index, value) {
                             json.data[i].total += value.monto;
@@ -50,8 +51,12 @@ Vue.component('solicitud-recursos-index', {
                 {data : 'folio'},
                 {data : 'fecha_registro'},
                 {data : 'usuario_registro'},
+                {data : 'estado'},
                 {data : 'cantidad_transacciones'},
-                {data : 'total'}
+                {data : 'total'},
+                {data : {}, render: function (data) {
+                        return '<a href="'+App.host+'/finanzas/solicitud_recursos/'+data.id+ '" title="Ver" class="btn btn-xs btn-default"> <i class="fa fa-eye"></i></a>'
+                    }}
             ],
             language: {
                 "sProcessing": "Procesando...",
