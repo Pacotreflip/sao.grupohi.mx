@@ -104,15 +104,6 @@ class Estimacion extends Rotation {
             $this->SetHeights([0.35]);
             $this->SetAligns(['L', 'L', 'R', 'L', 'L', 'L']);
         }
-
-        if (trim(Context::getDatabaseName())== 'SAO1814_DEV_PISTA_AEROPUERTO')
-        {
-            $this->SetFont('Arial','B',60);
-            $this->SetTextColor(155,155,155);
-            $this->RotatedText(5,20,utf8_decode("MUESTRA SIN"),45);
-            $this->RotatedText(10,22,utf8_decode("VALOR"),45);
-            $this->SetTextColor('0,0,0');
-        }
     }
 
     function Footer() {
