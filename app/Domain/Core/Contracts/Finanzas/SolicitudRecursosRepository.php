@@ -35,6 +35,7 @@ interface SolicitudRecursosRepository
     /**
      * @param $id
      * @return SolicitudRecursos|mixed
+     * @throws \Exception
      */
     public function finalizar($id);
 }

@@ -85,12 +85,21 @@ class EloquentSolicitudRecursosRepository implements SolicitudRecursosRepository
     /**
      * @param $id
      * @return SolicitudRecursos|mixed
+     * @throws \Exception
      */
     public function finalizar($id)
     {
-        $solicitud = $this->model->findOrFail($id);
+        try {
+            $solicitud = $this->model->findOrFail($id);
+            if($solicitud->partidas()->count() == 0) {
+                throw new \Exception('Seleccione por lo menos uns Transacción para esta Solicitud para poder finalizar');
+            }
 
-        $solicitud->estado = 2;
-        $solicitud->save();
+            $solicitud->estado = 2;
+            $solicitud->save();
+
+        } catch (\Exception $e) {
+            throw $e;
+        }
     }
 }

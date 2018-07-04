@@ -11,6 +11,7 @@ namespace Ghi\Api\Controllers\v1\Finanzas;
 
 use Carbon\Carbon;
 use Dingo\Api\Exception\StoreResourceFailedException;
+use Dingo\Api\Exception\UpdateResourceFailedException;
 use Dingo\Api\Http\Request;
 use Dingo\Api\Routing\Helpers;
 use Ghi\Domain\Core\Contracts\Finanzas\SolicitudRecursosRepository;
@@ -73,10 +74,19 @@ class SolicitudRecursosController extends Controller
         }
     }
 
+    /**
+     * @param Request $request
+     * @param $id
+     * @return \Dingo\Api\Http\Response|void
+     */
     public function finalizar(Request $request, $id) {
-        $solicitud = $this->solicitudRecursosRepository->finalizar($id);
-        return $this->response->item($solicitud, function ($item) {
-            return $item;
-        });
+        try {
+            $solicitud = $this->solicitudRecursosRepository->finalizar($id);
+            return $this->response->item($solicitud, function ($item) {
+                return $item;
+            });
+        } catch (\Exception $e) {
+            throw new UpdateResourceFailedException($e->getMessage());
+        }
     }
 }
