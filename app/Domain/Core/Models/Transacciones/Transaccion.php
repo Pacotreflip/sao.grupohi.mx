@@ -36,7 +36,7 @@ class Transaccion extends Model
      */
     public $timestamps = false;
 
-    protected $dates=['fecha'];
+    protected $dates=['fecha', 'vencimiento'];
 
     protected $fillable = [
         'tipo_transaccion',

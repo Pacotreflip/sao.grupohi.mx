@@ -8,7 +8,9 @@ use Ghi\Domain\Core\Contracts\EmpresaRepository;
 use Ghi\Domain\Core\Contracts\EstimacionRepository;
 use Ghi\Domain\Core\Formatos\Compras\ComparativaCotizacionesCompra;
 use Ghi\Domain\Core\Formatos\Contratos\ComparativaCotizacionesContrato;
+use Ghi\Domain\Core\Formatos\Finanzas\PDFSolicitudRecursos;
 use Ghi\Domain\Core\Formatos\Subcontratos\Estimacion;
+use Ghi\Domain\Core\Models\Finanzas\SolicitudRecursos;
 
 class FormatosController extends Controller
 {
@@ -62,5 +64,13 @@ class FormatosController extends Controller
         $requisicion = $this->requisicion->find($id);
         $pdf = new ComparativaCotizacionesCompra($requisicion);
         $pdf->create()->Output('I', 'Formato - Comparativa de Cotizaciones Requisciones.pdf', 1);
+    }
+
+    public function solicitud_recursos_pdf($id)
+    {
+        $solicitud = SolicitudRecursos::find($id);
+
+        $pdf = new PDFSolicitudRecursos($solicitud);
+        $pdf->create()->Output('I', 'Formato - Solicitud de Recursos.pdf', 1);
     }
 }

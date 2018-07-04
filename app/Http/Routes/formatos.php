@@ -23,4 +23,7 @@ Route::group(['prefix' => 'formatos', 'middleware' => ['system.access:formatos',
     Route::get('contratos/contrato_proyectado/{id}/comparativa_cotizaciones_contrato', 'FormatosController@comparativa_cotizaciones_contrato_pdf')->where(['id' => '[0-9]+']);
 
     Route::get('compras/requisicion/{id}/comparativa_cotizaciones_compra', 'FormatosController@comparativa_cotizaciones_compra_pdf')->where(['id' => '[0-9]+']);
+
+    Route::get('finanzas/solicitud_recursos/{id}/pdf', 'FormatosController@solicitud_recursos_pdf')->where(['id' => '[0-9]+']);
+
 });
