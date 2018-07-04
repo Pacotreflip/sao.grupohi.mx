@@ -55,6 +55,7 @@ require('./vue-components/Finanzas/solicitud_pago/pago_cuenta/create');
 
 require('./vue-components/Finanzas/solicitud_recursos/index');
 require('./vue-components/Finanzas/solicitud_recursos/edit');
+require('./vue-components/Finanzas/solicitud_recursos/show');
 
 /**
  * Formatos Components

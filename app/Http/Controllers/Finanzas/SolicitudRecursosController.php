@@ -8,7 +8,6 @@
 
 namespace Ghi\Http\Controllers\Finanzas;
 
-use Carbon\Carbon;
 use Ghi\Domain\Core\Models\Finanzas\SolicitudRecursos;
 use Ghi\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -31,5 +30,10 @@ class SolicitudRecursosController extends Controller {
     public function edit(Request $request, $id) {
         $solicitud = SolicitudRecursos::abiertas()->findOrFail($id);
         return view('finanzas.solicitud_recursos.edit')->withSolicitud($solicitud);
+    }
+
+    public function show(Request $request, $id) {
+        $solicitud = SolicitudRecursos::find($id);
+        return view('finanzas.solicitud_recursos.show')->withSolicitud($solicitud);
     }
 }

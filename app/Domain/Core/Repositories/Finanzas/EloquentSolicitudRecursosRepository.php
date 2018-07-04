@@ -141,4 +141,22 @@ class EloquentSolicitudRecursosRepository implements SolicitudRecursosRepository
             throw $e;
         }
     }
+
+    /**
+     * @param $id
+     * @return mixed
+     * @throws \Exception
+     */
+    public function find($id)
+    {
+        try {
+            $solicitud = $this->model->find($id);
+            if(! $solicitud) {
+                throw new \Exception('No se pudo encontrar la solicitud');
+            }
+            return $solicitud;
+        } catch (\Exception $e) {
+            throw $e;
+        }
+    }
 }

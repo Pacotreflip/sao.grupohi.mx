@@ -52,4 +52,11 @@ interface SolicitudRecursosRepository
      * @throws \Exception
      */
     public function removePartida($id, $id_transaccion);
+
+    /**
+     * @param $id
+     * @return mixed
+     * @throws \Exception
+     */
+    public function find($id);
 }

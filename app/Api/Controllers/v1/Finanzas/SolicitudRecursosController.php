@@ -19,6 +19,7 @@ use Ghi\Domain\Core\Contracts\Finanzas\SolicitudRecursosRepository;
 use Ghi\Domain\Core\Models\Finanzas\SolicitudRecursos;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Validator;
+use Symfony\Component\Routing\Exception\ResourceNotFoundException;
 
 class SolicitudRecursosController extends Controller
 {
@@ -33,7 +34,6 @@ class SolicitudRecursosController extends Controller
     }
 
     /**
-     * @param Request $request
      * @return \Dingo\Api\Http\Response
      * @throws \Exception
      */
@@ -56,10 +56,6 @@ class SolicitudRecursosController extends Controller
             'data' => $resp->items()], 200);
     }
 
-    public function syncPartidas(Request $request, $id_partida) {
-
-    }
-
     /**
      * @return \Dingo\Api\Http\Response
      */
@@ -78,7 +74,7 @@ class SolicitudRecursosController extends Controller
     /**
      * @param Request $request
      * @param $id
-     * @return \Dingo\Api\Http\Response|void
+     * @return \Dingo\Api\Http\Response
      */
     public function finalizar(Request $request, $id) {
         try {
@@ -136,6 +132,22 @@ class SolicitudRecursosController extends Controller
             }
         } catch (\Exception $e) {
             throw new DeleteResourceFailedException($e->getMessage());
+        }
+    }
+
+    /**
+     * @param Request $request
+     * @param $id
+     * @return \Dingo\Api\Http\Response
+     */
+    public function show(Request $request, $id) {
+        try {
+            $solicitud = $this->solicitudRecursosRepository->with($request->with)->find($id);
+
+            return response()->json($solicitud, 200);
+
+        } catch (\Exception $e) {
+            throw new ResourceNotFoundException($e->getMessage());
         }
     }
 }

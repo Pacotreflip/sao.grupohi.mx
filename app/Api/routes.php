@@ -110,6 +110,7 @@ $api->version('v1', function ($api) {
         /**
          * Solicitud de Recursos
          */
+        $api->get('finanzas/solicitud_recursos/{id}', 'Ghi\Api\Controllers\v1\Finanzas\SolicitudRecursosController@show')->where(['id' => '[0-9]+']);
         $api->post('finanzas/solicitud_recursos/paginate', 'Ghi\Api\Controllers\v1\Finanzas\SolicitudRecursosController@paginate');
         $api->post('finanzas/solicitud_recursos', 'Ghi\Api\Controllers\v1\Finanzas\SolicitudRecursosController@store');
         $api->get('finanzas/solicitud_recursos/solicitud_semana', 'Ghi\Api\Controllers\v1\Finanzas\SolicitudRecursosController@getSolicitudSemana');
