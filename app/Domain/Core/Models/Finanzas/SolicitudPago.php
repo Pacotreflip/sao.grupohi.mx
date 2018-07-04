@@ -53,9 +53,15 @@ class SolicitudPago extends Transaccion
     }
 
     public function getSeleccionadaAttribute() {
-       /* SolicitudRecursos::where()->whereHas('partidas', function ($q) {
-           $q->where('id_transaccion', '=', $this->id_transaccion);
-        })->first();*/
-        //TODO: regresa TRUE si hay una SolicitudRecursosPartida para la SolicitudRecursos semana actual y el año actual
+        $hoy = Carbon::now();
+        $solicitud = SolicitudRecursos::where('semana', '=', $hoy->weekOfYear)->where('anio', '=', $hoy->year)->orderBy('id', 'DESC')->first();
+
+
+        $partida = $solicitud->partidas()->where('id_transaccion', '=', $this->id_transaccion)->first();
+
+        if($partida) {
+            return true;
+        } 
+        return false;
     }
 }

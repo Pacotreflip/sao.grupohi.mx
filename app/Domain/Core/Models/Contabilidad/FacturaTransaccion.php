@@ -9,6 +9,7 @@ use Ghi\Domain\Core\Models\Finanzas\Rubro;
 use Ghi\Domain\Core\Models\Scopes\FacturaTransaccionScope;
 use Ghi\Domain\Core\Models\Transacciones\Tipo;
 use Ghi\Domain\Core\Models\Transacciones\Transaccion;
+use Ghi\Domain\Core\Models\Finanzas\SolicitudRecursos;
 
 class FacturaTransaccion extends Transaccion
 {
@@ -41,7 +42,13 @@ class FacturaTransaccion extends Transaccion
     }
 
     public function getSeleccionadaAttribute() {
-        //TODO:
+        $hoy = Carbon::now();
+        $solicitud = SolicitudRecursos::where('semana', '=', $hoy->weekOfYear)->where('anio', '=', $hoy->year)->orderBy('id', 'DESC')->first();
+        $partida = $solicitud->partidas()->where('id_transaccion', '=', $this->id_transaccion)->first();
 
+        if($partida) {
+            return true;
+        } 
+        return false;
     }
 }
