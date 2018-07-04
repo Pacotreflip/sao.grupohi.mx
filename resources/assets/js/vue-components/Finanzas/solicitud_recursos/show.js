@@ -18,6 +18,16 @@ Vue.component('solicitud-recursos-show', {
         })
     },
 
+    computed: {
+        total: function () {
+            let res = 0;
+            this.solicitud.partidas.forEach(function (val) {
+                res += (val.transaccion.monto * val.transaccion.tipo_cambio);
+            });
+            return res;
+        }
+    },
+
     methods: {
         get_solicitud: function () {
             let self = this;
@@ -33,7 +43,7 @@ Vue.component('solicitud-recursos-show', {
                         'Authorization': localStorage.getItem('token')
                     },
                     data: {
-                        with: 'partidas'
+                        with: ['partidas.transaccion', 'tipo', 'usuario']
                     },
                     success: function (response) {
                         self.cargando = false;
@@ -41,7 +51,7 @@ Vue.component('solicitud-recursos-show', {
                             solicitud: response
                         });
                     }
-                })
+                });
             })
         }
     }

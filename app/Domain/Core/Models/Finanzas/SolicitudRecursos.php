@@ -39,6 +39,10 @@ class SolicitudRecursos extends Model
         'id_tipo',
     ];
 
+    protected $appends = [
+        'dia_inicio',
+        'dia_fin'
+    ];
 
     /**
      *
@@ -102,4 +106,15 @@ class SolicitudRecursos extends Model
         return $query->where('estado', '=', 1);
     }
 
+    public function getDiaInicioAttribute() {
+        $date = new Carbon();
+        $date->setISODate($this->anio, $this->semana);
+        return $date->startOfWeek();
+    }
+
+    public function getDiaFinAttribute() {
+        $date = new Carbon();
+        $date->setISODate($this->anio, $this->semana);
+        return $date->endOfWeek();
+    }
 }
