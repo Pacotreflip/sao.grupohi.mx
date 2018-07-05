@@ -104,7 +104,11 @@ class SolicitudRecursosController extends Controller
                 throw new StoreResourceFailedException('Error al agregar la partida', $validator->errors());
             } else {
                 $this->solicitudRecursosRepository->addPartida($id, $request->id_transaccion);
-                return $this->response->created();
+                //Obtener la solicitud para mostrar el mensaje de la actualización
+                $data_solicitud = $this->solicitudRecursosRepository->find($id);
+                return response()->json([
+                    'solicitud' => $data_solicitud->folio]
+                    , 200);
             }
         } catch (\Exception $e) {
             throw new StoreResourceFailedException($e->getMessage());
@@ -128,7 +132,11 @@ class SolicitudRecursosController extends Controller
                 throw new DeleteResourceFailedException('Error al remover la partida', $validator->errors());
             } else {
                 $this->solicitudRecursosRepository->removePartida($id, $request->id_transaccion);
-                return $this->response->noContent();
+                //Obtener la solicitud para mostrar el mensaje de la actualización
+                $data_solicitud = $this->solicitudRecursosRepository->find($id);
+                return response()->json([
+                        'solicitud' => $data_solicitud->folio]
+                    , 200);
             }
         } catch (\Exception $e) {
             throw new DeleteResourceFailedException($e->getMessage());
