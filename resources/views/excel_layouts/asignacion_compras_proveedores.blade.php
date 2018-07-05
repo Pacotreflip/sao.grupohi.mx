@@ -109,10 +109,8 @@ $totales = isset($requisiciones['totales']) ? $requisiciones['totales'] : 0 ?>
         <td class="notSelect"></td>
         <td class="notSelect"></td>
         <td class="notSelect"></td>
-        <td class="notSelect"></td>
         @endif
         @else
-        <td class="notSelect"></td>
         <td class="notSelect"></td>
         <td class="notSelect"></td>
         <td class="notSelect"></td>
