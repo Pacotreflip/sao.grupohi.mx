@@ -808,7 +808,7 @@
                                                                 </span>
                                                     </button>
                                                 </td>
-                                                <td v-if="concepto.hijos_cobrables >0" class="-align-center">
+                                                <td v-if="concepto.hijos_cobrables > 0  || concepto.tiene_hijos == 0" class="-align-center">
                                                     <button type="button" class="btn btn-success fa fa-check small" @click="confirmacion_ruta(concepto)">Agregar</button>
                                                 </td>
                                                 <td v-else>
