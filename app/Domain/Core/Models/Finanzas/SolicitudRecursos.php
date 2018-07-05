@@ -117,4 +117,15 @@ class SolicitudRecursos extends Model
         $date->setISODate($this->anio, $this->semana);
         return $date->endOfWeek();
     }
+
+    public function getEstatusAttribute() {
+        switch ($this->estado) {
+            case 1:
+                return 'SOLICITADA';
+                break;
+            case 2:
+                return 'FINLIZADA';
+                break;
+        }
+    }
 }

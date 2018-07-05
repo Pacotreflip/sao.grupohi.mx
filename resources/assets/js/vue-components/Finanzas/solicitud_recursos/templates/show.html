@@ -16,7 +16,7 @@
             <b>Año - Semana</b> {{solicitud.anio}} - {{ solicitud.semana}}<br>
             <b>Tipo de Solicitud</b> {{ solicitud.tipo.descripcion }}<br>
             <b>Persona que Registró</b> {{solicitud.usuario.apaterno}} {{solicitud.usuario.amaterno}} {{solicitud.usuario.nombre}}<br>
-            <b>Estado</b> {{ solicitud.estado == 1 ? 'Generada' : 'Finalizada' }}<br>
+            <b>Estado</b> {{ solicitud.estatus }}<br>
             <br>
             <br>
         </div>

@@ -37,6 +37,8 @@ class PDFSolicitudRecursos extends Rotation
     private $solicitud;
     private $obra;
 
+    private $WidthTotal;
+
     /**
      * @var array
      */
@@ -56,9 +58,7 @@ class PDFSolicitudRecursos extends Rotation
         $this->solicitud = $solicitud;
 
         $this->obra = Obra::find(Context::getId());
-        $this->partidas = $solicitud->partidas;
-
-        $this->grupos = $this->partidas->groupBy('transaccion.id_rubro');
+        $this->grupos = $solicitud->partidas->groupBy('transaccion.id_rubro');
      }
 
     function Header()
@@ -91,33 +91,14 @@ class PDFSolicitudRecursos extends Rotation
         $this->Cell(($this->w * 0.75) * 0.75,0.50,utf8_decode($this->obra->nombre),'',1,'L');
         $this->SetXY($this->w * 0.25, $this->y);
         $this->Cell(($this->w * 0.75) * 0.25,0.50,utf8_decode('Periodo:'),'',0,'L');
-        $this->Cell(($this->w * 0.75) * 0.75,0.50,
-            utf8_decode($this->solicitud->anio . ' - Semana ' .
-                $this->solicitud->semana . ' - ' . 'Solicitud ' .
-                ($this->solicitud->tipo->descripcion) . ($this->solicitud->consecutivo ? ' [' . $this->solicitud->consecutivo .']' : '')
-            )
-            ,'',1,'L');
+        $this->Cell(($this->w * 0.75) * 0.75,0.50, utf8_decode($this->solicitud->anio . ' - Semana ' . $this->solicitud->semana . ' - ' . 'Solicitud ' . ($this->solicitud->tipo->descripcion) . ($this->solicitud->consecutivo ? ' [' . $this->solicitud->consecutivo .']' : '')),'',1,'L');
         $this->Ln(1);
 
-        /*$this->y = 1;
-        $this->SetFont('Arial', '', self::TAMANO_TITULO);
-        $this->Cell(($this->w - 2) * 0.6,1.05,'TABLA COMPARATIVA DE COTIZACIONES','BR',2,'C');
-        $this->Ln(0.15);
+        $this->SetX(1);
 
-        $this->SetFont('Arial', 'B', self::TAMANO_CONTENIDO);
-
-        $this->y_i = $this->y;
-        $this->Cell(($this->w - 2) * 0.200, 0.35, utf8_decode('Proyecto:'), '', 2, 'R');
-        $this->Cell(($this->w - 2) * 0.200, 0.35, utf8_decode('Número de concurso:'), '', 2, 'R');
-
-        $this->y = $this->y_i;
-
-        $this->SetFont('Arial', '', self::TAMANO_CONTENIDO);
-        $this->SetFillColor(220);
-        $this->Cell(($this->w - 2) * 0.8, 0.35, utf8_decode($this->obra->nombre), '', 2, 'L');
-        $this->Cell(($this->w - 2) * 0.8, 0.35, '#' . $this->solicitud->folio, 'TB', 2, 'L');
-
-        $this->Ln(0.5);*/
+        $this->SetFillColor('180','180','180');
+        $this->Cell($this->WidthTotal / 3, 1, 'ESTATUS', 'T', 0, 'C',1);
+        $this->Cell($this->WidthTotal / 3, 1, 'ESTATUS', 'T', 0, 'C',1);
     }
 
     function setPartidasEstilos()
@@ -219,7 +200,7 @@ class PDFSolicitudRecursos extends Rotation
                 $this->encola = 'partidas';
                 $this->Row(array(
                     '#'. $partida->transaccion->numero_folio,
-                    $partida->transaccion->rubros[0] ? utf8_decode($partida->transaccion->rubros[0]->descripcion) : 'N/A',
+                    isset($partida->transaccion->rubros[0]) ? utf8_decode($partida->transaccion->rubros[0]->descripcion) : 'N/A',
                     utf8_decode($partida->transaccion->tipoTran->Descripcion),
                     $partida->transaccion->referencia ? utf8_decode($partida->transaccion->referencia) : 'N/A',
                     $partida->transaccion->contrarecibo ? ('#'. utf8_decode($partida->transaccion->contrarecibo->numero_folio)) : 'N/A',
