@@ -226,7 +226,7 @@ class AsignacionProveedoresLayout extends ValidacionLayout
             //->store('xlsx', storage_path() . '/logs/')
             ;
     }
-    
+
     /**
      * @param $folio_sao
      * @param array $partidas
@@ -263,18 +263,19 @@ class AsignacionProveedoresLayout extends ValidacionLayout
                             });
                             $arrayCotizacion = $cotizacion->toArray();
                             $validarCotizacion = current($arrayCotizacion);
-                            if ($validarCotizacion['precio_unitario'] > 0) {
+                            if (trim(strval($validarCotizacion['precio_unitario'])) > '0') {
                                 $partida = $this->requisicion->rqctocSolicitud->rqctocSolicitudPartidas()->find((int)$row['id_partida']);
                                 //->Que la cantidad pendiente de cada partida del layout sea igual a la cantidad pendiente que se calcule con información de la base de datos, para asi evitar duplicidad de información
                                 if (!isset($sumatorias[$row['id_partida']]['pendiente'])) {
                                     $sumatorias[$row['id_partida']]['pendiente'] = $partida->cantidad_pendiente;
                                 }
-                                if ($sumatorias[$row['id_partida']]['pendiente'] == $row['cantidad_archivo']) {
+                                //if ($sumatorias[$row['id_partida']]['pendiente'] == $row['cantidad_archivo']) {
+                                if(strval(trim($sumatorias[$row['id_partida']]['pendiente'])) == trim($row['cantidad_archivo'])) {
                                     //->Que la cantidad a asignar sea menor o igual a la cantidad pendiente de cada partida
                                     if (!empty(trim($row['cantidad_asignada']))) {
                                         if ($row['cantidad_asignada'] > 0) {
                                             if (
-                                                $partida->cantidad_pendiente >= $row['cantidad_asignada']
+                                                strval($partida->cantidad_pendiente) >= trim($row['cantidad_asignada'])
                                                 && is_numeric($row['cantidad_asignada'])
                                             ) {
                                                 //save
@@ -351,7 +352,9 @@ class AsignacionProveedoresLayout extends ValidacionLayout
                 $layout = $this->setData($this->requisicion);
                 //->Número y descripción de columnas
                 if ($this->validarHeader($headers, $layout)) {
-                    $col = $sheet->toArray();
+                    $col = array_where($sheet->toArray(), function($key, $value) {
+                        return $value[0] != null;
+                    });
                     //->Que las partidas presentadas en el Layout sean las mismas que se encuentran en la base de datos al momento de cargarlo
                     if (count($col) != ($layout['maxRow'] + $this->cabecerasLength)) {
                         throw new \Exception("No es posible procesar el Layout debido a que presenta diferencias con la información actual de la Requisición");
