@@ -13,6 +13,7 @@ use Dingo\Api\Exception\StoreResourceFailedException;
 use Ghi\Domain\Core\Layouts\ValidacionLayout;
 use Ghi\Domain\Core\Models\Compras\Requisiciones\Requisicion;
 use Ghi\Domain\Core\Models\ControlRec\RQCTOCSolicitud;
+use Ghi\Domain\Core\Models\ControlRec\RQCTOCSolicitudPartidas;
 use Ghi\Domain\Core\Models\ControlRec\RQCTOCTablaComparativa;
 use Ghi\Domain\Core\Models\ControlRec\RQCTOCTablaComparativaPartida;
 use Illuminate\Support\Facades\Config;
@@ -97,6 +98,7 @@ class AsignacionProveedoresLayout extends ValidacionLayout
      */
     public function setData(Requisicion $requisicion)
     {
+
         $maxRow = 0;
         $row = 0;
         $arrayResult['totales'] = $requisicion->rqctocSolicitud->rqctocCotizaciones->filter(function ($value) {
@@ -112,7 +114,7 @@ class AsignacionProveedoresLayout extends ValidacionLayout
                 if ($totalesPartidas > 0) {
                     foreach ($cotizacion->rqctocCotizacionPartidas->filter() as $_index => $cotizacionPartida) {
                         $partida = $requisicion->rqctocSolicitud->rqctocSolicitudPartidas()->find($cotizacionPartida->idrqctoc_solicitudes_partidas);
-                        if ($partida->cantidad_pendiente > 0) {
+                        if ($partida->cantidad_pendiente > 0.001) {
                             if (!isset($arrayResult['valores'][$partida->idrqctoc_solicitudes_partidas])) {
                                 $arrayResult['valores'][$partida->idrqctoc_solicitudes_partidas] = [];
                                 $arrayResult['valores'][$partida->idrqctoc_solicitudes_partidas]['partida'] = $partida;
@@ -226,7 +228,7 @@ class AsignacionProveedoresLayout extends ValidacionLayout
             //->store('xlsx', storage_path() . '/logs/')
             ;
     }
-    
+
     /**
      * @param $folio_sao
      * @param array $partidas
