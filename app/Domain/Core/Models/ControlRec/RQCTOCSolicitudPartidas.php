@@ -86,7 +86,7 @@ class RQCTOCSolicitudPartidas extends Model
         if($this->requisicion_estatus == 1){
             return $this->cantidad;
         } else {
-           return 0;
+            return 0;
         }
     }
 
@@ -100,5 +100,12 @@ class RQCTOCSolicitudPartidas extends Model
             }
         }
         return $this->cantidad;
+    }
+
+    public function getCantidadAttribute() {
+        return DB::connection($this->connection)
+            ->table($this->table)
+            ->where($this->primaryKey, '=', $this->idrqctoc_solicitudes_partidas)
+            ->value(DB::raw('CONCAT(cantidad, "")'));
     }
 }

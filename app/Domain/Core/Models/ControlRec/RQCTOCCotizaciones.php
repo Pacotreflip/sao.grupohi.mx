@@ -106,7 +106,7 @@ class RQCTOCCotizaciones extends Model
         $res = false;
         foreach ($this->rqctocCotizacionPartidas as $rqctocCotizacionPartida) {
             if($rqctocCotizacionPartida->precio_unitario != 0) {
-                if($rqctocCotizacionPartida->rqctocSolicitudPartida->cantidad_pendiente > 0) {
+                if($rqctocCotizacionPartida->rqctocSolicitudPartida->cantidad_pendiente > 0.001) {
                     $res = true;
                 }
             }
