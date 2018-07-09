@@ -47,6 +47,7 @@ class PDFSolicitudRecursos extends Rotation
     private $txtSeccionTam;
     private $txtContenidoTam;
     private $txtFooterTam;
+    private $partidas;
 
     public function __construct(SolicitudRecursos $solicitud)
     {
@@ -60,6 +61,7 @@ class PDFSolicitudRecursos extends Rotation
         $this->txtContenidoTam = 7;
         $this->txtFooterTam = 6;
         $this->solicitud = $solicitud;
+        $this->partidas = $solicitud->partidas;
 
         $this->obra = Obra::find(Context::getId());
 
@@ -71,11 +73,11 @@ class PDFSolicitudRecursos extends Rotation
         $this->encabezados();
         if ($this->encola == 'partidas') {
             $this->SetFont('Arial', '', 6);
-            $this->SetFills(array('255,255,255', '255,255,255', '255,255,255', '255,255,255', '255,255,255', '255,255,255', '255,255,255', '255,255,255', '255,255,255', '255,255,255', '255,255,255'));
-            $this->SetTextColors(array('0,0,0', '0,0,0', '0,0,0', '0,0,0', '0,0,0', '0,0,0', '0,0,0', '0,0,0', '0,0,0', '0,0,0', '0,0,0'));
+            $this->SetFills(array('255,255,255', '255,255,255', '255,255,255', '255,255,255', '255,255,255', '255,255,255', '255,255,255', '255,255,255', '255,255,255', '255,255,255'));
+            $this->SetTextColors(array('0,0,0', '0,0,0', '0,0,0', '0,0,0', '0,0,0', '0,0,0', '0,0,0', '0,0,0', '0,0,0', '0,0,0'));
             $this->SetHeights(array(0.35));
-            $this->SetAligns(array('L', 'L', 'L', 'L', 'L', 'L', 'L', 'R', 'L', 'R', 'R'));
-            $this->SetWidths(array(0.078 * $this->WidthTotal, 0.125 * $this->WidthTotal, 0.203 * $this->WidthTotal, 0.104 * $this->WidthTotal, 0.063 * $this->WidthTotal, 0.078 * $this->WidthTotal, 0.086 * $this->WidthTotal, 0.07 * $this->WidthTotal, 0.062 * $this->WidthTotal, 0.048 * $this->WidthTotal, 0.083 * $this->WidthTotal));
+            $this->SetAligns(array('L', 'L', 'L', 'L', 'L', 'L', 'R', 'L', 'R', 'R'));
+            $this->SetWidths(array(0.078 * $this->WidthTotal, 0.303 * $this->WidthTotal, 0.103 * $this->WidthTotal, 0.104 * $this->WidthTotal, 0.063 * $this->WidthTotal, 0.086 * $this->WidthTotal, 0.07 * $this->WidthTotal, 0.062 * $this->WidthTotal, 0.048 * $this->WidthTotal, 0.083 * $this->WidthTotal));
         }
     }
 
@@ -107,44 +109,50 @@ class PDFSolicitudRecursos extends Rotation
         $this->Cell($this->WidthTotal / 3 * 2, 0.5, $this->solicitud->estatus, 'LTR', 1, 'L','0');
 
         $this->Cell($this->WidthTotal / 3, 0.5, 'EMPRESA', 'LR', 0, 'C','1');
-        $this->Cell($this->WidthTotal / 3 * 2, 0.5, $this->solicitud->estatus, 'LTR', 1, 'L','0');
-        $this->Cell($this->WidthTotal / 3, 0.5, 'ESTATUS', '', 0, 'C','1');
-        $this->Cell($this->WidthTotal / 3 * 2, 0.5, $this->solicitud->estatus, 'LTR', 1, 'L','0');
+        $this->Cell($this->WidthTotal / 3, 0.5, $this->obra->constructora, 'LTR', 0, 'L','0');
+        $this->Cell($this->WidthTotal / 6, 0.5, 'FECHA', 'LRT', 0, 'C','1');
+        $this->Cell($this->WidthTotal / 6, 0.5, $this->solicitud->created_at->format('d/m/Y'), 'LTR', 1, 'C','0');
+
+        $this->Cell($this->WidthTotal / 3, 0.5, 'PROYECTO', 'LR', 0, 'C','1');
+        $this->Cell($this->WidthTotal / 3, 0.5, $this->obra->nombre, 'LTR', 0, 'L','0');
+        $this->Cell($this->WidthTotal / 6, 0.5, 'FECHA', 'LRT', 0, 'C','1');
+        $this->Cell($this->WidthTotal / 6, 0.5, $this->solicitud->semana, 'LTR', 1, 'C','0');
     }
 
     function setPartidasEstilos()
     {
         $this->SetFont('Arial', '', 6);
-        $this->SetStyles(array('DF', 'DF', 'DF', 'DF', 'DF', 'DF', 'DF', 'DF', 'DF', 'DF', 'DF'));
-        $this->SetFills(array('180,180,180', '180,180,180', '180,180,180', '180,180,180', '180,180,180', '180,180,180', '180,180,180', '180,180,180', '180,180,180', '180,180,180', '180,180,180'));
-        $this->SetTextColors(array('0,0,0', '0,0,0', '0,0,0', '0,0,0', '0,0,0', '0,0,0', '0,0,0', '0,0,0', '0,0,0', '0,0,0', '0,0,0'));
+        $this->SetStyles(array('DF', 'DF', 'DF', 'DF', 'DF', 'DF', 'DF', 'DF', 'DF', 'DF'));
+        $this->SetFills(array('180,180,180', '180,180,180', '180,180,180', '180,180,180', '180,180,180', '180,180,180', '180,180,180', '180,180,180', '180,180,180', '180,180,180'));
+        $this->SetTextColors(array('0,0,0', '0,0,0', '0,0,0', '0,0,0', '0,0,0', '0,0,0', '0,0,0', '0,0,0', '0,0,0', '0,0,0'));
         $this->SetHeights(array(0.35));
-        $this->SetAligns(array('C', 'C', 'C', 'C', 'C', 'C', 'C', 'C', 'C', 'C', 'C'));
-        $this->SetWidths(array(0.078 * $this->WidthTotal, 0.125 * $this->WidthTotal, 0.203 * $this->WidthTotal, 0.104 * $this->WidthTotal, 0.063 * $this->WidthTotal, 0.078 * $this->WidthTotal, 0.086 * $this->WidthTotal, 0.07 * $this->WidthTotal, 0.062 * $this->WidthTotal, 0.048 * $this->WidthTotal, 0.083 * $this->WidthTotal));
-        $this->Row(array(utf8_decode('Folio (SAO)'), utf8_decode('Tipo de Movimiento'), utf8_decode('Tipo de Transacción'), utf8_decode('Folio de Factura'), utf8_decode('Folio CR'), utf8_decode('Fecha'), utf8_decode('Vencimiento'), utf8_decode('Monto'), utf8_decode('Moneda'), utf8_decode('T.C.'), utf8_decode('Monto M.N.')));
+        $this->SetAligns(array('C', 'C', 'C', 'C', 'C', 'C', 'C', 'C', 'C', 'C'));
+        $this->SetWidths(array(0.078 * $this->WidthTotal, 0.303 * $this->WidthTotal, 0.103 * $this->WidthTotal, 0.104 * $this->WidthTotal, 0.063 * $this->WidthTotal, 0.086 * $this->WidthTotal, 0.07 * $this->WidthTotal, 0.062 * $this->WidthTotal, 0.048 * $this->WidthTotal, 0.083 * $this->WidthTotal));
+        $this->Row(array(utf8_decode('Folio (SAO)'), utf8_decode('Proveedor'), utf8_decode('Tipo de Transacción'), utf8_decode('Folio de Factura'), utf8_decode('Folio CR'), utf8_decode('Vencimiento'), utf8_decode('Monto'), utf8_decode('Moneda'), utf8_decode('T.C.'), utf8_decode('Monto M.N.')));
 
         $this->SetFont('Arial', '', 6);
-        $this->SetFills(array('255,255,255', '255,255,255', '255,255,255', '255,255,255', '255,255,255', '255,255,255', '255,255,255', '255,255,255', '255,255,255', '255,255,255', '255,255,255'));
-        $this->SetTextColors(array('0,0,0', '0,0,0', '0,0,0', '0,0,0', '0,0,0', '0,0,0', '0,0,0', '0,0,0', '0,0,0', '0,0,0', '0,0,0'));
+        $this->SetFills(array('255,255,255', '255,255,255', '255,255,255', '255,255,255', '255,255,255', '255,255,255', '255,255,255', '255,255,255', '255,255,255', '255,255,255'));
+        $this->SetTextColors(array('0,0,0', '0,0,0', '0,0,0', '0,0,0', '0,0,0', '0,0,0', '0,0,0', '0,0,0', '0,0,0', '0,0,0'));
         $this->SetHeights(array(0.35));
-        $this->SetAligns(array('L', 'L', 'L', 'L', 'L', 'L', 'L', 'R', 'L', 'R', 'R'));
-        $this->SetWidths(array(0.078 * $this->WidthTotal, 0.125 * $this->WidthTotal, 0.203 * $this->WidthTotal, 0.104 * $this->WidthTotal, 0.063 * $this->WidthTotal, 0.078 * $this->WidthTotal, 0.086 * $this->WidthTotal, 0.07 * $this->WidthTotal, 0.062 * $this->WidthTotal, 0.048 * $this->WidthTotal, 0.083 * $this->WidthTotal));
-
+        $this->SetAligns(array('L', 'L', 'L', 'L', 'L', 'L', 'R', 'L', 'R', 'R'));
+        $this->SetWidths(array(0.078 * $this->WidthTotal, 0.303 * $this->WidthTotal, 0.103 * $this->WidthTotal, 0.104 * $this->WidthTotal, 0.063 * $this->WidthTotal, 0.086 * $this->WidthTotal, 0.07 * $this->WidthTotal, 0.062 * $this->WidthTotal, 0.048 * $this->WidthTotal, 0.083 * $this->WidthTotal));
     }
 
     function items()
     {
         foreach ($this->grupos as $grupo) {
             $this->setPartidasEstilos();
+            $this->SetFont('Arial', 'B', self::TAMANO_CONTENIDO);
+            $this->Cell($this->WidthTotal, 0.5, isset($grupo[0]->transaccion->rubros[0]) ? $grupo[0]->transaccion->rubros[0]->descripcion : 'SIN AGRUPAR', 'TLRB', 1, 'L', 0);
+            $this->SetFont('Arial', '', self::TAMANO_CONTENIDO);
             foreach ($grupo as $partida) {
                 $this->encola = 'partidas';
                 $this->Row(array(
                     '#'. $partida->transaccion->numero_folio,
-                    isset($partida->transaccion->rubros[0]) ? utf8_decode($partida->transaccion->rubros[0]->descripcion) : 'N/A',
-                    utf8_decode($partida->transaccion->tipoTran->Descripcion),
+                    isset($partida->transaccion->empresa) ? utf8_decode($partida->transaccion->empresa->razon_social) : 'N/A',
+                    utf8_decode(trim($partida->transaccion->tipoTran->Descripcion)),
                     $partida->transaccion->referencia ? utf8_decode($partida->transaccion->referencia) : 'N/A',
                     $partida->transaccion->contrarecibo ? ('#'. utf8_decode($partida->transaccion->contrarecibo->numero_folio)) : 'N/A',
-                    $partida->transaccion->fecha->format('Y-m-d'),
                     $partida->transaccion->vencimiento->format('Y-m-d'),
                     '$ '. number_format($partida->transaccion->monto, 2, '.', ','),
                     utf8_decode($partida->transaccion->moneda->nombre),
@@ -152,9 +160,18 @@ class PDFSolicitudRecursos extends Rotation
                     '$ '. number_format($partida->transaccion->monto * $partida->transaccion->tipo_cambio, 2, '.', ',')
                 ));
             }
-            $this->Ln(0.75);
+            $this->SetFont('Arial', 'B', self::TAMANO_CONTENIDO);
+            $this->Cell($this->WidthTotal * 0.917, 0.5, 'TOTAL DE ' . (isset($grupo[0]->transaccion->rubros[0]) ? $grupo[0]->transaccion->rubros[0]->descripcion : 'SIN AGRUPAR')       , 'TLRB', 0, 'L', 0);
+            $this->Cell($this->WidthTotal * 0.083, 0.5, '$ '. number_format($grupo->sum(function ($item) { return $item->transaccion->monto * $item->transaccion->tipo_cambio;}), 2, '.', ','), 'TLRB', 1, 'R', 0);
+            $this->SetFont('Arial', '', self::TAMANO_CONTENIDO);
+
+            $this->Ln(0.5);
         }
-        $this->encola = 'total';
+
+        $this->SetFont('Arial', 'B', self::TAMANO_CONTENIDO);
+        $this->Cell($this->WidthTotal * 0.917, 0.5, 'GRAN TOTAL', 'TLRB', 0, 'L', 0);
+        $this->Cell($this->WidthTotal * 0.083, 0.5, '$ '. number_format($this->partidas->sum(function ($item) { return $item->transaccion->monto * $item->transaccion->tipo_cambio;}), 2, '.', ','), 'TLRB', 1, 'R', 0);
+        $this->SetFont('Arial', '', self::TAMANO_CONTENIDO);
     }
 
     function logo()
