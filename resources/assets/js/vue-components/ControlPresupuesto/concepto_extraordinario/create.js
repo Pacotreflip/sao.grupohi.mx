@@ -158,12 +158,17 @@ Vue.component('concepto-extraordinario-create', {
                 beforeSend : function () {
                     self.cargando = true;
                 },
+
                 success : function (response) {
                     swal({
                         type : 'success',
                         title: 'Extraordinadio Guardado Correctamente',
                         text: 'Si desea guardar el extraordinario en catálogo ingrese una descripción, de lo contrario solo de clic en continuar',
                         input: 'text',
+                        inputPlaceholder: 'Descripción',
+                        inputAttributes: {
+                            maxlength: 100
+                        },
                         showCancelButton: true,
                         confirmButtonText: 'Guardar y Continuar ',
                         cancelButtonText: 'Continuar',
@@ -245,14 +250,14 @@ Vue.component('concepto-extraordinario-create', {
             var self = this;
             if(self.mostrar_tabla){
                 swal({
-                    title: 'Cambiar Opciones',
-                    text: "¿Desea cambiar de extraordinario, puede perder la información modificada?",
+                    title: 'Cerrar Extraordinario',
+                    text: "¿Desea cerrar el extraordinario, puede perder la información modificada?",
                     type: 'warning',
                     showCancelButton: true,
 
                     confirmButtonColor: '#3085d6',
                     cancelButtonColor: '#d33',
-                    confirmButtonText: 'Si, Cambiar',
+                    confirmButtonText: 'Si, Cerrar',
                     cancelButtonText: 'No, Cancelar'
                 }).then(function(result) {
                     if(result.value){
@@ -260,6 +265,8 @@ Vue.component('concepto-extraordinario-create', {
                         self.form.id_origen_extraordinario='';
                         self.form.extraordinario = {};
                         self.mostrar_tabla = false;
+                        self.form.motivo = '';
+                        self.form.area_solicitante = '';
                     }
                 });
             }
@@ -603,7 +610,20 @@ Vue.component('concepto-extraordinario-create', {
                 return true;
             }
             return false;
-        }
+        },
 
+        validar_botones_arbol:function (concepto, tipo) {
+            var self = this;
+            switch (tipo){
+                case 1:
+                    if(concepto.tiene_hijos > 0 && ! concepto.cargado && concepto.hijos_cobrables == 0){
+                        return true;
+                    }
+                    break;
+                case 2:
+                    break;
+            }
+
+        }
     }
 });

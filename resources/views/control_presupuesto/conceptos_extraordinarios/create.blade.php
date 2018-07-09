@@ -525,7 +525,7 @@
                                                     </td>
                                                     <td>
                                                         <div class="form-group" :class="{'has-error': validation_errors.has('form_save_solicitud.Subcontratos Importe [' + (i + 1) + ']')}">
-                                                            $<input type="text" step=".01" placeholder="Ingrese Cantidad" v-validate="'required|decimal:3|min_value:0'"
+                                                            $<input type="text" step=".01" placeholder="Ingrese Cantidad" v-validate="'required|decimal:6|min_value:0|max_value:999999999999'"
                                                                     :name="'Subcontratos Importe [' + (i + 1) + ']'"
                                                                     v-model="insumo.precio_unitario" style="width: 90%; height: 25px"
                                                                     :class="'p_u_sub_' + i"
@@ -566,7 +566,7 @@
                                     <div class="form-group"
                                          :class="{'has-error': validation_errors.has('form_save_solicitud.Motivo')}">
                                         <label><b>Motivo</b></label>
-                                        <textarea class="form-control" v-validate="'required'" :name="'Motivo'"
+                                        <textarea class="form-control" v-validate="'required'" :name="'Motivo'" maxlength="125"
                                                   v-model="form.motivo"></textarea>
                                         <label class="help"
                                                v-show="validation_errors.has('form_save_solicitud.Motivo')">@{{ validation_errors.first('form_save_solicitud.Motivo') }}</label>
@@ -574,7 +574,7 @@
                                     <div class="form-group"
                                          :class="{'has-error': validation_errors.has('form_save_solicitud.Area solicitante')}">
                                         <label><b>Área Solicitante</b></label>
-                                        <textarea class="form-control" v-validate="'required'"
+                                        <textarea class="form-control" v-validate="'required'" maxlength="125"
                                                   :name="'Area solicitante'"
                                                   v-model="form.area_solicitante"></textarea>
                                         <label class="help"
@@ -587,7 +587,7 @@
                             <div class="box-footer">
                             <div class="row">
                                 <div class="col-md-12 col-sm-6">
-                                    <button type="button" class="btn btn-default pull-right" >Cerrar</button>
+                                    <button type="button" class="btn btn-default pull-right" v-on:click="validacion_opciones()">Cerrar</button>
                                     <button type="submit" class="btn btn-primary pull-right" :disabled="cargando">
                                             <span v-if="cargando">
                                                 <i class="fa fa-spinner fa-spin"></i> Guardando
@@ -788,7 +788,7 @@
                                             <tr  v-for="(concepto, index) in conceptos_ordenados" :class="tr_class(concepto)" :id="tr_id(concepto)" >
                                                 <td v-if="concepto.id_padre == null">
                                                     @{{ concepto.descripcion }}
-                                                    <button style="border: 0; background-color: transparent" :disabled="cargando" v-if="concepto.tiene_hijos > 0 && ! concepto.cargado" @click="get_hijos(concepto)">
+                                                    <button style="border: 0; background-color: transparent" :disabled="cargando" v-if="validar_botones_arbol(concepto,1)" @click="get_hijos(concepto)">
                                                                 <span v-if="cargando">
                                                                     <i class="fa fa-spin fa-spinner"></i>
                                                                 </span>
@@ -799,7 +799,7 @@
                                                 </td>
                                                 <td  v-else>
                                                     @{{ concepto.descripcion}}
-                                                    <button style="border: 0; background-color: transparent" :disabled="cargando" v-if="concepto.tiene_hijos > 0 && ! concepto.cargado && concepto.hijos_cobrables == 0" @click="get_hijos(concepto)">
+                                                    <button style="border: 0; background-color: transparent" :disabled="cargando" v-if="validar_botones_arbol(concepto, 1)" @click="get_hijos(concepto)">
                                                                 <span v-if="cargando">
                                                                     <i class="fa fa-spin fa-spinner"></i>
                                                                 </span>

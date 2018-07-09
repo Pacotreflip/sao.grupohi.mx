@@ -69,11 +69,11 @@ class Concepto extends BaseModel
     }
 
     public function getPresupuestoAttribute(){
-        $nivel[] = explode('.', $this->nivel);
-        /*if(count($nivel) > 3){
-            return (int)$nivel[2];
-        }*/
-            return count($nivel);
+        $niv = explode('.', $this->nivel);
+        if(count($niv) > 3){
+            return (int)$niv[2];
+        }
+            return -1;
     }
 
     /**
