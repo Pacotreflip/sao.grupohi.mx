@@ -41,7 +41,8 @@ class SolicitudRecursos extends Model
 
     protected $appends = [
         'dia_inicio',
-        'dia_fin'
+        'dia_fin',
+        'estatus',
     ];
 
     /**
@@ -124,7 +125,7 @@ class SolicitudRecursos extends Model
                 return 'SOLICITADA';
                 break;
             case 2:
-                return 'FINLIZADA';
+                return 'FINALIZADA';
                 break;
         }
     }

@@ -37,12 +37,16 @@ class PDFSolicitudRecursos extends Rotation
     private $solicitud;
     private $obra;
 
-    private $WidthTotal;
-
     /**
      * @var array
      */
     private $grupos;
+    private $WidthTotal;
+    private $txtTitleTam;
+    private $txtSubtitleTam;
+    private $txtSeccionTam;
+    private $txtContenidoTam;
+    private $txtFooterTam;
 
     public function __construct(SolicitudRecursos $solicitud)
     {
@@ -58,12 +62,12 @@ class PDFSolicitudRecursos extends Rotation
         $this->solicitud = $solicitud;
 
         $this->obra = Obra::find(Context::getId());
-        $this->grupos = $solicitud->partidas->groupBy('transaccion.id_rubro');
-     }
+
+        $this->grupos = $this->solicitud->partidas->groupBy('transaccion.id_rubro');
+    }
 
     function Header()
     {
-
         $this->encabezados();
         if ($this->encola == 'partidas') {
             $this->SetFont('Arial', '', 6);
@@ -84,21 +88,28 @@ class PDFSolicitudRecursos extends Rotation
         $this->Line($this->w * 0.25, $this->y, $this->w - 1, $this->y);
         $this->SetLineWidth(0.02);
 
-
         $this->SetXY($this->w * 0.25, $this->y);
         $this->SetFont('Arial', '', self::TAMANO_CONTENIDO + 2);
         $this->Cell(($this->w * 0.75) * 0.25,0.50,utf8_decode('Proyecto:'),'',0,'L');
         $this->Cell(($this->w * 0.75) * 0.75,0.50,utf8_decode($this->obra->nombre),'',1,'L');
         $this->SetXY($this->w * 0.25, $this->y);
         $this->Cell(($this->w * 0.75) * 0.25,0.50,utf8_decode('Periodo:'),'',0,'L');
-        $this->Cell(($this->w * 0.75) * 0.75,0.50, utf8_decode($this->solicitud->anio . ' - Semana ' . $this->solicitud->semana . ' - ' . 'Solicitud ' . ($this->solicitud->tipo->descripcion) . ($this->solicitud->consecutivo ? ' [' . $this->solicitud->consecutivo .']' : '')),'',1,'L');
+        $this->Cell(($this->w * 0.75) * 0.75,0.50,
+            utf8_decode($this->solicitud->anio . ' - Semana ' .
+                $this->solicitud->semana . ' - ' . 'Solicitud ' .
+                ($this->solicitud->tipo->descripcion) . ($this->solicitud->consecutivo ? ' [' . $this->solicitud->consecutivo .']' : '')
+            )
+            ,'',1,'L');
         $this->Ln(1);
 
-        $this->SetX(1);
+        $this->SetFillColor(225,225,225);
+        $this->Cell($this->WidthTotal / 3, 0.5, 'ESTATUS', 'LTR', 0, 'C','1');
+        $this->Cell($this->WidthTotal / 3 * 2, 0.5, $this->solicitud->estatus, 'LTR', 1, 'L','0');
 
-        $this->SetFillColor('180','180','180');
-        $this->Cell($this->WidthTotal / 3, 1, 'ESTATUS', 'T', 0, 'C',1);
-        $this->Cell($this->WidthTotal / 3, 1, 'ESTATUS', 'T', 0, 'C',1);
+        $this->Cell($this->WidthTotal / 3, 0.5, 'EMPRESA', 'LR', 0, 'C','1');
+        $this->Cell($this->WidthTotal / 3 * 2, 0.5, $this->solicitud->estatus, 'LTR', 1, 'L','0');
+        $this->Cell($this->WidthTotal / 3, 0.5, 'ESTATUS', '', 0, 'C','1');
+        $this->Cell($this->WidthTotal / 3 * 2, 0.5, $this->solicitud->estatus, 'LTR', 1, 'L','0');
     }
 
     function setPartidasEstilos()
@@ -121,79 +132,8 @@ class PDFSolicitudRecursos extends Rotation
 
     }
 
-    function titulos()
-    {
-
-        $this->SetFont('Arial', '', $this->txtSubtitleTam - 1);
-
-        //Detalles de la Asignación (Titulo)
-        $this->SetFont('Arial', 'B', $this->txtSeccionTam);
-        $this->SetXY($this->GetPageWidth() / 2, 1);
-        $this->Cell(0.5 * $this->WidthTotal, 0.7, utf8_decode('SOLICITUD DE RECURSOS'), 'TRL', 0, 'C');
-
-        $this->Cell(0.5);
-        $this->Cell(0.5 * $this->WidthTotal, .7, '', 0, 1, 'L');
-
-    }
-
-    function detallesRecurso($x)
-    {
-
-        $this->SetFont('Arial', 'B', $this->txtContenidoTam);
-        $this->SetX($x);
-        $this->Cell(0.125 * $this->WidthTotal, 0.5, utf8_decode('Obra:'), '', 0, 'LB');
-        $this->SetFont('Arial', '', $this->txtContenidoTam);
-        $this->CellFitScale(0.360 * $this->WidthTotal, 0.5, utf8_decode($this->obra->nombre), '', 1, 'L');
-
-        $this->SetFont('Arial', 'B', $this->txtContenidoTam);
-        $this->SetX($x);
-        $this->Cell(0.125 * $this->WidthTotal, 0.5, utf8_decode('Tipo de Solicitud:'), '', 0, 'LB');
-        $this->SetFont('Arial', '', $this->txtContenidoTam);
-        $this->CellFitScale(0.375 * $this->WidthTotal, 0.5, utf8_decode($this->solicitud->tipoOrden->descripcion), '', 1, 'L');
-
-        $this->SetFont('Arial', 'B', $this->txtContenidoTam);
-        $this->SetX($x);
-        $this->Cell(0.125 * $this->WidthTotal, 0.5, utf8_decode('Tipo de Cobrabilidad:'), '', 0, 'LB');
-        $this->SetFont('Arial', '', '#' . $this->txtContenidoTam);
-        $this->CellFitScale(0.375 * $this->WidthTotal, 0.5, utf8_decode($this->solicitud->tipoOrden->cobrabilidad), '', 1, 'L');
-
-        $this->SetFont('Arial', 'B', $this->txtContenidoTam);
-        $this->SetX($x);
-        $this->Cell(0.125 * $this->WidthTotal, 0.5, utf8_decode('Número de Folio:'), '', 0, 'LB');
-        $this->SetFont('Arial', '', '#' . $this->txtContenidoTam);
-        $this->CellFitScale(0.375 * $this->WidthTotal, 0.5, '#' . utf8_decode($this->solicitud->numero_folio), '', 1, 'L');
-
-        $this->SetFont('Arial', 'B', $this->txtContenidoTam);
-        $this->SetX($x);
-        $this->Cell(0.125 * $this->WidthTotal, 0.5, utf8_decode('Estatus:'), '', 0, 'LB');
-        $this->SetFont('Arial', '', '#' . $this->txtContenidoTam);
-        $this->CellFitScale(0.375 * $this->WidthTotal, 0.5, utf8_decode($this->solicitud->estatus), '', 1, 'L');
-
-        $this->SetFont('Arial', 'B', '#' . $this->txtContenidoTam);
-        $this->SetX($x);
-        $this->Cell(0.125 * $this->WidthTotal, 0.5, utf8_decode('Fecha Solicitud:'), '', 0, 'L');
-        $this->SetFont('Arial', '', $this->txtContenidoTam);
-        $this->CellFitScale(0.375 * $this->WidthTotal, 0.5, utf8_decode(Carbon::parse($this->solicitud->fecha_solicitud)->format('d-m-Y')), '', 1, 'L');
-
-
-        $this->SetFont('Arial', 'B', $this->txtContenidoTam);
-        $this->SetX($x);
-        $this->Cell(0.125 * $this->WidthTotal, 0.5, utf8_decode('Persona que Solicita:'), '', 0, 'L');
-        $this->SetFont('Arial', '', $this->txtContenidoTam);
-        $this->CellFitScale(0.375 * $this->WidthTotal, 0.5, utf8_decode($this->solicitud->userRegistro), '', 1, 'L');
-
-        $this->SetFont('Arial', 'B', $this->txtContenidoTam);
-        $this->SetX($x);
-        $this->Cell(0.125 * $this->WidthTotal, 0.5, utf8_decode('Área Solicitante:'), '', 0, 'L');
-        $this->SetFont('Arial', '', $this->txtContenidoTam);
-        $this->CellFitScale(0.375 * $this->WidthTotal, 0.5, utf8_decode($this->solicitud->area_solicitante), '', 1, 'L');
-    }
-
     function items()
     {
-
-
-
         foreach ($this->grupos as $grupo) {
             $this->setPartidasEstilos();
             foreach ($grupo as $partida) {
@@ -215,72 +155,6 @@ class PDFSolicitudRecursos extends Rotation
             $this->Ln(0.75);
         }
         $this->encola = 'total';
-
-    }
-
-    function motivo()
-    {
-
-        $this->encola = "motivo";
-        $this->SetWidths(array($this->WidthTotal));
-        $this->SetFills(array('180,180,180'));
-        $this->SetTextColors(array('0,0,0'));
-        $this->SetHeights(array(0.3));
-        $this->SetFont('Arial', '', 6);
-        $this->SetAligns(array('C'));
-        $this->Row(array("Motivo"));
-        $this->SetAligns(array('J'));
-        $this->SetStyles(array('DF'));
-        $this->SetFills(array('255,255,255'));
-        $this->SetTextColors(array('0,0,0'));
-        $this->SetHeights(array(0.35));
-        $this->SetFont('Arial', '', 6);
-        $this->SetWidths(array($this->WidthTotal));
-        $this->Row(array(utf8_decode($this->solicitud->motivo)));
-    }
-
-    function resumen()
-    {
-
-
-        if ($this->getY() > 13) {
-            $this->addPage();
-        }
-        $this->SetX(17.52);
-        $this->SetFont('Arial', '', 6);
-        $this->SetStyles(array('DF', 'DF'));
-        $this->SetFills(array('180,180,180', '180,180,180'));
-        $this->SetTextColors(array('0,0,0', '0,0,0'));
-        $this->SetHeights(array(0.38));
-        $this->SetAligns(array('C', 'C'));
-        $this->SetWidths(array(0.2 * $this->WidthTotal, 0.2 * $this->WidthTotal));
-        $this->Row(array('Detalle', 'Cantidad'));
-
-//his->resumen);
-
-
-
-        $this->SetFills(array('255,255,255', '255,255,255'));
-        $this->SetTextColors(array('0,0,0', '0,0,0'));
-        $this->SetHeights(array(0.38));
-        $this->SetAligns(array('L', 'R'));
-        $this->SetWidths(array(0.2 * $this->WidthTotal, 0.2 * $this->WidthTotal));
-        $this->SetX(17.52);
-        $this->Row(['Conceptos Modificados', $this->data['detalle_afectacion']['conceptos_modificados']]);
-        $this->SetX(17.52);
-        $this->Row(['Importe Conceptos Modificados', '$ ' . number_format( $this->data['detalle_afectacion']['imp_conceptos_modif'], 2, '.', ',')]);
-        $this->SetX(17.52);
-        $this->Row([utf8_decode('Importe Variación'), '$ ' . number_format( $this->data['detalle_afectacion']['imp_variacion'], 2, '.', ',')]);
-        $this->SetX(17.52);
-        $this->Row(['Importe Conceptos Actualizados', '$ ' . number_format( $this->data['detalle_afectacion']['imp_conceptos_actualizados'], 2, '.', ',')]);
-        $this->SetX(17.52);
-        $this->Row(['Importe Presupuesto Actual', '$ ' . number_format( $this->data['detalle_afectacion']['imp_pres_original'], 2, '.', ',')]);
-        $this->SetX(17.52);
-        $this->Row(['Importe Presupuesto Nuevo', '$ ' . number_format(( $this->data['detalle_afectacion']['imp_pres_actualizado']), 2, '.', ',')]);
-        $this->Ln(1);
-
-
-        //  dd($this->resumen);
     }
 
     function logo()
@@ -383,25 +257,17 @@ class PDFSolicitudRecursos extends Rotation
     function Footer()
     {
         $this->firmas();
-       /*
-        $this->SetFont('Arial', 'B', $this->txtFooterTam);
-        $this->SetY($this->GetPageHeight() - 1);
-        $this->SetFont('Arial', '', $this->txtFooterTam);
-        $this->Cell(6.5, .4, utf8_decode('Fecha de Consulta: ' . date('Y-m-d g:i a')), 0, 0, 'L');
-        $this->SetFont('Arial', 'B', $this->txtFooterTam);
-        $this->Cell(6.5, .4, '', 0, 0, 'C');
-        $this->Cell(15, .4, utf8_decode('Página ') . $this->PageNo() . '/{nb}', 0, 0, 'R');
-        $this->SetY($this->GetPageHeight() - 1.3);
-        $this->SetFont('Arial', 'B', $this->txtFooterTam);
-        $this->Cell(6.5, .4, utf8_decode('Formato generado desde SAO.'), 0, 0, 'L');*/
 
-        //if ($this->solicitud->id_estatus == 1) {
-        //    $this->SetFont('Arial', '', 80);
-        //    $this->SetTextColor(204, 204, 204);
-        //    $this->RotatedText(7, 17, utf8_decode("PENDIENTE DE"), 45);
-        //    $this->RotatedText(9.5, 18, utf8_decode("AUTORIZACIÓN"), 45);
-        //    $this->SetTextColor('0,0,0');
-        //}
+         $this->SetFont('Arial', 'B', $this->txtFooterTam);
+         $this->SetY($this->GetPageHeight() - 1);
+         $this->SetFont('Arial', '', $this->txtFooterTam);
+         $this->Cell(6.5, .4, utf8_decode('Fecha de Consulta: ' . date('Y-m-d g:i a')), 0, 0, 'L');
+         $this->SetFont('Arial', 'B', $this->txtFooterTam);
+         $this->Cell(6.5, .4, '', 0, 0, 'C');
+         $this->Cell(15, .4, utf8_decode('Página ') . $this->PageNo() . '/{nb}', 0, 0, 'R');
+         $this->SetY($this->GetPageHeight() - 1.3);
+         $this->SetFont('Arial', 'B', $this->txtFooterTam);
+         $this->Cell(6.5, .4, utf8_decode('Formato generado desde SAO.'), 0, 0, 'L');
     }
 
     function RotatedText($x, $y, $txt, $angle)
