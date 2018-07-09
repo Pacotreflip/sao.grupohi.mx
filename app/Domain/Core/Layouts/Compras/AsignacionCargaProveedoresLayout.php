@@ -678,22 +678,45 @@ class AsignacionCargaProveedoresLayout extends ValidacionLayout
                     $subtotal = empty($gralCotizacion["cotizacion"]["iva"])?0:str_replace(",", "", $gralCotizacion["cotizacion"]["subtotal_moneda_conv"]);
                     $impuesto = empty($gralCotizacion["cotizacion"]["iva"])?0:str_replace(",", "", $gralCotizacion["cotizacion"]["iva"]);
                     $monto = empty($gralCotizacion["cotizacion"]["total"])?0:str_replace(",", "", $gralCotizacion["cotizacion"]["total"]);
-                    if ($anticipo > 100) {
+                    if ((int) $anticipo > 100) {
                         $cotizaciones[$key]['error'][] = "El porcentaje de anticipo no puede ser mayor a 100\n";
                         $error++;
                     }
                     if (!is_numeric($subtotal)) {
-                        $cotizaciones[$key]['error'][] = "El subtotal_moneda_conv [$subtotal] no es número\n";
+                        $cotizaciones[$key]['error'][] = "El subtotal_moneda_conv [$subtotal] no es numérico\n";
                         $error++;
                     }
                     if (!is_numeric($impuesto )) {
-                        $cotizaciones[$key]['error'][] = "El iva [$impuesto]  no es número\n";
+                        $cotizaciones[$key]['error'][] = "El iva [$impuesto]  no es numérico\n";
                         $error++;
                     }
                     if (!is_numeric($monto)) {
-                        $cotizaciones[$key]['error'][] = "El total [$monto]  no es número\n";
+                        $cotizaciones[$key]['error'][] = "El total [$monto]  no es numérico\n";
                         $error++;
                     }
+
+                    // Validación TC USD
+                    if (!is_numeric($gralCotizacion["cotizacion"]["tc_usd"]))
+                    {
+                        $cotizaciones[$key]['error'][] = "El campo TC USD [". $gralCotizacion["cotizacion"]["tc_usd"] ."]  no es numérico\n";
+                        $error++;
+                    }
+
+                    // Validación TC EURO
+                    if (!is_numeric($gralCotizacion["cotizacion"]["tc_euro"]))
+                    {
+                        $cotizaciones[$key]['error'][] = "El campo TC EURO [". $gralCotizacion["cotizacion"]["tc_euro"] ."]  no es numérico\n";
+                        $error++;
+                    }
+
+                    // Validación fecha cotización
+                    $fecha_unix = (bool) strtotime($fecha_cotizacion);
+                    if (!$fecha_unix)
+                    {
+                        $cotizaciones[$key]['error'][] = "El campo fecha de presupuesto es incorrecto\n";
+                        $error++;
+                    }
+
                     $rqctocCotizacion = $cotizacionCompra->rqctocCotizacion;
                     $idrqctocCotizaciones = $rqctocCotizacion->idrqctoc_cotizaciones;
                     $con_asignacion = $this->requisicion->getNumAsignaciones($idrqctocCotizaciones);
@@ -736,9 +759,16 @@ class AsignacionCargaProveedoresLayout extends ValidacionLayout
                         }
                         $descuento = empty($gralCotizacion["cotizacion"]["descuento"])?0:$gralCotizacion["cotizacion"]["descuento"];
                         if (!is_numeric($descuento)) {
-                            $cotizaciones[$key]['error'][] = "El descuento [$descuento] no se puede guardar por que no es número";
+                            $cotizaciones[$key]['error'][] = "El descuento [$descuento] no se puede guardar por que no es numérico";
                             $error++;
                         }
+
+                        // Validación % de descuento mayor a 100
+                        if ((int) $descuento > 100) {
+                            $cotizaciones[$key]['error'][] = "El % de descuento [". $descuento ."] no puede ser mayor a 100";
+                            $error++;
+                        }
+
                         $datos_cotizacion = [];
                         $datos_cotizacion["idmoneda"] = $idmoneda;
                         $datos_cotizacion["fecha_cotizacion"] = $fecha_cotizacion;
@@ -767,9 +797,26 @@ class AsignacionCargaProveedoresLayout extends ValidacionLayout
                                 $idrqctocSolicitudesPartidas = $partidas['idrqctoc_solicitudes_partidas'];
                                 $descuento_partida = $partidas['PorcentajeDescuento'];
                                 if (!is_numeric($descuento_partida)) {
-                                    $cotizaciones[$key]['error'][] = "El porcentaje de descuento no se puede guardar porque no es número";
+                                    $cotizaciones[$key]['error'][] = "El porcentaje de descuento no se puede guardar porque no es numérico";
                                     $error++;
                                 }
+
+                                // Validación % de descuento mayor a 100
+                                if ((int) $descuento_partida > 100) {
+                                    $cotizaciones[$key]['error'][] = "El porcentaje de descuento no se puede guardar porque su valor es mayor a 100";
+                                    $error++;
+                                }
+
+                                // Validación tipo de moneda
+                                // @todo obtener los tipos desde db
+                                $tipos_moneda = [1,2,3];
+
+                                if (!in_array($partidas['IdMoneda'], $tipos_moneda))
+                                {
+                                    $cotizaciones[$key]['error'][] = "Por favor, selecciona un tipo de moneda válido";
+                                    $error++;
+                                }
+
                                 $descuento_compuesto = $descuento_partida + $descuento - ($descuento_partida * $descuento / 100);
                                 //Dolar mysql
                                 if ($partidas['IdMoneda'] == 1) {
