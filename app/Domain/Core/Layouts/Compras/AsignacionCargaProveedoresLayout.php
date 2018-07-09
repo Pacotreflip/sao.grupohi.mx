@@ -717,6 +717,13 @@ class AsignacionCargaProveedoresLayout extends ValidacionLayout
                         $error++;
                     }
 
+                    // Validación vigencia
+                    if (!is_numeric($vigencia) || (int) $vigencia < 0)
+                    {
+                        $cotizaciones[$key]['error'][] = "El campo vigencia sólo puede contener caracteres numéricos\n";
+                        $error++;
+                    }
+
                     $rqctocCotizacion = $cotizacionCompra->rqctocCotizacion;
                     $idrqctocCotizaciones = $rqctocCotizacion->idrqctoc_cotizaciones;
                     $con_asignacion = $this->requisicion->getNumAsignaciones($idrqctocCotizaciones);
