@@ -261,7 +261,15 @@ Vue.component('solicitud-recursos-edit', {
                 data: {
                     id_transaccion: transaccion.id_transaccion
                 },
-                success: function () {
+                success: function (response) {
+                    $("#div-top-message").addClass("success-message");
+                    $("#div-top-message").html("Se agrego partida a la solicitud:" + response.solicitud);
+                    $("#div-top-message").slideDown();
+                    setTimeout(function(){
+                        $("#div-top-message").slideUp();
+                        $("#div-top-message").removeClass("success-message");
+                        $("#div-top-message").html("");
+                    }, 1500);
                 }
             })
         },
@@ -278,8 +286,15 @@ Vue.component('solicitud-recursos-edit', {
                     _method: 'DELETE',
                     id_transaccion: transaccion.id_transaccion
                 },
-                success: function () {
-
+                success: function (response) {
+                    $("#div-top-message").addClass("error-message");
+                    $("#div-top-message").html("Se quito la partida de la solicitud:" + response.solicitud);
+                    $("#div-top-message").slideDown();
+                    setTimeout(function(){
+                        $("#div-top-message").slideUp();
+                        $("#div-top-message").removeClass("error-message");
+                        $("#div-top-message").html("");
+                        }, 1500);
                 }
             })
         },
