@@ -160,6 +160,10 @@ class RolesPermissionsSeeder extends Seeder
         //Finanzas Solicitud de Recursos
         $registrar_solicitud_recursos = Permission::firstOrCreate(['name' => 'registrar_solicitud_recursos', 'display_name' => 'Registrar Solicitudes de Recursos', 'description' => 'Permiso para poder Registrar Solicitudes de Recursos']);
 
+        $consultar_solicitud_recursos = Permission::firstOrCreate(['name' => 'consultar_solicitud_recursos', 'display_name' => 'Consultar Solicitudes de Recursos', 'description' => 'Permiso para poder Consultar Solicitudes de Recursos']);
+        $modificar_solicitud_recursos = Permission::firstOrCreate(['name' => 'modificar_solicitud_recursos', 'display_name' => 'Modificar Solicitudes de Recursos', 'description' => 'Permiso para poder Modificar Solicitudes de Recursos']);
+        $eliminar_solicitud_recursos = Permission::firstOrCreate(['name' => 'eliminar_solicitud_recursos', 'display_name' => 'Eliminar Solicitudes de Recursos', 'description' => 'Permiso para poder Eliminar Solicitudes de Recursos']);
+
         /**
          * Roles
          */
@@ -379,7 +383,7 @@ class RolesPermissionsSeeder extends Seeder
                 $editar_cierre_periodo->id,
             ]
         );
-
+        //Finanzas
         $finaznas->permisos()->sync(
             [
                 $editar_comprobante_fondo_fijo->id,
@@ -390,7 +394,12 @@ class RolesPermissionsSeeder extends Seeder
                 $registrar_reposicion_fondo_fijo->id,
                 $registrar_pago_cuenta->id,
                 $consultar_solicitud_pago->id,
-                $registrar_solicitud_recursos->id
+                $registrar_solicitud_recursos->id,
+
+                $consultar_solicitud_recursos,
+                $modificar_solicitud_recursos,
+                $eliminar_solicitud_recursos
+
             ]
         );
 
