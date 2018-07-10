@@ -396,9 +396,9 @@ class RolesPermissionsSeeder extends Seeder
                 $consultar_solicitud_pago->id,
                 $registrar_solicitud_recursos->id,
 
-                $consultar_solicitud_recursos,
-                $modificar_solicitud_recursos,
-                $eliminar_solicitud_recursos
+                $consultar_solicitud_recursos->id,
+                $modificar_solicitud_recursos->id,
+                $eliminar_solicitud_recursos->id
 
             ]
         );
