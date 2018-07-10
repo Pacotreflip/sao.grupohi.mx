@@ -192,7 +192,7 @@ class PDFSolicitudRecursos extends Rotation
         if (file_put_contents($file, $data) !== false) {
             list($width, $height) = $this->resizeToFit($file);
             $this->image($file, 1, 1, $width, $height);
-            unlink($file);;
+            unlink($file);
         }
     }
 
