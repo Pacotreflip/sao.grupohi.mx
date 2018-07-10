@@ -154,19 +154,20 @@ class Transaccion extends Model
     }
 
     public function getTipoCambioAttribute() {
-        switch ($this->moneda->id_moneda) {
-            case Moneda::PESOS:
-                return 1;
-                break;
-            case Moneda::EUROS:
-                return $this->TcEuro;
-                break;
-            case Moneda::DOLARES:
-                return $this->TcUSD;
-                break;
-            default:
-                return null;
-                break;
+        if($this->moneda) {
+            switch ($this->moneda->id_moneda) {
+                case Moneda::PESOS:
+                    return 1;
+                    break;
+                case Moneda::EUROS:
+                    return $this->TcEuro;
+                    break;
+                case Moneda::DOLARES:
+                    return $this->TcUSD;
+                    break;
+            }
+        } else {
+            return null;
         }
     }
 
