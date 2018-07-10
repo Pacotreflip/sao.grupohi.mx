@@ -44,11 +44,17 @@ class FacturaTransaccion extends Transaccion
     public function getSeleccionadaAttribute() {
         $hoy = Carbon::now();
         $solicitud = SolicitudRecursos::where('semana', '=', $hoy->weekOfYear)->where('anio', '=', $hoy->year)->orderBy('id', 'DESC')->first();
-        $partida = $solicitud->partidas()->where('id_transaccion', '=', $this->id_transaccion)->first();
 
-        if($partida) {
-            return true;
-        } 
-        return false;
+        if($solicitud) {
+            $partida = $solicitud->partidas()->where('id_transaccion', '=', $this->id_transaccion)->first();
+
+            if($partida) {
+                return true;
+            } else {
+                return false;
+            }
+        } else {
+            return false;
+        }
     }
 }
