@@ -187,7 +187,7 @@ class EloquentContratoProyectadoRepository implements ContratoProyectadoReposito
         try {
             if (count($validator->errors()->all())) {
                 //Caer en excepción si alguna regla de validación falla
-                throw new StoreResourceFailedException('Error al agregar los Contratos', $validator->errors());
+                throw new StoreResourceFailedException('Error al agregar los Contratos '. $validator->errors());
             } else {
                 DB::connection('cadeco')->beginTransaction();
                 $data = $request->all();

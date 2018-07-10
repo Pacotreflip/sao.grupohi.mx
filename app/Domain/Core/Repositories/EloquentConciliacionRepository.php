@@ -10,6 +10,7 @@ namespace Ghi\Domain\Core\Repositories;
 
 use Carbon\Carbon;
 use Dingo\Api\Exception\ResourceException;
+use Ghi\Core\Facades\Context;
 use Ghi\Domain\Core\Contracts\ConciliacionRepository;
 use Dingo\Api\Http\Request;
 use Ghi\Domain\Core\Contracts\ContratoProyectadoRepository;
@@ -20,11 +21,15 @@ use Ghi\Domain\Core\Contracts\EstimacionRepository;
 use Ghi\Domain\Core\Contracts\ItemRepository;
 use Ghi\Domain\Core\Contracts\SubcontratoRepository;
 use Ghi\Domain\Core\Models\Acarreos\ConciliacionEstimacion;
+use Ghi\Domain\Core\Models\Acarreos\EmpresaSubcontrato;
 use Ghi\Domain\Core\Models\Acarreos\MaterialAcarreo;
 use Ghi\Domain\Core\Models\Contrato;
 use Ghi\Domain\Core\Models\Empresa;
 use Ghi\Domain\Core\Models\Acarreos\ContratoProyectadoAcarreo;
 use Ghi\Domain\Core\Models\Moneda;
+use Ghi\Domain\Core\Models\SubcontratosEstimaciones\Estimacion;
+use Ghi\Domain\Core\Models\SubcontratosEstimaciones\Folio;
+use Ghi\Domain\Core\Models\SubcontratosEstimaciones\Retencion;
 use Ghi\Domain\Core\Models\Transacciones\Item;
 use Ghi\Domain\Core\Models\Transacciones\Subcontrato;
 use Ghi\Domain\Core\Models\Costo;
@@ -89,203 +94,261 @@ class EloquentConciliacionRepository implements ConciliacionRepository
 
     public function store(Request $request)
     {
-
-        $est = ConciliacionEstimacion::where('id_conciliacion', '=', $request->id_conciliacion)->first();
-        if($est){
-            throw new ResourceException('La Conciliacion ya Existe en SAO');
-        }
-
-        $partidas_conciliacion = $request->get('partidas_conciliacion');
-        $empresa = Empresa::where('rfc', '=', $request->rfc)->first();
-
-        if(!$empresa){
-            // si no existe -> crear empresa
-            $empresa = $this->empresa->create($request->all());
-        }
-
-        //INICIO DE APARTADO DE CONTRATO PROYECTADO
-        // si contrato proyectado no existe -> crear contrato proyectado y partidas
-        $contrato_proyectado = ContratoProyectadoAcarreo::where('estatus',1)->first();
-        if(!$contrato_proyectado){
-            //  -> crear Contrato proyectado con su contrato
-            $req = new Request();
-            $contratos = [];
-            foreach ($partidas_conciliacion as $key => $partida){
-                if($key<10)$llave = '00'.$key.'.';
-                if($key>9 && $key<100)$llave = '0'.$key.'.';
-                if($key>100)$llave = $key.'.';
-                $contratos[$key] =  array(
-                    'nivel' => $llave,
-                    'descripcion' => 'Acarreo de '.$partida['material'],
-                    'unidad' => 'M3',
-                    'cantidad_presupuestada' => $partida['volumen'],
-                    'id_material' => (int)$partida['id_material'],
-                    'tarifa' => $partida['tarifa'],
-                    'destinos' => array( [
-                        'id_concepto' => (int)$partida['id_concepto']
-                    ])
-                );
+        try{
+            DB::connection('cadeco')->beginTransaction();
+            $est = ConciliacionEstimacion::where('id_conciliacion', '=', $request->id_conciliacion)->first();
+            if($est){
+                throw new ResourceException('La Conciliacion ya Existe en SAO');
             }
 
-            $req->merge([
-                'fecha' => Carbon::now()->toDateString(),
-                'referencia' => 'Contrato Proyectado de Acarreos',
-                'cumplimiento' => Carbon::now()->toDateString(),
-                'vencimiento' => Carbon::now()->addYear(1)->toDateString(),
-                'contratos' => ($contratos)
+            $partidas_conciliacion = $request->get('partidas_conciliacion');
+            $empresa = Empresa::where('rfc', '=', $request->rfc)->first();
 
-            ]);
+            if(!$empresa){
+                // si no existe -> crear empresa
+                $empresa = $this->empresa->create($request->all());
+            }
 
-            $contrato_proy_creado = $this->contratoProyectado->create($req);
-            $contrato_proyectado = ContratoProyectadoAcarreo::create(['id_transaccion' => $contrato_proy_creado->id_transaccion, 'descripcion' => $contrato_proy_creado->referencia]);
-
-        }else{  // si existe -> buscar contrato de cada partida
-
-            foreach ($partidas_conciliacion as $key => $partida) {
-
-                $contrato = Contrato::join('destinos', 'contratos.id_concepto', '=', 'destinos.id_concepto_contrato')
-                    ->join('Acarreos.material', 'destinos.id_concepto_contrato', '=', 'Acarreos.material.id_concepto_contrato')
-                    ->where('Acarreos.material.id_material_acarreo', '=', $partida['id_material'])
-                    ->where('Acarreos.material.id_concepto', '=', (int)$partida['id_concepto'])
-                    ->where('Acarreos.material.tarifa', '=', $partida['tarifa'])
-                    ->orderBy('nivel', 'asc')->get();
-
-                if (count($contrato) == 0) {  // si no existe contrato adjunto al Contrato proyectado, crearlo
-
-                    $req = new Request();
-                    $contratos = [];
-                    $contratos[] =  array(
-                        'nivel' => $this->getNivel($contrato_proyectado['id_transaccion']),
-                        'descripcion' => 'Acarreo de '.$partida['material'],
+            try{
+                //INICIO DE APARTADO DE CONTRATO PROYECTADO
+                // si contrato proyectado no existe -> crear contrato proyectado y partidas
+                $contrato_proyectado = ContratoProyectadoAcarreo::where('estatus',1)->first();
+                $req = new Request();
+                $contratos = [];
+                foreach ($partidas_conciliacion as $key => $partida){
+                    $contratos[$key] =  array(
+                        'nivel' => str_pad($key, 3, '0', STR_PAD_LEFT) . '.',
+                        'descripcion' => $partida['material'],
                         'unidad' => 'M3',
                         'cantidad_presupuestada' => $partida['volumen'],
                         'id_material' => (int)$partida['id_material'],
                         'tarifa' => $partida['tarifa'],
-                        'destinos' => array( [  
+                        'destinos' => array( [
                             'id_concepto' => (int)$partida['id_concepto']
                         ])
                     );
+                }
+
+                $req->merge([
+                    'fecha' => Carbon::now()->toDateString(),
+                    'referencia' => 'Contrato Proyectado de Acarreos',
+                    'cumplimiento' => Carbon::now()->toDateString(),
+                    'vencimiento' => Carbon::now()->addYear(1)->toDateString(),
+                    'contratos' => ($contratos)
+
+                ]);
+                if(!$contrato_proyectado){          //  -> crear Contrato proyectado con su contrato
+                    $contrato_proy_creado = $this->contratoProyectado->create($req);
+                    $contrato_proyectado = ContratoProyectadoAcarreo::create(['id_transaccion' => $contrato_proy_creado->id_transaccion, 'descripcion' => $contrato_proy_creado->referencia]);
+
+                }else{  // si existe -> buscar contrato de cada partida
+
+                    foreach ($partidas_conciliacion as $key => $partida) {
+                        $contratos = [];
+                        $contrato = Contrato::join('destinos', 'contratos.id_concepto', '=', 'destinos.id_concepto_contrato')
+                            ->join('Acarreos.material', 'destinos.id_concepto_contrato', '=', 'Acarreos.material.id_concepto_contrato')
+                            ->where('Acarreos.material.id_material_acarreo', '=', $partida['id_material'])
+                            ->where('Acarreos.material.id_concepto', '=', (int)$partida['id_concepto'])
+                            ->where('Acarreos.material.tarifa', '=', $partida['tarifa'])
+                            ->orderBy('nivel', 'asc')->get();
+
+
+                        if (count($contrato) == 0) {  // si no existe contrato adjunto al Contrato proyectado, crearlo
+                            $req = new Request();
+
+                            $contratos[] = array(
+                                'nivel' => $this->getNivel($contrato_proyectado['id_transaccion']),
+                                'descripcion' => $partida['material'],
+                                'unidad' => 'M3',
+                                'cantidad_presupuestada' => $partida['volumen'],
+                                'id_material' => (int)$partida['id_material'],
+                                'tarifa' => $partida['tarifa'],
+                                'destinos' => array([
+                                    'id_concepto' => (int)$partida['id_concepto']
+                                ])
+                            );
+
+                            $req->merge([
+                                'contratos' => ($contratos)
+                            ]);
+
+                            $this->contratoProyectado->addContratos($req, $contrato_proyectado['id_transaccion']);
+
+                        }
+                    }
+                }
+                // FIN DE APARTADO DE CONTRATO PROYECTADO
+            }catch(\Exception $e){
+                DB::connection('cadeco')->rollback();
+                throw new ResourceException('Error al generar la C.P  -  ' . $e);
+            }
+
+            // INICIO DE APARTADO DE SUBCONTRATO
+            // Buscar Subcontrato, si no existe crear Subcontrato con Items
+
+
+            $subcontrato_acarreo = EmpresaSubcontrato::where('id_empresa_acarreo', '=', $request->id_empresa)
+                                ->where('id_sindicato_acarreo', '=', $request->id_sindicato)
+                                ->where('id_tipo_tarifa', '=', $request->tipo_tarifa)->first();
+            try {
+                if(!$subcontrato_acarreo){
+                    $req = new Request();
+                    $items = [];
+                    foreach ($partidas_conciliacion as $key => $partida){
+                        $concepto_contrato = MaterialAcarreo::select('id_concepto_contrato')->where('id_material_acarreo', '=',(int)$partida['id_material'])
+                            ->where('id_concepto', '=',(int)$partida['id_concepto'] )->first();
+                        $moneda = Moneda::where('tipo', 1)->first();
+
+                        $items[$key] =  array(
+                            'id_concepto' => $concepto_contrato->id_concepto_contrato,
+                            'cantidad' => $partida['volumen'],
+                            'precio_unitario' => $partida['tarifa']
+                        );
+                    }
 
                     $req->merge([
-                        'contratos' => ($contratos)
-                    ]);
+                        'id_antecedente' => $contrato_proyectado['id_transaccion'],
+                        'fecha' => Carbon::now()->toDateString(),
+                        'id_costo' => (int)$request->id_costo,
+                        'id_empresa' => $empresa->id_empresa,
+                        'id_moneda' => array_key_exists('id_moneda', $partida)? (int)$partida['id_moneda']:(int)$moneda->id_moneda,
+                        'referencia' => $this->ajustar_referencia($request->sindicato, $empresa->razon_social, $request->nombre_tarifa),
+                        'items' => ($items)
 
-                    $new = $this->contratoProyectado->addContratos($req,$contrato_proyectado['id_transaccion']);
-
-                    $newMaterial = MaterialAcarreo::firstOrCreate([
-                        'id_material_acarreo' => (int)$partida['id_material']
-                        ,'id_concepto' => (int)$partida['id_concepto']
-                        ,'id_concepto_contrato' => $new[0]['id_concepto']
-                        ,'id_transaccion' => $contrato_proyectado['id_transaccion']
-                        ,'tarifa' => $partida['tarifa']
                     ]);
+                    $subcontrato = $this->subcontrato->create($req);
+                    EmpresaSubcontrato::create([
+                        'id_empresa_sao' => $empresa->id_empresa,
+                        'id_empresa_acarreo' => $request->id_empresa,
+                        'id_sindicato_acarreo' => $request->id_sindicato,
+                        'id_tipo_tarifa' => $request->tipo_tarifa,
+                        'id_subcontrato' => $subcontrato->id_transaccion]);
+
+                }else {   // si existe
+                    //      -> buscar Item
+                    $subcontrato = Subcontrato::where('id_transaccion', '=', $subcontrato_acarreo->id_subcontrato)->first();
+
+                    foreach ($partidas_conciliacion as $key => $partida) {
+                        $item = Item::join('Acarreos.material', 'items.id_concepto', '=', 'Acarreos.material.id_concepto_contrato')
+                            ->where('Acarreos.material.id_concepto', '=', (int)$partida['id_concepto'])
+                            ->where('Acarreos.material.id_material_acarreo', '=', (int)$partida['id_material'])
+                            ->where('Acarreos.material.tarifa', '=', $partida['tarifa'])
+                            ->where('items.id_transaccion', '=', $subcontrato->id_transaccion)
+                            ->select('items.id_item')->first();
+                        if ($item) {    //              si existe       -> aumentar volumen
+
+                            $req = new Request();
+                            $req->merge(['cantidad' => $partida['volumen']]);
+                            $this->item->update($req, $item->id_item);
+
+                        } else {   //              no existe       -> crearlo
+                            $concepto_contrato = MaterialAcarreo::select('id_concepto_contrato')->where('id_material_acarreo', '=', (int)$partida['id_material'])
+                                ->where('id_concepto', '=', (int)$partida['id_concepto'])
+                                ->where('Acarreos.material.tarifa', '=', $partida['tarifa'])->first();
+                            $req = new Request();
+                            $req->merge([
+                                'id_transaccion' => $subcontrato->id_transaccion,
+                                'cantidad' => $partida['volumen'],
+                                'precio_unitario' => $partida['tarifa'],
+                                'id_concepto' => $concepto_contrato->id_concepto_contrato
+                            ]);
+                            $this->item->create($req);
+                        }
+                    }
                 }
+            }catch (\Exception $e){
+                DB::connection('cadeco')->rollback();
+                throw new ResourceException('Error al generar la S.C.  -  ' . $e);
             }
-        }  // FIN DE APARTADO DE CONTRATO PROYECTADO
+            //  FIN APARTADO SUBCONTRATO
 
-        // INICIO DE APARTADO DE SUBCONTRATO
-        // Buscar Subcontrato, si no existe crear Subcontrato con Items
-        $subcontrato = Subcontrato::where('id_antecedente', '=', $contrato_proyectado['id_transaccion'])->where('id_empresa', '=', $empresa->id_empresa)->first();
-        if(!$subcontrato){
-            $req = new Request();
-            $items = [];
-            foreach ($partidas_conciliacion as $key => $partida){
-                $concepto_contrato = MaterialAcarreo::select('id_concepto_contrato')->where('id_material_acarreo', '=',(int)$partida['id_material'])
-                    ->where('id_concepto', '=',(int)$partida['id_concepto'] )->first();
+
+            try{
+                //  INICIA APARTADO DE GENERAR ESTIMACION
+                $reques_estimacion = new Request();
+                $items_estimacion=[];
                 $moneda = Moneda::where('tipo', 1)->first();
-                $items[$key] =  array(
-                    'id_concepto' => $concepto_contrato->id_concepto_contrato,
-                    'cantidad' => $partida['volumen'],
-                    'precio_unitario' => $partida['tarifa']
-                );
-            }
-
-            $req->merge([
-                'id_antecedente' => $contrato_proyectado['id_transaccion'],
-                'fecha' => Carbon::now()->toDateString(),
-                'id_costo' => (int)$request->id_costo,
-                'id_empresa' => $empresa->id_empresa,
-                'id_moneda' => array_key_exists('id_moneda', $partida)? (int)$partida['id_moneda']:(int)$moneda->id_moneda,
-                'referencia' => 'Subcontrato '. $empresa->razon_social ,
-                'items' => ($items)
-
-            ]);
-            $subcontrato = $this->subcontrato->create($req);
-
-        }else {   // si existe
-            //      -> buscar Item
-            foreach ($partidas_conciliacion as $key => $partida) {
-                $item = Item::join('Acarreos.material', 'items.id_concepto', '=', 'Acarreos.material.id_concepto_contrato')
-                    ->where('Acarreos.material.id_concepto', '=', (int)$partida['id_concepto'])
-                    ->where('Acarreos.material.id_material_acarreo', '=', (int)$partida['id_material'])
-                    ->where('Acarreos.material.tarifa', '=', $partida['tarifa'])
-                    ->where('items.id_transaccion', '=', $subcontrato->id_transaccion)
-                    ->select('items.id_item')->first();
-                if ($item) {    //              si existe       -> aumentar volumen
-
-                    $req = new Request();
-                    $req->merge(['cantidad' => $partida['volumen']]);
-                    $resp = $this->item->update($req, $item->id_item);
-
-                } else {   //              no existe       -> crearlo
-                    $concepto_contrato = MaterialAcarreo::select('id_concepto_contrato')->where('id_material_acarreo', '=',(int)$partida['id_material'])
-                        ->where('id_concepto', '=',(int)$partida['id_concepto'] )
-                        ->where('Acarreos.material.tarifa', '=', $partida['tarifa'])->first();
-                    $req = new Request();
-                    $req->merge([
-                        'id_transaccion' => $subcontrato->id_transaccion,
-                        'cantidad' => $partida['volumen'],
-                        'precio_unitario' => $partida['tarifa'],
-                        'id_concepto' => $concepto_contrato->id_concepto_contrato
-                    ]);
-                    $resp = $this->item->create($req);
+                foreach ($partidas_conciliacion as $key => $partida) {
+                    $item = Item::join('Acarreos.material', 'items.id_concepto', '=', 'Acarreos.material.id_concepto_contrato')
+                        ->where('Acarreos.material.id_concepto', '=', (int)$partida['id_concepto'])
+                        ->where('Acarreos.material.id_material_acarreo', '=', (int)$partida['id_material'])
+                        ->where('Acarreos.material.tarifa', '=', $partida['tarifa'])
+                        ->where('items.id_transaccion', '=', $subcontrato->id_transaccion)
+                        ->select(['items.id_item', 'items.id_concepto'])->first();
+                    $items_estimacion[$key] = array(
+                        'item_antecedente' => $item['id_concepto'],
+                        'cantidad' => $partida['volumen']
+                    );
                 }
+
+                $reques_estimacion->merge([
+                    'id_antecedente' => $subcontrato->id_transaccion,
+                    'fecha' => Carbon::now()->toDateString(),
+                    'id_empresa' => $empresa->id_empresa,
+                    'id_moneda' => array_key_exists('id_moneda', $partida)? (int)$partida['id_moneda']:(int)$moneda->id_moneda,
+                    'cumplimiento' => Carbon::parse($request->cumplimiento)->toDateString(),
+                    'vencimiento' => Carbon::parse($request->vencimiento )->toDateString(),
+                    'referencia' => 'Estimación de Acarreos ' . Carbon::now()->toDateTimeString(),
+                    'observaciones' => 'Conciliación con Folio ' . $request->id_conciliacion . ' de Sistema de Acarreos',
+                    'items' => ($items_estimacion)
+                ]);
+                $registro_estimacion = $this->estimacion->create($reques_estimacion);
+
+                /// registrar número de folio de la estimación
+                $this->numero_estimacion($registro_estimacion->id_transaccion,$registro_estimacion->id_antecedente);
+
+                // registrar retencion si la conciliacion es un acarreo
+                if($request->tipo_tarifa == 1){
+                    $importe_items = $registro_estimacion->items()->sum('importe');
+                    Retencion::create([
+                        'id_transaccion' => $registro_estimacion->id_transaccion,
+                        'id_tipo_retencion' => 1,
+                        'importe' => $importe_items * 0.04,
+                        'concepto' => 'RETENCION DEL 4% POR SER SERVICIO DE FLETE.'
+                    ]);
+
+                }
+
+                // registrar la conciliación con la estimación nueva
+                ConciliacionEstimacion::create(['id_conciliacion' => $request->id_conciliacion, 'id_estimacion' => $registro_estimacion->id_transaccion ]);
+            }catch (\Exception $e){
+                DB::connection('cadeco')->rollback();
+                throw new ResourceException('Error al generar la Estimacion  -  ' . $e);
             }
-        }//  FIN APARTADO SUBCONTRATO
 
-        //  INICIA APARTADO DE GENERAR ESTIMACION
-        $reques_estimacion = new Request();
-        $items_estimacion=[];
-        $moneda = Moneda::where('tipo', 1)->first();
-        foreach ($partidas_conciliacion as $key => $partida) {
-            $item = Item::join('Acarreos.material', 'items.id_concepto', '=', 'Acarreos.material.id_concepto_contrato')
-                ->where('Acarreos.material.id_concepto', '=', (int)$partida['id_concepto'])
-                ->where('Acarreos.material.id_material_acarreo', '=', (int)$partida['id_material'])
-                ->where('Acarreos.material.tarifa', '=', $partida['tarifa'])
-                ->where('items.id_transaccion', '=', $subcontrato->id_transaccion)
-                ->select(['items.id_item', 'items.id_concepto'])->first();
-            $items_estimacion[$key] = array(
-                'item_antecedente' => $item['id_concepto'],
-                'cantidad' => $partida['volumen']
-            );
+            DB::connection('cadeco')->commit();
+            return $this->estimacion->find($registro_estimacion->id_transaccion);
+
+        } catch(\Exception $e) {
+            DB::connection('cadeco')->rollback();
+            throw new ResourceException('Error al generar la Conciliación \n' . $e);
         }
+    }
 
-        $reques_estimacion->merge([
-            'id_antecedente' => $subcontrato->id_transaccion,
-            'fecha' => Carbon::now()->toDateString(),
-            'id_empresa' => $empresa->id_empresa,
-            'id_moneda' => array_key_exists('id_moneda', $partida)? (int)$partida['id_moneda']:(int)$moneda->id_moneda,
-            'cumplimiento' => Carbon::parse($request->cumplimiento)->toDateString(),
-            'vencimiento' => Carbon::parse($request->vencimiento )->toDateString(),
-            'referencia' => 'Estimación de Acarreos ' . Carbon::now()->toDateTimeString(),
-            'observaciones' => 'Conciliación con Folio ' . $request->id_conciliacion . ' de Sistema de Acarreos',
-            'items' => ($items_estimacion)
-        ]);
-        $registro_estimacion = $this->estimacion->create($reques_estimacion);
+    public function numero_estimacion($id_estimacion, $id_subcontrato){
+        $ultimo_folio = Folio::where('IDSubcontrato', '=', $id_subcontrato)->first();
+        if($ultimo_folio){
+            $ultimo_folio->UltimoFolio += 1;
+            $ultimo_folio->save();
 
-        ConciliacionEstimacion::create(['id_conciliacion' => $request->id_conciliacion, 'id_estimacion' => $registro_estimacion->id_transaccion ]);
-
-        return $this->estimacion->find($registro_estimacion->id_transaccion);
+            Estimacion::create(['IDEstimacion' => $id_estimacion , 'NumeroFolioConsecutivo' => $ultimo_folio->UltimoFolio ]);
+        }else{
+            Folio::create(['IDObra' => Context::getId(), 'IDSubcontrato' => $id_subcontrato, 'UltimoFolio' => 1]);
+            Estimacion::create(['IDEstimacion' => $id_estimacion , 'NumeroFolioConsecutivo' => 1 ]);
+        }
     }
 
     public function getNivel($id){
-        $nivel = '';
         $contratos = $this->contrato->nivelPadre($id)->get();
-        $val = (int)($contratos[count($contratos)-1]['nivel'])+1;
-        if($val < 10) $nivel = '00'.$val.'.';
-        if($val >= 10 && $val < 100) $nivel = '0'.$val.'.';
-        if($val > 99) $nivel = $val.'.';
-        return $nivel;
+        return str_pad($contratos->count() + 1, 3, '0', STR_PAD_LEFT) . '.';
+    }
+
+    public function ajustar_referencia($sindicato, $empresa, $tarifa){
+        $ref_size = (strlen($sindicato) + strlen($empresa) + 3) - 61;
+        if($ref_size > 0){
+            return $sindicato.'/'.substr($empresa, 0, strlen($empresa) - $ref_size).'/'.substr($tarifa, 0, 3);
+        }
+        return $sindicato.'/'.$empresa.'/'.substr($tarifa, 0, 3);
     }
 
     /**
@@ -299,10 +362,17 @@ class EloquentConciliacionRepository implements ConciliacionRepository
         $contrato_proyectado = ContratoProyectadoAcarreo::where('estatus',1)->first();
         $empresa = Empresa::where('rfc', '=', $request->rfc)->first();
         if($contrato_proyectado && $empresa) {
-            $subcontrato = Subcontrato::where('id_antecedente', '=', $contrato_proyectado->id_transaccion)->where('id_empresa', '=', $empresa->id_empresa)->first();
-            if($subcontrato['id_costo']){
-                return [];
+            $subcontrato_acarreo = EmpresaSubcontrato::where('id_empresa_acarreo', '=', $request->id_empresa)
+                ->where('id_sindicato_acarreo', '=', $request->id_sindicato)
+                ->where('id_tipo_tarifa', '=', $request->id_tarifa)->first();
+
+            if($subcontrato_acarreo){
+                $subcontrato = Subcontrato::where('id_transaccion', '=', $subcontrato_acarreo->id_subcontrato)->first();
+                if($subcontrato['id_costo']){
+                    return [];
+                }
             }
+
         }
         $costos = Costo::select(['id_costo', 'descripcion'])->get()->toArray();
         return $costos;
@@ -332,13 +402,13 @@ class EloquentConciliacionRepository implements ConciliacionRepository
         try {
             DB::connection('cadeco')->beginTransaction();
             foreach ($conceptos as $concepto) {
-                $item = Item::where('id_concepto', '=', $concepto->item_antecedente)->first();
+                $item = Item::where('id_concepto', '=', $concepto->item_antecedente)->where('id_transaccion', '=', $concepto->id_antecedente)->first();
                 $item->cantidad -= $concepto->cantidad;
                 $item->save();
 
                 $contrato = Contrato::find($concepto->item_antecedente);
                 $contrato->cantidad_presupuestada -= $concepto->cantidad;
-                $contrato->cantidad_original -= $concepto->cantidad;
+                //$contrato->cantidad_original -= $concepto->cantidad;
                 $contrato->save();
             }
             $registro_conciliacion = ConciliacionEstimacion::where('id_estimacion', '=', $conciliacion->id_estimacion)->first();
