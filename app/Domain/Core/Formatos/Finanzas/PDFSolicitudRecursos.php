@@ -78,6 +78,8 @@ class PDFSolicitudRecursos extends Rotation
             $this->SetHeights(array(0.35));
             $this->SetAligns(array('L', 'L', 'L', 'L', 'L', 'L', 'R', 'L', 'R', 'R'));
             $this->SetWidths(array(0.078 * $this->WidthTotal, 0.303 * $this->WidthTotal, 0.103 * $this->WidthTotal, 0.104 * $this->WidthTotal, 0.063 * $this->WidthTotal, 0.086 * $this->WidthTotal, 0.07 * $this->WidthTotal, 0.062 * $this->WidthTotal, 0.048 * $this->WidthTotal, 0.083 * $this->WidthTotal));
+        } else if ($this->encola == 'total' || $this->encola == 'gran_total') {
+            $this->SetFont('Arial', 'B', self::TAMANO_CONTENIDO);
         }
     }
 
@@ -145,8 +147,10 @@ class PDFSolicitudRecursos extends Rotation
             $this->SetFont('Arial', 'B', self::TAMANO_CONTENIDO);
             $this->Cell($this->WidthTotal, 0.5, isset($grupo[0]->transaccion->rubros[0]) ? $grupo[0]->transaccion->rubros[0]->descripcion : 'SIN AGRUPAR', 'TLRB', 1, 'L', 0);
             $this->SetFont('Arial', '', self::TAMANO_CONTENIDO);
+
+            $this->encola = 'partidas';
+
             foreach ($grupo as $partida) {
-                $this->encola = 'partidas';
                 $this->Row(array(
                     '#'. $partida->transaccion->numero_folio,
                     isset($partida->transaccion->empresa) ? utf8_decode($partida->transaccion->empresa->razon_social) : 'N/A',
@@ -160,6 +164,8 @@ class PDFSolicitudRecursos extends Rotation
                     '$ '. number_format($partida->transaccion->monto * $partida->transaccion->tipo_cambio, 2, '.', ',')
                 ));
             }
+
+            $this->encola = 'total';
             $this->SetFont('Arial', 'B', self::TAMANO_CONTENIDO);
             $this->Cell($this->WidthTotal * 0.917, 0.5, 'TOTAL DE ' . (isset($grupo[0]->transaccion->rubros[0]) ? $grupo[0]->transaccion->rubros[0]->descripcion : 'SIN AGRUPAR')       , 'TLRB', 0, 'L', 0);
             $this->Cell($this->WidthTotal * 0.083, 0.5, '$ '. number_format($grupo->sum(function ($item) { return $item->transaccion->monto * $item->transaccion->tipo_cambio;}), 2, '.', ','), 'TLRB', 1, 'R', 0);
@@ -168,10 +174,14 @@ class PDFSolicitudRecursos extends Rotation
             $this->Ln(0.5);
         }
 
+        $this->encola = 'gran_total';
+
         $this->SetFont('Arial', 'B', self::TAMANO_CONTENIDO);
         $this->Cell($this->WidthTotal * 0.917, 0.5, 'GRAN TOTAL', 'TLRB', 0, 'L', 0);
         $this->Cell($this->WidthTotal * 0.083, 0.5, '$ '. number_format($this->partidas->sum(function ($item) { return $item->transaccion->monto * $item->transaccion->tipo_cambio;}), 2, '.', ','), 'TLRB', 1, 'R', 0);
         $this->SetFont('Arial', '', self::TAMANO_CONTENIDO);
+
+        $this->encola = '';
     }
 
     function logo()
