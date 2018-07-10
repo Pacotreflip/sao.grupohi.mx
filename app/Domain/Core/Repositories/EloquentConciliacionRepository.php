@@ -94,7 +94,6 @@ class EloquentConciliacionRepository implements ConciliacionRepository
 
     public function store(Request $request)
     {
-        //dd('panda', $request->all());
         try{
             DB::connection('cadeco')->beginTransaction();
             $est = ConciliacionEstimacion::where('id_conciliacion', '=', $request->id_conciliacion)->first();
@@ -213,11 +212,10 @@ class EloquentConciliacionRepository implements ConciliacionRepository
                         'id_costo' => (int)$request->id_costo,
                         'id_empresa' => $empresa->id_empresa,
                         'id_moneda' => array_key_exists('id_moneda', $partida)? (int)$partida['id_moneda']:(int)$moneda->id_moneda,
-                        'referencia' => $request->tipo_tarifa == 1? $request->sindicato . ' / '. $empresa->razon_social . ' - Acarreo':$request->sindicato . ' / '. $empresa->razon_social . ' - Suministro',
+                        'referencia' => $this->ajustar_referencia($request->sindicato, $empresa->razon_social, $request->nombre_tarifa),
                         'items' => ($items)
 
                     ]);
-                    //dd($req->all(), $request->all());
                     $subcontrato = $this->subcontrato->create($req);
                     EmpresaSubcontrato::create([
                         'id_empresa_sao' => $empresa->id_empresa,
@@ -261,7 +259,6 @@ class EloquentConciliacionRepository implements ConciliacionRepository
             }catch (\Exception $e){
                 DB::connection('cadeco')->rollback();
                 throw new ResourceException('Error al generar la S.C.  -  ' . $e);
-                //dd($e);///$req, $item, $partida, $subcontrato->id_transaccion, $subcontrato->id_antecedente,
             }
             //  FIN APARTADO SUBCONTRATO
 
@@ -303,7 +300,6 @@ class EloquentConciliacionRepository implements ConciliacionRepository
                 // registrar retencion si la conciliacion es un acarreo
                 if($request->tipo_tarifa == 1){
                     $importe_items = $registro_estimacion->items()->sum('importe');
-                    //dd('panda', $registro_estimacion->id_transaccion);
                     Retencion::create([
                         'id_transaccion' => $registro_estimacion->id_transaccion,
                         'id_tipo_retencion' => 1,
@@ -318,7 +314,6 @@ class EloquentConciliacionRepository implements ConciliacionRepository
             }catch (\Exception $e){
                 DB::connection('cadeco')->rollback();
                 throw new ResourceException('Error al generar la Estimacion  -  ' . $e);
-                //dd($e);///$req, $item, $partida, $subcontrato->id_transaccion, $subcontrato->id_antecedente,
             }
 
             DB::connection('cadeco')->commit();
@@ -346,6 +341,14 @@ class EloquentConciliacionRepository implements ConciliacionRepository
     public function getNivel($id){
         $contratos = $this->contrato->nivelPadre($id)->get();
         return str_pad($contratos->count() + 1, 3, '0', STR_PAD_LEFT) . '.';
+    }
+
+    public function ajustar_referencia($sindicato, $empresa, $tarifa){
+        $ref_size = (strlen($sindicato) + strlen($empresa) + 3) - 61;
+        if($ref_size > 0){
+            return $sindicato.'/'.substr($empresa, 0, strlen($empresa) - $ref_size).'/'.substr($tarifa, 0, 3);
+        }
+        return $sindicato.'/'.$empresa.'/'.substr($tarifa, 0, 3);
     }
 
     /**
