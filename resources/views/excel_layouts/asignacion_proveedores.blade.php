@@ -47,8 +47,8 @@
             @foreach($requisicion['valores'] as $key => $req)
                 @foreach($req['presupuesto'] as $key => $cot)
                     <?php
-                        $cotizacions_ids[] = $cot->idtransaccion_sao;
-                        $empresas_ids[] = $cot->empresa->id_empresa;
+                    $cotizacions_ids[] = $cot->idtransaccion_sao;
+                    $empresas_ids[] = $cot->empresa->id_empresa;
                     ?>
                 @endforeach
             @endforeach
@@ -102,29 +102,7 @@
         <?php $ultimalinea = ($index==count($requisicion['valores']))? 'button-border':'border'; ?>
         <?php $ultimalinealeft = ($index==count($requisicion['valores']))? 'laterales-left-sin':'laterales-left'; ?>
         <?php $ultimalinearinght = ($index==count($requisicion['valores']))? 'laterales-right-sin':'laterales-right'; ?>
-        {{--Cantidades--}}
-        <?php
-        if(isset($req['partida']->item) && $req['partida']->item->transaccion->estatus_transaccion == 1)
-        {
-            if($req['partida']->cantidad_original !=0)
-            {
-                $cantidad_autorizada = $req['partida']->cantidad;
-                $cantidad_solicitada = $req['partida']->cantidad_original;
-            }
-            else
-            {
-                $cantidad_autorizada = $req['partida']->cantidad;
-                $cantidad_solicitada = $req['partida']->cantidad;
-            }
 
-        }
-        else
-        {
-            $cantidad_autorizada = 0;
-            $cantidad_solicitada = $req['partida']->cantidad;
-        }
-
-        ?>
         <tr>
             <!-- Información general de la partida -->
             <td style="background-color: #ffd966" class="laterales-left">{{ $index }}</td>
@@ -136,9 +114,9 @@
             <td style="background-color: #ffd966" class="border">{{ (!empty($req['partida']->material->unidad) ?
             $req['partida']->material->unidad : '') }}</td>
             <td style="background-color: #ffd966"
-                class="border">{{ $cantidad_solicitada }}</td>
+                class="border">{{ $req['partida']->cantidad_solicitada }}</td>
             <td style="background-color: #ffd966"
-                class="laterales-right">{{ $cantidad_autorizada }}</td>
+                class="laterales-right">{{ $req['partida']->cantidad_autorizada }}</td>
 
             <!-- Información de la cotización -->
             @foreach($req['presupuesto'] as $key => $cot)
