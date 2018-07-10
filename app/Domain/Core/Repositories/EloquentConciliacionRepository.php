@@ -193,13 +193,19 @@ class EloquentConciliacionRepository implements ConciliacionRepository
             $subcontrato_acarreo = EmpresaSubcontrato::where('id_empresa_acarreo', '=', $request->id_empresa)
                                 ->where('id_sindicato_acarreo', '=', $request->id_sindicato)
                                 ->where('id_tipo_tarifa', '=', $request->tipo_tarifa)->first();
-            try {
+
+            try {   //// no existe subcontrato
                 if(!$subcontrato_acarreo){
                     $req = new Request();
                     $items = [];
                     foreach ($partidas_conciliacion as $key => $partida){
-                        $concepto_contrato = MaterialAcarreo::select('id_concepto_contrato')->where('id_material_acarreo', '=',(int)$partida['id_material'])
-                            ->where('id_concepto', '=',(int)$partida['id_concepto'] )->first();
+                        $concepto_contrato = MaterialAcarreo::select('id_concepto_contrato')
+                            ->where('id_material_acarreo', '=', (int)$partida['id_material'])
+                            ->where('id_concepto', '=', (int)$partida['id_concepto'])
+                            ->where('Acarreos.material.tarifa', '=', $partida['tarifa'])
+                            ->where('Acarreos.material.id_item', '=', $partida['tiro'])
+                            ->first();
+
                         $moneda = Moneda::where('tipo', 1)->first();
 
                         $items[$key] =  array(
