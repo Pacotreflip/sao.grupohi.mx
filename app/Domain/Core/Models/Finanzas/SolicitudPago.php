@@ -56,12 +56,16 @@ class SolicitudPago extends Transaccion
         $hoy = Carbon::now();
         $solicitud = SolicitudRecursos::where('semana', '=', $hoy->weekOfYear)->where('anio', '=', $hoy->year)->orderBy('id', 'DESC')->first();
 
+        if($solicitud) {
+            $partida = $solicitud->partidas()->where('id_transaccion', '=', $this->id_transaccion)->first();
 
-        $partida = $solicitud->partidas()->where('id_transaccion', '=', $this->id_transaccion)->first();
-
-        if($partida) {
-            return true;
-        } 
-        return false;
+            if($partida) {
+                return true;
+            } else {
+                return false;
+            }
+        } else {
+            return false;
+        }
     }
 }
