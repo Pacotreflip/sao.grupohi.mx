@@ -331,7 +331,7 @@ class RolesPermissionsSeeder extends Seeder
          * Sistemas
          */
         $sistema_contable = Sistema::firstOrCreate(['name' => 'Sistema Contable', 'description' => 'Sistema para el control contable', 'url' => 'sistema_contable']);
-        $finaznas = Sistema::firstOrCreate(['name' => 'Finanzas', 'description' => 'Sistema para el control financiero', 'url' => 'finanzas']);
+        $finanzas = Sistema::firstOrCreate(['name' => 'Finanzas', 'description' => 'Sistema para el control financiero', 'url' => 'finanzas']);
         $formatos = Sistema::firstOrCreate(['name' => 'Formatos', 'description' => 'Sistema de emisión de formatos', 'url' => 'formatos']);
         $tesoreria = Sistema::firstOrCreate(['name' => 'Tesorería', 'description' => 'Sistema de Tesorería', 'url' => 'tesoreria']);
         $control_costos = Sistema::firstOrCreate(['name' => 'Control de Costos', 'description' => 'Sistema de control de costos', 'url' => 'control_costos']);
@@ -384,7 +384,7 @@ class RolesPermissionsSeeder extends Seeder
             ]
         );
         //Finanzas
-        $finaznas->permisos()->sync(
+        $finanzas->permisos()->sync(
             [
                 $editar_comprobante_fondo_fijo->id,
                 $registrar_comprobante_fondo_fijo->id,
@@ -394,8 +394,9 @@ class RolesPermissionsSeeder extends Seeder
                 $registrar_reposicion_fondo_fijo->id,
                 $registrar_pago_cuenta->id,
                 $consultar_solicitud_pago->id,
-                $registrar_solicitud_recursos->id,
 
+
+                $registrar_solicitud_recursos->id,
                 $consultar_solicitud_recursos->id,
                 $modificar_solicitud_recursos->id,
                 $eliminar_solicitud_recursos->id
