@@ -718,6 +718,7 @@ class AsignacionCargaProveedoresLayout extends ValidacionLayout
                     }
 
                     // Validación vigencia
+                    $vigencia = empty($vigencia) ? 0 : $vigencia;
                     if (!is_numeric($vigencia) || (int) $vigencia < 0)
                     {
                         $cotizaciones[$key]['error'][] = "El campo vigencia sólo puede contener caracteres numéricos\n";
