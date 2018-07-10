@@ -80,7 +80,7 @@ class EloquentSubcontratoRepository implements SubcontratoRepository
 
             if (count($validator->errors()->all())) {
                 //Caer en excepción si alguna regla de validación falla
-                throw new StoreResourceFailedException('Error al crear el Subcontrato', $validator->errors());
+                throw new StoreResourceFailedException('Error al crear el Subcontrato ' . $validator->errors());
             } else {
                 DB::connection('cadeco')->beginTransaction();
                 $data = $request->all();

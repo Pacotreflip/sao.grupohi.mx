@@ -123,7 +123,7 @@ class EloquentEstimacionRepository implements EstimacionRepository
 
             if (count($validator->errors()->all())) {
                 //Caer en excepción si alguna regla de validación falla
-                throw new StoreResourceFailedException('Error al crear la Estimación', $validator->errors());
+                throw new StoreResourceFailedException('Error al crear la Estimación '. $validator->errors());
             } else {
 
                 $estimacion = $this->model->create($request->all());
