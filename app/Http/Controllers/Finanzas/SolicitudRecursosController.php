@@ -18,6 +18,10 @@ class SolicitudRecursosController extends Controller {
     {
         $this->middleware('auth');
         $this->middleware('context');
+        //Métodos de consulta
+        $this->middleware('permission:consultar_solicitud_recursos', ['only' => ['index','show']]);
+        //Métodos de edición/modificación
+        $this->middleware('permission:modificar_solicitud_recursos', ['only' => ['edit']]);
     }
 
     public function index() {
