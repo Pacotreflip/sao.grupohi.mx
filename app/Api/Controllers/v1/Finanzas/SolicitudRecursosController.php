@@ -33,9 +33,9 @@ class SolicitudRecursosController extends Controller
         //Métodos de consulta
         $this->middleware('api.permission:consultar_solicitud_recursos', ['only' => ['paginate', 'getSolicitudSemana','show']]);
         //Métodos de edición/modificación
-        $this->middleware('api.permission:modificar_solicitud_recursos', ['only' => ['agregarPartida']]);
+        $this->middleware('api.permission:modificar_solicitud_recursos', ['only' => ['agregarPartida','removerPartida']]);
         //Método de elimiación
-        $this->middleware('api.permission:eliminar_solicitud_recursos', ['only' => ['removerPartida']]);
+        //$this->middleware('api.permission:eliminar_solicitud_recursos', ['only' => ['removerPartida']]);
         //Método de finalizar
         $this->middleware('api.permission:finalizar_solicitud_recursos', ['only' => ['finalizar']]);
 

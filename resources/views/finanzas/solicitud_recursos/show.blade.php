@@ -5,5 +5,5 @@
     {!! Breadcrumbs::render('finanzas.solicitud_recursos.show', $solicitud) !!}
 @endsection
 @section('main-content')
-    <solicitud-recursos-show v-cloak :id="{{$solicitud->id}}"></solicitud-recursos-show>
+    <solicitud-recursos-show v-cloak :id="{{$solicitud->id}}" :permission_consultar_pdf_solicitud_recursos="{{ \Entrust::can('consultar_pdf_solicitud_recursos') ? 'true' : 'false' }}"></solicitud-recursos-show>
 @endsection

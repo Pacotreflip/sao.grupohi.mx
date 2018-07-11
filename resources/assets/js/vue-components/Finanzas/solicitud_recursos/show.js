@@ -2,12 +2,13 @@ Vue.component('solicitud-recursos-show', {
 
     template: require('./templates/show.html'),
 
-    props: ['id'],
+    props: ['id','consultar_pdf_solicitud_recursos'],
 
     data: function () {
         return {
             solicitud: {},
-            cargando: false
+            cargando: false,
+            perm_consultar_pdf_solicitud_recursos: this.consultar_pdf_solicitud_recursos
         }
     },
 

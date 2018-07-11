@@ -34,6 +34,8 @@ class FormatosController extends Controller
 
         $this->middleware('permission:consultar_formato_estimacion', ['only' => ['estimacion_pdf', 'estimacion']]);
         $this->middleware('permission:consultar_formato_comparativa_presupuestos', ['only' => ['comparativa_presupuestos']]);
+        //Permisos solicitud de recursos pdf
+        $this->middleware('permission:consultar_pdf_solicitud_recursos', ['only' => ['solicitud_recursos_pdf']]);
 
         $this->estimacion = $estimacion;
         $this->empresa = $empresa;
