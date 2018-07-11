@@ -446,8 +446,8 @@ Vue.component('concepto-extraordinario-create', {
                     self.form.nivel_base = concepto.nivel;
                     self.form.path_base = concepto.path;
                     self.form.tiene_hijos_base = concepto.tiene_hijos;
+                    self.cerrar_estructura();
                     $('#seleccion_concepto_modal').modal('hide');
-
                 }
             });
         },
@@ -614,16 +614,34 @@ Vue.component('concepto-extraordinario-create', {
 
         validar_botones_arbol:function (concepto, tipo) {
             var self = this;
-            switch (tipo){
+            switch (concepto.presupuesto){
                 case 1:
-                    if(concepto.tiene_hijos > 0 && ! concepto.cargado && concepto.hijos_cobrables == 0){
+                    if(self.form.id_origen_extraordinario === '3' && self.form.id_opcion === '2'){
+                        return false;
+                    }
+                    else if(concepto.tiene_hijos > 0 && ! concepto.cargado && concepto.hijos_cobrables == 0){
                         return true;
                     }
                     break;
                 case 2:
+                    if(self.form.id_origen_extraordinario === '3' && self.form.id_opcion === '2'){
+                        return concepto.tiene_hijos > 0 && !concepto.cargado && concepto.hijos_cobrables == 0;
+                    }
+                    return false;
+                    break;
+                case -1:
+                    return true;
                     break;
             }
+        },
 
+        cerrar_estructura:function () {
+            var self = this;
+            self.modificar_estructura = false;
+            while(self.data.conceptos.length > 1){
+                self.data.conceptos.pop();
+            }
+            self.data.conceptos[0].cargado = false;
         }
     }
 });

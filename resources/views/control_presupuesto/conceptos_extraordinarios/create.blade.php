@@ -556,7 +556,7 @@
                                     <div class="col-md-1">
                                         <button type="button"
                                                 class="btn btn-success pull-right"
-                                                id="buscar"
+                                                id="buscar" data-backdrop="static" data-keyboard="false"
                                                 data-toggle="modal" data-target="#seleccion_concepto_modal"> Buscar
                                         </button>
                                     </div>
@@ -587,7 +587,7 @@
                             <div class="box-footer">
                             <div class="row">
                                 <div class="col-md-12 col-sm-6">
-                                    <button type="button" class="btn btn-default pull-right" v-on:click="validacion_opciones()">Cerrar</button>
+                                    <button type="button" class="btn btn-default pull-right" v-on:click="validacion_opciones()" style="margin-left: 5px">Cerrar</button>
                                     <button type="submit" class="btn btn-primary pull-right" :disabled="cargando">
                                             <span v-if="cargando">
                                                 <i class="fa fa-spinner fa-spin"></i> Guardando
@@ -611,7 +611,7 @@
                     <div class="box box-solid">
                         <div class="box-header with-border">
                             <div class="col-md-10"><h3 class="box-title">Modificar Estructura Presupuestal</h3></div>
-                            <div class="col-md-2"><button type="button" class="btn btn-default pull-right" v-on:click="modificar_estructura = !modificar_estructura" >Cerrar</button></div>
+                            <div class="col-md-2"><button type="button" class="btn btn-default pull-right" v-on:click="cerrar_estructura()" >Cerrar</button></div>
                         </div>
 
                         <div class="box-body">
@@ -630,30 +630,33 @@
                                                     <td v-if="concepto.id_padre == null">
                                                         @{{ concepto.descripcion }}
                                                         <button style="border: 0; background-color: transparent" :disabled="cargando" v-if="concepto.tiene_hijos > 0 && ! concepto.cargado" @click="get_hijos(concepto)">
-                                                                    <span v-if="cargando">
-                                                                        <i class="fa fa-spin fa-spinner"></i>
-                                                                    </span>
+                                                            <span v-if="cargando">
+                                                                <i class="fa fa-spin fa-spinner"></i>
+                                                            </span>
                                                             <span v-else>
-                                                                        <i class="fa fa-plus"></i>
-                                                                    </span>
+                                                                <i class="fa fa-plus"></i>
+                                                            </span>
                                                         </button>
                                                     </td>
                                                     <td  v-else>
                                                         @{{ concepto.descripcion}}
                                                         <button style="border: 0; background-color: transparent" :disabled="cargando" v-if="concepto.tiene_hijos > 0 && ! concepto.cargado && concepto.hijos_cobrables == 0" @click="get_hijos(concepto)">
-                                                                    <span v-if="cargando">
-                                                                        <i class="fa fa-spin fa-spinner"></i>
-                                                                    </span>
+                                                            <span v-if="cargando">
+                                                                <i class="fa fa-spin fa-spinner"></i>
+                                                            </span>
                                                             <span v-else>
-                                                                        <i class="fa fa-plus"></i>
-                                                                    </span>
+                                                                <i class="fa fa-plus"></i>
+                                                            </span>
                                                         </button>
                                                     </td>
-                                                    <td >
+                                                    <td v-if="concepto.hijos_cobrables == 0 || concepto.tiene_hijos == 0">
                                                         <button type="button" class="btn btn-success " @click="modal_agregar_partidas(concepto)">
                                                             <span v-if="cargando"><i class="fa fa-spinner fa-spin"></i> </span>
                                                             <span v-else><i class="fa fa-plus large"></i></span>
                                                         </button>
+                                                    </td>
+                                                    <td v-else>
+                                                        ---
                                                     </td>
 
                                                 </tr>
@@ -673,8 +676,7 @@
                 <div class="modal-dialog modal-lg">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <button type="button" class="close" data-dismiss="modal"><span
-                                        aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+                            <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
                             <h4 class="modal-title">Agregar Insumos</h4>
 
                             <div class="box-tools pull-right">
@@ -715,8 +717,7 @@
                 <div class="modal-dialog modal-lg">
                     <div class="modal-content">
                         <div class="modal-header with-border">
-                            <button type="button" class="close" data-dismiss="modal"><span
-                                        aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+                            <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
                             <h4 class="modal-title">Agregar Partidas al Presupuesto</h4>
                         </div>
                         <div class="modal-body">
@@ -772,8 +773,7 @@
                 <div class="modal-dialog modal-lg">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <button type="button" class="close" data-dismiss="modal"><span
-                                        aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+                            <button type="button" class="close" data-dismiss="modal"  v-on:click="cerrar_estructura()"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
                             <h4 class="modal-title">Agregar Extraordinario</h4>
                             <div class="box-body">
                                 <div class="table-responsive">
@@ -820,6 +820,11 @@
                                     </table>
                                 </div>
                             </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal" v-on:click="cerrar_estructura()">
+                                Cerrar
+                            </button>
                         </div>
                     </div>
                 </div>
