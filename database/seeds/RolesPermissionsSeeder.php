@@ -159,10 +159,7 @@ class RolesPermissionsSeeder extends Seeder
 
         //Finanzas Solicitud de Recursos
         $registrar_solicitud_recursos = Permission::firstOrCreate(['name' => 'registrar_solicitud_recursos', 'display_name' => 'Registrar Solicitudes de Recursos', 'description' => 'Permiso para poder Registrar Solicitudes de Recursos']);
-
         $consultar_solicitud_recursos = Permission::firstOrCreate(['name' => 'consultar_solicitud_recursos', 'display_name' => 'Consultar Solicitudes de Recursos', 'description' => 'Permiso para poder Consultar Solicitudes de Recursos']);
-        $modificar_solicitud_recursos = Permission::firstOrCreate(['name' => 'modificar_solicitud_recursos', 'display_name' => 'Modificar Solicitudes de Recursos', 'description' => 'Permiso para poder Modificar Solicitudes de Recursos']);
-        $eliminar_solicitud_recursos = Permission::firstOrCreate(['name' => 'eliminar_solicitud_recursos', 'display_name' => 'Eliminar Solicitudes de Recursos', 'description' => 'Permiso para poder Eliminar Solicitudes de Recursos']);
         $finalizar_solicitud_recursos = Permission::firstOrCreate(['name' => 'finalizar_solicitud_recursos', 'display_name' => 'Finalizar Solicitudes de Recursos', 'description' => 'Permiso para poder Finalizar Solicitudes de Recursos']);
         $consulta_pdf_solicitud_recursos = Permission::firstOrCreate(['name' => 'consultar_pdf_solicitud_recursos', 'display_name' => 'Consultar PDF Solicitudes de Recursos', 'description' => 'Permiso para poder Consultar PDF de Solicitudes de Recursos']);
 
@@ -398,14 +395,10 @@ class RolesPermissionsSeeder extends Seeder
                 $registrar_pago_cuenta->id,
                 $consultar_solicitud_pago->id,
 
-
                 $registrar_solicitud_recursos->id,
                 $consultar_solicitud_recursos->id,
-                $modificar_solicitud_recursos->id,
-                $eliminar_solicitud_recursos->id,
                 $finalizar_solicitud_recursos->id,
                 $consulta_pdf_solicitud_recursos->id
-
             ]
         );
 

@@ -8,7 +8,7 @@
     <div class="row">
         <div class="col-md-12">
             <solicitud-recursos-index
-                    :permission_modificar_solicitud_recursos="{{ \Entrust::can('modificar_solicitud_recursos') ? 'true' : 'false' }}"
+                    :permission_modificar_solicitud_recursos="{{ \Entrust::can('registrar_solicitud_recursos') ? 'true' : 'false' }}"
                     v-cloak
             >
             </solicitud-recursos-index>

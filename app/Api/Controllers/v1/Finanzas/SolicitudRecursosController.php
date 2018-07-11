@@ -29,13 +29,9 @@ class SolicitudRecursosController extends Controller
 
     public function __construct(SolicitudRecursosRepository $solicitudRecursosRepository)
     {
-        $this->middleware('api.permission:registrar_solicitud_recursos', ['only' => ['store']]);
+        $this->middleware('api.permission:registrar_solicitud_recursos', ['only' => ['store', 'agregarPartida','removerPartida']]);
         //Métodos de consulta
         $this->middleware('api.permission:consultar_solicitud_recursos', ['only' => ['paginate', 'getSolicitudSemana','show']]);
-        //Métodos de edición/modificación
-        $this->middleware('api.permission:modificar_solicitud_recursos', ['only' => ['agregarPartida','removerPartida']]);
-        //Método de elimiación
-        //$this->middleware('api.permission:eliminar_solicitud_recursos', ['only' => ['removerPartida']]);
         //Método de finalizar
         $this->middleware('api.permission:finalizar_solicitud_recursos', ['only' => ['finalizar']]);
 
