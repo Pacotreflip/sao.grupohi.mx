@@ -259,7 +259,8 @@ class RolesPermissionsSeeder extends Seeder
             $registrar_pago_cuenta->id,
             $registrar_reposicion_fondo_fijo->id,
             $consultar_solicitud_pago->id,
-            $registrar_solicitud_recursos->id,
+            $consultar_solicitud_recursos->id,
+            $registrar_solicitud_recursos->id
         ]);
         $consulta_finanzas->perms()->sync([
             $consultar_comprobante_fondo_fijo->id,
