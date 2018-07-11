@@ -142,8 +142,20 @@
                 <td style="background-color: #9bc2e6" class="{{$ultimalinea}} ">
                 </td>
 
-                {{--Moneda - calculado en backend --}}
-                <td style="background-color: #fff" class="{{$ultimalinea}} "></td>
+                {{--Moneda--}}
+                <td style="background-color: #fff" class="{{$ultimalinea}} "><?php
+                            switch ((int) $cot_partida->idmoneda)
+                            {
+                                case 2:
+                                    echo "EURO";
+                                    break;
+                                case 1:
+                                    echo "DOLAR USD";
+                                    break;
+                                case 3:
+                                    echo "PESO MXP";
+                                    break;
+                            } ?></td>
 
                 {{--Precio Total Moneda Conversión--}}
                 <td style="background-color: #9bc2e6" class="{{$ultimalinea}} "></td>

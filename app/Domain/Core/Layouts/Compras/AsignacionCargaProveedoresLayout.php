@@ -225,18 +225,6 @@ class AsignacionCargaProveedoresLayout extends ValidacionLayout
                             $desde = (count($this->headerDinamicos) * $key) + (count($this->headerFijos));
                             $moneda = "PESO MXP";
 
-                            switch ($cotizacion->idmoneda)
-                            {
-                                case 3:
-                                    $moneda = "EURO";
-                                    break;
-                                case 2:
-                                    $moneda = "DOLAR USD";
-                                    break;
-                                case 1:
-                                    $moneda = "PESO MXP";
-                                    break;
-                            }
 
                             // Precio Unitario
                             $sheet->getStyle(\PHPExcel_Cell::stringFromColumnIndex($desde) . $haciaAbajo)->getProtection()->setLocked(\PHPExcel_Style_Protection::PROTECTION_UNPROTECTED);
@@ -263,8 +251,6 @@ class AsignacionCargaProveedoresLayout extends ValidacionLayout
                             $objValidation->setPromptTitle('Tipo de Moneda');
                             $objValidation->setPrompt('Selecciona un valor de la lista');
                             $objValidation->setFormula1('"EURO, DOLAR USD, PESO MXP"');
-                            $sheet->setCellValue(\PHPExcel_Cell::stringFromColumnIndex($desde + 3) . $haciaAbajo,
-                                $moneda);
 
                             $sheet->getStyle(\PHPExcel_Cell::stringFromColumnIndex($desde + 3) . $haciaAbajo)->getProtection()->setLocked(\PHPExcel_Style_Protection::PROTECTION_UNPROTECTED);
 
@@ -610,21 +596,7 @@ class AsignacionCargaProveedoresLayout extends ValidacionLayout
                             if ($i < ($layout['maxRow'] + $this->cabecerasLength)) {
                                 if (is_numeric($id_transaccion) and !empty($id_transaccion) && is_array($idrqctoc_solicitudes_partidas) and count($idrqctoc_solicitudes_partidas)) {
                                     if(is_numeric($row[$k + ($this->lengthHeaderDinamicos - 11)])) {
-                                        $idMoneda = isset($moneda[$row[$k + ($this->lengthHeaderDinamicos - 8)]])?$moneda[$row[$k + ($this->lengthHeaderDinamicos - 8)]]:3;
-
-                                        $moneda = "PESO MXP";
-                                        switch ($row[9])
-                                        {
-                                            case "EURO":
-                                                $moneda = 3;
-                                                break;
-                                            case "DOLAR USD":
-                                                $moneda = 2;
-                                                break;
-                                            case "PESO MXP":
-                                                $moneda = 1;
-                                                break;
-                                        }
+                                        $monedaID = isset($moneda[$row[$k + ($this->lengthHeaderDinamicos - 8)]]) ? $moneda[$row[$k + ($this->lengthHeaderDinamicos - 8)]]:'PESO MXP';
 
                                         $arrayCotiazaciones[$id_transaccion]['partidas'][] = [
                                             'linea' => $i,
@@ -643,7 +615,7 @@ class AsignacionCargaProveedoresLayout extends ValidacionLayout
                                                 $this->mCrypt->decrypt($row[$k + ($this->lengthHeaderDinamicos - 5)])),
                                             'idrqctoc_solicitudes_partidas_2' => $this->mCrypt->decrypt($row[$k + ($this->lengthHeaderDinamicos - 4)]),
                                             'idrqctoc_solicitudes' => $this->mCrypt->decrypt($row[$k + ($this->lengthHeaderDinamicos - 3)]),
-                                            "IdMoneda" => $moneda,
+                                            "IdMoneda" => $monedaID,
                                             "estado" => 1,
                                         ];
                                     }
