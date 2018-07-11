@@ -100,7 +100,7 @@
             </p>
         </div>
         <hr>
-        <div class="col-md-12">
+        <div class="col-md-12" v-if="perm_finalizar_solicitud_recursos==true">
             <button class="pull-right btn btn-sm btn-success" @click="confirm_finalizar">Finalizar</button>
         </div>
     </div>
