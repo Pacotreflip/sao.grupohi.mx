@@ -185,7 +185,7 @@ class RolesPermissionsSeeder extends Seeder
         $administrador_sistema         = Role::firstOrCreate(['name' => 'administrador_sistema', 'display_name' => 'Administrador del Sistema', 'description' => 'Administrador del Sistema']);
         $comprador                     = Role::firstOrCreate(['name' => 'comprador', 'display_name' => 'Comprador', 'description' => 'Rol de Procuración']);
         $coordinador_procuracion       = Role::firstOrCreate(['name' => 'coordinador_procuracion', 'display_name' => 'Coordinador Procuracion', 'description' => 'Rol de Coordinador Procuración']);
-        $cuentas_por_pagar             = Role::firsrOrCreate(['name' => 'cuentas_por_pagar', 'display_name' => 'Cuentas por Pagar', 'description' => 'Rol de Cuentas por Pagar']);
+        $cuentas_por_pagar             = Role::firstOrCreate(['name' => 'cuentas_por_pagar', 'display_name' => 'Cuentas por Pagar', 'description' => 'Rol de Cuentas por Pagar']);
 
         /**
          * Asignaciones
