@@ -1,5 +1,5 @@
 <section class="invoice">
-    <!-- title row -->
+    <!-- title row --> 
     <div class="row">
         <div class="col-xs-12">
             <h2 class="page-header">
@@ -44,7 +44,7 @@
                 <tbody>
                 <tr v-for="partida in solicitud.partidas">
                     <td>#{{ partida.transaccion.numero_folio}}</td>
-                    <td>{{ partida.transaccion.rubro ? partida.transaccion.rubro.descripcion: 'N/A'}}</td>
+                    <td>{{ partida.transaccion.rubros[0] ? partida.transaccion.rubros[0].descripcion: 'N/A'}}</td>
                     <td>{{ partida.transaccion.tipo_tran.Descripcion }}</td>
                     <td>{{ partida.transaccion.referencia ?  partida.transaccion.referencia : 'N/A'}}</td>
                     <td>{{ partida.transaccion.contrarecibo ? '#' + partida.transaccion.contrarecibo.numero_folio : 'N/A' }}</td>
