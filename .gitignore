@@ -19,6 +19,6 @@ composer.lock
 php_errors.log
 /resources/assets/css/
 /public/img/logo_temp.png
-/bootstrap/cache/compiled.php
+/bootstrap/cache/config.php
 /bootstrap/cache/services.php
 /bootstrap/cache/routes.php
