@@ -142,6 +142,13 @@ class RolesPermissionsSeeder extends Seeder
         $rechazar_cambio_cantidad_insumos= Permission::firstOrCreate(['name' => 'rechazar_cambio_cantidad_insumos', 'display_name' => 'Rechazar Cambio de Cantidad de Insumos', 'description' => 'Rechazar Cambio de Cantidad de Insumos']);
         $consultar_cambio_cantidad_insumos = Permission::firstOrCreate(['name' => 'consultar_cambio_cantidad_insumos', 'display_name' => 'Consultar Cambio de Cantidad  de Insumos', 'description' => 'Consultar Cambio de Cantidad de Insumos']);
 
+        // Control Presupuesto Concepto Extraordinario
+        $registrar_extraordinario = Permission::firstOrCreate(['name' => 'registrar_extraordinario', 'display_name' => 'Registrar Concepto Extraordinario', 'description' => 'Registrar Concepto Extraordinario']);
+        $autorizar_extraordinario = Permission::firstOrCreate(['name' => 'autorizar_extraordinario', 'display_name' => 'Autorizar Concepto Extraordinario', 'description' => 'Autorizar Concepto Extraordinario']);
+        $aplicar_extraordinario = Permission::firstOrCreate(['name' => 'aplicar_extraordinario', 'display_name' => 'Aplicar Concepto Extraordinario', 'description' => 'Aplicar Concepto Extraordinario']);
+        $rechazar_extraordinario = Permission::firstOrCreate(['name' => 'rechazar_extraordinario', 'display_name' => 'Rechazar Concepto Extraordinario', 'description' => 'Rechazar Concepto Extraordinario']);
+        $consultar_extraordinario = Permission::firstOrCreate(['name' => 'consultar_extraordinario', 'display_name' => 'Consultar Concepto Extraordinario', 'description' => 'Consultar Concepto Extraordinario']);
+
         //Roles y Permisos
         $administrar_roles_permisos = Permission::firstOrCreate(['name' => 'administrar_roles_permisos', 'display_name' => 'Administrar Roles y Permisos', 'description' => 'Permisos para asignación de roles a usuarios']);
         $administracion_configuracion_obra = Permission::firstOrCreate(['name' => 'administracion_configuracion_obra', 'display_name' => 'Configuración de la estructura la obra', 'description' => 'Permisos para configuración de la estructura de obra']);
@@ -178,6 +185,7 @@ class RolesPermissionsSeeder extends Seeder
         $administrador_sistema         = Role::firstOrCreate(['name' => 'administrador_sistema', 'display_name' => 'Administrador del Sistema', 'description' => 'Administrador del Sistema']);
         $comprador                     = Role::firstOrCreate(['name' => 'comprador', 'display_name' => 'Comprador', 'description' => 'Rol de Procuración']);
         $coordinador_procuracion       = Role::firstOrCreate(['name' => 'coordinador_procuracion', 'display_name' => 'Coordinador Procuracion', 'description' => 'Rol de Coordinador Procuración']);
+        $cuentas_por_pagar             = Role::firsrOrCreate(['name' => 'cuentas_por_pagar', 'display_name' => 'Cuentas por Pagar', 'description' => 'Rol de Cuentas por Pagar']);
 
         /**
          * Asignaciones
@@ -257,7 +265,9 @@ class RolesPermissionsSeeder extends Seeder
             $registrar_reposicion_fondo_fijo->id,
             $consultar_solicitud_pago->id,
             $consultar_solicitud_recursos->id,
-            $registrar_solicitud_recursos->id
+            $registrar_solicitud_recursos->id,
+            $consulta_pdf_solicitud_recursos->id,
+            $finalizar_solicitud_recursos->id
         ]);
         $consulta_finanzas->perms()->sync([
             $consultar_comprobante_fondo_fijo->id,
@@ -315,6 +325,11 @@ class RolesPermissionsSeeder extends Seeder
             $autorizar_cambio_cantidad_insumos->id,
             $rechazar_cambio_cantidad_insumos->id,
             $consultar_cambio_cantidad_insumos->id,
+            $registrar_extraordinario->id,
+            $autorizar_extraordinario->id,
+            $aplicar_extraordinario->id,
+            $rechazar_extraordinario->id,
+            $consultar_extraordinario->id,
         ]);
         $administrador_sistema->perms()->sync([
             $administrar_roles_permisos->id,
@@ -326,6 +341,13 @@ class RolesPermissionsSeeder extends Seeder
             $consultar_asignacion->id,
             $resgistro_asignacion->id,
             $eliminar_asignacion->id,
+        ]);
+
+        $cuentas_por_pagar->perms()->sync([
+            $consultar_solicitud_recursos->id,
+            $registrar_solicitud_recursos->id,
+            $consulta_pdf_solicitud_recursos->id,
+            $finalizar_solicitud_recursos->id
         ]);
         /**
          * Sistemas
@@ -445,7 +467,12 @@ class RolesPermissionsSeeder extends Seeder
                 $registrar_cambio_cantidad_insumos->id,
                 $autorizar_cambio_cantidad_insumos->id,
                 $rechazar_cambio_cantidad_insumos->id,
-                $consultar_cambio_cantidad_insumos->id
+                $consultar_cambio_cantidad_insumos->id,
+                $registrar_extraordinario->id,
+                $autorizar_extraordinario->id,
+                $aplicar_extraordinario->id,
+                $rechazar_extraordinario->id,
+                $consultar_extraordinario->id
             ]
         );
 
