@@ -1,6 +1,6 @@
 Vue.component('solicitud-recursos-edit', {
     template: require('./templates/edit.html'),
-    props: ['id'],
+    props: ['id','permission_finalizar_solicitud_recursos'],
     data: function () {
         return {
             transacciones : [],
@@ -13,7 +13,8 @@ Vue.component('solicitud-recursos-edit', {
             fecha_inicio: '',
             fecha_fin: '',
             posterior: false,
-            filtro: ''
+            filtro: '',
+            perm_finalizar_solicitud_recursos: this.permission_finalizar_solicitud_recursos
         }
     },
 

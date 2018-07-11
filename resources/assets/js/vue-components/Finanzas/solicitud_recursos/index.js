@@ -1,12 +1,10 @@
 Vue.component('solicitud-recursos-index', {
-    props: ['permission_modificar_solicitud_recursos','permission_consultar_solicitud_recursos','permission_eliminar_solicitud_recursos'],
+    props: ['permission_modificar_solicitud_recursos'],
     template: require('./templates/index.html'),
     data: function () {
         return {
             cargando: false,
-            permission_consultar_solicitud_recursos: permission_consultar_solicitud_recursos,
-            permission_modificar_solicitud_recursos: permission_modificar_solicitud_recursos,
-            permission_eliminar_solicitud_recursos: permission_eliminar_solicitud_recursos
+            perm_modificar_solicitud_recursos: this.permission_modificar_solicitud_recursos
         }
     },
     mounted: function () {
@@ -58,7 +56,7 @@ Vue.component('solicitud-recursos-index', {
                 {data : 'cantidad_transacciones'},
                 {data : 'total'},
                 {data : {}, render: function (data) {
-                    if (self.permission_consultar_solicitud_recursos == true){
+                    if (self.perm_modificar_solicitud_recursos == true){
                         return '<a href="'+App.host+'/finanzas/solicitud_recursos/'+data.id+ '" title="Ver" class="btn btn-xs btn-default"> <i class="fa fa-eye"></i></a>'
                     }
                     return '';

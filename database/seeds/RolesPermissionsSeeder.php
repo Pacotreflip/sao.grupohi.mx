@@ -163,7 +163,7 @@ class RolesPermissionsSeeder extends Seeder
         $consultar_solicitud_recursos = Permission::firstOrCreate(['name' => 'consultar_solicitud_recursos', 'display_name' => 'Consultar Solicitudes de Recursos', 'description' => 'Permiso para poder Consultar Solicitudes de Recursos']);
         $modificar_solicitud_recursos = Permission::firstOrCreate(['name' => 'modificar_solicitud_recursos', 'display_name' => 'Modificar Solicitudes de Recursos', 'description' => 'Permiso para poder Modificar Solicitudes de Recursos']);
         $eliminar_solicitud_recursos = Permission::firstOrCreate(['name' => 'eliminar_solicitud_recursos', 'display_name' => 'Eliminar Solicitudes de Recursos', 'description' => 'Permiso para poder Eliminar Solicitudes de Recursos']);
-
+        $finalizar_solicitud_recursos = Permission::firstOrCreate(['name' => 'finalizar_solicitud_recursos', 'display_name' => 'Finalizar Solicitudes de Recursos', 'description' => 'Permiso para poder Finalizar Solicitudes de Recursos']);
         /**
          * Roles
          */
@@ -399,7 +399,8 @@ class RolesPermissionsSeeder extends Seeder
                 $registrar_solicitud_recursos->id,
                 $consultar_solicitud_recursos->id,
                 $modificar_solicitud_recursos->id,
-                $eliminar_solicitud_recursos->id
+                $eliminar_solicitud_recursos->id,
+                $finalizar_solicitud_recursos->id
 
             ]
         );

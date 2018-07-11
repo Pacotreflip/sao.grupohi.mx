@@ -12,5 +12,5 @@
             <h4 class="pull-right">Semana {{ $solicitud->semana }} del {{$solicitud->dia_inicio->format('d/m/Y')}} al {{$solicitud->dia_fin->format('d/m/Y')}} ({{$solicitud->tipo->descripcion}}) </h4>
         </div>
     </div>
-    <solicitud-recursos-edit v-cloak :id="{{$solicitud->id}}"></solicitud-recursos-edit>
+    <solicitud-recursos-edit v-cloak :id="{{$solicitud->id}}" :permission_finalizar_solicitud_recursos="{{ \Entrust::can('finalizar_solicitud_recursos') ? 'true' : 'false' }}"></solicitud-recursos-edit>
 @endsection
