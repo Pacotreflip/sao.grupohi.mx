@@ -6,13 +6,19 @@ Vue.component('solicitud-recursos-show', {
 
     data: function () {
         return {
-            solicitud: {},
+            solicitud: {
+                tipo : {},
+                dia_inicio : {},
+                dia_fin : {},
+                usuario : {} 
+            },
             cargando: false,
             perm_consultar_pdf_solicitud_recursos: this.permission_consultar_pdf_solicitud_recursos
         }
     },
 
     mounted: function () {
+
         let self = this;
         self.get_solicitud().then(function (data) {
             self.solicitud = data.solicitud;
@@ -22,9 +28,11 @@ Vue.component('solicitud-recursos-show', {
     computed: {
         total: function () {
             let res = 0;
-            this.solicitud.partidas.forEach(function (val) {
-                res += (val.transaccion.monto * val.transaccion.tipo_cambio);
-            });
+            if(typeof this.solicitud.partidas != 'undefined'){
+                this.solicitud.partidas.forEach(function (val) {
+                    res += (val.transaccion.monto * val.transaccion.tipo_cambio);
+                });
+            }
             return res;
         }
     },
@@ -44,7 +52,7 @@ Vue.component('solicitud-recursos-show', {
                         'Authorization': localStorage.getItem('token')
                     },
                     data: {
-                        with: ['partidas.transaccion', 'tipo', 'usuario']
+                        with: ['partidas.transaccion.rubros', 'tipo', 'usuario']
                     },
                     success: function (response) {
                         self.cargando = false;
