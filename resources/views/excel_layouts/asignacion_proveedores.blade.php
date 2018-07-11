@@ -135,7 +135,7 @@
 
                 {{--% Descuento--}}
                 <td style="background-color: #fff" class="{{$ultimalinea}} ">
-                    {{ $cot_partida ? $cot_partida->porcentaje_descuento : '0' }}
+                    {{ $cot_partida ? $cot_partida->descuento : '0' }}
                 </td>
 
                 {{--Precio Total--}}
