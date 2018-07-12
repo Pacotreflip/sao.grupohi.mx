@@ -161,7 +161,24 @@
             </td>
 
             {{--Moneda - calculado en backend --}}
-            <td style="background-color: #fff" class="{{$ultimalinea}} "></td>
+            <td style="background-color: #fff" class="{{$ultimalinea}} "><?php
+                if (isset($presupuesto->id_moneda))
+                    switch ((int) $presupuesto->id_moneda)
+                    {
+                        case 3:
+                            echo "EURO";
+                            break;
+                        case 2:
+                            echo "DOLAR USD";
+                            break;
+                        case 1:
+                            echo "PESO MXP";
+                            break;
+                    }
+
+                else
+                    echo "PESO MXP";
+                ?></td>
 
             {{--Precio Unitario Moneda Conversión - calculado en backend--}}
             <td style="background-color: #9bc2e6" class="{{$ultimalinea}} ">
