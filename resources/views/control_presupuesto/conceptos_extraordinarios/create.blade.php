@@ -278,7 +278,7 @@
                                                         </td>
                                                         <td>
                                                             <div class="form-group" :class="{'has-error': validation_errors.has('form_save_solicitud.Material Importe [' + (i + 1) + ']')}">
-                                                               $ <input type="text" step=".01" placeholder="Ingrese Cantidad" v-validate="'required|decimal:3|min_value:0|max_value:999999999999'"
+                                                               $ <input type="text" step=".01" placeholder="Ingrese Cantidad" v-validate="'required|decimal:6|min_value:0|max_value:999999999999'"
                                                                         :name="'Material Importe [' + (i + 1) + ']'"
                                                                         v-model="insumo.precio_unitario" style="width: 90%; height: 25px"
                                                                         :class="'p_u_mat_' + i"
@@ -339,7 +339,7 @@
                                                     </td>
                                                     <td>
                                                         <div class="form-group" :class="{'has-error': validation_errors.has('form_save_solicitud.Mano de Obra Importe [' + (i + 1) + ']')}">
-                                                            $<input type="text" step=".01" placeholder="Ingrese Cantidad" v-validate="'required|decimal:3|min_value:0|max_value:999999999999'"
+                                                            $<input type="text" step=".01" placeholder="Ingrese Cantidad" v-validate="'required|decimal:6|min_value:0|max_value:999999999999'"
                                                                     :name="'Mano de Obra Importe [' + (i + 1) + ']'"
                                                                     v-model="insumo.precio_unitario" style="width: 90%; height: 25px"
                                                                     :class="'p_u_mdo_' + i"
@@ -401,7 +401,7 @@
                                                     </td>
                                                     <td>
                                                         <div class="form-group" :class="{'has-error': validation_errors.has('form_save_solicitud.Herramienta y Equipo Importe [' + (i + 1) + ']')}">
-                                                            $<input type="text" step=".01" placeholder="Ingrese Cantidad" v-validate="'required|decimal:3|min_value:0|max_value:999999999999'"
+                                                            $<input type="text" step=".01" placeholder="Ingrese Cantidad" v-validate="'required|decimal:6|min_value:0|max_value:999999999999'"
                                                                     :name="'Herramienta y Equipo Importe [' + (i + 1) + ']'"
                                                                     v-model="insumo.precio_unitario" style="width: 90%; height: 25px"
                                                                     :class="'p_u_hye_' + i"
@@ -463,7 +463,7 @@
                                                     </td>
                                                     <td>
                                                         <div class="form-group" :class="{'has-error': validation_errors.has('form_save_solicitud.Maquinaria Importe [' + (i + 1) + ']')}">
-                                                            $ <input type="text" step=".01" placeholder="Ingrese Cantidad" v-validate="'required|decimal:3|min_value:0|max_value:999999999999'"
+                                                            $ <input type="text" step=".01" placeholder="Ingrese Cantidad" v-validate="'required|decimal:6|min_value:0|max_value:999999999999'"
                                                                      :name="'Maquinaria Importe [' + (i + 1) + ']'"
                                                                      v-model="insumo.precio_unitario" style="width: 90%; height: 25px"
                                                                      :class="'p_u_maq_' + i"
