@@ -267,6 +267,9 @@ Vue.component('concepto-extraordinario-create', {
                         self.mostrar_tabla = false;
                         self.form.motivo = '';
                         self.form.area_solicitante = '';
+                        self.form.path_base = '';
+                        self.form.id_concepto_base = '';
+                        self.form.nivel_base = '';
                     }
                 });
             }
