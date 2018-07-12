@@ -44,6 +44,7 @@ class CotizacionContrato extends Transaccion
         'FechaHoraRegistro',
         'numero_folio',
         'PorcentajeDescuento',
+        'anticipo',
         'TcUSD',
         'TcEuro',
         'DiasCredito',

@@ -753,6 +753,7 @@ class AsignacionCargaPreciosLayout extends ValidacionLayout
                                 $totalesContratos = $cotizacionContrato->getTotalesPresupiestos();
                                 $cotizacionContrato->monto = $totalesContratos[0]->monto;
                                 $cotizacionContrato->impuesto = $totalesContratos[0]->impuesto;
+                                $cotizacionContrato->anticipo = $contrato['cotizacion']['anticipio'];  //@todo renombrar variables  anticipio => anticipo
                                 $cotizacionContrato->save();
                                 $arrayPresupuesto['success'] = true;
                                 $success++;
