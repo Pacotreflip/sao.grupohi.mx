@@ -132,7 +132,8 @@
         @foreach($contratoProyectado['presupuesto'] as $key => $presupuesto)
             <?php
                 $desde = (count($headerPresupuestos) * $key) + (count($headerCotizaciones));
-                $presupuesto_partida = $presupuesto->presupuestos()->where('id_concepto', '=', $contratoProyectado['partida']->id_concepto)->first()
+                $presupuesto_partida = $presupuesto->presupuestos()->where('id_concepto', '=', $contratoProyectado['partida']->id_concepto)->first();
+
             ?>
 
             {{--Precio Unitario Antes Descto--}}
@@ -146,7 +147,7 @@
             </td>
 
             {{--% Descuento--}}
-            <td style="background-color: #fff" class="{{$ultimalinea}} ">{{ $presupuesto->PorcentajeDescuento }}</td>
+            <td style="background-color: #fff" class="{{$ultimalinea}} ">{{ $presupuesto_partida->PorcentajeDescuento }}</td>
 
             {{--Precio Unitario--}}
             <td style="background-color: #9bc2e6" class="{{$ultimalinea}} ">
