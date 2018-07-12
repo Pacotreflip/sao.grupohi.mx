@@ -130,13 +130,13 @@
 
         <!-- Información de la cotización -->
         @foreach($contratoProyectado['presupuesto'] as $key => $presupuesto)
-
             <?php
-            $desde = (count($headerPresupuestos) * $key) + (count($headerCotizaciones));
+                $desde = (count($headerPresupuestos) * $key) + (count($headerCotizaciones));
+                $presupuesto_partida = $presupuesto->presupuestos()->where('id_concepto', '=', $contratoProyectado['partida']->id_concepto)->first()
             ?>
 
             {{--Precio Unitario Antes Descto--}}
-            <td style="background-color: #fff;" class="{{$ultimalinealeft}} "></td>
+            <td style="background-color: #fff;" class="{{$ultimalinealeft}} ">{{ $presupuesto_partida->Precio_Unitario_Antes_Descuento }}</td>
 
             {{--Precio Total Antes Descto--}}
             <td style="background-color: #9bc2e6" class="{{$ultimalinea}} ">
@@ -146,9 +146,7 @@
             </td>
 
             {{--% Descuento--}}
-            <td style="background-color: #fff" class="{{$ultimalinea}} ">
-                0
-            </td>
+            <td style="background-color: #fff" class="{{$ultimalinea}} ">{{ $presupuesto->PorcentajeDescuento }}</td>
 
             {{--Precio Unitario--}}
             <td style="background-color: #9bc2e6" class="{{$ultimalinea}} ">
@@ -162,8 +160,8 @@
 
             {{--Moneda - calculado en backend --}}
             <td style="background-color: #fff" class="{{$ultimalinea}} "><?php
-                if (isset($presupuesto->id_moneda))
-                    switch ((int) $presupuesto->id_moneda)
+                if (isset($presupuesto_partida->IdMoneda))
+                    switch ((int) $presupuesto_partida->IdMoneda)
                     {
                         case 3:
                             echo "EURO";
@@ -189,7 +187,7 @@
             <td style="background-color: #9bc2e6" class="{{$ultimalinea}} "></td>
 
             {{--Observaciones--}}
-            <td style="background-color: #fff" class="{{$ultimalinea}} "></td>
+            <td style="background-color: #fff" class="{{$ultimalinea}} ">{{ $presupuesto_partida->Observaciones }}</td>
 
             {{--id_moneda--}}
             <td style="background-color: #fff; color: #fff"></td>
