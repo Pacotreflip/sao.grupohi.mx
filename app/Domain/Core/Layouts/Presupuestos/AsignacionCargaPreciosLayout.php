@@ -464,7 +464,7 @@ class AsignacionCargaPreciosLayout extends ValidacionLayout
                         // Referencia de posición para los totales/subtotales
                         $desde = $desdeCot - 1;
                         $sheet->setCellValue(\PHPExcel_Cell::stringFromColumnIndex($desde) . $pos, '% Anticipo');
-                        $sheet->setCellValue(\PHPExcel_Cell::stringFromColumnIndex($desde + 1) . $pos, '0');
+                        $sheet->setCellValue(\PHPExcel_Cell::stringFromColumnIndex($desde + 1) . $pos, (isset($presupuesto->anticipo) ? $presupuesto->anticipo : '0'));
                         $sheet->getStyle(\PHPExcel_Cell::stringFromColumnIndex($desde + 1) . $pos)->getProtection()->setLocked(\PHPExcel_Style_Protection::PROTECTION_UNPROTECTED);
                     }
 
@@ -477,7 +477,7 @@ class AsignacionCargaPreciosLayout extends ValidacionLayout
                         // Referencia de posición para los totales/subtotales
                         $desde = $desdeCot - 1;
                         $sheet->setCellValue(\PHPExcel_Cell::stringFromColumnIndex($desde) . $pos, 'Crédito dias');
-                        $sheet->setCellValue(\PHPExcel_Cell::stringFromColumnIndex($desde + 1) . $pos, '');
+                        $sheet->setCellValue(\PHPExcel_Cell::stringFromColumnIndex($desde + 1) . $pos, (isset($presupuesto->DiasCredito) ? $presupuesto->DiasCredito : '0'));
                         $sheet->getStyle(\PHPExcel_Cell::stringFromColumnIndex($desde + 1) . $pos)->getProtection()->setLocked(\PHPExcel_Style_Protection::PROTECTION_UNPROTECTED);
                     }
 
@@ -490,7 +490,7 @@ class AsignacionCargaPreciosLayout extends ValidacionLayout
                         // Referencia de posición para los totales/subtotales
                         $desde = $desdeCot - 1;
                         $sheet->setCellValue(\PHPExcel_Cell::stringFromColumnIndex($desde) . $pos, 'Vigencia dias');
-                        $sheet->setCellValue(\PHPExcel_Cell::stringFromColumnIndex($desde + 1) . $pos, '');
+                        $sheet->setCellValue(\PHPExcel_Cell::stringFromColumnIndex($desde + 1) . $pos, (isset($presupuesto->DiasVigencia) ? $presupuesto->DiasVigencia : '0'));
                         $sheet->getStyle(\PHPExcel_Cell::stringFromColumnIndex($desde + 1) . $pos)->getProtection()->setLocked(\PHPExcel_Style_Protection::PROTECTION_UNPROTECTED);
                     }
 
@@ -504,7 +504,7 @@ class AsignacionCargaPreciosLayout extends ValidacionLayout
                         $desde = $desdeCot - 1;
                         $sheet->setCellValue(\PHPExcel_Cell::stringFromColumnIndex($desde) . $pos,
                             'Observaciones Generales');
-                        $sheet->setCellValue(\PHPExcel_Cell::stringFromColumnIndex($desde + 1) . $pos, '');
+                        $sheet->setCellValue(\PHPExcel_Cell::stringFromColumnIndex($desde + 1) . $pos, (isset($presupuesto->observaciones) ? $presupuesto->observaciones : '0'));
                         $sheet->getStyle(\PHPExcel_Cell::stringFromColumnIndex($desde + 1) . $pos)->getProtection()->setLocked(\PHPExcel_Style_Protection::PROTECTION_UNPROTECTED);
                     }
 

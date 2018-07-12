@@ -159,7 +159,7 @@
                 ={{ \PHPExcel_Cell::stringFromColumnIndex($desde +1) }}{{ $haciaAbajo }}-({{ \PHPExcel_Cell::stringFromColumnIndex($desde +2) }}{{ $haciaAbajo }}*{{ \PHPExcel_Cell::stringFromColumnIndex($desde +1) }}{{ $haciaAbajo }}/100)
             </td>
 
-            {{--Moneda - calculado en backend --}}
+            {{--Moneda--}}
             <td style="background-color: #fff" class="{{$ultimalinea}} "><?php
                 if (isset($presupuesto_partida->IdMoneda))
                     switch ((int) $presupuesto_partida->IdMoneda)
