@@ -91,11 +91,11 @@ class CotizacionContrato extends Transaccion
      */
     public function getTotalesPresupiestos()
     {
-        return DB::connection('cadeco')
+            return DB::connection('cadeco')
             ->table('dbo.transacciones')
             ->select(
-                DB::raw("sum(cast(( contratos.cantidad_original * presupuestos.precio_unitario ) * ((100-case when presupuestos.PorcentajeDescuento is null then 0 else presupuestos.PorcentajeDescuento end)/100)*((100- case when transacciones.PorcentajeDescuento is null then 0 else transacciones.PorcentajeDescuento end)/100) as float(2))) as monto"),
-                DB::raw("sum(cast(( contratos.cantidad_original * presupuestos.precio_unitario ) * ((100-case when presupuestos.PorcentajeDescuento is null then 0 else presupuestos.PorcentajeDescuento end)/100)*((100- case when transacciones.PorcentajeDescuento is null then 0 else transacciones.PorcentajeDescuento end)/100) as float(2)))*.16 as impuesto")
+                DB::raw("sum(cast(( contratos.cantidad_original * presupuestos.precio_unitario ) *((100- case when transacciones.PorcentajeDescuento is null then 0 else transacciones.PorcentajeDescuento end)/100) as float(2))) as monto"),
+                DB::raw("sum(cast(( contratos.cantidad_original * presupuestos.precio_unitario ) *((100- case when transacciones.PorcentajeDescuento is null then 0 else transacciones.PorcentajeDescuento end)/100) as float(2)))*.16 as impuesto")
             )
             ->join('presupuestos', 'transacciones.id_transaccion', '=', 'presupuestos.id_transaccion')
             ->join('contratos', 'contratos.id_concepto', '=', 'presupuestos.id_concepto')
