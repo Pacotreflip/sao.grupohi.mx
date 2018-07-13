@@ -57,7 +57,7 @@ class EloquentCostoRepository implements CostoRepository
      */
     public function getDescendantsOf($id)
     {
-        if (is_null($id)) {
+        if (is_null($id) || $id == 0) {
             return $this->getRootLevels();
         }
 

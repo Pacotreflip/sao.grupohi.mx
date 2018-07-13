@@ -156,7 +156,7 @@ class AsignacionProveedoresLayout extends ValidacionLayout
             $excel->sheet('# ' . str_pad($requisicion->numero_folio, 5, '0', STR_PAD_LEFT), function (LaravelExcelWorksheet $sheet) use ($requisicion) {
                 $arrayRequisicion = $this->setData($requisicion);
                 $sheet->getProtection()->setSheet(true);
-                $sheet->loadView('excel_layouts.asignacion_proveedores',
+                $sheet->loadView('excel_layouts.asignacion_compras_proveedores',
                     ['requisiciones' => $arrayRequisicion,
                         'headerPartidas' => $this->headerFijos,
                         'headerCotizacion' => $this->headerDinamicos,

@@ -28,6 +28,15 @@ class EloquentPartidaAsignacionRepository implements PartidaAsignacionRepository
     }
 
     /**
+     * Obtiene todos las partidas asignadas
+     * @return \Illuminate\Database\Eloquent\Collection|\Ghi\Domain\Core\Contracts\Subcontratos\PartidaAsignacionRepository
+     */
+    public function get()
+    {
+        return $this->model->get();
+    }
+
+    /**
      * @param $id Identificador de la Cuenta de Almacen que se va a mostrar
      * @return \Illuminate\Database\Eloquent\Collection|\Ghi\Domain\Core\Contracts\Subcontratos\PartidaAsignacionRepository
      */
@@ -51,5 +60,15 @@ class EloquentPartidaAsignacionRepository implements PartidaAsignacionRepository
         }
 
         return $record;
+    }
+
+    /**
+     * @param array $where
+     * @return $this|mixed
+     */
+    public function where(array $where)
+    {
+        $this->model = $this->model->where($where);
+        return $this;
     }
 }

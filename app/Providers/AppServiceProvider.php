@@ -420,5 +420,15 @@ class AppServiceProvider extends ServiceProvider
             \Ghi\Domain\Core\Contracts\Subcontratos\PartidaAsignacionRepository::class,
             \Ghi\Domain\Core\Repositories\Subcontratos\EloquentPartidaAsignacionRepository::class
         );
+
+        $this->app->bind(
+            \Ghi\Domain\Core\Contracts\Finanzas\ReposicionFondoFijoRepository::class,
+            \Ghi\Domain\Core\Repositories\Finanzas\EloquentReposicionFondoFijoRepository::class
+        );
+
+        $this->app->bind(
+            \Ghi\Domain\Core\Contracts\Finanzas\PagoCuentaRepository::class,
+            \Ghi\Domain\Core\Repositories\Finanzas\EloquentPagoCuentaRepository::class
+        );
     }
 }

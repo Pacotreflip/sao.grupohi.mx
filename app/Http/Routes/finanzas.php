@@ -18,12 +18,18 @@ Route::group(['prefix' => 'finanzas', 'middleware' => 'system.access:finanzas'],
     Route::delete('comprobante_fondo_fijo/{id}', 'ComprobanteFondoFijoController@destroy')->name('finanzas.comprobante_fondo_fijo.destroy')->where(['id' => '[0-9]+']);
     Route::patch('comprobante_fondo_fijo/{id}', 'ComprobanteFondoFijoController@update')->name('finanzas.comprobante_fondo_fijo.update')->where(['id' => '[0-9]+']);
     Route::post('comprobante_fondo_fijo/paginate', 'ComprobanteFondoFijoController@paginate')->name('finanzas.comprobante_fondo_fijo.paginate');
- /**
-  * Materiales
-  */
 
+    /**
+     * Materiales
+     */
     Route::get('material/getBy', 'MaterialController@getBy')->name('finanzas.material.getBy');
     Route::get('material/getBySinFamilias', 'MaterialController@getBySinFamilias')->name('finanzas.material.getBySinFamilias');
 
     Route::get('comprobante_fondo_fijo/getBy', 'ComprobanteFondoFijoController@getBy')->name('finanzas.comprobante_fondo_fijo.getBy');
+
+    /**
+     * Solicitud de Cheque routes
+     */
+    Route::get('solicitud_cheque', 'Finanzas\SolicitudChequeController@create')->name('finanzas.solicitud_cheque.create');
+
 });

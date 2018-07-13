@@ -30,4 +30,17 @@ interface PartidaAsignacionRepository
      */
     public function find($id);
 
+    /**
+     *  Contiene los parametros de búsqueda
+     * @param array $where
+     * @return mixed
+     */
+    public function where(array $where);
+
+    /**
+     * Obtiene todos las partidas asignadas
+     *
+     * @return \Illuminate\Database\Eloquent\Collection|PartidaAsignacion
+     */
+    public function get();
 }
