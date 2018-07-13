@@ -90,10 +90,26 @@ Route::group(['prefix' => 'control_presupuesto'], function () {
         Route::post('/getAgrupacionFiltro', 'CambioCantidadInsumosController@getAgrupacionFiltro');
         Route::post('/getExplosionAgrupados', 'CambioCantidadInsumosController@getExplosionAgrupados');
         Route::post('/getExplosionAgrupadosPartidas', 'CambioCantidadInsumosController@getExplosionAgrupadosPartidas');
-        Route::get('/{cambio_cantidad}', 'CambioCantidadInsumosController@show')->name('control_presupuesto.cambio_cantidad_insumos.show')->where(['cambio_cantidad' => '[0-9]+']);;
+        Route::get('/{cambio_cantidad}', 'CambioCantidadInsumosController@show')->name('control_presupuesto.cambio_cantidad_insumos.show')->where(['cambio_cantidad' => '[0-9]+']);
         Route::get('/{cambio_insumos}/pdf', 'CambioCantidadInsumosController@pdf');
     });
 
+    /**
+     * Conceptos Extraordinarios
+     */
+    Route::group(['prefix' => 'conceptos_extraordinarios'], function () {
+        Route::get('/create', 'Presupuesto\ConceptosExtraordinariosController@create')->name('control_presupuesto.conceptos_extraordinarios.create');
+        Route::get('/{tipo}/extraordinario/{id}', 'Presupuesto\ConceptosExtraordinariosController@getExtraordinario')->name('control_presupuesto.conceptos_extraordinarios.getExtraordinario');
+        Route::post('/store', 'Presupuesto\ConceptosExtraordinariosController@store');
+        Route::get('/{id}', 'Presupuesto\ConceptosExtraordinariosController@show')->name('control_presupuesto.conceptos_extraordinarios.show')->where(['id' => '[0-9]+']);
+        Route::post('/{id}/autorizar', 'Presupuesto\ConceptosExtraordinariosController@autorizar')->name('control_presupuesto.conceptos_extraordinarios.autorizar')->where(['id' => '[0-9]+']);
+        Route::post('/{id}/rechazar', 'Presupuesto\ConceptosExtraordinariosController@rechazar')->name('control_presupuesto.conceptos_extraordinarios.rechazar');
+        Route::get('/{cambio_insumos}/pdf', 'Presupuesto\ConceptosExtraordinariosController@pdf');
+        Route::post('/guardarCatalogo', 'Presupuesto\ConceptosExtraordinariosController@guardarCatalogo')->name('control_presupuesto.conceptos_extraordinarios.guardarCatalogo');
+        Route::post('/guardarPartida', 'Presupuesto\ConceptosExtraordinariosController@guardarPartida')->name('control_presupuesto.conceptos_extraordinarios.guardarPartida');
+        Route::get('/getBy', 'Presupuesto\ConceptosExtraordinariosController@getBy')->name('control_presupuesto.conceptos_extraordinarios.getBy');
+        Route::get('/getNivelHijos', 'Presupuesto\ConceptosExtraordinariosController@getNivelHijos')->name('control_presupuesto.conceptos_extraordinarios.getNivelHijos');
+    });
 
     /**
      * Tipos de Cobrabilidad Routes
@@ -126,5 +142,6 @@ Route::group(['prefix' => 'control_presupuesto'], function () {
 
     Route::get('cambio_presupuesto/getDescripcionByTipo', 'MaterialController@getDescripcionByTipo')->name('control_presupuesto.cambio_presupuesto.getDescripcionByTipo');
     Route::post('cambio_presupuesto_partida/getClasificacionInsumos', 'SolicitudCambioPartidasController@getClasificacionInsumos')->name('control_presupuesto.cambio_presupuesto_partida.getClasificacionInsumos');
+
 
 });

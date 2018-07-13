@@ -93,9 +93,6 @@ Vue.component('cambio-insumos-show', {
                     self.rechazar_solicitud(id,result.value);
                 }
             });
-
-
-
         },
 
         autorizar_solicitud: function (id) {

@@ -27,5 +27,7 @@ interface UnidadRepository
 
     public function getUnidadesByDescripcion($descripcion);
 
+    public function lists();
+
 
 }

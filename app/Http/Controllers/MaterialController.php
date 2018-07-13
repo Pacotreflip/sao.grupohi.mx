@@ -74,6 +74,7 @@ class MaterialController extends Controller
     }
 
     public function store(Request $request) {
+
         $material = $this->material->create($request->all());
         return $material;
     }

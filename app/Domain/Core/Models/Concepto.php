@@ -17,6 +17,7 @@ class Concepto extends BaseModel
         'nivel_padre',
         'id_padre',
         'tiene_hijos',
+        'hijos_cobrables',
         'cargado',
         'path',
         'clave',
@@ -24,8 +25,8 @@ class Concepto extends BaseModel
         'numero_tarjeta',
         'sector',
         'cuadrante',
-        'entrega'
-
+        'entrega',
+        'presupuesto'
     ];
 
     protected $fillable = [
@@ -45,6 +46,10 @@ class Concepto extends BaseModel
     {
         parent::boot();
         static::addGlobalScope(new ObraScope());
+
+        static::creating(function ($model) {
+            $model->id_obra = Context::getId();
+        });
     }
 
     /**
@@ -61,6 +66,14 @@ class Concepto extends BaseModel
     public function getNivelHijosAttribute()
     {
         return $this->nivel . '___.';
+    }
+
+    public function getPresupuestoAttribute(){
+        $niv = explode('.', $this->nivel);
+        if(count($niv) > 3){
+            return (int)$niv[2];
+        }
+            return -1;
     }
 
     /**
@@ -88,6 +101,10 @@ class Concepto extends BaseModel
     public function getTieneHijosAttribute()
     {
         return Concepto::where('nivel', 'like', $this->nivel_hijos)->count();
+    }
+
+    public function getHijosCobrablesAttribute(){
+        return Concepto::where('nivel', 'like', $this->nivel_hijos)->where('concepto_medible', '=', 3)->count();
     }
 
     /**
@@ -223,13 +240,8 @@ class Concepto extends BaseModel
      */
     public function getSectorAttribute()
     {
-
         $conceptoPath = ConceptoPath::where('id_concepto', '=', $this->id_concepto)->first();
-        if($conceptoPath) {
-            return $conceptoPath->filtro4;
-        } else {
-            return null;
-        }
+        return $conceptoPath ? $conceptoPath->filtro4 : '';
     }
 
     /**
@@ -238,11 +250,8 @@ class Concepto extends BaseModel
     public function getCuadranteAttribute()
     {
         $conceptoPath = ConceptoPath::where('id_concepto', '=', $this->id_concepto)->first();
-        if($conceptoPath) {
-            return $conceptoPath->filtro5;
-        } else {
-            return null;
-        }    }
+        return $conceptoPath ? $conceptoPath->filtro5 : '';
+    }
 
     public function getEntregaAttribute()
     {
@@ -265,5 +274,18 @@ class Concepto extends BaseModel
         return DB::connection('cadeco')
             ->table('dbo.conceptos')
             ->select(DB::raw('max(LEN([nivel]) / 4) as MAX'))->lists('MAX');
+    }
+
+    public function getFamiliaAttribute(){
+        return Concepto::where('nivel', 'like', $this->nivel.'%');
+    }
+
+    public function insumos() {
+        return $this->hasMany(self::class, 'id_obra', 'id_obra')
+            ->where('nivel', 'like', $this->nivel . '___.');
+    }
+
+    public function cobrable(){
+        return $this->where('cantidad_presupuestada', '>', 0);
     }
 }

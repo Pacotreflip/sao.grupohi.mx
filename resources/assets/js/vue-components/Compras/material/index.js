@@ -164,6 +164,14 @@ Vue.component('material-index', {
                 complete : function () {
                     self.guardando = false;
                     $('#add_material_modal').modal('hide');
+                },
+                error: function(error) {
+                    swal({
+                        type: 'warning',
+                        title: 'Advertencia',
+                        text: error.responseJSON.message
+                    });
+                    self.guardando = false;
                 }
             })
         },

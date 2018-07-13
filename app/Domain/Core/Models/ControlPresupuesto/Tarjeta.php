@@ -21,6 +21,10 @@ class Tarjeta extends BaseModel
         'id_obra',
         'estatus'
     ];
+    protected $appends = [
+        'cantidad_descripcion'
+
+    ];
 
     protected static function boot()
     {
@@ -29,5 +33,13 @@ class Tarjeta extends BaseModel
             $model->estatus =1;
             $model->id_obra = Context::getId();
         });
+    }
+
+    public function concepto_tarjeta(){
+        return $this->hasOne(ConceptoTarjeta::class, 'id_tarjeta', 'id');
+    }
+
+    public function getCantidadDescripcionAttribute(){
+        return Tarjeta::where('descripcion', 'like', $this->descripcion.'%')->count();
     }
 }

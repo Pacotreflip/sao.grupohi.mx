@@ -32,7 +32,8 @@ class SolicitudCambioPartida extends Model
         'precio_unitario_nuevo',
         'rendimiento_original',
         'rendimiento_nuevo',
-        'tipo_agrupador'
+        'tipo_agrupador',
+        'unidad'
     ];
 
     protected $appends = ['factor'];
@@ -75,4 +76,5 @@ class SolicitudCambioPartida extends Model
         }
 
     }
+
 }

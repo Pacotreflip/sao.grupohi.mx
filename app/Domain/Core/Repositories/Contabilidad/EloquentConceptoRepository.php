@@ -5,7 +5,9 @@ namespace Ghi\Domain\Core\Repositories\Contabilidad;
 use Ghi\Core\Facades\Context;
 use Ghi\Domain\Core\Contracts\Contabilidad\ConceptoRepository;
 use Ghi\Domain\Core\Models\Concepto;
+use Ghi\Domain\Core\Models\ControlPresupuesto\Tarjeta;
 use Illuminate\Support\Facades\DB;
+use function MongoDB\BSON\toJSON;
 use PhpParser\Node\Expr\Array_;
 
 class EloquentConceptoRepository implements ConceptoRepository
@@ -34,8 +36,8 @@ class EloquentConceptoRepository implements ConceptoRepository
     public function getBy($attribute, $operator, $value, $with = null)
     {
         if ($with != null)
-            return $this->model->with($with)->where($attribute, $operator, $value)->get();
-        return $this->model->where($attribute, $operator, $value)->limit(5)->get();
+            return $this->model->with($with)->where($attribute, $operator, $value)->orderBy('nivel','asc')->get();
+        return $this->model->where($attribute, $operator, $value)->orderBy('nivel','asc')->get();
     }
 
     /**
@@ -236,6 +238,52 @@ class EloquentConceptoRepository implements ConceptoRepository
         return $cob_conceptos;
     }
 
+    public function getInsumosPorTarjeta($id_tarjeta){
+        $extraordinario = [];
+        $concepto_precio_unitario = 0;
+
+        $tarjeta = Tarjeta::find($id_tarjeta)->concepto_tarjeta()->get(['id_concepto'])->toArray();
+        $conceptoTarjeta = Concepto::whereIn('id_concepto', $tarjeta)->where('cantidad_presupuestada', '>', 0)->first();
+        $conceptos = $this->model->where('nivel', 'like', $conceptoTarjeta->nivel . '___.')->get();
+        foreach ($conceptos as $concepto) {
+            $insumos=$concepto->insumos()->get(['nivel', 'descripcion', 'unidad', 'id_material', 'cantidad_presupuestada', 'precio_unitario', 'monto_presupuestado'])->toArray();
+            $agrupador_monto_presupuestado = 0;
+
+            //// recalcular rendimiento de los insumos por agrupador
+            foreach ($insumos as $key => $insumo){
+                $insumos[$key]['cantidad_presupuestada'] = number_format($insumo['cantidad_presupuestada'] / $conceptoTarjeta->cantidad_presupuestada, 3, '.', '');
+                $insumos[$key]['monto_presupuestado'] = number_format(($insumo['cantidad_presupuestada'] / $conceptoTarjeta->cantidad_presupuestada) * $insumo['precio_unitario'], 3, '.', '');
+                $insumos[$key]['precio_unitario'] = number_format($insumo['precio_unitario'], 3, '.', '');
+                $agrupador_monto_presupuestado += ($insumo['cantidad_presupuestada'] / $conceptoTarjeta->cantidad_presupuestada) * $insumo['precio_unitario'];
+                $concepto_precio_unitario += ($insumo['cantidad_presupuestada'] / $conceptoTarjeta->cantidad_presupuestada) * $insumo['precio_unitario'];
+            }
+            //// ensambla el arreglo con los datos recabados de los insumos
+            $extraordinario +=
+            [str_replace(' ', '', $concepto->descripcion) =>
+                [
+                    'id_concepto' => $concepto->id_concepto,
+                    'nivel' => $concepto->nivel,
+                    'descripcion' => $concepto->descripcion,
+                    'monto_presupuestado' => $agrupador_monto_presupuestado,
+                    'insumos' => $insumos
+                ]];
+        }
+        /// Ensamble final del arreglo
+        $extraordinario +=
+            [
+                'id_concepto' =>$conceptoTarjeta->id_concepto,
+                'nivel'=>$conceptoTarjeta->nivel,
+                'descripcion'=>$conceptoTarjeta->descripcion,
+                'unidad'=>$conceptoTarjeta->unidad,
+                'id_material'=>$conceptoTarjeta->id_material,
+                'cantidad_presupuestada'=>1,
+                'precio_unitario'=>$concepto_precio_unitario,
+                'monto_presupuestado'=>$concepto_precio_unitario
+            ];
+
+        return $extraordinario;
+    }
+
     public function getPreciosConceptos($id)
     {
         $precios = $this->model->select(
@@ -256,4 +304,40 @@ class EloquentConceptoRepository implements ConceptoRepository
     }
 
 
+    /**
+     * Guarda una nueva partida en el arbol de presupuesto
+     * @param array $data
+     * @return mixed
+     * @throws \Exception
+     */
+    public function storePartida(array $data)
+    {
+        try{
+            DB::connection('cadeco')->beginTransaction();
+            $nivel_partida = 0;
+            $descendientes = $this->model->where('nivel', 'like', $data['nivel'].'___.')->orderBy('nivel', 'asc')->get(['nivel']);
+            if($descendientes->count() > 0) {
+                for ($i = 1; $i <= $descendientes->count(); $i++) {
+                    $nivel = explode('.', $descendientes[$i - 1]->nivel);
+                    if (intval($nivel[sizeof($nivel) - 2]) != $i) {
+                        $nivel_partida = $data['nivel'] . str_pad($i, 3, '0', STR_PAD_LEFT) . '.';
+                        break;
+                    }else{
+                        $nivel_partida = $data['nivel'] . str_pad($i+1, 3, '0', STR_PAD_LEFT) . '.';
+                    }
+                }
+
+            }else{
+                $nivel_partida = $data['nivel'] . str_pad(1, 3, '0', STR_PAD_LEFT) . '.';
+            }
+             $partida = Concepto::create(['nivel' => $nivel_partida , 'descripcion' => $data['descripcion'], 'unidad' => '']);
+
+            DB::connection('cadeco')->commit();
+            return Concepto::find($partida->id_concepto);
+        } catch (\Exception $e) {
+            DB::connection('cadeco')->rollback();
+            throw $e;
+        }
+
+    }
 }
