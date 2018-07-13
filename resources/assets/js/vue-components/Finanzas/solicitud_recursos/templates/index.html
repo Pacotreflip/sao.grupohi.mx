@@ -1,0 +1,38 @@
+<div class="box box-solid">
+    <div class="box-header with-border">
+        <h3 class="box-title">Resultados</h3>
+        <div class="box-tools" v-if="perm_modificar_solicitud_recursos == true">
+            <a  class="btn btn-default btn-sm" v-on:click="confirmar_solicitud()">
+                <i class="glyphicon glyphicon-plus-sign"></i> Crear /Editar Solicitud
+            </a>
+        </div>
+    </div>
+    <div class="box-body">
+        <table id="solicitudes_recursos_table" class="table table-bordered table-striped">
+            <thead>
+            <tr>
+                <th># Folio</th>
+                <th>Fecha de Registro</th>
+                <th>Usuario que Registró</th>
+                <th>Estado</th>
+                <th>Cantidad de Transacciones</th>
+                <th>Total Solicitado</th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            </tbody>
+            <tfoot>
+            <tr>
+                <th># Folio</th>
+                <th>Fecha de Registro</th>
+                <th>Usuario que Registró</th>
+                <th>Usuario que Registró</th>
+                <th>Estado</th>
+                <th>Total Solicitado</th>
+                <th></th>
+            </tr>
+            </tfoot>
+        </table>
+    </div>
+</div>

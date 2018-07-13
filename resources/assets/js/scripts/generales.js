@@ -12,7 +12,7 @@ $(function ()  {
             swal({
                 type: 'error',
                 title: '¡Error!',
-                text: jqXHR.responseText
+                text: typeof jqXHR.responseJSON === 'object' && jqXHR.responseJSON.message.length ? jqXHR.responseJSON.message : jqXHR.responseText
             });
         }
     });

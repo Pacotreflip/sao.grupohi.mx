@@ -2,8 +2,12 @@
 
 namespace Ghi\Providers;
 
+use Carbon\Carbon;
+use Cmixin\BusinessDay;
+use Ghi\Domain\Core\Models\Transacciones\Transaccion;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
+use Validator;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -15,6 +19,18 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {
         View::composer('*', \Ghi\Http\Composers\ObraComposer::class);
+
+        Validator::extend('periodo_abierto', function($attribute, $value, $parameters, $validator) {
+            return Transaccion::periodoAbierto($value);
+        });
+
+        Validator::extend('sin_facturas', function ($attribute, $value) {
+            return ! Transaccion::find($value)->tiene_facturas;
+        });
+
+        Validator::extend('after_or_equal', function($attribute, $value, $parameters, $validator) {
+            return strtotime($validator->getData()[$parameters[0]]) <= strtotime($value);
+        });
     }
 
     /**
@@ -449,6 +465,30 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(
             \Ghi\Domain\Core\Contracts\ControlPresupuesto\CatalogoExtraordinarioPartidaRepository::class,
             \Ghi\Domain\Core\Repositories\ControlPresupuesto\EloquentCatalogoExtraordinarioPartidaRepository::class
+        );
+
+        $this->app->bind(
+            \Ghi\Domain\Core\Contracts\Compras\OrdenCompraRepository::class,
+            \Ghi\Domain\Core\Repositories\Compras\EloquentOrdenCompraRepository::class
+        );
+
+        $this->app->bind(
+            \Ghi\Domain\Core\Contracts\Finanzas\SolicitudPagoRepository::class,
+            \Ghi\Domain\Core\Repositories\Finanzas\EloquentSolicitudPagoRepository::class
+        );
+
+        $this->app->bind(
+            \Ghi\Domain\Core\Contracts\Finanzas\RubroRepository::class,
+            \Ghi\Domain\Core\Repositories\Finanzas\EloquentRubroRepository::class
+        );
+
+        $this->app->bind(
+            \Ghi\Domain\Core\Contracts\Finanzas\SolicitudRecursosRepository::class,
+            \Ghi\Domain\Core\Repositories\Finanzas\EloquentSolicitudRecursosRepository::class
+        );
+        $this->app->bind(
+            \Ghi\Domain\Core\Contracts\Contabilidad\FacturaTransaccionRepository::class,
+            \Ghi\Domain\Core\Repositories\Contabilidad\EloquentFacturaTransaccionRepository::class
         );
     }
 }

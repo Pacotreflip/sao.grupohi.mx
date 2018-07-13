@@ -2,6 +2,9 @@
 
 namespace Ghi\Domain\Core\Contracts\Finanzas;
 
+use Ghi\Domain\Core\Models\TipoTransaccion;
+use Illuminate\Database\Eloquent\Collection;
+
 interface PagoCuentaRepository
 {
     /**
@@ -22,4 +25,10 @@ interface PagoCuentaRepository
      * @return mixed
      */
     public function get();
+
+    /**
+     * Devuelve lis tipos de transacción que se utilizan en las solicitudes de pago de pago a cuenta
+     * @return Collection | TipoTransaccion
+     */
+    public function getTiposTran();
 }

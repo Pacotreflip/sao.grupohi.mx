@@ -33,9 +33,32 @@ Breadcrumbs::register('finanzas.comprobante_fondo_fijo.show', function ($breadcr
 
 
 /*
- * Solicitud de Cheque Breadcrumbs...
+ * Solicitud de Pago Breadcrumbs...
  */
-Breadcrumbs::register('finanzas.solicitud_cheque.create', function ($breadcrumb) {
+Breadcrumbs::register('finanzas.solicitud_pago.index', function ($breadcrumb) {
     $breadcrumb->parent('finanzas.index');
-    $breadcrumb->push('NUEVA SOLICITUD DE CHEQUE', route('finanzas.solicitud_cheque.create'));
+    $breadcrumb->push('SOLICITUD DE PAGO', route('finanzas.solicitud_pago.index'));
+});
+
+Breadcrumbs::register('finanzas.solicitud_pago.create', function ($breadcrumb) {
+    $breadcrumb->parent('finanzas.solicitud_pago.index');
+    $breadcrumb->push('NUEVA', route('finanzas.solicitud_pago.create'));
+});
+
+/*
+ * Solicitud de Recursos Breadcrumbs...
+ */
+Breadcrumbs::register('finanzas.solicitud_recursos.index', function ($breadcrumb) {
+    $breadcrumb->parent('finanzas.index');
+    $breadcrumb->push('SOLICIUD DE RECURSOS', route('finanzas.solicitud_recursos.index'));
+});
+
+Breadcrumbs::register('finanzas.solicitud_recursos.show', function ($breadcrumb, $solicitud) {
+    $breadcrumb->parent('finanzas.solicitud_recursos.index');
+    $breadcrumb->push($solicitud->folio, route('finanzas.solicitud_recursos.show', $solicitud));
+});
+
+Breadcrumbs::register('finanzas.solicitud_recursos.edit', function ($breadcrumb, $solicitud) {
+    $breadcrumb->parent('finanzas.solicitud_recursos.show', $solicitud);
+    $breadcrumb->push('EDITAR', route('finanzas.solicitud_recursos.edit', $solicitud));
 });

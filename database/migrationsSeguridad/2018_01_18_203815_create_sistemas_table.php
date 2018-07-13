@@ -13,7 +13,7 @@ class CreateSistemasTable extends Migration
     public function up()
     {
         // Create table for storing sistemas
-        Schema::create('sistemas', function (Blueprint $table) {
+        Schema::connection('seguridad')->create('sistemas', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name')->unique();
             $table->string('description')->nullable();
@@ -21,7 +21,7 @@ class CreateSistemasTable extends Migration
         });
 
         // Create table for associating permissions to sistemas (Many-to-Many)
-        Schema::create('sistemas_permisos', function (Blueprint $table) {
+        Schema::connection('seguridad')->create('sistemas_permisos', function (Blueprint $table) {
             $table->integer('permission_id')->unsigned();
             $table->integer('sistema_id')->unsigned();
 
@@ -41,7 +41,7 @@ class CreateSistemasTable extends Migration
      */
     public function down()
     {
-        Schema::drop('sistemas');
-        Schema::drop('sistemas_permisos');
+        Schema::connection('seguridad')->drop('sistemas');
+        Schema::connection('seguridad')->drop('sistemas_permisos');
     }
 }

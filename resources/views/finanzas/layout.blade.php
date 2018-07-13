@@ -1,8 +1,7 @@
 @extends('layouts.app')
 @section('content-menu')
     <ul class="sidebar-menu">
-
-        @permission(['consultar_comprobante_fondo_fijo', 'registrar_reposicion_fondo_fijo', 'registrar_pago_cuenta']) {{-- Incluir todos los permisos que se van a requerir en el bloque posterior --}}
+        @permission(['consultar_comprobante_fondo_fijo', 'consultar_solicitud_pago', 'consultar_solicitud_recursos']) {{-- Incluir todos los permisos que se van a requerir en el bloque posterior --}}
         <li class="treeview">
             <a href="#">
                 <i class="fa fa-circle-o"></i>
@@ -12,11 +11,14 @@
                 </span>
             </a>
             <ul class="treeview-menu">
-                @permission(['registrar_reposicion_fondo_fijo', 'registrar_pago_cuenta'])
-                <li><a href="{{ route('finanzas.solicitud_cheque.create') }}"><i class="fa fa-circle-o"></i> <span>Solicitud de Cheque</span></a> </li>
-                @endpermission
                 @permission('consultar_comprobante_fondo_fijo')
                 <li><a href="{{route('finanzas.comprobante_fondo_fijo.index')}}"><i class='fa  fa-circle-o'></i> <span>Comprobantes de Fondo Fijo</span></a></li>
+                @endpermission
+                @permission('consultar_solicitud_pago')
+                <li><a href="{{ route('finanzas.solicitud_pago.index') }}"><i class="fa fa-circle-o"></i> <span>Solicitud de Pago</span></a></li>
+                @endpermission
+                @permission('consultar_solicitud_recursos')
+                <li><a href="{{ route('finanzas.solicitud_recursos.index') }}"><i class="fa fa-circle-o"></i> <span>Solicitudes de Recursos</span></a></li>
                 @endpermission
             </ul>
         </li>

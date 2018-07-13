@@ -1,0 +1,81 @@
+<section class="invoice">
+    <!-- title row --> 
+    <div class="row">
+        <div class="col-xs-12">
+            <h2 class="page-header">
+                {{ solicitud.folio }} ({{ solicitud.tipo.descripcion }})
+                <small class="pull-right"><b>Semana {{ solicitud.semana }} del {{ (new Date(solicitud.dia_inicio.date)).dateShortFormat() }}  al {{ (new Date(solicitud.dia_fin.date)).dateShortFormat() }}</b></small>
+            </h2>
+        </div>
+        <!-- /.col -->
+    </div>
+
+    <div class="row invoice-info">
+        <div class="col-sm-6 invoice-col">
+            <b>Folio</b> {{solicitud.folio}}<br>
+            <b>Año - Semana</b> {{solicitud.anio}} - {{ solicitud.semana}}<br>
+            <b>Tipo de Solicitud</b> {{ solicitud.tipo.descripcion }}<br>
+            <b>Persona que Registró</b> {{solicitud.usuario.apaterno}} {{solicitud.usuario.amaterno}} {{solicitud.usuario.nombre}}<br>
+            <b>Estado</b> {{ solicitud.estatus }}<br>
+            <br>
+            <br>
+        </div>
+        <!-- /.col -->
+    </div>
+    <!-- Table row -->
+    <div class="row">
+        <div class="col-xs-12 table-responsive">
+            <table class="table table-striped">
+                <thead>
+                <tr>
+                    <th>Folio (SAO)</th>
+                    <th>Tipo de Movimiento</th>
+                    <th>Tipo de Transacción</th>
+                    <th>Folio de Factura</th>
+                    <th>Folio CR</th>
+                    <th>Fecha</th>
+                    <th>Vencimiento</th>
+                    <th>Monto</th>
+                    <th>Moneda</th>
+                    <th>T.C.</th>
+                    <th>Monto M.N.</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr v-for="partida in solicitud.partidas">
+                    <td>#{{ partida.transaccion.numero_folio}}</td>
+                    <td>{{ partida.transaccion.rubros[0] ? partida.transaccion.rubros[0].descripcion: 'N/A'}}</td>
+                    <td>{{ partida.transaccion.tipo_tran.Descripcion }}</td>
+                    <td>{{ partida.transaccion.referencia ?  partida.transaccion.referencia : 'N/A'}}</td>
+                    <td>{{ partida.transaccion.contrarecibo ? '#' + partida.transaccion.contrarecibo.numero_folio : 'N/A' }}</td>
+                    <td>{{ new Date(partida.transaccion.fecha).dateShortFormat() }}</td>
+                    <td>{{ new Date(partida.transaccion.vencimiento).dateShortFormat() }}</td>
+                    <td style="text-align: right"><span class="pull-left">$</span> {{ parseFloat(partida.transaccion.monto).formatMoney(2, '.', ',') }}</td>
+                    <td>{{ partida.transaccion.moneda.nombre }}</td>
+                    <td style="text-align: right"><span class="pull-left">$</span> {{ parseFloat(partida.transaccion.tipo_cambio).formatMoney(2, '.', ',') }}</td>
+                    <td style="text-align: right"><span class="pull-left">$</span> {{ parseFloat(partida.transaccion.monto * partida.transaccion.tipo_cambio).formatMoney(2, '.', ',') }}</td>
+                </tr>
+                </tbody>
+                <tfoot>
+                <tr>
+                    <th colspan="10" style="text-align: right">Total Solicitado:</th>
+                    <th style="text-align: right"><span class="pull-left">$</span> {{ parseFloat(total).formatMoney(2, '.', ',') }}</th>
+                </tr>
+                </tfoot>
+            </table>
+        </div>
+        <!-- /.col -->
+    </div>
+    <!-- /.row -->
+
+    <!-- this row will not appear when printing -->
+    <div class="row no-print">
+        <div class="col-xs-12" v-if="perm_consultar_pdf_solicitud_recursos == true">
+            <a :href="'/formatos/finanzas/solicitud_recursos/' + id + '/pdf'"  type="button" class="btn btn-primary pull-right" style="margin-right: 5px;">
+                <i class="fa fa-download"></i> Ver PDF
+            </a>
+
+        </div>
+    </div>
+
+</section>

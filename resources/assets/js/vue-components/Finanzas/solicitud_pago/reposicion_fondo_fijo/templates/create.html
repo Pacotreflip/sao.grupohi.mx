@@ -1,0 +1,138 @@
+<section class="rffc">
+    <div class="row">
+        <form id="form_reposicion_fondo_fijo" @submit.prevent="validateForm('form_reposicion_fondo_fijo', 'save_reposicion')"  data-vv-scope="form_reposicion_fondo_fijo">
+            <!-- Fecha de Solicitud / Cumplimiento -->
+            <div class="col-md-6">
+                <div class="form-group" :class="{'has-error': validation_errors.has('form_reposicion_fondo_fijo.Fecha de Solicitud')}">
+                    <label for="cumplimiento_rff"><b>Fecha de Solicitud</b></label>
+                    <input type="text" name="Fecha de Solicitud" class="form-control input-sm"
+                           id="cumplimiento_rff" v-validate="'required'" v-model="form.cumplimiento"
+                           v-datepicker>
+                    <label class="help" v-show="validation_errors.has('form_reposicion_fondo_fijo.Fecha de Solicitud')">{{ validation_errors.first('form_reposicion_fondo_fijo.Fecha de Solicitud') }}</label>
+                </div>
+            </div>
+
+            <!-- Fecha límite de Pago / Vencimiento -->
+            <div class="col-md-6">
+                <div class="form-group" :class="{'has-error': validation_errors.has('form_reposicion_fondo_fijo.Fecha límite de Pago')}">
+                    <label for="vencimiento_rff"><b>Fecha límite de Pago</b></label>
+                    <input type="text" name="Fecha límite de Pago" class="form-control input-sm"
+                           id="vencimiento_rff" v-validate="'required'" v-model="form.vencimiento"
+                           v-datepicker>
+                    <label class="help" v-show="validation_errors.has('form_reposicion_fondo_fijo.Fecha límite de Pago')">{{ validation_errors.first('form_reposicion_fondo_fijo.Fecha límite de Pago') }}</label>
+                </div>
+            </div>
+
+            <!-- Rubro -->
+            <div :class="id_antecedente ? 'col-md-12' : 'col-md-6'">
+                <div class="form-group" :class="{'has-error': validation_errors.has('form_reposicion_fondo_fijo.Rubro')}">
+                    <label for="id_rubro_rff"><b>Rubro</b></label>
+                    <select v-validate="'required'" type="text" name="Rubro" class="form-control input-sm" id="id_rubro_rff" v-model="form.id_rubro">
+                        <option value disabled>[--SELECCIONE--]</option>
+                        <option v-for="rubro in rubros_filtrados" :value="rubro.id">{{ rubro.descripcion }}</option>
+                    </select>
+                    <label class="help" v-show="validation_errors.has('form_reposicion_fondo_fijo.Rubro')">{{ validation_errors.first('form_reposicion_fondo_fijo.Rubro') }}</label>
+                </div>
+            </div>
+
+            <span v-show="! id_antecedente && form.id_rubro != 13">
+                <!-- Comprobante de Fondo Fijo -->
+                <div class="col-md-6">
+                    <div class="form-group" :class="{'has-error': validation_errors.has('form_reposicion_fondo_fijo.Comprobante de Fondo Fijo')}">
+                        <label for="id_antecedente_rff"><b>Comprobante de Fondo Fijo</b></label>
+                        <select v-validate="(! id_antecedente && form.id_rubro != 13 ? 'required' : '')" type="text" name="Comprobante de Fondo Fijo" class="form-control input-sm"
+                                id="id_antecedente_rff" v-model="form.id_antecedente"></select>
+                        <label class="help" v-show="validation_errors.has('form_reposicion_fondo_fijo.Comprobante de Fondo Fijo')">{{ validation_errors.first('form_reposicion_fondo_fijo.Comprobante de Fondo Fijo') }}</label>
+                    </div>
+                </div>
+            </span>
+
+            <span v-show="form.id_rubro == 13">
+                <!-- Fondo Fijo -->
+                <div class="col-md-6">
+                    <div class="form-group" :class="{'has-error': validation_errors.has('form_reposicion_fondo_fijo.Fondo Fijo')}">
+                        <label for="id_referente_rff"><b>Fondo Fijo</b></label>
+                        <select v-validate="(form.id_rubro == 13 ? 'required' : '')" type="text" name="Fondo Fijo" class="form-control input-sm"
+                                id="id_referente_rff" v-model="form.id_referente"></select>
+                        <label class="help" v-show="validation_errors.has('form_reposicion_fondo_fijo.Fondo Fijo')">{{ validation_errors.first('form_reposicion_fondo_fijo.Fondo Fijo') }}</label>
+                    </div>
+                </div>
+            </span>
+
+            <div v-if="form.id_antecedente" class="col-md-12">
+                <section class="invoice">
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <h2 class="page-header">
+                                Información del Comprobante
+                                <small class="pull-right">Fecha: {{new Date(comprobante_fondo_fijo.fecha).dateShortFormat()}}</small>
+                            </h2>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <ul class="list-group list-group-unbordered">
+                                <li class="list-group-item">
+                                    <b>Número de Folio</b> <p class="pull-right">#{{ comprobante_fondo_fijo.numero_folio }}</p>
+                                </li>
+                                <li class="list-group-item">
+                                    <b>Fondo Fijo</b> <p class="pull-right">{{ comprobante_fondo_fijo.fondo_fijo.nombre }}</p>
+                                </li>
+                                <li class="list-group-item">
+                                    <b>Referencia</b> <p class="pull-right">{{ comprobante_fondo_fijo.referencia }}</p>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="col-sm-6 col-sm-offset-6">
+                            <div class="table-responsive">
+                                <table class="table table-striped">
+                                    <tbody>
+                                    <tr>
+                                        <th>Subtotal:</th>
+                                        <td style="text-align: right;">$&nbsp;{{parseFloat(comprobante_fondo_fijo.subtotal).formatMoney(2, '.', ',')}}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>IVA:</th>
+                                        <td style="text-align: right;">$&nbsp;{{parseFloat(comprobante_fondo_fijo.impuesto).formatMoney(2, '.', ',')}}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Total:</th>
+                                        <td style="text-align: right;">$&nbsp;{{parseFloat(comprobante_fondo_fijo.monto).formatMoney(2, '.', ',')}}</td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+            <div v-if="form.id_rubro == 13" class="col-md-4 col-md-offset-8">
+                <div class="form-group" :class="{'has-error': validation_errors.has('form_reposicion_fondo_fijo.Monto')}">
+                    <label for="monto_rff"><b>Monto</b></label>
+                    <input type="number" step="any" name="Monto" v-validate="(form.id_rubro == 13 ? 'required' : '')" v-model="form.monto" id="monto_rff" class="form-control input-sm">
+                    <label class="help" v-show="validation_errors.has('form_reposicion_fondo_fijo.Monto')">{{ validation_errors.first('form_reposicion_fondo_fijo.Monto') }}</label>
+                </div>
+            </div>
+
+            <div class="col-md-12">
+                <div class="form-group">
+                    <label for="observaciones"><b>Observaciones</b></label>
+                    <textarea class="form-control" v-model="form.observaciones"></textarea>
+                </div>
+            </div>
+
+            <div class="col-md-12">
+                <div class="form-group">
+                    <button type="submit" class="btn btn-primary pull-right" :disabled="guardando || cargando">
+                        <span v-if="guardando">
+                            <i class="fa fa-spinner fa-spin"></i> Guardando
+                        </span>
+                        <span v-else>
+                            <i class="fa fa-save"></i> Guardar
+                        </span>
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+</section>

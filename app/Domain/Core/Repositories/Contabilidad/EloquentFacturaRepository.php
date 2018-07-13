@@ -12,7 +12,6 @@ namespace Ghi\Domain\Core\Repositories\Contabilidad;
 use Ghi\Domain\Core\Contracts\Contabilidad\FacturaRepository;
 use Ghi\Domain\Core\Contracts\Contabilidad\RevaluacionRepository;
 use Ghi\Domain\Core\Models\Contabilidad\Factura;
-use Ghi\Domain\Core\Models\Moneda;
 
 class EloquentFacturaRepository implements FacturaRepository
 {

@@ -1,0 +1,184 @@
+<section>
+    <div class="row">
+        <form id="form_pago_cuenta" @submit.prevent="validateForm('form_pago_cuenta', 'save_pago')"
+              data-vv-scope="form_pago_cuenta">
+            <!-- Fecha de Solicitud / Cumplimiento -->
+            <div class="col-md-6">
+                <div class="form-group"
+                     :class="{'has-error': validation_errors.has('form_pago_cuenta.Fecha de Solicitud')}">
+                    <label for="cumplimiento_pc"><b>Fecha de Solicitud</b></label>
+                    <input type="text" name="Fecha de Solicitud" class="form-control input-sm"
+                           id="cumplimiento_pc" v-validate="'required'" v-model="form.cumplimiento"
+                           v-datepicker>
+                    <label class="help" v-show="validation_errors.has('form_pago_cuenta.Fecha de Solicitud')">{{
+                        validation_errors.first('form_pago_cuenta.Fecha de Solicitud') }}</label>
+                </div>
+            </div>
+
+            <!-- Fecha límite de Pago / Vencimiento -->
+            <div class="col-md-6">
+                <div class="form-group"
+                     :class="{'has-error': validation_errors.has('form_pago_cuenta.Fecha límite de Pago')}">
+                    <label for="vencimiento_pc"><b>Fecha límite de Pago</b></label>
+                    <input type="text" name="Fecha límite de Pago" class="form-control input-sm"
+                           id="vencimiento_pc" v-validate="'required'" v-model="form.vencimiento"
+                           v-datepicker>
+                    <label class="help" v-show="validation_errors.has('form_pago_cuenta.Fecha límite de Pago')">{{
+                        validation_errors.first('form_pago_cuenta.Fecha límite de Pago') }}</label>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="form-group"
+                     :class="{'has-error': validation_errors.has('form_pago_cuenta.Tipo de Transacción')}">
+                    <label for="tipo_transaccion_pc"><b>Tipo de Transacción</b></label>
+                    <select name="Tipo de Transacción" id="tipo_transaccion_pc" v-validate="'required'" class="form-control input-sm" v-model="form.tipo_transaccion">
+                        <option value>[--SELECCIONE EL TIPO--]</option>
+                        <option v-for="item in tipos_tran" :value="item.Tipo_Transaccion">{{ item.Descripcion }}</option>
+                    </select>
+                    <label class="help" v-show="validation_errors.has('form_pago_cuenta.Tipo de Transacción')">{{
+                        validation_errors.first('form_pago_cuenta.Tipo de Transacción') }}</label>
+                </div>
+            </div>
+
+            <div class="col-md-8">
+                <div class="form-group" :class="{'has-error': validation_errors.has('form_pago_cuenta.Transacción')}">
+                    <label for="id_antecedente_pc"><b>Transacción</b></label>
+                    <select v-validate="'required'" :disabled="! form.tipo_transaccion" type="text" name="Transacción" class="form-control input-sm"
+                            id="id_antecedente_pc" v-model="form.id_antecedente"></select>
+                    <label class="help" v-show="validation_errors.has('form_pago_cuenta.Transacción')">{{ validation_errors.first('form_pago_cuenta.Transacción') }}</label>
+                </div>
+            </div>
+
+            <div v-if="Object.keys(transaccion).length !== 0" class="col-md-12">
+                <section class="invoice">
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <h2 class="page-header">
+                                Información de la transacción
+                                <small class="pull-right">Fecha: {{new Date(transaccion.fecha).dateShortFormat()}}</small>
+                            </h2>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <ul class="list-group list-group-unbordered">
+                                <li class="list-group-item">
+                                    <b>Número de Folio</b> <p class="pull-right">#{{ transaccion.numero_folio }}</p>
+                                </li>
+                                <li v-if="form.tipo_transaccion == 51" class="list-group-item">
+                                    <b>Contrato Proyectado</b><br> <p>{{ transaccion.contrato_proyectado.referencia }}</p>
+                                </li>
+                                <li v-if="form.tipo_transaccion == 19" class="list-group-item">
+                                    <b>Requisición</b><br><p>{{ transaccion.requisicion.observaciones }}</p>
+                                </li>
+                                <li class="list-group-item">
+                                    <b>Empresa</b> <p class="pull-right">{{ transaccion.empresa.razon_social }}</p>
+                                </li>
+                                <li class="list-group-item">
+                                    <b>Referencia</b><br> <p>{{ transaccion.referencia }}</p>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="col-sm-6 col-sm-offset-6">
+                            <div class="table-responsive">
+                                <table class="table table-striped">
+                                    <tbody>
+                                    <tr>
+                                        <th>Subtotal:</th>
+                                        <td style="text-align: right;">$&nbsp;{{parseFloat(transaccion.monto - transaccion.impuesto).formatMoney(2, '.', ',')}}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>IVA:</th>
+                                        <td style="text-align: right;">$&nbsp;{{parseFloat(transaccion.impuesto).formatMoney(2, '.', ',')}}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Total:</th>
+                                        <td style="text-align: right;">$&nbsp;{{parseFloat(transaccion.monto).formatMoney(2, '.', ',')}}</td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+
+            <div class="col-md-12">
+                <div class="form-group">
+                    <label for="observaciones_pc"><b>Observaciones</b></label>
+                    <textarea id="observaciones_pc" class="form-control" v-model="form.observaciones"></textarea>
+                </div>
+            </div>
+
+            <!-- Tipo de Gasto -->
+            <div class="col-md-12" v-if="Object.keys(transaccion).length !== 0" :class="{'has-error': validation_errors.has('form_pago_cuenta.Tipo de Gasto')}">
+                <label for="id_costo_pc"><b>Tipo de Gasto</b></label>
+            </div>
+            <div class="col-md-12" v-if="Object.keys(transaccion).length !== 0">
+                <div class="form-group">
+                    <div class="input-group"
+                         :class="{'has-error': validation_errors.has('form_pago_cuenta.Tipo de Gasto')}">
+                        <input class="form-control" v-model="form.id_costo" type="hidden" name="Tipo de Gasto"
+                               v-validate="'required'" id="id_costo_pc">
+                        <input v-model="costo" type="text" class="form-control" readonly id="costo_pc"
+                               placeholder="Clic aquí para seleccionar Tipo de Gasto...">
+                        <span class="input-group-btn">
+                        <button :disabled="transaccion.costo != null" data-toggle="modal" data-target="#myModal_pc" class="btn btn-default" type="button"><i
+                                class="fa fa-search"></i></button>
+                        </span>
+                    </div>
+                    <div :class="{'has-error': validation_errors.has('form_pago_cuenta.Tipo de Gasto')}">
+                        <label class="help" v-show="validation_errors.has('form_pago_cuenta.Tipo de Gasto')">{{
+                            validation_errors.first('form_pago_cuenta.Tipo de Gasto') }}</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-12">
+                <div class="form-group">
+                    <button type="submit" class="btn btn-primary pull-right" :disabled="guardando || cargando">
+                    <span v-if="guardando">
+                        <i class="fa fa-spinner fa-spin"></i> Guardando
+                    </span>
+                        <span v-else>
+                        <i class="fa fa-save"></i> Guardar
+                    </span>
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <div id="myModal_pc" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="arbolCostos"
+         data-backdrop="static" data-keyboard="false">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" aria-label="Close" data-dismiss="modal">
+                        <span aria-hidden="true">×</span></button>
+                    <h4 class="modal-title">
+                        <span>
+                        Costos
+                        </span>
+                    </h4>
+                </div>
+                <div class="modal-body" style="overflow-x: auto;">
+                    <div id="jstree_pc"></div>
+                    <hr>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <p><small>Doble clic en la descripción del Costo para desplegar el árbol</small></p>
+                            <p><small>Clic en la descripción del Costo deseado y después de clic en el botón seleccionar</small></p>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-dismiss="modal" @click="select_costo">Seleccionar</button>
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
+                </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>

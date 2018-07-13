@@ -11,7 +11,7 @@ class CreateConfiguracionSchema extends Migration
      */
     public function up()
     {
-        \DB::statement('CREATE SCHEMA Configuracion AUTHORIZATION dbo;');
+        \DB::connection('seguridad')->statement('CREATE SCHEMA Configuracion AUTHORIZATION dbo;');
     }
 
     /**
@@ -21,6 +21,6 @@ class CreateConfiguracionSchema extends Migration
      */
     public function down()
     {
-        \DB::statement('DROP SCHEMA Configuracion;');
+        \DB::connection('seguridad')->statement('DROP SCHEMA Configuracion;');
     }
 }

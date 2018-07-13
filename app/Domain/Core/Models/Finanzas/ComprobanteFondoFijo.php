@@ -36,6 +36,9 @@ class ComprobanteFondoFijo extends Transaccion
 
     ];
 
+    protected $appends = [
+        'subtotal'
+    ];
 
     /**
      * Aplicar Scope Global para recuperar solo las transacciones de tipo Comprobante de Fondo Fijo

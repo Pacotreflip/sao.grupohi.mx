@@ -99,6 +99,9 @@ return [
     |
     */
 
+    'periodo_abierto'       => 'No se puede registrar la transacción ya que la fecha seleccionada presenta un Cierre de Periodo',
+    'sin_facturas'          => 'La transacción seleccionada tiene por lo menos una factura asociada',
+
     'custom' => [
         'attribute-name' => [
             'rule-name' => 'custom-message',

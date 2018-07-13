@@ -38,6 +38,6 @@ class CrearTablaConfiguracionObra extends Migration
      */
     public function down()
     {
-        Schema::drop('configuracion_obra');
+        Schema::connection('seguridad')->drop('configuracion_obra');
     }
 }

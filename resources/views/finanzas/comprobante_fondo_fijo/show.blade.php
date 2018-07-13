@@ -18,13 +18,13 @@
                     <hr>
 
                     @if($comprobante_fondo_fijo->reposicionFondoFijo)
-                    <strong>Reposición de Fondo Fijo:</strong>
-                    <p>#&nbsp;{{$comprobante_fondo_fijo->reposicionFondoFijo->numero_folio}}</p>
-                    <hr>
+                        <strong>Reposición de Fondo Fijo:</strong>
+                        <p>#&nbsp;{{$comprobante_fondo_fijo->reposicionFondoFijo->numero_folio}}</p>
+                        <hr>
                     @endif
 
                     <strong>Fecha:</strong>
-                    <p>{{$comprobante_fondo_fijo->fecha}}</p>
+                    <p>{{\Carbon\Carbon::parse($comprobante_fondo_fijo->fecha)->format('Y-m-d')}}</p>
                     <hr>
 
                     <strong>Fondo Fijo</strong>
@@ -36,7 +36,7 @@
                     <hr>
 
                     <strong>Cumplimiento</strong>
-                    <p>{{$comprobante_fondo_fijo->cumplimiento}}</p>
+                    <p>{{\Carbon\Carbon::parse($comprobante_fondo_fijo->cumplimiento)->format('Y-m-d')}}</p>
                     <hr>
 
                     <strong>Naturaleza</strong>
@@ -63,7 +63,7 @@
                                 <th style="text-align: center">#</th>
                                 <th style="text-align: center">Partida / Concepto</th>
                                 <th style="text-align: center">Destino</th>
-                            @if($comprobante_fondo_fijo->naturaleza == 1)
+                                @if($comprobante_fondo_fijo->naturaleza == 1)
                                     <th style="text-align: center">Unidad</th>
                                 @endif
                                 <th style="text-align: center">Cantidad</th>
@@ -79,14 +79,14 @@
                                     <td>{{ $index + 1 }}</td>
                                     <td>{{ $item->id_material ? $item->material : $item->referencia }}</td>
                                     <td>{{$item->destino}}</td>
-                                @if($comprobante_fondo_fijo->Naturaleza == 1)
+                                    @if($comprobante_fondo_fijo->Naturaleza == 1)
                                         <td>{{ $item->unidad ? $item->unidad : $item->material->unidad }}</td>
                                     @endif
                                     <td style="text-align: right">{{ $item->cantidad }}</td>
                                     @if($comprobante_fondo_fijo->Naturaleza == 1)
-                                        <td style="text-align: right">{{ $item->precio_unitario }}</td>
+                                        <td style="text-align: right"><span class="pull-left">$</span>{{ number_format(($item->precio_unitario),'2','.',',') }}</td>
                                     @endif
-                                    <td style="text-align: right">$&nbsp;{{ $item->Monto }}</td>
+                                    <td style="text-align: right"><span class="pull-left">$</span>{{ number_format(($item->Monto),'2','.',',') }}</td>
                                 </tr>
                             @endforeach
                             </tbody>
@@ -94,7 +94,7 @@
                     </div>
 
                     <div class="table-responsive">
-                    <!-- Subtotales -->
+                        <!-- Subtotales -->
                         <table class="table table-hover table-bordered">
                             <tr>
                                 <th style="text-align: right; width: 80%">Subtotal</th>
@@ -145,7 +145,7 @@
                                         <h4 class="modal-title" id="myModalLabel">Reposición de Fondo Fijo</h4>
                                     </div>
                                     <div class="modal-body">
-                                        <reposicion-fondo-fijo-create :comprobante_fondo_fijo="{{$comprobante_fondo_fijo->toJson()}}" v-cloak></reposicion-fondo-fijo-create>
+                                        <reposicion-fondo-fijo-create :id_antecedente="{{$comprobante_fondo_fijo->id_transaccion}}" v-cloak></reposicion-fondo-fijo-create>
                                     </div>
                                 </div>
                             </div>

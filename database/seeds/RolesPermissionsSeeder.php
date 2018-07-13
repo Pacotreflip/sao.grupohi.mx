@@ -159,9 +159,16 @@ class RolesPermissionsSeeder extends Seeder
         $resgistro_asignacion = Permission::firstOrCreate(['name' => 'registrar_asignacion', 'display_name' => 'Registrar una Asignación', 'description' => 'Permisos para el registro de una asignación de procuración']);
         $eliminar_asignacion = Permission::firstOrCreate(['name' => 'eliminar_asignacion', 'display_name' => 'Eliminar una Asignación', 'description' => 'Permisos para poder eliminar el registro de una asignación de procuración']);
 
-        //Finanzas Solicitud de Cheque
-        $registrar_reposicion_fondo_fijo = Permission::firstOrCreate(['name' => 'registrar_reposicion_fondo_fijo', 'display_name' => 'Registrar eposicion de fondo fijo', 'description' => 'Permiso para poder registrar reposiciónes de fondo fijo']);
+        //Finanzas Solicitud de Pago
+        $registrar_reposicion_fondo_fijo = Permission::firstOrCreate(['name' => 'registrar_reposicion_fondo_fijo', 'display_name' => 'Registrar Reposicion de fondo fijo', 'description' => 'Permiso para poder registrar reposiciones de fondo fijo']);
         $registrar_pago_cuenta = Permission::firstOrCreate(['name' => 'registrar_pago_cuenta', 'display_name' => 'Registrar pagos a cuenta', 'description' => 'Permiso para poder registrar pagos a cuenta']);
+        $consultar_solicitud_pago = Permission::firstOrCreate(['name' => 'consultar_solicitud_pago', 'display_name' => 'Consultar Solicitudes de Pago', 'description' => 'Permiso para poder Consultar Solicitudes de Pago']);
+
+        //Finanzas Solicitud de Recursos
+        $registrar_solicitud_recursos = Permission::firstOrCreate(['name' => 'registrar_solicitud_recursos', 'display_name' => 'Registrar Solicitudes de Recursos', 'description' => 'Permiso para poder Registrar Solicitudes de Recursos']);
+        $consultar_solicitud_recursos = Permission::firstOrCreate(['name' => 'consultar_solicitud_recursos', 'display_name' => 'Consultar Solicitudes de Recursos', 'description' => 'Permiso para poder Consultar Solicitudes de Recursos']);
+        $finalizar_solicitud_recursos = Permission::firstOrCreate(['name' => 'finalizar_solicitud_recursos', 'display_name' => 'Finalizar Solicitudes de Recursos', 'description' => 'Permiso para poder Finalizar Solicitudes de Recursos']);
+        $consulta_pdf_solicitud_recursos = Permission::firstOrCreate(['name' => 'consultar_pdf_solicitud_recursos', 'display_name' => 'Consultar PDF Solicitudes de Recursos', 'description' => 'Permiso para poder Consultar PDF de Solicitudes de Recursos']);
 
         /**
          * Roles
@@ -178,6 +185,7 @@ class RolesPermissionsSeeder extends Seeder
         $administrador_sistema         = Role::firstOrCreate(['name' => 'administrador_sistema', 'display_name' => 'Administrador del Sistema', 'description' => 'Administrador del Sistema']);
         $comprador                     = Role::firstOrCreate(['name' => 'comprador', 'display_name' => 'Comprador', 'description' => 'Rol de Procuración']);
         $coordinador_procuracion       = Role::firstOrCreate(['name' => 'coordinador_procuracion', 'display_name' => 'Coordinador Procuracion', 'description' => 'Rol de Coordinador Procuración']);
+        $cuentas_por_pagar             = Role::firstOrCreate(['name' => 'cuentas_por_pagar', 'display_name' => 'Cuentas por Pagar', 'description' => 'Rol de Cuentas por Pagar']);
 
         /**
          * Asignaciones
@@ -255,6 +263,11 @@ class RolesPermissionsSeeder extends Seeder
             $editar_movimiento_bancario->id,
             $registrar_pago_cuenta->id,
             $registrar_reposicion_fondo_fijo->id,
+            $consultar_solicitud_pago->id,
+            $consultar_solicitud_recursos->id,
+            $registrar_solicitud_recursos->id,
+            $consulta_pdf_solicitud_recursos->id,
+            $finalizar_solicitud_recursos->id
         ]);
         $consulta_finanzas->perms()->sync([
             $consultar_comprobante_fondo_fijo->id,
@@ -329,11 +342,18 @@ class RolesPermissionsSeeder extends Seeder
             $resgistro_asignacion->id,
             $eliminar_asignacion->id,
         ]);
+
+        $cuentas_por_pagar->perms()->sync([
+            $consultar_solicitud_recursos->id,
+            $registrar_solicitud_recursos->id,
+            $consulta_pdf_solicitud_recursos->id,
+            $finalizar_solicitud_recursos->id
+        ]);
         /**
          * Sistemas
          */
         $sistema_contable = Sistema::firstOrCreate(['name' => 'Sistema Contable', 'description' => 'Sistema para el control contable', 'url' => 'sistema_contable']);
-        $finaznas = Sistema::firstOrCreate(['name' => 'Finanzas', 'description' => 'Sistema para el control financiero', 'url' => 'finanzas']);
+        $finanzas = Sistema::firstOrCreate(['name' => 'Finanzas', 'description' => 'Sistema para el control financiero', 'url' => 'finanzas']);
         $formatos = Sistema::firstOrCreate(['name' => 'Formatos', 'description' => 'Sistema de emisión de formatos', 'url' => 'formatos']);
         $tesoreria = Sistema::firstOrCreate(['name' => 'Tesorería', 'description' => 'Sistema de Tesorería', 'url' => 'tesoreria']);
         $control_costos = Sistema::firstOrCreate(['name' => 'Control de Costos', 'description' => 'Sistema de control de costos', 'url' => 'control_costos']);
@@ -385,8 +405,8 @@ class RolesPermissionsSeeder extends Seeder
                 $editar_cierre_periodo->id,
             ]
         );
-
-        $finaznas->permisos()->sync(
+        //Finanzas
+        $finanzas->permisos()->sync(
             [
                 $editar_comprobante_fondo_fijo->id,
                 $registrar_comprobante_fondo_fijo->id,
@@ -395,6 +415,12 @@ class RolesPermissionsSeeder extends Seeder
 
                 $registrar_reposicion_fondo_fijo->id,
                 $registrar_pago_cuenta->id,
+                $consultar_solicitud_pago->id,
+
+                $registrar_solicitud_recursos->id,
+                $consultar_solicitud_recursos->id,
+                $finalizar_solicitud_recursos->id,
+                $consulta_pdf_solicitud_recursos->id
             ]
         );
 

@@ -47,7 +47,6 @@ class ReposicionFondoFijoController extends BaseController
      */
     public function store(Request $request)
     {
-        // Email array validator
         Validator::extend('uniqueid_antecedente', function($attribute, $value, $parameters, $validator) {
             $option = $this->reposicionFondoFijoRepository->where([$attribute => $value])->get();
             if (count($option->toArray())) {
@@ -61,15 +60,16 @@ class ReposicionFondoFijoController extends BaseController
             //Validaciones de Transaccion
             'id_referente' => ['required', 'int', 'exists:cadeco.fondos,id_fondo'],
             'cumplimiento' => ['required', 'date'],
-            'vencimiento' => ['required', 'date'],
-            'fecha' => ['required', 'date'],
+            'vencimiento' => ['required', 'date', 'after_or_equal:cumplimiento'],
             'monto' => ['required', 'string',],
             'destino' => ['required', 'string',],
             'observaciones' => ['string',],
-            'id_antecedente' => ['int','uniqueid_antecedente'],
+            'id_antecedente' => ['required_unless:id_rubro,13', 'int','uniqueid_antecedente'],
+            'id_rubro' => ['required', 'int', 'exists:cadeco.Finanzas.rubros,id']
         ];
         $messages = [
-            'uniqueid_antecedente' => 'El Comprobante seleccionado ya cuenta con una reposición de cheque',
+            'uniqueid_antecedente' => 'Ya existe una solicitud generada para la transacción seleccionada',
+            'after_or_equal' => 'La "Fecha Límite de Pago" debe ser mayor o igual a la "Fecha de Solicitud"'
         ];
 
         //Validar los datos recibidos con las reglas de validación
@@ -78,7 +78,7 @@ class ReposicionFondoFijoController extends BaseController
             //Caer en excepción si alguna regla de validación falla
             throw new ValidationHttpException($validator->errors());
         } else {
-            $this->reposicionFondoFijoRepository->create($request->all());
+            $this->reposicionFondoFijoRepository->create($request->id_rubro == 13 ? $request->except('id_antecedente') : $request->all());
             return $this->response()->created();
         }
     }

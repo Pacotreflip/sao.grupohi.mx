@@ -1,6 +1,6 @@
 <?php
 
-Route::group(['prefix' => 'finanzas', 'middleware' => 'system.access:finanzas'], function () {
+Route::group(['prefix' => 'finanzas', 'middleware' => ['system.access:finanzas', 'auth', 'context']], function () {
 
     /**
      * Index Route...
@@ -28,8 +28,15 @@ Route::group(['prefix' => 'finanzas', 'middleware' => 'system.access:finanzas'],
     Route::get('comprobante_fondo_fijo/getBy', 'ComprobanteFondoFijoController@getBy')->name('finanzas.comprobante_fondo_fijo.getBy');
 
     /**
-     * Solicitud de Cheque routes
+     * Solicitud de Pago routes
      */
-    Route::get('solicitud_cheque', 'Finanzas\SolicitudChequeController@create')->name('finanzas.solicitud_cheque.create');
+    Route::get('solicitud_pago', 'Finanzas\SolicitudPagoController@index')->name('finanzas.solicitud_pago.index');
+    Route::get('solicitud_pago/create', 'Finanzas\SolicitudPagoController@create')->name('finanzas.solicitud_pago.create');
 
+    /**
+     * Solicitud de Recursos routes
+     */
+    Route::get('solicitud_recursos', 'Finanzas\SolicitudRecursosController@index')->name('finanzas.solicitud_recursos.index');
+    Route::get('solicitud_recursos/{id}', 'Finanzas\SolicitudRecursosController@show')->name('finanzas.solicitud_recursos.show')->where(['id' => '[0-9]+']);
+    Route::get('solicitud_recursos/{id}/edit', 'Finanzas\SolicitudRecursosController@edit')->name('finanzas.solicitud_recursos.edit')->where(['id' => '[0-9]+']);
 });

@@ -4,6 +4,8 @@ namespace Ghi\Http\Middleware;
 
 use Closure;
 use Ghi\Domain\Core\Models\Seguridad\Sistema;
+use Illuminate\Http\Exception\HttpResponseException;
+use Illuminate\Http\Response;
 use Illuminate\Session\Store;
 use \Entrust;
 use Laracasts\Flash\Flash;
@@ -35,7 +37,7 @@ class SystemAccess
 
         if (! Entrust::can($permisos)) {
             if($request->ajax()) {
-                throw new HttpResponseException(new Response('¡LO SENTIMOS, NO CUENTAS CON LOS PERMISOS NECESARIOS PARA REALIZAR LA OPERACIÓN SELECCIONADA!', 404));
+                throw new HttpResponseException(new Response('¡LO SENTIMOS, NO CUENTAS CON LOS PERMISOS NECESARIOS PARA REALIZAR LA OPERACIÓN SELECCIONADA!', 403));
             }
             Flash::error('¡LO SENTIMOS, NO CUENTAS CON LOS PERMISOS NECESARIOS PARA REALIZAR LA OPERACIÓN SELECCIONADA!');
             return redirect()->back();

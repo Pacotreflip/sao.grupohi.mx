@@ -12,7 +12,7 @@ class CreateConfiguracionCierresAperturasTable extends Migration
      */
     public function up()
     {
-        Schema::create('Configuracion.cierres_aperturas', function (Blueprint $table) {
+        Schema::connection('seguridad')->create('Configuracion.cierres_aperturas', function (Blueprint $table) {
             $table->unsignedInteger('id_cierre');
             $table->text('motivo');
             $table->integer('registro');
@@ -34,6 +34,6 @@ class CreateConfiguracionCierresAperturasTable extends Migration
      */
     public function down()
     {
-        Schema::drop('Configuracion.cierres_aperturas');
+        Schema::connection('seguridad')->drop('Configuracion.cierres_aperturas');
     }
 }

@@ -22,4 +22,10 @@ interface SubcontratoRepository
      * @return Subcontrato
      */
     public function create(Request $request);
+
+    public function search($value, array $columns);
+
+    public function limit($limit);
+
+    public function with($relations);
 }

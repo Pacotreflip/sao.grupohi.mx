@@ -10,7 +10,7 @@ namespace Ghi\Http\Controllers\Finanzas;
 
 use Ghi\Http\Controllers\Controller;
 
-class SolicitudChequeController extends Controller {
+class SolicitudPagoController extends Controller {
 
     public function __construct()
     {
@@ -19,7 +19,11 @@ class SolicitudChequeController extends Controller {
         $this->middleware('permission:registrar_reposicion_fondo_fijo|registrar_pago_cuenta', ['only' => ['create']]);
     }
 
+    public function index() {
+        return view('finanzas.solicitud_pago.index');
+    }
+
     public function create() {
-        return view('finanzas.solicitud_cheque.create');
+        return view('finanzas.solicitud_pago.create');
     }
 }

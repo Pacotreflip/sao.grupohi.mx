@@ -12,4 +12,26 @@ $icon-font-path: "../fonts";
 .numerico{
   text-align: right;
 }
-
+/*
+* JEAB 04-07-2018 Estilos para el mensaje de alerta top
+*/
+#div-top-message {
+  position: fixed;
+  z-index: 6001;
+  top: 0;
+  left: 0;
+  right: 0;
+  color: white;
+  text-align: center;
+  line-height: 2.5;
+  overflow: hidden;
+  -webkit-box-shadow: 0 0 5px black;
+  -moz-box-shadow:    0 0 5px black;
+  box-shadow:         0 0 5px black;
+}
+.success-message {
+  background: #39dd7c !important;
+}
+.error-message{
+  background: #ea431c !important;
+}

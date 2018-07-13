@@ -1,0 +1,139 @@
+<section>
+    <div class="row">
+        <div class="col-md-offset-2 col-md-5 col-sm-offset-2 col-sm-5">
+            <div class="box box-solid">
+                <div class="box-body">
+                    <p><b>Agrupación</b></p>
+                    <div class="btn-group" style="width: 100%">
+                        <button style="width: 33.33%;" id="id_empresa" type="button" class="btn btn-default" :class="group_by == 'id_empresa' ? 'active' : ''" v-on:click="toggle('id_empresa')">
+                            Proveedor
+                        </button>
+                        <button style="width: 33.33%;" id="id_rubro" type="button" class="btn btn-default" :class="group_by == 'id_rubro' ? 'active' : ''" v-on:click="toggle('id_rubro')">
+                            Movimiento
+                        </button>
+                        <button style="width: 33.33%;" id="id_moneda" type="button" class="btn btn-default" :class="group_by == 'id_moneda' ? 'active' : ''" v-on:click="toggle('id_moneda')">
+                            Moneda
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-5 col-sm-5">
+            <div class="box box-solid">
+                <div class="box-body">
+                    <p><b>Vencimiento (días)</b></p>
+                    <div class="btn-group" style="width: 100%">
+                        <button style="width: 20%;" id="v0020" type="button" class="btn btn-default" :class="filtro == 'v0020' ? 'active' : ''" v-on:click="set_fechas(false, -20, 'v0020')">
+                            <small>V<20</small>
+                        </button>
+                        <button style="width: 20%;" id="v2040" type="button" class="btn btn-default" :class="filtro == 'v2040' ? 'active' : ''" v-on:click="set_fechas(-20, -40, 'v2040')">
+                            <small>V<=20<40</small>
+                        </button>
+                        <button style="width: 20%;" id="v4060" type="button" class="btn btn-default" :class="filtro == 'v4060' ? 'active' : ''" v-on:click="set_fechas(-40, -60, 'v4060')">
+                            <small>V<=40<60</small>
+                        </button>
+                        <button style="width: 20%;" id="v6000" type="button" class="btn btn-default" :class="filtro == 'v6000' ? 'active' : ''" v-on:click="set_fechas(-60, false, 'v6000')">
+                            <small>60<=V</small>
+                        </button>
+                        <button style="width: 20%;" type="button" class="btn btn-default" data-toggle="modal" data-target="#vencimientoModal">
+                            <small>Otro</small>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <div class="row">
+        <div v-for="(grupo, key) in grupos" class="col-md-12">
+            <div class="box box-solid">
+                <div class="box-header with-border">
+                    <h3 class="box-title">{{grupo[0][title] ? grupo[0][title][text] : 'SIN AGRUPAR'}}</h3>
+                </div>
+
+                <div class="box-body">
+                    <div class="table-responsive pre-scrollable">
+                        <table class="table table-bordered table-striped">
+                            <thead>
+                            <tr>
+                                <th>Folio (SAO)</th>
+                                <th>Tipo de Movimiento</th>
+                                <th>Tipo de Transacción</th>
+                                <th>Folio de Factura</th>
+                                <th>Folio CR</th>
+                                <th>Fecha</th>
+                                <th>Vencimiento</th>
+                                <th>Monto</th>
+                                <th>Moneda</th>
+                                <th>T.C.</th>
+                                <th>Monto M.N.</th>
+                                <th></th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr v-for="transaccion in grupo">
+                                <td>#{{ transaccion.numero_folio }}</td>
+                                <td>{{ transaccion.rubro ? transaccion.rubro.descripcion: 'N/A' }}</td>
+                                <td>{{ transaccion.tipo_tran.Descripcion }}</td>
+                                <td>{{ transaccion.referencia ?  transaccion.referencia : 'N/A'}}</td>
+                                <td>{{ transaccion.contrarecibo ? '#' + transaccion.contrarecibo.numero_folio : 'N/A' }}</td>
+                                <td>{{ new Date(transaccion.fecha).dateShortFormat() }}</td>
+                                <td>{{ new Date(transaccion.vencimiento).dateShortFormat() }}</td>
+                                <td style="text-align: right"><span class="pull-left">$</span> {{ parseFloat(transaccion.monto).formatMoney(2, '.', ',') }}</td>
+                                <td>{{ transaccion.moneda.nombre }}</td>
+                                <td style="text-align: right"><span class="pull-left">$</span> {{ parseFloat(transaccion.tipo_cambio).formatMoney(2, '.', ',') }}</td>
+                                <td style="text-align: right"><span class="pull-left">$</span> {{ parseFloat(transaccion.monto * transaccion.tipo_cambio).formatMoney(2, '.', ',') }}</td>
+                                <td><input type="checkbox" v-model="transaccion.seleccionada" v-on:click="sync(transaccion)"></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <p class="pull-right">
+                <b>Total Solicitado: </b> $ {{ parseFloat(total_solicitado).formatMoney(2, '.', ',') }}
+            </p>
+        </div>
+        <hr>
+        <div class="col-md-12" v-if="perm_finalizar_solicitud_recursos==true">
+            <button class="pull-right btn btn-sm btn-success" @click="confirm_finalizar">Finalizar</button>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="vencimientoModal" tabindex="-1" role="dialog" aria-labelledby="vencimientoModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel">Vencimiento</h4>
+                </div>
+                <form @submit.prevent="set_fecha_modal">
+                <div class="modal-body">
+                    <div class="btn-group btn-group-justified" data-toggle="buttons">
+                        <label class="btn btn-default active focus">
+                            <input type="radio" autocomplete="off" v-on:focus="posterior=false"> ANTERIOR A
+                        </label>
+                        <label class="btn btn-default">
+                            <input type="radio" autocomplete="off" v-on:focus="posterior=true"> POSTERIOR A
+                        </label>
+                    </div>
+                    <br>
+                    <div class="form-group">
+                        <input type="text" id ="vencimiento" autocomplete="off" class="input-sm form-control" v-datepicker required>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn btn-primary">Aceptar</button>
+                </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
