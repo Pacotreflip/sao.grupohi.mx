@@ -225,7 +225,11 @@ class Concepto extends BaseModel
     {
 
         $conceptoPath = ConceptoPath::where('id_concepto', '=', $this->id_concepto)->first();
-        return $conceptoPath->filtro4;
+        if($conceptoPath) {
+            return $conceptoPath->filtro4;
+        } else {
+            return null;
+        }
     }
 
     /**
@@ -234,8 +238,11 @@ class Concepto extends BaseModel
     public function getCuadranteAttribute()
     {
         $conceptoPath = ConceptoPath::where('id_concepto', '=', $this->id_concepto)->first();
-        return $conceptoPath->filtro5;
-    }
+        if($conceptoPath) {
+            return $conceptoPath->filtro5;
+        } else {
+            return null;
+        }    }
 
     public function getEntregaAttribute()
     {
