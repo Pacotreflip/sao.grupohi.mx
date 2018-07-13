@@ -13,7 +13,6 @@ use Ghi\Domain\Core\Models\ControlRec\RQCTOCCotizacionesPartidas;
 use Ghi\Domain\Core\Models\ControlRec\RQCTOCSolicitudPartidas;
 use Ghi\Domain\Core\Models\ControlRec\RQCTOCSolicitud;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
 
 /**
  * Class EloquentRequisicionRepository
@@ -177,20 +176,41 @@ class EloquentRequisicionRepository implements RequisicionRepository
      * @param $id_requisicion
      * @return mixed
      */
-    public function getPartidasCotizacion($id_requisicion)
+    public function getPartidasCotizacion($id_requisicion, $id_transaccion_sao, $solo_pendientes)
     {
-        return RQCTOCSolicitudPartidas::where('idrqctoc_solicitudes', $id_requisicion)
+        $partidas = RQCTOCSolicitudPartidas::where('idrqctoc_solicitudes', $id_requisicion)
             ->with(['item.transaccion', 'material'])
             ->groupBy('idmaterial_sao')->get();
+
+        $partidas->map(function ($p) use ($id_requisicion){
+            $agrupadas = RQCTOCSolicitudPartidas::where('idrqctoc_solicitudes', $id_requisicion)
+                ->where('idmaterial_sao', $p->idmaterial_sao)
+                ->where('idrqctoc_solicitudes_partidas', '<>', $p->idrqctoc_solicitudes_partidas)
+                ->get(['idrqctoc_solicitudes_partidas', 'cantidad'])->toArray();
+
+            $cantidad = $p->cantidad;
+            $agrupar = [$p->idrqctoc_solicitudes_partidas];
+            foreach ($agrupadas as $a)
+            {
+                $agrupar[] = $a['idrqctoc_solicitudes_partidas'];
+                $cantidad = $cantidad + $a['cantidad'];
+            }
+            $p->idrqctoc_solicitudes_partidas = implode(',', $agrupar);
+            $p->cantidad = $cantidad;
+        });
+
+        return $solo_pendientes ? $partidas->filter(function ($p){
+            return !$p->fincada;
+        }) : $partidas;
     }
 
     /**
      * @param int $id_requisicion
      * @param array $ids_cot
      */
-    public function   getPartidasCotizacionAgrupadas($id_requisicion)
+    public function   getPartidasCotizacionAgrupadas($id_requisicion, $id_transaccion_sao, $solo_pendientes)
     {
-        return RQCTOCCotizacionesPartidas::select( DB::raw("
+        $partidas =  RQCTOCCotizacionesPartidas::select( DB::raw("
             rqctoc_cotizaciones_partidas.idrqctoc_cotizaciones_partidas,
             rqctoc_cotizaciones_partidas.idrqctoc_cotizaciones,
             rqctoc_cotizaciones_partidas.idrqctoc_solicitudes_partidas,
@@ -205,6 +225,7 @@ class EloquentRequisicionRepository implements RequisicionRepository
             rqctoc_cotizaciones.tc_eur,
             rqctoc_cotizaciones.idmoneda as idmoneda_cot,
             sum(rqctoc_solicitudes_partidas.cantidad) as cantidad,
+            rqctoc_solicitudes_partidas.idmaterial_sao,
             ctg_monedas.moneda as moneda,
             ctg_monedas.corto as  moneda_corto,
             (precio_unitario-(precio_unitario*rqctoc_cotizaciones_partidas.descuento/100)) as precio_unitario,
@@ -220,6 +241,11 @@ class EloquentRequisicionRepository implements RequisicionRepository
             ->where('rqctoc_cotizaciones.idobra_sao', Context::getID())
             ->groupBy('rqctoc_solicitudes_partidas.idmaterial_sao', 'rqctoc_cotizaciones.idrqctoc_cotizaciones')
             ->get();
+
+
+        return $solo_pendientes ? $partidas->filter(function ($p){
+            return !$p->fincada;
+        }) : $partidas;
     }
 
     public function getRequisicion($id_transaccion_sao)
@@ -248,4 +274,5 @@ class EloquentRequisicionRepository implements RequisicionRepository
         }
         return false;
     }
+
 }

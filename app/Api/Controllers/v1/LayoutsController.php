@@ -18,6 +18,7 @@ use Ghi\Domain\Core\Layouts\Compras\AsignacionCargaProveedoresLayout;
 use Ghi\Domain\Core\Layouts\Compras\AsignacionProveedoresLayout;
 use Ghi\Domain\Core\Layouts\Contratos\AsignacionSubcontratistasLayout;
 use Ghi\Domain\Core\Layouts\Presupuestos\AsignacionCargaPreciosLayout;
+use Ghi\Domain\Core\Models\Compras\Requisiciones\Requisicion;
 use Ghi\Http\Controllers\Controller as BaseController;
 
 /**

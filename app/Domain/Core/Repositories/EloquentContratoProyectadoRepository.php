@@ -11,10 +11,13 @@ namespace Ghi\Domain\Core\Repositories;
 
 use Dingo\Api\Exception\StoreResourceFailedException;
 use Dingo\Api\Http\Request;
+use Ghi\Core\Models\Transaccion;
 use Ghi\Domain\Core\Contracts\ContratoProyectadoRepository;
 use Ghi\Domain\Core\Models\Acarreos\MaterialAcarreo;
 use Ghi\Domain\Core\Models\Contrato;
+use Ghi\Domain\Core\Models\Subcontratos\PartidaAsignacion;
 use Ghi\Domain\Core\Models\Transacciones\ContratoProyectado;
+use Ghi\Domain\Core\Repositories\Subcontratos\EloquentPartidaAsignacionRepository;
 use Illuminate\Support\Facades\DB;
 
 class EloquentContratoProyectadoRepository implements ContratoProyectadoRepository
@@ -273,7 +276,6 @@ class EloquentContratoProyectadoRepository implements ContratoProyectadoReposito
 
     public function getPartidasContratos($id = 0, $solo_pendientes = false)
     {
-
         // This isn't pretty...
         $query = DB::connection('cadeco')->select(DB::raw("SELECT
                         contratos.descripcion as descripcion,
@@ -281,6 +283,7 @@ class EloquentContratoProyectadoRepository implements ContratoProyectadoReposito
                         contratos.unidad,
                         contratos.cantidad_presupuestada,
                         contratos.cantidad_original,
+                        contratos.cantidad_original as cantidad,
                         contratos.cantidad_modificada,
                         conceptos.descripcion as destino,
                         conceptos.id_concepto as id_destino,
@@ -321,21 +324,29 @@ class EloquentContratoProyectadoRepository implements ContratoProyectadoReposito
                 ORDER BY nivel;
             "));
 
+        $transacciones = Transaccion::where('id_antecedente', $id)->get()->toArray();
+        $tIds = [];
+
+        foreach ($transacciones as $t)
+            $tIds[] = $t['id_transaccion'];
+
         // Sólo devuelve las partidas pendientes de asignar
         if ($solo_pendientes)
         {
-            $query = array_where($query, function ($value, $key) {
-                return (int) $value['en_asig'] == 0;
+            $query = array_where($query, function ($key, $value) use ($tIds) {
+                $partidas = PartidaAsignacion::whereIn('id_transaccion', $tIds)->where('id_concepto', $value->id_concepto)->get()->first();
+
+                return (!empty($partidas) && $partidas->id_concepto == $value->id_concepto) ? false : true;
             });
 
             // No muestres el padre si todos los hijos ya se encuentran fincados
-            $query = array_where($query, function ($value, $key) use($id) {
+            $query = array_where($query, function ($key, $value) use($id) {
 
-                if ($value['hijos'] == 1)
+                if ($value->hijos == 1)
                 {
-                    $encontrados = Contrato::where('id_transaccion', $id)->where('nivel', 'like', $value['nivel'])->get()->toArray();
+                    $encontrados = Contrato::where('id_transaccion', $id)->where('nivel', 'like', $value->nivel)->get(['id_concepto'])->first()->toArray();
 
-                    return array_diff(explode(',', $value['hijos_ids']), $encontrados) == array();
+                    return array_diff(explode(',', $value->hijos_ids), array_values($encontrados)) == [];
                 }
 
                 return true;
@@ -379,6 +390,22 @@ select * from (
                     WHERE 
                         id_transaccion = contratos.id_transaccion AND 
                         id_concepto = contratos.id_concepto) as en_asig,
+(
+          SELECT CAST(CAST(SUM(ISNULL (cc.cantidad_original, 0))  AS FLOAT) AS bigint) as cantidad
+          FROM contratos cc
+
+          WHERE case when ( LEN(ltrim(contratos.descripcion)) - CHARINDEX(' ',lTRIM(contratos.descripcion))  > 0) then 
+SUBSTRING( ltrim(contratos.descripcion),CHARINDEX(' ',ltrim(contratos.descripcion)),LEN(ltrim(contratos.descripcion)) - CHARINDEX(' ',ltrim(contratos.descripcion) )+1)
+else
+rtrim(ltrim((contratos.descripcion)))
+end
+ =
+  case when ( LEN(ltrim(cc.descripcion)) - CHARINDEX(' ',lTRIM(cc.descripcion))  > 0) then 
+SUBSTRING( ltrim(cc.descripcion),CHARINDEX(' ',ltrim(cc.descripcion)),LEN(ltrim(cc.descripcion)) - CHARINDEX(' ',ltrim(cc.descripcion) )+1)
+else
+rtrim(ltrim((cc.descripcion)))
+end and cc.id_transaccion = contratos.id_transaccion
+          ) as cantidad,
         STUFF((
           SELECT concat(',',gc.id_concepto) as id_hijo
           FROM contratos gc
@@ -428,21 +455,29 @@ FROM contratos
 ) z
 order by z.nivel"));
 
+        $transacciones = Transaccion::where('id_antecedente', $id)->get()->toArray();
+        $tIds = [];
+
+        foreach ($transacciones as $t)
+            $tIds[] = $t['id_transaccion'];
+
         // Sólo devuelve las partidas pendientes de asignar
         if ($solo_pendientes)
         {
-            $query = array_where($query, function ($value, $key) {
-                return (int) $value['en_asig'] == 0;
+            $query = array_where($query, function ($key, $value) use ($tIds) {
+                $partidas = PartidaAsignacion::whereIn('id_transaccion', $tIds)->where('id_concepto', $value->id_concepto)->get()->first();
+
+                return (!empty($partidas) && $partidas->id_concepto == $value->id_concepto) ? false : true;
             });
 
             // No muestres el padre si todos los hijos ya se encuentran fincados
-            $query = array_where($query, function ($value, $key) use($id) {
+            $query = array_where($query, function ($key, $value) use($id) {
 
-                if ($value['hijos'] == 1)
+                if ($value->hijos == 1)
                 {
-                    $encontrados = Contrato::where('id_transaccion', $id)->where('nivel', 'like', $value['nivel'])->get()->toArray();
+                    $encontrados = Contrato::where('id_transaccion', $id)->where('nivel', 'like', $value->nivel)->get(['id_concepto'])->first()->toArray();
 
-                    return array_diff(explode(',', $value['hijos_ids']), $encontrados) == array();
+                    return array_diff(explode(',', $value->hijos_ids), array_values($encontrados)) == [];
                 }
 
                 return true;

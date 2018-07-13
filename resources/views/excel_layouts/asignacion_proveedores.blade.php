@@ -47,8 +47,8 @@
             @foreach($requisicion['valores'] as $key => $req)
                 @foreach($req['presupuesto'] as $key => $cot)
                     <?php
-                        $cotizacions_ids[] = $cot->idtransaccion_sao;
-                        $empresas_ids[] = $cot->empresa->id_empresa;
+                    $cotizacions_ids[] = $cot->idtransaccion_sao;
+                    $empresas_ids[] = $cot->empresa->id_empresa;
                     ?>
                 @endforeach
             @endforeach
@@ -61,7 +61,8 @@
             $info['solo_pendientes']) }}
             @endif
         </td>
-        <?php $primerValor = array_values($requisicion['valores'])[0]; ?>
+        <?php $primerValor = !empty($requisicion['valores']) ? array_values($requisicion['valores'])[0] :
+            ['presupuesto' => []]; ?>
         @foreach($primerValor['presupuesto'] as $key => $cotizacion)
             <td colspan="{{ count($headerCotizaciones) }}">
                 {{ $cotizacion->empresa->razon_social }}
@@ -101,41 +102,21 @@
         <?php $ultimalinea = ($index==count($requisicion['valores']))? 'button-border':'border'; ?>
         <?php $ultimalinealeft = ($index==count($requisicion['valores']))? 'laterales-left-sin':'laterales-left'; ?>
         <?php $ultimalinearinght = ($index==count($requisicion['valores']))? 'laterales-right-sin':'laterales-right'; ?>
-        {{--Cantidades--}}
-        <?php
-        if(isset($req['partida']->item) && $req['partida']->item->transaccion->estatus_transaccion == 1)
-        {
-            if($req['partida']->cantidad_original !=0)
-            {
-                $cantidad_autorizada = $req['partida']->cantidad;
-                $cantidad_solicitada = $req['partida']->cantidad_original;
-            }
-            else
-            {
-                $cantidad_autorizada = $req['partida']->cantidad;
-                $cantidad_solicitada = $req['partida']->cantidad;
-            }
 
-        }
-        else
-        {
-            $cantidad_autorizada = 0;
-            $cantidad_solicitada = $req['partida']->cantidad;
-        }
-
-        ?>
         <tr>
             <!-- Información general de la partida -->
             <td style="background-color: #ffd966" class="laterales-left">{{ $index }}</td>
-            <td style="background-color: #ffd966" class="border">{{  $req['partida']->idrqctoc_solicitudes_partidas }}</td>
-            <td style="background-color: #ffd966" class="border">{{ (!empty($req['partida']->material->numero_parte) ?
-            '['. $req['partida']->material->numero_parte .']' : '') . $req['partida']->material->descripcion }}</td>
+            <td style="background-color: #ffd966" class="border">{{  $mcrypt->encrypt($req['partida']->idrqctoc_solicitudes_partidas) }}</td>
+            <td style="background-color: #ffd966" class="border">{{ (!empty($req['partida']->material) ?
+            '['. $req['partida']->material->numero_parte .']' : '') . (!empty($req['partida']->material) ?
+            $req['partida']->material->descripcion : '')
+            }}</td>
             <td style="background-color: #ffd966" class="border">{{ (!empty($req['partida']->material->unidad) ?
             $req['partida']->material->unidad : '') }}</td>
             <td style="background-color: #ffd966"
-                class="border">{{ $cantidad_solicitada }}</td>
+                class="border">{{ $req['partida']->cantidad_solicitada }}</td>
             <td style="background-color: #ffd966"
-                class="laterales-right">{{ $cantidad_autorizada }}</td>
+                class="laterales-right">{{ $req['partida']->cantidad_autorizada }}</td>
 
             <!-- Información de la cotización -->
             @foreach($req['presupuesto'] as $key => $cot)
@@ -154,15 +135,32 @@
 
                 {{--% Descuento--}}
                 <td style="background-color: #fff" class="{{$ultimalinea}} ">
-                    {{ $cot_partida ? $cot_partida->porcentaje_descuento : '' }}
+                    {{ $cot_partida ? $cot_partida->descuento : '0' }}
                 </td>
 
                 {{--Precio Total--}}
                 <td style="background-color: #9bc2e6" class="{{$ultimalinea}} ">
                 </td>
 
-                {{--Moneda - calculado en backend --}}
-                <td style="background-color: #fff" class="{{$ultimalinea}} "></td>
+                {{--Moneda--}}
+                <td style="background-color: #fff" class="{{$ultimalinea}} "><?php
+                            if (isset($cot_partida->idmoneda))
+                                switch ((int) $cot_partida->idmoneda)
+                                {
+                                    case 2:
+                                        echo "EURO";
+                                        break;
+                                    case 1:
+                                        echo "DOLAR USD";
+                                        break;
+                                    case 3:
+                                        echo "PESO MXP";
+                                        break;
+                                }
+
+                            else
+                                echo "PESO MXP";
+                            ?></td>
 
                 {{--Precio Total Moneda Conversión--}}
                 <td style="background-color: #9bc2e6" class="{{$ultimalinea}} "></td>
@@ -171,7 +169,8 @@
                 <td style="background-color: #fff" class="{{$ultimalinea}} "></td>
 
                 {{--material_sao--}}
-                <td style="background-color: #fff; color: #fff">{{ $mcrypt->encrypt($req['partida']->material->id_material) }}</td>
+                <td style="background-color: #fff; color: #fff">{{ $mcrypt->encrypt((!empty($req['partida']->material) ?
+                $req['partida']->material->id_material : '0')) }}</td>
 
                 {{--idrqctoc_solicitudes_partidas--}}
                 <td style="background-color: #fff; color: #fff"></td>
