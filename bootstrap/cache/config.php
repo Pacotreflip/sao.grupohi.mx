@@ -264,11 +264,11 @@
       'igh' => 
       array (
         'driver' => 'mysql',
-        'host' => 'localhost',
+        'host' => '172.20.74.7',
         'port' => '3306',
         'database' => 'igh',
-        'username' => 'root',
-        'password' => '12345',
+        'username' => 'sca',
+        'password' => 'w6FCR56sLT',
         'charset' => 'utf8',
         'collation' => 'utf8_unicode_ci',
         'prefix' => '',
@@ -278,11 +278,11 @@
       'controlrec' => 
       array (
         'driver' => 'mysql',
-        'host' => 'localhost',
+        'host' => '172.20.74.92',
         'port' => '3306',
         'database' => 'controlrec',
-        'username' => 'root',
-        'password' => '12345',
+        'username' => 'ocompra',
+        'password' => 'KcLuDWe5vG',
         'charset' => 'utf8',
         'collation' => 'utf8_unicode_ci',
         'prefix' => '',
@@ -301,19 +301,19 @@
       'cadeco' => 
       array (
         'driver' => 'sqlsrv',
-        'host' => 'localhost',
-        'database' => 'SAO1814_TERMINAL_NAICM',
-        'username' => 'sa',
-        'password' => '12345',
+        'host' => '172.20.74.3',
+        'database' => 'SAO1814_DEV_TERMINAL_NAICM',
+        'username' => 'emartinez',
+        'password' => 'ems807&gh3',
         'prefix' => '',
       ),
       'seguridad' => 
       array (
         'driver' => 'sqlsrv',
-        'host' => 'localhost',
+        'host' => '172.20.74.3',
         'database' => 'SEGURIDAD_ERP',
-        'username' => 'sa',
-        'password' => '12345',
+        'username' => 'emartinez',
+        'password' => 'ems807&gh3',
         'prefix' => '',
       ),
       'sqlite' => 
