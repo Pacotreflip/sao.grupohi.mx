@@ -64,7 +64,9 @@ class PagoCuentaController extends BaseController
             'destino' => ['required', 'string',],
             'observaciones' => ['string',],
             'id_empresa' => ['required', 'exists:cadeco.empresas,id_empresa'],
-            'id_costo' => ['required', 'exists:cadeco.costos,id_costo'],
+            'id_costo' => [
+                //'required',
+                'exists:cadeco.costos,id_costo'],
             'id_antecedente' => ['required', 'uniqueid_antecedente', 'sin_facturas'],
         ];
 

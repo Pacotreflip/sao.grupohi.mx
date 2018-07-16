@@ -36,17 +36,18 @@ Vue.component('solicitud-recursos-index', {
                         json.data[i].total = 0;
 
                         json.data[i].fecha_registro = new Date(json.data[i].created_at).dateShortFormat();
-                        json.data[i].usuario_registro = json.data[i].usuario.amaterno + ' ' + json.data[i].usuario.apaterno + ' ' + json.data[i].usuario.nombre;
+                        json.data[i].usuario_registro = json.data[i].usuario.apaterno + ' ' + json.data[i].usuario.amaterno + ' ' + json.data[i].usuario.nombre;
                         json.data[i].estado = json.data[i].estado == 1 ? 'Generada' : 'Finalizada';
                         json.data[i].cantidad_transacciones = json.data[i].partidas.length ? json.data[i].partidas.length : 0;
                         $.each(json.data[i].partidas, function(index, value) {
-                            json.data[i].total += value.monto;
+                            json.data[i].total += parseFloat(value.monto);
                         });
 
                         json.data[i].total = '$ ' + parseFloat(json.data[i].total).formatMoney(2, '.', ',');
                     }
                     return json.data;
                 }
+
             },
             "columns" : [
                 {data : 'folio'},

@@ -117,7 +117,7 @@ class PDFSolicitudRecursos extends Rotation
 
         $this->Cell($this->WidthTotal / 3, 0.5, 'PROYECTO', 'LR', 0, 'C','1');
         $this->Cell($this->WidthTotal / 3, 0.5, $this->obra->nombre, 'LTR', 0, 'L','0');
-        $this->Cell($this->WidthTotal / 6, 0.5, 'FECHA', 'LRT', 0, 'C','1');
+        $this->Cell($this->WidthTotal / 6, 0.5, 'SEMANA', 'LRT', 0, 'C','1');
         $this->Cell($this->WidthTotal / 6, 0.5, $this->solicitud->semana, 'LTR', 1, 'C','0');
     }
 

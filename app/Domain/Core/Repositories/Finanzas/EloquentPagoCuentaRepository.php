@@ -37,7 +37,7 @@ class EloquentPagoCuentaRepository implements PagoCuentaRepository
         try {
             DB::connection('cadeco')->beginTransaction();
             $transaccion = Transaccion::find($data['id_antecedente']);
-            if(!$transaccion->costo) {
+            if(!$transaccion->costo && isset($data['id_costo'])) {
                 $transaccion->id_costo = $data['id_costo'];
                 $transaccion->save();
             }

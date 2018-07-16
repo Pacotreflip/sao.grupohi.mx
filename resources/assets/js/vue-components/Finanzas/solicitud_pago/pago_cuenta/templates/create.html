@@ -119,8 +119,7 @@
                 <div class="form-group">
                     <div class="input-group"
                          :class="{'has-error': validation_errors.has('form_pago_cuenta.Tipo de Gasto')}">
-                        <input class="form-control" v-model="form.id_costo" type="hidden" name="Tipo de Gasto"
-                               v-validate="'required'" id="id_costo_pc">
+                        <input class="form-control" v-model="form.id_costo" type="hidden" name="Tipo de Gasto" id="id_costo_pc">
                         <input v-model="costo" type="text" class="form-control" readonly id="costo_pc"
                                placeholder="Clic aquí para seleccionar Tipo de Gasto...">
                         <span class="input-group-btn">

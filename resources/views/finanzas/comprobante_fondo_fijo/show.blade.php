@@ -133,7 +133,7 @@
                     @permission('registrar_reposicion_fondo_fijo')
                     <div class="box-footer">
                         <button class="btn btn-sm btn-primary pull-right" data-toggle="modal" data-target="#reposicion_modal">
-                            <i class="fa fa-check"></i> Generar Reposición
+                            <i class="fa fa-check"></i> Generar Solicitud de Pago
                         </button>
 
                         <!-- Modal -->
