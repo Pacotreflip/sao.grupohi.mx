@@ -32,7 +32,8 @@ class ConceptosExtraordinariosController extends Controller
                                 TipoExtraordinarioRepository $tipos_extraordinario,
                                 TarjetaRepository $tarjetas,
                                 CatalogoExtraordinarioRepository $catalogo,
-                                ConceptoRepository $concepto, CatalogoExtraordinarioPartidaRepository $extraordinario_partidas)
+                                ConceptoRepository $concepto,
+                                CatalogoExtraordinarioPartidaRepository $extraordinario_partidas)
     {
         parent::__construct();
 
@@ -207,6 +208,8 @@ class ConceptosExtraordinariosController extends Controller
 
     public function getNivelHijos(Request $request) {
         $items = $this->concepto->getBy($request->attribute, $request->operator, $request->value);
-        return response()->json(['data' => ['conceptos' => $items]], 200);
+        $clave_concepto = $this->concepto->getClaveConceptoNueva($request->value);
+
+        return response()->json(['data' => ['conceptos' => $items, 'clave_concepto' => $clave_concepto]], 200);
     }
 }

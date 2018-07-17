@@ -106,9 +106,9 @@ Vue.component('cambio-insumos-create', {
                     },
                     "dataSrc" : function (json) {
                         for (var i = 0; i < json.data.length; i++) {
-                            json.data[i].monto_presupuestado = '$' + parseFloat(json.data[i].monto_presupuestado).formatMoney(2, ',', '.');
-                            json.data[i].cantidad_presupuestada = parseFloat(json.data[i].cantidad_presupuestada).formatMoney(2, ',', '.');
-                            json.data[i].precio_unitario = '$' + parseFloat(json.data[i].precio_unitario).formatMoney(2, ',', '.');
+                            json.data[i].monto_presupuestado = '$' + parseFloat(json.data[i].monto_presupuestado).formatMoney(2, '.', ',');
+                            json.data[i].cantidad_presupuestada = parseFloat(json.data[i].cantidad_presupuestada).formatMoney(2, '.', ',');
+                            json.data[i].precio_unitario = '$' + parseFloat(json.data[i].precio_unitario).formatMoney(2, '.', ',');
                             json.data[i].filtro9_sub = json.data[i].filtro9.length > 50 ? json.data[i].filtro9.substr(0, 50) + '...' : json.data[i].filtro9;
                         }
                         return json.data;
@@ -125,7 +125,6 @@ Vue.component('cambio-insumos-create', {
                     {data : 'filtro8'},
                     {data : 'filtro9'},
                     {data : 'filtro10'},
-                    {data : 'filtro11'},
                     {data : 'unidad'},
                     {data : 'cantidad_presupuestada', className : 'text-right'},
                     {data : 'precio_unitario', className : 'text-right'},
@@ -135,9 +134,9 @@ Vue.component('cambio-insumos-create', {
                 "fnCreatedRow": function( nRow, aData, iDataIndex ) {
                     $('td:eq(8)', nRow).html( '<span title="'+aData.filtro9+'">'+aData.filtro9_sub+'</span>' );
                     if (self.existe(aData.id_concepto)) {
-                        $('td:eq(15)', nRow).html( '<button class="btn btn-xs btn-default btn_remove_concepto" id="'+aData.id_concepto+'"><i class="fa fa-minus text-red"></i></button>');
+                        $('td:eq(14)', nRow).html( '<button class="btn btn-xs btn-default btn_remove_concepto" id="'+aData.id_concepto+'"><i class="fa fa-minus text-red"></i></button>');
                     }else {
-                        $('td:eq(15)', nRow).html( '<button class="btn btn-xs btn-default btn_add_concepto" id="' + aData.id_concepto + '"><i class="fa fa-plus text-green"></i></button>');
+                        $('td:eq(14)', nRow).html( '<button class="btn btn-xs btn-default btn_add_concepto" id="' + aData.id_concepto + '"><i class="fa fa-plus text-green"></i></button>');
                     }
                 },
                 language: {
@@ -166,9 +165,7 @@ Vue.component('cambio-insumos-create', {
                 }
             });
         });
-
         self.fetchPresupuestos();
-
         $(document).on('click', '.btn_add_concepto', function () {
             var id = $(this).attr('id');
             self.addConcepto(id);
@@ -176,7 +173,27 @@ Vue.component('cambio-insumos-create', {
             var id = $(this).attr('id');
             self.removeConcepto(id);
         });
+        $('#tarjetas_select').select2({
+            sortResults: function(results, container, query) {
+                if (query.term) {
+                    // use the built in javascript sort function
+                    return results.sort(function(a, b) {
+                        if (a.text.length > b.text.length) {
+                            return 1;
+                        } else if (a.text.length < b.text.length) {
+                            return -1;
+                        } else {
+                            return 0;
+                        }
+                    });
+                }
+                return results;
+            }
 
+            /*sorter: function(data) {
+                return data.sort();
+            }*/
+        });
 
     },
 
@@ -200,6 +217,19 @@ Vue.component('cambio-insumos-create', {
                     }
                 });
         });
+        },
+
+        sorter: function(data) {
+            var datos = JSON.parse(data);
+            return datos.sort(function (a, b) {
+                if (a.text > b.text) {
+                    return 1;
+                }
+                if (a.text < b.text) {
+                    return -1;
+                }
+                return 0;
+            });
         },
 
         fetchPresupuestos: function () {
@@ -400,7 +430,7 @@ Vue.component('cambio-insumos-create', {
 
         existe : function (id) {
             var found = this.form.partidas.find(function (partida) {
-                return partida.id_concepto == id;
+                return partida.cobrable.id_concepto == id;
             });
             return found != undefined;
         },
@@ -803,7 +833,6 @@ Vue.component('cambio-insumos-create', {
                     confirmButtonText: 'Si, Eliminar',
                     cancelButtonText: 'No, Cancelar'
                 }).then(function(result) {
-                    console.log(result);
                     if(result.value){ //cancelo
                         self.removerRendimientoValidado(id_concepto, id, tipo);
                     }
@@ -843,32 +872,32 @@ Vue.component('cambio-insumos-create', {
 
                     self.form.partidas[0].conceptos.MATERIALES.insumos[i].rendimiento_nuevo = cant_pres;
                     var total = cant_concepto * self.form.partidas[0].conceptos.MATERIALES.insumos[i].rendimiento_nuevo;
-                    $("#r_p_" +id_concepto+'_'  + i).val(total);
+                    $("#r_p_" +id_concepto+'_'  + i).val(total.formatMoney(6, '.', ','));
                     break;
                 case 2://// agergar a mano obra
                     self.form.partidas[0].conceptos.MANOOBRA.insumos[i].rendimiento_nuevo = cant_pres;
                     var total = cant_concepto * self.form.partidas[0].conceptos.MANOOBRA.insumos[i].rendimiento_nuevo;
-                    $("#r_p_" +id_concepto+'_'  + i).val(total);
+                    $("#r_p_" +id_concepto+'_'  + i).val(total.formatMoney(6, '.', ','));
                     break;
                 case 4: ////agregar a herram y equipo
                     self.form.partidas[0].conceptos.HERRAMIENTAYEQUIPO.insumos[i].rendimiento_nuevo = cant_pres;
                     var total = cant_concepto * self.form.partidas[0].conceptos.HERRAMIENTAYEQUIPO.insumos[i].rendimiento_nuevo;
-                    $("#r_p_" +id_concepto+'_'  + i).val(total);
+                    $("#r_p_" +id_concepto+'_'  + i).val(total.formatMoney(6, '.', ','));
                     break;
                 case 8: ///agregar a maquinaria
                     self.form.partidas[0].conceptos.MAQUINARIA.insumos[i].rendimiento_nuevo = cant_pres;
                     var total = cant_concepto * self.form.partidas[0].conceptos.MAQUINARIA.insumos[i].rendimiento_nuevo;
-                    $("#r_p_" +id_concepto+'_'  + i).val(total);
+                    $("#r_p_" +id_concepto+'_'  + i).val(total.formatMoney(6, '.', ','));
                     break;
                 case 5: ///agregar a subcontratos
                     self.form.partidas[0].conceptos.SUBCONTRATOS.insumos[i].rendimiento_nuevo = cant_pres;
                     var total = cant_concepto * self.form.partidas[0].conceptos.SUBCONTRATOS.insumos[i].rendimiento_nuevo;
-                    $("#r_p_" +id_concepto+'_'  + i).val(total);
+                    $("#r_p_" +id_concepto+'_'  + i).val(total.formatMoney(6, '.', ','));
                     break;
                 case 6: ///agregar a gastos
                     self.form.partidas[0].conceptos.GASTOS.insumos[i].rendimiento_nuevo = cant_pres;
                     var total = cant_concepto * self.form.partidas[0].conceptos.GASTOS.insumos[i].rendimiento_nuevo;
-                    $("#r_p_" +id_concepto+'_'  + i).val(total);
+                    $("#r_p_" +id_concepto+'_'  + i).val(total.formatMoney(6, '.', ','));
                     break;
             }
         },
@@ -906,33 +935,33 @@ Vue.component('cambio-insumos-create', {
             switch (tipo){
                 case 1: ///agregar a materiales
                     var total = cant_pres / cant_concepto;
-                    $(".rendimiento" +id_concepto+'_'  + i).val(total);
+                    $(".rendimiento" +id_concepto+'_'  + i).val(total.formatMoney(6, '.', ','));
                     self.form.partidas[0].conceptos.MATERIALES.insumos[i].rendimiento_nuevo = total;
                     break;
                 case 2://// agergar a mano obra
                     var total = cant_pres / cant_concepto;
-                    $(".rendimiento" +id_concepto+'_'  + i).val(total);
+                    $(".rendimiento" +id_concepto+'_'  + i).val(total.formatMoney(6, '.', ','));
                     self.form.partidas[0].conceptos.MANOOBRA.insumos[i].rendimiento_nuevo = total;
 
                     break;
                 case 4: ////agregar a herram y equipo
                     var total = cant_pres / cant_concepto;
-                    $(".rendimiento" +id_concepto+'_'  + i).val(total);
+                    $(".rendimiento" +id_concepto+'_'  + i).val(total.formatMoney(6, '.', ','));
                     self.form.partidas[0].conceptos.HERRAMIENTAYEQUIPO.insumos[i].rendimiento_nuevo =total;
                     break;
                 case 8: ///agregar a maquinaria
                     var total = cant_pres / cant_concepto;
-                    $(".rendimiento" +id_concepto+'_'  + i).val(total);
+                    $(".rendimiento" +id_concepto+'_'  + i).val(total.formatMoney(6, '.', ','));
                     self.form.partidas[0].conceptos.MAQUINARIA.insumos[i].rendimiento_nuevo = total;
                     break;
                 case 5: ///agregar a SUNCONTRATOS
                     var total = cant_pres / cant_concepto;
-                    $(".rendimiento" +id_concepto+'_'  + i).val(total);
+                    $(".rendimiento" +id_concepto+'_'  + i).val(total.formatMoney(6, '.', ','));
                     self.form.partidas[0].conceptos.SUBCONTRATOS.insumos[i].rendimiento_nuevo = total;
                     break;
                 case 6: ///agregar a maquinaria
                     var total = cant_pres / cant_concepto;
-                    $(".rendimiento" +id_concepto+'_'  + i).val(total);
+                    $(".rendimiento" +id_concepto+'_'  + i).val(total.formatMoney(6, '.', ','));
                     self.form.partidas[0].conceptos.GASTOS.insumos[i].rendimiento_nuevo = total;
                     break;
             }

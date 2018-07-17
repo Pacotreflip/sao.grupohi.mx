@@ -38,6 +38,7 @@ class Concepto extends BaseModel
         , 'cantidad_presupuestada'
         , 'monto_presupuestado'
         , 'precio_unitario'
+        , 'clave_concepto'
 
     ];
     public $timestamps = false;
