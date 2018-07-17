@@ -104,6 +104,7 @@ class EloquentContratoProyectadoRepository implements ContratoProyectadoReposito
                                 ,'id_concepto_contrato' => $new_contrato['id_concepto']
                                 ,'id_transaccion' => $contrato_proyectado->id_transaccion
                                 ,'tarifa' => $contrato['tarifa']
+                                ,'id_item' => $contrato['tiro']
                             ]);
                         }
                     }
@@ -210,6 +211,7 @@ class EloquentContratoProyectadoRepository implements ContratoProyectadoReposito
                                 ,'id_concepto_contrato' => $new_contrato['id_concepto']
                                 ,'id_transaccion' => $id
                                 ,'tarifa' => $contrato['tarifa']
+                                ,'id_item' => $contrato['tiro']
                             ]);
                         }
                     }
