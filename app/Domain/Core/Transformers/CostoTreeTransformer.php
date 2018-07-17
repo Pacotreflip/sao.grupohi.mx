@@ -10,13 +10,13 @@ class CostoTreeTransformer extends AbstractTransformer
      * @param Costo $Costo
      * @return array
      */
-    public function transformModel(Model $Costo)
+    public function transformModel(Model $costo)
     {
         $output = [
-            'id'       => $Costo->id_Costo,
-            'nivel'    => $Costo->nivel,
-            'text'     => $Costo->clave_Costo ? $Costo->clave_Costo.' - '.$Costo->descripcion : $Costo->descripcion,
-            'children' => $Costo->tieneDescendientes(),
+            'id'       => $costo->id_costo,
+            'nivel'    => $costo->nivel,
+            'text'     => $costo->clave_Costo ? $costo->clave_Costo.' - '.$costo->descripcion : $costo->descripcion,
+            'children' => $costo->tieneDescendientes(),
         ];
         return $output;
 

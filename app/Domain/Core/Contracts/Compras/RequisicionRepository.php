@@ -53,4 +53,14 @@ interface RequisicionRepository
      * @return mixed
      */
     public function like(array $cols,$q);
+
+    /**
+     * @param int $id_requisicion
+     * @return mixed
+     */
+    public function getPartidasCotizacion($id_requisicion, $id_transaccion_sao, $solo_pendientes);
+
+    public function getPartidasCotizacionAgrupadas($id_requisicion, $id_transaccion_sao, $solo_pendientes);
+
+    public function getRequisicion($id_requisicion);
 }

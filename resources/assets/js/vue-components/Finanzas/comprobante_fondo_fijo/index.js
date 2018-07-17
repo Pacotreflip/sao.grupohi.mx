@@ -33,7 +33,7 @@ Vue.component('comprobante-fondo-fijo-index',{
                 },
                 "dataSrc" : function (json) {
                     for (var i = 0; i < json.data.length; i++) {
-                        json.data[i].monto = '$' + parseFloat(json.data[i].monto).formatMoney(2, ',', '.');
+                        json.data[i].monto = '<span class="pull-left">$</span>' + '<span class="pull-right">' + parseFloat(json.data[i].monto).formatMoney(2, '.', ',') + '</span>';
                         json.data[i].fecha = new Date(json.data[i].fecha).dateShortFormat();
                         json.data[i].FechaHoraRegistro = new Date(json.data[i].FechaHoraRegistro).dateFormat();
                     }
@@ -51,8 +51,8 @@ Vue.component('comprobante-fondo-fijo-index',{
                     data : {},
                     render : function(data) {
                         return (self.consultar_comprobante_fondo_fijo ? '<a href="'+App.host+'/finanzas/comprobante_fondo_fijo/'+data.id_transaccion+'" title="Ver" class="btn btn-xs btn-default"><i class="fa fa-eye"></i></a>' : '') +
-                               (self.editar_comprobante_fondo_fijo ? '<a href="'+App.host+'/finanzas/comprobante_fondo_fijo/'+data.id_transaccion+'/edit'+'" title="Editar" class="btn btn-xs btn-info"> <i class="fa fa-pencil"></i></a>' : '') +
-                               (self.eliminar_comprobante_fondo_fijo ? '<button title="Eliminar" type="button" class="btn btn-xs btn-danger btn_delete" id="'+data.id_transaccion+'"><i class="fa fa-trash"></i></button>' : '');
+                            (self.editar_comprobante_fondo_fijo ? '<a href="'+App.host+'/finanzas/comprobante_fondo_fijo/'+data.id_transaccion+'/edit'+'" title="Editar" class="btn btn-xs btn-info"> <i class="fa fa-pencil"></i></a>' : '') +
+                            (self.eliminar_comprobante_fondo_fijo ? '<button title="Eliminar" type="button" class="btn btn-xs btn-danger btn_delete" id="'+data.id_transaccion+'"><i class="fa fa-trash"></i></button>' : '');
                     },
                     orderable : false
                 }

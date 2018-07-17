@@ -264,11 +264,11 @@
       'igh' => 
       array (
         'driver' => 'mysql',
-        'host' => 'localhost',
+        'host' => '172.20.74.7',
         'port' => '3306',
         'database' => 'igh',
-        'username' => 'root',
-        'password' => 'root',
+        'username' => 'sca',
+        'password' => 'w6FCR56sLT',
         'charset' => 'utf8',
         'collation' => 'utf8_unicode_ci',
         'prefix' => '',
@@ -278,11 +278,11 @@
       'controlrec' => 
       array (
         'driver' => 'mysql',
-        'host' => 'localhost',
+        'host' => '172.20.74.92',
         'port' => '3306',
         'database' => 'controlrec',
-        'username' => 'root',
-        'password' => 'root',
+        'username' => 'ocompra',
+        'password' => 'KcLuDWe5vG',
         'charset' => 'utf8',
         'collation' => 'utf8_unicode_ci',
         'prefix' => '',
@@ -302,18 +302,18 @@
       array (
         'driver' => 'sqlsrv',
         'host' => '172.20.74.3',
-        'database' => 'SAO1814_DEV_PISTA_AEROPUERTO',
-        'username' => 'dev_pista',
-        'password' => 'Hermes2018',
+        'database' => 'SAO1814_DEV_TERMINAL_NAICM',
+        'username' => 'emartinez',
+        'password' => 'ems807&gh3',
         'prefix' => '',
       ),
       'seguridad' => 
       array (
         'driver' => 'sqlsrv',
-        'host' => 'DESKTOP-BGFQU6P\\SQLEXPRESS',
+        'host' => '172.20.74.3',
         'database' => 'SEGURIDAD_ERP',
-        'username' => 'sa',
-        'password' => '12345',
+        'username' => 'emartinez',
+        'password' => 'ems807&gh3',
         'prefix' => '',
       ),
       'sqlite' => 

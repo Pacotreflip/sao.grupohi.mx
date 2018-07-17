@@ -170,4 +170,7 @@ class ContratoProyectadoController extends Controller
             });
         }
     }
+    public function getContratosAgrupados() {
+        return $this->contrato_proyectado->getContratosAgrupados();
+    }
 }

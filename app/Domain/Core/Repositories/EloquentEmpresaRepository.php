@@ -82,4 +82,13 @@ class EloquentEmpresaRepository implements EmpresaRepository
     {
         return $this->model->create($data);
     }
+
+    /**
+     * Devuelve una lista de empresas para listas
+     * @return array
+     */
+    public function lists()
+    {
+        return $this->model->orderBy('razon_social', 'ASC')->lists('razon_social', 'id_empresa');
+    }
 }

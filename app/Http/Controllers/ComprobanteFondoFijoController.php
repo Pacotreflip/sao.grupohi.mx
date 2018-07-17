@@ -4,9 +4,10 @@ namespace Ghi\Http\Controllers;
 
 use Dingo\Api\Routing\Helpers;
 use Ghi\Core\Models\Material;
-use Ghi\Domain\Core\Repositories\EloquentFondoRepository;
-use Ghi\Domain\Core\Repositories\EloquentItemRepository;
-use Ghi\Domain\Core\Repositories\EloquentMaterialRepository;
+
+use Ghi\Domain\Core\Contracts\FondoRepository;
+use Ghi\Domain\Core\Contracts\ItemRepository;
+use Ghi\Domain\Core\Contracts\MaterialRepository;
 use Ghi\Domain\Core\Transformers\ItemComprobanteFondoFijo;
 use Illuminate\Http\Request;
 use Ghi\Domain\Core\Contracts\Finanzas\ComprobanteFondoFijoRepository;
@@ -26,7 +27,7 @@ class ComprobanteFondoFijoController extends Controller
     /**
      * ComprobanteFondoFijoController constructor.
      */
-    public function __construct(ComprobanteFondoFijoRepository $comprobante_fondo_fijo, EloquentFondoRepository $eloquentFondoRepository, EloquentMaterialRepository $materiales, EloquentItemRepository $items)
+    public function __construct(ComprobanteFondoFijoRepository $comprobante_fondo_fijo, FondoRepository $eloquentFondoRepository, MaterialRepository $materiales, ItemRepository $items)
     {
         parent::__construct();
 

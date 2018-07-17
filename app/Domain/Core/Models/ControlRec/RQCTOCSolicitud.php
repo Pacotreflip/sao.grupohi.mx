@@ -3,6 +3,7 @@
 namespace Ghi\Domain\Core\Models\ControlRec;
 
 use Ghi\Core\Facades\Context;
+use Ghi\Domain\Core\Models\Scopes\DatabaseScope;
 use Illuminate\Database\Eloquent\Model;
 
 class RQCTOCSolicitud extends Model
@@ -11,6 +12,12 @@ class RQCTOCSolicitud extends Model
 
     protected $table = 'rqctoc_solicitudes';
     protected $primaryKey = 'idrqctoc_solicitudes';
+
+    protected static function boot()
+    {
+        parent::boot();
+        static::addGlobalScope(new DatabaseScope());
+    }
 
     public function rqctocSolicitudPartidas() {
         return $this->hasMany(RQCTOCSolicitudPartidas::class, 'idrqctoc_solicitudes', 'idrqctoc_solicitudes');
