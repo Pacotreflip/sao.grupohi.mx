@@ -76,4 +76,12 @@ interface ConceptoRepository
      * @return mixed
      */
     public function storePartida(array $data);
+
+    /**
+     * Obtiene una sugerencia de clave concepto para nuevas partidas en el presupuesto
+     * @param $nivel_hijos
+     * @return mixed
+     */
+    public function getClaveConceptoNueva($nivel_hijos);
+
 }

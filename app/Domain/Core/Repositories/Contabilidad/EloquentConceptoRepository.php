@@ -251,9 +251,9 @@ class EloquentConceptoRepository implements ConceptoRepository
 
             //// recalcular rendimiento de los insumos por agrupador
             foreach ($insumos as $key => $insumo){
-                $insumos[$key]['cantidad_presupuestada'] = number_format($insumo['cantidad_presupuestada'] / $conceptoTarjeta->cantidad_presupuestada, 3, '.', '');
-                $insumos[$key]['monto_presupuestado'] = number_format(($insumo['cantidad_presupuestada'] / $conceptoTarjeta->cantidad_presupuestada) * $insumo['precio_unitario'], 3, '.', '');
-                $insumos[$key]['precio_unitario'] = number_format($insumo['precio_unitario'], 3, '.', '');
+                $insumos[$key]['cantidad_presupuestada'] = number_format($insumo['cantidad_presupuestada'] / $conceptoTarjeta->cantidad_presupuestada, 6, '.', '');
+                $insumos[$key]['monto_presupuestado'] = number_format(($insumo['cantidad_presupuestada'] / $conceptoTarjeta->cantidad_presupuestada) * $insumo['precio_unitario'], 6, '.', '');
+                $insumos[$key]['precio_unitario'] = number_format($insumo['precio_unitario'], 6, '.', '');
                 $agrupador_monto_presupuestado += ($insumo['cantidad_presupuestada'] / $conceptoTarjeta->cantidad_presupuestada) * $insumo['precio_unitario'];
                 $concepto_precio_unitario += ($insumo['cantidad_presupuestada'] / $conceptoTarjeta->cantidad_presupuestada) * $insumo['precio_unitario'];
             }
@@ -330,7 +330,7 @@ class EloquentConceptoRepository implements ConceptoRepository
             }else{
                 $nivel_partida = $data['nivel'] . str_pad(1, 3, '0', STR_PAD_LEFT) . '.';
             }
-             $partida = Concepto::create(['nivel' => $nivel_partida , 'descripcion' => $data['descripcion'], 'unidad' => '']);
+             $partida = Concepto::create(['nivel' => $nivel_partida , 'descripcion' => '[' . $data['clave_concepto'] . '] '. $data['descripcion'], 'unidad' => '', 'clave_concepto' => $data['clave_concepto']]);
 
             DB::connection('cadeco')->commit();
             return Concepto::find($partida->id_concepto);
@@ -339,5 +339,33 @@ class EloquentConceptoRepository implements ConceptoRepository
             throw $e;
         }
 
+    }
+
+
+    /**
+     * Obtiene una sugerencia de clave concepto para nuevas partidas en el presupuesto
+     * @param $nivel_hijos
+     * @return mixed
+     */
+    public function getClaveConceptoNueva($nivel_hijos)
+    {
+        $resp = $this->model->where('nivel', 'like', $nivel_hijos)->whereNotNull('clave_concepto')->orderBy('clave_concepto', 'asc')->get(['clave_concepto'])->toArray();
+        if(!$resp)return '';
+        foreach ($resp as $key => $clave){
+            $temp = explode('.', $clave['clave_concepto']);
+            if(($key + 1) !=  $temp[sizeof($temp)-1]){
+                return $this->concatenar_clave($temp, $key + 1);
+            }
+        }
+        return $this->concatenar_clave($temp, $key + 2);
+    }
+
+    public function concatenar_clave(array $elementos, $valor){
+        $clave = [];
+        for($i = 0; $i < sizeof($elementos) - 1; $i++){
+            array_push($clave, $elementos[$i]);
+        }
+        array_push($clave, $valor);
+        return  join(".",$clave );
     }
 }

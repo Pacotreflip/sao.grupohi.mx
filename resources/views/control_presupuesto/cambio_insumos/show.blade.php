@@ -167,7 +167,7 @@
                     </div>
                     <div class="box box-solid" id="divDetalle" style="display: none;">
                         <div class="box-header with-border">
-                            <h3 class="box-title">Afectacion de insumos</h3>
+                            <h3 class="box-title">Afectación de insumos</h3>
                         </div>
                         <div class="box-body">
                             <div v-for="(tipos, i) in clasificacion" v-show="tipos.items.length >0">

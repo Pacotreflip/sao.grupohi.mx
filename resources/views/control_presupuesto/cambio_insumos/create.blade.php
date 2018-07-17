@@ -46,16 +46,16 @@
                 <div class="col-md-12">
                     <div class="box box-solid">
                         <div class="box-header with-border">
-                            <h3 class="box-title">Conceptos !!</h3>
+                            <h3 class="box-title">Conceptos</h3>
 
                         </div>
                         <div class="box-body">
                             <div class="table-responsive">
-                                <table id="conceptos_table" class="small table table-bordered table-striped">
+                                <table id="conceptos_table" class="large table table-bordered table-striped">
                                     <thead>
                                     <tr>
                                         <th v-for="nivel in niveles">@{{ nivel.nombre }}</th>
-                                        <th>Unidad</th>
+
                                         <th>Volumen</th>
                                         <th>Costo</th>
                                         <th>Importe</th>
@@ -65,10 +65,10 @@
                                     <tfoot>
                                     <tr>
                                         <th v-for="nivel in niveles">@{{ nivel.nombre }}</th>
-                                        <th>Unidad</th>
-                                        <th>Cantidad</th>
-                                        <th>Precio Unitario</th>
-                                        <th>Monto</th>
+
+                                        <th>Volumen</th>
+                                        <th>Costo</th>
+                                        <th>Importe</th>
                                         <th>Agregar</th>
                                     </tr>
                                     </tfoot>
@@ -141,7 +141,7 @@
                                                     <td>@{{ i+1 }}</td>
                                                     <td>@{{ insumo.descripcion }}</td>
                                                     <td>@{{ insumo.unidad }}</td>
-                                                    <td>@{{ parseFloat(insumo.rendimiento_actual).formatMoney(3,'.',',') }}</td>
+                                                    <td>@{{ parseFloat(insumo.rendimiento_actual).formatMoney(6,'.',',') }}</td>
                                                     <td>
                                                         <div class="form-group"
                                                              :class="{'has-error': validation_errors.has('form_save_solicitud.Cantidad Actualizada Material [' + (i + 1) + ']')}">
@@ -150,14 +150,14 @@
                                                                    :class="'rendimiento'+insumo.id_elemento+'_' + i"
                                                                    :id="'c_p_'+insumo.id_elemento+'_' + i"
                                                                    @change="recalcular(insumo.id_elemento, i,1)"
-                                                                   v-validate="insumo.nuevo==true ? 'required|decimal|min_value:0' : 'decimal|min_value:0'"
+                                                                   v-validate="insumo.nuevo==true ? 'required|decimal:6|min_value:0|max_value:99999' : 'decimal:6|min_value:0|max_value:99999'"
                                                                    :name="'Cantidad Actualizada Material [' + (i + 1) + ']'">
                                                             <label class="help"
                                                                    v-show="validation_errors.has('form_save_solicitud.Cantidad Actualizada Material [' + (i + 1) + ']')">@{{ validation_errors.first('form_save_solicitud.Cantidad Actualizada Material [' + (i + 1) + ']') }}</label>
                                                         </div>
                                                     </td>
 
-                                                    <td v-show="form.agrupadas.length==1">@{{ parseFloat(insumo.cantidad_presupuestada).formatMoney(3,'.',',') }}</td>
+                                                    <td v-show="form.agrupadas.length==1">@{{ parseFloat(insumo.cantidad_presupuestada).formatMoney(6,'.',',') }}</td>
                                                     <td v-show="form.agrupadas.length==1">
                                                         <div class="form-group"
                                                              :class="{'has-error': validation_errors.has('form_save_solicitud.Volumen Actualizado Material [' + (i + 1) + ']')}">
@@ -165,7 +165,7 @@
                                                                    style="width: 75%"
                                                                    :id="'r_p_'+insumo.id_elemento+'_' + i"
                                                                    @change="recalcular_cantidad(insumo.id_elemento, i,1)"
-                                                                   v-validate="insumo.nuevo==true ? 'required|decimal|min_value:0' : 'decimal|min_value:0'"
+                                                                   v-validate="insumo.nuevo==true ? 'required|decimal:6|min_value:0|max_value:99999' : 'decimal:6|min_value:0|max_value:99999'"
                                                                    :name="'Volumen Actualizado Material [' + (i + 1) + ']'">
                                                             <label class="help"
                                                                    v-show="validation_errors.has('form_save_solicitud.Volumen Actualizado Material [' + (i + 1) + ']')">@{{ validation_errors.first('form_save_solicitud.Volumen Actualizado Material [' + (i + 1) + ']') }}</label>
@@ -173,7 +173,7 @@
                                                     </td>
 
                                                     <td :id="'p_u_'+ insumo.id_elemento+ '_' + i">
-                                                        $@{{ parseFloat(insumo.precio_unitario).formatMoney(2,'.',',') }}</td>
+                                                        $@{{ parseFloat(insumo.precio_unitario).formatMoney(6,'.',',') }}</td>
                                                     <td>
                                                         <div class="form-group"
                                                              :class="{'has-error': validation_errors.has('form_save_solicitud.Costo Actualizado Material [' + (i + 1) + ']')}">
@@ -182,7 +182,7 @@
                                                                     :class="'pre_unit'+insumo.id_elemento+'_' + i"
                                                                     :id="'m_p_'+insumo.id_elemento+'_' + i"
                                                                     @change="recalcular_monto(insumo.id_elemento, i,1)"
-                                                                    v-validate="insumo.nuevo==true ? 'required|decimal|min_value:0' : 'decimal|min_value:0'"
+                                                                    v-validate="insumo.nuevo==true ? 'required|decimal:6|min_value:0|max_value:99999999' : 'decimal:6|min_value:0|max_value:99999999'"
                                                                     :name="'Costo Actualizado Material [' + (i + 1) + ']'">
                                                             <label class="help"
                                                                    v-show="validation_errors.has('form_save_solicitud.Costo Actualizado Material [' + (i + 1) + ']')">@{{ validation_errors.first('form_save_solicitud.Costo Actualizado Material [' + (i + 1) + ']') }}</label>
@@ -234,7 +234,7 @@
                                                     <td>@{{ i+1 }}</td>
                                                     <td>@{{ insumo.descripcion }}</td>
                                                     <td>@{{ insumo.unidad }}</td>
-                                                    <td>@{{ parseFloat(insumo.rendimiento_actual).formatMoney(3,'.',',') }}</td>
+                                                    <td>@{{ parseFloat(insumo.rendimiento_actual).formatMoney(6,'.',',') }}</td>
                                                     <td>
                                                         <div class="form-group"
                                                              :class="{'has-error': validation_errors.has('form_save_solicitud.Rendimiento Actualizado Mano de Obra [' + (i + 1) + ']')}">
@@ -243,14 +243,14 @@
                                                                    :class="'rendimiento'+insumo.id_elemento+'_' + i"
                                                                    :id="'c_p_'+insumo.id_elemento+'_' + i"
                                                                    @change="recalcular(insumo.id_elemento, i,2)"
-                                                                   v-validate="insumo.nuevo==true ? 'required|decimal|min_value:0' : 'decimal|min_value:0'"
+                                                                   v-validate="insumo.nuevo==true ? 'required|decimal:6|min_value:0|max_value:99999' : 'decimal:6|min_value:0|max_value:99999'"
                                                                    :name="'Rendimiento Actualizado Mano de Obra [' + (i + 1) + ']'">
                                                             <label class="help"
                                                                    v-show="validation_errors.has('form_save_solicitud.Rendimiento Actualizado Mano de Obra [' + (i + 1) + ']')">@{{ validation_errors.first('form_save_solicitud.Rendimiento Actualizado Mano de Obra [' + (i + 1) + ']') }}</label>
                                                         </div>
                                                     </td>
 
-                                                    <td v-show="form.agrupadas.length==1">@{{ parseFloat(insumo.cantidad_presupuestada).formatMoney(3,'.',',') }}</td>
+                                                    <td v-show="form.agrupadas.length==1">@{{ parseFloat(insumo.cantidad_presupuestada).formatMoney(6,'.',',') }}</td>
                                                     <td v-show="form.agrupadas.length==1">
                                                         <div class="form-group"
                                                              :class="{'has-error': validation_errors.has('form_save_solicitud.Volumen Actualizado Mano de Obra [' + (i + 1) + ']')}">
@@ -258,7 +258,7 @@
                                                                    style="width: 90%"
                                                                    :id="'r_p_'+insumo.id_elemento+'_' + i"
                                                                    @change="recalcular_cantidad(insumo.id_elemento, i,2)"
-                                                                   v-validate="insumo.nuevo==true ? 'required|decimal|min_value:0' : 'decimal|min_value:0'"
+                                                                   v-validate="insumo.nuevo==true ? 'required|decimal:6|min_value:0|max_value:99999' : 'decimal:6|min_value:0|max_value:99999'"
                                                                    :name="'Volumen Actualizado Mano de Obra [' + (i + 1) + ']'">
                                                             <label class="help"
                                                                    v-show="validation_errors.has('form_save_solicitud.Volumen Actualizado Mano de Obra [' + (i + 1) + ']')">@{{ validation_errors.first('form_save_solicitud.Volumen Actualizado Mano de Obra [' + (i + 1) + ']') }}</label>
@@ -266,7 +266,7 @@
                                                     </td>
 
                                                     <td :id="'p_u_'+ insumo.id_elemento+ '_' + i">
-                                                        $@{{ parseFloat(insumo.precio_unitario).formatMoney(2,'.',',') }}</td>
+                                                        $@{{ parseFloat(insumo.precio_unitario).formatMoney(6,'.',',') }}</td>
                                                     <td>
                                                         <div class="form-group"
                                                              :class="{'has-error': validation_errors.has('form_save_solicitud.Costo Actualizado Mano de Obra [' + (i + 1) + ']')}">
@@ -275,7 +275,7 @@
                                                                     :class="'pre_unit'+insumo.id_elemento+'_' + i"
                                                                     :id="'m_p_'+insumo.id_elemento+'_' + i"
                                                                     @change="recalcular_monto(insumo.id_elemento, i,2)"
-                                                                    v-validate="insumo.nuevo==true ? 'required|decimal|min_value:0' : 'decimal|min_value:0'"
+                                                                    v-validate="insumo.nuevo==true ? 'required|decimal:6|min_value:0|max_value:99999' : 'decimal:6|min_value:0|max_value:99999'"
                                                                     :name="'Costo Actualizado Mano de Obra [' + (i + 1) + ']'">
                                                             <label class="help"
                                                                    v-show="validation_errors.has('form_save_solicitud.Costo Actualizado Mano de Obra [' + (i + 1) + ']')">@{{ validation_errors.first('form_save_solicitud.Costo Actualizado Mano de Obra [' + (i + 1) + ']') }}</label>
@@ -328,7 +328,7 @@
                                                     <td>@{{ i+1 }}</td>
                                                     <td>@{{ insumo.descripcion }}</td>
                                                     <td>@{{ insumo.unidad }}</td>
-                                                    <td>@{{ parseFloat(insumo.rendimiento_actual).formatMoney(3,'.',',') }}</td>
+                                                    <td>@{{ parseFloat(insumo.rendimiento_actual).formatMoney(6,'.',',') }}</td>
                                                     <td>
                                                         <div class="form-group"
                                                              :class="{'has-error': validation_errors.has('form_save_solicitud.Cantidad Actualizada Herramienta [' + (i + 1) + ']')}">
@@ -337,14 +337,14 @@
                                                                    :class="'rendimiento'+insumo.id_elemento+'_' + i"
                                                                    :id="'c_p_'+insumo.id_elemento+'_' + i"
                                                                    @change="recalcular(insumo.id_elemento, i,4)"
-                                                                   v-validate="insumo.nuevo==true ? 'required|decimal|min_value:0' : 'decimal|min_value:0'"
+                                                                   v-validate="insumo.nuevo==true ? 'required|decimal:6|min_value:0|max_value:99999' : 'decimal:6|min_value:0|max_value:99999'"
                                                                    :name="'Cantidad Actualizada Herramienta [' + (i + 1) + ']'">
                                                             <label class="help"
                                                                    v-show="validation_errors.has('form_save_solicitud.Cantidad Actualizada Herramienta [' + (i + 1) + ']')">@{{ validation_errors.first('form_save_solicitud.Cantidad Actualizada Herramienta [' + (i + 1) + ']') }}</label>
                                                         </div>
                                                     </td>
 
-                                                    <td v-show="form.agrupadas.length==1">@{{ parseFloat(insumo.cantidad_presupuestada).formatMoney(3,'.',',') }}</td>
+                                                    <td v-show="form.agrupadas.length==1">@{{ parseFloat(insumo.cantidad_presupuestada).formatMoney(6,'.',',') }}</td>
                                                     <td v-show="form.agrupadas.length==1">
                                                         <div class="form-group"
                                                              :class="{'has-error': validation_errors.has('form_save_solicitud.Volumen Actualizado Herramienta [' + (i + 1) + ']')}">
@@ -352,7 +352,7 @@
                                                                    style="width: 90%"
                                                                    :id="'r_p_'+insumo.id_elemento+'_' + i"
                                                                    @change="recalcular_cantidad(insumo.id_elemento, i,4)"
-                                                                   v-validate="insumo.nuevo==true ? 'required|decimal|min_value:0' : 'decimal|min_value:0'"
+                                                                   v-validate="insumo.nuevo==true ? 'required|decimal:6|min_value:0|max_value:99999' : 'decimal:6|min_value:0|max_value:99999'"
                                                                    :name="'Volumen Actualizado Herramienta [' + (i + 1) + ']'">
                                                             <label class="help"
                                                                    v-show="validation_errors.has('form_save_solicitud.Volumen Actualizado Herramienta [' + (i + 1) + ']')">@{{ validation_errors.first('form_save_solicitud.Volumen Actualizado Herramienta [' + (i + 1) + ']') }}</label>
@@ -360,7 +360,7 @@
                                                     </td>
 
                                                     <td :id="'p_u_'+ insumo.id_elemento+ '_' + i">
-                                                        $@{{ parseFloat(insumo.precio_unitario).formatMoney(2,'.',',') }}</td>
+                                                        $@{{ parseFloat(insumo.precio_unitario).formatMoney(6,'.',',') }}</td>
                                                     <td>
                                                         <div class="form-group"
                                                              :class="{'has-error': validation_errors.has('form_save_solicitud.Costo Actualizado Herramienta [' + (i + 1) + ']')}">
@@ -369,7 +369,7 @@
                                                                     :class="'pre_unit'+insumo.id_elemento+'_' + i"
                                                                     :id="'m_p_'+insumo.id_elemento+'_' + i"
                                                                     @change="recalcular_monto(insumo.id_elemento, i,4)"
-                                                                    v-validate="insumo.nuevo==true ? 'required|decimal|min_value:0' : 'decimal|min_value:0'"
+                                                                    v-validate="insumo.nuevo==true ? 'required|decimal:6|min_value:0|max_value:99999' : 'decimal:6|min_value:0|max_value:99999'"
                                                                     :name="'Costo Actualizado Herramienta [' + (i + 1) + ']'">
                                                             <label class="help"
                                                                    v-show="validation_errors.has('form_save_solicitud.Costo Actualizado Herramienta [' + (i + 1) + ']')">@{{ validation_errors.first('form_save_solicitud.Costo Actualizado Herramienta [' + (i + 1) + ']') }}</label>
@@ -421,7 +421,7 @@
                                                     <td>@{{ i+1 }}</td>
                                                     <td>@{{ insumo.descripcion }}</td>
                                                     <td>@{{ insumo.unidad }}</td>
-                                                    <td>@{{ parseFloat(insumo.rendimiento_actual).formatMoney(3,'.',',') }}</td>
+                                                    <td>@{{ parseFloat(insumo.rendimiento_actual).formatMoney(6,'.',',') }}</td>
                                                     <td>
                                                         <div class="form-group"
                                                              :class="{'has-error': validation_errors.has('form_save_solicitud.Cantidad Actualizada Maquinaria [' + (i + 1) + ']')}">
@@ -430,14 +430,14 @@
                                                                    :class="'rendimiento'+insumo.id_elemento+'_' + i"
                                                                    :id="'c_p_'+insumo.id_elemento+'_' + i"
                                                                    @change="recalcular(insumo.id_elemento, i,8)"
-                                                                   v-validate="insumo.nuevo==true ? 'required|decimal|min_value:0' : 'decimal|min_value:0'"
+                                                                   v-validate="insumo.nuevo==true ? 'required|decimal:6|min_value:0|max_value:99999' : 'decimal:6|min_value:0|max_value:99999'"
                                                                    :name="'Cantidad Actualizada Maquinaria [' + (i + 1) + ']'">
                                                             <label class="help"
                                                                    v-show="validation_errors.has('form_save_solicitud.Cantidad Actualizada Maquinaria [' + (i + 1) + ']')">@{{ validation_errors.first('form_save_solicitud.Cantidad Actualizada Maquinaria [' + (i + 1) + ']') }}</label>
                                                         </div>
                                                     </td>
 
-                                                    <td v-show="form.agrupadas.length==1">@{{ parseFloat(insumo.cantidad_presupuestada).formatMoney(3,'.',',') }}</td>
+                                                    <td v-show="form.agrupadas.length==1">@{{ parseFloat(insumo.cantidad_presupuestada).formatMoney(6,'.',',') }}</td>
                                                     <td v-show="form.agrupadas.length==1">
                                                         <div class="form-group"
                                                              :class="{'has-error': validation_errors.has('form_save_solicitud.Volumen Actualizado Maquinaria [' + (i + 1) + ']')}">
@@ -445,7 +445,7 @@
                                                                    style="width: 90%"
                                                                    :id="'r_p_'+insumo.id_elemento+'_' + i"
                                                                    @change="recalcular_cantidad(insumo.id_elemento, i,8)"
-                                                                   v-validate="insumo.nuevo==true ? 'required|decimal|min_value:0' : 'decimal|min_value:0'"
+                                                                   v-validate="insumo.nuevo==true ? 'required|decimal:6|min_value:0|max_value:99999' : 'decimal:6|min_value:0|max_value:99999'"
                                                                    :name="'Volumen Actualizado Maquinaria [' + (i + 1) + ']'">
                                                             <label class="help"
                                                                    v-show="validation_errors.has('form_save_solicitud.Volumen Actualizado Maquinaria [' + (i + 1) + ']')">@{{ validation_errors.first('form_save_solicitud.Volumen Actualizado Maquinaria [' + (i + 1) + ']') }}</label>
@@ -453,7 +453,7 @@
                                                     </td>
 
                                                     <td :id="'p_u_'+ insumo.id_elemento+ '_' + i">
-                                                        $@{{ parseFloat(insumo.precio_unitario).formatMoney(2,'.',',') }}</td>
+                                                        $@{{ parseFloat(insumo.precio_unitario).formatMoney(6,'.',',') }}</td>
                                                     <td>
                                                         <div class="form-group"
                                                              :class="{'has-error': validation_errors.has('form_save_solicitud.Costo Actualizado Maquinaria [' + (i + 1) + ']')}">
@@ -462,7 +462,7 @@
                                                                     :class="'pre_unit'+insumo.id_elemento+'_' + i"
                                                                     :id="'m_p_'+insumo.id_elemento+'_' + i"
                                                                     @change="recalcular_monto(insumo.id_elemento, i,8)"
-                                                                    v-validate="insumo.nuevo==true ? 'required|decimal|min_value:0' : 'decimal|min_value:0'"
+                                                                    v-validate="insumo.nuevo==true ? 'required|decimal:6|min_value:0|max_value:99999' : 'decimal:6|min_value:0|max_value:99999'"
                                                                     :name="'Costo Actualizado Maquinaria [' + (i + 1) + ']'">
                                                             <label class="help"
                                                                    v-show="validation_errors.has('form_save_solicitud.Costo Actualizado Maquinaria [' + (i + 1) + ']')">@{{ validation_errors.first('form_save_solicitud.Costo Actualizado Maquinaria [' + (i + 1) + ']') }}</label>
@@ -513,7 +513,7 @@
                                                     <td>@{{ i+1 }}</td>
                                                     <td>@{{ insumo.descripcion }}</td>
                                                     <td>@{{ insumo.unidad }}</td>
-                                                    <td>@{{ parseFloat(insumo.rendimiento_actual).formatMoney(3,'.',',') }}</td>
+                                                    <td>@{{ parseFloat(insumo.rendimiento_actual).formatMoney(6,'.',',') }}</td>
                                                     <td>
                                                         <div class="form-group"
                                                              :class="{'has-error': validation_errors.has('form_save_solicitud.Cantidad Actualizada Subcontratos [' + (i + 1) + ']')}">
@@ -522,13 +522,13 @@
                                                                    :class="'rendimiento'+insumo.id_elemento+'_' + i"
                                                                    :id="'c_p_'+insumo.id_elemento+'_' + i"
                                                                    @change="recalcular(insumo.id_elemento, i,5)"
-                                                                   v-validate="insumo.nuevo==true ? 'required|decimal|min_value:0' : 'decimal|min_value:0'"
+                                                                   v-validate="insumo.nuevo==true ? 'required|decimal:6|min_value:0|max_value:99999' : 'decimal:6|min_value:0|max_value:99999'"
                                                                    :name="'Cantidad Actualizada Subcontratos [' + (i + 1) + ']'">
                                                             <label class="help"
                                                                    v-show="validation_errors.has('form_save_solicitud.Cantidad Actualizada Subcontratos [' + (i + 1) + ']')">@{{ validation_errors.first('form_save_solicitud.Cantidad Actualizada Subcontratos [' + (i + 1) + ']') }}</label>
                                                         </div>
                                                     </td>
-                                                    <td v-show="form.agrupadas.length==1">@{{ parseFloat(insumo.cantidad_presupuestada).formatMoney(3,'.',',') }}</td>
+                                                    <td v-show="form.agrupadas.length==1">@{{ parseFloat(insumo.cantidad_presupuestada).formatMoney(6,'.',',') }}</td>
                                                     <td v-show="form.agrupadas.length==1">
                                                         <div class="form-group"
                                                              :class="{'has-error': validation_errors.has('form_save_solicitud.Volumen Actualizado Subcontratos [' + (i + 1) + ']')}">
@@ -536,14 +536,14 @@
                                                                    style="width: 90%"
                                                                    :id="'r_p_'+insumo.id_elemento+'_' + i"
                                                                    @change="recalcular_cantidad(insumo.id_elemento, i,5)"
-                                                                   v-validate="insumo.nuevo==true ? 'required|decimal|min_value:0' : 'decimal|min_value:0'"
+                                                                   v-validate="insumo.nuevo==true ? 'required|decimal:6|min_value:0|max_value:99999' : 'decimal:6|min_value:0|max_value:99999'"
                                                                    :name="'Volumen Actualizado Subcontratos [' + (i + 1) + ']'">
                                                             <label class="help"
                                                                    v-show="validation_errors.has('form_save_solicitud.Volumen Actualizado Subcontratos [' + (i + 1) + ']')">@{{ validation_errors.first('form_save_solicitud.Volumen Actualizado Subcontratos [' + (i + 1) + ']') }}</label>
                                                         </div>
                                                     </td>
                                                     <td :id="'p_u_'+ insumo.id_elemento+ '_' + i">
-                                                        $@{{ parseFloat(insumo.precio_unitario).formatMoney(2,'.',',') }}</td>
+                                                        $@{{ parseFloat(insumo.precio_unitario).formatMoney(6,'.',',') }}</td>
                                                     <td>
                                                         <div class="form-group"
                                                              :class="{'has-error': validation_errors.has('form_save_solicitud.Costo Actualizado Subcontratos [' + (i + 1) + ']')}">
@@ -552,7 +552,7 @@
                                                                     :class="'pre_unit'+insumo.id_elemento+'_' + i"
                                                                     :id="'m_p_'+insumo.id_elemento+'_' + i"
                                                                     @change="recalcular_monto(insumo.id_elemento, i,5)"
-                                                                    v-validate="insumo.nuevo==true ? 'required|decimal|min_value:0' : 'decimal|min_value:0'"
+                                                                    v-validate="insumo.nuevo==true ? 'required|decimal:6|min_value:0|max_value:99999' : 'decimal:6|min_value:0|max_value:99999'"
                                                                     :name="'Costo Actualizado Subcontratos [' + (i + 1) + ']'">
                                                             <label class="help"
                                                                    v-show="validation_errors.has('form_save_solicitud.Costo Actualizado Subcontratos [' + (i + 1) + ']')">@{{ validation_errors.first('form_save_solicitud.Costo Actualizado Subcontratos [' + (i + 1) + ']') }}</label>

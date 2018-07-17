@@ -114,7 +114,7 @@
                                                         </div>
                                                     </td>
 
-                                                    <td >$@{{ parseFloat(form.extraordinario.monto_presupuestado).formatMoney(2,'.',',') }}</td>
+                                                    <td >$@{{ parseFloat(form.extraordinario.monto_presupuestado).formatMoney(6,'.',',') }}</td>
                                                 </tr>
                                                 </tbody>
                                             </table>
@@ -167,8 +167,8 @@
                                                             <label class="help" v-show="validation_errors.has('form_save_solicitud.Concepto Cantidad')">@{{ validation_errors.first('form_save_solicitud.Concepto Cantidad') }}</label>
                                                         </div>
                                                     </td>
-                                                    <td >$@{{ parseFloat(form.extraordinario.precio_unitario).formatMoney(2,'.',',') }}</td>
-                                                    <td >$@{{ parseFloat(form.extraordinario.monto_presupuestado).formatMoney(2,'.',',') }}</td>
+                                                    <td >$@{{ parseFloat(form.extraordinario.precio_unitario).formatMoney(6,'.',',') }}</td>
+                                                    <td >$@{{ parseFloat(form.extraordinario.monto_presupuestado).formatMoney(6,'.',',') }}</td>
                                                 </tr>
                                                 </tbody>
                                             </table>
@@ -286,7 +286,7 @@
                                                                 <label class="help" v-show="validation_errors.has('form_save_solicitud.Material Importe [' + (i + 1) + ']')">@{{ validation_errors.first('form_save_solicitud.Material Importe [' + (i + 1) + ']') }}</label>
                                                             </div>
                                                         </td>
-                                                        <td>$@{{ parseFloat(insumo.monto_presupuestado).formatMoney(2,'.',',') }}</td>
+                                                        <td>$@{{ parseFloat(insumo.monto_presupuestado).formatMoney(6,'.',',') }}</td>
 
                                                     </tr>
                                                 </tbody>
@@ -347,7 +347,7 @@
                                                             <label class="help" v-show="validation_errors.has('form_save_solicitud.Mano de Obra Importe [' + (i + 1) + ']')">@{{ validation_errors.first('form_save_solicitud.Mano de Obra Importe [' + (i + 1) + ']') }}</label>
                                                         </div>
                                                     </td>
-                                                    <td>$@{{ parseFloat(insumo.monto_presupuestado).formatMoney(2,'.',',') }}</td>
+                                                    <td>$@{{ parseFloat(insumo.monto_presupuestado).formatMoney(6,'.',',') }}</td>
 
                                                 </tr>
                                                 </tbody>
@@ -409,7 +409,7 @@
                                                             <label class="help" v-show="validation_errors.has('form_save_solicitud.Herramienta y Equipo Importe [' + (i + 1) + ']')">@{{ validation_errors.first('form_save_solicitud.Herramienta y Equipo Importe [' + (i + 1) + ']') }}</label>
                                                         </div>
                                                     </td>
-                                                    <td>$@{{ parseFloat(insumo.monto_presupuestado).formatMoney(2,'.',',') }}</td>
+                                                    <td>$@{{ parseFloat(insumo.monto_presupuestado).formatMoney(6,'.',',') }}</td>
 
                                                 </tr>
                                                 </tbody>
@@ -471,7 +471,7 @@
                                                             <label class="help" v-show="validation_errors.has('form_save_solicitud.Maquinaria Importe [' + (i + 1) + ']')">@{{ validation_errors.first('form_save_solicitud.Maquinaria Importe [' + (i + 1) + ']') }}</label>
                                                         </div>
                                                     </td>
-                                                    <td>$@{{ parseFloat(insumo.monto_presupuestado).formatMoney(2,'.',',') }}</td>
+                                                    <td>$@{{ parseFloat(insumo.monto_presupuestado).formatMoney(6,'.',',') }}</td>
 
                                                 </tr>
                                                 </tbody>
@@ -533,7 +533,7 @@
                                                             <label class="help" v-show="validation_errors.has('form_save_solicitud.Subcontratos Importe [' + (i + 1) + ']')">@{{ validation_errors.first('form_save_solicitud.Subcontratos Importe [' + (i + 1) + ']') }}</label>
                                                         </div>
                                                     </td>
-                                                    <td>$@{{ parseFloat(insumo.monto_presupuestado).formatMoney(2,'.',',') }}</td>
+                                                    <td>$@{{ parseFloat(insumo.monto_presupuestado).formatMoney(6,'.',',') }}</td>
 
                                                 </tr>
                                                 </tbody>
@@ -741,12 +741,18 @@
                                         </tbody>
                                     </table>
                                     <div class="callout callout-info">
-                                        <p>Para agregar una partida en @{{ concepto_base.descripcion }} solo ingrese una descripción</p>
+                                        <p>Para agregar una nueva partida en @{{ concepto_base.descripcion }} ingrese la clave y descripción.</p>
                                     </div>
                                     <form id="form_save_partida" @submit.prevent="validateForm('form_save_partida', 'save_partida')"
                                           data-vv-scope="form_save_partida">
-                                        <div class="form-group" :class="{'has-error': validation_errors.has('form_save_partida.Partida Descripcion')}">
-                                            <input type="text" placeholder="Ingrese Descripción de la Partida"  style="width: 100%; height: 34px" maxlength="125"
+                                        <div class="col-md-3">
+                                            <label for="clave">Clave de la nueva partida</label>
+                                            <input type="text"  style="width: 100%; height: 34px" maxlength="35" id="clave"
+                                                   v-model="clave_concepto" :disabled="cargando" class="form-control">
+                                        </div>
+                                        <div class="form-group col-md-9" :class="{'has-error': validation_errors.has('form_save_partida.Partida Descripcion')}">
+                                            <label for="descripcion">Descripcion de la nueva partida</label>
+                                            <input type="text" placeholder="Ingrese Descripción de la Partida"  style="width: 100%; height: 34px" maxlength="125" id="descripcion"
                                                    class="form-control" v-validate="'required'"
                                                    v-model="partida_descripcion" :disabled="cargando"
                                                    :name="'Partida Descripcion'">
