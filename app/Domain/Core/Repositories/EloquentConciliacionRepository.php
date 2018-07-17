@@ -123,6 +123,7 @@ class EloquentConciliacionRepository implements ConciliacionRepository
                         'cantidad_presupuestada' => $partida['volumen'],
                         'id_material' => (int)$partida['id_material'],
                         'tarifa' => $partida['tarifa'],
+                        'tiro' => $partida['tiro'],
                         'destinos' => array( [
                             'id_concepto' => (int)$partida['id_concepto']
                         ])
@@ -150,6 +151,7 @@ class EloquentConciliacionRepository implements ConciliacionRepository
                             ->where('Acarreos.material.id_material_acarreo', '=', $partida['id_material'])
                             ->where('Acarreos.material.id_concepto', '=', (int)$partida['id_concepto'])
                             ->where('Acarreos.material.tarifa', '=', $partida['tarifa'])
+                            ->where('Acarreos.material.id_item', '=', $partida['tiro'])
                             ->orderBy('nivel', 'asc')->get();
 
 
@@ -163,6 +165,7 @@ class EloquentConciliacionRepository implements ConciliacionRepository
                                 'cantidad_presupuestada' => $partida['volumen'],
                                 'id_material' => (int)$partida['id_material'],
                                 'tarifa' => $partida['tarifa'],
+                                'tiro' => $partida['tiro'],
                                 'destinos' => array([
                                     'id_concepto' => (int)$partida['id_concepto']
                                 ])
@@ -190,13 +193,19 @@ class EloquentConciliacionRepository implements ConciliacionRepository
             $subcontrato_acarreo = EmpresaSubcontrato::where('id_empresa_acarreo', '=', $request->id_empresa)
                                 ->where('id_sindicato_acarreo', '=', $request->id_sindicato)
                                 ->where('id_tipo_tarifa', '=', $request->tipo_tarifa)->first();
-            try {
+
+            try {   //// no existe subcontrato
                 if(!$subcontrato_acarreo){
                     $req = new Request();
                     $items = [];
                     foreach ($partidas_conciliacion as $key => $partida){
-                        $concepto_contrato = MaterialAcarreo::select('id_concepto_contrato')->where('id_material_acarreo', '=',(int)$partida['id_material'])
-                            ->where('id_concepto', '=',(int)$partida['id_concepto'] )->first();
+                        $concepto_contrato = MaterialAcarreo::select('id_concepto_contrato')
+                            ->where('id_material_acarreo', '=', (int)$partida['id_material'])
+                            ->where('id_concepto', '=', (int)$partida['id_concepto'])
+                            ->where('Acarreos.material.tarifa', '=', $partida['tarifa'])
+                            ->where('Acarreos.material.id_item', '=', $partida['tiro'])
+                            ->first();
+
                         $moneda = Moneda::where('tipo', 1)->first();
 
                         $items[$key] =  array(
@@ -233,6 +242,7 @@ class EloquentConciliacionRepository implements ConciliacionRepository
                             ->where('Acarreos.material.id_concepto', '=', (int)$partida['id_concepto'])
                             ->where('Acarreos.material.id_material_acarreo', '=', (int)$partida['id_material'])
                             ->where('Acarreos.material.tarifa', '=', $partida['tarifa'])
+                            ->where('Acarreos.material.id_item', '=', $partida['tiro'])
                             ->where('items.id_transaccion', '=', $subcontrato->id_transaccion)
                             ->select('items.id_item')->first();
                         if ($item) {    //              si existe       -> aumentar volumen
@@ -242,9 +252,12 @@ class EloquentConciliacionRepository implements ConciliacionRepository
                             $this->item->update($req, $item->id_item);
 
                         } else {   //              no existe       -> crearlo
-                            $concepto_contrato = MaterialAcarreo::select('id_concepto_contrato')->where('id_material_acarreo', '=', (int)$partida['id_material'])
+                            $concepto_contrato = MaterialAcarreo::select('id_concepto_contrato')
+                                ->where('id_material_acarreo', '=', (int)$partida['id_material'])
                                 ->where('id_concepto', '=', (int)$partida['id_concepto'])
-                                ->where('Acarreos.material.tarifa', '=', $partida['tarifa'])->first();
+                                ->where('Acarreos.material.tarifa', '=', $partida['tarifa'])
+                                ->where('Acarreos.material.id_item', '=', $partida['tiro'])
+                                ->first();
                             $req = new Request();
                             $req->merge([
                                 'id_transaccion' => $subcontrato->id_transaccion,
@@ -273,6 +286,7 @@ class EloquentConciliacionRepository implements ConciliacionRepository
                         ->where('Acarreos.material.id_concepto', '=', (int)$partida['id_concepto'])
                         ->where('Acarreos.material.id_material_acarreo', '=', (int)$partida['id_material'])
                         ->where('Acarreos.material.tarifa', '=', $partida['tarifa'])
+                        ->where('Acarreos.material.id_item', '=', $partida['tiro'])
                         ->where('items.id_transaccion', '=', $subcontrato->id_transaccion)
                         ->select(['items.id_item', 'items.id_concepto'])->first();
                     $items_estimacion[$key] = array(
@@ -292,6 +306,7 @@ class EloquentConciliacionRepository implements ConciliacionRepository
                     'observaciones' => 'Conciliación con Folio ' . $request->id_conciliacion . ' de Sistema de Acarreos',
                     'items' => ($items_estimacion)
                 ]);
+                //dd($reques_estimacion);
                 $registro_estimacion = $this->estimacion->create($reques_estimacion);
 
                 /// registrar número de folio de la estimación
