@@ -429,8 +429,8 @@ Vue.component('cambio-insumos-create', {
         },
 
         existe : function (id) {
-            var found = this.form.partidas.find(function (partida) {
-                return partida.cobrable.id_concepto == id;
+            var found = this.form.agrupadas.find(function (partida) {
+                return partida == id;
             });
             return found != undefined;
         },
