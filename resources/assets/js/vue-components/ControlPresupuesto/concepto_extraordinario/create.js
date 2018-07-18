@@ -33,6 +33,7 @@ Vue.component('concepto-extraordinario-create', {
             material_seleccionado:[],
             concepto_base:[],
             partidas_concepto:[],
+            clave_concepto:'',
             modificar_estructura:false,
             partida_descripcion:''
         }
@@ -458,7 +459,15 @@ Vue.component('concepto-extraordinario-create', {
         validateForm: function(scope, funcion) {
             this.$validator.validateAll(scope).then(() => {
             if(funcion == 'save_solicitud') {
-                this.confirmSave();
+                if(!this.insumos_cantidad()){
+                    swal({
+                        type: 'warning',
+                        title: 'Advertencia',
+                        text: 'El extraordinario debe incluir al menos un insumo.'
+                    });
+                }else{
+                    this.confirmSave();
+                }
             }
             if(funcion == 'save_partida') {
                 this.confirmPartidaSave();
@@ -529,12 +538,11 @@ Vue.component('concepto-extraordinario-create', {
                 },
                 success: function (data, textStatus, xhr) {
                     self.partidas_concepto = data.data.conceptos;
+                    self.clave_concepto = data.data.clave_concepto;
                 },
                 complete: function() {
                     self.cargando = false;
-
                     $('#add_partida_modal').modal('show');
-
                 }
             });
 
@@ -567,7 +575,8 @@ Vue.component('concepto-extraordinario-create', {
                 url: url,
                 data : {
                     nivel:self.concepto_base.nivel,
-                    descripcion:self.partida_descripcion
+                    descripcion:self.partida_descripcion,
+                    clave_concepto:self.clave_concepto
                 },
                 beforeSend: function () {
                     self.cargando = true;
@@ -645,6 +654,16 @@ Vue.component('concepto-extraordinario-create', {
                 self.data.conceptos.pop();
             }
             self.data.conceptos[0].cargado = false;
+        },
+
+        insumos_cantidad: function () {
+            var self = this;
+            return self.form.extraordinario.MATERIALES.insumos.length > 0 ||
+                self.form.extraordinario.MAQUINARIA.insumos.length > 0 ||
+                self.form.extraordinario.MANOOBRA.insumos.length > 0 ||
+                self.form.extraordinario.HERRAMIENTAYEQUIPO.insumos.length > 0 ||
+                self.form.extraordinario.SUBCONTRATOS.insumos.length > 0 ||
+                self.form.extraordinario.GASTOS.insumos.length > 0 ;
         }
     }
 });

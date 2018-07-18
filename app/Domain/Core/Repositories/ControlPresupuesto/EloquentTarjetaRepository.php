@@ -40,7 +40,7 @@ class EloquentTarjetaRepository implements TarjetaRepository
 
     public function lists()
     {
-        return $this->model->lists('descripcion', 'id');
+        return $this->model->orderBy('id' , 'asc')->lists('descripcion', 'id');
     }
 
 
