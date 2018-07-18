@@ -63,8 +63,10 @@
                                             <th>#</th>
                                             <th>Descripción</th>
                                             <th>Unidad</th>
-
-
+                                            <th>Cantidad Original</th>
+                                            <th>Cantidad Actualizada</th>
+                                            <th>Volumen Original</th>
+                                            <th>Volumen Actualizado</th>
                                             <th>Costo Original</th>
                                             <th>Costo Actualizado</th>
                                             <th>-</th>
