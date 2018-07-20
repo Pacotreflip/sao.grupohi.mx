@@ -88,7 +88,7 @@
                                              :class="{'has-error': validation_errors.has('form_fondo_fijo.Naturaleza')}">
                                             <label for="Naturaleza"
                                                    class="control-label"><strong>Naturaleza</strong></label>
-                                            <select name="Naturaleza" class="form-control input-sm"
+                                            <select @change="form.items = []" name="Naturaleza" class="form-control input-sm"
                                                     v-model="form.comprobante.id_naturaleza" v-validate="'required'">
                                                 <option value>[--SELECCIONE--]</option>
                                                 <option value="0">Gastos Varios</option>
@@ -160,7 +160,7 @@
                                                     <button @click="item_material(index,item)" :id="'btn'+(index+1)+''" style="display:none" type="button"></button>
                                                 </td>
                                                 <td class="form-group"  :class="{'has-error': validation_errors.has('form_fondo_fijo.Cantidad [' + (index + 1) + ']')}">
-                                                    <input :name="'Cantidad [' + (index + 1) + ']'" class="form-control input-sm text-right" v-model="item.cantidad" v-validate="'required|numeric'"/>
+                                                    <input @change="item.precio_unitario = ( form.comprobante.id_naturaleza!=1 ? item.importe / item.cantidad : item.precio_unitario)" :name="'Cantidad [' + (index + 1) + ']'" class="form-control input-sm text-right" v-model="item.cantidad" v-validate="'required|numeric'"/>
                                                     <label class="help" v-show="validation_errors.has('form_fondo_fijo.Cantidad [' + (index + 1) + ']')">@{{ validation_errors.first('form_fondo_fijo.Cantidad [' + (index + 1) + ']') }}</label>
                                                 </td>
 
@@ -175,7 +175,7 @@
 
                                                 <td style="white-space: nowrap"  class="form-group" :class="{'has-error': validation_errors.has('form_fondo_fijo.Monto  [' + (index + 1) + ']')}" v-show="form.comprobante.id_naturaleza==0">
 
-                                                    <input  class="form-control input-sm text-right" type="text" :name="'Monto  [' + (index + 1) + ']'" v-validate="form.comprobante.id_naturaleza==0 ? 'required' : ''" v-model="item.importe"/>
+                                                    <input @change="item.precio_unitario = ( form.comprobante.id_naturaleza!=1 ? item.importe / item.cantidad : item.precio_unitario)" class="form-control input-sm text-right" type="text" :name="'Monto  [' + (index + 1) + ']'" v-validate="form.comprobante.id_naturaleza==0 ? 'required' : ''" v-model="item.importe"/>
                                                     <label class="help" v-show="validation_errors.has('form_fondo_fijo.Monto  [' + (index + 1) + ']')">@{{ validation_errors.first('form_fondo_fijo.Monto  [' + (index + 1) + ']') }}</label>
                                                 </td>
 
