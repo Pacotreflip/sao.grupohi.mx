@@ -483,14 +483,12 @@ Vue.component('comprobante-fondo-fijo-create', {
         },
         habilitaIva:function () {
             var self = this;
-            self.form.iva=self.subtotal*.16;
-
+            self.form.iva = self.subtotal*.16;
         },
         save_comprobante_fondo_fijo: function () {
             var self = this;
             var url = this.url_comprobante_fondo_fijo_create;
             var data = self.form;
-            console.log(url);
             $.ajax({
                 type: 'POST',
                 url:url,
