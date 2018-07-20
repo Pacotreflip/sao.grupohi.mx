@@ -36,13 +36,13 @@
   ),
   'app' => 
   array (
-    'env' => 'local',
+    'env' => 'production',
     'debug' => true,
     'url' => 'http://localhost',
     'timezone' => 'America/Mexico_City',
     'locale' => 'es',
     'fallback_locale' => 'es',
-    'key' => 'base64:EwKzL+NjLs0EDTJtVYBkaErNl+vWkrG5sXK8dALPluc=',
+    'key' => 'base64:HaVUvEs7c5FzzoTLj63CxoKRp9qUjJdgfiV/JCC8RFA=',
     'cipher' => 'AES-256-CBC',
     'log' => 'single',
     'providers' => 
@@ -223,7 +223,7 @@
       'file' => 
       array (
         'driver' => 'file',
-        'path' => 'C:\\Users\\25852\\PhpstormProjects\\sao.grupohi.mx\\storage\\framework/cache',
+        'path' => 'C:\\Users\\Francisco Esquivel\\Laravel\\sao.grupohi.mx\\storage\\framework/cache',
       ),
       'memcached' => 
       array (
@@ -319,7 +319,7 @@
       'sqlite' => 
       array (
         'driver' => 'sqlite',
-        'database' => 'C:\\Users\\25852\\PhpstormProjects\\sao.grupohi.mx\\database\\database.sqlite',
+        'database' => 'C:\\Users\\Francisco Esquivel\\Laravel\\sao.grupohi.mx\\database\\database.sqlite',
         'prefix' => '',
       ),
       'mysql' => 
@@ -390,7 +390,7 @@
         'host' => 'localhost',
         'port' => 11211,
       ),
-      'dir' => 'C:\\Users\\25852\\PhpstormProjects\\sao.grupohi.mx\\storage\\cache',
+      'dir' => 'C:\\Users\\Francisco Esquivel\\Laravel\\sao.grupohi.mx\\storage\\cache',
     ),
     'properties' => 
     array (
@@ -456,7 +456,7 @@
       ),
       'store' => 
       array (
-        'path' => 'C:\\Users\\25852\\PhpstormProjects\\sao.grupohi.mx\\storage\\exports',
+        'path' => 'C:\\Users\\Francisco Esquivel\\Laravel\\sao.grupohi.mx\\storage\\exports',
         'returnInfo' => false,
       ),
       'pdf' => 
@@ -466,15 +466,15 @@
         array (
           'DomPDF' => 
           array (
-            'path' => 'C:\\Users\\25852\\PhpstormProjects\\sao.grupohi.mx\\vendor/dompdf/dompdf/',
+            'path' => 'C:\\Users\\Francisco Esquivel\\Laravel\\sao.grupohi.mx\\vendor/dompdf/dompdf/',
           ),
           'tcPDF' => 
           array (
-            'path' => 'C:\\Users\\25852\\PhpstormProjects\\sao.grupohi.mx\\vendor/tecnick.com/tcpdf/',
+            'path' => 'C:\\Users\\Francisco Esquivel\\Laravel\\sao.grupohi.mx\\vendor/tecnick.com/tcpdf/',
           ),
           'mPDF' => 
           array (
-            'path' => 'C:\\Users\\25852\\PhpstormProjects\\sao.grupohi.mx\\vendor/mpdf/mpdf/',
+            'path' => 'C:\\Users\\Francisco Esquivel\\Laravel\\sao.grupohi.mx\\vendor/mpdf/mpdf/',
           ),
         ),
       ),
@@ -642,12 +642,12 @@
       'local' => 
       array (
         'driver' => 'local',
-        'root' => 'C:\\Users\\25852\\PhpstormProjects\\sao.grupohi.mx\\storage\\app',
+        'root' => 'C:\\Users\\Francisco Esquivel\\Laravel\\sao.grupohi.mx\\storage\\app',
       ),
       'public' => 
       array (
         'driver' => 'local',
-        'root' => 'C:\\Users\\25852\\PhpstormProjects\\sao.grupohi.mx\\storage\\app/public',
+        'root' => 'C:\\Users\\Francisco Esquivel\\Laravel\\sao.grupohi.mx\\storage\\app/public',
         'visibility' => 'public',
       ),
       's3' => 
@@ -786,7 +786,7 @@
     'lifetime' => 120,
     'expire_on_close' => false,
     'encrypt' => false,
-    'files' => 'C:\\Users\\25852\\PhpstormProjects\\sao.grupohi.mx\\storage\\framework/sessions',
+    'files' => 'C:\\Users\\Francisco Esquivel\\Laravel\\sao.grupohi.mx\\storage\\framework/sessions',
     'connection' => NULL,
     'table' => 'sessions',
     'lottery' => 
@@ -804,13 +804,13 @@
   array (
     'paths' => 
     array (
-      0 => 'C:\\Users\\25852\\PhpstormProjects\\sao.grupohi.mx\\resources\\views',
+      0 => 'C:\\Users\\Francisco Esquivel\\Laravel\\sao.grupohi.mx\\resources\\views',
     ),
-    'compiled' => 'C:\\Users\\25852\\PhpstormProjects\\sao.grupohi.mx\\storage\\framework\\views',
+    'compiled' => 'C:\\Users\\Francisco Esquivel\\Laravel\\sao.grupohi.mx\\storage\\framework\\views',
   ),
   'langman' => 
   array (
-    'path' => 'C:\\Users\\25852\\PhpstormProjects\\sao.grupohi.mx\\resources\\lang',
+    'path' => 'C:\\Users\\Francisco Esquivel\\Laravel\\sao.grupohi.mx\\resources\\lang',
   ),
   'modelTransformers' => 
   array (
