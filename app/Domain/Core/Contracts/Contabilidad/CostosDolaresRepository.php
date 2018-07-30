@@ -15,5 +15,4 @@ interface CostosDolaresRepository
      * Obtiene el reporte de Costos en Dolares
      * @return mixed
      */
-    public function getBy($fechas);
-}
+    public function getBy($fechas,  $provision = false);}

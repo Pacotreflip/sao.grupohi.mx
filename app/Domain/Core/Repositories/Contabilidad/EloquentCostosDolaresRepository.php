@@ -19,8 +19,9 @@ class EloquentCostosDolaresRepository implements CostosDolaresRepository
      * Obtiene el reporte de Costos en Dolares
      * @return mixed
      */
-    public function getBy($fechas)
+    public function getBy($fechas, $provision = false)
     {
+        $prov = $provision?' AND int_transacciones_interfaz.id_transaccion_interfaz = 19 ':'';
         $reporte = DB::connection('cadeco')->select("SELECT  distinct
 conceptos.id_concepto
 , int_polizas.fecha AS fecha_poliza
@@ -105,6 +106,7 @@ END as float) AS costo_me_complementaria
                 AND int_polizas_movimientos.id_tipo_cuenta_contable = 1
 					AND int_polizas_movimientos.cuenta_contable like '5%'
                 AND int_polizas_movimientos.deleted_at is null
+                ".$prov."
                 ) 
           
           union
@@ -200,6 +202,7 @@ END as float) AS costo_me_complementaria
                 AND int_polizas_movimientos.id_tipo_cuenta_contable = 1
 				AND int_polizas_movimientos.cuenta_contable like '5%'
                 AND int_polizas_movimientos.deleted_at is null
+                ".$prov."
                 )
              AND int_polizas.fecha BETWEEN ".$fechas." ORDER BY folio_contpaq asc");
 

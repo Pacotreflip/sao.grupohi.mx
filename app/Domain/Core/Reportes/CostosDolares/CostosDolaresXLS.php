@@ -79,12 +79,18 @@ class CostosDolaresXLS
                 $total_costo_me = 0;
                 $total_costo_me_comp = 0;
                 $total_efecto_camb = 0;
+                $resumen_extr = [];
+                $resumen_comp = [];
+                $resumen_auto = [];
+                $resumen_efec = [];
                 foreach ($this->costos as $item){
                     $total_mn_real += $item->importe;
                     $total_mn_aut += $item->costo_me * $item->cambio;
                     $total_costo_me += $item->costo_me;
+                    $resumen_extr[$item->moneda] =$item->costo_me;
                     $total_costo_me_comp += $item->costo_me_complementaria;
                     $total_efecto_camb += $item->efecto_cambiario;
+
                     array_push($data, array( $item->fecha_poliza, $item->tipo_cambio,$item->moneda, $item->cuenta_contable, $item->descripcion_concepto, number_format($item->importe,'2','.',','), number_format($item->costo_me,'2','.',','),number_format($item->costo_me_complementaria,'2','.',','), number_format($item->costo_me * $item->cambio,'2','.',',') , number_format($item->efecto_cambiario,'2','.',','), $item->tipo_poliza_contpaq.' No. '.$item->folio_contpaq, $item->tipo_poliza_sao.' No. '.$item->id_poliza ));
                     $sheet->setBorder('A'.$linea.':L'.$linea.'', 'thin');
                     $sheet->cells('A'.$linea.':L'.$linea.'', function ($cells){
@@ -93,7 +99,7 @@ class CostosDolaresXLS
                     $linea+=1;
                 }
                 // Agrega linea final con los totales
-                array_push($data, array('','','','','Totales: ',number_format($total_mn_real,'2','.',','),number_format($total_costo_me,'2','.',','),number_format($total_costo_me_comp,'2','.',','),number_format($total_mn_aut,'2','.',','),number_format($total_efecto_camb,'2','.',',') ,'',''));  //
+                array_push($data, array('','','','','Totales: ',number_format($total_mn_real,'2','.',','),number_format($total_costo_me,'2','.',','),number_format($total_costo_me_comp,'2','.',','),number_format($total_mn_aut,'2','.',','),number_format($total_efecto_camb,'2','.',',') ,$resumen_extr[$item->moneda],''));  //
                 $sheet->setBorder('A'.$linea.':L'.$linea.'', 'thin');
                 $sheet->cells('A'.$linea.':L'.$linea.'', function ($cells){
                     $cells->setBackground('#A5A5A5');
