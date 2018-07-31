@@ -36,16 +36,16 @@
   ),
   'app' => 
   array (
-    'env' => 'local',
+    'env' => 'production',
     'debug' => true,
     'url' => 'http://localhost',
     'timezone' => 'America/Mexico_City',
     'locale' => 'es',
     'fallback_locale' => 'es',
-    'key' => 'base64:EwKzL+NjLs0EDTJtVYBkaErNl+vWkrG5sXK8dALPluc=',
+    'key' => 'base64:HaVUvEs7c5FzzoTLj63CxoKRp9qUjJdgfiV/JCC8RFA=',
     'cipher' => 'AES-256-CBC',
     'log' => 'single',
-    'providers' => 
+    'providers' =>
     array (
       0 => 'Illuminate\\Auth\\AuthServiceProvider',
       1 => 'Illuminate\\Broadcasting\\BroadcastServiceProvider',
@@ -87,7 +87,7 @@
       37 => 'Themsaid\\Transformers\\TransformersServiceProvider',
       38 => 'Maatwebsite\\Excel\\ExcelServiceProvider',
     ),
-    'aliases' => 
+    'aliases' =>
     array (
       'App' => 'Illuminate\\Support\\Facades\\App',
       'Artisan' => 'Illuminate\\Support\\Facades\\Artisan',
@@ -132,37 +132,37 @@
       'Excel' => 'Maatwebsite\\Excel\\Facades\\Excel',
     ),
   ),
-  'auth' => 
+  'auth' =>
   array (
-    'defaults' => 
+    'defaults' =>
     array (
       'guard' => 'web',
       'passwords' => 'users',
     ),
-    'guards' => 
+    'guards' =>
     array (
-      'web' => 
+      'web' =>
       array (
         'driver' => 'session',
         'provider' => 'users',
       ),
-      'api' => 
+      'api' =>
       array (
         'driver' => 'token',
         'provider' => 'users',
       ),
     ),
-    'providers' => 
+    'providers' =>
     array (
-      'users' => 
+      'users' =>
       array (
         'driver' => 'intranet-auth',
         'model' => 'Ghi\\Domain\\Core\\Models\\User',
       ),
     ),
-    'passwords' => 
+    'passwords' =>
     array (
-      'users' => 
+      'users' =>
       array (
         'provider' => 'users',
         'email' => 'auth.emails.password',
@@ -171,66 +171,66 @@
       ),
     ),
   ),
-  'breadcrumbs' => 
+  'breadcrumbs' =>
   array (
     'view' => 'breadcrumbs.adminlte',
   ),
-  'broadcasting' => 
+  'broadcasting' =>
   array (
     'default' => 'redis',
-    'connections' => 
+    'connections' =>
     array (
-      'pusher' => 
+      'pusher' =>
       array (
         'driver' => 'pusher',
         'key' => NULL,
         'secret' => NULL,
         'app_id' => NULL,
-        'options' => 
+        'options' =>
         array (
         ),
       ),
-      'redis' => 
+      'redis' =>
       array (
         'driver' => 'redis',
         'connection' => 'default',
       ),
-      'log' => 
+      'log' =>
       array (
         'driver' => 'log',
       ),
     ),
   ),
-  'cache' => 
+  'cache' =>
   array (
     'default' => 'file',
-    'stores' => 
+    'stores' =>
     array (
-      'apc' => 
+      'apc' =>
       array (
         'driver' => 'apc',
       ),
-      'array' => 
+      'array' =>
       array (
         'driver' => 'array',
       ),
-      'database' => 
+      'database' =>
       array (
         'driver' => 'database',
         'table' => 'cache',
         'connection' => NULL,
       ),
-      'file' => 
+      'file' =>
       array (
         'driver' => 'file',
-        'path' => 'C:\\Users\\25852\\PhpstormProjects\\sao.grupohi.mx\\storage\\framework/cache',
+        'path' => 'C:\\Users\\Francisco Esquivel\\Laravel\\sao.grupohi.mx\\storage\\framework/cache',
       ),
-      'memcached' => 
+      'memcached' =>
       array (
         'driver' => 'memcached',
-        'servers' => 
+        'servers' =>
         array (
-          0 => 
+          0 =>
           array (
             'host' => '127.0.0.1',
             'port' => 11211,
@@ -238,7 +238,7 @@
           ),
         ),
       ),
-      'redis' => 
+      'redis' =>
       array (
         'driver' => 'redis',
         'connection' => 'default',
@@ -246,22 +246,22 @@
     ),
     'prefix' => 'laravel',
   ),
-  'compile' => 
+  'compile' =>
   array (
-    'files' => 
+    'files' =>
     array (
     ),
-    'providers' => 
+    'providers' =>
     array (
     ),
   ),
-  'database' => 
+  'database' =>
   array (
     'fetch' => 8,
     'default' => 'igh',
-    'connections' => 
+    'connections' =>
     array (
-      'igh' => 
+      'igh' =>
       array (
         'driver' => 'mysql',
         'host' => '172.20.74.7',
@@ -275,7 +275,7 @@
         'strict' => false,
         'engine' => NULL,
       ),
-      'controlrec' => 
+      'controlrec' =>
       array (
         'driver' => 'mysql',
         'host' => '172.20.74.92',
@@ -289,7 +289,7 @@
         'strict' => false,
         'engine' => NULL,
       ),
-      'generales' => 
+      'generales' =>
       array (
         'driver' => 'sqlsrv',
         'host' => 'localhost',
@@ -298,7 +298,7 @@
         'password' => '',
         'prefix' => '',
       ),
-      'cadeco' => 
+      'cadeco' =>
       array (
         'driver' => 'sqlsrv',
         'host' => '172.20.74.3',
@@ -307,7 +307,7 @@
         'password' => 'ems807&gh3',
         'prefix' => '',
       ),
-      'seguridad' => 
+      'seguridad' =>
       array (
         'driver' => 'sqlsrv',
         'host' => '172.20.74.3',
@@ -316,13 +316,13 @@
         'password' => 'ems807&gh3',
         'prefix' => '',
       ),
-      'sqlite' => 
+      'sqlite' =>
       array (
         'driver' => 'sqlite',
-        'database' => 'C:\\Users\\25852\\PhpstormProjects\\sao.grupohi.mx\\database\\database.sqlite',
+        'database' => 'C:\\Users\\Francisco Esquivel\\Laravel\\sao.grupohi.mx\\database\\database.sqlite',
         'prefix' => '',
       ),
-      'mysql' => 
+      'mysql' =>
       array (
         'driver' => 'mysql',
         'host' => 'localhost',
@@ -336,7 +336,7 @@
         'strict' => false,
         'engine' => NULL,
       ),
-      'pgsql' => 
+      'pgsql' =>
       array (
         'driver' => 'pgsql',
         'host' => 'localhost',
@@ -350,10 +350,10 @@
       ),
     ),
     'migrations' => 'erp_migrations',
-    'redis' => 
+    'redis' =>
     array (
       'cluster' => false,
-      'default' => 
+      'default' =>
       array (
         'host' => '127.0.0.1',
         'password' => NULL,
@@ -363,7 +363,7 @@
       ),
     ),
   ),
-  'entrust' => 
+  'entrust' =>
   array (
     'role' => 'Ghi\\Domain\\Core\\Models\\Seguridad\\Role',
     'roles_table' => 'roles',
@@ -374,25 +374,25 @@
     'user_foreign_key' => 'user_id',
     'role_foreign_key' => 'role_id',
   ),
-  'excel' => 
+  'excel' =>
   array (
-    'cache' => 
+    'cache' =>
     array (
       'enable' => true,
       'driver' => 'memory',
-      'settings' => 
+      'settings' =>
       array (
         'memoryCacheSize' => '32MB',
         'cacheTime' => 600,
       ),
-      'memcache' => 
+      'memcache' =>
       array (
         'host' => 'localhost',
         'port' => 11211,
       ),
-      'dir' => 'C:\\Users\\25852\\PhpstormProjects\\sao.grupohi.mx\\storage\\cache',
+      'dir' => 'C:\\Users\\Francisco Esquivel\\Laravel\\sao.grupohi.mx\\storage\\cache',
     ),
-    'properties' => 
+    'properties' =>
     array (
       'creator' => 'Maatwebsite',
       'lastModifiedBy' => 'Maatwebsite',
@@ -404,9 +404,9 @@
       'manager' => 'Maatwebsite',
       'company' => 'Maatwebsite',
     ),
-    'sheets' => 
+    'sheets' =>
     array (
-      'pageSetup' => 
+      'pageSetup' =>
       array (
         'orientation' => 'portrait',
         'paperSize' => '9',
@@ -414,12 +414,12 @@
         'fitToPage' => false,
         'fitToHeight' => true,
         'fitToWidth' => true,
-        'columnsToRepeatAtLeft' => 
+        'columnsToRepeatAtLeft' =>
         array (
           0 => '',
           1 => '',
         ),
-        'rowsToRepeatAtTop' => 
+        'rowsToRepeatAtTop' =>
         array (
           0 => 0,
           1 => 0,
@@ -431,7 +431,7 @@
       ),
     ),
     'creator' => 'Maatwebsite',
-    'csv' => 
+    'csv' =>
     array (
       'delimiter' => ',',
       'enclosure' => '"',
@@ -439,7 +439,7 @@
 ',
       'use_bom' => false,
     ),
-    'export' => 
+    'export' =>
     array (
       'autosize' => true,
       'autosize-method' => 'approx',
@@ -447,49 +447,49 @@
       'merged_cell_alignment' => 'left',
       'calculate' => false,
       'includeCharts' => false,
-      'sheets' => 
+      'sheets' =>
       array (
         'page_margin' => false,
         'nullValue' => NULL,
         'startCell' => 'A1',
         'strictNullComparison' => false,
       ),
-      'store' => 
+      'store' =>
       array (
-        'path' => 'C:\\Users\\25852\\PhpstormProjects\\sao.grupohi.mx\\storage\\exports',
+        'path' => 'C:\\Users\\Francisco Esquivel\\Laravel\\sao.grupohi.mx\\storage\\exports',
         'returnInfo' => false,
       ),
-      'pdf' => 
+      'pdf' =>
       array (
         'driver' => 'DomPDF',
-        'drivers' => 
+        'drivers' =>
         array (
-          'DomPDF' => 
+          'DomPDF' =>
           array (
-            'path' => 'C:\\Users\\25852\\PhpstormProjects\\sao.grupohi.mx\\vendor/dompdf/dompdf/',
+            'path' => 'C:\\Users\\Francisco Esquivel\\Laravel\\sao.grupohi.mx\\vendor/dompdf/dompdf/',
           ),
-          'tcPDF' => 
+          'tcPDF' =>
           array (
-            'path' => 'C:\\Users\\25852\\PhpstormProjects\\sao.grupohi.mx\\vendor/tecnick.com/tcpdf/',
+            'path' => 'C:\\Users\\Francisco Esquivel\\Laravel\\sao.grupohi.mx\\vendor/tecnick.com/tcpdf/',
           ),
-          'mPDF' => 
+          'mPDF' =>
           array (
-            'path' => 'C:\\Users\\25852\\PhpstormProjects\\sao.grupohi.mx\\vendor/mpdf/mpdf/',
+            'path' => 'C:\\Users\\Francisco Esquivel\\Laravel\\sao.grupohi.mx\\vendor/mpdf/mpdf/',
           ),
         ),
       ),
     ),
-    'filters' => 
+    'filters' =>
     array (
-      'registered' => 
+      'registered' =>
       array (
         'chunk' => 'Maatwebsite\\Excel\\Filters\\ChunkReadFilter',
       ),
-      'enabled' => 
+      'enabled' =>
       array (
       ),
     ),
-    'import' => 
+    'import' =>
     array (
       'heading' => 'slugged',
       'startRow' => 1,
@@ -497,7 +497,7 @@
       'slug_whitelist' => '._',
       'includeCharts' => false,
       'to_ascii' => true,
-      'encoding' => 
+      'encoding' =>
       array (
         'input' => 'UTF-8',
         'output' => 'UTF-8',
@@ -505,125 +505,125 @@
       'calculate' => true,
       'ignoreEmpty' => false,
       'force_sheets_collection' => false,
-      'dates' => 
+      'dates' =>
       array (
         'enabled' => true,
         'format' => false,
-        'columns' => 
+        'columns' =>
         array (
         ),
       ),
-      'sheets' => 
+      'sheets' =>
       array (
-        'test' => 
+        'test' =>
         array (
           'firstname' => 'A2',
         ),
       ),
     ),
-    'views' => 
+    'views' =>
     array (
-      'styles' => 
+      'styles' =>
       array (
-        'th' => 
+        'th' =>
         array (
-          'font' => 
+          'font' =>
           array (
             'bold' => true,
             'size' => 12,
           ),
         ),
-        'strong' => 
+        'strong' =>
         array (
-          'font' => 
+          'font' =>
           array (
             'bold' => true,
             'size' => 12,
           ),
         ),
-        'b' => 
+        'b' =>
         array (
-          'font' => 
+          'font' =>
           array (
             'bold' => true,
             'size' => 12,
           ),
         ),
-        'i' => 
+        'i' =>
         array (
-          'font' => 
+          'font' =>
           array (
             'italic' => true,
             'size' => 12,
           ),
         ),
-        'h1' => 
+        'h1' =>
         array (
-          'font' => 
+          'font' =>
           array (
             'bold' => true,
             'size' => 24,
           ),
         ),
-        'h2' => 
+        'h2' =>
         array (
-          'font' => 
+          'font' =>
           array (
             'bold' => true,
             'size' => 18,
           ),
         ),
-        'h3' => 
+        'h3' =>
         array (
-          'font' => 
+          'font' =>
           array (
             'bold' => true,
             'size' => 13.5,
           ),
         ),
-        'h4' => 
+        'h4' =>
         array (
-          'font' => 
+          'font' =>
           array (
             'bold' => true,
             'size' => 12,
           ),
         ),
-        'h5' => 
+        'h5' =>
         array (
-          'font' => 
+          'font' =>
           array (
             'bold' => true,
             'size' => 10,
           ),
         ),
-        'h6' => 
+        'h6' =>
         array (
-          'font' => 
+          'font' =>
           array (
             'bold' => true,
             'size' => 7.5,
           ),
         ),
-        'a' => 
+        'a' =>
         array (
-          'font' => 
+          'font' =>
           array (
             'underline' => true,
-            'color' => 
+            'color' =>
             array (
               'argb' => 'FF0000FF',
             ),
           ),
         ),
-        'hr' => 
+        'hr' =>
         array (
-          'borders' => 
+          'borders' =>
           array (
-            'bottom' => 
+            'bottom' =>
             array (
               'style' => 'thin',
-              'color' => 
+              'color' =>
               array (
                 0 => 'FF000000',
               ),
@@ -633,24 +633,24 @@
       ),
     ),
   ),
-  'filesystems' => 
+  'filesystems' =>
   array (
     'default' => 'local',
     'cloud' => 's3',
-    'disks' => 
+    'disks' =>
     array (
-      'local' => 
+      'local' =>
       array (
         'driver' => 'local',
-        'root' => 'C:\\Users\\25852\\PhpstormProjects\\sao.grupohi.mx\\storage\\app',
+        'root' => 'C:\\Users\\Francisco Esquivel\\Laravel\\sao.grupohi.mx\\storage\\app',
       ),
-      'public' => 
+      'public' =>
       array (
         'driver' => 'local',
-        'root' => 'C:\\Users\\25852\\PhpstormProjects\\sao.grupohi.mx\\storage\\app/public',
+        'root' => 'C:\\Users\\Francisco Esquivel\\Laravel\\sao.grupohi.mx\\storage\\app/public',
         'visibility' => 'public',
       ),
-      's3' => 
+      's3' =>
       array (
         'driver' => 's3',
         'key' => 'your-key',
@@ -660,7 +660,7 @@
       ),
     ),
   ),
-  'jwt' => 
+  'jwt' =>
   array (
     'secret' => 'vgoAVJuFkQv0h6r4GKuQyxWqfJreO2Qy',
     'ttl' => 20160,
@@ -668,7 +668,7 @@
     'algo' => 'HS256',
     'user' => 'Ghi\\Domain\\Core\\Models\\User',
     'identifier' => 'idusuario',
-    'required_claims' => 
+    'required_claims' =>
     array (
       0 => 'iss',
       1 => 'iat',
@@ -678,7 +678,7 @@
       5 => 'jti',
     ),
     'blacklist_enabled' => true,
-    'providers' => 
+    'providers' =>
     array (
       'user' => 'Tymon\\JWTAuth\\Providers\\User\\EloquentUserAdapter',
       'jwt' => 'Tymon\\JWTAuth\\Providers\\JWT\\NamshiAdapter',
@@ -686,12 +686,12 @@
       'storage' => 'Tymon\\JWTAuth\\Providers\\Storage\\IlluminateCacheAdapter',
     ),
   ),
-  'mail' => 
+  'mail' =>
   array (
     'driver' => 'smtp',
     'host' => '172.20.74.6',
     'port' => '25',
-    'from' => 
+    'from' =>
     array (
       'address' => NULL,
       'name' => NULL,
@@ -701,7 +701,7 @@
     'password' => '&ScR2507-11$',
     'sendmail' => '/usr/sbin/sendmail -bs',
   ),
-  'phpmailer' => 
+  'phpmailer' =>
   array (
     'host' => NULL,
     'port' => NULL,
@@ -710,30 +710,30 @@
     'username' => NULL,
     'password' => NULL,
   ),
-  'queue' => 
+  'queue' =>
   array (
     'default' => 'sync',
-    'connections' => 
+    'connections' =>
     array (
-      'sync' => 
+      'sync' =>
       array (
         'driver' => 'sync',
       ),
-      'database' => 
+      'database' =>
       array (
         'driver' => 'database',
         'table' => 'jobs',
         'queue' => 'default',
         'expire' => 60,
       ),
-      'beanstalkd' => 
+      'beanstalkd' =>
       array (
         'driver' => 'beanstalkd',
         'host' => 'localhost',
         'queue' => 'default',
         'ttr' => 60,
       ),
-      'sqs' => 
+      'sqs' =>
       array (
         'driver' => 'sqs',
         'key' => 'your-public-key',
@@ -742,7 +742,7 @@
         'queue' => 'your-queue-name',
         'region' => 'us-east-1',
       ),
-      'redis' => 
+      'redis' =>
       array (
         'driver' => 'redis',
         'connection' => 'default',
@@ -750,46 +750,46 @@
         'expire' => 60,
       ),
     ),
-    'failed' => 
+    'failed' =>
     array (
       'database' => 'igh',
       'table' => 'failed_jobs',
     ),
   ),
-  'services' => 
+  'services' =>
   array (
-    'mailgun' => 
+    'mailgun' =>
     array (
       'domain' => NULL,
       'secret' => NULL,
     ),
-    'ses' => 
+    'ses' =>
     array (
       'key' => NULL,
       'secret' => NULL,
       'region' => 'us-east-1',
     ),
-    'sparkpost' => 
+    'sparkpost' =>
     array (
       'secret' => NULL,
     ),
-    'stripe' => 
+    'stripe' =>
     array (
       'model' => 'Ghi\\User',
       'key' => NULL,
       'secret' => NULL,
     ),
   ),
-  'session' => 
+  'session' =>
   array (
     'driver' => 'file',
     'lifetime' => 120,
     'expire_on_close' => false,
     'encrypt' => false,
-    'files' => 'C:\\Users\\25852\\PhpstormProjects\\sao.grupohi.mx\\storage\\framework/sessions',
+    'files' => 'C:\\Users\\Francisco Esquivel\\Laravel\\sao.grupohi.mx\\storage\\framework/sessions',
     'connection' => NULL,
     'table' => 'sessions',
-    'lottery' => 
+    'lottery' =>
     array (
       0 => 2,
       1 => 100,
@@ -800,17 +800,17 @@
     'secure' => false,
     'http_only' => true,
   ),
-  'view' => 
+  'view' =>
   array (
-    'paths' => 
+    'paths' =>
     array (
-      0 => 'C:\\Users\\25852\\PhpstormProjects\\sao.grupohi.mx\\resources\\views',
+      0 => 'C:\\Users\\Francisco Esquivel\\Laravel\\sao.grupohi.mx\\resources\\views',
     ),
-    'compiled' => 'C:\\Users\\25852\\PhpstormProjects\\sao.grupohi.mx\\storage\\framework\\views',
+    'compiled' => 'C:\\Users\\Francisco Esquivel\\Laravel\\sao.grupohi.mx\\storage\\framework\\views',
   ),
-  'langman' => 
+  'langman' =>
   array (
-    'path' => 'C:\\Users\\25852\\PhpstormProjects\\sao.grupohi.mx\\resources\\lang',
+    'path' => 'C:\\Users\\Francisco Esquivel\\Laravel\\sao.grupohi.mx\\resources\\lang',
   ),
   'modelTransformers' => 
   array (

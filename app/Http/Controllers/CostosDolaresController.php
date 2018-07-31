@@ -56,7 +56,7 @@ class CostosDolaresController extends Controller
         $fecha_inicial = explode("+-+", $request->fechas)[0] . ' 00:00:00.000';
         $fecha_final = explode("+-+", $request->fechas)[1] . ' 00:00:00.000';
         $rango = "'{$fecha_inicial}' and '{$fecha_final}'";
-        $reporte = $this->costos_dolares->getBy($rango);
+        $reporte = $this->costos_dolares->getBy($rango, filter_var(explode("+-+", $request->fechas)[2], FILTER_VALIDATE_BOOLEAN));
         $pdf = new CostosDolaresXLS($reporte);
         $pdf->create();
     }
