@@ -83,14 +83,16 @@ class CostosDolaresXLS
                 $resumen_comp = [];
                 $resumen_auto = [];
                 $resumen_efec = [];
-                foreach ($this->costos as $item){
+                foreach ($this->costos as $key => $item){
                     $total_mn_real += $item->importe;
                     $total_mn_aut += $item->costo_me * $item->cambio;
+                    array_key_exists($item->moneda,$resumen_auto )?$resumen_auto[$item->moneda] += $item->costo_me:$resumen_auto[$item->moneda] = $item->costo_me;
                     $total_costo_me += $item->costo_me;
-                    $resumen_extr[$item->moneda] =$item->costo_me;
+                    array_key_exists($item->moneda,$resumen_extr )?$resumen_extr[$item->moneda] += $item->costo_me * $item->cambio:$resumen_extr[$item->moneda] = $item->costo_me * $item->cambio;
                     $total_costo_me_comp += $item->costo_me_complementaria;
+                    array_key_exists($item->moneda,$resumen_comp )?$resumen_comp[$item->moneda] += $item->costo_me_complementaria:$resumen_comp[$item->moneda] = $item->costo_me_complementaria;
                     $total_efecto_camb += $item->efecto_cambiario;
-
+                    array_key_exists($item->moneda,$resumen_efec )?$resumen_efec[$item->moneda] += $item->efecto_cambiario:$resumen_efec[$item->moneda] = $item->efecto_cambiario;
                     array_push($data, array( $item->fecha_poliza, $item->tipo_cambio,$item->moneda, $item->cuenta_contable, $item->descripcion_concepto, number_format($item->importe,'2','.',','), number_format($item->costo_me,'2','.',','),number_format($item->costo_me_complementaria,'2','.',','), number_format($item->costo_me * $item->cambio,'2','.',',') , number_format($item->efecto_cambiario,'2','.',','), $item->tipo_poliza_contpaq.' No. '.$item->folio_contpaq, $item->tipo_poliza_sao.' No. '.$item->id_poliza ));
                     $sheet->setBorder('A'.$linea.':L'.$linea.'', 'thin');
                     $sheet->cells('A'.$linea.':L'.$linea.'', function ($cells){
@@ -98,13 +100,35 @@ class CostosDolaresXLS
                     });
                     $linea+=1;
                 }
+
                 // Agrega linea final con los totales
-                array_push($data, array('','','','','Totales: ',number_format($total_mn_real,'2','.',','),number_format($total_costo_me,'2','.',','),number_format($total_costo_me_comp,'2','.',','),number_format($total_mn_aut,'2','.',','),number_format($total_efecto_camb,'2','.',',') ,$resumen_extr[$item->moneda],''));  //
+                array_push($data, array('','','','','Totales: ',number_format($total_mn_real,'2','.',','),number_format($total_costo_me,'2','.',','),number_format($total_costo_me_comp,'2','.',','),number_format($total_mn_aut,'2','.',','),number_format($total_efecto_camb,'2','.',',') ,'',''));  //
                 $sheet->setBorder('A'.$linea.':L'.$linea.'', 'thin');
                 $sheet->cells('A'.$linea.':L'.$linea.'', function ($cells){
                     $cells->setBackground('#A5A5A5');
 
                 });
+
+                $linea +=2;
+                // Recuadro de resumen de transacciones de Moneda Extranjera
+                array_push($data, array('','','' ,'' ,'','','','','','','',''));  //
+                array_push($data, array('','','' ,''  ,'MXM',number_format($total_mn_real,'2','.',','),'','','','','',''));  //
+                $sheet->setBorder('E'.$linea.':J'.$linea.'', 'thin');
+                $sheet->cells('E'.$linea.':J'.$linea.'', function ($cells){
+                    $cells->setBackground('#C5C5C5');
+                });
+                $linea +=1;
+                foreach ($resumen_extr as $index => $resumen){
+                    array_push($data, array('','','' ,''  ,$index,number_format($resumen_auto[$index],'2','.',','),'',number_format($resumen_comp[$index],'2','.',','),number_format($resumen_extr[$index],'2','.',','),number_format($resumen_efec[$index],'2','.',','),'',''));  //
+                    $sheet->setBorder('E'.$linea.':J'.$linea.'', 'thin');
+                    $sheet->cells('E'.$linea.':J'.$linea.'', function ($cells){
+                        $cells->setBackground('#C5C5C5');
+                    });
+                    $linea +=1;
+                }
+
+
+
                 $sheet->mergeCells('A1:B1');
                 $sheet->mergeCells($this->letters[$num + 1].'2:'. $this->letters[$num + 3].'2');
                 $sheet->fromArray($data, null, 'A1', false, false );

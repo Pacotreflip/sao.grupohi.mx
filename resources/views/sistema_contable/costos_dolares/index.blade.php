@@ -34,14 +34,14 @@
     </div>
     @if(!empty($costos))
         <div class="row" >
-            <div class="col-md-9">
+            <div class="col-md-10">
                 <button class="btn btn-sm btn-primary pull-right" type="button" id="pdf" onclick="pdf()">Reporte PDF</button>
             </div>
             <div class="col-md-1">
                 <button class="btn btn-sm btn-primary pull-right" type="button" id="xls" onclick="xls()">Reporte Excel</button>
             </div>
-            <div class="col-md-2">
-                <button class="btn btn-sm btn-primary pull-right" type="button" id="xls" onclick="xls_prov()">Reporte Excel (Sin Provision)</button>
+            <div class="col-md-1">
+                <button class="btn btn-sm btn-primary pull-right" type="button" id="xls" onclick="xls_prov()">Reporte Excel<br/>(Sin Provisión)</button>
             </div>
         </div>
         <br>
@@ -143,11 +143,11 @@
         }
 
         function xls(){
-            var url = App.host + '/sistema_contable/costos_dolares/' + $_GET('fechas') + '+-+true/reportexls';
+            var url = App.host + '/sistema_contable/costos_dolares/' + $_GET('fechas') + '+-+false/reportexls';
             $("#PDFModal .modal-body").html('<iframe src="'+url+'"  frameborder="0" height="100%" width="99.6%">d</iframe>');
         }
         function xls_prov(){
-            var url = App.host + '/sistema_contable/costos_dolares/' + $_GET('fechas') + '+-+false/reportexls';
+            var url = App.host + '/sistema_contable/costos_dolares/' + $_GET('fechas') + '+-+true/reportexls';
             $("#PDFModal .modal-body").html('<iframe src="'+url+'"  frameborder="0" height="100%" width="99.6%">d</iframe>');
         }
     </script>

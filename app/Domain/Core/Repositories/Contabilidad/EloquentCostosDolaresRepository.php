@@ -21,7 +21,7 @@ class EloquentCostosDolaresRepository implements CostosDolaresRepository
      */
     public function getBy($fechas, $provision = false)
     {
-        $prov = $provision?' AND int_transacciones_interfaz.id_transaccion_interfaz = 19 ':'';
+        $prov = $provision?' AND int_transacciones_interfaz.id_transaccion_interfaz != 19 ':'';
         $reporte = DB::connection('cadeco')->select("SELECT  distinct
 conceptos.id_concepto
 , int_polizas.fecha AS fecha_poliza
