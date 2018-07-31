@@ -134,7 +134,7 @@ class Estimacion extends Transaccion
 
     public function getAmortizacionPendienteAttribute() {
         $estimaciones_anteriores = $this->subcontrato->estimaciones()->where('id_transaccion', '<', $this->id_transaccion)->get();
-            return $this->subcontrato->anticipo_monto - $estimaciones_anteriores->sum('monto_anticipo_aplicado') - $this->monto_anticipo_aplicado;
+        return $this->subcontrato->anticipo_monto - $estimaciones_anteriores->sum('monto_anticipo_aplicado') - $this->monto_anticipo_aplicado;
     }
 
     public function getAmortizacionPendienteAnteriorAttribute() {
@@ -153,9 +153,9 @@ class Estimacion extends Transaccion
             : $this->suma_importes - $this->monto_anticipo_aplicado;
     }
 
-   /* public function getImpuestoAttribute() {
-        return $this->subtotal * 0.16;
-    }*/
+    public function getImpuestoAttribute() {
+        return $this->subtotal * $this->iva;
+    }
 
     public function getMontoAttribute() {
         return $this->subtotal + $this->impuesto;
